@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<!-- Mirrored from ci.wuboy.twbbs.org/user_guide/libraries/uri.html by HTTrack Website Copier/3.x [XR&CO'2008], Sun, 27 Jun 2010 06:29:38 GMT -->
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI 類別 : CodeIgniter 使用手冊</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter 使用手冊' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../index.html');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle 目錄" alt="Toggle 目錄" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter 使用手冊 Version 1.7.2</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">目錄</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://ci.wuboy.twbbs.org/">CodeIgniter 首頁</a> &nbsp;&#8250;&nbsp;
+<a href="../index-2.html">使用手冊首頁</a> &nbsp;&#8250;&nbsp;
+URI 類別
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="ci.wuboy.twbbs.org/user_guide/" />搜尋使用手冊&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>URI 類別</h1>
+
+<p>URI 類別提供函數，它幫助您解析 URI 字串資訊。假如您使用了 URI routing，也可以利用類別解析網址字串所設定的 re-routed 區段</p>
+
+<p class="important"><strong>注意:</strong> This class is initialized automatically by the system so there is no need to do it manually.</p>
+
+<h2>$this->uri->segment(<var>n</var>)</h2>
+
+<p>Permits you to retrieve a specific segment. Where <var>n</var> is the segment number you wish to retrieve.
+Segments are numbered from left to right. For example，if your full URL is this:</p>
+
+<code>http://example.com/index.php/news/local/metro/crime_is_up</code>
+
+<p>The segment numbers would be this:</p>
+
+<ol>
+<li>news</li>
+<li>local</li>
+<li>metro</li>
+<li>crime_is_up</li>
+</ol>
+
+<p>By default the function returns FALSE (boolean) if the segment does not exist. There is an optional second parameter that
+permits you to set your own default value if the segment is missing.
+For example，this would tell the function to return the number zero in the event of failure:</p>
+
+<code>$product_id = $this->uri->segment(3，0);</code>
+
+<p>It helps avoid having to write code like this:</p>
+
+<code>if ($this->uri->segment(3) === FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$product_id = 0;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$product_id = $this->uri->segment(3);<br />
+}<br />
+</code>
+
+<h2>$this->uri->rsegment(<var>n</var>)</h2>
+
+<p>This function is identical to the previous one，except that it lets you retrieve a specific segment from your
+re-routed URI in the event you are using CodeIgniter's <a href="../general/routing.html">URI Routing</a> feature.</p>
+
+
+<h2>$this->uri->slash_segment(<var>n</var>)</h2>
+
+<p>This function is almost identical to <dfn>$this->uri->segment()</dfn>，except it adds a trailing and/or leading slash based on the second
+parameter.  If the parameter is not used，a trailing slash added.  Examples:</p>
+
+<code>$this->uri->slash_segment(<var>3</var>);<br />
+$this->uri->slash_segment(<var>3</var>，'leading');<br />
+$this->uri->slash_segment(<var>3</var>，'both');</code>
+
+<p>Returns:</p>
+
+<ol>
+<li>segment/</li>
+<li>/segment</li>
+<li>/segment/</li>
+</ol>
+
+
+<h2>$this->uri->slash_rsegment(<var>n</var>)</h2>
+
+<p>This function is identical to the previous one，except that it lets you add slashes a specific segment from your
+re-routed URI in the event you are using CodeIgniter's <a href="../general/routing.html">URI Routing</a> feature.</p>
+
+
+
+<h2>$this->uri->uri_to_assoc(<var>n</var>)</h2>
+
+<p>This function lets you turn URI segments into and associative array of key/value pairs.  Consider this URI:</p>
+
+<code>index.php/user/search/name/joe/location/UK/gender/male</code>
+
+<p>Using this function you can turn the URI into an associative array with this prototype:</p>
+
+<code>[array]<br />
+(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'joe'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'location'	=> 'UK'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'gender'	=> 'male'<br />
+)</code>
+
+<p>The first parameter of the function lets you set an offset.  By default it is set to <kbd>3</kbd> since your
+URI will normally contain a controller/function in the first and second segments. 參考範例:</p>
+
+<code>
+$array = $this->uri->uri_to_assoc(3);<br />
+<br />
+echo $array['name'];
+</code>
+
+
+<p>The second parameter lets you set default key names，so that the array returned by the function will always contain expected indexes，even if missing from the URI. 參考範例:</p>
+
+<code>
+$default = array('name'，'gender'，'location'，'type'，'sort');<br />
+<br />
+$array = $this->uri->uri_to_assoc(3，$default);</code>
+
+<p>If the URI does not contain a value in your default，an array index will be set to that name，with a value of FALSE.</p>
+
+<p>Lastly，if a corresponding value is not found for a given key (if there is an odd number of URI segments) the value will be set to FALSE (boolean).</p>
+
+
+<h2>$this->uri->ruri_to_assoc(<var>n</var>)</h2>
+
+<p>This function is identical to the previous one，except that it creates an associative array using the
+re-routed URI in the event you are using CodeIgniter's <a href="../general/routing.html">URI Routing</a> feature.</p>
+
+
+<h2>$this->uri->assoc_to_uri()</h2>
+
+<p>Takes an associative array as input and generates a URI string from it.  The array keys will be included in the string.  參考範例:</p>
+
+<code>$array = array('product' => 'shoes'，'size' => 'large'，'color' => 'red');<br />
+<br />
+$str = $this->uri->assoc_to_uri($array);<br />
+<br />
+// Produces:  product/shoes/size/large/color/red
+</code>
+
+
+<h2>$this->uri->uri_string()</h2>
+
+<p>Returns a string with the complete URI.  For example，if this is your full URL:</p>
+
+<code>http://example.com/index.php/news/local/345</code>
+
+<p>The function would return this:</p>
+
+<code>/news/local/345</code>
+
+
+<h2>$this->uri->ruri_string(<var>n</var>)</h2>
+
+<p>This function is identical to the previous one，except that it returns the
+re-routed URI in the event you are using CodeIgniter's <a href="../general/routing.html">URI Routing</a> feature.</p>
+
+
+
+<h2>$this->uri->total_segments()</h2>
+
+<p>Returns the total number of segments.</p>
+
+
+<h2>$this->uri->total_rsegments()</h2>
+
+<p>This function is identical to the previous one，except that it returns the total number of segments in your
+re-routed URI in the event you are using CodeIgniter's <a href="../general/routing.html">URI Routing</a> feature.</p>
+
+
+
+<h2>$this->uri->segment_array()</h2>
+
+<p>Returns an array containing the URI segments.  For 參考範例:</p>
+
+<code>
+$segs = $this->uri->segment_array();<br />
+<br />
+foreach ($segs as $segment)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $segment;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo '&lt;br />';<br />
+}</code>
+
+<h2>$this->uri->rsegment_array()</h2>
+
+<p>This function is identical to the previous one，except that it returns the array of segments in your
+re-routed URI in the event you are using CodeIgniter's <a href="../general/routing.html">URI Routing</a> feature.</p>
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+上個主題:&nbsp;&nbsp;<a href="unit_testing.html">Unit Testing 類別</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">頁首</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index-2.html">使用手冊首頁</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+下個主題:&nbsp;&nbsp;<a href="user_agent.html">User Agent 類別</a>
+</p>
+<p><a href="http://ci.wuboy.twbbs.org/">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab，Inc.</a></p>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-5766319-11");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+
+<!-- Mirrored from ci.wuboy.twbbs.org/user_guide/libraries/uri.html by HTTrack Website Copier/3.x [XR&CO'2008], Sun, 27 Jun 2010 06:29:38 GMT -->
+</html>

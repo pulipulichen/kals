@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>配置类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;配置类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/config.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>配置类</h1>
+
+<p>该配置类提供一种方法来进行偏好设置。该偏好来源于默认的配置文件(<samp>application/config/config.php</samp>) 或您自己定制的配置文件。</p>
+
+<p class="important"><strong>注意：</strong>该类已经自动加载而无需手动启用。</p>
+
+
+<h2>分析配置文件</h2>
+
+<p>默认情况下，CodeIgniter已经有一个主要的配置文件，位于<samp>application/config/config.php</samp>。如果你用文本编辑器打开你会看到配置项目被存储在一个叫<var>$config</var>的数组里。</p>
+
+<p>您可以添加您自己的配置项目到这个文件里，或者您更愿意让您自己的配置项目与原配置项目分开（assuming you even need config items），简单的创建一个文件并保存到<dfn>config</dfn>这个文件夹里就行了。</p>
+
+<p><strong>提示:</strong> 如果你想建立一个和主要配置文件一样格式的配置文件，把你的配置项目建立在一个名为<var>$config</var>的数组中,即使配置文件中有相同的数组名，CodeIgniter也能智能的管理这些文件而不会发生冲突.</p>
+
+<h2>加载配置文件</h2>
+
+<p><strong>Note:</strong> CodeIgniter 会自动加载主要的配置文件&#40;<samp>application/config/config.php</samp>&#41;,
+所以你只需要加载你自己创建的配置文件</p>
+
+<p>有两种方法来加载配置文件:</p>
+
+<ol><li><strong>手动加载</strong>
+
+<p>为了加载一个你自定义的配置文件，你需要在 <a href="../../user_guide/general/controllers.html">controller</a> 中这样做:</p>
+
+<code>$this-&gt;config-&gt;load('<var>filename</var>');</code>
+
+<p>这里的 <var>filename</var> 是你自定义的配置文件的文件名，这个文件名没有 .php 的扩展名.</p>
+
+<p>如果你需要加载多个自定义配置文件，一般情况下它们会被合并成一个数组。然而，如果在不同的配置文件中存在同名的索引，那么会发生冲突。为了避免这个问题，你可以把第二个参数设置为 <kbd>TRUE</kbd> ，这可以使每个配置文件的内容存储在一个单独的数组中，数组的索引就是配置文件的文件名。请看下面的例子:</p>
+
+<code>
+// 用这样的方式保存为一个数组:  $this-&gt;config['blog_settings'] = $config<br />
+$this-&gt;config-&gt;load('<var>blog_settings</var>', <kbd>TRUE</kbd>);</code>
+
+<p>请阅读下面名为 <dfn>获取配置元素</dfn> 的部分以了解在这样的方式下如何取得配置信息</p>
+
+<p>第三个参数允许屏蔽当配置文件不存在时产生的错误信息:</p>
+
+<code>$this-&gt;config-&gt;load('<var>blog_settings</var>', <dfn>FALSE</dfn>, <kbd>TRUE</kbd>);</code>
+
+</li>
+<li><strong>自动加载</strong>
+
+<p>如果你需要一个特定配置文件在全局范围内都能使用，你可以使系统自动加载它。要自动加载配置，请打开文件 <strong>autoload.php</strong>，它在 <samp>application/config/autoload.php</samp>，然后按照文件中的提示增加你想要自动加载的配置文件。</p>
+</li>
+</ol>
+
+
+<h2>获取配置元素</h2>
+
+<p>从配置文件中检索元素，使用下面的函数:</p>
+
+<code>$this-&gt;config-&gt;item('<var>item name</var>');</code>
+
+<p>其中 <var>item name</var> 是 $config 数组中你期望检索的索引. 例如，要获得您选择的语言，你可以这样做:</p>
+
+<code>$lang = $this-&gt;config-&gt;item('language');</code>
+
+<p>当试图获取的元素不存在时，此函数返回 FALSE (boolean) 。</p>
+
+<p>如果你为了用具体的索引来声明配置数组(避免上述索引重名问题)而在函数 <kbd>$this-&gt;config-&gt;load</kbd> 中使用了第二个参数，你可以通过指定函数 <kbd>$this-&gt;config-&gt;item()</kbd> 的第二个参数为特定索引名来获取相关的配置元素。例如:</p>
+
+<code>
+// 载入一个名为 blog_settings.php 的配置文件，然后把它声明为一个索引为 "blog_settings" 的数组<br />
+$this-&gt;config-&gt;load('<var>blog_settings</var>', <kbd>TRUE</kbd>);<br /><br />
+
+// 在数组 blog_settings 中获取名为 site_name 的配置元素<br />
+$site_name = $this-&gt;config-&gt;item('<dfn>site_name</dfn>', '<var>blog_settings</var>');<br /><br />
+
+// 另外一种方式:<br />
+$blog_config = $this-&gt;config-&gt;item('<var>blog_settings</var>');<br />
+$site_name = $blog_config['site_name'];</code>
+
+<h2>设置一项元素</h2>
+
+<p>如果你想动态设置/改变一个现有的配置元素，你可以使用:</p>
+
+<code>$this-&gt;config-&gt;set_item('<var>item_name</var>', '<var>item_value</var>');</code>
+
+<p>其中 <var>item_name</var> 是你希望改变的 $config 数组的索引, <var>item_value</var> 是改变后的值.</p>
+
+
+<h2>辅助函数</h2>
+
+<p>config 类有以下辅助函数:</p>
+
+<h2>$this-&gt;config-&gt;site_url();</h2>
+<p>该函数得到你网站的 URL，其中包含了你在 config 文件中设置的 "index" 的值。</p>
+
+<h2>$this-&gt;config-&gt;system_url();</h2>
+<p>该函数得到 <dfn>system folder</dfn> 的URL .</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+airwin, aykirk, borisauschina, Hex, skey, szlinz, tanqimin, zhupeng</div>
+<div id="DocDate">
+最后修改: 2009-09-20 00:56:54</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="calendar.html">日历类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="../../user_guide/database/index.html">数据库类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

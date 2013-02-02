@@ -1,0 +1,4 @@
+# IDE, don't track them
+aptana/
+nbproject
+

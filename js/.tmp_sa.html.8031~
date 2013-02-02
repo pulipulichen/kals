@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DEMO</title>
+<script type="text/javascript" src="/kals/js/jquery.js"></script>
+<link type='text/css' rel='stylesheet' href='/kals/web_apps/generic/style' />
+<script type="text/javascript" src="/kals/libraries/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/kals/libraries/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="/kals/libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js"></script>
+<script type="text/javascript" src="/kals/web_apps/generic/package/demo"></script>
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+function sa_create_temp_obs() {
+    var _temp = 'ABBDCCAABCBDBCBBBBCDDBCBCBCBBDBCDB BCBBDBCBAABCDDBCBAABAAABBBAA BDBABABBBCBBDBDBBCDBC';
+    
+    $('.sa-config .obs:first').val(_temp);
+}
+
+function sa_start()
+{
+        
+}
+
+</script>
+<style type="text/css">
+.sa-table th, .sa-table td {
+    vertical-align: top;
+}
+.sa-table .textarea {
+    width: 90%;
+}
+</style>
+
+<h1>事件序列分析工具</h1>
+
+<table class="sa-config sa-table" width="80%">
+    <tbody>
+        <tr>
+            <th>觀察樣本</th>
+            <td>
+                <textarea class="obs textarea" ></textarea>
+                <ul>
+                    <li>例如：「ABDC CBBD」，空格表示片段</li>
+                    <li><button type="button" onclick="sa_create_temp_obs()">輸入範本觀察樣本</button></li>
+                </ul>           
+            </td>
+        </tr>
+        <tr>
+            <th>觀察編碼</th>
+            <td>
+                <textarea class="codes textarea"></textarea>
+                <ul>
+                    <li>例如：「ABCD」，共4種編碼</li>
+                    <li>如果沒有空白，則程式會自動從觀察樣本去統計。</li>
+                </ul>                
+            </td>
+        </tr>
+        <tr>
+            <th>觀察轉換長度</th>
+            <td>
+                2 lag                
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <button type="button" onclick="sa_start()">開始計算</button>
+            </th>
+        </tr>
+    </tbody>
+</table>
+
+<div class="sa-result"></div>
+
+</body>
+</html>

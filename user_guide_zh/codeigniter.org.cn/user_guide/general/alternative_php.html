@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>PHP 替代语法 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;PHP 替代语法	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/general/alternative_php.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>视图文件的 PHP 替代语法</h1>
+<p>如果你不使用 CodeIgniter 的<a href="../../user_guide/libraries/parser.html">模板引擎</a>，则你可以在视图文件中使用原始 PHP 代码。要使 PHP 代码达到最精简并使其更容易辨认，因此建议你使用 PHP 替代语法控制结构及短标记的 echo 语句。 建议您使用 PHP 的语法为您的控制结构和简短的输出标签。如果你不熟悉这个语法，它允许你从你的代码中消灭大括号，并且消灭&ldquo;echo&rdquo;语句。</p>
+<h2>自动短标记支持</h2>
+<p><strong>注：</strong>如果你发现本页描述的语法在你的服务器上不工作，它可能是&ldquo;短标记&rdquo;，并且在你的 PHP ini 文件中禁用了。CodeIgniter 可以重写所有短标记，让你使用这个语法即使你的服务器不支持它。这个特性可以在你的 <dfn>config/config.php</dfn> 文件中打开（$config['rewrite_short_tags']）。</p>
+<p class="important">请注意，如果你使用这个特性，如果在你的<strong>视图文件</strong>中发生 PHP 错误，则错误信息和行号将无法准确显示。相反，所有的错误将显示为 <kbd>eval &#40;&#41;</kbd> 的错误。</p>
+<h2>替代 Echo</h2>
+<p>正常的 echo 和 print 输出一般是这样的形式：</p>
+<p><code>&lt;?php echo $variable; ?&gt;</code></p>
+<p>使用替代语法，你能改成这样的形式：</p>
+<p><code>&lt;?=$variable?&gt;</code></p>
+<h2>替代控制结构</h2>
+<p>控制结构，像 <var>if</var>，<var>for</var>，<var>foreach</var>，和 <var>while</var> 也可以写成简化的形式。这里是一个用 foreach 的例子：</p>
+<p><code>&lt;ul&gt;<br />
+<br />
+<var>&lt;?php foreach($todo as $item): ?&gt;</var><br />
+<br />
+&lt;li&gt;<var>&lt;?=$item?&gt;</var>&lt;/li&gt;<br />
+<br />
+<var>&lt;?php endforeach; ?&gt;</var><br />
+<br />
+&lt;/ul&gt;</code></p>
+<p>注意，这里没有大括号。相反，结束大括号被替换成了 <var>endforeach</var>。上面列出的每一个控制结构也有相似的关闭语法：<var>endif</var>，<var>endfor</var>，<var>endforeach</var>，和 <var>endwhile</var></p>
+<p>并且在每个结构以后注意不要使用分号(除了最后一个)，用冒号。这是很重要的！</p>
+<p>这有另一个例子，使用 if/elseif/else。注意冒号：</p>
+<p><code><var>&lt;?php if ($username == 'sally'): ?&gt;</var><br />
+<br />
+&nbsp;&nbsp;&nbsp;&lt;h3&gt;Hi Sally&lt;/h3&gt;<br />
+<br />
+<var>&lt;?php elseif ($username == 'joe'): ?&gt;</var><br />
+<br />
+&nbsp;&nbsp;&nbsp;&lt;h3&gt;Hi Joe&lt;/h3&gt;<br />
+<br />
+<var>&lt;?php else: ?&gt;</var><br />
+<br />
+&nbsp;&nbsp;&nbsp;&lt;h3&gt;Hi unknown user&lt;/h3&gt;<br />
+<br />
+<var>&lt;?php endif; ?&gt;</var></code></p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, laotan</div>
+<div id="DocDate">
+最后修改: 2008-04-07 16:03:45</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="managing_apps.html">管理应用程序</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="security.html">安全</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

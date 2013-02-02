@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>表情辅助函数 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;表情辅助函数	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/helpers/smiley_helper.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>表情辅助函数</h1>
+
+<p>这个表情文件包含一系列管理表情的函数.</p>
+
+
+<h2>加载表情辅助函数</h2>
+
+<p>可以使用下面的代码加载此辅助函数:</p>
+
+<code>$this-&gt;load-&gt;helper('smiley');</code>
+
+<h2>总体来看</h2>
+
+<p>这些笑脸表情是用普通的文本来描述的,像 <dfn>:-)</dfn> 然后再将他们转换成真正的表情<img src="../../user_guide/images/smile.gif" width="19" height="19" border="0" alt="smile!"></p>
+
+<p>这里显示了许多表情图片，当你点击图片的时候，它们就会被插入到一个表单区域中.比如，你有一个允许用户评论并且可以插入表情的的博客，你的访问用户可以点击满意的表情图片，然后在javascript脚本的帮助下插入到相应的表单区域.</p>
+
+
+<h2>可点击的表情</h2>
+
+<p>这里有个案例将教给你如何在表单的旁边创建可以点击的各种表情.首先你需要下载并安装表情包,然后再建一个控制器和相应的视图作为描述文件.</p>
+
+<p class="important"><strong>重点提示:</strong>开始之前,请下载<a href="http://codeigniter.com/download_files/smileys.zip">download the smiley images</a>然后把它们放在可以公开访问的服务器上.这个辅助函数采用数组的形式替换各种表情,在目录
+<dfn>application/config/smileys.php</dfn>中可以查看</p>
+
+
+<h3>控制器</h3>
+
+<p>在你的<dfn>application/controllers/</dfn>目录中创建一个文件命名为<kbd>smileys.php</kbd> 然后加入下面的代码.</p>
+
+<p><strong>重点提示:</strong>修改你的表情url在函数<dfn>get_clickable_smileys()</dfn>的参数中，url指向你的<dfn>smiley</dfn>路径.</p>
+
+<p>可以看到添加表情的时候我们使用的是<a href="../../user_guide/libraries/table.html">Table Class</a>.</p>
+
+<textarea class="textarea" style="width:100%" cols="50" rows="25">
+&lt;?php
+
+class Smileys extends Controller &#123;
+
+ function Smileys()
+ &#123;
+  parent::Controller();
+ &#125;
+ 
+ function index()
+ &#123;
+  $this-&gt;load-&gt;helper('smiley');
+  $this-&gt;load-&gt;library('table');
+  
+  $image_array = get_clickable_smileys('http://example.com/images/smileys/', 'comments');
+
+  $col_array = $this-&gt;table-&gt;make_columns($image_array, 8);  
+   
+  $data['smiley_table'] = $this-&gt;table-&gt;generate($col_array);
+  
+  $this-&gt;load-&gt;view('smiley_view', $data);
+ &#125;
+ 
+&#125;
+?&gt;
+</textarea>
+
+<p>在你的<dfn>application/views/</dfn>文件夹下,创建一个名字为<kbd>smiley_view.php</kbd>的文件，然后加入下面的代码:</p>
+
+
+<textarea class="textarea" style="width:100%" cols="50" rows="20">
+&lt;html>
+&lt;head>
+&lt;title>Smileys&lt;/title>
+
+&lt;?php echo smiley_js(); ?&gt;
+
+&lt;/head>
+&lt;body>
+
+&lt;form name="blog">
+&lt;textarea name="comments" id="comments" cols="40" rows="4">&lt;/textarea>
+&lt;/form>
+
+&lt;p>Click to insert a smiley!&lt;/p>
+
+&lt;?php echo $smiley_table; ?&gt;
+
+&lt;/body>
+&lt;/html>
+</textarea>
+
+
+<p>当你创建完控制器和视图之后，就可以显示你的表情了 <dfn>http://www.example.com/index.php/smileys/</dfn></p>
+
+
+<h3>Field Aliases</h3>
+
+<p>When making changes to a view it can be inconvenient to have the field id in the controller. To work around this,
+you can give your smiley links a generic name that will be tied to a specific id in your view.</p>
+<code>$image_array = get_smiley_links("http://example.com/images/smileys/", "comment_textarea_alias");</code>
+
+<p>To map the alias to the field id, pass them both into the smiley_js function:</p>
+<code>$image_array = smiley_js("comment_textarea_alias", "comments");</code>
+
+
+<h1>函数参考</h1>
+
+
+<h2>get_clickable_smileys()</h2>
+
+<p>返回一个已经绑定了可点击表情的数组。你必须提供表情文件夹的 URL，还有表单域的 ID 或者表单域的别名。</p>
+
+<code>$image_array = get_smiley_links("http://example.com/images/smileys/", "comment");</code>
+<p class="important">Note: Usage of this function without the second parameter, in combination with js_insert_smiley has been deprecated.</p>
+
+
+<h2>smiley_js()</h2>
+
+<p>生成的 JavaScript 可以让图片点击后插入到表单域中。If you supplied an alias instead of an id when generating your smiley links, you need to pass the
+alias and corresponding form id into the function.
+This function is designed to be placed into the &lt;head&gt; area of your web page.</p>
+
+<code>&lt;?php echo smiley_js(); ?&gt;</code>
+<p class="important">Note: This function replaces js_insert_smiley, which has been deprecated.</p>
+
+
+<h2>parse_smileys()</h2>
+
+<p>输入一个文本字符串，用来替换任何已经被包含的空白文本表情，而两者是等效的.第一个参数必须包含你的字符串,第二个参数是你的表情的存放目录:</p>
+
+<code>
+$str = 'Here are some simileys: :-)  ;-)';<br />
+<br />
+$str = parse_smileys($str, "http://example.com/images/smileys/");<br />
+<br />
+echo $str;
+</code><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, icebird, zhupeng</div>
+<div id="DocDate">
+最后修改: 2009-09-12 15:14:10</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="security_helper.html">安全辅助函数</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="string_helper.html">字符串辅助函数</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

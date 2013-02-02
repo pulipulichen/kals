@@ -1,0 +1,56 @@
+/* 
+    Document   : tooltip
+    Created on : 2010/9/3, 下午 12:20:32
+    Author     : pudding
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/* -------- */
+/* tooltip */
+
+.tooltip {
+    display:none;
+    font-size: 14px;
+}
+
+.tooltip .tip-content {
+    margin: 0;
+    padding: 0;
+}
+
+.tooltip .tip-needle {
+    width: 10px;
+    height: 5px;
+    background-color:#22272C;
+    margin:auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-color:#22272C;
+    broder-width: 0;
+    border-radius: 0 0 10px 10px;
+    -moz-border-radius: 0 0 10px 10px;
+    display:block;
+}
+
+.tooltip .tip-needle.top {
+    border-radius: 10px 10px 0 0;
+    -moz-border-radius: 10px 10px 0 0;
+    display:none;
+}
+
+.tooltip.bottom .tip-needle.top {
+    display:block;
+}
+.tooltip.bottom .tip-needle.bottom {
+    display:none;
+}
+
+.tooltip.hide .tip-needle,
+.tooltip.hide .tip-content {
+    display: none;
+}

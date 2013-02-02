@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>购物车类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;购物车类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/cart.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>购物车类</h1>
+
+<p>购物车类允许项目被添加到session中，session在用户浏览你的网站期间都保持有效状态。这些项目能够以标准的 "购物车" 格式被检索和显示，并允许用户更新数量或者从购物车中移除项目。</p>
+
+<p>请注意购物车类只提供核心的"购物车"功能。它不提供配送、信用卡授权或者其它处理组件。</p>
+
+
+<h2>初始化购物车类</h2>
+
+<p><strong>重要：</strong>购物车类利用 CodeIgniter 的 <a href="sessions.html">Session 类</a>把购物车信息保存到数据库中，所以在使用购物车类之前，你必须根据 <a href="sessions.html">Session 类文档</a>中的说明来创建数据库表，并且在 <kbd>appliction/config/config.php</kbd> 文件中把 Session 相关参数设置为使用数据库。</p>
+
+<p>为了在你的控制器构造函数中初始化购物车类，请使用 <dfn>$this-&gt;load-&gt;library</dfn> 函数:</p>
+
+<code>$this-&gt;load-&gt;library('cart');</code>
+<p>一旦加载，就可以通过调用 <dfn>$this-&gt;cart</dfn> 来使用购物车对象了。</p>
+
+<p class="important"><strong>说明:</strong> 购物车类会自动加载和初始化Session类，因此除非你在别处要用到session，否则你不需要再次加载Session类。</p>
+
+<h2>将一个项目添加到购物车</h2>
+
+<p>要添加项目到购物车，只需将一个包含了商品信息的数组传递给 <dfn>$this-&gt;cart-&gt;insert()</dfn> 函数即可，就像下面这样：</p>
+
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_123ABC',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 39.95,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'T-Shirt',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'options' => array('Size' => 'L', 'Color' => 'Red')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+
+$this-&gt;cart-&gt;insert($data);
+
+</code>
+
+<p class="important"><strong>重要说明:</strong> 上面的前四个数组索引 (<dfn>id</dfn>, <dfn>qty</dfn>, <dfn>price</dfn> 和<dfn>name</dfn>) 是 <strong>必需的</strong>。
+如果缺少其中的任何一个，数据将不会被保存到购物车中。第5个索引 (<dfn>options</dfn>) 是可选的。当你的商品包含一些相关的选项信息时，你就可以使用它。正如上面所显示的那样，请使用一个数组来保存选项信息。</p>
+
+<p>五个保留的索引分别是:</p>
+
+<ul>
+<li><strong>id</strong> - 你的商店里的每件商品都必须有一个唯一的标识符(identifier)。典型的标识符是 "sku"(译者注：库存量单位) 或者其它类似的标识符。</li>
+<li><strong>qty</strong> - 购买的数量(quantity)。
+<li><strong>price</strong> - 商品的价格(price)。
+<li><strong>name</strong> - 商品的名称(name)。
+
+<li><strong>options</strong> - 标识商品的任何附加属性。必须通过数组来传递。
+</ul>
+
+<p>除以上五个索引外，还有两个保留字：<dfn>rowid</dfn> 和 <dfn>subtotal</dfn>。它们是购物车类内部使用的，因此，往购物车中插入数据时，请不要使用这些词作为索引。</p>
+
+<p>你的数组可能包含附加的数据。你的数组中包含的所有数据都会被存储到session中。然而，最好的方式是标准化你所有商品的数据，这样更方便你在表格中显示它们。</p>
+
+
+<h2>将多个项目添加到购物车</h2>
+
+<p>通过下面这种多维数组的方式，可以一次性添加多个产品到购物车中。当你希望允许用户选择同一页面中的多个项目时，这就非常有用了。</p>
+
+
+<code>
+$data = array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_123ABC',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 39.95,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'T-Shirt',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'options' => array('Size' => 'L', 'Color' => 'Red')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_567ZYX',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 9.95,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'Coffee Mug'<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'id'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => 'sku_965QRS',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'price'&nbsp;&nbsp; => 29.95,<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name'&nbsp;&nbsp;&nbsp; => 'Shot Glass'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+
+$this-&gt;cart-&gt;insert($data);
+
+</code>
+
+
+
+
+<h2>显示购物车</h2>
+
+<p>为了显示购物车的数据，你得创建一个 <a href="../../user_guide/general/views.html">视图文件</a>，它的代码类似于下面这个。</p>
+
+<p>请注意这个范例使用了<a href="../../user_guide/helpers/form_helper.html">表单辅助函数</a>.</p>
+
+
+<textarea class="textarea" style="width:100%" cols="50" rows="55">
+&lt;?php echo form_open('path/to/controller/update/function'); ?&gt;
+
+&lt;table cellpadding="6" cellspacing="1" style="width:100%" border="0">
+
+&lt;tr>
+  &lt;th>QTY&lt;/th>
+  &lt;th>Item Description&lt;/th>
+  &lt;th style="text-align:right">Item Price&lt;/th>
+  &lt;th style="text-align:right">Sub-Total&lt;/th>
+&lt;/tr>
+
+&lt;?php $i = 1; ?&gt;
+
+&lt;?php foreach($this-&gt;cart-&gt;contents() as $items): ?&gt;
+
+ &lt;?php echo form_hidden($i.'[rowid]', $items['rowid']); ?&gt;
+ 
+ &lt;tr>
+   &lt;td>&lt;?php echo form_input(array('name' => $i.'[qty]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5')); ?&gt;&lt;/td>
+   &lt;td>
+  &lt;?php echo $items['name']; ?&gt;
+     
+   &lt;?php if ($this-&gt;cart-&gt;has_options($items['rowid']) == TRUE): ?&gt;
+     
+    &lt;p>
+     &lt;?php foreach ($this-&gt;cart-&gt;product_options($items['rowid']) as $option_name => $option_value): ?&gt;
+      
+      &lt;strong>&lt;?php echo $option_name; ?&gt;:&lt;/strong> &lt;?php echo $option_value; ?&gt;&lt;br />
+          
+     &lt;?php endforeach; ?&gt;
+    &lt;/p>
+    
+   &lt;?php endif; ?&gt;
+    
+   &lt;/td>
+   &lt;td style="text-align:right">&lt;?php echo $this-&gt;cart-&gt;format_number($items['price']); ?&gt;&lt;/td>
+   &lt;td style="text-align:right">$&lt;?php echo $this-&gt;cart-&gt;format_number($items['subtotal']); ?&gt;&lt;/td>
+ &lt;/tr>
+
+&lt;?php $i++; ?&gt;
+
+&lt;?php endforeach; ?&gt;
+
+&lt;tr>
+  &lt;td colspan="2">&nbsp;&lt;/td>
+  &lt;td class="right">&lt;strong>Total&lt;/strong>&lt;/td>
+  &lt;td class="right">$&lt;?php echo $this-&gt;cart-&gt;format_number($this-&gt;cart-&gt;total()); ?&gt;&lt;/td>
+&lt;/tr>
+
+&lt;/table>
+
+&lt;p>&lt;?php echo form_submit('', 'Update your Cart'); ?&gt;&lt;/p>
+</textarea>
+
+
+
+
+<h2>更新购物车</h2>
+
+<p>为了更新购物车中的信息，你必须将一个包含了 <kbd>Row ID</kbd> 和数量(quantity)的数组传递给 <dfn>$this-&gt;cart-&gt;update()</dfn> 函数:</p>
+
+<p class="important"><strong>说明:</strong> 如果数量被设置为 0 ，那么购物车中对应的项目会被移除。</p>
+
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid' => 'b99ccdf16028f015540f341130b6d8ec',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp; => 3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+
+$this-&gt;cart-&gt;update($data);
+<br /><br />
+// 或者是一个多维数组<br /><br />
+
+$data = array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid'&nbsp;&nbsp; => 'b99ccdf16028f015540f341130b6d8ec',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid'&nbsp;&nbsp; => 'xw82g9q3r495893iajdh473990rikw23',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 4<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'rowid'&nbsp;&nbsp; => 'fh4kdkkkaoe30njgoe92rkdkkobec333',<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'qty'&nbsp;&nbsp;&nbsp;&nbsp; => 2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+
+$this-&gt;cart-&gt;update($data);
+
+
+
+
+</code>
+
+<p><strong>什么是 Row ID?</strong>&nbsp;  当一个项目被添加到购物车时，程序所生成的那个唯一的标识符就是<kbd>row ID</kbd>。创建唯一ID的理由是，当购物车中相同的商品有不同的选项时，购物车就能够对它们进行管理。</p>
+
+<p>比如说，有人购买了两件相同的T-shirt (相同的商品ID)，但是尺寸不同。商品ID(以及其它属性)都会完全一样，因为它们是相同的T-shirt。它们唯一的差别就是尺寸不同。因此购物车必须想办法来区分它们，这样才能独立地管理这两件尺寸不同的T-shirt。而基于商品ID和其它相关选项信息来创建一个唯一的 "row ID" 就能解决这个问题。</p>
+
+<p>在几乎所有情况下，更新购物车都将是用户通过 "查看购物车" 页面来实现的，因此对开发者来说，不必太担心"row ID"，只要保证你的 "查看购物车" 页面中的一个隐藏表单字段包含了这个信息，并且确保它能被传递给表单提交时所调用的更新函数就行了。请仔细分析上面的 "查看购物车" 页面的结构以获取更多信息。</p>
+
+
+
+<p>&nbsp;<br /></p>
+
+
+<h1>函数参考</h1>
+
+<h2>$this-&gt;cart-&gt;insert();</h2>
+
+<p>允许你将项目添加到购物车中，就像上面所描述的那样。</p>
+
+
+<h2>$this-&gt;cart-&gt;update();</h2>
+
+<p>允许你更新购物车中的项目，就像上面所描述的那样。</p>
+
+
+<h2>$this-&gt;cart-&gt;total();</h2>
+
+<p>显示购物车中的总计金额。</p>
+
+
+<h2>$this-&gt;cart-&gt;total_items();</h2>
+
+<p>显示购物车中总共的项目数量。</p>
+
+
+<h2>$this-&gt;cart-&gt;contents();</h2>
+
+<p>返回一个包含了购物车中所有信息的数组。</p>
+
+
+
+<h2>$this-&gt;cart-&gt;has_options(rowid);</h2>
+
+<p>如果购物车中特定的列包含选项信息，本函数会返回 TRUE(布尔值)。本函数被设计为与 <dfn>$this-&gt;cart-&gt;contents()</dfn> 一起在循环中使用，因此就像上面的 <dfn>显示购物车</dfn> 范例所显示的那样，你必须把 <kbd>rowid</kbd> 传递给这个函数。</p>
+
+
+<h2>$this-&gt;cart-&gt;options(rowid);</h2>
+
+<p>以数组的形式返回特定商品的选项信息。本函数被设计为与 <dfn>$this-&gt;cart-&gt;contents()</dfn> 一起在循环中使用，因此就像上面的 <dfn>显示购物车</dfn> 范例所显示的那样，你必须把 <kbd>rowid</kbd> 传递给这个函数。
+</p>
+
+
+
+<h2>$this-&gt;cart-&gt;destroy();</h2>
+
+<p>允许你销毁购物车。这个函数一般是在你处理完用户订单后调用。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, yinzhili</div>
+<div id="DocDate">
+最后修改: 2009-09-13 12:56:42</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="calendar.html">日历类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="config.html">配置类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

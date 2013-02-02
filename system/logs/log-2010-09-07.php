@@ -1,0 +1,10 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+
+ERROR - 2010-09-07 03:10:32 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/2a38a4a9316c49e5a833517c45d31070) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-09-07 05:55:05 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/9bf31c7ff062936a96d3c8bd1f8f2ff3) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-09-07 06:15:58 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/34173cb38f07f89ddbebc2ac9128303f) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-09-07 09:24:18 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/c0c7c76d30bd3dcaefc96f40275bdc0a) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-09-07 10:05:40 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/fc490ca45c00b1249bbe3554a4fdf6fb) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-09-07 12:49:11 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/67c6a1e7ce56d3d6fa748ab6d9af3fd7) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-09-07 16:43:08 --> Severity: Warning  --> chmod() [<a href='function.chmod'>function.chmod</a>]: No such file or directory D:\xampp\htdocs\kals\system\codeigniter\Common.php 73
+ERROR - 2010-09-07 16:43:08 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/3ef815416f775098fe977004015c6193) [<a href='function.unlink'>function.unlink</a>]: No such file or directory D:\xampp\htdocs\kals\system\codeigniter\Common.php 74

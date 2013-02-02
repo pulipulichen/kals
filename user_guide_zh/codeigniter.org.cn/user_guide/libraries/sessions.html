@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Session 类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;Session 类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/sessions.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>Session 类</h1>
+
+<p>Session 类可以使用户在浏览您的网站时，维持他们的状态并跟踪他们的行为。
+Session 类将每个用户的 session 信息序列化（serialize）后存储到到 cookie 中（并同时进行加密）。
+您还可以将 session 数据存储到数据库中来增强安全性，但是这时要求存储在用户 cookie 中的 session ID 值能与数据库中存储的用户 session ID 值相匹配。程序默认只在 cookie 中存储 session。如果您在要在数据库中存储 session 的话，需要按照下面指示的方法，在您的数据库中创建需要的数据表。
+</p>
+
+<p class="important"><strong>注意：</strong> Session类并不使用PHP本身的session，而是使用类自己的session，这样做，可以给开发者提供更大的弹性。</p>
+
+<h2>初始化 Session</h2>
+
+<p>Sessions会在每个页面载入后开始运行，所以session类必须首先被<a href="../../user_guide/general/libraries.html">初始化</a>。您可以在<a href="../../user_guide/general/controllers.html">控制器</a>中初始化，也可以在系统中<a href="../../user_guide/general/autoloader.html">自动加载</a>（译者注：在autoload.php设定）。session类的绝大部分都会在后台运行，所以初始化session时，它session数据会被自动读取、创建和更新。</p>
+
+
+<p>要在您的控制器构造函数中初始化session类，您可以使用 <dfn>$this-&gt;load-&gt;library</dfn> 函数:</p>
+
+<code>$this-&gt;load-&gt;library('session');</code>
+<p>一旦被载入, session就可以这样使用： <dfn>$this-&gt;session</dfn></p>
+
+
+<h2>Sessions 是怎样工作的？</h2>
+
+<p>当页面载入后，session类就会检查用户的cookie中是否存在有效的session数据。如果session数据不存在（或者已经过期），那么就会创建一个新的session并把他保存在cookie中。如果session数据存在，那么他的信息就会被更新，同时cookie也会被同时更新。每次更新都会重新生成session_id的值。</p>
+
+<p>对于您来说，需要知道的非常重要的一点就是，session类一旦被初始化，它就会自动运行。对于后面的事情，您可以完全不作理会。正如您将会在下面看到的一样，您可以正常使用session来工作，甚至还可以添加自己的session数据，而在这一切的过程中，读、写和更新的操作都是自动完成的。</p>
+
+
+<h2>Session 数据是什么？</h2>
+
+<p>一个 <em>session</em> 是由一个包括下列信息的数组组成的：</p>
+
+<ul>
+<li>唯一的用户Session ID (这是一个平均信息量统计出来的非常坚固的随机字符串，使用MD5加密，默认是每五分钟就重新生成一次。</li>
+<li>用户的 IP 地址</li>
+<li>用户浏览器信息（取前50个字符）</li>
+<li>最新的一个活跃时间戳.</li>
+</ul>
+
+<p>以上数据将会用以下数组格式序列化并存到cookie里：</p>
+
+<code>[array]<br />
+(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'session_id'&nbsp;&nbsp;&nbsp;&nbsp;=> random hash,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ip_address'&nbsp;&nbsp;&nbsp;&nbsp;=> 'string - user IP address',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'user_agent'&nbsp;&nbsp;&nbsp;&nbsp;=> 'string - user agent data',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'last_activity' => timestamp<br />
+)</code>
+
+<p>如果你将加密设置开启，serialized 的数组会被先被加密，然后存入cookie中。这会让数据不容易被看到和修改，从而提高安全性。从<a href="encryption.html">这里</a>可以找到更多关于加密的信息。Session类会自动负责初始化和数据加密。</p>
+
+<p>注意: 默认情况下, Session Cookie 每隔 5 分钟才会更新一次,这样会减少对处理器的负荷。如果你重复的装载页面， 你会发现"上次活动"的时间在五分钟，或多余五分钟的时候才会变化，也就是 cookie 上次被写入的时间。 这个时间可以通过设置 system/config/config.php 文件里的 $config['time_to_update'] 行来改变。</p>
+
+<h2>取得 Session 数据</h2>
+
+<p>可以通过如下的函数来得到 session 数组的任何信息:</p>
+
+<code>$this-&gt;session-&gt;userdata('<samp>item</samp>');</code>
+
+<p><samp>item</samp> 是数组里的相对应数据的索引。例如，想要获得 session ID， 你要使用如下的代码:</p>
+
+<code>$session_id = $this-&gt;session-&gt;userdata('<samp>session_id</samp>');</code>
+
+<p><strong>注意:</strong> 如果你的目标数据不存在的话，这个函数会返回 FALSE (布尔值boolean)。</p>
+
+
+<h2>添加自定义的 Session 数据</h2>
+
+<p>session 数组的一个非常有用的用途是你可以它里面添加你自己的数据，这些数据会被保存在用户的 cookie 中。这样做的原因是什么呢？看看这个例子:</p>
+
+<p>假设，有个特定用户登陆到你的网站， 当他通过检测后 你可以添加他的用户名和电子邮件到 session cookie 中，这些信息可以在不去访问数据库的情况下，当成全局量来使用。</p>
+
+<p>通过以下函数，你可以传递一个新的用户数组到 session 数组中:</p>
+
+<code>$this-&gt;session-&gt;set_userdata(<samp>$array</samp>);</code>
+
+<p> <samp>$array</samp> 是一个结合数组，用来存储你的新数据。例如  :</p>
+
+
+<p><code>$newdata = array(<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'username'&nbsp; => 'johndoe',<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'email'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=> 'johndoe@some-site.com',<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'logged_in' => TRUE<br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+    <br />
+    $this-&gt;session-&gt;set_userdata(<samp>$newdata</samp>);</code></p>
+<p>如果使用下面 set_userdata()函数的写法,可以每次只添加一个用户数据。</p>
+<p><code>$this-&gt;session-&gt;set_userdata('some_name', 'some_value');</code></p>
+<p class="important"><strong>注意:</strong> Cookies 只能存储 4KB 的数据, 使用时要小心超出它的容量。特别指出的是，加密会产生比原数据更长的数据字符串，所以一定要当心你要存放数据的大小。</p>
+
+<h2>删除 Session 数据</h2>
+<p>正如使用 set_userdata() 是用来添加信息到 session 中，而通过向 unset_userdata() 函数中传递 session key 可以用来删除这些信息。例如, 你想要从 session 信息里去掉 'some_name': </p>
+<p><code>$this-&gt;session-&gt;unset_userdata('some_name');</code></p>
+&lt;!-- 以下由Fanbin 翻译--&gt;
+<p>也可以给这个函数传一个要删除项的关联数组。</p>
+<p><code>$array_items = array('username' => '', 'email' => '');<br />
+<br />
+$this-&gt;session-&gt;unset_userdata(<samp>$array_items</samp>);</code></p>
+<h2>闪出数据</h2>
+<p>CodeIgniter 支持 &quot;闪出数据&quot;, 或者说Session数据只对下次服务器请求可用, 然后会自动清除。这应该会非常有用，往往应用在信息或状态提示中（例如：“记录2已删除”）。</p>
+<p>注意: 闪出数据变量名以“flash_”开头，所以在你自己的变量名中要避免使用这个前缀。</p>
+<p>要添加闪出数据：</p>
+<p><code>$this-&gt;session-&gt;set_flashdata('item', 'value');</code></p>
+<p>你也可以使用和 set_userdata() 同样的方式向 set_flashdata() 传递一个数组。</p>
+<p>要读取一个闪出数据变量：</p>
+<p><code>$this-&gt;session-&gt;flashdata('item');</code></p>
+<p>如果你发现你需要在一个附加的请求中保留一个闪出数据，你可以使用 keep_flashdata() 这个函数。</p>
+<p><code>$this-&gt;session-&gt;keep_flashdata('item');</code></p>
+
+<h2>将 Session 数据存入数据库</h2>
+<p>由于Session数据数组是附带一个Session ID保存在用户cookie里的，你无法验证它，除非你把session数据存储在数据库中。在一些不需要或很少需要安全保护的应用中，session ID 或许并不需要。但如果你的应用需要安全保护，验证是必须滴。</p>
+
+<p>当session 数据在数据库中可用时，每当从用户cookie中发现一个有效的session，一个数据库查询就会被执行以匹配它。如果 session ID 不相配，session 就会被销毁。Session ID永远不会更新，它们只会在一个新的会话创建时生成。</p>
+
+<p>为了存储session，你必须先创建一个数据表。这是 session 类所需的基本结构（用于MySQL的）：</p>
+
+<textarea class="textarea" style="width:100%" cols="50" rows="8">
+CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+session_id varchar(40) DEFAULT '0' NOT NULL,
+ip_address varchar(16) DEFAULT '0' NOT NULL,
+user_agent varchar(50) NOT NULL,
+last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+user_data text NOT NULL,
+PRIMARY KEY (session_id)
+);</textarea>
+
+<p><strong>注意:</strong> 默认情况下这个表叫做 <dfn>ci_sessions</dfn>, 但是你可以给它指定任意名字，只要你更新了 <kbd>application/config/config.php</kbd> 文件以确保它包含了你所起的名字。
+一旦你创建了数据表，你就可以像下面这样在config.php文件中启用数据库选项：</p>
+
+<code>$config['sess_use_database'] = TRUE;</code>
+
+<p>一旦启用了，Session类就会在数据库中存储session数据。</p>
+
+<p>同时确保你已经在配置文件中指定了数据表名：</p>
+
+<code>$config['sess_table_name'] = 'ci_sessions";</code>
+
+<p class="important"><strong>注意:</strong> Session类已经内置了清除过期session的垃圾回收机制，因此你不需要编写你自己的事务来做这个。</p>
+
+
+<h2>销毁 Session </h2>
+<p>要清除当前 session: </p>
+<code>$this-&gt;session-&gt;sess_destroy();</code>
+<p class="important"><strong>注意:</strong> 此函数应该是最后被调用的。即使闪出变量已不再有效。如果你只想让某几项而不是所有项被销毁，请使用 <dfn>unset_userdata()</dfn>.</p>
+&lt;!-- Fanbin 翻译部分结束 --&gt;
+<h2>Session 的参数</h2>
+<p>你可以在<kbd>application/config/config.php</kbd> 文件中找到以下的 Session 相关的参数:</p>
+
+
+<table cellpadding="0" cellspacing="1" border="0" style="width:100%" class="tableborder">
+<tr>
+    <th>参数</th>
+    <th>默认</th>
+    <th>选项</th>
+    <th>描述</th>
+</tr>
+<tr>
+    <td class="td"><strong>sess_cookie_name</strong></td>
+    <td class="td">ci_session</td>
+    <td class="td">无</td>
+    <td class="td">你想要保存 Session Cookie 的名字。</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_expiration</strong></td>
+    <td class="td">7200</td>
+    <td class="td">无</td>
+    <td class="td">session 持续的秒数。默认是2个小时(7200秒)。如果将这个数值设为: 0，就可以得到 永久 session。</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_encrypt_cookie</strong></td>
+    <td class="td">FALSE</td>
+    <td class="td">TRUE/FALSE (布尔值boolean)</td>
+    <td class="td">是否对 session 数据加密.</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_use_database</strong></td>
+    <td class="td">FALSE</td>
+    <td class="td">TRUE/FALSE (布尔值boolean)</td>
+    <td class="td">是否将 session 数据存放入数据库中。在开启这个选项前，你要先创建一个数据库表。</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_table_name</strong></td>
+    <td class="td">ci_sessions</td>
+    <td class="td">任何有效的 SQL 表名</td>
+    <td class="td">session 数据库表的名字。</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_time_to_update</strong></td>
+    <td class="td">300</td>
+    <td class="td">时间以秒计算</td>
+    <td class="td">这个选项控制 session 类多久会产生一个新的session 和 session id。</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_match_ip</strong></td>
+    <td class="td">FALSE</td>
+    <td class="td">TRUE/FALSE (布尔值boolean)</td>
+    <td class="td">是否通过用户的IP地址来读取 session 的数据。 注意 ，有些网络运行商 ISPs 会动态的改变IP, 所以将这个选项设为 FALSE， 才有可能得到永久的 session。</td>
+</tr>
+<tr>
+    <td class="td"><strong>sess_match_useragent</strong></td>
+    <td class="td">TRUE</td>
+    <td class="td">TRUE/FALSE (布尔值boolean)</td>
+    <td class="td">是否要按照对应的 User Agent 来读取 session 数据。</td>
+</tr>
+</table><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+aykirk, Fanbin, guns1985, Hex, shishirui</div>
+<div id="DocDate">
+最后修改: 2009-11-23 18:06:50</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="pagination.html">分页类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="trackback.html">Trackback 类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>
