@@ -70,8 +70,7 @@ Editor_container.prototype.set_list_coll = function (_list_coll) {
  * @memberOf {Editor_container}
  * @type {jQuery} UI
  */
-Editor_container.prototype._$create_ui = function ()
-{
+Editor_container.prototype._$create_ui = function () {
     var _ui = $('<table height="100%" width="100%" cellspacing="0"><tbody>'
             + '</tbody></table>')
         .addClass('editor-container');
@@ -99,13 +98,11 @@ Editor_container.prototype._$create_ui = function ()
     
     var _this = this;
     setTimeout(function () {
-        _this.toggle_deny(true);    
+        _this.toggle_deny(true);
     }, 0);
     
     return _ui;
 };
-
-
 
 /**
  * 建立編輯器

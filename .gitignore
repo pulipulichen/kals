@@ -2,3 +2,5 @@
 aptana/
 nbproject/
 
+/system/cache
+/system/logs
