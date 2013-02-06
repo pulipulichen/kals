@@ -1,6 +1,5 @@
 # IDE, don't track them
 aptana/
-nbproject/
 
 /system/cache
 /system/logs
