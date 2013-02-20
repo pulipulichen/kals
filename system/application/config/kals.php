@@ -46,8 +46,8 @@ $config['segmentor.default_for_search'] = 'segmentor.disable';    //預設搜尋
 
 //$config['ckip.username'] = 'kals';
 //$config['ckip.password'] = 'password';
-//$config['ckip.server_ip'] = '140.109.19.104';
-//$config['ckip.server_port'] = '1501';
+//$config['ckip.server_ip'] = 'exp-ckip.dlll.nccu.edu.tw';
+//$config['ckip.server_port'] = '58151';
 
 //$config['yahoo.app_id'] = 'K7WZ.qrV34HHPDMPT4WGq.MSj6Z85hSDdPQYASkuxT9E1mjzC25kcZ1UImJdOHf06VAYXj4-'; //for kals wiki
 //$config['yahoo.app_id'] = 'zno81EPV34FUKrAEs_Hn1pcuB1IQ4TBGLBXwLLRWwB2nyaBDnIZT94EESP2s39Xn2zKnfBo-'; //for 140.119.61.174

@@ -61,7 +61,7 @@ class generic extends Web_apps_controller {
         if (is_null($return_list))
         {
             $this->load_js($list);
-            $this->pack_js($list_package);
+            $this->pack_js($list_package, 'toolkit');
         }
         else
         {
@@ -100,7 +100,7 @@ class generic extends Web_apps_controller {
         if (is_null($return_list))
         {
             $this->load_js($list);
-            $this->pack_js($list_package);
+            $this->pack_js($list_package, 'core');
         }
         else
         {
@@ -268,7 +268,7 @@ class generic extends Web_apps_controller {
         if (is_null($return_list))
         {
             $this->load_js($list);
-            $this->pack_js($list_package);
+            $this->pack_js($list_package, 'component');
         }
         else
         {
@@ -298,7 +298,7 @@ class generic extends Web_apps_controller {
             $full_list[] = $path;
 
         //$this->load_js($full_list);
-        $this->pack_js($full_list);
+        $this->pack_js($full_list, 'package');
     }
     
     function component_package($is_demo = NULL) {
@@ -340,7 +340,8 @@ class generic extends Web_apps_controller {
             //$this->load_css($path);
 
             //實際使用時，寫pack_css
-            $this->pack_css($path);
+            //$this->pack_css($path, 'style');
+            $this->_20130219_pack_css($path);
         }
     }
 
@@ -373,7 +374,7 @@ class generic extends Web_apps_controller {
             //$this->load_css_release($path);
 
             //實際使用時，寫pack_css
-            $this->pack_css($path);
+            $this->pack_css($path, 'style_release');
         }
     }
 
@@ -445,7 +446,7 @@ class generic extends Web_apps_controller {
         $path = 'core/KALS_loader';
 
         //$this->load_js($path);
-        $this->pack_js($path);
+        $this->pack_js($path, 'loader');
     }
 
     function info($json, $callback = NULL)
