@@ -1944,7 +1944,7 @@ Selectable_text.prototype.get_sentence_index = function () {
 		_sentense_index_word.addClass(this.sententce_index_classname);
 		
 		//檢測找到的字是否真的是分句點，平時不使用應關掉
-		_sentense_index_word.css("color", "red");
+		//_sentense_index_word.css("color", "red");
 		//alert([$('#kals_word_' + _i).length, _i]);
 	}
 	

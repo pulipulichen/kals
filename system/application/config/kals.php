@@ -19,7 +19,7 @@
 // --------
 $config['crypt_salt'] = 'kals2010';
 
-$config['output.cache.enable'] = true; //是否使用快取功能，預設是true;
+$config['output.cache.enable'] = false; //是否使用快取功能，預設是true;
 $config['output.cache.expiration'] = 5;  //快取的單位是「分鐘」
 $config['output.package.enable'] = true; //是否啟用壓縮功能，預設是true;
 

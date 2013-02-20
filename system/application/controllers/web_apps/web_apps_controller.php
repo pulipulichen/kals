@@ -72,9 +72,9 @@ class Web_apps_controller extends Controller {
             }
             else {
                 //如果沒有快取檔案，那麼照以下步驟製作出快取之後，寫入快取檔案
-                $script = $this->_combine_js($path);
-                $packed = $this->_compression_js($script);
-                
+                //$script = $this->_combine_js($path);
+                //$packed = $this->_minify_compression_js($script);
+                $packed = $this->_combine_js($path);
                 write_file($cache_path, $packed);
             }
         }
@@ -86,8 +86,9 @@ class Web_apps_controller extends Controller {
             }
             
             //然後照以下步驟顯示檔案內容
-            $script = $this->_combine_js($path);
-            $packed = $this->_compression_js($script);
+            //$script = $this->_combine_js($path);
+            //$packed = $this->_minify_compression_js($script);
+            $packed = $this->_combine_js($path);
         }
         send_js_header($this->output);
         $this->load->view($this->dir.'display', array('data'=>$packed));
@@ -125,6 +126,7 @@ class Web_apps_controller extends Controller {
                     continue;
 
                 $script = $this->load->view($this->dir.$path, NULL, TRUE);
+                $script = $this->_minify_compression_js($script);
                 $scripts_ary[] = $script;
             }
         }
@@ -189,6 +191,52 @@ class Web_apps_controller extends Controller {
         // sleep(rand(0, 10)/1000);
     }
 
+    /**
+     * 改用Minify來壓縮JavaScript
+     * @param string $script 要被壓縮的JavaScript程式碼
+     * @return string 壓縮完成的結果
+     */
+    protected function _minify_compression_js($script) {
+        if ($this->config->item('output.package.enable') == false)
+            return $script;
+        
+        $packed = '';
+        
+        //$this->load->library('web_apps/min/lib/JSMinPlus');
+        require_once '/system/application/libraries/web_apps/min/lib/JSMinPlus.php';
+        //echo '[][][][]'.$packed;
+        $packed = JSMinPlus::minify($script);
+        
+        return $packed;
+    }
+    
+    /**
+     * 改用Minify來壓縮CSS
+     * @param string $style 要被壓縮的CSS程式碼
+     * @return string 壓縮完成的結果
+     */
+    protected function _minify_compression_css($style) {
+        if ($this->config->item('output.package.enable') == false)
+            return $style;
+        
+        $packed = '';
+        
+        //$this->load->library('web_apps/min/lib/JSMinPlus');
+        require_once '/system/application/libraries/web_apps/min/lib/CSSMin.php';
+        //echo '[][][][]'.$packed;
+        if (is_null($this->cssmin))
+            $this->cssmin = new CSSmin ();
+        $packed = $this->cssmin->run($style);
+        //$packed = $style;
+        
+        return $packed;
+    }
+    
+    /**
+     * Minify的CSSmin，專門壓縮CSS用的。
+     * @var CSSmin 
+     */
+    private $cssmin = null;
 
     protected function _yui_compression_js($script)
     {
@@ -197,6 +245,7 @@ class Web_apps_controller extends Controller {
 
         
         $this->load->library('web_apps/Minify_YUICompressor');
+        
         $this->load->library('web_apps/phplock.php');
         $lock = $this->phplock;
         $lock->startLock ();
@@ -310,6 +359,16 @@ class Web_apps_controller extends Controller {
 
     function create_pack_css($path, $path2 = NULL)
     {
+        if (is_array($path))
+        {
+            $style = '';
+            foreach ($path AS $p)
+            {
+                $style = $style . $this->create_pack_css($p);
+            }
+            return $style;
+        }
+        
         if (isset($path2))
             $path .= '/'.$path2;
 
@@ -320,19 +379,21 @@ class Web_apps_controller extends Controller {
 
         if ($this->config->item('output.package.enable'))
         {
-            $style = $this->_compress_css($style);
+            //$style = $this->_compress_css($style);
             /**
              * 不使用YUI的CSS壓縮
              * @version 201302201 Pudding Chen
              */
             //$style = $this->_yui_compression_css($style);
+            
+            $style = $this->_minify_compression_css($style);
         }
 
         //取代網址
         $base_url = base_url();
         $style = str_replace('${base_url}', $base_url, $style);
 
-        send_css_header($this->output);
+        //send_css_header($this->output);
         //$style = $this->load->view($this->dir.'display', array('data'=>$style), TRUE);
         return $style;
     }

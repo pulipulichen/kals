@@ -16,7 +16,7 @@ include_once 'web_apps_controller.php';
 
 class generic extends Web_apps_controller {
 
-    protected $controller_enable_cache = TRUE;
+    protected $controller_enable_cache = FALSE;
 
     function toolkit($return_list = NULL)
     {
@@ -334,15 +334,17 @@ class generic extends Web_apps_controller {
             'annotation_recommend',
             'core'
         );
+        /*
         foreach ($list AS $path)
         {
             //測試用時，寫load_css
             //$this->load_css($path);
 
             //實際使用時，寫pack_css
-            //$this->pack_css($path, 'style');
-            $this->_20130219_pack_css($path);
-        }
+            
+            //$this->_20130219_pack_css($path);
+        }*/
+        $this->pack_css($list, 'style');
     }
 
     /**
