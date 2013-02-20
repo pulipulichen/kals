@@ -469,4 +469,4 @@ $(function() {
 });
 
 /* End of file KALS_context */
-///* Location: ./system/application/views/web_apps/core/KALS_context.js */
+/* Location: ./system/application/views/web_apps/core/KALS_context.js */

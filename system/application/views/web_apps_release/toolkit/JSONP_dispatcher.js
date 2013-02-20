@@ -147,4 +147,4 @@ JSONP_dispatcher.prototype.reset_data = function () {
 JSONP_dispatcher.prototype._default_reset_data = null;
 
 /* End of file JSONP_dispatcher */
-///* Location: ./system/application/views/web_apps/JSONP_dispatcher.js */
+/* Location: ./system/application/views/web_apps/JSONP_dispatcher.js */

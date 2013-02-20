@@ -300,4 +300,4 @@ Event_dispatcher.prototype.set_changed = function ()
 };
 
 /* End of file Event_dispatcher */
-///* Location: ./system/application/views/web_apps/Event_dispatcher.js */
+/* Location: ./system/application/views/web_apps/Event_dispatcher.js */

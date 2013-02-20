@@ -734,5 +734,14 @@ KALS_util.decodeURIComponent = function (_str) {
     return _result;
 };
 
+/**
+ * 使用console.log來記錄偵錯訊息
+ * @param {String} 
+ */
+KALS_util.log = function (_log) {
+    _log = '[KALS] ' + _log;
+    console.log(_log);
+};
+
 /* End of file KALS_unit */
 /* Location: ./libraries/helpers/kals_unit.js */

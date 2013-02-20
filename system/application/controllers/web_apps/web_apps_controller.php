@@ -56,7 +56,17 @@ class Web_apps_controller extends Controller {
      */
     function pack_js($path, $cache_name)
     {
+        send_js_header($this->output);
+        //header('Content-type: text/javascript');
+        
         $this->load->helper('file');
+        
+        $packed_file = '';
+        
+        if (is_string($path)) {
+            $path = array($path);
+        }
+        
         
         //製作快取路徑
         $cache_path = './system/cache/'.$cache_name.'.js';
@@ -69,13 +79,24 @@ class Web_apps_controller extends Controller {
                 //如果有快取檔案，回傳快取檔案的內容，記得送出js_header
                 
                 $packed = read_file($cache_path);
+                $this->load->view($this->dir.'display', array('data'=>$packed));
             }
             else {
                 //如果沒有快取檔案，那麼照以下步驟製作出快取之後，寫入快取檔案
                 //$script = $this->_combine_js($path);
                 //$packed = $this->_minify_compression_js($script);
-                $packed = $this->_combine_js($path);
-                write_file($cache_path, $packed);
+                //$packed = $this->_combine_js($path);
+                //write_file($cache_path, $packed);
+                
+                foreach ($path AS $p) {
+                    if ($p == '')
+                        continue;
+                    $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
+                    $packed = $this->_minify_compression_js($script);
+                    $this->load->view($this->dir.'display', array('data'=>$packed));
+                    //echo $packed;
+                    $packed_file = $packed_file . $packed;
+                }
             }
         }
         else
@@ -88,10 +109,21 @@ class Web_apps_controller extends Controller {
             //然後照以下步驟顯示檔案內容
             //$script = $this->_combine_js($path);
             //$packed = $this->_minify_compression_js($script);
-            $packed = $this->_combine_js($path);
+            //$packed = $this->_combine_js($path);
+            
+                foreach ($path AS $p) {
+                    if ($p == '')
+                        continue;
+                    $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
+                    $packed = $this->_minify_compression_js($script);
+                    $this->load->view($this->dir.'display', array('data'=>$packed));
+                    //echo $packed;
+                }
         }
-        send_js_header($this->output);
-        $this->load->view($this->dir.'display', array('data'=>$packed));
+        
+        if ($packed_file != '') {
+            write_file($cache_path, $packed_file);
+        }
     }
 
     /**
@@ -108,8 +140,9 @@ class Web_apps_controller extends Controller {
             if (isset($path2))
                 $path .= '/'.$path2;
             $path .= '.js';
-            $scripts_ary[] = $this->load->view($this->dir.$path, NULL, TRUE);
-            
+            $script = $this->load->view($this->dir.$path, NULL, TRUE);
+            //$script = $this->_minify_compression_js($script);
+            $scripts_ary[] = $script;
         }
         else if (is_array($path))
         {
@@ -126,7 +159,7 @@ class Web_apps_controller extends Controller {
                     continue;
 
                 $script = $this->load->view($this->dir.$path, NULL, TRUE);
-                $script = $this->_minify_compression_js($script);
+                //$script = $this->_minify_compression_js($script);
                 $scripts_ary[] = $script;
             }
         }
@@ -203,9 +236,10 @@ class Web_apps_controller extends Controller {
         $packed = '';
         
         //$this->load->library('web_apps/min/lib/JSMinPlus');
-        require_once '/system/application/libraries/web_apps/min/lib/JSMinPlus.php';
+        require_once './system/application/libraries/web_apps/min/lib/JSMinPlus.php';
         //echo '[][][][]'.$packed;
         $packed = JSMinPlus::minify($script);
+        $packed = $packed."\n";
         
         return $packed;
     }
@@ -222,13 +256,13 @@ class Web_apps_controller extends Controller {
         $packed = '';
         
         //$this->load->library('web_apps/min/lib/JSMinPlus');
-        require_once '/system/application/libraries/web_apps/min/lib/CSSMin.php';
+        require_once './system/application/libraries/web_apps/min/lib/CSSmin.php';
         //echo '[][][][]'.$packed;
         if (is_null($this->cssmin))
             $this->cssmin = new CSSmin ();
         $packed = $this->cssmin->run($style);
         //$packed = $style;
-        
+        $packed = $packed;
         return $packed;
     }
     

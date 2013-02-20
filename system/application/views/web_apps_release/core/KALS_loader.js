@@ -66,26 +66,47 @@ this.generic_load = function (_conf, _callback)
         style_list: _prefix+'style|generic'
     };
     
+    /*
     var _component_libraries = {
         //script_list: _prefix+'component_package'
-        script_list: _prefix+'package'
-    };
+        //script_list: _prefix+'package'
+        
+        script_list: [
+            _prefix+'toolkit',
+            _prefix+'core',
+            _prefix+'component'
+        ]
+    };*/
     
+    var _component_libraries = [
+            _prefix+'toolkit',
+            _prefix+'component',
+            _prefix+'core'
+            //_prefix+'package'
+        ];
+    
+    console.log('[KALS] load jquery');
     _this.load_jquery(function () {
         
+        console.log('[KALS] load libraries');
         _this.load_libraries(_libraries, function () {
-        
-        _this.load_libraries(_toolkit_libraries, function () {
-            //$.test_msg('load_libraries');
-            //設定generic設定的觀察者模式
             
-            _this.load_libraries(_component_libraries, function () {
-                if (typeof(_callback) == "function")
-                {
-                    _callback();
-                }   
-            });    
-        });
+            console.log('[KALS] load toolkit');
+            _this.load_libraries(_toolkit_libraries, function () {
+                //$.test_msg('load_libraries');
+                //設定generic設定的觀察者模式
+                
+                console.log('[KALS] load component');
+                
+                //_this.load_libraries(_component_libraries, function () {
+                _this.load_scripts_orderly(_component_libraries, function () {
+                    console.log('[KALS] callback');
+                    if (typeof(_callback) == "function")
+                    {
+                        _callback();
+                    }
+                });    
+            });
         });
     });
     
@@ -240,15 +261,20 @@ this.load_scripts = function (_script_list, _callback, _is_libraries)
     {
         var _script_url = _base_url + _script_list[_i];
         
+        console.log('[KALS] start load: '+_script_url);
         $.getScript(_script_url, function () {
+            
             _check_complete(_script_url);
         });           
     }
     return this;
 };
 
-this.insert_scripts = function (_script_list, _callback) {
-    var _base_url = this.get_libraries_url();
+this.insert_scripts = function (_script_list, _callback, _is_libraries) {
+    
+    var _base_url = this.get_base_url();
+    if (typeof(_is_libraries) == "boolean" && _is_libraries == true )
+        _base_url = this.get_libraries_url();
     
     var _loaded = false;
     
@@ -258,6 +284,7 @@ this.insert_scripts = function (_script_list, _callback) {
        var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
        _script_tag.appendTo($('head'));
        
+       console.log('[KALS] append script: ' + _script_url);
        $.getScript(_script_url, function () {
            
            if (_loaded == false)
@@ -400,7 +427,7 @@ this.load_libraries = function (_libraries, _callback)
             
             _complete();
             
-        });
+        }, true);
     }
     else
     {
@@ -419,6 +446,36 @@ this.load_libraries = function (_libraries, _callback)
     }
     
     return this;
+};
+
+/**
+ * 依序讀取JS程式檔
+ */
+this.load_scripts_orderly = function (_scripts, _callback) {
+    
+    var _script = _scripts[0];
+    
+    var _base_url = this.get_base_url();
+    //_script = _base_url + _script;
+    
+    var _other_scripts = [];
+    console.log('[KALS] load script:' + _script);
+    for (var _i = 0; _i < _scripts.length; _i++) {
+        _other_scripts[(_i-1)] = _scripts[_i];
+    }
+        
+    console.log('[KALS] _other_scripts length:' + _other_scripts.length);
+    
+    //this.load_scripts([_script], function () {
+    this.insert_scripts([_script], function () {
+        var _this = this;
+        if (_other_scripts.length > 0) {
+            _this.load_scripts_orderly(_other_scripts, _callback);
+        }
+        else {
+            _callback();
+        }
+    }, false); 
 };
 
 /**
@@ -453,5 +510,6 @@ setTimeout(function () {
     var KALS_loader = KALS_loader_class();
     KALS_loader.load();
 }, 0);
+
 /* End of file KALS_loader */
 /* Location: ./libraries/core/KALS_loader.js */

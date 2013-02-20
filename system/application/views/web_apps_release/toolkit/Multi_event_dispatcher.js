@@ -150,4 +150,4 @@ Multi_event_dispatcher.prototype.notify_listeners = function (_type, _arg)
 };
 
 /* End of file Multi_event_dispatcher */
-///* Location: ./system/application/views/web_apps/toolkit/Multi_event_dispatcher.js */
+/* Location: ./system/application/views/web_apps/toolkit/Multi_event_dispatcher.js */

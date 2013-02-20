@@ -353,4 +353,4 @@ Viewportmove_dispatcher.prototype.unlock_viewport = function(){
 */
 
 /* End of file Viewportmove_dispatcher */
-///* Location: ./system/application/views/web_apps/toolkit/Viewportmove_dispatcher.js */
+/* Location: ./system/application/views/web_apps/toolkit/Viewportmove_dispatcher.js */
