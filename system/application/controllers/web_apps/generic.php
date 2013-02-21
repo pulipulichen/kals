@@ -20,6 +20,16 @@ class generic extends Web_apps_controller {
 
     function toolkit($return_list = NULL)
     {
+        /**
+         * 20130221 Pulipuli Chen
+         * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
+         * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
+         * 我是用YUI Compressor Online壓縮的
+         * http://refresh-sf.com/yui
+         * 
+         * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
+         */
+        
         $list = array(
             'libraries/jquery.tools'
             ,'libraries/jquery.ba-bbq.min'
