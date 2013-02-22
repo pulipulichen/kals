@@ -18,6 +18,7 @@ if (typeof($jquery_extends) == 'undefined') {
 
 /**
  * 顯示測試訊息
+ * @version 20130222 Pulipuli Chen 把錯誤訊息改成console.log()輸出
  * @param {string} _title
  * @param {Object} _test
  */
@@ -25,6 +26,7 @@ jQuery.test_msg = function (_title, _test)
 {
     //return;
     
+	/*
     var _info_box = this('#info_box');
     if (_info_box.length == 0)
     {   
@@ -75,7 +77,31 @@ jQuery.test_msg = function (_title, _test)
         .html(_d.getHours() + ':' + _d.getMinutes() + ':' + _d.getSeconds())
         .css('float', 'right')
         .prependTo(_info);
+    */
+	
+	
+    if (this.isset(_title) && this.is_null(_test))
+    {
+        _test = _title;
+        _title = null;
+    }
+    else if (this.is_null(_title) && this.is_null(_test))
+    {
+        _test = '---------------';
+        return;
+    }
     
+    if (this.is_object(_test))
+    {
+        _test = '[Object: '+this.json_encode(_test)+']';
+    }
+
+	if (this.isset(_title))
+		console.log('[KALS]'+'['+_title+'] '+_test);
+	else
+		console.log('[KALS] '+_test);
+	
+	return this;
 };
 
 // --------
@@ -2188,16 +2214,46 @@ jQuery.fn.setup_hover = function () {
 
 jQuery.browser.msie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);
 
+/**
+ * 移除反斜線
+ * @param {string} _str
+ * @return {string}
+ */
 jQuery.stripslashes = function (_str) {
-	
 	_str=_str.replace(/\\'/g,'\'');
 	_str=_str.replace(/\\"/g,'"');
 	_str=_str.replace(/\\0/g,'\0');
 	_str=_str.replace(/\\\\/g,'\\');
 	return _str;
-	
 };
 
+/**
+ * 改良原本的decodeURIComponent
+ * @version 20130222 Pullipuli
+ * @param  {String} _str 要轉換的字串
+ * @return {String}      轉換完成的字串
+ */
+jQuery.decodeURIComponent = function (_str) {
+    var _result;
+    /*
+    try
+    {
+        _result = decodeURIComponent(_str);
+    }
+    catch (_e) {
+        _str = $.str_replace("%", "%25", _str);
+        _result = decodeURIComponent(_str);
+    }
+    */
+    _str = $.str_replace("%", "%25", _str);
+    _result = decodeURIComponent(_str);
+    return _result;
+};
+
+/**
+ * 20130222 Pulipuli Chen
+ * 不採用
+ */
 if (false)
 {
     /**

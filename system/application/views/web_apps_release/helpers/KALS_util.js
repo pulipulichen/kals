@@ -714,6 +714,7 @@ KALS_util.help = function (_url) {
 
 /**
  * 改良原本的decodeURIComponent
+ * @deprecated 20130222 不採用，請用jQuery.decodeURIComponent()
  * @param  {String} _str 要轉換的字串
  * @return {String}      轉換完成的字串
  */
