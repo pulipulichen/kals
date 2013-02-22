@@ -24,62 +24,6 @@ if (typeof($jquery_extends) == 'undefined') {
  */
 jQuery.test_msg = function (_title, _test)
 {
-    //return;
-    
-	/*
-    var _info_box = this('#info_box');
-    if (_info_box.length == 0)
-    {   
-        var _toggle = $('<div></div>')
-            .css('height', '15px')
-            .dblclick(function () {
-                $('#info_box').show();
-            })
-            .appendTo(this('body'));
-        
-         _info_box = this('<fieldset id="info_box" style="margin-bottom:1em;"><legend>Test Message Box</legend></fieldset>')
-            //.prependTo(this('body'));
-            .appendTo(this('body'));
-        
-        //if (location.href.toLowerCase().indexOf('homework') > -1)    
-            //_info_box.hide();
-        _info_box.dblclick(function () {
-            $(this).hide();
-        });
-        
-    }
-    if (this.isset(_title) && this.is_null(_test))
-    {
-        _test = _title;
-        _title = null;
-    }
-    else if (this.is_null(_title) && this.is_null(_test))
-    {
-        this('<hr />').appendTo(_info_box);
-        return;
-    }
-    
-    if (this.is_object(_test))
-    {
-        _test = '[Object: '+this.json_encode(_test)+']';
-    }
-
-    var _info = this('<pre>'+_test+'</pre>')
-        .attr('style', 'display:block;border:1px solid #CCCCCC;padding: 5px;')
-        .appendTo(this('#info_box'));
-
-    if (this.isset(_title))
-        _info.prepend('<strong>'+_title+': </strong>');
-        
-    //加上時間
-    var _d = new Date();
-    var _time = $('<div></div>')
-        .html(_d.getHours() + ':' + _d.getMinutes() + ':' + _d.getSeconds())
-        .css('float', 'right')
-        .prependTo(_info);
-    */
-	
-	
     if (this.isset(_title) && this.is_null(_test))
     {
         _test = _title;
