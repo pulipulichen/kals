@@ -126,7 +126,7 @@ Notification_component.prototype.toggle_hover = function (_is_hover) {
  */
 Notification_component.prototype._set_interval_check = function (_excute) {
     
-    if (_excute = null)
+    if (_excute == null)
     {
         _excute = true;
     }
