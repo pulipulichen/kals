@@ -439,7 +439,7 @@ KALS_util.show_exception = function (_exception)
         .appendTo(_exception_content);
     KALS_context.lang.add_listener(_dt, new KALS_language_param('Hint: ', 'exception.hint.heading'));
     
-    var _dd = _dd = $('<dd></dd>')
+    var _dd = $('<dd></dd>')
             .appendTo(_exception_content);
     KALS_context.lang.add_listener(_dd, new KALS_language_param('You can press "ESC" key to close message.', 'exception.hint.message'));
         
