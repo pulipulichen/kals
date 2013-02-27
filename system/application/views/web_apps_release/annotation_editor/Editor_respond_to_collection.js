@@ -81,7 +81,7 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
     else if ($.is_class(_param, 'Annotation_collection_param'))
     {
         var _coll = _param.annotations;
-        for (var _i in _coll)
+        for (var _i in _coll) //變數宣告?
         {
             this.add_respond_to(_coll[_i], _removable);
         }
@@ -93,8 +93,9 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
     }
     
     //要先確認是否已經有這個respond
-    if (this.has_respond_to(_param) == true)
-        return this;
+    if (this.has_respond_to(_param) == true) {
+		return this;
+	}
     
     var _respond = new Editor_respond_to(this._editor, _param, _removable);
     
@@ -181,8 +182,9 @@ Editor_respond_to_collection.prototype.get_respond_to_coll = function () {
     
     return _coll;
     */
-    if (this._responds.length == 0)
-        return null;
+    if (this._responds.length == 0) {
+		return null;
+	}
     
     var _coll = new Annotation_collection_param();
     
@@ -211,8 +213,9 @@ Editor_respond_to_collection.prototype._listen_editor = function () {
         var _data = _this.get_data();
         //$.test_msg('Editor_respond_to_collection._listen_editor() get', _data);
         
-        if ($.isset(_data))
-            _param[_this._$listen_field] = _data;
+        if ($.isset(_data)) {
+			_param[_this._$listen_field] = _data;
+		}
     });
 };
 
@@ -223,8 +226,9 @@ Editor_respond_to_collection.prototype._listen_editor = function () {
 Editor_respond_to_collection.prototype.get_data = function () {
     
     var _coll = this.get_respond_to_coll();
-    if ($.is_null(_coll))
-        return null;
+    if ($.is_null(_coll)) {
+		return null;
+	}
     
     var _new_coll = new Annotation_collection_param();
     
@@ -248,8 +252,9 @@ Editor_respond_to_collection.prototype.get_data = function () {
  */
 Editor_respond_to_collection.prototype.set_data = function (_param) {
     
-    if (typeof(_param[this._$listen_field]) == 'undefined')
-        return this;
+    if (typeof(_param[this._$listen_field]) == 'undefined') {
+		return this;
+	}
     
     var _respond_to_coll = _param[this._$listen_field];
     this.reset();

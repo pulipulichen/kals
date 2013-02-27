@@ -259,7 +259,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
         //return true;
         //return false;
         //alert('focuse');
-    });
+    });*/
     /*
     _ckeditor.on('maximize', function (_evt) {
         
@@ -363,11 +363,13 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 Note_editor_ckeditor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
     
-    if ($.is_null(_text))
-        _text = '';
+    if ($.is_null(_text)) {
+		_text = '';
+	}
     
-    if (_text == _setted_text)
-        return this;    
+    if (_text == _setted_text) {
+		return this;
+	}    
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     $.save_scroll_position();

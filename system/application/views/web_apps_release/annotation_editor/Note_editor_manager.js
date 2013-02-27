@@ -22,8 +22,9 @@ function Note_editor_manager(_editor) {
     }
     this.child('init', new Init_note_editor());
     
-    if ($.browser.msie)
-        this._type_mapping = this._type_mapping_ie;
+    if ($.browser.msie) {
+		this._type_mapping = this._type_mapping_ie;
+	}
 }
 
 Note_editor_manager.prototype = new KALS_user_interface();
@@ -95,10 +96,12 @@ Note_editor_manager.prototype.create = function (_type) {
 };
 
 Note_editor_manager.prototype.get_text = function () {
-    if ($.isset(this._active_editor))
-        return this._active_editor.get_text();
-    else
-        return null;
+    if ($.isset(this._active_editor)) {
+		return this._active_editor.get_text();
+	}
+	else {
+		return null;
+	}
 };
 
 Note_editor_manager.prototype.set_text = function (_text) {
@@ -113,8 +116,9 @@ Note_editor_manager.prototype.set_text = function (_text) {
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor))
-        this._active_editor.set_text(_text);
+    if ($.isset(this._active_editor)) {
+		this._active_editor.set_text(_text);
+	}
     return this;
 };
 
