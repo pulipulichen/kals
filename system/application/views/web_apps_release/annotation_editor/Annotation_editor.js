@@ -699,7 +699,7 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
     
     if (_is_loading == null)
     {
-        _is_loading == !(this.is_loading());//ACK？
+        _is_loading = !(this.is_loading());//ACK？
     }
     
     

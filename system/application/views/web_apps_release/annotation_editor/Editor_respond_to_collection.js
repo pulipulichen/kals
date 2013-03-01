@@ -67,12 +67,12 @@ Editor_respond_to_collection.prototype._$removable = true;
  * @param {Annotation_param|Annotation_collection_param} _param
  */
 Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
-    
+    var _i;
     var _removable = this._$removable;
     
     if ($.is_array(_param))
     {
-        for (var _i in _param)
+        for (_i in _param)
         {
             this.add_respond_to(_param[_i], _removable);
         }
@@ -81,7 +81,7 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
     else if ($.is_class(_param, 'Annotation_collection_param'))
     {
         var _coll = _param.annotations;
-        for (var _i in _coll) //變數宣告?
+        for (_i in _coll) //變數宣告?
         {
             this.add_respond_to(_coll[_i], _removable);
         }
