@@ -306,13 +306,9 @@ Annotation_param.prototype.import_json = function (_json)
             var _value = _json[_attr];
             if (_attr == 'note')
             {
-<<<<<<< HEAD
                 //_value = KALS_util.decodeURIComponent(_value);
 				_value = $.decodeURIComponent(_value);
-=======
-                _value = $.decodeURIComponent(_value);
->>>>>>> 018371b32a0ce52775a2da48cfc6c5c03ddb4fe3
-            }
+		     }
             else if (_attr == 'policy_type' && $.is_number(_value))
             {
                 _value = _value + '';
