@@ -139,10 +139,12 @@ Annotation_tool.prototype._$create_ui = function ()
     
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
-        if ($.is_small_height() == false)
-            _body_top = KALS_toolbar.get_ui().height();
-        if (_ui.offset().top < _body_top)
-            _ui.css('top', _body_top + 'px'); 
+        if ($.is_small_height() === false) {
+			_body_top = KALS_toolbar.get_ui().height();
+		}
+        if (_ui.offset().top < _body_top) {
+			_ui.css('top', _body_top + 'px');
+		}
     });
     
     var _this = this;
@@ -165,10 +167,12 @@ Annotation_tool.prototype._$create_ui = function ()
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable())
-            _ui.removeClass(_not_login);
-        else
-            _ui.addClass(_not_login);
+        if (_policy.writable()) {
+			_ui.removeClass(_not_login);
+		}
+		else {
+			_ui.addClass(_not_login);
+		}
             
         _topic_list.reload();
     }, true);
@@ -188,8 +192,9 @@ Annotation_tool.prototype.setup_list = function () {
 	var _tool = this;
 	//註冊一下
 	_component.add_listener(function () {
-		if (_component.is_totally_loaded())
+		if (_component.is_totally_loaded()) {
 			_tool.editor_container.toggle_container(true);
+		}
     });
     return _component;
 };
@@ -347,7 +352,7 @@ Annotation_tool.prototype.setup_position = function () {
         //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
         
         //如果沒有選取，就不會有_selection_bottom，也就不用定位
-        if (_selection_bottom == null)
+        if (_selection_bottom === null)
         {
             _ui.css('top', '0px');
             _ui.css('left', '0px');
@@ -425,10 +430,13 @@ Annotation_tool.prototype.setup_position = function () {
             _l = _body_right - _tool_width;
         }
         
-        if (_t < 0)
-            _t = 0;
-        else if ($.is_small_height() == false && _t < KALS_toolbar.get_ui().height())
-            _t = KALS_toolbar.get_ui().height();
+        if (_t < 0) {
+			_t = 0;
+		}
+		else 
+			if ($.is_small_height() === false && _t < KALS_toolbar.get_ui().height()) {
+				_t = KALS_toolbar.get_ui().height();
+			}
         
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
@@ -471,7 +479,7 @@ Annotation_tool.prototype.view = null;
 Annotation_tool.prototype.setup_view = function () {
     if ($.is_null(this.view))
     {
-        var _view = new Window_view;
+        var _view = new Window_view();
         this.child('view', _view);
     }
     return this.view;
@@ -497,7 +505,7 @@ Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _cal
     {
         try
         {
-            _annotation_id = parseInt(_annotation_id);
+            _annotation_id = parseInt(_annotation_id,10);
         }
         catch(e) {
             _annotation_id = null;
@@ -517,7 +525,7 @@ Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _cal
     
     var _load_callback = function (_param) {
         
-        if (_param != false)
+        if (_param !== false)
         {
             _param = new Annotation_param(_param);
             $.trigger_callback(_callback, _param);    

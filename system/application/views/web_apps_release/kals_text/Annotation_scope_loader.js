@@ -47,8 +47,9 @@ Annotation_scope_loader.prototype.setup_loader = function (_data, _callback) {
         });
     };
     
-    if ($.isset(this._refresh_timer))
-        this.stop_loader();
+    if ($.isset(this._refresh_timer)) {
+		this.stop_loader();
+	}
     
     this._refresh_timer = setInterval(_interval_action, this._refresh_interval);
     
@@ -68,8 +69,9 @@ Annotation_scope_loader.prototype.setup_loader = function (_data, _callback) {
 
 Annotation_scope_loader.prototype.stop_loader = function () {
     
-    if ($.is_null(this._refresh_timer))
-        return this;
+    if ($.is_null(this._refresh_timer)) {
+		return this;
+	}
     
     clearInterval(this._refresh_timer);
     this._refresh_timer = null;
@@ -144,7 +146,7 @@ Annotation_scope_loader.prototype.reset = function () {
 };
 
 Annotation_scope_loader.prototype.is_initialized = function () {
-    return (this._last_check_time != null);
+    return (this._last_check_time !== null);
 };
 
 /* End of file Annotation_scope_loader */
