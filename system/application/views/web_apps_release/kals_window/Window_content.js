@@ -27,7 +27,7 @@ function Window_content(){
             
             //$.test_msg('Window_content load context data', _data);
             
-            if (_data != null
+            if (_data !== null
                 && typeof(_data[_this._$load_config]) != 'undefined')
             {
                 _this.set_config(_data[_this._$load_config]);
@@ -149,37 +149,41 @@ Window_content.prototype._setup_submit = function (_submit) {
  */
 Window_content.prototype.get_input_value = function (_name) {
     
-    if ($.is_null(_name))
-        return _name;
+    if ($.is_null(_name)) {
+		return _name;
+	}
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     
-    if (_ui.length == 1)
-        return _ui.attr('value'); 
-    else
-    {
-        var _type = _ui.eq(0).attr('type').toLowerCase();
-        var _checked = _ui.filter(':checked');
-        if (_type == 'radio')
-        {
-            if (_checked.length == 1)
-                return _checked.val();
-            else
-                return null;
-        }
-        else if (_type == 'checkbox')
-        {
-            var _result = [];
-            for (var _i = 0; _i < _checked.length; _i++)
-                _result.push(_checked.eq(_i).val());
-            return _result;
-        }
-    }
+    if (_ui.length == 1) {
+		return _ui.attr('value');
+	}
+	else {
+		var _type = _ui.eq(0).attr('type').toLowerCase();
+		var _checked = _ui.filter(':checked');
+		if (_type == 'radio') {
+			if (_checked.length == 1) {
+				return _checked.val();
+			}
+			else {
+				return null;
+			}
+		}
+		else 
+			if (_type == 'checkbox') {
+				var _result = [];
+				for (var _i = 0; _i < _checked.length; _i++) {
+					_result.push(_checked.eq(_i).val());
+				}
+				return _result;
+			}
+	}
 };
 
 Window_content.prototype.get_input = function (_name) {
-    if ($.is_null(_name))
-        return _name;
+    if ($.is_null(_name)) {
+		return _name;
+	}
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     return _ui;
@@ -208,15 +212,17 @@ Window_content.prototype.set_config = function (_config) {
 
 Window_content.prototype.get_config = function (_index) {
     
-    if ($.isset(_index)
-        && typeof(this._config[_index]) != 'undefined')
-        return this._config[_index];
-    else
-        return this._config;
+    if ($.isset(_index) &&
+	typeof(this._config[_index]) != 'undefined') {
+		return this._config[_index];
+	}
+	else {
+		return this._config;
+	}
 };
 
 Window_content.prototype.set_config_loaded = function () {
-    if (this._config_loaded == false)
+    if (this._config_loaded === false)
     {
         this._config_loaded = true;
         $.trigger_callback(this._config_onload);
@@ -231,7 +237,7 @@ Window_content.prototype.set_config_onload = function (_callback) {
     
     //$.test_msg('Window_content.set_config_onload()', this._config_loaded);
     
-    if (this._config_loaded == true)
+    if (this._config_loaded === true)
     {
         $.trigger_callback(this._config_onload);
         this._config_onload = null;

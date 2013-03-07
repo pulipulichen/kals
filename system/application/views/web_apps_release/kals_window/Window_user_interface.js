@@ -19,15 +19,17 @@ Window_user_interface.prototype = new KALS_user_interface();
 
 Window_user_interface.prototype.panel = function (_classname) {
     var _ui = $('<div class="window-panel"></div>');
-    if ($.isset(_classname))
-        _ui.addClass(_classname);
+    if ($.isset(_classname)) {
+		_ui.addClass(_classname);
+	}
     return _ui; 
 };
 
 Window_user_interface.prototype.subpanel = function (_classname) {
     var _ui = $('<div class="window-subpanel"></div>');
-    if ($.isset(_classname))
-        _ui.addClass(_classname);
+    if ($.isset(_classname)) {
+		_ui.addClass(_classname);
+	}
     return _ui; 
 };
 
@@ -52,8 +54,9 @@ Window_user_interface.prototype._setup_text_input = function (_input, _default_v
     
     _input.addClass(this._input_text_classname);
     
-    if ($.isset(_default_value))
-        _input.val(_default_value);
+    if ($.isset(_default_value)) {
+		_input.val(_default_value);
+	}
     
     _input.keypress(function (e) {
         
@@ -80,7 +83,7 @@ Window_user_interface.prototype.check_input = function (_input) {
         
         //$.test_msg('window ui.check_input()', _input.val());
         
-        if (_input.val() == '')
+        if (_input.val() === '')
         {
             _input.addClass('empty');
         }
@@ -104,8 +107,9 @@ Window_user_interface.prototype.dropdown = function (_name, _options, _default_v
         .attr('name', _name)
         .addClass('dropdown');
         
-    if ($.is_array(_options) == false)
-        _options = [_options];
+    if ($.is_array(_options) === false) {
+		_options = [_options];
+	}
     
     for (var _i in _options)
     {
@@ -136,10 +140,12 @@ Window_user_interface.prototype.dropdown_option = function (_lang_param, _value)
     KALS_context.lang.add_listener(_option, _lang_param);
     if ($.is_null(_value))
     {
-        if ($.is_class(_lang_param, 'KALS_language_param'))
-            _value = _lang_param.lang;
-        else
-            _value = _lang_param;
+        if ($.is_class(_lang_param, 'KALS_language_param')) {
+			_value = _lang_param.lang;
+		}
+		else {
+			_value = _lang_param;
+		}
     }
     
     _option.attr('value', _value);
@@ -163,10 +169,12 @@ Window_user_interface.prototype.list_option = function (_lang_param, _value) {
     
     if ($.is_null(_value))
     {
-        if ($.is_class(_lang_param, 'KALS_language_param'))
-            _value = _lang_param.lang;
-        else
-            _value = _lang_param;
+        if ($.is_class(_lang_param, 'KALS_language_param')) {
+			_value = _lang_param.lang;
+		}
+		else {
+			_value = _lang_param;
+		}
     }
     
     _heading.attr('value', _value);
@@ -180,8 +188,9 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
         .addClass('radio-list')
         .addClass('list');
     
-    if ($.is_array(_options) == false)
-        _options = [_options];
+    if ($.is_array(_options) === false) {
+		_options = [_options];
+	}
     
     for (var _i in _options)
     {
@@ -245,10 +254,12 @@ Window_user_interface.prototype.row = function (_title, _data)
             if (_input.length > 0)
             {
                 var _type = _input.attr('type');
-                if (_type == 'text' || _type == 'password')
-                    _input.select();
-                else
-                    _input.focus();
+                if (_type == 'text' || _type == 'password') {
+					_input.select();
+				}
+				else {
+					_input.focus();
+				}
             }                
         }
     });
@@ -310,7 +321,7 @@ Window_user_interface.prototype._setup_content = function (_container, _content)
     
     if ($.is_class(_content, 'KALS_language_param'))
     {
-        KALS_context.lang.add_listener(_container, _content)
+        KALS_context.lang.add_listener(_container, _content);
     }
     else
     {
