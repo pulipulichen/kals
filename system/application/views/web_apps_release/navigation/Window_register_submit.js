@@ -34,16 +34,18 @@ Window_register_submit.prototype.submit = function () {
     var _data = this.get_data();
     var _inputs = this.get_inputs();
     
-    if (this.validate(_inputs, _data) == false)
-        return;
+    if (this.validate(_inputs, _data) === false) {
+		return;
+	}
     
     this._setup_auth(_data);
     
     // ---------
     // 接下來要準備登入囉
     
-    if (this._lock_submit() == false)
-        return this;
+    if (this._lock_submit() === false) {
+		return this;
+	}
     
     var _this = this;
     

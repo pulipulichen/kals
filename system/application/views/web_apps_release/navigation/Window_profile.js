@@ -99,15 +99,15 @@ Window_profile.prototype._$create_ui = function ()
         
         var _sex_config = _this.get_config('sex');
         var _sex_options = [];
-        for (var _i in _sex_config)
+        for (_i in _sex_config)
         {
-            var _value = _sex_config[_i];
-            var _lang_param = new KALS_language_param(
+            _value = _sex_config[_i];
+            _lang_param = new KALS_language_param(
                 _value,
                 'window.content.sex.' + _value
             );
             
-            var _option = _factory.list_option(_lang_param, _value);
+            _option = _factory.list_option(_lang_param, _value);
             _sex_options.push(_option);
         }
         var _sex_default_value = KALS_context.user.get_sex();
@@ -151,7 +151,7 @@ Window_profile.prototype._$create_ui = function ()
     
     var _check_embed = function (_is_embed)
     {
-        if (_is_embed == true)
+        if (_is_embed === true)
         {
             _password_link_data.hide();
             _password_row.hide();
