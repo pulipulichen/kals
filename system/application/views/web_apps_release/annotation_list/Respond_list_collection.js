@@ -140,7 +140,7 @@ Respond_list_collection.prototype.setup_load_list = function (_data, _callback) 
     var _this = this;
     List_collection.prototype.setup_load_list.call(this,_data, function () {
         var _respond_count = _data.total_count;
-        if (_respond_count == 0)
+        if (_respond_count === 0)
         {
             _this.hide();
         }

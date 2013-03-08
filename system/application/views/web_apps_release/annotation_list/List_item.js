@@ -69,7 +69,7 @@ List_item.prototype._$create_ui = function ()
     _note.get_ui().appendTo(_ui);
     
     var _menu_block, _menu_tooltip;
-    if (this._menu_style_default == null)
+    if (this._menu_style_default === null)
     {
         _menu_block = this._setup_menu_block();
         _menu_block.get_ui().appendTo(_ui);
@@ -93,8 +93,8 @@ List_item.prototype._$create_ui = function ()
     setTimeout(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         
-        if (_this._menu_style_default == null 
-            || _this._menu_style_default == 'tooltip')
+        if (_this._menu_style_default === null 
+            || _this._menu_style_default === 'tooltip')
         {
             var _config = _menu_tooltip._$get_config();
             _ui.tooltip(_config);        
@@ -168,10 +168,12 @@ List_item.prototype._setup_menu_tooltip = function () {
 };
 
 List_item.prototype.is_enable = function (_option_name) {
-    if (_option_name == null || this._disable_option == null)
-        return true;
-    else
-        return ( $.inArray(_option_name, this._disable_option) == -1 );
+    if (_option_name === null || this._disable_option === null) {
+		return true;
+	}
+	else {
+		return ($.inArray(_option_name, this._disable_option) == -1);
+	}
 };
 
 List_item.prototype._$onviewportmove = function (_ui) {
@@ -191,17 +193,20 @@ List_item.prototype._$onviewportmove = function (_ui) {
 
 List_item.prototype.get_list_item_ui = function () {
     var _ui = this.get_ui('.list-item:first');
-    if (_ui.length == 0)
-        _ui = this.get_ui();
+    if (_ui.length === 0) {
+		_ui = this.get_ui();
+	}
     return _ui;
 };
 
 List_item.prototype._toggle_menu_style = function (_style) {
     
-    if ($.isset(this._menu_style_default))
-        _style = this._menu_style_default;
-    if ($.is_null(_style) || _style == 'none')
-        return this;
+    if ($.isset(this._menu_style_default)) {
+		_style = this._menu_style_default;
+	}
+    if ($.is_null(_style) || _style == 'none') {
+		return this;
+	}
     
     var _block_classname = this._menu_style_classname;
     var _ui = this.get_list_item_ui();
@@ -234,10 +239,12 @@ List_item.prototype.get_annotation_param = function () {
 
 List_item.prototype.get_annotation_id = function () {
     
-    if ($.is_class(this._annotation_param, 'Annotation_param'))
-        return this._annotation_param.annotation_id;
-    else
-        return null;
+    if ($.is_class(this._annotation_param, 'Annotation_param')) {
+		return this._annotation_param.annotation_id;
+	}
+	else {
+		return null;
+	}
 };
 
 List_item.prototype.get_topic_param = function () {
@@ -252,8 +259,9 @@ List_item.prototype.get_menu_style = function () {
     var _style = 'tooltip';
     
     var _ui = this.get_ui();
-    if (_ui.hasClass(this._menu_style_classname))
-        _style = 'block';
+    if (_ui.hasClass(this._menu_style_classname)) {
+		_style = 'block';
+	}
     return _style;
 };
 
@@ -272,10 +280,12 @@ List_item.prototype.editor_set_data = function (_param) {
 };
 
 List_item.prototype.get_scope_coll = function () {
-    if ($.is_class(this._annotation_param, 'Annotation_param'))
-        return this._annotation_param.scope;
-    else
-        return null;
+    if ($.is_class(this._annotation_param, 'Annotation_param')) {
+		return this._annotation_param.scope;
+	}
+	else {
+		return null;
+	}
 };
 
 List_item.prototype.set_selection = function () {
@@ -306,15 +316,23 @@ List_item.prototype.select = function () {
  */
 List_item.prototype.equals = function (_param) {
     var _annotation_id;
-    if ($.is_class(_param, 'Annotation_param'))
-        _annotation_id = _param.annotation_id;
-    else if ($.is_number(_param))
-        _annotation_id = _param;
-    else if ($.is_string(_param))
-        _annotation_id = parseInt(_param);
-    else if ($.is_class(_param, 'List_item'))
-        _annotation_id = _param.get_annotation_id();
-        
+    if ($.is_class(_param, 'Annotation_param')) {
+		_annotation_id = _param.annotation_id;
+	}
+	
+	else 
+		if ($.is_number(_param)) {
+			_annotation_id = _param;
+		}
+		else 
+			if ($.is_string(_param)) {
+				_annotation_id = parseInt(_param,10);//第二位參數未設定-修為預設值10進制
+			}
+			else 
+				if ($.is_class(_param, 'List_item')) {
+					_annotation_id = _param.get_annotation_id();
+				}
+      
     return (_annotation_id == this.get_annotation_id());
 };
 
@@ -322,24 +340,28 @@ List_item.prototype._focus_classname = 'focus';
 
 List_item.prototype.focus = function (_scrollto) {
     
-    if ($.is_null(_scrollto))
-        _scrollto = false;
+    if ($.is_null(_scrollto)) {
+		_scrollto = false;
+	}
     
     var _ui = this.get_ui('.list-item:first');
-    if (_ui.length == 0)
-        _ui = this.get_ui();
+    if (_ui.length === 0) {
+		_ui = this.get_ui();
+	}
     
     //如果已經是在focus狀態，則不做任何事情
-    if (_ui.hasClass(this._focus_classname))
-        return this;
+    if (_ui.hasClass(this._focus_classname)) {
+		return this;
+	}
     
     this.blur_other_focus();
     this.set_selection();
     
     _ui.addClass(this._focus_classname);
     
-    if (_scrollto == true)
-        _ui.scrollIntoView();
+    if (_scrollto === true) {
+		_ui.scrollIntoView();
+	}
     return this;
 };
 
@@ -350,8 +372,9 @@ List_item._blur_timer = null;
 
 List_item.prototype.blur = function () {
     
-    if (List_item._blur_timer != null)
-        clearTimeout(List_item._blur_timer);
+    if (List_item._blur_timer !== null) {
+		clearTimeout(List_item._blur_timer);
+	}
     
     var _this = this;
     List_item._blur_timer = setTimeout(function () {
@@ -403,8 +426,9 @@ List_item.prototype.set_editing = function() {
     var _ui = this.get_ui();
     var _editing_classname = 'editing';
     
-    if (_ui.hasClass(_editing_classname))
-        return this;
+    if (_ui.hasClass(_editing_classname)) {
+		return this;
+	}
     
     //將其他為編輯中的item取消
     var _selector = '.' + this._classname + '.' + _editing_classname;

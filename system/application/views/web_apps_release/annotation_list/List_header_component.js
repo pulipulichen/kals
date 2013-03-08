@@ -63,7 +63,7 @@ List_header_component.prototype._$create_ui = function ()
     var _like_component = this._setup_like_component();
     _like_component.get_ui().appendTo(_ui);
     
-    if (this._item.is_enable('like') == false)
+    if (this._item.is_enable('like') === false)
     {
         _like_component.get_ui().hide();
     }
@@ -83,7 +83,7 @@ List_header_component.prototype._$create_ui = function ()
     var _lock_component = this._create_lock_component();
     _lock_component.prependTo(_ui);
     
-    if (this._item.is_enable('policy') == false)
+    if (this._item.is_enable('policy') === false)
     {
         //_lock_component.hide();
     }
@@ -91,8 +91,8 @@ List_header_component.prototype._$create_ui = function ()
     var _recommend_component = this._create_recommend_component();
     _recommend_component.prependTo(_ui);
     
-    if (this._item.is_enable('recommend') == false
-        || KALS_CONFIG.enable_annotation_recommend == false)
+    if (this._item.is_enable('recommend') === false
+        || KALS_CONFIG.enable_annotation_recommend === false)
     {
         _recommend_component.hide();
     }
@@ -131,14 +131,17 @@ List_header_component.prototype.set_user_name = function (_name)
     if ($.is_null(_name))
     {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _name = _param.user.get_name();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_name = _param.user.get_name();
+		}
+		else {
+			return this;
+		}
     }
     
-    if ($.is_null(this._name_container))
-        this.get_ui();
+    if ($.is_null(this._name_container)) {
+		this.get_ui();
+	}
     
     this._name_container.html(_name);
 };
@@ -157,18 +160,22 @@ List_header_component.prototype.set_is_my = function (_is_my)
     if ($.is_null(_is_my))
     {
         var _param = this._item.get_data();
-        if ($.isset(_param)) 
-            _is_my = _param.is_my_annotation();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_is_my = _param.is_my_annotation();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_is_my == true)
-        _ui.addClass(this.is_my_classname);
-    else
-        _ui.removeClass(this.is_my_classname);
+    if (_is_my === true) {
+		_ui.addClass(this.is_my_classname);
+	}
+	else {
+		_ui.removeClass(this.is_my_classname);
+	}
     
     return this;
 };
@@ -208,18 +215,22 @@ List_header_component.prototype.set_has_recommend = function (_has_recommend)
     if ($.is_null(_has_recommend))
     {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _has_recommend = _param.has_recommend();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_has_recommend = _param.has_recommend();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_has_recommend == true)
-        _ui.addClass(this.is_has_recommend);
-    else
-        _ui.removeClass(this.is_has_recommend);
+    if (_has_recommend === true) {
+		_ui.addClass(this.is_has_recommend);
+	}
+	else {
+		_ui.removeClass(this.is_has_recommend);
+	}
     
     return this;
 };
@@ -246,16 +257,19 @@ List_header_component.prototype.set_type = function (_type)
     if ($.is_null(_type))
     {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _type = _param.type;
-        else
-            return this;
+        if ($.isset(_param)) {
+			_type = _param.type;
+		}
+		else {
+			return this;
+		}
     }
     
     //$.test_msg('List_header_component.set_type [is_null]', _type);
     
-    if ($.is_null(this._type_container))
-        this.get_ui();
+    if ($.is_null(this._type_container)) {
+		this.get_ui();
+	}
     
     this._type_container.empty();
     
@@ -321,24 +335,29 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
 List_header_component.prototype.set_has_recommend = function (_has_recommend) 
 {
     //只有我的標註才要設置recommend的喔！
-    if (this.is_my() == false)
-        return this;
+    if (this.is_my() === false) {
+		return this;
+	}
     
     if ($.is_null(_has_recommend))
     {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _has_recommend = _param.has_recommend();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_has_recommend = _param.has_recommend();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_has_recommend == true)
-        _ui.addClass(this.has_recommend_classname);
-    else
-        _ui.removeClass(this.has_recommend_classname);
+    if (_has_recommend === true) {
+		_ui.addClass(this.has_recommend_classname);
+	}
+	else {
+		_ui.removeClass(this.has_recommend_classname);
+	}
     
     return this;
 };
@@ -370,10 +389,12 @@ List_header_component.prototype.set_policy_type = function (_policy_type) {
     if ($.is_null(_policy_type))
     {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _policy_type = _param.policy_type;
-        else
-            return this;
+        if ($.isset(_param)) {
+			_policy_type = _param.policy_type;
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
@@ -415,8 +436,9 @@ List_header_component.prototype._create_id_component = function () {
         .addClass('id-component');
         
     var _param = this._item.get_data();
-    if ($.isset(_param))
-        _component.html('#' + _param.annotation_id);
+    if ($.isset(_param)) {
+		_component.html('#' + _param.annotation_id);
+	}
     
     this._id_component = _component;
     return _component;

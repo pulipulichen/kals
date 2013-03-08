@@ -15,8 +15,9 @@ function List_timestamp_component(_item) {
     
     KALS_user_interface.call(this);
     
-    if ($.isset(_item))
-        this._item = _item;
+    if ($.isset(_item)) {
+		this._item = _item;
+	}
     
 }
 

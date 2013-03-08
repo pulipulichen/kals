@@ -224,15 +224,16 @@ List_collection.prototype.load_list = function(_data, _callback)
         return this;
     }
     
-    if (this.is_totally_loaded() == true
-        || this._check_login() == false)
+    if (this.is_totally_loaded() === true
+        || this._check_login() === false)
     {
         $.trigger_callback(_callback);
         return this;
     }
     
-    if (this._load_lock == true)
-        return this;
+    if (this._load_lock === true) {
+		return this;
+	}
     
     var _search_data = this.get_search_data();
     
@@ -252,55 +253,66 @@ List_collection.prototype.load_list = function(_data, _callback)
     return this;
 };
 
-List_collection.prototype.get_search_data = function () {
+List_collection.prototype.get_search_data = function(){
+
+	var _search_data = {};
+	
+	//如果有指定target id，則就不需要其他參考資料
+	if ($.isset(this._$topic_id)) {
+		_search_data.topic_id = this._$topic_id;
+		
+		if ($.isset(this._$limit)) {
+			_search_data.limit = this._$limit;
+		}
+		
+		if ($.isset(this._$target_topic)) {
+			_search_data.target_topic = this._$target_topic;
+		}
+		if ($.isset(this._$order_by) && this._$order_by != 'score') {
+			_search_data.order_by = this._$order_by;
+		}
+		
+		if ($.isset(this._offset)) {
+			_search_data.offset = this._offset;
+		}
+		
+		return _search_data;
+	}
+	
+	//一定要有範圍資料！
+	if ($.is_null(this._scope_coll)) {
+		return null;
+	}
+	
+	_search_data.scope = this._scope_coll.export_json(false);
+	
+	//需要登入身分的兩個參數
+	if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
+	KALS_context.auth.is_login() === false) {
+		return null;
+	}
+	
+	if ($.isset(this._$target_like)) {
+		_search_data.target_like = this._$target_like;
+	}
+	if ($.isset(this._$target_my)) {
+		_search_data.target_my = this._$target_my;
+}
     
-    var _search_data = {};
+    if ($.isset(this._$limit)) {
+		_search_data.limit = this._$limit;
+	}
     
-    //如果有指定target id，則就不需要其他參考資料
-    if ($.isset(this._$topic_id))
-    {
-        _search_data['topic_id'] = this._$topic_id;
+    if ($.isset(this._$target_topic)) {
+		_search_data.target_topic = this._$target_topic;
+	}
+    if ($.isset(this._$order_by) && this._$order_by != 'score') {
+		_search_data.order_by = this._$order_by;
+	}
         
-        if ($.isset(this._$limit))
-            _search_data['limit'] = this._$limit;
-            
-        if ($.isset(this._$target_topic))
-        _search_data['target_topic'] = this._$target_topic;
-        if ($.isset(this._$order_by) && this._$order_by != 'score')
-            _search_data['order_by'] = this._$order_by;
-            
-        if ($.isset(this._offset))
-            _search_data['offset'] = this._offset;
-            
-        return _search_data;
-    }
-    
-    //一定要有範圍資料！
-    if ($.is_null(this._scope_coll))
-        return null;
-    
-    _search_data['scope'] = this._scope_coll.export_json(false);
-    
-    //需要登入身分的兩個參數
-    if (($.isset(this._$target_like) || $.isset(this._$target_my))
-        && KALS_context.auth.is_login() == false)
-        return null;
-    
-    if ($.isset(this._$target_like))
-        _search_data['target_like'] = this._$target_like;
-    if ($.isset(this._$target_my))
-        _search_data['target_my'] = this._$target_my;
-    
-    if ($.isset(this._$limit))
-        _search_data['limit'] = this._$limit;
-    
-    if ($.isset(this._$target_topic))
-        _search_data['target_topic'] = this._$target_topic;
-    if ($.isset(this._$order_by) && this._$order_by != 'score')
-        _search_data['order_by'] = this._$order_by;
-        
-    if ($.isset(this._offset))
-        _search_data['offset'] = this._offset;
+    if ($.isset(this._offset)) {
+		_search_data.offset = this._offset;
+	}
     
     return _search_data;
     
@@ -310,11 +322,12 @@ List_collection.prototype._check_login = function () {
     
     //$.test_msg('List_coll._check_login()', [this._$name, this._$need_login, KALS_context.auth.is_login()]);
     
-    if ($.isset(this._$need_login) == false)
-        return true;
+    if ($.isset(this._$need_login) === false) {
+		return true;
+	}
     
     var _pass = (this._$need_login == KALS_context.auth.is_login());
-    if (_pass == false)
+    if (_pass === false)
     {
         this._totally_loaded = true;
     } 
@@ -333,15 +346,17 @@ List_collection.prototype.set_load_id = function (_dispatcher) {
 };
 
 List_collection.prototype.check_load_id = function (_load_id) {
-    if (this._check_load_id == true)
-    {
-        if ($.is_null(_load_id))
-            return (this._load_id_dispatcher.get_load_id() == this._load_id);
-        else
-            return (this._load_id_dispatcher.get_load_id() == _load_id);
-    }   
-    else
-        return true;
+    if (this._check_load_id === true) {
+		if ($.is_null(_load_id)) {
+			return (this._load_id_dispatcher.get_load_id() == this._load_id);
+		}
+		else {
+			return (this._load_id_dispatcher.get_load_id() == _load_id);
+		}
+	}
+	else {
+		return true;
+	}
 };
 
 List_collection.prototype.setup_load_list = function (_data, _callback) {
@@ -349,7 +364,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
     //$.test_msg('List_coll.setup_load_list()', _data);
     //$.test_msg('List_coll.setup_load_list()', $.is_array(_data.annotation_collection));
     
-    if (this._check_login() == false)
+    if (this._check_login() === false)
     {
         $.trigger_callback(_callback);
         return this;
@@ -359,13 +374,14 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
     
     var _setup_list_complete = function () {
         
-        if (typeof(_data.totally_loaded) == 'boolean' && _data.totally_loaded == true)
-        _this._totally_loaded = _data.totally_loaded;
+        if (typeof(_data.totally_loaded) == 'boolean' && _data.totally_loaded === true) {
+			_this._totally_loaded = _data.totally_loaded;
+		}
 
         //_this._ready = true;
         _this._check_load_id = false;
         
-        if (_this._set_focus_param != null)
+        if (_this._set_focus_param !== null)
         {
             _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
             
@@ -384,8 +400,9 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         
             var _length = _annotation_coll.length();
             
-            if (_this._offset == null)
-                _this._offset = 0;
+            if (_this._offset === null) {
+				_this._offset = 0;
+			}
             _this._offset = _this._offset + _length;
             
             //$.test_msg('List_collection.setup_load_list()', 'before complete');
@@ -418,7 +435,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
        
         var _load_id = this._load_id;
         var _loop_annotation = function (_i) {
-            if (_this.check_load_id(_load_id) == false)
+            if (_this.check_load_id(_load_id) === false)
             {
                 //$.test_msg('List_collection.setup_load_list()', 'lost load id');
                 return;
@@ -455,8 +472,9 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
  * 將設定回歸原始 
  */
 List_collection.prototype.reset = function() {
-    if ($.isset(this._list_container))
-        this._list_container.empty();
+    if ($.isset(this._list_container)) {
+		this._list_container.empty();
+	}
     this._list_items = [];
     this._offset = null;
     this._totally_loaded = false;
@@ -481,12 +499,14 @@ List_collection.prototype.reload = function(_callback)
  */
 List_collection.prototype.create_list_item = function(_param)
 {
-    if (this._$target_topic == true)
-        return new List_item_topic(_param);
-    //else if (this._$target_topic == false)
-    //    return new List_item_respond(_param);
-    else
-        return new List_item(_param);
+    if (this._$target_topic === true) {
+		return new List_item_topic(_param);
+	}
+	//else if (this._$target_topic == false)
+	//    return new List_item_respond(_param);
+	else {
+		return new List_item(_param);
+	}
 };
 
 /**
@@ -523,13 +543,13 @@ List_collection.prototype.add_list_item = function(_param, _from_head)
 {
     var _list_item = this.create_list_item(_param);
     
-    if (_list_item != null)
+    if (_list_item !== null)
     {
         this._list_items.push(_list_item);
         
         var _list_item_ui = _list_item.get_ui();
         
-        if ($.is_null(_from_head) || _from_head == false)
+        if ($.is_null(_from_head) || _from_head === false)
         {
             this._list_container.append(_list_item_ui);
         }
@@ -580,8 +600,9 @@ List_collection.prototype.remove_list_item = function (_param) {
  */
 List_collection.prototype.focus = function(_param, _scrollto) 
 {
-    if ($.is_null(_param))
-        return null;
+    if ($.is_null(_param)) {
+		return null;
+	}
     
     for (var _i in this._list_items)
     {
@@ -613,12 +634,13 @@ List_collection.prototype.focus = function(_param, _scrollto)
             return _list_item;
         }
         else if (typeof(_list_item.respond_list) != 'undefined'
-            && _list_item.respond_list != null)
+            && _list_item.respond_list !== null)
         {
             //$.test_msg('List_collection.focus() has respond list', _list_item.get_annotation_id());
             var _result = _list_item.respond_list.focus(_param, _scrollto);
-            if (_result != null)
-                return _result;
+            if (_result !== null) {
+				return _result;
+			}
         }
     }
     
@@ -640,18 +662,20 @@ List_collection.prototype.set_scope_coll = function (_scope_coll) {
 };
 
 List_collection.prototype.count_list_item = function () {
-    if (this._list_items == null)
-        return 0;
-    else
-        return this._list_items.length;
+    if (this._list_items === null) {
+		return 0;
+	}
+	else {
+		return this._list_items.length;
+	}
 };
 
 List_collection.prototype._is_marked_first = false;
 
 List_collection.prototype._mark_first = function () {
-    if (this._is_marked_first == true)
-        return this;
-    
+    if (this._is_marked_first === true) {
+		return this;
+	}
     if (this._list_items.length > 0)
     {
         var _list_item = this._list_items[0];

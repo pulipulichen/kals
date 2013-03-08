@@ -124,11 +124,13 @@ List_like_component.prototype._create_icon_component = function () {
  */
 List_like_component.prototype.set_is_like = function (_is_like) {
     
-    if (this._lock == true)
-        return;
+    if (this._lock === true) {
+		return;
+	}
     
-    if ($.is_null(_is_like))
-        _is_like = !(this.is_liked());
+    if ($.is_null(_is_like)) {
+		_is_like = !(this.is_liked());
+	}
                 
     var _annotation_id = this._item.get_annotation_id();
     
@@ -141,8 +143,9 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     
     this.load(_data, function (_this, _data) {
         
-        if (_this._lock == false)
-            return;
+        if (_this._lock === false) {
+			return;
+		}
             
         _this._lock = false;
         
@@ -150,15 +153,17 @@ List_like_component.prototype.set_is_like = function (_is_like) {
         
         //var _param = _this._item.get_data();
         var _lang;
-        if (_is_like == true)
-            _lang = _this._lang.set_like;
-        else
-            _lang = _this._lang.set_not_like;
+        if (_is_like === true) {
+			_lang = _this._lang.set_like;
+		}
+		else {
+			_lang = _this._lang.set_not_like;
+		}
             
         KALS_util.notify(_lang);
         
         //調整次數
-        if (_is_like == true)
+        if (_is_like === true)
         {
             _this.add_like_count();
         }
@@ -194,14 +199,17 @@ List_like_component.prototype._toggle_like = function (_is_like) {
     var _ui = this.get_ui();
     //$.test_msg('List_like_component.toggle_like 1', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
     
-    if ($.is_null(_is_like))
-        _is_like = (!(this.is_liked()));
+    if ($.is_null(_is_like)) {
+		_is_like = (!(this.is_liked()));
+	}
     
     
-    if (_is_like == true)
-        _ui.addClass(this.like_classname);
-    else
-        _ui.removeClass(this.like_classname);
+    if (_is_like === true) {
+		_ui.addClass(this.like_classname);
+	}
+	else {
+		_ui.removeClass(this.like_classname);
+	}
         
     //$.test_msg('List_like_component.toggle_like 2', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
     
