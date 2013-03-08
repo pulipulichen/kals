@@ -211,7 +211,7 @@ Annotation_editor.prototype.get_data = function () {
 Annotation_editor.prototype.submit = function () {
     
     //讀取中就不設定
-    if (this.is_loading() == true) //型態檢查？IF RANGE?
+    if (this.is_loading() === true) 
 	{
 		return this;
 	}
@@ -219,7 +219,7 @@ Annotation_editor.prototype.submit = function () {
 		var _annotation_param = this.get_data();
 	
     
-    if (this._check_note(_annotation_param) == false) {
+    if (this._check_note(_annotation_param) === false) {
 		return this;
 	}
 		
@@ -242,7 +242,7 @@ Annotation_editor.prototype.submit = function () {
     var _callback = function (_data) {
         
         //如果已經取消了loading動作，那就不作任何反應。
-        if (_this.is_loading() == false) {
+        if (_this.is_loading() === false) {
 			return this;
 		}
         
@@ -273,7 +273,7 @@ Annotation_editor.prototype.submit = function () {
 				}
                     
                 if (typeof(_data.recommend) != 'undefined' &&
-				KALS_CONFIG.enable_annotation_recommend == true) {
+				KALS_CONFIG.enable_annotation_recommend === true) {
 					_annotation_param.recommend = new Recommend_param(_data.recommend);
 				}
                 if (typeof(_data.nav) != 'undefined')
@@ -287,7 +287,7 @@ Annotation_editor.prototype.submit = function () {
             _this._create_callback(_annotation_param);
         }
         
-        if (_annotation_param.is_respond() == false)
+        if (_annotation_param.is_respond() === false)
         {
             //設置selection
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
@@ -327,7 +327,7 @@ Annotation_editor.prototype._check_note = function (_annotation_param) {
 	}
     
     if (typeof(_annotation_param.note) == 'undefined' ||
-	_annotation_param.note == null) {
+	_annotation_param.note === null) {
 		//顯示錯誤
 		var _heading = new KALS_language_param('ERROR', 'alert.heading.error');
 		
@@ -426,7 +426,7 @@ Annotation_editor.prototype._$enable_types = ['reset', 'set'];
 
 Annotation_editor.prototype.reset = function () {
     
-    if (this._editing_lock == false)
+    if (this._editing_lock === false)
     {
         this.toggle_loading(false);
         
@@ -528,7 +528,7 @@ Annotation_editor.prototype._$create_ui = function ()
 };
 
 Annotation_editor.prototype.is_enable = function (_option_name) {
-    if (_option_name == null || this._disable_option == null) {
+    if (_option_name === null || this._disable_option === null) {
 		return true;
 	}
 	else {
@@ -697,10 +697,9 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
         _is_loading = null;
     }
     
-    if (_is_loading == null)
-    {
-        _is_loading = !(this.is_loading());//ACK？
-    }
+    if (_is_loading === null) {
+		_is_loading = !(this.is_loading());
+	}
     
     
     if (_is_loading == this.is_loading())
@@ -718,7 +717,7 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
     var _container = this._container;
     var _loading = this._loading_component;
     
-    if (_is_loading == true)
+    if (_is_loading === true)
     {
         //_container.slideUp(function () {
         //    _loading.slideDown(_complete);

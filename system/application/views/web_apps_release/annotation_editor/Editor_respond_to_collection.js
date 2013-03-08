@@ -87,13 +87,13 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
         }
         return this;
     }
-    else if ($.is_class(_param, 'Annotation_param') == false)
+    else if ($.is_class(_param, 'Annotation_param') === false)
     {
         return this;
     }
     
     //要先確認是否已經有這個respond
-    if (this.has_respond_to(_param) == true) {
+    if (this.has_respond_to(_param) === true) {
 		return this;
 	}
     
@@ -182,7 +182,7 @@ Editor_respond_to_collection.prototype.get_respond_to_coll = function () {
     
     return _coll;
     */
-    if (this._responds.length == 0) {
+    if (this._responds.length === 0) {
 		return null;
 	}
     

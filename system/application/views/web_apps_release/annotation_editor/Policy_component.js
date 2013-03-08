@@ -122,8 +122,9 @@ Policy_component.prototype.set_policy_type = function(_type) {
     //$.test_msg('set_policy_type', [_type, this._policy_type]);
     
     //防止重複變更
-    if (_type == this._policy_type)
-        return this;
+    if (_type == this._policy_type) {
+		return this;
+	}
     
     this._policy_type = _type;
     
@@ -178,8 +179,9 @@ Policy_component.prototype.set_policy_changable = function (_changable) {
     
     //$.test_msg("set_policy_changable", [_changable, this._config_policy_changable()]);
     
-    if (_changable == true && this._config_policy_changable() == false)
-        _changable = false;
+    if (_changable === true && this._config_policy_changable() === false) {
+		_changable = false;
+	}
     
     
     this._policy_changable = _changable;
@@ -187,7 +189,7 @@ Policy_component.prototype.set_policy_changable = function (_changable) {
     var _ui = this.get_ui();
     var _deny_change_classname = 'deny-change';
     
-    if (_changable == false)
+    if (_changable === false)
     {
         _ui.addClass(_deny_change_classname);    
     }
@@ -261,8 +263,9 @@ Policy_component.prototype._listen_editor = function () {
         
         //要注意到，如果type='private'，則是由伺服器端去設定只有該使用者才擁有readable的權限。而不是從這邊指名share_list為該使用者。
         var _share_list = _this.get_share_list();
-        if ($.isset(_share_list) && _policy_type == 'share')
-            _param.share_list = _share_list;
+        if ($.isset(_share_list) && _policy_type == 'share') {
+			_param.share_list = _share_list;
+		}
     });
 };
 
@@ -293,16 +296,18 @@ Policy_component.prototype.filter_policy_type_id = function (_policy_type) {
  * @param {Annotation_param} _annotation_param
  */
 Policy_component.prototype.set_data = function (_annotation_param) {
-    if ($.is_null(_annotation_param))
-        return this;
+    if ($.is_null(_annotation_param)) {
+		return this;
+	}
 
     var _policy_type = _annotation_param.policy_type;
     //$.test_msg('Policy.set_data()', [_policy_type, typeof(_policy_type)]);
     this.set_policy_type(_policy_type);
     
     var _share_list = _annotation_param.share_list;
-    if ($.isset(_share_list))
-        this.set_share_list(_share_list);
+    if ($.isset(_share_list)) {
+		this.set_share_list(_share_list);
+	}
     
     return this;
 };
@@ -314,8 +319,9 @@ Policy_component.prototype.open_window = function () {
     
     //$.test_msg('Policy_component.open_window()', this._policy_changable);
     
-    if (this._policy_changable == false)
-        return this;
+    if (this._policy_changable === false) {
+		return this;
+	}
     
     var _content = new Window_policy(this);
     

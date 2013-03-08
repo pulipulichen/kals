@@ -80,7 +80,7 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
         _name = _param.user.name;
         
         //避免名稱太長
-        if (_name == null)
+        if (_name === null)
         {
             _name = '';
         }
@@ -118,7 +118,7 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
         .appendTo(_data_ui);
     
     //$.test_msg('Editor_respond_to._$create_ui()', this._removable);
-    if (this._removable == true)
+    if (this._removable === true)
     {
         //刪除的部份
         var _delete_ui = $('<span></span>').html('x')
@@ -149,7 +149,7 @@ Editor_respond_to.prototype._respond_to_id_prefix = 'editor_respond_to_';
 
 Editor_respond_to.prototype.focus_respond_to_annotation = function (_id) {
     
-    if (_id == null) {
+    if (_id === null) {
 		return this;
 	}
 	else {

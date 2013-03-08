@@ -117,8 +117,9 @@ Note_editor_ckeditor._setup_ckeditor = function () {
 
 Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     
+	var _this;
     var _ui = this.get_ui('textarea:first');
-    var _this = this;
+    _this = this;
     
     /*
     var _config = {
@@ -155,7 +156,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     //{
         //var _had_setup_classname = 'setted';
         //this._had_setup = false;
-        var _this = this; 
+        _this = this; 
         
         var _afterckeditorsetup = function () {
             

@@ -126,12 +126,12 @@ Note_editor_manager.prototype._get_editor_list = function () {
     
     var _list = [];
     
-    for (var _i in this._type_mapping)
-    {
+    for (var _i in this._type_mapping){
         var _editor_name = this._type_mapping[_i];
         
-        if ($.inArray(_editor_name, _list) == -1)
-            _list.push(_editor_name);
+        if ($.inArray(_editor_name, _list) == -1) {
+			_list.push(_editor_name);
+		}
     }
     
     //$.test_msg('Note_editor._get_editor_list', _list);
@@ -220,10 +220,12 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     }
     
     //防止重複更換
-    if (_note_editor_name == this._active_editor_name)
-        return this;
-    else
-        this._active_editor_name = _note_editor_name;    
+    if (_note_editor_name == this._active_editor_name) {
+		return this;
+	}
+	else {
+		this._active_editor_name = _note_editor_name;
+	}   
     
     var _ui = this.get_ui();
     
@@ -232,13 +234,15 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     
     
     var _text = false;
-    if ($.isset(this._active_editor))
-        _text = this._active_editor.get_text();
+    if ($.isset(this._active_editor)) {
+		_text = this._active_editor.get_text();
+	}
     
     this._active_editor = this._note_editors[ _note_editor_name ];
     
-    if (_text != false)
-        this._active_editor.set_text(_text);
+    if (_text !== false) {
+		this._active_editor.set_text(_text);
+	}
     
     return this;
 };
@@ -299,8 +303,9 @@ Note_editor_manager.prototype.reset = function () {
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor))
-        this._active_editor.reset();
+    if ($.isset(this._active_editor)) {
+		this._active_editor.reset();
+	}
     
     //$.test_msg('Note_editor_managr.reset()');
     //this.set_text('');
