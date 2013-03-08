@@ -60,9 +60,10 @@ My_custom_annotation_loader.prototype.load_annotation = function (_data, _callba
         
         //$.test_msg('My_custom_annotation_loader.load_annotation() for', [_type_id, typeof(_scope_coll_json), _scope_coll_json.length]);
         
-        if (_scope_coll_json == null
-            || _scope_coll_json.length == 0)
-            continue;
+        if (_scope_coll_json === null ||
+		_scope_coll_json.length === 0) {
+			continue;
+		}
         
         var _scope_coll = new Scope_collection_param(_scope_coll_json);
         this._selection.set_scope_coll(_type_id, _scope_coll, _is_initialize);
@@ -98,8 +99,9 @@ My_custom_annotation_loader.prototype.initialize = function () {
             
             if ($.isset(_my) && _is_login)
             {
-                if (_this.is_loaded())
-                    return;
+                if (_this.is_loaded()) {
+					return;
+				}
                 _this.setup_loader(_my, function () {
                     _this.stop_loader();
                 });
@@ -113,7 +115,7 @@ My_custom_annotation_loader.prototype.initialize = function () {
 };
 
 My_custom_annotation_loader.prototype._$exception_handle = function (_data) {
-    if (this.is_initialized() == false)
+    if (this.is_initialized() === false)
     {
         var _this = this;
         setTimeout(function () {

@@ -56,9 +56,10 @@ My_basic_annotation_loader.prototype.load_annotation = function (_data, _callbac
         var _type_id = _i;
         var _scope_coll_json = _basic_scope[_i];
         
-        if (_scope_coll_json == null
-            || _scope_coll_json.length == 0)
-            continue;
+        if (_scope_coll_json === null ||
+		_scope_coll_json.length === 0) {
+			continue;
+		}
         
         //$.test_msg('My_annotation_loader.load_annotation()', $.is_array(_scope_coll_json[0]));
         
@@ -105,8 +106,9 @@ My_basic_annotation_loader.prototype.initialize = function () {
             
             if ($.isset(_my_basic) && _is_login)
             {
-                if (_this.is_loaded())
-                    return;
+                if (_this.is_loaded()) {
+					return;
+				}
                     
                 //_this.setup_loader(_my_basic);
                 
@@ -131,7 +133,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
 
 My_basic_annotation_loader.prototype._$exception_handle = function (_data) {
     
-    if (this.is_initialized() == false)
+    if (this.is_initialized() === false)
     {
         //$.test_msg('My_annotation_loader._$exception_handle()');
         
