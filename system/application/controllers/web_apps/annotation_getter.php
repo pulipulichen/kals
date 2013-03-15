@@ -5,7 +5,6 @@ include_once 'web_apps_controller.php';
  *
  * annotation_getter full description.
  *
- * @version 20130222 黃柏翰
  * @package		KALS
  * @category		Controllers
  * @author		Pudding Chen <puddingchen.35@gmail.com>

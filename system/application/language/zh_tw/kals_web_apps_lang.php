@@ -93,7 +93,7 @@ $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
 $lang['web_apps.toolbar.search.search_result'] = '搜尋結果: ';
 
 $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
-$lang['web_apps.toolbar.navigation_list.help'] = '說明';
+$lang['web_apps.toolbar.navigation_list.help'] = '';
 
 $lang['web_apps.window.content.email'] = '電子信箱位址';
 $lang['web_apps.window.content.name'] = '名字';
@@ -104,6 +104,11 @@ $lang['web_apps.window.content.sex'] = '性別';
 $lang['web_apps.window.content.sex.0'] = '不表示性別';
 $lang['web_apps.window.content.sex.1'] = '男';
 $lang['web_apps.window.content.sex.2'] = '女';
+$lang['web_apps.window.content.top.0'] = '第一名';
+$lang['web_apps.window.content.top.1'] = '第二名';
+$lang['web_apps.window.content.top.2'] = '第三名';
+$lang['web_apps.window.content.top.3'] = '第四名';
+$lang['web_apps.window.content.top.4'] = '第五名';
 $lang['web_apps.window.content.password'] = '密碼';
 $lang['web_apps.window.content.error_no_email'] = '請輸入電子信箱位址。';
 $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
@@ -186,8 +191,8 @@ $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
 
 $lang['web_apps.annotation.type.importance'] = '重要';
 $lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
-$lang['web_apps.annotation.type.concept'] = '概念';
-$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您用自己的話來歸納文章中的概念。例如註明原因、影響、特色等等。';
+$lang['web_apps.annotation.type.concept'] = '提問';
+$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您可以提問的標註。';
 $lang['web_apps.annotation.type.confusion'] = '困惑';
 $lang['web_apps.annotation.type.confusion.hint'] = '標示您對文章內文產生困惑的地方。';
 $lang['web_apps.annotation.type.question'] = '質疑';

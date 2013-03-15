@@ -1,0 +1,316 @@
+#!/bin/sh
+
+#################################################################################
+#
+#   Lynis
+# ------------------
+#
+# Copyright 2007-2009, Michael Boelen (michael@rootkit.nl), The Netherlands
+# Web site: http://www.rootkit.nl
+#
+# Lynis comes with ABSOLUTELY NO WARRANTY. This is free software, and you are
+# welcome to redistribute it under the terms of the GNU General Public License.
+# See LICENSE file for usage of this software.
+#
+#################################################################################
+#
+# Kernel
+#
+#################################################################################
+#
+    InsertSection "Kernel"
+#
+#################################################################################
+#
+    CORE_DUMPS_DISABLED=0
+#
+#################################################################################
+#
+    # Test        : KRNL-5622
+    # Description : Check default run level on Linux machines
+    Register --test-no KRNL-5622 --os Linux --weight L --network NO --description "Determine Linux default run level"
+    if [ ${SKIPTEST} -eq 0 ]; then
+	logtext "Test: Checking /etc/inittab"
+        if [ -f /etc/inittab ]; then
+            logtext "Result: file /etc/inittab found"
+    	    logtext "Test: Checking default Linux run level..."
+	    FIND=`awk -F: '/^id/ { print $2; }' /etc/inittab | head -n 1`
+            if [ "${FIND}" = "" ]; then
+                Display --indent 2 --text "- Checking default run level" --result UNKNOWN --color YELLOW
+                logtext "Result: Can't determine default run level from /etc/inittab"
+              else
+                Display --indent 2 --text "- Checking default run level..." --result "${FIND}" --color GREEN
+                logtext "Found default run level '${FIND}'"
+    	        report "linux_default_runlevel=${FIND}"
+            fi
+          else
+            logtext "Result: file /etc/inittab not found"
+            if [ "${LINUX_VERSION}" = "Debian" -o "${LINUX_VERSION}" = "Ubuntu" ]; then
+        	logtext "Test: Checking run level with who -r, for Debian based systems"
+                FIND=`who -r | awk '{ if ($1=="run-level") { print $2 } }'`
+                if [ ! "${FIND}" = "" ]; then
+                    logtext "Result: Found default run level '${FIND}'"
+    	            report "linux_default_runlevel=${FIND}"
+    	            Display --indent 2 --text "- Checking default run level..." --result "RUNLEVEL ${FIND}" --color GREEN
+    	          else
+    	            logtext "Result: Can't determine default run level from who -r"
+    	            Display --indent 2 --text "- Checking default run level..." --result UNKNOWN --color YELLOW
+    	        fi
+    	    fi
+	fi
+    fi 
+#
+#################################################################################
+#
+    # Test        : KRNL-5677
+    # Description : Check CPU options and support (PAE, No eXecute, eXecute Disable)
+    # More info   : pae and nx bit are both visible on AMD and Intel CPU's if supported
+    Register --test-no KRNL-5677 --os Linux --weight L --network NO --description "Check CPU options and support"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        Display --indent 2 --text "- Checking CPU support (NX/PAE)"
+	logtext "Test: Checking /proc/cpuinfo..."
+        if [ -f /proc/cpuinfo ]; then
+	    logtext "Result: found /proc/cpuinfo"
+	    logtext "Test: Checking CPU options (XD/NX/PAE)..."
+	    FIND=`cat /proc/cpuinfo | grep " pae " | grep " nx "`
+	    if [ "${FIND}" = "" ]; then
+	        Display --indent 6 --text "CPU does not seem to support PAE or No eXecute" --result NO --color YELLOW
+		logtext "Result: PAE or No eXecute option(s) not found"
+	      else
+	        Display --indent 6 --text "CPU supports PAE and NoeXecute" --result YES --color GREEN
+		logtext "Result: PAE and NoExecute found."
+		#ReportSuggestion ${TEST_NO} "Make sure a PAE enabled kernel is used when possible to gain native No eXecute/eXecute Disable support, as this CPU supports these options. This helps against buffer overflow attacks."
+	    fi
+	  else
+	    Display --indent 4 --text "No CPU information found" --result UNKNOWN --color YELLOW
+	    logtext "Result: /proc/cpuinfo not found"
+        fi
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5680
+    # Description : Check if installed kernel has PAE support
+    # Dependency  : KRNL-5677
+    # More info   : RedHat/CentOS/Fedora uses the package name 'kernel-PAE'
+#
+#################################################################################
+#
+    # Test        : KRNL-5695
+    # Description : Determining Linux kernel version and release number
+    Register --test-no KRNL-5695 --os Linux --weight L --network NO --description "Determine Linux kernel version and release number"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        # Kernel number (and suffix)
+        LINUX_KERNEL_RELEASE=`uname -r`
+	report "linux_kernel_release=${LINUX_KERNEL_RELEASE}"
+	logtext "Result: found kernel release ${LINUX_KERNEL_RELEASE}"	
+	# Type and build date
+	LINUX_KERNEL_VERSION=`uname -v`
+	report "linux_kernel_version=${LINUX_KERNEL_VERSION}"
+	logtext "Result: found kernel version ${LINUX_KERNEL_VERSION}"
+	Display --indent 2 --text "- Checking kernel version" --result DONE --color GREEN
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5723
+    # Description : Check if Linux is build as a monolithic kernel or not
+    Register --test-no KRNL-5723 --os Linux --weight L --network NO --description "Determining if Linux kernel is monolithic"
+    if [ ${SKIPTEST} -eq 0 ]; then
+	logtext "Test: checking if kernel is monolithic or modular"
+        # Checking if any modules are loaded
+        FIND=`lsmod | grep -v "^Module" | wc -l | tr -s ' ' | tr -d ' '`
+        Display --indent 2 --text "- Checking kernel type" --result DONE --color GREEN	
+	if [ "${FIND}" = "0" ]; then
+	    logtext "Result: Found monolithic kernel"
+	    report "linux_kernel_type=monolithic"
+	    MONOLITHIC_KERNEL=1
+	  else
+	    logtext "Result: Found modular kernel"
+	    report "linux_kernel_type=modular"
+	    MONOLITHIC_KERNEL=0
+	fi
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5726
+    # Description : Checking Linux loaded kernel modules
+    Register --test-no KRNL-5726 --os Linux --weight L --network NO --description "Checking Linux loaded kernel modules"
+    if [ ${SKIPTEST} -eq 0 ]; then
+	FIND=`lsmod | awk '{ if ($1!="Module") print $1 }' | sort`
+        Display --indent 2 --text "- Checking loaded kernel modules" --result DONE --color GREEN
+	if [ ! "${FIND}" = "" ]; then
+	    logtext "Loaded modules according lsmod:"
+	    N=0
+	    for I in ${FIND}; do
+		    logtext "Loaded module: ${I}"
+		    report "loaded_kernel_module[]=${I}"
+		    N=`expr ${N} + 1`
+	    done
+	    Display --indent 6 --text "Found ${N} active modules"
+	  else
+	    logtext "Result: no loaded modules found"
+	    logtext "Notice: No loaded kernel modules could indicate a broken/malformed lsmod, or a (custom) monolithic kernel"
+	fi	
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5728
+    # Description : Checking for available Linux kernel configuration file in /boot
+    Register --test-no KRNL-5728 --os Linux --weight L --network NO --description "Checking Linux kernel config"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        LINUXCONFIGFILE="/boot/config-`uname -r`"
+	if [ -f ${LINUXCONFIGFILE} ]; then
+	    logtext "Result: found config (${LINUXCONFIGFILE})"
+	    Display --indent 2 --text "- Checking Linux kernel configuration file..." --result FOUND --color GREEN
+	  else
+	    logtext "Result: no Linux kernel configuration file found in /boot"
+	    Display --indent 2 --text "- Checking Linux kernel configuration file..." --result "NOT FOUND" --color WHITE
+	fi
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5745
+    # Description : Checking FreeBSD loaded kernel modules
+    Register --test-no KRNL-5745 --os FreeBSD --weight L --network NO --description "Checking FreeBSD loaded kernel modules"
+    if [ ${SKIPTEST} -eq 0 ]; then
+
+        Display --indent 2 --text "- Checking active kernel modules..."
+        logtext "Test: ${KERNEL_ACTIVE_MODULES_TITLE}"
+        logtext "Description: ${KERNEL_ACTIVE_MODULES_DESCRIPTION}"
+        logtext "Action: Checking modules"
+        if [ -f /sbin/kldstat ]; then
+            FIND=`kldstat | grep -v 'Name' | tr -s ' ' | cut -d ' ' -f6`
+            if [ $? -eq 0 ]; then
+	        logtext "Loaded modules according kldstat:"
+		N=0
+	        for I in ${FIND}; do
+		    logtext "Loaded module: ${I}"
+		    report "loaded_kernel_module[]=${I}"
+		    N=`expr ${N} + 1`
+		done
+		Display --indent 4 --text "Found ${N} kernel modules" --result DONE --color GREEN
+    	      else
+		Display --indent 4 --text "Test failed" --result WARNING --color RED
+	        logtext "Result: Problem with executing kldstat"
+	    fi
+          else
+    	    echo "[ ${WHITE}SKIPPED${NORMAL} ]"
+	    logtext "Result: no results, can't find /sbin/kldstat"
+        fi
+    fi
+
+#
+#################################################################################
+#
+    # Test        : KRNL-5770
+    # Description : Checking Solaris load modules
+    Register --test-no KRNL-5770 --os Solaris --weight L --network NO --description "Checking active kernel modules"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        logtext "Test: searching loaded kernel modules"
+	FIND=`modinfo -c -w | grep -v "UNLOADED" | grep LOADED | awk '{ print $3 }' | sort`
+	if [ ! "${FIND}" = "" ]; then
+	    for I in ${FIND}; do
+	        logtext "Found module: ${I}"
+	        report "loaded_kernel_module[]=${I}"
+	    done
+	    Display --indent 2 --text "- Checking Solaris active kernel modules" --result DONE --color GREEN
+          else
+	    logtext "Result: no output"
+	    Display --indent 2 --text "- Checking Solaris active kernel modules" --result UNKNOWN --color YELLOW
+	fi
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5788
+    # Description : Checking availability new kernel
+    if [ "${LINUX_VERSION}" = "Debian" -o "${LINUX_VERSION}" = "Ubuntu" ]; then PREQS_MET="YES"; else PREQS_MET="NO"; fi
+    Register --test-no KRNL-5788 --os Linux --preqs-met ${PREQS_MET} --weight L --network NO --description "Checking availability new kernel"
+    if [ ${SKIPTEST} -eq 0 ]; then
+        logtext "Test: Searching apt-cache, to determine if a newer kernel is available"
+	if [ -x /usr/bin/apt-cache ]; then
+	    logtext "Result: found /usr/bin/apt-cache"
+            # Test for presence /usr/bin/apt-cache and dpkg
+            logtext "Test: Using apt-cache to determine if there is an update available"
+            FINDKERNFILE=`readlink -f /vmlinuz`
+            FINDKERNEL=`dpkg -S ${FINDKERNFILE} | awk -F : '{print $1}'`
+            FINDINST=`apt-cache policy ${FINDKERNEL} | egrep 'Installed' | cut -d ':' -f2 | tr -d ' '`
+            FINDCAND=`apt-cache policy ${FINDKERNEL} | egrep 'Candidate' | cut -d ':' -f2 | tr -d ' '`
+            logtext "Kernel installed: ${FINDINST}"
+            logtext "Kernel candidate: ${FINDCAND}"
+            if [ "${FINDINST}" = "${FINDCAND}" ]; then
+                Display --indent 2 --text "- Checking for available kernel update... " --result OK --color GREEN
+        	logtext "Result: no kernel update available"
+              else
+                Display --indent 2 --text "- Checking for available kernel update... " --result "UPDATE AVAILABLE" --color YELLOW
+        	logtext "Result: kernel update available according 'apt-cache policy'."
+            fi
+	  else
+	    logtext "Result: could NOT find /usr/bin/apt-cache, skipped other tests."
+	fi
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5820
+    # Description : Checking core dumps configuration (Linux)
+    Register --test-no KRNL-5820 --os Linux --weight L --network NO --description "Checking core dumps configuration"
+    if [ ${SKIPTEST} -eq 0 ]; then
+	logtext "Test: Checking presence /etc/security/limits.conf"
+	if [ -f /etc/security/limits.conf ]; then
+	    logtext "Result: file /etc/security/limits.conf exists" 
+	    logtext "Test: Checking if core dumps are disabled in /etc/limits.conf"
+	    FIND1=`cat /etc/security/limits.conf | awk '{ if ($1=="*" && $2=="soft" && $3=="core" && $4=="0") { print "soft core disabled" } else { print "soft core enabled" } }'`
+	    FIND2=`cat /etc/security/limits.conf | awk '{ if ($1=="*" && $2=="hard" && $3=="core" && $4=="0") { print "hard core disabled" } else { print "hard core enabled" } }'`
+	    if [ "${FIND1}" = "soft core disabled" -a "${FIND2}" = "hard core disabled" ]; then
+	        logtext "Result: core dumps (soft and hard) are both disabled"
+	        Display --indent 2 --text "- Checking core dumps configuration... " --result DISABLED --color GREEN	    
+		CORE_DUMPS_DISABLED=1
+		AddHP 3 3
+	      else
+	        logtext "Result: core dumps (soft or hard) are enabled"
+	        Display --indent 2 --text "- Checking core dumps configuration... " --result ENABLED --color YELLOW
+		#YYY suggestion
+		AddHP 1 2
+	    fi
+	    
+	    # Sysctl option
+	    logtext "Test: Checking sysctl value of fs.suid_dumpable"
+	    FIND=`sysctl fs.suid_dumpable | awk '{ if ($1=="fs.suid_dumplable") { print $3 } }'`
+	    logtext "Result: value ${FIND} found"
+	    if [ "${FIND}" = "1" ]; then
+	        logtext "Result: setuid programs can perform core dumps"
+	        Display --indent 2 --text "- Checking setuid core dumps configuration... " --result ENABLED --color YELLOW
+		#YYY suggestion
+		AddHP 1 1
+	      else
+	        logtext "Result: setuid programs can't perform core dumps"
+	        Display --indent 4 --text "- Checking setuid core dumps configuration... " --result DISABLED --color GREEN	    
+		AddHP 0 1
+	    fi
+            # Check ulimit settings and harden it
+            # echo 'ulimit -S -c 0 > /dev/null 2>&1' >> /etc/profile
+	  else
+	    logtext "Result: file /etc/security/limits.conf does not exist, skipping test" 
+	fi
+    fi
+#
+#################################################################################
+#
+    # Test        : KRNL-5826
+    # Description : Checking core dumps configuration (Solaris)
+    #Register --test-no KRNL-5826 --os Linux --weight L --network NO --description "Checking core dumps configuration"
+    #if [ ${SKIPTEST} -eq 0 ]; then
+#
+#################################################################################
+#
+
+wait_for_keypress
+
+#
+#================================================================================
+# Lynis - Copyright 2007-2009, Michael Boelen - www.rootkit.nl - The Netherlands

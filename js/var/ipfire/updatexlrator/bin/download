@@ -1,0 +1,207 @@
+#!/usr/bin/perl
+#
+# This code is distributed under the terms of the GPL
+#
+# (c) 2006-2008 marco.s - http://update-accelerator.advproxy.net
+#
+# Portions (c) 2008 by dotzball - http://www.blockouttraffic.de
+#
+# $Id: download,v 2.1 2008/07/23 00:00:00 marco.s Exp $
+#
+
+use strict;
+use HTTP::Date;
+
+require '/var/ipfire/updatexlrator/updxlrator-lib.pl';
+
+my $logfile="/var/log/updatexlrator/download.log";
+my $logging=0;
+my $repository='/var/updatecache';
+my $login='';
+my $dlrate='';
+my $uuid='';
+my %xlratorsettings=();
+my %proxysettings=();
+my @http_header=();
+my $remote_size=0;
+my $remote_mtime=0;
+my $updatefile='';
+my $unique=0;
+my $mirror=1;
+
+my %dlinfo=();
+my $wgetContinueFlag="";
+
+my $vendorid  = $ARGV[0]; if (!defined($vendorid)  || $vendorid  eq '') { exit; }
+my $sourceurl = $ARGV[1]; if (!defined($sourceurl) || $sourceurl eq '') { exit; }
+my $cfmirror  = $ARGV[2]; if (!defined($cfmirror)  || $cfmirror eq '') { exit; }
+my $restartdl = defined($ARGV[3]) ? $ARGV[3] : 0;
+
+umask(0002);
+
+$sourceurl =~ s@\%2b@+@ig;
+$sourceurl =~ s@\%2f@/@ig;
+$sourceurl =~ s@\%7e@~@ig;
+$updatefile = substr($sourceurl,rindex($sourceurl,"/")+1);
+$updatefile =~ s@\%20@ @ig;
+$vendorid =~ tr/A-Z/a-z/;
+
+unless (-d "$repository/download/$vendorid")
+{
+	system("mkdir -p $repository/download/$vendorid");
+	system("chmod 775 $repository/download/$vendorid");
+}
+
+if($restartdl == 0)
+{
+	# this is a new download
+	exit if (-e "$repository/download/$vendorid/$updatefile");
+
+	# dotzball: Why is this necessary?
+	system("touch $repository/download/$vendorid/$updatefile");
+	$wgetContinueFlag = "-nc";
+
+}
+else
+{
+	# this is a restart of a previous (unfinished) download
+	# -> continue download
+	$wgetContinueFlag = "-c";
+	&writelog("Continue download: $updatefile");
+}
+
+
+if ($cfmirror)
+{
+	$uuid = `echo $updatefile | md5sum`;
+} else {
+	$uuid = `echo $sourceurl  | md5sum`;
+}
+
+$uuid =~ s/[^0-9a-f]//g;
+$uuid =~ s/([a-f\d]{8})([a-f\d]{4})([a-f\d]{4})([a-f\d]{4})([a-f\d]{12})/$1-$2-$3-$4-$5/;
+
+if (-e "$UPDXLT::swroot/updatexlrator/settings")
+{
+	&UPDXLT::readhash("$UPDXLT::swroot/updatexlrator/settings", \%xlratorsettings);
+	if ($xlratorsettings{'MAX_DOWNLOAD_RATE'} ne '') { $dlrate = "--limit-rate=" . int($xlratorsettings{'MAX_DOWNLOAD_RATE'} / 8) . "k" };
+}
+
+if (-e "$UPDXLT::swroot/proxy/settings") { &UPDXLT::readhash("$UPDXLT::swroot/proxy/settings", \%proxysettings); }
+
+if (-e "$UPDXLT::swroot/proxy/advanced/settings")
+{
+	%proxysettings=();
+	&UPDXLT::readhash("$UPDXLT::swroot/proxy/advanced/settings", \%proxysettings);
+}
+
+if (($proxysettings{'UPSTREAM_PROXY'}) && ($proxysettings{'UPSTREAM_USER'}))
+{
+	$login = "--proxy-user=\"$proxysettings{'UPSTREAM_USER'}\"";
+	if ($proxysettings{'UPSTREAM_PASSWORD'})
+	{
+		$login .= " --proxy-password=\"$proxysettings{'UPSTREAM_PASSWORD'}\"";
+	}
+}
+
+if ($xlratorsettings{'MAX_DOWNLOAD_RATE'} eq '')
+{
+	&writelog("Retrieving file for local cache: $updatefile");
+} else {
+	&writelog("Retrieving file for local cache at max. " . $xlratorsettings{'MAX_DOWNLOAD_RATE'} . " kBit/s: $updatefile");
+}
+
+$ENV{'http_proxy'} = $proxysettings{'UPSTREAM_PROXY'};
+@http_header = `$UPDXLT::wget $login --user-agent="$UPDXLT::useragent" --spider -S $sourceurl 2>&1`;
+$ENV{'http_proxy'} = '';
+
+foreach (@http_header)
+{
+	chomp;
+	if (/^\s*Content-Length:\s/) { s/[^0-9]//g; $remote_size=$_; &writelog("Remote file size: $_ bytes"); }
+	if (/^\s*Last-Modified:\s/)
+	{
+		s/^\s*Last-Modified:\s//;
+		$remote_mtime = HTTP::Date::str2time($_);
+		&writelog("Remote file date: $_");
+	}
+}
+
+$ENV{'http_proxy'} = $proxysettings{'UPSTREAM_PROXY'};
+
+unless($restartdl)
+{
+	# this is a new download
+	# -> download from scratch
+	unlink "$repository/download/$vendorid/$updatefile";
+	unlink "$repository/download/$vendorid/$updatefile.info";
+}
+
+# save file informations while downloading
+$dlinfo{'VENDORID'} = $vendorid;
+$dlinfo{'SRCURL'} = $sourceurl;
+$dlinfo{'FILENAME'} = $updatefile;
+$dlinfo{'CFMIRROR'} = $cfmirror;
+$dlinfo{'REMOTETIME'} = $remote_mtime;
+$dlinfo{'REMOTESIZE'} = $remote_size;
+$dlinfo{'STATUS'} = "1";
+&UPDXLT::writehash("$repository/download/$vendorid/$updatefile.info", \%dlinfo);
+
+my $cmd = "$UPDXLT::wget $login $dlrate --user-agent=\"$UPDXLT::useragent\" -q -P $repository/download/$vendorid $wgetContinueFlag $sourceurl";
+
+$_ = system("$cmd");
+$ENV{'http_proxy'} = '';
+
+if ($_ == 0)
+{
+	&writelog("Download finished with result code: OK");
+
+	unless (-d "$repository/$vendorid")
+	{
+		system("mkdir -p $repository/$vendorid");
+		system("chmod 775 $repository/$vendorid");
+	}
+
+	unless (-d "$repository/$vendorid/$uuid")
+	{
+		system("mkdir -p $repository/$vendorid/$uuid");
+		system("chmod 775 $repository/$vendorid/$uuid");
+	}
+
+	&writelog("Moving file to the cache directory: $vendorid/$uuid");
+	$updatefile =~ s@ @\\ @ig;
+	system("mv $repository/download/$vendorid/$updatefile $repository/$vendorid/$uuid");
+	# Workaround for IPCop's mv bug:
+	utime time,$remote_mtime,"$repository/$vendorid/$uuid/$updatefile";
+	$updatefile =~ s@\\ @ @ig;
+
+	&UPDXLT::setcachestatus("$repository/$vendorid/$uuid/source.url",$sourceurl);
+	&UPDXLT::setcachestatus("$repository/$vendorid/$uuid/status",$UPDXLT::sfOk);
+	&UPDXLT::setcachestatus("$repository/$vendorid/$uuid/checkup.log",time);
+	&UPDXLT::setcachestatus("$repository/$vendorid/$uuid/access.log",time);
+
+	system("/usr/local/bin/updxsetperms");
+	system("chmod 775 $repository/$vendorid/$uuid/*");
+
+	unlink ("$repository/download/$vendorid/$updatefile.info");
+
+} else {
+	&writelog("Download finished with result code: ERROR");
+	if (-e "$repository/download/$vendorid/$updatefile") { unlink ("$repository/download/$vendorid/$updatefile"); }
+}
+
+
+# -------------------------------------------------------------------
+
+sub writelog
+{
+	if ($logging)
+	{
+        	open (LOGFILE,">>$logfile");
+	        my @now = localtime(time);
+        	printf LOGFILE "%04d-%02d-%02d %02d:%02d:%02d [%d] %s\n",$now[5]+1900,$now[4]+1,$now[3],$now[2],$now[1],$now[0],$$,$_[0];
+	        close LOGFILE;
+	}
+}
+
+# -------------------------------------------------------------------

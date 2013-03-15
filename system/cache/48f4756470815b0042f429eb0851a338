@@ -1,0 +1,19 @@
+1341377625TS--->text/javascript-->#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x012c6b33, pid=744, tid=2872384400
+#
+# JRE version: 7.0_01-b08
+# Java VM: Java HotSpot(TM) Client VM (21.1-b02 mixed mode linux-x86 )
+# Problematic frame:
+# [thread -1217049712 also had an error]
+V  [libjvm.so+0x34db33]  method_compare+0x13
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# An error report file with more information is saved as:
+# /tmp/hs_err_pid744.log
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#

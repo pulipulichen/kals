@@ -1,0 +1,16 @@
+    $subipfire->{'10.pakfire'} = {'caption' => 'Pakfire',
+				  'uri' => '/cgi-bin/pakfire.cgi',
+				  'title' => "Pakfire",
+				  'enabled' => 1,
+				  };
+    $subipfire->{'99.help'} = {'caption' => $Lang::tr{'help'},
+				  'uri' => '/cgi-bin/help.cgi',
+				  'title' => "$Lang::tr{'help'}",
+				  'enabled' => 1,
+				  };
+    $subipfire->{'55.pound'} = {
+				'caption' => $Lang::tr{'pound'},
+				'uri' => '/pound-edit.php',
+				'title' => "$Lang::tr{'pound'}",
+				'enabled' => 1,
+				};

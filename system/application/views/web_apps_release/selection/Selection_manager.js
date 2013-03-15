@@ -27,6 +27,8 @@ function Selection_manager(_selector) {
     this.child('search', new Selection_search(_text));
     this.child('my_basic', new Selection_my_manager(_text));
     this.child('my_custom', new Selection_my_custom_manager(_text));
+    this.child('top_basic', new Selection_top_manager(_text));
+    this.child('top_custom', new Selection_top_custom_manager(_text));    
     
     this.child('recommend', new Selection_recommend(_text));
     this.child('navigation', new Selection_navigation_manager(_text));
@@ -75,10 +77,14 @@ Selection_manager.prototype.search = null;
  */
 Selection_manager.prototype.my_basic = null;
 
+Selection_manager.prototype.top_basic = null;
+
 /**
  * @type {Selection_my_custom_manager}
  */
 Selection_manager.prototype.my_custom = null;
+
+Selection_manager.prototype.top_custom = null;
 
 /**
  * @type {Selection_recommend}

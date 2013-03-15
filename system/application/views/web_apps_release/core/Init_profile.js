@@ -32,10 +32,12 @@ Init_profile.prototype._$onstart = function () {
     //KALS_text.load_my_basic.initialize();
     //KALS_text.load_my_custom.initialize();
     KALS_text.load_my.initialize();
+    //KALS_text.load_top.initialize();
     
     //KALS_context.init_profile.complete('my_annotation');
     
     KALS_text.load_navigation.initialize();
+    KALS_text.load_top.initialize();
     //KALS_context.init_profile.complete('navigation_annotation');
     
     KALS_context.init_profile.complete('my_style');
@@ -52,13 +54,9 @@ Init_profile.prototype._$onstart = function () {
         //$.test_msg('KALS_context.auth.check_login() callback');
         
         setTimeout(function () {
-			
             KALS_context.hash.check_hash(function () {
                 KALS_context.init_profile.complete('hash');
             });
-            
-			//@TODO 暫時先關掉
-			//KALS_context.init_profile.complete('hash');
         }, 500);
             
     });

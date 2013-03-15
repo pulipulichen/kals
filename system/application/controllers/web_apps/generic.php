@@ -149,6 +149,8 @@ class generic extends Web_apps_controller {
             'navigation/Embed_navigation',
             'navigation/Window_profile',
             'navigation/Window_profile_submit',
+            'navigation/Window_top',
+            'navigation/Window_top_submit',
             //'navigation/Window_style',
             //'navigation/Window_style_submit',
             'navigation/Window_logout',
@@ -204,6 +206,19 @@ class generic extends Web_apps_controller {
             'selection/Selection_my_custom_type',
             'selection/Selection_my_custom_manager',
             
+            'selection/Selection_top',
+            'selection/Selection_top_importance',
+            'selection/Selection_top_concept',
+            'selection/Selection_top_confusion',
+            'selection/Selection_top_question',
+            'selection/Selection_top_example',
+            'selection/Selection_top_summary',
+            'selection/Selection_top_custom',
+            'selection/Selection_top_manager',
+
+            'selection/Selection_top_custom_type',
+            'selection/Selection_top_custom_manager',
+        
             'selection/Selection_navigation',
             'selection/Selection_navigation_bad',
             'selection/Selection_navigation_normal',
@@ -269,6 +284,9 @@ class generic extends Web_apps_controller {
             'kals_text/My_annotation_loader',
             'kals_text/My_basic_annotation_loader',
             'kals_text/My_custom_annotation_loader',
+            'kals_text/Top_annotation_loader',
+            'kals_text/Top_basic_annotation_loader',
+            'kals_text/Top_custom_annotation_loader',        
             'kals_text/Navigation_loader',
 
             'kals_text/Init_text',

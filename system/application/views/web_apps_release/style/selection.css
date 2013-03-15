@@ -92,7 +92,7 @@
 */
 
 .kals-word.nav_bad {
-    color: #A64B00; 
+    /*color: #A64B00;*/ 
 }
 
 .kals-word.nav_normal {
@@ -101,18 +101,18 @@
 }
 
 .kals-word.nav_good {
-   /*color: #A60000;*/
-   color: #A64B00;
+   /*color: #A60000;
+   color: #A64B00;*/
 }
 
 .kals-word.nav_great {
-   /*color: #A62F00;*/
-   /*color: #F00;*/
-   color: #A64B00;
+   /*color: #A62F00;
+   color: #F00;
+   color: #A64B00;*/
 }
 
 /**
- * 被選擇的情況
+ * 被選?��??��?
  * @section Selection_select
  */
 .kals-paragraph .select {
@@ -236,13 +236,43 @@
     border-bottom-color: #7EFF7E;
 }
 
-/* 2010.11.21 測試用 */
+/* top文字 */
+
+.kals-word.top_importance {
+   background-color: #CCCC00;
+}
+
+.kals-word.top_question {
+    background-color: #FF8686;
+}
+
+.kals-word.top_confusion {
+    background-color: #C676C6;
+}
+
+.kals-word.top_summary {
+    background-color: #AA7676;
+}
+
+.kals-word.top_concept {
+    background-color: #8E8EFF;
+}
+
+.kals-word.top_example {
+    background-color: #7EFF7E;
+}
+
+.kals-word.top_custom {
+    background-color: #7EFF7E;
+}
+
+/* 2010.11.21 測試??*/
 /*
 .kals-word {
     color: red;
 }
 */
-/* 2010.11.22 測試用 */
+/* 2010.11.22 測試??*/
 /*
 .kals-word.location-head {
     background-color: #FF0000;

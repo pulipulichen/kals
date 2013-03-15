@@ -52,6 +52,14 @@ Context_policy.prototype.get_my_custom = function () {
     return this.get_attr('my_custom');
 };
 
+Context_policy.prototype.get_top_basic = function () {
+    return this.get_attr('top_basic');
+};
+
+Context_policy.prototype.get_top_custom = function () {
+    return this.get_attr('top_custom');
+};
+
 Context_policy.prototype.set_readable = function (_boolean) {
     return this.set_attr('read', _boolean);
 };

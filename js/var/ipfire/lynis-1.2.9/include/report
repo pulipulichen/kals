@@ -1,0 +1,163 @@
+#!/bin/sh
+
+#################################################################################
+#
+#   Lynis
+# ------------------
+#
+# Copyright 2007-2009, Michael Boelen (michael@rootkit.nl), The Netherlands
+# Web site: http://www.rootkit.nl
+#
+# Lynis comes with ABSOLUTELY NO WARRANTY. This is free software, and you are
+# welcome to redistribute it under the terms of the GNU General Public License.
+# See LICENSE file for usage of this software.
+#
+#################################################################################
+#
+# Report
+#
+#################################################################################
+#
+
+    logtextbreak
+    #if [ ${QUIET} -eq 0 ]; then
+#        echo ""
+#        echo "  ---------------------------------------------------"
+#        echo "  Program version:           ${PROGRAM_version}"
+#        echo "  Operating system:          ${OS_NAME}"
+#        echo "  Operating system version:  ${OS_VERSION}" 
+#        if [ ! "${OS_MODE}" = "" ]; then echo "  Operating system mode:     ${OS_MODE}"; fi
+#        echo "  Kernel version:            ${OS_KERNELVERSION}"
+#        echo "  Hardware platform:         ${HARDWARE}"
+#        echo "  Hostname:                  ${HOSTNAME}"
+#        echo "  Auditor:                   ${AUDITORNAME}"
+#        echo "  Profile:                   ${PROFILE}"
+#        echo "  Log file:                  ${LOGFILE}"
+#        echo "  Report file:               ${REPORTFILE}"
+#        echo "  Report version:            ${REPORT_version}"
+#        echo "  ---------------------------------------------------"
+#    fi
+
+#
+#################################################################################
+#
+# Hardening Index
+# Define approximately how strong a machine has been hardened
+#
+#################################################################################
+#
+	# If no hardening has been found, set value to 1
+	if [ ${HPPOINTS} -eq 0 ]; then HPPOINTS=1; HPTOTAL=1; fi
+	HPINDEX=`expr $HPPOINTS \* 100 / $HPTOTAL`
+	HPAOBLOCKS=`expr $HPPOINTS \* 20 / $HPTOTAL`
+	# Set color related to rating
+	if [ ${HPINDEX} -lt 50 ]; then
+	    HPCOLOR="${RED}"
+	    HIDESCRIPTION="System has not or a low amount been hardened"
+	fi
+	if [ ${HPINDEX} -gt 49 -a ${HPINDEX} -lt 80 ]; then
+	    HPCOLOR="${YELLOW}"
+	    HIDESCRIPTION="System has been hardened, but could use additional hardening"
+	fi
+	if [ ${HPINDEX} -gt 79 -a ${HPINDEX} -lt 90 ]; then
+	    HPCOLOR="${GREEN}"
+	    HIDESCRIPTION="System seem to be decent hardened"
+	fi
+	if [ ${HPINDEX} -gt 89 ]; then
+	    HPCOLOR="${GREEN}"
+	    HIDESCRIPTION="System seem to be well hardened"
+	fi
+
+        case ${HPAOBLOCKS} in
+	    0)  HPBLOCKS=""; HPEMPTY="                    " ;;
+	    1)  HPBLOCKS="#"; HPEMPTY="                   " ;;
+	    2)  HPBLOCKS="##"; HPEMPTY="                  " ;;
+	    3)  HPBLOCKS="###"; HPEMPTY="                 " ;;
+	    4)  HPBLOCKS="####"; HPEMPTY="                " ;;
+	    5)  HPBLOCKS="#####"; HPEMPTY="               " ;;
+	    6)  HPBLOCKS="######"; HPEMPTY="              " ;;
+	    7)  HPBLOCKS="#######"; HPEMPTY="             " ;;
+	    8)  HPBLOCKS="########"; HPEMPTY="            " ;;
+	    9)  HPBLOCKS="#########"; HPEMPTY="           " ;;
+	    10) HPBLOCKS="##########"; HPEMPTY="          " ;;
+	    11) HPBLOCKS="###########"; HPEMPTY="         " ;;
+	    12) HPBLOCKS="############"; HPEMPTY="        " ;;
+	    13) HPBLOCKS="#############"; HPEMPTY="       " ;;
+	    14) HPBLOCKS="##############"; HPEMPTY="      " ;;
+	    15) HPBLOCKS="###############"; HPEMPTY="     " ;;
+	    16) HPBLOCKS="################"; HPEMPTY="    " ;;
+	    17) HPBLOCKS="#################"; HPEMPTY="   " ;;
+	    18) HPBLOCKS="##################"; HPEMPTY="  " ;;
+	    19) HPBLOCKS="###################"; HPEMPTY=" " ;;
+	    20) HPBLOCKS="####################"; HPEMPTY="" ;;	    
+	esac	    
+
+	HPGRAPH="[${HPCOLOR}${HPBLOCKS}${NORMAL}${HPEMPTY}]"
+		
+	logtext "Hardening index : [${HPINDEX}] [${HPBLOCKS}${HPEMPTY}]"
+	logtext "Hardening strength: ${HIDESCRIPTION}"
+
+#
+#################################################################################
+#
+# Show test results overview
+#
+#################################################################################
+#
+    # Only show overview if not running in quiet mode
+    if [ ${QUIET} -eq 0 ]; then
+        echo ""; echo "================================================================================"
+        echo ""; echo "  -[ ${WHITE}${PROGRAM_name} ${PROGRAM_version} Results${NORMAL} ]-"
+        echo ""; echo "  ${SECTION}Tests performed${NORMAL}: ${CTESTS_PERFORMED}"
+    
+        # Show warnings from logfile
+        SWARNINGS=`cat ${LOGFILE} | grep -i 'warning:' | sed 's/ /!space!/g'`
+
+        if [ "${SWARNINGS}" = "" ]; then
+	    echo ""; echo "  ${OK}All tests OK${NORMAL}"; echo ""
+          else
+            echo "  ${WARNING}Warnings${NORMAL}:"
+            echo "  ----------------------------"
+            for WARNING in ${SWARNINGS}; do
+                SHOWWARNING=`echo ${WARNING} | sed 's/!space!/ /g'`
+                echo "   - ${SHOWWARNING}"
+            done
+        fi
+
+        # Show suggestions from logfile
+        SSUGGESTIONS=`grep -i 'suggestion:' ${LOGFILE} | sed 's/ /!space!/g'`
+
+        if [ ! "${SSUGGESTIONS}" = "" ]; then
+	    echo ""
+            echo "  ${YELLOW}Suggestions${NORMAL}:"
+            echo "  ----------------------------"
+            for SUGGESTION in ${SSUGGESTIONS}; do
+                SHOWSUGGESTION=`echo ${SUGGESTION} | sed 's/!space!/ /g'`
+                echo "   - ${SHOWSUGGESTION}"
+            done
+        fi
+
+
+        echo "================================================================================"
+        echo "  ${SECTION}Files${NORMAL}:"
+        echo "  - Test and debug information      : ${WHITE}${LOGFILE}${NORMAL}"
+        echo "  - Report data                     : ${WHITE}${REPORTFILE}${NORMAL}"
+        echo "================================================================================"
+        if [ $PROGRAM_LV -gt $PROGRAM_AC ]; then
+            echo "  ${NOTICE}Notice: ${WHITE}${PROGRAM_name} update available${NORMAL}"
+            echo "  Current version : ${WHITE}${PROGRAM_AC}${NORMAL}    Latest version : ${WHITE}${PROGRAM_LV}${NORMAL}"
+            echo "================================================================================"
+        fi
+
+	echo "  Hardening index : [${HPINDEX}]     ${HPGRAPH}"
+        echo "================================================================================"
+        echo "  ${PROGRAM_name} ${PROGRAM_version}"
+        echo "  ${PROGRAM_copyright}"
+        echo "================================================================================"
+        echo ""; echo ""
+    fi
+
+
+#
+#================================================================================
+# Lynis - Copyright 2007-2009, Michael Boelen - www.rootkit.nl - The Netherlands

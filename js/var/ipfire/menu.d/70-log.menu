@@ -1,0 +1,61 @@
+    $sublogs->{'10.summary'} = {'caption' => $Lang::tr{'log summary'},
+				 'uri' => '/cgi-bin/logs.cgi/summary.dat',
+				 'title' => "$Lang::tr{'log summary'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'20.settings'} = {'caption' => $Lang::tr{'log settings'},
+				 'uri' => '/cgi-bin/logs.cgi/config.dat',
+				 'title' => "$Lang::tr{'log settings'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'30.proxy'} = {'caption' => $Lang::tr{'proxy logs'},
+				 'uri' => '/cgi-bin/logs.cgi/proxylog.dat',
+				 'title' => "$Lang::tr{'proxy logs'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'31.calamaris'} = {'caption' => $Lang::tr{'calamaris proxy reports'},
+				 'uri' => '/cgi-bin/logs.cgi/calamaris.dat',
+				 'title' => "$Lang::tr{'calamaris proxy reports'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'40.firewall'} = {'caption' => $Lang::tr{'firewall logs'},
+				 'uri' => '/cgi-bin/logs.cgi/firewalllog.dat',
+				 'title' => "$Lang::tr{'firewall logs'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'41.firewallip'} = {'caption' => $Lang::tr{'firewall logs ip'},
+				 'uri' => '/cgi-bin/logs.cgi/firewalllogip.dat',
+				 'title' => "$Lang::tr{'firewall logs ip'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'42.firewallport'} = {'caption' => $Lang::tr{'firewall logs port'},
+				 'uri' => '/cgi-bin/logs.cgi/firewalllogport.dat',
+				 'title' => "$Lang::tr{'firewall logs port'}",
+				 'enabled' => 1
+				 };
+    $sublogs->{'50.ids'} = {'caption' => $Lang::tr{'ids logs'},
+				'uri' => '/cgi-bin/logs.cgi/ids.dat',
+				'title' => "$Lang::tr{'ids logs'}",
+				'enabled' => 1
+				};
+    $sublogs->{'60.urlfilter'} = {
+				'caption' => $Lang::tr{'urlfilter logs'},
+				'uri' => '/cgi-bin/logs.cgi/urlfilter.dat',
+				'title' => "$Lang::tr{'urlfilter log'}",
+				'enabled' => 1,
+				};
+    $sublogs->{'70.openvpn'} = {'caption' => $Lang::tr{'openvpn log'},
+				'uri' => '/cgi-bin/logs.cgi/openvpn.dat',
+				'title' => "$Lang::tr{'openvpn log'}",
+				'enabled' => 1
+				};
+    $sublogs->{'80.system'} = {'caption' => $Lang::tr{'system logs'},
+				'uri' => '/cgi-bin/logs.cgi/log.dat',
+				'title' => "$Lang::tr{'system logs'}",
+				'enabled' => 1
+				};
+    $sublogs->{'90.userlog'} = {'caption' => $Lang::tr{'user proxy logs'},
+				'uri' => '/cgi-bin/logs.cgi/userlog.dat',
+				'title' => "$Lang::tr{'user log'}",
+				'enabled' => 1
+				};

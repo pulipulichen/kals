@@ -1,0 +1,11 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+
+ERROR - 2010-10-03 11:05:08 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/e369853df766fa44e1ed0ff613f563bd) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:19:38 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/98dce83da57b0395e163467c9dae521b) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:23:05 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/e4da3b7fbbce2345d7772b0674a318d5) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:26:04 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/1c383cd30b7c298ab50293adfecb7b18) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:26:46 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/d67d8ab4f4c10bf22aa353e27879133c) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:43:48 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/735b90b4568125ed6c3f678819b6e058) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:51:43 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/72b32a1f754ba1c09b3695e0cb6cde7f) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 11:58:47 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/d9d4f495e875a2e075a1a4a6e1b9770f) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74
+ERROR - 2010-10-03 13:02:29 --> Severity: Warning  --> unlink(D:\xampp\htdocs\kals/system/cache/2a38a4a9316c49e5a833517c45d31070) [<a href='function.unlink'>function.unlink</a>]: Permission denied D:\xampp\htdocs\kals\system\codeigniter\Common.php 74

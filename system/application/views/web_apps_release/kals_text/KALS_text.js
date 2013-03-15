@@ -24,6 +24,7 @@ function KALS_text(_selector) {
     this.child('init', new Init_text());
     this.child('selection', new Selection_manager(_selector));
     this.child('load_my', new My_annotation_loader());
+    this.child('load_top', new Top_annotation_loader());
     this.child('load_navigation', new Navigation_loader());
     this.child('tool', new Annotation_tool(_selector));
     
@@ -54,15 +55,21 @@ KALS_text.prototype.selection = null;
  */
 KALS_text.prototype.load_my = null;
 
+KALS_text.prototype.load_top = null;
+
 /**
  * @type {My_basic_annotation_loader}
  */
 KALS_text.prototype.load_my_basic = null;
 
+KALS_text.prototype.load_top_basic = null;
+
 /**
  * @type {My_custom_annotation_loader}
  */
 KALS_text.prototype.load_my_custom = null;
+
+KALS_text.prototype.load_top_custom = null;
 
 /**
  * @type {Recommend_loader}

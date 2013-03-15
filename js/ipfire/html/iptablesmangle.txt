@@ -1,0 +1,20 @@
+Chain PREROUTING (policy ACCEPT 23188 packets, 2744K bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+24440 2905K PORTFWMANGLE  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain INPUT (policy ACCEPT 23109 packets, 2713K bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain FORWARD (policy ACCEPT 79 packets, 31061 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTPUT (policy ACCEPT 20822 packets, 2742K bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain POSTROUTING (policy ACCEPT 20901 packets, 2773K bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain PORTFWMANGLE (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 MARK       tcp  --  *      *       192.168.1.0/24       192.168.11.70       tcp dpt:444 MARK set 0x1 
+    0     0 MARK       tcp  --  *      *       192.168.1.0/24       192.168.11.70       tcp dpt:60080 MARK set 0x1 

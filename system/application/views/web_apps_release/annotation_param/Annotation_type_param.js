@@ -450,6 +450,11 @@ Annotation_type_param.prototype.get_my_classname = function (_prefix, _postfix)
     return 'my_' + this.get_classname(_prefix, _postfix);
 };
 
+Annotation_type_param.prototype.get_top_classname = function (_prefix, _postfix)
+{
+    return 'top_' + this.get_classname(_prefix, _postfix);
+};
+
 /**
  * 設置按鈕的背景顏色
  * @param {string} _color CSS顏色表示法

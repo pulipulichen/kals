@@ -29,7 +29,19 @@ DEFAULT_KALS_CONFIG = {
      * 工具列左方的顯示內容
      * @type {string} HTML語法
      */
-    logo: "KALS",
+    logo: "~CRAS~",
+    
+    imp: " 重要 ",
+    
+    //que: " 提問 ",
+    
+    exp: " 困惑 ",
+    
+    lnk: " 質疑 ",
+    
+    ben: " 舉例 ",
+    
+    sum: " 摘要 ",
     
     /**
      * 預設登入的帳號
@@ -54,7 +66,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * @type {boolean} = false 阻止註冊
      */
-    deny_register: false,
+    deny_register: true,
     
     /**
      * @{type} string 登入時顯示的訊息，如果不使用的話，值填入null
@@ -92,19 +104,19 @@ DEFAULT_KALS_CONFIG = {
      */
     annotation_type_option: [
         'importance'
-        , 'concept'
+        //, 'concept'
         , 'confusion'
         , 'question'
         , 'example'
         , 'summary'
-        , 'custom'
+        //, 'custom'
     ],
     
     /**
      * 是否讓「自訂」選項可供使用者自由填入資料
      * @type {boolean} = false
      */
-    enable_custom_name: true,
+    enable_custom_name: false,
     
     /**
      * 預先定義標註類型。

@@ -1,0 +1,159 @@
+Chain INPUT (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+24351 2873K BADTCP     all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+24351 2873K CUSTOMINPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+24351 2873K GUARDIAN   all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+24351 2873K IPTVINPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+24351 2873K GUIINPUT   all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+19608 2591K ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED 
+ 4728  281K IPSECINPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+ 4728  281K OPENSSLVIRTUAL  all  --  *      *       0.0.0.0/0            0.0.0.0/0           /* OPENSSLVIRTUAL INPUT */ 
+   57  3808 ACCEPT     all  --  lo     *       0.0.0.0/0            0.0.0.0/0           state NEW 
+    0     0 DROP       all  --  *      *       127.0.0.0/8          0.0.0.0/0           state NEW 
+    0     0 DROP       all  --  *      *       0.0.0.0/0            127.0.0.0/8         state NEW 
+ 2458  123K ACCEPT    !icmp --  green0 *       0.0.0.0/0            0.0.0.0/0           state NEW 
+ 2213  154K DHCPBLUEINPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+ 2213  154K OPENSSLPHYSICAL  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+ 2213  154K WIRELESSINPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           state NEW 
+ 2213  154K REDINPUT   all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+ 2213  154K XTACCESS   all  --  *      *       0.0.0.0/0            0.0.0.0/0           state NEW 
+  612 42729 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 LOG flags 0 level 4 prefix `DROP_INPUT ' 
+ 2040  146K DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           /* DROP_INPUT */ 
+
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+   80 31137 BADTCP     all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+   10   480 TCPMSS     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:0x06/0x02 TCPMSS clamp to PMTU 
+   80 31137 GUARDIAN   all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+   80 31137 CUSTOMFORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+   80 31137 IPTVFORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+   74 30821 ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0           state RELATED,ESTABLISHED 
+    6   316 IPSECFORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+    6   316 OPENSSLVIRTUAL  all  --  *      *       0.0.0.0/0            0.0.0.0/0           /* OPENSSLVIRTUAL FORWARD */ 
+    6   316 OUTGOINGFWMAC  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+    6   316 OUTGOINGFW  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+    0     0 ACCEPT     all  --  lo     *       0.0.0.0/0            0.0.0.0/0           state NEW 
+    0     0 DROP       all  --  *      *       127.0.0.0/8          0.0.0.0/0           state NEW 
+    0     0 DROP       all  --  *      *       0.0.0.0/0            127.0.0.0/8         state NEW 
+    1    76 ACCEPT     all  --  green0 *       0.0.0.0/0            0.0.0.0/0           state NEW 
+    5   240 WIRELESSFORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           state NEW 
+    5   240 REDFORWARD  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+    5   240 PORTFWACCESS  all  --  *      *       0.0.0.0/0            0.0.0.0/0           state NEW 
+    0     0 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 LOG flags 0 level 4 prefix `DROP_OUTPUT ' 
+    0     0 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           /* DROP_OUTPUT */ 
+
+Chain OUTPUT (policy ACCEPT 2768 packets, 346K bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+22112 2939K CUSTOMOUTPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+22112 2939K OUTGOINGFW  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+22112 2939K IPSECOUTPUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain BADTCP (2 references)
+ pkts bytes target     prot opt in     out     source               destination         
+  114 11653 RETURN     all  --  lo     *       0.0.0.0/0            0.0.0.0/0           
+    0     0 PSCAN      tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:0x3F/0x29 
+    0     0 PSCAN      tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:0x3F/0x00 
+    0     0 PSCAN      tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:0x3F/0x01 
+    0     0 PSCAN      tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:0x06/0x06 
+    0     0 PSCAN      tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:0x03/0x03 
+    0     0 NEWNOTSYN  tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           tcp flags:!0x17/0x02 state NEW 
+
+Chain CUSTOMFORWARD (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain CUSTOMINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain CUSTOMOUTPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain DHCPBLUEINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain DMZHOLES (0 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain GUARDIAN (2 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain GUIINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+   15   873 ACCEPT     icmp --  *      *       0.0.0.0/0            0.0.0.0/0           icmp type 8 
+
+Chain IPSECFORWARD (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain IPSECINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain IPSECOUTPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain IPTVFORWARD (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain IPTVINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain LOG_DROP (0 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 LOG flags 0 level 4 
+    0     0 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain LOG_REJECT (0 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 LOG flags 0 level 4 
+    0     0 REJECT     all  --  *      *       0.0.0.0/0            0.0.0.0/0           reject-with icmp-port-unreachable 
+
+Chain NEWNOTSYN (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 LOG        all  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 LOG flags 0 level 4 prefix `DROP_NEWNOTSYN ' 
+    0     0 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           /* DROP_NEWNOTSYN */ 
+
+Chain OPENSSLPHYSICAL (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OPENSSLVIRTUAL (2 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTGOINGFW (2 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTGOINGFWMAC (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain PORTFWACCESS (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 ACCEPT     tcp  --  red0   *       0.0.0.0/0            192.168.11.70       tcp dpt:444 
+    5   240 ACCEPT     tcp  --  red0   *       0.0.0.0/0            192.168.1.35        tcp dpt:80 
+
+Chain PSCAN (5 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 LOG        tcp  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 /* DROP_TCP PScan */ LOG flags 0 level 4 prefix `DROP_TCP Scan ' 
+    0     0 LOG        udp  --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 /* DROP_UDP PScan */ LOG flags 0 level 4 prefix `DROP_UDP Scan ' 
+    0     0 LOG        icmp --  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 /* DROP_ICMP PScan */ LOG flags 0 level 4 prefix `DROP_ICMP Scan ' 
+    0     0 LOG        all  -f  *      *       0.0.0.0/0            0.0.0.0/0           limit: avg 10/min burst 5 /* DROP_FRAG PScan */ LOG flags 0 level 4 prefix `DROP_FRAG Scan ' 
+    0     0 DROP       all  --  *      *       0.0.0.0/0            0.0.0.0/0           /* DROP_PScan */ 
+
+Chain REDFORWARD (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain REDINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain UPNPFW (0 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain WIRELESSFORWARD (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain WIRELESSINPUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain XTACCESS (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 ACCEPT     tcp  --  red0   *       0.0.0.0/0            192.168.11.70       tcp dpt:113 
+    0     0 ACCEPT     tcp  --  red0   *       0.0.0.0/0            192.168.11.70       tcp dpt:35700 
+    0     0 ACCEPT     udp  --  red0   *       0.0.0.0/0            192.168.11.70       udp dpt:35700 
+   77  3696 ACCEPT     tcp  --  red0   *       0.0.0.0/0            192.168.11.70       tcp dpt:444 
+    1    48 ACCEPT     tcp  --  red0   *       0.0.0.0/0            192.168.11.70       tcp dpt:222 

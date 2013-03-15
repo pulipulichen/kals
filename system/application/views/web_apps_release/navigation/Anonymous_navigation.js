@@ -20,11 +20,12 @@ function Anonymous_navigation(_common_windows) {
     this._$nav_items = [
          this.login
          , this.register
+         , new Window_top()
          //'Window_login',
          //'Window_register'
     ];
     
-    if (KALS_CONFIG.deny_register === true)
+    if (KALS_CONFIG.deny_register == true)
     {
         this._$nav_items = [
              this.login
@@ -33,9 +34,8 @@ function Anonymous_navigation(_common_windows) {
     
     if ($.isset(_common_windows))
     {
-        for (var _i in _common_windows) {
-			this._$nav_items.push(_common_windows[_i]);
-		}
+        for (var _i in _common_windows)
+            this._$nav_items.push(_common_windows[_i]);
     }
 }
 

@@ -1,0 +1,60 @@
+    $subfirewall->{'10.dnat'} = {
+				 'caption' => $Lang::tr{'ssport forwarding'},
+				 'uri' => '/cgi-bin/portfw.cgi',
+				 'title' => "$Lang::tr{'ssport forwarding'}",
+				 'enabled' => 1,
+				 };
+    $subfirewall->{'20.xtaccess'} = {
+				 'caption' => $Lang::tr{'external access'},
+				 'uri' => '/cgi-bin/xtaccess.cgi',
+				 'title' => "$Lang::tr{'external access'}",
+				 'enabled' => 1,
+				 };
+    $subfirewall->{'30.wireless'} = {
+				'caption' => $Lang::tr{'blue access'},
+				'uri' => '/cgi-bin/wireless.cgi',
+				'title' => "$Lang::tr{'blue access'}",
+				'enabled' => 1,
+				 };
+    $subfirewall->{'40.dmz'} = {
+				'caption' => $Lang::tr{'ssdmz pinholes'},
+				'uri' => '/cgi-bin/dmzholes.cgi',
+				'title' => "$Lang::tr{'dmz pinhole configuration'}",
+				'enabled' => 1,
+				 };
+    $subfirewall->{'50.outgoing'} = {
+				'caption' => $Lang::tr{'outgoing firewall'},
+				'uri' => '/cgi-bin/outgoingfw.cgi',
+				'title' => "$Lang::tr{'outgoing firewall'}",
+				'enabled' => 1,
+				};
+    $subfirewall->{'51.outgoinggrp'} = {
+				'caption' => $Lang::tr{'outgoing firewall groups'},
+				'uri' => '/cgi-bin/outgoinggrp.cgi',
+				'title' => "$Lang::tr{'outgoing firewall groups'}",
+				'enabled' => 1,
+				};
+    $subfirewall->{'60.upnp'} = {
+				'caption' => 'UPnP',
+				'uri' => '/cgi-bin/upnp.cgi',
+				'title' => "Universal Plug and Play",
+				'enabled' => 0,
+				};
+    $subfirewall->{'60.optingsfw'} = {
+				'caption' => $Lang::tr{'options fw'},
+				'uri' => '/cgi-bin/optionsfw.cgi',
+				'title' => "$Lang::tr{'options fw'}",
+				'enabled' => 1,
+				};
+    $subfirewall->{'70.iptables'} = {
+				'caption' => $Lang::tr{'ipts'},
+				'uri' => '/cgi-bin/iptables.cgi',
+				'title' => "$Lang::tr{'ipts'}",
+				'enabled' => 1,
+				};
+    $subfirewall->{'55.pound'} = {
+				'caption' => $Lang::tr{'pound'},
+				'uri' => '/pound-edit.php',
+				'title' => "$Lang::tr{'pound'}",
+				'enabled' => 1,
+				};
