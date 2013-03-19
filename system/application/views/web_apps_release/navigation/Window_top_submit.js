@@ -69,6 +69,7 @@ Window_top_submit.prototype.complete_handle = function (_data) {
     	KALS_text.load_top.set_user_id(_user_id);
     	KALS_text.load_top.setup_loader(_data, function () {
 			    //Window_content_submit.prototype.complete_handle.call(this, _data);
+				KALS_text.load_top.stop_loader();
     	});
     }
     
