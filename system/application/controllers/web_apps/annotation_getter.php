@@ -478,7 +478,7 @@ class Annotation_getter extends Web_apps_controller {
         {
 			
             //如果要讓標註指引有分數層次的差別，則請解開這邊的註解
-            
+            /*
             $aid = $annotation->get_id();
         	$sql = "SELECT f_score FROM top WHERE topic_id = $aid";
         	$aaa1 = pg_query($sql);
@@ -487,12 +487,14 @@ class Annotation_getter extends Web_apps_controller {
         	$score_a = $annotation->get_score(0)->get_score();
         	$score = array();
             $score = $score_a * $a1;
-     
+     		
 			//$score = $annotation->get_field('t_score');
             
-        	//$score = $annotation->get_score(0)->get_score();
+        	$score = $annotation->get_score(0)->get_score();
+        	
         	
             $score_type = 1;
+            
             if ($score < 0.6)
                 $score_type = 1;
             else if ($score >= 0.6 && $score < 4)
@@ -501,7 +503,7 @@ class Annotation_getter extends Web_apps_controller {
                 $score_type = 3;
             else
                 $score_type = 4;
-            
+            */
            
             if (isset($score_scope_colls[$score_type]) == false)
             {
@@ -594,6 +596,7 @@ class Annotation_getter extends Web_apps_controller {
         {
 			
             //如果要讓標註指引有分數層次的差別，則請解開這邊的註解
+            /*
             $aid = $annotation->get_id();
         	$sql = "SELECT f_score FROM top WHERE topic_id = $aid";
         	$aaa1 = pg_query($sql);
@@ -602,9 +605,9 @@ class Annotation_getter extends Web_apps_controller {
         	$score_a = $annotation->get_score(0)->get_score();
             $score = array();
         	$score = $score_a * $a1;
-            
+            */
         	
-        	//$score = $annotation->get_score(0)->get_score();
+        	$score = $annotation->get_score(0)->get_score();
           
 
             $score_type = $this->parse_navigation_level($score);
@@ -933,7 +936,8 @@ class Annotation_getter extends Web_apps_controller {
             && isset($data->target_topic) && $data->target_topic === FALSE
             && isset($data->limit) == FALSE){
             $action = 16;
-            kals_log3($this->db, $data->topic_id);}
+            //kals_log3($this->db, $data->topic_id);
+            }
             
 
         $do_log = TRUE;

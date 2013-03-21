@@ -103,7 +103,7 @@ class Annotation_setter extends Web_apps_controller {
         $annotation = new Annotation($annotation->get_id());
 
             //$score = $annotation->get_score(0)->get_score();
-        	kals_log2($this->db, 13, $annotation->get_id(), array('user_id' => $user->get_id()));
+        	//kals_log2($this->db, 13, $annotation->get_id(), array('user_id' => $user->get_id()));
 
         if ($annotation->is_respond() === FALSE)
         {
