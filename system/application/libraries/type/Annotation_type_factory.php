@@ -21,7 +21,10 @@ class Annotation_type_factory extends KALS_object {
         4 => 'summary',
         5 => 'concept',
         6 => 'example',
-        7 => 'custom'
+        7 => 'custom',
+        8 => 'other',
+        9 => 'explain',
+        10 => 'debug'
     );
 
     /**

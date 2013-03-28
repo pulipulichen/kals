@@ -242,6 +242,18 @@
     color: black;
 }
 
+.type-option.other {
+    background-color: black;
+}
+
+.type-option.explain {
+    background-color: gray;
+}
+
+.type-option.debug {
+    background-color: #EE82EE;
+}
+
 .type-component .type-menu {
     background-color: #EEE;
     border-bottom: 1px solid #555;

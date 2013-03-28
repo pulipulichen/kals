@@ -55,7 +55,8 @@ Note_editor_manager.prototype._type_mapping = {
     'summary': 'Note_editor_ckeditor',
     'concept': 'Note_editor_ckeditor',
     'example': 'Note_editor_ckeditor',
-    'custom': 'Note_editor_ckeditor'
+    'custom': 'Note_editor_ckeditor',
+	'other': 'Note_editor_ckeditor'
 };
 
 /**
@@ -70,7 +71,8 @@ Note_editor_manager.prototype._type_mapping_ie = {
     'summary': 'Note_editor',
     'concept': 'Note_editor',
     'example': 'Note_editor',
-    'custom': 'Note_editor'
+    'custom': 'Note_editor',
+	'other': 'Note_editor'
 };
 
 Note_editor_manager.prototype._default_editor = 'Note_editor_ckeditor';

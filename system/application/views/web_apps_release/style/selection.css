@@ -196,7 +196,10 @@
 .kals-word.my_summary,
 .kals-word.my_concept,
 .kals-word.my_example,
-.kals-word.my_custom {
+.kals-word.my_custom,
+.kals-word.my_other, 
+.kals-word.my_explain,
+.kals-word.my_debug {
     border-bottom-width: 2px;
     border-bottom-style: solid;
 }
@@ -234,6 +237,21 @@
 .kals-word.my_custom {
     /*background-color: #B2FFB7;*/
     border-bottom-color: #7EFF7E;
+}
+
+.kals-word.my_other {
+    /*background-color: #B2FFB7;*/
+    border-bottom-color: black;
+}
+
+.kals-word.my_explain {
+    /*background-color: #B2FFB7;*/
+    border-bottom-color: gray;
+}
+
+.kals-word.my_debug {
+    /*background-color: #B2FFB7;*/
+    border-bottom-color: #EE82EE;
 }
 
 /* top文字 */

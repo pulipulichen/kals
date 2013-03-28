@@ -42,6 +42,9 @@ INSERT INTO "type"(type_id, "name", "basic") VALUES (4, 'annotation.type.summary
 INSERT INTO "type"(type_id, "name", "basic") VALUES (5, 'annotation.type.concept', true);
 INSERT INTO "type"(type_id, "name", "basic") VALUES (6, 'annotation.type.example', true);
 INSERT INTO "type"(type_id, "name", "basic") VALUES (7, 'annotation.type.custom', true);
+INSERT INTO "type"(type_id, "name", "basic") VALUES (8, 'annotation.type.other', true);
+INSERT INTO "type"(type_id, "name", "basic") VALUES (9, 'annotation.type.explain', true);
+INSERT INTO "type"(type_id, "name", "basic") VALUES (10, 'annotation.type.debug', true);
 
  * </code>
  */

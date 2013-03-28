@@ -28,7 +28,10 @@ Annotation_type_param._type_mapping = {
     4: 'summary',
     5: 'concept',
     6: 'example',
-    7: 'custom'
+    7: 'custom',
+	8: 'other',
+	9: 'explain',
+	10: 'debug'
 };
 
 Annotation_type_param.current_custom_id = 100;

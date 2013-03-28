@@ -189,22 +189,26 @@ $lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成
 $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。';
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
 
-$lang['web_apps.annotation.type.importance'] = '重要';
-$lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
+$lang['web_apps.annotation.type.importance'] = '推論';
+$lang['web_apps.annotation.type.importance.hint'] = '這就是推論。';
 $lang['web_apps.annotation.type.concept'] = '提問';
 $lang['web_apps.annotation.type.concept.hint'] = '這個標註是您可以提問的標註。';
-$lang['web_apps.annotation.type.confusion'] = '困惑';
-$lang['web_apps.annotation.type.confusion.hint'] = '標示您對文章內文產生困惑的地方。';
-$lang['web_apps.annotation.type.question'] = '質疑';
-$lang['web_apps.annotation.type.question.hint'] = '標示您質疑文章內文是否正確的地方。';
-$lang['web_apps.annotation.type.example'] = '舉例';
-$lang['web_apps.annotation.type.example.hint'] = '記錄或補充與文章內容的相關資料、舉例。';
+$lang['web_apps.annotation.type.confusion'] = '連結';
+$lang['web_apps.annotation.type.confusion.hint'] = '這就是連結。';
+$lang['web_apps.annotation.type.question'] = '辨析';
+$lang['web_apps.annotation.type.question.hint'] = '這就是辨析。';
+$lang['web_apps.annotation.type.example'] = '釋疑';
+$lang['web_apps.annotation.type.example.hint'] = '這就是釋疑。';
 $lang['web_apps.annotation.type.summary'] = '摘要';
 $lang['web_apps.annotation.type.summary.hint'] = '用自己的話來歸納文章的摘要內容，像是註明原因、影響、特色等等。';
-$lang['web_apps.annotation.type.other'] = '其他';
-$lang['web_apps.annotation.type.other.hint'] = '這個標註不屬於上述類型之中。';
 $lang['web_apps.annotation.type.custom'] = '自訂';
 $lang['web_apps.annotation.type.custom.hint'] = '您自己定義的標註類型。';
+$lang['web_apps.annotation.type.other'] = '其他';
+$lang['web_apps.annotation.type.other.hint'] = '這個標註不屬於上述類型之中。';
+$lang['web_apps.annotation.type.explain'] = '字詞解釋';
+$lang['web_apps.annotation.type.explain.hint'] = '這就是字詞解釋。';
+$lang['web_apps.annotation.type.debug'] = '偵錯';
+$lang['web_apps.annotation.type.debug.hint'] = '這就是偵錯。';
 
 $lang['web_apps.user.anonymous'] = '匿名';
 

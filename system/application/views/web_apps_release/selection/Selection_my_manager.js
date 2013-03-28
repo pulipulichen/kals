@@ -21,6 +21,9 @@ function Selection_my_manager(_text) {
     this.child('example', new Selection_my_example(_text));
     this.child('summary', new Selection_my_summary(_text));
     this.child('custom', new Selection_my_custom(_text));
+	this.child('other', new Selection_my_other(_text));
+	this.child('explain', new Selection_my_explain(_text));
+	this.child('debug', new Selection_my_debug(_text));
     
 }
 
@@ -34,7 +37,10 @@ Selection_my_manager.prototype._my_selections = {
 	4: 'summary',
 	5: 'concept',
 	6: 'example',
-	7: 'custom'
+	7: 'custom',
+	8: 'other',
+	9: 'explain',
+	10: 'debug'
 };
 
 /**
@@ -72,6 +78,21 @@ Selection_my_manager.prototype.summary = null;
  * @type {Selection_my_custom}
  */
 Selection_my_manager.prototype.custom = null;
+
+/**
+ * @type {Selection_my_other}
+ */
+Selection_my_manager.prototype.other = null;
+
+/**
+ * @type {Selection_my_explain}
+ */
+Selection_my_manager.prototype.explain = null;
+
+/**
+ * @type {Selection_my_debug}
+ */
+Selection_my_manager.prototype.debug = null;
 
 /**
  * 

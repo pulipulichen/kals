@@ -104,11 +104,14 @@ DEFAULT_KALS_CONFIG = {
      */
     annotation_type_option: [
         'importance'
-        //, 'concept'
+        , 'concept'
         , 'confusion'
         , 'question'
         , 'example'
         , 'summary'
+		, 'other'
+		, 'explain'
+		, 'debug'
         //, 'custom'
     ],
     

@@ -201,6 +201,9 @@ class generic extends Web_apps_controller {
             'selection/Selection_my_example',
             'selection/Selection_my_summary',
             'selection/Selection_my_custom',
+            'selection/Selection_my_other',
+            'selection/Selection_my_explain',
+            'selection/Selection_my_debug',
             'selection/Selection_my_manager',
 
             'selection/Selection_my_custom_type',
