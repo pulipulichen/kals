@@ -171,7 +171,7 @@ Window_top.prototype.setup_content = function (_callback) {
 		    //使用語系檔顯示
 		    var _disable = _factory.row(
 		        	_disable_radio,
-		        	"不顯示標註達人標註"
+		        	"不顯示"
 		    	).appendTo(_subpanel);
 			//讀取完成
 		    

@@ -190,25 +190,25 @@ $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
 
 $lang['web_apps.annotation.type.importance'] = '推論';
-$lang['web_apps.annotation.type.importance.hint'] = '這就是推論。';
+$lang['web_apps.annotation.type.importance.hint'] = '根據文中一連串的訊息或他人提出的想法、意見，進行整合、詮釋，並歸納出重點。';
 $lang['web_apps.annotation.type.concept'] = '提問';
-$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您可以提問的標註。';
+$lang['web_apps.annotation.type.concept.hint'] = '針對文本內容、他人提供的想法或意見，表達自己疑惑並提出問題。';
 $lang['web_apps.annotation.type.confusion'] = '連結';
-$lang['web_apps.annotation.type.confusion.hint'] = '這就是連結。';
+$lang['web_apps.annotation.type.confusion.hint'] = '將自己的記憶、生活經驗或先前學到的知識、讀過的文本與現在正在閱讀的內容做連結。';
 $lang['web_apps.annotation.type.question'] = '辨析';
-$lang['web_apps.annotation.type.question.hint'] = '這就是辨析。';
+$lang['web_apps.annotation.type.question.hint'] = '針對文中的訊息或他人提出的想法、意見，進行檢驗、評估，進而提出自己不同的看法。';
 $lang['web_apps.annotation.type.example'] = '釋疑';
-$lang['web_apps.annotation.type.example.hint'] = '這就是釋疑。';
+$lang['web_apps.annotation.type.example.hint'] = '針對自己或他人的問題，提出說明、解釋。';
 $lang['web_apps.annotation.type.summary'] = '摘要';
-$lang['web_apps.annotation.type.summary.hint'] = '用自己的話來歸納文章的摘要內容，像是註明原因、影響、特色等等。';
+$lang['web_apps.annotation.type.summary.hint'] = '擷取文章中重要的訊息，經過統整濃縮後，形成能代表文章主旨的簡要敘述。';
 $lang['web_apps.annotation.type.custom'] = '自訂';
 $lang['web_apps.annotation.type.custom.hint'] = '您自己定義的標註類型。';
 $lang['web_apps.annotation.type.other'] = '其他';
-$lang['web_apps.annotation.type.other.hint'] = '這個標註不屬於上述類型之中。';
+$lang['web_apps.annotation.type.other.hint'] = '無法歸於系統制訂類別的意見或想法。';
 $lang['web_apps.annotation.type.explain'] = '字詞解釋';
-$lang['web_apps.annotation.type.explain.hint'] = '這就是字詞解釋。';
+$lang['web_apps.annotation.type.explain.hint'] = '對於文本內的字或詞，提供拼音、意思或例句的補充說明。';
 $lang['web_apps.annotation.type.debug'] = '偵錯';
-$lang['web_apps.annotation.type.debug.hint'] = '這就是偵錯。';
+$lang['web_apps.annotation.type.debug.hint'] = '針對文本內容或他人提供的意見或資料，指出錯誤的地方並加以修正。';
 
 $lang['web_apps.user.anonymous'] = '匿名';
 

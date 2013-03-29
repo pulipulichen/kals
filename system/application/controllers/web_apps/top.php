@@ -49,7 +49,7 @@ class Top extends Web_apps_controller {
         //$webpage_id = $this->get_webpage_id();
         $webpage_id = get_context_webpage()->get_id();
         
-        $qry = "select user_id, user_name from top_ranking where webpage_id = $webpage_id limit 5";
+        $qry = "select user_id, user_name from top_ranking where webpage_id = $webpage_id limit 10";
         $top5 = pg_query($qry);
         $data = pg_fetch_all($top5);
         

@@ -267,17 +267,18 @@ Type_menu.prototype._type_component = null;
  * @type {String[]}
  */
 Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_option;
+
+//var cchaha = document.getElementById('tooltip type-menu');
+
 /*
-Type_menu.prototype._type_options = [
-    'importance',
-    'concept',
-    'confusion',
-    'question',
-    'example',
-    'summary',
-    'custom'
-];
+	if (document.getElementByName('tooltip type-menu') == 'tooltip type-menu') {
+		Type_menu.prototype._type_options = ['importance', 'concept', 'confusion', 'question', 'example', 'summary', 'custom'];
+	}
+	else {
+		Type_menu.prototype._type_options = ['importance'];
+	}
 */
+
 
 Type_menu.prototype._type_lang_header = 'annotation.type.';
 

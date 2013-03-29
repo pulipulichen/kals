@@ -212,46 +212,136 @@
     font-weight: bold;
 }
 
-.type-option.importance {
+.topic-list .type-option.importance {
     background-color: yellow;
     color: black;
 }
 
-.type-option.concept {
+.editor-tool .type-option.importance {
+    background-color: yellow;
+    color: black;
+}
+
+.window-view-content .type-option.importance {
+    background-color: yellow;
+    color: black;
+}
+
+.topic-list .type-option.concept {
     background-color: blue;
 }
 
-.type-option.confusion {
+.editor-tool .type-option.concept {
+    background-color: blue;
+}
+
+.window-view-content .type-option.concept {
+    background-color: blue;
+}
+
+.topic-list .type-option.confusion {
     background-color: #800080;
 }
 
-.type-option.question {
+.editor-tool .type-option.confusion {
+    background-color: #800080;
+}
+
+.window-view-content .type-option.confusion {
+    visibility: hidden;
+}
+
+.topic-list .type-option.question {
     background-color: red;
 }
 
-.type-option.example {
-    background-color: green;
+
+.editor-tool .type-option.question {
+    background-color: red;
 }
 
-.type-option.summary {
+.window-view-content .type-option.question {
+    background-color: red;
+}
+
+.topic-list .type-option.example {
+    background-color: green;
+	
+}
+
+.editor-tool .type-option.example {
+    background-color: green;
+	visibility: hidden;
+}
+
+.window-view-content .type-option.example {
+    background-color: green;
+	
+}
+
+.topic-list .type-option.summary {
     background-color: #670808;
 }
 
-.type-option.custom {
+.editor-tool .type-option.summary {
+    background-color: #670808;
+}
+
+.window-view-content .type-option.summary {
+    visibility: hidden;
+}
+
+.topic-list .type-option.custom {
     background-color: white;
     color: black;
 }
 
-.type-option.other {
+.editor-tool .type-option.custom {
+    background-color: white;
+    color: black;
+}
+
+.window-view-content .type-option.custom {
+    background-color: white;
+    color: black;
+}
+
+.topic-list .type-option.other {
     background-color: black;
 }
 
-.type-option.explain {
+
+.editor-tool .type-option.other {
+    background-color: black;
+}
+
+.window-view-content .type-option.other {
+    background-color: black;
+}
+
+.topic-list .type-option.explain {
     background-color: gray;
 }
 
-.type-option.debug {
-    background-color: #EE82EE;
+.editor-tool .type-option.explain {
+    background-color: gray;
+}
+
+.window-view-content .type-option.explain {
+    visibility: hidden;
+}
+
+.topic-list .type-option.debug {
+	background-color: #EE82EE;
+}
+
+.editor-tool .type-option.debug {
+	/*background-color: #EE82EE;*/
+	visibility: hidden;
+}
+
+.window-view-content .type-option.debug {
+	background-color: #EE82EE;
 }
 
 .type-component .type-menu {

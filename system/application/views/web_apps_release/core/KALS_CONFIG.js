@@ -102,7 +102,8 @@ DEFAULT_KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_option: [
+    annotation_type_option:
+	[
         'importance'
         , 'concept'
         , 'confusion'
