@@ -256,6 +256,10 @@ $lang['web_apps.list_like_component.like_count'] = '{0}人喜愛';
 $lang['web_apps.list_like_component.set_like'] = '加入喜愛清單';
 $lang['web_apps.list_like_component.set_not_like'] = '移出喜愛清單';
 
+$lang['web_apps.list_read_component.read_count'] = '{0}人已閱讀';
+$lang['web_apps.list_read_component.set_read'] = '加入已閱讀清單';
+$lang['web_apps.list_read_component.set_not_read'] = '移出閱讀清單';
+
 /**
  * Respond_list_component
  */

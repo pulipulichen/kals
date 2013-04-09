@@ -438,6 +438,11 @@ class Search_engine extends Generic_collection {
             $db->join('annotation2like_count AS target_over_like', 'annotation.annotation_id = target_over_like.annotation_id '
                 . ' AND target_over_like.like_count > '.$this->target_over_like_count);
         }
+        if (isset($this->target_over_read_count) && $this->target_over_read_count > 0)
+        {
+            $db->join('annotation2read_count AS target_over_read', 'annotation.annotation_id = target_over_read.annotation_id '
+                . ' AND target_over_read.read_count > '.$this->target_over_read_count);
+        }
         
         //------------------------------------------------
         // 第十二關 search_anchor_text * 查詢
@@ -530,6 +535,38 @@ class Search_engine extends Generic_collection {
                  *
                  */
                 $db->where('( target_like.annotation_id IS NULL OR  target_like.annotation_id NOT IN (SELECT annotation_id FROM annotation2like WHERE user_id = ' . $this->target_like_user_id . ' AND canceled = FALSE) )');
+
+            }
+        }
+        if (isset($this->target_read))
+        {
+            if ($this->target_read === TRUE)
+            {
+                $db->join('annotation2read AS target_read', 'annotation.annotation_id = target_read.annotation_id '
+                    . ' AND target_read.user_id = ' . $this->target_read_user_id
+                    . ' AND target_read.canceled IS FALSE');
+            }
+            else
+            {
+                /*
+                $db->join('annotation2read AS target_read'
+                    , 'annotation.annotation_id = annotation.annotation_id '
+                    , 'left');
+                $db->where('((annotation.annotation_id = target_read.annotation_id '
+                        . ' AND target_read.user_id = ' . $this->target_read_user_id
+                        . ' AND target_read.canceled IS TRUE)'
+                        . ' OR (target_read.annotation2read_id IS NULL))');
+                 */
+                $db->join('annotation2read AS target_read'
+                    , 'annotation.annotation_id = target_read.annotation_id '
+                    , 'left');
+                /*
+                $db->where('( ( ( (target_read.user_id != ' . $this->target_read_user_id . ') OR'
+                        . '( target_read.user_id = ' . $this->target_read_user_id . ' AND target_read.canceled IS TRUE) )'
+                        . ' OR (target_read.annotation2read_id IS NULL) ) )');
+                 *
+                 */
+                $db->where('( target_read.annotation_id IS NULL OR  target_read.annotation_id NOT IN (SELECT annotation_id FROM annotation2read WHERE user_id = ' . $this->target_read_user_id . ' AND canceled = FALSE) )');
 
             }
         }
@@ -629,9 +666,16 @@ class Search_engine extends Generic_collection {
 
     // @todo target_like不知道要幹嘛用的
     protected $target_over_like_count;
+    protected $target_over_read_count;
+    
     public function set_target_over_like_count($like_count)
     {
         $this->target_over_like_count = $like_count;
+        return $this;
+    }
+    public function set_target_over_read_count($read_count)
+    {
+        $this->target_over_read_count = $read_count;
         return $this;
     }
 
@@ -687,6 +731,8 @@ class Search_engine extends Generic_collection {
 
     protected $target_like;
     protected $target_like_user_id;
+    protected $target_read;
+    protected $target_read_user_id;
 
     /**
      * 設定喜愛
@@ -703,6 +749,18 @@ class Search_engine extends Generic_collection {
         {
             $this->target_like = $is_like;
             $this->target_like_user_id = $user->get_id();
+        }
+        return $this;
+    }
+    public function set_target_read($is_read, $user)
+    {
+        if (is_null($user))
+            $user = get_context_user();
+
+        if (is_bool($is_read) && isset($user))
+        {
+            $this->target_read = $is_read;
+            $this->target_read_user_id = $user->get_id();
         }
         return $this;
     }

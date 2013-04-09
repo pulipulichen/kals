@@ -77,7 +77,9 @@ List_item_respond.prototype.focus_respond = function (_respond_to_id) {
 };
 
 
-List_item_respond.prototype._disable_option = ['like', 'policy'];
+List_item_respond.prototype._disable_option = ['like', 'read', 'policy'];
+
+
 
 List_item_respond.prototype.respond_annotation = function () {
     

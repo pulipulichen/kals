@@ -62,10 +62,18 @@ List_header_component.prototype._$create_ui = function ()
     
     var _like_component = this._setup_like_component();
     _like_component.get_ui().appendTo(_ui);
+	
+	var _read_component = this._setup_read_component();
+    _read_component.get_ui().appendTo(_ui);
     
     if (this._item.is_enable('like') == false)
     {
         _like_component.get_ui().hide();
+    }
+	
+    if (this._item.is_enable('read') == false)
+    {
+        _read_component.get_ui().hide();
     }
     
     var _name_container = $('<span></span>')
@@ -401,6 +409,14 @@ List_header_component.prototype.like = null;
 List_header_component.prototype._setup_like_component = function () {
     var _component = new List_like_component(this._item);
     this.child('like', _component);
+    return _component;
+};
+
+List_header_component.prototype.read = null;
+
+List_header_component.prototype._setup_read_component = function () {
+    var _component = new List_read_component(this._item);
+    this.child('read', _component);
     return _component;
 };
 

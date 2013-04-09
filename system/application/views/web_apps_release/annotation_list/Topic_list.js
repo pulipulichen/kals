@@ -49,6 +49,10 @@ Topic_list.prototype._$create_ui = function ()
     var _like = new List_collection_like();
     _like.get_ui().appendTo(_ui);
     this._list_colls.push(_like);
+	
+    var _read = new List_collection_read();
+    _read.get_ui().appendTo(_ui);
+    this._list_colls.push(_read);
     
     var _other = new List_collection_other();
     _other.get_ui().appendTo(_ui);

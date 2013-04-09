@@ -22,7 +22,7 @@ View_list_item_respond.prototype._menu_style_default = 'block';
 
 View_list_item_respond.prototype._note_show_fulltext = true;
 
-View_list_item_respond.prototype._disable_option = ['view', 'like'];
+View_list_item_respond.prototype._disable_option = ['view', 'like', 'read'];
 
 /*
 View_list_item_respond.prototype.editor_set_data = function (_param) {

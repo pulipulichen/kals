@@ -251,6 +251,7 @@ class generic extends Web_apps_controller {
 
             'annotation_list/List_collection',
             'annotation_list/List_collection_like',
+            'annotation_list/List_collection_read',
             'annotation_list/List_collection_my',
             'annotation_list/List_collection_other',
             'annotation_list/List_collection_anonymous',
@@ -264,6 +265,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_menu_tooltip',
             'annotation_list/List_menu_block',
             'annotation_list/List_like_component',
+            'annotation_list/List_read_component',
             'annotation_list/List_header_component',
             'annotation_list/List_note_component',
             'annotation_list/List_item',

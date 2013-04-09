@@ -108,6 +108,8 @@ class Generic_attribute_object extends Generic_object {
             $type_id = $this->get_type_id();
             if (is_class($this, 'Annotation_like'))
                 test_msg('Generic_attribute_object::_pre_update() ', $type_id.'?');
+            if (is_class($this, 'Annotation_read'))
+                test_msg('Generic_attribute_object::_pre_update() ', $type_id.'?');
             if (isset($type_id))
             {
                 $data[$this->type_field] = $type_id;

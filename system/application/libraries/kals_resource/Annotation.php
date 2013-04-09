@@ -529,6 +529,9 @@ class Annotation extends KALS_resource {
 
         $this->_CI_load('library', 'annotation/Annotation_like_collection', 'annotation_like_collection');
         $this->like_coll = new Annotation_like_collection($this);
+        
+        $this->_CI_load('library', 'annotation/Annotation_read_collection', 'annotation_read_collection');
+        $this->read_coll = new Annotation_read_collection($this);
     }
 
     protected function  _post_update() {
@@ -537,6 +540,7 @@ class Annotation extends KALS_resource {
         $this->feature_coll->update();
         $this->score_coll->update();
         $this->like_coll->update();
+        $this->read_coll->update();
 
         //假如有topic的話……
         $topic_id = $this->get_field('topic_id');
@@ -567,6 +571,13 @@ class Annotation extends KALS_resource {
         $this->like_coll->update();
         return $this;
     }
+    
+    public function add_read($user_id)
+    {
+        $this->read_coll->set_item_data($user_id, 'FALSE');
+        $this->read_coll->update();
+        return $this;
+    }
 
     public function is_liked($user_id)
     {
@@ -576,6 +587,14 @@ class Annotation extends KALS_resource {
         return $this->like_coll->exists($user_id);
     }
 
+    public function is_readd($user_id)
+    {
+        $this->_CI_load('library', 'kals_actor/User', 'user');
+        $user_id = $this->CI->user->filter_id($user_id);
+
+        return $this->read_coll->exists($user_id);
+    }
+
     public function remove_like($user_id)
     {
         $this->like_coll->set_item_data($user_id, 'TRUE');
@@ -583,9 +602,22 @@ class Annotation extends KALS_resource {
         return $this;
     }
 
+    public function remove_read($user_id)
+    {
+        $this->read_coll->set_item_data($user_id, 'TRUE');
+        $this->read_coll->update();
+        return $this;
+    }
+
+
     public function get_like_count()
     {
         return $this->like_coll->get_like_count();
+    }
+
+    public function get_read_count()
+    {
+        return $this->read_coll->get_read_count();
     }
 
     //------------------------------------------------
@@ -807,6 +839,10 @@ class Annotation extends KALS_resource {
             $current_user = get_context_user();
             if (is_class($current_user, 'User'))
                 $data['is_like'] = $this->is_liked($current_user);
+                
+            if (is_class($current_user, 'User'))
+                $data['is_read'] = $this->is_readd($current_user);
+            
         }
         else
         {
@@ -871,7 +907,11 @@ class Annotation extends KALS_resource {
             
             if (is_class($current_user, 'User') && $is_my_annotation === FALSE)
                 $data['is_like'] = $this->is_liked($current_user);
+            if (is_class($current_user, 'User') && $is_my_annotation === FALSE)
+                $data['is_read'] = $this->is_readd($current_user);
+                
             $data['like_count'] = $this->get_like_count();
+            $data['read_count'] = $this->get_read_count();
         }
 
         if ($is_my_annotation === TRUE)
@@ -940,7 +980,11 @@ class Annotation extends KALS_resource {
 
             if (is_class($current_user, 'User') && $is_my_annotation === FALSE)
                 $data['is_like'] = $this->is_liked($current_user);
+            if (is_class($current_user, 'User') && $is_my_annotation === FALSE)
+                $data['is_read'] = $this->is_readd($current_user);
+                
             $data['like_count'] = $this->get_like_count();
+            $data['read_count'] = $this->get_read_count();
         }
 
         return $data;

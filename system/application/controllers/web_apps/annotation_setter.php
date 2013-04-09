@@ -628,6 +628,49 @@ class Annotation_setter extends Web_apps_controller {
         return $this->_display_jsonp($data, $callback);
     }
 
+    public function read($json, $callback)
+    {
+        $data = json_to_object($json);
+        $annotation_id = $data->annotation_id;
+        $annotation = new Annotation($annotation_id);
+        $is_read = $data->is_read;
+        $user = $this->user;
+        if (is_null($annotation_id) || is_null($is_read)
+            || is_null($user)
+            || $annotation->get_user()->equals($user)
+            || $annotation->is_respond())
+        {
+            $data = show_error('Permission deny.');
+            return $this->_display_jsonp($data, $callback);
+        }
+
+        set_ignore_authorize(true);
+        if ($is_read === TRUE)
+            $annotation->add_read($user);
+        else
+            $annotation->remove_read($user);
+
+        //計算分數吧
+        $this->_setup_scores($annotation);
+
+        //log區
+        $array_data = $annotation_id;
+
+        $action = 29;
+        if ($is_read == FALSE)
+            $action = 30;
+        $user_id = NULL;
+        if (isset($user))
+            $user_id = $user->get_id();
+        kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
+
+        //$annotation->update();
+        context_complete();
+        set_ignore_authorize(false);
+        $data = TRUE;
+        return $this->_display_jsonp($data, $callback);
+    }
+
     public function recommend_accept($json, $callback = NULL)
     {
         //$data = json_to_object($json);

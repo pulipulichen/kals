@@ -768,7 +768,7 @@ class Annotation_getter extends Web_apps_controller {
         // 4 [ target my ]
         //test_msg('3 [ target like ] 4 [ target my ]');
 
-        if ((isset($data->target_lik) OR isset($data->target_my) )
+        if ((isset($data->target_like) OR isset($data->target_my) OR isset($data->target_read))
             && is_null($user))
         {
             return $this->_create_null_list($callback);
@@ -779,6 +779,13 @@ class Annotation_getter extends Web_apps_controller {
             $search->set_target_like($data->target_like, $user);
             if (isset($search_id))
                 $search_id->set_target_like($data->target_like, $user);
+        }
+
+        if (isset($data->target_read))
+        {
+            $search->set_target_read($data->target_read, $user);
+            if (isset($search_id))
+                $search_id->set_target_read($data->target_read, $user);
         }
 
         if (isset($data->target_my))

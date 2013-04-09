@@ -64,12 +64,14 @@ Annotation_param.prototype.note = null;
  */
 Annotation_param.prototype.is_like = false;
 
+Annotation_param.prototype.is_read = false;
 /**
  * 喜歡的人數
  * @type {number}
  */
 Annotation_param.prototype.like_count = 0;
 
+Annotation_param.prototype.read_count = 0;
 /**
  * 標註類型
  * 1    importance
@@ -190,7 +192,9 @@ Annotation_param.prototype._plain_types = [
     'policy_type',
     'timestamp',
     'is_like',
+	'is_read',
     'like_count',
+	'read_count',
     'respond_list'
 ];
 
@@ -208,7 +212,8 @@ Annotation_param.prototype._param_types = [
 
 Annotation_param.prototype._only_for_import = [
     'recommend',
-    'like_count'
+    'like_count',
+	'read_count'
 ];
 
 Annotation_param.prototype._policy_types = {

@@ -47,6 +47,8 @@ List_collection.prototype._$target_my = null;
  */
 List_collection.prototype._$target_like = null;
 
+List_collection.prototype._$target_read = null;
+
 /**
  * 是否鎖定主題的標註
  * @type {boolean|null}
@@ -286,8 +288,14 @@ List_collection.prototype.get_search_data = function () {
         && KALS_context.auth.is_login() == false)
         return null;
     
+    if (($.isset(this._$target_read) || $.isset(this._$target_my))
+        && KALS_context.auth.is_login() == false)
+        return null;	
+	
     if ($.isset(this._$target_like))
         _search_data['target_like'] = this._$target_like;
+    if ($.isset(this._$target_read))
+        _search_data['target_read'] = this._$target_read;
     if ($.isset(this._$target_my))
         _search_data['target_my'] = this._$target_my;
     

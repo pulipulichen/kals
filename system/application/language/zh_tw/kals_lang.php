@@ -32,6 +32,7 @@ $lang['action.annotation.read.exception'] = '讀取Annotation錯誤';
 $lang['action.annotation.administration.exception'] = '無法管理Annotation錯誤';
 
 $lang['annotation_like_collection.deny_annotation_author.exception'] = '標註作者不能喜歡自己的標註';
+$lang['annotation_read_collection.deny_annotation_author.exception'] = '標註作者不能讀過自己的標註';
 
 $lang['kals_resource.type.1'] = '網域';
 $lang['kals_resource.type.2'] = '網頁';

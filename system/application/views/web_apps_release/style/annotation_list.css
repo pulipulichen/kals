@@ -116,6 +116,10 @@
 .list-header-component.is-my .list-like-component .icon-component {
     display: none;
 }
+.list-header-component.is-my .list-read-component .icon-component {
+    display: none;
+}
+
 /*
 .list-header-component.has-recommend {
     background-image: url(${base_url}images/has-recommend.gif);
@@ -149,8 +153,17 @@
     cursor: pointer;
     float:right;
 }
+.list-read-component {
+    cursor: pointer;
+    float:right;
+}
 
 .list-like-component .count-component {
+    font-size:smaller;
+    color: #808080;
+    float:right;
+}
+.list-read-component .count-component {
     font-size:smaller;
     color: #808080;
     float:right;
@@ -168,7 +181,24 @@
     background-position:center;
     background-repeat:no-repeat;
 }
+.list-read-component .icon-component {
+    /*height:24px;
+    width:24px;
+    */ 
+    height:20px;
+    width:20px;
+    padding: 10px;
+    margin: 0 5px;
+    background-image:url(${base_url}images/is-not-readd.png);
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
 .list-like-component.hide .icon-component {
+    /*visibility:hidden;*/
+    display: none;
+}
+.list-read-component.hide .icon-component {
     /*visibility:hidden;*/
     display: none;
 }
@@ -177,17 +207,30 @@
 .window-view-content.not-login .list-like-component .icon-component {
     display: none;
 }
+.annotation-tool.not-login .list-read-component .icon-component,
+.window-view-content.not-login .list-read-component .icon-component {
+    display: none;
+}
 
 .list-like-component.hover .icon-component {
     background-image:url(${base_url}images/set-is-liked.png);
+}
+.list-read-component.hover .icon-component {
+    background-image:url(${base_url}images/set-is-readd.png);
 }
 
 .list-like-component.liked .icon-component {
     background-image:url(${base_url}images/is-liked.png);
 }
+.list-read-component.readd .icon-component {
+    background-image:url(${base_url}images/is-readd.png);
+}
 
 .list-like-component.liked.hover .icon-component {
     background-image:url(${base_url}images/set-is-not-liked.png);
+}
+.list-read-component.readd.hover .icon-component {
+    background-image:url(${base_url}images/set-is-not-readd.png);
 }
 
 /**
