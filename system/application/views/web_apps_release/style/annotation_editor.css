@@ -248,7 +248,8 @@
 }
 
 .window-view-content .type-option.confusion {
-    visibility: hidden;
+	/*display: none;*/
+	display: none !important;
 }
 
 .topic-list .type-option.question {
@@ -270,8 +271,8 @@
 }
 
 .editor-tool .type-option.example {
-    background-color: green;
-	visibility: hidden;
+	display: none !important;
+	/*display: none;*/
 }
 
 .window-view-content .type-option.example {
@@ -288,7 +289,8 @@
 }
 
 .window-view-content .type-option.summary {
-    visibility: hidden;
+    display: none !important;
+	/*display: none;*/
 }
 
 .topic-list .type-option.custom {
@@ -328,7 +330,7 @@
 }
 
 .window-view-content .type-option.explain {
-    visibility: hidden;
+    display: none !important;
 }
 
 .topic-list .type-option.debug {
@@ -337,7 +339,7 @@
 
 .editor-tool .type-option.debug {
 	/*background-color: #EE82EE;*/
-	visibility: hidden;
+	display: none !important;
 }
 
 .window-view-content .type-option.debug {
@@ -345,11 +347,11 @@
 }
 
 .type-component .type-menu {
-    background-color: #EEE;
+    /*background-color: #EEE;
     border-bottom: 1px solid #555;
     border-left: 1px solid #AAA;
     border-right: 1px solid #555;
-    border-top: 1px solid #AAA;
+    border-top: 1px solid #AAA;*/
     cursor: default;
     width: 75px;
     z-index: 4;
