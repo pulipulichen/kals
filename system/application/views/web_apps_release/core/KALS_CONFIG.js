@@ -29,7 +29,7 @@ DEFAULT_KALS_CONFIG = {
      * 工具列左方的顯示內容
      * @type {string} HTML語法
      */
-    logo: "~CRAS~",
+    logo: "KALS",
     
     imp: " 重要 ",
     

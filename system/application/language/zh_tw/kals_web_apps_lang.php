@@ -163,7 +163,7 @@ $lang['web_apps.window.password_change.submit.error.password_confirm_empty'] = '
 $lang['web_apps.window.filter.heading'] = '請勾選要顯示的標註';
 $lang['web_apps.window.filter.nav_heading'] = '標註顯示';
 $lang['web_apps.window.filter.content.option.my'] = '我的標註';
-$lang['web_apps.window.filter.content.option.navigation'] = '推薦的標註';
+$lang['web_apps.window.filter.content.option.navigation'] = '所有的標註';
 
 
 /**
@@ -277,7 +277,7 @@ $lang['web_apps.window.view.heading'] = '瀏覽討論';
  */
 $lang['web_apps.recommend_tooltip.heading'] = '有些建議給您！';
 $lang['web_apps.recommend_tooltip.recommend_by.heading1'] = '建議您參考';
-$lang['web_apps.recommend_tooltip.recommend_by.heading2'] = '推薦的標註(用綠字標示)';
+$lang['web_apps.recommend_tooltip.recommend_by.heading2'] = '所有的標註(用綠字標示)';
 $lang['web_apps.recommend_tooltip.recommend_by.heading3'] = '：';
 $lang['web_apps.recommend_tooltip.submit.heading'] = '根據這個建議，您是否會想要：';
 $lang['web_apps.recommend_tooltip.submit.accept_delete'] = '贊成，請刪除我的標註，讓我重寫';

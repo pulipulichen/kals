@@ -686,9 +686,9 @@ class Annotation_getter extends Web_apps_controller {
             $score_type = 4;*/
             
     		$score_type = 1;
-            if ($score < 0.6)
+            if ($score < 0)
                 $score_type = 1;
-            else if ($score >= 0.6 && $score < 4)
+            else if ($score >= 0 && $score < 4)
                 $score_type = 2;
             else if ($score >= 4 && $score < 6)
                 $score_type = 3;
