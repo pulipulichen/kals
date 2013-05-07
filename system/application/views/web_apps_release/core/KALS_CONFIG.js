@@ -179,7 +179,16 @@ DEFAULT_KALS_CONFIG = {
         resize_enabled: false,
         startupFocus: false,
         uiColor : '#CB842E'
-    }
+    },
+	//標註列表設定
+	annotation_list: {
+		//筆記顯示設定
+		note: {
+			simple_max_length: 150,
+			//允許顯示的HTML標籤
+			allow_html_tags: ["a", "img", "iframe"]
+		}
+	}
 };
 
 if (typeof(KALS_CONFIG) != 'undefined')
