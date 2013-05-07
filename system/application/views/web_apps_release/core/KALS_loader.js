@@ -440,7 +440,7 @@ this.load_scripts_orderly = function (_scripts, _callback) {
         _other_scripts[(_i-1)] = _scripts[_i];
     }
         
-    console.log('[KALS] _other_scripts length:' + _other_scripts.length);
+    //console.log('[KALS] _other_scripts length:' + _other_scripts.length);
     
     //this.load_scripts([_script], function () {
     this.insert_scripts([_script], function () {

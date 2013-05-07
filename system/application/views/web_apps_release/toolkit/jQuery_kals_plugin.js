@@ -2250,8 +2250,14 @@ jQuery.decodeURIComponent = function (_str) {
         _result = decodeURIComponent(_str);
     }
     */
-    _str = $.str_replace("%", "%25", _str);
-    _result = decodeURIComponent(_str);
+    //_str = $.str_replace("%", "%25", _str);
+	try {
+		_result = decodeURIComponent(_str);
+	}
+	catch (e) {
+		_str = $.str_replace("%", "%25", _str);
+		_result = decodeURIComponent(_str);
+	}
     return _result;
 };
 

@@ -295,7 +295,11 @@ Annotation_param.prototype.import_json = function (_json) {
         if (typeof(_json[_attr]) != 'undefined') {
             var _value = _json[_attr];
             if (_attr == 'note') {
+				//$.test_msg("Annotation_param.import_json Note 1", _value);
+				_value = $.decodeURIComponent(_value);
+				//$.test_msg("Annotation_param.import_json Note 2", _value);
 				_value = unescape(_value);
+				//$.test_msg("Annotation_param.import_json Note 3", _value);
 			}
 			else 
 				if (_attr == 'policy_type' && $.is_number(_value)) {
