@@ -43,8 +43,7 @@ Context_custom_type.prototype._type_list = {};
  * 初始化，從KALS_CONFIG載入資料
  */
 Context_custom_type.prototype.initialize = function () {
-    if (typeof(KALS_CONFIG.annotation_custom_type) != 'undefined')
-    {
+    if (typeof(KALS_CONFIG.annotation_custom_type) != 'undefined') {
         var _custom_type = KALS_CONFIG.annotation_custom_type;
         
         for (var _type_name in _custom_type)
@@ -116,8 +115,7 @@ Context_custom_type.prototype.load_id = function () {
 Context_custom_type.prototype.set_type_id = function (_type_id_data) {
     
     if (typeof(_type_id_data) == 'object'
-        && _type_id_data != null)
-    {
+        && _type_id_data != null) {
         for (var _type_name in _type_id_data)
         {
             if (typeof(this._type_list[_type_name]) == 'undefined')
@@ -136,8 +134,7 @@ Context_custom_type.prototype.set_type_id = function (_type_id_data) {
  */
 Context_custom_type.prototype.get_type_name_list = function () {
     var _type_name_list = [];
-    for (var _type_name in this._type_list)
-    {
+    for (var _type_name in this._type_list) {
         _type_name_list.push(_type_name);
     }
     return _type_name_list;
@@ -149,8 +146,7 @@ Context_custom_type.prototype.get_type_name_list = function () {
  */
 Context_custom_type.prototype.get_type_list = function () {
     var _type_list = [];
-    for (var _type_name in this._type_list)
-    {
+    for (var _type_name in this._type_list) {
         _type_list.push(this._type_list[_type_name]);
     }
     return _type_list;
@@ -164,12 +160,10 @@ Context_custom_type.prototype.get_type_list = function () {
 Context_custom_type.prototype.filter_id = function (_type_name) {
     var _type_id = null;
     
-    if ($.is_number(_type_name))
-    {
+    if ($.is_number(_type_name)) {
         _type_id = _type_name;
     }
-    else
-    {
+    else {
         var _type = this._type_list[_type_name];
         _type_id = _type.get_id();
     }
@@ -194,7 +188,7 @@ Context_custom_type.prototype.length = function () {
 Context_custom_type.prototype.setup_css = function () {
     
     //如果沒有要自訂的標註，那就免啦
-    if (this.length() == 0)
+    if (this.length() === 0)
         return this;
     
     var _style_manager = KALS_context.style;
@@ -203,8 +197,7 @@ Context_custom_type.prototype.setup_css = function () {
     
     _style_manager.create_style(_style_name);
     
-    for (var _type_name in this._type_list)
-    {
+    for (var _type_name in this._type_list) {
         var _type_param = this._type_list[_type_name];
         
         var _selector = '.' + _type_param.get_my_classname();
@@ -230,13 +223,11 @@ Context_custom_type.prototype.find_type = function (_type_name) {
     
     var _basic_id = Annotation_type_param.filter_basic_id(_type_name);
     
-    if ($.is_number(_basic_id))
-    {
+    if ($.is_number(_basic_id)) {
         //表示是基本資料
         _output_type = new Annotation_type_param(_basic_id);
     }
-    else if ($.is_number(_type_name))
-    {
+    else if ($.is_number(_type_name)) {
         var _target_type_id = _type_name;
         //$.test_msg('Context_custom_type.find_type ready search', this._type_list);
         for (var _t in this._type_list)
@@ -251,18 +242,17 @@ Context_custom_type.prototype.find_type = function (_type_name) {
             }
         }
         
-        if (_output_type == null)
+        if (_output_type === null)
         {
             _output_type = new Annotation_type_param(_target_type_id);
         }
     }
-    else
-    {
+    else {
         if (typeof(this._type_list[_type_name]) != 'undefined')
             _output_type = this._type_list[_type_name];
     }
     
-    //$.test_msg('Context_custom_type.find_type', [_type_name, (_output_type == null)]);
+    //$.test_msg('Context_custom_type.find_type', [_type_name, (_output_type === null)]);
     
     return _output_type;
 };
@@ -309,8 +299,7 @@ Context_custom_type.prototype.get_type_option = function (_type_data) {
     else
         _type_param = this.find_type(_type_data);
     
-    if (_type_param == null)
-    {
+    if (_type_param === null) {
         _type_param = this.add_custom_type(_type_data);
     }
     
@@ -318,15 +307,14 @@ Context_custom_type.prototype.get_type_option = function (_type_data) {
     
     //設置外觀
     _option.addClass(_type_param.get_classname());
-    if (_type_param.is_basic() == false)
+    if (_type_param.is_basic() === false)
         _option.attr('style', _type_param.get_option_style());
     
     //接下來是內文的部份
     var _type_name = _type_param.get_type_name();
     _option.html(_type_name);
     
-    if (_type_param.is_basic())
-    {
+    if (_type_param.is_basic()) {
         var _type_lang_header = Type_menu.prototype._type_lang_header;
         var _lang = new KALS_language_param(
             _type_name,

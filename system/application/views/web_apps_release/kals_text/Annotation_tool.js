@@ -16,8 +16,7 @@ function Annotation_tool(_selector) {
     Overlay_modal.call(this);
     
     
-    if ($.isset(_selector))
-    {
+    if ($.isset(_selector)) {
         this._text = _selector;
         //this.child('list', new Topic_list);
         
@@ -130,8 +129,7 @@ Annotation_tool.prototype._$create_ui = function ()
         handle: 'div.annotation-tool-header'
     };
     
-    if ($('body').height() > _ui.height() + 100)
-    {
+    if ($('body').height() > _ui.height() + 100) {
         _draggable_config.containment = 'parent';
     }
     
@@ -139,7 +137,7 @@ Annotation_tool.prototype._$create_ui = function ()
     
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
-        if ($.is_small_height() == false)
+        if ($.is_small_height() === false)
             _body_top = KALS_toolbar.get_ui().height();
         if (_ui.offset().top < _body_top)
             _ui.css('top', _body_top + 'px'); 
@@ -324,14 +322,12 @@ Annotation_tool.prototype.setup_position = function () {
     //$.test_msg('Annotation_tool.setup_position()');
     
     var _ui = this.get_ui();
-    if ($.is_small_width())
-    {
+    if ($.is_small_width()) {
         _ui.css('top', '0px');
         _ui.css('left', '0px');
         return this;
     }
-    else
-    {
+    else {
         var _mode = 'foot';
         
         var _tool_height = _ui.height();
@@ -347,7 +343,7 @@ Annotation_tool.prototype.setup_position = function () {
         //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
         
         //如果沒有選取，就不會有_selection_bottom，也就不用定位
-        if (_selection_bottom == null)
+        if (_selection_bottom === null)
         {
             _ui.css('top', '0px');
             _ui.css('left', '0px');
@@ -427,7 +423,7 @@ Annotation_tool.prototype.setup_position = function () {
         
         if (_t < 0)
             _t = 0;
-        else if ($.is_small_height() == false && _t < KALS_toolbar.get_ui().height())
+        else if ($.is_small_height() === false && _t < KALS_toolbar.get_ui().height())
             _t = KALS_toolbar.get_ui().height();
         
         _ui.css('top', _t + 'px')
@@ -469,8 +465,7 @@ Annotation_tool.prototype.setup_list_menu_tooltip = function () {
 Annotation_tool.prototype.view = null;
 
 Annotation_tool.prototype.setup_view = function () {
-    if ($.is_null(this.view))
-    {
+    if ($.is_null(this.view)) {
         var _view = new Window_view;
         this.child('view', _view);
     }
@@ -493,8 +488,7 @@ Annotation_tool.prototype._setup_recommend_hint = function () {
 
 Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _callback) {
     
-    if ($.is_string(_annotation_id))
-    {
+    if ($.is_string(_annotation_id)) {
         try
         {
             _annotation_id = parseInt(_annotation_id);
@@ -504,20 +498,18 @@ Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _cal
         }
     }        
     
-    if ($.is_null(_annotation_id))
-    {
+    if ($.is_null(_annotation_id)) {
         $.trigger_callback(_callback);
         return this;
     }
-    else if ($.is_class(_annotation_id, 'Annotation_param'))
-    {
+    else if ($.is_class(_annotation_id, 'Annotation_param')) {
         $.trigger_callback(_callback, _annotation_id);
         return this;
     }
     
     var _load_callback = function (_param) {
         
-        if (_param != false)
+        if (_param !== false)
         {
             _param = new Annotation_param(_param);
             $.trigger_callback(_callback, _param);    
@@ -563,8 +555,7 @@ Annotation_tool.prototype.set_editing_param = function (_editing_param) {
 
 Annotation_tool.prototype.check_editing = function () {
     
-    if ($.isset(this._editing_param))
-    {
+    if ($.isset(this._editing_param)) {
         var _list_item = this.list.focus(this._editing_param, false);
         
         if ($.isset(_list_item))

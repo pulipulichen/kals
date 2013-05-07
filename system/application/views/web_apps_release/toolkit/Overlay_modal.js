@@ -113,8 +113,7 @@ Overlay_modal.prototype._$get_config = function () {
  */
 Overlay_modal.prototype.open = function (_callback) {
     
-    if (this.is_opened() == false)
-    {
+    if (this.is_opened() === false) {
         var _ui = this.get_ui();
         var _this = this;
         
@@ -153,8 +152,7 @@ Overlay_modal.prototype.open = function (_callback) {
             }
         }
     }
-    else
-    {
+    else {
         $.trigger_callback(_callback);
     }
     
@@ -166,8 +164,7 @@ Overlay_modal.prototype.open = function (_callback) {
  * @param {function|null} _callback
  */
 Overlay_modal.prototype.close = function (_callback) {
-    if (this._$closable && this.is_opened())
-    {
+    if (this._$closable && this.is_opened()) {
         var _ui = this.get_ui();
         
         var _this = this;
@@ -225,13 +222,12 @@ Overlay_modal.prototype._mask_z_index = 9998;
  * @param {Object} _callback
  */
 Overlay_modal.prototype.expose = function (_callback) {
-    if (this._$exposable == false)
+    if (this._$exposable === false)
         return this;
     
     var _ui = this.get_ui();
     
-    if ($.isset(_ui))
-    {
+    if ($.isset(_ui)) {
         _ui.expose({
             color: '#333333',
             loadSpeed: 200,
@@ -254,13 +250,12 @@ Overlay_modal.prototype.expose = function (_callback) {
  * @param {function} _callback
  */
 Overlay_modal.prototype.cover = function (_callback) {
-    if (this._$exposable == false)
+    if (this._$exposable === false)
         return this;
     
     var _ui = this.get_ui();
     
-    if ($.isset(_ui))
-    {
+    if ($.isset(_ui)) {
         _ui.css('z-index', (this._mask_z_index-1));
     }
     

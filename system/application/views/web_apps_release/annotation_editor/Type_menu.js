@@ -51,18 +51,16 @@ Type_menu.prototype._$create_ui = function ()
     
     var _options = this._type_options;
     
-    for (var _i in _options)
-    {
+    for (var _i in _options) {
         var _type = _options[_i];
         this._setup_type_ui(_ui, _type);
     }
     
     var _custom_type_list = KALS_context.custom_type.get_type_list();
     //$.test_msg('Type_menu._$create_ui custom_type_lis', _custom_type_list);
-    for (var _j in _custom_type_list)
-    {
+    for (var _j in _custom_type_list) {
         //$.test_msg('Type_menu._$create_ui custom_type_lis', _j);
-        var _type = _custom_type_list[_j];
+        _type = _custom_type_list[_j];
         this._setup_type_ui(_ui, _type);
     } 
     
@@ -102,13 +100,12 @@ Type_menu.prototype.create_type_option = function (_type) {
     var _classname;
     var _annotation_type;
     
-    if ($.is_string(_type))
-    {
+    if ($.is_string(_type)) {
         _classname = _type;
         _annotation_type = _type;
         
         var _lang_index = this._type_lang_header + _type;
-        if (this.enable_custom_name == false
+        if (this.enable_custom_name === false
             && _type == 'custom')
         {
             _lang_index = this._type_lang_header + 'other';
@@ -121,8 +118,7 @@ Type_menu.prototype.create_type_option = function (_type) {
         
         KALS_context.lang.add_listener(_type_ui, _type_lang);
     }
-    else if ($.is_class(_type, 'Annotation_type_param'))
-    {
+    else if ($.is_class(_type, 'Annotation_type_param')) {
         _classname = _type.get_classname();
         _annotation_type = _type.get_name();
         var _type_name = _type.get_name();
@@ -160,11 +156,10 @@ Type_menu.prototype.create_type_hint = function (_type) {
         .addClass(this._hint_classname);
     var _classname = '';
     
-    if ($.is_string(_type))
-    {
+    if ($.is_string(_type)) {
         _classname = _type;
         var _hint_lang;
-        if (this.enable_custom_name == false
+        if (this.enable_custom_name === false
             && _type == 'custom')
         {
             _hint_lang = new KALS_language_param(
@@ -181,8 +176,7 @@ Type_menu.prototype.create_type_hint = function (_type) {
         }
         KALS_context.lang.add_listener(_hint_ui, _hint_lang);
     }
-    else if ($.is_class(_type, 'Annotation_type_param'))
-    {
+    else if ($.is_class(_type, 'Annotation_type_param')) {
         _classname = _type.get_classname();
         _hint_ui.html(_type.get_hint());
     }
@@ -202,8 +196,7 @@ Type_menu.prototype._hint_tooltip_config = {
 Type_menu.prototype.create_type_option_list = function () {
     
     var _list = {};
-    for (var _i in this._type_options)
-    {
+    for (var _i in this._type_options) {
         var _type = this._type_options[_i];
         var _option = this.create_type_option(_type);
         _list[_type] = _option;
@@ -212,11 +205,10 @@ Type_menu.prototype.create_type_option_list = function () {
     //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
     
     var _custom_type_list = KALS_context.custom_type.get_type_list();
-    for (var _j in _custom_type_list)
-    {
-        var _type = _custom_type_list[_j];
+    for (var _j in _custom_type_list) {
+        _type = _custom_type_list[_j];
         var _type_name = _type.get_name();
-        var _option = this.create_type_option(_type);
+        _option = this.create_type_option(_type);
         _list[_type_name] = _option;
     } 
     
@@ -242,7 +234,7 @@ Type_menu.prototype.setup_type_option = function (_type_ui) {
         
         //$.test_msg('Type_menu.setup_option()', _type);
         
-        if (_this.enable_custom_name == true
+        if (_this.enable_custom_name === true
             && _type == 'custom')
         {
             _this.open_custom_name_dialog();
@@ -287,27 +279,29 @@ Type_menu.prototype._$get_config = function () {
     
     var _config = Tooltip_modal.prototype._$get_config.call(this, _selector);
     
-    _config['position'] = 'bottom right';
-    _config['offset'] = [-50, -13];
-    _config['events'] = {def: 'click mouseover, mouseleave' };
+    _config.position = 'bottom right';
+    _config.offset = [-50, -13];
+    _config.events = {def: 'click mouseover, mouseleave' };
     
     var _onbeforeshow;
-    if (typeof(_config['onBeforeShow']) == 'function')
-        _onbeforeshow = _config['onBeforeShow'];
+    if (typeof(_config.onBeforeShow) == 'function') {
+		_onbeforeshow = _config.onBeforeShow;
+	}
         
     var _this = this;
-    _config['onBeforeShow'] = function () {
+    _config.onBeforeShow = function () {
         
         setTimeout(function () {
             _this.setup_position();    
         }, 10);
         
         
-        if ($.is_function(_onbeforeshow))
-            _onbeforeshow.call(this);
+        if ($.is_function(_onbeforeshow)) {
+			_onbeforeshow.call(this);
+		}
     };
     
-    _config['relative'] = true;
+    _config.relative = true;
     
     return _config;
     
@@ -321,30 +315,33 @@ Type_menu.prototype.setup_position = function () {
     var _top, _left;
     
     //上極限
-    if (_ui.offset().top < 0)
-        _top = 0;
+    if (_ui.offset().top < 0) {
+		_top = 0;
+	}
     
     //$.test_msg('Type_menu.setup_position()', _ui.offset().top);
     
-    if ($.isset(_top))
-        _ui.css('top', _top + 'px');
+    if ($.isset(_top)) {
+		_ui.css('top', _top + 'px');
+	}
     
     //左右
     var _ui_left = _ui.offset().left;
     var _ui_right = _ui_left + _ui.width();
     
-    if (_ui_right > $('body').width())
-    {
+    if (_ui_right > $('body').width()) {
         var _trigger = this.get_trigger();
         var _trigger_left = _trigger.offset().left;
         _left = _trigger_left - _ui.width() - 10;
         
-        if (_left < 0)
-            _left = null;
+        if (_left < 0) {
+			_left = null;
+		}
     }
     
-    if ($.isset(_left))
-        _ui.css('left', _left + 'px');
+    if ($.isset(_left)) {
+		_ui.css('left', _left + 'px');
+	}
 };
 
 // --------
@@ -375,8 +372,7 @@ Type_menu.prototype.open_custom_name_dialog = function () {
     
     var _dialog = this._custom_name_dialog;
     var _this = this;
-    if (_dialog == null)
-    {
+    if (_dialog === null) {
         _dialog = new Dialog_modal();
         
         _dialog.set_heading(new KALS_language_param(
@@ -413,10 +409,10 @@ Type_menu.prototype.open_custom_name_dialog = function () {
 
 Type_menu.prototype.filter_type = function (_type) {
     
-    for (var _i in this._type_options)
-    {
-        if (_type == this._type_options[_i])
-            return _type;
+    for (var _i in this._type_options) {
+        if (_type == this._type_options[_i]) {
+			return _type;
+		}
     }
     
     return 'custom';

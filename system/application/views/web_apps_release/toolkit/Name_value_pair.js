@@ -47,15 +47,13 @@ Name_value_pair.prototype._indicator = '=';
  */
 Name_value_pair.prototype.unserialize = function (_string_data)
 {
-    if (false == $.is_string(_string_data))
-    {
+    if (false == $.is_string(_string_data)) {
         return this.reset();
     }
     
     var _string_array = _string_data.split(this._splitter);
     var _object_data = {};
-    for (var _i in _string_array)
-    {
+    for (var _i in _string_array) {
         var _data = _string_array[_i];
         var _pos = _data.indexOf(this._indicator);
         
@@ -82,8 +80,7 @@ Name_value_pair.prototype.serialize = function ()
     var _object_data = this._data;
     var _string_data = '';
     
-    for (var _key in _object_data)
-    {
+    for (var _key in _object_data) {
         var _value = _object_data[_key];
         
         _string_data = _string_data + _key + this._indicator + _value + this._splitter;
@@ -109,12 +106,10 @@ Name_value_pair.prototype.to_string = function () {
  * @type {Object}
  */
 Name_value_pair.prototype.get_field = function (_key, _default) {
-    if (typeof(this._data[_key]) != undefined)
-    {
+    if (typeof(this._data[_key]) != undefined) {
         return this._data[_key];
     }
-    else
-    {
+    else {
         return _default;
     }
 };

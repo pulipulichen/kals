@@ -17,8 +17,7 @@ jQuery.fn.scrollIntoView = function() {
     
     //為了避免被toolbar遮掉
     var _top_padding = KALS_toolbar.get_ui().height() + window.pageYOffset;
-    if ($(el).offset().top < _top_padding)
-    {
+    if ($(el).offset().top < _top_padding) {
         //$.test_msg('jQuery.fn.scrollIntoView()', _top_padding);
         window.scrollTo(_view_left, _top_padding);
     }
@@ -70,7 +69,7 @@ jQuery.fn.astound_droppable = function(dropFunction) {
                 $(this).css('background-color', 'pink'); 
             },
             drop: function(event,ui) { 
-                if ((this == study.currentDropTarget) || (study.currentDropTarget == '')) {
+                if ((this == study.currentDropTarget) || (study.currentDropTarget === '')) {
                     dropFunction(event,ui,$(this)); 
                 }
                 $(this).css('background-color',''); 

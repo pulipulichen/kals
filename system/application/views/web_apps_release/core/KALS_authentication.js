@@ -119,8 +119,7 @@ KALS_authentication.prototype.reset_auth_data = function () {
     };
     
     //如果有KALS_CONFIG設定的話
-    if (typeof(KALS_CONFIG.user_email) == 'string')
-    {
+    if (typeof(KALS_CONFIG.user_email) == 'string') {
         this._auth_data['email'] = KALS_CONFIG.user_email;
         this._auth_data['embed'] = true;
     }
@@ -140,24 +139,20 @@ KALS_authentication.prototype.config_is_embed = function () {
 KALS_authentication.prototype._get_error_message = function () {
     var _lang_param;
     
-    if (this._auth_data.email == null 
-        && (this._auth_data.embed == false && this._auth_data.password == null))
-    {
+    if (this._auth_data.email === null 
+        && (this._auth_data.embed === false && this._auth_data.password === null)) {
         _lang_param = new KALS_language_param('Email and Password are empty.'
             , 'authentication.error.message_empty_email_and_password');
     }   
-    else if (this._auth_data.email == null)
-    {
+    else if (this._auth_data.email === null) {
         _lang_param = new KALS_language_param('Email is empty.'
             , 'authentication.error.message_empty_email');
     }   
-    else if (this._auth_data.embed == false && this._auth_data.password == null)
-    {
+    else if (this._auth_data.embed === false && this._auth_data.password === null) {
         _lang_param = new KALS_language_param('Password is empty.'
             , 'authentication.error.message_empty_password');
     }   
-    else
-    {
+    else {
         _lang_param = new KALS_language_param('System error.'
             , 'authentication.error.message');
     }    
@@ -178,8 +173,7 @@ KALS_authentication.prototype._get_error_message = function () {
  */
 KALS_authentication.prototype.login = function (_return_error, _callback) {
     
-    if ($.is_function(_return_error) && $.is_null(_callback))
-    {
+    if ($.is_function(_return_error) && $.is_null(_callback)) {
         _callback = _return_error;
         _return_error = false;
     }
@@ -188,9 +182,8 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
     var _this = this;
     var _heading, _message;
         
-    if (_data.email == null
-        || (_data.embed == false && _data.password == null))
-    {   
+    if (_data.email === null
+        || (_data.embed === false && _data.password === null)) {   
         _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
         _message = this._get_error_message();
         
@@ -288,8 +281,7 @@ KALS_authentication.prototype.encrypt_login = function () {
  */
 KALS_authentication.prototype.register = function (_return_error, _callback) {
     
-    if ($.is_function(_return_error) && $.is_null(_callback))
-    {
+    if ($.is_function(_return_error) && $.is_null(_callback)) {
         _callback = _return_error;
         _return_error = false;
     }
@@ -298,14 +290,12 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
     var _this = this;
     var _heading, _message;
         
-    if (_data.email == null)
-    {
+    if (_data.email === null) {
         _heading = new KALS_language_param('REGISTER ERROR', 'authentication.register_error.heading');
         _message = this._get_error_message();
         KALS_util.alert(_heading, _message, function () { _this.show_register_form(); });
     }
-    else
-    {
+    else {
         this._$load_url = this._register_url;
         
         this.load(_data, function (_this, _data) {
@@ -376,8 +366,7 @@ KALS_authentication.prototype.show_register_form = function (_callback) {
  */
 KALS_authentication.prototype.logout = function (_return_error, _callback) {
     
-    if ($.is_function(_return_error) && $.is_null(_callback))
-    {
+    if ($.is_function(_return_error) && $.is_null(_callback)) {
         _callback = _return_error;
         _return_error = false;
     }
@@ -414,7 +403,7 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
                 });
             }
         }
-        else //if (_data == true)
+        else //if (_data === true)
         {
             /**
              * 由於登出後回傳資料有所修改，原本的登出會有bug
@@ -467,7 +456,7 @@ KALS_authentication.prototype.deregister = function (_callback) {
                 KALS_window.setup_window(_content); 
             });
         }
-        else if (_data == true)
+        else if (_data === true)
         {
             _this._is_login = false;
             
@@ -498,8 +487,7 @@ KALS_authentication.prototype.check_login = function (_callback) {
     
     var _embed_login = this.config_is_embed();
     
-    if (_embed_login == false)
-    {
+    if (_embed_login === false) {
         //如果不是預設帳號登入，則改成check_login
         //20111105 Pudding Chen
         this._$load_url = this._check_login_url;
@@ -515,7 +503,7 @@ KALS_authentication.prototype.check_login = function (_callback) {
         
         this.load(function (_this, _data) {
             
-            if (typeof(_data.login) == 'boolean' && _data.login == true)
+            if (typeof(_data.login) == 'boolean' && _data.login === true)
             {
                 _this._is_login = true;
             }
@@ -532,8 +520,7 @@ KALS_authentication.prototype.check_login = function (_callback) {
             }
         });    //this.load(function (_this, _data) {
     }
-    else
-    {
+    else {
         this.login(false, _callback);
     }
     

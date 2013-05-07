@@ -22,8 +22,7 @@ function Annotation_param(_param) {
     this.type = new Annotation_type_param();
     this.navigation_level = 0;
     
-    if ($.isset(_param))
-    {
+    if ($.isset(_param)) {
         this.import_json(_param);
     }
 }
@@ -166,7 +165,7 @@ Annotation_param.prototype.is_respond = function () {
  */
 Annotation_param.prototype.is_my_annotation = function () {
     
-    if (this.user == null)
+    if (this.user === null)
         return false;
     
     var _user_id = KALS_context.user.get_id();
@@ -180,7 +179,7 @@ Annotation_param.prototype.is_my_annotation = function () {
  * @type {boolean}
  */
 Annotation_param.prototype.has_recommend = function () {
-    return !(this.recommend == null);
+    return !(this.recommend === null);
 };
 
 Annotation_param.prototype._plain_types = [
@@ -222,8 +221,7 @@ Annotation_param.prototype.export_json = function () {
     var _json = {};
     
     var _plain_types = this._plain_types;
-    for (var _i in _plain_types)
-    {
+    for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
         if ($.isset(this[_attr]))
         {
@@ -255,8 +253,7 @@ Annotation_param.prototype.export_json = function () {
     
     var _param_types = this._param_types;
     
-    for (var _i in _param_types)
-    {
+    for (var _i in _param_types) {
         var _attr = _param_types[_i];
         //$.test_msg('Annotation_param.export_json', [_attr, ($.isset(this[_attr]))]);
         
@@ -298,8 +295,7 @@ Annotation_param.prototype.import_json = function (_json)
 {
     //取得Annotation的note時，也記得要先做urlencode()跟JavaScript端的decodeURIComponent()
     var _plain_types = this._plain_types;
-    for (var _i in _plain_types)
-    {
+    for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
         if (typeof(_json[_attr]) != 'undefined')
         {
@@ -326,8 +322,7 @@ Annotation_param.prototype.import_json = function (_json)
     }
     
     var _param_types = this._param_types;
-    for (var _i in _param_types)
-    {
+    for (var _i in _param_types) {
         var _attr = _param_types[_i];
         if (typeof(_json[_attr]) != 'undefined')
         {

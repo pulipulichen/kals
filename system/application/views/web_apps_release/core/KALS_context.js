@@ -19,12 +19,11 @@ KALS_context.initialize = function () {
     //設定基本網址
     if (typeof(KALS_loader) != 'undefined')
         this.base_url = KALS_loader.get_base_url();
-    else
-    {
+    else {
         // TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
         this.setup_base_url();
     }
-    if (this.base_url == null || this.base_url == '')
+    if (this.base_url === null || this.base_url === '')
         this.base_url = 'http://192.168.11.2/kals/web_apps/';
     //$.test_msg('KALS_context() base url', this.base_url);
     
@@ -90,8 +89,7 @@ KALS_context.setup_base_url = function () {
     //$.test_msg('KALS_context.setup_base_url()', _scripts.length);
     
     var _needle = '/web_apps/';
-    for (var _i in _scripts)
-    {
+    for (var _i in _scripts) {
         var _src = _scripts.eq(_i).attr('src');
         if (typeof(_src) != 'string')
             continue;
@@ -115,12 +113,10 @@ KALS_context.setup_base_url = function () {
  * @type {string}
  */
 KALS_context.get_base_url = function (_file) {
-    if ($.is_null(_file))
-    {
+    if ($.is_null(_file)) {
         _file = '';
     }
-    else if ($.is_array(_file))
-    {
+    else if ($.is_array(_file)) {
         var _temp = '';
         for (var _i in _file)
         {
@@ -135,13 +131,13 @@ KALS_context.get_base_url = function (_file) {
         _file = _temp;
     }
     
-    if (this.base_url == null)
+    if (this.base_url === null)
         return _file;
     
     if ($.is_string(_file) && $.starts_with(_file, '/'))
         _file = _file.substring(1, _file.length);
     
-    if ($.ends_with(this.base_url, '/') == false)
+    if ($.ends_with(this.base_url, '/') === false)
         this.base_url = this.base_url + '/';
     
     var _url = this.base_url + _file;
@@ -163,7 +159,7 @@ KALS_context.get_image_url = function (_img) {
     if ($.is_string(_img) && $.starts_with(_img, '/'))
         _img = _img.substring(1, _img.length);
     
-    if (this.base_url == null)
+    if (this.base_url === null)
         return _img;
         
     var _img_url = this.get_base_url();
@@ -174,7 +170,7 @@ KALS_context.get_image_url = function (_img) {
     _img_url = _img_url.substring(0, _pos + 1);
     _img_url = _img_url + 'images/' + _img;
     
-    if (_img == '')
+    if (_img === '')
         return _img_url;
     else
         return $('<img src="'+_img_url+'" border="0" />');
@@ -289,8 +285,7 @@ KALS_context._text_selector = null;
  */
 KALS_context.check_text_selector = function (_callback) {
     
-    if (this._text_selector == null)
-    {
+    if (this._text_selector === null) {
         // TODO 2010.10.16 KALS_context._text_selector：測試時設置預設值
         //this._text_selector = '#selectable';
         
@@ -312,7 +307,7 @@ KALS_context.check_text_selector = function (_callback) {
             */
             this._text_selector = $('#articleContent').addClass('selectable-text');
         }
-        else if ($('.selectable-text').length == 0)
+        else if ($('.selectable-text').length === 0)
         {
             /*
             var _text_container = $('<div></div>')
@@ -351,7 +346,7 @@ KALS_context.check_text_selector = function (_callback) {
                 return _text_container;
             };
             
-            if (KALS_CONFIG.annotation_scope_selector == null)
+            if (KALS_CONFIG.annotation_scope_selector === null)
             {
                 _text_container = _default_scope();
             }
@@ -360,7 +355,7 @@ KALS_context.check_text_selector = function (_callback) {
                 var _scope_selector = KALS_CONFIG.annotation_scope_selector;
                 _scope_content = $(_scope_selector);
                 
-                if (_scope_content.length == 0)
+                if (_scope_content.length === 0)
                     _text_container = _default_scope();
                 else if (_scope_content.length > 1)
                     _scope_content = _scope_content.filter(':first');

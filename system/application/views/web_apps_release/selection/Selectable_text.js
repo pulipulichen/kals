@@ -17,8 +17,7 @@ function Selectable_text(_selector) {
     this.locks = [];
     this.child('tooltip', new Select_tooltip());
     
-    if ($.isset(_selector))
-    {
+    if ($.isset(_selector)) {
         this.set_text(_selector);
     }
 }
@@ -45,8 +44,7 @@ Selectable_text.prototype.set_text = function (_selector) {
     this._text = _selector;
     
     //調整速度
-    if ($.browser.msie)
-    {
+    if ($.browser.msie) {
         this.excute_interval = this.excute_interval_ie;
     }
     return this;
@@ -197,8 +195,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
      * @type {Array}
      */
     var _child_nodes = _element.attr('childNodes');
-    if (typeof(_child_nodes) == 'undefined')
-    {
+    if (typeof(_child_nodes) == 'undefined') {
         //$.test_msg('Selectable_text.setup_selectable_element() callback');
         
         if ($.is_function(_callback))
@@ -242,7 +239,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         }
 		
 		if (_child_obj.nodeName != '#text' &&
-            _this.element_has_class(_child_obj, _para_classname) == false)
+            _this.element_has_class(_child_obj, _para_classname) === false)
         {
             var _check_word_count = _this.word_count;
             
@@ -263,7 +260,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 }
 				
                 _i++;
-                if (_i % _batch_excute == 0)
+                if (_i % _batch_excute === 0)
                 {
                     _this.excute_timer = setTimeout(function () 
                     {
@@ -312,18 +309,18 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 if (_s < _text.length - 1) 
                     _t_next = _text.substr(parseInt(_s)+1, 1);
                 
-    			if ($.match_english(_t) == true)
+    			if ($.match_english(_t) === true)
     			{	
-    				while ($.match_english(_t_next) == true)
+    				while ($.match_english(_t_next) === true)
     				{
     					_t = _t + _t_next;
     					_s++;
     					_t_next = _text.substr(parseInt(_s)+1, 1);
     				}
     			}
-    			else if ($.match_number(_t) == true)
+    			else if ($.match_number(_t) === true)
     			{
-    				while ($.match_number(_t_next) == true)
+    				while ($.match_number(_t_next) === true)
     				{
     					_t = _t + _t_next;
     					_s++;
@@ -333,20 +330,20 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 
                 var _t_element = null;
                 
-    			if ($.match_space(_t) == false) {
+    			if ($.match_space(_t) === false) {
                     _t_element = _this.create_selectable_word(_this.paragraph_count, _this.word_count, _t);
                     if ($.match_sentence_punctuation(_t))
                     {
                         if ($.match_english_sentence_punctuation(_t))
                         {
-                            if (_t_next == '')
+                            if (_t_next === '')
                             {
                                 $(_t_element).addClass(_sentence_punctuation_class_name);
                             }   
                             else if ($.match_space(_t_next))
                             {
                                 /*
-                                if (_t_prev != '' && $.match_number(_t_prev) == false)
+                                if (_t_prev !== '' && $.match_number(_t_prev) === false)
                                 {
                                     $(_t_element).addClass(_sentence_punctuation_class_name);
                                 }
@@ -396,7 +393,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             $(_child_obj).remove();
             
             _i++;
-            if (_i % _batch_excute == 0)
+            if (_i % _batch_excute === 0)
             {
                 _this.excute_timer = setTimeout(function () 
                 {
@@ -460,7 +457,7 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         
         _i++;
         
-        if (_i % _batch_excute == 0)
+        if (_i % _batch_excute === 0)
         {
             _this.excute_timer = setTimeout(function () {
                 _loop(_i, _callback);
@@ -479,8 +476,7 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
     };
     
     var _this = this;
-    var _loop = function (_i)
-    {
+    var _loop = function (_i) {
         _first_paragraph = _this._text.find('.' + _paragraph_id_prefix + _i + ':first');
         _last_paragraph = _this._text.find('.' + _paragraph_id_prefix + _i + ':last');
         
@@ -523,7 +519,7 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
             
             if (_word.hasClass(_sentence_punctuation_class_name))
             {
-                if (_location == 0)
+                if (_location === 0)
                 {
                     _location = 3;
                 }
@@ -643,8 +639,7 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
     var _para_ary = [];
     
     /*
-    for (var _i = _first_paragraph_id; _i < _last_paragraph_id + 1; _i++)
-    {
+    for (var _i = _first_paragraph_id; _i < _last_paragraph_id + 1; _i++) {
         _length = this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+this.punctuation_classname+'):not(.'+this.sententce_punctuation_classname+')').length;
         
         //$.test_msg(_length);
@@ -708,13 +703,11 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
  */
 Selectable_text.prototype.element_has_class = function (_element, _class_name)
 {
-    if ($.is_object(_element) == false
-        || typeof(_element.className) == 'undefined')
-    {
+    if ($.is_object(_element) === false
+        || typeof(_element.className) == 'undefined') {
         return false;
     }
-    else
-    {
+    else {
         var _class_names = _element.className.split(' ');
         return ($.inArray(_class_name, _class_names) > -1);
     }
@@ -725,13 +718,11 @@ Selectable_text.prototype.element_has_class = function (_element, _class_name)
  * @param {Object} _element
  */
 Selectable_text.prototype.get_element_content = function (_element) {
-    if ($.is_object(_element) == false)
-    {
+    if ($.is_object(_element) === false) {
         return '';
     }
     else if (typeof(_element.nodeValue) != 'undefined'
-        && $.trim(_element.nodeValue) != '')
-    {
+        && $.trim(_element.nodeValue) !== '') {
         //2010.10.15 還是保留空格好了
         //return $.trim(_element.nodeValue);
         return _element.nodeValue;
@@ -797,14 +788,13 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
     
     var _select = KALS_text.selection.select;
     
-    if ($.is_mobile_mode() == false)
-    {
+    if ($.is_mobile_mode() === false) {
         if (typeof(this.locks['word_click']) == 'undefined')
         {
             var _this = this;
 			
 			var _click_evt = function(_callback) {
-                if (_this.initialized == false)
+                if (_this.initialized === false)
                     return this;
                 
                 var _word = $(this);
@@ -905,27 +895,22 @@ Selectable_text.prototype.create_span_word = function(_text)
 Selectable_text.prototype.get_paragraph_id = function(_word)
 { 
     
-    if ($.is_number(_word))
-    {
+    if ($.is_number(_word)) {
         _word = this.word_id_prefix + _word;
     }
-    if ($.is_string(_word))
-    {
+    if ($.is_string(_word)) {
         _word = $('#' + _word);
     }
-    if ($.is_object(_word) && false == $.is_jquery(_word))
-    {
+    if ($.is_object(_word) && false == $.is_jquery(_word)) {
         _word = $(_word);
     }
     
     var _paragraph_class_name = this.paragraph_classname;
     var _paragraph;
-    if (false == _word.hasClass(_paragraph_class_name))
-    {
+    if (false == _word.hasClass(_paragraph_class_name)) {
         _paragraph = _word.parents( '.' + this.paragraph_classname + ':first');
     }
-    else
-    {
+    else {
         _paragraph = _word;
     }
         
@@ -933,8 +918,7 @@ Selectable_text.prototype.get_paragraph_id = function(_word)
         return null;
         
     var _paragraph_class_names = _paragraph.attr('className').split(' ');
-    for (var _i in _paragraph_class_names)
-    {
+    for (var _i in _paragraph_class_names) {
         var _class_name = _paragraph_class_names[_i];
         //$.test_msg('Selectable .get_paragraph_id()', [_class_name, _i, this.paragraph_id_prefix, $.get_prefixed_id(_class_name)]);
         if ($.starts_with(_class_name, this.paragraph_id_prefix))
@@ -954,8 +938,7 @@ Selectable_text.prototype.get_paragraph_id = function(_word)
 Selectable_text.prototype.get_word_id = function (_word)
 
 {
-    if ($.is_object(_word))
-    {
+    if ($.is_object(_word)) {
         if ($.is_jquery(_word))
         {
             _word = _word.attr('id');
@@ -967,8 +950,7 @@ Selectable_text.prototype.get_word_id = function (_word)
     }
        
     var _id_prefix = this.word_id_prefix;
-    if ($.starts_with(_word, _id_prefix))
-    {
+    if ($.starts_with(_word, _id_prefix)) {
         _word = _word.substring(_id_prefix.length, _word.length);
     }
     return parseInt(_word);
@@ -991,12 +973,10 @@ Selectable_text.prototype.get_word_by_index = function(_index) {
 
 Selectable_text.prototype.is_word_next_span = function (_word) {
     var _next = _word.next();
-    if (_next.length == 0)
-    {
+    if (_next.length === 0) {
         return false;
     }
-    else
-    {
+    else {
         return _next.hasClass(this._span_classname);
     }
 };
@@ -1005,12 +985,10 @@ Selectable_text.prototype.get_word_next_span = function (_word) {
     var _next = _word.next();
     //_next.css('background-color', 'red');
     //$.test_msg('Selectable_text.is_word_next_span()', _next.length);
-    if (_next.length == 0)
-    {
+    if (_next.length === 0) {
         return null;
     }
-    else
-    {
+    else {
         return _next;
     }
 };
@@ -1031,8 +1009,7 @@ Selectable_text.prototype.get_words_by_scope_coll = function (_scope_coll) {
     
     //$.test_msg('Selectable_text.get_words_by_scope_coll()', _index_array);
     
-    for (var _i in _index_array)
-    {
+    for (var _i in _index_array) {
         var _ary = [];
         var _index_ary = _index_array[_i];
         for (var _j in _index_ary)
@@ -1070,8 +1047,7 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
     var _paragraph_id;
     
     
-    for (var _i = 0; _i < _scope_coll.length(); _i++)
-    {
+    for (var _i = 0; _i < _scope_coll.length(); _i++) {
         var _s = _scope_coll.get(_i);
         var _from_index = _s.get_from();
         var _from = this.get_word_by_index(_from_index);
@@ -1091,7 +1067,7 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
         {
             if (_prev_word.hasClass(_sentence_punctuation_class_name))
             {
-                if (_sentence == 0)
+                if (_sentence === 0)
                 {
                     _sentence++;
                 }
@@ -1121,7 +1097,7 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
             
             if (_next_word.hasClass(_sentence_punctuation_class_name))
             {
-                if (_sentence == 0)
+                if (_sentence === 0)
                     _sentence++;
                 else
                 {
@@ -1161,14 +1137,14 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
             //_word.css('color', 'red');
             //$.test_msg('Selectable_text.add_class()', [_classname, _word.length]);
             
-            if (_j == 0)
+            if (_j === 0)
                 _word.addClass(_classname + '_from');
             else if (_j == _words[_i].length - 1)
                 _word.addClass(_classname + '_to');
             else
                 _word.addClass(_classname + '_middle');
             
-            if (_word.hasClass(_classname + '_to') == false
+            if (_word.hasClass(_classname + '_to') === false
                 && _this.is_word_next_span(_word))
             {
                 var _span = _this.get_word_next_span(_word); 
@@ -1226,8 +1202,7 @@ Selectable_text.prototype._filter_classname = function (_classname) {
     var _classnames;
     if ($.is_array(_classname))
         _classnames = _classname;
-    else if (_classname.indexOf(' ') > -1)
-    {
+    else if (_classname.indexOf(' ') > -1) {
         _classnames = _classname.split(' ');
     }
     else
@@ -1243,16 +1218,14 @@ Selectable_text.prototype._filter_classname = function (_classname) {
  */
 Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _callback) {
     
-    if ($.is_string(_scope_coll) && $.is_null(_classname))
-    {
+    if ($.is_string(_scope_coll) && $.is_null(_classname)) {
         _classname = _scope_coll;
         _scope_coll = null;
     }
     
     var _classnames = this._filter_classname(_classname);
     
-    if ($.isset(_scope_coll))
-    {
+    if ($.isset(_scope_coll)) {
         var _words = this.get_words_by_scope_coll(_scope_coll);
         for (var _i in _words)
         {
@@ -1263,7 +1236,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
                 {
                     _classname = _classnames[_c];
                     
-                    if (_word.hasClass(_classname + '_to') == false
+                    if (_word.hasClass(_classname + '_to') === false
                         && this.is_word_next_span(_word))
                     {
                         var _span = this.get_word_next_span(_word);
@@ -1271,7 +1244,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
                         _span.removeClass(_classname);
                     }
                     
-                    if (_j == 0)
+                    if (_j === 0)
                         _word.removeClass(_classname + '_from');
                     else if (_j == _words[_i].length - 1)
                         _word.removeClass(_classname + '_to');
@@ -1293,7 +1266,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
                 
                 _word.removeClass(_classname);
                 
-                if (_j == 0)
+                if (_j === 0)
                     _word.removeClass(_classname + '_from');
                 else if (_j == _words[_i].length - 1)
                     _word.removeClass(_classname + '_to');
@@ -1339,8 +1312,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
         _loop_i(0);
         */
     }
-    else
-    {
+    else {
         
         for (var _j in _classnames)
         {
@@ -1416,8 +1388,7 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
     
     var _anchor_text = '';
     
-    for (var _i = 0; _i < _scope_coll.length(); _i++)
-    {
+    for (var _i = 0; _i < _scope_coll.length(); _i++) {
         var _sentence = '';
         
         var _scope = _scope_coll.get(_i);
@@ -1472,8 +1443,7 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
     var _focus_index = [];
     var _focus_head_index = [];
     var _focus_foot_index = [];
-    if ($.is_class(_focus_coll, 'Scope_collection_param'))
-    {
+    if ($.is_class(_focus_coll, 'Scope_collection_param')) {
         _focus_index = _focus_coll.get_index_array();
         _focus_head_index = _focus_coll.get_from_index_array();
         _focus_foot_index = _focus_coll.get_to_index_array();
@@ -1491,8 +1461,7 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
         
     var _ellipsis = '<span class="ellipsis">...</span>';
     var _last_id = this.word_count;
-    for (var _i = 0; _i < _scope_coll.length(); _i++)
-    {
+    for (var _i = 0; _i < _scope_coll.length(); _i++) {
         var _sentence = '';
         
         var _scope = _scope_coll.get(_i);
@@ -1555,11 +1524,10 @@ Selectable_text.prototype.retrieve_scope_coll = function (_classname) {
     var _scope_coll = new Scope_collection_param();
     
     var _from, _to, _last_to;
-    for (var _i = 0; _i < _words.length; _i++)
-    {
+    for (var _i = 0; _i < _words.length; _i++) {
         var _id = $.get_prefixed_id(_words.eq(_i));
         
-        if (_from == null)
+        if (_from === null)
         {
             _from = _id;
         }
@@ -1601,8 +1569,7 @@ Selectable_text.prototype.get_offset_top = function (_scope_coll) {
         return _offset;
     
     var _index = _scope_coll.get_first_index();
-    if ($.isset(_index))
-    {
+    if ($.isset(_index)) {
         var _word = this.get_word_by_index(_index);
         _offset = _word.offset().top;
     }
@@ -1621,8 +1588,7 @@ Selectable_text.prototype.get_offset_bottom = function (_scope_coll) {
         return _offset;
     
     var _index = _scope_coll.get_last_index();
-    if ($.isset(_index))
-    {
+    if ($.isset(_index)) {
         var _word = this.get_word_by_index(_index);
         _offset = _word.offset().top + _word.height();
     }
@@ -1639,15 +1605,14 @@ Selectable_text.prototype.get_offset_left = function (_scope_coll) {
     var _offset = null;
     
     var _words = this.get_words_by_scope_coll(_scope_coll);
-    for (var _i in _words)
-    {
+    for (var _i in _words) {
         for (var _j in _words[_i])
         {
             var _word = _words[_i][_j];
             
             var _o = _word.offset().left;
             
-            if (_offset == null
+            if (_offset === null
                 || _o < _offset)
                 _offset = _o;
         }
@@ -1665,15 +1630,14 @@ Selectable_text.prototype.get_offset_right = function (_scope_coll) {
     var _offset = null;
     
     var _words = this.get_words_by_scope_coll(_scope_coll);
-    for (var _i in _words)
-    {
+    for (var _i in _words) {
         for (var _j in _words[_i])
         {
             var _word = _words[_i][_j];
             
             var _o = _word.offset().left + _word.width();
             
-            if (_offset == null
+            if (_offset === null
                 || _o > _offset)
                 _offset = _o;
         }
@@ -1692,8 +1656,7 @@ Selectable_text.prototype.get_offset_first_left = function (_scope_coll) {
     
     var _index = _scope_coll.get_first_index();
     
-    if ($.is_number(_index))
-    {
+    if ($.is_number(_index)) {
         var _word = this.get_word_by_index(_index);
         _offset = _word.offset().left;
     }
@@ -1711,8 +1674,7 @@ Selectable_text.prototype.get_offset_last_right = function (_scope_coll) {
     
     var _index = _scope_coll.get_last_index();
     
-    if ($.is_number(_index))
-    {
+    if ($.is_number(_index)) {
         var _word = this.get_word_by_index(_index);
         _offset = _word.offset().left + _word.width();
     }
@@ -1745,8 +1707,7 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
     var _location = 5;
     var _location_id = 5;
     
-    for (var _i in _words)
-    {
+    for (var _i in _words) {
         for (var _j in _words[_i])
         {
             var _word = _words[_i][_j];
@@ -1813,8 +1774,7 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
             _location_id_ary.push(_id);
     };
     
-    for (var _i in _words)
-    {
+    for (var _i in _words) {
         for (var _j in _words[_i])
         {
             var _word = _words[_i][_j];
@@ -1857,7 +1817,7 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
         }
     }
     
-    //if (_location_id_ary.length == 0)
+    //if (_location_id_ary.length === 0)
     //    _location_id_ary.push(5);    //預設是5
     
     return _location_id_ary;
@@ -1998,16 +1958,14 @@ Selectable_text.prototype.add_select = function (_scope)
     
     var _from, _to, _from_id, _to_id;
     
-    if ($.is_array(_scope) && _scope.length > 0)
-    {
+    if ($.is_array(_scope) && _scope.length > 0) {
         _from = _scope[0];
         if (_scope.length > 1)
             _to = _scope[1];
         else
             _to = _from;
     }
-    else if ($.is_object(_scope))
-    {
+    else if ($.is_object(_scope)) {
         _from = $.get_parameter(_scope, 'from');
         _to = $.get_parameter(_scope, 'to');
     }
@@ -2016,22 +1974,19 @@ Selectable_text.prototype.add_select = function (_scope)
     
     if ($.is_object(_from))
         _from_id = $.get_prefixed_id(_from);
-    else
-    {
+    else {
         _from_id = parseInt(_from);
         _from = $('#' + _id_prefix + _from_id );
     }
     
     if ($.is_object(_to))
         _to_id = $.get_prefixed_id(_to);
-    else
-    {
+    else {
         _to_id = parseInt(_to);
         _to = $('#' + _id_prefix + _to_id );
     }
     
-    if (_to_id < _from_id)
-    {
+    if (_to_id < _from_id) {
         var _temp = _from;
         var _temp_id = _from_id;
         _from = _to;
@@ -2049,8 +2004,7 @@ Selectable_text.prototype.add_select = function (_scope)
     
     _scope = [];
     _scope.push(_from);
-    for (var _i = _from_id+1; _i < _to_id; _i++)
-    {
+    for (var _i = _from_id+1; _i < _to_id; _i++) {
         var _middle = $('#' + _id_prefix + _i)
             .addClass( _selected_class_name )
             .addClass(_middle_classname);
@@ -2079,8 +2033,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
     var _sentence = 0;
     var _paragraph_id;
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
         var _from = _scope[0];
         var _to = _scope[(_scope.length-1)];
@@ -2098,7 +2051,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
         {
             if (_prev_word.hasClass(_sentence_punctuation_class_name))
             {
-                if (_sentence == 0)
+                if (_sentence === 0)
                     _sentence++
                 else
                 {
@@ -2126,7 +2079,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
             
             if (_next_word.hasClass(_sentence_punctuation_class_name))
             {
-                if (_sentence == 0)
+                if (_sentence === 0)
                     _sentence++;
                 else
                 {
@@ -2143,8 +2096,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
     var _resort_scope = [];
     var _hold = false;
     
-    for (var _i = 0; _i < _recommend_scope.length; _i++)
-    {
+    for (var _i = 0; _i < _recommend_scope.length; _i++) {
         var _scope = _recommend_scope[_i];
         if (_i < _recommend_scope.length - 1)
         {
@@ -2152,7 +2104,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
             
             if (_scope[1] < _next_scope[0])
             {
-                if (_hold == false)
+                if (_hold === false)
                     _resort_scope.push(_scope);
                     
                 _hold = false;
@@ -2160,7 +2112,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
             }
             else
             {
-                if (_hold == true)
+                if (_hold === true)
                     _scope = _resort_scope.pop();
                     
                 _scope = [_scope[0], _next_scope[1]];

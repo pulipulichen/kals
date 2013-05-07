@@ -37,8 +37,7 @@ View_anchor_text_component.prototype._scope_coll = null;
 View_anchor_text_component.prototype._anchor_text = null;
 
 View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
-    if ($.is_class(_topic_param, 'Annotation_param'))
-    {
+    if ($.is_class(_topic_param, 'Annotation_param')) {
         this._topic_param = _topic_param;
         var _anchor_text = this.get_anchor_text(_topic_param.scope);
         this.set_anchor_text(_anchor_text);

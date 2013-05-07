@@ -46,8 +46,7 @@ Attribute_event_dispatcher.prototype.unset_attr = function (_type) {
 };
 
 Attribute_event_dispatcher.prototype.reset = function () {
-    for (var _type in this._attributes)
-    {
+    for (var _type in this._attributes) {
         this.unset_attr(_type);
     }
     return this;
@@ -61,15 +60,13 @@ Attribute_event_dispatcher.prototype.reset = function () {
  */
 Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _length) {
     if ($.is_null(_type)
-        || typeof(this._attributes[_type]) == 'undefined')
-    {
+        || typeof(this._attributes[_type]) == 'undefined') {
         if ($.is_null(_default))
             return null;
         else
             return _default;
     }   
-    else
-    {
+    else {
         var _value = this._attributes[_type];
         
         //$.test_msg('Atrr get_attr()', [_type, _default, _length]);
@@ -115,8 +112,7 @@ Attribute_event_dispatcher.prototype.add_attr_listener = function (_type, _attr_
  * 通知所有監聽者
  */
 Attribute_event_dispatcher.prototype.notify_total_listeners = function () {
-    for (var _type in this._attributes)
-    {
+    for (var _type in this._attributes) {
         this.notify_listeners(_type);
     }
     return this;
@@ -139,14 +135,13 @@ Attribute_event_dispatcher.prototype._$data_key = 'data';
 Attribute_event_dispatcher.prototype.update = function (_dispatcher, _data) {
     
     var _data_key = this._$data_key;
-    if (_data_key == null)
+    if (_data_key === null)
         return this;
     
     //$.test_msg('Attribute_event_dispatcher.update()', _data);
     //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);
     
-    if (typeof(_data[_data_key]) != 'undefined')
-    {
+    if (typeof(_data[_data_key]) != 'undefined') {
         //$.test_msg('Attribute_event_dispatcher.update()', _data);
         //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);
     
@@ -156,8 +151,7 @@ Attribute_event_dispatcher.prototype.update = function (_dispatcher, _data) {
             this.set_attr(_key, _data[_data_key][_key]);
         }
     }
-    else
-    {
+    else {
         this.reset();
     }
     

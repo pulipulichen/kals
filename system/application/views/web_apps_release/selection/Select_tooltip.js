@@ -42,21 +42,18 @@ Select_tooltip.prototype._$get_config = function () {
     //_config['delay'] = 30;
     //_config['predelay'] = 100;
     
-    if ($.is_mobile_mode())
-    {
+    if ($.is_mobile_mode()) {
         _config['events'] = {
             def: 'mouseenter click,null'
         }; 
     }
-    else
-    {
+    else {
         //_config['events'] = {
         //    def: 'mouseenter click,mouseleave'
         //};    
     }
     
-    if ($.is_touchable())
-    {
+    if ($.is_touchable()) {
        var _touch_event = 'touchstart ';
        _config['events']['def'] = _touch_event + _config['events']['def'];
        
@@ -78,10 +75,10 @@ Select_tooltip.prototype._$get_config = function () {
             _this = this;
         
         var _tip = _this.getTip();
-        if (_tip.length == 0)
+        if (_tip.length === 0)
             return;
             
-        if (_select_tooltip.enable_select == false)
+        if (_select_tooltip.enable_select === false)
             return;
         
         var _trigger = _this.getTrigger();
@@ -198,7 +195,7 @@ Select_tooltip.prototype._$get_config = function () {
     var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
     _config['onBeforeHide'] = function (_this) {
         
-        if (_select_tooltip.enable_select == false)
+        if (_select_tooltip.enable_select === false)
             return;
         
         //if ($.is_null(_this))
@@ -232,7 +229,7 @@ Select_tooltip.prototype._$get_config = function () {
 Select_tooltip.prototype.tooltip_config = null;
 
 Select_tooltip.prototype.get_tooltip_config = function () {
-    if (this._tooltip_config == null)
+    if (this._tooltip_config === null)
         this._tooltip_config = this._$get_config();
     return this._tooltip_config;
 };
@@ -298,8 +295,7 @@ Select_tooltip.prototype._$create_ui = function ()
     //var _word_id_prefix = Selection_manager.prototype.word_id_prefix;
     var _word_id_prefix = Selectable_text.prototype.word_id_prefix;
     
-    var _select_event = function (_event)
-    {
+    var _select_event = function (_event) {
         //先叫原本的事件不要動
         _event.preventDefault();
         
@@ -316,8 +312,7 @@ Select_tooltip.prototype._$create_ui = function ()
         KALS_text.selection.select.set_select(_word);
     };
     
-    var _cancel_event = function (_event)
-    {
+    var _cancel_event = function (_event) {
         //先叫原本的事件不要動
         _event.preventDefault();
         

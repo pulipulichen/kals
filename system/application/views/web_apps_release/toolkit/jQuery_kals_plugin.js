@@ -24,19 +24,16 @@ if (typeof($jquery_extends) == 'undefined') {
  */
 jQuery.test_msg = function (_title, _test)
 {
-    if (this.isset(_title) && this.is_null(_test))
-    {
+    if (this.isset(_title) && this.is_null(_test)) {
         _test = _title;
         _title = null;
     }
-    else if (this.is_null(_title) && this.is_null(_test))
-    {
+    else if (this.is_null(_title) && this.is_null(_test)) {
         _test = '---------------';
         return;
     }
     
-    if (this.is_object(_test))
-    {
+    if (this.is_object(_test)) {
         _test = '[Object: '+this.json_encode(_test)+']';
     }
 
@@ -63,12 +60,10 @@ jQuery.substr = function(_str, _start, _length)
     _str = _str + '';
     if (_start < 0)
         _start = _str.length + _start;
-    if (this.isset(_length) == false)
-    {
+    if (this.isset(_length) === false) {
         return _str.substr(_start);
     }
-    else
-    {
+    else {
         return _str.substr(_start, _length);
     }
 };
@@ -120,7 +115,7 @@ jQuery.starts_with = function(_str, _prefix)
  */
 jQuery.appends_with = function(_str, _suffix)
 {
-    if (this.ends_with(_str, _suffix) == false)
+    if (this.ends_with(_str, _suffix) === false)
         return _str + _suffix;
     else
         return _str;
@@ -135,7 +130,7 @@ jQuery.appends_with = function(_str, _suffix)
  */
 jQuery.prepends_with = function(_str, _prefix)
 {
-    if (this.starts_with(_str, _prefix) == false)
+    if (this.starts_with(_str, _prefix) === false)
         return _str + _prefix;
     else
         return _str;
@@ -223,8 +218,7 @@ jQuery.serialize_json = function (_json)
 
     var _output = '';
 
-    for (var _key in _json)
-    {
+    for (var _key in _json) {
         var _attr = '"'+_key+'":';
         var _value = _json[_key];
         if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value))
@@ -267,8 +261,7 @@ jQuery.serialize_array = function (_array)
 
     var _output = '';
 
-    for (var _key in _array)
-    {
+    for (var _key in _array) {
         var _attr = "";
         var _value = _array[_key];
         if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value))
@@ -319,7 +312,7 @@ jQuery.addslashes = function (_str) {
 
 jQuery.combine_comma = function (_str)
 {
-    if (_str != '')
+    if (_str !== '')
         _str += ',';
     return _str;
 };
@@ -355,8 +348,7 @@ jQuery.get_class = function (_obj) {
         && !(_obj instanceof Array)
         && !(_obj instanceof Function)
         && _obj.constructor
-        && _obj != this.window)
-    {
+        && _obj != this.window) {
         var _arr = _obj.constructor.toString().match(/function\s*(\w+)/);
         if (_arr && _arr.length == 2) {
             return _arr[1];
@@ -402,7 +394,7 @@ jQuery.is_null = function (_obj)
         || (typeof(_obj) == 'string' && _obj == 'null'))
         return true;
     else
-        return (_obj == null);
+        return (_obj === null);
 };
 
 jQuery.is_class = function(_obj, _class_name)
@@ -467,8 +459,7 @@ jQuery.is_ascii = function (_text)
 {
     if ($.is_number(_text))
         return true;
-    else if ($.is_string(_text))
-    {
+    else if ($.is_string(_text)) {
         
         for (var _i = 0; _i < _text.length; _i++)
         {
@@ -520,7 +511,7 @@ jQuery.is_html_element = function (_element)
     var _class_name = this.get_class(_element);
     
     //$.test_msg([_class_name, _element.constructor]);
-    if (_class_name == false)
+    if (_class_name === false)
         return false;
     if (this.starts_with(_class_name, 'HTML')
         && (this.ends_with(_class_name, 'Element') || this.ends_with(_class_name, 'ElementConstructor')))
@@ -539,7 +530,7 @@ jQuery.is_html_element = function (_element)
 jQuery.isset = function (_obj)
 {
     if (typeof(_obj) == "undefined"
-        || this.is_null(_obj) == true)
+        || this.is_null(_obj) === true)
         return false;
     else
         return true;
@@ -556,9 +547,8 @@ jQuery.object_isset = function (_object_path)
 {
     var _paths = _object_path.split('.');
     var _path_now = '';
-    for (var _key in _paths)
-    {
-        if (_path_now != '')
+    for (var _key in _paths) {
+        if (_path_now !== '')
             _path_now = _path_now + '.';
         _path_now = _path_now + _paths[_key];
         
@@ -683,8 +673,7 @@ jQuery.parse_extension_name = function (_path)
     if (_dot == -1
         || _dot < _slash)
         return null;
-    else
-    {
+    else {
         var _ext = _path.substr(_dot+1);
         return _ext;
     }
@@ -733,8 +722,7 @@ jQuery.extend({
      * @method [init]
      * @param {function} _callback 要初始化的動作
      */
-    init: function (_callback)
-    {
+    init: function (_callback) {
         if (false == $(this).hasClass('inited'))
         {
             if (this.is_function(_callback))
@@ -1022,8 +1010,7 @@ jQuery.fn.extend({
         
         return this;
     },
-    center: function (_scale)
-    {
+    center: function (_scale) {
         var _this = $(this);
         
         _this.valign({
@@ -1066,8 +1053,7 @@ jQuery.fn.extend({
      * @class {jQuery}
      * @param {Object} _scale 縮放比率
      */
-    fullscreen_width: function (_scale)
-    {
+    fullscreen_width: function (_scale) {
         var _this = $(this);
         
         if ($.is_null(_scale))
@@ -1095,8 +1081,7 @@ jQuery.fn.extend({
         
         return this;
     },
-    fullscreen_height: function (_scale)
-    {
+    fullscreen_height: function (_scale) {
         var _this = $(this);
         
         if ($.is_null(_scale))
@@ -1137,8 +1122,7 @@ jQuery.fn.extend({
      * @param {string} _option "width", "height", "x", "y"
      * @param {number} _scale 比例
      */
-    fullscreen: function (_option, _scale)
-    {
+    fullscreen: function (_option, _scale) {
         var _this = $(this);
         if ($.is_number(_option) && $.is_null(_scale))
         {
@@ -1200,7 +1184,7 @@ jQuery.fn.extend({
             return this;
         
         var _value = _this.css(_css);
-        if ($.isset(_value) && _value != 0 && _value != '')
+        if ($.isset(_value) && _value != 0 && _value !== '')
         {
             _this.attr(_attr, _value);
             if ($.isset(_reset))
@@ -1255,8 +1239,7 @@ jQuery.fn.extend({
      * @param {string|number} _expect 預期值
      * @param {number|null} _scale 比例值
      */
-    css_scale: function (_css, _expect, _scale)
-    {   
+    css_scale: function (_css, _expect, _scale) {   
         if ($.is_object(_css) && $.is_null(_scale))
         {
             _scale = _expect;
@@ -1280,8 +1263,8 @@ jQuery.fn.extend({
         //var _value = this.css(_css);
         
         if ($.is_null(_expect)
-            || _expect == 0
-            || _expect == '')
+            || _expect === 0
+            || _expect === '')
             return this;
         
         var _scale_length = function (_expect, _scale) {
@@ -1366,8 +1349,7 @@ jQuery.append_unit = function (_length, _default_unit) {
     
     if (this.is_number(_length))
         return _length + _default_unit;
-    else
-    {
+    else {
         if (this.ends_with(_length, 'px')
             || this.ends_with(_length, '%')
             || this.ends_with(_length, 'em')
@@ -1392,8 +1374,7 @@ jQuery.append_unit = function (_length, _default_unit) {
 jQuery.strip_unit = function (_length) {
     if (this.is_number(_length))
         return _length;
-    else
-    {
+    else {
         if (this.ends_with(_length, '%'))
             _length = _length.substr(0, _length.length -1);
         if (this.ends_with(_length, 'px')
@@ -1424,8 +1405,7 @@ jQuery.get_unit = function (_length) {
     var _unit = null;
     if (this.is_number(_length))
         return _unit;
-    else
-    {
+    else {
         var _len = _length.length;
         if (this.ends_with(_length, '%'))
             _unit = _length.substr(_len -1, _len);
@@ -1507,8 +1487,7 @@ jQuery.create_once = function (_html, _append_to) {
     var _tag_name = _temp_obj.attr('tagName');
 
     var _class_name = _temp_obj.attr('class');
-    if (_class_name != '' && _class_name != null)
-    {
+    if (_class_name !== '' && _class_name != null) {
         var _classes = _class_name.split(' ');
         _class_name = '';
         for (var _key in _classes)
@@ -1520,19 +1499,17 @@ jQuery.create_once = function (_html, _append_to) {
         _class_name = '';
 
     var _id = _temp_obj.attr('id');
-    if (_id != '' && _id != null)
+    if (_id !== '' && _id != null)
         _id = '#'+_id;
     else
         _id = '';
 
 
-    if (_class_name == '' && _id == '')
-    {
+    if (_class_name === '' && _id === '') {
         _temp_obj.appendTo(_append_to);
         return _temp_obj;
     }
-    else
-    {
+    else {
         var _selector = _tag_name+_class_name+_id;
         var _obj = this(_selector);
         if (false == _obj.exists())
@@ -1568,8 +1545,7 @@ jQuery.check_interface = function(_theObject, _theInterface) {
  * @param {string} _except_tags 不要移除的標籤
  * @type {string}
  */
-jQuery.strip_html_tag = function(_html, _except_tags)
-{
+jQuery.strip_html_tag = function(_html, _except_tags) {
     //var _reTag = /<(?:.|\s)*?/g;
     var _reTag = /<[^>].*?>/g;
     
@@ -1635,9 +1611,8 @@ jQuery.mobile_mode = null;
  * @memberOf {jQuery}
  * @method [is_mobile_mode]
  */
-jQuery.is_mobile_mode = function ()
-{
-    if (this.mobile_mode == null) {
+jQuery.is_mobile_mode = function () {
+    if (this.mobile_mode === null) {
         var _this = this;
         YUI().use("", function(Y){
             var _mode = (!$.is_null(Y.UA.mobile));
@@ -1686,7 +1661,7 @@ jQuery.touchable = null;
  */
 jQuery.is_touchable = function () {
    
-   if (this.touchable == null)
+   if (this.touchable === null)
    {
        var _touchable = false;
         try 
@@ -1736,8 +1711,7 @@ jQuery.get_parameter = function(_parameters, _name, _default_value)
     if ($.is_null(_parameters))
         return null;
     
-    if ($.is_array(_name))
-    {
+    if ($.is_array(_name)) {
         for (var _key in _name)
         {
             var _n = _name[_key];
@@ -1842,7 +1816,7 @@ jQuery.match_space = function(_text)
  */
 jQuery.cancel_select = function() 
 {
-	if ($.browser.msie == true)
+	if ($.browser.msie === true)
 		top.document.selection.empty();
 	else
 		window.getSelection().removeAllRanges();
@@ -1865,8 +1839,7 @@ jQuery.get_prefixed_id = function (_prefixed_id) {
     
     if ($.is_number(_prefixed_id))
         return _prefixed_id;
-    if ($.is_object(_prefixed_id))
-    {
+    if ($.is_object(_prefixed_id)) {
         if ($.is_jquery(_prefixed_id))
             _prefixed_id = _prefixed_id.attr('id');
         else if ($.is_null(_prefixed_id))
@@ -1880,8 +1853,7 @@ jQuery.get_prefixed_id = function (_prefixed_id) {
             return null;
     }
     
-    if ($.is_null(_prefixed_id) || $.trim(_prefixed_id) == '')
-    {
+    if ($.is_null(_prefixed_id) || $.trim(_prefixed_id) === '') {
         return null;
     }
     _prefixed_id = _prefixed_id + '';
@@ -1902,7 +1874,7 @@ jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
 		
 	var _classname_ary = _classname.split(' ');
 	var _id = null;
-	if (_prefixed == null)
+	if (_prefixed === null)
 	{
 		for (var _i = 0; _i < _classname_ary.length; _i++)
 		{
@@ -1959,12 +1931,11 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-'))
         _target_y = eval(window.pageYOffset + _target_y);
     
-    if ($.is_number(_target_x) == false || $.is_number(_target_y) == false)
+    if ($.is_number(_target_x) === false || $.is_number(_target_y) === false)
         return this;
     
     //調整_speed跟_callback
-    if ($.is_function(_speed) && $.is_null(_callback))
-    {
+    if ($.is_function(_speed) && $.is_null(_callback)) {
         _callback = _speed;
         _speed = 1000;
     }
@@ -1974,7 +1945,7 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         _speed = 200;
     else if (_speed == 'slow')
         _speed = 2000;
-    else if ($.is_number(_speed) == false)
+    else if ($.is_number(_speed) === false)
         _speed = 1000;
         
     //確認要移動的次數
@@ -1985,8 +1956,7 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     _interval_y = parseInt((_target_y - window.pageYOffset) / _repeat_count)+1;
     
     
-    var _loop = function (_i, _count, _callback)
-    {
+    var _loop = function (_i, _count, _callback) {
         if (_i == _count || _i > _count)
         {
             if ($.is_function(_callback))
@@ -2035,13 +2005,11 @@ jQuery.save_scroll_position = function () {
 jQuery.load_scroll_position = function () {
     
     
-    if (window.pageXOffset != this._scroll_position[0])
-    {
+    if (window.pageXOffset != this._scroll_position[0]) {
         //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
     }
     
-    if (window.pageYOffset != this._scroll_position[1])
-    {
+    if (window.pageYOffset != this._scroll_position[1]) {
         //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }
@@ -2067,8 +2035,7 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
 {
     var _delay = 0;
     
-    if (typeof(_callback) == 'number')
-    {
+    if (typeof(_callback) == 'number') {
         if (typeof(_arg1) == 'function')
         {
             _delay = _callback;
@@ -2076,8 +2043,7 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
         }
     }
     
-    if ($.is_function(_callback))
-    {
+    if ($.is_function(_callback)) {
         setTimeout(function () {
             
             if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4) && $.isset(_arg5))
@@ -2112,8 +2078,7 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
  */
 jQuery.multi_extend = function (_this_class, _super_class)
 {
-    if ($.is_object(_super_class))
-    {
+    if ($.is_object(_super_class)) {
         for (var _key in _super_class)
         {
             _this_class[_key] = _super_class[_key];
@@ -2130,8 +2095,7 @@ jQuery.get_interval_time = function (_time) {
     if ($.is_string(_time))
         _time = parseInt(_time);
     
-    if ($.is_number(_time))
-    {
+    if ($.is_number(_time)) {
         var _now = parseInt((new Date()).getTime()/1000);
         return _now - _time;
     }
@@ -2146,8 +2110,7 @@ jQuery.get_interval_time = function (_time) {
  */
 jQuery.array_remove = function (_ary, _index) {
     if(isNaN(_index)||_index>_ary.length){return false;}
-    for(var i=0,n=0;i<_ary.length;i++)
-    {
+    for(var i=0,n=0;i<_ary.length;i++) {
         if(_ary[i]!=_ary[_index])
         {
             _ary[n++]=_ary[i];

@@ -48,8 +48,7 @@ List_timestamp_component.prototype._$create_ui = function ()
 
 List_timestamp_component.prototype.set_timestamp = function (_timestamp) {
     
-    if ($.is_null(_timestamp))
-    {
+    if ($.is_null(_timestamp)) {
         _timestamp = this._item.get_data().timestamp;
     }
     

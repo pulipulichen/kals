@@ -119,13 +119,13 @@ Context_user.prototype.has_login = function () {
  * @type {User_param}
  */
 Context_user.prototype.get_data = function () {
-    if (KALS_context.auth.is_login() == false)
+    if (KALS_context.auth.is_login() === false)
         return null;
     
     var _id = this.get_id();
     var _name = this.get_name();
     
-    if (_id == null)
+    if (_id === null)
         return null;
     
     var _param = new User_param(_id, _name);

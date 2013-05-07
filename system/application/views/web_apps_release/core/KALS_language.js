@@ -20,8 +20,7 @@ function KALS_language() {
     
     var _this = this;
     //Context訂閱一下
-    if (typeof(KALS_context) != 'undefined')
-    {
+    if (typeof(KALS_context) != 'undefined') {
         KALS_context.add_listener(function (_dispatcher, _data) {
             if (typeof(_data.KALS_language) != 'undefined')
                 _this.set_lang(_data.KALS_language);
@@ -70,8 +69,7 @@ KALS_language.prototype.set_lang = function(_lang_data){
  */
 KALS_language.prototype.line = function(_lang_param){
     var _line, _arg;
-    if ($.is_object(_lang_param))
-    {
+    if ($.is_object(_lang_param)) {
         _line = $.get_parameter(_lang_param, 'line');
         _arg = $.get_parameter(_lang_param, 'arg' );    
     }
@@ -99,8 +97,7 @@ KALS_language.prototype.line = function(_lang_param){
  * @type {jQuery}
  */
 KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
-    if ($.isset(_arg))
-    {
+    if ($.isset(_arg)) {
         _arg = $.filter_array(_arg);
         
         //$.test_msg('lang._lang_set_arg' [_lang, _arg]);
@@ -156,8 +153,7 @@ KALS_language.prototype.add_listener = function(_obj, _lang_param)
             this._setup_obj(_obj, _lang_param.msg);
         }   
     }
-    else
-    {
+    else {
         //如果已經存在此設定，則刪除原本的設定之後，再設定一次
         this.delete_listener(_obj);
         this.add_listener(_obj, _lang_param);
@@ -185,8 +181,7 @@ KALS_language.prototype.delete_listener = function (_obj)
  */
 KALS_language.prototype.notify_listeners = function ()
 {
-    if (this._changed)
-    {
+    if (this._changed) {
         for (var _i in this._listeners)
         {
             var _lang_param = this._listeners_lang_param[_i];
@@ -206,8 +201,7 @@ KALS_language.prototype.notify_listeners = function ()
  */
 KALS_language.prototype.create_listener = function (_lang_param)
 {
-    if ($.is_string(_lang_param))
-    {
+    if ($.is_string(_lang_param)) {
         _lang_param = new KALS_language_param(_lang_param);
     }
     
@@ -322,7 +316,7 @@ KALS_language.prototype.get_interval_param = function (_time)
     
     var _test_scope = function (_min, _max) {
         
-        if (_min == null)
+        if (_min === null)
         {
             _min = 0;
         }
@@ -347,56 +341,44 @@ KALS_language.prototype.get_interval_param = function (_time)
         return _u;
     };
     
-    if (_interval < 30 *_s)
-    {
+    if (_interval < 30 *_s) {
         _lang_param = _date_params.recent;
     }
-    else if (_test_scope(30*_s, _m))
-    {
+    else if (_test_scope(30*_s, _m)) {
         _lang_param = _date_params.within_minute;
     }
-    else if (_test_scope(_m, _h))
-    {
+    else if (_test_scope(_m, _h)) {
         _unit = _parse_unit(_m);
         _lang_param = _date_params.minutes;
     }
-    else if (_test_scope(_h, 2*_h))
-    {
+    else if (_test_scope(_h, 2*_h)) {
         _lang_param = _date_params.hour;
     }
-    else if (_test_scope(2*_h, 12*_h))
-    {
+    else if (_test_scope(2*_h, 12*_h)) {
         _unit = _parse_unit(_h);
         _lang_param = _date_params.hours;
     }
-    else if (_test_scope(12*_h, _d))
-    {
+    else if (_test_scope(12*_h, _d)) {
         _lang_param = _date_params.half_day;
     }
-    else if (_test_scope(_d, 2*_d))
-    {
+    else if (_test_scope(_d, 2*_d)) {
         _lang_param = _date_params.day;
     }
-    else if (_test_scope(2*_d, _w))
-    {
+    else if (_test_scope(2*_d, _w)) {
         _unit = _parse_unit(_d);
         _lang_param = _date_params.days;
     }
-    else if (_test_scope(_w, 2*_w))
-    {
+    else if (_test_scope(_w, 2*_w)) {
         _lang_param = _date_params.week;
     }
-    else if (_test_scope(2*_w, 3*_w))
-    {
+    else if (_test_scope(2*_w, 3*_w)) {
         _unit = _parse_unit(_w);
         _lang_param = _date_params.weeks;
     }
-    else if (_test_scope(3*_w, _month))
-    {
+    else if (_test_scope(3*_w, _month)) {
         _lang_param = _date_params.month;
     }
-    else if (_test_scope(_month, _y))
-    {
+    else if (_test_scope(_month, _y)) {
         var _date_obj = new Date();
         _date_obj.setTime(_time);
         
@@ -406,8 +388,7 @@ KALS_language.prototype.get_interval_param = function (_time)
         _lang_param = _date_params.date;
         _lang_param.arg = [_month, _date];
     }
-    else if (_test_scope(_y, null))
-    {
+    else if (_test_scope(_y, null)) {
         var _date_obj = new Date();
         _date_obj.setTime(_time);
         
@@ -418,8 +399,7 @@ KALS_language.prototype.get_interval_param = function (_time)
     
     if (_unit != null
         && $.is_class(_lang_param, 'KALS_language_param')
-        && $.is_null(_lang_param.arg))
-    {
+        && $.is_null(_lang_param.arg)) {
         _lang_param.arg = [_unit];
     }
     
@@ -434,8 +414,7 @@ KALS_language.prototype.get_interval_param = function (_time)
 KALS_language.prototype.get_month = function (_month_number) {
     if ($.is_number(_month_number)
         && _month_number > 0
-        && _month_number < 13)
-    {
+        && _month_number < 13) {
         return this._data_lang.month_name[_month_number];
     }
     return null;
@@ -449,13 +428,11 @@ KALS_language.prototype.get_month = function (_month_number) {
 KALS_language.prototype._setup_obj = function (_obj, _lang) {
     var _tag_name = _obj.attr('tagName').toLowerCase();
     if (_tag_name == 'input'
-        || _tag_name == 'textarea')
-    {   
+        || _tag_name == 'textarea') {   
         _obj.attr('placeholder', _lang).val('').blur();    //.change();
         
     }
-    else
-    {
+    else {
         _obj.html(_lang);
     }
     return this;

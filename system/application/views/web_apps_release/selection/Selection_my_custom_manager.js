@@ -36,7 +36,7 @@ Selection_my_custom_manager.prototype._my_selections = {
  */
 Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scope_coll, _is_initialize) {
     
-    if (_scope_coll.length() == 0)
+    if (_scope_coll.length() === 0)
         return this;
         
     if ($.is_null(_is_initialize))
@@ -57,8 +57,7 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
         _my_custom_type_name = _my_type.get_my_classname();
     
     //$.test_msg('Selection_my_custom_manager.set_scope_coll', [_type_id, _my_custom_type_name, typeof(_my_type)]);
-    if (typeof(this._my_selections[_type_id]) == 'undefined')
-    {
+    if (typeof(this._my_selections[_type_id]) == 'undefined') {
         this._my_selections[_type_id] = _my_custom_type_name;
         this.child(_my_custom_type_name, new Selection_my_custom_type(this._text, _my_custom_type_name));
     }
@@ -66,8 +65,7 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
     //$.test_msg('my_custom_manager set_scope_coll 2'
     //    , typeof(this._my_selections[_type_id]));
     
-    for (var _i in this._my_selections)
-    {
+    for (var _i in this._my_selections) {
         var _type_name = this._my_selections[_i];
         
         //$.test_msg('my_custom_manager', [_type_name, _i, _type_id, typeof(this[_type_name])]);
@@ -76,7 +74,7 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
             this[_type_name].set_scope_coll(_scope_coll);
             continue;
         }   
-        else if (_is_initialize == false)
+        else if (_is_initialize === false)
         {
             //其他的則是刪除標註
             this[_type_name].clear_scope_coll(_scope_coll);
@@ -88,8 +86,7 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
 
 Selection_my_custom_manager.prototype.clear = function () {
     
-    for (var _i in this._my_selections)
-    {
+    for (var _i in this._my_selections) {
         var _type_name = this._my_selections[_i];
         this[_type_name].clear();
     }

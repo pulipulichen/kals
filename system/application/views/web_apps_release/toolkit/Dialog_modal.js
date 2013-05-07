@@ -37,8 +37,7 @@ Dialog_modal.prototype._$create_ui = function () {
             + '<div class="dialog-content"></div></td></tr>'
         + '</tbody></table>');
     
-    if ($.browser.msie6)
-    {
+    if ($.browser.msie6) {
         _ui.css('width', '480px');
         //_ui.css('font-size', '1.5em');
     }
@@ -62,23 +61,19 @@ Dialog_modal.prototype._$onviewportmove = function (_ui) {
     if ($.browser.msie6)
         return;
     
-    if ($.is_small_width())
-    {
+    if ($.is_small_width()) {
         _ui.fullscreen_width();
         _ui.addClass('compact-width');
     }
-    else
-    {
+    else {
         _ui.restore();
         _ui.removeClass('compact-width');
     }
     
-    if ($.is_small_height())
-    {
+    if ($.is_small_height()) {
         _ui.addClass('compact-height');
     }
-    else
-    {
+    else {
         _ui.removeClass('compact-height');
     }
     
@@ -130,18 +125,15 @@ Dialog_modal.prototype.setup_modal = function (_config) {
     
     var _message = $.get_parameter(_config, 'message');
     var _content = $.get_parameter(_config, 'content');
-    if ($.is_jquery(_content))
-    {
+    if ($.is_jquery(_content)) {
         this.set_content(_content);
     }
-    else if ($.is_string(_message))
-    {
+    else if ($.is_string(_message)) {
         this.set_message(_message);
     }
     
     var _display_content = $.get_parameter(_config, 'display_content', true);
-    if (_display_content == false)
-    {
+    if (_display_content === false) {
         this.toggle_content(false);
     }
     
@@ -158,8 +150,7 @@ Dialog_modal.prototype.setup_modal = function (_config) {
  */
 Dialog_modal.prototype.set_heading = function (_lang_param) {
     var _container = this.get_heading();
-    if (_container.length == 1)
-    {
+    if (_container.length == 1) {
         if ($.is_string(_lang_param))
         {
             _container.html(_lang_param);
@@ -190,8 +181,7 @@ Dialog_modal.prototype.set_backward_option = function (_option) {
     var _ui = this.get_ui();
     
     var _option_ui = _option;
-    if ($.is_jquery(_option) == false)
-    {
+    if ($.is_jquery(_option) === false) {
         if (typeof(_option.get_ui) != 'function')
             return this;
         _option_ui = _option.get_ui();
@@ -277,8 +267,7 @@ Dialog_modal.prototype.toggle_toolbar_option = function(_display) {
 Dialog_modal.prototype.set_content = function (_lang) {
     var _container = this.get_content();
     
-    if (_container.length == 1)
-    {
+    if (_container.length == 1) {
         this.toggle_content(true);
         this.get_ui().addClass('with-content');
         if ($.is_null(_lang))
@@ -319,8 +308,7 @@ Dialog_modal.prototype.set_content_temp = function () {
     
     var _content = _container.children();
     
-    if (_content.length > 0)
-    {
+    if (_content.length > 0) {
         _content.hide()
             .appendTo($('body'));
     }
@@ -336,8 +324,7 @@ Dialog_modal.prototype.get_content = function () {
 };
 
 Dialog_modal.prototype.toggle_content = function (_display, _callback) {
-    if ($.is_function(_display), $.is_null(_callback))
-    {
+    if ($.is_function(_display), $.is_null(_callback)) {
         _callback = _display;
         _display = null;
     }
@@ -347,16 +334,13 @@ Dialog_modal.prototype.toggle_content = function (_display, _callback) {
     //var _container = _ui.find('.dialog-content-tr:first');
     var _container = _ui.find('.dialog-content:first');
     
-    if (_display == null)
-    {
+    if (_display === null) {
         _container.toggle();
     }
-    else if (_display == true)
-    {
+    else if (_display === true) {
         _container.show();
     }
-    else
-    {
+    else {
         _container.hide();
     }
     
@@ -390,8 +374,7 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
     
     _ui.removeClass('with-options');
     
-    for (var _index = 0; _index < _options.length; _index++)
-    {
+    for (var _index = 0; _index < _options.length; _index++) {
         //$.test_msg('set_options forloop', [$.get_class(_options[_index]), (typeof(_options[_index].get_ui))]);
         
         if (typeof(_options[_index].get_ui) != 'function')
@@ -401,12 +384,12 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
         
         
         
-        if (_index == 0) {
+        if (_index === 0) {
             _ui.addClass('with-options');
         }
         
         if (_index < _options.length -1
-            && _double_col == true)
+            && _double_col === true)
         {
             var _option_left = _option_ui;
             _index++;
@@ -441,16 +424,13 @@ Dialog_modal.prototype.toggle_options = function (_display) {
     
     var _ui = this.get_ui();
     
-    if ($.is_null(_display))
-    {
+    if ($.is_null(_display)) {
         _ui.toggleClass('hide-options');
     }
-    else if (_display == true)
-    {
+    else if (_display === true) {
         _ui.removeClass('hide-options');
     }
-    else
-    {
+    else {
         _ui.addClass('hide-options');
     }
     
@@ -464,13 +444,12 @@ Dialog_modal.prototype.toggle_options = function (_display) {
  * @param {number} _offset = 0;
  */
 Dialog_modal.prototype.focus_option = function (_offset) {
-    if (this._setted_focus == true)
+    if (this._setted_focus === true)
         return this;
     
     var _ui = this.get_ui();
     
-    if (_ui != null)
-    {
+    if (_ui != null) {
         if ($.is_null(_offset))
             _offset = 0;
             
@@ -605,7 +584,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
         
         var END_TIMER;
         var _move_event = function(_event) {
-            if (_scrollStartPos == null)
+            if (_scrollStartPos === null)
                 return;
             
             //_el.css('color', 'blue');    //偵測用功能
@@ -626,7 +605,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                     if (_target_top > 50)
                         _target_top = 50;
                     var _bottom_padding = _el.find('.bottom-padding:first');
-                    if (_bottom_padding.length == 0) {
+                    if (_bottom_padding.length === 0) {
                         _bottom_padding = $('<div class="bottom-padding"></div>').appendTo(_el);
                     }
                     if (_bottom_padding.height() < _target_top)
@@ -647,7 +626,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                     if (_target_top > 50)
                         _target_top = 50;
                     var _top_padding = _el.find('.top-padding:first');
-                    if (_top_padding.length == 0) {
+                    if (_top_padding.length === 0) {
                         _top_padding = $('<div class="top-padding"></div>').prependTo(_el);
                     }
                     

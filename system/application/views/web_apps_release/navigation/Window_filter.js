@@ -73,8 +73,7 @@ Window_filter.prototype._$create_ui = function () {
     var _type_lang_header = Type_menu.prototype._type_lang_header;
     
     var _type_inputs = [];
-    for (var _i in _types)
-    {
+    for (var _i in _types) {
         var _type = _types[_i];
         
         var _type_input = $('<td><label><input type="checkbox" name="filter" value="my_'+_type+'" checked="true" /> <span></span></label></td>');
@@ -121,8 +120,7 @@ Window_filter.prototype._$create_ui = function () {
     }
     
     var _tr;
-    for (_i in _type_inputs)
-    {
+    for (_i in _type_inputs) {
         if (_i % 2 === 0)
         {
             _tr = $('<tr></tr>')
@@ -151,7 +149,7 @@ Window_filter.prototype._$create_ui = function () {
     _my_input.click(function (_event) {
         var _disabled = _my_checkbox.attr('disabled');
         
-        if (_disabled == true)
+        if (_disabled === true)
         {
             _event.preventDefault();
             

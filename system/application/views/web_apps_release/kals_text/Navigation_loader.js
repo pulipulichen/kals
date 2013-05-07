@@ -37,11 +37,10 @@ Navigation_loader.prototype._$load_url = 'annotation_getter/navigation_';
  */
 Navigation_loader.prototype.load_annotation = function (_data, _callback) {
     
-    if (KALS_context.policy.allow_show_navigation() == false)
+    if (KALS_context.policy.allow_show_navigation() === false)
         return this;
     
-    if ($.is_function(_data) && $.is_null(_callback))
-    {
+    if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
         _data = null;
     }
@@ -50,13 +49,12 @@ Navigation_loader.prototype.load_annotation = function (_data, _callback) {
     
     var _is_initialize = !(this.is_initialized());
     
-    for (var _i in _data)
-    {
+    for (var _i in _data) {
         var _type_id = _i;
         var _scope_coll_json = _data[_i];
         
-        if (_scope_coll_json == null
-            || _scope_coll_json.length == 0)
+        if (_scope_coll_json === null
+            || _scope_coll_json.length === 0)
             continue;
         
         //$.test_msg('Navigation_loader.load_annotation()', [$.is_array(_scope_coll_json[0]), _i]);
@@ -82,8 +80,7 @@ Navigation_loader.prototype.initialize = function () {
     
     //$.test_msg('Navigation_loader.initialize()', typeof(KALS_text));
     
-    if (typeof(KALS_text) == 'object')
-    {
+    if (typeof(KALS_text) == 'object') {
         this._selection = KALS_text.selection.navigation;
         
         var _this = this;
@@ -92,7 +89,7 @@ Navigation_loader.prototype.initialize = function () {
             setTimeout(function () {
                 
                 //$.test_msg('Navigation_loader.initialize()', _policy.allow_show_navigation());
-                if (_policy.allow_show_navigation() == false)
+                if (_policy.allow_show_navigation() === false)
                 {
                     _this.reset();
                     return;
@@ -123,8 +120,7 @@ Navigation_loader.prototype.initialize = function () {
 
 Navigation_loader.prototype._$exception_handle = function (_data) {
     
-    if (this.is_initialized() == false)
-    {
+    if (this.is_initialized() === false) {
         $.test_msg('Navigation_loader._$exception_handle()');
         
         var _this = this;

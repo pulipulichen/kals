@@ -30,8 +30,7 @@ User_collection_param.prototype.users = [];
  */
 User_collection_param.prototype.add = function (_user) {
     
-    if ($.is_array(_user))
-    {
+    if ($.is_array(_user)) {
         var _users = _user;
         for (var _i in _users)
         {
@@ -41,12 +40,10 @@ User_collection_param.prototype.add = function (_user) {
         return;
     }
     
-    if ($.is_number(_user))
-    {
+    if ($.is_number(_user)) {
         _user = new User_param(_user);
     }
-    else if ($.is_class(_user, 'User_param') == false)
-    {
+    else if ($.is_class(_user, 'User_param') === false) {
         return this;
     }
     
@@ -67,8 +64,7 @@ User_collection_param.prototype.remove = function (_user_id) {
     var _old_coll = this.users;
     var _new_coll = [];
     
-    for (var _i in _old_coll)
-    {
+    for (var _i in _old_coll) {
         var _user = _old_coll[_i];
         
         if (_user.id == _user_id)
@@ -104,8 +100,7 @@ User_collection_param.prototype.length = function () {
  */
 User_collection_param.prototype.import_coll = function (_users) {
     
-    if ($.isset(_users))
-    {
+    if ($.isset(_users)) {
         if ($.is_class(_users, 'User_collection_param'))
             this.users = _users.users;
         else if ($.is_class(_users, 'User_param')

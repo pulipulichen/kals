@@ -58,8 +58,7 @@ Note_editor_ckeditor._ckeditor_config = KALS_CONFIG.ckeditor_config;
 Note_editor_ckeditor._setup_timer = null;
 Note_editor_ckeditor._setup_ckeditor = function () {
     
-    if ($.isset(this._setup_timer))
-    {
+    if ($.isset(this._setup_timer)) {
         clearTimeout(this._setup_timer);
     }
     
@@ -92,7 +91,7 @@ Note_editor_ckeditor._setup_ckeditor = function () {
             
             /*
             setTimeout(function () {
-                if ($(_textarea).children('span').length == 0)
+                if ($(_textarea).children('span').length === 0)
                 {
                     _ui.show();
                     _ui.css('visibility', 'visible');
@@ -155,14 +154,14 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     //{
         //var _had_setup_classname = 'setted';
         //this._had_setup = false;
-        var _this = this; 
+        _this = this; 
         
         var _afterckeditorsetup = function () {
             
             //if (_ui.hasClass(_had_setup_classname))
             //    return;
             
-            //if (_this._had_setup == true)
+            //if (_this._had_setup === true)
             //    return;
             
             
@@ -238,8 +237,6 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
          _editor.execCommand('maximize');
          
       });
-      */
-    /*
     _ckeditor.on('focus', function (_evt) {
         
         var _editor = _evt.editor;
@@ -260,6 +257,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
         //return false;
         //alert('focuse');
     });
+    */
     /*
     _ckeditor.on('maximize', function (_evt) {
         
@@ -340,7 +338,7 @@ Note_editor.prototype.get_text = function () {
     catch (e) {}
        
     
-    if ($.trim(_text) == '')
+    if ($.trim(_text) === '')
         return null;
     else
         return _text;
@@ -363,11 +361,13 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 Note_editor_ckeditor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
     
-    if ($.is_null(_text))
-        _text = '';
+    if ($.is_null(_text)) {
+		_text = '';
+	}
     
-    if (_text == _setted_text)
-        return this;    
+    if (_text == _setted_text) {
+		return this;
+	}
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     $.save_scroll_position();

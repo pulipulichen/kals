@@ -66,8 +66,7 @@ JSONP_dispatcher.prototype.set_load_url = function (_url) {
  */
 JSONP_dispatcher.prototype.load = function (_arg, _callback) {
     
-    if ($.is_function(_arg) && $.is_null(_callback))
-    {
+    if ($.is_function(_arg) && $.is_null(_callback)) {
         _callback = _arg;
         _arg = null;
     }
@@ -90,8 +89,7 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
         retry: 1
     };
     
-    if ($.is_function(this._$exception_handle))
-    {
+    if ($.is_function(this._$exception_handle)) {
         _config['exception_handle'] = function (_data) {
             _this._$exception_handle(_data);    
         }; 

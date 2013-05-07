@@ -16,11 +16,10 @@ function Overlay_manager () {
     var _this = this;
     //跟URL_hash_dispatcher註冊
     if (typeof(KALS_context) == 'object'
-        && typeof(KALS_context.hash) == 'object')
-    {
+        && typeof(KALS_context.hash) == 'object') {
         KALS_context.hash.add_listener(function (_dispatcher, _data) {
             if (typeof(_data.backward) == 'boolean'
-                && _data.backward == true)
+                && _data.backward === true)
             {
                 //$.test_msg('modal listener', _data);
                 _this.close_all();
@@ -29,8 +28,7 @@ function Overlay_manager () {
     }   
     
     //跟onviewportmove註冊mash的fit事件
-    if (typeof($.mask) != 'undefined')
-    {
+    if (typeof($.mask) != 'undefined') {
         KALS_context.view.add_listener(function () {
             if ($.mask.isLoaded())
             {
@@ -110,8 +108,7 @@ Overlay_manager.prototype.close = function (_target_name) {
     else if ($.is_string(_target_name))
         _target_name = [_target_name];
     
-    for (var _i in this._opened_modals)
-    {
+    for (var _i in this._opened_modals) {
         var _modal = this._opened_modals[_i];
         var _name = _modal.get_modal_name();
         
@@ -133,14 +130,12 @@ Overlay_manager.prototype.check_mask = function (_is_close) {
     
     //$.test_msg('Overlay_manager.check_mask()', _is_close);
     
-    if (_is_close == true && this._mask_locker == true)
-    {
+    if (_is_close === true && this._mask_locker === true) {
         this._mask_locker = false;
         //$.test_msg('Overlay_manager.check_mask() unlock mask');
         return this;
     }
-    else
-    {
+    else {
         this._mask_locker = false;
     }
         
@@ -165,7 +160,7 @@ Overlay_manager.prototype.check_mask = function (_is_close) {
             }
         }
         
-        if (_need_expose == false)
+        if (_need_expose === false)
         {
             $.mask.close();
         } 
@@ -189,15 +184,14 @@ Overlay_manager.prototype.lock_mask = function () {
  */
 Overlay_manager.prototype.add_opened = function (_modal) {
     
-    if (_modal._$exposable == false)
+    if (_modal._$exposable === false)
         return this;
     
-    if (_modal == null || typeof(_modal.is_closable) != 'function')
+    if (_modal === null || typeof(_modal.is_closable) != 'function')
         return this;
     
     if ($.inArray(_modal, this._opened_modals) == -1
-        && _modal.is_closable())
-    {
+        && _modal.is_closable()) {
         
         //$.test_msg('add_opened', [_modal.get_modal_name(), _modal.is_exposable()]);
         
@@ -239,12 +233,11 @@ Overlay_manager.prototype.has_opened = function () {
  */
 Overlay_manager.prototype.delete_opened = function (_modal) {
     
-    if (_modal._$exposable == false)
+    if (_modal._$exposable === false)
         return this;
     
     var _deleted = $.inArray(_modal, this._opened_modals);
-    if (_deleted > -1)
-    {
+    if (_deleted > -1) {
         //delete this._opened_modals[_i];
         //this._opened_modals[_i].pop();
         //this._opened_modals.length -= 1;

@@ -97,8 +97,7 @@ KALS_text.prototype.filter_selector = function (_selector) {
         //_selector = _selector;
         //不做任何事情，因為他本來就是jQuery型態           
     }
-    else
-    {
+    else {
         //丟出錯誤
         _exception = new KALS_exception('kals_text.exception.selector_not_exist');
         KALS_util.show_exception(_exception);
@@ -107,8 +106,7 @@ KALS_text.prototype.filter_selector = function (_selector) {
     
     if (_selector.length > 0)
         return _selector;
-    else
-    {
+    else {
         //找不到_selector，丟出錯誤
         _exception = new KALS_exception('kals_text.exception.selector_not_exist');
         KALS_util.show_exception(_exception);

@@ -111,14 +111,12 @@ Window_user_interface.prototype.dropdown = function (_name, _options, _default_v
 		_options = [_options];
 	}
     
-    for (var _i in _options)
-    {
+    for (var _i in _options) {
         _options[_i].appendTo(_select); 
     }
     
     //選擇預設的選項
-    if ($.isset(_default_value))
-    {
+    if ($.isset(_default_value)) {
         _select.children('[value="' + _default_value + '"]').attr('selected', 'selected');
         //$.test_msg('win ui.dropdown()' , [_default_value
         //    , _select.children('[value="' + _default_value + '"]').length
@@ -138,8 +136,7 @@ Window_user_interface.prototype.dropdown_option = function (_lang_param, _value)
     var _option = $('<option></option>');
     
     KALS_context.lang.add_listener(_option, _lang_param);
-    if ($.is_null(_value))
-    {
+    if ($.is_null(_value)) {
         if ($.is_class(_lang_param, 'KALS_language_param')) {
 			_value = _lang_param.lang;
 		}
@@ -167,8 +164,7 @@ Window_user_interface.prototype.list_option = function (_lang_param, _value) {
     
     KALS_context.lang.add_listener(_heading, _lang_param);
     
-    if ($.is_null(_value))
-    {
+    if ($.is_null(_value)) {
         if ($.is_class(_lang_param, 'KALS_language_param')) {
 			_value = _lang_param.lang;
 		}
@@ -192,8 +188,7 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
 		_options = [_options];
 	}
     
-    for (var _i in _options)
-    {
+    for (var _i in _options) {
         var _option = _options[_i];
         
         var _input = $('<input type="radio" name="'+_name+'" />')
@@ -205,8 +200,7 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
     }
     
     //選擇預設的選項
-    if ($.isset(_default_value))
-    {
+    if ($.isset(_default_value)) {
         //$.test_msg('window ui.radio_list() _default_value', _default_value);
         
         _list.find('[value="' + _default_value + '"]').attr('checked', true);
@@ -233,8 +227,7 @@ Window_user_interface.prototype.window_change_link = function (_lang_param, _con
  */
 Window_user_interface.prototype.row = function (_title, _data)
 {
-    if ($.is_null(_data))
-    {
+    if ($.is_null(_data)) {
         _data = '';
         //return this.message_row(_title);
     }
@@ -276,8 +269,7 @@ Window_user_interface.prototype.row = function (_title, _data)
  */
 Window_user_interface.prototype.message_row = function (_message)
 {
-    if ($.is_null(_message))
-    {
+    if ($.is_null(_message)) {
         _message = '';
     }
     
@@ -301,8 +293,7 @@ Window_user_interface.prototype.hr_row = function () {
 
 Window_user_interface.prototype.heading_row = function (_heading) {
     
-    if ($.is_null(_heading))
-    {
+    if ($.is_null(_heading)) {
         return this.hr_row();
     }
     
@@ -319,12 +310,10 @@ Window_user_interface.prototype.tip = function (_lang_param) {
 
 Window_user_interface.prototype._setup_content = function (_container, _content) {
     
-    if ($.is_class(_content, 'KALS_language_param'))
-    {
+    if ($.is_class(_content, 'KALS_language_param')) {
         KALS_context.lang.add_listener(_container, _content);
     }
-    else
-    {
+    else {
         _container.append(_content);
     }
     return _container;

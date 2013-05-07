@@ -78,7 +78,7 @@
 			$(this).scroll(function(){
 				// calculates the actual height of the scrolling container
 				var inner_wrap = $(".endless_scroll_inner_wrap", this);
-				if (inner_wrap.length == 0) {
+				if (inner_wrap.length === 0) {
 					$(this).wrapInner("<div class=\"endless_scroll_inner_wrap\" />");
 				}
 				
@@ -87,7 +87,7 @@
 					(inner_wrap.height() - $(this).height() <= $(this).scrollTop() + options.bottomPixels)
 				)
 				{
-					if ((options.fireOnce == false || (options.fireOnce == true && fired != true)))
+					if ((options.fireOnce === false || (options.fireOnce === true && fired != true)))
 					{
 						if(options.resetCounter.apply(this) === true)
 						{

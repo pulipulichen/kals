@@ -31,8 +31,7 @@ Window_filter_submit.prototype.submit = function () {
     
     
     
-    if ($.isset(_data))
-    {
+    if ($.isset(_data)) {
         _style_manager.clear_style(_style_name);
         var _url = 'custom';
         
@@ -83,8 +82,7 @@ Window_filter_submit.prototype.submit = function () {
         //_style_manager.load_style(_style_name, _url, _config);
         
     }
-    else
-    {
+    else {
         _style_manager.remove_style(_style_name);
         //_style_manager.unload_style(_style_name);
     }
@@ -100,8 +98,7 @@ Window_filter_submit.prototype.get_data = function () {
     var _is_login = KALS_context.auth.is_login();
     var _word_classname = '.kals-paragraph .kals-word';
     //如果有登入，才需要取得my資料
-    if (_is_login === true)
-    {
+    if (_is_login === true) {
         var _my = [];
         var _inputs = _content_ui.find('.my-type-div input');
         //$.test_msg('Window_filter_submit.get_data() my', _inputs.length);
@@ -125,8 +122,7 @@ Window_filter_submit.prototype.get_data = function () {
     
     //如果有show navigation，才需要取得nav資料
     var _allow_show_navigation = KALS_context.policy.allow_show_navigation();
-    if (_allow_show_navigation)
-    {
+    if (_allow_show_navigation) {
         
         var _nav_input = _content_ui.find('.nav-div input');
         var _nav_checked = _nav_input.attr('checked');

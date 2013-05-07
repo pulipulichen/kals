@@ -41,13 +41,12 @@ Recommend_hint.prototype._recommended = null;
  * @param {List_item}
  */
 Recommend_hint.prototype.setup_recommend = function(_recommended) {
-    if ($.isset(_recommended))
-    {   
+    if ($.isset(_recommended)) {   
         //this._recommended_item = _recommended_item;
         //this._recommended = _recommended_item.get_annotation_param();
         this._recommended = _recommended;
         
-        if (this.has_recommend() == false)
+        if (this.has_recommend() === false)
             return this;
         
         this._setup_position_words();
@@ -160,7 +159,7 @@ Recommend_hint.prototype._last_word = null;
 
 Recommend_hint.prototype._setup_position_words = function () {
     
-    if (this.has_recommend() == false)
+    if (this.has_recommend() === false)
         return this;
     
     var _scope = this._recommended.scope;
@@ -182,7 +181,7 @@ Recommend_hint.prototype._touch_top = function () {
     var _first_word_top = _first_word.offset().top;
     
     var _body_top = 0;
-    if ($.is_small_height() == false)
+    if ($.is_small_height() === false)
         _body_top = KALS_toolbar.get_ui().height();
     //$.test_msg('Recommend_hint._touch_top()', [_body_top, _first_word_top, _ui_height]);
     return (_first_word_top - _ui_height - 5 < _body_top);
@@ -202,14 +201,12 @@ Recommend_hint.prototype._touch_bottom = function () {
 
 Recommend_hint.prototype.setup_position = function (_callback) {
     
-    if (KALS_CONFIG.enable_annotation_recommend == false)
-    {
+    if (KALS_CONFIG.enable_annotation_recommend === false) {
         $.trigger_callback(_callback);
         return;
     }
     
-    if (this.has_recommend() == false)
-    {
+    if (this.has_recommend() === false) {
         //$.test_msg('Recommend_hint.setup_position()'
         //    , [this.has_recommend(), this.has_recommend_by(), this.has_tips()]);
         return this;
@@ -218,13 +215,11 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     var _pos = this._$default_position;
     //$.test_msg('Recommend_hint.setup_position() decide pos', [_pos, this._touch_top(), this._touch_bottom()]);
     if (_pos == 'top'
-        && (this._touch_top() == true && this._touch_bottom() == false))
-    {
+        && (this._touch_top() === true && this._touch_bottom() === false)) {
         _pos = 'bottom';
     }
     else if (_pos == 'bottom'
-        && (this._touch_bottom() == true && this._touch_top() == false))
-    {
+        && (this._touch_bottom() === true && this._touch_top() === false)) {
         _pos = 'top';
     }
     //$.test_msg('Recommend_hint.setup_position() final pos', _pos);
@@ -243,8 +238,7 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     var _ui_offset = _ui.offset();
     var _ui_width = _ui.width();
     var _center, _ui_left, _ui_top;
-    if (_pos == 'bottom')
-    {     
+    if (_pos == 'bottom') {     
        /*
        $.test_msg('Recommend_hint.setup_position() bottom before', [_ui.css('position'), _ui.offset().top, this._last_word.offset().top]);
         _ui.position({
@@ -261,8 +255,7 @@ Recommend_hint.prototype.setup_position = function (_callback) {
         
         _ui.addClass(_tooltip_bottom_classname);
     }
-    else
-    {
+    else {
         /*
         _ui.position({
             of: this._first_word,
@@ -288,15 +281,14 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     if (_ui_offset.left < 0)
         _ui.css('left', '0px');
     var _body_right = $('body').width();
-    if (_ui_offset.left + _ui_width > _body_right)
-    {
+    if (_ui_offset.left + _ui_width > _body_right) {
         _ui_left = _body_right - _ui_width;
         _ui.css('left', _ui_left + 'px');
     }
     
     //修正最上方
     var _body_top = 0;
-    if ($.is_small_height() == false)
+    if ($.is_small_height() === false)
         _body_top = KALS_toolbar.get_ui().height();
     if (_ui_offset.top < _body_top)
         _ui.css('top', _body_top + 'px');

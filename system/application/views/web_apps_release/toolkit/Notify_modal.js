@@ -41,8 +41,7 @@ Notify_modal.prototype._$create_ui = function () {
     _config.effect = 'fade';
     
     var _onbeforeload;
-    if (typeof(_config.onBeforeLoad) == 'function')
-    {
+    if (typeof(_config.onBeforeLoad) == 'function') {
         _onbeforeload = _config.onBeforeLoad;
     }
     
@@ -55,8 +54,7 @@ Notify_modal.prototype._$create_ui = function () {
     };
     
     var _onclose;
-    if (typeof(_config.onClose) == 'function')
-    {
+    if (typeof(_config.onClose) == 'function') {
         _onclose = _config.onClose;   
     }
      
@@ -100,15 +98,13 @@ Notify_modal.prototype.setup_modal = function (_config) {
     Notify_modal.prototype.setup_modal.call(this, _config);
     
     var _time = $.get_parameter(_config, 'timeout_close');
-    if ($.isset(_time))
-    {
+    if ($.isset(_time)) {
         this.set_timeout_close(_time);
     }
     
     var _lang = $.get_parameter(_config, 'message');
     var _lang_time = $.get_parameter(_config, 'timeout_close_message');
-    if ($.isset(_lang))
-    {
+    if ($.isset(_lang)) {
         this.set_message(_lang, _lang_time);
     } 
     
@@ -134,8 +130,7 @@ Notify_modal.prototype.set_timeout_close = function (_time) {
     var _ui = this.get_ui();
     _ui.attr('timeout_close', _time);
     
-    if (this._close_lock != null)
-    {
+    if (this._close_lock != null) {
         clearTimeout(this._close_lock);
     }
     
@@ -158,8 +153,7 @@ Notify_modal.prototype.close = function (_callback) {
     
     
     
-    if (_display_message.length == 0)
-    {
+    if (_display_message.length === 0) {
         var _this = this;
         Overlay_modal.prototype.close.call(this, function () {
             try
@@ -172,8 +166,7 @@ Notify_modal.prototype.close = function (_callback) {
             $.trigger_callback(_callback);
         });
     }
-    else
-    {
+    else {
         $.trigger_callback(_callback);
     }
 };
@@ -193,8 +186,7 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
     
     var _ui = this.get_ui();
     
-    if ($.is_null(_lang_time))
-    {
+    if ($.is_null(_lang_time)) {
         _lang_time = _this.attr('timeout_close');
         _lang_time = parseInt(_lang_time);
     }

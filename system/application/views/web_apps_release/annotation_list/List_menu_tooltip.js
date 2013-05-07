@@ -16,8 +16,7 @@ function List_menu_tooltip(_item, _disable_option) {
     
     List_menu.call(this, _item, _disable_option);
     
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         var _annotation_id = _item.get_annotation_id();
         this._$tooltip_id = this._$tooltip_id + '_' + _annotation_id; 
     }

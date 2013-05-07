@@ -16,8 +16,7 @@ function Note_editor(_editor) {
     Event_dispatcher.call(this);
             
     this._$apply_types = [];
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;
         //this.listen_editor();
         
@@ -57,7 +56,7 @@ Note_editor.prototype._$create_ui = function ()
     var _this = this;
     this.notify_ready();
     
-        var _this = this;
+        _this = this;
         setTimeout(function() {
             _this.notify_ready();    
         }, 0);
@@ -76,22 +75,30 @@ Note_editor.prototype.get_text = function () {
     var _text = _ui.val();
     
     
-    if ($.trim(_text) == '')
-        return null;
-    else
-        return _text;
+    if ($.trim(_text) === '') {
+		return null;
+	}
+	else {
+		return _text;
+	}
 };
 
+/**
+ * 設定指定文字到筆記編輯器中
+ * @param {string} _text
+ */
 Note_editor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
     
     //$.test_msg('Note_editor.set_text() setted text', [_text, _setted_text]);
     
-    if ($.is_null(_text))
-        _text = '';
+    if ($.is_null(_text)) {
+		_text = '';
+	}
     
-    if (_text == _setted_text)
-        return this;    
+    if (_text == _setted_text) {
+		return this;
+	}
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);

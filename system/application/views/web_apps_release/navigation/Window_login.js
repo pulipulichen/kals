@@ -73,8 +73,7 @@ Window_login.prototype._$create_ui = function () {
     );
     
     // 2010.11.21 在職專班實驗專用訊息
-    if (typeof(KALS_CONFIG.login_hint) == 'string')
-    {
+    if (typeof(KALS_CONFIG.login_hint) == 'string') {
         var _login_hint = $('<div></div>')
             .css({
                 fontSize: 'small',
@@ -109,8 +108,7 @@ Window_login.prototype._$create_ui = function () {
     _register_row.addClass('register-link')
         .appendTo(_ui);
         
-    if (KALS_CONFIG.deny_register === true)
-    {
+    if (KALS_CONFIG.deny_register === true) {
         _register_row.hide();
     }
     
@@ -129,8 +127,7 @@ Window_login.prototype.set_error = function (_lang_param) {
     _error.empty();
     if ($.is_null(_lang_param))
         _error.hide();
-    else
-    {
+    else {
         var _error_msg = KALS_context.lang.create_listener(_lang_param);
         _error.append(_error_msg).show();
     }

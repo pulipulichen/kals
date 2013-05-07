@@ -129,8 +129,8 @@ List_collection.prototype._$create_ui = function ()
     //var _loading = this._create_loading_component()
     //    .appendTo(_ui);
     
-    //if (this._$limit == null
-    //    || this.is_totally_loaded() == true)
+    //if (this._$limit === null
+    //    || this.is_totally_loaded() === true)
     //{
     //    _loading.hide();
     //}
@@ -167,12 +167,11 @@ List_collection.prototype._create_loading_component = function()
 /*
 List_collection.prototype._toggle_loading = function(_display)
 {
-    if ($.is_null(_display))
-    {
+    if ($.is_null(_display)) {
         _display = (this._load_component.css('display') != 'block');
     }
     
-    if (_display == true)
+    if (_display === true)
         this._list_container.show();
     else
         this._list_container.hide();
@@ -189,14 +188,12 @@ List_collection.prototype._load_lock = false;
 
 List_collection.prototype.load_list = function(_data, _callback) 
 {
-    if ($.is_function(_data) && $.is_null(_callback))
-    {
+    if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
         _data = null;
     }
     
-    if ($.isset(_data))
-    {
+    if ($.isset(_data)) {
         if ($.is_class(_data, 'Annotation_param'))
         {
             var _annotation_param = _data.export_json();
@@ -224,20 +221,18 @@ List_collection.prototype.load_list = function(_data, _callback)
         return this;
     }
     
-    if (this.is_totally_loaded() == true
-        || this._check_login() == false)
-    {
+    if (this.is_totally_loaded() === true
+        || this._check_login() === false) {
         $.trigger_callback(_callback);
         return this;
     }
     
-    if (this._load_lock == true)
+    if (this._load_lock === true)
         return this;
     
     var _search_data = this.get_search_data();
     
-    if ($.isset(_search_data))
-    {
+    if ($.isset(_search_data)) {
         //$.test_msg('List_coll.load_list', _search_data);
         
         this._load_lock = true;
@@ -257,8 +252,7 @@ List_collection.prototype.get_search_data = function () {
     var _search_data = {};
     
     //如果有指定target id，則就不需要其他參考資料
-    if ($.isset(this._$topic_id))
-    {
+    if ($.isset(this._$topic_id)) {
         _search_data['topic_id'] = this._$topic_id;
         
         if ($.isset(this._$limit))
@@ -283,7 +277,7 @@ List_collection.prototype.get_search_data = function () {
     
     //需要登入身分的兩個參數
     if (($.isset(this._$target_like) || $.isset(this._$target_my))
-        && KALS_context.auth.is_login() == false)
+        && KALS_context.auth.is_login() === false)
         return null;
     
     if ($.isset(this._$target_like))
@@ -310,12 +304,11 @@ List_collection.prototype._check_login = function () {
     
     //$.test_msg('List_coll._check_login()', [this._$name, this._$need_login, KALS_context.auth.is_login()]);
     
-    if ($.isset(this._$need_login) == false)
+    if ($.isset(this._$need_login) === false)
         return true;
     
     var _pass = (this._$need_login == KALS_context.auth.is_login());
-    if (_pass == false)
-    {
+    if (_pass === false) {
         this._totally_loaded = true;
     } 
     return _pass;
@@ -333,12 +326,13 @@ List_collection.prototype.set_load_id = function (_dispatcher) {
 };
 
 List_collection.prototype.check_load_id = function (_load_id) {
-    if (this._check_load_id == true)
-    {
-        if ($.is_null(_load_id))
-            return (this._load_id_dispatcher.get_load_id() == this._load_id);
-        else
-            return (this._load_id_dispatcher.get_load_id() == _load_id);
+    if (this._check_load_id === true) {
+        if ($.is_null(_load_id)) {
+			return (this._load_id_dispatcher.get_load_id() == this._load_id);
+		}
+		else {
+			return (this._load_id_dispatcher.get_load_id() == _load_id);
+		}
     }   
     else
         return true;
@@ -349,8 +343,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
     //$.test_msg('List_coll.setup_load_list()', _data);
     //$.test_msg('List_coll.setup_load_list()', $.is_array(_data.annotation_collection));
     
-    if (this._check_login() == false)
-    {
+    if (this._check_login() === false) {
         $.trigger_callback(_callback);
         return this;
     }
@@ -359,7 +352,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
     
     var _setup_list_complete = function () {
         
-        if (typeof(_data.totally_loaded) == 'boolean' && _data.totally_loaded == true)
+        if (typeof(_data.totally_loaded) == 'boolean' && _data.totally_loaded === true)
         _this._totally_loaded = _data.totally_loaded;
 
         //_this._ready = true;
@@ -375,8 +368,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         $.trigger_callback(_callback);
     };
     
-    if ($.is_array(_data.annotation_collection))
-    {
+    if ($.is_array(_data.annotation_collection)) {
         //要先把_data.annotation_collection轉換成Anntation_collection_param()
         
         var _loop_annotation_complete = function () {
@@ -384,7 +376,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         
             var _length = _annotation_coll.length();
             
-            if (_this._offset == null)
+            if (_this._offset === null)
                 _this._offset = 0;
             _this._offset = _this._offset + _length;
             
@@ -418,7 +410,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
        
         var _load_id = this._load_id;
         var _loop_annotation = function (_i) {
-            if (_this.check_load_id(_load_id) == false)
+            if (_this.check_load_id(_load_id) === false)
             {
                 //$.test_msg('List_collection.setup_load_list()', 'lost load id');
                 return;
@@ -443,8 +435,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         
         _loop_annotation(0);
     }
-    else
-    {
+    else {
         _setup_list_complete();
     }
     
@@ -481,9 +472,9 @@ List_collection.prototype.reload = function(_callback)
  */
 List_collection.prototype.create_list_item = function(_param)
 {
-    if (this._$target_topic == true)
+    if (this._$target_topic === true)
         return new List_item_topic(_param);
-    //else if (this._$target_topic == false)
+    //else if (this._$target_topic === false)
     //    return new List_item_respond(_param);
     else
         return new List_item(_param);
@@ -523,13 +514,12 @@ List_collection.prototype.add_list_item = function(_param, _from_head)
 {
     var _list_item = this.create_list_item(_param);
     
-    if (_list_item != null)
-    {
+    if (_list_item != null) {
         this._list_items.push(_list_item);
         
         var _list_item_ui = _list_item.get_ui();
         
-        if ($.is_null(_from_head) || _from_head == false)
+        if ($.is_null(_from_head) || _from_head === false)
         {
             this._list_container.append(_list_item_ui);
         }
@@ -555,8 +545,7 @@ List_collection.prototype.editor_add_list_item = function (_param, _from_head) {
 List_collection.prototype.remove_list_item = function (_param) {
     
     var _delete_index;
-    for (var _i in this._list_items)
-    {
+    for (var _i in this._list_items) {
         var _list_item = this._list_items[_i];
         if (_list_item.equals(_param))
         {
@@ -566,8 +555,7 @@ List_collection.prototype.remove_list_item = function (_param) {
         }
     }
     
-    if ($.isset(_delete_index))
-    {
+    if ($.isset(_delete_index)) {
         this._list_items = $.array_remove(this._list_items, _delete_index);
     }
     return this;
@@ -583,8 +571,7 @@ List_collection.prototype.focus = function(_param, _scrollto)
     if ($.is_null(_param))
         return null;
     
-    for (var _i in this._list_items)
-    {
+    for (var _i in this._list_items) {
         var _list_item = this._list_items[_i];
         /*
         var _list_id = _list_item.get_annotation_id();
@@ -640,7 +627,7 @@ List_collection.prototype.set_scope_coll = function (_scope_coll) {
 };
 
 List_collection.prototype.count_list_item = function () {
-    if (this._list_items == null)
+    if (this._list_items === null)
         return 0;
     else
         return this._list_items.length;
@@ -649,11 +636,10 @@ List_collection.prototype.count_list_item = function () {
 List_collection.prototype._is_marked_first = false;
 
 List_collection.prototype._mark_first = function () {
-    if (this._is_marked_first == true)
+    if (this._is_marked_first === true)
         return this;
     
-    if (this._list_items.length > 0)
-    {
+    if (this._list_items.length > 0) {
         var _list_item = this._list_items[0];
         _list_item.get_ui().addClass('first');
         this._is_marked_first = true;    
@@ -671,12 +657,11 @@ List_collection.prototype._mark_first = function () {
  */
 /*
 List_collection.prototype.is_ready = function () {
-    if (this._ready == false)
+    if (this._ready === false)
         return false;
     
-    for (var _i in this._list_items)
-    {
-        if (this._list_items[_i].is_ready() == false)
+    for (var _i in this._list_items) {
+        if (this._list_items[_i].is_ready() === false)
             return false;
     }
     

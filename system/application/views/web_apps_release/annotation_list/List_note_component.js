@@ -40,8 +40,7 @@ List_note_component.prototype = new KALS_user_interface();
 List_note_component.prototype._item = null;
 
 List_note_component.prototype._set_list_item = function (_item) {
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
@@ -86,7 +85,7 @@ List_note_component.prototype._$create_ui = function ()
     var _ui = $('<div></div>')
         .addClass('list-note-component');
     
-    if (this._show_fulltext == false) {
+    if (this._show_fulltext === false) {
 		_ui.addClass('simple');
 	}
     
@@ -152,8 +151,7 @@ List_note_component.prototype._create_respond_comma = function () {
  * @param {Annotation_collection_param} _respond_to_coll
  */
 List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) {
-    if ($.is_null(_respond_to_coll))
-    {
+    if ($.is_null(_respond_to_coll)) {
         _respond_to_coll = this._item.get_data().respond_to_coll;
     }
     
@@ -165,8 +163,7 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
     
     this._respond_container.empty();
     
-    for (var _i = 0; _i < _respond_to_coll.length(); _i ++)
-    {
+    for (var _i = 0; _i < _respond_to_coll.length(); _i ++) {
         if (_i > 0)
         {
             var _comma = this._create_respond_comma();
@@ -178,8 +175,7 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
         _respond_to.appendTo(this._respond_container);
     }
     
-    if (_respond_to_coll.length() > 0)
-    {
+    if (_respond_to_coll.length() > 0) {
         var _to = $('<span></span>')
             .addClass('to')
             .prependTo(this._respond_container);
@@ -224,8 +220,7 @@ List_note_component.prototype._create_note_container = function () {
 
 
 List_note_component.prototype.set_note = function (_note) {
-    if ($.is_null(_note))
-    {
+    if ($.is_null(_note)) {
         _note = this._item.get_data().note;
     }
     
@@ -239,8 +234,7 @@ List_note_component.prototype.set_note = function (_note) {
     
     this._note_container.html(_note);
     
-    if (this._show_fulltext == false)
-    {
+    if (this._show_fulltext === false) {
         //var _text = this._note_container.text();
 		_text = this._note_container.html();
 		_origin_text = _text;

@@ -140,8 +140,7 @@ Selection_manager.prototype.get_selection_scopes = function () {
     
     var _first_id = null;
     var _last_id = null;
-    for (var _key in this.selected_scope)
-    {
+    for (var _key in this.selected_scope) {
         var _s = this.selected_scope[_key];
         
         var _from = _s[0];
@@ -165,8 +164,7 @@ Selection_manager.prototype.get_anchor_text = function () {
     
     var _anchor_text = '';
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         if (_i > 0)
             _anchor_text = _anchor_text + ' ';
         
@@ -280,8 +278,7 @@ Selection_manager.prototype.unset_recommend = function () {
 Selection_manager.prototype.add_class = function (_class_name) 
 {
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
         if ($.is_array(_scope))
         {
@@ -310,8 +307,7 @@ Selection_manager.prototype.add_class = function (_class_name)
 Selection_manager.prototype.remove_class = function (_class_name) 
 {
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
         if ($.is_array(_scope))
         {
@@ -356,8 +352,7 @@ Selection_manager.prototype.clear_annotation = function () {
     //有哪些標註的class_name，尚未訂定
     var _anno_class_names = [];
     
-    for (var _i in _anno_class_names)
-    {
+    for (var _i in _anno_class_names) {
         var _class_name = _anno_class_names[_i];
         $('.' + _class_name).removeClass(_class_name);
     }
@@ -374,8 +369,7 @@ Selection_manager.prototype.clear_recommend = function () {
     //有哪些推薦標註的class_name，尚未訂定
     var _recommend_class_names = [];
     
-    for (var _i in _recommend_class_names)
-    {
+    for (var _i in _recommend_class_names) {
         var _class_name = _recommend_class_names[_i];
         $('.' + _class_name).removeClass(_class_name);
     }
@@ -390,8 +384,8 @@ Selection_manager.prototype.clear_recommend = function () {
 /*
 Selection_manager.prototype.get_selection_top = function () {
     
-    if (this.selected_scope == null
-        || this.selected_scope.length == 0)
+    if (this.selected_scope === null
+        || this.selected_scope.length === 0)
         return null;
     
     var _first_group = this.selected_scope[0];
@@ -412,8 +406,8 @@ Selection_manager.prototype.get_selection_top = function () {
 /*
 Selection_manager.prototype.get_selection_bottom = function () {
     
-    if (this.selected_scope == null
-        || this.selected_scope.length == 0)
+    if (this.selected_scope === null
+        || this.selected_scope.length === 0)
         return null;
     
     var _last_scope = this.selected_scope[(this.selected_scope.length - 1)];

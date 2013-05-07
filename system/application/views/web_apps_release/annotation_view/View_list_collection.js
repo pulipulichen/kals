@@ -30,8 +30,7 @@ View_list_collection.prototype._$target_topic = true;
 View_list_collection.prototype._topic_param = null;
 
 View_list_collection.prototype.set_topic_param = function (_topic_param) {
-    if ($.isset(_topic_param))
-    {
+    if ($.isset(_topic_param)) {
         this._topic_param = _topic_param;
         
         var _topic_id = _topic_param.annotation_id;
@@ -44,12 +43,10 @@ View_list_collection.prototype.set_topic_param = function (_topic_param) {
 
 View_list_collection.prototype.create_list_item = function(_param)
 {
-    if (this._$target_topic == true)
-    {
+    if (this._$target_topic === true) {
         return new View_list_item_topic(_param, this._topic_param);
     }
-    else
-    {
+    else {
         return new View_list_item_respond(_param, this._topic_param);
     }
 };
@@ -61,8 +58,7 @@ View_list_collection.prototype.create_list_item = function(_param)
  */
 View_list_collection.prototype.add_list_item = function(_param, _from_head)
 {
-    if ($.is_class(_param.topic, 'Annotation_param'))
-    {
+    if ($.is_class(_param.topic, 'Annotation_param')) {
         var _topic_param = _param.topic;
         
         //$.test_msg('View_list_colleciton.add_list_item() add repsond param', _topic_param.export_json());
@@ -78,8 +74,7 @@ View_list_collection.prototype.add_list_item = function(_param, _from_head)
         
         return this;
     }
-    else
-    {
+    else {
         return List_collection.prototype.add_list_item.call(this, _param, _from_head);
     }
 };

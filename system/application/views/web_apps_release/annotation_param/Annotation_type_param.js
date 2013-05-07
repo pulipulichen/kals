@@ -12,8 +12,7 @@
  */
 function Annotation_type_param(_param) {
 
-    if ($.isset(_param))
-    {
+    if ($.isset(_param)) {
         return this.set(_param);
     }
 }
@@ -103,20 +102,17 @@ Annotation_type_param.prototype.set = function (_param) {
     
     //$.test_msg('Annotation_type_param.set()', [_param, _id, $.is_number(_id)]);
     
-    if ($.is_number(_id))
-    {
+    if ($.is_number(_id)) {
         //表示是基本的ID
         this.id = _id;
         this.custom_name = null;
     } 
-    else if ($.is_class(_param, 'Annotation_type_param'))
-    {
+    else if ($.is_class(_param, 'Annotation_type_param')) {
         //this.id = _param.get_id();
         //this.custom_name = _param.get_custom_name();
         return _param;
     }
-    else
-    {
+    else {
         //如果是字串的話，那表示是自訂類型囉
         //this.id = 7;
         this.custom_name = _param;
@@ -169,12 +165,10 @@ Annotation_type_param.prototype.set_custom = function () {
 
 Annotation_type_param.prototype.get_name = function () {
     /*
-    if (this.custom_name == null)
-    {
+    if (this.custom_name === null) {
         return Annotation_type_param.filter_name(this.id);
     }
-    else
-    {
+    else {
         return this.custom_name;
     } 
     */
@@ -191,12 +185,10 @@ Annotation_type_param.prototype.get_type_name = function () {
     
     return Annotation_type_param.filter_name(_id);
     */
-    if (this.custom_name == null)
-    {
+    if (this.custom_name === null) {
         return Annotation_type_param.filter_name(this.id);
     }
-    else
-    {
+    else {
         return this.custom_name;
     }
 };
@@ -220,7 +212,7 @@ Annotation_type_param.prototype.has_custom_name= function () {
 Annotation_type_param.prototype.equals = function (_type) {
     if ($.is_null(_type))
         return false;
-    if ($.is_class(_type, 'Annotation_type_param') == false)
+    if ($.is_class(_type, 'Annotation_type_param') === false)
         _type = new Annotation_collection_param(_type);
     
     return (_type.get_id() == this.get_id()
@@ -231,8 +223,7 @@ Annotation_type_param.prototype.export_json = function () {
     
     var _json = this.get_id();
     
-    if (this.is_basic() == false)
-    {
+    if (this.is_basic() === false) {
         var _name = this.get_name();
         if (_name != 'custom')
         {
@@ -245,15 +236,13 @@ Annotation_type_param.prototype.export_json = function () {
 
 Annotation_type_param.filter_basic_id = function (_param) {
     
-    if ($.is_number(_param))
-    {
+    if ($.is_number(_param)) {
         if (typeof(Annotation_type_param._type_mapping[_param]) == 'string')
             return _param;
         else
             return null;
     }
-    else if ($.is_string(_param))
-    {
+    else if ($.is_string(_param)) {
         for (var _i in Annotation_type_param._type_mapping)
         {
             _typename = Annotation_type_param._type_mapping[_i];
@@ -270,8 +259,7 @@ Annotation_type_param.filter_name = function (_param) {
     if ($.is_string(_param))
         return _param; 
     else if ($.is_number(_param)
-        && typeof(Annotation_type_param._type_mapping[_param]) == 'string')
-    {
+        && typeof(Annotation_type_param._type_mapping[_param]) == 'string') {
         return Annotation_type_param._type_mapping[_param];
     }
     else
@@ -327,34 +315,27 @@ Annotation_type_param.prototype.get_anchor_css = function () {
     var _style = this._anchor_style;
     var _color = this._anchor_color;
     
-    if (_style == 'underline')
-    {
+    if (_style == 'underline') {
         _css = 'border-bottom:1px solid ' + _color;
     }
-    else if (_style == 'dottedline')
-    {
+    else if (_style == 'dottedline') {
         _css = 'border-bottom:1px dotted ' + _color;
     }
-    else if (_style == 'doubleline')
-    {
+    else if (_style == 'doubleline') {
         _css = 'border-bottom:1px double ' + _color;
     }
-    else if (_style == 'hashedline')
-    {
+    else if (_style == 'hashedline') {
         _css = 'border-bottom:1px dashed ' + _color;
     }
-    else if (_style == 'background')
-    {
+    else if (_style == 'background') {
         _css = 'background-color:' + _color;
     }
-    else
-    {
+    else {
         _css = 'border-bottom:1px solid ' + _color;
     }
     _css = _css + ' !important';
     
-    if (typeof(this._anchor_font_color) == 'string')
-    {
+    if (typeof(this._anchor_font_color) == 'string') {
         _css = _css + ';color:' + this._anchor_font_color + ' !important';
     }
     //_css = ' {' + _css + '} ';
@@ -427,12 +408,10 @@ Annotation_type_param.prototype.get_classname = function (_prefix, _postfix) {
     var _type_id = this.get_id();
     var _type_classname = '';
     
-    if (typeof(Annotation_type_param._type_mapping[_type_id]) == 'string')
-    {
+    if (typeof(Annotation_type_param._type_mapping[_type_id]) == 'string') {
         _type_classname = Annotation_type_param._type_mapping[_type_id];
     }
-    else
-    {
+    else {
         _type_classname = 'custom_type_' + _type_id;
     }
     

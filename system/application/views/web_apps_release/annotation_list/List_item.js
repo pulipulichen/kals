@@ -15,8 +15,7 @@ function List_item(_param) {
     
     Multi_event_dispatcher.call(this);
     
-    if ($.isset(_param))
-    {
+    if ($.isset(_param)) {
         this.set_annotation_param(_param);
         
         if ($.browser.msie)
@@ -54,8 +53,7 @@ List_item.prototype._$create_ui = function ()
         .addClass(this._classname)
         .addClass('list-item');
     
-    if ($.isset(this._annotation_param))
-    {
+    if ($.isset(this._annotation_param)) {
         _ui.attr('annotation_id', this._annotation_param.annotation_id);
         
         var _topic_id = this.get_topic_id();
@@ -69,16 +67,14 @@ List_item.prototype._$create_ui = function ()
     _note.get_ui().appendTo(_ui);
     
     var _menu_block, _menu_tooltip;
-    if (this._menu_style_default == null)
-    {
+    if (this._menu_style_default === null) {
         _menu_block = this._setup_menu_block();
         _menu_block.get_ui().appendTo(_ui);
         
         _menu_tooltip = this._setup_menu_tooltip();
         _menu_tooltip.get_ui().appendTo(_ui);
     }
-    else if (this._menu_style_default == 'block')
-    {
+    else if (this._menu_style_default == 'block') {
         _menu_block = this._setup_menu_block();
         _menu_block.get_ui().appendTo(_ui);
     }
@@ -93,7 +89,7 @@ List_item.prototype._$create_ui = function ()
     setTimeout(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         
-        if (_this._menu_style_default == null 
+        if (_this._menu_style_default === null 
             || _this._menu_style_default == 'tooltip')
         {
             var _config = _menu_tooltip._$get_config();
@@ -168,16 +164,17 @@ List_item.prototype._setup_menu_tooltip = function () {
 };
 
 List_item.prototype.is_enable = function (_option_name) {
-    if (_option_name == null || this._disable_option == null)
-        return true;
-    else
-        return ( $.inArray(_option_name, this._disable_option) == -1 );
+    if (_option_name === null || this._disable_option === null) {
+		return true;
+	}
+	else {
+		return ($.inArray(_option_name, this._disable_option) == -1);
+	}
 };
 
 List_item.prototype._$onviewportmove = function (_ui) {
     
-    if ($.is_null(this._menu_style_default))
-    {
+    if ($.is_null(this._menu_style_default)) {
         if ($.is_small_width())
         {
             this._toggle_menu_style('block');
@@ -191,7 +188,7 @@ List_item.prototype._$onviewportmove = function (_ui) {
 
 List_item.prototype.get_list_item_ui = function () {
     var _ui = this.get_ui('.list-item:first');
-    if (_ui.length == 0)
+    if (_ui.length === 0)
         _ui = this.get_ui();
     return _ui;
 };
@@ -205,12 +202,10 @@ List_item.prototype._toggle_menu_style = function (_style) {
     
     var _block_classname = this._menu_style_classname;
     var _ui = this.get_list_item_ui();
-    if (_style == 'block')
-    {
+    if (_style == 'block') {
         _ui.addClass(_block_classname);
     }
-    else
-    {
+    else {
         _ui.removeClass(_block_classname);
     }
     return this;
@@ -326,7 +321,7 @@ List_item.prototype.focus = function (_scrollto) {
         _scrollto = false;
     
     var _ui = this.get_ui('.list-item:first');
-    if (_ui.length == 0)
+    if (_ui.length === 0)
         _ui = this.get_ui();
     
     //如果已經是在focus狀態，則不做任何事情
@@ -338,7 +333,7 @@ List_item.prototype.focus = function (_scrollto) {
     
     _ui.addClass(this._focus_classname);
     
-    if (_scrollto == true)
+    if (_scrollto === true)
         _ui.scrollIntoView();
     return this;
 };
@@ -365,8 +360,7 @@ List_item.prototype.blur_other_focus = function () {
     //先檢查是否有其他的focus
     var _other_focus = this.get_other_focus();
     
-    if (_other_focus.length > 0)
-    {
+    if (_other_focus.length > 0) {
         _other_focus.removeClass(this._focus_classname);
     }
     
@@ -440,8 +434,7 @@ List_item.prototype.focus_respond = function (_respond_to_id) {
     var _result = _list.focus(_respond_to_id, true);
     
     if ($.is_null(_result)
-        && this.is_enable('view'))
-    {
+        && this.is_enable('view')) {
         var _content = KALS_text.tool.view;
         _content.set_focus_id(_respond_to_id);
         
@@ -456,8 +449,7 @@ List_item.prototype.respond_annotation = function () {
     
     var _editor = this.get_editor();
     
-    if ($.isset(_respond_to))
-    {
+    if ($.isset(_respond_to)) {
         _editor.respond_coll.add_respond_to(_respond_to);
     }
     

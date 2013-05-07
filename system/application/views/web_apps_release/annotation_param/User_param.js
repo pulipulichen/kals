@@ -15,8 +15,7 @@ function User_param(_id, _name) {
     
     if ($.is_null(_id))
         return;
-    else if ($.is_object(_id) && $.is_null(_name))
-    {
+    else if ($.is_object(_id) && $.is_null(_name)) {
         if (typeof(_id.name) != 'undefined')
             _name = _id.name;
         if (typeof(_id.id) != 'undefined')
@@ -59,7 +58,7 @@ User_param.prototype.is_me = function () {
 };
 
 User_param.prototype.equals = function (_other_user) {
-    if ($.is_class(_other_user, 'User_param') == false)
+    if ($.is_class(_other_user, 'User_param') === false)
         return false;
         
     var _other_user_id = _other_user.id;

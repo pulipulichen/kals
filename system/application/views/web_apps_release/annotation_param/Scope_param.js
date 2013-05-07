@@ -31,20 +31,17 @@ Scope_param.prototype._filter_index = function (_index) {
     var id;
     if ($.is_number(_index))
         return _index;
-    else if ($.is_jquery(_index))
-    {
+    else if ($.is_jquery(_index)) {
         _id = _index.attr('id');
         _id = $.get_prefixed_id(_id);
         return _id;
     }
-    else if (typeof(_index.id) != 'undefined')
-    {
+    else if (typeof(_index.id) != 'undefined') {
         _id = _index.id;
         _id = $.get_prefixed_id(_id);
         return _id;
     }
-    else
-    {
+    else {
         try
         {
             _index = parseInt(_index);
@@ -107,14 +104,13 @@ Scope_param.prototype.reset = function() {
 
 Scope_param.prototype._check_order = function () {
     
-    if (this.from == null
-        || this.to == null)
+    if (this.from === null
+        || this.to === null)
         return this;
     
     //$.test_msg('Scope_param', [this.from, this.to]);
     
-    if (this.from > this.to)
-    {
+    if (this.from > this.to) {
         var _temp = this.from;
         this.from = this.to;
         this.to = _temp;
@@ -131,8 +127,7 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
     ];
     
     if (_export_anchor_text != false
-        && this.get_anchor_text() != null)
-    {
+        && this.get_anchor_text() != null) {
         var _anchor_text = this.get_anchor_text();
         _anchor_text = encodeURIComponent(_anchor_text); 
         _json.push(_anchor_text);
@@ -147,7 +142,7 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
  */
 Scope_param.prototype.equals = function (_scope) {
     
-    if ($.is_class(_scope, 'Scope_param') == false)
+    if ($.is_class(_scope, 'Scope_param') === false)
         return false;
         
     var _this_to = this.get_to();

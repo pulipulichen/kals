@@ -37,8 +37,7 @@ function Viewportmove_dispatcher() {
         .bind('resize', _event)
         .bind('load', _event);
         
-    if ($.is_mobile_mode())
-    {
+    if ($.is_mobile_mode()) {
         _event = function () {
             _this.set_changed();
             _this.notify_listeners(_this);
@@ -112,7 +111,7 @@ Viewportmove_dispatcher.prototype._setup_zoom_detector = function () {
     
     if (typeof(jQuery) != 'undefined' 
          && typeof(jQuery.is_mobile_mode) == 'function'
-         && jQuery.is_mobile_mode() == false)
+         && jQuery.is_mobile_mode() === false)
         return;
     
     //原程式有這一段，但是用意不明，所以我先把他刪掉了
@@ -244,8 +243,7 @@ Viewportmove_dispatcher.prototype._get_device_scale = function()
     var _result = _deviceWidth / window.outerWidth;
     
     // 加入平滑化(smooth)修正比例參數
-    for (var _i = 0; _i < this._scale_range.length-1; _i++)
-    {
+    for (var _i = 0; _i < this._scale_range.length-1; _i++) {
         var _range1 = this._scale_range[_i];
         var _range2 = this._scale_range[(_i+1)];
         
@@ -299,13 +297,12 @@ Viewportmove_dispatcher.prototype._update_device_scale_style = function ()
 
 /*
 Viewportmove_dispatcher.prototype.lock_viewport = function () {
-    if (this._viewport_locked == true)
+    if (this._viewport_locked === true)
         return;
     
     var _head = $('head');
     var _origin_viewport = $('head meta[name=viewport]');
-    if (_origin_viewport.length == 0)
-    {
+    if (_origin_viewport.length === 0) {
         _origin_viewport = $('<meta name="viewport" ' 
                 + 'content="width='+$(document).width()+', maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes '
                 + ' initial-scale=' + this._zoom_scale+ '" />')
@@ -328,7 +325,7 @@ Viewportmove_dispatcher.prototype.lock_viewport = function () {
 
 /*
 Viewportmove_dispatcher.prototype.unlock_viewport = function(){
-    if (this._viewport_locked == false)
+    if (this._viewport_locked === false)
         return;
     
     var _new_viewport = $('head meta#kals_viewport_lock');
@@ -336,8 +333,7 @@ Viewportmove_dispatcher.prototype.unlock_viewport = function(){
     
     if (_new_viewport.length > 0)
         _new_viewport.remove();
-    if (_origin_viewport.length > 0)
-    {
+    if (_origin_viewport.length > 0) {
         _origin_viewport.attr('name', 'viewport');
         alert(_origin_viewport.attr('content'));
         var _x_offset = _origin_viewport.attr('x_offset');

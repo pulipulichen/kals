@@ -15,15 +15,15 @@ function Note_editor_manager(_editor) {
     
     KALS_user_interface.call(this);
     
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;
         this._listen_editor();
     }
     this.child('init', new Init_note_editor());
     
-    if ($.browser.msie)
-        this._type_mapping = this._type_mapping_ie;
+    if ($.browser.msie) {
+		this._type_mapping = this._type_mapping_ie;
+	}
 }
 
 Note_editor_manager.prototype = new KALS_user_interface();
@@ -88,33 +88,35 @@ Note_editor_manager.prototype._$create_ui = function () {
  * @param {String} _type
  */
 Note_editor_manager.prototype.create = function (_type) {
-    //if ($.browser.msie == false)
+    //if ($.browser.msie === false)
     //    return new Note_editor_ckeditor(this._editor);
     //else
         return new Note_editor(this._editor);
 };
 
 Note_editor_manager.prototype.get_text = function () {
-    if ($.isset(this._active_editor))
-        return this._active_editor.get_text();
-    else
-        return null;
+    if ($.isset(this._active_editor)) {
+		return this._active_editor.get_text();
+	}
+	else {
+		return null;
+	}
 };
 
 Note_editor_manager.prototype.set_text = function (_text) {
     
     //$.test_msg('Note_editor_manager.set_text()', [_text, this._active_editor, typeof(this._active_editor.set_text)]);
     /*
-    for (var _i in this._note_editors)
-    {
+    for (var _i in this._note_editors) {
         //var _note_editor = this._note_editors[_i];
         //_note_editor.set_text('121212121212');
         this._note_editors[_i].set_text(_text);
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor))
-        this._active_editor.set_text(_text);
+    if ($.isset(this._active_editor)) {
+		this._active_editor.set_text(_text);
+	}
     return this;
 };
 
@@ -122,12 +124,12 @@ Note_editor_manager.prototype._get_editor_list = function () {
     
     var _list = [];
     
-    for (var _i in this._type_mapping)
-    {
+    for (var _i in this._type_mapping) {
         var _editor_name = this._type_mapping[_i];
         
-        if ($.inArray(_editor_name, _list) == -1)
-            _list.push(_editor_name);
+        if ($.inArray(_editor_name, _list) == -1) {
+			_list.push(_editor_name);
+		}
     }
     
     //$.test_msg('Note_editor._get_editor_list', _list);
@@ -158,8 +160,7 @@ Note_editor_manager.prototype.initialize = function (_callback) {
     */
     var _list = this._get_editor_list();
     this.init._$schedule_task = _list;
-    for (var _i in _list)
-    {
+    for (var _i in _list) {
         var _note_editor_name = _list[_i];
         //$.test_msg('Note_editor_manager.initialize()', _note_editor_name);
         
@@ -195,31 +196,29 @@ Note_editor_manager.prototype.initialize = function (_callback) {
  */
 Note_editor_manager.prototype.toggle_editor = function (_type) {
     
-    if ($.is_null(_type))
-    {
+    if ($.is_null(_type)) {
         _type = this._editor.type.get_default_type();
     }
     
-    if ($.is_class(_type, 'Annotation_type_param'))
-    {
+    if ($.is_class(_type, 'Annotation_type_param')) {
         _type = _type.get_type_name();
     }
     
     var _note_editor_name;
-    if (typeof(this._type_mapping[_type]) == 'string')
-    {
+    if (typeof(this._type_mapping[_type]) == 'string') {
         _note_editor_name = this._type_mapping[_type];
     }
-    else
-    {
+    else {
         _note_editor_name = this._default_editor;
     }
     
     //防止重複更換
-    if (_note_editor_name == this._active_editor_name)
-        return this;
-    else
-        this._active_editor_name = _note_editor_name;    
+    if (_note_editor_name == this._active_editor_name) {
+		return this;
+	}
+	else {
+		this._active_editor_name = _note_editor_name;
+	} 
     
     var _ui = this.get_ui();
     
@@ -228,13 +227,15 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     
     
     var _text = false;
-    if ($.isset(this._active_editor))
-        _text = this._active_editor.get_text();
+    if ($.isset(this._active_editor)) {
+		_text = this._active_editor.get_text();
+	}
     
     this._active_editor = this._note_editors[ _note_editor_name ];
     
-    if (_text != false)
-        this._active_editor.set_text(_text);
+    if (_t !== false) {
+		this._active_editor.set_text(_text);
+	}
     
     return this;
 };
@@ -252,8 +253,7 @@ Note_editor_manager.prototype.ontypechange = function (_type) {
 Note_editor_manager.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.note) != 'undefined')
-    {
+        && typeof(_param.note) != 'undefined') {
         this.set_text(_param.note);
     }
     return this;
@@ -271,8 +271,7 @@ Note_editor_manager.prototype._listen_editor = function () {
         var _text = _this.get_text();
         
         //如果是空值，則不傳輸資料，由伺服器端去取得預設值
-        if ($.isset(_text))
-        {
+        if ($.isset(_text)) {
             _annotation_param.note = _text;
         }
     });
@@ -282,21 +281,22 @@ Note_editor_manager.prototype._listen_editor = function () {
     });
 };
 
-
-
+/**
+ * 重新設定所有的Editor
+ */
 Note_editor_manager.prototype.reset = function () {
     
     /*
-    for (var _i in this._note_editors)
-    {
+    for (var _i in this._note_editors) {
         //var _note_editor = this._note_editors[_i];
         //_note_editor.set_text('121212121212');
         this._note_editors[_i].reset();
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor))
-        this._active_editor.reset();
+    if ($.isset(this._active_editor)) {
+		this._active_editor.reset();
+	}
     
     //$.test_msg('Note_editor_managr.reset()');
     //this.set_text('');

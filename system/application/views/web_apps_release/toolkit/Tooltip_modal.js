@@ -73,8 +73,7 @@ Tooltip_modal.prototype._$get_config = function (_selector) {
         //, effect: 'fade'        
     };
     
-    if ($.is_null(_selector) && $.isset(this._$tooltip_id))
-    {
+    if ($.is_null(_selector) && $.isset(this._$tooltip_id)) {
         _selector = '#' + this._$tooltip_id;
     }
     
@@ -110,28 +109,24 @@ Tooltip_modal.prototype._create_tooltip_prototype = function (_config) {
     var _content = $.get_parameter(_config, 'content');
     var _classname = $.get_parameter(_config, 'classname');
     
-    if ($.is_string(_content))
-    {
+    if ($.is_string(_content)) {
         _content = $(_content);
     }
-    else if ($.is_null(_content))
-    {
+    else if ($.is_null(_content)) {
         _content = $('<div></div>');
     }
     
     var _tooltip = null;
     var _tooltip_existed = false;
     
-    if ($.isset(_id))
-    {
+    if ($.isset(_id)) {
         _tooltip = $('div#' + _id);
         _tooltip_existed = (_tooltip.length > 0);
     }
     
     //$.test_msg('Tooltip_modal._create_tooltip.prototype()', _tooltip_existed);
     
-    if (_tooltip_existed == false)
-    {  
+    if (_tooltip_existed === false) {  
         _tooltip = _content
             .addClass('tooltip')
             .appendTo($('body'));
@@ -157,8 +152,7 @@ Tooltip_modal.prototype.open = function (_callback) {
     
     var _this = this;
     
-    if (_ui != null)
-    {
+    if (_ui != null) {
         if (typeof(_ui.tooltip) == 'function')
         {
             this._$temp_callback = _callback;
@@ -180,8 +174,7 @@ Tooltip_modal.prototype.open = function (_callback) {
  * @param {function|null} _callback
  */
 Tooltip_modal.prototype.close = function (_callback) {
-    if (this._$closable && this.is_opened())
-    {
+    if (this._$closable && this.is_opened()) {
         //var _ui = this.get_ui();
         var _ui = this.get_trigger();
         
@@ -209,19 +202,17 @@ Tooltip_modal.prototype.close = function (_callback) {
 /**
  * 利用tooltip的isShown()來偵測是否開啟
  * 2010.10.18 那要設置在trigger上才對，目前這個無法這樣做，所以取消
- * @param {boolean} _fully = false。如果_fully == true，則會在tooltip完全顯示且定位完成之後才會回傳true
+ * @param {boolean} _fully = false。如果_fully === true，則會在tooltip完全顯示且定位完成之後才會回傳true
  * @type {boolean}
  */
 /*
 Tooltip_modal.prototype.is_opened = function (_fully) {
     var _ui = this.get_trigger();
-    if (_ui != null)
-    {
+    if (_ui != null) {
         return _ui.tooltip().isShown(_fully);
         
     }
-    else
-    {
+    else {
         return false;
     }
 };

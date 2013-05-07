@@ -41,8 +41,7 @@ My_basic_annotation_loader.prototype._$load_url = 'annotation_getter/my_basic';
  */
 My_basic_annotation_loader.prototype.load_annotation = function (_data, _callback) {
     
-    if ($.is_function(_data) && $.is_null(_callback))
-    {
+    if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
         _data = null;
     }
@@ -51,13 +50,12 @@ My_basic_annotation_loader.prototype.load_annotation = function (_data, _callbac
     var _is_initialize = !(this.is_initialized());
     
     var _basic_scope = _data;
-    for (var _i in _basic_scope)
-    {
+    for (var _i in _basic_scope) {
         var _type_id = _i;
         var _scope_coll_json = _basic_scope[_i];
         
-        if (_scope_coll_json == null
-            || _scope_coll_json.length == 0)
+        if (_scope_coll_json === null
+            || _scope_coll_json.length === 0)
             continue;
         
         //$.test_msg('My_annotation_loader.load_annotation()', $.is_array(_scope_coll_json[0]));
@@ -69,7 +67,7 @@ My_basic_annotation_loader.prototype.load_annotation = function (_data, _callbac
         this._selection.set_scope_coll(_type_id, _scope_coll, _is_initialize);
     }
     
-    //if (this.is_initialized() == false)
+    //if (this.is_initialized() === false)
     //{
         //回報已經完成初始化
     //    KALS_context.init_profile.complete('my_annotation');
@@ -90,8 +88,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
     
     //$.test_msg('My_annotation_loader.initialize()', typeof(KALS_text));
     
-    if (typeof(KALS_text) == 'object')
-    {
+    if (typeof(KALS_text) == 'object') {
         this._selection = KALS_text.selection.my_basic;
         
         var _this = this;
@@ -131,8 +128,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
 
 My_basic_annotation_loader.prototype._$exception_handle = function (_data) {
     
-    if (this.is_initialized() == false)
-    {
+    if (this.is_initialized() === false) {
         //$.test_msg('My_annotation_loader._$exception_handle()');
         
         var _this = this;

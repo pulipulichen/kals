@@ -193,8 +193,7 @@ DEFAULT_KALS_CONFIG = {
 
 if (typeof(KALS_CONFIG) != 'undefined')
 {
-    for (var _i in KALS_CONFIG)
-    {
+    for (var _i in KALS_CONFIG) {
         DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
     }
 }

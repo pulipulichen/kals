@@ -41,8 +41,7 @@ Window_password_change_submit.prototype.validate = function (_inputs, _data) {
     
     //$.test_msg('Window_password_change_submit.validate() _data', _data);
     
-    if (_data.password === '')
-    {
+    if (_data.password === '') {
         this.set_error(new KALS_language_param(
             'Please write password.',
             'window.password_change.submit.error.password_emtpy'
@@ -50,8 +49,7 @@ Window_password_change_submit.prototype.validate = function (_inputs, _data) {
         _inputs.password.focus();
         return false;
     }
-    else if (_data.password_confirm === '')
-    {
+    else if (_data.password_confirm === '') {
         this.set_error(new KALS_language_param(
             'Please write password confirm.',
             'window.password_change.submit.error.password_confirm_empty'
@@ -59,8 +57,7 @@ Window_password_change_submit.prototype.validate = function (_inputs, _data) {
         _inputs.password_confirm.focus();
         return false;
     }
-    else if (_data.password != _data.password_confirm)
-    {
+    else if (_data.password != _data.password_confirm) {
         _inputs.password_confirm.val('');
         _inputs.password.select();
         
@@ -70,8 +67,7 @@ Window_password_change_submit.prototype.validate = function (_inputs, _data) {
         ));
         return false;
     }
-    else
-    {
+    else {
         return true;
     }
 };

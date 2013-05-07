@@ -30,12 +30,10 @@ KALS_modal.prototype._$create_ui_prototype = function (_element) {
     if ($.is_null(_element))
         _element = 'div';
     
-    if ($.is_string(_element))
-    {
+    if ($.is_string(_element)) {
         _ui = $('<' + _element + '></' + _element + '>');
     }
-    else
-    {
+    else {
         _ui =  $(_element);
     }
     
@@ -91,8 +89,7 @@ KALS_modal.prototype._setup_ui = function () {
     
     if (this._$onviewportmove != null
         && typeof(KALS_context) != 'undefined'
-        && typeof(KALS_context.view) != 'undefined')
-    {
+        && typeof(KALS_context.view) != 'undefined') {
         var _this = this;
         
         KALS_context.view.add_listener(function () {
@@ -179,7 +176,7 @@ KALS_modal.prototype.set_closable = function (_closable) {
 KALS_modal.prototype.set_onopen = function (_callback) {
     if ($.is_function(_callback))
         this._$onopen = _callback;
-    else if (_callback == false || _callback == null)
+    else if (_callback === false || _callback === null)
         this._$onopen = null;
     return this;
 };
@@ -190,12 +187,10 @@ KALS_modal.prototype.set_onopen = function (_callback) {
  */
 KALS_modal.prototype.set_onclose = function (_callback) {
     
-    if ($.is_function(_callback))
-    {
+    if ($.is_function(_callback)) {
         this._$onclose = _callback;
     }
-    else if (_callback == false || _callback == null)
-    {
+    else if (_callback === false || _callback === null) {
         this._$onclose = null;
     }
         
@@ -209,7 +204,7 @@ KALS_modal.prototype.set_onclose = function (_callback) {
 KALS_modal.prototype.set_onviewportmove = function (_callback) {
     if ($.is_function(_callback))
         this._$onviewportmove = _callback;
-    else if (_callback == false || _callback == null)
+    else if (_callback === false || _callback === null)
         this._$onviewportmove = null;
     return this;
 };
@@ -220,8 +215,7 @@ KALS_modal.prototype.set_onviewportmove = function (_callback) {
  * @param {function} _callback
  */
 KALS_modal.prototype.toggle_modal = function (_display, _callback) {
-    if ($.is_function(_display), $.is_null(_callback))
-    {
+    if ($.is_function(_display), $.is_null(_callback)) {
         _callback = _display;
         _display = null;
     }
@@ -230,7 +224,7 @@ KALS_modal.prototype.toggle_modal = function (_display, _callback) {
         _display = !(this.is_opened());
     }
     
-    if (_display == true)
+    if (_display === true)
         this.open(_callback);
     else
         this.close(_callback);
@@ -243,12 +237,10 @@ KALS_modal.prototype.toggle_modal = function (_display, _callback) {
  */
 KALS_modal.prototype.is_opened = function () {
     var _ui = this.get_ui();
-    if (_ui != null)
-    {
+    if (_ui != null) {
         return _ui.visible();
     }
-    else
-    {
+    else {
         return false;
     }
 };
@@ -259,8 +251,7 @@ KALS_modal.prototype.is_opened = function () {
  */
 KALS_modal.prototype.open = function (_callback) {
     var _ui = this.get_ui();
-    if (_ui != null)
-    {
+    if (_ui != null) {
         _ui.show();
     }
     
@@ -291,8 +282,7 @@ KALS_modal.prototype._$onopen = null;
  * @param {Object} _callback
  */
 KALS_modal.prototype.close = function (_callback) {
-    if (this._$closable)
-    {
+    if (this._$closable) {
         var _ui = this.get_ui();
         if (_ui != null)
         {
@@ -320,7 +310,7 @@ KALS_modal.prototype._$onclose = null;
 
 /**
  * 畫面移動時候的callback。
- * 只有在this.has_setup_ui() == true的時候啟動。
+ * 只有在this.has_setup_ui() === true的時候啟動。
  * 參數會傳入this._ui。
  * @type {function} = function (_ui) {}
  */
@@ -341,8 +331,7 @@ KALS_modal.prototype.call_temp_callback = function (_ui) {
     //$.test_msg('call temp callback', [this.get_modal_name(), ($.is_function(this._$temp_callback))
     //    , this._$temp_callback]);
     
-    if ($.is_function(this._$temp_callback))
-    {
+    if ($.is_function(this._$temp_callback)) {
         //$.test_msg('is funciton');
         this._$temp_callback(_ui);
         this._$temp_callback = null;

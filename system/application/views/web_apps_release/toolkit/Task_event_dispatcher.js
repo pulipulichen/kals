@@ -106,7 +106,7 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
         if ($.is_null(_boolean))
             _boolean = true;
             
-        if (_this._task_state == null)
+        if (_this._task_state === null)
             _this.reset();
         
         if ($.inArray(_task, _this._$schedule_task) > -1)
@@ -115,7 +115,7 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
             _this._task_state[_task] = _boolean;
         }
         
-        if (_this.completed == true)
+        if (_this.completed === true)
             return;    //表示全部已經完成
         
         //$.test_msg('是否完成全部任務', [_task, _this.is_completed(), '[', _this._$schedule_task, ']']);
@@ -144,8 +144,7 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
 Task_event_dispatcher.prototype.reset = function() {
     
     this._task_state = {};
-    for (var _t in this._$schedule_task)
-    {
+    for (var _t in this._$schedule_task) {
         var _task = this._$schedule_task[_t];
         this._task_state[_task] = false;
     }
@@ -161,18 +160,16 @@ Task_event_dispatcher.prototype.reset = function() {
  */
 Task_event_dispatcher.prototype.is_completed = function (_task) {
     
-    if (this._task_state == null)
+    if (this._task_state === null)
         return false;
     
-    if ($.isset(_task))
-    {
+    if ($.isset(_task)) {
         if (typeof(this._task_state[_task]) == 'undefined')
             return false;
         else
             return this._task_state[_task];
     }
-    else
-    {
+    else {
         for (var _t in this._$schedule_task)
         {
             var _task = this._$schedule_task[_t];
@@ -189,8 +186,7 @@ Task_event_dispatcher.prototype.is_completed = function (_task) {
  * 開始進行任務
  */
 Task_event_dispatcher.prototype.start = function () {
-    if ($.is_function(this._$onstart))
-    {
+    if ($.is_function(this._$onstart)) {
         var _this = this;
         //隔一下再開始進行
         setTimeout(function () {

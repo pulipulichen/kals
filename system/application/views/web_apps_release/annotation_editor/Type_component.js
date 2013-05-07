@@ -14,8 +14,7 @@
 function Type_component(_editor) {
     
     Event_dispatcher.call(this);
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;
         this._default_type = new Annotation_type_param();
         //this._type = new Annotation_type_param();
@@ -73,8 +72,7 @@ Type_component.prototype._$create_ui = function ()
     
     var _options = _menu.create_type_option_list();
     
-    for (var _i in _options)
-    {
+    for (var _i in _options) {
         var _option = _options[_i];
         
         _option.tooltip(_config);
@@ -111,34 +109,33 @@ Type_component.prototype.set_type = function (_type) {
     //_ui.empty();
     
     var _is_custom_type = false;
-    if ($.is_null(_type))
-        _type = this.get_type();
-    else if (_type == '')
-    {
-        _type = new Annotation_type_param(7);
-    }
-    else
-    {
-        _custom_type = KALS_context.custom_type.find_type(_type);
-        
-        if (_custom_type != null)
-        {
-            _type = _custom_type;
-        }
-        else
-        {
-            //$.test_msg('Type_component.set_type() [add_custom_type]', _type);
-            _type = KALS_context.custom_type.add_custom_type(_type);
-            _is_custom_type = true;
-        }
-    }
+    if ($.is_null(_type)) {
+		_type = this.get_type();
+	}
+	else 
+		if (_type === '') {
+			_type = new Annotation_type_param(7);
+		}
+		else {
+			_custom_type = KALS_context.custom_type.find_type(_type);
+			
+			if (_custom_type !== null) {
+				_type = _custom_type;
+			}
+			else {
+				//$.test_msg('Type_component.set_type() [add_custom_type]', _type);
+				_type = KALS_context.custom_type.add_custom_type(_type);
+				_is_custom_type = true;
+			}
+		}
     
     //$.test_msg('Type_component.set_type()', [$.isset(this._type), _type.equals(this._type)]);
     
-    if ($.isset(this._type)
-        && _type.equals(this._type)
-        && _is_custom_type == false)
-        return this;
+    if ($.isset(this._type) &&
+	_type.equals(this._type) &&
+	_is_custom_type === false) {
+		return this;
+	}
     
     //$.test_msg('Type_component.set_type() pass', [_type.export_json(), _type.export_json()
     //    , _type.get_id(), _type.get_type_name()
@@ -154,24 +151,20 @@ Type_component.prototype.set_type = function (_type) {
     var _ui = this.get_ui();
     var _classname = _type.get_classname();
     
-    if (_ui.children('.' + _classname).length > 0)
-    {
+    if (_ui.children('.' + _classname).length > 0) {
         _ui.children(':not(.' + _type.get_classname() + ')').hide();
         _ui.children('.' + _type.get_classname()).css('display', 'inline');
     }
-    else
-    {
+    else {
         _ui.children(':not(.custom:first)').hide();
         _ui.children('.custom:first').css('display', 'inline');
     }
     
-    if (_type.is_basic() == false)
-    {
+    if (_type.is_basic() === false) {
         //如果不是基本類型，則設置custom_name
         this.set_custom_name(_type.get_type_name());
     }
-    else
-    {
+    else {
         this.reset_custom_name();
     }
     
@@ -192,16 +185,16 @@ Type_component.prototype.notify_change = function () {
  * @type {Annotation_type_param}
  */
 Type_component.prototype.get_type = function () {
-    if ($.is_null(this._type))
-    {
+    if ($.is_null(this._type)) {
         return this._default_type;
     }
-    else
-    {
-        if (this._custom_name == null)
-            return this._type;
-        else
-            return this._custom_name;
+    else {
+        if (this._custom_name === null) {
+			return this._type;
+		}
+		else {
+			return this._custom_name;
+		}
     }    
 };
 
@@ -258,8 +251,7 @@ Type_component.prototype._listen_editor = function () {
 Type_component.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.type) != 'undefined')
-    {
+        && typeof(_param.type) != 'undefined') {
         this.set_type(_param.type);
     }
     return this;
@@ -304,28 +296,33 @@ Type_component.prototype._create_custom_type_option = function (_option) {
 Type_component.prototype._custom_name = null;
 
 /**
- * 設置custom_name
+ * 設置自訂類型的名稱
  * @param {String|Annotation_type_param} _name
  */
 Type_component.prototype.set_custom_name = function (_name) {
     
     //$.test_msg('Type_component.set_custom_name 1', _name);
     
-    if ($.is_string(_name))
-        _name = $.trim(_name);
-    else if ($.is_class(_name, 'Annotation_type_param'))
-        _name = _name.get_type_name();
-    if (_name == '')
-        _name = null;
+    if ($.is_string(_name)) {
+		_name = $.trim(_name);
+	}
+	else {
+		if ($.is_class(_name, 'Annotation_type_param')) {
+			_name = _name.get_type_name();
+		}
+	}
+    if (_name === '') {
+		_name = null;
+	}
     
-    if (this._custom_type_option == null)
-        return this;
+    if (this._custom_type_option === null) {
+		return this;
+	}
     
     var _classname = '.' + this._custom_type_option_classname + ':first';
         
     //$.test_msg('Type_component.set_custom_name 2', [_name, $.isset(_name), (_name != null), _classname]);
-    if ($.isset(_name) && _name != null)
-    {
+    if ($.isset(_name) && _name !== null) {
         //this._type.set_type(_name);
         
         this._custom_type_option.children(_classname)
@@ -337,8 +334,7 @@ Type_component.prototype.set_custom_name = function (_name) {
             .hide();
         
     }
-    else
-    {   
+    else {   
         this._custom_type_option.find(_classname)
             //.val('')
             .html('')
@@ -349,10 +345,14 @@ Type_component.prototype.set_custom_name = function (_name) {
     return this;
 };
 
+/**
+ * 重設自訂類型的名稱
+ */
 Type_component.prototype.reset_custom_name = function () {
     
-    if (this._custom_type_option == null)
-        return this;
+    if (this._custom_type_option === null) {
+		return this;
+	}
     
     return this.set_custom_name();
 };

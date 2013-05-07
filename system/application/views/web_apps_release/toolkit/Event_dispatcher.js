@@ -61,14 +61,12 @@ Event_dispatcher.prototype._$event_name = 'update';
 Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger)
 {
     if ($.is_function(_obj) 
-        && ($.is_null(_function) || $.is_boolean(_function)))
-    {
+        && ($.is_null(_function) || $.is_boolean(_function))) {
         _trigger = _function;
         //_function = _obj;
         //_obj = new Object;
     }
-    else if ($.is_object(_obj) && $.is_boolean(_function) && $.is_null(_trigger))
-    {
+    else if ($.is_object(_obj) && $.is_boolean(_function) && $.is_null(_trigger)) {
         _trigger = _function;
         _function = null;
     }
@@ -84,7 +82,7 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger)
         
         this._listeners.push(_obj);
         
-        if (_trigger == true)
+        if (_trigger === true)
         {
             this._notify_listener(_obj);
         }
@@ -111,14 +109,12 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
 {
     //參數初始化
     if ($.is_function(_obj) 
-        && ($.is_null(_function) || $.is_boolean(_function)))
-    {
+        && ($.is_null(_function) || $.is_boolean(_function))) {
         _trigger = _function;
         //_function = _obj;
         //_obj = new Object;
     }
-    else if ($.is_object(_obj) && $.is_boolean(_function) && $.is_null(_trigger))
-    {
+    else if ($.is_object(_obj) && $.is_boolean(_function) && $.is_null(_trigger)) {
         _trigger = _function;
         _function = null;
     }
@@ -135,7 +131,7 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
         
         this._once_listeners.push(_obj);
         
-        if (_trigger == true)
+        if (_trigger === true)
         {
             this._notify_once_listener(_obj);
         }
@@ -147,8 +143,7 @@ Event_dispatcher.prototype._notify_once_listener = function(_obj, _complate) {
     var _complete = this._notify_listener(_obj);
             
     if (!(typeof(_complete) == 'boolean'
-        && _complete == false))
-    {
+        && _complete === false)) {
         //除非回傳false，否則一律刪除
         this.delete_once_listener(_obj);
     }
@@ -194,16 +189,14 @@ Event_dispatcher.prototype.delete_once_listener = function (_obj) {
 Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj)
 {
     var _key;
-    if ($.is_object(_obj))
-    {
+    if ($.is_object(_obj)) {
         _key = $.inArray(_obj, _listeners);
         //if (_key > -1)
         //    delete _listeners[_key];
         if (_key > -1)
             _listeners = $.array_remove(_listeners, _key);
     }
-    else if ($.is_function(_obj))
-    {
+    else if ($.is_function(_obj)) {
         var _func = _obj;
         for (_key in _listeners)
         {
@@ -238,9 +231,8 @@ Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj)
  */
 Event_dispatcher.prototype.notify_listeners = function (_arg)
 {
-    if (this._$enable_changed_lock == false 
-        || (this._$enable_changed_lock == true && this._changed))
-    {
+    if (this._$enable_changed_lock === false 
+        || (this._$enable_changed_lock === true && this._changed)) {
         var _event_name = this._$event_name;
         
         //$.test_msg('Event_dispatcher.notify_listeners()', this._listeners.length);
@@ -257,7 +249,7 @@ Event_dispatcher.prototype.notify_listeners = function (_arg)
             this._notify_once_listener(_listener, _arg);
         }
         
-        if (this._$enable_changed_lock == true)
+        if (this._$enable_changed_lock === true)
             this._changed = false;
     }
     return this;
@@ -268,15 +260,13 @@ Event_dispatcher.prototype._notify_listener = function (_listener, _arg) {
     var _event_name = this._$event_name;
     var _result;
     
-    if ($.is_function(_listener))
-    {
+    if ($.is_function(_listener)) {
         if ($.isset(_arg))
             _result = _listener(this, _arg);
         else
             _result = _listener(this);
     }
-    else if (typeof(_listener[_event_name]) == 'function')
-    {
+    else if (typeof(_listener[_event_name]) == 'function') {
         //$.test_msg('Event_dispatcher.notify_listeners() has event', _event_name);
         
         if ($.isset(_arg))

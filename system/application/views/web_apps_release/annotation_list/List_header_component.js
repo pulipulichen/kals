@@ -31,8 +31,7 @@ List_header_component.prototype = new KALS_user_interface();
 List_header_component.prototype._item = null;
 
 List_header_component.prototype._set_list_item = function (_item) {
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
@@ -63,8 +62,7 @@ List_header_component.prototype._$create_ui = function ()
     var _like_component = this._setup_like_component();
     _like_component.get_ui().appendTo(_ui);
     
-    if (this._item.is_enable('like') == false)
-    {
+    if (this._item.is_enable('like') === false) {
         _like_component.get_ui().hide();
     }
     
@@ -83,17 +81,15 @@ List_header_component.prototype._$create_ui = function ()
     var _lock_component = this._create_lock_component();
     _lock_component.prependTo(_ui);
     
-    if (this._item.is_enable('policy') == false)
-    {
+    if (this._item.is_enable('policy') === false) {
         //_lock_component.hide();
     }
     
     var _recommend_component = this._create_recommend_component();
     _recommend_component.prependTo(_ui);
     
-    if (this._item.is_enable('recommend') == false
-        || KALS_CONFIG.enable_annotation_recommend == false)
-    {
+    if (this._item.is_enable('recommend') === false
+        || KALS_CONFIG.enable_annotation_recommend === false) {
         _recommend_component.hide();
     }
     
@@ -128,8 +124,7 @@ List_header_component.prototype._name_container = null;
 
 List_header_component.prototype.set_user_name = function (_name) 
 {
-    if ($.is_null(_name))
-    {
+    if ($.is_null(_name)) {
         var _param = this._item.get_data();
         if ($.isset(_param))
             _name = _param.user.get_name();
@@ -154,8 +149,7 @@ List_header_component.prototype.is_my_classname = 'is-my';
  */
 List_header_component.prototype.set_is_my = function (_is_my) 
 {
-    if ($.is_null(_is_my))
-    {
+    if ($.is_null(_is_my)) {
         var _param = this._item.get_data();
         if ($.isset(_param)) 
             _is_my = _param.is_my_annotation();
@@ -165,7 +159,7 @@ List_header_component.prototype.set_is_my = function (_is_my)
     
     var _ui = this.get_ui();
     
-    if (_is_my == true)
+    if (_is_my === true)
         _ui.addClass(this.is_my_classname);
     else
         _ui.removeClass(this.is_my_classname);
@@ -205,8 +199,7 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
  */
 List_header_component.prototype.set_has_recommend = function (_has_recommend) 
 {
-    if ($.is_null(_has_recommend))
-    {
+    if ($.is_null(_has_recommend)) {
         var _param = this._item.get_data();
         if ($.isset(_param))
             _has_recommend = _param.has_recommend();
@@ -216,7 +209,7 @@ List_header_component.prototype.set_has_recommend = function (_has_recommend)
     
     var _ui = this.get_ui();
     
-    if (_has_recommend == true)
+    if (_has_recommend === true)
         _ui.addClass(this.is_has_recommend);
     else
         _ui.removeClass(this.is_has_recommend);
@@ -243,8 +236,7 @@ List_header_component.prototype.set_type = function (_type)
 {
     //$.test_msg('List_header_component.set_type', _type);
     
-    if ($.is_null(_type))
-    {
+    if ($.is_null(_type)) {
         var _param = this._item.get_data();
         if ($.isset(_param))
             _type = _param.type;
@@ -266,15 +258,13 @@ List_header_component.prototype.set_type = function (_type)
         .addClass(_type.get_classname())
         .appendTo(this._type_container);
     
-    if (_type.is_basic() == false)
-    {
+    if (_type.is_basic() === false) {
         _option.attr('style', _type.get_menu_style());
     }
     
     var _type_lang_header = Type_menu.prototype._type_lang_header;
     var _type_name = _type.get_type_name();
-    if (_type.is_custom())
-    {
+    if (_type.is_custom()) {
         var _custom_name = _type.get_type_name();
         
         if ($.isset(_custom_name))
@@ -321,11 +311,10 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
 List_header_component.prototype.set_has_recommend = function (_has_recommend) 
 {
     //只有我的標註才要設置recommend的喔！
-    if (this.is_my() == false)
+    if (this.is_my() === false)
         return this;
     
-    if ($.is_null(_has_recommend))
-    {
+    if ($.is_null(_has_recommend)) {
         var _param = this._item.get_data();
         if ($.isset(_param))
             _has_recommend = _param.has_recommend();
@@ -335,7 +324,7 @@ List_header_component.prototype.set_has_recommend = function (_has_recommend)
     
     var _ui = this.get_ui();
     
-    if (_has_recommend == true)
+    if (_has_recommend === true)
         _ui.addClass(this.has_recommend_classname);
     else
         _ui.removeClass(this.has_recommend_classname);
@@ -367,8 +356,7 @@ List_header_component.prototype._create_lock_component = function () {
 
 List_header_component.prototype.set_policy_type = function (_policy_type) {
     
-    if ($.is_null(_policy_type))
-    {
+    if ($.is_null(_policy_type)) {
         var _param = this._item.get_data();
         if ($.isset(_param))
             _policy_type = _param.policy_type;
@@ -378,12 +366,10 @@ List_header_component.prototype.set_policy_type = function (_policy_type) {
     
     var _ui = this.get_ui();
     var _lock_classname = 'policy-type-lock';
-    if (_policy_type == 'private' || _policy_type == 'share')
-    {
+    if (_policy_type == 'private' || _policy_type == 'share') {
         _ui.addClass(_lock_classname);
     }
-    else
-    {
+    else {
         _ui.removeClass(_lock_classname);
     }
     return this;

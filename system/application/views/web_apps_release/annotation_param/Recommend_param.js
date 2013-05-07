@@ -12,8 +12,7 @@
  */
 function Recommend_param(_json) {
     
-    if ($.isset(_json))
-    {
+    if ($.isset(_json)) {
         this.import_json(_json);
     }
 }
@@ -34,8 +33,7 @@ Recommend_param.prototype.tips = [];
 Recommend_param.prototype.recommend_by = null;
 
 Recommend_param.prototype.import_json = function (_json) {
-    if ($.isset(_json))
-    {
+    if ($.isset(_json)) {
         if (typeof(_json.tips) != 'undefined'
             && $.is_array(_json.tips))
         {

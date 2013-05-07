@@ -149,8 +149,7 @@ Window_profile.prototype._$create_ui = function ()
         _password_link_data
     ).appendTo(_ui);
     
-    var _check_embed = function (_is_embed)
-    {
+    var _check_embed = function (_is_embed) {
         if (_is_embed === true)
         {
             _password_link_data.hide();
