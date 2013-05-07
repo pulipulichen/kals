@@ -18,7 +18,7 @@ function KALS_toolbar() {
     this.child('toggle', new Toolbar_toggle_component());
     this.child('padding', new Toolbar_padding_component());
     
-    this.child('logo', new Logo_component());;
+    this.child('logo', new Logo_component());
     this.child('loading', new Loading_component());
     this.child('search', new Search_component());
     
@@ -160,15 +160,18 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     
     KALS_context.auth.add_listener(function (_auth, _data) {
-        if (_data === null)
-            return;
+        if (_data === null) {
+			return;
+		}
         
         //$.test_msg('KALS_context_auth.add_listener()', _data.login);
         //如果有登入，切換至avatar-nav，否則切換至login-nav        
-        if (_data.login === true)
-            _this.toggle_navigation('avatar-component');
-        else
-            _this.toggle_navigation('anonymous-component');
+        if (_data.login === true) {
+			_this.toggle_navigation('avatar-component');
+		}
+		else {
+			_this.toggle_navigation('anonymous-component');
+		}
     });
     
     _ui.dblclick(function () {
@@ -216,8 +219,9 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
         //this.toolbar.toggle_left(true);
     }
     
-    if ($.is_mobile_mode())
-        _ui.valign('top');
+    if ($.is_mobile_mode()) {
+		_ui.valign('top');
+	}
     
     if (this.toolbar_visible() === false) {
         _ui.align('center');
@@ -238,10 +242,12 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    var _ui_hidden = _ui.hasClass('hide');
    
    if ($.is_null(_display)) {
-       if (_ui_hidden)
-           _display = true;
-       else
-           _display = false;
+       if (_ui_hidden) {
+		   _display = true;
+	   }
+	   else {
+	       _display = false;
+	   }
    }
    
    

@@ -40,10 +40,12 @@ Notification_component.prototype.get_unread = function () {
     
     var _unread = this.get_ui('.unread:first').html();
     
-    if (_unread === '')
-        _unread = 0;
-    else
-        _unread = parseInt(_unread);
+    if (_unread === '') {
+		_unread = 0;
+	}
+	else {
+		_unread = parseInt(_unread, 10);
+	}
     return _unread;
 };
 
@@ -77,7 +79,7 @@ Notification_component.prototype.reset_unread = function () {
 };
 
 Notification_component.prototype.has_unread = function () {
-    return (this.get_unread() != 0);
+    return (this.get_unread() !== 0);
 };
 
 /**
@@ -86,14 +88,17 @@ Notification_component.prototype.has_unread = function () {
  */
 Notification_component.prototype.reduce_unread = function (_reduce) {
     
-    if (_reduce === null)
-        _reduce = 1;
+    if (_reduce === null) {
+		_reduce = 1;
+	}
         
     var _unread = this.get_unread();
-    if (_reduce > _unread)
-        _unread = 0;
-    else
-        _unread = _unread - _reduce;
+    if (_reduce > _unread) {
+		_unread = 0;
+	}
+	else {
+		_unread = _unread - _reduce;
+	}
     
     return this.set_unread(_unread);
 };
@@ -103,12 +108,16 @@ Notification_component.prototype.toggle_hover = function (_is_hover) {
     var _ui = this.get_ui();
     
     var _hover_classname = 'hover';
-    if (_is_hover === null)
-        _ui.toggleClass(_hover_classname);
-    else if (_is_hover)
-        _ui.addClass(_hover_classname);
-    else
-        _ui.removeClass(_hover_classname);
+    if (_is_hover === null) {
+		_ui.toggleClass(_hover_classname);
+	}
+	else 
+		if (_is_hover) {
+			_ui.addClass(_hover_classname);
+		}
+		else {
+			_ui.removeClass(_hover_classname);
+		}
     
 };
 
@@ -122,7 +131,7 @@ Notification_component.prototype.toggle_hover = function (_is_hover) {
  */
 Notification_component.prototype._set_interval_check = function (_excute) {
     
-    if (_excute = null) {
+    if (_excute === null) {
         _excute = true;
     }
     
