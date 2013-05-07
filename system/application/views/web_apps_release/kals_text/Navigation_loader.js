@@ -37,8 +37,9 @@ Navigation_loader.prototype._$load_url = 'annotation_getter/navigation_';
  */
 Navigation_loader.prototype.load_annotation = function (_data, _callback) {
     
-    if (KALS_context.policy.allow_show_navigation() === false)
-        return this;
+    if (KALS_context.policy.allow_show_navigation() === false) {
+		return this;
+	}
     
     if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
@@ -53,9 +54,10 @@ Navigation_loader.prototype.load_annotation = function (_data, _callback) {
         var _type_id = _i;
         var _scope_coll_json = _data[_i];
         
-        if (_scope_coll_json === null
-            || _scope_coll_json.length === 0)
-            continue;
+        if (_scope_coll_json === null ||
+		_scope_coll_json.length === 0) {
+			continue;
+		}
         
         //$.test_msg('Navigation_loader.load_annotation()', [$.is_array(_scope_coll_json[0]), _i]);
         
