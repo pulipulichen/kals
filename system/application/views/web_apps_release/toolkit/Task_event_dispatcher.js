@@ -20,11 +20,13 @@ function Task_event_dispatcher(_onstart, _oncomplete) {
     this._task_state = {};
     this.completed = false;
     
-    if ($.is_function(_onstart))
-        this._$onstart = _onstart;
+    if ($.is_function(_onstart)) {
+		this._$onstart = _onstart;
+	}
     
-    if ($.is_function(_oncomplete))
-        this._$oncomplete = _oncomplete;
+    if ($.is_function(_oncomplete)) {
+		this._$oncomplete = _oncomplete;
+	}
 }
 
 Task_event_dispatcher.prototype = new Event_dispatcher();
@@ -101,21 +103,25 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
     
     setTimeout(function () {
         
-        if ($.is_null(_task))
-            return;
-        if ($.is_null(_boolean))
-            _boolean = true;
+        if ($.is_null(_task)) {
+			return;
+		}
+        if ($.is_null(_boolean)) {
+			_boolean = true;
+		}
             
-        if (_this._task_state === null)
-            _this.reset();
+        if (_this._task_state === null) {
+			_this.reset();
+		}
         
         if ($.inArray(_task, _this._$schedule_task) > -1) {
             //$.test_msg('設定任務', [_task, _boolean]);
             _this._task_state[_task] = _boolean;
         }
         
-        if (_this.completed === true)
-            return;    //表示全部已經完成
+        if (_this.completed === true) {
+			return; //表示全部已經完成
+		}
         
         //$.test_msg('是否完成全部任務', [_task, _this.is_completed(), '[', _this._$schedule_task, ']']);
         if (_this.is_completed()) {
@@ -157,22 +163,28 @@ Task_event_dispatcher.prototype.reset = function() {
  */
 Task_event_dispatcher.prototype.is_completed = function (_task) {
     
-    if (this._task_state === null)
-        return false;
+    if (this._task_state === null) {
+		return false;
+	}
     
     if ($.isset(_task)) {
-        if (typeof(this._task_state[_task]) == 'undefined')
-            return false;
-        else
-            return this._task_state[_task];
+        if (typeof(this._task_state[_task]) == 'undefined') {
+			return false;
+		}
+		else {
+			return this._task_state[_task];
+		}
     }
     else {
         for (var _t in this._$schedule_task) {
-            var _task = this._$schedule_task[_t];
-            if (typeof(this._task_state[_task]) == 'undefined')
-                return false;
-            else if (false == this._task_state[_task])
-                return false;
+            _task = this._$schedule_task[_t];
+            if (typeof(this._task_state[_task]) == 'undefined') {
+				return false;
+			}
+			else 
+				if (false == this._task_state[_task]) {
+					return false;
+				}
         }
         return true;
     }

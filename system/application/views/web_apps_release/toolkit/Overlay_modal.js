@@ -57,12 +57,14 @@ Overlay_modal.prototype._$get_config = function () {
         load: false,
         onBeforeLoad: function() {
             //跟Modal_controller註冊開啟
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object')
-                KALS_context.overlay.add_opened(_this);
+            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
+				KALS_context.overlay.add_opened(_this);
+			}
             
             var _ui = _this.get_ui();
-            if ($.is_function(_this._$onviewportmove))
-                _this._$onviewportmove(_ui); 
+            if ($.is_function(_this._$onviewportmove)) {
+				_this._$onviewportmove(_ui);
+			}
         },
         onLoad: function () {
             
@@ -77,8 +79,9 @@ Overlay_modal.prototype._$get_config = function () {
             _ui.animate({}, {
                 complete: function () {
                     setTimeout(function () {
-                        if ($.is_function(_this._$onopen))
-                            _this._$onopen(_ui);
+                        if ($.is_function(_this._$onopen)) {
+							_this._$onopen(_ui);
+						}
                         _this.call_temp_callback(_ui);    
                     }, 1000);
                        
@@ -87,15 +90,17 @@ Overlay_modal.prototype._$get_config = function () {
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object')
-                KALS_context.overlay.delete_opened(_this);    
+            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
+				KALS_context.overlay.delete_opened(_this);
+			}
             
         },
         onClose: function () {
             
             var _ui = _this.get_ui();
-            if ($.is_function(_this._$onclose))
-                _this._$onclose(_ui);
+            if ($.is_function(_this._$onclose)) {
+				_this._$onclose(_ui);
+			}
             _this.call_temp_callback(_ui);
             
             
@@ -119,7 +124,7 @@ Overlay_modal.prototype.open = function (_callback) {
         
         //$.test_msg('Overlay_modal.open() check _ui', [(_ui != null), (typeof(_ui.overlay) == 'function'), _callback]);
         
-        if (_ui != null) {
+        if (_ui !== null) {
             if (typeof(_ui.overlay) == 'function') {
                 //$.test_msg('Overlay_modal.open() 設置this._$temp_callback', _callback);
                 this._$temp_callback = _callback;
@@ -142,8 +147,9 @@ Overlay_modal.prototype.open = function (_callback) {
                 
                 //$.test_msg('Overlay_modal.open() after show');
                 
-                if ($.is_function(_callback))
-                    _callback(_ui);
+                if ($.is_function(_callback)) {
+					_callback(_ui);
+				}
             }
         }
     }
@@ -164,7 +170,7 @@ Overlay_modal.prototype.close = function (_callback) {
         
         var _this = this;
         
-        if (_ui != null) {
+        if (_ui !== null) {
             if (typeof(_ui.overlay) == 'function') {
                 //$.test_msg('close set temp callback', [this.get_modal_name(), typeof(_callback)]);
                 //$.test_msg('close set temp callback', _ui.overlay().close);
@@ -184,8 +190,9 @@ Overlay_modal.prototype.close = function (_callback) {
             }
             else {
                 _ui.hide();
-                if ($.is_function(_callback))
-                    _callback(_ui);
+                if ($.is_function(_callback)) {
+					_callback(_ui);
+				}
             }
         }
     }
@@ -213,8 +220,9 @@ Overlay_modal.prototype._mask_z_index = 9998;
  * @param {Object} _callback
  */
 Overlay_modal.prototype.expose = function (_callback) {
-    if (this._$exposable === false)
-        return this;
+    if (this._$exposable === false) {
+		return this;
+	}
     
     var _ui = this.get_ui();
     
@@ -241,8 +249,9 @@ Overlay_modal.prototype.expose = function (_callback) {
  * @param {function} _callback
  */
 Overlay_modal.prototype.cover = function (_callback) {
-    if (this._$exposable === false)
-        return this;
+    if (this._$exposable === false) {
+		return this;
+	}
     
     var _ui = this.get_ui();
     

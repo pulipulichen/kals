@@ -56,8 +56,9 @@ Name_value_pair.prototype.unserialize = function (_string_data) {
         var _data = _string_array[_i];
         var _pos = _data.indexOf(this._indicator);
         
-        if (_pos == -1)
-            continue;
+        if (_pos == -1) {
+			continue;
+		}
             
         var _key = _data.substring(0, _pos);
         var _value = _data.substring((_pos+1), _data.length);
@@ -104,7 +105,7 @@ Name_value_pair.prototype.to_string = function () {
  * @type {Object}
  */
 Name_value_pair.prototype.get_field = function (_key, _default) {
-    if (typeof(this._data[_key]) != undefined) {
+    if (typeof(this._data[_key]) !== undefined) {
         return this._data[_key];
     }
     else {
@@ -131,8 +132,9 @@ Name_value_pair.prototype.set_field = function (_key, _value) {
  * @param {String} _key
  */
 Name_value_pair.prototype.delete_field = function (_key) {
-    if (typeof(this._data[_key]) != 'undefined')
-        delete this._data[_key];
+    if (typeof(this._data[_key]) != 'undefined') {
+		delete this._data[_key];
+	}
     return this;
 };
 

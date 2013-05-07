@@ -19,8 +19,9 @@ function JSONP_dispatcher(_url) {
     this._default_reset_data = null;
     
     this._data = null;
-    if ($.isset(_url))
-        this.set_load_url(_url);
+    if ($.isset(_url)) {
+		this.set_load_url(_url);
+	}
         
 }
 
@@ -81,8 +82,9 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
             
             //$.test_msg('JSONP_dispatcher.load() ajax_get', _data);
             
-            if ($.is_function(_callback)) 
-                _callback(_this, _data);
+            if ($.is_function(_callback)) {
+				_callback(_this, _data);
+			}
                 
             _this.set_data(_data);
         },
@@ -90,7 +92,7 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
     };
     
     if ($.is_function(this._$exception_handle)) {
-        _config['exception_handle'] = function (_data) {
+        _config.exception_handle = function (_data) {
             _this._$exception_handle(_data);    
         }; 
         
@@ -104,8 +106,9 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
 JSONP_dispatcher.prototype._$exception_handle = null;
 
 JSONP_dispatcher.prototype._notify_listener = function (_obj, _arg) {
-    if ($.is_null(_arg))
-        _arg = this.get_data();
+    if ($.is_null(_arg)) {
+		_arg = this.get_data();
+	}
     return Event_dispatcher.prototype._notify_listener.call(this, _obj, _arg);
 };
 

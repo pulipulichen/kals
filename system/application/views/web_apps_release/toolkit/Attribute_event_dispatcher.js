@@ -61,10 +61,12 @@ Attribute_event_dispatcher.prototype.reset = function () {
 Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _length) {
     if ($.is_null(_type)
         || typeof(this._attributes[_type]) == 'undefined') {
-        if ($.is_null(_default))
-            return null;
-        else
-            return _default;
+        if ($.is_null(_default)) {
+			return null;
+		}
+		else {
+			return _default;
+		}
     }   
     else {
         var _value = this._attributes[_type];
@@ -89,22 +91,28 @@ Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _leng
  * @param {boolean} _trigger 是否立即啟動，預設是true。
  */
 Attribute_event_dispatcher.prototype.add_attr_listener = function (_type, _attr_function, _trigger) {
-    if ($.is_null(_trigger))
-        _trigger = true;
+    if ($.is_null(_trigger)) {
+		_trigger = true;
+	}
     
     var _function = function(_dispatcher) {
         var _attr = _dispatcher.get_attr(_type);
         
-        if ($.is_function(_attr_function))
-            _attr_function(_dispatcher, _attr);
-        else if (typeof(_attr_function.innerHTML))
-            _attr_function.innerHTML = _attr;
-        else if ($.is_function(_attr_function.html))
-            _attr_function.html(_attr);
+        if ($.is_function(_attr_function)) {
+			_attr_function(_dispatcher, _attr);
+		}
+		else 
+			if (typeof(_attr_function.innerHTML)) {
+				_attr_function.innerHTML = _attr;
+			}
+			else 
+				if ($.is_function(_attr_function.html)) {
+					_attr_function.html(_attr);
+				}
     };
     
     return this.add_listener(_type, _function, _trigger);
-},
+};
 
 /**
  * 通知所有監聽者
@@ -133,8 +141,9 @@ Attribute_event_dispatcher.prototype._$data_key = 'data';
 Attribute_event_dispatcher.prototype.update = function (_dispatcher, _data) {
     
     var _data_key = this._$data_key;
-    if (_data_key === null)
-        return this;
+    if (_data_key === null) {
+		return this;
+	}
     
     //$.test_msg('Attribute_event_dispatcher.update()', _data);
     //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);

@@ -70,8 +70,9 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger) {
         _function = null;
     }
     
-    if ($.is_null(_trigger))
-        _trigger = false;
+    if ($.is_null(_trigger)) {
+		_trigger = false;
+	}
     
     if ($.inArray(_obj, this._listeners) == -1) {
         if ($.isset(_function)) {
@@ -115,8 +116,9 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
         _function = null;
     }
     
-    if ($.is_null(_trigger))
-        _trigger = false;
+    if ($.is_null(_trigger)) {
+		_trigger = false;
+	}
     
     //接下來開始進行事件觸發
     if ($.inArray(_obj, this._once_listeners) == -1) {
@@ -144,10 +146,12 @@ Event_dispatcher.prototype._notify_once_listener = function(_obj, _complate) {
 };
 
 Event_dispatcher.prototype._trigger_listener = function (_listener) {
-    if ($.is_object(_listener))
-        return _listener[this._$event_name](this);
-    else
-        return _listener(this);
+    if ($.is_object(_listener)) {
+		return _listener[this._$event_name](this);
+	}
+	else {
+		return _listener(this);
+	}
 };
 
 /**
@@ -185,8 +189,9 @@ Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj) {
         _key = $.inArray(_obj, _listeners);
         //if (_key > -1)
         //    delete _listeners[_key];
-        if (_key > -1)
-            _listeners = $.array_remove(_listeners, _key);
+        if (_key > -1) {
+			_listeners = $.array_remove(_listeners, _key);
+		}
     }
     else if ($.is_function(_obj)) {
         var _func = _obj;
@@ -228,13 +233,14 @@ Event_dispatcher.prototype.notify_listeners = function (_arg) {
             this._notify_listener(_listener, _arg);
         }
         
-        for (var _i in this._once_listeners) {
-            var _listener = this._once_listeners[_i];
+        for (_i in this._once_listeners) {
+            _listener = this._once_listeners[_i];
             this._notify_once_listener(_listener, _arg);
         }
         
-        if (this._$enable_changed_lock === true)
-            this._changed = false;
+        if (this._$enable_changed_lock === true) {
+			this._changed = false;
+		}
     }
     return this;
 };
@@ -245,18 +251,22 @@ Event_dispatcher.prototype._notify_listener = function (_listener, _arg) {
     var _result;
     
     if ($.is_function(_listener)) {
-        if ($.isset(_arg))
-            _result = _listener(this, _arg);
-        else
-            _result = _listener(this);
+        if ($.isset(_arg)) {
+			_result = _listener(this, _arg);
+		}
+		else {
+			_result = _listener(this);
+		}
     }
     else if (typeof(_listener[_event_name]) == 'function') {
         //$.test_msg('Event_dispatcher.notify_listeners() has event', _event_name);
         
-        if ($.isset(_arg))
-            _result = _listener[_event_name](this, _arg);
-        else
-            _result = _listener[_event_name](this);    
+        if ($.isset(_arg)) {
+			_result = _listener[_event_name](this, _arg);
+		}
+		else {
+			_result = _listener[_event_name](this);
+		}    
     }
     
     return _result;

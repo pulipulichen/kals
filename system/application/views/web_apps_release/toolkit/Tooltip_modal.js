@@ -56,15 +56,17 @@ Tooltip_modal.prototype._$get_config = function (_selector) {
             //if ($.is_function(_this._$onviewportmove))
             //    _this._$onviewportmove(_ui);
             
-            if ($.is_function(_this._$onopen))
-                _this._$onopen(_ui);
+            if ($.is_function(_this._$onopen)) {
+				_this._$onopen(_ui);
+			}
                 
             _this.call_temp_callback(_ui);
         },
         onHide: function () {
             var _ui = _this.get_ui();
-            if ($.is_function(_this._$onclose))
-                _this._$onclose(_ui);
+            if ($.is_function(_this._$onclose)) {
+				_this._$onclose(_ui);
+			}
             _this.call_temp_callback(_ui);
         },
         delay: 30,
@@ -77,8 +79,9 @@ Tooltip_modal.prototype._$get_config = function (_selector) {
         _selector = '#' + this._$tooltip_id;
     }
     
-    if ($.isset(_selector))
-        _config['tip'] = _selector;
+    if ($.isset(_selector)) {
+		_config.tip = _selector;
+	}
     
     return _config;  
 };
@@ -103,8 +106,9 @@ Tooltip_modal.prototype.get_trigger = function () {
 Tooltip_modal.prototype._create_tooltip_prototype = function (_config) {
     
     var _id = $.get_parameter(_config, 'id');
-    if ($.is_null(_id) && $.isset(this._$tooltip_id))
-        _id = this._$tooltip_id;
+    if ($.is_null(_id) && $.isset(this._$tooltip_id)) {
+		_id = this._$tooltip_id;
+	}
     
     var _content = $.get_parameter(_config, 'content');
     var _classname = $.get_parameter(_config, 'classname');
@@ -131,11 +135,13 @@ Tooltip_modal.prototype._create_tooltip_prototype = function (_config) {
             .addClass('tooltip')
             .appendTo($('body'));
         
-        if ($.isset(_id))
-            _tooltip.attr('id', _id);
+        if ($.isset(_id)) {
+			_tooltip.attr('id', _id);
+		}
         
-        if ($.isset(_classname))
-            _tooltip.addClass(_classname);
+        if ($.isset(_classname)) {
+			_tooltip.addClass(_classname);
+		}
         
         //$.test_msg('Tooltip_modal._create_tooltip.prototype()', _tooltip.length);
     }
@@ -152,15 +158,16 @@ Tooltip_modal.prototype.open = function (_callback) {
     
     var _this = this;
     
-    if (_ui != null) {
+    if (_ui !== null) {
         if (typeof(_ui.tooltip) == 'function') {
             this._$temp_callback = _callback;
             _ui.tooltip().show();
         }
         else {
             _ui.show();
-            if ($.is_function(_callback))
-                _callback(_ui);
+            if ($.is_function(_callback)) {
+				_callback(_ui);
+			}
         }
     }
     
@@ -178,15 +185,16 @@ Tooltip_modal.prototype.close = function (_callback) {
         
         var _this = this;
         
-        if (_ui != null) {
+        if (_ui !== null) {
             if (typeof(_ui.tooltip) == 'function') {
                  this._$temp_callback = _callback;
                  _ui.tooltip().hide();
             }
             else {
                 _ui.hide();
-                if ($.is_function(_callback))
-                    _callback(_ui);
+                if ($.is_function(_callback)) {
+					_callback(_ui);
+				}
             }
         }
     }

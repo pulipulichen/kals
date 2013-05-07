@@ -23,10 +23,12 @@ function Dialog_option(_lang, _callback, _arg) {
         _lang = null;
     }
     
-    if ($.is_class(_lang, 'KALS_language_param'))
-        this.lang = _lang;
-    if ($.is_function(_callback))
-        this.callback = _callback;
+    if ($.is_class(_lang, 'KALS_language_param')) {
+		this.lang = _lang;
+	}
+    if ($.is_function(_callback)) {
+		this.callback = _callback;
+	}
     this.arg = _arg;
 }
 
@@ -56,8 +58,9 @@ Dialog_option.prototype._$create_ui = function () {
         .addClass('dialog-option');
     
     var _lang = this.lang;
-    if ($.is_null(_lang))
-        _lang = this._default_lang;
+    if ($.is_null(_lang)) {
+		_lang = this._default_lang;
+	}
     
     KALS_context.lang.add_listener(_button, _lang);
     
@@ -73,8 +76,9 @@ Dialog_option.prototype._$create_ui = function () {
         $(this).addClass('hover');
     }, function () {
         
-        if ($(this).hasClass('focus') === false)
-            $(this).removeClass('hover');
+        if ($(this).hasClass('focus') === false) {
+			$(this).removeClass('hover');
+		}
     });
     
     _button.focus(function () {
