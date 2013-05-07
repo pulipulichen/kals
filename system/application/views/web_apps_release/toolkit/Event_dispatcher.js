@@ -58,8 +58,7 @@ Event_dispatcher.prototype._$event_name = 'update';
  * @param {Object} _function
  * @param {Object} _trigger
  */
-Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger)
-{
+Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger) {
     if ($.is_function(_obj) 
         && ($.is_null(_function) || $.is_boolean(_function))) {
         _trigger = _function;
@@ -75,15 +74,13 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger)
         _trigger = false;
     
     if ($.inArray(_obj, this._listeners) == -1) {
-        if ($.isset(_function))
-        {
+        if ($.isset(_function)) {
             _obj[this._$event_name] = _function;
         }
         
         this._listeners.push(_obj);
         
-        if (_trigger === true)
-        {
+        if (_trigger === true) {
             this._notify_listener(_obj);
         }
     }
@@ -105,8 +102,7 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger)
  * @param {Object} _function
  * @param {Object} _trigger
  */
-Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigger)
-{
+Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigger) {
     //參數初始化
     if ($.is_function(_obj) 
         && ($.is_null(_function) || $.is_boolean(_function))) {
@@ -124,15 +120,13 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
     
     //接下來開始進行事件觸發
     if ($.inArray(_obj, this._once_listeners) == -1) {
-        if ($.isset(_function))
-        {
+        if ($.isset(_function)) {
             _obj[this._$event_name] = _function;
         }
         
         this._once_listeners.push(_obj);
         
-        if (_trigger === true)
-        {
+        if (_trigger === true) {
             this._notify_once_listener(_obj);
         }
     }
@@ -160,8 +154,7 @@ Event_dispatcher.prototype._trigger_listener = function (_listener) {
  * 刪除觀察者
  * @param {Object|function} _obj
  */
-Event_dispatcher.prototype.delete_listener = function (_obj)
-{
+Event_dispatcher.prototype.delete_listener = function (_obj) {
     this._listeners = this._delete_listener_data(
         this._listeners,
         _obj
@@ -186,8 +179,7 @@ Event_dispatcher.prototype.delete_once_listener = function (_obj) {
  * @param {function[]|Object[]} _listeners
  * @param {Object|function} _obj
  */
-Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj)
-{
+Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj) {
     var _key;
     if ($.is_object(_obj)) {
         _key = $.inArray(_obj, _listeners);
@@ -198,24 +190,19 @@ Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj)
     }
     else if ($.is_function(_obj)) {
         var _func = _obj;
-        for (_key in _listeners)
-        {
+        for (_key in _listeners) {
             _obj = _listeners[_key];
             
-            if ($.is_object(_obj))
-            {
+            if ($.is_object(_obj)) {
                 if (typeof(_obj[this._$event_name] == 'function')
-                    && _obj[this._$event_name] == _func)
-                {
+                    && _obj[this._$event_name] == _func) {
                     //delete _listeners[_key];
                     _listeners = $.array_remove(_listeners, _key);
                 }
                     
             }
-            else if ($.is_function(_obj))
-            {
-                if (_obj == _func)
-                {
+            else if ($.is_function(_obj)) {
+                if (_obj == _func) {
                     //delete _listeners[_key];
                     _listeners = $.array_remove(_listeners, _key);
                 }
@@ -229,22 +216,19 @@ Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj)
  * 通知所有觀察者
  * @param {Object} _arg
  */
-Event_dispatcher.prototype.notify_listeners = function (_arg)
-{
+Event_dispatcher.prototype.notify_listeners = function (_arg) {
     if (this._$enable_changed_lock === false 
         || (this._$enable_changed_lock === true && this._changed)) {
         var _event_name = this._$event_name;
         
         //$.test_msg('Event_dispatcher.notify_listeners()', this._listeners.length);
         
-        for (var _i in this._listeners)
-        {
+        for (var _i in this._listeners) {
             var _listener = this._listeners[_i];
             this._notify_listener(_listener, _arg);
         }
         
-        for (var _i in this._once_listeners)
-        {
+        for (var _i in this._once_listeners) {
             var _listener = this._once_listeners[_i];
             this._notify_once_listener(_listener, _arg);
         }
@@ -283,8 +267,7 @@ Event_dispatcher.prototype._notify_listener = function (_listener, _arg) {
  * 
  * 如果this._$enable_changed_lock有開啟，那麼在作notify_lis
  */
-Event_dispatcher.prototype.set_changed = function ()
-{
+Event_dispatcher.prototype.set_changed = function () {
     this._changed = true;
     return this;
 };

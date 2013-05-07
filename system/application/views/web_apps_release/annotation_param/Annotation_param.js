@@ -223,27 +223,21 @@ Annotation_param.prototype.export_json = function () {
     var _plain_types = this._plain_types;
     for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
-        if ($.isset(this[_attr]))
-        {
+        if ($.isset(this[_attr])) {
             var _value = this[_attr];
-            if (_attr == 'note')
-            {
+            if (_attr == 'note') {
                 _value = encodeURIComponent(_value);
             }
-            else if (_attr == 'policy_type' && $.is_string(_value))
-            {
-                for (var _p in this._policy_types)
-                {
+            else if (_attr == 'policy_type' && $.is_string(_value)) {
+                for (var _p in this._policy_types) {
                     var _policy_type = this._policy_types[_p];
-                    if (_policy_type == _value)
-                    {
+                    if (_policy_type == _value) {
                         _value = parseInt(_p);
                         break;
                     }
                 }
             }
-            else if (_attr == 'respond_list')
-            {
+            else if (_attr == 'respond_list') {
                 continue;
             }
             
@@ -257,20 +251,16 @@ Annotation_param.prototype.export_json = function () {
         var _attr = _param_types[_i];
         //$.test_msg('Annotation_param.export_json', [_attr, ($.isset(this[_attr]))]);
         
-        if ($.isset(this[_attr]))
-        {
-            if (_attr == 'respond_to_coll')
-            {
+        if ($.isset(this[_attr])) {
+            if (_attr == 'respond_to_coll') {
                 var _data = this[_attr].export_respond_json();
                 if ($.is_array(_data) && _data.length > 0)
                     _json[_attr] = _data;
             }  
-            else if (_attr == 'topic')
-            {
+            else if (_attr == 'topic') {
                 _json[_attr] = this[_attr].export_respond_json();
             }
-            else if ($.inArray(_attr, this._only_for_import) > -1)
-            {
+            else if ($.inArray(_attr, this._only_for_import) > -1) {
                 // 不做輸出！
                 continue;
             }
@@ -291,26 +281,20 @@ Annotation_param.prototype.export_respond_json = function () {
     return _data;
 };
 
-Annotation_param.prototype.import_json = function (_json) 
-{
+Annotation_param.prototype.import_json = function (_json) {
     //取得Annotation的note時，也記得要先做urlencode()跟JavaScript端的decodeURIComponent()
     var _plain_types = this._plain_types;
     for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
-        if (typeof(_json[_attr]) != 'undefined')
-        {
+        if (typeof(_json[_attr]) != 'undefined') {
             var _value = _json[_attr];
-            if (_attr == 'note')
-            {
+            if (_attr == 'note') {
                 _value = unescape(_value);
-            else if (_attr == 'policy_type' && $.is_number(_value))
-            {
+            else if (_attr == 'policy_type' && $.is_number(_value)) {
                 _value = _value + '';
-                for (var _p in this._policy_types)
-                {
+                for (var _p in this._policy_types) {
                     var _policy_type = this._policy_types[_p];
-                    if (_p == _value)
-                    {
+                    if (_p == _value) {
                         _value = _policy_type;
                         break;
                     }
@@ -324,8 +308,7 @@ Annotation_param.prototype.import_json = function (_json)
     var _param_types = this._param_types;
     for (var _i in _param_types) {
         var _attr = _param_types[_i];
-        if (typeof(_json[_attr]) != 'undefined')
-        {
+        if (typeof(_json[_attr]) != 'undefined') {
             var _value = _json[_attr];
             if (_attr == 'respond_to_coll')
                 this[_attr] = new Annotation_collection_param(_value);
@@ -337,8 +320,7 @@ Annotation_param.prototype.import_json = function (_json)
                 this[_attr] = new User_param(_value);
             else if (_attr == 'topic')
                 this[_attr] = new Annotation_param(_value);
-            else if (_attr == 'type')
-            {
+            else if (_attr == 'type') {
                 _value = decodeURIComponent(_value);
                 //this[_attr] = new Annotation_type_param(_value);
                 this[_attr] = KALS_context.custom_type.import_json(_value);

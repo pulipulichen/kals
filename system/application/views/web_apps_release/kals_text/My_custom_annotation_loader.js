@@ -93,16 +93,14 @@ My_custom_annotation_loader.prototype.initialize = function () {
             
             //$.test_msg('my_custom initialize', [$.isset(_my), _is_login]);
             
-            if ($.isset(_my) && _is_login)
-            {
+            if ($.isset(_my) && _is_login) {
                 if (_this.is_loaded())
                     return;
                 _this.setup_loader(_my, function () {
                     _this.stop_loader();
                 });
             }
-            else
-            {
+            else {
                 _this.reset();
             }
         });

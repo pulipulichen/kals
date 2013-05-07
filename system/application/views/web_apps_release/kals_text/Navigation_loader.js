@@ -89,24 +89,20 @@ Navigation_loader.prototype.initialize = function () {
             setTimeout(function () {
                 
                 //$.test_msg('Navigation_loader.initialize()', _policy.allow_show_navigation());
-                if (_policy.allow_show_navigation() === false)
-                {
+                if (_policy.allow_show_navigation() === false) {
                     _this.reset();
                     return;
                 }
-                else
-                {
+                else {
                     var _navigation_data = _policy.get_navigation_data();
-                    if ($.isset(_navigation_data))
-                    {                
+                    if ($.isset(_navigation_data)) {                
                         //var _navigation_data = _data.Navigation_loader;
                         _this.setup_loader( _navigation_data , function () {
                             //KALS_context.init_profile.complete('navigation_annotation');
                             //_this.stop_loader();
                         });
                     }
-                    else
-                    {
+                    else {
                         //_this.reset();
                     }    
                 }

@@ -46,8 +46,7 @@ Context_custom_type.prototype.initialize = function () {
     if (typeof(KALS_CONFIG.annotation_custom_type) != 'undefined') {
         var _custom_type = KALS_CONFIG.annotation_custom_type;
         
-        for (var _type_name in _custom_type)
-        {
+        for (var _type_name in _custom_type) {
             var _type_data = _custom_type[_type_name];
             
             var _type_param = new Annotation_type_param(_type_name);
@@ -61,8 +60,7 @@ Context_custom_type.prototype.initialize = function () {
             if (typeof(_type_data.hint) == 'string')
                 _type_param.set_hint(_type_data.hint);
             
-            if (typeof(_type_data.option) != 'undefined')
-            {
+            if (typeof(_type_data.option) != 'undefined') {
                 //檢查是否有background_color
                 if (typeof(_type_data.option.background_color) == 'string')
                     _type_param.set_option_background_color(_type_data.option.background_color);
@@ -72,8 +70,7 @@ Context_custom_type.prototype.initialize = function () {
                     _type_param.set_option_font_color(_type_data.option.font_color);
             }
             
-            if (typeof(_type_data.anchor) != 'undefined')
-            {
+            if (typeof(_type_data.anchor) != 'undefined') {
                 //檢查是否有style
                 if (typeof(_type_data.anchor.style) == 'string')
                     _type_param.set_anchor_style(_type_data.anchor.style);
@@ -116,8 +113,7 @@ Context_custom_type.prototype.set_type_id = function (_type_id_data) {
     
     if (typeof(_type_id_data) == 'object'
         && _type_id_data != null) {
-        for (var _type_name in _type_id_data)
-        {
+        for (var _type_name in _type_id_data) {
             if (typeof(this._type_list[_type_name]) == 'undefined')
                 continue;
             
@@ -230,20 +226,17 @@ Context_custom_type.prototype.find_type = function (_type_name) {
     else if ($.is_number(_type_name)) {
         var _target_type_id = _type_name;
         //$.test_msg('Context_custom_type.find_type ready search', this._type_list);
-        for (var _t in this._type_list)
-        {
+        for (var _t in this._type_list) {
             var _type = this._type_list[_t];
             var _type_id = _type.get_id();
             //$.test_msg('Context_custom_type.find_type search', [_type_name, _type_id]);
-            if (_type_id == _target_type_id)
-            {
+            if (_type_id == _target_type_id) {
                 _output_type = _type;
                 break;
             }
         }
         
-        if (_output_type === null)
-        {
+        if (_output_type === null) {
             _output_type = new Annotation_type_param(_target_type_id);
         }
     }

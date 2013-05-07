@@ -80,8 +80,7 @@ List_note_component.prototype._respond_to_coll = null;
  * @memberOf {List_note_component}
  * @type {jQuery} UI
  */
-List_note_component.prototype._$create_ui = function ()
-{
+List_note_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-note-component');
     
@@ -155,17 +154,18 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
         _respond_to_coll = this._item.get_data().respond_to_coll;
     }
     
-    if ($.is_null(_respond_to_coll))
-        return this;
+    if ($.is_null(_respond_to_coll)) {
+		return this;
+	}
     
-    if ($.is_null(this._respond_container))
-        this.get_ui();
+    if ($.is_null(this._respond_container)) {
+		this.get_ui();
+	}
     
     this._respond_container.empty();
     
     for (var _i = 0; _i < _respond_to_coll.length(); _i ++) {
-        if (_i > 0)
-        {
+        if (_i > 0) {
             var _comma = this._create_respond_comma();
             _comma.appendTo(this._respond_container);
         }
@@ -224,13 +224,15 @@ List_note_component.prototype.set_note = function (_note) {
         _note = this._item.get_data().note;
     }
     
-    if ($.is_null(_note))
-        _note = '';
+    if ($.is_null(_note)) {
+		_note = '';
+	}
     
     //$.test_msg('List_note.set_note()', [_note, typeof(_note)]);
     
-    if ($.is_null(this._note_container))
-        this.get_ui();
+    if ($.is_null(this._note_container)) {
+		this.get_ui();
+	}
     
     this._note_container.html(_note);
     
@@ -241,8 +243,7 @@ List_note_component.prototype.set_note = function (_note) {
 		_allow_html_tags = KALS_CONFIG.annotation_list.note.allow_html_tags;
 		_text = $.strip_html_tag(_text, _allow_html_tags);
         _text = $.trim(_text);
-        if (_origin_text.length > this._simple_max_length)
-        {
+        if (_origin_text.length > this._simple_max_length) {
 			if (_text.length > this._simple_max_length) {
 	            _text = _text.substr(0, this._simple_max_length) + '...';
 	            this._note_container.html(_text);
@@ -280,8 +281,9 @@ List_note_component.prototype._create_view_thread = function () {
 };
 
 List_note_component.prototype.view_thread = function (_callback) {
-    if ($.isset(this._item))
-        this._item.view_thread(_callback);
+    if ($.isset(this._item)) {
+		this._item.view_thread(_callback);
+	}
     return this;
 };
 

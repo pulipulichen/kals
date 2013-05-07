@@ -108,8 +108,7 @@ Recommend_hint.prototype.get_recommend_by = function () {
  * @memberOf {Recommend_hint}
  * @type {jQuery} UI
  */
-Recommend_hint.prototype._$create_ui = function ()
-{
+Recommend_hint.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('tooltip recommend-hint')
         .appendTo($('body'))

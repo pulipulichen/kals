@@ -48,8 +48,7 @@ Navigation_list.prototype._$nav_items = [];
  * @memberOf {Navigation_list}
  * @type {jQuery} UI
  */
-Navigation_list.prototype._$create_ui = function ()
-{
+Navigation_list.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('navigation-list');
     

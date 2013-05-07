@@ -183,14 +183,12 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     var _ui_toggle = this.toggle.get_ui();
     var _padding_ui = this.padding.get_ui();
     if ($.is_small_height()) {   
-        if (this.toggle.is_show() === false)
-        {
+        if (this.toggle.is_show() === false) {
             this.toggle_toolbar(false);
             this.toggle.show();    
         }
         
-        if (_padding_ui.hasClass('compact-height') === false)
-        {
+        if (_padding_ui.hasClass('compact-height') === false) {
             _padding_ui.slideUp(function () {
                 _padding_ui.addClass('compact-height');    
             });
@@ -200,8 +198,7 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
         this.toggle_toolbar(true);
         this.toggle.hide();
         
-        if (_padding_ui.hasClass('compact-height'))
-        {
+        if (_padding_ui.hasClass('compact-height')) {
             _padding_ui.removeClass('compact-height');
             _padding_ui.slideDown(function () {
                 //_padding_ui.css('display', null);
@@ -240,8 +237,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    var _ui = this.get_ui();
    var _ui_hidden = _ui.hasClass('hide');
    
-   if ($.is_null(_display))
-   {
+   if ($.is_null(_display)) {
        if (_ui_hidden)
            _display = true;
        else
@@ -255,8 +251,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    
    //$.test_msg('display', _display);
    var _height;
-   if (_display === true && _ui_hidden)
-   {
+   if (_display === true && _ui_hidden) {
        //_toolbar_ui.slideDown(_callback);
        _ui.removeClass('hide');
        _height = _toolbar_ui.height();
@@ -275,8 +270,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
            }
        });
    }
-   else if (_display === false && _ui_hidden === false)
-   {
+   else if (_display === false && _ui_hidden === false) {
        _height = _toolbar_ui.height();
        _height = (_height * -1) + 'px';
        //$.test_msg(_height);
@@ -293,8 +287,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
            }
        });
    }
-   else
-   {
+   else {
        $.trigger_callback(_callback);
    }
    

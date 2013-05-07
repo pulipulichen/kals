@@ -73,8 +73,7 @@ Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _leng
         
         if ($.isset(_value)
             && $.is_number(_length)
-            && _value.length > _length)
-        {
+            && _value.length > _length) {
             _value = _value.substr(0, _length) + '...';
         }
         return _value;
@@ -89,8 +88,7 @@ Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _leng
  * _attr_function = function (_dispatcher, _attr) { //... }
  * @param {boolean} _trigger 是否立即啟動，預設是true。
  */
-Attribute_event_dispatcher.prototype.add_attr_listener = function (_type, _attr_function, _trigger)
-{
+Attribute_event_dispatcher.prototype.add_attr_listener = function (_type, _attr_function, _trigger) {
     if ($.is_null(_trigger))
         _trigger = true;
     
@@ -145,8 +143,7 @@ Attribute_event_dispatcher.prototype.update = function (_dispatcher, _data) {
         //$.test_msg('Attribute_event_dispatcher.update()', _data);
         //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);
     
-        for (var _key in _data[_data_key])
-        {
+        for (var _key in _data[_data_key]) {
             //$.test_msg('Attribute_event_dispatcher.update()', [_key, _data[_data_key][_key]]);
             this.set_attr(_key, _data[_data_key][_key]);
         }

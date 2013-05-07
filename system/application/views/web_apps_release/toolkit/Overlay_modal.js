@@ -119,30 +119,25 @@ Overlay_modal.prototype.open = function (_callback) {
         
         //$.test_msg('Overlay_modal.open() check _ui', [(_ui != null), (typeof(_ui.overlay) == 'function'), _callback]);
         
-        if (_ui != null)
-        {
-            if (typeof(_ui.overlay) == 'function')
-            {
+        if (_ui != null) {
+            if (typeof(_ui.overlay) == 'function') {
                 //$.test_msg('Overlay_modal.open() 設置this._$temp_callback', _callback);
                 this._$temp_callback = _callback;
                 //$.test_msg('Overlay_modal.open() 設置了this._$temp_callback', this._$temp_callback);
                 
                 //此處的callback會在load的時候就呼叫了
                 var _api = _ui.data("overlay");
-                if ($.isset(_api))
-                {
+                if ($.isset(_api)) {
                     _api.setOpened(false);
                     _api.load();    
                 }
                 _ui.show();
                 
-                if (this.is_exposable())
-                {
+                if (this.is_exposable()) {
                     this.expose();
                 }
             }
-            else
-            {
+            else {
                 _ui.show();
                 
                 //$.test_msg('Overlay_modal.open() after show');
@@ -169,18 +164,15 @@ Overlay_modal.prototype.close = function (_callback) {
         
         var _this = this;
         
-        if (_ui != null)
-        {
-            if (typeof(_ui.overlay) == 'function')
-            {
+        if (_ui != null) {
+            if (typeof(_ui.overlay) == 'function') {
                 //$.test_msg('close set temp callback', [this.get_modal_name(), typeof(_callback)]);
                 //$.test_msg('close set temp callback', _ui.overlay().close);
                 this._$temp_callback = _callback;
                 
                 //if (typeof(_ui.overlay().isOpened()) != 'undefined')
                 var _api = _ui.data("overlay");
-                if ($.isset(_api))
-                {
+                if ($.isset(_api)) {
                     _api.setOpened(true);
                     _api.close();    
                 }
@@ -190,8 +182,7 @@ Overlay_modal.prototype.close = function (_callback) {
                     
                 //}
             }
-            else
-            {
+            else {
                 _ui.hide();
                 if ($.is_function(_callback))
                     _callback(_ui);

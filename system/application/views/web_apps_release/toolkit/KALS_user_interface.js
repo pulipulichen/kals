@@ -160,8 +160,7 @@ KALS_user_interface.prototype.has_child = function (_name) {
  */
 KALS_user_interface.prototype.child = function (_name, _child) {
     if (_child != null) {
-        if (this.has_child(_name) === false)
-        {
+        if (this.has_child(_name) === false) {
             this[_name] = _child;
             this._children[_name] = _child;
             //$.test_msg('child', [_name, $.get_class(_child)]);
@@ -173,8 +172,7 @@ KALS_user_interface.prototype.child = function (_name, _child) {
     }
     else {
         _child = null;
-        if (this.has_child(_name))
-        {
+        if (this.has_child(_name)) {
             _child = this._children[_name];
         }
         return _child;    
@@ -193,8 +191,7 @@ KALS_user_interface.prototype.child_ui = function (_name) {
     var _ui = null;
     if (this.has_child(_name)) {
         var _child = this.child(_name);
-        if ($.is_function(_child.get_ui))
-        {
+        if ($.is_function(_child.get_ui)) {
             _ui = _child.get_ui();
         }
     }

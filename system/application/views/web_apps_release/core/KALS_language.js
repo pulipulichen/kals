@@ -80,8 +80,7 @@ KALS_language.prototype.line = function(_lang_param){
         return null;
     
     if ($.isset(this._lang) 
-        && $.isset(this._lang[_line])) 
-    {
+        && $.isset(this._lang[_line])) {
         var _lang = this._lang[_line];
         _lang = this._lang_set_arg(_lang, _arg);
         return _lang;
@@ -102,8 +101,7 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
         
         //$.test_msg('lang._lang_set_arg' [_lang, _arg]);
         
-        for (var _i in _arg)
-        {
+        for (var _i in _arg) {
             var _search = '{'+_i+'}';
             var _replace = '<span class="lang-arg-'+_i+'"></span>';
             _lang = $.str_replace(_search, _replace, _lang); 
@@ -111,8 +109,7 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
         
         _lang = $('<span>'+_lang+'</span>');
         
-        for (var _i in _arg)
-        {
+        for (var _i in _arg) {
             var _a = _arg[_i];
             if ($.is_object(_a))
                 _lang.find('span.lang-arg-'+_i).append(_a);
@@ -128,10 +125,8 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
  * @param {jQuery} _obj 要顯示語系的容器
  * @param {String|KALS_language_param} _lang_param 語系參數
  */
-KALS_language.prototype.add_listener = function(_obj, _lang_param)
-{
-    if ($.inArray(_obj, this._listeners) == -1) 
-    {
+KALS_language.prototype.add_listener = function(_obj, _lang_param) {
+    if ($.inArray(_obj, this._listeners) == -1) {
         this._listeners.push(_obj);
         var _key = $.inArray(_obj, this._listeners);
         
@@ -142,13 +137,11 @@ KALS_language.prototype.add_listener = function(_obj, _lang_param)
         
         var _lang = this.line(_lang_param);
         
-        if ($.isset(_lang)) 
-        {
+        if ($.isset(_lang)) {
             this._setup_obj(_obj, _lang);
         }   
         else if (typeof(_lang_param.msg) != 'undefined'
-            && $.isset(_lang_param.msg))
-        {
+            && $.isset(_lang_param.msg)) {
             //如果找不到語系檔，則將預設顯示值輸出
             this._setup_obj(_obj, _lang_param.msg);
         }   
@@ -165,11 +158,9 @@ KALS_language.prototype.add_listener = function(_obj, _lang_param)
  * 移除監聽者
  * @param {Object} _obj
  */
-KALS_language.prototype.delete_listener = function (_obj)
-{
+KALS_language.prototype.delete_listener = function (_obj) {
     var _key = $.inArray(_obj, this._listeners);
-    if (_key > -1) 
-    {
+    if (_key > -1) {
         delete this._listeners[_key];
         delete this._listeners_lang_param[_key];
     }
@@ -179,11 +170,9 @@ KALS_language.prototype.delete_listener = function (_obj)
 /**
  * 當語系檔有所修改時(KALS_language.set_lang())，確認每個觀察者是否有對應的語系檔，然後設定之。
  */
-KALS_language.prototype.notify_listeners = function ()
-{
+KALS_language.prototype.notify_listeners = function () {
     if (this._changed) {
-        for (var _i in this._listeners)
-        {
+        for (var _i in this._listeners) {
             var _lang_param = this._listeners_lang_param[_i];
             var _lang = this.line(_lang_param);
             if ($.isset(_lang)) {
@@ -199,8 +188,7 @@ KALS_language.prototype.notify_listeners = function ()
  * 建立監聽者
  * @param {string|KALS_language_param} _lang_param 語系參數
  */
-KALS_language.prototype.create_listener = function (_lang_param)
-{
+KALS_language.prototype.create_listener = function (_lang_param) {
     if ($.is_string(_lang_param)) {
         _lang_param = new KALS_language_param(_lang_param);
     }
@@ -289,8 +277,7 @@ KALS_language.prototype._date_params = {
  * @param {number|strig} _time 單位是秒數
  * @type {KALS_language_param} Lang語言變數的結果
  */
-KALS_language.prototype.get_interval_param = function (_time)
-{
+KALS_language.prototype.get_interval_param = function (_time) {
     var _s, _m, _h, _hh, _d, _hd, _w, _hw, _y;
     _s = 1;    //一秒鐘
     _m = _s * 60;    //一分鐘
@@ -316,21 +303,17 @@ KALS_language.prototype.get_interval_param = function (_time)
     
     var _test_scope = function (_min, _max) {
         
-        if (_min === null)
-        {
+        if (_min === null) {
             _min = 0;
         }
         
-        if (_max != null)
-        {
-            if ($.is_number(_max))
-            {
+        if (_max != null) {
+            if ($.is_number(_max)) {
                 _max--;
             }
             return (_interval > _min && _interval < _max);
         }
-        else
-        {
+        else {
             return (_interval > _min);
         }
     };

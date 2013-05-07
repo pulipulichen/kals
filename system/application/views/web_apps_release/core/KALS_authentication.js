@@ -35,8 +35,7 @@ function KALS_authentication(){
    //2010.10.26 請KALS_context給予資料吧
    var _this = this;
    KALS_context.add_once_listener(function (_context, _data) {
-       if (typeof(_data.auth) != 'undefined')
-       {
+       if (typeof(_data.auth) != 'undefined') {
            _this._default_reset_data = _data.auth;
        }
    });
@@ -201,22 +200,18 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         this.load(_data, function (_this, _data) {
             //$.test_msg('login load', _data);
             
-            if (typeof(_data.error) != 'undefined')
-            {
+            if (typeof(_data.error) != 'undefined') {
                 //顯示錯誤
                 
                 _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
                 _message = new KALS_language_param('E-mail or password is not correct.', 'authentication.login_error.' + _data.error);
                 //$.test_msg('auth.login()', _return_error);
-                if (_return_error)
-                {
-                    if ($.is_function(_callback))
-                    {
+                if (_return_error) {
+                    if ($.is_function(_callback)) {
                         _callback(_this, _message);
                     }
                 }
-                else
-                {
+                else {
                     KALS_util.alert(_heading, _message, function () {
                         //_this.show_login_form();
                         var _content = new Window_login();
@@ -224,8 +219,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
                     });   
                 }
             }
-            else
-            {
+            else {
                 _this._is_login = true;
                 
                 setTimeout(function () {
@@ -303,21 +297,17 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
             $.test_msg('auth.register()', [_data, _return_error]);
             
 			//先檢查登入是否有錯誤
-            if (typeof(_data.error) != 'undefined')
-            {
+            if (typeof(_data.error) != 'undefined') {
                 _heading = new KALS_language_param('REGISTER ERROR', 'authentication.register_error.heading');
                 _message = new KALS_language_param('The e-mail is not correct or had been registered.'
                     , 'authentication.register_error.' + _data.error);
                 
-                if (_return_error)
-                {
-                    if ($.is_function(_callback))
-                    {
+                if (_return_error) {
+                    if ($.is_function(_callback)) {
                         _callback(_this, _message);
                     }     
                 }
-                else
-                {
+                else {
                     KALS_util.alert(_heading, _message, function () { 
                         //_this.show_register_form();
                         var _content = new Window_register();
@@ -325,8 +315,7 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
                     });
                 }
             }
-            else
-            {
+            else {
                //正常登入的情況
                _this._is_login = true;
                
@@ -379,23 +368,19 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
         
         //$.test_msg('auth logout', _data);
         
-        if (typeof(_data.error) != 'undefined')
-        {
+        if (typeof(_data.error) != 'undefined') {
             
             
             //顯示錯誤
             _heading = new KALS_language_param('ERROR', 'authentication.logout_error.heading');
             _message = new KALS_language_param('Logout failed.', 'authentication.logout_error.message');
             
-            if (_return_error)
-            {
-                if ($.is_function(_callback))
-                {
+            if (_return_error) {
+                if ($.is_function(_callback)) {
                     _callback(_this, _message);
                 }      
             }
-            else
-            {
+            else {
                 KALS_util.alert(_heading, _message, function () { 
                     //_this.show_login_form();
                     var _content = new Window_logout();
@@ -403,8 +388,7 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
                 });
             }
         }
-        else //if (_data === true)
-        {
+        else //if (_data === true) {
             /**
              * 由於登出後回傳資料有所修改，原本的登出會有bug
              * 在此修正
@@ -416,8 +400,7 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
             _this._is_login = false;
             
             setTimeout(function () {
-                if ($.is_function(_callback))
-                {
+                if ($.is_function(_callback)) {
                     _callback(_this, _data);
                 }    
             }, 100);
@@ -444,8 +427,7 @@ KALS_authentication.prototype.deregister = function (_callback) {
         
         //$.test_msg('auth.deregister() loaded', _data);
         
-        if (typeof(_data.error) != 'undefined')
-        {            
+        if (typeof(_data.error) != 'undefined') {            
             //顯示錯誤
             _heading = new KALS_language_param('ERROR', 'authentication.deregister_error.heading');
             _message = new KALS_language_param('Logout failed.', 'authentication.deregister_error.message');
@@ -456,8 +438,7 @@ KALS_authentication.prototype.deregister = function (_callback) {
                 KALS_window.setup_window(_content); 
             });
         }
-        else if (_data === true)
-        {
+        else if (_data === true) {
             _this._is_login = false;
             
             var _auth_data = _this.reset_auth_data();
@@ -465,8 +446,7 @@ KALS_authentication.prototype.deregister = function (_callback) {
             KALS_util.notify('Deregister success!');
             
             setTimeout(function () {
-                if ($.is_function(_callback))
-                {
+                if ($.is_function(_callback)) {
                     _callback(_this, _data);
                 }    
             }, 100);
@@ -503,19 +483,16 @@ KALS_authentication.prototype.check_login = function (_callback) {
         
         this.load(function (_this, _data) {
             
-            if (typeof(_data.login) == 'boolean' && _data.login === true)
-            {
+            if (typeof(_data.login) == 'boolean' && _data.login === true) {
                 _this._is_login = true;
             }
-            else
-            {
+            else {
                 _this._is_login = false;
             }
             
             //$.test_msg('auth check_login()', _data);
             
-            if ($.is_function(_callback))
-            {
+            if ($.is_function(_callback)) {
                 _callback(_this, _data);
             }
         });    //this.load(function (_this, _data) {

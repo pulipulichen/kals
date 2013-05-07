@@ -17,20 +17,17 @@ Style_manager.prototype.create_style = function (_style_name) {
     var _style;
     
     if (this._use_style_sheet() === false) {
-        if ($.isset(_style_name))
-        {
+        if ($.isset(_style_name)) {
             _style = $('head style[name="'+_style_name+'"]');
         
-            if (_style.length === 0)
-            {
+            if (_style.length === 0) {
                 _style = $('<style type="text/css" name="'+_style_name+'"></style>')
                     .appendTo($('head'));
             }
             
             return _style;    
         }
-        else
-        {
+        else {
             _style = $('<style type="text/css"></style>')
                 .appendTo($('head'));
             return _style;
@@ -55,11 +52,9 @@ Style_manager.prototype.get_style = function (_style_name) {
             return this.create_style(_style);
     }   
     else {
-        for (var _i in document.styleSheets)
-        {
+        for (var _i in document.styleSheets) {
             var _style = document.styleSheets[_i];
-            if (_style.title == _style_name)
-            {
+            if (_style.title == _style_name) {
                 return _style;
             }
         }
@@ -100,14 +95,12 @@ Style_manager.prototype.clear_style = function (_style_name) {
         //for (var _i = 1; _i < _length + 1 ;_i++)
         //    _style_sheet.removeRule(_i);    //12597
         //_style_sheet.removeRule();
-        while (true)
-        {
+        while (true) {
             try
             {
                 _style_sheet.removeRule();
             }
-            catch (e)
-            {
+            catch (e) {
                 break;
             }
         }
@@ -137,8 +130,7 @@ Style_manager.prototype.add_style = function (_style_name, _selector, _style) {
 Style_manager.prototype._combine_selector = function (_selector) {
     if ($.is_array(_selector)) {
         var _temp = '';
-        for (var _i in _selector)
-        {
+        for (var _i in _selector) {
             if (_i > 0)
                 _temp = _temp + ', ';
             _temp = _temp + _selector[_i];
@@ -153,8 +145,7 @@ Style_manager.prototype._combine_rule = function (_style) {
     if ($.is_object(_style)) {
         var _style_temp = '';
         var _first = true;
-        for (var _field in _style)
-        {
+        for (var _field in _style) {
             var _value = _style[_field];
             
             var _formal_field = $.str_replace('_', '-', _field);
@@ -214,11 +205,9 @@ Style_manager.prototype.load_style = function (_title, _path, _config) {
     
     if (document.createStyleSheet) {
         var _found = false;
-        for (var _i in document.styleSheets)
-        {
+        for (var _i in document.styleSheets) {
             var _style = document.styleSheets[_i];
-            if (_style.title == _title)
-            {
+            if (_style.title == _title) {
                 //_style.disabled = true;
                 _style.href = _path;
                 _style.disabled = false;
@@ -251,11 +240,9 @@ Style_manager.prototype.unload_style = function (_path) {
     
     _path = KALS_context.get_base_url(['style/', _path]);
     if (document.createStyleSheet) {
-        for (var _i in document.styleSheets)
-        {
+        for (var _i in document.styleSheets) {
             var _style = document.styleSheets[_i];
-            if (_style.title == _path || _style.href == _path)
-            {
+            if (_style.title == _path || _style.href == _path) {
                 _style.disabled = true;
             }
         }

@@ -80,8 +80,7 @@ Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_
         
         //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_type, _type_name, _i]);
         
-        if (_type_name == _type)
-        {
+        if (_type_name == _type) {
             //如果是現在這個類型，則設置
             this[_type].set_scope_coll(_scope_coll);
          

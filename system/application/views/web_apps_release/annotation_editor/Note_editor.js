@@ -49,8 +49,7 @@ Note_editor.prototype._$apply_type = [];
  * @memberOf {Note_editor}
  * @type {jQuery} UI
  */
-Note_editor.prototype._$create_ui = function ()
-{
+Note_editor.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .append(this.create_textarea());
     var _this = this;

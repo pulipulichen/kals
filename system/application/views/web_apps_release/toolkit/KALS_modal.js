@@ -93,8 +93,7 @@ KALS_modal.prototype._setup_ui = function () {
         var _this = this;
         
         KALS_context.view.add_listener(function () {
-            if (_this.has_setup_ui() && _this._ui.visible())
-            {
+            if (_this.has_setup_ui() && _this._ui.visible()) {
                 _this._$onviewportmove(_this._ui);
             }
         });
@@ -284,8 +283,7 @@ KALS_modal.prototype._$onopen = null;
 KALS_modal.prototype.close = function (_callback) {
     if (this._$closable) {
         var _ui = this.get_ui();
-        if (_ui != null)
-        {
+        if (_ui != null) {
             _ui.hide();
         }
         if ($.is_function(this._$onclose))

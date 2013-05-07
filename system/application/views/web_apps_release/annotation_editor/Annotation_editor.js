@@ -58,8 +58,7 @@ Annotation_editor.prototype.set_list_coll = function (_list_coll) {
         //鎖定該List_item
         var _this = this;
         this.list_coll.add_listener(function (_list_coll) {
-            if ($.isset(_this._editing_param))
-            {
+            if ($.isset(_this._editing_param)) {
                 var _param = _this._editing_param;
                 //_list_coll.focus(_param, function (_list_item) {
                 //    if ($.isset(_list_item))
@@ -242,8 +241,7 @@ Annotation_editor.prototype.submit = function () {
         if (_is_editing_mode)    //編輯模式
         {
             if ($.isset(_data)
-                && typeof(_data.timestamp) != 'undefined')
-            {
+                && typeof(_data.timestamp) != 'undefined') {
                 _annotation_param.timestamp = _data.timestamp;
             }
             _this._edit_callback(_annotation_param);
@@ -252,8 +250,7 @@ Annotation_editor.prototype.submit = function () {
         }
         else    //新增模式
         {
-            if ($.isset(_data))
-            {
+            if ($.isset(_data)) {
                 if (typeof(_data.annotation_id) != 'undefined') {
 					_annotation_param.annotation_id = _data.annotation_id;
 				}
@@ -276,14 +273,12 @@ Annotation_editor.prototype.submit = function () {
             _this._create_callback(_annotation_param);
         }
         
-        if (_annotation_param.is_respond() === false)
-        {
+        if (_annotation_param.is_respond() === false) {
             //設置selection
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
             
             //$.test_msg('_data.nav setup', [KALS_context.user.get_anchor_navigation_type(), _annotation_param.get_navigation_level()]);
-            if (KALS_context.user.get_anchor_navigation_type() == 'all')
-            {
+            if (KALS_context.user.get_anchor_navigation_type() == 'all') {
                 //設置指引selection
                 KALS_text.selection.navigation.set_scope_coll(_annotation_param.get_navigation_level(), _annotation_param.scope);
             }   
@@ -468,8 +463,7 @@ Annotation_editor.prototype.set_data = function (_param) {
  * @memberOf {Annotation_editor}
  * @type {jQuery} UI
  */
-Annotation_editor.prototype._$create_ui = function ()
-{
+Annotation_editor.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('annotation-editor');
         

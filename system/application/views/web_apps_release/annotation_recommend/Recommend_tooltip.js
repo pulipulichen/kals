@@ -31,8 +31,7 @@ Recommend_tooltip.prototype._$tooltip_id = 'recommend_tooltip';
  */
 Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to) {
     if ($.isset(_recommended)) {   
-        if ($.is_number(_recommended) || $.is_string(_recommended))
-        {
+        if ($.is_number(_recommended) || $.is_string(_recommended)) {
             return this.load_recommend(_recommended);
         }
     
@@ -42,8 +41,7 @@ Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to)
         if (this.has_recommend() === false)
             return this;
             
-        if (this.recommended_item === null)
-        {
+        if (this.recommended_item === null) {
             var _recommended_item = this._setup_recommended_item(_recommended);
             _recommended_item.get_ui().appendTo(this._recommended_item_container);
         }
@@ -99,8 +97,7 @@ Recommend_tooltip.prototype.setup_recommend_by = function () {
     
     var _recommend_by = this._recommended.recommend.recommend_by;
     if ($.is_class(_recommend_by, 'Annotation_param')) {
-        if (this.recommend_by_item === null)
-        {
+        if (this.recommend_by_item === null) {
             var _recommend_by_item = this._setup_recommend_by_item(_recommend_by);
             _recommend_by_item.get_ui().appendTo(this._recommend_by_item_container);
         }
@@ -133,8 +130,7 @@ Recommend_tooltip.prototype.setup_tips = function () {
         this._tips_heading.show();
         this._tips_container.show().empty();
         //$.test_msg('Recommend_tooltip.setup_tips()', _tips.length);
-        for (var _i in _tips)
-        {
+        for (var _i in _tips) {
             var _tip_list = this._create_tip_list(_tips[_i]);
             if ($.isset(_tip_list))
                 _tip_list.appendTo(this._tips_container);
@@ -157,8 +153,7 @@ Recommend_tooltip.prototype.setup_tips = function () {
  * @memberOf {Recommend_tooltip}
  * @type {jQuery} UI
  */
-Recommend_tooltip.prototype._$create_ui = function ()
-{
+Recommend_tooltip.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('recommend-tooltip tooltip draggable-tool')
         .appendTo($('body'))
@@ -224,12 +219,10 @@ Recommend_tooltip.prototype._$create_ui = function ()
         
     
         KALS_context.policy.add_attr_listener('write', function (_policy) {
-            if (_policy.writable())
-            {
+            if (_policy.writable()) {
                 //_bottom.show();
             }
-            else
-            {
+            else {
                 //_bottom.hide();
                 _this.close();
             }
@@ -571,8 +564,7 @@ Recommend_tooltip.prototype.accept = function () {
             var _reload_my_callback = function () {
                 
                 var _lang;
-                if (typeof(_data.annotation_id) != 'undefined')
-                {
+                if (typeof(_data.annotation_id) != 'undefined') {
                     //將新增的標註作為修改對象
                     var _annotation_id = _data.annotation_id;
                     KALS_text.tool.list.set_editing_param(_annotation_id);
@@ -587,8 +579,7 @@ Recommend_tooltip.prototype.accept = function () {
                         'recommend_tooltip.submit.accept_recommend.notify'
                     );    
                 }
-                else
-                {
+                else {
                     _lang = new KALS_language_param(
                         'Your annotation has been deleted. Try to write another better!',
                         'recommend_tooltip.submit.accept_delete.notify'
@@ -600,12 +591,10 @@ Recommend_tooltip.prototype.accept = function () {
             };
             
             //因為範圍改變了，所以需要重新讀取
-            if (typeof(_data.my) != 'undefined')
-            {
+            if (typeof(_data.my) != 'undefined') {
                 KALS_text.load_my.reload(_data.my, _reload_my_callback);
                 
-                if (typeof(_data.nav) != 'undefined')
-                {
+                if (typeof(_data.nav) != 'undefined') {
                     KALS_text.load_navigation.reload(_data.nav);
                 } 
             }
@@ -670,8 +659,7 @@ Recommend_tooltip.prototype.reject = function () {
     return this;
 };
 
-Recommend_tooltip.prototype.close = function (_callback)
-{
+Recommend_tooltip.prototype.close = function (_callback) {
     KALS_text.selection.recommend_by.clear();
     KALS_text.selection.recommended.clear();
     KALS_context.hash.delete_field('recommend');

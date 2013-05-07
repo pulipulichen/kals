@@ -53,8 +53,7 @@ Type_component.prototype._type = null;
  * @memberOf {Type_component}
  * @type {jQuery} UI
  */
-Type_component.prototype._$create_ui = function ()
-{
+Type_component.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('type-component');
     
@@ -77,8 +76,7 @@ Type_component.prototype._$create_ui = function ()
         
         _option.tooltip(_config);
         
-        if (_i == 'custom')
-        {
+        if (_i == 'custom') {
             _option = this._create_custom_type_option(_option);
         }
         _option.hide().appendTo(_ui);
@@ -237,8 +235,7 @@ Type_component.prototype._listen_editor = function () {
         var _type = _this.get_type();
         
         //如果是預設值，則不回傳，由伺服器去取得預設值
-        if (_type != _this._default_type)
-        {
+        if (_type != _this._default_type) {
             _annotation_param.set_type(_type);
         }   
     });

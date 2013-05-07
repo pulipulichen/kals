@@ -32,8 +32,7 @@ User_collection_param.prototype.add = function (_user) {
     
     if ($.is_array(_user)) {
         var _users = _user;
-        for (var _i in _users)
-        {
+        for (var _i in _users) {
             _user = _users[_i];
             this.add(_user);
         }
@@ -114,8 +113,7 @@ User_collection_param.prototype.export_json = function () {
     
     var _json = [];
     
-    for (var _i in this.users) 
-    {
+    for (var _i in this.users) {
         var _user = this.users[_i];
         var _j = _user.export_json();
         _json.push(_j);

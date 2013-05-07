@@ -28,8 +28,7 @@ function KALS_exception(_class, _message) {
             this.request_uri = _server_error.request_uri;
     }
     else {
-        if ($.is_null(_message) && $.is_string(_class))
-        {
+        if ($.is_null(_message) && $.is_string(_class)) {
             _message = _class;
             _class = null;
         }

@@ -32,8 +32,7 @@ URL_hash_dispatcher.prototype._hash_data = null;
  * @memberOf {URL_hash_dispatcher}
  * @type {String} Description about return value.
  */
-URL_hash_dispatcher.prototype._get_location_hash = function ()
-{
+URL_hash_dispatcher.prototype._get_location_hash = function () {
     var _hash = '';
     if (typeof(location.hash) != 'undefined') {
         _hash = location.hash;
@@ -49,24 +48,20 @@ URL_hash_dispatcher.prototype._get_location_hash = function ()
         
         var _start = 0;
         var _end = _url.length;
-        if (_hash_pos == -1)
-        {
+        if (_hash_pos == -1) {
             //情況1：沒有hash
             return '';
         }
-        else if (_query_pos == -1)
-        {
+        else if (_query_pos == -1) {
             //情況2：有hash但沒有query
             _start = _hash_pos + 1;
         }
-        else if (_hash_pos < _query_pos)
-        {
+        else if (_hash_pos < _query_pos) {
             //情況3：hash比query先寫
             _start = _hash_pos + 1;
             _end = _query_pos;
         }
-        else
-        {
+        else {
             //情況4：query比hash
             _start = _hash_pos + 1;
         }
@@ -100,15 +95,13 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
         
         var _hash_pos = _url.indexOf('#');
         
-        if (_hash_pos != -1)
-        {
+        if (_hash_pos != -1) {
             var _start = _hash_pos;
             var _end = _url.length;
             
             var _query_pos = _url.indexOf('?');
             if (_query_pos != -1
-                && (_query_pos > _hash_pos))
-            {
+                && (_query_pos > _hash_pos)) {
                 _end = _query_pos;
             }
             
@@ -293,8 +286,7 @@ URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
     if (this._had_setup_onhashchange === false) {
         var _this = this;
         $(window).hashchange(function () {
-            if (_this._set_lock === false)
-            {
+            if (_this._set_lock === false) {
                 //$.test_msg('backward setup 之前', _this._hash_data.get_data());
                 
                 //只有在沒有特別設定this._set_lock的時候，才會執行這段
@@ -312,8 +304,7 @@ URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
                 _this.notify_listeners(_data);   
                 delete _data[_backward_field]; 
             }
-            else
-            {
+            else {
                 setTimeout(function () {
                     _this._set_lock = false;    
                 }, 2000);
@@ -342,16 +333,14 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     else {
 		//$.test_msg('URL_hash_dispatcher', 'pass3');
 		
-        if (this.has_field('recommend') === true)
-        {
+        if (this.has_field('recommend') === true) {
 			//$.test_msg('URL_hash_dispatcher', 'pass4');
             var _id = this.get_field('recommend');
             //$.test_msg('has check_hash() recommend', _id);
             KALS_text.tool.recommend.load_recommend(_id);
         }
         
-        if (this.has_field('select') === true)
-        {
+        if (this.has_field('select') === true) {
             //$.test_msg('URL_hash_dispatcher', 'pass5');
             var _scope_text = this.get_field('select');
             //$.test_msg('has check_hash()', _scope_text);

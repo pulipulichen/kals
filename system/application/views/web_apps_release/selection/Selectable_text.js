@@ -136,8 +136,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     // 開始作初始化
     // ---------
     var _this = this;
-    this.setup_selectable_element(_element, function () 
-    {
+    this.setup_selectable_element(_element, function () {
         // ---------
         // 開始標示段落位置
         // ---------
@@ -198,8 +197,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     if (typeof(_child_nodes) == 'undefined') {
         //$.test_msg('Selectable_text.setup_selectable_element() callback');
         
-        if ($.is_function(_callback))
-        {
+        if ($.is_function(_callback)) {
             _callback();
         }
         return this;
@@ -217,8 +215,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     var _loop = function (_i, _child_nodes, _cb)
 	{
         //停止迴圈的判定
-        if (_i == _child_nodes.length || _i > _child_nodes.length)
-        {
+        if (_i == _child_nodes.length || _i > _child_nodes.length) {
             //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
             
             if ($.is_function(_cb))
@@ -231,57 +228,47 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
          * @type {jQuery}
          */
 		var _child_obj = _child_nodes.item(_i);
-        if (_this.element_has_class(_child_obj, _para_classname)) 
-        {
+        if (_this.element_has_class(_child_obj, _para_classname)) {
             _i++;
             _loop(_i, _child_nodes, _cb);
             return;
         }
 		
 		if (_child_obj.nodeName != '#text' &&
-            _this.element_has_class(_child_obj, _para_classname) === false)
-        {
+            _this.element_has_class(_child_obj, _para_classname) === false) {
             var _check_word_count = _this.word_count;
             
-            _this.setup_selectable_element($(_child_obj), function () 
-            {
+            _this.setup_selectable_element($(_child_obj), function () {
                 var _node_name = _child_obj.nodeName;
                 if (_check_word_count < _this.word_count
                     && typeof(_node_name) == 'string' 
-                    && $.inArray(_node_name.toLowerCase(), _para_tag_names) != -1)
-                {
+                    && $.inArray(_node_name.toLowerCase(), _para_tag_names) != -1) {
                     _this.paragraph_count++;
                     _this.paragraph_count++;
                 }   
                 else if (typeof(_node_name) == 'string'
-                    && _node_name.toLowerCase() == 'br')
-                {
+                    && _node_name.toLowerCase() == 'br') {
                     _this.paragraph_count++;
                 }
 				
                 _i++;
-                if (_i % _batch_excute === 0)
-                {
-                    _this.excute_timer = setTimeout(function () 
-                    {
+                if (_i % _batch_excute === 0) {
+                    _this.excute_timer = setTimeout(function () {
                         _loop(_i, _child_nodes, _cb);
                         return;
                     }, _wait);    
                 }
-                else
-                {
+                else {
                     _loop(_i, _child_nodes, _cb);
                     return;
                 }
             });
             return;
         }
-        else
-        {
+        else {
             var _text = _this.get_element_content(_child_obj);
             
-            if (_text == "")
-            {
+            if (_text == "") {
                 _i++;
                 _loop(_i, _child_nodes, _cb);
                 return;
@@ -332,28 +319,21 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 
     			if ($.match_space(_t) === false) {
                     _t_element = _this.create_selectable_word(_this.paragraph_count, _this.word_count, _t);
-                    if ($.match_sentence_punctuation(_t))
-                    {
-                        if ($.match_english_sentence_punctuation(_t))
-                        {
-                            if (_t_next === '')
-                            {
+                    if ($.match_sentence_punctuation(_t)) {
+                        if ($.match_english_sentence_punctuation(_t)) {
+                            if (_t_next === '') {
                                 $(_t_element).addClass(_sentence_punctuation_class_name);
                             }   
-                            else if ($.match_space(_t_next))
-                            {
+                            else if ($.match_space(_t_next)) {
                                 /*
-                                if (_t_prev !== '' && $.match_number(_t_prev) === false)
-                                {
+                                if (_t_prev !== '' && $.match_number(_t_prev) === false) {
                                     $(_t_element).addClass(_sentence_punctuation_class_name);
                                 }
-                                else
-                                {
+                                else {
                                     $(_t_element).addClass(_punctuation_classname);
                                 }
                                 */
-                                if (_s < _text.length - 2) 
-                                {
+                                if (_s < _text.length - 2) {
                                     //檢測下下個字是否是大寫英文
                                     var _t_nnext = _text.substr(parseInt(_s)+2, 1);
                                     if ($.match_upper_english(_t_nnext))
@@ -361,18 +341,15 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                                     else
                                         $(_t_element).addClass(_punctuation_classname);
                                 }
-                                else
-                                {
+                                else {
                                     $(_t_element).addClass(_sentence_punctuation_class_name);
                                 }
                             }
-                            else
-                            {
+                            else {
                                 $(_t_element).addClass(_punctuation_classname);
                             }
                         }
-                        else
-                        {
+                        else {
                             $(_t_element).addClass(_sentence_punctuation_class_name);
                         }   
                     }   
@@ -380,8 +357,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                         $(_t_element).addClass(_punctuation_classname);
                     _this.word_count++;
                 }
-                else 
-                {
+                else {
                     _t_element = _this.create_span_word(_t);
                 }
                 
@@ -393,24 +369,20 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             $(_child_obj).remove();
             
             _i++;
-            if (_i % _batch_excute === 0)
-            {
-                _this.excute_timer = setTimeout(function () 
-                {
+            if (_i % _batch_excute === 0) {
+                _this.excute_timer = setTimeout(function () {
                     _loop(_i, _child_nodes, _cb);
                     return;
                 }, _wait);    
             }
-            else
-            {
+            else {
                 _loop(_i, _child_nodes, _cb);
                 return;
             }
         }    //else if (_child_obj.nodeName != '#text' &&
 	};    //var _loop = function (_i, _child_nodes, _callback)
 	
-    this.excute_timer = setTimeout(function () 
-    {
+    this.excute_timer = setTimeout(function () {
         _loop(0, _child_nodes, _callback);
     }, 0);
     return this;
@@ -457,14 +429,12 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         
         _i++;
         
-        if (_i % _batch_excute === 0)
-        {
+        if (_i % _batch_excute === 0) {
             _this.excute_timer = setTimeout(function () {
                 _loop(_i, _callback);
             }, _wait);    
         }
-        else
-        {
+        else {
             _loop(_i, _callback);
         }
     };
@@ -482,15 +452,13 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         
         //沒有段落了，結束了，所以呼叫完結的函數
         //$.test_msg('selectable.setup_paragraph_location()', [_i, _last_paragraph_id]);
-        if (_i == _last_paragraph_id + 1 || _i > _last_paragraph_id + 1)
-        {
+        if (_i == _last_paragraph_id + 1 || _i > _last_paragraph_id + 1) {
             _complete();
             return;
         }
         
         //如果找不到下一個段落，則結束迴圈
-        if (false == _first_paragraph.exists())
-        {
+        if (false == _first_paragraph.exists()) {
             //$.test_msg('_text.setup_paragraph_location()',' Cannot found ' + _i);
            _continue(_i);
            return;
@@ -501,8 +469,7 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         var _last_word = _last_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):last');
         
         if (false == _first_word.exists()
-            || false == _last_word.exists())
-        {
+            || false == _last_word.exists()) {
             _continue(_i, _callback);
             return;
         }
@@ -512,19 +479,15 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         
         //標示段落開頭的部份
         var _location = 0;
-        for (var _w = _first_id; _w < _last_id + 1; _w++)
-        {
+        for (var _w = _first_id; _w < _last_id + 1; _w++) {
             var _word = $('#' + _word_id_prefix + _w + ':first');
             _word.addClass(_location_class_names[_location]);
             
-            if (_word.hasClass(_sentence_punctuation_class_name))
-            {
-                if (_location === 0)
-                {
+            if (_word.hasClass(_sentence_punctuation_class_name)) {
+                if (_location === 0) {
                     _location = 3;
                 }
-                else
-                {
+                else {
                     //迴圈結束
                     break;
                 }
@@ -535,19 +498,15 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
             
             //標示段落結尾的部份
             _location = 1;
-            for (var _w = _last_id; _w > _first_id - 1; _w--)
-            {
+            for (var _w = _last_id; _w > _first_id - 1; _w--) {
                 var _word = $('#' + _word_id_prefix + _w + ':first');
                 
                 if (_w < _last_id - 3
-                    && _word.hasClass(_sentence_punctuation_class_name))
-                {
-                    if (_location == 1)
-                    {
+                    && _word.hasClass(_sentence_punctuation_class_name)) {
+                    if (_location == 1) {
                         _location = 4;
                     }
-                    else
-                    {
+                    else {
                         //迴圈結束
                         break;
                     }
@@ -662,8 +621,7 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
 
     var _this = this;   
     var _loop = function (_i) {
-        if (_i < _last_paragraph_id + 1)
-        {
+        if (_i < _last_paragraph_id + 1) {
             _length = _this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+_this.punctuation_classname+'):not(.'+_this.sententce_punctuation_classname+')').length;
         
             //$.test_msg(_length);
@@ -675,8 +633,7 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
                 _loop(_i);
             }, 0);
         }
-        else
-        {
+        else {
             $.test_msg('Total words', _this.word_count);
     
             var _sum = 0;
@@ -701,8 +658,7 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
  * @param {String} _class_name
  * @type {boolean}
  */
-Selectable_text.prototype.element_has_class = function (_element, _class_name)
-{
+Selectable_text.prototype.element_has_class = function (_element, _class_name) {
     if ($.is_object(_element) === false
         || typeof(_element.className) == 'undefined') {
         return false;
@@ -752,8 +708,7 @@ Selectable_text.prototype.create_selectable_paragraph = function (_id) {
  * @param {string} _text
  * @type {jQuery}
  */
-Selectable_text.prototype.create_selectable_word = function(_para_id, _point_id, _text)
-{
+Selectable_text.prototype.create_selectable_word = function(_para_id, _point_id, _text) {
 	var _word = document.createElement("span");
 
 	_word.className = this.word_classname
@@ -789,8 +744,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
     var _select = KALS_text.selection.select;
     
     if ($.is_mobile_mode() === false) {
-        if (typeof(this.locks['word_click']) == 'undefined')
-        {
+        if (typeof(this.locks['word_click']) == 'undefined') {
             var _this = this;
 			
 			var _click_evt = function(_callback) {
@@ -877,8 +831,7 @@ Selectable_text.prototype._span_classname = 'span';
  * @param {String} _text
  * @type {jQuery}
  */
-Selectable_text.prototype.create_span_word = function(_text)
-{
+Selectable_text.prototype.create_span_word = function(_text) {
 	var _word = document.createElement("span");
     _word.className = this._span_classname + ' ' + this.word_classname;
 	
@@ -892,8 +845,7 @@ Selectable_text.prototype.create_span_word = function(_text)
  * 取得段落的ID
  * @param {number|string|Object} _word
  */
-Selectable_text.prototype.get_paragraph_id = function(_word)
-{ 
+Selectable_text.prototype.get_paragraph_id = function(_word) { 
     
     if ($.is_number(_word)) {
         _word = this.word_id_prefix + _word;
@@ -921,8 +873,7 @@ Selectable_text.prototype.get_paragraph_id = function(_word)
     for (var _i in _paragraph_class_names) {
         var _class_name = _paragraph_class_names[_i];
         //$.test_msg('Selectable .get_paragraph_id()', [_class_name, _i, this.paragraph_id_prefix, $.get_prefixed_id(_class_name)]);
-        if ($.starts_with(_class_name, this.paragraph_id_prefix))
-        {
+        if ($.starts_with(_class_name, this.paragraph_id_prefix)) {
             return $.get_prefixed_id(_class_name);
         }
     }
@@ -939,12 +890,10 @@ Selectable_text.prototype.get_word_id = function (_word)
 
 {
     if ($.is_object(_word)) {
-        if ($.is_jquery(_word))
-        {
+        if ($.is_jquery(_word)) {
             _word = _word.attr('id');
         }
-        else
-        {
+        else {
             _word = _word.id;
         }
     }
@@ -1012,8 +961,7 @@ Selectable_text.prototype.get_words_by_scope_coll = function (_scope_coll) {
     for (var _i in _index_array) {
         var _ary = [];
         var _index_ary = _index_array[_i];
-        for (var _j in _index_ary)
-        {
+        for (var _j in _index_ary) {
             var _index = _index_ary[_j];
             var _word = this.get_word_by_index(_index);
             _ary.push(_word);
@@ -1063,16 +1011,12 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
         var _prev_word = $('#' + _word_id_prefix + (_from_id) );
         
         while (_prev_word.exists()
-            && this.get_paragraph_id(_prev_word) == _paragraph_id)
-        {
-            if (_prev_word.hasClass(_sentence_punctuation_class_name))
-            {
-                if (_sentence === 0)
-                {
+            && this.get_paragraph_id(_prev_word) == _paragraph_id) {
+            if (_prev_word.hasClass(_sentence_punctuation_class_name)) {
+                if (_sentence === 0) {
                     _sentence++;
                 }
-                else
-                {
+                else {
                     break;
                 }
             }
@@ -1090,17 +1034,14 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
             _sentence++;
                     
         while (_next_word.exists()
-            && this.get_paragraph_id(_next_word) == _paragraph_id)
-        {
+            && this.get_paragraph_id(_next_word) == _paragraph_id) {
             _to_id = $.get_prefixed_id(_next_word);
             _next_word = $('#' + _word_id_prefix + (_to_id+1) );
             
-            if (_next_word.hasClass(_sentence_punctuation_class_name))
-            {
+            if (_next_word.hasClass(_sentence_punctuation_class_name)) {
                 if (_sentence === 0)
                     _sentence++;
-                else
-                {
+                else {
                     _to_id = $.get_prefixed_id(_next_word);
                     break;
                 }
@@ -1129,8 +1070,7 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
     var _add_class = function (_i, _j) {
         var _word = _words[_i][_j];
         
-        for (var _c in _classnames)
-        {
+        for (var _c in _classnames) {
             _classname = _classnames[_c];
             _word.addClass(_classname);
             
@@ -1145,8 +1085,7 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
                 _word.addClass(_classname + '_middle');
             
             if (_word.hasClass(_classname + '_to') === false
-                && _this.is_word_next_span(_word))
-            {
+                && _this.is_word_next_span(_word)) {
                 var _span = _this.get_word_next_span(_word); 
                 _span.addClass(_classname + '_middle');
                 _span.addClass(_classname);
@@ -1159,11 +1098,9 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
     };
     
     var _loop_i = function (_i) {
-        if (_i < _words.length)
-        {
+        if (_i < _words.length) {
             var _loop_j = function (_j) {
-                if (_j < _words[_i].length)
-                {
+                if (_j < _words[_i].length) {
                     for (_j; _j < _j + 5 && _j < _words[_i].length; _j++)
                         _add_class(_i, _j);
                     
@@ -1172,8 +1109,7 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
                         _loop_j(_j);
                     }, 1);
                 }
-                else
-                {
+                else {
                     setTimeout(function () {
                         _i++;
                         _loop_i(_i);
@@ -1183,8 +1119,7 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
             
             _loop_j(0);
         }
-        else
-        {
+        else {
             $.trigger_callback(_callback);
         }
     };
@@ -1227,18 +1162,14 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
     
     if ($.isset(_scope_coll)) {
         var _words = this.get_words_by_scope_coll(_scope_coll);
-        for (var _i in _words)
-        {
-            for (var _j in _words[_i])
-            {
+        for (var _i in _words) {
+            for (var _j in _words[_i]) {
                 var _word = _words[_i][_j];
-                for (var _c in _classnames)
-                {
+                for (var _c in _classnames) {
                     _classname = _classnames[_c];
                     
                     if (_word.hasClass(_classname + '_to') === false
-                        && this.is_word_next_span(_word))
-                    {
+                        && this.is_word_next_span(_word)) {
                         var _span = this.get_word_next_span(_word);
                         _span.removeClass(_classname + '_middle');
                         _span.removeClass(_classname);
@@ -1260,8 +1191,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
         /*
         var _remove_class = function (_i, _j) {
             var _word = _words[_i][_j];
-            for (var _c in _classnames)
-            {
+            for (var _c in _classnames) {
                 _classname = _classnames[_c];
                 
                 _word.removeClass(_classname);
@@ -1276,10 +1206,8 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
         };
         
         var _loop_j = function (_i, _j) {
-            if (_j < _words[_i].length)
-            {
-                for (var _k = _j; _k < _j+5 && _k < _words[_i].length; _k++)
-                {
+            if (_j < _words[_i].length) {
+                for (var _k = _j; _k < _j+5 && _k < _words[_i].length; _k++) {
                     _remove_class(_i, _k);    
                 }
                 _j = _k - 1;
@@ -1289,8 +1217,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
                     _loop_j(_i, _j);
                 }, 1);
             }
-            else
-            {
+            else {
                 setTimeout(function () {
                     _i++;
                     _loop_i(_i);
@@ -1299,12 +1226,10 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
         };
         
         var _loop_i = function (_i) {
-            if (_i < _words.length)
-            {
+            if (_i < _words.length) {
                 _loop_j(_i, 0);
             }
-            else
-            {
+            else {
                 $.trigger_callback(_callback);
             }
         };
@@ -1314,8 +1239,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
     }
     else {
         
-        for (var _j in _classnames)
-        {
+        for (var _j in _classnames) {
             _classname = _classnames[_j];
             //要記得是限定在選取範圍喔！
             $('.' + this.word_classname + '.' + _classname)
@@ -1329,8 +1253,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
         var _words = $('.' + this.word_classname + '.' + _classname);
         
         var _remove_class = function (_word) {
-            for (var _j in _classnames)
-            {
+            for (var _j in _classnames) {
                 _classname = _classnames[_j];
                 //要記得是限定在選取範圍喔！
                 _word.removeClass(_classname + '_from')
@@ -1341,10 +1264,8 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
         };
         
         var _loop = function (_i) {
-            if (_i < _words.length)
-            {
-                for (_i; _i < _i+5 && _i < _words.length; _i++)
-                {
+            if (_i < _words.length) {
+                for (_i; _i < _i+5 && _i < _words.length; _i++) {
                     var _word = _words.eq(_i);
                     _remove_class(_word);    
                 }
@@ -1354,8 +1275,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
                     _loop(_i);
                 }, 1);
             }
-            else
-            {
+            else {
                 $.trigger_callback(_callback);
             }
         }; 
@@ -1395,8 +1315,7 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
         var _from = _scope.get_from();
         var _to = _scope.get_to();
         
-        for (var _j = _from; _j < _to + 1; _j++)
-        {
+        for (var _j = _from; _j < _to + 1; _j++) {
             var _index = _j;
             var _word = this.get_word_by_index(_index);
             var _text = _word.text();
@@ -1404,8 +1323,7 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
             _sentence = _sentence + _text;
             
             if (_j < _to
-                && this.is_word_next_span(_word))
-            {
+                && this.is_word_next_span(_word)) {
                 _sentence = _sentence + ' ';
             }
         }
@@ -1468,22 +1386,18 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
         var _from = _scope.get_from();
         var _to = _scope.get_to();
         
-        for (var _j = _from; _j < _to + 1; _j++)
-        {
+        for (var _j = _from; _j < _to + 1; _j++) {
             var _index = _j;
             var _word = this.get_word_by_index(_index);
             var _text = _word.text();
             
             if (_j < _to
-                && this.is_word_next_span(_word))
-            {
+                && this.is_word_next_span(_word)) {
                 _text = _text + ' ';
             }
             
-            for (var _k in _focus_index)
-            {
-                if ($.inArray(_j, _focus_index[_k]) > -1)
-                {
+            for (var _k in _focus_index) {
+                if ($.inArray(_j, _focus_index[_k]) > -1) {
                     _text = _focus_text(_j, _text);
                 }    
             }
@@ -1527,22 +1441,17 @@ Selectable_text.prototype.retrieve_scope_coll = function (_classname) {
     for (var _i = 0; _i < _words.length; _i++) {
         var _id = $.get_prefixed_id(_words.eq(_i));
         
-        if (_from === null)
-        {
+        if (_from === null) {
             _from = _id;
         }
-        else
-        {
-            if ((_id - _from) == 1)
-            {
+        else {
+            if ((_id - _from) == 1) {
                 _to = _id;
             }
-            else if (_to != null && (_id - _to) == 1)
-            {
+            else if (_to != null && (_id - _to) == 1) {
                 _to = _id;
             }
-            else
-            {
+            else {
                 _scope_coll.add(_from, _to);
                 _from = _id;
                 _to = null;
@@ -1606,8 +1515,7 @@ Selectable_text.prototype.get_offset_left = function (_scope_coll) {
     
     var _words = this.get_words_by_scope_coll(_scope_coll);
     for (var _i in _words) {
-        for (var _j in _words[_i])
-        {
+        for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
             
             var _o = _word.offset().left;
@@ -1631,8 +1539,7 @@ Selectable_text.prototype.get_offset_right = function (_scope_coll) {
     
     var _words = this.get_words_by_scope_coll(_scope_coll);
     for (var _i in _words) {
-        for (var _j in _words[_i])
-        {
+        for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
             
             var _o = _word.offset().left + _word.width();
@@ -1708,52 +1615,44 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
     var _location_id = 5;
     
     for (var _i in _words) {
-        for (var _j in _words[_i])
-        {
+        for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
             
             var _l = 5;
             var _id = 5;    //modal端的代號
             
-            if (_word.hasClass(_classnames[0]))
-            {
+            if (_word.hasClass(_classnames[0])) {
                 _l = 0;
                 _id = 0;
                 return 0;
             }
-            else if (_word.hasClass(_classnames[1]))
-            {
+            else if (_word.hasClass(_classnames[1])) {
                 _l = 1;
                 _id = 4;
             }
             else if (_location > 2
                 && _word.hasClass(_classnames[3])
-                && _word.hasClass(_classnames[4]))
-            {
+                && _word.hasClass(_classnames[4])) {
                 _l = 2;
                 _id = 2;
             }
             else if (_location > 3
-                && _word.hasClass(_classnames[3]))
-            {
+                && _word.hasClass(_classnames[3])) {
                 _l = 3;
                 _id = 1;
             }
             else if (_location > 4
-                && _word.hasClass(_classnames[4]))
-            {
+                && _word.hasClass(_classnames[4])) {
                 _l = 4;
                 _id = 3;
             }
-            else
-            {
+            else {
                 //5的話就不用判斷啦，直接看下一個迴圈
                 continue;
             }
             
             //更新_location
-            if (_l < _location)
-            {
+            if (_l < _location) {
                 _location = _l;
                 _location_id = _id;
             }
@@ -1775,42 +1674,33 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
     };
     
     for (var _i in _words) {
-        for (var _j in _words[_i])
-        {
+        for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
             
             if (_word.hasClass(_classnames[0]) 
-                && _word.hasClass(_classnames[1]))
-            {
+                && _word.hasClass(_classnames[1])) {
                 _push_location(5);
             }
-            else
-            {
-                if (_word.hasClass(_classnames[0]))
-                {
+            else {
+                if (_word.hasClass(_classnames[0])) {
                     _push_location(0);
                 }
                 
-                if (_word.hasClass(_classnames[1]))
-                {
+                if (_word.hasClass(_classnames[1])) {
                     _push_location(4);
                 }    
             }   
             
             if (_word.hasClass(_classnames[3])
-                && _word.hasClass(_classnames[4]))
-            {
+                && _word.hasClass(_classnames[4])) {
                 _push_location(2);
             }
-            else
-            {
-                if (_word.hasClass(_classnames[3]))
-                {
+            else {
+                if (_word.hasClass(_classnames[3])) {
                     _push_location(1);
                 }
                 
-                if (_word.hasClass(_classnames[4]))
-                {
+                if (_word.hasClass(_classnames[4])) {
                     _push_location(3);
                 }    
             }
@@ -1950,8 +1840,7 @@ Selectable_text.prototype.cancel_select = function () {
  * @type {jQuery[]}
  */
 /*
-Selectable_text.prototype.add_select = function (_scope)
-{
+Selectable_text.prototype.add_select = function (_scope) {
     var _from_classname = this.selected_from_classname;
     var _to_classname = this.selected_to_classname;
     var _middle_classname = this.selected_middle_classname;
@@ -2047,14 +1936,11 @@ Selectable_text.prototype.get_recommend_scope = function () {
         var _prev_word = $('#' + _word_id_prefix + (_from_id) );
         
         while (_prev_word.exists()
-            && this.get_paragraph_id(_prev_word) == _paragraph_id)
-        {
-            if (_prev_word.hasClass(_sentence_punctuation_class_name))
-            {
+            && this.get_paragraph_id(_prev_word) == _paragraph_id) {
+            if (_prev_word.hasClass(_sentence_punctuation_class_name)) {
                 if (_sentence === 0)
                     _sentence++
-                else
-                {
+                else {
                     break;
                 }
             }
@@ -2072,17 +1958,14 @@ Selectable_text.prototype.get_recommend_scope = function () {
             _sentence++;
                     
         while (_next_word.exists()
-            && this.get_paragraph_id(_next_word) == _paragraph_id)
-        {
+            && this.get_paragraph_id(_next_word) == _paragraph_id) {
             _to_id = $.get_prefixed_id(_next_word);
             _next_word = $('#' + _word_id_prefix + (_to_id+1) );
             
-            if (_next_word.hasClass(_sentence_punctuation_class_name))
-            {
+            if (_next_word.hasClass(_sentence_punctuation_class_name)) {
                 if (_sentence === 0)
                     _sentence++;
-                else
-                {
+                else {
                     _to_id = $.get_prefixed_id(_next_word);
                     break;
                 }
@@ -2098,20 +1981,17 @@ Selectable_text.prototype.get_recommend_scope = function () {
     
     for (var _i = 0; _i < _recommend_scope.length; _i++) {
         var _scope = _recommend_scope[_i];
-        if (_i < _recommend_scope.length - 1)
-        {
+        if (_i < _recommend_scope.length - 1) {
             var _next_scope = _recommend_scope[(_i+1)];
             
-            if (_scope[1] < _next_scope[0])
-            {
+            if (_scope[1] < _next_scope[0]) {
                 if (_hold === false)
                     _resort_scope.push(_scope);
                     
                 _hold = false;
                 continue;
             }
-            else
-            {
+            else {
                 if (_hold === true)
                     _scope = _resort_scope.pop();
                     
@@ -2123,8 +2003,7 @@ Selectable_text.prototype.get_recommend_scope = function () {
             
             //做完是做完了，尚未經過驗證 
         }
-        else
-        {
+        else {
             _resort_scope.push(_scope);
         }
     }

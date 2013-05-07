@@ -38,8 +38,7 @@ Annotation_collection_param.prototype.add = function (_param) {
     
     if ($.is_array(_param)) {
         var _coll = _param;
-        for (var _i in _coll)
-        {
+        for (var _i in _coll) {
             this.add(_coll[_i])
         }
         return this;

@@ -22,8 +22,7 @@ if (typeof($jquery_extends) == 'undefined') {
  * @param {string} _title
  * @param {Object} _test
  */
-jQuery.test_msg = function (_title, _test)
-{
+jQuery.test_msg = function (_title, _test) {
     if (this.isset(_title) && this.is_null(_test)) {
         _test = _title;
         _title = null;
@@ -55,8 +54,7 @@ jQuery.test_msg = function (_title, _test)
  * @param {number} _start 起始位置。如果是負數，則從最後面開始算
  * @param {number} _length 長度
  */
-jQuery.substr = function(_str, _start, _length)
-{
+jQuery.substr = function(_str, _start, _length) {
     _str = _str + '';
     if (_start < 0)
         _start = _str.length + _start;
@@ -76,8 +74,7 @@ jQuery.substr = function(_str, _start, _length)
  * @param {string} _suffix
  * @type {string}
  */
-jQuery.ends_with = function(_str, _suffix)
-{
+jQuery.ends_with = function(_str, _suffix) {
     _str = _str + '';
     var _len = _suffix.length;
     var _start = 0 - _len;
@@ -94,8 +91,7 @@ jQuery.ends_with = function(_str, _suffix)
  * @param {string} _str
  * @param {string} _prefix
  */
-jQuery.starts_with = function(_str, _prefix)
-{
+jQuery.starts_with = function(_str, _prefix) {
     _str = _str + '';
     var _len = _prefix.length;
     var _start = 0;
@@ -113,8 +109,7 @@ jQuery.starts_with = function(_str, _prefix)
  * @param {string} _suffix
  * @type {string}
  */
-jQuery.appends_with = function(_str, _suffix)
-{
+jQuery.appends_with = function(_str, _suffix) {
     if (this.ends_with(_str, _suffix) === false)
         return _str + _suffix;
     else
@@ -128,8 +123,7 @@ jQuery.appends_with = function(_str, _suffix)
  * @param _prefix
  * @type boolean
  */
-jQuery.prepends_with = function(_str, _prefix)
-{
+jQuery.prepends_with = function(_str, _prefix) {
     if (this.starts_with(_str, _prefix) === false)
         return _str + _prefix;
     else
@@ -188,8 +182,7 @@ jQuery.str_replace = function (_search, _replace, _subject, _count) {
 // JSON與AJAX
 // --------
 
-jQuery.json_encode = function (_json)
-{
+jQuery.json_encode = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json))
         return _json;
     else if(this.is_string(_json))
@@ -207,8 +200,7 @@ jQuery.json_encode = function (_json)
  * @param {Object} _json
  * @type {string}
  */
-jQuery.serialize_json = function (_json)
-{
+jQuery.serialize_json = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json))
         return _json;
     else if(this.is_string(_json))
@@ -227,13 +219,11 @@ jQuery.serialize_json = function (_json)
             _attr += this.serialize_string(_value);
         else if (this.is_array(_value))
             _attr += this.serialize_array(_value);
-        else if (this.is_object(_value))
-        {
+        else if (this.is_object(_value)) {
             if (typeof(_value.to_string) == 'function') {
                 _attr += _value.to_string();
             }
-            else
-            {
+            else {
                 var _class_name = $.get_class(_value);
                 if (_class_name == 'Object')
                     _attr += this.serialize_json(_value);
@@ -250,8 +240,7 @@ jQuery.serialize_json = function (_json)
     return _output;
 };
 
-jQuery.serialize_array = function (_array)
-{
+jQuery.serialize_array = function (_array) {
     if (this.is_number(_array) || this.is_boolean(_array) || this.is_null(_array))
         return _array;
     else if(this.is_string(_array))
@@ -281,8 +270,7 @@ jQuery.serialize_array = function (_array)
     return _output;
 };
 
-jQuery.serialize_string = function (_str)
-{
+jQuery.serialize_string = function (_str) {
     if (this.is_number(_str) || this.is_boolean(_str) || this.is_null(_str))
         return _str;
     else if (this.is_array(_str))
@@ -310,8 +298,7 @@ jQuery.addslashes = function (_str) {
     return (_str+'').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 };
 
-jQuery.combine_comma = function (_str)
-{
+jQuery.combine_comma = function (_str) {
     if (_str !== '')
         _str += ',';
     return _str;
@@ -353,8 +340,7 @@ jQuery.get_class = function (_obj) {
         if (_arr && _arr.length == 2) {
             return _arr[1];
         }
-        else
-        {
+        else {
             _class_name = _obj.constructor.toString();
             
             //$.test_msg('$.get_class()', _class_name);
@@ -374,8 +360,7 @@ jQuery.get_class = function (_obj) {
     {
         var _constructor = _obj.constructor + '';
         
-        if ($.starts_with(_constructor, '[object'))
-        {
+        if ($.starts_with(_constructor, '[object')) {
             //$.test_msg('get_class', [_constructor, typeof(_constructor)]);
             var _space_pos = _constructor.lastIndexOf(' ');
             _class_name = _constructor.substring(_space_pos + 1, _constructor.length -1);
@@ -388,8 +373,7 @@ jQuery.get_class = function (_obj) {
     return false;
 };
 
-jQuery.is_null = function (_obj)
-{
+jQuery.is_null = function (_obj) {
     if (typeof(_obj) == 'undefined'
         || (typeof(_obj) == 'string' && _obj == 'null'))
         return true;
@@ -397,8 +381,7 @@ jQuery.is_null = function (_obj)
         return (_obj === null);
 };
 
-jQuery.is_class = function(_obj, _class_name)
-{
+jQuery.is_class = function(_obj, _class_name) {
     if ($.is_null(_class_name))
         return false;
     
@@ -414,8 +397,7 @@ jQuery.is_class = function(_obj, _class_name)
     }
 };
 
-jQuery.is_boolean = function(_obj)
-{
+jQuery.is_boolean = function(_obj) {
     return (typeof(_obj) == 'boolean');
 };
 
@@ -426,13 +408,11 @@ jQuery.is_boolean = function(_obj)
  * @return 驗證結果
  * @type boolean
  */
-jQuery.is_array = function(_obj)
-{
+jQuery.is_array = function(_obj) {
     return (typeof(_obj) == 'object' && (_obj instanceof Array));
 };
 
-jQuery.filter_array = function (_obj)
-{
+jQuery.filter_array = function (_obj) {
     var _is_array = (typeof(_obj) == 'object' && (_obj instanceof Array));
     if (false == _is_array)
         return [_obj];
@@ -440,13 +420,11 @@ jQuery.filter_array = function (_obj)
         return _obj;
 };
 
-jQuery.is_string = function (_obj)
-{
+jQuery.is_string = function (_obj) {
     return (typeof(_obj) == 'string');
 };
 
-jQuery.is_number = function (_obj)
-{
+jQuery.is_number = function (_obj) {
     return (typeof(_obj) == 'number');
 };
 
@@ -455,24 +433,20 @@ jQuery.is_number = function (_obj)
  * @see   Wikipedia - ASCII: http://zh.wikipedia.org/zh-tw/Ascii
  * @param {Object} _text
  */
-jQuery.is_ascii = function (_text)
-{
+jQuery.is_ascii = function (_text) {
     if ($.is_number(_text))
         return true;
     else if ($.is_string(_text)) {
         
-        for (var _i = 0; _i < _text.length; _i++)
-        {
+        for (var _i = 0; _i < _text.length; _i++) {
             _ascii_num = _text.charCodeAt(_i);
             
             //$.test_msg('$.is_ascii', [_ascii_num, _i, _text, _text.length]);
             
-            if (_ascii_num > 32 && _ascii_num < 126)
-            {
+            if (_ascii_num > 32 && _ascii_num < 126) {
                 //return true; 
             } 
-            else 
-            {
+            else {
                 return false;
                 break; 
             }
@@ -483,13 +457,11 @@ jQuery.is_ascii = function (_text)
         return false;
 };
 
-jQuery.is_object = function (_obj)
-{
+jQuery.is_object = function (_obj) {
     return (typeof(_obj) == 'object' && !(_obj instanceof Array));
 };
 
-jQuery.is_function = function (_obj)
-{
+jQuery.is_function = function (_obj) {
     return (typeof(_obj) == 'function');
 };
 
@@ -497,8 +469,7 @@ jQuery.is_function = function (_obj)
  * 驗證是否物件為jQuery物件
  * @param {Object} _obj
  */
-jQuery.is_jquery = function (_obj)
-{
+jQuery.is_jquery = function (_obj) {
     return (typeof(_obj) == 'object' && (_obj instanceof jQuery));
 };
 
@@ -506,8 +477,7 @@ jQuery.is_jquery = function (_obj)
  * 驗證是否物件_element為HTML物件
  * @param {Object} _element
  */
-jQuery.is_html_element = function (_element)
-{
+jQuery.is_html_element = function (_element) {
     var _class_name = this.get_class(_element);
     
     //$.test_msg([_class_name, _element.constructor]);
@@ -527,8 +497,7 @@ jQuery.is_html_element = function (_element)
  * 檢測變數是否存在，如果是null，也作為不存在
  * @param {Object} _obj
  */
-jQuery.isset = function (_obj)
-{
+jQuery.isset = function (_obj) {
     if (typeof(_obj) == "undefined"
         || this.is_null(_obj) === true)
         return false;
@@ -543,8 +512,7 @@ jQuery.isset = function (_obj)
  * @param {string} _object_path 要偵測的路徑
  * @type {boolean}
  */
-jQuery.object_isset = function (_object_path)
-{
+jQuery.object_isset = function (_object_path) {
     var _paths = _object_path.split('.');
     var _path_now = '';
     for (var _key in _paths) {
@@ -567,8 +535,7 @@ jQuery.object_isset = function (_object_path)
 // URL類
 // --------
 
-jQuery.is_link = function(_url)
-{
+jQuery.is_link = function(_url) {
     if (this.starts_with(_url, 'http://')
         || this.starts_with(_url, 'https://')
         || this.starts_with(_url, 'ftp://'))
@@ -649,8 +616,7 @@ jQuery.parse_url = function (_str, _component) {
     }
 };
 
-jQuery.is_image = function(_url)
-{
+jQuery.is_image = function(_url) {
     if (false == this.is_link(_url))
         return false;
     var _param = this.parse_url(_url);
@@ -666,8 +632,7 @@ jQuery.is_image = function(_url)
         return false;
 };
 
-jQuery.parse_extension_name = function (_path)
-{
+jQuery.parse_extension_name = function (_path) {
     var _dot = _path.lastIndexOf('.');
     var _slash = _path.lastIndexOf('/');
     if (_dot == -1
@@ -679,8 +644,7 @@ jQuery.parse_extension_name = function (_path)
     }
 };
 
-jQuery.get_time_interval = function (_time)
-{
+jQuery.get_time_interval = function (_time) {
     // TODO 留到server端去做
 
 };
@@ -723,8 +687,7 @@ jQuery.extend({
      * @param {function} _callback 要初始化的動作
      */
     init: function (_callback) {
-        if (false == $(this).hasClass('inited'))
-        {
+        if (false == $(this).hasClass('inited')) {
             if (this.is_function(_callback))
                 _callback(this);
             $(this).addClass('inited');
@@ -744,8 +707,7 @@ jQuery.fn.extend({
      * - offset: 位移。會受到scale影響。
      * - scale: 手機模式用的縮放比例
      */
-    align: function (_options) 
-    {
+    align: function (_options) {
         if (_options == 'left' || _options == 'center' || _options == 'right')
             _options = {option: _options};
                     
@@ -765,8 +727,7 @@ jQuery.fn.extend({
         var _mobile_mode = $.is_mobile_mode();
         //_mobile_mode = false;
         
-        if (_this.is_layer()) 
-        {
+        if (_this.is_layer()) {
             if (_mobile_mode)
                 _this.css('position', 'absolute');
             else
@@ -785,8 +746,7 @@ jQuery.fn.extend({
             _max_width = _max_width * _scale;
             
             
-            if (_option == 'left') 
-            {
+            if (_option == 'left') {
                 if (_mobile_mode) {
                     _option = window.pageXOffset;
                     _option = _option + _offset;
@@ -804,14 +764,12 @@ jQuery.fn.extend({
                        - _max_width
                        + _offset;
                }
-               else
-               {
+               else {
                    _direction = 'right';
                    _option = _offset;    
                }
             }
-            else if (_option == 'center') 
-            {
+            else if (_option == 'center') {
                 var _width = _this.width();
                 
                 var _padding_left = $.strip_unit(_this.css('padding-left'));
@@ -841,8 +799,7 @@ jQuery.fn.extend({
                 _this.animate(_animate_option, {
                     queue:false,
                     complete: function () {
-                        if (_this.width() != ALIGN_CHECK)
-                        {
+                        if (_this.width() != ALIGN_CHECK) {
                             $(_this).align(_options);
                         }
                     },
@@ -854,26 +811,21 @@ jQuery.fn.extend({
             _this.css(_direction, _option + 'px');
             
         }
-        else
-        {
-            if (_option == 'left')
-            {
+        else {
+            if (_option == 'left') {
                 _this.css('margin-left', 0)
                     .css('float', 'none');
             }
-            else if (_option == 'right')
-            {
+            else if (_option == 'right') {
                 _this.css('margin-right', 0)
                     .css('float', 'right');
             }
-            else if (_option == 'center')
-            {
+            else if (_option == 'center') {
                 _this.css('margin-right', 'auto')
                     .css('margin-left', 'auto')
                     .css('float', 'none');
             }
-            else
-            {
+            else {
                 _this.css('margin-left', _option)
                     .css('float', 'none');
             }
@@ -889,8 +841,7 @@ jQuery.fn.extend({
      * - offset: 位移。會受到scale影響。
      * - scale: 手機模式用的縮放比例
      */
-    valign: function (_options) 
-    {
+    valign: function (_options) {
         if (_options == 'top' || _options == 'middle' || _options == 'bottom')
             _options = {option: _options};
         
@@ -914,8 +865,7 @@ jQuery.fn.extend({
         var _mobile_mode = $.is_mobile_mode();
         
         //if (_position != 'static')
-        if (_this.is_layer()) 
-        {
+        if (_this.is_layer()) {
             if (_mobile_mode)
                 _this.css('position', 'absolute');
             else
@@ -934,8 +884,7 @@ jQuery.fn.extend({
                     _option = window.pageYOffset
                         + _offset;
                 }
-                else
-                {
+                else {
                     _option = _offset;    
                 }
             }
@@ -950,8 +899,7 @@ jQuery.fn.extend({
                 }
                 
             }
-            else if (_option == 'middle') 
-            {
+            else if (_option == 'middle') {
                 var _height = _this.height();
                 
                 var _padding_top = $.strip_unit(_this.css('padding-top'));
@@ -987,23 +935,18 @@ jQuery.fn.extend({
             //2010.9.10 取消動畫
             _this.css(_direction, _option + 'px');
         }
-        else
-        {
-            if (_option == 'top')
-            {
+        else {
+            if (_option == 'top') {
                 _this.css('margin-top', 0);
             }
-            else if (_option == 'bottom')
-            {
+            else if (_option == 'bottom') {
                 _this.css('margin-bottom', 0);
             }
-            else if (_option == 'middle')
-            {
+            else if (_option == 'middle') {
                 _this.css('margin-top', 0)
                     .css('margin-bottom', 0);
             }
-            else
-            {
+            else {
                 _this.css('margin-top', _option);
             }
         }
@@ -1124,8 +1067,7 @@ jQuery.fn.extend({
      */
     fullscreen: function (_option, _scale) {
         var _this = $(this);
-        if ($.is_number(_option) && $.is_null(_scale))
-        {
+        if ($.is_number(_option) && $.is_null(_scale)) {
             _scale = _option;
             _option = null;
         }
@@ -1135,8 +1077,7 @@ jQuery.fn.extend({
             _this.fullscreen_width(_scale);
         else if (_option == 'height' || _option == 'y')
             _this.fullscreen_height(_scale);
-        else
-        {
+        else {
             _this.fullscreen_width(_scale);
             _this.fullscreen_height(_scale);
             
@@ -1145,14 +1086,12 @@ jQuery.fn.extend({
     },
     restore: function () {
         var _this = $(this);
-        if (_this.hasAttr('restore_width'))
-        {
+        if (_this.hasAttr('restore_width')) {
             //_this.css('width', _this.attr('restore_width'));
             _this.css('width', 'auto');
             _this.removeAttr('restore_width');
         }
-        if (_this.hasAttr('restore_height'))
-        {
+        if (_this.hasAttr('restore_height')) {
             //_this.css('width', _this.attr('restore_width'));
             _this.css('width', 'auto');
             _this.removeAttr('restore_height');
@@ -1167,8 +1106,7 @@ jQuery.fn.extend({
     attr_to_css: function (_attr, _css, _reset) {
         var _this = $(this);
         var _value = _this.attr(_attr);
-        if ($.isset(_value))
-        {
+        if ($.isset(_value)) {
             _this.css(_css, _value);
             if ($.is_null(_reset)) {
                 _this.removeAttr(_attr);
@@ -1184,8 +1122,7 @@ jQuery.fn.extend({
             return this;
         
         var _value = _this.css(_css);
-        if ($.isset(_value) && _value != 0 && _value !== '')
-        {
+        if ($.isset(_value) && _value != 0 && _value !== '') {
             _this.attr(_attr, _value);
             if ($.isset(_reset))
                 _this.css(_css, _reset);
@@ -1240,17 +1177,14 @@ jQuery.fn.extend({
      * @param {number|null} _scale 比例值
      */
     css_scale: function (_css, _expect, _scale) {   
-        if ($.is_object(_css) && $.is_null(_scale))
-        {
+        if ($.is_object(_css) && $.is_null(_scale)) {
             _scale = _expect;
             _expect = _css.expect;
             _css = _css.css;
         }
     
-        if ($.is_array(_css))
-        {
-            for (var _i in _css)
-            {
+        if ($.is_array(_css)) {
+            for (var _i in _css) {
                 this.css_scale(_css[_i], _expect, _scale);
             }
             return this;
@@ -1310,17 +1244,14 @@ jQuery.fn.extend({
             return _expect;
         };
         
-        if ($.is_string(_expect) && _expect.indexOf(' ') > -1)
-        {
+        if ($.is_string(_expect) && _expect.indexOf(' ') > -1) {
             var _expects = _expect.split(' ');
-            for (var _key in _expects)
-            {
+            for (var _key in _expects) {
                 _expects[_key] = _scale_length(_expects[_key], _scale);
             }
             _expect = _expects.join(' ');
         }
-        else
-        {
+        else {
             _expect = _scale_length(_expect, _scale);
         }
         if ($.is_null(_expect))
@@ -1444,8 +1375,7 @@ jQuery.get_viewport_width = function () {
     if (isNaN(_max_width) || _max_width > $(document).width())
         _max_width = $(document).width();
     
-    if (document.documentElement && document.documentElement.clientWidth) 
-    {
+    if (document.documentElement && document.documentElement.clientWidth) {
         //IE 6+ in 'standards compliant mode'
         _ie_width = document.documentElement.clientWidth;
         if (isNaN(_max_width) || _max_width > _ie_width)
@@ -1461,8 +1391,7 @@ jQuery.get_viewport_height = function () {
     if (isNaN(_max_length) || _max_length > $(document).height())
         _max_length = $(document).height();
     
-    if (document.documentElement && document.documentElement.clientHeight) 
-    {
+    if (document.documentElement && document.documentElement.clientHeight) {
         //IE 6+ in 'standards compliant mode'
         _ie_height = document.documentElement.clientHeight;
         if (isNaN(_max_length) || _max_length > _ie_height)
@@ -1490,8 +1419,7 @@ jQuery.create_once = function (_html, _append_to) {
     if (_class_name !== '' && _class_name != null) {
         var _classes = _class_name.split(' ');
         _class_name = '';
-        for (var _key in _classes)
-        {
+        for (var _key in _classes) {
             _class_name += '.'+_classes[_key];
         }
     }
@@ -1512,8 +1440,7 @@ jQuery.create_once = function (_html, _append_to) {
     else {
         var _selector = _tag_name+_class_name+_id;
         var _obj = this(_selector);
-        if (false == _obj.exists())
-        {
+        if (false == _obj.exists()) {
             _temp_obj.appendTo(_append_to);
             _obj = _temp_obj;
         }
@@ -1661,8 +1588,7 @@ jQuery.touchable = null;
  */
 jQuery.is_touchable = function () {
    
-   if (this.touchable === null)
-   {
+   if (this.touchable === null) {
        var _touchable = false;
         try 
         {            
@@ -1706,14 +1632,12 @@ jQuery.fn.extend({
  * @param {string} _name
  * @param {Object} _default_value
  */
-jQuery.get_parameter = function(_parameters, _name, _default_value) 
-{
+jQuery.get_parameter = function(_parameters, _name, _default_value) {
     if ($.is_null(_parameters))
         return null;
     
     if ($.is_array(_name)) {
-        for (var _key in _name)
-        {
+        for (var _key in _name) {
             var _n = _name[_key];
             //if (typeof(_parameters[_n])!= 'undefined' && _parameters[_n] != null)
             if (typeof(_parameters[_n])!= 'undefined' && $.isset(_parameters[_n]))
@@ -1751,21 +1675,18 @@ jQuery._match_config = {
     }
 }; 
 
-jQuery.match_english = function(_text)
-{
+jQuery.match_english = function(_text) {
 	//var _reg = /^([a-z]|[A-Z])$/;
 	//return _reg.test(_text);
     return (typeof(jQuery._match_config.english[_text]) == 'number');
 };
 
-jQuery.match_upper_english = function(_text)
-{
+jQuery.match_upper_english = function(_text) {
 	//var _reg = /^([A-Z])$/;
 	//return _reg.test(_text);
     return (typeof(jQuery._match_config.upper_english[_text]) == 'number');
 };
-jQuery.match_number = function(_text)
-{
+jQuery.match_number = function(_text) {
 	var _reg = /^\d$/;
 	return _reg.test(_text);
 };
@@ -1773,8 +1694,7 @@ jQuery.match_number = function(_text)
  * 測試是否為標點符號
  * @param {String} _text
  */
-jQuery.match_punctuation = function(_text)
-{
+jQuery.match_punctuation = function(_text) {
 	//var _reg = /^(，|,|。|\.|\'|")$/;
     //var _reg = /^(，|,|。|\.|：|:|；|;|、|？|\?|！|!|-)$/;
 	//return _reg.test(_text);
@@ -1785,8 +1705,7 @@ jQuery.match_punctuation = function(_text)
  * 測試是否為斷句的標點符號
  * @param {String} _text
  */
-jQuery.match_sentence_punctuation = function(_text)
-{
+jQuery.match_sentence_punctuation = function(_text) {
 	//var _reg = /^(，|,|。|\.|\'|")$/;
     //var _reg = /^(。|\.|：|:|；|？|\?|！|!)$/;
 	//return _reg.test(_text);
@@ -1797,16 +1716,14 @@ jQuery.match_sentence_punctuation = function(_text)
  * 測試是否為斷句的標點符號
  * @param {String} _text
  */
-jQuery.match_english_sentence_punctuation = function(_text)
-{
+jQuery.match_english_sentence_punctuation = function(_text) {
 	//var _reg = /^(，|,|。|\.|\'|")$/;
     //var _reg = /^(\.|:|\?|!)$/;
 	//return _reg.test(_text);
     return (typeof(jQuery._match_config.english_sentence_punctuation[_text]) == 'number');
 };
 
-jQuery.match_space = function(_text)
-{
+jQuery.match_space = function(_text) {
 	var _reg = /^(\s|　)$/;
 	return _reg.test(_text);
 };
@@ -1814,22 +1731,19 @@ jQuery.match_space = function(_text)
 /**
  * 取消選擇範圍
  */
-jQuery.cancel_select = function() 
-{
+jQuery.cancel_select = function() {
 	if ($.browser.msie === true)
 		top.document.selection.empty();
 	else
 		window.getSelection().removeAllRanges();
 };
 
-jQuery.lock_viewport = function () 
-{
+jQuery.lock_viewport = function () {
     var _new_viewport = $('<meta name="viewport" id="kals_viewport_lock" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes" />')
         .appendTo($('head'));
 };
 
-jQuery.unlock_viewport = function () 
-{
+jQuery.unlock_viewport = function () {
     $('head meta[name=viewport]#kals_viewport');
 };
 
@@ -1845,8 +1759,7 @@ jQuery.get_prefixed_id = function (_prefixed_id) {
         else if ($.is_null(_prefixed_id))
             return null;
         else if (typeof(_prefixed_id) != 'undefined'
-            && typeof(_prefixed_id.id) != 'undefined')
-        {
+            && typeof(_prefixed_id.id) != 'undefined') {
             _prefixed_id = _prefixed_id.id;
         }
         else
@@ -1957,16 +1870,13 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     
     
     var _loop = function (_i, _count, _callback) {
-        if (_i == _count || _i > _count)
-        {
+        if (_i == _count || _i > _count) {
             if ($.is_function(_callback))
                 _callback();
             return;
         }
-        else
-        {
-            if (_i < _count -1)
-            {
+        else {
+            if (_i < _count -1) {
                 var _offset_x = window.pageXOffset;
                 _next_x = _offset_x + _interval_x;
                 if (_next_x > _target_x)
@@ -1977,8 +1887,7 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
                 if (_next_y > _target_y)
                     _next_y = _target_y;
             }
-            else
-            {
+            else {
                 _next_x = _target_x;
                 _next_y = _target_y;
             }
@@ -2031,13 +1940,11 @@ jQuery.create_id = function () {
  * @param {Object} _arg4 參數
  * @param {Object} _arg5 參數
  */
-jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5)
-{
+jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5) {
     var _delay = 0;
     
     if (typeof(_callback) == 'number') {
-        if (typeof(_arg1) == 'function')
-        {
+        if (typeof(_arg1) == 'function') {
             _delay = _callback;
             _callback = _arg1;
         }
@@ -2076,11 +1983,9 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
  * @param {Object} _this_class
  * @param {Object} _super_class
  */
-jQuery.multi_extend = function (_this_class, _super_class)
-{
+jQuery.multi_extend = function (_this_class, _super_class) {
     if ($.is_object(_super_class)) {
-        for (var _key in _super_class)
-        {
+        for (var _key in _super_class) {
             _this_class[_key] = _super_class[_key];
         }
     }
@@ -2111,8 +2016,7 @@ jQuery.get_interval_time = function (_time) {
 jQuery.array_remove = function (_ary, _index) {
     if(isNaN(_index)||_index>_ary.length){return false;}
     for(var i=0,n=0;i<_ary.length;i++) {
-        if(_ary[i]!=_ary[_index])
-        {
+        if(_ary[i]!=_ary[_index]) {
             _ary[n++]=_ary[i];
         }
     }
@@ -2179,8 +2083,7 @@ jQuery.decodeURIComponent = function (_str) {
  * 20130222 Pulipuli Chen
  * 不採用
  */
-if (false)
-{
+if (false) {
     /**
      * @type {jQuery}
      * @alias $

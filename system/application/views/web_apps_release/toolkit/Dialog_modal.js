@@ -80,12 +80,10 @@ Dialog_modal.prototype._$onviewportmove = function (_ui) {
     _ui.ready(function () {
         
         if ($.is_small_height() 
-            && (_ui.height() > $.get_viewport_height() || _ui.height() == $.get_viewport_height()))
-        {
+            && (_ui.height() > $.get_viewport_height() || _ui.height() == $.get_viewport_height())) {
             _ui.valign('top');
         }
-        else
-        {
+        else {
             _ui.css('top', '10%');
         }
         
@@ -151,12 +149,10 @@ Dialog_modal.prototype.setup_modal = function (_config) {
 Dialog_modal.prototype.set_heading = function (_lang_param) {
     var _container = this.get_heading();
     if (_container.length == 1) {
-        if ($.is_string(_lang_param))
-        {
+        if ($.is_string(_lang_param)) {
             _container.html(_lang_param);
         }
-        else
-        {
+        else {
            KALS_context.lang.add_listener(_container, _lang_param);
         }
     }
@@ -270,30 +266,24 @@ Dialog_modal.prototype.set_content = function (_lang) {
     if (_container.length == 1) {
         this.toggle_content(true);
         this.get_ui().addClass('with-content');
-        if ($.is_null(_lang))
-        {
+        if ($.is_null(_lang)) {
             //如果是空物件，則隱藏
             _container.empty();
             this.toggle_content(false);
             this.get_ui().removeClass('with-content');  
         }
-        else if ($.is_string(_lang))
-        {
+        else if ($.is_string(_lang)) {
             _container.html(_lang);
         }
-        else if ($.is_class(_lang, 'KALS_language_param'))
-        {
-            if (typeof(KALS_context) != 'undefined')
-            {
+        else if ($.is_class(_lang, 'KALS_language_param')) {
+            if (typeof(KALS_context) != 'undefined') {
                 KALS_context.lang.add_listener(_container, _lang);
             }
         }
-        else
-        {
+        else {
             _container.empty();
             
-            if ($.isset(_lang))
-            {
+            if ($.isset(_lang)) {
                 _container.append(_lang);
                 _lang.show();
             }
@@ -389,8 +379,7 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
         }
         
         if (_index < _options.length -1
-            && _double_col === true)
-        {
+            && _double_col === true) {
             var _option_left = _option_ui;
             _index++;
             var _option_right = _options[_index].get_ui();
@@ -403,8 +392,7 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
             _option_left.addClass('option-left');
             _option_right.addClass('option-right');
         }
-        else
-        {
+        else {
             var _option = _option_ui;
             var _tr = $('<tr class="dialog-options"><td></td></tr>')
                 .appendTo(_tbody);
@@ -489,8 +477,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             
             /*
             var _el_position = _el.css('position').toLowerCase();
-            if (_el_position == 'absolute' || _el_position == 'fixed')
-            {
+            if (_el_position == 'absolute' || _el_position == 'fixed') {
                 //加入wrapper!
                 var _scroll_wrapper = $('<div class="scroll-wrapper"></div>').appendTo($('body'));
                 var _el_offset = _el.offset();
@@ -519,12 +506,10 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                 //_scroll_container.css('top', _el_offset.top + 'px');
                 _scroll_container.css('position', 'fixed');
                 _scroll_container.css('top', 0);
-                if ($.is_mobile_mode())
-                {   
+                if ($.is_mobile_mode()) {   
                     //_scroll_container.css('top', _el_offset.top + 'px');
                 }
-                else
-                {   
+                else {   
                     _scroll_container.css('top', 0);    
                 }
                 _scroll_container.css('right', '5px');
@@ -619,8 +604,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                         });
                     }
                 }
-                else
-                {
+                else {
                     _el.attr('scrollTop', 0);
                     _target_top = _target_top * -1;
                     if (_target_top > 50)
@@ -640,8 +624,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                     }   
                 }
             }
-            else if (_target_top > 0 && _target_top < _max_height + 1)
-            {
+            else if (_target_top > 0 && _target_top < _max_height + 1) {
                 _el.attr('scrollTop', _target_top);
                 
                 if (_scroll != null) {
@@ -715,8 +698,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
         var _wheel_event = function (_event, _delta) {
             if (_event.preventDefault)
                 _event.preventDefault();
-            if (_delta)
-            {
+            if (_delta) {
                 _delta = -_delta;
                 var _scroll_top = _el.attr('scrollTop');
                 
@@ -778,8 +760,7 @@ Dialog_modal.prototype.open = function (_callback) {
     return Overlay_modal.prototype.open.call(this, _open_callback);
 };
 
-Dialog_modal.prototype.expose = function (_callback)
-{
+Dialog_modal.prototype.expose = function (_callback) {
     var _this = this;
     var _expose_callback = function () {
         _this.focus_option();

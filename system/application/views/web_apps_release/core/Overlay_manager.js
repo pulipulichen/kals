@@ -19,8 +19,7 @@ function Overlay_manager () {
         && typeof(KALS_context.hash) == 'object') {
         KALS_context.hash.add_listener(function (_dispatcher, _data) {
             if (typeof(_data.backward) == 'boolean'
-                && _data.backward === true)
-            {
+                && _data.backward === true) {
                 //$.test_msg('modal listener', _data);
                 _this.close_all();
             }
@@ -30,8 +29,7 @@ function Overlay_manager () {
     //跟onviewportmove註冊mash的fit事件
     if (typeof($.mask) != 'undefined') {
         KALS_context.view.add_listener(function () {
-            if ($.mask.isLoaded())
-            {
+            if ($.mask.isLoaded()) {
                 $.mask.fit();
             } 
         });    
@@ -65,8 +63,7 @@ Overlay_manager.prototype.close_all = function (_except_name) {
             _index = _i;
         
         //if (_index < _this._opened_modals.length)
-        if (_index != null)
-        {
+        if (_index != null) {
             var _modal = _this._opened_modals[_index];
             var _name = _modal.get_modal_name();
             
@@ -77,8 +74,7 @@ Overlay_manager.prototype.close_all = function (_except_name) {
                 _loopy(_callback);    
             });
         }
-        else
-        {
+        else {
             _callback();
         }
     };
@@ -86,8 +82,7 @@ Overlay_manager.prototype.close_all = function (_except_name) {
     _loopy(function () {
         //跟URL_hash_dispatcher註冊
         if (typeof(KALS_context) == 'object'
-            && typeof(KALS_context.hash) == 'object')
-        {
+            && typeof(KALS_context.hash) == 'object') {
             KALS_context.hash.delete_field('modal');
         }  
         
@@ -112,8 +107,7 @@ Overlay_manager.prototype.close = function (_target_name) {
         var _modal = this._opened_modals[_i];
         var _name = _modal.get_modal_name();
         
-        if ($.inArray(_name, _target_name) > -1)
-        {
+        if ($.inArray(_name, _target_name) > -1) {
             _modal.close();
         }
     }
@@ -147,21 +141,18 @@ Overlay_manager.prototype.check_mask = function (_is_close) {
         
         //$.test_msg('Overlay_manager.check_mask()', [_this._opened_modals.length]);
         
-        for (var _i in _this._opened_modals)
-        {
+        for (var _i in _this._opened_modals) {
             var _modal = _this._opened_modals[_i];
             
             //$.test_msg('Overlay_manager.check_mask() for', [_modal.get_modal_name(), _modal.is_exposable()]);
             
-            if (_modal.is_exposable())
-            {
+            if (_modal.is_exposable()) {
                 _need_expose = true;
                 break;
             }
         }
         
-        if (_need_expose === false)
-        {
+        if (_need_expose === false) {
             $.mask.close();
         } 
     }, 200);
@@ -197,11 +188,9 @@ Overlay_manager.prototype.add_opened = function (_modal) {
         
         this._opened_modals.push(_modal);
         
-        if (_modal.is_exposable())
-        {
+        if (_modal.is_exposable()) {
             //先將已經開啟的modal移至mask之後
-            for (var _i in this._opened_modals)
-            {
+            for (var _i in this._opened_modals) {
                 var _opened_modal = this._opened_modals[_i];
                 if (_opened_modal.is_exposable())
                     _opened_modal.cover();
@@ -211,8 +200,7 @@ Overlay_manager.prototype.add_opened = function (_modal) {
         
         //跟URL_hash_dispatcher註冊
         if (typeof(KALS_context) == 'object'
-            && typeof(KALS_context.hash) == 'object')
-        {
+            && typeof(KALS_context.hash) == 'object') {
             KALS_context.hash.set_field('modal', _modal.get_modal_name());
         }   
     }   
@@ -243,8 +231,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         //this._opened_modals.length -= 1;
         
         var _new_opened = [];
-        for (var _i = 0; _i < this._opened_modals.length; _i++)
-        {
+        for (var _i = 0; _i < this._opened_modals.length; _i++) {
             if (_i == _deleted)
                 continue;
             else
@@ -255,8 +242,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         //將未關閉的modal最後一個移至mask之前
         var _last_modal;
         
-        for (var _i in this._opened_modals)
-        {
+        for (var _i in this._opened_modals) {
             //不做任何事情，只是取得modal
             _last_modal = this._opened_modals[_i];
         }
@@ -266,8 +252,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         //if (_last_modal != null)
         //    $.test_msg('delete_opened', [_last_modal.get_modal_name()]);
         
-        if (_last_modal != null)
-        {
+        if (_last_modal != null) {
             //_last_modal.get_ui().css('z-index', 9999);
             _last_modal.expose();
             
@@ -275,17 +260,14 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
             
             //跟URL_hash_dispatcher註冊
             if (typeof(KALS_context) == 'object'
-                && typeof(KALS_context.hash) == 'object')
-            {
+                && typeof(KALS_context.hash) == 'object') {
                 KALS_context.hash.set_field('modal', _modal.get_modal_name());
             } 
         }
-        else
-        {
+        else {
             //跟URL_hash_dispatcher註冊
             if (typeof(KALS_context) == 'object'
-                && typeof(KALS_context.hash) == 'object')
-            {
+                && typeof(KALS_context.hash) == 'object') {
                 KALS_context.hash.delete_field('modal');
             }
         }

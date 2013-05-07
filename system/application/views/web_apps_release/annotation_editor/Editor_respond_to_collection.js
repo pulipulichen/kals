@@ -45,8 +45,7 @@ Editor_respond_to_collection.prototype.set_editor = function (_editor) {
  * @memberOf {Editor_respond_to_collection}
  * @type {jQuery} UI
  */
-Editor_respond_to_collection.prototype._$create_ui = function ()
-{
+Editor_respond_to_collection.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('editor-respond-to-collection');
       
@@ -70,8 +69,7 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
     var _removable = this._$removable;
     
     if ($.is_array(_param)) {
-        for (var _i in _param)
-        {
+        for (var _i in _param) {
             this.add_respond_to(_param[_i], _removable);
         }
         return this;
@@ -117,8 +115,7 @@ Editor_respond_to_collection.prototype.has_respond_to = function (_param) {
         var _respond = this._responds[_i];
         var _respond_param = _respond.get_respond_to();
         
-        if ($.is_null(_respond_param))
-        {
+        if ($.is_null(_respond_param)) {
             continue;
         }
         
@@ -126,8 +123,7 @@ Editor_respond_to_collection.prototype.has_respond_to = function (_param) {
         
         //$.test_msg('Editor_respond_to_colleciton.has_respond_to() for loop ', [(_respond_id == _annotation_id), _respond_id]);
         
-        if (_respond_id == _annotation_id)
-        {
+        if (_respond_id == _annotation_id) {
             return true;
         }
     }

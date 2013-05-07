@@ -45,8 +45,7 @@ Name_value_pair.prototype._indicator = '=';
  * @param {string} _string_data 要解序列化的字串資料
  * @type {Object} 解序列化之後的物件資料 
  */
-Name_value_pair.prototype.unserialize = function (_string_data)
-{
+Name_value_pair.prototype.unserialize = function (_string_data) {
     if (false == $.is_string(_string_data)) {
         return this.reset();
     }
@@ -75,8 +74,7 @@ Name_value_pair.prototype.unserialize = function (_string_data)
  * 將this._data序列化成字串之後回傳
  * @type {string}
  */
-Name_value_pair.prototype.serialize = function ()
-{
+Name_value_pair.prototype.serialize = function () {
     var _object_data = this._data;
     var _string_data = '';
     

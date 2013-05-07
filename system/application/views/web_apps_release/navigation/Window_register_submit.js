@@ -55,15 +55,13 @@ Window_register_submit.prototype.submit = function () {
             
             //$.test_msg('Window_register_submit()', $.is_class(_data, 'KALS_language_param'));
             
-            if ($.is_class(_data, 'KALS_language_param'))
-            {
+            if ($.is_class(_data, 'KALS_language_param')) {
                 _this._content.set_error(_data);
                 KALS_window.toggle_loading(false, function () {
                     _this._unlock_submit();
                 });
             }
-            else
-            {
+            else {
                 var _username = KALS_context.user.get_name();
                 _this.complete_notification.arg = _username;
                 KALS_util.notify(_this.complete_notification);

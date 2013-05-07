@@ -47,8 +47,7 @@ Window_view.prototype._topic_param = null;
  */
 Window_view.prototype._focus_id = null;
 
-Window_view.prototype.set_focus_id = function (_annotation_id)
-{
+Window_view.prototype.set_focus_id = function (_annotation_id) {
     this._focus_id = _annotation_id;
     return this;
 };
@@ -58,8 +57,7 @@ Window_view.prototype.set_focus_id = function (_annotation_id)
  */
 Window_view.prototype._respond_param = null;
 
-Window_view.prototype.set_respond_param = function (_param) 
-{
+Window_view.prototype.set_respond_param = function (_param) {
     this._respond_param = _param;
     return this;
 };
@@ -69,8 +67,7 @@ Window_view.prototype.set_respond_param = function (_param)
  */
 Window_view.prototype._edit_param = null;
 
-Window_view.prototype.set_edit_param = function (_param) 
-{
+Window_view.prototype.set_edit_param = function (_param) {
     this._edit_param = _param;
     return this;
 };
@@ -98,8 +95,7 @@ Window_view.prototype._load_url = 'annotation_getter/list';
 /**
  * @param {number|Annotation_param} _topic_id
  */
-Window_view.prototype.load_topic_param = function (_topic_id)
-{
+Window_view.prototype.load_topic_param = function (_topic_id) {
     if ($.isset(this._topic_param))
         return this;
     
@@ -121,8 +117,7 @@ Window_view.prototype.load_topic_param = function (_topic_id)
             callback: function (_data) {
                 if (typeof(_data.annotation_collection) != 'undefined'
                     && $.is_array(_data.annotation_collection)
-                    && _data.annotation_collection.length > 0)
-                {
+                    && _data.annotation_collection.length > 0) {
                     var _topic_data = _data.annotation_collection[0];
                     var _topic_param = new Annotation_param(_data);
                     _this.set_topic_param(_topic_param);    
@@ -142,16 +137,14 @@ Window_view.prototype.load_view = function (_annotation_id, _callback) {
     
     KALS_text.tool.load_annotation_param(_annotation_id, function (_param) {
         
-        if (_param.is_respond() === false)
-        {
+        if (_param.is_respond() === false) {
             _this.set_topic_param(_param);
             KALS_window.setup_window(_this, function () {
                 //KALS_context.hash.set_field('view', _param.annotation_id);
                 $.trigger_callback(_callback);
             });
         }
-        else
-        {
+        else {
             var _topic_id = _param.topic.annotation_id;
             
             _this.set_focus_id(_param.annotation_id);
@@ -247,8 +240,7 @@ Window_view.prototype._classname = 'window-view-content';
  * @memberOf {Window_view}
  * @type {jQuery} UI
  */
-Window_view.prototype._$create_ui = function ()
-{
+Window_view.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass(this._classname);
     
@@ -361,8 +353,7 @@ Window_view.prototype.onload = function () {
         //$.test_msg('Window_view.onload() focus id', $.isset(_result));
         //_result.get_ui().css('color', 'red');
         
-        if ($.isset(_result))
-        {
+        if ($.isset(_result)) {
             _focus_anchor = false;
             KALS_context.hash.set_field('view', this._focus_id);
         }
@@ -409,8 +400,7 @@ Window_view.prototype.setup_content = function (_callback) {
     this.list.add_listener(function (_list) {
        
        $.test_msg('Window_view.setup_content() ', _list.is_ready());
-       if (_list.is_ready())
-       {
+       if (_list.is_ready()) {
            _this.onload();
        }
         

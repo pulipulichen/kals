@@ -95,8 +95,7 @@ KALS_context.setup_base_url = function () {
             continue;
         
         var _pos = _src.indexOf(_needle); 
-        if (_pos > 0)
-        {
+        if (_pos > 0) {
             this.base_url = _src.substring(0, _pos + _needle.length);
             
             //$.test_msg('KALS_context.setup_base_url()', this.base_url);
@@ -118,8 +117,7 @@ KALS_context.get_base_url = function (_file) {
     }
     else if ($.is_array(_file)) {
         var _temp = '';
-        for (var _i in _file)
-        {
+        for (var _i in _file) {
             var _f = _file[_i];
             if ($.starts_with(_f, '/'))
                 _f = _f.substr(1, _f.length);
@@ -292,8 +290,7 @@ KALS_context.check_text_selector = function (_callback) {
         //this._text_selector = 'body';
         
         //$.test_msg('KALS_context.check_text_selector()', $('.selectable-text').legnth);
-        if ($('#articleContent').length != 0)
-        {
+        if ($('#articleContent').length != 0) {
             //this._text_selector = $('#articleContent');
             /*
             var _text_container = $('<div></div>')
@@ -307,8 +304,7 @@ KALS_context.check_text_selector = function (_callback) {
             */
             this._text_selector = $('#articleContent').addClass('selectable-text');
         }
-        else if ($('.selectable-text').length === 0)
-        {
+        else if ($('.selectable-text').length === 0) {
             /*
             var _text_container = $('<div></div>')
                 .addClass('selectable-text')
@@ -325,8 +321,7 @@ KALS_context.check_text_selector = function (_callback) {
             //_move('div:not(.selectable-text)');
             //_move('p');
             //_move('table');
-            for (var _i in KALS_CONFIG.selectable_text)
-            {
+            for (var _i in KALS_CONFIG.selectable_text) {
                 _move(KALS_CONFIG.selectable_text[_i]);
             }
             */
@@ -346,12 +341,10 @@ KALS_context.check_text_selector = function (_callback) {
                 return _text_container;
             };
             
-            if (KALS_CONFIG.annotation_scope_selector === null)
-            {
+            if (KALS_CONFIG.annotation_scope_selector === null) {
                 _text_container = _default_scope();
             }
-            else
-            {
+            else {
                 var _scope_selector = KALS_CONFIG.annotation_scope_selector;
                 _scope_content = $(_scope_selector);
                 
@@ -374,8 +367,7 @@ KALS_context.check_text_selector = function (_callback) {
                 _children_content.appendTo(_text_container);
                 
                 /*
-                else if (_scope_content.length == 1)
-                {
+                else if (_scope_content.length == 1) {
                     _text_container = $('<div></div>')
                         .addClass('selectable-text');
                     
@@ -384,10 +376,8 @@ KALS_context.check_text_selector = function (_callback) {
                     _text_container.insertBefore(_scope_content);
                     _scope_content.appendTo(_text_container);
                 }
-                else
-                {
-                    for (var _i = 0; _i < _scope_content.length; _i++)
-                    {
+                else {
+                    for (var _i = 0; _i < _scope_content.length; _i++) {
                         var _content = _scope_content.eq(_i);
                         
                         var _container = $('<div></div>')
@@ -405,8 +395,7 @@ KALS_context.check_text_selector = function (_callback) {
             
             this._text_selector = _text_container;
         }
-        else
-        {
+        else {
             this._text_selector = $('.selectable-text:last');
         }
     }

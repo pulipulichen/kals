@@ -71,8 +71,7 @@ Annotation_tool.prototype.list = null;
  * @memberOf {Annotation_tool}
  * @type {jQuery} UI
  */
-Annotation_tool.prototype._$create_ui = function ()
-{
+Annotation_tool.prototype._$create_ui = function () {
     //var _ui = $('<table height="100%"><tbody>'
     //        + '<tr><td class="editor"></td></tr>'
     //        + '<tr><td class="list"></td></tr>'
@@ -343,8 +342,7 @@ Annotation_tool.prototype.setup_position = function () {
         //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
         
         //如果沒有選取，就不會有_selection_bottom，也就不用定位
-        if (_selection_bottom === null)
-        {
+        if (_selection_bottom === null) {
             _ui.css('top', '0px');
             _ui.css('left', '0px');
             _ui.hide();
@@ -355,13 +353,11 @@ Annotation_tool.prototype.setup_position = function () {
         var _margin_bottom = _body_bottom - _selection_bottom;
         
         //如果底下寬度不足的話
-        if (_margin_bottom < _tool_height)
-        {
+        if (_margin_bottom < _tool_height) {
             var _selection_top = _selection.get_offset_top();
             
             //如果上面寬度夠高，則定位於head
-            if (_selection_top > _tool_height)
-            {
+            if (_selection_top > _tool_height) {
                 //$.test_msg('Annotation_tool.setup_position() head', [ _margin_bottom, _tool_height, _selection_top ]);
                 _mode = 'head';
             }   
@@ -369,8 +365,7 @@ Annotation_tool.prototype.setup_position = function () {
         }
         
         var _l, _t, _margin = 10;
-        if (_mode == 'foot')
-        {
+        if (_mode == 'foot') {
             _t = _selection_bottom + _margin;
             
             var _last_right = _selection.get_offset_last_right();
@@ -378,17 +373,14 @@ Annotation_tool.prototype.setup_position = function () {
             var _bottom_width = _last_right - _left;
             
             //$.test_msg([_bottom_width , _tool_width]);
-            if (_bottom_width > _tool_width)
-            {
+            if (_bottom_width > _tool_width) {
                 _l = _last_right - _tool_width;
             }
-            else
-            {
+            else {
                 _l = _left; 
             }
         }
-        else
-        {
+        else {
             _t = _selection_top - _tool_height - _margin;
             
             var _first_left = _selection.get_offset_first_left();
@@ -396,12 +388,10 @@ Annotation_tool.prototype.setup_position = function () {
             //var _top_width = _right - _first_left;
             
             /*
-            if (_top_width > _tool_width)
-            {
+            if (_top_width > _tool_width) {
                 _l = _first_left;
             }
-            else
-            {
+            else {
                 _l = _right - _tool_width; 
             }
             */
@@ -412,12 +402,10 @@ Annotation_tool.prototype.setup_position = function () {
         
         //為了防止超出畫面左右的設置
         var _body_right = $('body').width();
-        if (_l < 0)
-        {
+        if (_l < 0) {
             _l = 0;
         }
-        else if (_l + _tool_width > _body_right)
-        {
+        else if (_l + _tool_width > _body_right) {
             _l = _body_right - _tool_width;
         }
         
@@ -509,13 +497,11 @@ Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _cal
     
     var _load_callback = function (_param) {
         
-        if (_param !== false)
-        {
+        if (_param !== false) {
             _param = new Annotation_param(_param);
             $.trigger_callback(_callback, _param);    
         }
-        else
-        {
+        else {
             _exception_handle();
         }
     };
@@ -558,8 +544,7 @@ Annotation_tool.prototype.check_editing = function () {
     if ($.isset(this._editing_param)) {
         var _list_item = this.list.focus(this._editing_param, false);
         
-        if ($.isset(_list_item))
-        {
+        if ($.isset(_list_item)) {
             _list_item.edit_annotation();
         }
         this.editor_container.toggle_loading(false);

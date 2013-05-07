@@ -83,12 +83,10 @@ Window_user_interface.prototype.check_input = function (_input) {
         
         //$.test_msg('window ui.check_input()', _input.val());
         
-        if (_input.val() === '')
-        {
+        if (_input.val() === '') {
             _input.addClass('empty');
         }
-        else
-        {
+        else {
             _input.removeClass('empty');
         }
     });
@@ -101,8 +99,7 @@ Window_user_interface.prototype.check_input = function (_input) {
  * @param {jQuery[]} _option_lang_params
  * @param {String} _default_value 會去找options的value對應
  */
-Window_user_interface.prototype.dropdown = function (_name, _options, _default_value)
-{
+Window_user_interface.prototype.dropdown = function (_name, _options, _default_value) {
     var _select = $('<select></select>')
         .attr('name', _name)
         .addClass('dropdown');
@@ -225,8 +222,7 @@ Window_user_interface.prototype.window_change_link = function (_lang_param, _con
  * @param {KALS_language_param|jQuery|string} _title
  * @param {KALS_language_param|jQuery|string|null} _data
  */
-Window_user_interface.prototype.row = function (_title, _data)
-{
+Window_user_interface.prototype.row = function (_title, _data) {
     if ($.is_null(_data)) {
         _data = '';
         //return this.message_row(_title);
@@ -241,11 +237,9 @@ Window_user_interface.prototype.row = function (_title, _data)
         
         var _dt = $(this);
         var _dd = _dt.nextAll('dd:first');
-        if (_dd.length > 0)
-        {
+        if (_dd.length > 0) {
             var _input = _dd.find('input:first');
-            if (_input.length > 0)
-            {
+            if (_input.length > 0) {
                 var _type = _input.attr('type');
                 if (_type == 'text' || _type == 'password') {
 					_input.select();
@@ -267,8 +261,7 @@ Window_user_interface.prototype.row = function (_title, _data)
  * 訊息行
  * @param {KALS_language_param|jQuery|string|null} _message = <hr />
  */
-Window_user_interface.prototype.message_row = function (_message)
-{
+Window_user_interface.prototype.message_row = function (_message) {
     if ($.is_null(_message)) {
         _message = '';
     }

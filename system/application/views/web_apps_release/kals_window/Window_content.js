@@ -27,8 +27,7 @@ function Window_content(){
             //$.test_msg('Window_content load context data', _data);
             
             if (_data !== null
-                && typeof(_data[_this._$load_config]) != 'undefined')
-            {
+                && typeof(_data[_this._$load_config]) != 'undefined') {
                 _this.set_config(_data[_this._$load_config]);
                 _this.set_config_loaded();
             }

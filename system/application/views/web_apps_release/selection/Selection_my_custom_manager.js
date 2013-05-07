@@ -69,13 +69,11 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
         var _type_name = this._my_selections[_i];
         
         //$.test_msg('my_custom_manager', [_type_name, _i, _type_id, typeof(this[_type_name])]);
-        if (_i == _type_id)
-        {
+        if (_i == _type_id) {
             this[_type_name].set_scope_coll(_scope_coll);
             continue;
         }   
-        else if (_is_initialize === false)
-        {
+        else if (_is_initialize === false) {
             //其他的則是刪除標註
             this[_type_name].clear_scope_coll(_scope_coll);
         }

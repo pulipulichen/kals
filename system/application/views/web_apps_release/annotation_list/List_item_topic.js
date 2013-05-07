@@ -24,8 +24,7 @@ List_item_topic.prototype = new List_item();
  * @memberOf {List_item_topic}
  * @type {jQuery} UI
  */
-List_item_topic.prototype._$create_ui = function ()
-{
+List_item_topic.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-item-topic');
     
@@ -40,8 +39,9 @@ List_item_topic.prototype._$create_ui = function ()
         var _param = this.get_data();
         //$.test_msg('List_item_topic._$create_ui()', _param.respond_list);
         
-        if ($.isset(_param.respond_list))
-            _respond_list.load_list(_param.respond_list);    
+        if ($.isset(_param.respond_list)) {
+			_respond_list.load_list(_param.respond_list);
+		}    
     }
     else {
         _respond_list.load_list();
@@ -101,8 +101,9 @@ List_item_topic.prototype.focus = function (_scrollto) {
     
     var _param = this.get_data();
     
-    if (_param.is_my_annotation())
-        this.show_recommend();
+    if (_param.is_my_annotation()) {
+		this.show_recommend();
+	}
         
     return this; 
 };

@@ -36,8 +36,7 @@ Selection_select.prototype.auto_cancel_wait = 10000;
  * 設定選取
  * @param {jQuery} _word
  */
-Selection_select.prototype.set_select = function (_word) 
-{
+Selection_select.prototype.set_select = function (_word) {
     if (KALS_context.policy.readable() === false)
         return this;
     
@@ -72,8 +71,7 @@ Selection_select.prototype.set_select = function (_word)
         //在做add_select的時候，就會進行通知
         var _scope_coll = new Scope_collection_param(this._select_from, _id);
         
-        if (_scope_coll.length() > 0)
-        {
+        if (_scope_coll.length() > 0) {
             var _anchor_text = this._text.get_anchor_text(_scope_coll);
             
             //$.test_msg('Selection_select.set_select()', [_anchor_text.length, KALS_CONFIG.anchor_length_max]);

@@ -75,8 +75,7 @@ Window_policy.prototype._policy_type = 'public';
  * @memberOf {Window_policy}
  * @type {jQuery} UI
  */
-Window_policy.prototype._$create_ui = function ()
-{
+Window_policy.prototype._$create_ui = function () {
     var _ui = $('<form></form>')
         .addClass('window-policy');
     

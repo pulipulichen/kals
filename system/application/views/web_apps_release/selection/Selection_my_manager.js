@@ -109,15 +109,13 @@ Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _i
         
         //$.test_msg('Selection_my_manager.set_scope_coll()', [_type, _type_name, _i]);
         
-        if (_type_name == _type)
-        {
+        if (_type_name == _type) {
             //如果是現在這個類型，則設置
             this[_type].set_scope_coll(_scope_coll);
             //$.test_msg('Selection_my_manager.set_scope_coll()',[ _scope_coll.length(), typeof(this[_type].set_scope_coll), _type]);
             continue;
         }   
-        else if (_is_initialize === false)
-        {
+        else if (_is_initialize === false) {
             //其他的則是刪除標註
             this[_type_name].clear_scope_coll(_scope_coll);
         }

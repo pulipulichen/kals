@@ -109,8 +109,7 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
         if (_this._task_state === null)
             _this.reset();
         
-        if ($.inArray(_task, _this._$schedule_task) > -1)
-        {
+        if ($.inArray(_task, _this._$schedule_task) > -1) {
             //$.test_msg('設定任務', [_task, _boolean]);
             _this._task_state[_task] = _boolean;
         }
@@ -119,12 +118,10 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
             return;    //表示全部已經完成
         
         //$.test_msg('是否完成全部任務', [_task, _this.is_completed(), '[', _this._$schedule_task, ']']);
-        if (_this.is_completed())
-        {
+        if (_this.is_completed()) {
             $(function () {
                 _this.notify_listeners();
-                if ($.is_function(_this._$oncomplete))
-                {
+                if ($.is_function(_this._$oncomplete)) {
                     _this._$oncomplete();
                     
                     _this.completed = true;
@@ -170,8 +167,7 @@ Task_event_dispatcher.prototype.is_completed = function (_task) {
             return this._task_state[_task];
     }
     else {
-        for (var _t in this._$schedule_task)
-        {
+        for (var _t in this._$schedule_task) {
             var _task = this._$schedule_task[_t];
             if (typeof(this._task_state[_task]) == 'undefined')
                 return false;

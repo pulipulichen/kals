@@ -33,8 +33,7 @@ Topic_list.prototype.my = null;
  * @memberOf {Topic_list}
  * @type {jQuery} UI
  */
-Topic_list.prototype._$create_ui = function ()
-{
+Topic_list.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('topic-list');
     
@@ -67,22 +66,18 @@ Topic_list.prototype._$create_ui = function ()
     var _this = this;
     
     var _endless_scroll_callback = function (p) {
-        if (_this.is_totally_loaded() === false)
-        {
-            if (_this.is_loading() === false)
-            {
+        if (_this.is_totally_loaded() === false) {
+            if (_this.is_loading() === false) {
                 clearTimeout(_this._endless_scroll_timer);
                 _this._endless_scroll_timer = null;
                 
                 _this.load_list();
             }
-            else
-            {
+            else {
                 _this._endless_scroll_timer = setTimeout(_endless_scroll_callback, 3000);
             }
         }
-        else
-        {
+        else {
             clearTimeout(_this._endless_scroll_timer);
             _this._endless_scroll_timer = null;
         }   
@@ -127,18 +122,20 @@ Topic_list.prototype._toggle_loading = function (_is_loading, _callback) {
     var _loading_classname = 'loading';
     var _ui = this.get_ui();
     
-    if ($.is_null(_is_loading))
-        _is_loading = !(_ui.hasClass(_loading_classname));
+    if ($.is_null(_is_loading)) {
+		_is_loading = !(_ui.hasClass(_loading_classname));
+	}
         
-    if (_is_loading === true)
-        _ui.addClass(_loading_classname);
-    else {
-        this._loading_component.slideUp(function () {
-            $(this).removeAttr('style');
-            _ui.removeClass(_loading_classname);    
-            $.trigger_callback(_callback);
-        });
-    }        
+    if (_is_loading === true) {
+		_ui.addClass(_loading_classname);
+	}
+	else {
+		this._loading_component.slideUp(function(){
+			$(this).removeAttr('style');
+			_ui.removeClass(_loading_classname);
+			$.trigger_callback(_callback);
+		});
+	}        
     
     return this;
 };
@@ -172,8 +169,9 @@ Topic_list.prototype._toggle_complete = function (_is_complete) {
     var _classname = 'complete';
     var _ui = this.get_ui();
     
-    if ($.is_null(_is_complete))
-        _is_complete = !(_ui.hasClass(_classname));
+    if ($.is_null(_is_complete)) {
+		_is_complete = !(_ui.hasClass(_classname));
+	}
         
     if (_is_complete === true) {
         this._complete_component.hide();
@@ -213,18 +211,20 @@ Topic_list.prototype._toggle_blank = function (_is_blank) {
     var _classname = 'blank';
     var _ui = this.get_ui();
     
-    if ($.is_null(_is_blank))
-        _is_blank = !(_ui.hasClass(_classname));
+    if ($.is_null(_is_blank)) {
+		_is_blank = !(_ui.hasClass(_classname));
+	}
         
     if (_is_blank === true) {
-        this._blank_component.hide();
-        _ui.addClass(_classname);
-        this._blank_component.fadeIn('fast', function () {
-            $(this).removeAttr('style');
-        });
-    }   
-    else
-        _ui.removeClass(_classname);
+		this._blank_component.hide();
+		_ui.addClass(_classname);
+		this._blank_component.fadeIn('fast', function(){
+			$(this).removeAttr('style');
+		});
+	}
+	else {
+		_ui.removeClass(_classname);
+	}
     
     return this;
 };
@@ -232,8 +232,7 @@ Topic_list.prototype._toggle_blank = function (_is_blank) {
 Topic_list.prototype.is_totally_loaded = function () {
     for (var _i in this._list_colls) {
         var _coll = this._list_colls[_i];
-        if (_coll.is_totally_loaded() === false)
-        {
+        if (_coll.is_totally_loaded() === false) {
             //$.test_msg(_coll._$name);
             return false;
         }
@@ -250,13 +249,13 @@ Topic_list.prototype.is_totally_loaded = function () {
  * @param {Annotation_param|Number} _param
  * @type {List_item}
  */
-Topic_list.prototype.focus = function(_param, _scollto)
-{
+Topic_list.prototype.focus = function(_param, _scollto) {
     this.reset_focus();
     
     //$.test_msg('Topic_list.focus()', [_scollto, this.is_overflow()]);
-    if (this.is_overflow() === false)
-        _scollto = false;
+    if (this.is_overflow() === false) {
+		_scollto = false;
+	}
     
     var _list_item;
     for (var _i in this._list_colls) {
@@ -266,15 +265,13 @@ Topic_list.prototype.focus = function(_param, _scollto)
         _list_coll.add_once_listener(function (_list_coll) {
             var _list_item = _list_coll.focus(_param);
             
-            if ($.is_function(_callback))
-            {
+            if ($.is_function(_callback)) {
                 _callback(_list_item);
             }
         });
         */
         _list_item = _list_coll.focus(_param, _scollto);
-        if ($.isset(_list_item))
-        {
+        if ($.isset(_list_item)) {
             //_callback(_list_item);
             //return this;
             return _list_item;
@@ -306,18 +303,15 @@ Topic_list.prototype.reset_focus = function() {
  * @param {Annotation} _param
  * @param {String} _name
  */
-Topic_list.prototype.move = function(_param, _name)
-{
+Topic_list.prototype.move = function(_param, _name) {
     for (var _i in this._list_colls) {
         var _list_coll = this._list_colls[_i];
         var _list_coll_name = _list_coll.get_name();
         
-        if (_list_coll_name == _name)
-        {
+        if (_list_coll_name == _name) {
             _list_coll.add_list_item(_param, true);
         }
-        else
-        {
+        else {
             _list_coll.remove_list_item(_param);
         }
     }
@@ -327,8 +321,7 @@ Topic_list.prototype.move = function(_param, _name)
  * 設定範圍
  * @param {Scope_collection_param} _scope_coll
  */
-Topic_list.prototype.set_scope_coll = function (_scope_coll)
-{
+Topic_list.prototype.set_scope_coll = function (_scope_coll) {
     for (var _i in this._list_colls) {
         var _list_coll = this._list_colls[_i];
         _list_coll.set_scope_coll(_scope_coll);
@@ -416,8 +409,7 @@ Topic_list.prototype.load_list = function (_callback) {
         _count++;
         
         if (_count == _limit
-            || _count > _limit)
-        {
+            || _count > _limit) {
             _this._first_load = false;
             
             _this._load_list_complete(_callback);
@@ -437,11 +429,11 @@ Topic_list.prototype.load_list = function (_callback) {
     var _this = this;
     var _loop = function (_i, _load_id) {
         //$.test_msg('Topic_list.load_list()', [_load_id, _this._load_id]);
-        if (_load_id != _this._load_id || _this._load_id === null)
-            return;
+        if (_load_id != _this._load_id || _this._load_id === null) {
+			return;
+		}
         
-        if (_i < _this._list_colls.length)
-        {
+        if (_i < _this._list_colls.length) {
             var _coll = _this._list_colls[_i];
             _coll.set_load_id(_this); 
             _coll.load_list(function () {
@@ -451,8 +443,7 @@ Topic_list.prototype.load_list = function (_callback) {
                 }, 0);
             });
         }
-        else
-        {
+        else {
             _this._load_list_complete(_callback);
         }
     };
@@ -469,25 +460,25 @@ Topic_list.prototype._load_list_complete = function (_callback) {
     else {
         var _this = this;
         setTimeout(function() {
-            if (_this.has_list_item() === false)
-                _this._toggle_blank(true);
+            if (_this.has_list_item() === false) {
+				_this._toggle_blank(true);
+			}
             
             //$.test_msg([_this.has_list_item() , _this.is_totally_loaded()]);
             
-            if (_this.has_list_item() && _this.is_totally_loaded())
-                _this._toggle_complete(true);
+            if (_this.has_list_item() && _this.is_totally_loaded()) {
+				_this._toggle_complete(true);
+			}
             
             _this.check_editing();
             _this._toggle_loading(false, function () {
                 
                 //$.test_msg('Topic_list._load_list_complete()', _this._set_focus_param);
                 
-                if (_this._set_focus_param != null)
-                {
+                if (_this._set_focus_param !== null) {
                     
                     var _item = _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
-                    if ($.is_function(_this._set_focus_callback))
-                    {
+                    if ($.is_function(_this._set_focus_callback)) {
                         _this._set_focus_callback(_item);
                     }
                     
@@ -511,16 +502,18 @@ Topic_list.prototype.add_list_item = function (_param, _scrollto) {
     this._set_focus_param = null;
     this._set_focus_scrollto = null;
     
-    if ($.is_null(_scrollto))
-        _scrollto = true;
+    if ($.is_null(_scrollto)) {
+		_scrollto = true;
+	}
     
     this._toggle_blank(false);
     
     //加在List_collection_my的範圍
     var _item = this.my.add_list_item(_param, true);
     
-    if (_scrollto === true)
-        this.my.focus(_param, true);
+    if (_scrollto === true) {
+		this.my.focus(_param, true);
+	}
     return _item;
 };
 
@@ -543,11 +536,13 @@ Topic_list.prototype.is_overflow = function () {
     
     //$.test_msg('Topic_list.is_overflow()', [_colls_height, _max_height, (_colls_height < _max_height || _colls_height == _max_height)]);
     
-    if (_colls_height < _max_height
-        || _colls_height == _max_height)
-        return false;
-    else
-        return true;
+    if (_colls_height < _max_height ||
+	_colls_height == _max_height) {
+		return false;
+	}
+	else {
+		return true;
+	}
     
 };
 
@@ -583,8 +578,7 @@ Topic_list.prototype.check_editing = function () {
     if ($.isset(this._editing_param)) {
         var _list_item = this.focus(this._editing_param, false);
         
-        if ($.isset(_list_item))
-        {
+        if ($.isset(_list_item)) {
             _list_item.edit_annotation();
             KALS_text.tool.editor_container.toggle_loading(false);
         }

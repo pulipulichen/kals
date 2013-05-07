@@ -25,8 +25,7 @@ List_menu_block.prototype = new List_menu();
  * @memberOf {List_menu_block}
  * @type {jQuery} UI
  */
-List_menu_block.prototype._$create_ui = function ()
-{
+List_menu_block.prototype._$create_ui = function () {
     var _ui = List_menu.prototype._$create_ui.call(this);
     _ui.addClass('list-menu-block');
     return _ui;

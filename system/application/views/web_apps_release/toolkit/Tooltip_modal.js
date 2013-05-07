@@ -153,13 +153,11 @@ Tooltip_modal.prototype.open = function (_callback) {
     var _this = this;
     
     if (_ui != null) {
-        if (typeof(_ui.tooltip) == 'function')
-        {
+        if (typeof(_ui.tooltip) == 'function') {
             this._$temp_callback = _callback;
             _ui.tooltip().show();
         }
-        else
-        {
+        else {
             _ui.show();
             if ($.is_function(_callback))
                 _callback(_ui);
@@ -180,15 +178,12 @@ Tooltip_modal.prototype.close = function (_callback) {
         
         var _this = this;
         
-        if (_ui != null)
-        {
-            if (typeof(_ui.tooltip) == 'function')
-            {
+        if (_ui != null) {
+            if (typeof(_ui.tooltip) == 'function') {
                  this._$temp_callback = _callback;
                  _ui.tooltip().hide();
             }
-            else
-            {
+            else {
                 _ui.hide();
                 if ($.is_function(_callback))
                     _callback(_ui);

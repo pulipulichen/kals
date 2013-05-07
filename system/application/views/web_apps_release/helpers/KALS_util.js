@@ -25,8 +25,7 @@ KALS_util = {};
  *   retry_wait: 3000 //預設嘗試等待時間，單位是毫秒
  * };
  */
-KALS_util.ajax_get = function (_config)
-{
+KALS_util.ajax_get = function (_config) {
     var _url = $.get_parameter(_config, 'url');
     var _data = $.get_parameter(_config, 'data');
     var _callback = $.get_parameter(_config, 'callback');
@@ -38,16 +37,13 @@ KALS_util.ajax_get = function (_config)
     
     _url = $.appends_with(_url, '/');
     
-    if (_data != null) 
-    {
-        if ($.is_object(_data))
-        {
+    if (_data != null) {
+        if ($.is_object(_data)) {
             _data = $.json_encode(_data);
             _data = encodeURIComponent(_data);
             _data = escape(_data);    
         }
-        else if ($.is_string(_data))
-        {
+        else if ($.is_string(_data)) {
             _data = encodeURIComponent(_data);
             _data = escape(_data); 
         }
@@ -71,12 +67,10 @@ KALS_util.ajax_get = function (_config)
     
     //檢查網址是否超過最大長度
     if (_url.length > 2000) {
-        if ($.is_function(_exception_handle))
-        {
+        if ($.is_function(_exception_handle)) {
             _exception_handle();
         }
-        else
-        {
+        else {
             $.test_msg('KALS_util.ajax_get()'+'超過最大長度囉', _url.length);
             this.show_exception({
                 heading: KALS_context.lang.line(new KALS_language_param(
@@ -111,30 +105,24 @@ KALS_util.ajax_get = function (_config)
 			$.test_msg('ajax_get return data', _data);
 			
 			
-            if (typeof(_retry_timer) == 'undefined' || _retry_timer === null)
-            {
+            if (typeof(_retry_timer) == 'undefined' || _retry_timer === null) {
                 return;
             }
-            else if ($.isset(_retry_timer))
-            {
+            else if ($.isset(_retry_timer)) {
                 clearInterval(_retry_timer);
                 _retry_timer = null;
                 delete _retry_timer;
             }
             
-            if (typeof(_data.exception) != 'undefined')
-            {            
-                if ($.is_function(_exception_handle))
-                {
+            if (typeof(_data.exception) != 'undefined') {            
+                if ($.is_function(_exception_handle)) {
                     _exception_handle(_data.exception);
                 }
-                else
-                {
+                else {
                     _this.show_exception(_data.exception);
                 }
             }
-            else
-            {
+            else {
                 _callback(_data);
             }
         }); 
@@ -145,15 +133,12 @@ KALS_util.ajax_get = function (_config)
         _get_json();
         
         
-        if (_retry != null && _retry > 0)
-        {
+        if (_retry != null && _retry > 0) {
             _retry_timer = setInterval(function () {
                 
                 if (_retry_counter == _retry || _retry_counter > _retry
-                    || typeof(_retry_timer) == 'undefined')
-                {
-                    if (typeof(_retry_timer) != 'undefined')
-                    {
+                    || typeof(_retry_timer) == 'undefined') {
+                    if (typeof(_retry_timer) != 'undefined') {
                         clearInterval(_retry_timer);
                         _retry_timer = null;
                         delete _retry_timer;
@@ -169,21 +154,17 @@ KALS_util.ajax_get = function (_config)
             }, _retry_wait);    
         }
     }
-    catch (e) 
-    {
-        if ($.isset(_retry_timer))
-        {
+    catch (e) {
+        if ($.isset(_retry_timer)) {
             clearInterval(_retry_timer);
             _retry_timer = null;
             delete _retry_timer;
         }
         
-        if ($.is_function(_exception_handle))
-        {
+        if ($.is_function(_exception_handle)) {
             _exception_handle(e);
         }
-        else
-        {
+        else {
             _this.show_exception(e);
         }
     }
@@ -199,8 +180,7 @@ KALS_util.ajax_get = function (_config)
  *   exception_handle: function (_data) //可省略，省略則自動使用KALS_util.show_exception來處理
  * };
  */	
-KALS_util.ajax_post = function (_config)
-{
+KALS_util.ajax_post = function (_config) {
     //如果要檢查資料，請將_debug設為true
     var _debug = false;
     
@@ -378,12 +358,10 @@ KALS_util.ajax_upload = function (_config) {
                     };
                     
                     if (typeof(_data) == 'undefined'
-                        || typeof(_data['completed']) == 'undefined')
-                    {
+                        || typeof(_data['completed']) == 'undefined') {
                         _this.show_exception(_exception);
                     }
-                    else if (_data['completed'] === false)
-                    {
+                    else if (_data['completed'] === false) {
                         if (_data['data'] !== false)
                             _exception['message'] = _data['data'];
                         _this.show_exception(_exception);
@@ -409,8 +387,7 @@ KALS_util.ajax_upload = function (_config) {
  * 在ajax_get()的時候發生錯誤時，會自動將_data.exception送到此方法。
  * 這是處理例外的預設方法，您可以在ajax_get()當中設定exception_handle
  */
-KALS_util.show_exception = function (_exception)
-{
+KALS_util.show_exception = function (_exception) {
     //var _heading = $.get_parameter(_exception, 'heading');
     //var _message = $.get_parameter(_exception, 'message');
     //var _request_uri = $.get_parameter(_exception, 'request_uri');
@@ -522,8 +499,7 @@ KALS_util._get_alert_modal = function () {
  * @memberOf {KALS_util}
  * @method [alert]
  */
-KALS_util.alert = function (_heading, _content, _callback)
-{
+KALS_util.alert = function (_heading, _content, _callback) {
     var _modal = this._get_alert_modal();
     _modal.set_heading(_heading);
     _modal.set_content(_content);
@@ -585,8 +561,7 @@ KALS_util._get_confirm_modal = function () {
  * @memberOf {KALS_util}
  * @method [confirm]
  */
-KALS_util.confirm = function (_heading, _content, _callback)
-{   
+KALS_util.confirm = function (_heading, _content, _callback) {   
     var _modal = this._get_confirm_modal();
     _modal.set_heading(_heading);
     _modal.set_content(_content);

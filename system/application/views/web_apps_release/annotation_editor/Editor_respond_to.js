@@ -48,8 +48,7 @@ Editor_respond_to.prototype._respond_to = null;
  * @memberOf {Editor_respond_to}
  * @type {jQuery} UI
  */
-Editor_respond_to.prototype._$create_ui = function ()
-{
+Editor_respond_to.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('editor-respond-to');
     return _ui;
@@ -79,12 +78,10 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
         _name = _param.user.name;
         
         //避免名稱太長
-        if (_name === null)
-        {
+        if (_name === null) {
             _name = '';
         }
-        if (_name.length > 7)
-        {
+        if (_name.length > 7) {
             _name = _name.substr(0, 7) + '...';
         }
     }

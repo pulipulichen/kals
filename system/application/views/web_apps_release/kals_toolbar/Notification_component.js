@@ -29,8 +29,7 @@ Notification_component.prototype = new KALS_user_interface();
  * @memberOf {Notification_component}
  * @type {jQuery} UI
  */
-Notification_component.prototype._$create_ui = function ()
-{
+Notification_component.prototype._$create_ui = function () {
     var _ui = $('<div><div class="unread"></div></div>')
         .addClass('notification-component');
     

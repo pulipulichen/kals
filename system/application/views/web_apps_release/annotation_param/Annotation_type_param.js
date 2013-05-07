@@ -225,8 +225,7 @@ Annotation_type_param.prototype.export_json = function () {
     
     if (this.is_basic() === false) {
         var _name = this.get_name();
-        if (_name != 'custom')
-        {
+        if (_name != 'custom') {
             _json = encodeURIComponent(_name);
         }
     }
@@ -243,8 +242,7 @@ Annotation_type_param.filter_basic_id = function (_param) {
             return null;
     }
     else if ($.is_string(_param)) {
-        for (var _i in Annotation_type_param._type_mapping)
-        {
+        for (var _i in Annotation_type_param._type_mapping) {
             _typename = Annotation_type_param._type_mapping[_i];
             if (_typename == _param)
                 return parseInt(_i);
@@ -424,8 +422,7 @@ Annotation_type_param.prototype.get_classname = function (_prefix, _postfix) {
  * @param {string|null} _postfix
  * @return {string}
  */
-Annotation_type_param.prototype.get_my_classname = function (_prefix, _postfix)
-{
+Annotation_type_param.prototype.get_my_classname = function (_prefix, _postfix) {
     return 'my_' + this.get_classname(_prefix, _postfix);
 };
 

@@ -71,8 +71,7 @@ Policy_component.prototype._policy_changable = false;
  * @memberOf {Policy_component}
  * @type {jQuery} UI
  */
-Policy_component.prototype._$create_ui = function ()
-{
+Policy_component.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('policy-component');
     
@@ -244,8 +243,7 @@ Policy_component.prototype._listen_editor = function () {
         var _policy_type = _this.get_policy_type();
         
         //如果是預設值，則由伺服器端去取得預設值
-        if (_policy_type != this._default_policy_type)
-        {
+        if (_policy_type != this._default_policy_type) {
             //var _policy_type_id = _this.filter_policy_type_id(_policy_type);
             _param.policy_type = _policy_type;
         }

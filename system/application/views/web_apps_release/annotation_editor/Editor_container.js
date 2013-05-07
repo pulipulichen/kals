@@ -344,13 +344,11 @@ Editor_container.prototype._create_deny = function () {
     // --------
     
     KALS_context.auth.add_listener(function(_auth) {
-        if (_auth.is_login())
-        {
+        if (_auth.is_login()) {
             _deny_write.show();
             _not_login.hide();
         }
-        else
-        {
+        else {
             _deny_write.hide();
             _not_login.show();
         }
@@ -426,13 +424,11 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
     
     var _this = this;
     this.toggle_container(false, function () {
-        if (_is_deny === true)
-        {
+        if (_is_deny === true) {
             _deny.show();
             _editor.hide();
         }
-        else
-        {
+        else {
             _deny.hide();
             _editor.show();
         }
@@ -463,13 +459,11 @@ Editor_container.prototype.toggle_loading = function (_is_loading) {
     var _this = this;
     /*
     this.toggle_container(false, function () {
-        if (_is_loading === true)
-        {
+        if (_is_loading === true) {
             _loading.show();
             _editor.hide();
         }
-        else
-        {
+        else {
             _loading.hide();
             _editor.show();
         }

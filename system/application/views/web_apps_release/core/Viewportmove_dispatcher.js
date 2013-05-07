@@ -22,8 +22,7 @@ function Viewportmove_dispatcher() {
     
     var _this = this;
     var _event = function(){
-        if (typeof($viewport_trigger) != 'undefined')
-        {
+        if (typeof($viewport_trigger) != 'undefined') {
             clearTimeout($viewport_trigger);
         }
         $viewport_trigger = setTimeout(function () {
@@ -156,8 +155,7 @@ Viewportmove_dispatcher.prototype._setup_zoom_detector = function () {
         var _viewport_width = _this.get_viewport_width();
         
         //如果偵測到的寬度與之前設定的寬度不同，則觸發事件
-        if (_detect_width != _viewport_width) 
-        {
+        if (_detect_width != _viewport_width) {
             //將偵測到的寬度存成設定的寬度
             _this.viewport_width = _detect_width;
             _this.update_device_scale_style();
@@ -224,8 +222,7 @@ Viewportmove_dispatcher.prototype._get_detector_width = function () {
 */
 
 /*
-Viewportmove_dispatcher.prototype._get_device_scale = function()
-{
+Viewportmove_dispatcher.prototype._get_device_scale = function() {
     var _deviceWidth = null;
     //偵測方向
     var _landscape = Math.abs(window.orientation) == 90;
@@ -251,8 +248,7 @@ Viewportmove_dispatcher.prototype._get_device_scale = function()
             break;
         
         if (_result < _range1 
-            && _result > _range2)
-        {
+            && _result > _range2) {
             var _middle = (_range1 + _range2) / 2;
             if (_result > _middle)
                 _result = _range1;
@@ -274,12 +270,10 @@ Viewportmove_dispatcher.prototype._get_device_scale = function()
 //Viewportmove_dispatcher.prototype._scale_range = [2.5, 2, 1.5, 1.25, 1, 0.75, 0.625, 0.5, 0.375, 0.3125, 0.25, 0.2];
 
 /*
-Viewportmove_dispatcher.prototype._update_device_scale_style = function () 
-{
+Viewportmove_dispatcher.prototype._update_device_scale_style = function () {
     var _stylesheet = this._width_stylesheet;
     if (typeof(_stylesheet.cssRules) != 'undefined' 
-        && _stylesheet.cssRules.length) 
-    {
+        && _stylesheet.cssRules.length) {
         _stylesheet.deleteRule(0);
     }
     

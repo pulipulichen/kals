@@ -15,8 +15,9 @@ function List_timestamp_component(_item) {
     
     KALS_user_interface.call(this);
     
-    if ($.isset(_item))
-        this._item = _item;
+    if ($.isset(_item)) {
+		this._item = _item;
+	}
     
 }
 
@@ -33,8 +34,7 @@ List_timestamp_component.prototype._item = null;
  * @memberOf {List_timestamp_component}
  * @type {jQuery} UI
  */
-List_timestamp_component.prototype._$create_ui = function ()
-{
+List_timestamp_component.prototype._$create_ui = function () {
     var _ui = $('<td></td>')
         .addClass('list-timestamp-component');
     

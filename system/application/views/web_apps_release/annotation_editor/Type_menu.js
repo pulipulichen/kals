@@ -39,8 +39,7 @@ Type_menu.prototype._menu_id = 'editor_type_menu';
  * @memberOf {Type_menu}
  * @type {jQuery} UI
  */
-Type_menu.prototype._$create_ui = function ()
-{
+Type_menu.prototype._$create_ui = function () {
     this._menu_id = this._menu_id + $.create_id();
     var _id = this._menu_id;
     
@@ -106,8 +105,7 @@ Type_menu.prototype.create_type_option = function (_type) {
         
         var _lang_index = this._type_lang_header + _type;
         if (this.enable_custom_name === false
-            && _type == 'custom')
-        {
+            && _type == 'custom') {
             _lang_index = this._type_lang_header + 'other';
         }
         
@@ -160,15 +158,13 @@ Type_menu.prototype.create_type_hint = function (_type) {
         _classname = _type;
         var _hint_lang;
         if (this.enable_custom_name === false
-            && _type == 'custom')
-        {
+            && _type == 'custom') {
             _hint_lang = new KALS_language_param(
                 'Your custom type.',
                 'annotation.type.other.hint'
             );
         }
-        else
-        {
+        else {
             _hint_lang = new KALS_language_param(
                 '',
                 'annotation.type.' + _type + '.hint'
@@ -235,12 +231,10 @@ Type_menu.prototype.setup_type_option = function (_type_ui) {
         //$.test_msg('Type_menu.setup_option()', _type);
         
         if (_this.enable_custom_name === true
-            && _type == 'custom')
-        {
+            && _type == 'custom') {
             _this.open_custom_name_dialog();
         }
-        else
-        {
+        else {
             _component.set_type(_type);    
         }
         _this.close();

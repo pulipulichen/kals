@@ -30,8 +30,7 @@ Note_editor_ckeditor.prototype._$apply_type = 'default';
  * @memberOf {Note_editor_ckeditor}
  * @type {jQuery} UI
  */
-Note_editor_ckeditor.prototype._$create_ui = function ()
-{
+Note_editor_ckeditor.prototype._$create_ui = function () {
     var _ui = Note_editor.prototype._$create_ui.call(this);
     
     //_ui.attr('id', 'textarea_' + $.create_id());
@@ -69,8 +68,7 @@ Note_editor_ckeditor._setup_ckeditor = function () {
         
         //$.test_msg('Note_editor_ckeditor.setup_ckeditor() textareas', _textareas.length);
         
-        _textareas.each(function(_index, _textarea)
-        {
+        _textareas.each(function(_index, _textarea) {
             var _ui = $(_textarea).find('textarea:first');
             //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [each textarea]', [_ui.length, typeof(_ui.ckeditor)]);
             _ui.ckeditor(function () {
@@ -91,8 +89,7 @@ Note_editor_ckeditor._setup_ckeditor = function () {
             
             /*
             setTimeout(function () {
-                if ($(_textarea).children('span').length === 0)
-                {
+                if ($(_textarea).children('span').length === 0) {
                     _ui.show();
                     _ui.css('visibility', 'visible');
                 }
@@ -182,8 +179,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
             
             $.test_msg('Note_editor_ckeditor.setup_ckeditor() toolboxs', [_toolboxs.length]);
             
-            for (var _i = 0; _i < _toolboxs.length; _i++)
-            {
+            for (var _i = 0; _i < _toolboxs.length; _i++) {
                 var _toolbox = _toolboxs.eq(_i);
                 
                 _toolbox.find('.cke_toolbar:last').addClass('minimize');
@@ -202,8 +198,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
             
             $.test_msg('Note_editor_ckeditor.setup_ckeditor() cke_editors', [_cke_editors.length]);
             
-            for (var _i = 0; _i < _cke_editors.length; _i++)
-            {
+            for (var _i = 0; _i < _cke_editors.length; _i++) {
                 var _cke_editor = _cke_editor.eq(_i);
                 
                 var _cke_toolbox = _cke_editor.find('.cke_toolbox:first');
@@ -230,8 +225,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     //} catch (e) {} 
     
     /*
-    _ckeditor.on('instanceReady', function( _evt )
-      {
+    _ckeditor.on('instanceReady', function( _evt ) {
          //_evt.preventDefault();
          var _editor = _evt.editor;
          _editor.execCommand('maximize');

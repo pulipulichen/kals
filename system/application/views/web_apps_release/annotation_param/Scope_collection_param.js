@@ -40,8 +40,7 @@ Scope_collection_param.prototype.add = function (_scope, _to) {
     
     if ($.is_array(_scope)) {
         var _scopes = _scope;
-        for (var _i in _scopes)
-        {
+        for (var _i in _scopes) {
             _scope = _scopes[_i];
             this.add(_scope);
         }
@@ -93,8 +92,7 @@ Scope_collection_param.prototype.import_coll = function (_scope_coll) {
         //$.test_msg('Scope_collection_para.import_coll()', _scope_coll_json.length);
         //$.test_msg('Scope_collection_para.import_coll()', _scope_coll_json);
         
-        for (var _i in _scope_coll_json)
-        {
+        for (var _i in _scope_coll_json) {
             var _scope_json = _scope_coll_json[_i];
             var _from = _scope_json[0];
             var _to = _scope_json[1];
@@ -153,20 +151,17 @@ Scope_collection_param.prototype.resort = function (_force) {
     
     for (var _i = 0; _i < _length; _i++) {
         var _scope = _scopes[_i];
-        if (_i < _length - 1)
-        {
+        if (_i < _length - 1) {
             var _next_scope = _scopes[_i+1];
             
-            if (_scope.get_to() < _next_scope.get_from())
-            {
+            if (_scope.get_to() < _next_scope.get_from()) {
                 if (_hold === false)
                     _resort_scopes.push(_scope);
                     
                 _hold = false;
                 continue;
             }
-            else
-            {
+            else {
                 if (_hold === true)
                     _scope = _resort_scopes.pop();
                     
@@ -179,8 +174,7 @@ Scope_collection_param.prototype.resort = function (_force) {
             
             //做完是做完了，尚未經過驗證 
         }
-        else
-        {
+        else {
             _resort_scopes.push(_scope);
         }
     }
@@ -300,8 +294,7 @@ Scope_collection_param.prototype.export_json = function (_export_anchor_text) {
  * @param {Scope_collection_param} _scope_coll
  * @type {Boolean}
  */
-Scope_collection_param.prototype.equals = function (_scope_coll)
-{
+Scope_collection_param.prototype.equals = function (_scope_coll) {
     if ($.is_class(_scope_coll, 'Scope_collection_param') === false)
         return false;
     

@@ -47,8 +47,7 @@ Notify_modal.prototype._$create_ui = function () {
     
     _config.onBeforeLoad = function () {
         
-        if ($.is_function(_onbeforeload))
-        {
+        if ($.is_function(_onbeforeload)) {
             _onbeforeload();
         }
     };

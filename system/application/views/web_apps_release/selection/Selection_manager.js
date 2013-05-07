@@ -99,8 +99,7 @@ Selection_manager.prototype.initialize = function () {
     // 開始作初始化
     // ---------
     var _this = this;
-    this.text.initialize(function () 
-    {
+    this.text.initialize(function () {
         // ---------
         // 完成後的動作
         // ---------
@@ -169,8 +168,7 @@ Selection_manager.prototype.get_anchor_text = function () {
             _anchor_text = _anchor_text + ' ';
         
         var _scope = this.selected_scope[_i];
-        for (var _j in _scope)
-        {
+        for (var _j in _scope) {
             var _word = _scope[_j];
             _anchor_text = _anchor_text + _word.html();
         }
@@ -204,8 +202,7 @@ Selection_manager.prototype.select = function (_scope) {
  * }
  */
 /*
-Selection_manager.prototype.add_select = function (_scope)
-{
+Selection_manager.prototype.add_select = function (_scope) {
     _scope = this.scope.add_select(_scope);
     this.selected_scope.push(_scope);
     this.notify_listeners('select', this);
@@ -228,8 +225,7 @@ Selection_manager.prototype.has_selected = function () {
  * @param {number} _type 標註類型ID
  */
 /*
-Selection_manager.prototype.set_annotation_type = function (_type)
-{
+Selection_manager.prototype.set_annotation_type = function (_type) {
     //有哪些標註的class_name，尚未訂定
     var _anno_class_name = _type;
     this.add_class(_anno_class_name);
@@ -238,8 +234,7 @@ Selection_manager.prototype.set_annotation_type = function (_type)
 };
 */
 /*
-Selection_manager.prototype.unset_annotation_type = function (_type)
-{
+Selection_manager.prototype.unset_annotation_type = function (_type) {
     //有哪些標註的class_name，尚未訂定
     var _anno_class_name = _type;
     this.remove_class(_anno_class_name);
@@ -275,24 +270,19 @@ Selection_manager.prototype.unset_recommend = function () {
  * @param {String} _class_name
  */
 /*
-Selection_manager.prototype.add_class = function (_class_name) 
-{
+Selection_manager.prototype.add_class = function (_class_name) {
     
     for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
-        if ($.is_array(_scope))
-        {
-            for (var _j in _scope)
-            {
+        if ($.is_array(_scope)) {
+            for (var _j in _scope) {
                 var _word = _scope[_j];
-                if ($.is_jquery(_word))
-                {
+                if ($.is_jquery(_word)) {
                     _word.addClass(_class_name);
                 }
             }
         }
-        else if ($.is_jquery(_scope))
-        {
+        else if ($.is_jquery(_scope)) {
             _scope.addClass(_class_name);
         }
     }
@@ -304,24 +294,19 @@ Selection_manager.prototype.add_class = function (_class_name)
  * @param {String} _class_name
  */
 /*
-Selection_manager.prototype.remove_class = function (_class_name) 
-{
+Selection_manager.prototype.remove_class = function (_class_name) {
     
     for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
-        if ($.is_array(_scope))
-        {
-            for (var _j in _scope)
-            {
+        if ($.is_array(_scope)) {
+            for (var _j in _scope) {
                 var _word = _scope[_j];
-                if ($.is_jquery(_word))
-                {
+                if ($.is_jquery(_word)) {
                     _word.removeClass(_class_name);
                 }
             }
         }
-        else if ($.is_jquery(_scope))
-        {
+        else if ($.is_jquery(_scope)) {
             _scope.removeClass(_class_name);
         }
     }

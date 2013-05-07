@@ -84,8 +84,7 @@ View_anchor_text_component.prototype._classname = 'view-anchor-text-component';
  * @memberOf {View_anchor_text_component}
  * @type {jQuery} UI
  */
-View_anchor_text_component.prototype._$create_ui = function ()
-{
+View_anchor_text_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass(this._classname)
         .addClass('kals-paragraph');
@@ -105,8 +104,7 @@ View_anchor_text_component.prototype._text_container = null;
  * @type {jQuery}
  */
 View_anchor_text_component.prototype._create_text_container = function () {
-   if ($.is_null(this._text_container))
-   {
+   if ($.is_null(this._text_container)) {
        var _ui = $('<div></div>')
            .addClass('text-container');
        this._text_container = _ui;

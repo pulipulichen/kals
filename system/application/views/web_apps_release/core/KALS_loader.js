@@ -31,16 +31,14 @@ function KALS_loader_class() {
  * var _conf = {user_name: 'pudding'};
  * @param {Object} _callback 回呼函數
  */
-this.load = function (_conf, _callback)
-{
+this.load = function (_conf, _callback) {
     this.generic_load(_conf, _callback);
     return this;
 };
 
 this.generic_dispatcher = null;
 
-this.generic_load = function (_conf, _callback)
-{   
+this.generic_load = function (_conf, _callback) {   
     var _prefix = "generic/";
     
     if (typeof(_conf) == 'function' && typeof(_callback) == 'undefined') {
@@ -100,8 +98,7 @@ this.generic_load = function (_conf, _callback)
                 //_this.load_libraries(_component_libraries, function () {
                 _this.load_scripts_orderly(_component_libraries, function () {
                     console.log('[KALS] callback');
-                    if (typeof(_callback) == "function")
-                    {
+                    if (typeof(_callback) == "function") {
                         _callback();
                     }
                 });    
@@ -112,8 +109,7 @@ this.generic_load = function (_conf, _callback)
     return this;
 };
 
-this.has_jquery = function () 
-{
+this.has_jquery = function () {
     return (typeof(jQuery) == 'object'
         && jQuery != null
         && jQuery instanceof jQuery);
@@ -128,22 +124,19 @@ this.base_url = null;
  * @type {string}
  * @final
  */
-this.get_base_url = function ()
-{
+this.get_base_url = function () {
     if (this.base_url === null) {
         var _base_url = null;
         var _script_tags = document.getElementsByTagName("script");
         var _needle = '/kals/web_apps/generic/loader';
-        for (var _i in _script_tags)
-        {
+        for (var _i in _script_tags) {
             var _s = _script_tags[_i];
             if (typeof(_s.src) == 'undefined')
                 continue;
             
             var _url = _s.src;
             if (_url.length >= _needle.length
-                && _url.indexOf(_needle) > -1)
-            {
+                && _url.indexOf(_needle) > -1) {
                 _needle = 'web_apps/';
                 var _pos = _url.lastIndexOf(_needle);
                 
@@ -152,14 +145,12 @@ this.get_base_url = function ()
                 
             }
             
-            if (_base_url != null) 
-            {
+            if (_base_url != null) {
                 break;
             }
         }
         
-        if (_base_url != null)
-        {
+        if (_base_url != null) {
             //$.test_msg('KALS_loader.setup_base_url()', _base_url);
             this.base_url = _base_url;
         }   
@@ -179,33 +170,28 @@ this.get_libraries_url = function () {
     
 };
 
-this.load_jquery = function (_callback)
-{
+this.load_jquery = function (_callback) {
     if (this.has_jquery()) {
         if (typeof(_callback) == 'function')
             _callback();
     }
     else {   
         var _base_url = this.get_base_url();
-        if (_base_url != null)
-        {
+        if (_base_url != null) {
             var _jquery_url = _base_url + 'generic/jquery';
             var _head= document.getElementsByTagName('body')[0];
             var _script= document.createElement('script');
             _script.type= 'text/javascript';
             _script.src= _jquery_url;
-            _script.onreadystatechange = function () 
-            {
+            _script.onreadystatechange = function () {
                 if (typeof(this.readyState) != 'undefined'
-                    && this.readyState == 'complete')
-                {                     
+                    && this.readyState == 'complete') {                     
                     if (typeof(_callback) == 'function')
                         _callback();
                 }
             };
             _script.onload = function () {              
-                if (typeof(_callback) == 'function')
-                {
+                if (typeof(_callback) == 'function') {
                     setTimeout(function () {
                         _callback();    
                     }, 0);
@@ -224,22 +210,19 @@ this.load_jquery = function (_callback)
  * @param {Array} _script_list
  * @param {Function} _callback
  */
-this.load_scripts = function (_script_list, _callback, _is_libraries) 
-{
+this.load_scripts = function (_script_list, _callback, _is_libraries) {
     var _loaded = [];
     
     var _check_complete = function (_script) {
         if (typeof(_script) == 'undefined'
             || _script === ''
-            || $.inArray(_script, _loaded) > -1)
-        {
+            || $.inArray(_script, _loaded) > -1) {
             return this;
         }
         
         _loaded.push(_script);
         
-        if (_loaded.length == _script_list.length)
-        {
+        if (_loaded.length == _script_list.length) {
             if (typeof(_callback) == 'function')
                 _callback();
         }
@@ -280,8 +263,7 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
        console.log('[KALS] append script: ' + _script_url);
        $.getScript(_script_url, function () {
            
-           if (_loaded === false)
-           {
+           if (_loaded === false) {
                if (typeof(_callback) == 'function')
                    _callback();
            }
@@ -292,8 +274,7 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     return this;
 };
 
-this.load_styles = function (_style_list, _callback)
-{
+this.load_styles = function (_style_list, _callback) {
     var _loaded = [];
     var _check_complete = function (_style) {
         if (typeof(_style) == 'undefined'
@@ -301,8 +282,7 @@ this.load_styles = function (_style_list, _callback)
             return;
         
         _loaded.push(_style);
-        if (_loaded.length >= _style_list.length)
-        {
+        if (_loaded.length >= _style_list.length) {
             if (typeof(_callback) == 'function')
                 _callback();
         }
@@ -320,8 +300,7 @@ this.load_styles = function (_style_list, _callback)
         var _style_title = null;
         
         var _pos = _style_data.lastIndexOf('|');
-        if (_pos > -1)
-        {
+        if (_pos > -1) {
             _style_url = _style_data.substr(0, _pos);
             _style_title = _style_data.substring(_pos+1, _style_data.length);
         }
@@ -332,8 +311,7 @@ this.load_styles = function (_style_list, _callback)
             
         //檢查一下是否已有該title
         var _link = null;
-        if (_style_title != null)
-        {
+        if (_style_title != null) {
             _link = $('link[type=text/css][rel=stylesheet][title='+_style_title+']');
             if (_link.length === 0)
                 _link = $('<link type="text/css" rel="stylesheet" href="'+_style+'" />')
@@ -345,13 +323,11 @@ this.load_styles = function (_style_list, _callback)
             _link = $('<link type="text/css" rel="stylesheet" href="'+_style+'" />')
                 .appendTo($('head'));
         
-        _link.attr('onreadystatechange', function () 
-            {
+        _link.attr('onreadystatechange', function () {
                 if (this.readyState == 'complete')
                     _check_complete(this.href);
             })
-            .attr('onload', function () 
-            {
+            .attr('onload', function () {
                 _check_complete(this.href);
             });
             
@@ -361,8 +337,7 @@ this.load_styles = function (_style_list, _callback)
     return this;
 };
 
-this.load_libraries = function (_libraries, _callback) 
-{
+this.load_libraries = function (_libraries, _callback) {
     var _loaded = 0;
     var _threshold = 0;
     var _complete = function () {
@@ -370,8 +345,7 @@ this.load_libraries = function (_libraries, _callback)
             return;
         _loaded++;
         
-        if (_loaded >= _threshold && _loaded != -1)
-        {
+        if (_loaded >= _threshold && _loaded != -1) {
             _loaded = -1;
             if (typeof(_callback) == 'function')
                 _callback();
@@ -397,14 +371,12 @@ this.load_libraries = function (_libraries, _callback)
             
             setTimeout(function () {
                 
-                if (typeof(_libraries.script_list) != 'undefined')
-                {
+                if (typeof(_libraries.script_list) != 'undefined') {
                     _this.load_scripts(_libraries.script_list, function () {
                         _complete();
                     });
                 }
-                if (typeof(_libraries.style_list) != 'undefined')
-                {   
+                if (typeof(_libraries.style_list) != 'undefined') {   
                     _this.load_styles(_libraries.style_list, function () {
                         _complete();
                     });
@@ -418,14 +390,12 @@ this.load_libraries = function (_libraries, _callback)
         }, true);
     }
     else {
-        if (typeof(_libraries.script_list) != 'undefined')
-        {
+        if (typeof(_libraries.script_list) != 'undefined') {
             _this.load_scripts(_libraries.script_list, function () {
                 _complete();
             });
         }
-        if (typeof(_libraries.style_list) != 'undefined')
-        {   
+        if (typeof(_libraries.style_list) != 'undefined') {   
             _this.load_styles(_libraries.style_list, function () {
                 _complete();
             });
@@ -468,24 +438,21 @@ this.load_scripts_orderly = function (_scripts, _callback) {
 /**
  * Setup完畢之後，接下來要開始跟伺服器取得資料，進行初始化。
  */
-this.initialize = function (email)
-{
+this.initialize = function (email) {
     
 };
 
 /**
  * 初始化完畢、也取得伺服器資料之後，接下來就進行更進一步的設置。
  */
-this.ready = function ()
-{
+this.ready = function () {
 
 };
 
 /**
  * 上述工作完成之後，最後的設定。
  */
-this.complete = function ()
-{
+this.complete = function () {
 
 };
 

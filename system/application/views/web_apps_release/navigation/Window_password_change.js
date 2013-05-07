@@ -46,8 +46,7 @@ Window_password_change.prototype.onclose = function () {
  * @memberOf {Window_password_change}
  * @type {jQuery} UI
  */
-Window_password_change.prototype._$create_ui = function ()
-{
+Window_password_change.prototype._$create_ui = function () {
     var _factory = KALS_window.ui;
     var _ui = _factory.panel('window-password-change');
     

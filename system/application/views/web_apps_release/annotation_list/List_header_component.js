@@ -54,8 +54,7 @@ List_header_component.prototype.set_data = function () {
  * @memberOf {List_header_component}
  * @type {jQuery} UI
  */
-List_header_component.prototype._$create_ui = function ()
-{
+List_header_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-header-component');
     
@@ -122,18 +121,20 @@ List_header_component.prototype._$create_ui = function ()
 
 List_header_component.prototype._name_container = null;
 
-List_header_component.prototype.set_user_name = function (_name) 
-{
+List_header_component.prototype.set_user_name = function (_name) {
     if ($.is_null(_name)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _name = _param.user.get_name();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_name = _param.user.get_name();
+		}
+		else {
+			return this;
+		}
     }
     
-    if ($.is_null(this._name_container))
-        this.get_ui();
+    if ($.is_null(this._name_container)) {
+		this.get_ui();
+	}
     
     this._name_container.html(_name);
 };
@@ -147,22 +148,25 @@ List_header_component.prototype.is_my_classname = 'is-my';
 /**
  * @param {Boolean} _is_my
  */
-List_header_component.prototype.set_is_my = function (_is_my) 
-{
+List_header_component.prototype.set_is_my = function (_is_my) {
     if ($.is_null(_is_my)) {
         var _param = this._item.get_data();
-        if ($.isset(_param)) 
-            _is_my = _param.is_my_annotation();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_is_my = _param.is_my_annotation();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_is_my === true)
-        _ui.addClass(this.is_my_classname);
-    else
-        _ui.removeClass(this.is_my_classname);
+    if (_is_my === true) {
+		_ui.addClass(this.is_my_classname);
+	}
+	else {
+		_ui.removeClass(this.is_my_classname);
+	}
     
     return this;
 };
@@ -197,22 +201,25 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
 /**
  * @param {Boolean} _is_my
  */
-List_header_component.prototype.set_has_recommend = function (_has_recommend) 
-{
+List_header_component.prototype.set_has_recommend = function (_has_recommend) {
     if ($.is_null(_has_recommend)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _has_recommend = _param.has_recommend();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_has_recommend = _param.has_recommend();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_has_recommend === true)
-        _ui.addClass(this.is_has_recommend);
-    else
-        _ui.removeClass(this.is_has_recommend);
+    if (_has_recommend === true) {
+		_ui.addClass(this.is_has_recommend);
+	}
+	else {
+		_ui.removeClass(this.is_has_recommend);
+	}
     
     return this;
 };
@@ -232,22 +239,24 @@ List_header_component.prototype._type_container = null;
  * 
  * @param {Annotation_type_param} _type
  */
-List_header_component.prototype.set_type = function (_type) 
-{
+List_header_component.prototype.set_type = function (_type) {
     //$.test_msg('List_header_component.set_type', _type);
     
     if ($.is_null(_type)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _type = _param.type;
-        else
-            return this;
+        if ($.isset(_param)) {
+			_type = _param.type;
+		}
+		else {
+			return this;
+		}
     }
     
     //$.test_msg('List_header_component.set_type [is_null]', _type);
     
-    if ($.is_null(this._type_container))
-        this.get_ui();
+    if ($.is_null(this._type_container)) {
+		this.get_ui();
+	}
     
     this._type_container.empty();
     
@@ -267,13 +276,11 @@ List_header_component.prototype.set_type = function (_type)
     if (_type.is_custom()) {
         var _custom_name = _type.get_type_name();
         
-        if ($.isset(_custom_name))
-        {
+        if ($.isset(_custom_name)) {
             _option.html(_custom_name);
             _option.addClass('other');    
         }
-        else
-        {
+        else {
             var _lang = new KALS_language_param(
                 _type_name,
                 _type_lang_header + _type_name
@@ -282,8 +289,7 @@ List_header_component.prototype.set_type = function (_type)
             KALS_context.lang.add_listener(_option, _lang);
         }
     }
-    else 
-    {
+    else {
         var _lang = new KALS_language_param(
             _type_name,
             _type_lang_header + _type_name
@@ -308,26 +314,30 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
 /**
  * @param {Boolean} _has_recommend
  */
-List_header_component.prototype.set_has_recommend = function (_has_recommend) 
-{
+List_header_component.prototype.set_has_recommend = function (_has_recommend) {
     //只有我的標註才要設置recommend的喔！
-    if (this.is_my() === false)
-        return this;
+    if (this.is_my() === false) {
+		return this;
+	}
     
     if ($.is_null(_has_recommend)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _has_recommend = _param.has_recommend();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_has_recommend = _param.has_recommend();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_has_recommend === true)
-        _ui.addClass(this.has_recommend_classname);
-    else
-        _ui.removeClass(this.has_recommend_classname);
+    if (_has_recommend === true) {
+		_ui.addClass(this.has_recommend_classname);
+	}
+	else {
+		_ui.removeClass(this.has_recommend_classname);
+	}
     
     return this;
 };
@@ -358,10 +368,12 @@ List_header_component.prototype.set_policy_type = function (_policy_type) {
     
     if ($.is_null(_policy_type)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _policy_type = _param.policy_type;
-        else
-            return this;
+        if ($.isset(_param)) {
+			_policy_type = _param.policy_type;
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
@@ -396,13 +408,18 @@ List_header_component.prototype._setup_like_component = function () {
 
 List_header_component.prototype._id_component = null;
 
+/**
+ * 建立顯示ID的元件
+ * @return {jQuery}
+ */
 List_header_component.prototype._create_id_component = function () {
     var _component = $('<span></span>')
         .addClass('id-component');
         
     var _param = this._item.get_data();
-    if ($.isset(_param))
-        _component.html('#' + _param.annotation_id);
+    if ($.isset(_param)) {
+		_component.html('#' + _param.annotation_id);
+	}
     
     this._id_component = _component;
     return _component;

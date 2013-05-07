@@ -100,8 +100,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
             
             //$.test_msg('My_annotation_loader.init()', ($.isset(_my_basic) && _is_login));
             
-            if ($.isset(_my_basic) && _is_login)
-            {
+            if ($.isset(_my_basic) && _is_login) {
                 if (_this.is_loaded())
                     return;
                     
@@ -111,8 +110,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
                     _this.stop_loader();
                 });
             }
-            else
-            {
+            else {
                 //$.test_msg('My_annotation_loader.init()');
                 //_this.stop_loader();
                 //_this._selection.clear();

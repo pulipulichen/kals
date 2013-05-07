@@ -59,8 +59,7 @@ Select_tooltip.prototype._$get_config = function () {
        
        var _trigger_class_name = this.trigger_classname;
        
-       if (typeof(TRIGGER_TOUCHSTART_EVENT_LOCK) == 'undefined')
-       {
+       if (typeof(TRIGGER_TOUCHSTART_EVENT_LOCK) == 'undefined') {
            $('.' + _trigger_class_name).live('touchstart', function (_event) {
                _event.preventDefault();
            });
@@ -93,14 +92,12 @@ Select_tooltip.prototype._$get_config = function () {
             var _trigger_bottom;
             var _tip_top = _tip.offset().top;
             var _top_padding = KALS_toolbar.get_ui().height();
-            if (_tip_top < window.pageYOffset + _top_padding)
-            {             
+            if (_tip_top < window.pageYOffset + _top_padding) {             
                _trigger_bottom = _trigger.offset().top + _trigger.height();
                    _tip.css('top', _trigger_bottom+'px');
                _tip.addClass('bottom');
             }
-            else
-            {
+            else {
                 _tip.removeClass('bottom');
             }
             
@@ -110,8 +107,7 @@ Select_tooltip.prototype._$get_config = function () {
             // 如果他沒有對到字的正上方，則調整一下吧
             //$.test_msg('Select_tooltip._$get_config()', [_trigger.offset().left, _trigger.offset().top, _tip.offset().left, _tip.offset().top]);
             var _trigger_offset = _trigger.offset();
-            if (Math.abs( _tip_left - _trigger_offset.left) > 50 )
-            {
+            if (Math.abs( _tip_left - _trigger_offset.left) > 50 ) {
                 //那就定位在滑鼠上方
                 //$.test_msg('Select_tooltip._$get_config()', [_event.clientX, _event.clientY]);
                 _tip_left = _event.clientX - (_tip.width() / 2);
@@ -120,15 +116,13 @@ Select_tooltip.prototype._$get_config = function () {
                 _tip_top = window.pageYOffset + _event.clientY - _tip.height() - 3;
                 //$.test_msg('Select_tooltip._$get_config()', [_tip_top]);
                 _tip.css('top', _tip_top+'px');
-                if (_tip_top < window.pageYOffset + _top_padding)
-                {             
+                if (_tip_top < window.pageYOffset + _top_padding) {             
                    _tip_top = window.pageYOffset + _event.clientY + (_trigger.height() / 3);
                        _tip.css('top', _tip_top+'px');
                    _tip.addClass('bottom');
                    //$.test_msg('Select_tooltip._$get_config() bottom', [_event.clientY, _tip_top, window.pageYOffset, _top_padding]);
                 }
-                else
-                {
+                else {
                     //$.test_msg('Select_tooltip._$get_config() top', [_tip_top]);
                     _tip.css('top', _tip_top+'px');
                     _tip.removeClass('bottom');
@@ -136,14 +130,11 @@ Select_tooltip.prototype._$get_config = function () {
             }
             
             /*
-            if (_tip_left < _x_left + 30)
-            {
+            if (_tip_left < _x_left + 30) {
                 _x_left = _x_left - 30;
-                if (_x_left > 0)
-                {
+                if (_x_left > 0) {
                     setTimeout(function () {
-                        if (_tip.offset().left == _tip_left)
-                        {
+                        if (_tip.offset().left == _tip_left) {
                             $.scroll_to({x: _x_left});
                         }
                     }, 1000);
@@ -152,13 +143,11 @@ Select_tooltip.prototype._$get_config = function () {
             
             var _x_right = _x_left + $.get_viewport_width();
             var _tip_right = _tip_left + _tip.width();
-            if (_tip_right > _x_right - 30)
-            {
+            if (_tip_right > _x_right - 30) {
                 _x_left = _x_left + 30;
                 
                 setTimeout(function () {
-                    if (_tip.offset().left == _tip_left)
-                    {
+                    if (_tip.offset().left == _tip_left) {
                         $.scroll_to({x: _x_left});
                     }
                 }, 1000);
@@ -185,8 +174,7 @@ Select_tooltip.prototype._$get_config = function () {
         else
             _tip.removeClass(_selected_classname);
         
-        if ($.is_function(_onbeforeshow))
-        {
+        if ($.is_function(_onbeforeshow)) {
             _onbeforeshow.call(this);
         }
         
@@ -249,8 +237,7 @@ Select_tooltip.prototype.trigger_classname = 'tooltip-trigger';
  * @memberOf {Select_tooltip}
  * @type {jQuery} UI
  */
-Select_tooltip.prototype._$create_ui = function ()
-{
+Select_tooltip.prototype._$create_ui = function () {
     var _tooltip_id = this.tooltip_id;
     var _container_classname = this.container_classname;
     var _button_classname = this.button_classname;

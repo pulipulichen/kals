@@ -36,8 +36,7 @@ Window_filter_submit.prototype.submit = function () {
         var _url = 'custom';
         
         var _config = [];
-        if (typeof(_data.my) == 'object' && _data.my.length > 0)
-        {
+        if (typeof(_data.my) == 'object' && _data.my.length > 0) {
             var _my_style = {
                 //'background_color': 'transparent'
                 'border-bottom-style': 'none'
@@ -64,8 +63,7 @@ Window_filter_submit.prototype.submit = function () {
             });
             */
         }
-        if (typeof(_data.nav) == 'object')
-        {
+        if (typeof(_data.nav) == 'object') {
             var _nav_style = {
                 'color': 'inherit'
                 //'text_decoration': 'none'
@@ -102,8 +100,7 @@ Window_filter_submit.prototype.get_data = function () {
         var _my = [];
         var _inputs = _content_ui.find('.my-type-div input');
         //$.test_msg('Window_filter_submit.get_data() my', _inputs.length);
-        for (var _i = 0; _i < _inputs.length; _i++)
-        {
+        for (var _i = 0; _i < _inputs.length; _i++) {
             var _input = _inputs.eq(_i);
             if (_input.attr('checked') === true) {
 				continue;
@@ -113,8 +110,7 @@ Window_filter_submit.prototype.get_data = function () {
             _my.push(_word_classname + '.' + _classname);
         }
         
-        if (_my.length > 0)
-        {
+        if (_my.length > 0) {
             _data.my = _my;
             _has_data = true;
         }
@@ -126,8 +122,7 @@ Window_filter_submit.prototype.get_data = function () {
         
         var _nav_input = _content_ui.find('.nav-div input');
         var _nav_checked = _nav_input.attr('checked');
-        if (_nav_checked === false)
-        {
+        if (_nav_checked === false) {
             var _nav = [];
             _nav.push(_word_classname + '.nav_bad');
             _nav.push(_word_classname + '.nav_normal');
