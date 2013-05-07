@@ -25,8 +25,9 @@ function Profile_navigation(_common_windows) {
     
     if ($.isset(_common_windows))
     {
-        for (var _i in _common_windows)
-            this._$nav_items.push(_common_windows[_i]);
+        for (var _i in _common_windows) {
+			this._$nav_items.push(_common_windows[_i]);
+		}
     }
 }
 

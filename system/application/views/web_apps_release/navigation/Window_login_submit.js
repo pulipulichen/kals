@@ -58,10 +58,12 @@ Window_login_submit.prototype.get_data = function () {
 
 Window_login_submit.prototype.validate = function (_inputs, _data) {
     
-    if (_inputs == null)
-        _inputs = this.get_inputs();
-    if (_data == null)
-        _data = this.get_data();
+    if (_inputs === null) {
+		_inputs = this.get_inputs();
+	}
+    if (_data === null) {
+		_data = this.get_data();
+	}
     
     var _email = _data.email;
         _email = $.trim(_email);
@@ -71,7 +73,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
     
     var _error_lang = null;
     
-    if (_email == '' && _password == '')
+    if (_email === '' && _password === '')
     {
         _error_lang = new KALS_language_param(
             'Please write E-mail and Password',
@@ -82,7 +84,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
         KALS_window.ui.check_input(_password_input);
         _email_input.focus();
     }
-    else if (_email == '')
+    else if (_email === '')
     {
         _error_lang = new KALS_language_param(
             'Please write E-mail',
@@ -91,7 +93,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
         _email_input.focus();
         KALS_window.ui.check_input(_email_input);
     }
-    else if (_password == '')
+    else if (_password === '')
     {
         _error_lang = new KALS_language_param(
             'Please write Password',
@@ -101,7 +103,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
         KALS_window.ui.check_input(_password_input);
     }
     
-    if (_error_lang != null)
+    if (_error_lang !== null)
     {
         this._content.set_error(_error_lang);
         this._unlock_submit();
@@ -115,8 +117,9 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
 
 Window_login_submit.prototype._setup_auth = function (_data) {
     
-    if (_data == null)
-        _data = this.get_data();
+    if (_data === null) {
+		_data = this.get_data();
+	}
     
     var _auth = KALS_context.auth;
     _auth.set_email(_data.email);
@@ -128,16 +131,18 @@ Window_login_submit.prototype.submit = function () {
     var _data = this.get_data();
     var _inputs = this.get_inputs();
     
-    if (this.validate(_inputs, _data) == false)
-        return this;
+    if (this.validate(_inputs, _data) === false) {
+		return this;
+	}
     
     this._setup_auth(_data);
     
     // ---------
     // 接下來要準備登入囉
     
-    if (this._lock_submit() == false)
-        return this;
+    if (this._lock_submit() === false) {
+		return this;
+	}
     
     var _this = this;
     

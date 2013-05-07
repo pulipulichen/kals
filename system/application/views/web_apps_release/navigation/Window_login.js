@@ -109,7 +109,7 @@ Window_login.prototype._$create_ui = function () {
     _register_row.addClass('register-link')
         .appendTo(_ui);
         
-    if (KALS_CONFIG.deny_register == true)
+    if (KALS_CONFIG.deny_register === true)
     {
         _register_row.hide();
     }

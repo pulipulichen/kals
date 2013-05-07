@@ -53,8 +53,9 @@ Navigation_list.prototype._$create_ui = function ()
     var _ui = $('<div></div>')
         .addClass('navigation-list');
     
-    if (this._$classname != null)
-        _ui.addClass(this._$classname);
+    if (this._$classname !== null) {
+		_ui.addClass(this._$classname);
+	}
     
     var _nav = this._create_nav();
     var _menu_button = this._create_menu();
@@ -104,13 +105,13 @@ Navigation_list.prototype._create_nav = function() {
         });
     }
     
-    if (this._$show_help == true)
+    if (this._$show_help === true)
     {
-        var _td = $('<td></td>')
+        _td = $('<td></td>')
             .addClass('item')
             .appendTo(_tr);
                 
-        var _a = $('<a href="#"></a>')
+        _a = $('<a href="#"></a>')
             .appendTo(_td)
             .addClass('help');
 
@@ -131,23 +132,23 @@ Navigation_list.prototype._create_nav = function() {
 
 Navigation_list.prototype._get_window_content = function (_index) {
     
-    if (typeof(this._$nav_items[_index]) == 'undefined')
-    {
-        return null;
-    }
-    else if (typeof(this._$nav_items[_index]) == 'string')
-    {
-        var _window_content = this._$nav_items[_index];
-        eval('var _content = new ' + _window_content + '()');
-        return _content;
-    }
-    else if (typeof(this._$nav_items[_index]) == 'object')
-    {
-        var _window_content = this._$nav_items[_index];
-        return _window_content;
-    }
-    else
-        return null;
+    if (typeof(this._$nav_items[_index]) == 'undefined') {
+		return null;
+	}
+	else 
+		if (typeof(this._$nav_items[_index]) == 'string') {
+			var _window_content = this._$nav_items[_index];
+			eval('var _content = new ' + _window_content + '()');
+			return _content;
+		}
+		else 
+			if (typeof(this._$nav_items[_index]) == 'object') {
+				_window_content = this._$nav_items[_index];
+				return _window_content;
+			}
+			else {
+				return null;
+			}
 }; 
 
 Navigation_list.prototype._create_menu = function() {
@@ -183,9 +184,9 @@ Navigation_list.prototype._create_menu = function() {
         _options.push(_option);
     }
     
-    if (this._$show_help == true)
+    if (this._$show_help === true)
     {
-        var _option = new Dialog_close_option(this._help_lang, function () {
+        _option = new Dialog_close_option(this._help_lang, function () {
             KALS_util.help();
         });
         _option.add_class('help');

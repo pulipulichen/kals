@@ -102,17 +102,17 @@ KALS_window.prototype._$get_config = function () {
     //$.test_msg('KALS_window._$get_config()', [ this._$modal_name , _config.onLoad]);
     
     var _parent_onbeforeload;
-    if (typeof(_config['onBeforeLoad']) != 'undefined')
+    if (typeof(_config.onBeforeLoad) != 'undefined')
     {
-        _parent_onbeforeload = _config['onBeforeLoad'];
+        _parent_onbeforeload = _config.onBeforeLoad;
     }
     
     var _this = this;
-    _config['onBeforeLoad'] = function () {
+    _config.onBeforeLoad = function () {
         
         var _ui = _this.get_ui();
     
-        if ($.is_small_width() == false)
+        if ($.is_small_width() === false)
         {
             _ui.css('width', _this._width);
         }
@@ -144,8 +144,9 @@ KALS_window.prototype._$get_config = function () {
         */
         _ui.css('height', _this._height);
         
-        if ($.is_function(_parent_onbeforeload))
-            _parent_onbeforeload();
+        if ($.is_function(_parent_onbeforeload)) {
+			_parent_onbeforeload();
+		}
     };
     
     return _config;
@@ -212,13 +213,16 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         _this._content = _content;
         _content._window = _this;
         
-        if ($.is_string(_content.name))
-            _this.set_modal_name(_content.name);
+        if ($.is_string(_content.name)) {
+			_this.set_modal_name(_content.name);
+		}
         
-        if ($.isset(_content.width))
-            _this.set_width(_content.width);
-        if ($.isset(_content.height))
-            _this.set_height(_content.height);
+        if ($.isset(_content.width)) {
+			_this.set_width(_content.width);
+		}
+        if ($.isset(_content.height)) {
+			_this.set_height(_content.height);
+		}
         //if ($.isset(_content.overflow))
         //    _this.set_overflow(_content.overflow);
         
@@ -266,8 +270,9 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         }
             
             
-        if ($.is_function(_content.onviewportmove))
-            _this.set_onviewportmove(_content.onviewportmove);
+        if ($.is_function(_content.onviewportmove)) {
+			_this.set_onviewportmove(_content.onviewportmove);
+		}
         
         //$.test_msg('準備檢查window open之後的callback', _this._$modal_name);
         
@@ -350,10 +355,13 @@ KALS_window.prototype._reset_window = function (_callback) {
  * @param {string|number} _width = 'auto': 如果是number，則預設單位為px
  */
 KALS_window.prototype.set_width = function(_width) {
-    if ($.is_null(_width))
-        _width = this._default_width;
-    else if ($.is_number(_width))
-        _width = _width + 'px';
+    if ($.is_null(_width)) {
+		_width = this._default_width;
+	}
+	else 
+		if ($.is_number(_width)) {
+			_width = _width + 'px';
+		}
    
     this._width = _width;
    
@@ -365,10 +373,13 @@ KALS_window.prototype.set_width = function(_width) {
  * @param {string|number} _height = 'auto': 如果是number，則預設單位為px
  */
 KALS_window.prototype.set_height = function(_height) {
-    if ($.is_null(_height))
-        _height = this._default_height;
-    else if ($.is_number(_height))
-        _height = _height + 'px';
+    if ($.is_null(_height)) {
+		_height = this._default_height;
+	}
+	else 
+		if ($.is_number(_height)) {
+			_height = _height + 'px';
+		}
    
     this._height = _height;
     return this;
@@ -423,7 +434,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
         _is_loading = null;
     }
     
-    if (_is_loading != null
+    if (_is_loading !== null
        && this.is_loading() == _is_loading)
     {
         $.trigger_callback(_callback);
@@ -462,7 +473,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     //var _speed = 1000;
     var _speed = 0;    //2010.9.10 取消動畫
     
-    if (_is_loading == null)
+    if (_is_loading === null)
     {
         if (this.is_loading())
         {
@@ -474,7 +485,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
         }
     }
     
-    if (_is_loading == true)
+    if (_is_loading === true)
     {
         _open_loading();
     }
@@ -484,8 +495,9 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     }
     
     
-    if ($.is_function(this._$onviewportmove))
-        this._$onviewportmove(_ui);
+    if ($.is_function(this._$onviewportmove)) {
+		this._$onviewportmove(_ui);
+	}
     
     setTimeout(function () {
         

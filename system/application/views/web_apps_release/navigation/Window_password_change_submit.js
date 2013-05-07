@@ -41,7 +41,7 @@ Window_password_change_submit.prototype.validate = function (_inputs, _data) {
     
     //$.test_msg('Window_password_change_submit.validate() _data', _data);
     
-    if (_data.password == '')
+    if (_data.password === '')
     {
         this.set_error(new KALS_language_param(
             'Please write password.',
@@ -50,7 +50,7 @@ Window_password_change_submit.prototype.validate = function (_inputs, _data) {
         _inputs.password.focus();
         return false;
     }
-    else if (_data.password_confirm == '')
+    else if (_data.password_confirm === '')
     {
         this.set_error(new KALS_language_param(
             'Please write password confirm.',

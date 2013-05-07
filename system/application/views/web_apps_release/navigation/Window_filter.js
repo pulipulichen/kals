@@ -97,7 +97,7 @@ Window_filter.prototype._$create_ui = function () {
             for (var _i = 0; _i < _inputs.length; _i++)
             {
                 var _checked = _inputs.eq(_i).attr('checked');
-                if (_state == null)
+                if (_state === null)
                 {
                     _state = _checked;
                 }
@@ -121,18 +121,18 @@ Window_filter.prototype._$create_ui = function () {
     }
     
     var _tr;
-    for (var _i in _type_inputs)
+    for (_i in _type_inputs)
     {
-        if (_i % 2 == 0)
+        if (_i % 2 === 0)
         {
             _tr = $('<tr></tr>')
                 .appendTo(_my_type_div);
         }
         
-        var _type_input = _type_inputs[_i];
+        _type_input = _type_inputs[_i];
         _type_input.appendTo(_tr);
         
-        if (_i == _type_inputs && _i % 2 == 0)
+        if (_i == _type_inputs && _i % 2 === 0)
         {
             _type_input.attr('colspan', 2);
         }
@@ -165,10 +165,12 @@ Window_filter.prototype._$create_ui = function () {
     //如果登出狀態，則隱藏
     KALS_context.auth.add_listener(function (_auth) {
         var _inputs = _my_div.find('input');
-        if (_auth.is_login())
-            _inputs.attr('disabled', false);
-        else
-            _inputs.attr('disabled', true);
+        if (_auth.is_login()) {
+			_inputs.attr('disabled', false);
+		}
+		else {
+			_inputs.attr('disabled', true);
+		}
     }, true);
     
     // ---------
@@ -193,10 +195,12 @@ Window_filter.prototype._$create_ui = function () {
     
     KALS_context.policy.add_attr_listener('show_navigation', function (_policy) {
         var _input = _nav_div.find('input');
-        if (_policy.allow_show_navigation())
-            _input.attr('disabled', false);
-        else
-            _input.attr('disabled', true);
+        if (_policy.allow_show_navigation()) {
+			_input.attr('disabled', false);
+		}
+		else {
+			_input.attr('disabled', true);
+		}
     });
     
     return _ui;
