@@ -36,13 +36,11 @@ Selection_my_custom_manager.prototype._my_selections = {
  */
 Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scope_coll, _is_initialize) {
     
-    if (_scope_coll.length() === 0) {
-		return this;
-	}
+    if (_scope_coll.length() === 0)
+        return this;
         
-    if ($.is_null(_is_initialize)) {
-		_is_initialize = false;
-	}
+    if ($.is_null(_is_initialize))
+        _is_initialize = false;
     
     //$.test_msg('my_custom_manager set_scope_coll 1'
     //    , typeof(this._my_selections[_type_id]));
@@ -55,9 +53,8 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
     _type_id = decodeURIComponent(_type_id);
     
     var _my_type = KALS_context.custom_type.find_type(_type_id);
-    if ($.isset(_my_type) && _my_type.is_predefined()) {
-		_my_custom_type_name = _my_type.get_my_classname();
-	}
+    if ($.isset(_my_type) && _my_type.is_predefined())
+        _my_custom_type_name = _my_type.get_my_classname();
     
     //$.test_msg('Selection_my_custom_manager.set_scope_coll', [_type_id, _my_custom_type_name, typeof(_my_type)]);
     if (typeof(this._my_selections[_type_id]) == 'undefined') {

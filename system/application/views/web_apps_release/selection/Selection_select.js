@@ -37,9 +37,8 @@ Selection_select.prototype.auto_cancel_wait = 10000;
  * @param {jQuery} _word
  */
 Selection_select.prototype.set_select = function (_word) {
-    if (KALS_context.policy.readable() === false) {
-		return this;
-	}
+    if (KALS_context.policy.readable() === false)
+        return this;
     
     var _id = $.get_prefixed_id(_word);
 	
@@ -115,26 +114,23 @@ Selection_select.prototype.cancel_select = function () {
 };
 
 Selection_select.prototype.clear = function () {
-    if (this._setted_hash === true) {
-		KALS_context.hash.delete_field('select');
-	}
+    if (this._setted_hash === true)
+    KALS_context.hash.delete_field('select');
     
     return Selection.prototype.clear.call(this);
 };
 
 Selection_select.prototype.load_select = function (_scope_text) {
     
-    if ($.is_null(_scope_text)) {
-		return this;
-	}
+    if ($.is_null(_scope_text))
+        return this;
     
     var _scopes = _scope_text.split(',');
     
     var _first_index = _scopes[0];
     var _last_index = _first_index;
-    if (_scopes.length > 1) {
-		_last_index = _scopes[1];
-	}
+    if (_scopes.length > 1)
+        _last_index = _scopes[1];
 
     var _scope_coll = new Scope_collection_param(_first_index, _last_index);
     var _anchor_text = this._text.get_anchor_text(_scope_coll);

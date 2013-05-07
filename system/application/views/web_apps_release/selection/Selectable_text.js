@@ -217,9 +217,8 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         if (_i == _child_nodes.length || _i > _child_nodes.length) {
             //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
             
-            if ($.is_function(_cb)) {
-				_cb();
-			}
+            if ($.is_function(_cb))
+                _cb();
             return;
         }
         
@@ -268,7 +267,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         else {
             var _text = _this.get_element_content(_child_obj);
             
-            if (_text === "") {
+            if (_text == "") {
                 _i++;
                 _loop(_i, _child_nodes, _cb);
                 return;
@@ -291,12 +290,10 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     			var _t = _text.substr(_s, 1);
                 var _t_prev = '',  _t_next = '';
                 
-                if (_s > 0) {
-					_t_prev = _text.substr(parseInt(_s,10) - 1, 1);
-				}
-                if (_s < _text.length - 1) {
-					_t_next = _text.substr(parseInt(_s,10) + 1, 1);
-				}
+                if (_s > 0)
+                    _t_prev = _text.substr(parseInt(_s)-1, 1);
+                if (_s < _text.length - 1) 
+                    _t_next = _text.substr(parseInt(_s)+1, 1);
                 
     			if ($.match_english(_t) === true)
     			{	
@@ -304,7 +301,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     				{
     					_t = _t + _t_next;
     					_s++;
-    					_t_next = _text.substr(parseInt(_s,10)+1, 1);
+    					_t_next = _text.substr(parseInt(_s)+1, 1);
     				}
     			}
     			else if ($.match_number(_t) === true)
@@ -313,7 +310,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     				{
     					_t = _t + _t_next;
     					_s++;
-    					_t_next = _text.substr(parseInt(_s,10)+1, 1);
+    					_t_next = _text.substr(parseInt(_s)+1, 1);
     				}
     			}
                 
@@ -322,46 +319,41 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     			if ($.match_space(_t) === false) {
                     _t_element = _this.create_selectable_word(_this.paragraph_count, _this.word_count, _t);
                     if ($.match_sentence_punctuation(_t)) {
-						if ($.match_english_sentence_punctuation(_t)) {
-							if (_t_next === '') {
-								$(_t_element).addClass(_sentence_punctuation_class_name);
-							}
-							else 
-								if ($.match_space(_t_next)) {
-									/*
-			 if (_t_prev !== '' && $.match_number(_t_prev) === false) {
-			 $(_t_element).addClass(_sentence_punctuation_class_name);
-			 }
-			 else {
-			 $(_t_element).addClass(_punctuation_classname);
-			 }
-			 */
-									if (_s < _text.length - 2) {
-										//檢測下下個字是否是大寫英文
-										var _t_nnext = _text.substr(parseInt(_s, 10) + 2, 1);
-										if ($.match_upper_english(_t_nnext)) {
-											$(_t_element).addClass(_sentence_punctuation_class_name);
-										}
-										else {
-											$(_t_element).addClass(_punctuation_classname);
-										}
-									}
-									else {
-										$(_t_element).addClass(_sentence_punctuation_class_name);
-									}
-								}
-								else {
-									$(_t_element).addClass(_punctuation_classname);
-								}
-						}
-						else {
-							$(_t_element).addClass(_sentence_punctuation_class_name);
-						}
-					}
-					else 
-						if ($.match_punctuation(_t)) {
-							$(_t_element).addClass(_punctuation_classname);
-						}
+                        if ($.match_english_sentence_punctuation(_t)) {
+                            if (_t_next === '') {
+                                $(_t_element).addClass(_sentence_punctuation_class_name);
+                            }   
+                            else if ($.match_space(_t_next)) {
+                                /*
+                                if (_t_prev !== '' && $.match_number(_t_prev) === false) {
+                                    $(_t_element).addClass(_sentence_punctuation_class_name);
+                                }
+                                else {
+                                    $(_t_element).addClass(_punctuation_classname);
+                                }
+                                */
+                                if (_s < _text.length - 2) {
+                                    //檢測下下個字是否是大寫英文
+                                    var _t_nnext = _text.substr(parseInt(_s)+2, 1);
+                                    if ($.match_upper_english(_t_nnext))
+                                        $(_t_element).addClass(_sentence_punctuation_class_name);
+                                    else
+                                        $(_t_element).addClass(_punctuation_classname);
+                                }
+                                else {
+                                    $(_t_element).addClass(_sentence_punctuation_class_name);
+                                }
+                            }
+                            else {
+                                $(_t_element).addClass(_punctuation_classname);
+                            }
+                        }
+                        else {
+                            $(_t_element).addClass(_sentence_punctuation_class_name);
+                        }   
+                    }   
+                    else if ($.match_punctuation(_t))
+                        $(_t_element).addClass(_punctuation_classname);
                     _this.word_count++;
                 }
                 else {
@@ -447,9 +439,8 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
     };
     
     var _complete = function () {
-        if ($.is_function(_callback)) {
-			_callback();
-		}
+        if ($.is_function(_callback))
+            _callback();
         return;
     };
     
@@ -633,9 +624,8 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
             _length = _this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+_this.punctuation_classname+'):not(.'+_this.sententce_punctuation_classname+')').length;
         
             //$.test_msg(_length);
-            if (_length > 10) {
-				_para_ary.push(_length);
-			}
+            if (_length > 10)
+                _para_ary.push(_length);
             
             setTimeout(function () {
                 _i++;
@@ -646,9 +636,8 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
             $.test_msg('Total words', _this.word_count);
     
             var _sum = 0;
-            for (_i in _para_ary) {
-				_sum = _sum + _para_ary[_i];
-			}
+            for (var _i in _para_ary)
+                _sum = _sum + _para_ary[_i];
             var _avg = _sum / _para_ary.length;
             
             $.test_msg('Per paragraph avg words', _avg);
@@ -685,18 +674,16 @@ Selectable_text.prototype.element_has_class = function (_element, _class_name) {
  */
 Selectable_text.prototype.get_element_content = function (_element) {
     if ($.is_object(_element) === false) {
-		return '';
-	}
-	else 
-		if (typeof(_element.nodeValue) != 'undefined' &&
-		$.trim(_element.nodeValue) !== '') {
-			//2010.10.15 還是保留空格好了
-			//return $.trim(_element.nodeValue);
-			return _element.nodeValue;
-		}
-		else {
-			return '';
-		}
+        return '';
+    }
+    else if (typeof(_element.nodeValue) != 'undefined'
+        && $.trim(_element.nodeValue) !== '') {
+        //2010.10.15 還是保留空格好了
+        //return $.trim(_element.nodeValue);
+        return _element.nodeValue;
+    }   
+    else
+        return '';
 };
 
 /**
@@ -756,13 +743,12 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
     var _select = KALS_text.selection.select;
     
     if ($.is_mobile_mode() === false) {
-        if (typeof(this.locks.word_click) == 'undefined') {
+        if (typeof(this.locks['word_click']) == 'undefined') {
             var _this = this;
 			
 			var _click_evt = function(_callback) {
-                if (_this.initialized === false) {
-					return this;
-				}
+                if (_this.initialized === false)
+                    return this;
                 
                 var _word = $(this);
                 setTimeout(function () {
@@ -772,9 +758,8 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
                 //_manager.listen_select(_word);
                 _select.set_select(_word);
 				
-				if ($.is_function(_callback)) {
+				if ($.is_function(_callback))
 					_callback();
-				}
             };
 			
 			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
@@ -830,7 +815,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 				});
 			*/
 			
-            this.locks.word_click = true;
+            this.locks['word_click'] = true;
         }
     }
     $.trigger_callback(_callback);
@@ -880,9 +865,8 @@ Selectable_text.prototype.get_paragraph_id = function(_word) {
         _paragraph = _word;
     }
         
-    if (false == _paragraph.exists()) {
-		return null;
-	}
+    if (false == _paragraph.exists())
+        return null;
         
     var _paragraph_class_names = _paragraph.attr('className').split(' ');
     for (var _i in _paragraph_class_names) {
@@ -917,7 +901,7 @@ Selectable_text.prototype.get_word_id = function (_word)
     if ($.starts_with(_word, _id_prefix)) {
         _word = _word.substring(_id_prefix.length, _word.length);
     }
-    return parseInt(_word,10);
+    return parseInt(_word);
 };
 
 Selectable_text.prototype.locks = [];
@@ -966,9 +950,8 @@ Selectable_text.prototype.get_words_by_scope_coll = function (_scope_coll) {
     
     var _coll = [];
     
-    if ($.is_null(_scope_coll)) {
-		return _coll;
-	}
+    if ($.is_null(_scope_coll))
+        return _coll;
     
     var _index_array = _scope_coll.get_index_array();
     
@@ -1000,9 +983,8 @@ Selectable_text.prototype.get_words_by_scope_coll = function (_scope_coll) {
  */
 Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
     
-    if ($.is_null(_scope_coll)) {
-		return null;
-	}
+    if ($.is_null(_scope_coll))
+        return null;
     
     var _word_id_prefix = this.word_id_prefix;
     var _sentence_punctuation_class_name = this.sententce_punctuation_classname;
@@ -1047,9 +1029,8 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
         _paragraph_id = this.get_paragraph_id(_to);
         var _to_id = $.get_prefixed_id(_to.id());
         var _next_word = $('#' + _word_id_prefix + (_to_id) );
-        if (_next_word.hasClass(_sentence_punctuation_class_name)) {
-			_sentence++;
-		}
+        if (_next_word.hasClass(_sentence_punctuation_class_name))
+            _sentence++;
                     
         while (_next_word.exists()
             && this.get_paragraph_id(_next_word) == _paragraph_id) {
@@ -1057,13 +1038,12 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
             _next_word = $('#' + _word_id_prefix + (_to_id+1) );
             
             if (_next_word.hasClass(_sentence_punctuation_class_name)) {
-                if (_sentence === 0) {
-					_sentence++;
-				}
-				else {
-					_to_id = $.get_prefixed_id(_next_word);
-					break;
-				}
+                if (_sentence === 0)
+                    _sentence++;
+                else {
+                    _to_id = $.get_prefixed_id(_next_word);
+                    break;
+                }
             }
         }
         
@@ -1096,16 +1076,12 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
             //_word.css('color', 'red');
             //$.test_msg('Selectable_text.add_class()', [_classname, _word.length]);
             
-            if (_j === 0) {
-				_word.addClass(_classname + '_from');
-			}
-			else 
-				if (_j == _words[_i].length - 1) {
-					_word.addClass(_classname + '_to');
-				}
-				else {
-					_word.addClass(_classname + '_middle');
-				}
+            if (_j === 0)
+                _word.addClass(_classname + '_from');
+            else if (_j == _words[_i].length - 1)
+                _word.addClass(_classname + '_to');
+            else
+                _word.addClass(_classname + '_middle');
             
             if (_word.hasClass(_classname + '_to') === false
                 && _this.is_word_next_span(_word)) {
@@ -1115,9 +1091,8 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
                 //$.test_msg('text.add_class()', [_span.length, _span.css('')]);
             }
             
-            if (_words[_i].length == 1) {
-				_word.addClass(_classname + '_to');
-			}    
+            if (_words[_i].length == 1)
+                _word.addClass(_classname + '_to');    
         }
     };
     
@@ -1125,9 +1100,8 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
         if (_i < _words.length) {
             var _loop_j = function (_j) {
                 if (_j < _words[_i].length) {
-                    for (_j; _j < _j + 5 && _j < _words[_i].length; _j++) {
-						_add_class(_i, _j);
-					}
+                    for (_j; _j < _j + 5 && _j < _words[_i].length; _j++)
+                        _add_class(_i, _j);
                     
                     setTimeout(function () {
                         //_j++;
@@ -1160,16 +1134,13 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
  */
 Selectable_text.prototype._filter_classname = function (_classname) {
     var _classnames;
-    if ($.is_array(_classname)) {
-		_classnames = _classname;
-	}
-	else 
-		if (_classname.indexOf(' ') > -1) {
-			_classnames = _classname.split(' ');
-		}
-		else {
-			_classnames = [_classname];
-		}
+    if ($.is_array(_classname))
+        _classnames = _classname;
+    else if (_classname.indexOf(' ') > -1) {
+        _classnames = _classname.split(' ');
+    }
+    else
+        _classnames = [_classname];
     
     return _classnames;
 };
@@ -1203,16 +1174,12 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
                         _span.removeClass(_classname);
                     }
                     
-                    if (_j === 0) {
-						_word.removeClass(_classname + '_from');
-					}
-					else 
-						if (_j == _words[_i].length - 1) {
-							_word.removeClass(_classname + '_to');
-						}
-						else {
-							_word.removeClass(_classname + '_middle');
-						}
+                    if (_j === 0)
+                        _word.removeClass(_classname + '_from');
+                    else if (_j == _words[_i].length - 1)
+                        _word.removeClass(_classname + '_to');
+                    else
+                        _word.removeClass(_classname + '_middle');
                         
                     
                     _word.removeClass(_classname);
@@ -1271,7 +1238,7 @@ Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _cal
     }
     else {
         
-        for (_j in _classnames) {
+        for (var _j in _classnames) {
             _classname = _classnames[_j];
             //要記得是限定在選取範圍喔！
             $('.' + this.word_classname + '.' + _classname)
@@ -1335,9 +1302,8 @@ Selectable_text.prototype.set_class = function (_scope_coll, _classname) {
  */
 Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
     
-    if ($.is_null(_scope_coll)) {
-		return null;
-	}
+    if ($.is_null(_scope_coll))
+        return null;
     
     var _anchor_text = '';
     
@@ -1364,9 +1330,8 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
         _sentence = $.trim(_sentence);
         
         //不同範圍之間，以空格斷句！
-        if (_i > 0) {
-			_anchor_text = _anchor_text + ' ';
-		}
+        if (_i > 0)
+            _anchor_text = _anchor_text + ' ';
            
         _anchor_text = _anchor_text + _sentence;
     }
@@ -1387,9 +1352,8 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
  */
 Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focus_coll) {
     
-    if ($.is_null(_scope_coll)) {
-		return null;
-	}
+    if ($.is_null(_scope_coll))
+        return null;
     
     var _anchor_text = $('<span></span>');
     
@@ -1403,16 +1367,12 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
     }
     
     var _focus_text = function (_index, _text) {
-        if ($.inArray(_index, _focus_head_index) > -1) {
-			_text = '<span class="select select_from view">' + _text + '</span>';
-		}
-		else 
-			if ($.inArray(_index, _focus_foot_index) > -1) {
-				_text = '<span class="select select_to view">' + _text + '</span>';
-			}
-			else {
-				_text = '<span class="select select_middle view">' + _text + '</span>';
-			}
+        if ($.inArray(_index, _focus_head_index) > -1)
+            _text = '<span class="select select_from view">' + _text + '</span>';
+        else if ($.inArray(_index, _focus_foot_index) > -1)
+            _text = '<span class="select select_to view">' + _text + '</span>';
+        else
+            _text = '<span class="select select_middle view">' + _text + '</span>';
         return _text;
     };
         
@@ -1447,12 +1407,10 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
         _sentence = $.trim(_sentence);
         
         //不同範圍之間，以空格斷句！
-        if (_from > 0) {
-			_sentence = _ellipsis + _sentence;
-		}
-        if (_i == _scope_coll.length() - 1 && _to < _last_id) {
-			_sentence = _sentence + _ellipsis;
-		}
+        if (_from > 0)
+            _sentence = _ellipsis + _sentence;
+        if (_i == _scope_coll.length() - 1 && _to < _last_id)
+            _sentence = _sentence + _ellipsis;
            
         var _sentence_span = $('<span></span>')
             .html(_sentence)
@@ -1489,7 +1447,7 @@ Selectable_text.prototype.retrieve_scope_coll = function (_classname) {
             if ((_id - _from) == 1) {
                 _to = _id;
             }
-            else if (_to !== null && (_id - _to) == 1) {
+            else if (_to != null && (_id - _to) == 1) {
                 _to = _id;
             }
             else {
@@ -1515,9 +1473,8 @@ Selectable_text.prototype.retrieve_scope_coll = function (_classname) {
 Selectable_text.prototype.get_offset_top = function (_scope_coll) {
     
     var _offset = null;
-    if ($.is_null(_scope_coll)) {
-		return _offset;
-	}
+    if ($.is_null(_scope_coll))
+        return _offset;
     
     var _index = _scope_coll.get_first_index();
     if ($.isset(_index)) {
@@ -1535,9 +1492,8 @@ Selectable_text.prototype.get_offset_top = function (_scope_coll) {
  */
 Selectable_text.prototype.get_offset_bottom = function (_scope_coll) {
     var _offset = null;
-    if ($.is_null(_scope_coll)) {
-		return _offset;
-	}
+    if ($.is_null(_scope_coll))
+        return _offset;
     
     var _index = _scope_coll.get_last_index();
     if ($.isset(_index)) {
@@ -1563,10 +1519,9 @@ Selectable_text.prototype.get_offset_left = function (_scope_coll) {
             
             var _o = _word.offset().left;
             
-            if (_offset === null ||
-			_o < _offset) {
-				_offset = _o;
-			}
+            if (_offset === null
+                || _o < _offset)
+                _offset = _o;
         }
     }
     
@@ -1588,10 +1543,9 @@ Selectable_text.prototype.get_offset_right = function (_scope_coll) {
             
             var _o = _word.offset().left + _word.width();
             
-            if (_offset === null ||
-			_o > _offset) {
-				_offset = _o;
-			}
+            if (_offset === null
+                || _o > _offset)
+                _offset = _o;
         }
     }
     
@@ -1714,9 +1668,8 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
     var _location_id_ary = [];
     
     var _push_location = function (_id) {
-        if ($.inArray(_id, _location_id_ary) == -1) {
-			_location_id_ary.push(_id);
-		}
+        if ($.inArray(_id, _location_id_ary) == -1)
+            _location_id_ary.push(_id);
     };
     
     for (var _i in _words) {
@@ -1779,7 +1732,7 @@ Selectable_text.prototype.get_sentence_index = function () {
 			var _sentence = _sentences.eq(_i);
 			var _word_id = _sentence.attr('id');
 			_word_id = _word_id.substr(this.word_id_prefix.length, _word_id);
-			_word_id = parseInt(_word_id,10);
+			_word_id = parseInt(_word_id);
 			_sentence_index.push(_word_id);
 		}
 		
@@ -1787,7 +1740,7 @@ Selectable_text.prototype.get_sentence_index = function () {
 	}
 	
 	//先來看被視為分句的標點符號位置
-	_sentence_index = [0];
+	var _sentence_index = [0];
 	var _sentence_punctuation =  $('.'+this.sententce_punctuation_classname);
 	
 	for (var _s = 0; _s < _sentence_punctuation.length; _s++)
@@ -1796,7 +1749,7 @@ Selectable_text.prototype.get_sentence_index = function () {
 		//kals_word_953
 		//_id = _id.substring(10, _id.length);
 		_id = $.get_prefixed_id(_id);
-		_sentence_index.push(parseInt(_id,10));	
+		_sentence_index.push(parseInt(_id));	
 	}
 	
 	//再來看段落的最後一個字
@@ -1809,20 +1762,20 @@ Selectable_text.prototype.get_sentence_index = function () {
 	//_last_pid = parseInt(_last_pid);
 	var _last_pid = $.get_class_prefixed_id(_last_paragraph, this.paragraph_id_prefix);
 	
-	for (_i = 0; _i < _last_pid+1; _i++)
+	for (var _i = 0; _i < _last_pid+1; _i++)
 	{
 		var _paragraph = $('.' + this.paragraph_id_prefix + _i + ":last");
 		
 		if (_paragraph.length == 1) 
 		{
-			_last_word = _paragraph.find('.'+this.word_classname+'.tooltip-trigger:last:not(.'+this.sententce_punctuation_classname+')');
+			var _last_word = _paragraph.find('.'+this.word_classname+'.tooltip-trigger:last:not(.'+this.sententce_punctuation_classname+')');
 			
 			if (_last_word.length > 0) {
-				_id = _last_word.attr('id');
+				var _id = _last_word.attr('id');
 				
 				//_id = _id.substring(this.word_id_prefix.length, _id.length);
 				_id = $.get_prefixed_id(_id);
-				_sentence_index.push(parseInt(_id,10));
+				_sentence_index.push(parseInt(_id));
 				
 				if (isNaN(_id))
 				{
@@ -1834,7 +1787,7 @@ Selectable_text.prototype.get_sentence_index = function () {
 	}
 	
 	//檢查測試結果用
-	for (_i = 0; _i < _sentence_index.length; _i++) {
+	for (var _i = 0; _i < _sentence_index.length; _i++) {
 		
 		var _sentense_index_word = $('#' + this.word_id_prefix + _sentence_index[_i]);
 		_sentense_index_word.addClass(this.sententce_index_classname);

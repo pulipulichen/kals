@@ -61,13 +61,11 @@ Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_
     
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_scope_coll.length(), _type, $.is_number(_type), typeof(this._nav_selections[_type])]);
     
-    if (_scope_coll.length() === 0) {
-		return this;
-	}
+    if (_scope_coll.length() === 0)
+        return this;
         
-    if ($.is_null(_is_initialize)) {
-		_is_initialize = false;
-	}
+    if ($.is_null(_is_initialize))
+        _is_initialize = false;
     
     
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_type, $.is_number(_type), typeof(this._nav_selections[_type])]);

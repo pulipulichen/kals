@@ -43,7 +43,7 @@ Select_tooltip.prototype._$get_config = function () {
     //_config['predelay'] = 100;
     
     if ($.is_mobile_mode()) {
-        _config.events = {
+        _config['events'] = {
             def: 'mouseenter click,null'
         }; 
     }
@@ -55,7 +55,7 @@ Select_tooltip.prototype._$get_config = function () {
     
     if ($.is_touchable()) {
        var _touch_event = 'touchstart ';
-       _config.events.def = _touch_event + _configevents.def;
+       _config['events']['def'] = _touch_event + _config['events']['def'];
        
        var _trigger_class_name = this.trigger_classname;
        
@@ -67,20 +67,18 @@ Select_tooltip.prototype._$get_config = function () {
        }
     }
     
-    var _onbeforeshow = _config.onBeforeShow;
-    _config.onBeforeShow = function (_event) {
+    var _onbeforeshow = _config['onBeforeShow'];
+    _config['onBeforeShow'] = function (_event) {
         
         //if ($.is_null(_this))
             _this = this;
         
         var _tip = _this.getTip();
-        if (_tip.length === 0) {
-			return;
-		}
+        if (_tip.length === 0)
+            return;
             
-        if (_select_tooltip.enable_select === false) {
-			return;
-		}
+        if (_select_tooltip.enable_select === false)
+            return;
         
         var _trigger = _this.getTrigger();
         $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
@@ -171,12 +169,10 @@ Select_tooltip.prototype._$get_config = function () {
         
         //在顯示之前，決定是否要調整
         var _selected_classname = 'selected';
-        if (KALS_text.selection.select._select_from !== null) {
-			_tip.addClass(_selected_classname);
-		}
-		else {
-			_tip.removeClass(_selected_classname);
-		}
+        if (KALS_text.selection.select._select_from != null)
+            _tip.addClass(_selected_classname);
+        else
+            _tip.removeClass(_selected_classname);
         
         if ($.is_function(_onbeforeshow)) {
             _onbeforeshow.call(this);
@@ -185,33 +181,29 @@ Select_tooltip.prototype._$get_config = function () {
     };    //onBeforeShow: function () {
     
     var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
-    _config.onBeforeHide = function (_this) {
+    _config['onBeforeHide'] = function (_this) {
         
-        if (_select_tooltip.enable_select === false) {
-			return;
-		}
+        if (_select_tooltip.enable_select === false)
+            return;
         
         //if ($.is_null(_this))
         //{
             _this = this;
         //}
         
-        if (typeof(_this.getTrigger) != 'function' &&
-		typeof(this.getTrigger) == 'function') {
-			_this.getTrigger = this.getTrigger;
-		}
+        if (typeof(_this.getTrigger) != 'function'
+            && typeof(this.getTrigger) == 'function')
+            _this.getTrigger = this.getTrigger;
         var _trigger = _this.getTrigger();
         _trigger.removeClass('tooltip-trigger-hover');
         
-        if ($.is_function(_onbeforehide)) {
-			_onbeforehide.call(this);
-		}
+        if ($.is_function(_onbeforehide))
+            _onbeforehide.call(this);
         
     };    //onBeforeHide: function () {
     
-    if ($.is_mobile_mode()) {
-		_config.effect = 'toggle';
-	}
+    if ($.is_mobile_mode())
+        _config['effect'] = 'toggle';
     //else
     //    _config['effect'] = 'fade';
     
@@ -225,9 +217,8 @@ Select_tooltip.prototype._$get_config = function () {
 Select_tooltip.prototype.tooltip_config = null;
 
 Select_tooltip.prototype.get_tooltip_config = function () {
-    if (this._tooltip_config === null) {
-		this._tooltip_config = this._$get_config();
-	}
+    if (this._tooltip_config === null)
+        this._tooltip_config = this._$get_config();
     return this._tooltip_config;
 };
 
