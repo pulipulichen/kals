@@ -75,8 +75,9 @@ Init_profile.prototype._$oncomplete = function () {
     KALS_context.completed = true;
 	
 	/**
-	 * 布丁測試用
+	 * @version 20130224 布丁測試用
 	 */
+	/*
 	var _sentence_list = KALS_text.selection.text.get_sentence_index();
 	
 	var _php_array = 'new Array(';
@@ -91,7 +92,7 @@ Init_profile.prototype._$oncomplete = function () {
 	$.test_msg('count .kals-sentence-punctuation', $('.kals-sentence-punctuation').length);
 	$.test_msg('list .kals-sentence-punctuation', _sentence_list);
 	$.test_msg('list php array .kals-sentence-punctuation', _php_array);
-	
+	*/
 };
 
 /* End of file Init_profile */
