@@ -71,17 +71,17 @@ KALS_authentication.prototype.get_auth_data = function () {
 
 KALS_authentication.prototype.set_email = function (_value) {
     _value = $.trim(_value);
-    this._auth_data['email'] = _value;
+    this._auth_data.email = _value;
     return this;
 };
 
 KALS_authentication.prototype.set_password = function (_value) {
-    this._auth_data['password'] = _value;
+    this._auth_data.password = _value;
     return this;
 };
 
 KALS_authentication.prototype.set_embed = function (_value) {
-    this._auth_data['embed'] = _value;
+    this._auth_data.embed = _value;
     return this;
 };
 
@@ -96,7 +96,7 @@ KALS_authentication.prototype.set_embed = function (_value) {
 //};
 
 KALS_authentication.prototype.is_embed = function () {
-    return this._auth_data['embed'];
+    return this._auth_data.embed;
 };
 
 KALS_authentication.prototype.is_login = function () {
@@ -119,8 +119,8 @@ KALS_authentication.prototype.reset_auth_data = function () {
     
     //如果有KALS_CONFIG設定的話
     if (typeof(KALS_CONFIG.user_email) == 'string') {
-        this._auth_data['email'] = KALS_CONFIG.user_email;
-        this._auth_data['embed'] = true;
+        this._auth_data.email = KALS_CONFIG.user_email;
+        this._auth_data.embed = true;
     }
     
     return this.reset_data();
@@ -223,8 +223,9 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
                 _this._is_login = true;
                 
                 setTimeout(function () {
-                    if ($.is_function(_callback))
-                        _callback(_this, _data);    
+                    if ($.is_function(_callback)) {
+						_callback(_this, _data);
+					} 
                 }, 100);
                 
                 //else
@@ -320,8 +321,9 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
                _this._is_login = true;
                
                 setTimeout(function () {
-                    if ($.is_function(_callback))
-                        _callback(_this, _data);    
+                    if ($.is_function(_callback)) {
+						_callback(_this, _data);
+					} 
                 }, 100);
                 //else
                 //    this.register_callback(_this, _data);
@@ -388,7 +390,7 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
                 });
             }
         }
-        else //if (_data === true) {
+        else { //if (_data === true) {
             /**
              * 由於登出後回傳資料有所修改，原本的登出會有bug
              * 在此修正

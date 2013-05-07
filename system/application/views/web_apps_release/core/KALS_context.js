@@ -17,14 +17,16 @@ KALS_context.initialize = function () {
     
     
     //設定基本網址
-    if (typeof(KALS_loader) != 'undefined')
-        this.base_url = KALS_loader.get_base_url();
-    else {
-        // TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
-        this.setup_base_url();
-    }
-    if (this.base_url === null || this.base_url === '')
-        this.base_url = 'http://192.168.11.2/kals/web_apps/';
+    if (typeof(KALS_loader) != 'undefined') {
+		this.base_url = KALS_loader.get_base_url();
+	}
+	else {
+		// TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
+		this.setup_base_url();
+	}
+    if (this.base_url === null || this.base_url === '') {
+		this.base_url = 'http://192.168.11.2/kals/web_apps/';
+	}
     //$.test_msg('KALS_context() base url', this.base_url);
     
     //基礎元件 Basic Components
@@ -81,8 +83,9 @@ KALS_context.base_url = null;
  * @type {string} base_url
  */
 KALS_context.setup_base_url = function () {
-    if (this.base_url != null)
-        return this;
+    if (this.base_url !== null) {
+		return this;
+	}
     
     var _scripts = $('script');
     
@@ -91,8 +94,9 @@ KALS_context.setup_base_url = function () {
     var _needle = '/web_apps/';
     for (var _i in _scripts) {
         var _src = _scripts.eq(_i).attr('src');
-        if (typeof(_src) != 'string')
-            continue;
+        if (typeof(_src) != 'string') {
+			continue;
+		}
         
         var _pos = _src.indexOf(_needle); 
         if (_pos > 0) {
@@ -119,24 +123,29 @@ KALS_context.get_base_url = function (_file) {
         var _temp = '';
         for (var _i in _file) {
             var _f = _file[_i];
-            if ($.starts_with(_f, '/'))
-                _f = _f.substr(1, _f.length);
-            if (_i < _file.length -1)
-                $.appends_with(_f, '/');
+            if ($.starts_with(_f, '/')) {
+				_f = _f.substr(1, _f.length);
+			}
+            if (_i < _file.length - 1) {
+				$.appends_with(_f, '/');
+			}
             
             _temp = _temp + _f;
         }
         _file = _temp;
     }
     
-    if (this.base_url === null)
-        return _file;
+    if (this.base_url === null) {
+		return _file;
+	}
     
-    if ($.is_string(_file) && $.starts_with(_file, '/'))
-        _file = _file.substring(1, _file.length);
+    if ($.is_string(_file) && $.starts_with(_file, '/')) {
+		_file = _file.substring(1, _file.length);
+	}
     
-    if ($.ends_with(this.base_url, '/') === false)
-        this.base_url = this.base_url + '/';
+    if ($.ends_with(this.base_url, '/') === false) {
+		this.base_url = this.base_url + '/';
+	}
     
     var _url = this.base_url + _file;
     //$.test_msg('KALS_context.get_base_url()', [_url, this.base_url, _file]); 
@@ -151,27 +160,33 @@ KALS_context.get_base_url = function (_file) {
  */
 KALS_context.get_image_url = function (_img) {
     
-    if ($.is_null(_img))
-        _img = '';
+    if ($.is_null(_img)) {
+		_img = '';
+	}
     
-    if ($.is_string(_img) && $.starts_with(_img, '/'))
-        _img = _img.substring(1, _img.length);
+    if ($.is_string(_img) && $.starts_with(_img, '/')) {
+		_img = _img.substring(1, _img.length);
+	}
     
-    if (this.base_url === null)
-        return _img;
+    if (this.base_url === null) {
+		return _img;
+	}
         
     var _img_url = this.get_base_url();
     var _pos = _img_url.lastIndexOf('/web_apps');
-    if (_pos == -1)
-        return _img;
+    if (_pos == -1) {
+		return _img;
+	}
     
     _img_url = _img_url.substring(0, _pos + 1);
     _img_url = _img_url + 'images/' + _img;
     
-    if (_img === '')
-        return _img_url;
-    else
-        return $('<img src="'+_img_url+'" border="0" />');
+    if (_img === '') {
+		return _img_url;
+	}
+	else {
+		return $('<img src="' + _img_url + '" border="0" />');
+	}
 };
 
 /**
@@ -290,7 +305,7 @@ KALS_context.check_text_selector = function (_callback) {
         //this._text_selector = 'body';
         
         //$.test_msg('KALS_context.check_text_selector()', $('.selectable-text').legnth);
-        if ($('#articleContent').length != 0) {
+        if ($('#articleContent').length !== 0) {
             //this._text_selector = $('#articleContent');
             /*
             var _text_container = $('<div></div>')
@@ -348,10 +363,13 @@ KALS_context.check_text_selector = function (_callback) {
                 var _scope_selector = KALS_CONFIG.annotation_scope_selector;
                 _scope_content = $(_scope_selector);
                 
-                if (_scope_content.length === 0)
-                    _text_container = _default_scope();
-                else if (_scope_content.length > 1)
-                    _scope_content = _scope_content.filter(':first');
+                if (_scope_content.length === 0) {
+					_text_container = _default_scope();
+				}
+				else 
+					if (_scope_content.length > 1) {
+						_scope_content = _scope_content.filter(':first');
+					}
                 
                 var _children_content = _scope_content.children();
                 
@@ -436,7 +454,7 @@ KALS_context.load_info = function (_callback) {
     var _data = {};
         
         //指引預設
-        _data['anchor_navigation_type'] = KALS_CONFIG.anchor_navigation_type;
+        _data.anchor_navigation_type = KALS_CONFIG.anchor_navigation_type;
     
     this.load(_data, _callback);
     

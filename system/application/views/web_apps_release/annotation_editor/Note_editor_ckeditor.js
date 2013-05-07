@@ -325,8 +325,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
 /*
 Note_editor.prototype.get_text = function () {
     var _text;
-    try
-    {
+    try {
         _text = this._ckeditor.getData();    
     }
     catch (e) {}
@@ -343,8 +342,7 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
     if (_text == _setted_text)
         return this;
     
-    try
-    {
+    try {
         this._ckeditor.setData(_text);    
     }
     catch (e) {}

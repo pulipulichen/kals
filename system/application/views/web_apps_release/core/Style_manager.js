@@ -42,29 +42,34 @@ Style_manager.prototype.create_style = function (_style_name) {
 
 Style_manager.prototype.get_style = function (_style_name) {
     var _style;
-    if ($.is_null(_style_name))
-        return null;
-    else if (this._use_style_sheet() === false) {
-        _style = $('head style[name="'+_style_name+'"]');
-        if (_style.length > 0)
-            return _style;
-        else
-            return this.create_style(_style);
-    }   
-    else {
-        for (var _i in document.styleSheets) {
-            var _style = document.styleSheets[_i];
-            if (_style.title == _style_name) {
-                return _style;
-            }
-        }
-        return this.create_style(_style_name);
-    } 
+    if ($.is_null(_style_name)) {
+		return null;
+	}
+	else 
+		if (this._use_style_sheet() === false) {
+			_style = $('head style[name="' + _style_name + '"]');
+			if (_style.length > 0) {
+				return _style;
+			}
+			else {
+				return this.create_style(_style);
+			}
+		}
+		else {
+			for (var _i in document.styleSheets) {
+				_style = document.styleSheets[_i];
+				if (_style.title == _style_name) {
+					return _style;
+				}
+			}
+			return this.create_style(_style_name);
+		} 
 };
 
 Style_manager.prototype.remove_style = function (_style_name) {
-    if ($.is_null(_style_name))
-        return this;
+    if ($.is_null(_style_name)) {
+		return this;
+	}
     
     if (this._use_style_sheet() === false) {
         this.get_style(_style_name).remove();    
@@ -76,8 +81,9 @@ Style_manager.prototype.remove_style = function (_style_name) {
 };
 
 Style_manager.prototype.clear_style = function (_style_name) {
-    if ($.is_null(_style_name))
-        return this;
+    if ($.is_null(_style_name)) {
+		return this;
+	}
     
     var _style_sheet = this.get_style(_style_name); 
     if (this._use_style_sheet() === false) {
@@ -85,19 +91,20 @@ Style_manager.prototype.clear_style = function (_style_name) {
     }
     else {
         var _rules = _style_sheet.rules;
-        if (_rules === null)
-            return this;
+        if (_rules === null) {
+			return this;
+		}
         
         var _length = _rules.length;
-        if (_length === null || _length === 0)
-            return this;
+        if (_length === null || _length === 0) {
+			return this;
+		}
             
         //for (var _i = 1; _i < _length + 1 ;_i++)
         //    _style_sheet.removeRule(_i);    //12597
         //_style_sheet.removeRule();
         while (true) {
-            try
-            {
+            try {
                 _style_sheet.removeRule();
             }
             catch (e) {
@@ -131,8 +138,9 @@ Style_manager.prototype._combine_selector = function (_selector) {
     if ($.is_array(_selector)) {
         var _temp = '';
         for (var _i in _selector) {
-            if (_i > 0)
-                _temp = _temp + ', ';
+            if (_i > 0) {
+				_temp = _temp + ', ';
+			}
             _temp = _temp + _selector[_i];
         }
         _selector = _temp;
@@ -151,8 +159,9 @@ Style_manager.prototype._combine_rule = function (_style) {
             var _formal_field = $.str_replace('_', '-', _field);
             var _r = _formal_field + ':' + _value;
             
-            if (_first === false)
-                _style_temp = _style_temp + '; ';
+            if (_first === false) {
+				_style_temp = _style_temp + '; ';
+			}
             _style_temp = _style_temp + _r;
             _first = false;
         }
@@ -160,11 +169,13 @@ Style_manager.prototype._combine_rule = function (_style) {
     }
     else if ($.is_string(_style)) {
         _style = $.trim(_style);
-        if (_style.substr(0, 1) == '{')
-            _style = _style.substr(1, _style.length);
+        if (_style.substr(0, 1) == '{') {
+			_style = _style.substr(1, _style.length);
+		}
         
-        if (_style.substr(_style.length-1, _style.length) == '}')
-            _style = _style.substr(0, _style.length-1);
+        if (_style.substr(_style.length - 1, _style.length) == '}') {
+			_style = _style.substr(0, _style.length - 1);
+		}
     }
     
     return _style;
@@ -186,7 +197,7 @@ Style_manager.prototype.set_style = function (_style_name, _selector, _style) {
 
 Style_manager.prototype.load_style = function (_title, _path, _config) {
     
-    if ($.is_null(_config), $.is_object(_path)) {
+    if ($.is_null(_config) && $.is_object(_path)) {
         _config = _path;
         _path = 'custom';
     }
@@ -216,14 +227,16 @@ Style_manager.prototype.load_style = function (_title, _path, _config) {
             }
         }
         
-        if (_found === false)
-            document.createStyleSheet(_path).title = _title;
+        if (_found === false) {
+			document.createStyleSheet(_path).title = _title;
+		}
     }
     else {
         var _link = $('head link[title="'+_title+'"]');
         $.test_msg('Style_manager.load_style()', _link.length);
-        if (_link.length > 0)
-            _link.remove();
+        if (_link.length > 0) {
+			_link.remove();
+		}
             
         _link = $('<link type="text/css" rel="stylesheet" href="'+_path+'" title="'+_title+'" />')
             .appendTo($('head'));    
@@ -233,7 +246,7 @@ Style_manager.prototype.load_style = function (_title, _path, _config) {
 };
 
 Style_manager.prototype._use_style_sheet = function () {
-    return (document.createStyleSheet != null);
+    return (document.createStyleSheet !== null);
 };
 
 Style_manager.prototype.unload_style = function (_path) {

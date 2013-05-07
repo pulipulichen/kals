@@ -36,8 +36,9 @@ URL_hash_dispatcher.prototype._get_location_hash = function () {
     var _hash = '';
     if (typeof(location.hash) != 'undefined') {
         _hash = location.hash;
-        if (_hash.substring(0, 1) == '#')
-            _hash = _hash.substring(1, _hash.length);
+        if (_hash.substring(0, 1) == '#') {
+			_hash = _hash.substring(1, _hash.length);
+		}
     }
     else {
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
@@ -107,8 +108,9 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
             
             var _head = _url.substring(0, _start);
             var _foot = '';
-            if (_url.length != _end);
-                _foot = _url.substring(_end, _url.length);
+            if (_url.length != _end) {
+				_foot = _url.substring(_end, _url.length);
+			}
             
             _url = _head + _foot;
         }
@@ -145,8 +147,9 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
         _title = _title.substring(0, _hash_pos);
     }
     
-    if (_hash !== '')
-        _hash = ' #' + _hash;
+    if (_hash !== '') {
+		_hash = ' #' + _hash;
+	}
     
     _title = _title + _hash;
     document.title = _title;
@@ -159,8 +162,9 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
  * @param {boolean} _force = false：是否要強制覆蓋原本的設定。如果已經從this._get_location_hash()取得過資料，則此處不會再設定。
  */
 URL_hash_dispatcher.prototype._setup_hash_data = function (_force) {
-    if ($.is_null(_force))
-        _force = false;
+    if ($.is_null(_force)) {
+		_force = false;
+	}
     
     if (this._hash_data === null || _force) {
         var _hash = this._get_location_hash();
@@ -207,8 +211,7 @@ URL_hash_dispatcher.prototype.get_hash_data = function () {
  */
 URL_hash_dispatcher.prototype.set_field = function (_key, _value) {
     
-    try
-    {
+    try {
         //嘗試將值化為字串，因為hash只能存入字串而已
         _value = _value + '';
     }
@@ -335,7 +338,7 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 		
         if (this.has_field('recommend') === true) {
 			//$.test_msg('URL_hash_dispatcher', 'pass4');
-            var _id = this.get_field('recommend');
+            _id = this.get_field('recommend');
             //$.test_msg('has check_hash() recommend', _id);
             KALS_text.tool.recommend.load_recommend(_id);
         }

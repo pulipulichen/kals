@@ -40,7 +40,7 @@ function Overlay_manager () {
  * 已經開啟的Modal。
  * @type {Array|KALS_Modal}
  */
-Overlay_manager.prototype._opened_modals = [],
+Overlay_manager.prototype._opened_modals = [];
 
 /**
  * 關閉所有Modal
@@ -48,10 +48,13 @@ Overlay_manager.prototype._opened_modals = [],
  */    
 Overlay_manager.prototype.close_all = function (_except_name) {
     
-    if ($.is_null(_except_name))
-        _except_name = [];
-    else if ($.is_string(_except_name))
-        _except_name = [_except_name];
+    if ($.is_null(_except_name)) {
+		_except_name = [];
+	}
+	else 
+		if ($.is_string(_except_name)) {
+			_except_name = [_except_name];
+		}
     
     var _this = this;
     var _loopy = function (_callback) {
@@ -59,11 +62,12 @@ Overlay_manager.prototype.close_all = function (_except_name) {
         //$.test_msg('call loopy');
         
         var _index = null;
-        for (_i in _this._opened_modals)
-            _index = _i;
+        for (_i in _this._opened_modals) {
+			_index = _i;
+		}
         
         //if (_index < _this._opened_modals.length)
-        if (_index != null) {
+        if (_index !== null) {
             var _modal = _this._opened_modals[_index];
             var _name = _modal.get_modal_name();
             
@@ -98,10 +102,13 @@ Overlay_manager.prototype.close_all = function (_except_name) {
  */
 Overlay_manager.prototype.close = function (_target_name) {
     
-    if ($.is_null(_target_name))
-        _target_name = [];
-    else if ($.is_string(_target_name))
-        _target_name = [_target_name];
+    if ($.is_null(_target_name)) {
+		_target_name = [];
+	}
+	else 
+		if ($.is_string(_target_name)) {
+			_target_name = [_target_name];
+		}
     
     for (var _i in this._opened_modals) {
         var _modal = this._opened_modals[_i];
@@ -119,8 +126,9 @@ Overlay_manager.prototype.close = function (_target_name) {
 Overlay_manager.prototype._check_mask_timer = null;
 Overlay_manager.prototype.check_mask = function (_is_close) {
     
-    if ($.isset(this._check_mask_timer))
-        clearTimeout(this._check_mask_timer);
+    if ($.isset(this._check_mask_timer)) {
+		clearTimeout(this._check_mask_timer);
+	}
     
     //$.test_msg('Overlay_manager.check_mask()', _is_close);
     
@@ -175,11 +183,13 @@ Overlay_manager.prototype.lock_mask = function () {
  */
 Overlay_manager.prototype.add_opened = function (_modal) {
     
-    if (_modal._$exposable === false)
-        return this;
+    if (_modal._$exposable === false) {
+		return this;
+	}
     
-    if (_modal === null || typeof(_modal.is_closable) != 'function')
-        return this;
+    if (_modal === null || typeof(_modal.is_closable) != 'function') {
+		return this;
+	}
     
     if ($.inArray(_modal, this._opened_modals) == -1
         && _modal.is_closable()) {
@@ -192,8 +202,9 @@ Overlay_manager.prototype.add_opened = function (_modal) {
             //先將已經開啟的modal移至mask之後
             for (var _i in this._opened_modals) {
                 var _opened_modal = this._opened_modals[_i];
-                if (_opened_modal.is_exposable())
-                    _opened_modal.cover();
+                if (_opened_modal.is_exposable()) {
+					_opened_modal.cover();
+				}
             } 
             _modal.expose(); 
         }
@@ -221,8 +232,9 @@ Overlay_manager.prototype.has_opened = function () {
  */
 Overlay_manager.prototype.delete_opened = function (_modal) {
     
-    if (_modal._$exposable === false)
-        return this;
+    if (_modal._$exposable === false) {
+		return this;
+	}
     
     var _deleted = $.inArray(_modal, this._opened_modals);
     if (_deleted > -1) {
@@ -232,17 +244,19 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         
         var _new_opened = [];
         for (var _i = 0; _i < this._opened_modals.length; _i++) {
-            if (_i == _deleted)
-                continue;
-            else
-                _new_opened.push(this._opened_modals[_i]);
+            if (_i == _deleted) {
+				continue;
+			}
+			else {
+				_new_opened.push(this._opened_modals[_i]);
+			}
         }
         this._opened_modals = _new_opened;
         
         //將未關閉的modal最後一個移至mask之前
         var _last_modal;
         
-        for (var _i in this._opened_modals) {
+        for (_i in this._opened_modals) {
             //不做任何事情，只是取得modal
             _last_modal = this._opened_modals[_i];
         }
@@ -252,7 +266,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         //if (_last_modal != null)
         //    $.test_msg('delete_opened', [_last_modal.get_modal_name()]);
         
-        if (_last_modal != null) {
+        if (_last_modal !== null) {
             //_last_modal.get_ui().css('z-index', 9999);
             _last_modal.expose();
             

@@ -128,8 +128,7 @@ KALS_util.ajax_get = function (_config) {
         }); 
     };
     
-    try
-    {
+    try {
         _get_json();
         
         
@@ -681,8 +680,7 @@ KALS_util.help = function (_url) {
 KALS_util.decodeURIComponent = function (_str) {
     var _result;
     /*
-    try
-    {
+    try {
         _result = decodeURIComponent(_str);
     }
     catch (_e) {

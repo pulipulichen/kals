@@ -477,8 +477,7 @@ Annotation_tool.prototype._setup_recommend_hint = function () {
 Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _callback) {
     
     if ($.is_string(_annotation_id)) {
-        try
-        {
+        try {
             _annotation_id = parseInt(_annotation_id);
         }
         catch(e) {

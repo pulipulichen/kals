@@ -22,8 +22,9 @@ function KALS_language() {
     //Context訂閱一下
     if (typeof(KALS_context) != 'undefined') {
         KALS_context.add_listener(function (_dispatcher, _data) {
-            if (typeof(_data.KALS_language) != 'undefined')
-                _this.set_lang(_data.KALS_language);
+            if (typeof(_data.KALS_language) != 'undefined') {
+				_this.set_lang(_data.KALS_language);
+			}
         });
     }
 }
@@ -70,23 +71,27 @@ KALS_language.prototype.set_lang = function(_lang_data){
 KALS_language.prototype.line = function(_lang_param){
     var _line, _arg;
     if ($.is_object(_lang_param)) {
-        _line = $.get_parameter(_lang_param, 'line');
-        _arg = $.get_parameter(_lang_param, 'arg' );    
-    }
-    else if ($.is_string(_lang_param))
-        _line = _lang_param;
+		_line = $.get_parameter(_lang_param, 'line');
+		_arg = $.get_parameter(_lang_param, 'arg');
+	}
+	else 
+		if ($.is_string(_lang_param)) {
+			_line = _lang_param;
+		}
     
-    if ($.is_null(_line))
-        return null;
+    if ($.is_null(_line)) {
+		return null;
+	}
     
-    if ($.isset(this._lang) 
-        && $.isset(this._lang[_line])) {
-        var _lang = this._lang[_line];
-        _lang = this._lang_set_arg(_lang, _arg);
-        return _lang;
-    }   
-    else 
-        return null;
+    if ($.isset(this._lang) &&
+	$.isset(this._lang[_line])) {
+		var _lang = this._lang[_line];
+		_lang = this._lang_set_arg(_lang, _arg);
+		return _lang;
+	}
+	else {
+		return null;
+	}
 };
 
 /**
@@ -109,12 +114,14 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
         
         _lang = $('<span>'+_lang+'</span>');
         
-        for (var _i in _arg) {
+        for (_i in _arg) {
             var _a = _arg[_i];
-            if ($.is_object(_a))
-                _lang.find('span.lang-arg-'+_i).append(_a);
-            else
-                _lang.find('span.lang-arg-'+_i).html(_a);
+            if ($.is_object(_a)) {
+				_lang.find('span.lang-arg-' + _i).append(_a);
+			}
+			else {
+				_lang.find('span.lang-arg-' + _i).html(_a);
+			}
         }
     }
     return _lang;
@@ -130,8 +137,9 @@ KALS_language.prototype.add_listener = function(_obj, _lang_param) {
         this._listeners.push(_obj);
         var _key = $.inArray(_obj, this._listeners);
         
-        if ($.is_string(_lang_param))
-            _lang_param = new KALS_language_param(_lang_param);
+        if ($.is_string(_lang_param)) {
+			_lang_param = new KALS_language_param(_lang_param);
+		}
        
         this._listeners_lang_param[_key] = _lang_param;
         
@@ -294,8 +302,9 @@ KALS_language.prototype.get_interval_param = function (_time) {
     var _lang_param = null;
     var _unit = null;
     
-    if ($.is_string(_time))
-        _time = parseInt(_time);
+    if ($.is_string(_time)) {
+		_time = parseInt(_time, 10);
+	}
     
     var _interval = $.get_interval_time(_time);
     
@@ -307,7 +316,7 @@ KALS_language.prototype.get_interval_param = function (_time) {
             _min = 0;
         }
         
-        if (_max != null) {
+        if (_max !== null) {
             if ($.is_number(_max)) {
                 _max--;
             }
@@ -365,14 +374,14 @@ KALS_language.prototype.get_interval_param = function (_time) {
         var _date_obj = new Date();
         _date_obj.setTime(_time);
         
-        var _month = this.get_month((_date_obj.getMonth+1));
+        _month = this.get_month((_date_obj.getMonth+1));
         var _date = _date_obj.getDate();
         
         _lang_param = _date_params.date;
         _lang_param.arg = [_month, _date];
     }
     else if (_test_scope(_y, null)) {
-        var _date_obj = new Date();
+        _date_obj = new Date();
         _date_obj.setTime(_time);
         
         var _year = _date_obj.getYear();
@@ -380,7 +389,7 @@ KALS_language.prototype.get_interval_param = function (_time) {
         _unit = _year;
     }
     
-    if (_unit != null
+    if (_unit !== null
         && $.is_class(_lang_param, 'KALS_language_param')
         && $.is_null(_lang_param.arg)) {
         _lang_param.arg = [_unit];

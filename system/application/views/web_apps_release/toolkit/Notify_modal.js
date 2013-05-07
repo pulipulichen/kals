@@ -155,8 +155,7 @@ Notify_modal.prototype.close = function (_callback) {
     if (_display_message.length === 0) {
         var _this = this;
         Overlay_modal.prototype.close.call(this, function () {
-            try
-            {
+            try {
                 clearTimeout(_this._close_lock);    
             }
             catch (e) { }

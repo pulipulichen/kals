@@ -356,8 +356,7 @@ jQuery.get_class = function (_obj) {
         }
     }
     
-    try
-    {
+    try {
         var _constructor = _obj.constructor + '';
         
         if ($.starts_with(_constructor, '[object')) {
@@ -385,8 +384,7 @@ jQuery.is_class = function(_obj, _class_name) {
     if ($.is_null(_class_name))
         return false;
     
-    try
-    {
+    try {
         return (typeof(_obj) == 'object' 
             && _obj != null 
             //&& (_obj instanceof _class_name));
@@ -1590,8 +1588,7 @@ jQuery.is_touchable = function () {
    
    if (this.touchable === null) {
        var _touchable = false;
-        try 
-        {            
+        try {            
             var _el = document.createElement('div');
             _el.setAttribute('ontouchstart', 'return;');
            if (typeof(_el.ontouchstart) == "function")
@@ -2065,8 +2062,7 @@ jQuery.stripslashes = function (_str) {
 jQuery.decodeURIComponent = function (_str) {
     var _result;
     /*
-    try
-    {
+    try {
         _result = decodeURIComponent(_str);
     }
     catch (_e) {

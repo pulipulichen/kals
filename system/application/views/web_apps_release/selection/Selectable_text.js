@@ -177,8 +177,7 @@ Selectable_text.prototype.excute_interval_ie = {
 Selectable_text.prototype.excute_timer = null;
 
 Selectable_text.prototype.stop_initialize = function () {
-    try
-    {
+    try {
         clearTimeout(this.excute_timer);
     }
     catch (e) {}
