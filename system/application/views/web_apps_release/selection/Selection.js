@@ -83,8 +83,9 @@ Selection.prototype.set_scope_coll = function (_scope_coll) {
     }
         
     
-    if (this._$select_once === true)
-        this.clear();
+    if (this._$select_once === true) {
+		this.clear();
+	}
     
     this._scope_coll = _scope_coll;
     
@@ -254,8 +255,9 @@ Selection.prototype._scroll_lock = false;
 
 Selection.prototype.scroll_into_view = function (_callback) {
     
-    if (this._scroll_lock === true)
-        return;
+    if (this._scroll_lock === true) {
+		return;
+	}
     
     this._scroll_lock = true;
     
@@ -284,7 +286,7 @@ Selection.prototype.scroll_into_view = function (_callback) {
         
         //$.test_msg('Selection.scroll_into_view()', [this._$name, _y, KALS_toolbar.get_height()]);
         
-        _config['y'] = _y;
+        _config.y = _y;
     }
     
     var _this = this;
@@ -299,10 +301,12 @@ Selection.prototype.scroll_into_view = function (_callback) {
 
 Selection.prototype.equals = function (_scope_coll) {
     
-    if (this._scope_coll === null || _scope_coll === null)
-        return false;
-    else 
-        return this._scope_coll.equals(_scope_coll);
+    if (this._scope_coll === null || _scope_coll === null) {
+		return false;
+	}
+	else {
+		return this._scope_coll.equals(_scope_coll);
+	}
 };
 
 /* End of file Selection */
