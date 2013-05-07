@@ -62,10 +62,12 @@ View_anchor_text_component.prototype.get_anchor_text = function (_scope_coll) {
 View_anchor_text_component.prototype.set_anchor_text = function (_anchor_text) {
     this._anchor_text = _anchor_text;
     var _text_container = this._create_text_container();
-    if ($.isset(_anchor_text))
-        _text_container.html(_anchor_text);
-    else
-        _text_container.empty();
+    if ($.isset(_anchor_text)) {
+		_text_container.html(_anchor_text);
+	}
+	else {
+		_text_container.empty();
+	}
     return this;
 };
 

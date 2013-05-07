@@ -64,7 +64,7 @@ View_list_collection.prototype.add_list_item = function(_param, _from_head) {
         var _topic_item = this.focus(_topic_param, false);
         
         if (typeof(_topic_item.respond_list) == 'object'
-            && _topic_item.respond_list != null) {
+            && _topic_item.respond_list !== null) {
             _topic_item.respond_list.add_list_item(_param, false);
             _topic_item.respond_list.get_ui().show();
         }

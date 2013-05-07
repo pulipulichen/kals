@@ -96,13 +96,13 @@ Window_view.prototype._load_url = 'annotation_getter/list';
  * @param {number|Annotation_param} _topic_id
  */
 Window_view.prototype.load_topic_param = function (_topic_id) {
-    if ($.isset(this._topic_param))
-        return this;
+    if ($.isset(this._topic_param)) {
+		return this;
+	}
     
     if ($.is_number(_topic_id) || $.is_string(_topic_id)) {
-        try
-        {
-            _topic_id = parseInt(_topic_id);
+        try {
+            _topic_id = parseInt(_topic_id, 10);
         }
         catch (e) {}
         
@@ -178,7 +178,7 @@ Window_view.prototype.set_selection = function () {
     if ($.isset(this._topic_param)) {
         var _this = this;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope)    
+            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
         }, 1000);
     }
     
@@ -266,10 +266,12 @@ Window_view.prototype._$create_ui = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable())
-            _ui.removeClass(_not_login_classname);
-        else
-            _ui.addClass(_not_login_classname);
+        if (_policy.writable()) {
+			_ui.removeClass(_not_login_classname);
+		}
+		else {
+			_ui.addClass(_not_login_classname);
+		}
     }, true);
     
     return _ui;
@@ -376,10 +378,12 @@ Window_view.prototype.onload = function () {
     
     this._loaded = true;
     
-    if (this._stop_select === false)
-        this.set_selection();
-    else
-        this._stop_select = false;
+    if (this._stop_select === false) {
+		this.set_selection();
+	}
+	else {
+		this._stop_select = false;
+	}
     
     var _ui = this.get_ui();
     var _temp_logout = 'temp-logout';
