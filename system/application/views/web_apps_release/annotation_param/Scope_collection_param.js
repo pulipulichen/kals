@@ -137,14 +137,12 @@ Scope_collection_param.prototype._resorted = true;
 
 Scope_collection_param.prototype.resort = function (_force) {
     
-    if ($.is_null(_force)) {
-		_force = false;
-	}
+    if ($.is_null(_force))
+        _force = false;
     
     //如果非強迫排序，而且是已經排序的情況下，則略過排序動作    
-    if (_force === false && this._resorted === true) {
-		return this;
-	}
+    if (_force === false && this._resorted === true)
+        return this;
     
     var _scopes = this.scopes; 
     var _resort_scopes = [];
@@ -157,17 +155,15 @@ Scope_collection_param.prototype.resort = function (_force) {
             var _next_scope = _scopes[_i+1];
             
             if (_scope.get_to() < _next_scope.get_from()) {
-                if (_hold === false) {
-					_resort_scopes.push(_scope);
-				}
+                if (_hold === false)
+                    _resort_scopes.push(_scope);
                     
                 _hold = false;
                 continue;
             }
             else {
-                if (_hold === true) {
-					_scope = _resort_scopes.pop();
-				}
+                if (_hold === true)
+                    _scope = _resort_scopes.pop();
                     
                 //_scope = [_scope[0], _next_scope[1]];
                 _scope = new Scope_param(_scope.get_from(), _next_scope.get_to());
@@ -209,9 +205,8 @@ Scope_collection_param.prototype.get_index_array = function () {
         
         //$.test_msg('Scope_coll.get_index_array()', [_from, _to]);
         
-        for (var _j = _from; _j < (parseInt(_to, 10) + 1); _j++) {
-			_ary.push(_j);
-		}
+        for (var _j = _from; _j < eval(_to + 1); _j++)
+            _ary.push(_j);
         _coll.push(_ary);
     }
     
@@ -263,7 +258,7 @@ Scope_collection_param.prototype.get_first_index = function () {
     
     if (this.length() > 0) {
         var _scope = this.get(0);
-        _index = _scope.get_from();
+        var _index = _scope.get_from();
     }
     
     return _index;
@@ -275,7 +270,7 @@ Scope_collection_param.prototype.get_last_index = function () {
     
     if (this.length() > 0) {
         var _scope = this.get((this.length()-1));
-        _index = _scope.get_to();
+        var _index = _scope.get_to();
     }
     
     return _index;
@@ -300,21 +295,18 @@ Scope_collection_param.prototype.export_json = function (_export_anchor_text) {
  * @type {Boolean}
  */
 Scope_collection_param.prototype.equals = function (_scope_coll) {
-    if ($.is_class(_scope_coll, 'Scope_collection_param') === false) {
-		return false;
-	}
+    if ($.is_class(_scope_coll, 'Scope_collection_param') === false)
+        return false;
     
-    if (this.length() != _scope_coll.length()) {
-		return false;
-	}
+    if (this.length() != _scope_coll.length())
+        return false;
         
     for (var _i = 0; _i < this.length(); _i++) {
         var _this_scope = this.get(_i);
         var _scope = _scope_coll.get(_i);
         
-        if (_this_scope.equals(_scope) === false) {
-			return false;
-		}
+        if (_this_scope.equals(_scope) === false)
+            return false;
     }
     
     return true;
