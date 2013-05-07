@@ -38,7 +38,7 @@ Recommend_param.prototype.import_json = function (_json) {
             && $.is_array(_json.tips)) {
             this.tips = [];
             for (var _i in _json.tips) {
-                this.tips.push(_json.tips[_i])
+                this.tips.push(_json.tips[_i]);
             }
         }
         

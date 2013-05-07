@@ -81,11 +81,13 @@ Selection_my_manager.prototype.custom = null;
  */
 Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
-    if (_scope_coll.length() === 0)
-        return this;
+    if (_scope_coll.length() === 0) {
+		return this;
+	}
         
-    if ($.is_null(_is_initialize))
-        _is_initialize = false;
+    if ($.is_null(_is_initialize)) {
+		_is_initialize = false;
+	}
     
     
     //$.test_msg('Selection_my_manager.set_scope_coll()', [_type, $.is_number(_type), typeof(this._my_selections[_type])]);
@@ -97,7 +99,7 @@ Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _i
     //加入基本標註類型檢查
     var _type_param = KALS_context.custom_type.find_type(_type);
     if (_type_param.is_basic() === true) {
-        _type = _type_param.get_type_name()
+        _type = _type_param.get_type_name();
     }
     else {
         return KALS_text.selection.my_custom.set_scope_coll(_type, _scope_coll, _is_initialize);
