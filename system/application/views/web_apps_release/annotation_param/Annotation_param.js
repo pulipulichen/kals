@@ -156,7 +156,7 @@ Annotation_param.prototype.navigation_level = 1;
  * @type {boolean}
  */
 Annotation_param.prototype.is_respond = function () {
-    return (this.topic != null);
+    return (this.topic !== null);
 };
 
 /**
@@ -165,8 +165,9 @@ Annotation_param.prototype.is_respond = function () {
  */
 Annotation_param.prototype.is_my_annotation = function () {
     
-    if (this.user === null)
-        return false;
+    if (this.user === null) {
+		return false;
+	}
     
     var _user_id = KALS_context.user.get_id();
     var _author_id = this.user.get_id();
@@ -232,7 +233,7 @@ Annotation_param.prototype.export_json = function () {
                 for (var _p in this._policy_types) {
                     var _policy_type = this._policy_types[_p];
                     if (_policy_type == _value) {
-                        _value = parseInt(_p);
+                        _value = parseInt(_p,10);
                         break;
                     }
                 }
@@ -247,25 +248,29 @@ Annotation_param.prototype.export_json = function () {
     
     var _param_types = this._param_types;
     
-    for (var _i in _param_types) {
-        var _attr = _param_types[_i];
+    for (_i in _param_types) {
+        _attr = _param_types[_i];
         //$.test_msg('Annotation_param.export_json', [_attr, ($.isset(this[_attr]))]);
         
         if ($.isset(this[_attr])) {
             if (_attr == 'respond_to_coll') {
-                var _data = this[_attr].export_respond_json();
-                if ($.is_array(_data) && _data.length > 0)
-                    _json[_attr] = _data;
-            }  
-            else if (_attr == 'topic') {
-                _json[_attr] = this[_attr].export_respond_json();
-            }
-            else if ($.inArray(_attr, this._only_for_import) > -1) {
-                // 不做輸出！
-                continue;
-            }
-            else
-                _json[_attr] = this[_attr].export_json();
+				var _data = this[_attr].export_respond_json();
+				if ($.is_array(_data) && _data.length > 0) {
+					_json[_attr] = _data;
+				}
+			}
+			else 
+				if (_attr == 'topic') {
+					_json[_attr] = this[_attr].export_respond_json();
+				}
+				else 
+					if ($.inArray(_attr, this._only_for_import) > -1) {
+						// 不做輸出！
+						continue;
+					}
+					else {
+						_json[_attr] = this[_attr].export_json();
+					}
         }
     }
     
@@ -275,8 +280,9 @@ Annotation_param.prototype.export_json = function () {
 Annotation_param.prototype.export_respond_json = function () {
     var _data = {};
     
-    if ($.isset(this.annotation_id))
-        _data.annotation_id = this.annotation_id;
+    if ($.isset(this.annotation_id)) {
+		_data.annotation_id = this.annotation_id;
+	}
         
     return _data;
 };
@@ -289,44 +295,58 @@ Annotation_param.prototype.import_json = function (_json) {
         if (typeof(_json[_attr]) != 'undefined') {
             var _value = _json[_attr];
             if (_attr == 'note') {
-                _value = unescape(_value);
-            else if (_attr == 'policy_type' && $.is_number(_value)) {
-                _value = _value + '';
-                for (var _p in this._policy_types) {
-                    var _policy_type = this._policy_types[_p];
-                    if (_p == _value) {
-                        _value = _policy_type;
-                        break;
-                    }
-                }
-            }
+				_value = unescape(_value);
+			}
+			else 
+				if (_attr == 'policy_type' && $.is_number(_value)) {
+					_value = _value + '';
+					for (var _p in this._policy_types) {
+						var _policy_type = this._policy_types[_p];
+						if (_p == _value) {
+							_value = _policy_type;
+							break;
+						}
+					}
+				}
             
             this[_attr] = _value;
         }
     }
     
     var _param_types = this._param_types;
-    for (var _i in _param_types) {
-        var _attr = _param_types[_i];
+    for (_i in _param_types) {
+        _attr = _param_types[_i];
         if (typeof(_json[_attr]) != 'undefined') {
-            var _value = _json[_attr];
-            if (_attr == 'respond_to_coll')
-                this[_attr] = new Annotation_collection_param(_value);
-            else if (_attr == 'scope')
-                this[_attr] = new Scope_collection_param(_value);
-            else if (_attr == 'share_list')
-                this[_attr] = new User_collection_param(_value);
-            else if (_attr == 'user')
-                this[_attr] = new User_param(_value);
-            else if (_attr == 'topic')
-                this[_attr] = new Annotation_param(_value);
-            else if (_attr == 'type') {
-                _value = decodeURIComponent(_value);
-                //this[_attr] = new Annotation_type_param(_value);
-                this[_attr] = KALS_context.custom_type.import_json(_value);
-            }
-            else if (_attr == 'recommend')
-                this[_attr] = new Recommend_param(_value);
+            _value = _json[_attr];
+            if (_attr == 'respond_to_coll') {
+				this[_attr] = new Annotation_collection_param(_value);
+			}
+			else if (_attr == 'scope') {
+				this[_attr] = new Scope_collection_param(_value);
+			}
+			else 
+				if (_attr == 'share_list') {
+					this[_attr] = new User_collection_param(_value);
+				}
+				else 
+					if (_attr == 'user') {
+						this[_attr] = new User_param(_value);
+					}
+					else 
+						if (_attr == 'topic') {
+							this[_attr] = new Annotation_param(_value);
+						}
+						else 
+							if (_attr == 'type') {
+								_value = decodeURIComponent(_value);
+								//this[_attr] = new Annotation_type_param(_value);
+								this[_attr] = KALS_context.custom_type.import_json(_value);
+							}
+							else 
+								if (_attr == 'recommend') {
+									this[_attr] = new Recommend_param(_value);
+								}
+						
         }
     }
     
@@ -344,10 +364,12 @@ Annotation_param.prototype.set_type = function (_type) {
 
 Annotation_param.prototype.get_interval_time = function () {
     var _timestamp = this.timestamp;
-    if ($.is_null(_timestamp))
-        return null;
-    else
-        return $.get_interval_time(_timestamp);
+    if ($.is_null(_timestamp)) {
+		return null;
+	}
+	else {
+		return $.get_interval_time(_timestamp);
+	}
 };
 
 /**
