@@ -3,6 +3,15 @@
     position:relative;
     z-index: 1;
 }
+.editor-tool tr td{
+	padding: 0 0 !important;
+	border:0px !important;
+	width:330px !important;
+	
+}
+.editor-tool table{
+	border-collapse:inherit !important;
+}
 
 .editor-container {
     border:1px none #4A4531;
@@ -14,7 +23,7 @@
  * @section Editor_container
  */
 .editor-container .toggle {
-    text-align: center;
+    text-align: center !important;
     /*background-color: yellow;*/
     font-size: small;
     /*color: white;*/
@@ -58,6 +67,9 @@
     */
 }
 
+.editor-container .toggle td {
+	text-align:center !important;
+}
 .editor-container .toggle.hide {
     border-radius: 8px;
     -moz-border-radius: 8px;
@@ -81,7 +93,7 @@
 
 .editor-container .toggle td {
     -moz-box-shadow: 0px 5px 5px #AF9067;
-    -webkit-box-shadow: 0px 5px 5px #AF9067;
+    
     position:relative;
     display: block;
 }
@@ -182,7 +194,7 @@
 /**
  * @section type
  */
-.type-component {
+.annotation-editor .type-component {
     margin-right: 5px;
     margin-left: 5px;
     margin-top: 5px;
@@ -197,17 +209,17 @@
 
 .type-option {
     /*padding: 5px 10px;*/
-    padding: 1px 5px;
-    text-align: center;
+    padding: 1px 5px !important;
+    text-align: center !important;
     color: white;
-    background-color: gray;
-    font-size: small;
+    background-color: gray ;
+    font-size: small !important;
     
-    border-bottom: 1px solid #555;
-    border-left: 1px solid #AAA;
-    border-right: 1px solid #555;
-    border-top: 1px solid #AAA;
-    cursor: pointer;
+    border-bottom: 1px solid #555 !important;
+    border-left: 1px solid #AAA !important;
+    border-right: 1px solid #555 !important;
+    border-top: 1px solid #AAA !important;
+    cursor: pointer !important;
     
     font-weight: bold;
 }
@@ -320,7 +332,7 @@
  /**
   * @section Policy_component
   */
-.policy-component {
+.annotation-tool .annotation-editor .policy-component {
     font-size:small;
     cursor: pointer;
     padding-left: 18px;
@@ -353,7 +365,8 @@
 
 .window-policy .help {
     padding-left: 1em;
-    font-size:small;    
+    font-size:small;
+	font-weight:normal !important;    
 }
 
 /**
@@ -517,4 +530,19 @@ table.cke_editor.inline-table {
 .editor-container .note-editor-textarea {
     width: 90%;
     height: 100px;
+}
+
+/**
+ * @section {Reset recovery}
+ */
+.annotation-tool tbody tr th{
+	background:rgba(255, 255, 255, 255) !important;
+	color: black;
+}
+
+.annotation-tool tbody tr td,
+.annotation-tool tbody tr th {
+	
+	border-bottom:0px !important;
+	border-top:0px !important;
 }

@@ -52,13 +52,9 @@ Init_profile.prototype._$onstart = function () {
         //$.test_msg('KALS_context.auth.check_login() callback');
         
         setTimeout(function () {
-			
             KALS_context.hash.check_hash(function () {
                 KALS_context.init_profile.complete('hash');
             });
-            
-			//@TODO 暫時先關掉
-			//KALS_context.init_profile.complete('hash');
         }, 500);
             
     });
@@ -73,25 +69,6 @@ Init_profile.prototype._$oncomplete = function () {
     //});
     
     KALS_context.completed = true;
-	
-	/**
-	 * 布丁測試用
-	 */
-	var _sentence_list = KALS_text.selection.text.get_sentence_index();
-	
-	var _php_array = 'new Array(';
-	for (var _i = 0; _i < _sentence_list.length; _i++)
-	{
-		if (_i != 0)
-			_php_array = _php_array + ',';
-		_php_array = _php_array + _sentence_list[_i];
-	}
-	_php_array = _php_array + ');';
-	
-	$.test_msg('count .kals-sentence-punctuation', $('.kals-sentence-punctuation').length);
-	$.test_msg('list .kals-sentence-punctuation', _sentence_list);
-	$.test_msg('list php array .kals-sentence-punctuation', _php_array);
-	
 };
 
 /* End of file Init_profile */

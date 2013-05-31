@@ -13,14 +13,12 @@
  * @version		1.0 2010/6/22 下午 10:41:19
  */
 
-//要觀察的網址
-$config['obs_webpage_url'] = 'http://demo-kals.dlll.nccu.edu.tw/homework';
+//要觀察的網址 1142
+$config['obs_webpage_url'] = 'http://140.119.61.174/homework';
 
 
 $config['obs_date_from'] = '2010-12-02 17:00:00+08';
-$config['obs_epoch_from'] = '1291280400';
 $config['obs_date_to'] = '2010-12-16 17:00:00+08';
-$config['obs_epoch_to'] = '1292490000';
 
 //全部的觀察名單
 $config['obs_email'] = array(

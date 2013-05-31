@@ -4,13 +4,13 @@
  *
  * 負責取出Action的Action Factory
  *
- * @package		KALS
- * @category		Library
- * @author		Pudding Chen <puddingchen.35@gmail.com>
- * @copyright		Copyright (c) 2010, Pudding Chen
- * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link		http://sites.google.com/site/puddingkals/
- * @version		1.0 2010/6/25 下午 05:30:29
+ * @package     KALS
+ * @category        Library
+ * @author      Pudding Chen <puddingchen.35@gmail.com>
+ * @copyright       Copyright (c) 2010, Pudding Chen
+ * @license     http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link        http://sites.google.com/site/puddingkals/
+ * @version     1.0 2010/6/25 下午 05:30:29
  */
 class Action_factory extends KALS_object {
 
@@ -28,33 +28,34 @@ class Action_factory extends KALS_object {
         {
             case 1:
             case 'action.domain.administration':
-                //$this->CI->load->library('policy/Action_domain_administration');
-                $this->_CI_load("library", 'policy/Action_domain_administration');
+                $this->CI->load->library('policy/Action_domain_administration');
                 $action = $this->CI->action_domain_administration;
                 break;
             case 2:
             case 'action.webpage.administration':
-                //$this->CI->load->library('policy/Action_webpage_administration');
-                $this->_CI_load("library", 'policy/Action_webpage_administration');
+                $this->CI->load->library('policy/Action_webpage_administration');
                 $action = $this->CI->action_webpage_administration;
                 break;
             case 3:
             case 'actopm.webpage.read':
-            	//$this->CI->load->library('policy/Action_webpage_read');
-                $this->_CI_load("library", 'policy/Action_webpage_read');
+                $this->CI->load->library('policy/Action_webpage_read');
                 $action = $this->CI->action_webpage_read;
                 break;
             case 4:
             case 'action.webpage.recommend_show':
-                //$this->CI->load->library('policy/Action_webpage_recommend_show');
-                $this->_CI_load("library", 'policy/Action_webpage_recommend_show');
+                $this->CI->load->library('policy/Action_webpage_recommend_show');
                 $action = $this->CI->action_webpage_recommend_show;
                 break;
             case 5:
             case 'action.annotation.read':
-                //$this->CI->load->library('policy/Action_annotation_read');
-                $this->_CI_load("library", 'policy/Action_annotation_read');
-                $action = $this->CI->action_annotation_read;
+                $this->CI->load->library('policy/Action_annotation_read');
+
+                #TODO 此處會抓不到對應的Policy
+                if (isset($this->CI->action_annotation_read))
+                    $action = $this->CI->action_annotation_read;
+                else if (isset($this->action_annotation_read))
+                    $action = $this->action_annotation_read;
+
                 break;
             default :
                 $action = NULL;

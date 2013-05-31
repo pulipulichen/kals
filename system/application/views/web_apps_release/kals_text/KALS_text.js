@@ -105,15 +105,15 @@ KALS_text.prototype.filter_selector = function (_selector) {
         return null;
     }
     
-    if (_selector.length > 0) {
-		return _selector;
-	}
-	else {
-		//找不到_selector，丟出錯誤
-		_exception = new KALS_exception('kals_text.exception.selector_not_exist');
-		KALS_util.show_exception(_exception);
-		return null;
-	}
+    if (_selector.length > 0)
+        return _selector;
+    else
+    {
+        //找不到_selector，丟出錯誤
+        _exception = new KALS_exception('kals_text.exception.selector_not_exist');
+        KALS_util.show_exception(_exception);
+        return null;
+    }
 };
 
 /* End of file KALS_text */

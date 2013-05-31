@@ -166,12 +166,7 @@ class Authentication extends Web_apps_controller {
 
         $data = json_to_object($json);
 
-        //test_msg('authentication.register before find_user');
-        
         $user = $this->user->find_user($this->url, $data->email);
-        
-        
-        //test_msg('authentication.register after find_user');
 
         //$output = NULL;
         //$output['login'] = FALSE;
@@ -179,7 +174,7 @@ class Authentication extends Web_apps_controller {
 
         $action = 8;
         $user_id = NULL;
-        if (isset($user) )
+        if (isset($user))
         {
             //handle_error('user_already_exist');
             $output['error'] = 'user_already_existed';
@@ -187,23 +182,11 @@ class Authentication extends Web_apps_controller {
         }
         else    //if (isset($user)) else
         {
-            
             $user = $this->user->create_user($this->url, $data->email);
-            
             $user->set_password($data->password);
-            
-            //test_msg('auth.regiester after create_user', $user->get_id());
-            
             $user->update();
-            
-            //test_msg('auth.regiester after update password', $user->get_id());
-            
             $output = $this->_parse_user_output($user, FALSE);
-            
-            
-            //test_msg('auth.regiester after _parse_user_output', $output['user']);
-            
-            
+
             $user_id = $user->get_id();
         }
 

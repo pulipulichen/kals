@@ -62,14 +62,12 @@ class exp201012 extends Admin_apps_controller {
      * @var String 使用PostgreSQL的日期格式
      */
     private $obs_date_from;
-    private $obs_epoch_from;
 
     /**
      * 要觀察的結束日期
      * @var String 使用PostgreSQL的日期格式
      */
     private $obs_date_to;
-    private $obs_epoch_to;
 
     /**
      * 要觀察的名單
@@ -154,9 +152,7 @@ class exp201012 extends Admin_apps_controller {
         //$this->obs_domain_id = $this->domain->filter_id($this->obs_webpage_url);
 
         $this->obs_date_from = $this->config->item('obs_date_from');
-        $this->obs_epoch_from = $this->config->item('obs_epoch_from');
         $this->obs_date_to = $this->config->item('obs_date_to');
-        $this->obs_epoch_to = $this->config->item('obs_epoch_to');
 
         $this->obs_email = $this->config->item('obs_email');
         $this->in_email = 'in (';
@@ -176,11 +172,6 @@ class exp201012 extends Admin_apps_controller {
         $this->obs_test_score = $this->config->item('obs_test_score');
         $this->paragraph_scope = $this->config->item('paragraph_scope');
         $this->chapter_scope = $this->config->item('chapter_scope');
-        
-        
-        $this->load->library('unit_test');
-        $this->load->helper('unit_test');
-        $this->unit->set_benchmark('Construc Complete');
     }
 
     function index() {
@@ -1356,8 +1347,7 @@ AND annotation.user_id = "user"."user_id"
 AND annotation.create_timestamp > \'' . $this->obs_date_from  .'\'
 AND annotation.create_timestamp < \'' . $this->obs_date_to  .'\'
 AND score.annotation_id = annotation.annotation_id
-AND score.score_type_id = 5
-AND annotation.annotation_type_id <> 4')
+AND score.score_type_id = 5')
                 ->where('email '. $this->in_email)
                 ->order_by('scope_length')
                 ->get();
@@ -1369,11 +1359,6 @@ AND annotation.annotation_type_id <> 4')
             $id = $row['annotation_id'];
             $scope_length = intval($row['scope_length']);
             $email = $row['email'];
-
-            $score = 0;
-            if (isset($revise_score[$scope_length]))
-                $scroe = $revise_score[$scope_length];
-
             $tbody[] = array(
                 $email,
                 $id,
@@ -1381,7 +1366,7 @@ AND annotation.annotation_type_id <> 4')
                 $this->obs_group[$email],
                 $row['scope_length'],
                 $row['score'],
-                $score
+                $revise_score[$scope_length]
             );
 
             if (isset($length_count[$scope_length]) === FALSE)
@@ -3526,26 +3511,10 @@ AND log_timestamp < \'' . $this->obs_date_to  .'\'')
             4 => 91.31036774,
             5 => 92.55095259,
             7 => 94.7275144,
-            8 => 97.06468764,
-            9 => 1
+            8 => 97.06468764
         );
-        
-        /*$sentence_index = array(0,142,199,256,314,402,473,530,663,667,790,932,1035,1193,1255,1340,1419,1444,1463,1503,1564,1636,1664,1689,1716,1742,1871,1921,1989,2019,2108,2217,2295,2422,2557,2718,2791,2916,3032,3079,3146,3197,3213,3226,3239,3266,3313,3411,3604,3640,3854,3922,3980,4068,4082,4201,4285,4387,4497,4500,4526,4590,4653,4679,4727,4764,4796,4803,4812,4820,4829,4836,4845,4858,4893,4903,4913,4961,4969,5017,5044,5052,5120,5148,5156,5210,5279,5307,5316,5333,5384,5433,5529,5563,5595,5674,5718,5789,5854,5920,5955,5985,6027,6055,6090,6165,6238,6432,6520,6535,6553,6608,6639,6796,6836,7042,7046,7086,7104,7144,7246,7284,7292,7328,7361,7419,7427,7485,7564,7572,7607,7637,7724,7732,7821,7903,7969,7988,8065,8074,8166,8198,8233,8276,8368,8396,8549,8618,8648,8684,8743,8823,8857,8891,8920,8997,9025,9107,9118,9139,9153,9178,9187,9189,9199,9208,9211,9218,9247,9267,9275,9280,9283,9286,9290,9292,9299,9306,9313,9319,9334,9337,9350,9355,9358,9362,9370,9382,9385,9392,9401,9404,9408,9415,9421,9427,9439,9448,9451,9455,9462,9468,9495,9499,9505,9508,9511,9515,9529,9536,9557,9561,9568,9575,9582,9588,9598,9612,9615,9684,9736,9900,18,74,76,682,686,695,1266,1509,1748,2570,2805,3331,3422,3663,3737,3766,3774,4091,5226,5241,5324,5339,5443,5798,6180,6258,6289,6308,6319,6353,6654,6846,6893,6929,6970,6974,7158,7159,7166,7171,7207,7827,8280,9111,9617,9688,9711,9746,9762,9796,9816,9851,9873,9909);
-        sort($sentence_index);
-        echo '$sentence_index = array(';
-        foreach ($sentence_index AS $s)
-        {
-            echo $s.',';
-        }
-        echo ');<br />';
-         * 
-         */
-        $sentence_index = array(0,18,74,76,142,199,256,314,402,473,530,663,667,682,686,695,790,932,1035,1193,1255,1266,1340,1419,1444,1463,1503,1509,1564,1636,1664,1689,1716,1742,1748,1871,1921,1989,2019,2108,2217,2295,2422,2557,2570,2718,2791,2805,2916,3032,3079,3146,3197,3213,3226,3239,3266,3313,3331,3411,3422,3604,3640,3663,3737,3766,3774,3854,3922,3980,4068,4082,4091,4201,4285,4387,4497,4500,4526,4590,4653,4679,4727,4764,4796,4803,4812,4820,4829,4836,4845,4858,4893,4903,4913,4961,4969,5017,5044,5052,5120,5148,5156,5210,5226,5241,5279,5307,5316,5324,5333,5339,5384,5433,5443,5529,5563,5595,5674,5718,5789,5798,5854,5920,5955,5985,6027,6055,6090,6165,6180,6238,6258,6289,6308,6319,6353,6432,6520,6535,6553,6608,6639,6654,6796,6836,6846,6893,6929,6970,6974,7042,7046,7086,7104,7144,7158,7159,7166,7171,7207,7246,7284,7292,7328,7361,7419,7427,7485,7564,7572,7607,7637,7724,7732,7821,7827,7903,7969,7988,8065,8074,8166,8198,8233,8276,8280,8368,8396,8549,8618,8648,8684,8743,8823,8857,8891,8920,8997,9025,9107,9111,9118,9139,9153,9178,9187,9189,9199,9208,9211,9218,9247,9267,9275,9280,9283,9286,9290,9292,9299,9306,9313,9319,9334,9337,9350,9355,9358,9362,9370,9382,9385,9392,9401,9404,9408,9415,9421,9427,9439,9448,9451,9455,9462,9468,9495,9499,9505,9508,9511,9515,9529,9536,9557,9561,9568,9575,9582,9588,9598,9612,9615,9617,9684,9688,9711,9736,9746,9762,9796,9816,9851,9873,9900,9909);
-        
-        $this->load->library('search/Search_annotation_user_collection');
-        $this->load->library('search/Search_annotation_id_collection');
 
-            $query = $this->db->select('"user".user_id, email, annotation.annotation_id, score')
+            $query = $this->db->select('email, annotation.annotation_id, score')
                 ->from('annotation
 , "user", webpage2annotation, score')
                 ->where('annotation.user_id = "user".user_id
@@ -3583,9 +3552,7 @@ AND score.score_type_id = 1')
             '標註編號',
             '標註範圍共識',
             '專家調查',
-            '加權社群行為',
-            '範圍位置',
-            '以句為單位的共識次數'
+            '加權社群行為'
         );
 
         $tbody = array();
@@ -3596,99 +3563,6 @@ AND score.score_type_id = 1')
             $annotation_id = intval($row['annotation_id']);
             $annotation = new Annotation($annotation_id);
             $count = $annotation->get_consensus_count();
-            
-            /**
-             * 來計算以句子為單位的共識
-             * @author Pudding Chen 20121228
-             */
-            
-            //取得標註的位置
-            $scopes = $annotation->get_scopes();
-            foreach ($scopes AS $scope)
-            {
-                $from_index = intval($scope->get_from_index());
-                $to_index = intval($scope->get_to_index());
-            }
-            
-            //擴張標註的位置
-            $sentence_from_index = null;
-            $sentence_to_index = null;
-            $last_s_index = 0;
-            
-            //if ($from_index != 1)
-            //    continue;
-            
-            foreach ($sentence_index AS $s => $s_index)
-            {   
-                //先判斷句子開頭
-                if (is_null($sentence_from_index))
-                {
-                    if ($from_index == 0)
-                    {
-                        $sentence_from_index = 0;
-                    }
-                    else if ($from_index < $s_index)
-                    {
-                        $sentence_from_index = $last_s_index;
-                    }
-                }
-                if ($to_index < $s_index)
-                {
-                    //echo $to_index.'-'.$s_index.'!<br />';
-                    //{
-                        //$set_next_s_index = true;
-                        //$sentence_to_index = $last_s_index;
-                        $sentence_to_index = $s_index;
-                        break;
-                    //}
-                }
-                
-                //echo '['.$s.":".$from_index.'-'.$to_index.'-'.$s_index.'-'.$last_s_index.'|'.$sentence_from_index.'-'.$sentence_to_index.'?'.($sentence_from_index == null).'-'.($to_index < $s_index).']<br />';
-                $last_s_index = $s_index;
-            }
-            
-            //找完了，範圍是
-            //$sentense_from_index
-            //$sentense_to_index
-            //建立搜尋範圍
-            
-            $s = new Annotation_scope();
-            //$s->set_index($sentence_from_index, $sentence_to_index);
-            $s->set_index($from_index, $to_index);
-            $s->set_webpage($this->obs_webpage_id);
-            
-            $sentence_search_scope = new Annotation_scope_collection();
-            $sentence_search_scope->add_scope($s);
-            
-            //echo $sentence_search_scope->length().'-'.$this->obs_webpage_id.'|';
-            $sentence_consensus_count = '--';
-            //if ($from_index == 1)
-            //{
-            
-                $search = new Search_annotation_user_collection();  //只算人頭
-
-                $search->set_check_authorize(false);
-                $search->set_limit(NULL);
-                $search->set_overlap_scope($sentence_search_scope);
-                $search->set_exclude_annotation($annotation_id);
-                $search->set_exclude_user($annotation->get_user());
-                $search->set_target_newer_create($this->obs_epoch_from);
-                $search->set_target_older_create($this->obs_epoch_to);
-                $search->set_target_topic(true);
-                        
-                $sentence_consensus_count = $search->length();
-                
-                /*
-                $this->unit->run($search->length()
-                , 0
-                , '測試搜尋 '. $annotation_id . ': '. $sentence_from_index.'-'.$from_index.'-'.$to_index.'-'.$sentence_to_index);
-                 */
-                /*
-            }
-            else
-            {
-                //continue;
-            }*/
             
             if (isset($consensus_count[$email]) == false)
             {
@@ -3725,19 +3599,15 @@ AND score.score_type_id = 1')
             $comp_total += $this->obs_mix_score[$email];
 
             $tbody[] = array(
-                $email . '('.$row['user_id'].')',
+                $email,
                 $this->obs_mix_score[$email],
                 $this->obs_group[$email],
                 $annotation_id,
                 $count,
                 $row['score'],
-                $social_function[$count],
-                $sentence_from_index.'-'.$from_index.'-'.$to_index.'-'.$sentence_to_index,
-                $sentence_consensus_count
+                $social_function[$count]
             );
         }
-        
-        //unit_test_report($this);
 
         $this->_display_body('標註與標註範圍共識列表', $thead, $tbody);
 

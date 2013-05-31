@@ -14,6 +14,9 @@
     min-width: 320px;
     max-width: 640px;
     max-height:100%;
+	padding-left:10px !important;
+	padding-right:10px !important;
+	
 }
 
 .dialog-modal.compact-width {
@@ -43,6 +46,11 @@
 .dialog-toolbar-tr,
 .dialog-toolbar-table {
     height: 36px;
+	margin:0px !important;
+	background: rgba(0,0,0,0)!important;
+}
+.dialog-toolbar-table tr{
+	background: rgba(0,0,0,0)!important;
 }
 
 .dialog-toolbar {
@@ -52,8 +60,8 @@
     /*padding: 0.5em 1em 0.3em;*/
     padding: 0;
     
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px !important;
+    -webkit-border-radius: 8px !important;
     
     background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
         , #918978 51%, #8C8473 100%);
@@ -64,7 +72,7 @@
         , endColorstr='#8C8473');
     background-color: #8C8473;
     
-    border: 1px solid #494437;    
+    border: 1px solid #494437 !important;    
     color: #FFFFFF;
     font-weight: bold;
     display: block;
@@ -76,7 +84,11 @@
     line-height: 40px;
     height: 36px;
 }
-
+.dialog-toolbar tr td{
+	padding:0px 0px !important;
+	border:0px !important;
+	border-collapse:inherit !important;
+}
 .dialog-heading {
     margin: 0.1em 16px 0.2em 0;
     -moz-user-select: none;
@@ -139,25 +151,27 @@
         , endColorstr='#FED448');
     background-color: #FED448;
         
-    border: 1px solid #D19405;
+    border: 1px solid #D19405 !important;
     color: #4C3000;
     font-weight: bold;
     outline: medium none;
-    font-size: 0.8em;
+    font-size: 0.7em !important;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;
     margin-right: 0.1em;
     overflow: visible;
-    padding:0.2em;
+    padding:0.2em !important;
     position:relative;
     text-align:center;
     text-decoration: none !important;
     
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    min-height: 35px;
+    -moz-border-radius: 8px !important;
+    -webkit-border-radius: 8px !important;
+    min-height: 33px;
 }
+
+
 
 .dialog-option.link {
     color: blue;
@@ -181,11 +195,14 @@
     display: none;
 }
 */
+.dialog-content-tr{
+	background: rgba(0,0,0,0)!important;
+}
 
 .dialog-content {
     border:0 none;
     overflow: auto;
-    padding: 0.5em 1em;
+    padding: 0.5em 1em !important;
     color: #383838;
     cursor: auto;    
     max-height: 400px;
@@ -214,7 +231,7 @@
 }
 
 .dialog-modal.with-content.with-options .dialog-content {
-    border-bottom:1px solid #8E846B;
+    border-bottom:1px solid #8E846B !important;
     margin-bottom: 5px;
 }
 
@@ -241,4 +258,25 @@
 
 .dialog-content .exception dd {
     word-break:break-all;
+}
+.window-loading-tr{
+	height:0px !important;
+	padding:0px 0px !important;
+	background: rgba(0,0,0,0)!important;
+}
+.window-loading-tr td{
+	height:0px !important;
+	padding:0px 0px !important;
+}
+.dialog-content-tr{
+	padding:0px 0px !important;
+}
+.dialog-content-td{
+	padding:0px 0px !important;
+	
+}
+.dialog-options{
+	height:28px !important;
+	padding:0px 0px !important;
+	background: rgba(0,0,0,0)!important;
 }

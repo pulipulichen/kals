@@ -38,23 +38,24 @@ KALS_util.ajax_get = function (_config)
     
     _url = $.appends_with(_url, '/');
     
-    if (_data !== null) {
-		if ($.is_object(_data)) {
-			_data = $.json_encode(_data);
-			_data = encodeURIComponent(_data);
-			_data = escape(_data);
-		}
-		else 
-			if ($.is_string(_data)) {
-				_data = encodeURIComponent(_data);
-				_data = escape(_data);
-			}
-		
-		_url = _url + _data + '/callback=?';
-	}
-	else {
-		_url = _url + 'callback=?';
-	}
+    if (_data != null) 
+    {
+        if ($.is_object(_data))
+        {
+            _data = $.json_encode(_data);
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);    
+        }
+        else if ($.is_string(_data))
+        {
+            _data = encodeURIComponent(_data);
+            _data = escape(_data); 
+        }
+        
+        _url = _url + _data + '/callback=?';
+    }
+    else
+        _url = _url + 'callback=?';
     
     if (typeof(KALS_context) != 'undefined')
     {
@@ -108,11 +109,7 @@ KALS_util.ajax_get = function (_config)
         //    return;
         
         $.getJSON(_url, function (_data) {
-			
-			$.test_msg('ajax_get return data', _data);
-			
-			
-            if (typeof(_retry_timer) == 'undefined' || _retry_timer === null)
+            if (typeof(_retry_timer) == 'undefined' || _retry_timer == null)
             {
                 return;
             }
@@ -146,7 +143,7 @@ KALS_util.ajax_get = function (_config)
         _get_json();
         
         
-        if (_retry !== null && _retry > 0)
+        if (_retry != null && _retry > 0)
         {
             _retry_timer = setInterval(function () {
                 
@@ -199,7 +196,7 @@ KALS_util.ajax_get = function (_config)
  *   callback: function (_data),
  *   exception_handle: function (_data) //可省略，省略則自動使用KALS_util.show_exception來處理
  * };
- */	
+ */
 KALS_util.ajax_post = function (_config)
 {
     //如果要檢查資料，請將_debug設為true
@@ -235,7 +232,7 @@ KALS_util.ajax_post = function (_config)
         .attr('name', _name)
         .appendTo(_layer);
     
-    if (_debug === true)
+    if (_debug == true)
     {
         _iframe.css('width', '640px')
             .css('height', '480px');
@@ -278,13 +275,11 @@ KALS_util.ajax_post = function (_config)
                 url: _url, 
                 callback: function (_data) {
                     
-                    if (_debug === false) {
-						_layer.remove();
-					}
+                    if (_debug == false)
+                        _layer.remove();
                     
-                    if ($.is_function(_callback)) {
-						_callback(_data);
-					}
+                    if ($.is_function(_callback))
+                        _callback(_data);
                 },
                 exception_handle: _exception_handle 
             });
@@ -386,21 +381,19 @@ KALS_util.ajax_upload = function (_config) {
                     };
                     
                     if (typeof(_data) == 'undefined'
-                        || typeof(_data.completed) == 'undefined')
+                        || typeof(_data['completed']) == 'undefined')
                     {
                         _this.show_exception(_exception);
                     }
-                    else if (_data.completed === false)
+                    else if (_data['completed'] == false)
                     {
-                        if (_data.data !== false) {
-							_exception.message = _data.data;
-						}
+                        if (_data['data'] != false)
+                            _exception['message'] = _data['data'];
                         _this.show_exception(_exception);
                     }
                     
-                    if ($.is_function(_callback)) {
-						_callback(_data);
-					}
+                    if ($.is_function(_callback))
+                        _callback(_data);
                 },
                 exception_handle: _exception_handle 
             });
@@ -425,9 +418,8 @@ KALS_util.show_exception = function (_exception)
     //var _message = $.get_parameter(_exception, 'message');
     //var _request_uri = $.get_parameter(_exception, 'request_uri');
     
-    if ($.is_class(_exception, 'KALS_exception') === false) {
-		_exception = new KALS_exception(_exception);
-	}
+    if ($.is_class(_exception, 'KALS_exception') == false)
+        _exception = new KALS_exception(_exception);
         
     var _heading = _exception.heading;
     var _message = _exception.message;
@@ -443,7 +435,7 @@ KALS_util.show_exception = function (_exception)
         .appendTo(_exception_content);
     KALS_context.lang.add_listener(_dt, new KALS_language_param('Hint: ', 'exception.hint.heading'));
     
-    var _dd = $('<dd></dd>')
+    var _dd = _dd = $('<dd></dd>')
             .appendTo(_exception_content);
     KALS_context.lang.add_listener(_dd, new KALS_language_param('You can press "ESC" key to close message.', 'exception.hint.message'));
         
@@ -543,12 +535,10 @@ KALS_util.alert = function (_heading, _content, _callback)
     _modal.set_heading(_heading);
     _modal.set_content(_content);
     
-    if ($.is_function(_callback)) {
-		_modal.set_onclose(_callback);
-	}
-	else {
-		_modal.set_onclose(false);
-	}
+    if ($.is_function(_callback))
+        _modal.set_onclose(_callback);
+    else
+        _modal.set_onclose(false);
     _modal.open();
     
     return _modal;
@@ -573,15 +563,13 @@ KALS_util._get_confirm_modal = function () {
         var _no_lang = new KALS_language_param('NO', 'dialog.option.no');
         
         var _yes_option = new Dialog_close_option(_yes_lang, function () {
-            if (typeof(_modal.confirm_callback) == 'function') {
-				_modal.confirm_callback(true);
-			}
+            if (typeof(_modal.confirm_callback) == 'function')
+                _modal.confirm_callback(true);
         });
         
         var _no_option = new Dialog_close_option(_no_lang, function () {
-            if (typeof(_modal.confirm_callback) == 'function') {
-				_modal.confirm_callback(true);
-			}
+            if (typeof(_modal.confirm_callback) == 'function')
+                _modal.confirm_callback(true);
         });
         
         _modal.set_options([_yes_option, _no_option]);
@@ -611,12 +599,10 @@ KALS_util.confirm = function (_heading, _content, _callback)
     _modal.set_heading(_heading);
     _modal.set_content(_content);
     
-    if ($.is_function(_callback)) {
-		_modal.confirm_callback = _callback;
-	}
-	else {
-		_modal.confirm_callback = null;
-	}
+    if ($.is_function(_callback))
+        _modal.confirm_callback = _callback;
+    else
+        _modal.confirm_callback = null;
         
     _modal.open();
     
@@ -632,7 +618,7 @@ KALS_util.confirm = function (_heading, _content, _callback)
 KALS_util._notify_modal = null;
 
 KALS_util._get_notify_modal = function () {
-    if (this._notify_modal === null)
+    if (this._notify_modal == null)
     {
         this._notify_modal = new Notify_modal();
         
@@ -681,7 +667,7 @@ KALS_util.select_menu = function (_config) {
     _menu.set_options(_options, false);
     _menu.set_onclose(_onclose);
     
-    if (_heading_close === true)
+    if (_heading_close == true)
     {
         var _close_option = new Dialog_close_option();
         _menu.set_forward_option(_close_option);    
@@ -701,50 +687,25 @@ KALS_util.select_menu = function (_config) {
  */
 KALS_util.help = function (_url) {
     
-    if ($.is_null(_url)) {
-		_url = '';
-	}
+    if ($.is_null(_url))
+        _url = '';
     
-    if (_url.substr(0, 1) == '/') {
-		_url = _url.substr(1, _url.length);
-	}
+    if (_url.substr(0,1) == '/')
+        _url = _url.substr(1, _url.length);
     
     var _base_url = KALS_CONFIG.help_base_url;
     var _needle = 'http';
     var _help_url = KALS_context.get_base_url([KALS_CONFIG.help_base_url, _url]);
     if (_base_url.substr(0, _needle.length) == _needle)
     {
-        if (_base_url.substr(_base_url.length - 1, _base_url.length) != '/') {
-			_base_url = _base_url + '/';
-		}
+        if (_base_url.substr(_base_url.length-1, _base_url.length) != '/')
+            _base_url = _base_url + '/';
         _help_url = _base_url + _url;
     }
     
     var _help_win = window.open(_help_url, '_blank', 'width=480,height=640,scrollbars=1');
     
     return _help_win;
-};
-
-/**
- * 改良原本的decodeURIComponent
- * @param  {String} _str 要轉換的字串
- * @return {String}      轉換完成的字串
- */
-KALS_util.decodeURIComponent = function (_str) {
-    var _result;
-    /*
-    try
-    {
-        _result = decodeURIComponent(_str);
-    }
-    catch (_e) {
-        _str = $.str_replace("%", "%25", _str);
-        _result = decodeURIComponent(_str);
-    }
-    */
-    _str = $.str_replace("%", "%25", _str);
-    _result = decodeURIComponent(_str);
-    return _result;
 };
 
 /* End of file KALS_unit */

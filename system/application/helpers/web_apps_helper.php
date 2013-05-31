@@ -1,4 +1,4 @@
-<?php
+	<?php
 /**
  * web_apps_helper
  *
@@ -135,7 +135,9 @@ if ( ! function_exists('kals_log'))
                 $CI->load->library('kals_resource/Webpage');
             $webpage_id = $CI->webpage->filter_webpage_id($url);
              */
-            $webpage_id = get_context_webpage()->get_id();
+			
+			if (is_object(get_context_webpage()))
+				$webpage_id = get_context_webpage()->get_id();
         }
         
         $user_id = NULL;

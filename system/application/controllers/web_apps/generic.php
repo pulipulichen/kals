@@ -16,25 +16,25 @@ include_once 'web_apps_controller.php';
 
 class generic extends Web_apps_controller {
 
-    protected $controller_enable_cache = TRUE;
+    protected $controller_enable_cache = FALSE;
 
     function toolkit($return_list = NULL)
     {
         $list = array(
+            'libraries/jquery.tools'
+            ,'libraries/jquery.ba-bbq.min'
+            , 'libraries/jquery.jcrop'
+            , 'libraries/jquery.ba-hashchange'
+            , 'libraries/jquery.placeheld'
+            , 'libraries/jquery.endless-scroll.1.4.1'
         );
 
         $list_package = array(
             'core/KALS_CONFIG'
             , 'core/KALS_language_param'
-            , 'libraries/jquery.tools'
             , 'libraries/yui'
-            , 'libraries/jquery.jcrop'
-            , 'libraries/jquery.ba-hashchange'
-            ,'libraries/jquery.ba-bbq.min'
             , 'libraries/jQuery_mousewheel_plugin'
-            , 'libraries/jquery.placeheld'
             , 'libraries/jquery.scrollIntoView'
-            , 'libraries/jquery.endless-scroll.1.4.1'
             , 'toolkit/jQuery_kals_plugin'
             , 'toolkit/KALS_user_interface' //Qunit
             , 'toolkit/KALS_modal'
@@ -61,7 +61,7 @@ class generic extends Web_apps_controller {
         if (is_null($return_list))
         {
             $this->load_js($list);
-            $this->pack_js($list_package);
+            $this->pack_js($list_package, 'toolkit');
         }
         else
         {
@@ -99,8 +99,8 @@ class generic extends Web_apps_controller {
 
         if (is_null($return_list))
         {
-            $this->load_js($list);
-            $this->pack_js($list_package);
+            //$this->load_js($list);
+            $this->pack_js($list_package, 'core');
         }
         else
         {
@@ -267,8 +267,8 @@ class generic extends Web_apps_controller {
 
         if (is_null($return_list))
         {
-            $this->load_js($list);
-            $this->pack_js($list_package);
+            //$this->load_js($list);
+            $this->pack_js($list_package, 'component');
         }
         else
         {
@@ -286,11 +286,13 @@ class generic extends Web_apps_controller {
                 $this->dir = $this->release_dir;
         }
 
+        $full_list = array();
         
         $list_toolkit = $this->toolkit(true);
         $list_core = $this->core(true);
         $list_component = $this->component(true);
 
+        
         $full_list = $list_toolkit;
         foreach ($list_core AS $path)
             $full_list[] = $path;
@@ -298,7 +300,7 @@ class generic extends Web_apps_controller {
             $full_list[] = $path;
 
         //$this->load_js($full_list);
-        $this->pack_js($full_list);
+        $this->pack_js($full_list, 'package');
     }
     
     function component_package($is_demo = NULL) {
@@ -317,6 +319,7 @@ class generic extends Web_apps_controller {
     function style()
     {
         $list = array(
+        	'kals-reset',
             'generic',
             'dialog',
             'notify',
@@ -334,14 +337,17 @@ class generic extends Web_apps_controller {
             'annotation_recommend',
             'core'
         );
+        /*
         foreach ($list AS $path)
         {
             //測試用時，寫load_css
             //$this->load_css($path);
 
             //實際使用時，寫pack_css
-            $this->pack_css($path);
-        }
+            
+            //$this->_20130219_pack_css($path);
+        }*/
+        $this->pack_css($list, 'style');
     }
 
     /**
@@ -350,6 +356,7 @@ class generic extends Web_apps_controller {
     function style_release()
     {
         $list = array(
+            'kals-reset',
             'generic',
             'dialog',
             'notify',
@@ -373,7 +380,7 @@ class generic extends Web_apps_controller {
             //$this->load_css_release($path);
 
             //實際使用時，寫pack_css
-            $this->pack_css($path);
+            $this->pack_css($path, 'style_release');
         }
     }
 
@@ -438,14 +445,14 @@ class generic extends Web_apps_controller {
     {
         //if (is_null($is_release) == false)
         if (true)
-		{
-			$this->dir = $this->release_dir;
-		}
+        {
+                $this->dir = $this->release_dir;
+        }
         
         $path = 'core/KALS_loader';
 
         //$this->load_js($path);
-        $this->pack_js($path);
+        $this->pack_js($path, 'loader');
     }
 
     function info($json, $callback = NULL)

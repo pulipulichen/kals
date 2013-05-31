@@ -11,19 +11,36 @@
      top: 0;
      left: 0;
      width: 100%;
-     border: 0px solid red;
+     border: 0px solid red !important;
      z-index: 10;
-     margin: 0;
-     padding: 0;
+     margin: 0 0 !important;
+     padding: 0 0 !important;
      height: 30px !important;
+	 
+ }
+ .kals-toolbar tr td{
+ 	padding: 0 .5em !important;
+	text-align:right !important;
+	font-size:100% !important;
+	
+	
+ }
+
+ .kals-toolbar table{
+ 	border-collapse:inherit !important;
+	margin: 0px 0 !important;
+	text-align:right !important;
+	font-size:100% !important;
+	
  }
  
  .kals-toolbar div {
      margin: 0;
      padding: 0;
-     font-size: medium;
+
  }
  
+
  .kals-toolbar.hide {
      width: 70px;
  }
@@ -33,8 +50,10 @@
  }
 
 .toolbar-component, .toolbar-padding {
-    height: 30px;
+    height: 30px !important;
+	line-height:1 !important;
 }
+
 .toolbar-padding {
     margin: 0;
     padding:0;
@@ -62,6 +81,8 @@
 .toolbar-left {
     vertical-align: middle;
     width: 120px;
+	border: 0px !important;
+	vertical-align:middle !important;
 }
 
 .kals-toolbar.compact-width .toolbar-left {
@@ -87,7 +108,18 @@
 
 .toolbar-right {
     padding-right: 0.5em;
-    text-align:right;
+    text-align:right !important;
+	border: 0px !important;
+}
+.toolbar-right {
+    padding-right: 0.5em;
+    text-align:right !important;
+	border: 0px !important;
+	vertical-align:middle !important;
+}
+
+.toolbar-right table{
+	width:auto !important;
 }
 
 /* 處理切換功能 */
@@ -147,6 +179,8 @@
     margin: 0 1em;
     margin-left: 1em !important; 
     font-weight: bold;
+	vertical-align:middle !important;
+	
 }
 
 /* --------- */
@@ -331,4 +365,13 @@
 
 .notification-component.has-unread .unread {
     display: block;
+}
+.kals-toolbar tbody tr {
+	background:rgba(0, 0, 0, 0) !important;
+}
+
+.kals-toolbar tbody tr td{
+	
+	border-bottom:0px !important;
+	border-top:0px !important;
 }

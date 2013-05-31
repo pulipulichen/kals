@@ -310,9 +310,8 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
         
         this.load(_data, function (_this, _data) {
             
-            $.test_msg('auth.register()', [_data, _return_error]);
+            //$.test_msg('auth.register()', [_data, _return_error]);
             
-			//先檢查登入是否有錯誤
             if (typeof(_data.error) != 'undefined')
             {
                 _heading = new KALS_language_param('REGISTER ERROR', 'authentication.register_error.heading');
@@ -337,7 +336,7 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
             }
             else
             {
-               //正常登入的情況
+               
                _this._is_login = true;
                
                 setTimeout(function () {

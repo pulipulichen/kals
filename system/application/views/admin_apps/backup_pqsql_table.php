@@ -1,14 +1,15 @@
--- Sequence: recommend_recommend_id_seq
 
--- DROP SEQUENCE recommend_recommend_id_seq;
+-- Sequence: annotation2recommend_recommend_id_seq
 
-CREATE SEQUENCE recommend_recommend_id_seq
+-- DROP SEQUENCE annotation2recommend_recommend_id_seq;
+
+CREATE SEQUENCE annotation2recommend_recommend_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
-  START 946
+  START 945
   CACHE 1;
-ALTER TABLE recommend_recommend_id_seq OWNER TO kals;
+ALTER TABLE annotation2recommend_recommend_id_seq OWNER TO postgres;
 
 -- -----------------------
 
@@ -25,7 +26,7 @@ CREATE TABLE webpage
   CONSTRAINT webpage_pkey PRIMARY KEY (webpage_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE webpage OWNER TO kals;
+ALTER TABLE webpage OWNER TO postgres;
 
 
 -- Table: ci_sessions
@@ -42,7 +43,7 @@ CREATE TABLE ci_sessions
   CONSTRAINT ci_sessions_pkey PRIMARY KEY (session_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE ci_sessions OWNER TO kals;
+ALTER TABLE ci_sessions OWNER TO postgres;
 
 -- Table: "domain"
 
@@ -56,7 +57,7 @@ CREATE TABLE "domain"
   CONSTRAINT domain_pk PRIMARY KEY (domain_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE "domain" OWNER TO kals;
+ALTER TABLE "domain" OWNER TO postgres;
 
 
 -- Table: "group"
@@ -72,7 +73,7 @@ CREATE TABLE "group"
   CONSTRAINT group_group_id_key UNIQUE (group_id, domain_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE "group" OWNER TO kals;
+ALTER TABLE "group" OWNER TO postgres;
 
 
 -- Table: group2actor
@@ -92,7 +93,7 @@ CREATE TABLE group2actor
   CONSTRAINT group2actor_group_id_key UNIQUE (group_id, actor_type_id, actor_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE group2actor OWNER TO kals;
+ALTER TABLE group2actor OWNER TO postgres;
 
 
 -- Index: fki_
@@ -124,7 +125,7 @@ CREATE TABLE "user"
   CONSTRAINT user_pkey PRIMARY KEY (user_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE "user" OWNER TO kals;
+ALTER TABLE "user" OWNER TO postgres;
 
 
 -- --------------------------------
@@ -144,7 +145,7 @@ CREATE TABLE anchor_text
   CONSTRAINT anchor_text_text_key UNIQUE (text)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE anchor_text OWNER TO kals;
+ALTER TABLE anchor_text OWNER TO postgres;
 
 
 -- Table: scope
@@ -167,7 +168,7 @@ CREATE TABLE scope
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE scope OWNER TO kals;
+ALTER TABLE scope OWNER TO postgres;
 
 
 -- Table: policy
@@ -183,7 +184,7 @@ CREATE TABLE policy
   CONSTRAINT policy_pkey PRIMARY KEY (policy_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE policy OWNER TO kals;
+ALTER TABLE policy OWNER TO postgres;
 
 -- Table: log
 
@@ -201,7 +202,7 @@ CREATE TABLE log
   CONSTRAINT log_pkey PRIMARY KEY (log_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE log OWNER TO kals;
+ALTER TABLE log OWNER TO postgres;
 COMMENT ON TABLE log IS '1=檢查登入成功	//記得要取得瀏覽器資料
 2=檢查登入失敗
 3=輸入登入成功
@@ -245,7 +246,7 @@ CREATE TABLE annotation
   CONSTRAINT annotation_pkey PRIMARY KEY (annotation_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE annotation OWNER TO kals;
+ALTER TABLE annotation OWNER TO postgres;
 
 CREATE TABLE annotation2like
 (
@@ -266,7 +267,7 @@ CREATE TABLE annotation2like
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE annotation2like OWNER TO kals;
+ALTER TABLE annotation2like OWNER TO postgres;
 
 -- Table: annotation2respond
 
@@ -286,7 +287,7 @@ CREATE TABLE annotation2respond
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE annotation2respond OWNER TO kals;
+ALTER TABLE annotation2respond OWNER TO postgres;
 
 -- Index: fki_annotation2respond_respond_to
 
@@ -315,7 +316,7 @@ CREATE TABLE annotation2scope
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE annotation2scope OWNER TO kals;
+ALTER TABLE annotation2scope OWNER TO postgres;
 
 -- Table: feature
 
@@ -333,7 +334,7 @@ CREATE TABLE feature
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE feature OWNER TO kals;
+ALTER TABLE feature OWNER TO postgres;
 
 -- Index: fki_feature_2_annotation
 
@@ -373,7 +374,7 @@ CREATE TABLE notification
   CONSTRAINT notification_trigger_actor_type_id_key UNIQUE (trigger_actor_type_id, trigger_actor_id, trigger_resource_type_id, trigger_resource_id, association_user_id, notification_type_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE notification OWNER TO kals;
+ALTER TABLE notification OWNER TO postgres;
 
 -- Index: fki_notification_association_user_id
 
@@ -400,7 +401,7 @@ CREATE TABLE policy2actor
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE policy2actor OWNER TO kals;
+ALTER TABLE policy2actor OWNER TO postgres;
 
 -- Table: recommend
 
@@ -408,7 +409,7 @@ ALTER TABLE policy2actor OWNER TO kals;
 
 CREATE TABLE recommend
 (
-  recommend_id integer NOT NULL,
+  recommend_id integer NOT NULL DEFAULT nextval('annotation2recommend_recommend_id_seq'::regclass),
   recommended_annotation_id integer NOT NULL,
   recommended_webpage_id integer,
   create_time timestamp with time zone NOT NULL DEFAULT now(),
@@ -418,19 +419,19 @@ CREATE TABLE recommend
   deleted boolean NOT NULL DEFAULT false,
   create_timestamp timestamp with time zone,
   checked_timestamp timestamp with time zone,
-  CONSTRAINT recommend_pkey PRIMARY KEY (recommend_id),
-  CONSTRAINT recommend_recommend_by_annotation_id_fkey FOREIGN KEY (recommend_by_annotation_id)
+  CONSTRAINT annotation2recommend_pkey PRIMARY KEY (recommend_id),
+  CONSTRAINT annotation2recommend_recommend_by_annotation_id_fkey FOREIGN KEY (recommend_by_annotation_id)
       REFERENCES annotation (annotation_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT recommend_recommended_annotation_id_fkey FOREIGN KEY (recommended_annotation_id)
+  CONSTRAINT annotation2recommend_recommended_annotation_id_fkey FOREIGN KEY (recommended_annotation_id)
       REFERENCES annotation (annotation_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT recommend_recommended_webpage_id_fkey FOREIGN KEY (recommended_webpage_id)
+  CONSTRAINT annotation2recommend_recommended_webpage_id_fkey FOREIGN KEY (recommended_webpage_id)
       REFERENCES webpage (webpage_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE recommend OWNER TO kals;
+ALTER TABLE recommend OWNER TO postgres;
 
 -- Table: score
 
@@ -448,7 +449,7 @@ CREATE TABLE score
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (OIDS=FALSE);
-ALTER TABLE score OWNER TO kals;
+ALTER TABLE score OWNER TO postgres;
 
 -- Table: langvar
 
@@ -471,29 +472,7 @@ CREATE TABLE langvar
   CONSTRAINT langvar_webpage_id_key UNIQUE (webpage_id, langvar_type_id)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE langvar OWNER TO kals;
-
-SELECT setval('public.anchor_text_anchor_text_id_seq', 2853, true);
-SELECT setval('public.annotation2like_annotation2like_id_seq', 574, true);
-SELECT setval('public.recommend_recommend_id_seq', 946, true);
-SELECT setval('public.annotation2respond_annotation2respond_id_seq', 381, true);
-SELECT setval('public.annotation2scope_annotation2scope_id_seq', 4753, true);
-SELECT setval('public.annotation_annotation_id_seq', 3502, true);
-SELECT setval('public.domain_domain_id_seq', 270, true);
-SELECT setval('public.feature_feature_id_seq', 2210, true);
-SELECT setval('public.group2actor_group2actor_id_seq', 315, true);
-SELECT setval('public.group_group_id_seq', 414, true);
-SELECT setval('public.langvar_langvar_id_seq', 164, true);
-SELECT setval('public.log_log_id_seq', 5878, true);
-SELECT setval('public.notification_notification_id_seq', 1892, true);
-SELECT setval('public.policy2actor_policy2actor_id_seq', 406, true);
-SELECT setval('public.policy_policy_id_seq', 237, true);
-SELECT setval('public.scope_scope_id_seq', 2560, true);
-SELECT setval('public.score_score_id_seq', 8010, true);
-SELECT setval('public.user_user_id_seq', 1693, true);
-SELECT setval('public.webpage_webpage_id_seq', 1154, true);
-
-
+ALTER TABLE langvar OWNER TO postgres;
 
 -- ----------------------------
 
@@ -508,7 +487,7 @@ CREATE OR REPLACE VIEW annotation2anchor_text AS
    JOIN scope USING (scope_id)
    JOIN anchor_text USING (anchor_text_id);
 
-ALTER TABLE annotation2anchor_text OWNER TO kals;
+ALTER TABLE annotation2anchor_text OWNER TO postgres;
 GRANT ALL ON TABLE annotation2anchor_text TO postgres;
 GRANT SELECT ON TABLE annotation2anchor_text TO public;
 
@@ -523,7 +502,7 @@ CREATE OR REPLACE VIEW annotation2like_count AS
   GROUP BY annotation.annotation_id
   ORDER BY annotation.annotation_id;
 
-ALTER TABLE annotation2like_count OWNER TO kals;
+ALTER TABLE annotation2like_count OWNER TO postgres;
 GRANT ALL ON TABLE annotation2like_count TO postgres;
 GRANT SELECT ON TABLE annotation2like_count TO public;
 
@@ -537,7 +516,7 @@ CREATE OR REPLACE VIEW annotation2respond_count AS
    LEFT JOIN annotation2respond ON annotation.annotation_id = annotation2respond.respond_to
   GROUP BY annotation.annotation_id;
 
-ALTER TABLE annotation2respond_count OWNER TO kals;
+ALTER TABLE annotation2respond_count OWNER TO postgres;
 GRANT ALL ON TABLE annotation2respond_count TO postgres;
 GRANT SELECT ON TABLE annotation2respond_count TO public;
 
@@ -549,7 +528,7 @@ CREATE OR REPLACE VIEW scope2length AS
  SELECT scope.scope_id, scope.to_index - scope.from_index + 1 AS length
    FROM scope;
 
-ALTER TABLE scope2length OWNER TO kals;
+ALTER TABLE scope2length OWNER TO postgres;
 
 -- View: annotation2scope_length
 
@@ -561,7 +540,7 @@ CREATE OR REPLACE VIEW annotation2scope_length AS
    JOIN scope2length USING (scope_id)
   GROUP BY annotation2scope.annotation_id;
 
-ALTER TABLE annotation2scope_length OWNER TO kals;
+ALTER TABLE annotation2scope_length OWNER TO postgres;
 
 -- View: annotation2score
 
@@ -577,7 +556,7 @@ CREATE OR REPLACE VIEW annotation2score AS
    LEFT JOIN score ON annotation.annotation_id = score.annotation_id AND score.score_type_id = 0
   ORDER BY annotation.annotation_id;
 
-ALTER TABLE annotation2score OWNER TO kals;
+ALTER TABLE annotation2score OWNER TO postgres;
 
 -- View: annotation2topic_respond_count
 
@@ -590,7 +569,7 @@ CREATE OR REPLACE VIEW annotation2topic_respond_count AS
   GROUP BY annotation_topic.annotation_id
   ORDER BY annotation_topic.annotation_id;
 
-ALTER TABLE annotation2topic_respond_count OWNER TO kals;
+ALTER TABLE annotation2topic_respond_count OWNER TO postgres;
 
 -- View: annotation_consensus
 
@@ -609,7 +588,7 @@ CREATE OR REPLACE VIEW annotation_consensus AS
   GROUP BY main.annotation_id
   ORDER BY main.annotation_id;
 
-ALTER TABLE annotation_consensus OWNER TO kals;
+ALTER TABLE annotation_consensus OWNER TO postgres;
 
 -- View: webpage2annotation
 
@@ -622,7 +601,8 @@ CREATE OR REPLACE VIEW webpage2annotation AS
    JOIN scope ON annotation2scope.scope_id = scope.scope_id
   ORDER BY scope.webpage_id;
 
-ALTER TABLE webpage2annotation OWNER TO kals;
+ALTER TABLE webpage2annotation OWNER TO postgres;
 
--- -------------------------------------
+
+
 

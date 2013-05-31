@@ -401,10 +401,7 @@ if ( ! function_exists('test_msg'))
     {
         if ($title == '----' && is_null($msg))
         {
-            echo '<br />
-                <hr />
-                <br />
-                ';
+            echo '<br /><hr /><br />';
             return;
         }
 
@@ -414,8 +411,7 @@ if ( ! function_exists('test_msg'))
             $title = NULL;
         }
 
-        echo '[[[<pre>
-            ';
+        echo '[[[<pre>';
         if ($title != NULL OR $msg != NULL)
         {
             if ($title !== NULL)
@@ -429,9 +425,7 @@ if ( ! function_exists('test_msg'))
             else
                 echo $msg;
         }
-        echo '
-            </pre>]]]<br />
-            ';
+        echo '</pre>]]]<br />';
     }
 }
 

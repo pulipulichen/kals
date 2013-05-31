@@ -40,7 +40,8 @@ jQuery.test_msg = function (_title, _test)
             .appendTo(this('body'));
         
         //if (location.href.toLowerCase().indexOf('homework') > -1)    
-            _info_box.hide();
+        _info_box.hide();
+        alert(1212);
         _info_box.dblclick(function () {
             $(this).hide();
         });

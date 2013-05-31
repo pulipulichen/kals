@@ -184,6 +184,25 @@ $lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成
 $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。';
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
 
+/*
+$lang['web_apps.annotation.type.importance'] = '重要';
+$lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
+$lang['web_apps.annotation.type.concept'] = '提問';
+$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您可以提問的標註。';
+$lang['web_apps.annotation.type.confusion'] = '釋譯';
+$lang['web_apps.annotation.type.confusion.hint'] = '釋義的標註。';
+$lang['web_apps.annotation.type.question'] = '連結';
+$lang['web_apps.annotation.type.question.hint'] = '用來使用連結的標註';
+$lang['web_apps.annotation.type.example'] = '辨析';
+$lang['web_apps.annotation.type.example.hint'] = '辨析的標註。';
+$lang['web_apps.annotation.type.summary'] = '摘要';
+$lang['web_apps.annotation.type.summary.hint'] = '用自己的話來歸納文章的摘要內容，像是註明原因、影響、特色等等。';
+$lang['web_apps.annotation.type.other'] = '其他';
+$lang['web_apps.annotation.type.other.hint'] = '這個標註不屬於上述類型之中。';
+$lang['web_apps.annotation.type.custom'] = '自訂';
+$lang['web_apps.annotation.type.custom.hint'] = '您自己定義的標註類型。';
+*/
+
 $lang['web_apps.annotation.type.importance'] = '重要';
 $lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
 $lang['web_apps.annotation.type.concept'] = '概念';

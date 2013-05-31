@@ -7,13 +7,14 @@
 /**
  * Compress Javascript/CSS using the YUI Compressor
  *
- * You must set $jarFile before calling the minify functions.
+ * You must set $jarFile and $tempDir before calling the minify functions.
  * Also, depending on your shell's environment, you may need to specify
  * the full path to java in $javaExecutable or use putenv() to setup the
  * Java environment.
  *
  * <code>
- * Minify_YUICompressor::$jarFile = 'yuicompressor-2.4.6.jar';
+ * Minify_YUICompressor::$jarFile = '/path/to/yuicompressor-2.3.5.jar';
+ * Minify_YUICompressor::$tempDir = '/tmp';
  * $code = Minify_YUICompressor::minifyJs(
  *   $code
  *   ,array('nomunge' => true, 'line-break' => 1000)
@@ -24,17 +25,25 @@
  *
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>
- * @author Pudding Chen <pulipuli.chen@gmail.com> Revise
  */
 class Minify_YUICompressor {
 
     /**
-     * YUI Compressor jar file name. Put YUI Compressor jar file and this file im same directory.
-     * This must be set before calling minifyJs() or minifyCss().
+     * Filepath of the YUI Compressor jar file. This must be set before
+     * calling minifyJs() or minifyCss().
      *
      * @var string
      */
     public static $jarFile = 'yuicompressor-2.4.6.jar';
+
+    /**
+     * Writable temp directory. This must be set before calling minifyJs()
+     * or minifyCss().
+     *
+     * @var string
+     * @deprecated Use System temp directory
+     */
+    //public static $tempDir = '';
 
     /**
      * Filepath of "java" executable (may be needed if not in shell's PATH)
@@ -82,7 +91,7 @@ class Minify_YUICompressor {
             throw new Exception('Minify_YUICompressor : could not create temp file.');
         }
         file_put_contents($tmpFile, $content);
-        exec(self::_getCmd($options, $type, $tmpFile), $output);
+        @exec(self::_getCmd($options, $type, $tmpFile), $output);
         unlink($tmpFile);
         return implode("\n", $output);
     }

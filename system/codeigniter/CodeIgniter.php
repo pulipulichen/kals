@@ -198,22 +198,7 @@ $EXT->_call_hook('pre_controller');
 // Mark a start point so we can benchmark the controller
 $BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
 
-/**
- * PostgreSQL連線檢測
- *
- * 如果未來不使用PostgreSQL，則請取消掉這段程式碼
- */
-
-if (!function_exists("pg_connect"))
-{
-	echo "PostgreSQL is not ready. <br /> Please check your PHP does enable extension=php_pdo_pgsql.dll and extension=php_pgsql.dll";
-	phpinfo();
-
-}
-
 $CI = new $class();
-
-
 
 // Is this a scaffolding request?
 if ($RTR->scaffolding_request === TRUE)

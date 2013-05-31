@@ -84,7 +84,6 @@ class KALS_object {
 
             //檢查是否正確呼叫
             //if (strtolower(get_class($this->CI->$class_name)) != $class_name)
-            
             $ucfirst_class_name = ucfirst($class_name);
             if (is_object($this->CI->$class_name) === FALSE
                 && class_exists($ucfirst_class_name))

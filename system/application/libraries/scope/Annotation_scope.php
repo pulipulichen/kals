@@ -141,19 +141,11 @@ class Annotation_scope extends Generic_object {
         return $index;
     }
 
-    /**
-     * 取得開頭的索引
-     * @return int
-     */
     public function get_from_index()
     {
         return intval($this->get_field('from_index'));
     }
 
-    /**
-     * 取得結尾的索引
-     * @return int
-     */
     public function get_to_index()
     {
         return intval($this->get_field('to_index'));

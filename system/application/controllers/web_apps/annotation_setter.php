@@ -54,32 +54,7 @@ class Annotation_setter extends Web_apps_controller {
     private function _create_process($json)
     {
         //$this->output->enable_profiler(TRUE);
-        
-        /**
-         * 20121224 Pulipuli Chen
-         * 移除scope中text包含\'的資料
-         */
-        $json = str_replace("\\'", "'", $json);
-        
         $data = json_to_object($json);
-        
-        //檢視資料
-        //test_msg('annotation_setter._create_process', $json);
-        //{
-        //  "feature_location":[0,2,4],
-        //  "note":"%3Cp%3E%0A%09test%3C%2Fp%3E%0A",
-        //  "policy_type":1,
-        //  "is_like":false,
-        //  "like_count":0,
-        //  "feature_recommend_scope":[[6391,6434]],
-        //  "scope":[
-        //      [6391,6433,"3.%20This%20distraction%20effect%20of%20the%20visual%20cue%20map%20has%20not%20been%20proven.%20In%20the%20future%2C%20a%20systematic%20experimental%20design%20should%20be%20conducted%20to%20examine%20whether%20the%20visual%20cue%20map%20distracts%20learners\'%20reading%2C%20thus%20affecting%20their%20reading%20comprehension"]
-        //      ],
-        //  "type":1
-        //   }
-            
-        
-        
         //先將權限設成管理者
         set_ignore_authorize(true);
 

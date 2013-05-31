@@ -40,7 +40,7 @@ jQuery.test_msg = function (_title, _test)
             .appendTo(this('body'));
         
         //if (location.href.toLowerCase().indexOf('homework') > -1)    
-            //_info_box.hide();
+            _info_box.hide();
         _info_box.dblclick(function () {
             $(this).hide();
         });
@@ -1907,38 +1907,6 @@ jQuery.get_prefixed_id = function (_prefixed_id) {
         return _id;
 };
 
-jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
-	
-	if ($.is_jquery(_classname))
-		_classname = _classname.attr('className');
-		
-	var _classname_ary = _classname.split(' ');
-	var _id = null;
-	if (_prefixed == null)
-	{
-		for (var _i = 0; _i < _classname_ary.length; _i++)
-		{
-			_id = $.get_prefixed_id(_classname_ary[_i]);
-			if (_id != null)
-				return _id;
-		}
-	}
-	else
-	{
-		for (var _i = 0; _i < _classname_ary.length; _i++)
-		{
-			var _c = _classname_ary[_i];
-			if ($.starts_with(_c, _prefixed))
-			{
-				_id = $.get_prefixed_id(_c);
-				if (_id != null)
-					return _id;
-			}
-		}
-	}
-	return _id;
-};
-
 /**
  * 以動畫的方式捲動捲軸
  * @memberOf {jQuery}
@@ -2187,16 +2155,6 @@ jQuery.fn.setup_hover = function () {
 };
 
 jQuery.browser.msie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);
-
-jQuery.stripslashes = function (_str) {
-	
-	_str=_str.replace(/\\'/g,'\'');
-	_str=_str.replace(/\\"/g,'"');
-	_str=_str.replace(/\\0/g,'\0');
-	_str=_str.replace(/\\\\/g,'\\');
-	return _str;
-	
-};
 
 if (false)
 {

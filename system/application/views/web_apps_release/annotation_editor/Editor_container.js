@@ -70,7 +70,8 @@ Editor_container.prototype.set_list_coll = function (_list_coll) {
  * @memberOf {Editor_container}
  * @type {jQuery} UI
  */
-Editor_container.prototype._$create_ui = function () {
+Editor_container.prototype._$create_ui = function ()
+{
     var _ui = $('<table height="100%" width="100%" cellspacing="0"><tbody>'
             + '</tbody></table>')
         .addClass('editor-container');
@@ -98,11 +99,13 @@ Editor_container.prototype._$create_ui = function () {
     
     var _this = this;
     setTimeout(function () {
-        _this.toggle_deny(true);
+        _this.toggle_deny(true);    
     }, 0);
     
     return _ui;
 };
+
+
 
 /**
  * 建立編輯器
@@ -256,6 +259,7 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     
     var _hide_editor_classname = 'hide-editor';
     
+    
     /*
     var _complete = function () {
         $.trigger_callback(_callback);
@@ -274,10 +278,8 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
         */
        
         //$.test_msg('Editor_container.toggle_container() if true', _display);
-        
-		_container.show();
-        
-		_parent.removeClass(_hide_editor_classname);
+        _container.show();
+        _parent.removeClass(_hide_editor_classname);
         this._toggle.removeClass(_hide_classname);
         
         //$.test_msg('Editor_container.toggle_container() if true end', _display);

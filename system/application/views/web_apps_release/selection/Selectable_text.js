@@ -89,18 +89,7 @@ Selectable_text.prototype.word_id_prefix = 'kals_word_';
  * @type {String}
  */
 Selectable_text.prototype.punctuation_classname = 'kals-punctuation';
-
-/**
- * 分句用的標點符號classname
- * @type {String}
- */
 Selectable_text.prototype.sententce_punctuation_classname = 'kals-sentence-punctuation';
-
-/**
- * 分句用索引的classname
- * @type {String}
- */
-Selectable_text.prototype.sententce_index_classname = 'kals-sentence-index';
 
 Selectable_text.prototype.selected_classname = 'selected';
 Selectable_text.prototype.selected_from_classname = 'from';
@@ -230,7 +219,6 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         }
         
         /**
-         * _child_obj
          * @type {jQuery}
          */
 		var _child_obj = _child_nodes.item(_i);
@@ -261,7 +249,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 {
                     _this.paragraph_count++;
                 }
-				
+                
                 _i++;
                 if (_i % _batch_excute == 0)
                 {
@@ -802,8 +790,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
         if (typeof(this.locks['word_click']) == 'undefined')
         {
             var _this = this;
-			
-			var _click_evt = function(_callback) {
+            this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')').click(function() {
                 if (_this.initialized == false)
                     return this;
                 
@@ -814,64 +801,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
                 
                 //_manager.listen_select(_word);
                 _select.set_select(_word);
-				
-				if ($.is_function(_callback))
-					_callback();
-            };
-			
-			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
-			_words.click(_click_evt);
-			
-			/**
-			 * 滑鼠放在文字上的自動選取功能
-			 * 
-			 * @author Pudding Chen 20121228
-			 * @param {function} _callback
-			 * @deprecated 不佳，太麻煩了，不使用
-			 */
-			/*
-			var _hover_evt = function (_callback) {
-				_select.set_hover();
-			};
-			
-			var _last_word = null;
-			var _HOVER_TIMER = null;
-			
-			_words.mouseover(function () {
-				var _word = $(this);
-					_HOVER_TIMER = setTimeout(function () {
-						setTimeout(function () {
-		                    _word.tooltip().hide();
-		                }, 100);
-						_select.set_select(_word);
-					}, 1500);
-				})
-				.mouseout(function () {
-					clearTimeout(_HOVER_TIMER);
-				});
-			*/
-			/*
-			var _HOVER_TIMER = null;
-			_words.mouseover(function () {
-				if (_HOVER_TIMER != null)
-					clearTimeout(_HOVER_TIMER);
-				
-				var _word = $(this);
-				_HOVER_TIMER = setTimeout(function () {
-					_word.click();
-					setTimeout(function () {}, 200);
-						_word.click();
-						clearTimeout(_HOVER_TIMER);
-						_HOVER_TIMER = null;
-				}, 800);
-				
-			})
-				.mouseout(function () {
-					clearTimeout(_HOVER_TIMER);
-					_HOVER_TIMER = null;
-				});
-			*/
-			
+            });
             this.locks['word_click'] = true;
         }
     }
@@ -973,6 +903,8 @@ Selectable_text.prototype.get_word_id = function (_word)
     }
     return parseInt(_word);
 };
+
+
 
 Selectable_text.prototype.locks = [];
 
@@ -1429,14 +1361,13 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
             var _index = _j;
             var _word = this.get_word_by_index(_index);
             var _text = _word.text();
-			
             _sentence = _sentence + _text;
             
             if (_j < _to
                 && this.is_word_next_span(_word))
             {
                 _sentence = _sentence + ' ';
-            }
+            } 
         }
         
         _sentence = $.trim(_sentence);
@@ -1450,10 +1381,6 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
     
     _anchor_text = $.trim(_anchor_text);
     
-	//把' "轉換掉
-	//_anchor_text = $.str_replace("'", " ", _anchor_text);
-	//_text= $.str_replace("'", "&amp;", _text);
-	
     return _anchor_text;
 };
 
@@ -1611,7 +1538,7 @@ Selectable_text.prototype.get_offset_top = function (_scope_coll) {
 };
 
 /**
- * 取得選取範圍最底部的位置
+ * 取得選取範圍的bottom位置
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -1631,7 +1558,6 @@ Selectable_text.prototype.get_offset_bottom = function (_scope_coll) {
 };
 
 /**
- * 取得標註範圍最左邊的位置
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -1657,7 +1583,6 @@ Selectable_text.prototype.get_offset_left = function (_scope_coll) {
 };
 
 /**
- * 取得現在標註範圍最右邊的位置
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -1683,7 +1608,6 @@ Selectable_text.prototype.get_offset_right = function (_scope_coll) {
 };
 
 /**
- * 取得標註範圍中，第一個範圍的第一個字的左邊位置
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -1702,7 +1626,6 @@ Selectable_text.prototype.get_offset_first_left = function (_scope_coll) {
 };
 
 /**
- * 取得標註範圍中，最後一個範圍的最後一個字的右邊位置
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -1719,10 +1642,6 @@ Selectable_text.prototype.get_offset_last_right = function (_scope_coll) {
     
     return _offset;
 };
-
-// --------
-// Data mining
-// --------
 
 /**
  * 取得段落的特徵
@@ -1802,7 +1721,6 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
     return _location_id;
     
     */
-	
     var _classnames = this.location_classnames;
     var _words = this.get_words_by_scope_coll(_scope_coll);
     
@@ -1864,97 +1782,6 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
     
 };
 
-/**
- * 取得句子位置的索引
- * 
- * 用來分析標註所在句子，跟段落paragraph是不一樣的。
- * @author Pudding Chen 20121228
- * @return {Array}
- */
-Selectable_text.prototype.get_sentence_index = function () {
-	
-	//如果已經作過這樣的分析的話
-	if (this._text.find('.'+this.sententce_index_classname).length > 0)
-	{
-		var _sentences = this._text.find('.'+this.sententce_index_classname);
-		var _sentence_index = [];
-		for (var _i = 0; _i < _sentences.length; _i++)
-		{
-			var _sentence = _sentences.eq(_i);
-			var _word_id = _sentence.attr('id');
-			_word_id = _word_id.substr(this.word_id_prefix.length, _word_id);
-			_word_id = parseInt(_word_id);
-			_sentence_index.push(_word_id);
-		}
-		
-		return _sentence_index;
-	}
-	
-	//先來看被視為分句的標點符號位置
-	var _sentence_index = [0];
-	var _sentence_punctuation =  $('.'+this.sententce_punctuation_classname);
-	
-	for (var _s = 0; _s < _sentence_punctuation.length; _s++)
-	{
-		var _id = _sentence_punctuation.eq(_s).attr('id');
-		//kals_word_953
-		//_id = _id.substring(10, _id.length);
-		_id = $.get_prefixed_id(_id);
-		_sentence_index.push(parseInt(_id));	
-	}
-	
-	//再來看段落的最後一個字
-	var _last_word = this._text.find('.'+this.word_classname+':last');
-	var _last_paragraph = _last_word.parents("."+this.paragraph_classname+":first");
-	
-	//var _last_paragraph_classname = _last_paragraph.attr('className');
-	//var _paragraph_classname_header = this.paragraph_classname + ' ' + this.paragraph_id_prefix;  
-	//var _last_pid = _last_paragraph_classname.substring(_paragraph_classname_header.length , _last_paragraph_classname.length);
-	//_last_pid = parseInt(_last_pid);
-	var _last_pid = $.get_class_prefixed_id(_last_paragraph, this.paragraph_id_prefix);
-	
-	for (var _i = 0; _i < _last_pid+1; _i++)
-	{
-		var _paragraph = $('.' + this.paragraph_id_prefix + _i + ":last");
-		
-		if (_paragraph.length == 1) 
-		{
-			var _last_word = _paragraph.find('.'+this.word_classname+'.tooltip-trigger:last:not(.'+this.sententce_punctuation_classname+')');
-			
-			if (_last_word.length > 0) {
-				var _id = _last_word.attr('id');
-				
-				//_id = _id.substring(this.word_id_prefix.length, _id.length);
-				_id = $.get_prefixed_id(_id);
-				_sentence_index.push(parseInt(_id));
-				
-				if (isNaN(_id))
-				{
-					_last_word.css('color', 'blue')
-						.attr('title', _id);
-				}
-			}
-		}
-	}
-	
-	//檢查測試結果用
-	for (var _i = 0; _i < _sentence_index.length; _i++) {
-		
-		var _sentense_index_word = $('#' + this.word_id_prefix + _sentence_index[_i]);
-		_sentense_index_word.addClass(this.sententce_index_classname);
-		
-		//檢測找到的字是否真的是分句點，平時不使用應關掉
-		_sentense_index_word.css("color", "red");
-		//alert([$('#kals_word_' + _i).length, _i]);
-	}
-	
-	//排序
-	//_sentence_index.sort(function (_a, _b) {
-	//	return (_a - _b);
-	//});
-	
-	return _sentence_index;
-};
 
 // --------
 // Selection @deprecated
@@ -2180,8 +2007,6 @@ Selectable_text.prototype.get_recommend_scope = function () {
     return _resort_scope;
 };
 */
-
-
 
 /* End of file Selectable_text */
 /* Location: ./system/application/views/web_apps/Selectable_text.js */

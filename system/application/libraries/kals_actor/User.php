@@ -54,8 +54,7 @@ class User extends KALS_actor {
     private $notification_coll;
     protected function  _post_construct($table_name = NULL, $id = NULL) {
         $this->CI->load->helper('email');
-        //$this->_CI_load('library', 'user_agent', 'user_agent');
-        $this->CI->load->library("user_agent");
+        $this->_CI_load('library', 'user_agent', 'user_agent');
 
         $this->_CI_load('library', 'kals_actor/Notification_collection', 'notification_collection');
         $this->notification_coll = new Notification_collection($this);
@@ -72,11 +71,8 @@ class User extends KALS_actor {
 
     protected function _set_field_filter($data)
     {
-        //test_msg('User._set_field_filter befure', $data);
         if (is_array($data))
         {
-            //test_msg('User._set_field_filter is_array');
-            
             if (array_key_exists('password', $data))
             {
                 $data['password'] = $this->_crypt_password($data['password']);
@@ -99,23 +95,14 @@ class User extends KALS_actor {
                 $domain_id = $domain->get_id();
                 $data['domain_id'] = $domain_id;
             }
-            
-            //檢查email是否合法
-            //test_msg('User._set_field_filter has key: email', isset($data['email']));
-            //test_msg('valid_email',valid_email($data['email']));
             if (isset($data['email']) && FALSE === valid_email($data['email']))
             {
                 unset($data['email']);
             }
             if (isset($data['locale']))
             {
-                /**
-                 * 先取消這個功能，這到底是怎麼了orz
-                 * @author Pudding Chen <pulipuli.chen@gmail.com> 20121228
-                 */
-                //if ($this->CI->user_agent->in_acceptable_langage($data['locale']) === FALSE)
-                //    $data['locale'] = $this->CI->user_agent->get_default_language();
-                
+                if ($this->CI->user_agent->in_acceptable_langage($data['locale']) === FALSE)
+                    $data['locale'] = $this->CI->user_agent->get_default_language();
             }
         }
         return $data;
@@ -193,8 +180,6 @@ class User extends KALS_actor {
     {
         $domain_id = $this->CI->domain->filter_domain_id($domain_id);
 
-        //test_msg('User.create_user before check', array($domain_id, $email));
-        
         if (is_int($domain_id) && is_string($email))
         {
             $key = $domain_id;
@@ -206,27 +191,15 @@ class User extends KALS_actor {
                     'domain_id' => $domain_id,
                     'email' => $email
                 );
-                
-                //test_msg('User.create_user', $data);
-                
                 $user = $this->create($data);
                 if (isset($user))
                     set_cache ($user, $key, $value);
             }
-            
-            //test_msg('User.create_user after create', $user->get_id());
-            
             return $user;
         }
         else
         {
-            //test_msg('User.create_user by array data', $data);
-            
-            $data = array(
-                'domain_id' => $domain_id,
-                'email' => $email
-            );
-            return $this->create($data);
+            return $this->create($domain_id, $email);
         }
     }
 
@@ -276,8 +249,6 @@ class User extends KALS_actor {
             $data['name'] = get_email_name($data['email']);
             $this->set_field('name', $data['name']);
         }
-        
-        //test_msg("User._pre_insert", $data);
 
         return $data;
     }
@@ -357,16 +328,8 @@ class User extends KALS_actor {
     public function get_locale()
     {
         $locale = $this->get_field('locale');
-        
-        //@todo 20121223 讀不到自訂的MY_User_Agent
-        //失敗了，雖然有user_agent，可是卻沒有in_acceptable_language
-        /*
-        if (
-                $this->CI->user_agent->in_acceptable_language($locale) === FALSE)
+        if ($this->CI->user_agent->in_acceptable_langage($locale) === FALSE)
             $locale = $this->CI->user_agent->get_default_language();
-         * 
-         */
-        
         return $locale;
     }
 

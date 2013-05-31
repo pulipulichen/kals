@@ -190,7 +190,6 @@ class Search_engine extends Generic_collection {
 
         $overlap_scope_where = NULL;
         $overlap_scope_join = array();
-        
         if (isset($this->overlap_scope) && $this->overlap_scope->length())
         {
             //SELECT distinct annotation.annotation_id
@@ -205,7 +204,7 @@ class Search_engine extends Generic_collection {
 
             $where = '';
             $join_scopes = array();
-            
+
             foreach ($this->overlap_scope AS $key => $scope)
             {
                 $webpage_id = $scope->get_webpage_id();
@@ -468,16 +467,6 @@ class Search_engine extends Generic_collection {
         {
             $db->where("annotation.update_timestamp > TIMESTAMP WITH TIME ZONE 'epoch' + "  . $this->target_newer_update . " * INTERVAL '1 second'");
         }
-        
-        if (isset($this->target_newer_create))
-        {
-            $db->where("annotation.create_timestamp > TIMESTAMP WITH TIME ZONE 'epoch' + "  . $this->target_newer_create . " * INTERVAL '1 second'");
-        }
-        
-        if (isset($this->target_older_create))
-        {
-            $db->where("annotation.create_timestamp < TIMESTAMP WITH TIME ZONE 'epoch' + "  . $this->target_older_create . " * INTERVAL '1 second'");
-        }
 
         //------------------------------------------------
         // 第十五關 target_topic * 查詢
@@ -658,30 +647,6 @@ class Search_engine extends Generic_collection {
     public function set_target_newer_update($epoch)
     {
        $this->target_newer_update = $epoch;
-       return $this;
-    }
-    
-    protected $target_newer_create;
-    /**
-     * 目標是建立時間大於這個項目的類別
-     * @param int $epoch 從1970/1/1到現在的秒數(注意是秒數，而非毫秒數)
-     * 詳細的文件請參考此網頁http://www.epochconverter.com/
-     */
-    public function set_target_newer_create($epoch)
-    {
-       $this->target_newer_create = $epoch;
-       return $this;
-    }
-    
-    protected $target_older_create;
-    /**
-     * 目標是建立時間晚於這個項目的類別
-     * @param int $epoch 從1970/1/1到現在的秒數(注意是秒數，而非毫秒數)
-     * 詳細的文件請參考此網頁http://www.epochconverter.com/
-     */
-    public function set_target_older_create($epoch)
-    {
-       $this->target_older_create = $epoch;
        return $this;
     }
 

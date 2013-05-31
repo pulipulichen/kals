@@ -42,8 +42,7 @@ Selection_select.prototype.set_select = function (_word)
         return this;
     
     var _id = $.get_prefixed_id(_word);
-	
-	//第一次點選
+    
     if (this._select_from == null)
     {
         var _classname = this.get_classname();
@@ -63,8 +62,6 @@ Selection_select.prototype.set_select = function (_word)
     }
     else
     {
-		//第二次點選，顯示Editor_contrainer
-		
         //2010.11.3 取消自動取消選取功能
         //if ($.isset(this._select_timer))
         //    clearTimeout(this._select_timer);
@@ -85,15 +82,12 @@ Selection_select.prototype.set_select = function (_word)
             //{
             //    _anchor_text = _anchor_text.substring(0, KALS_CONFIG.anchor_length_max);
             //}
-			
             _scope_coll.get(0).set_anchor_text(_anchor_text);
         
             this.set_scope_coll(_scope_coll);
             
             KALS_context.hash.set_field('select', this._select_from + ',' + _id);
-			
             this._setted_hash = true;
-			
         }
         
         this._select_from = null;

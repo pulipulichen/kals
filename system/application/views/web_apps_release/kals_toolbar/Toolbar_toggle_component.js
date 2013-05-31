@@ -40,12 +40,10 @@ Toolbar_toggle_component.prototype.hide = function (_instant) {
     var _ui = this.get_ui();
     _ui.addClass('hidden');
     
-    if (_instant === true) {
-		_ui.hide();
-	}
-	else {
-		_ui.slideUp();
-	}
+    if (_instant == true)
+        _ui.hide();
+    else
+        _ui.slideUp();
     
     return this;
 };
@@ -55,12 +53,10 @@ Toolbar_toggle_component.prototype.show = function (_instant) {
     var _ui = this.get_ui();
     _ui.removeClass('hidden');
     
-    if (_instant === true) {
-		_ui.show();
-	}
-	else {
-		_ui.slideDown();
-	}
+    if (_instant == true)
+        _ui.show();
+    else
+        _ui.slideDown();
     
     return this;
 };

@@ -43,11 +43,8 @@ code {
 </head>
 <body>
 
-<h1>Welcome to KALS!</h1>
+<h1>Welcome to CodeIgniter!</h1>
 
-<p>If you want to know how to use kals, please <a href="help/">read help</a>.</p>
-
-<!--
 <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 
 <p>If you would like to edit this page you'll find it located at:</p>
@@ -60,6 +57,6 @@ code {
 
 
 <p><br />Page rendered in {elapsed_time} seconds</p>
--->
+
 </body>
 </html>

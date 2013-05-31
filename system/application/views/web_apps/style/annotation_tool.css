@@ -15,12 +15,8 @@
     
     padding: 0;
     border-width: 3px;
-    margin:0;
 }
 
-.annotation-tool div {
-    margin:0;
-}
 
 
 .annotation-tool.ui-draggable-dragging {
@@ -105,7 +101,6 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FEF8E4'
         , endColorstr='#FEEEBD');
     background-color: #FEEEBD;
-    margin:0;
 }
 
 .annotation-tool .annotation-tool-editor {

@@ -181,7 +181,7 @@ class Generic_object extends KALS_object {
      *         return $cond;
      *     }</code>
      */
-    protected function _set_field_filter($cond)
+    protected  function _set_field_filter($cond)
     {
         return $cond;
     }
@@ -1288,12 +1288,9 @@ class Generic_object extends KALS_object {
      */
     public function create($data, $value = NULL)
     {
-        //test_msg('_set_default_field 1', $data);
         $data = self::_set_default_field($this->default_field, $data, $value);
-        //test_msg('_set_default_field 2', $data);
         $data = $this->_set_field_filter($data);
-        //test_msg('_set_default_field 3', $data);
-        
+
         if (self::_has_unique_restriction($this->unique_restriction)
             && self::_match_unique($data, $this->unique_restriction, $this->table_fields))
         {
@@ -1304,10 +1301,8 @@ class Generic_object extends KALS_object {
                 return $obj;
             }
         }
-        
 
         $data = $this->_pre_create($data);
-        
         $cache_cond = $this->_get_cache_cond($data);
 
         if ($this->use_cache)

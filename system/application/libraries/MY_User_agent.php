@@ -36,13 +36,13 @@ class MY_User_agent extends CI_User_agent {
             $lang = strtolower($lang);
         }
 
-        if ($this->in_acceptable_language($lang) === FALSE)
+        if ($this->in_acceptable_langage($lang) === FALSE)
             $lang = $this->get_default_language ();
 
         return $lang;
     }
 
-    function in_acceptable_language($lang)
+    function in_acceptable_langage($lang)
     {
         //限制選單
         if (isset($this->accepatable) === FALSE)

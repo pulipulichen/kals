@@ -116,13 +116,9 @@ class backup_pgsql extends Admin_apps_controller {
                     {
                         $value_list .= "TSVECTOR('".str_replace("'", "", $row[$field])."')";
                     }
-                    else if ($type == 'timestamptz')
+                    else if ($type == 'timestamptz' || $type == 'timetz')
                     {
                         $value_list .= "timestamp with time zone '" . $row[$field] . "'";
-                    }
-                    else if ($type == 'timetz')
-                    {
-                        $value_list .= "timestamp with time zone '2010-12-06 " . $row[$field] . "'";
                     }
                     else if ($type == "bool")
                     {

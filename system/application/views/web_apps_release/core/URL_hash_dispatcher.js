@@ -337,23 +337,16 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     
     //$.test_msg('has check_hash() end', this.has_field('select'));
     
-	//$.test_msg('URL_hash_dispatcher', 'pass1');
-	
     //優先度：view recommend = select
     if (this.has_field('view') == true)
     {
-		//$.test_msg('URL_hash_dispatcher', 'pass2');
-		
         var _id = this.get_field('view');
         KALS_text.tool.view.load_view(_id);
     }
     else
     {
-		//$.test_msg('URL_hash_dispatcher', 'pass3');
-		
         if (this.has_field('recommend') == true)
         {
-			//$.test_msg('URL_hash_dispatcher', 'pass4');
             var _id = this.get_field('recommend');
             //$.test_msg('has check_hash() recommend', _id);
             KALS_text.tool.recommend.load_recommend(_id);
@@ -361,14 +354,10 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
         
         if (this.has_field('select') == true)
         {
-            //$.test_msg('URL_hash_dispatcher', 'pass5');
+            
             var _scope_text = this.get_field('select');
             //$.test_msg('has check_hash()', _scope_text);
-            
-			
-			setTimeout(function () {
-				KALS_text.selection.select.load_select(_scope_text);
-			}, 3000); 
+            KALS_text.selection.select.load_select(_scope_text); 
         }    
     }
     
@@ -376,8 +365,6 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     
     this.delete_field('backward');
     this.delete_field('model');
-	
-	//$.test_msg('URL_hash_dispatcher', 'pass');
     
     $.trigger_callback(_callback);
     return this;
