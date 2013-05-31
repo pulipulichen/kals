@@ -206,6 +206,7 @@
     color: #383838;
     cursor: auto;    
     max-height: 400px;
+	line-height:normal !important;
 }
 
 .dialog-modal.compact-height .dialog-content {
