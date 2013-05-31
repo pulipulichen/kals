@@ -12,12 +12,15 @@
  */
 function Scope_param(_from, _to, _anchor_text) {
     
-    if ($.isset(_from))
-        this.set_from(_from);
-    if ($.isset(_to))
-        this.set_to(_to);
-    if ($.isset(_anchor_text))
-        this.set_anchor_text(_anchor_text);
+    if ($.isset(_from)) {
+		this.set_from(_from);
+	}
+    if ($.isset(_to)) {
+		this.set_to(_to);
+	}
+    if ($.isset(_anchor_text)) {
+		this.set_anchor_text(_anchor_text);
+	}
 }
 
 Scope_param.prototype.from = null;
@@ -29,31 +32,30 @@ Scope_param.prototype.anchor_text = null;
 Scope_param.prototype._filter_index = function (_index) {
     
     var id;
-    if ($.is_number(_index))
-        return _index;
-    else if ($.is_jquery(_index))
-    {
-        _id = _index.attr('id');
-        _id = $.get_prefixed_id(_id);
-        return _id;
-    }
-    else if (typeof(_index.id) != 'undefined')
-    {
-        _id = _index.id;
-        _id = $.get_prefixed_id(_id);
-        return _id;
-    }
-    else
-    {
-        try
-        {
-            _index = parseInt(_index);
-            return _index;
-        }
-        catch (e) {
-            return null;
-        }
-    }
+    if ($.is_number(_index)) {
+		return _index;
+	}
+	else 
+		if ($.is_jquery(_index)) {
+			_id = _index.attr('id');
+			_id = $.get_prefixed_id(_id);
+			return _id;
+		}
+		else 
+			if (typeof(_index.id) != 'undefined') {
+				_id = _index.id;
+				_id = $.get_prefixed_id(_id);
+				return _id;
+			}
+			else {
+				try {
+					_index = parseInt(_index,10);
+					return _index;
+				} 
+				catch (e) {
+					return null;
+				}
+			}
     
 };
 
@@ -61,8 +63,9 @@ Scope_param.prototype.set_from = function (_index) {
     
     _index = this._filter_index(_index);
     
-    if (_index != null)
-        this.from = _index;
+    if (_index !== null) {
+		this.from = _index;
+	}
     
     this._check_order();
     
@@ -77,8 +80,9 @@ Scope_param.prototype.set_to = function (_index) {
     
     _index = this._filter_index(_index);
     
-    if (_index != null)
-        this.to = _index;
+    if (_index !== null) {
+		this.to = _index;
+	}
     
     this._check_order();
     
@@ -107,9 +111,10 @@ Scope_param.prototype.reset = function() {
 
 Scope_param.prototype._check_order = function () {
     
-    if (this.from == null
-        || this.to == null)
-        return this;
+    if (this.from === null ||
+	this.to === null) {
+		return this;
+	}
     
     //$.test_msg('Scope_param', [this.from, this.to]);
     
@@ -130,8 +135,8 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
         this.get_to()
     ];
     
-    if (_export_anchor_text != false
-        && this.get_anchor_text() != null)
+    if (_export_anchor_text !== false
+        && this.get_anchor_text() !== null)
     {
         var _anchor_text = this.get_anchor_text();
         _anchor_text = encodeURIComponent(_anchor_text); 
@@ -147,8 +152,9 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
  */
 Scope_param.prototype.equals = function (_scope) {
     
-    if ($.is_class(_scope, 'Scope_param') == false)
-        return false;
+    if ($.is_class(_scope, 'Scope_param') === false) {
+		return false;
+	}
         
     var _this_to = this.get_to();
     var _this_from = this.get_from();

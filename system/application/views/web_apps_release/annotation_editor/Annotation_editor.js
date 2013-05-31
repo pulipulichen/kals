@@ -17,17 +17,20 @@ function Annotation_editor(_editor_container, _list_coll, _disable_option) {
     
     Multi_event_dispatcher.call(this);
     
-    if ($.isset(_editor_container))
-        this._editor_container = _editor_container;
+    if ($.isset(_editor_container)) {
+		this._editor_container = _editor_container;
+	}
     
-    if ($.isset(_list_coll))
-        this.set_list_coll(_list_coll);
+    if ($.isset(_list_coll)) {
+		this.set_list_coll(_list_coll);
+	}
     
     //this.listen_reset();
     //this.setup_note_editor_factory();
     
-    if ($.isset(_disable_option))
-        this._disable_option = _disable_option;
+    if ($.isset(_disable_option)) {
+		this._disable_option = _disable_option;
+	}
 }
 
 Annotation_editor.prototype = new Multi_event_dispatcher();
@@ -208,33 +211,40 @@ Annotation_editor.prototype.get_data = function () {
 Annotation_editor.prototype.submit = function () {
     
     //讀取中就不設定
-    if (this.is_loading() == true)
-        return this;
+    if (this.is_loading() === true) 
+	{
+		return this;
+	}
+		
+		var _annotation_param = this.get_data();
+	
     
-    var _annotation_param = this.get_data();
-    
-    if (this._check_note(_annotation_param) == false)
-        return this;
-    
-    var _annotation_json = _annotation_param.export_json();
-    
+    if (this._check_note(_annotation_param) === false) {
+		return this;
+	}
+		
+		var _annotation_json = _annotation_param.export_json();
+	
     //檢查取得資料是否正確
     $.test_msg('Annotation_editor.submit()', _annotation_json);
     
     var _load_url;
     var _is_editing_mode = this.is_editing(); 
-    if (_is_editing_mode)
-        _load_url = this._edit_url;
-    else
-        _load_url = this._create_url;
+    if (_is_editing_mode) {
+		_load_url = this._edit_url;
+	}
+	else {
+		_load_url = this._create_url;
+	}
     
     var _this = this;
     
     var _callback = function (_data) {
         
         //如果已經取消了loading動作，那就不作任何反應。
-        if (_this.is_loading() == false)
-            return this;
+        if (_this.is_loading() === false) {
+			return this;
+		}
         
         //補完參數
         _annotation_param.user = KALS_context.user.get_data();
@@ -254,15 +264,18 @@ Annotation_editor.prototype.submit = function () {
         {
             if ($.isset(_data))
             {
-                if (typeof(_data.annotation_id) != 'undefined')
-                    _annotation_param.annotation_id = _data.annotation_id;
+                if (typeof(_data.annotation_id) != 'undefined') {
+					_annotation_param.annotation_id = _data.annotation_id;
+				}
                 
-                if (typeof(_data.timestamp) != 'undefined')
-                    _annotation_param.timestamp = _data.timestamp;
+                if (typeof(_data.timestamp) != 'undefined') {
+					_annotation_param.timestamp = _data.timestamp;
+				}
                     
-                if (typeof(_data.recommend) != 'undefined' 
-                    && KALS_CONFIG.enable_annotation_recommend == true)
-                    _annotation_param.recommend = new Recommend_param(_data.recommend);
+                if (typeof(_data.recommend) != 'undefined' &&
+				KALS_CONFIG.enable_annotation_recommend === true) {
+					_annotation_param.recommend = new Recommend_param(_data.recommend);
+				}
                 if (typeof(_data.nav) != 'undefined')
                 {
                     $.test_msg('_data.nav', _data.nav);
@@ -274,7 +287,7 @@ Annotation_editor.prototype.submit = function () {
             _this._create_callback(_annotation_param);
         }
         
-        if (_annotation_param.is_respond() == false)
+        if (_annotation_param.is_respond() === false)
         {
             //設置selection
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
@@ -309,32 +322,27 @@ Annotation_editor.prototype.submit = function () {
 
 Annotation_editor.prototype._check_note = function (_annotation_param) {
     
-    if (this.is_enable('note_allow_empty'))
-        return true;
+    if (this.is_enable('note_allow_empty')) {
+		return true;
+	}
     
-    if (typeof(_annotation_param.note) == 'undefined'
-        || _annotation_param.note == null)
-    {
-        //顯示錯誤
-        var _heading = new KALS_language_param(
-            'ERROR',
-            'alert.heading.error'
-        );
-        
-        var _content = new KALS_language_param(
-            'You have to write something in note.',
-            'annotation_editor.note_deny_empty'
-        );
-        
-        var _this = this;
-        KALS_util.alert(_heading, _content, function () {
-            //_this.note.focus();
-        });
-        
-        return false;
-    }
-    else
-        return true;
+    if (typeof(_annotation_param.note) == 'undefined' ||
+	_annotation_param.note === null) {
+		//顯示錯誤
+		var _heading = new KALS_language_param('ERROR', 'alert.heading.error');
+		
+		var _content = new KALS_language_param('You have to write something in note.', 'annotation_editor.note_deny_empty');
+		
+		var _this = this;
+		KALS_util.alert(_heading, _content, function(){
+		//_this.note.focus();
+		});
+		
+		return false;
+	}
+	else {
+		return true;
+	}
 };
 
 /**
@@ -418,7 +426,7 @@ Annotation_editor.prototype._$enable_types = ['reset', 'set'];
 
 Annotation_editor.prototype.reset = function () {
     
-    if (this._editing_lock == false)
+    if (this._editing_lock === false)
     {
         this.toggle_loading(false);
         
@@ -520,10 +528,12 @@ Annotation_editor.prototype._$create_ui = function ()
 };
 
 Annotation_editor.prototype.is_enable = function (_option_name) {
-    if (_option_name == null || this._disable_option == null)
-        return true;
-    else
-        return ( $.inArray(_option_name, this._disable_option) == -1 );
+    if (_option_name === null || this._disable_option === null) {
+		return true;
+	}
+	else {
+		return ($.inArray(_option_name, this._disable_option) == -1);
+	}
 };
 
 Annotation_editor.prototype._container = null; 
@@ -687,10 +697,9 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
         _is_loading = null;
     }
     
-    if (_is_loading == null)
-    {
-        _is_loading == !(this.is_loading());
-    }
+    if (_is_loading === null) {
+		_is_loading = !(this.is_loading());
+	}
     
     
     if (_is_loading == this.is_loading())
@@ -708,7 +717,7 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
     var _container = this._container;
     var _loading = this._loading_component;
     
-    if (_is_loading == true)
+    if (_is_loading === true)
     {
         //_container.slideUp(function () {
         //    _loading.slideDown(_complete);

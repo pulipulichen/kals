@@ -43,7 +43,8 @@ Type_menu.prototype._$create_ui = function ()
 {
     this._menu_id = this._menu_id + $.create_id();
     var _id = this._menu_id;
-    
+    var _type;
+	
     var _ui = this._create_tooltip_prototype({
         id: _id,
         classname: 'type-menu'
@@ -53,7 +54,7 @@ Type_menu.prototype._$create_ui = function ()
     
     for (var _i in _options)
     {
-        var _type = _options[_i];
+        _type = _options[_i];
         this._setup_type_ui(_ui, _type);
     }
     
@@ -62,7 +63,7 @@ Type_menu.prototype._$create_ui = function ()
     for (var _j in _custom_type_list)
     {
         //$.test_msg('Type_menu._$create_ui custom_type_lis', _j);
-        var _type = _custom_type_list[_j];
+        _type = _custom_type_list[_j];
         this._setup_type_ui(_ui, _type);
     } 
     
@@ -164,7 +165,7 @@ Type_menu.prototype.create_type_hint = function (_type) {
     {
         _classname = _type;
         var _hint_lang;
-        if (this.enable_custom_name == false
+        if (this.enable_custom_name === false
             && _type == 'custom')
         {
             _hint_lang = new KALS_language_param(
@@ -200,12 +201,14 @@ Type_menu.prototype._hint_tooltip_config = {
 };
 
 Type_menu.prototype.create_type_option_list = function () {
-    
+    var _type;
+	var _option;
+	
     var _list = {};
     for (var _i in this._type_options)
     {
-        var _type = this._type_options[_i];
-        var _option = this.create_type_option(_type);
+        _type = this._type_options[_i];
+        _option = this.create_type_option(_type);
         _list[_type] = _option;
     }
     
@@ -214,9 +217,9 @@ Type_menu.prototype.create_type_option_list = function () {
     var _custom_type_list = KALS_context.custom_type.get_type_list();
     for (var _j in _custom_type_list)
     {
-        var _type = _custom_type_list[_j];
+        _type = _custom_type_list[_j];
         var _type_name = _type.get_name();
-        var _option = this.create_type_option(_type);
+        option = this.create_type_option(_type);
         _list[_type_name] = _option;
     } 
     
@@ -242,7 +245,7 @@ Type_menu.prototype.setup_type_option = function (_type_ui) {
         
         //$.test_msg('Type_menu.setup_option()', _type);
         
-        if (_this.enable_custom_name == true
+        if (_this.enable_custom_name === true
             && _type == 'custom')
         {
             _this.open_custom_name_dialog();
@@ -287,27 +290,29 @@ Type_menu.prototype._$get_config = function () {
     
     var _config = Tooltip_modal.prototype._$get_config.call(this, _selector);
     
-    _config['position'] = 'bottom right';
-    _config['offset'] = [-50, -13];
-    _config['events'] = {def: 'click mouseover, mouseleave' };
+    _config.position = 'bottom right';
+    _config.offset = [-50, -13];
+    _config.events = {def: 'click mouseover, mouseleave' };
     
     var _onbeforeshow;
-    if (typeof(_config['onBeforeShow']) == 'function')
-        _onbeforeshow = _config['onBeforeShow'];
+    if (typeof(_config.onBeforeShow) == 'function') {
+		_onbeforeshow = _config.onBeforeShow;
+	}
         
     var _this = this;
-    _config['onBeforeShow'] = function () {
+    _config.onBeforeShow = function () {
         
         setTimeout(function () {
             _this.setup_position();    
         }, 10);
         
         
-        if ($.is_function(_onbeforeshow))
-            _onbeforeshow.call(this);
+        if ($.is_function(_onbeforeshow)) {
+			_onbeforeshow.call(this);
+		}
     };
     
-    _config['relative'] = true;
+    _config.relative = true;
     
     return _config;
     
@@ -321,13 +326,15 @@ Type_menu.prototype.setup_position = function () {
     var _top, _left;
     
     //上極限
-    if (_ui.offset().top < 0)
-        _top = 0;
+    if (_ui.offset().top < 0) {
+		_top = 0;
+	}
     
     //$.test_msg('Type_menu.setup_position()', _ui.offset().top);
     
-    if ($.isset(_top))
-        _ui.css('top', _top + 'px');
+    if ($.isset(_top)) {
+		_ui.css('top', _top + 'px');
+	}
     
     //左右
     var _ui_left = _ui.offset().left;
@@ -339,12 +346,14 @@ Type_menu.prototype.setup_position = function () {
         var _trigger_left = _trigger.offset().left;
         _left = _trigger_left - _ui.width() - 10;
         
-        if (_left < 0)
-            _left = null;
+        if (_left < 0) {
+			_left = null;
+		}
     }
     
-    if ($.isset(_left))
-        _ui.css('left', _left + 'px');
+    if ($.isset(_left)) {
+		_ui.css('left', _left + 'px');
+	}
 };
 
 // --------
@@ -375,7 +384,7 @@ Type_menu.prototype.open_custom_name_dialog = function () {
     
     var _dialog = this._custom_name_dialog;
     var _this = this;
-    if (_dialog == null)
+    if (_dialog === null)
     {
         _dialog = new Dialog_modal();
         
@@ -415,8 +424,9 @@ Type_menu.prototype.filter_type = function (_type) {
     
     for (var _i in this._type_options)
     {
-        if (_type == this._type_options[_i])
-            return _type;
+        if (_type == this._type_options[_i]) {
+			return _type;
+		}
     }
     
     return 'custom';

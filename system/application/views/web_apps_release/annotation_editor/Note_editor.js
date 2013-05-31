@@ -51,13 +51,14 @@ Note_editor.prototype._$apply_type = [];
  * @type {jQuery} UI
  */
 Note_editor.prototype._$create_ui = function ()
-{
+{   
+    var _this;
     var _ui = $('<div></div>')
         .append(this.create_textarea());
-    var _this = this;
+     _this = this;
     this.notify_ready();
     
-        var _this = this;
+       _this = this;
         setTimeout(function() {
             _this.notify_ready();    
         }, 0);
@@ -76,10 +77,12 @@ Note_editor.prototype.get_text = function () {
     var _text = _ui.val();
     
     
-    if ($.trim(_text) == '')
-        return null;
-    else
-        return _text;
+    if ($.trim(_text) === '') {
+		return null;
+	}
+	else {
+		return _text;
+	}
 };
 
 Note_editor.prototype.set_text = function (_text) {
@@ -87,11 +90,13 @@ Note_editor.prototype.set_text = function (_text) {
     
     //$.test_msg('Note_editor.set_text() setted text', [_text, _setted_text]);
     
-    if ($.is_null(_text))
-        _text = '';
+    if ($.is_null(_text)) {
+		_text = '';
+	}
     
-    if (_text == _setted_text)
-        return this;    
+    if (_text == _setted_text) {
+		return this;
+	}   
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);

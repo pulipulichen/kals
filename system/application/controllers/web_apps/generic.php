@@ -145,6 +145,7 @@ class generic extends Web_apps_controller {
             'navigation/Window_logout_submit',
             'navigation/Window_password_change',
             'navigation/Window_password_change_submit',
+            'navigation/Window_search',
 
             'navigation/Common_navigation',
             'navigation/Window_filter',

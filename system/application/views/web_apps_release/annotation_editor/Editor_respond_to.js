@@ -18,13 +18,15 @@ function Editor_respond_to(_editor, _param, _removable) {
     
     this._editor = _editor;
     
-    if ($.isset(_param))
-        this.set_respond_to(_param);
+    if ($.isset(_param)) {
+		this.set_respond_to(_param);
+	}
     
     //$.test_msg('Editor_respond_to()', _removable);
     
-    if ($.isset(_removable))
-        this._removable = _removable;
+    if ($.isset(_removable)) {
+		this._removable = _removable;
+	}
 }
 
 // Extend from KALS_user_interface
@@ -65,10 +67,12 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
     //名稱的部份
     var _name, _annotation_id;
     
-    if (typeof(_param.annotation_id) != 'undefined')
-        _annotation_id = _param.annotation_id;
-    else
-        return this;
+    if (typeof(_param.annotation_id) != 'undefined') {
+		_annotation_id = _param.annotation_id;
+	}
+	else {
+		return this;
+	}
     
     if (typeof(_param.user) == 'object'
         && typeof(_param.user.name) != 'undefined')
@@ -76,7 +80,7 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
         _name = _param.user.name;
         
         //避免名稱太長
-        if (_name == null)
+        if (_name === null)
         {
             _name = '';
         }
@@ -101,7 +105,7 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
         .attr('id', this._respond_to_id_prefix + _annotation_id)
         .click(function () {
             _this.focus_respond_to_annotation(this.id);
-        });;
+        });
     
     var _name_ui = $('<span></span>')
         .addClass('name')
@@ -114,7 +118,7 @@ Editor_respond_to.prototype.set_respond_to = function (_param) {
         .appendTo(_data_ui);
     
     //$.test_msg('Editor_respond_to._$create_ui()', this._removable);
-    if (this._removable == true)
+    if (this._removable === true)
     {
         //刪除的部份
         var _delete_ui = $('<span></span>').html('x')
@@ -145,10 +149,12 @@ Editor_respond_to.prototype._respond_to_id_prefix = 'editor_respond_to_';
 
 Editor_respond_to.prototype.focus_respond_to_annotation = function (_id) {
     
-    if (_id == null)
-        return this;
-    else    
-        _id = $.get_prefixed_id(_id);
+    if (_id === null) {
+		return this;
+	}
+	else {
+		_id = $.get_prefixed_id(_id);
+	}
     
     this._editor.list_coll.focus(_id, true);
 };

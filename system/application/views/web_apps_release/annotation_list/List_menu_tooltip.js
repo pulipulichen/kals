@@ -61,8 +61,9 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         //$.test_msg('List_menu_tooltip._$get_config() onBeforeShow', _this._item.get_menu_style());
         
         var _menu_style = _this._item.get_menu_style();
-        if (_menu_style == 'block')
-            return false;
+        if (_menu_style == 'block') {
+			return false;
+		}
         
         //先找到其他顯示的tooltip，並把他們關掉
         //$('.list-menu-tooltip:not(#'+_this._$tooltip_id+')').fadeOut();
