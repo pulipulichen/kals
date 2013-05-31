@@ -115,9 +115,21 @@ this.generic_load = function (_conf, _callback)
 
 this.has_jquery = function () 
 {
-    return (typeof(jQuery) == 'object'
+	var _has_jquery = (typeof(jQuery) == 'object'
         && jQuery != null
         && jQuery instanceof jQuery);
+	var _has_dollar = (typeof($) == 'object'
+        && $ != null
+        && $ instanceof jQuery);
+	
+	if (_has_jquery && _has_dollar) {
+		console.log('[KALS] start load jquery');
+		return true;
+	}
+	else {
+		console.log('[KALS] jquery has loaded by other');
+		return false;
+	}
 };
 
 //this.base_url = null;
@@ -186,8 +198,9 @@ this.load_jquery = function (_callback)
 {
     if (this.has_jquery())
     {
-        if (typeof(_callback) == 'function')
-            _callback();
+        if (typeof(_callback) == 'function') {
+			_callback();
+		}
     }
     else
     {   
