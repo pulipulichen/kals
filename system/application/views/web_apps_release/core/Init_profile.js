@@ -25,7 +25,7 @@ Init_profile.prototype = new Task_event_dispatcher();
 Init_profile.prototype._$onstart = function () {
     //KALS_context資料初始化之後，才能進行其他資料的讀取
     
-    $.test_msg('Init_profile._$onstart()');
+    //$.test_msg('Init_profile._$onstart()');
     
     KALS_context.init_profile.complete('notification');
     
