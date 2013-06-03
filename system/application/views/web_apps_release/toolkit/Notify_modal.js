@@ -216,6 +216,12 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
     _this = this;
     
     var _close_message = function () {
+		// @20130603 Pudding Chen
+		// 先確認是否可關閉？
+		if (typeof(_this.close) != "function") {
+			return;
+		}
+		
         _container.addClass(_this._close_classname);
         
         _this.close(function () {
