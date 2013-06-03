@@ -6,7 +6,7 @@ jQuery.fn.scrollIntoView = function() {
     
     var el = this.get(0);
     
-    $.test_msg('$.fn.scrollIntoView()', el.tagName);
+    //$.test_msg('$.fn.scrollIntoView()', el.tagName);
     
     if (el.scrollIntoView) {
         el.scrollIntoView();

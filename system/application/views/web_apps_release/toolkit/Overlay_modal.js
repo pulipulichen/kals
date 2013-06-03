@@ -38,7 +38,7 @@ Overlay_modal.prototype._$need_expose = true;
  * 此Overlay是否需要Mask的設定
  * @type {boolean}
  */
-Overlay_modal.prototype._$exposable = true;
+Overlay_modal.prototype._$exposable = false;
 
 /**
  * Overlay的共通輸入參數。實際上設定是在建構子時設定的。
@@ -138,7 +138,7 @@ Overlay_modal.prototype.open = function (_callback) {
                 }
                 _ui.show();
                 
-                if (this.is_exposable()) {
+                if (this.is_exposable() && typeof(this.expose) == "function") {
                     this.expose();
                 }
             }
@@ -226,7 +226,7 @@ Overlay_modal.prototype.expose = function (_callback) {
     
     var _ui = this.get_ui();
     
-    if ($.isset(_ui)) {
+    if ($.isset(_ui) && typeof(_ui.expose) == "function") {
         _ui.expose({
             color: '#333333',
             loadSpeed: 200,

@@ -790,6 +790,12 @@ Dialog_modal.prototype.open = function (_callback) {
     return Overlay_modal.prototype.open.call(this, _open_callback);
 };
 
+/**
+ * 曝光
+ * 
+ * 背後加上深色背景的Mask
+ * @param {Object} _callback
+ */
 Dialog_modal.prototype.expose = function (_callback) {
     var _this = this;
     var _expose_callback = function () {

@@ -206,7 +206,9 @@ Overlay_manager.prototype.add_opened = function (_modal) {
 					_opened_modal.cover();
 				}
             } 
-            _modal.expose(); 
+			if (typeof(_modal.expose) == "function") {
+				_modal.expose();
+			}
         }
         
         //跟URL_hash_dispatcher註冊
@@ -236,6 +238,8 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
 		return this;
 	}
     
+	//$.test_msg("Overlay_manager delete_opended", "check point 1");
+	
     var _deleted = $.inArray(_modal, this._opened_modals);
     if (_deleted > -1) {
         //delete this._opened_modals[_i];
@@ -253,6 +257,8 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         }
         this._opened_modals = _new_opened;
         
+		//$.test_msg("Overlay_manager delete_opended", "check point 2");
+		
         //將未關閉的modal最後一個移至mask之前
         var _last_modal;
         
@@ -266,9 +272,15 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         //if (_last_modal != null)
         //    $.test_msg('delete_opened', [_last_modal.get_modal_name()]);
         
-        if (_last_modal !== null) {
+		//$.test_msg("Overlay_manager delete_opended", "check point 3");
+		
+        if (_last_modal !== null && _last_modal !== undefined) {
+			//$.test_msg("Overlay_manager delete_opended", "check point 3.1 " + typeof(_last_modal.expose));
             //_last_modal.get_ui().css('z-index', 9999);
-            _last_modal.expose();
+			if (typeof(_last_modal.expose) != "undefined") {
+				$.test_msg("Overlay_manager", "before last_modal expose");
+				_last_modal.expose();	
+			}
             
             //_last_modal.focus_option();
             
@@ -277,19 +289,26 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
                 && typeof(KALS_context.hash) == 'object') {
                 KALS_context.hash.set_field('modal', _modal.get_modal_name());
             } 
+			//$.test_msg("Overlay_manager delete_opended", "check point 3.1.1");
         }
         else {
+			//$.test_msg("Overlay_manager delete_opended", "check point 3.2");
             //跟URL_hash_dispatcher註冊
             if (typeof(KALS_context) == 'object'
                 && typeof(KALS_context.hash) == 'object') {
                 KALS_context.hash.delete_field('modal');
             }
+			//$.test_msg("Overlay_manager delete_opended", "check point 3.2.1");
         }
+		
+		//$.test_msg("Overlay_manager delete_opended", "check point 4");
     }
     
     //$.test_msg('deleted_opended length', this._opened_modals.length);
     this.check_mask(true);
     
+	//$.test_msg("Overlay_manager delete_opended", "check point 5");
+	
     return this;
 };
 

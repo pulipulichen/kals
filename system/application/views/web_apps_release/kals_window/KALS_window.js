@@ -94,6 +94,11 @@ KALS_window.prototype._height = null;
  */
 KALS_window.prototype._default_overflow = 'inherit';
 
+/**
+ * 需要背景遮罩
+ */
+KALS_window.prototype._$exposable = true;
+
 // ---------
 
 KALS_window.prototype._$get_config = function () {

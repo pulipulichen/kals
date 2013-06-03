@@ -421,8 +421,6 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
 		return this;
 	}
     
-    
-    
     var _this = this;
     this.toggle_container(false, function () {
         if (_is_deny === true) {
