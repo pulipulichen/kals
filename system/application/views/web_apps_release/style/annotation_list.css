@@ -49,25 +49,26 @@
 /**
  * @section List_item
  */
-.annotation-tool .list-item {
+.KALS.annotation-tool .list-item {
     background-color: white;
     
     padding-top: 5px;
     padding-bottom: 5px;
+	padding: 5px;
     clear: both;
 }
 
-.list-item-topic {
+.KALS .list-item-topic {
     border-bottom: 1px solid gray;
     background-color: white;
 }
 
-.list-item.focus,
-.list-item.editing {
+.KALS .list-item.focus,
+.KALS .list-item.editing {
     background-color: #FEEEBD;
 }
 
-.list-item p {
+.KALS .list-item p {
     margin: 0;
 }
 
