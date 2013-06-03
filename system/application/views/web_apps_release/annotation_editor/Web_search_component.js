@@ -33,6 +33,7 @@ Web_search_component.prototype._$create_ui = function () {
 	if (typeof(KALS_CONFIG.web_search_url) != "undefined"
 		&& (KALS_CONFIG.web_search_url === false
 			|| KALS_CONFIG.web_search_url == "disable")) {
+				_ui.hide();
 				return _ui;
 			}
 	

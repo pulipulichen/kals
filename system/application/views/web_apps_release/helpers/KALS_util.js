@@ -73,7 +73,9 @@ KALS_util.ajax_get = function (_config) {
             _exception_handle();
         }
         else {
+			
             $.test_msg('KALS_util.ajax_get()'+'超過最大長度囉', _url.length);
+			
             this.show_exception({
                 heading: KALS_context.lang.line(new KALS_language_param(
                     'Data error.',
@@ -89,11 +91,13 @@ KALS_util.ajax_get = function (_config) {
         return;
     }
     
-    $.test_msg('ajax_get', '<a href="'+_url+'" target="_blank">' + _url + '</a>');
+    $.test_msg('ajax_get', _url);
     
     var _retry_timer;
     var _retry_exception = function () {
-        $.test_msg('retry exception');
+        
+		$.test_msg('retry exception');
+		
         _this.show_exception();
     };
     
@@ -104,7 +108,10 @@ KALS_util.ajax_get = function (_config) {
         
         $.getJSON(_url, function (_data) {
 			
-			$.test_msg('ajax_get return data', _data);
+			if (typeof(_data.KALS_language) == "undefined"
+				&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
+				$.test_msg('ajax_get from ' + _url + ' return data', _data);
+			}
 			
 			
             if (typeof(_retry_timer) == 'undefined' || _retry_timer === null) {

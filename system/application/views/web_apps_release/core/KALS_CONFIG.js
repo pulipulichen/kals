@@ -155,9 +155,9 @@ DEFAULT_KALS_CONFIG = {
 	 * 預設標註類型
 	 *
 	 * @copyright 20130603 Pudding Chen
-	 * @type {string} = "importance" 重要
+	 * @type {string} = "importance" 重要，也可以寫上自訂的名字
 	 */
-	default_annotation_type: "question",
+	default_annotation_type: "importance",
     
 	/**
 	 * 網頁搜尋
@@ -165,9 +165,10 @@ DEFAULT_KALS_CONFIG = {
 	 * @copyright 20130603 Pudding Chen
 	 * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
 	 * 
-	 * @type {String} web_search_url = "http://www.google.com/search?q={query}";
+	 * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
 	 */
-	web_search_url: "http://www.google.com/search?q={query}",
+	//web_search_url: "http://www.google.com/search?q={query}",
+	web_search_url: "disable",
 	
     //----------------------------
     

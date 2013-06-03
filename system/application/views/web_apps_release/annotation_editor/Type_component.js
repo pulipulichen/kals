@@ -94,13 +94,17 @@ Type_component.prototype._$create_ui = function () {
 		for (_i in _options) {
 			_option = _options[_i];
 			var _type_name = _i;
-			//$.test_msg("[Type_component]", [_i, _default_type_name]);
+			//$.test_msg("Type_component", [_i, _default_type_name]);
 			if (_default_type_name == _type_name) {
-				this._default_type = KALS_context.custom_type.find_type(_i); 
+				this._default_type = KALS_context.custom_type.find_type(_i);
+				_default_type = this._default_type;
+				//$.test_msg("Type_component set default", this._default_type); 
 				break;
 			}
 		}
 	}
+	
+	//如果沒有設定預設選單，則自動選擇第一個選單
 	if (_default_type === null) {
 		for (_i in _options) {
 			_option = _options[_i];

@@ -82,22 +82,22 @@ this.generic_load = function (_conf, _callback) {
             //_prefix+'package'
         ];
     
-    console.log('[KALS] load jquery');
+    //console.log('[KALS] load jquery');
     _this.load_jquery(function () {
         
-        console.log('[KALS] load libraries');
+        //console.log('[KALS] load libraries');
         _this.load_libraries(_libraries, function () {
             
-            console.log('[KALS] load toolkit');
+            //console.log('[KALS] load toolkit');
             _this.load_libraries(_toolkit_libraries, function () {
                 //$.test_msg('load_libraries');
                 //設定generic設定的觀察者模式
                 
-                console.log('[KALS] load component');
+                //console.log('[KALS] load component');
                 
                 //_this.load_libraries(_component_libraries, function () {
                 _this.load_scripts_orderly(_component_libraries, function () {
-                    console.log('[KALS] callback');
+                    //console.log('[KALS] callback');
                     if (typeof(_callback) == "function") {
                         _callback();
                     }
@@ -435,7 +435,7 @@ this.load_scripts_orderly = function (_scripts, _callback) {
     //_script = _base_url + _script;
     
     var _other_scripts = [];
-    console.log('[KALS] load script:' + _script);
+    //console.log('[KALS] load script:' + _script);
     for (var _i = 0; _i < _scripts.length; _i++) {
         _other_scripts[(_i-1)] = _scripts[_i];
     }
