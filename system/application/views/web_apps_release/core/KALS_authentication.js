@@ -295,7 +295,7 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
         
         this.load(_data, function (_this, _data) {
             
-            $.test_msg('auth.register()', [_data, _return_error]);
+            //$.test_msg('auth.register()', [_data, _return_error]);
             
 			//先檢查登入是否有錯誤
             if (typeof(_data.error) != 'undefined') {
