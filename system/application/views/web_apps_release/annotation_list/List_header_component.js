@@ -360,6 +360,8 @@ List_header_component.prototype._create_lock_component = function () {
     var _lock_img = KALS_context.get_image_url('policy-lock.gif');
     _lock_img.addClass('header-option')
         .addClass('lock');
+	var _msg = KALS_context.lang.line("policy_type.private");
+	_lock_img.attr("title", _msg);
     this._lock_component = _lock_img;
     return _lock_img;
 };

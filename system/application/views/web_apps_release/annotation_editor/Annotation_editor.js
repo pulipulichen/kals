@@ -264,7 +264,7 @@ Annotation_editor.prototype.submit = function () {
 					_annotation_param.recommend = new Recommend_param(_data.recommend);
 				}
                 if (typeof(_data.nav) != 'undefined') {
-                    $.test_msg('_data.nav', _data.nav);
+                    //$.test_msg('_data.nav', _data.nav);
                     _annotation_param.navigation_level = _data.nav;
                 }
             }
