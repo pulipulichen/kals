@@ -96,9 +96,10 @@ Editor_container.prototype._$create_ui = function () {
     this._set_toggle_position();
     
     var _this = this;
-    setTimeout(function () {
-        _this.toggle_deny(true);
-    }, 0);
+	
+    //setTimeout(function () {
+    //    _this.toggle_deny(true);
+    //}, 0);
     
     return _ui;
 };
@@ -416,11 +417,14 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
     var _deny = this._deny;
     var _editor = this.editor.get_ui();
     
+	//$.test_msg('Editor_container.toggle_deny() 1', _is_deny);
+	
     if ($.is_null(_is_deny) || _is_deny === undefined) {
-        _is_deny = !(_deny.visible());
+        //_is_deny = !(_deny.visible());
+		_is_deny = (KALS_context.policy.writable() === false);
     }
     
-    //$.test_msg('Editor_container.toggle_deny()', _is_deny);
+    //$.test_msg('Editor_container.toggle_deny() 2', _is_deny);
     
     //如果是一樣的話，那就不用切換啦
     if (_is_deny === true 
@@ -432,21 +436,24 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
 	
 	// @20130603 Pudding Chen
 	// 不知道為什麼加入這段就能正常顯示，非常不能理解
-	_editor.show();
+	//_editor.show();
 	
-    this.toggle_container(false, function () {
-		//$.test_msg("Editor_container _is_deny", _is_deny);
-        if (_is_deny === true) {
-            _deny.show();
-            _editor.hide();
-        }
-        else {
-            _deny.hide();
-            _editor.show();
-        }
-        
-        _this.toggle_container(true);
-    });
+	setTimeout(function () {
+		_this.toggle_container(false, function () {
+			//$.test_msg("Editor_container _is_deny", _is_deny);
+	        if (_is_deny === true) {
+	            _deny.show();
+	            _editor.hide();
+	        }
+	        else {
+	            _deny.hide();
+	            _editor.show();
+	        }
+	        
+	        _this.toggle_container(true);
+	    });
+	}, 500);
+	    
 	
     return this;
 };
@@ -511,8 +518,7 @@ Editor_container.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        //$.test_msg('Editor_container.listen_auth()', [_auth.is_login(), _auth._is_login]);
-        if (_policy.writable()) {
+		if (_policy.writable()) {
 			_this.toggle_deny(false);
 		}
 		else {

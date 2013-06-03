@@ -331,7 +331,10 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 		//$.test_msg('URL_hash_dispatcher', 'pass2');
 		
         var _id = this.get_field('view');
-        KALS_text.tool.view.load_view(_id);
+		KALS_context.init_profile.add_listener(function () {
+	        KALS_text.tool.view.load_view(_id);
+	    });
+        
     }
     else {
 		//$.test_msg('URL_hash_dispatcher', 'pass3');
@@ -348,10 +351,12 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
             var _scope_text = this.get_field('select');
             //$.test_msg('has check_hash()', _scope_text);
             
-			
-			setTimeout(function () {
-				KALS_text.selection.select.load_select(_scope_text);
-			}, 3000); 
+			KALS_context.init_profile.add_listener(function () {
+		        KALS_text.selection.select.load_select(_scope_text);  
+		    });
+			//setTimeout(function () {
+			//	KALS_text.selection.select.load_select(_scope_text);
+			//}, 3000); 
         }    
     }
     

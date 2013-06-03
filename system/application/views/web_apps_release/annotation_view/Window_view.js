@@ -149,7 +149,6 @@ Window_view.prototype.load_view = function (_annotation_id, _callback) {
             
             _this.set_focus_id(_param.annotation_id);
             _this.load_view(_topic_id, function () {
-                
                 //KALS_context.hash.set_field('view', _param.annotation_id);
                 $.trigger_callback(_callback);
             });

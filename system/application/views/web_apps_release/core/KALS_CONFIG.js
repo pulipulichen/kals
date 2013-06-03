@@ -170,6 +170,15 @@ DEFAULT_KALS_CONFIG = {
 	//web_search_url: "http://www.google.com/search?q={query}",
 	web_search_url: "disable",
 	
+	/**
+	 * 獨立模式
+	 * @type {boolean} isolation_mode: false，預設不開啟
+	 * 
+	 * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
+	 * 但是關閉之後，所有人又能看到別人的標註
+	 */
+	isolation_mode: true,
+	
     //----------------------------
     
     //以下是版面調整

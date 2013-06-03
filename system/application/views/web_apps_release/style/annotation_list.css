@@ -276,8 +276,12 @@
     display: none;
 }
 
-.list-menu .list-menu-option.edit,
-.list-menu .list-menu-option.delete {
+.KALS .list-menu .list-menu-option.edit,
+.KALS .list-menu .list-menu-option.delete {
+    display: none;
+}
+
+.KALS.window .list-menu .list-menu-option.select {
     display: none;
 }
 
