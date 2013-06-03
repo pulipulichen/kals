@@ -306,7 +306,9 @@ Editor_container.prototype.is_container_display = function () {
  */
 Editor_container.prototype._deny = null;
 
-
+/**
+ * 未登入前，顯示禁止留言的訊息
+ */
 Editor_container.prototype._create_deny = function () {
     
     var _deny = $('<div></div>')
@@ -345,6 +347,7 @@ Editor_container.prototype._create_deny = function () {
     // --------
     
     KALS_context.auth.add_listener(function(_auth) {
+		//$.test_msg("Editor_container", "登入了嗎？: " + _auth.is_login());
         if (_auth.is_login()) {
             _deny_write.show();
             _not_login.hide();
@@ -404,12 +407,16 @@ Editor_container.prototype._create_container = function () {
     return _container;
 };
 
+/**
+ * 切換無法禁止留言的功能
+ * @param {boolean} _is_deny
+ */
 Editor_container.prototype.toggle_deny = function (_is_deny) {
     
     var _deny = this._deny;
     var _editor = this.editor.get_ui();
     
-    if ($.is_null(_is_deny)) {
+    if ($.is_null(_is_deny) || _is_deny === undefined) {
         _is_deny = !(_deny.visible());
     }
     
@@ -422,7 +429,13 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
 	}
     
     var _this = this;
+	
+	// @20130603 Pudding Chen
+	// 不知道為什麼加入這段就能正常顯示，非常不能理解
+	_editor.show();
+	
     this.toggle_container(false, function () {
+		//$.test_msg("Editor_container _is_deny", _is_deny);
         if (_is_deny === true) {
             _deny.show();
             _editor.hide();
@@ -434,7 +447,7 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
         
         _this.toggle_container(true);
     });
-    
+	
     return this;
 };
 

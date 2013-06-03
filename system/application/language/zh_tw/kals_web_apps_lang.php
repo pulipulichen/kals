@@ -65,6 +65,7 @@ $lang['web_apps.time.1_month_ago'] = '1個月之前';
 $lang['web_apps.time.n_months_ago'] = '{0}個月之前';
 $lang['web_apps.time.on_date'] = '{0}月{1}日';
 $lang['web_apps.time.in_year'] = '{0}年';
+$lang['web_apps.time.fulldate'] = '{0}年{1}月{2}日';
 $lang['web_apps.time.month_name.1'] = '1';
 $lang['web_apps.time.month_name.2'] = '2';
 $lang['web_apps.time.month_name.3'] = '3';

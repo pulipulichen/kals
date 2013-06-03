@@ -21,6 +21,11 @@ function List_menu_block(_item, _disable_option) {
 List_menu_block.prototype = new List_menu();
 
 /**
+ * 顯示完整的日期
+ */
+List_menu_block.prototype.timestamp_full_dispaly = true;
+
+/**
  * Create UI
  * @memberOf {List_menu_block}
  * @type {jQuery} UI

@@ -248,7 +248,8 @@ KALS_language.prototype._date_params = {
         month: new KALS_language_param('1 month ago', 'time.1_month_ago'),
         months: new KALS_language_param('{0} months ago', 'time.n_months_ago'),
         date: new KALS_language_param('{0} {1}', 'time.on_date'),
-        year: new KALS_language_param('{0}', 'time.in_year')
+        year: new KALS_language_param('{0}', 'time.in_year'),
+		fulldate: new KALS_language_param('{0}, {1} {2}', 'time.fulldate')
     },  
     month_name: [
         null,    //編號0沒有月份
@@ -375,23 +376,24 @@ KALS_language.prototype.get_interval_param = function (_time) {
     }
     else if (_test_scope(_month, _y)) {
         var _date_obj = new Date();
-        _date_obj.setTime(_time);
-        
-        _month = this.get_month((_date_obj.getMonth()+1));
+        _date_obj.setTime(_time*1000);
+        //$.test_msg("lang date", _time);
+        _month = this.get_month(_date_obj);
         var _date = _date_obj.getDate();
-        $.test_msg("lang month", _month);
         _lang_param = _date_params.date;
         _lang_param.arg = [_month, _date];
     }
     else if (_test_scope(_y, null)) {
         _date_obj = new Date();
-        _date_obj.setTime(_time);
+        _date_obj.setTime(_time*1000);
         
-        var _year = _date_obj.getYear();
+        var _year = _date_obj.getFullYear();
         _lang_param = _date_params.year;
         _unit = _year;
     }
     
+    //$.test_msg("lang get_interval_param", _lang_param);
+	
     if (_unit !== null
         && $.is_class(_lang_param, 'KALS_language_param')
         && $.is_null(_lang_param.arg)) {
@@ -403,17 +405,49 @@ KALS_language.prototype.get_interval_param = function (_time) {
 
 /**
  * 取得月份
- * @param {number} _month_number 是1~12
+ * @param {date} )_date_obj
  * @type {string} 月份字串，例如Jan、Feb
  */
-KALS_language.prototype.get_month = function (_month_number) {
+KALS_language.prototype.get_month = function (_date_obj) {
+	
+	var _month_number = _date_obj.getMonth();
+	_month_number++;
+	
     if ($.is_number(_month_number)
         && _month_number > 0
         && _month_number < 13) {
-		$.test_msg("lang", _month_number);
-        return this._date_params.month_name[_month_number];
+		//$.test_msg("lang", _month_number);
+		var _month_param = this._date_params.month_name[_month_number];
+		var _month_msg = this.line(_month_param.line); 
+        return _month_msg;
     }
     return null;
+};
+
+/**
+ * 顯示全部日期
+ * @param {number} _time
+ */
+KALS_language.prototype.get_fulldate = function (_time) {
+	if ($.is_string(_time)) {
+		_time = parseInt(_time, 10);
+	}
+	
+    var _date_params = this._date_params.interval;
+	
+    var _date_obj = new Date();
+    _date_obj.setTime(_time*1000);
+    _month = this.get_month(_date_obj);
+    var _date = _date_obj.getDate();
+	
+	var _year = _date_obj.getFullYear();
+    _lang_param = _date_params.fulldate;
+    _lang_param.arg = [_year, _month, _date];
+    
+	//$.test_msg("lang get_fulldate _lang_param_arg", _lang_param);
+	
+    //return _lang_param;
+	return this.line(_lang_param);
 };
 
 /**

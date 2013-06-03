@@ -129,9 +129,10 @@ List_menu.prototype.is_enable = function (_option_name) {
  * @type {List_timestamp_component}
  */
 List_menu.prototype.timestamp = null;
+List_menu.prototype.timestamp_full_dispaly = false;
 
 List_menu.prototype._setup_timestamp = function () {
-    var _component = new List_timestamp_component(this._item);
+    var _component = new List_timestamp_component(this._item, this.timestamp_full_dispaly);
     this.child('timestamp', _component);
     return _component;
 };
