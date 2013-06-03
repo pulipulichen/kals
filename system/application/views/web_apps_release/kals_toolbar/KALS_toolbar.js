@@ -22,7 +22,7 @@ function KALS_toolbar() {
     this.child('loading', new Loading_component());
     this.child('search', new Search_component());
     
-    this._common_windows = [new Window_filter()];
+    this._common_windows = (new Common_navigation()).get_nav_items();
     this.child('anonymous_nav', new Anonymous_navigation(this._common_windows));
     this.child('avatar', new Avatar_component(this._common_windows));
     //this.child('common_nav', new Common_navigation());

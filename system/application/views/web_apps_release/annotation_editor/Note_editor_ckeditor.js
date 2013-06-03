@@ -363,13 +363,24 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     $.save_scroll_position();
-    _ui.ckeditorGet().setData(_text, function () {
-        setTimeout(function () {
-            $.load_scroll_position();    
-        }, 0);
-        
-    });
+	
+	var _set_data = function () {
+		_ui.ckeditorGet().setData(_text, function () {
+	        setTimeout(function () {
+	            $.load_scroll_position();    
+	        }, 0);
+	        
+	    });	
+	};
     
+    try {
+		_set_data();
+	}
+	catch (_e) {
+		setTimeout(function () {
+			_set_data();
+		}, 500);
+	}
     
     return this;
 };

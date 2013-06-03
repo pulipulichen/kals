@@ -18,6 +18,11 @@ function Context_policy(){
     //{
         KALS_context.auth.add_listener(this);
     //}
+	
+	if (KALS_CONFIG.isolation_mode === true) {
+		//this.set_attr("read", false);
+		this.set_attr("show_navigation", false);
+	}
 }
 
 Context_policy.prototype = new Attribute_event_dispatcher();
@@ -32,9 +37,15 @@ Context_policy.prototype.writable = function () {
     return this.get_attr('write', false);
 };
 
+/**
+ * 是否允許顯示別人的標註
+ */
 Context_policy.prototype.allow_show_navigation = function () {
+	var _allow_show = this.get_attr('show_navigation', false);
+	return _allow_show; 
+	
     //實驗中，預設是不顯示推薦標註
-    return this.get_attr('show_navigation', false);
+    //return this.get_attr('show_navigation', false);
     
     //正式使用時，預設是顯示推薦標註
     //return this.get_attr('recommend', true);

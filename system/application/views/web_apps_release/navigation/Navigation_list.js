@@ -200,5 +200,12 @@ Navigation_list.prototype._create_menu = function() {
     return _ui;
 };
 
+/**
+ * @type {Array|KALS_window}
+ */
+Navigation_list.prototype.get_nav_items = function () {
+	return this._$nav_items;
+};
+
 /* End of file Navigation_list */
 /* Location: ./system/application/views/web_apps/Navigation_list.js */

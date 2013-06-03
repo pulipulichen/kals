@@ -46,17 +46,28 @@ Topic_list.prototype._$create_ui = function () {
     this.child('my', _my);
     
     var _like = new List_collection_like();
-    _like.get_ui().appendTo(_ui);
+	var _like_ui = _like.get_ui();
+    _like_ui.appendTo(_ui);
     this._list_colls.push(_like);
     
     var _other = new List_collection_other();
-    _other.get_ui().appendTo(_ui);
+	var _other_ui = _other.get_ui();
+    _other_ui.appendTo(_ui);
     this._list_colls.push(_other);
-    
+	
     var _anonymous = new List_collection_anonymous();
-    _anonymous.get_ui().appendTo(_ui);
-    this._list_colls.push(_anonymous);  
+	var _anonymous_ui = _anonymous.get_ui(); 
+    _anonymous_ui.appendTo(_ui);
+    this._list_colls.push(_anonymous);
     
+	// @20130603 Pudding Chen
+	// Isolation Mode
+	if (KALS_context.policy.allow_show_navigation() === false) {
+		_like_ui.hide();
+		_other_ui.hide();
+		_anonymous_ui.hide();
+	}
+	
     var _blank = this._create_blank_component();
     _blank.appendTo(_ui);
     

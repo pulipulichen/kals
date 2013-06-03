@@ -485,6 +485,8 @@ KALS_authentication.prototype.check_login = function (_callback) {
         
         this.load(function (_this, _data) {
             
+			//$.test_msg("check_login", _data);
+			
             if (typeof(_data.login) == 'boolean' && _data.login === true) {
                 _this._is_login = true;
             }
