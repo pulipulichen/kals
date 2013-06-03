@@ -246,7 +246,9 @@ Style_manager.prototype.load_style = function (_title, _path, _config) {
 };
 
 Style_manager.prototype._use_style_sheet = function () {
-    return (document.createStyleSheet !== null);
+	//$.test_msg("[Style_manager] document.createStyleSheet: " + typeof(document.createStyleSheet));
+    return (document.createStyleSheet !== null 
+		&& document.createStyleSheet !== undefined);
 };
 
 Style_manager.prototype.unload_style = function (_path) {

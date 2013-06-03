@@ -1,10 +1,19 @@
-.editor-tool {
+.kals-modal .editor-tool {
     -webkit-box-shadow: 0px 5px 5px #AF9067;
     position:relative;
     z-index: 1;
 }
+.kals-modal .editor-tool tr td{
+	padding: 0 0 !important;
+	border:0px !important;
+	width:330px !important;
+	
+}
+.kals-modal .editor-tool table{
+	border-collapse:inherit !important;
+}
 
-.editor-container {
+.kals-modal .editor-container {
     border:1px none #4A4531;
     border-bottom-style: solid;
     
@@ -13,8 +22,8 @@
 /**
  * @section Editor_container
  */
-.editor-container .toggle {
-    text-align: center;
+.kals-modal .editor-container .toggle {
+    text-align: center !important;
     /*background-color: yellow;*/
     font-size: small;
     /*color: white;*/
@@ -58,12 +67,15 @@
     */
 }
 
-.editor-container .toggle.hide {
+.kals-modal .editor-container .toggle td {
+	text-align:center !important;
+}
+.kals-modal .editor-container .toggle.hide {
     border-radius: 8px;
     -moz-border-radius: 8px;
 }
 
-.editor-container .toggle.top {
+.kals-modal .editor-container .toggle.top {
     border-radius: 8px 8px 0 0;
     -moz-border-radius: 8px 8px 0 0;
     
@@ -79,20 +91,20 @@
     */
 }
 
-.editor-container .toggle td {
+.kals-modal .editor-container .toggle td {
     -moz-box-shadow: 0px 5px 5px #AF9067;
-    -webkit-box-shadow: 0px 5px 5px #AF9067;
+    
     position:relative;
     display: block;
 }
 
-.editor-container .toggle.top td {
+.kals-modal .editor-container .toggle.top td {
     -moz-box-shadow: 0px -5px 5px #AF9067;
     -webkit-box-shadow: 0px -5px 5px #AF9067;
 }
 
 
-.editor-container .container {
+.kals-modal .editor-container .container {
     border:0px solid #4A4531;
     border-style: none solid;
     /*border-radius: 8px;
@@ -106,14 +118,14 @@
 }
 */
 
-.editor-container .editor-message {
+.kals-modal .editor-container .editor-message {
     display:none;
     text-align:center;
     padding: 10px 0;
     font-size: small;
 }
 
-.editor-container .editor-deny .not-login {
+.kals-modal .editor-container .editor-deny .not-login {
     
     color: blue;
     text-decoration:underline;
@@ -124,50 +136,50 @@
 /**
  * @section Annotation_editor
  */
-.annotation-editor .header {
+.kals-modal .annotation-editor .header {
     font-size:small;
 }
 
-.annotation-editor .header th {
+.kals-modal .annotation-editor .header th {
     vertical-align:middle;
     /*width: 50%;*/
     padding-bottom: 5px;
 }
 
-.annotation-editor .header th.left {
+.kals-modal .annotation-editor .header th.left {
     text-align:left;
     padding-left: 0.5em;
     
 }
 
-.annotation-editor .header th.right {
+.kals-modal .annotation-editor .header th.right {
     text-align:right;
     padding-right: 0.5em;
 }
 
-.annotation-editor .loading-component {
+.kals-modal .annotation-editor .loading-component {
     text-align: center;
     padding: 10px 0;
     font-size: small;
     cursor: wait;
 }
 
-.annotation-editor .header button.create,
-.annotation-editor .header button.edit,
-.annotation-editor .header button.cancel {
+.kals-modal .annotation-editor .header button.create,
+.kals-modal .annotation-editor .header button.edit,
+.kals-modal .annotation-editor .header button.cancel {
     min-height: 0;
     border: 1px solid #D19405;
 }
 
-.annotation-editor .header .submit-container .edit,
-.annotation-editor .header .submit-container .cancel,
-.annotation-editor.editing .header .submit-container .create {
+.kals-modal .annotation-editor .header .submit-container .edit,
+.kals-modal .annotation-editor .header .submit-container .cancel,
+.kals-modal .annotation-editor.editing .header .submit-container .create {
     display: none;
 }
 
-.annotation-editor.editing .header .submit-container .edit,
-.annotation-editor.editing .header .submit-container .cancel,
-.annotation-editor .header .submit-container .create {
+.kals-modal .annotation-editor.editing .header .submit-container .edit,
+.kals-modal .annotation-editor.editing .header .submit-container .cancel,
+.kals-modal .annotation-editor .header .submit-container .create {
     padding: 3px;
     display: inline;
 }
@@ -175,14 +187,14 @@
 /**
  * @section User
  */
-.user-component {
+.kals-modal .user-component {
     /*float:left;*/
 }
 
 /**
  * @section type
  */
-.type-component {
+.kals-modal .annotation-editor .type-component {
     margin-right: 5px;
     margin-left: 5px;
     margin-top: 5px;
@@ -195,54 +207,54 @@
     background-repeat:no-repeat;
 }
 
-.type-option {
+.kals-modal .type-option {
     /*padding: 5px 10px;*/
-    padding: 1px 5px;
-    text-align: center;
+    padding: 1px 5px !important;
+    text-align: center !important;
     color: white;
-    background-color: gray;
-    font-size: small;
+    background-color: gray ;
+    font-size: small !important;
     
-    border-bottom: 1px solid #555;
-    border-left: 1px solid #AAA;
-    border-right: 1px solid #555;
-    border-top: 1px solid #AAA;
-    cursor: pointer;
+    border-bottom: 1px solid #555 !important;
+    border-left: 1px solid #AAA !important;
+    border-right: 1px solid #555 !important;
+    border-top: 1px solid #AAA !important;
+    cursor: pointer !important;
     
     font-weight: bold;
 }
 
-.type-option.importance {
+.kals-modal .type-option.importance {
     background-color: yellow;
     color: black;
 }
 
-.type-option.concept {
+.kals-modal .type-option.concept {
     background-color: blue;
 }
 
-.type-option.confusion {
+.kals-modal .type-option.confusion {
     background-color: #800080;
 }
 
-.type-option.question {
+.kals-modal .type-option.question {
     background-color: red;
 }
 
-.type-option.example {
+.kals-modal .type-option.example {
     background-color: green;
 }
 
-.type-option.summary {
+.kals-modal .type-option.summary {
     background-color: #670808;
 }
 
-.type-option.custom {
+.kals-modal .type-option.custom {
     background-color: white;
     color: black;
 }
 
-.type-component .type-menu {
+.kals-modal .type-component .type-menu {
     background-color: #EEE;
     border-bottom: 1px solid #555;
     border-left: 1px solid #AAA;
@@ -253,7 +265,7 @@
     z-index: 4;
 }
 
-.type-component .type-menu .type-option {
+.kals-modal .type-component .type-menu .type-option {
     border-style: none;
     display:block;
     width: 100%;
@@ -261,7 +273,7 @@
     -moz-border-radius: 0px;
 }
 
-.type-component .type-menu .type-option.hover {
+.kals-modal .type-component .type-menu .type-option.hover {
    /*border-left: 10px solid black;
    padding-left: 0px;*/
    position:relative;
@@ -269,7 +281,7 @@
    -webkit-box-shadow: #FFFFFF 0px 0px 20px;
 }
 
-.type-component .type-option
+.kals-modal .type-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -277,14 +289,14 @@
     height:18px;
 }
 
-.type-component .type-option.custom  .type-option {
+.kals-modal .type-component .type-option.custom  .type-option {
     border-radius: 0px;
     -moz-border-radius: 0px;
     border-style: none;
     padding: 0;
 }
 
-.type-component .type-option .custom-type-option
+.kals-modal .type-component .type-option .custom-type-option
 {
     font-weight: bold;   
     border-width: 0px;
@@ -296,18 +308,18 @@
     /*padding: 5px 10px;*/
 }
 
-.custom-type-dialog {
+.kals-modal .custom-type-dialog {
     text-align: center;
 }
 
-.custom-type-dialog input.text {
+.kals-modal .custom-type-dialog input.text {
     width: 100%;
 }
 
-.type-menu .type-option {
+.kals-modal .type-menu .type-option {
     padding: 5px;
 }
-.type-menu .type-hint {
+.kals-modal .type-menu .type-hint {
     display: none;
     position: absolute;
     background-color: #FEEEBD;
@@ -320,7 +332,7 @@
  /**
   * @section Policy_component
   */
-.policy-component {
+.kals-modal .annotation-tool .annotation-editor .policy-component {
     font-size:small;
     cursor: pointer;
     padding-left: 18px;
@@ -334,33 +346,34 @@
     margin-left: 5px;
 }
 
-.policy-component.lock {
+.kals-modal .annotation-tool .annotation-editor .policy-component.lock {
     background-image: url('${base_url}images/policy-lock.gif');
 }
 
-.policy-component.deny-change {
+.kals-modal .policy-component.deny-change {
     color: #666;
     cursor:inherit;
 }
  
-.window-policy label {
+.kals-modal .window-policy label {
     cursor: pointer; 
 }
 
-.window-policy label .heading {
+.kals-modal .window-policy label .heading {
     font-weight: bold;
 }
 
-.window-policy .help {
+.kals-modal .window-policy .help {
     padding-left: 1em;
-    font-size:small;    
+    font-size:small;
+	font-weight:normal !important;    
 }
 
 /**
  * @subsection Submit-button 
  */
 
-.annotation-editor .submit
+.kals-modal .annotation-editor .submit
 {
     /*float: right;*/
 }
@@ -368,7 +381,7 @@
 /**
  * @section Editor_respond_to
  */
-.respond-container {
+.kals-modal .respond-container {
     /*max-height: 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -378,11 +391,11 @@
     overflow-x: auto;
 }
 
-.editor-respond-to-topic {
+.kals-modal .editor-respond-to-topic {
     display: none;
 }
 
-.editor-respond-to {
+.kals-modal .editor-respond-to {
     border-radius: 5px;
     -moz-border-radius: 5px;
     background-color: #8C8473;
@@ -396,7 +409,7 @@
     margin-right: 2px;
 }
 
-.editor-respond-to .delete {
+.kals-modal .editor-respond-to .delete {
     padding: 0 3px;
     color: #FDD44B;
     
@@ -404,11 +417,11 @@
     
     margin-left: 3px;
 }
-.editor-respond-to .delete.hover {
+.kals-modal .editor-respond-to .delete.hover {
     color: #D19405;
 }
 
-.editor-respond-to .id {
+.kals-modal .editor-respond-to .id {
     margin-left: 5px;
     
 }
@@ -416,7 +429,7 @@
 /**
  * @section Note_editor
  */
-.note-editor {
+.kals-modal .note-editor {
     
    /*padding-top: 30px;*/
   text-align:center;
@@ -427,50 +440,50 @@
     display: none;
 }
 */
-.note-editor .cke_skin_kama {
+.kals-modal .note-editor .cke_skin_kama {
     padding: 0;
 }
 
 
-.note-editor .cke_toolbox .cke_toolbar {
+.kals-modal .note-editor .cke_toolbox .cke_toolbar {
     display:none !important;
 }
 
-.note-editor .cke_toolbox .cke_toolbar.maximize {
+.kals-modal .note-editor .cke_toolbox .cke_toolbar.maximize {
     display:none !important;
     border: 1px solid green;
 }
 
-.note-editor .cke_toolbox .cke_toolbar.minimize {
+.kals-modal .note-editor .cke_toolbox .cke_toolbar.minimize {
     display:block !important;
     /*border: 1px solid red;*/
 }
 
-.cke_maximized .cke_toolbox .cke_toolbar.maximize {
+.kals-modal .cke_maximized .cke_toolbox .cke_toolbar.maximize {
     display:block !important;
 }
 
-.cke_maximized .cke_toolbox .cke_toolbar.minimize {
+.kals-modal .cke_maximized .cke_toolbox .cke_toolbar.minimize {
     display:none !important;
 }
 
-.note-editor .cke_bottom_tr {
+.kals-modal .note-editor .cke_bottom_tr {
     display:none;
 }
 
-.note-editor .cke_maximized .cke_bottom_tr {
+.kals-modal .note-editor .cke_maximized .cke_bottom_tr {
     display:table-row;
 }
 
-.note-editor td.cke_contents iframe {
+.KALS .note-editor td.cke_contents iframe {
     display:block;
 }
 
-table.cke_editor {
+.KALS table.cke_editor {
     display:table !important;
 }
 
-.Note_editor textarea {
+.KALS .Note_editor textarea {
     width: 90%;
     margin: 0 5px;
     height: 50px;
@@ -499,22 +512,47 @@ table.cke_editor.inline-table {
 /**
  * @section Editor_respond
  */
- .editor-respond {
+.kals-modal .editor-respond {
      border: 1px solid #800000;
      background-color: #FFFFB9;
      font-size: smaller;
      color: #800000;
  }
- .editor-respond .delete {
+.kals-modal .editor-respond .delete {
      background-color:#800000;
      color: white;
  }
  
- .editor-respond .name {
+.kals-modal .editor-respond .name {
      padding: 0 5px;
  }
 
-.editor-container .note-editor-textarea {
+.kals-modal .editor-container .note-editor-textarea {
     width: 90%;
     height: 100px;
+}
+
+/**
+ * @section Web_search_component
+ */
+.kals-modal .annotation-editor .web-search.button.dialog-option {
+	min-height: auto;
+	background-image: url('${base_url}images/web_search.png');
+	padding-right: 18px !important;
+	background-repeat:no-repeat;
+	background-position: right center;
+	/*
+	font-size: smaller;
+	
+	background-color:white;
+	border: 1px solid #494437;
+	padding: 2px;
+	padding-right: 20px;
+	
+	
+	cursor: pointer;
+	
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    */
 }

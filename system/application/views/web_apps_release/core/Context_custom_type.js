@@ -264,6 +264,7 @@ Context_custom_type.prototype.find_type = function (_type_name) {
 /**
  * 新增自訂標註
  * @param {string} _type_data
+ * @type {Annotation_type_param}
  */
 Context_custom_type.prototype.add_custom_type = function (_type_data) {
     var _type_param = new Annotation_type_param(_type_data);
@@ -288,7 +289,7 @@ Context_custom_type.prototype.import_json = function (_json) {
 /**
  * 取得type選項的按鈕
  * @param {Annotation_type_param|string|number} _type_data
- * @return {jQuery}
+ * @return {Annotation_type_param}
  */
 Context_custom_type.prototype.get_type_option = function (_type_data) {
     var _option = $('<span></span>')

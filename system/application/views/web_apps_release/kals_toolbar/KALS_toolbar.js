@@ -98,7 +98,8 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     var _ui = this._$create_ui_prototype();
     _ui.removeClass('kals-modal');
-    _ui.addClass('kals-toolbar');
+    _ui.addClass('kals-toolbar')
+		.addClass("KALS");
     
     var _toolbar_ui = this.toolbar.get_ui();
     var _toggle_ui = this.toggle.get_ui();

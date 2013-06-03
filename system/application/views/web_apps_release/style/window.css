@@ -19,6 +19,7 @@
     width: 100%;
     font-size:medium;
     margin:0;
+	height: auto !important;
 }
 
 .dialog-modal.window div {
@@ -26,7 +27,7 @@
 }
 
 .window-loading {
-    padding: 30px 1em;
+    padding: 30px 1em !important;
     text-align:center;
     line-height: 30px;
     /*width: 480px;
@@ -59,7 +60,7 @@
     text-align:right;
     width: 150px;
     float: left;
-    padding-right: 0.5em;
+    padding-right: 0.5em !important;
     cursor:pointer;
 }
 
@@ -73,7 +74,7 @@
 .window-panel .row dd {
     padding: 0;
     margin: 0;
-    padding-bottom: 0.5em;
+    padding-bottom: 0.5em !important;
 }
 
 .window-panel .text {
@@ -81,7 +82,7 @@
 }
 
 .window-panel .text.empty {
-    border: 2px solid red;
+    border: 2px solid red !important;
 }
 
 .dialog-modal.compact-width .window-panel .text {
@@ -90,8 +91,8 @@
 
 .window-panel h2.heading {
     font-size:large;
-    border-bottom: 1px solid black;
-    padding-left: 0.5em;
+    border-bottom: 1px solid black !important;
+    padding-left: 0.5em !important;
 }
 
 .window-panel .list label {

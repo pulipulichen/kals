@@ -116,7 +116,10 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
         
         for (_i in _arg) {
             var _a = _arg[_i];
-            if ($.is_object(_a)) {
+			if ($.is_object(_a) && typeof(_a.msg) == "string") {
+				_lang.find('span.lang-arg-' + _i).html(_a);
+			}
+            else if ($.is_object(_a)) {
 				_lang.find('span.lang-arg-' + _i).append(_a);
 			}
 			else {
@@ -374,9 +377,9 @@ KALS_language.prototype.get_interval_param = function (_time) {
         var _date_obj = new Date();
         _date_obj.setTime(_time);
         
-        _month = this.get_month((_date_obj.getMonth+1));
+        _month = this.get_month((_date_obj.getMonth()+1));
         var _date = _date_obj.getDate();
-        
+        $.test_msg("lang month", _month);
         _lang_param = _date_params.date;
         _lang_param.arg = [_month, _date];
     }
@@ -407,7 +410,8 @@ KALS_language.prototype.get_month = function (_month_number) {
     if ($.is_number(_month_number)
         && _month_number > 0
         && _month_number < 13) {
-        return this._data_lang.month_name[_month_number];
+		$.test_msg("lang", _month_number);
+        return this._date_params.month_name[_month_number];
     }
     return null;
 };

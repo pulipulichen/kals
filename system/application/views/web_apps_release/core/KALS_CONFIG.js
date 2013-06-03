@@ -150,7 +150,25 @@ DEFAULT_KALS_CONFIG = {
      *     也可以用http開頭的絕對網址，例如'http://www.google.com.tw/'
      */
     help_base_url: 'help/',
+	
+	/**
+	 * 預設標註類型
+	 *
+	 * @copyright 20130603 Pudding Chen
+	 * @type {string} = "importance" 重要
+	 */
+	default_annotation_type: "question",
     
+	/**
+	 * 網頁搜尋
+	 * 
+	 * @copyright 20130603 Pudding Chen
+	 * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
+	 * 
+	 * @type {String} web_search_url = "http://www.google.com/search?q={query}";
+	 */
+	web_search_url: "http://www.google.com/search?q={query}",
+	
     //----------------------------
     
     //以下是版面調整

@@ -165,7 +165,8 @@ KALS_window.prototype._$create_ui = function () {
     
     var _ui = this.base.prototype._$create_ui.call(this);
     
-    _ui.addClass('window');
+    _ui.addClass('window')
+		.addClass("KALS");
     
     var _content_tr = _ui.find('.dialog-content-tr:first');
     var _loading_tr = $('<tr class="window-loading-tr"><td></td></tr>')

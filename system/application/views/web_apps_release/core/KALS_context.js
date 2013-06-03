@@ -460,6 +460,12 @@ KALS_context.load_info = function (_callback) {
     
 };
 
+/**
+ * 記住最後選擇的標註類型
+ * @type {Annotation_type_param}
+ */
+KALS_context.last_select_annotation_type = null;
+
 // ------------------------------------------------
 
 /**

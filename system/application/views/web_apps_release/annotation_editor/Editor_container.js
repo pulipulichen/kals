@@ -218,6 +218,7 @@ Editor_container.prototype.get_parent_container = function () {
 };
 
 /**
+ * 開關編輯器
  * @param {boolean} _display
  * @param {function} _callback
  */
@@ -235,7 +236,7 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     
     //$.test_msg('Editor_container.toggle_container() visible', [_display, _visible]);
     
-    if (_display === null) {
+    if (_display === undefined || _display === null) {
         _display = !(_visible);
     }
     

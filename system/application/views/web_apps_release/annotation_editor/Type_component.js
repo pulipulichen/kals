@@ -33,6 +33,7 @@ Type_component.prototype._$enable_changed_lock = false;
 Type_component.prototype._editor = null;
 
 /**
+ * 預設顯示的標註類型
  * @type {Annotation_type_param}
  */
 Type_component.prototype._default_type = null;
@@ -85,17 +86,41 @@ Type_component.prototype._$create_ui = function () {
     _ui.tooltip(_config);
     //_ui.setup_hover();
     
-    
+	// 20130603 Pudding Chen
+	// 預設選單
+	var _default_type = null;
+	if (typeof(KALS_CONFIG.default_annotation_type) == "string") {
+		var _default_type_name = KALS_CONFIG.default_annotation_type;
+		for (_i in _options) {
+			_option = _options[_i];
+			var _type_name = _i;
+			//$.test_msg("[Type_component]", [_i, _default_type_name]);
+			if (_default_type_name == _type_name) {
+				this._default_type = KALS_context.custom_type.find_type(_i); 
+				break;
+			}
+		}
+	}
+	if (_default_type === null) {
+		for (_i in _options) {
+			_option = _options[_i];
+			var _type_name = _i;
+			this._default_type = KALS_context.custom_type.find_type(_i);
+			break;
+		}
+	}
     this._listen_editor();
     
     return _ui;
 };
 
 /**
+ * 設定標註類型
  * 
  * @param {Annotation_type_param} _type
+ * @param {boolean} _is_manual = false 是人為選擇的，預設是false。如果是人為選擇的，則會記錄起來
  */
-Type_component.prototype.set_type = function (_type) {
+Type_component.prototype.set_type = function (_type, _is_manual) {
     
     //$.test_msg('Type_component.set_type() start', _type);
     
@@ -106,6 +131,9 @@ Type_component.prototype.set_type = function (_type) {
     //var _ui = this.get_ui();
     //_ui.empty();
     
+	/**
+	 * 過濾_type參數
+	 */
     var _is_custom_type = false;
     if ($.is_null(_type)) {
 		_type = this.get_type();
@@ -127,11 +155,19 @@ Type_component.prototype.set_type = function (_type) {
 			}
 		}
     
+	/**
+	 * 20130603 Pudding Chen
+	 * 如果是人為選擇的，則記錄起來
+	 */
+	if (typeof(_is_manual) == "boolean" && _is_manual === true) {
+		KALS_context.last_select_annotation_type = _type;
+	}
+	
     //$.test_msg('Type_component.set_type()', [$.isset(this._type), _type.equals(this._type)]);
     
     if ($.isset(this._type) &&
-	_type.equals(this._type) &&
-	_is_custom_type === false) {
+		_type.equals(this._type) &&
+		_is_custom_type === false) {
 		return this;
 	}
     
@@ -201,10 +237,23 @@ Type_component.prototype.get_default_type = function () {
     return this._default_type;
 };
 
-
+/**
+ * 重設標註類型
+ */
 Type_component.prototype.reset_type = function () {
     this.reset_custom_name();
-    return this.set_type(this._default_type);
+	/**
+	 * 20130603 Pudding Chen
+	 * 改成記錄最後一次選擇的標註類型
+	 */
+	//return this.set_type(this._default_type);
+	var _last_select_annotation_type = KALS_context.last_select_annotation_type;
+	
+	if (_last_select_annotation_type === null && typeof(KALS_CONFIG.default_annotation_type) == "string") {
+		
+	}
+	
+    return this.set_type(_last_select_annotation_type);
 };
 
 Type_component.prototype._setup_menu = function () {

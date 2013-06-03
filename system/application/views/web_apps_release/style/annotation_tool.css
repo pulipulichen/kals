@@ -135,3 +135,20 @@
 .annotation-tool.hide-editor .annotation-tool-list {
     max-height: 270px;
 }
+
+
+
+/**
+ * @section {Reset recovery}
+ */
+.annotation-tool tbody tr th{
+	background:rgba(255, 255, 255, 0) !important;
+	color: black;
+}
+
+.annotation-tool tbody tr td,
+.annotation-tool tbody tr th {
+	
+	border-bottom:0px !important;
+	border-top:0px !important;
+}

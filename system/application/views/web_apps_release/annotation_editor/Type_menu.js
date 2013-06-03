@@ -17,11 +17,10 @@ function Type_menu(_type_component) {
     this._type_component = _type_component;
     
     var _this = this;
-    /*
-    setTimeout(function () {
-        _this.get_ui();
-    }, 0);
-    */
+    
+    //setTimeout(function () {
+    //    _this.get_ui();
+    //}, 0);
 }
 
 Type_menu.prototype = new Tooltip_modal();
@@ -83,6 +82,10 @@ Type_menu.prototype._setup_type_ui = function (_ui, _type) {
     return this;
 };
 
+/**
+ * 標註選項的classname
+ * @type {String} 
+ */
 Type_menu.prototype._option_classname = 'type-option';
 
 /**
@@ -131,6 +134,7 @@ Type_menu.prototype.create_type_option = function (_type) {
     _type_ui.addClass(_classname)
         .attr('annotation_type', _annotation_type);
     */
+	
     //var _type_value = $('<input type="hidden" class="type-value" value="'+_type+'" />')
     //    .appendTo(_type_ui);
     
@@ -189,6 +193,10 @@ Type_menu.prototype._hint_tooltip_config = {
     delay: 0
 };
 
+/**
+ * 建立標註類型選項
+ * @type {Array|Annotation_type_param} 標註類型選項的列表
+ */
 Type_menu.prototype.create_type_option_list = function () {
     
     var _list = {};
@@ -200,13 +208,17 @@ Type_menu.prototype.create_type_option_list = function () {
     
     //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
     
+	/**
+	 * 20130603 Pudding Chen 
+	 * 加入自訂的標註類型
+	 */
     var _custom_type_list = KALS_context.custom_type.get_type_list();
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];
         var _type_name = _type.get_name();
         _option = this.create_type_option(_type);
         _list[_type_name] = _option;
-    } 
+    }
     
     return _list;
     
@@ -235,7 +247,13 @@ Type_menu.prototype.setup_type_option = function (_type_ui) {
             _this.open_custom_name_dialog();
         }
         else {
-            _component.set_type(_type);    
+            /**
+             * 20130603 Pudding Chen
+             * 加入記錄最後選擇參數的設定
+             */
+			//_component.set_type(_type);    
+			_component.set_type(_type, true);
+			
         }
         _this.close();
     });
@@ -289,7 +307,6 @@ Type_menu.prototype._$get_config = function () {
             _this.setup_position();    
         }, 10);
         
-        
         if ($.is_function(_onbeforeshow)) {
 			_onbeforeshow.call(this);
 		}
@@ -301,8 +318,10 @@ Type_menu.prototype._$get_config = function () {
     
 };
 
+/**
+ * 設定標註類型選單的位置
+ */
 Type_menu.prototype.setup_position = function () {
-    
     
     var _ui = this.get_ui();
     
@@ -388,7 +407,14 @@ Type_menu.prototype.open_custom_name_dialog = function () {
         var _option = new Dialog_close_option(_option_lang, function () {
             var _custom_name = _content.find('input[name="custom_type"]:first').val();
             //alert(_custom_name);
-            _this._type_component.set_type(_custom_name);
+			
+			/**
+			 * 20130603 Pudding Chen
+			 * 改成記錄最後一次選擇的標註類型
+			 */
+            //_this._type_component.set_type(_custom_name);
+			_this._type_component.set_type(_custom_name, true);
+			
             return false;
         });
         
@@ -401,6 +427,11 @@ Type_menu.prototype.open_custom_name_dialog = function () {
     return this;
 };
 
+/**
+ * 找一下這個type是不是自訂的類型
+ * @deprecated 20130603 Pudding Chen 不使用了，因為現在標註類型不是單純的字串，而是物件
+ * @param {Object} _type
+ */
 Type_menu.prototype.filter_type = function (_type) {
     
     for (var _i in this._type_options) {

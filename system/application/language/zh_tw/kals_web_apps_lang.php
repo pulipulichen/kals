@@ -212,6 +212,8 @@ $lang['web_apps.policy_type.share.help'] = '只有以下名單的使用者能看
 
 $lang['web_apps.window.policy.heading'] = '標註權限設定';
 
+$lang['web_apps.web_search'] = '網頁搜尋';
+
 $lang['web_apps.type_menu.custom_type_dialog.heading'] = '自訂標註類型';
 
 /**

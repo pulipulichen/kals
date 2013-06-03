@@ -80,6 +80,7 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('annotation-tool')
         .addClass('draggable-tool')
         .addClass('kals-modal')
+		.addClass("KALS")
         .hide()
         .appendTo($('body'));
         

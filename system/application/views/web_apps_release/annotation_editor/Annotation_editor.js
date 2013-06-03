@@ -405,6 +405,9 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param) {
  */
 Annotation_editor.prototype._$enable_types = ['reset', 'set'];
 
+/**
+ * 重設目前的編輯器
+ */
 Annotation_editor.prototype.reset = function () {
     
     if (this._editing_lock === false) {
@@ -478,6 +481,12 @@ Annotation_editor.prototype._$create_ui = function () {
     var _type = this._setup_type();
     _type.get_ui().appendTo(_container.find('th.left:first'));
     
+	// @20130603 Pudding Chen
+	// 加入Web Search功能
+	var _web_search = new Web_search_component();
+	this.web_search = _web_search;
+	_web_search.get_ui().appendTo(_container.find('th.left:first'));
+	
     var _policy = this._setup_policy();
     _policy.get_ui().appendTo(_container.find('th.right:first'));
     
@@ -834,6 +843,16 @@ Annotation_editor.prototype._setup_policy = function() {
     
     return _policy;  
 };
+
+// --------
+// Web Search
+// @copyright 20130603 Pudding Chen 
+// --------
+
+/**
+ * @type {Web_search_component}
+ */
+Annotation_editor.prototype.web_search = null;
 
 /* End of file Annotation_editor */
 /* Location: ./system/application/views/web_apps/Annotation_editor.js */
