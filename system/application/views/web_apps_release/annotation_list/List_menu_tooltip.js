@@ -85,13 +85,16 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         var _trigger_padding_left = $.strip_unit(_trigger.css('padding-left'));
         var _trigger_padding_right = $.strip_unit(_trigger.css('padding-right'));
         _trigger_width = _trigger_width + _trigger_padding_left + _trigger_padding_right;
-       
+		
        
         //確認tip不要超過畫面左方
         var _tooltip_left = _trigger_left - _tooltip_width;
         
         if (_tooltip_left < 0) {
-            _tooltip_left = _trigger_width + 20;
+			// @20130602 Pudding Chen
+			// 不知道為什麼+20之後會出問題，現在先關掉
+            //_tooltip_left = _trigger_width + 20;
+			_tooltip_left = _trigger_width;
             
             var _tooltip_right = _tooltip_left + _tooltip_width;
             
