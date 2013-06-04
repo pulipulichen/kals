@@ -40,10 +40,13 @@
     padding-left: 5px;
     padding-right: 5px;
     background-color: white;
+	
+	clear:both;
 }
 
 .window-view-content .list-item-respond .list-item {
     padding-left: 2em;
+	clear:both;
 }
 
 .window-view-content .view-list-container {

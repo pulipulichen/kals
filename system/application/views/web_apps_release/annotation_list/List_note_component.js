@@ -226,9 +226,9 @@ List_note_component.prototype.set_note = function (_note) {
     if ($.is_null(_note)) {
         _note = this._item.get_data().note;
 		
-		if (this._show_fulltext === true) {
-			$.test_msg("List_note_component.set_note(), get_data", _note);
-		}
+		//if (this._show_fulltext === true) {
+		//	$.test_msg("List_note_component.set_note(), get_data", _note);
+		//}
     }
     
     if ($.is_null(_note)) {

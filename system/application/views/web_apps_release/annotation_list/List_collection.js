@@ -430,7 +430,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
 				
 				if (KALS_context.policy.allow_show_navigation() === false) {
 					var _user_name = KALS_context.user.get_name();
-					$.test_msg("setup_load_list", _param.user);
+					//$.test_msg("setup_load_list", _param.user);
 					
 					
 					if (_param.user.name === _user_name) {

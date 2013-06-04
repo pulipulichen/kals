@@ -273,10 +273,16 @@ List_menu.prototype.get_annotation_id = function () {
     return this._item.get_data().annotation_id;
 };
 
+/**
+ * 顯示討論視窗
+ * @param {function} _callback
+ */
 List_menu.prototype.view_thread = function (_callback) {
     if ($.isset(this._item))
     {
-        this._item.view_thread(_callback);
+		// @20130604 Pudding Chen
+		// 不知道為什麼關掉這串就會恢復正常
+        //this._item.view_thread(_callback);
         this.close();
     }   
     return this;

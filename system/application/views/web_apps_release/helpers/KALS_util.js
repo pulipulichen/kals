@@ -108,10 +108,10 @@ KALS_util.ajax_get = function (_config) {
         
         $.getJSON(_url, function (_data) {
 			
-			if (typeof(_data.KALS_language) == "undefined"
-				&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
+			//if (typeof(_data.KALS_language) == "undefined"
+			//	&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
 				$.test_msg('ajax_get from ' + _url + ' return data', _data);
-			}
+			//}
 			
 			
             if (typeof(_retry_timer) == 'undefined' || _retry_timer === null) {
