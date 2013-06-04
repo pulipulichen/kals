@@ -373,14 +373,19 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 	    });	
 	};
     
-    try {
-		_set_data();
-	}
-	catch (_e) {
-		setTimeout(function () {
+	var _loop = function () {
+		try {
 			_set_data();
-		}, 500);
-	}
+		}
+		catch (_e) {
+			setTimeout(function () {
+				_loop();
+			}, 500);
+		}
+	};
+	
+	
+	    
     
     return this;
 };

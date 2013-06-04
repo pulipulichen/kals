@@ -427,7 +427,27 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
             if (_i < _annotation_coll.length()) {
                 var _param = _annotation_coll.get(_i);
                 //var _list_item = _this.add_list_item(_param);
-                _this.add_list_item(_param);
+				
+				if (KALS_context.policy.allow_show_navigation() === false) {
+					var _user_name = KALS_context.user.get_name();
+					$.test_msg("setup_load_list", _param.user);
+					
+					
+					if (_param.user.name === _user_name) {
+						_this.add_list_item(_param);
+					}
+					else if (typeof(_data.total_count) !== "undefined") {
+						// @20130603 Pudding Chen
+						// 有個Bug，我必須要在這邊說清楚
+						// 當列表未顯示，卻又有超過數量的非自己標註時，數字上就會大於0，Bug就會出現
+						// 目前還沒有想法可以解決，先擺著
+						_data.total_count--;
+					}
+				}
+				else {
+					_this.add_list_item(_param);
+				}
+                
                 
                 setTimeout(function () {
                     _i++;

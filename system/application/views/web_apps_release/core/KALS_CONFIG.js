@@ -177,7 +177,7 @@ DEFAULT_KALS_CONFIG = {
 	 * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
 	 * 但是關閉之後，所有人又能看到別人的標註
 	 */
-	isolation_mode: true,
+	isolation_mode: false,
 	
     //----------------------------
     

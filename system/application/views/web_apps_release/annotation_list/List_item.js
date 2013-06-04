@@ -84,6 +84,10 @@ List_item.prototype._$create_ui = function () {
         _this.blur();
     }); 
     
+	_ui.click(function () {
+		_this.view_thread();
+	});
+	
     setTimeout(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         

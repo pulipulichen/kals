@@ -231,7 +231,7 @@ $lang['web_apps.list_collection.complete'] = '沒有其他標註了';
 $lang['web_apps.list_menu.delete'] = '刪除';
 $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
-$lang['web_apps.list_menu.view'] = '討論';
+$lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';

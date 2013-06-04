@@ -25,8 +25,10 @@ function Selection_manager(_selector) {
     //this.child('editor', new Selection_editor(_text));
     this.child('view', new Selection_view(_text));
     this.child('search', new Selection_search(_text));
+	
     this.child('my_basic', new Selection_my_manager(_text));
     this.child('my_custom', new Selection_my_custom_manager(_text));
+	
     
     this.child('recommend', new Selection_recommend(_text));
     this.child('navigation', new Selection_navigation_manager(_text));

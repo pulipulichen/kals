@@ -18,9 +18,11 @@ function Context_policy(){
     //{
         KALS_context.auth.add_listener(this);
     //}
+	this.set_attr("read", true);
+	this.set_attr("write", false);
+	this.set_attr("show_navigation", true);
 	
 	if (KALS_CONFIG.isolation_mode === true) {
-		//this.set_attr("read", false);
 		this.set_attr("show_navigation", false);
 	}
 }
@@ -41,7 +43,8 @@ Context_policy.prototype.writable = function () {
  * 是否允許顯示別人的標註
  */
 Context_policy.prototype.allow_show_navigation = function () {
-	var _allow_show = this.get_attr('show_navigation', false);
+	var _allow_show = this.get_attr('show_navigation', true);
+	//$.test_msg("policy show_navigation", _allow_show);
 	return _allow_show; 
 	
     //實驗中，預設是不顯示推薦標註

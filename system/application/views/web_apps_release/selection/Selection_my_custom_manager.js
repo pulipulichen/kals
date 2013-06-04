@@ -15,6 +15,13 @@ function Selection_my_custom_manager(_text) {
     KALS_user_interface.call(this);
     
     this._text = _text;
+	
+	var _this = this;
+	KALS_context.auth.add_listener(function (_auth) {
+		if (_auth.is_login() === false) {
+			_this.clear();
+		}
+	});
 }
 
 // Extend from KALS_user_interface
