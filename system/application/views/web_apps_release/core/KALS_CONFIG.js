@@ -188,6 +188,7 @@ DEFAULT_KALS_CONFIG = {
         autoGrow_maxWidth: false,
         extraPlugins: 'kals_maximize,youtube',
         toolbar: [
+			//最大化的時候顯示的工具列
             ['Maximize','Source','Preview','-'],
             ['Cut','Copy','Paste','PasteText','PasteFromWord'],
             ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
@@ -200,7 +201,9 @@ DEFAULT_KALS_CONFIG = {
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
-            ['Maximize','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+			
+			//最小化的時候顯示的工具列
+            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']	
         ],
         height: '50px',
         //width: '261px',

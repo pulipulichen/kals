@@ -106,7 +106,7 @@ Note_editor_ckeditor._setup_ckeditor = function () {
     };
     
     //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [standby ready]');
-    this._setup_timer = setTimeout(_setup, 1000);
+    this._setup_timer = setTimeout(_setup, 100);
     
     return this;
 };
@@ -388,6 +388,15 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 	    
     
     return this;
+};
+
+Note_editor_ckeditor.prototype.focus = function () {
+	var _ui = this.get_ui('.note-editor-textarea:first');
+	var _ckeditor = _ui.ckeditorGet();
+	//$.test_msg(_ckeditor);
+	_ckeditor.focus();
+	
+	return this;	
 };
 
 /* End of file Note_editor_ckeditor */

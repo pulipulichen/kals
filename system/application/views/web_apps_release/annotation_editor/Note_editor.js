@@ -127,6 +127,14 @@ Note_editor.prototype.notify_ready = function () {
     return this;
 };
 
+Note_editor.prototype.focus = function () {
+	var _ui = this.get_ui('.note-editor-textarea:first');
+	if (_ui.length > 0) {
+		_ui.focus();	
+	}
+	return this;
+};
+
 
 /* End of file Note_editor */
 /* Location: ./system/application/views/web_apps/Note_editor.js */

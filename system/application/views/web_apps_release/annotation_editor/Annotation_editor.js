@@ -702,6 +702,7 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
     var _container = this._container;
     var _loading = this._loading_component;
     
+	//進入讀取狀態
     if (_is_loading === true) {
         //_container.slideUp(function () {
         //    _loading.slideDown(_complete);
@@ -710,6 +711,7 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
             _loading.fadeIn(_complete);
         });
     }
+	//讀取完成
     else {
         //_loading.slideUp(function () {
         //    _container.slideDown(_complete);

@@ -272,6 +272,7 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
         
 		_parent.removeClass(_hide_editor_classname);
         this._toggle.removeClass(_hide_classname);
+		this.editor.note.focus();
         
         //$.test_msg('Editor_container.toggle_container() if true end', _display);
     }
