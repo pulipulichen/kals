@@ -217,6 +217,8 @@ $lang['web_apps.web_search'] = '網頁搜尋';
 
 $lang['web_apps.type_menu.custom_type_dialog.heading'] = '自訂標註類型';
 
+$lang['web_apps.note.ckeditor.edit_hint'] = '如果編輯器無法選取，請按兩下「原始碼」按鈕就可以正常運作。';
+
 /**
  * List_collection
  */

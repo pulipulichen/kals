@@ -160,3 +160,7 @@
 	border-bottom:0px !important;
 	border-top:0px !important;
 }
+
+.KALS.annotation-tool .enable-editor-hint {
+	display: none;
+}

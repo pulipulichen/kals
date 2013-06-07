@@ -2323,6 +2323,12 @@ jQuery.decodeURIComponent = function (_str) {
     return _result;
 };
 
+$.widget("ui.dialog", $.ui.dialog, {
+	_allowInteraction: function(event) {
+		return !!$(event.target).closest(".cke").length || this._super(event);
+	}
+});
+
 /**
  * 20130222 Pulipuli Chen
  * 不採用

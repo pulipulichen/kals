@@ -37,6 +37,7 @@ Note_editor_ckeditor.prototype._$create_ui = function () {
     _ui.addClass('ckeditor')
         .addClass('note-editor-ckeditor');
     _ui.find('textarea:first').show();
+	
     //$.test_msg('Note_editor_cheditor._$create_ui [stantby ready to call setup]');
     
     var _this = this;
@@ -70,6 +71,17 @@ Note_editor_ckeditor._setup_ckeditor = function () {
         
         _textareas.each(function(_index, _textarea) {
             var _ui = $(_textarea).find('textarea:first');
+			
+			var _hint_lang = new KALS_language_param(
+				'If editor could not edit, press "source" button twice to enable it.',
+				"note.ckeditor.edit_hint"
+				
+			);
+			var _hint = KALS_context.lang.create_listener(_hint_lang)
+				.addClass("enable-editor-hint")
+				.insertAfter(_ui);
+			
+			
             //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [each textarea]', [_ui.length, typeof(_ui.ckeditor)]);
             _ui.ckeditor(function () {
             
@@ -85,8 +97,12 @@ Note_editor_ckeditor._setup_ckeditor = function () {
                 
                 var _cke_editor = _editor_span.find('table.cke_editor:first');
                 var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
+				
             }, _this._ckeditor_config);
             
+			
+			
+			
             /*
             setTimeout(function () {
                 if ($(_textarea).children('span').length === 0) {
@@ -102,7 +118,6 @@ Note_editor_ckeditor._setup_ckeditor = function () {
            CKEDITOR.replace(_editor_id);
            */
         });
-        
     };
     
     //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [standby ready]');
@@ -173,7 +188,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
             
             var _cke_editor = _editor_span.find('table.cke_editor:first');
             var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');    
-            
+			
             /*
             var _toolboxs = $('.cke_toolbox');
             
@@ -209,6 +224,8 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
                 _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
             }
             */
+            
+			
             _this.notify_ready();
             
             //_ui.addClass(_had_setup_classname);
@@ -391,10 +408,10 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 };
 
 Note_editor_ckeditor.prototype.focus = function () {
-	var _ui = this.get_ui('.note-editor-textarea:first');
-	var _ckeditor = _ui.ckeditorGet();
+	//var _ui = this.get_ui('.note-editor-textarea:first');
+	//var _ckeditor = _ui.ckeditorGet();
 	//$.test_msg(_ckeditor);
-	_ckeditor.focus();
+	
 	
 	return this;	
 };
