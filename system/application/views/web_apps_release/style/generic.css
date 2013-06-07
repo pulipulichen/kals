@@ -62,12 +62,12 @@
 /* -------- */
 /* form */
 
-input.placeheld,
-textarea.placeheld {
+.KALS input.placeheld,
+.KALS textarea.placeheld {
     color: gray;
 } 
 
-.link {
+.KALS .link {
     text-decoration:underline;
     cursor: pointer;
 }

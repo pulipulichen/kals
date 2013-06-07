@@ -23,25 +23,73 @@ if (typeof($jquery_extends) == 'undefined') {
  * @param {Object} _test
  */
 jQuery.test_msg = function (_title, _test) {
+	
+	//return;
+	
+	// @20130607 Pudding Chen
+	// 加入原本的底層吧XD
+    
+    var _info_box = this('.KALS.info-box:first');
+	
+    if (_info_box.length == 0) {   
+        var _toggle = $('<div></div>')
+            .css('height', '15px')
+            .dblclick(function () {
+                _info_box.show();
+            })
+            .appendTo(this('body'));
+        
+         _info_box = this('<fieldset class="KALS info-box"><legend>Test Message Box</legend></fieldset>')
+            //.prependTo(this('body'));
+            .appendTo(this('body'));
+        
+        //if (location.href.toLowerCase().indexOf('homework') > -1)    
+        
+		_info_box.hide();
+        _info_box.dblclick(function () {
+            $(this).hide();
+        });
+    }
+	
     if (this.isset(_title) && this.is_null(_test)) {
         _test = _title;
         _title = null;
     }
     else if (this.is_null(_title) && this.is_null(_test)) {
         _test = '---------------';
+		this('<hr />').appendTo(_info_box);
         return;
     }
     
     if (this.is_object(_test)) {
         _test = '[Object: '+this.json_encode(_test)+']';
     }
+	
+	var _info_test = _test;
+	
+	if ($.starts_with(_info_test, "http")) {
+		_info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
+	}
+	
+    var _info = this('<pre>'+_info_test+'</pre>')
+		.addClass("info")
+        .appendTo(_info_box);
 
 	if (this.isset(_title)) {
 		console.log('[KALS]' + '[' + _title + '] ' + _test);
+		_info.prepend('<strong>' + _title + ': </strong>');
 	}
 	else {
 		console.log('[KALS] ' + _test);
 	}
+        
+    //加上時間
+    var _d = new Date();
+    var _time = $('<div></div>')
+		.addClass("time")
+        .html(_d.getHours() + ':' + _d.getMinutes() + ':' + _d.getSeconds())
+        .css('float', 'right')
+        .prependTo(_info);
 	
 	return this;
 };

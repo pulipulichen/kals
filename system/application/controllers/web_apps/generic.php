@@ -345,7 +345,8 @@ class generic extends Web_apps_controller {
             'annotation_editor',
             'annotation_view',
             'annotation_recommend',
-            'core'
+            'core',
+        	'toolkit'
         );
         /*
         foreach ($list AS $path)
