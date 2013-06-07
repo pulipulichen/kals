@@ -144,6 +144,8 @@
     font-family: 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, Helvetica, sans-serif;
     border-radius: 0 0 10px 10px;
     -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    -khtml-border-radius: 0 0 10px 10px;
     
     background: -moz-linear-gradient(#D6964A 0%, #D6964A 50% 
         ,  #D09042 71%, #CB842E 100%);
@@ -326,6 +328,8 @@
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     
     width: 1.5em;
     height: 1.5em;
@@ -345,6 +349,8 @@
     border: 3px solid black;
     -moz-border-radius: 8px 8px 0 0;
     -webkit-border-radius: 8px 8px 0 0;
+    border-radius: 8px 8px 0 0;
+    -khtml-border-radius: 8px 8px 0 0;
 }
  
 .notification-component .unread {
@@ -352,6 +358,8 @@
     height: 1em;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -khtml-border-radius: 4px;
     border: 1px solid white;
     float:right;
     

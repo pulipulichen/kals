@@ -54,7 +54,7 @@
 	background: rgba(0,0,0,0)!important;
 }
 
-.dialog-toolbar {
+.KALS.window .dialog-toolbar {
     
     -moz-user-select:none;
     cursor:default;
@@ -63,6 +63,8 @@
     
     -moz-border-radius: 8px !important;
     -webkit-border-radius: 8px !important;
+    border-radius: 8px !important;
+    -khtml-border-radius: 8px !important;
     
     background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
         , #918978 51%, #8C8473 100%);
@@ -88,6 +90,16 @@
     line-height: 36px;
     height: 36px;
 }
+
+.KALS.window .dialog-toolbar .button.dialog-option {
+	
+	/**
+	 * @copyright 20130608 Pudding Chen
+	 */
+    line-height: 30px;
+    height: 30px;
+}
+
 .dialog-toolbar tr td {
 	padding:0px 0px !important;
 	border:0px !important;
@@ -142,7 +154,7 @@
     margin-right: 3px;
 }
 
-.button.dialog-option {
+.KALS.window .button.dialog-option {
     cursor:pointer;
     margin: 0;
     
@@ -172,6 +184,8 @@
     
     -moz-border-radius: 8px !important;
     -webkit-border-radius: 8px !important;
+    border-radius: 8px !important;
+    -khtml-border-radius: 8px !important;
     min-height: 33px;
 }
 

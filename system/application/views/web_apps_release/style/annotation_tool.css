@@ -9,6 +9,8 @@
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     
     -webkit-box-shadow: #6F5A40 0px 3px 5px;
     -moz-box-shadow: #A29584 0px 5px 5px;
@@ -64,6 +66,8 @@
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     
     background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
         , #918978 51%, #8C8473 100%);
@@ -89,6 +93,8 @@
 .annotation-tool .annotation-tool-header .dialog-option.last {
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
+    border-radius: 0 8px 8px 0;
+    -khtml-border-radius: 0 8px 8px 0;
 }
 
 .annotation-tool .annotation-tool-header .dialog-option.hover {
@@ -122,6 +128,8 @@
     
     -moz-border-radius: 0 0 8px 8px;
     -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px;
+    -khtml-border-radius: 0 0 8px 8px;
 }
 
 .annotation-tool.not-login .annotation-tool-list {

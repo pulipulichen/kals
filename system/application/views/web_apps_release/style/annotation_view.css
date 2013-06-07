@@ -1,5 +1,5 @@
 .view-anchor-text-component {
-    background-color: #white;
+    background-color: white;
 }
 
 .view-anchor-text-component .text-container {
@@ -13,6 +13,8 @@
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     -moz-box-shadow: 0 0 20px #666666;
     -webkit-box-shadow: 0 0 20px #666666;
 }

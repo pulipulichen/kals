@@ -1680,11 +1680,23 @@ jQuery.css_border_radius = {
         '-moz-border-radius-bottomleft' ,
         '-moz-border-radius-bottomright'
     ],
-    webkit: [
+    general: [
         'border-top-left-radius' ,
         'border-top-right-radius' ,
         'border-bottom-left-radius' ,
         'border-bottom-right-radius'
+    ],
+    khtml: [
+        '-khtml-border-radius-topleft' ,
+        '-khtml-border-radius-topright' , 
+        '-khtml-border-radius-bottomleft' ,
+        '-khtml-border-radius-bottomright'
+    ],
+    webkit: [
+        '-webkit-border-radius-topleft' ,
+        '-webkit-border-radius-topright' , 
+        '-webkit-border-radius-bottomleft' ,
+        '-webkit-border-radius-bottomright'
     ]
 };
 
@@ -1697,7 +1709,9 @@ jQuery.css_finger_friendly = {
         {css: 'border-width', expect: '3px'},
         {css: 'padding', expect: '5px'},
         {css: jQuery.css_border_radius.moz, expect: '10px'},
-        {css: jQuery.css_border_radius.webkit, expect: '10px 10px'}
+        {css: jQuery.css_border_radius.webkit, expect: '10px 10px'},
+        {css: jQuery.css_border_radius.khtml, expect: '10px 10px'},
+        {css: jQuery.css_border_radius.general, expect: '10px 10px'}
     ]
 };
 

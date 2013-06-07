@@ -23,6 +23,8 @@
     
     -moz-border-radius: 8px !important;
     -webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
     
     display: block;
     outline: 0 none;

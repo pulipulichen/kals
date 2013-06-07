@@ -73,11 +73,15 @@
 .kals-modal .editor-container .toggle.hide {
     border-radius: 8px;
     -moz-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    -webkit-border-radius: 8px;
 }
 
 .kals-modal .editor-container .toggle.top {
     border-radius: 8px 8px 0 0;
     -moz-border-radius: 8px 8px 0 0;
+    -webkit-border-radius: 8px 8px 0 0;
+    -khtml-border-radius: 8px 8px 0 0;
     
     border-top-style: solid;
     border-bottom-style: none;
@@ -271,6 +275,8 @@
     width: 100%;
     border-radius: 0px;
     -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -khtml-border-radius: 0px;
 }
 
 .kals-modal .type-component .type-menu .type-option.hover {
@@ -285,6 +291,8 @@
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
     margin: 0;
     height:18px;
 }
@@ -292,6 +300,8 @@
 .kals-modal .type-component .type-option.custom  .type-option {
     border-radius: 0px;
     -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -khtml-border-radius: 0px;
     border-style: none;
     padding: 0;
 }
@@ -398,6 +408,8 @@
 .kals-modal .editor-respond-to {
     border-radius: 5px;
     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
     background-color: #8C8473;
     color: white;
     border: 1px solid #494437;

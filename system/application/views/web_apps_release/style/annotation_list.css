@@ -132,6 +132,8 @@
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
     margin: 0;
     height:18px;
     padding: 1px 5px !important;
@@ -197,19 +199,19 @@
 /**
  * @section List_menu
  */
-.list-item .list-menu {
+.KALS.annotation-tool .list-item .list-menu {
     display: none;
     padding: 0.2em 0;
 }
 
-.tooltip.list-menu {
+.KALS.annotation-tool .tooltip.list-menu {
     text-align:right;
     word-break:keep-all;
     /*padding: 0 0.5em;*/
     min-height: 0;
     /*padding: 0.2em;*/
 }
-.list-menu-tooltip {
+.KALS.annotation-tool .list-menu-tooltip {
     background:#847D63 !important;
     color: #FFFFFF;
     /*border: 1px solid black;*/
@@ -217,24 +219,26 @@
     
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
+    border-radius: 0px;
+    -khtml-border-radius: 0px;
     /*border: 1px solid #515151;*/
     padding: 0;
 	
 }
-.list-menu-tooltip tr{
+.KALS.annotation-tool .list-menu-tooltip tr{
 	background: rgba(0,0,0,0)!important;
 }
 
-.list-menu-block {
+.KALS.annotation-tool .list-menu-block {
     text-align:right;
 }
 
-.list-menu-block table {
+.KALS.annotation-tool .list-menu-block table {
     display: inline;
 }
 
 
-.list-item.menu-style-block .list-menu-block  {
+.KALS.annotation-tool .list-item.menu-style-block .list-menu-block  {
     display: block;
 }
 
@@ -245,7 +249,7 @@
 }
 */
 
-.list-menu .list-menu-option {
+.KALS.annotation-tool .list-menu .list-menu-option {
     cursor: pointer;
     padding: 0.2em 0.5em;
     margin-left: 0.2em;
@@ -254,34 +258,34 @@
     border-left: 2px groove gray;
 }
 
-.list-menu.list-menu-block .list-menu-option {
+.KALS.annotation-tool .list-menu.list-menu-block .list-menu-option {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-.list-menu-tooltip .list-menu-option.hover {
+.KALS.annotation-tool .list-menu-tooltip .list-menu-option.hover {
     background-color: #FFF;
     color: #8C8473;
 }
 
-.list-menu .list-timestamp-component {
+.KALS.annotation-tool .list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
 }
 
-.list-menu.not-login .list-menu-option {
+.KALS.annotation-tool .list-menu.not-login .list-menu-option {
     display: none;
 }
 
-.list-menu.not-login .list-menu-option.view {
+.KALS.annotation-tool .list-menu.not-login .list-menu-option.view {
     display: table-cell;
 }
 
-.list-menu.is-my .list-menu-option.respond {
+.KALS.annotation-tool .list-menu.is-my .list-menu-option.respond {
     display: none;
 }
 
-.KALS .list-menu .list-menu-option.edit,
-.KALS .list-menu .list-menu-option.delete {
+.KALS.annotation-tool .KALS .list-menu .list-menu-option.edit,
+.KALS.annotation-tool .KALS .list-menu .list-menu-option.delete {
     display: none;
 }
 
