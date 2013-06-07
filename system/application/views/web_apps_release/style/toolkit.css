@@ -17,13 +17,13 @@
 
 .KALS.info-box .info {
 	display:block;border:1px solid #CCCCCC;padding: 5px;overflow: auto;max-width: 100%;width: 800px;word-wrap: break-word;
+	max-height: 250px;
 }
 
 .KALS.info-box .info .time {
 	background-color: #666;
 	color: white;
 	padding: 0 5px;
-	min-height: 250px;
 }
 
 /* End of file toolkit.css */

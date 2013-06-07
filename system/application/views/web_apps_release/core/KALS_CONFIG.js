@@ -66,10 +66,10 @@ DEFAULT_KALS_CONFIG = {
      * 顯示其他人的標註
      * @version 20111106 Pudding Chen
      *     2009年的舊稱呼是「navigation_annotation」，2011年改成「anchor_navigation_type」
-     * @type {string} = "all" | "recommend" | "disable" | null 預設使用all
+     * @type {string} = "all" | "recommend" | "none" | null 預設使用all
      *     "all": 顯示所有標註
      *     "recommend": 顯示推薦標註。但並不準確，通常系統找不出推薦的標註。
-     *     "disable" | null：不顯示標註
+     *     "none" | null：不顯示標註
      */
     anchor_navigation_type: "all",
     

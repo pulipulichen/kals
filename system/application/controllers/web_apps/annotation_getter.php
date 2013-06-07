@@ -455,6 +455,11 @@ class Annotation_getter extends Web_apps_controller {
         $output_data = array();
         return $this->_display_jsonp($output_data, $callback);
     }
+    
+    function navigation_disable($json = NULL, $callback = NULL)
+    {
+        return $this->navigation_none($json, $callback);
+    }
 
     /**
      * 判斷推薦標註的等級，目前分成4級
