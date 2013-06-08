@@ -161,6 +161,14 @@
 	border-top:0px !important;
 }
 
+/**
+ * @section {editor-hint}
+ */
+.KALS .enable-editor-hint {
+	font-size: smaller;
+	text-align:left;
+	
+}
 .KALS.annotation-tool .enable-editor-hint {
 	display: none;
 }

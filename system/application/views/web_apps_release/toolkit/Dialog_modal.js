@@ -25,6 +25,7 @@ Dialog_modal.prototype._$create_ui = function () {
     var _ui = this._$create_ui_prototype();
     
     _ui.addClass('dialog-modal')
+		.addClass('KALS').addClass('window')
         .html('<table align="center" class="dialog-table" height="100%" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
         + '<tr class="dialog-toolbar-tr"><th class="dialog-toolbar" valign="middle">'
             + '<table class="dialog-toolbar-table" width="100%" align="center" cellpadding="0" cellspacing="0" border="0"><tbody><tr>'

@@ -16,7 +16,17 @@ function Context_policy(){
     
     //if ($.object_isset('KALS_context.auth.add_listener()'))
     //{
-        KALS_context.auth.add_listener(this);
+        //KALS_context.auth.add_listener(this);
+		var _this = this;
+		KALS_context.auth.add_listener(function (_auth) {
+			//$.test_msg("Context_policy", _auth._data.policy);
+			if (_auth.is_login()) {
+				_this.set_attr(_auth.get_data().policy);
+			}
+			else {
+				_this.reset();
+			}
+		});
     //}
 	this.set_attr("read", true);
 	this.set_attr("write", false);
@@ -58,10 +68,16 @@ Context_policy.prototype.get_navigation_data = function () {
     return this.get_attr('navigation_data');
 };
 
+/**
+ * 我的標註的範圍資料
+ */
 Context_policy.prototype.get_my_basic = function () {
     return this.get_attr('my_basic');
 };
 
+/**
+ * 我的自訂標註的範圍資料
+ */
 Context_policy.prototype.get_my_custom = function () {
     return this.get_attr('my_custom');
 };

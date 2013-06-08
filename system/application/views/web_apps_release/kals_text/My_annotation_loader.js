@@ -86,8 +86,19 @@ My_annotation_loader.prototype.initialize = function () {
 
 My_annotation_loader.prototype.reload = function (_data, _callback) {
     var _this = this;
-    var _basic_data = _data.basic;
-    var _custom_data = _data.custom;
+	var _basic_data, _custom_data;
+	
+	//$.test_msg("My_annotation_loader.reload()", _data);
+	
+	if (typeof(_data) != "undefined") {
+		if (typeof(_data.my_basic) != "undefined") {
+			_basic_data = _data.my_basic;	
+		}
+		if (typeof(_data.my_custom) != "undefined") {
+			_custom_data = _data.my_custom;	
+		}
+	}
+	
     this.basic.reload(_basic_data, function () {
         _this.custom.reload(_custom_data, _callback);
     });

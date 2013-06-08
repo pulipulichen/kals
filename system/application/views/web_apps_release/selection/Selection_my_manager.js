@@ -22,12 +22,6 @@ function Selection_my_manager(_text) {
     this.child('summary', new Selection_my_summary(_text));
     this.child('custom', new Selection_my_custom(_text));
     
-	var _this = this;
-	KALS_context.auth.add_listener(function (_auth) {
-		if (_auth.is_login() === false) {
-			_this.clear();
-		}
-	});
 }
 
 // Extend from KALS_user_interface

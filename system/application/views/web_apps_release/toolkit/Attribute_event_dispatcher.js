@@ -31,9 +31,17 @@ Attribute_event_dispatcher.prototype._attributes = {};
  */
 Attribute_event_dispatcher.prototype.set_attr = function (_type, _value) {
     
-    this._attributes[_type] = _value;
-    //$.test_msg('Attr .set_attr', _type, _value);
-    return this.notify_listeners(_type, _value);
+	if ($.is_string(_type)) {
+		this._attributes[_type] = _value;
+	    //$.test_msg('Attr .set_attr', _type, _value);
+	    return this.notify_listeners(_type, _value);
+	}
+	else if ($.is_object(_type) && _value === undefined) {
+		for (var _t in _type) {
+			this.set_attr(_t, _type[_t]);
+		}
+		return this;
+	}
 };
 
 /**

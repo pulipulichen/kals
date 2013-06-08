@@ -13,7 +13,7 @@
 function My_basic_annotation_loader() {
     
     Annotation_scope_loader.call(this);
-    
+	
 }
 
 My_basic_annotation_loader.prototype = new Annotation_scope_loader();
@@ -41,6 +41,8 @@ My_basic_annotation_loader.prototype._$load_url = 'annotation_getter/my_basic';
  */
 My_basic_annotation_loader.prototype.load_annotation = function (_data, _callback) {
     
+	//$.test_msg("My_basic_annotation_loaer", _data);
+	
     if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
         _data = null;
@@ -113,7 +115,8 @@ My_basic_annotation_loader.prototype.initialize = function () {
                 });
             }
             else {
-                //$.test_msg('My_annotation_loader.init()');
+                $.test_msg('My_basic_annotation_loader', "reset()");
+				
                 //_this.stop_loader();
                 //_this._selection.clear();
                 
@@ -124,6 +127,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
             }
         });
     }
+	return this;
 };
 
 My_basic_annotation_loader.prototype._$exception_handle = function (_data) {
