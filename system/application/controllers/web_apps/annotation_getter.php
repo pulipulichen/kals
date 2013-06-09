@@ -454,6 +454,10 @@ class Annotation_getter extends Web_apps_controller {
      */
     function navigation_none($json = NULL, $callback = NULL)
     {
+    	if (!isset($callback)) {
+            $callback = $json;
+        }
+    	
         $output_data = array();
         return $this->_display_jsonp($output_data, $callback);
     }

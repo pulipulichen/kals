@@ -155,8 +155,10 @@ List_menu.prototype._create_edit_ui = function () {
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
+    _ui.click(function (_e) {
         _this.edit_annotation();
+		_e.preventDefault();
+		return false;
     });
     
     _ui.setup_hover();
@@ -178,8 +180,10 @@ List_menu.prototype._create_delete_ui = function () {
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
+    _ui.click(function (_e) {
         _this.delete_annotation();
+		_e.preventDefault();
+		return false;
     });
     
     _ui.setup_hover();

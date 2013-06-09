@@ -20,12 +20,18 @@ function Context_policy(){
 		var _this = this;
 		KALS_context.auth.add_listener(function (_auth) {
 			//$.test_msg("Context_policy", _auth._data.policy);
-			if (_auth.is_login()) {
-				_this.set_attr(_auth.get_data().policy);
+			if (typeof (_auth.get_data().policy) != "undefined") {
+				if (_auth.is_login()) {
+					_this.set_attr(_auth.get_data().policy);
+				}
+				else {
+					if (typeof(_auth.get_data().navigation_data) != "undefined") {
+						_this.set_attr("navigation_data", _auth.get_data().policy.navigation_data);
+					}
+					_this.reset();
+				}	
 			}
-			else {
-				_this.reset();
-			}
+			
 		});
     //}
 	
@@ -101,15 +107,14 @@ Context_policy.prototype.reset = function () {
 	
 	if (KALS_CONFIG.isolation_mode === true) {
 		this.set_attr("show_navigation", false);
-		this.set_attr("write", false);
 		this.set_attr("read", KALS_context.auth.is_login());
-		return;
+		return this;
 	}
 	
 	this.set_attr("read", true);
+	this.set_attr("write", false);
 	this.set_attr("show_navigation", true);
-	
-	
+	return this;
 };
 
 /* End of file Context_policy */

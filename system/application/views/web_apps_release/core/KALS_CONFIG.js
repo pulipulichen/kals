@@ -167,8 +167,8 @@ DEFAULT_KALS_CONFIG = {
 	 * 
 	 * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
 	 */
-	//web_search_url: "http://www.google.com/search?q={query}",
-	web_search_url: "disable",
+	web_search_url: "http://www.google.com/search?q={query}",
+	//web_search_url: "disable",
 	
 	/**
 	 * 獨立模式

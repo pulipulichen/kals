@@ -14,7 +14,10 @@ function Navigation_loader() {
     
     Annotation_scope_loader.call(this);
     
-    this._$load_url = this._$load_url + KALS_CONFIG.anchor_navigation_type;
+	if (KALS_CONFIG.anchor_navigation_type == "disable") {
+		KALS_CONFIG.anchor_navigation_type = "none";
+	}
+	this._$load_url = this._$load_url + KALS_CONFIG.anchor_navigation_type;
 }
 
 Navigation_loader.prototype = new Annotation_scope_loader();
@@ -86,7 +89,7 @@ Navigation_loader.prototype.initialize = function () {
 		var _setup = setTimeout(function () {
             
 			var _policy = KALS_context.policy;
-            //$.test_msg('Navigation_loader.initialize()', _policy.allow_show_navigation());
+            $.test_msg('Navigation_loader.initialize()', [_policy.allow_show_navigation(), _policy.get_navigation_data()]);
             if (_policy.allow_show_navigation() === false) {
                 _this.reset();
                 return;
