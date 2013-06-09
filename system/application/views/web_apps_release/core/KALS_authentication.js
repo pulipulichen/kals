@@ -222,6 +222,10 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
             else {
                 _this._is_login = true;
                 
+				if (KALS_CONFIG.isolation_mode) {
+					KALS_context.policy.set_attr("read", true);
+				}
+				
                 setTimeout(function () {
                     if ($.is_function(_callback)) {
 						_callback(_this, _data);
@@ -400,6 +404,10 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
             var _auth_data = _this.reset_auth_data();
             
             _this._is_login = false;
+			
+			if (KALS_CONFIG.isolation_mode) {
+				KALS_context.policy.set_attr("read", false);
+			}
             
             setTimeout(function () {
                 if ($.is_function(_callback)) {
@@ -494,6 +502,13 @@ KALS_authentication.prototype.check_login = function (_callback) {
                 _this._is_login = false;
             }
             
+			if (KALS_CONFIG.isolation_mode) {
+				
+				//$.test_msg("auth.check_login()", _this._is_login);
+				
+				KALS_context.policy.set_attr("read", _this._is_login);
+			}
+			
             //$.test_msg('auth check_login()', _data);
             
             if ($.is_function(_callback)) {

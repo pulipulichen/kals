@@ -117,7 +117,7 @@
 /**
  * 如果是我的標註，則不顯示like
  */
-.list-header-component.is-my .list-like-component .icon-component {
+.KALS .list-header-component.is-my .list-like-component .icon-component {
     display: none;
 }
 /*
@@ -128,7 +128,7 @@
     background-repeat:no-repeat;
 }
 */
-.list-header-component .type-option
+.KALS .list-header-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -141,9 +141,9 @@
     cursor:default;
 }
 
-.list-header-component .id-component {
+.KALS .list-header-component .id-component {
     float:right;
-    color: gray;
+    color: #CCC;
     font-size: smaller;
     margin-left: 5px;
 }
@@ -151,18 +151,18 @@
 /**
  * @section List_like_component
  */
-.list-like-component {
+.KALS .list-like-component {
     cursor: pointer;
     float:right;
 }
 
-.list-like-component .count-component {
+.KALS .list-like-component .count-component {
     font-size:smaller;
     color: #808080;
     float:right;
 }
 
-.list-like-component .icon-component {
+.KALS .list-like-component .icon-component {
     /*height:24px;
     width:24px;
     */ 
@@ -174,7 +174,7 @@
     background-position:center;
     background-repeat:no-repeat;
 }
-.list-like-component.hide .icon-component {
+.KALS .list-like-component.hide .icon-component {
     /*visibility:hidden;*/
     display: none;
 }
@@ -225,20 +225,20 @@
     padding: 0;
 	
 }
-.KALS.annotation-tool .list-menu-tooltip tr{
+.KALS .list-menu-tooltip tr{
 	background: rgba(0,0,0,0)!important;
 }
 
-.KALS.annotation-tool .list-menu-block {
+.KALS .list-menu-block {
     text-align:right;
 }
 
-.KALS.annotation-tool .list-menu-block table {
+.KALS .list-menu-block table {
     display: inline;
 }
 
 
-.KALS.annotation-tool .list-item.menu-style-block .list-menu-block  {
+.KALS .list-item.menu-style-block .list-menu-block  {
     display: block;
 }
 
@@ -249,7 +249,8 @@
 }
 */
 
-.KALS.annotation-tool .list-menu .list-menu-option {
+.KALS .list-menu .list-menu-option,
+.KALS .list-menu-option {
     cursor: pointer;
     padding: 0.2em 0.5em;
     margin-left: 0.2em;
@@ -258,37 +259,40 @@
     border-left: 2px groove gray;
 }
 
-.KALS.annotation-tool .list-menu.list-menu-block .list-menu-option {
+.KALS .list-menu.list-menu-block .list-menu-option {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-.KALS.annotation-tool .list-menu-tooltip .list-menu-option.hover {
+.KALS .list-menu-tooltip .list-menu-option.hover {
     background-color: #FFF;
     color: #8C8473;
 }
 
-.KALS.annotation-tool .list-menu .list-timestamp-component {
+.KALS .list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
 }
 
-.KALS.annotation-tool .list-menu.not-login .list-menu-option {
+.KALS .list-menu.not-login .list-menu-option {
     display: none;
 }
 
-.KALS.annotation-tool .list-menu.not-login .list-menu-option.view {
+.KALS .list-menu.not-login .list-menu-option.view {
     display: table-cell;
 }
 
-.KALS.annotation-tool .list-menu.is-my .list-menu-option.respond {
+.KALS .list-menu.is-my .list-menu-option.respond {
     display: none;
 }
 
-.KALS.annotation-tool .KALS .list-menu .list-menu-option.edit,
-.KALS.annotation-tool .KALS .list-menu .list-menu-option.delete {
+.KALS.list-menu .list-menu-option.edit,
+.KALS .list-menu .list-menu-option.delete {
     display: none;
 }
 
+/**
+ * 只有在view當中不需要出現選擇的樣子
+ */
 .KALS.window .list-menu .list-menu-option.select {
     display: none;
 }

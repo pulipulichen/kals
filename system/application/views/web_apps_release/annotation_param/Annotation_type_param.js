@@ -11,7 +11,6 @@
  * @extends {KALS_user_interface}
  */
 function Annotation_type_param(_param) {
-
     if ($.isset(_param)) {
         return this.set(_param);
     }
@@ -96,6 +95,10 @@ Annotation_type_param.prototype._is_predefined_annotation_type = true;
 
 // ---------------------------------------------------------------
 
+/**
+ * 設定標註類型
+ * @param {Object} _param
+ */
 Annotation_type_param.prototype.set = function (_param) {
     
     var _id = Annotation_type_param.filter_basic_id(_param);
@@ -122,10 +125,13 @@ Annotation_type_param.prototype.set = function (_param) {
     return this;
 };
 
+/**
+ * 等同於this.set()的功能
+ * @param {Object} _param
+ */
 Annotation_type_param.prototype.set_type = function (_param) {
     return this.set(_param);
 };
-
 
 Annotation_type_param.prototype.reset_custom_name = function () {
     this.custom_name = null;
@@ -369,6 +375,15 @@ Annotation_type_param.prototype.set_hint = function(_hint) {
  * @return {string}
  */
 Annotation_type_param.prototype.get_hint = function () {
+	if ($.is_null(this._hint)) {
+		var _type = this.get_type_name();
+		var _lang = new KALS_language_param(
+                '',
+                'annotation.type.' + _type + '.hint'
+        );
+		var _hint = KALS_context.lang.line(_lang);
+		this._hint = _hint;
+	}
     return this._hint;
 };
 

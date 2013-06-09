@@ -14,6 +14,15 @@
 function Selection_select(_text) {
     
     Selection.call(this, _text);
+	if (KALS_context.hash.has_field('select')) {
+		this._setted_hash = true;
+	}
+	
+	var _this = this;
+	KALS_context.policy.add_attr_listener('read', function (_policy) {
+        //$.test_msg('Selection_select()', _policy.readable());
+        _this._selectable = _policy.readable();
+    }, true);
 }
 
 Selection_select.prototype = new Selection();
@@ -32,12 +41,16 @@ Selection_select.prototype._$login_clear = true;
 
 Selection_select.prototype.auto_cancel_wait = 10000;
 
+Selection_select.prototype._selectable = true;
+
 /**
  * 設定選取
  * @param {jQuery} _word
  */
 Selection_select.prototype.set_select = function (_word) {
-    if (KALS_context.policy.readable() === false) {
+	//$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
+    if (this._selectable === false) {
+		KALS_context.hash.delete_field('select');
 		return this;
 	}
     
@@ -110,6 +123,7 @@ Selection_select.prototype.cancel_select = function () {
     this._select_from = null;
     this._select_from_word = null;
     this._setted_hash = false;
+	KALS_context.hash.delete_field('select');
     
     return this;
 };

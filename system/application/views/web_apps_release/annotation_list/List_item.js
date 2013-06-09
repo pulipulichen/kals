@@ -84,9 +84,13 @@ List_item.prototype._$create_ui = function () {
         _this.blur();
     }); 
     
-	_ui.click(function () {
-		_this.view_thread();
-	});
+	// @20130609 Pudding Chen
+	// 只有在不顯示全文的情況下，按下內容才會顯示thread
+	if (this._note_show_fulltext === false) {
+		_ui.click(function () {
+			_this.view_thread();
+		});
+	}	
 	
     setTimeout(function() {
         //$.test_msg('List_item._$create_ui()', _config);

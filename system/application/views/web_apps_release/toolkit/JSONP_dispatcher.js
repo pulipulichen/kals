@@ -97,7 +97,6 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
         }; 
         
     }
-        
     
     KALS_util.ajax_get(_config);
     return this;

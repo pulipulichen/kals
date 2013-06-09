@@ -28,24 +28,27 @@ function Context_policy(){
 			}
 		});
     //}
-	this.set_attr("read", true);
-	this.set_attr("write", false);
-	this.set_attr("show_navigation", true);
 	
-	if (KALS_CONFIG.isolation_mode === true) {
-		this.set_attr("show_navigation", false);
-	}
+	_this.reset();
 }
 
 Context_policy.prototype = new Attribute_event_dispatcher();
 
 Context_policy.prototype._$data_key = 'policy';
 
-Context_policy.prototype.readable = function () {
+Context_policy.prototype.readable = function () {		
+	if (KALS_CONFIG.isolation_mode === true) {
+		//$.test_msg("policy.readable()", this.get_attr('read'));
+		return this.get_attr('read', false);
+	}
     return this.get_attr('read', true);
 };
 
 Context_policy.prototype.writable = function () {
+	if (KALS_CONFIG.isolation_mode === true 
+		&& KALS_context.auth.is_login() === false) {
+			return false;
+		}
     return this.get_attr('write', false);
 };
 
@@ -92,6 +95,21 @@ Context_policy.prototype.set_writable = function (_boolean) {
 
 Context_policy.prototype.set_show_navigation = function (_boolean) {
     return this.set_attr('show_navigation', _boolean);
+};
+
+Context_policy.prototype.reset = function () {
+	
+	if (KALS_CONFIG.isolation_mode === true) {
+		this.set_attr("show_navigation", false);
+		this.set_attr("write", false);
+		this.set_attr("read", KALS_context.auth.is_login());
+		return;
+	}
+	
+	this.set_attr("read", true);
+	this.set_attr("show_navigation", true);
+	
+	
 };
 
 /* End of file Context_policy */

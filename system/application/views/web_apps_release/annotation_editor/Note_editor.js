@@ -23,6 +23,9 @@ function Note_editor(_editor) {
     }
 }
 
+/**
+ * 繼承自Event_dispatcher
+ */
 Note_editor.prototype = new Event_dispatcher();
 
 /**

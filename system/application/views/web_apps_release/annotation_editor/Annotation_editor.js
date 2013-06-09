@@ -493,6 +493,14 @@ Annotation_editor.prototype._$create_ui = function () {
     var _submit = this._create_submit_button()
         .appendTo(_container.find('th.right:first'));
     
+	// --------
+	// 第二列
+	
+	this._setup_type_hint();
+	
+	// --------
+	// 第三列
+	
     var _respond_container = this._create_respond_container()
         .appendTo(_container.find('td.respond:first'));
     
@@ -531,6 +539,7 @@ Annotation_editor.prototype._create_container = function () {
                 + '<th class="left">&nbsp;</th>'
                 + '<th class="right">&nbsp;</th>'
             + '</tr>'
+			+ '<tr><td class="annotation-type-hint" colspan="2"></td></tr>'
             + '<tr><td class="respond" colspan="2"></td></tr>'
             + '<tr><td class="note" colspan="2"></td></tr>'
             + '</tbody></table>')
@@ -855,6 +864,36 @@ Annotation_editor.prototype._setup_policy = function() {
  * @type {Web_search_component}
  */
 Annotation_editor.prototype.web_search = null;
+
+// --------
+// Annotation type hint
+// @copyright 20130609 Pudding Chen 
+// --------
+/**
+ * 設定標註類型的說明
+ */
+Annotation_editor.prototype._setup_type_hint = function () {
+	
+	var _type_hint = this._container.find("td.annotation-type-hint:first");
+	
+	this.type.add_listener(function (_type) {
+		
+		//$.test_msg("Annotation_editor._setup_type_hint()", _type.get_hint());
+		
+		var _hint = _type.get_hint();
+		if ($.is_null(_hint)
+			|| typeof(_hint) == "undefined"
+			|| _hint === "") {
+			_type_hint.hide();
+		}
+		else {
+			_type_hint.show();
+			_type_hint.html(_hint);
+		}
+	});
+	
+	return this;
+};
 
 /* End of file Annotation_editor */
 /* Location: ./system/application/views/web_apps/Annotation_editor.js */

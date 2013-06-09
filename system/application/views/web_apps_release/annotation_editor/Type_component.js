@@ -211,6 +211,9 @@ Type_component.prototype.set_type = function (_type, _is_manual) {
     return this.notify_change();
 };
 
+/**
+ * 如果標註類型有所改變，則通知別人
+ */
 Type_component.prototype.notify_change = function () {
     
     //通知監聽者
@@ -220,6 +223,7 @@ Type_component.prototype.notify_change = function () {
 };
 
 /**
+ * 取得標註類型
  * @type {Annotation_type_param}
  */
 Type_component.prototype.get_type = function () {
@@ -236,7 +240,19 @@ Type_component.prototype.get_type = function () {
     }    
 };
 
+/**
+ * 取得標註類型的說明
+ * @type {string}
+ */
+Type_component.prototype.get_hint = function () {
+	var _type = this.get_type();
+	return _type.get_hint();
+};
 
+/**
+ * 取得預設的標註類型
+ * @type {Annotation_type_param}
+ */
 Type_component.prototype.get_default_type = function () {
     return this._default_type;
 };

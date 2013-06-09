@@ -115,7 +115,7 @@ My_basic_annotation_loader.prototype.initialize = function () {
                 });
             }
             else {
-                $.test_msg('My_basic_annotation_loader', "reset()");
+                //$.test_msg('My_basic_annotation_loader', "reset()");
 				
                 //_this.stop_loader();
                 //_this._selection.clear();

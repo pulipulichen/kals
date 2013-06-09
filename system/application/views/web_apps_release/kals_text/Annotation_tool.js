@@ -15,7 +15,6 @@ function Annotation_tool(_selector) {
     
     Overlay_modal.call(this);
     
-    
     if ($.isset(_selector)) {
         this._text = _selector;
         //this.child('list', new Topic_list);
