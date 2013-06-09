@@ -367,22 +367,35 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 };
 */
 
+/**
+ * 設定CKedtior中的文字
+ * 
+ * CKeditor的設定方式比較特別，請小心喔
+ * @param {String} _text
+ */
 Note_editor_ckeditor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
     
     if ($.is_null(_text)) {
-		_text = '';
+		_text = '12212';
 	}
     
+	/*
     if (_text == _setted_text) {
 		return this;
 	}
+	*/
     
+	//$.test_msg("Note_editor_ckeditor.set_text()", _text);
+	
     var _ui = this.get_ui('.note-editor-textarea:first');
     $.save_scroll_position();
 	
+	
+	//為了避免CKeditor還沒初始化前就設定，我們必須等它一下。
 	var _set_data = function () {
 		_ui.ckeditorGet().setData(_text, function () {
+			//$.test_msg("Note_editor_ckeditor.set_text() ok", _text);
 	        setTimeout(function () {
 	            $.load_scroll_position();    
 	        }, 0);
@@ -401,8 +414,7 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 		}
 	};
 	
-	
-	    
+	_loop();
     
     return this;
 };

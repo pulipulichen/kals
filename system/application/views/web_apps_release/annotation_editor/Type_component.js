@@ -304,9 +304,13 @@ Type_component.prototype._listen_editor = function () {
         var _type = _this.get_type();
         
         //如果是預設值，則不回傳，由伺服器去取得預設值
-        if (_type != _this._default_type) {
-            _annotation_param.set_type(_type);
-        }   
+        //if (_type != _this._default_type) {
+        //    _annotation_param.set_type(_type);
+        //}
+		
+		// @20130609 Pudding Chen
+		// 因為現在預設值都可以做修改，所以不管怎樣都要回傳預設值
+		_annotation_param.set_type(_type);
     });
 };
 

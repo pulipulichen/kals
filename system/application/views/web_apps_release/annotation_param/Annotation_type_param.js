@@ -163,6 +163,9 @@ Annotation_type_param.prototype.set_custom_id = function () {
     return this;
 };
 
+/**
+ * 將這個標註類型設定為「自訂」的類別
+ */
 Annotation_type_param.prototype.set_custom = function () {
     this.set_custom_id();
     this._is_basic_annotation_type = false;

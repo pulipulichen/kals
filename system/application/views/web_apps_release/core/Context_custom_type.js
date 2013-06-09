@@ -230,10 +230,14 @@ Context_custom_type.prototype.find_type = function (_type_name) {
     var _basic_id = Annotation_type_param.filter_basic_id(_type_name);
     
     if ($.is_number(_basic_id)) {
+		$.test_msg("custom.find_type()", "基本資料");
+		
         //表示是基本資料
         _output_type = new Annotation_type_param(_basic_id);
     }
     else if ($.is_number(_type_name)) {
+		$.test_msg("custom.find_type()", "數字");
+		
         var _target_type_id = _type_name;
         //$.test_msg('Context_custom_type.find_type ready search', this._type_list);
         for (var _t in this._type_list) {
@@ -251,6 +255,8 @@ Context_custom_type.prototype.find_type = function (_type_name) {
         }
     }
     else {
+		$.test_msg("custom.find_type()", "其他" + typeof(this._type_list[_type_name]));
+		
         if (typeof(this._type_list[_type_name]) != 'undefined') {
 			_output_type = this._type_list[_type_name];
 		}
@@ -275,13 +281,26 @@ Context_custom_type.prototype.add_custom_type = function (_type_data) {
 };
 
 /**
+ * 新增預設標註
+ * @param {string} _type_data
+ * @type {Annotation_type_param}
+ */
+Context_custom_type.prototype.add_predefined_type = function (_type_data) {
+    var _type_param = new Annotation_type_param(_type_data);
+    var _type_name = _type_param.get_type_name();
+    this._type_list[_type_name] = _type_param;
+    _type_param.set_predefined(true);
+    return _type_param;
+};
+
+/**
  * find_type的交接口
  * @param {String} _json
  */
 Context_custom_type.prototype.import_json = function (_json) {
     var _type_param = this.find_type(_json);
     if ($.is_null(_type_param)) {
-		_type_param = this.add_custom_type(_json);
+		_type_param = this.add_predefined_type(_json);
 	} 
     return _type_param;
 };
