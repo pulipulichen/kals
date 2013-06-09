@@ -765,11 +765,6 @@ jQuery.parse_extension_name = function (_path) {
 	}
 };
 
-jQuery.get_time_interval = function (_time) {
-    // TODO 留到server端去做
-
-};
-
 /**
  * 是否存在
  * @memberOf {jQuery}

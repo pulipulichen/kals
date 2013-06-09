@@ -312,9 +312,9 @@ KALS_language.prototype.get_interval_param = function (_time) {
     
     var _interval = $.get_interval_time(_time);
     
-    //$.test_msg('lang.get_itnerval_param()', [_time, _interval]);
+    //$.test_msg('lang.get_itnerval_param()', [parseInt((new Date()).getTime() / 1000, 10), _time, _interval]);
     
-    var _test_scope = function (_min, _max) {
+    var _test_scope = function (_interval, _min, _max) {
         
         if (_min === null) {
             _min = 0;
@@ -340,41 +340,41 @@ KALS_language.prototype.get_interval_param = function (_time) {
     if (_interval < 30 *_s) {
         _lang_param = _date_params.recent;
     }
-    else if (_test_scope(30*_s, _m)) {
+    else if (_test_scope(_interval, 30*_s, _m)) {
         _lang_param = _date_params.within_minute;
     }
-    else if (_test_scope(_m, _h)) {
+    else if (_test_scope(_interval, _m, _h)) {
         _unit = _parse_unit(_m);
         _lang_param = _date_params.minutes;
     }
-    else if (_test_scope(_h, 2*_h)) {
+    else if (_test_scope(_interval, _h, 2*_h)) {
         _lang_param = _date_params.hour;
     }
-    else if (_test_scope(2*_h, 12*_h)) {
+    else if (_test_scope(_interval, 2*_h, 12*_h)) {
         _unit = _parse_unit(_h);
         _lang_param = _date_params.hours;
     }
-    else if (_test_scope(12*_h, _d)) {
+    else if (_test_scope(_interval, 12*_h, _d)) {
         _lang_param = _date_params.half_day;
     }
-    else if (_test_scope(_d, 2*_d)) {
+    else if (_test_scope(_interval, _d, 2*_d)) {
         _lang_param = _date_params.day;
     }
-    else if (_test_scope(2*_d, _w)) {
+    else if (_test_scope(_interval, 2*_d, _w)) {
         _unit = _parse_unit(_d);
         _lang_param = _date_params.days;
     }
-    else if (_test_scope(_w, 2*_w)) {
+    else if (_test_scope(_interval, _w, 2*_w)) {
         _lang_param = _date_params.week;
     }
-    else if (_test_scope(2*_w, 3*_w)) {
+    else if (_test_scope(_interval, 2*_w, 3*_w)) {
         _unit = _parse_unit(_w);
         _lang_param = _date_params.weeks;
     }
-    else if (_test_scope(3*_w, _month)) {
+    else if (_test_scope(_interval, 3*_w, _month)) {
         _lang_param = _date_params.month;
     }
-    else if (_test_scope(_month, _y)) {
+    else if (_test_scope(_interval, _month, _y)) {
         var _date_obj = new Date();
         _date_obj.setTime(_time*1000);
         //$.test_msg("lang date", _time);
@@ -383,7 +383,7 @@ KALS_language.prototype.get_interval_param = function (_time) {
         _lang_param = _date_params.date;
         _lang_param.arg = [_month, _date];
     }
-    else if (_test_scope(_y, null)) {
+    else if (_test_scope(_interval, _y, null)) {
         _date_obj = new Date();
         _date_obj.setTime(_time*1000);
         

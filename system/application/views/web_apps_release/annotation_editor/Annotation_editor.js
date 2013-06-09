@@ -275,7 +275,7 @@ Annotation_editor.prototype.submit = function () {
         
         if (_annotation_param.is_respond() === false) {
             //設置selection
-			$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
+			//$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
             
             //$.test_msg('_data.nav setup', [KALS_context.user.get_anchor_navigation_type(), _annotation_param.get_navigation_level()]);
