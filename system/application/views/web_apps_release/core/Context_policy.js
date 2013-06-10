@@ -110,14 +110,18 @@ Context_policy.prototype.set_show_navigation = function (_boolean) {
 Context_policy.prototype.reset = function () {
 	
 	if (KALS_CONFIG.isolation_mode === true) {
-		this.set_attr("show_navigation", false);
-		this.set_attr("read", KALS_context.auth.is_login());
+		this.set_attr("read", true);
+		this.set_attr("write", KALS_context.auth.is_login());
+		this.set_attr("show_navigation", false);		
+		this.unset_attr("my_basic");
+		
 		return this;
 	}
 	
 	this.set_attr("read", true);
-	this.set_attr("write", false);
+	this.set_attr("write", KALS_context.auth.is_login());
 	this.set_attr("show_navigation", true);
+	this.unset_attr("my_basic");
 	return this;
 };
 

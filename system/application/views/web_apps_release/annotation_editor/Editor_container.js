@@ -451,6 +451,10 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
 	            _editor.show();
 	        }
 	        
+			// @20130610 Pudding Chen
+			// 讓下面的編輯器，重置吧
+			_this.editor.reset();
+			
 	        _this.toggle_container(true);
 	    });
 	}, 500);

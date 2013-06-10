@@ -21,7 +21,8 @@ function Selection_my_manager(_text) {
     this.child('example', new Selection_my_example(_text));
     this.child('summary', new Selection_my_summary(_text));
     this.child('custom', new Selection_my_custom(_text));
-    
+	
+	return this;
 }
 
 // Extend from KALS_user_interface
