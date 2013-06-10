@@ -338,7 +338,7 @@ Annotation_editor.prototype._check_note = function (_annotation_param) {
  */
 Annotation_editor.prototype._create_callback = function (_annotation_param) {
     
-    $.test_msg('Annotation_editor._create_callback()', [_annotation_param.annotation_id, _annotation_param.timestamp, $.is_null(_annotation_param.recommend)]);
+    //$.test_msg('Annotation_editor._create_callback()', [_annotation_param.annotation_id, _annotation_param.timestamp, $.is_null(_annotation_param.recommend)]);
     
     //將新增加的資料丟進_list_coll
     var _list_item = this.list_coll.editor_add_list_item(_annotation_param, false);

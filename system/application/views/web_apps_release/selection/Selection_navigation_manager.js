@@ -59,6 +59,10 @@ Selection_navigation_manager.prototype.great = null;
  */
 Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
+	if (KALS_context.policy.allow_show_navigation() === false) {
+		return this;
+	}
+	
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_scope_coll.length(), _type, $.is_number(_type), typeof(this._nav_selections[_type])]);
     
     if (_scope_coll.length() === 0) {

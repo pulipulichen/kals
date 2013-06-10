@@ -62,6 +62,10 @@ Context_policy.prototype.writable = function () {
  * 是否允許顯示別人的標註
  */
 Context_policy.prototype.allow_show_navigation = function () {
+	if (KALS_CONFIG.isolation_mode === true) {
+		return false;
+	}
+	
 	var _allow_show = this.get_attr('show_navigation', true);
 	//$.test_msg("policy show_navigation", _allow_show);
 	return _allow_show; 

@@ -618,7 +618,11 @@ KALS_util._get_notify_modal = function () {
  */
 KALS_util.notify = function (_message) {
     var _notify_modal = this._get_notify_modal();
-    _notify_modal.set_message(_message, 10000);
+    
+	// @20130610 Pudding Chen
+	// 修正不知道為什麼不會自動關閉的問題
+	//_notify_modal.set_message(_message, 10000);
+	_notify_modal.set_message(_message, 10);
     
     //$.test_msg('KALS_util.notify()', _message);
     

@@ -98,10 +98,7 @@ class Authentication extends Web_apps_controller {
         //將使用者寫入Context當中
         set_context_user($user);
 
-        $output = $this->_get_policy_output($output);
-        $output['policy'] = array(
-            'write' => TRUE
-        );
+        $output = $this->_get_login_policy_output($output);
 
         require_once 'annotation_getter.php';
         $annotation_getter = new annotation_getter();
@@ -112,19 +109,20 @@ class Authentication extends Web_apps_controller {
         return $output;
     }
 
-    private function _get_policy_output($output = NULL) {
+    /**
+     * 登入之後使用者的權限
+     */
+    private function _get_login_policy_output($output = NULL) {
 
         if (is_null($output))
             $output = array();
 
         //Policy這邊還沒處理好QQ
-        /*
         $output['policy'] = array(
             'read' => TRUE,
             'write' => TRUE,
             'show_navigation' => TRUE
         );
-		*/
         require_once 'annotation_getter.php';
         $annotation_getter = new annotation_getter();
         $output['policy']['navigation_data'] = $annotation_getter->navigation();
@@ -149,7 +147,9 @@ class Authentication extends Web_apps_controller {
                 'sex' => NULL
             ),
             'policy' => array(
+            	'read' => TRUE,
             	'write' => FALSE,
+            	'show_navigation' => TRUE,
                 'navigation_data' => $annotation_getter->navigation()
             )
         );

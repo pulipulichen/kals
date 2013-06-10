@@ -151,8 +151,6 @@ Notify_modal.prototype.close = function (_callback) {
     var _ui = this.get_ui();
     var _display_message = _ui.find('.' + this._message_classname + ':not(.' + this._close_classname + ')');
     
-    
-    
     if (_display_message.length === 0) {
         var _this = this;
         Overlay_modal.prototype.close.call(this, function () {
@@ -209,7 +207,6 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
     
     //加入新留言之後，就要重新對齊一下
     this._$onviewportmove(_ui);
-    
     
     //this.set_timeout_close(_lang_time);
     
