@@ -178,9 +178,9 @@ $lang['web_apps.editor_container.deny_write'] = '您目前沒有權限可以撰�
 
 $lang['web_apps.annotation_editor.note_deny_empty'] = '請填寫回應資料才能送出。';
 $lang['web_apps.annotation_editor.loading'] = '資料處理中，請稍候…';
-$lang['web_apps.annotation_editor.submit.create'] = '新增';
-$lang['web_apps.annotation_editor.submit.edit'] = '更新';
-$lang['web_apps.annotation_editor.submit.cancel'] = '取消';
+$lang['web_apps.annotation_editor.submit.create'] = '新增標註';
+$lang['web_apps.annotation_editor.submit.edit'] = '更新標註';
+$lang['web_apps.annotation_editor.submit.cancel'] = '取消編輯';
 $lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成';
 $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。';
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';

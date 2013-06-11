@@ -193,7 +193,7 @@
 .kals-modal .annotation-editor.editing .submit-container .edit,
 .kals-modal .annotation-editor.editing .submit-container .cancel,
 .kals-modal .annotation-editor .submit-container .create {
-    padding: 3px;
+    padding: 0.4em;
     display: inline;
 }
 
