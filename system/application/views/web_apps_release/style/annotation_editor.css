@@ -169,24 +169,41 @@
     cursor: wait;
 }
 
-.kals-modal .annotation-editor .header button.create,
-.kals-modal .annotation-editor .header button.edit,
-.kals-modal .annotation-editor .header button.cancel {
+.kals-modal .annotation-editor button.create,
+.kals-modal .annotation-editor button.edit,
+.kals-modal .annotation-editor button.cancel {
     min-height: 0;
     border: 1px solid #D19405;
+	width: 96%;
+	
+	-moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -khtml-border-radius: 3px;
+	padding: 0.4em;
+	margin-top: 0.2em;
 }
 
-.kals-modal .annotation-editor .header .submit-container .edit,
-.kals-modal .annotation-editor .header .submit-container .cancel,
-.kals-modal .annotation-editor.editing .header .submit-container .create {
+.kals-modal .annotation-editor .submit-container .edit,
+.kals-modal .annotation-editor .submit-container .cancel,
+.kals-modal .annotation-editor.editing .submit-container .create {
     display: none;
 }
 
-.kals-modal .annotation-editor.editing .header .submit-container .edit,
-.kals-modal .annotation-editor.editing .header .submit-container .cancel,
-.kals-modal .annotation-editor .header .submit-container .create {
+.kals-modal .annotation-editor.editing .submit-container .edit,
+.kals-modal .annotation-editor.editing .submit-container .cancel,
+.kals-modal .annotation-editor .submit-container .create {
     padding: 3px;
     display: inline;
+}
+
+.kals-modal .annotation-editor.editing .submit-container .edit,
+.kals-modal .annotation-editor.editing .submit-container .cancel {
+	width: 45%;
+}
+
+.kals-modal .annotation-editor.editing .submit-container .edit {
+	margin-right: 3%;
 }
 
 /**
@@ -472,27 +489,33 @@
     /*border: 1px solid red;*/
 }
 
-.kals-modal .cke_maximized .cke_toolbox .cke_toolbar.maximize {
+.annotation-tool-header .cke_maximized .cke_toolbox .cke_toolbar.maximize {
     display:block !important;
 }
 
-.kals-modal .cke_maximized .cke_toolbox .cke_toolbar.minimize {
+/**
+ * 當編輯器最大化時，隱藏最小化時使用的工具列
+ * 
+ * 因為最大化的時候，編輯器會被移到另一個div底下，沒有class
+ * 所以必須直接指定編輯器本身的工具列才行
+ */
+.cke_maximized .cke_toolbox .cke_toolbar.minimize {
     display:none !important;
 }
 
-.kals-modal .note-editor .cke_bottom_tr {
+.annotation-editor .note-editor .cke_bottom_tr {
     display:none;
 }
 
-.kals-modal .note-editor .cke_maximized .cke_bottom_tr {
+.annotation-tool-header .note-editor .cke_maximized .cke_bottom_tr {
     display:table-row;
 }
 
-.KALS .note-editor td.cke_contents iframe {
+.annotation-editor .note-editor td.cke_contents iframe {
     display:block;
 }
 
-.KALS table.cke_editor {
+.annotation-editor table.cke_editor {
     display:table !important;
 }
 

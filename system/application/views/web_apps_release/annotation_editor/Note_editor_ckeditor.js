@@ -419,9 +419,13 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
     return this;
 };
 
+/**
+ * 將游標聚焦於編輯器上
+ */
 Note_editor_ckeditor.prototype.focus = function () {
-	//var _ui = this.get_ui('.note-editor-textarea:first');
-	//var _ckeditor = _ui.ckeditorGet();
+	var _ui = this.get_ui('.note-editor-textarea:first');
+	var _ckeditor = _ui.ckeditorGet();
+	_ckeditor.focus();
 	//$.test_msg(_ckeditor);
 	
 	

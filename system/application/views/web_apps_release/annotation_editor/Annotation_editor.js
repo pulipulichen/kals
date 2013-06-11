@@ -491,9 +491,6 @@ Annotation_editor.prototype._$create_ui = function () {
     var _policy = this._setup_policy();
     _policy.get_ui().appendTo(_container.find('th.right:first'));
     
-    var _submit = this._create_submit_button()
-        .appendTo(_container.find('th.right:first'));
-    
 	// --------
 	// 第二列
 	
@@ -510,6 +507,13 @@ Annotation_editor.prototype._$create_ui = function () {
     var _note_editor = this._setup_note_editor();
     _note_editor.get_ui().appendTo(_container.find('td.note:first'));
     
+	// ---------
+	// 第四列
+	
+    var _submit = this._create_submit_button()
+        .appendTo(_container.find('th.submit:first'));
+    
+	
     // ---------
     
     var _loading = this._create_loading_component();
@@ -543,6 +547,7 @@ Annotation_editor.prototype._create_container = function () {
 			+ '<tr><td class="annotation-type-hint" colspan="2"></td></tr>'
             + '<tr><td class="respond" colspan="2"></td></tr>'
             + '<tr><td class="note" colspan="2"></td></tr>'
+			+ '<tr><th class="submit" colspan="2"></th></tr>'
             + '</tbody></table>')
         .addClass('container');
     
@@ -775,6 +780,10 @@ Annotation_editor.prototype._setup_note_editor = function () {
         });    
     }, 0);
     
+	var _this = this;
+	this.type.add_listener(function () {
+		_this.note.focus();
+	});
     
     return _note_editor;
 };

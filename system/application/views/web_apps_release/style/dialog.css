@@ -61,10 +61,10 @@
     /*padding: 0.5em 1em 0.3em;*/
     padding: 0;
     
-    -moz-border-radius: 8px !important;
-    -webkit-border-radius: 8px !important;
-    border-radius: 8px !important;
-    -khtml-border-radius: 8px !important;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     
     background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
         , #918978 51%, #8C8473 100%);
@@ -169,23 +169,23 @@
         
     border: 1px solid #D19405 !important;
     color: #4C3000;
-    font-weight: bold;
+    /*font-weight: bold;*/
     outline: medium none;
-    font-size: 0.7em !important;
+    font-size: 0.7em;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;
     margin-right: 0.1em;
     overflow: visible;
-    padding:0.2em !important;
+    padding:0.2em;
     position:relative;
     text-align:center;
     text-decoration: none !important;
     
-    -moz-border-radius: 8px !important;
-    -webkit-border-radius: 8px !important;
-    border-radius: 8px !important;
-    -khtml-border-radius: 8px !important;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     min-height: 33px;
 }
 
