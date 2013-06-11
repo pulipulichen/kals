@@ -89,8 +89,44 @@ where "user".user_id = t.user_id
 order by score desc
 limit 3
          */
-        
+
+/**
+ * 
+select "user"."user_id", "user".name, 
+"t1".topic as topic, 
+case when ("r2".respond is null) then 0 else "r2".respond END AS r3,
+topic + (case when ("r2".respond is null) then 0 else "r2".respond END)*2 as score
+
+from
+(select "user".user_id, count(annotation_id) as topic from annotation, "user" 
+where annotation.user_id = "user".user_id
+and annotation.create_timestamp > '2013-06-10 14:00:00+08'
+and annotation.create_timestamp < '2013-06-17 18:00:00+08'
+and "user".user_id > 2006 and "user".user_id < 2061
+and topic_id is null
+and annotation.deleted is false
+ group by "user".user_id  
+order by topic desc) t1 left join
+(select "user".user_id, count(annotation_id) as respond from annotation, "user" 
+where annotation.user_id = "user".user_id
+and annotation.create_timestamp > '2013-06-10 14:00:00+08'
+and annotation.create_timestamp < '2013-06-17 18:00:00+08'
+and "user".user_id > 2006 and "user".user_id < 2061
+and topic_id is not null
+and annotation.deleted is false
+ group by "user".user_id  
+order by respond desc) r2 using (user_id), 
+"user"
+where "user".user_id = "t1".user_id
+order by score desc
+ */
+        $class_exp = ' "user".user_id > 2006 and "user".user_id < 2061 ';
         // user_id 2007~2061
+        
+        // 5-4 2007~2035
+        // 5-2 2036~2061
+        
+        
     }
 }
 
