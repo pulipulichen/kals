@@ -21,6 +21,7 @@ function Selection(_text) {
     if ($.isset(_text)) {
         this._text = _text;
         
+		/*
         var _this = this;
         KALS_context.auth.add_listener(function (_auth) {
             //if (_this._$logout_clear && _auth.is_login() === false)
@@ -28,6 +29,7 @@ function Selection(_text) {
             //    || (_this._$logout_clear === true && _auth.is_login() === false))
             //    _this.clear();
         });
+        */
     }
 }
 

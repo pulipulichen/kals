@@ -755,6 +755,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
     
     var _select = KALS_text.selection.select;
     
+	// 如果是一般模式
     if ($.is_mobile_mode() === false) {
         if (typeof(this.locks.word_click) == 'undefined') {
             var _this = this;
@@ -779,6 +780,24 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 			
 			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
 			_words.click(_click_evt);
+			
+			var _mouse_evt = function (_callback) {
+				var _word = $(this);
+				_select.set_select(_word);
+			};
+			
+			
+			// @20130612 Pudding Chen
+			// 加入了拖曳選取時也能用的選取範圍功能
+			_words.mousedown(function () {
+				var _word = $(this);
+				_select.cancel_select();
+				_select.set_select(_word);
+			});
+			_words.mouseup(function () {
+				var _word = $(this);
+				_select.set_select(_word);
+			});
 			
 			/**
 			 * 滑鼠放在文字上的自動選取功能
