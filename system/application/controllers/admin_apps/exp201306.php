@@ -22,9 +22,6 @@ class exp201306 extends Controller {
 
     function index()
     {
-        echo "<h1>5-4 排行榜</h1>";
-        echo "<ol>";
-        echo "</ol>";
         
         /*
 select "user".user_id, count(annotation_id) as topic from annotation, "user" 
@@ -120,13 +117,110 @@ order by respond desc) r2 using (user_id),
 where "user".user_id = "t1".user_id
 order by score desc
  */
-        $class_exp = ' "user".user_id > 2006 and "user".user_id < 2061 ';
+        $class_exp = ' "user".user_id > 2006 and "user".user_id < 2036 ';
+        $class_ctl = ' "user".user_id > 2035 and "user".user_id < 2061 ';
+        $time = "and annotation.create_timestamp > '2013-06-10 14:00:00+08'
+and annotation.create_timestamp < '2013-06-17 18:00:00+08'";
+        
+        $select_exp = 'select "user"."user_id", "user".name, 
+"t1".topic as topic, 
+case when ("r2".respond is null) then 0 else "r2".respond END AS respond,
+topic + (case when ("r2".respond is null) then 0 else "r2".respond END)*2 as score
+
+from
+(select "user".user_id, count(annotation_id) as topic from annotation, "user" 
+where annotation.user_id = "user".user_id
+'.$time.'
+and '.$class_exp.'
+and topic_id is null
+and annotation.deleted is false
+ group by "user".user_id  
+order by topic desc) t1 left join
+(select "user".user_id, count(annotation_id) as respond from annotation, "user" 
+where annotation.user_id = "user".user_id
+'.$time.'
+and '.$class_exp.'
+and topic_id is not null
+and annotation.deleted is false
+ group by "user".user_id  
+order by respond desc) r2 using (user_id), 
+"user"
+where "user".user_id = "t1".user_id
+order by score desc';
         // user_id 2007~2061
         
         // 5-4 2007~2035
         // 5-2 2036~2061
         
+        echo "<h1>5-4 排行榜</h1>";
+        echo "<table border='1'><tbody>";
+        echo "<tr><th>座號</th><th>總分</th><th>主旨</th><th>回應</th></tr>";
         
+        
+        $query = $this->db->query($select_exp);
+        foreach ($query->result() as $row) {
+            
+            $rank_info = '<tr>
+                    <td>'.$row->name.'</td>
+                    <td>'.$row->score.'</td>
+                    <td>'.$row->topic.'</td>
+                    <td>'.$row->respond.'</td>
+                </tr>';
+            echo $rank_info;
+        }
+        
+        echo "</tbody></table>";
+        
+        // ----------------------------------------
+        
+        $select_ctl = 'select "user"."user_id", "user".name, 
+"t1".topic as topic, 
+case when ("r2".respond is null) then 0 else "r2".respond END AS respond,
+topic + (case when ("r2".respond is null) then 0 else "r2".respond END)*2 as score
+
+from
+(select "user".user_id, count(annotation_id) as topic from annotation, "user" 
+where annotation.user_id = "user".user_id
+'.$time.'
+and '.$class_ctl.'
+and topic_id is null
+and annotation.deleted is false
+ group by "user".user_id  
+order by topic desc) t1 left join
+(select "user".user_id, count(annotation_id) as respond from annotation, "user" 
+where annotation.user_id = "user".user_id
+'.$time.'
+and '.$class_ctl.'
+and topic_id is not null
+and annotation.deleted is false
+ group by "user".user_id  
+order by respond desc) r2 using (user_id), 
+"user"
+where "user".user_id = "t1".user_id
+order by score desc';
+        // user_id 2007~2061
+        
+        // 5-4 2007~2035
+        // 5-2 2036~2061
+        
+        echo "<h1>5-2 排行榜</h1>";
+        echo "<table border='1'><tbody>";
+        echo "<tr><th>座號</th><th>總分</th><th>主旨</th><th>回應</th></tr>";
+        
+        
+        $query = $this->db->query($select_ctl);
+        foreach ($query->result() as $row) {
+            
+            $rank_info = '<tr>
+                    <td>'.$row->name.'</td>
+                    <td>'.$row->score.'</td>
+                    <td>'.$row->topic.'</td>
+                    <td>'.$row->respond.'</td>
+                </tr>';
+            echo $rank_info;
+        }
+        
+        echo "</tbody></table>";
     }
 }
 
