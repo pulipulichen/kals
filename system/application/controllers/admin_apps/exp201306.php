@@ -152,6 +152,7 @@ order by score desc';
         // 5-4 2007~2035
         // 5-2 2036~2061
         
+        echo '<div style="float:left">';
         echo "<h1>5-4 排行榜</h1>";
         echo "<table border='1'><tbody>";
         echo "<tr><th>座號</th><th>總分</th><th>主旨</th><th>回應</th></tr>";
@@ -170,6 +171,7 @@ order by score desc';
         }
         
         echo "</tbody></table>";
+        echo "</div>";
         
         // ----------------------------------------
         
@@ -202,7 +204,7 @@ order by score desc';
         
         // 5-4 2007~2035
         // 5-2 2036~2061
-        
+        echo '<div style="float:left;margin-left: 1em;">';
         echo "<h1>5-2 排行榜</h1>";
         echo "<table border='1'><tbody>";
         echo "<tr><th>座號</th><th>總分</th><th>主旨</th><th>回應</th></tr>";
@@ -221,6 +223,7 @@ order by score desc';
         }
         
         echo "</tbody></table>";
+        echo "</div>";
     }
 }
 

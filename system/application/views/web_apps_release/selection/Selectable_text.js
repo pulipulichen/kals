@@ -760,6 +760,8 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
         if (typeof(this.locks.word_click) == 'undefined') {
             var _this = this;
 			
+			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
+			/*
 			var _click_evt = function(_callback) {
                 if (_this.initialized === false) {
 					return this;
@@ -777,28 +779,70 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 					_callback();
 				}
             };
-			
-			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
 			_words.click(_click_evt);
-			
-			var _mouse_evt = function (_callback) {
-				var _word = $(this);
-				_select.set_select(_word);
-			};
-			
+			*/
 			
 			// @20130612 Pudding Chen
 			// 加入了拖曳選取時也能用的選取範圍功能
+			if (typeof(KALS_SELECT_MOUSEDOWN_LOCK) === "undefined") {
+				KALS_SELECT_MOUSEDOWN_LOCK = null;
+			}
 			_words.mousedown(function () {
-				var _word = $(this);
-				_select.cancel_select();
-				_select.set_select(_word);
+				KALS_SELECT_MOUSEDOWN_LOCK = 1;
+				
+				var _md_this = this;
+				setTimeout(function () {
+					if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
+						var _word = $(_md_this);
+						_select.cancel_select();
+						_select.set_select(_word);	
+						
+						KALS_SELECT_MOUSEDOWN_LOCK = 2;
+					}
+				}, 100);
 			});
 			_words.mouseup(function () {
-				var _word = $(this);
-				_select.set_select(_word);
+				var _mu_this = this;
+				setTimeout(function () {
+					if (KALS_SELECT_MOUSEDOWN_LOCK === 2) {
+						var _word = $(_mu_this);
+						_select.set_select(_word);	
+					}
+					
+					KALS_SELECT_MOUSEDOWN_LOCK = null;
+				}, 100);
+				
+				if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
+					//表示這是一個Click事件
+					KALS_SELECT_MOUSEDOWN_LOCK = null;
+					
+					if (_this.initialized === false) {
+						return this;
+					}
+	                
+	                var _word = $(this);
+	                setTimeout(function () {
+	                    _word.tooltip().hide();
+	                }, 100);
+	                
+	                //_manager.listen_select(_word);
+	                _select.set_select(_word);
+					
+					if ($.is_function(_callback)) {
+						_callback();
+					}
+					
+					
+				}
 			});
 			
+			/*
+			_words.mousemove(function () {
+				if (KALS_SELECT_MOUSEDOWN_LOCK !== 2) {
+					KALS_SELECT_MOUSEDOWN_LOCK = null;	
+				}
+			});
+			*/			
 			/**
 			 * 滑鼠放在文字上的自動選取功能
 			 * 
