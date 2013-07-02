@@ -52,6 +52,7 @@ class Annotation extends KALS_resource {
 
     protected $table_name = 'annotation';
     protected $table_fields = array('annotation_id', 'create_timestamp', 'update_timestamp', 'deleted', 'user_id', 'annotation_type_id', 'note', 'note_index', 'topic_id');
+    //表格中的欄位
     protected $primary_key = 'annotation_id';
     protected $not_null_field = array('user_id', 'annotation_type_id');
     protected $except_bind_fields = array('note_index');
@@ -198,7 +199,7 @@ class Annotation extends KALS_resource {
     }
      */
 
-    public function set_note($value)
+    public function set_note($value)  //是你嗎？
     {
         if (is_string($value))
         {
@@ -782,15 +783,15 @@ class Annotation extends KALS_resource {
      * @param NULL|String[] $fields 限定要輸出的欄位，沒有的話就用預設的欄位輸出
      * @return Object
      */
-    public function export_data($fields = NULL)
+    public function export_data($fields = NULL) //匯出資料
     {
         $data = array();
 
-        if (FALSE === is_array($fields))
+        if (FALSE === is_array($fields)) //fields!=searchrange?
         {
             //$data['class'] = get_class($this);
             $data['annotation_id'] = $this->get_id();
-            $note = $this->get_note();
+            $note = $this->get_note();  //note?
             if (isset($note))
                 $data['note'] = $note;
             $data['user'] = $this->get_user()->export_simple_data();
