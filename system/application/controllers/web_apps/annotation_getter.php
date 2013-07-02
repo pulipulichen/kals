@@ -196,10 +196,12 @@ class Annotation_getter extends Web_apps_controller {
         $output_data = array();
 
         $my_annotation = $this->my();
-        if (isset($my_annotation['basic']))
+        if (isset($my_annotation['basic'])) {
             $output_data = $my_annotation['basic'];
-        else if (is_array($my_annotation))
+        }
+        else if (is_array($my_annotation)) {
             $output_data = $my_annotation;
+        }
 
         return $this->_display_jsonp($output_data, $callback);
     }
@@ -452,8 +454,17 @@ class Annotation_getter extends Web_apps_controller {
      */
     function navigation_none($json = NULL, $callback = NULL)
     {
+    	if (!isset($callback)) {
+            $callback = $json;
+        }
+    	
         $output_data = array();
         return $this->_display_jsonp($output_data, $callback);
+    }
+    
+    function navigation_disable($json = NULL, $callback = NULL)
+    {
+        return $this->navigation_none($json, $callback);
     }
 
     /**

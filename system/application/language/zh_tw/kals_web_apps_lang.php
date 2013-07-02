@@ -65,6 +65,7 @@ $lang['web_apps.time.1_month_ago'] = '1個月之前';
 $lang['web_apps.time.n_months_ago'] = '{0}個月之前';
 $lang['web_apps.time.on_date'] = '{0}月{1}日';
 $lang['web_apps.time.in_year'] = '{0}年';
+$lang['web_apps.time.fulldate'] = '{0}年{1}月{2}日';
 $lang['web_apps.time.month_name.1'] = '1';
 $lang['web_apps.time.month_name.2'] = '2';
 $lang['web_apps.time.month_name.3'] = '3';
@@ -228,7 +229,11 @@ $lang['web_apps.policy_type.share.help'] = '只有以下名單的使用者能看
 
 $lang['web_apps.window.policy.heading'] = '標註權限設定';
 
+$lang['web_apps.web_search'] = '網頁搜尋';
+
 $lang['web_apps.type_menu.custom_type_dialog.heading'] = '自訂標註類型';
+
+$lang['web_apps.note.ckeditor.edit_hint'] = '如果編輯器無法選取，請按兩下「原始碼」按鈕就可以正常運作。';
 
 /**
  * List_collection
@@ -244,7 +249,7 @@ $lang['web_apps.list_collection.complete'] = '沒有其他標註了';
 $lang['web_apps.list_menu.delete'] = '刪除';
 $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
-$lang['web_apps.list_menu.view'] = '討論';
+$lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';

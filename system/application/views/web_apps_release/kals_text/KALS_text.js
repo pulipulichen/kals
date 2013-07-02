@@ -16,7 +16,9 @@ function KALS_text(_selector) {
     
     KALS_user_interface.call(this);
     
-    var _selector = this.get_selector();
+	if (typeof(_selector) == "undefined") {
+		_selector = this.get_selector();	
+	}
     //$.test_msg('KALS_text()', _selector);
     
     _selector = this.filter_selector(_selector);
@@ -97,8 +99,7 @@ KALS_text.prototype.filter_selector = function (_selector) {
         //_selector = _selector;
         //不做任何事情，因為他本來就是jQuery型態           
     }
-    else
-    {
+    else {
         //丟出錯誤
         _exception = new KALS_exception('kals_text.exception.selector_not_exist');
         KALS_util.show_exception(_exception);
