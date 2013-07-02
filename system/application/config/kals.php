@@ -21,7 +21,7 @@ $config['crypt_salt'] = 'kals2010';
 
 $config['output.cache.enable'] = false; //是否使用快取功能，預設是true;
 $config['output.cache.expiration'] = 5;  //快取的單位是「分鐘」
-$config['output.package.enable'] = false; //是否啟用壓縮功能，預設是true;
+$config['output.package.enable'] = true; //是否啟用壓縮功能，預設是true;
 
 $config['CACHEABLE_TYPES'] = array('Domain', 'Webpage', 'Annotation', 'User', 'Group', 'Annotation_scope', 'Scope_anchor_text', 'Annotation_like'
         , 'Annotation_feature_collection', 'Annotation_like_collection', 'Annotation_respond_collection', 'Annotation_topic_respond_collection'
@@ -44,10 +44,10 @@ $config['segmentor.default_for_search'] = 'segmentor.disable';    //預設搜尋
 //$config['segmentor.default_for_search'] = 'segmentor.scws';    //預設搜尋時使用的斷詞器
 //$config['segmentor.default_for_search'] = 'segmentor.ckip';    //預設搜尋時使用的斷詞器
 
-//$config['ckip.username'] = 'pulipuli36';
-//$config['ckip.password'] = '740324';
-//$config['ckip.server_ip'] = '140.109.19.104';
-//$config['ckip.server_port'] = '1501';
+//$config['ckip.username'] = 'kals';
+//$config['ckip.password'] = 'password';
+//$config['ckip.server_ip'] = 'exp-ckip.dlll.nccu.edu.tw';
+//$config['ckip.server_port'] = '58151';
 
 //$config['yahoo.app_id'] = 'K7WZ.qrV34HHPDMPT4WGq.MSj6Z85hSDdPQYASkuxT9E1mjzC25kcZ1UImJdOHf06VAYXj4-'; //for kals wiki
 //$config['yahoo.app_id'] = 'zno81EPV34FUKrAEs_Hn1pcuB1IQ4TBGLBXwLLRWwB2nyaBDnIZT94EESP2s39Xn2zKnfBo-'; //for 140.119.61.174

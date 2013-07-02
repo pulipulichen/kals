@@ -299,7 +299,7 @@ Annotation_param.prototype.import_json = function (_json)
             if (_attr == 'note'
                 || _attr == 'type')
             {
-                _value = decodeURIComponent(_value);
+                _value = $.decodeURIComponent(_value);
             }
             else if (_attr == 'policy_type' && $.is_number(_value))
             {

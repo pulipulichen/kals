@@ -13,8 +13,7 @@ function Annotation_collection_param(_param) {
     
     this.annotations = [];
     
-    if ($.isset(_param))
-    {
+    if ($.isset(_param)) {
         if ($.is_array(_param)) {
 			this.import_json(_param);
 		}
@@ -40,18 +39,15 @@ Annotation_collection_param.prototype.add = function (_param) {
 		return this;
 	}
     
-    if ($.is_array(_param))
-    {
+    if ($.is_array(_param)) {
         var _coll = _param;
-        for (var _i in _coll)
-        {
+        for (var _i in _coll) {
             this.add(_coll[_i]);
         }
         return this;
     }
     
-    if (typeof(_param.annotation_id) != 'undefined')
-    {
+    if (typeof(_param.annotation_id) != 'undefined') {
         _param = new Annotation_param(_param);
         this.annotations.push(_param);
     }
@@ -67,8 +63,7 @@ Annotation_collection_param.prototype.export_json = function () {
     
     var _json = [];
     
-    for (var _i in this.annotations)
-    {
+    for (var _i in this.annotations) {
         var _annotation = this.annotations[_i];
         var _j = _annotation.export_json();
         _json.push(_j);
@@ -80,8 +75,7 @@ Annotation_collection_param.prototype.export_json = function () {
 Annotation_collection_param.prototype.export_respond_json = function () {
     var _json = [];
     
-    for (var _i in this.annotations)
-    {
+    for (var _i in this.annotations) {
         var _annotation = this.annotations[_i];
         var _j = _annotation.export_respond_json();
         _json.push(_j);

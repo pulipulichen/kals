@@ -16,30 +16,42 @@ include_once 'web_apps_controller.php';
 
 class generic extends Web_apps_controller {
 
-    protected $controller_enable_cache = TRUE;
+    protected $controller_enable_cache = FALSE;
+    
+    private $dirmap_path = "./system/application/views/web_apps_release/";
 
     function toolkit($return_list = NULL)
     {
+        /**
+         * 20130221 Pulipuli Chen
+         * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
+         * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
+         * 我是用YUI Compressor Online壓縮的
+         * http://refresh-sf.com/yui
+         * 
+         * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
+         */
+        
         $list = array(
+            'libraries/min/jquery.tools'
+            ,'libraries/min/jquery.ba-bbq.min'
+            , 'libraries/min/jquery.jcrop'
+            , 'libraries/min/jquery.ba-hashchange'
+            , 'libraries/min/jquery.placeheld.min'
+            , 'libraries/min/jquery.endless-scroll.1.4.1'
+            , 'libraries/min/yui-min'
+            , 'libraries/min/jQuery_mousewheel_plugin-min'
+            , 'libraries/min/jquery.scrollIntoView-min'
         );
 
         $list_package = array(
             'core/KALS_CONFIG'
             , 'core/KALS_language_param'
-            , 'libraries/jquery.tools'
-            , 'libraries/yui'
-            , 'libraries/jquery.jcrop'
-            , 'libraries/jquery.ba-hashchange'
-            ,'libraries/jquery.ba-bbq.min'
-            , 'libraries/jQuery_mousewheel_plugin'
-            , 'libraries/jquery.placeheld'
-            , 'libraries/jquery.scrollIntoView'
-            , 'libraries/jquery.endless-scroll.1.4.1'
             , 'toolkit/jQuery_kals_plugin'
             , 'toolkit/KALS_user_interface' //Qunit
             , 'toolkit/KALS_modal'
             , 'toolkit/Overlay_modal'
-            ,'toolkit/Tooltip_modal'
+            , 'toolkit/Tooltip_modal'
             , 'toolkit/Dialog_modal'
             , 'toolkit/Dialog_option'
             , 'toolkit/Dialog_link'
@@ -61,13 +73,14 @@ class generic extends Web_apps_controller {
         if (is_null($return_list))
         {
             $this->load_js($list);
-            $this->pack_js($list_package);
+            $this->pack_js($list_package, 'toolkit');
         }
         else
         {
             $full_list = $list;
-            foreach ($list_package AS $path)
+            foreach ($list_package AS $path) {
                 $full_list[] = $path;
+            }
             return $full_list;
         }
     }
@@ -79,6 +92,7 @@ class generic extends Web_apps_controller {
             ""
         );
 
+        //注意順序！
         $list_package = array(
             'core/KALS_language',
             'core/Viewportmove_dispatcher',
@@ -93,24 +107,36 @@ class generic extends Web_apps_controller {
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',
-            'core/KALS_context',
-            ''
+            'core/KALS_context'	//必須是最後一個！	
+            //''
         );
-
+        
+        /*
+        $dir_list = array(
+    		'core'
+    	);
+        $files = $this->dirmap($dir_list);
+		*/
+        
         if (is_null($return_list))
         {
-            $this->load_js($list);
-            $this->pack_js($list_package);
+            //$this->load_js($list);
+            $this->pack_js($list_package, 'core');
         }
         else
         {
             $full_list = $list;
-            foreach ($list_package AS $path)
+            foreach ($list_package AS $path) {
                 $full_list[] = $path;
+            }
             return $full_list;
         }
     }
 
+    /**
+     * 載入Component類型的JavaScript
+     * @param {boolean} 是否要回傳列表
+     */
     function component($return_list = NULL)
     {
         $list = array(            
@@ -145,8 +171,6 @@ class generic extends Web_apps_controller {
             'navigation/Window_logout_submit',
             'navigation/Window_password_change',
             'navigation/Window_password_change_submit',
-            'navigation/Window_search',
-            'navigation/Window_search_submit',
 
             'navigation/Common_navigation',
             'navigation/Window_filter',
@@ -222,6 +246,7 @@ class generic extends Web_apps_controller {
             'annotation_editor/Policy_component',
             'annotation_editor/Window_policy',
             'annotation_editor/Window_policy_submit',
+        	'annotation_editor/Web_search_component',
 
             'annotation_list/List_collection',
             'annotation_list/List_collection_like',
@@ -266,19 +291,67 @@ class generic extends Web_apps_controller {
             'kals_text/Init_text',
             'kals_text/KALS_text',
         );
-
+        
+    	/*
+    	$dir_list = array(
+    		'kals_window',
+			'navigation',
+			'kals_toolbar',
+			'annotation_param',
+			'selection',
+			'annotation_editor',
+			'annotation_view',
+			'annotation_recommend',
+			'kals_text'
+    	);
+        $files = $this->dirmap($dir_list);
+        */
+        
         if (is_null($return_list))
         {
-            $this->load_js($list);
-            $this->pack_js($list_package);
+            //$this->load_js($list);
+            //$this->pack_js($files, 'component');
+            $this->pack_js($list_package, 'component');
         }
         else
         {
             $full_list = $list;
-            foreach ($list_package AS $path)
+            foreach ($files AS $path)
                 $full_list[] = $path;
             return $full_list;
         }
+    }
+    
+    /**
+     * 取得目錄陣列底下的檔案列表 
+     *
+     */
+    function dirmap($dirs) {
+    	
+    	if (is_string($dirs)) {
+    		$dirs = array($dirs);
+    	}
+    	
+    	$files = array();
+    	
+    	$this->load->helper('directory');
+    	for ($i = 0; $i < count($dirs); $i++) {
+    		 $f = directory_map($this->dirmap_path . $dirs[$i], TRUE);
+    		 //print_r($f);
+	    	for ($j = 0; $j < count($f); $j++) {
+	        	$f[$j] = $dirs[$i]."/".$f[$j];
+	        }
+    		 $files = array_merge($files, $f);
+    	}
+        
+        for ($i = 0; $i < count($files); $i++) {
+        	$name = $files[$i];
+        	$files[$i] = substr($name, 0 , strrpos($name, "."));
+        }
+        
+        //print_r($files);
+    	
+        return $files;
     }
 
     function package($is_demo = NULL) {
@@ -288,11 +361,13 @@ class generic extends Web_apps_controller {
                 $this->dir = $this->release_dir;
         }
 
+        $full_list = array();
         
         $list_toolkit = $this->toolkit(true);
         $list_core = $this->core(true);
         $list_component = $this->component(true);
 
+        
         $full_list = $list_toolkit;
         foreach ($list_core AS $path)
             $full_list[] = $path;
@@ -300,7 +375,7 @@ class generic extends Web_apps_controller {
             $full_list[] = $path;
 
         //$this->load_js($full_list);
-        $this->pack_js($full_list);
+        $this->pack_js($full_list, 'package');
     }
     
     function component_package($is_demo = NULL) {
@@ -318,6 +393,7 @@ class generic extends Web_apps_controller {
 
     function style()
     {
+    	/*
         $list = array(
             'generic',
             'dialog',
@@ -334,21 +410,40 @@ class generic extends Web_apps_controller {
             'annotation_editor',
             'annotation_view',
             'annotation_recommend',
-            'core'
+            'core',
+        	'toolkit'
         );
+        */
+        
+        /*
         foreach ($list AS $path)
         {
             //測試用時，寫load_css
             //$this->load_css($path);
 
             //實際使用時，寫pack_css
-            $this->pack_css($path);
+            
+            //$this->_20130219_pack_css($path);
+        }*/
+        //$this->pack_css($list, 'style');
+        
+    	/*
+        $this->load->helper('directory');
+        $files = directory_map($this->dirmap_path . 'style/');
+        for ($i = 0; $i < count($files); $i++) {
+        	$files[$i] = substr($files[$i], 0 , -4);
         }
+        */
+        //print_r($files);
+        $files = $this->dirmap("style");
+        
+        $this->pack_css($files, 'style');
     }
 
     /**
      * @deprecated 20111106 Pudding Chen 請使用style
      */
+    /*
     function style_release()
     {
         $list = array(
@@ -375,9 +470,10 @@ class generic extends Web_apps_controller {
             //$this->load_css_release($path);
 
             //實際使用時，寫pack_css
-            $this->pack_css($path);
+            $this->pack_css($path, 'style_release');
         }
     }
+    */
 
     function load_css($path, $path2 = NULL)
     {
@@ -440,14 +536,14 @@ class generic extends Web_apps_controller {
     {
         //if (is_null($is_release) == false)
         if (true)
-		{
-			$this->dir = $this->release_dir;
-		}
+        {
+                $this->dir = $this->release_dir;
+        }
         
         $path = 'core/KALS_loader';
 
         //$this->load_js($path);
-        $this->pack_js($path);
+        $this->pack_js($path, 'loader');
     }
 
     function info($json, $callback = NULL)

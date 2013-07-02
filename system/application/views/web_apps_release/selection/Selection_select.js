@@ -14,6 +14,15 @@
 function Selection_select(_text) {
     
     Selection.call(this, _text);
+	if (KALS_context.hash.has_field('select')) {
+		this._setted_hash = true;
+	}
+	
+	var _this = this;
+	KALS_context.policy.add_attr_listener('read', function (_policy) {
+        //$.test_msg('Selection_select()', _policy.readable());
+        _this._selectable = _policy.readable();
+    }, true);
 }
 
 Selection_select.prototype = new Selection();
@@ -32,20 +41,23 @@ Selection_select.prototype._$login_clear = true;
 
 Selection_select.prototype.auto_cancel_wait = 10000;
 
+Selection_select.prototype._selectable = true;
+
 /**
  * 設定選取
  * @param {jQuery} _word
  */
-Selection_select.prototype.set_select = function (_word) 
-{
-    if (KALS_context.policy.readable() == false)
-        return this;
+Selection_select.prototype.set_select = function (_word) {
+	//$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
+    if (this._selectable === false) {
+		KALS_context.hash.delete_field('select');
+		return this;
+	}
     
     var _id = $.get_prefixed_id(_word);
 	
 	//第一次點選
-    if (this._select_from == null)
-    {
+    if (this._select_from === null) {
         var _classname = this.get_classname();
         this.clear();
         this._select_from = _id;
@@ -61,8 +73,7 @@ Selection_select.prototype.set_select = function (_word)
         //    _this._select_timer = null;
         //}, this.auto_cancel_wait);
     }
-    else
-    {
+    else {
 		//第二次點選，顯示Editor_contrainer
 		
         //2010.11.3 取消自動取消選取功能
@@ -74,8 +85,7 @@ Selection_select.prototype.set_select = function (_word)
         //在做add_select的時候，就會進行通知
         var _scope_coll = new Scope_collection_param(this._select_from, _id);
         
-        if (_scope_coll.length() > 0)
-        {
+        if (_scope_coll.length() > 0) {
             var _anchor_text = this._text.get_anchor_text(_scope_coll);
             
             //$.test_msg('Selection_select.set_select()', [_anchor_text.length, KALS_CONFIG.anchor_length_max]);
@@ -106,36 +116,39 @@ Selection_select.prototype.set_select = function (_word)
 
 Selection_select.prototype.cancel_select = function () {
     
-    if ($.isset(this._select_from_word))
-    {
+    if ($.isset(this._select_from_word)) {
         this._select_from_word.removeClass(this.get_classname());
     }
     
     this._select_from = null;
     this._select_from_word = null;
     this._setted_hash = false;
+	KALS_context.hash.delete_field('select');
     
     return this;
 };
 
 Selection_select.prototype.clear = function () {
-    if (this._setted_hash == true)
-    KALS_context.hash.delete_field('select');
+    if (this._setted_hash === true) {
+		KALS_context.hash.delete_field('select');
+	}
     
     return Selection.prototype.clear.call(this);
 };
 
 Selection_select.prototype.load_select = function (_scope_text) {
     
-    if ($.is_null(_scope_text))
-        return this;
+    if ($.is_null(_scope_text)) {
+		return this;
+	}
     
     var _scopes = _scope_text.split(',');
     
     var _first_index = _scopes[0];
     var _last_index = _first_index;
-    if (_scopes.length > 1)
-        _last_index = _scopes[1];
+    if (_scopes.length > 1) {
+		_last_index = _scopes[1];
+	}
 
     var _scope_coll = new Scope_collection_param(_first_index, _last_index);
     var _anchor_text = this._text.get_anchor_text(_scope_coll);

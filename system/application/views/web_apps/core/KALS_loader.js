@@ -58,7 +58,6 @@ this.generic_load = function (_conf, _callback)
     var _generic_libraries = {
         script_list: _prefix+'script'
     };
-    
     _this.load_jquery(function () {
         
         _this.load_libraries(_toolkit_libraries, function () {

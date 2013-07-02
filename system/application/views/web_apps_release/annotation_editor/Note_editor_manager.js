@@ -22,9 +22,8 @@ function Note_editor_manager(_editor) {
     }
     this.child('init', new Init_note_editor());
     
-    if ($.browser.msie) {
-		this._type_mapping = this._type_mapping_ie;
-	}
+    if ($.browser.msie)
+        this._type_mapping = this._type_mapping_ie;
 }
 
 Note_editor_manager.prototype = new KALS_user_interface();
@@ -96,12 +95,10 @@ Note_editor_manager.prototype.create = function (_type) {
 };
 
 Note_editor_manager.prototype.get_text = function () {
-    if ($.isset(this._active_editor)) {
-		return this._active_editor.get_text();
-	}
-	else {
-		return null;
-	}
+    if ($.isset(this._active_editor))
+        return this._active_editor.get_text();
+    else
+        return null;
 };
 
 Note_editor_manager.prototype.set_text = function (_text) {
@@ -116,9 +113,8 @@ Note_editor_manager.prototype.set_text = function (_text) {
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor)) {
-		this._active_editor.set_text(_text);
-	}
+    if ($.isset(this._active_editor))
+        this._active_editor.set_text(_text);
     return this;
 };
 
@@ -126,12 +122,12 @@ Note_editor_manager.prototype._get_editor_list = function () {
     
     var _list = [];
     
-    for (var _i in this._type_mapping){
+    for (var _i in this._type_mapping)
+    {
         var _editor_name = this._type_mapping[_i];
         
-        if ($.inArray(_editor_name, _list) == -1) {
-			_list.push(_editor_name);
-		}
+        if ($.inArray(_editor_name, _list) == -1)
+            _list.push(_editor_name);
     }
     
     //$.test_msg('Note_editor._get_editor_list', _list);
@@ -220,12 +216,10 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     }
     
     //防止重複更換
-    if (_note_editor_name == this._active_editor_name) {
-		return this;
-	}
-	else {
-		this._active_editor_name = _note_editor_name;
-	}   
+    if (_note_editor_name == this._active_editor_name)
+        return this;
+    else
+        this._active_editor_name = _note_editor_name;    
     
     var _ui = this.get_ui();
     
@@ -234,15 +228,13 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     
     
     var _text = false;
-    if ($.isset(this._active_editor)) {
-		_text = this._active_editor.get_text();
-	}
+    if ($.isset(this._active_editor))
+        _text = this._active_editor.get_text();
     
     this._active_editor = this._note_editors[ _note_editor_name ];
     
-    if (_text !== false) {
-		this._active_editor.set_text(_text);
-	}
+    if (_text != false)
+        this._active_editor.set_text(_text);
     
     return this;
 };
@@ -313,6 +305,17 @@ Note_editor_manager.prototype.reset = function () {
     //var _ui = this.get_ui('textarea');
     //_ui.val('');
     
+    
+    return this;
+};
+
+/**
+ * 聚焦於編輯器上
+ */
+Note_editor_manager.prototype.focus = function () {
+    if ($.isset(this._active_editor)) {
+		this._active_editor.focus();
+	} 
     
     return this;
 };

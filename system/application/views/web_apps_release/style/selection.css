@@ -2,6 +2,8 @@
     cursor:pointer;
     border-radius: 0.4em;
     -moz-border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    -khtml-border-radius: 0.4em;
     border: 1px solid #22272C;
     background-color: #576570;
     
@@ -122,6 +124,8 @@
     z-index:1;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
 }
 
 .kals-paragraph .select.select_from {
@@ -129,6 +133,8 @@
     
     -moz-border-radius: 8px 0 0 8px;
     -webkit-border-radius: 8px 0 0 8px;
+    border-radius: 8px 0 0 8px;
+    -khtml-border-radius: 8px 0 0 8px;
 }
 
 .kals-paragraph .select.select_to {
@@ -136,6 +142,8 @@
     
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
+    border-radius: 0 8px 8px 0;
+    -khtml-border-radius: 0 8px 8px 0;
 }
 
 .kals-paragraph .select.select_middle {
@@ -144,12 +152,16 @@
     
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
+    border-radius: 0;
+    -khtml-border-radius: 0;
 }
 
 .kals-paragraph .select.select_to.select_from {
     border-style: solid;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
 }
 
 /**
