@@ -283,7 +283,8 @@ Window_user_interface.prototype.error_row = function (_message) {
     return _ui;
 };
 
-Window_user_interface.prototype.hr_row = function () {
+//畫水平線
+Window_user_interface.prototype.hr_row = function () { 
     var _ui = $('<div class="hr-row"><hr /></div>');
     return _ui;
 };
@@ -305,7 +306,11 @@ Window_user_interface.prototype.tip = function (_lang_param) {
     _tip.addClass('tip');
     return _tip;
 };
-
+/**
+ * 設定要顯示語系檔的元件
+ * @param {HTMLElement} _container 要顯示文字的元件
+ * @param {KALS_language_param} _content 語系檔
+ */
 Window_user_interface.prototype._setup_content = function (_container, _content) {
     
     if ($.is_class(_content, 'KALS_language_param'))
@@ -318,5 +323,194 @@ Window_user_interface.prototype._setup_content = function (_container, _content)
     }
     return _container;
 };
+
+
+/**
+ * 製造換頁的選單
+ * @param {number} _now_page 現在頁數
+ * @param {number} _all_page 所有頁數
+ * @param {function} _callback 點下按鈕之後呼叫的功能
+ * _callback = function (_page) {
+ * 	//看你要用page作什麼事情
+ * }
+ */
+
+Window_user_interface.prototype.create_pager = function (_now_page, _all_page, _callback) {
+	var _factory = this;
+	var _ui = _factory.panel('pager');
+	
+	var _first = new KALS_language_param (
+	    'First',
+	    'window.pager.first'
+	);
+	var _first_value = 1;
+	
+	var _prev = new KALS_language_param (
+	    'Prev',
+	    'window.pager.prev'
+	);
+	var _prev_value = _now_page - 1;
+	
+	var _next = new KALS_language_param (
+	    'Next',
+	    'window.pager.next'
+	);
+	var _next_value = parseInt(_now_page) + 1;
+	
+	var _last = new KALS_language_param (
+	    'Last',
+	    'window.pager.last'
+	);
+	var _last_value = _all_page;
+	
+	var _now = new KALS_language_param (
+	    _now_page,
+	    'window.pager.now'
+	);
+	var _now_value = _now_page;
+	
+	var _now_prev = new KALS_language_param (
+	    parseInt(_now_page) - 1,
+	    'window.pager._now_prev'
+	);
+	var _now_prev_value = parseInt(_now_page) - 1;
+	
+	var _now_prev2 = new KALS_language_param (
+	    parseInt(_now_page) - 2,
+	    'window.pager._now_prev2'
+	);
+	var _now_prev2_value = parseInt(_now_page) - 2;
+	
+	var _now_next = new KALS_language_param (
+	    parseInt(_now_page) + 1,
+	    'window.pager._now_next'
+	);
+	var _now_next_value = parseInt(_now_page) + 1;
+
+	var _now_next2 = new KALS_language_param (
+	    parseInt(_now_page) + 2,
+	    'window.pager._now_next2'
+	);
+	var _now_next2_value = parseInt(_now_page) + 2;
+
+	//var _lastnum = _all_page;
+	
+	// Prev First ... 3 4 5 6 7 ... Last Next
+	// [1       ] [2] [3][4][5] [6] [7      ]
+	
+	// Part 1
+	if (_now_page != 1) {
+		this.create_pager_button(_prev, _prev_value, _callback).appendTo(_ui);
+		this.create_pager_button(_first, _first_value, _callback).appendTo(_ui);
+	} 
+    if (_now_page ==2){
+			
+		this.create_pager_button('1', _first_value, _callback).appendTo(_ui);
+		}
+		
+	
+	//Part2
+    if (_now_page > 3){
+		
+		this.create_pager_button('...').appendTo(_ui);
+		
+	}
+		
+	//PART3
+	if (_now_page > 3) {
+		this.create_pager_button(_now_prev2, _now_prev2_value, _callback).appendTo(_ui);
+	}
+
+    if (_now_page ==3){
+			
+		this.create_pager_button('1', _first_value, _callback).appendTo(_ui);
+		}
+	if (_now_page > 2) {
+		this.create_pager_button(_now_prev, _now_prev_value, _callback).appendTo(_ui);
+	}
+
+	
+	
+	//PART4 //當前頁面
+	this.create_pager_button(_now).appendTo(_ui);
+	
+	
+	//PART5
+	if (_now_page < _all_page - 1) {
+		this.create_pager_button(_now_next, _now_next_value, _callback).appendTo(_ui);
+	}
+	
+	if (_now_page < _all_page - 2) {
+		this.create_pager_button(_now_next2, _now_next2_value, _callback).appendTo(_ui);
+	}
+	
+	//PART6
+	if (_now_page < _all_page - 3){
+		
+		this.create_pager_button('...').appendTo(_ui);
+		
+	}
+	
+	
+	//PART7	
+	
+	    if (_now_page == _all_page - 1) {
+			this.create_pager_button(_all_page, _last_value, _callback).appendTo(_ui);
+		}
+	    if (_now_page == _all_page - 2) {
+			this.create_pager_button(_all_page, _last_value, _callback).appendTo(_ui);
+		}
+		if (_now_page != _all_page) {
+		this.create_pager_button(_last, _last_value, _callback).appendTo(_ui);
+		this.create_pager_button(_next, _next_value, _callback).appendTo(_ui);
+	
+	     
+	} 
+				
+	return _ui;
+};
+
+
+/**
+ * 製作換頁按鈕
+ * @param {KALS_language_param} _lang 按鈕顯示樣貌
+ * @param {string} _value 要輸入callback的值
+ * @param {Function} _callback 案下去的動作
+ * _callback = function (_value) {
+ * 	//_value...
+ * }
+ */
+
+ 
+ Window_user_interface.prototype.create_pager_button = function (_lang, _value, _callback) {
+	var _button = $("<button></button>")
+		.addClass("pager-button");
+	
+	if ($.is_function(_callback)) {
+		_button.click(function () {
+			_callback(_value);
+		});
+		_button.addClass("link");
+	}
+	
+	this._setup_content(_button, _lang);
+	
+	return _button;
+}; 
+
+//========================
+
+/**
+ * 畫出搜尋結果
+ * @param {KALS_language_param} _author 作者
+ * @param {KALS_language_param} _sort 類別
+ * @param {KALS_language_param} _content 內文
+ * @param {KALS_language_param} _note 筆記
+
+ */
+
+
+	
+//=============	
 /* End of file Window_user_interface */
 /* Location: ./system/application/views/web_apps/Window_user_interface.js */

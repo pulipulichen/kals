@@ -63,6 +63,9 @@
     cursor:pointer;
 }
 
+.window-subpanel  {
+    clear:both;
+}
 .dialog-modal.compact-width .window-panel .row dt {
     text-align:left;
     width: 100%;
@@ -120,3 +123,19 @@
 .window-password-change .row dt {
     width: 170px;
 }
+.window-panel .pager .pager-button {
+
+	border: 0;
+ 
+	background-color: transparent;
+		
+}
+.window-panel .result-table{
+	
+
+       border:1px solid black;
+       text-align:center;
+
+}
+
+

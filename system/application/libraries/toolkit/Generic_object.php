@@ -618,7 +618,7 @@ class Generic_object extends KALS_object {
      * @param string $field
      * @return mixed
      */
-    public function get_field($field)
+    public function get_field($field) //是你嗎？
     {
         if (is_array($field))
         {

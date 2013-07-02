@@ -148,10 +148,10 @@ Window_profile.prototype._$create_ui = function ()
         new KALS_language_param('Password Change', 'window.profile.content.password_change.heading'),
         _password_link_data
     ).appendTo(_ui);
-    
+   ///====== 
     var _check_embed = function (_is_embed)
     {
-        if (_is_embed == true)
+        if (_is_embed === true)
         {
             _password_link_data.hide();
             _password_row.hide();
