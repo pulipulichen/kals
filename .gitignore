@@ -3,6 +3,10 @@ aptana/
 nbproject/
 test/
 .settings/
+/aptana/
+/nbproject/
+/test/
+/.settings/
 
 /system/cache/
 /system/logs/
