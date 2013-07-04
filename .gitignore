@@ -1,5 +1,6 @@
 # IDE, don't track them
 aptana/
+/aptana/
 
 /system/cache
 /system/logs
