@@ -1,0 +1,18 @@
+name = Regions Admin Example
+description = An example feature for placing admin blocks in a region
+core = 7.x
+package = Regions
+dependencies[] = context
+dependencies[] = ctools
+dependencies[] = masquerade
+dependencies[] = system
+features[context][] = regions_admin
+features[ctools][] = context:context:3
+features[features_api][] = api:1
+
+; Information added by drupal.org packaging script on 2012-09-25
+version = "7.x-1.4"
+core = "7.x"
+project = "regions"
+datestamp = "1348598439"
+

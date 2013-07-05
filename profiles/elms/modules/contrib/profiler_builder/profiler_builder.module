@@ -1,0 +1,202 @@
+<?php
+// Copyright (C) 2011  The Pennsylvania State University
+//
+// Bryan Ollendyke
+// bto108@psu.edu
+//
+// Keith D. Bailey
+// kdb163@psu.edu
+//
+// 12 Borland
+// University Park,  PA 16802
+/**
+ * Implementation of hook_permission()
+ */
+function profiler_builder_permission() {
+    return array('administer profiler builder' => array(
+    'title' => 'Administer profiler builder',
+    'description' => 'Administer profiler builder',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function profiler_builder_menu() {
+  $items = array();
+  $items['admin/config/development/profiler_builder'] = array(
+    'title' => 'Profiler Builder',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_profiler_builder_settings'),
+    'description' => 'Build distribution files from current settings',
+    'access arguments' => array('administer profiler builder'),
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_settings()
+ */
+function _profiler_builder_settings() {
+  $form = array();
+  //call helper function to populate the three fields
+  _profiler_builder_info_file($info, $vars, $drush);
+  //info file
+  $form['info_file'] = array(
+    '#weight' => '-1',
+    '#description' => t('This is what the .info file would look like if you were to make a distribution off of this site as it exists currently.'),
+    '#collapsed' => '1',
+    '#type' => 'fieldset',
+    '#collapsible' => '1',
+    '#title' => t('.info file'),
+  );
+  $form['info_file']['info_file_contents'] = array(
+    '#description' => t('Copy this into your .info file for the distribution you are making'),
+    '#weight' => '0',
+    '#type' => 'textarea',
+    '#title' => t('File contents'),
+    '#value' => $info,
+  );
+  $form['info_file']['vars'] = array(
+    '#description' => t('Cheatsheet for all variables'),
+    '#weight' => '1',
+    '#type' => 'textarea',
+    '#title' => t('Variables'),
+    '#value' => $vars,
+  );
+  //drush make
+  $form['drush_file'] = array(
+    '#weight' => '0',
+    '#description' => t('This is what the .make file would look like if you were to make a distribution off of this site as it exists currently.'),
+    '#collapsed' => '1',
+    '#type' => 'fieldset',
+    '#collapsible' => '1',
+    '#title' => t('.make file'),
+  );
+  $form['drush_file']['drush_file_contents'] = array(
+    '#description' => t('Copy this into your .make file for the distribution you are making'),
+    '#weight' => '1',
+    '#type' => 'textarea',
+    '#title' => t('File contents'),
+    '#value' => $drush,
+  );
+  return $form;  
+}
+
+//helper function to build out the file pieces
+function _profiler_builder_info_file(&$info, &$vars, &$drush) {
+  //build the array we need  
+  $result = db_select('system', 's')
+  ->fields('s', array('status', 'type','name','info'))
+  ->condition('s.status', 1,'=')
+  ->condition('s.type', 'module','=')
+  ->execute();   
+  foreach($result as $val) { 
+  $system[$val->name]=unserialize($val->info); 
+  }
+  // allow modification via profiler_builder_ignore_alter
+  drupal_alter('profiler_builder_modules_list', $system);
+  //convert data
+ foreach($system as $module => $info) {
+    //account for the other package in module listing
+    if (!isset($info['package'])) {
+      $info['package'] = 'Other';  
+    }
+    $data[$info['package']][$module] = $info['version'];
+  }
+  //info file of required modules
+  $info = '';
+  foreach ($data as $package => $projects) {
+    $info.= '; '. $package ."\n";
+    foreach ($projects as $project => $version) {
+      $info.= 'dependencies[] = '. $project ."\n";
+    }
+  }
+  //variables
+  $vars = "; Variables\n\n";
+  //array of values we know to ignore automatically
+  $ignore_list = _profiler_builder_ignore_list();
+   $result = db_select('variable', 'v')
+  ->fields('v',array('name'))
+  ->condition('v.name', $ignore_list,'NOT IN')  
+  ->execute();  
+   foreach($result as $value) {
+    $val = variable_get($value->name, '');
+    if ($val != '') {
+      if (is_array($val)) {
+        foreach ($val as $key => $ary_val) {
+          if (is_array($ary_val)) {
+            foreach ($ary_val as $key2 => $ary_val2) {
+              if (is_array($ary_val2)) {
+                foreach ($ary_val2 as $key3 => $ary_val3) {
+                  if (is_array($ary_val3)) {
+                    foreach ($ary_val3 as $key4 => $ary_val4) {
+                      $vars.= 'variables['. $value->name .']['. $key .']['. $key2 .']['. $key3 .']['. $key4 .'] = '. var_export($ary_val4, true) ."\n";
+                    }
+                  }
+                  else {
+                    $vars.= 'variables['. $value->name .']['. $key .']['. $key2 .']['. $key3 .'] = '. var_export($ary_val3, true) ."\n";
+                  }
+                }
+              }
+              else {
+                $vars.= 'variables['. $value->name .']['. $key .']['. $key2 .'] = '. var_export($ary_val2, true) ."\n";
+              }
+            }
+          }
+          else {
+            $vars.= 'variables['. $value->name .']['. $key .'] = '. var_export($ary_val, true) ."\n";
+          }
+        }
+      }
+      else {
+        $vars.= 'variables['. $value->name .'] = '. var_export($val, true) ."\n";
+      }
+    }
+  }
+  //drush
+  $drush = '';
+  foreach ($data as $package => $projects) {
+    // skip core modules
+    // TODO: include Projects in the drush makefile, not Modules
+    if ('Core' !== $package) {
+      foreach ($projects as $project => $version) {
+        $drush.= 'projects['. $project .'][version] = "'. str_replace('7.x-', '', $version) .'"'."\n";
+        $drush.= 'projects['. $project .'][subdir] = "contrib"'."\n";
+      }
+    }
+  }
+}
+
+//helper function to gather ignored values
+function _profiler_builder_ignore_list() {
+  $ignore_list = array(
+    'features_codecache',
+    'views_block_hashes',
+    'drupal_private_key',
+    'cache_content_flush_cache_page',
+    'cache_content_flush_cache_block',
+    'cache_flush_cache_update',
+    'cron_key',
+    'cron_last',
+    'css_js_query_string',
+    'email__active_tab',
+    'install_profile',
+    'install_task',
+    'install_time',
+    'menu_masks',
+    'site_mail',
+    'update_last_check',
+    'wipe_rebuild',
+    'update_notify_emails',
+    'clean_url',
+    'file_temporary_path',
+    'ctools_last_cron',
+    'node_cron_last',
+    'user_admin_role',
+  );
+  // allow modification via profiler_builder_ignore_alter
+  drupal_alter('profiler_builder_ignore', $ignore_list);
+  return $ignore_list;
+}

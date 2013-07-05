@@ -1,0 +1,10 @@
+name = Options element
+description = A custom form element for entering the options in select lists, radios, or checkboxes.
+core = 7.x
+
+; Information added by drupal.org packaging script on 2012-03-17
+version = "7.x-1.7"
+core = "7.x"
+project = "options_element"
+datestamp = "1332018945"
+

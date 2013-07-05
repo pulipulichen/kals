@@ -1,0 +1,14 @@
+; $Id:$
+name = Organic groups theme
+description = "Associate theme to a group."
+package = "Organic groups"
+dependencies[] = og_context
+core = 7.x
+files[] = og_theme.module
+files[] = og_theme.install
+; Information added by drupal.org packaging script on 2012-07-25
+version = "7.x-2.0"
+core = "7.x"
+project = "og_theme"
+datestamp = "1343202820"
+

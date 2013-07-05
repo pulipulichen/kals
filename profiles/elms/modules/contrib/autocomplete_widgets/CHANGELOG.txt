@@ -1,0 +1,62 @@
+7.x-1.x-dev
+===========
+
+This is the initial dev release for the 7.x branch which integrates with the fields API that is now in core.
+The following new widget has been added:
+-  'Autocomplete for predefined suggestions' - this allows an admin to provide a list of suggestions but still allows users to enter anything they want in a text field. Use this widget to help avoid (but not prevent) variations of the same value. Ex: burger, hamburger, Burger ...
+
+
+6.x-1.x-dev
+===========
+
+Features:
+- #656554 by dagmar - Views 3 integration.
+- #730790 by jromine - Filter HTML from display of values.
+
+
+6.x-1.3
+=======
+
+Release notes:
+- This release requires running update.php to upgrade.
+
+Security issue:
+- DRUPAL-SA-CONTRIB-2009-115 [1]: Autocomplete callback does not honor permissions to access CCK fields.
+
+[1] http://drupal.org/node/670942
+
+Bugfixes:
+- #562432 Autocomplete text fields do not use default value setting.
+- #553336 Follow up patch to fix case sensitivity feature.
+
+Features:
+- Added CHANGELOG.txt.
+- #553336 Added case sensitive option. Needs update.php.
+- Split code into separate files to minimize memory consumption during normal site operation.
+- Added translations template and fixed a couple of potx warnings related to CCK widget labels.
+
+
+6.x-1.2
+=======
+
+Release notes:
+- Upgrading does not require running update.php.
+
+Features:
+- #550588: Add support for i18n to the 'Autocomplete for existing field data' widget.
+
+
+6.x-1.1
+=======
+
+Release notes:
+- Upgrading does not require running update.php.
+
+Bugfixes:
+- #405628 by nguyenquocviet - The widget of autocomplete for allowed values list does not show any possible values from allowed values list.
+
+
+6.x-1.0
+=======
+
+- Initial release.

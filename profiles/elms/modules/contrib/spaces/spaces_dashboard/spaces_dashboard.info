@@ -1,0 +1,25 @@
+core = 7.x
+dependencies[] = "context"
+dependencies[] = "context_ui"
+dependencies[] = "ctools"
+dependencies[] = "features"
+description = "A dashboard space on user pages."
+features[context][] = "spaces_dashboard"
+features[ctools][] = "context:context:3"
+name = "Spaces Dashboard"
+package = "Features"
+spaces[types] = "all"
+
+files[] = spaces_dashboard.admin.inc
+files[] = spaces_dashboard.api.php
+files[] = spaces_dashboard.context.inc
+files[] = spaces_dashboard.features.inc
+files[] = spaces_dashboard.module
+files[] = tests/spaces_dashboard.test
+
+; Information added by drupal.org packaging script on 2012-03-06
+version = "7.x-3.0-alpha1"
+core = "7.x"
+project = "spaces"
+datestamp = "1331005546"
+

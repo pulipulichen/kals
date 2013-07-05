@@ -1,0 +1,22 @@
+/* CSS Document */
+#nrhi_container {
+  background-color:#333;
+  border:2px solid #999;
+  display:none;
+  position:absolute;
+  float:left;
+  color:#CCC;
+  font-size:12px;
+  text-align:center;
+}
+
+ul.nrhi_items {
+  list-style-position:inside;
+  list-style-type:none;
+}
+
+ul.nrhi_items li{
+  list-style-position:inside;
+  list-style-type:none;
+  display:inline;
+}

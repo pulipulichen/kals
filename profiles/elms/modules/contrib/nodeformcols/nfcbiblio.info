@@ -1,0 +1,13 @@
+name = Biblio compatability
+description = Adds support for biblio fields
+dependencies[] = nodeformcols
+dependencies[] = biblio
+core = 7.x
+package = Node form columns
+
+; Information added by drupal.org packaging script on 2012-06-13
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "nodeformcols"
+datestamp = "1339547249"
+

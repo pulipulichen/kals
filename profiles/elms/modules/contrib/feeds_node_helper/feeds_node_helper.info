@@ -1,0 +1,14 @@
+; $Id: feeds_node_helper.info
+name = Feeds Node Helper
+description = Provides some additionally useful importers for feeds
+package = Feeds
+dependencies[] = feeds
+project = "feeds_node_helper"
+
+
+; Information added by drupal.org packaging script on 2012-09-26
+version = "7.x-1.2"
+core = "7.x"
+project = "feeds_node_helper"
+datestamp = "1348671039"
+

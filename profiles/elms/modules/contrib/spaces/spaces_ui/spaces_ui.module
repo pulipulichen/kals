@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function spaces_ui_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && $plugin == 'export_ui') {
+    return 'export_ui';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function spaces_ui_theme() {
+  $items = array();
+  $items['spaces_preset_list_new'] =  array(
+    'render element' => 'form',
+    'template' => 'spaces-preset-list-new',
+    'path' => drupal_get_path('module', 'spaces_ui') .'/theme',
+    'file' => 'theme.inc',
+  );
+  return $items;
+}
+
+

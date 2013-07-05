@@ -1,0 +1,129 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the spaces module.
+ *
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function spaces_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function spaces_uninstall() {
+}
+
+/**
+ * Implements hook_enable().
+ */
+function spaces_enable() {
+  db_update('system')
+      ->fields(array('weight' => -1,))
+      ->condition('name', 'spaces')
+      ->condition('type', 'module')
+      ->execute();
+}
+
+/**
+ * Implements hook_schema().
+ */
+function spaces_schema() {
+  $schema = array();
+  $schema['spaces_overrides'] = array(
+    'description' => 'Object overrides per space.',
+    'fields' => array(
+      'type' => array(
+        'description' => 'The space type.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'id' => array(
+        'description' => 'The space id.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'object_type' => array(
+        'description' => 'The override object type.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'object_id' => array(
+        'description' => 'The override object id.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'value' => array(
+        'description' => 'Serialized storage of space-specific override values.',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+    ),
+    'indexes' => array(
+      'space' => array('type', 'id'),
+      'object' => array('object_type', 'object_id'),
+    ),
+  );
+  $schema['spaces_presets'] = array(
+    'description' => 'Spaces presets.',
+    'export' => array(
+      'key' => 'name',
+      'identifier' => 'spaces_presets',
+      'default hook' => 'spaces_presets',
+      'status' => 'spaces_preset_status',
+      'api' => array(
+        'owner' => 'spaces',
+        'api' => 'spaces', // Base name for api include files.
+        'minimum_version' => 3,
+        'current_version' => 3,
+      ),
+      'export callback' => 'spaces_preset_export',
+    ),
+    'fields' => array(
+      'name' => array(
+        'description' => 'The preset string identifier.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'title' => array(
+        'description' => 'The human-readable name for this preset.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'description' => array(
+        'description' => 'The description for this preset.',
+        'type' => 'text',
+      ),
+      'space_type' => array(
+        'description' => 'The space type for which this preset applies.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'value' => array(
+        'description' => 'A serialized array that represents this preset\'s definition.',
+        'type' => 'text',
+        'serialize' => TRUE,
+      ),
+    ),
+    'primary key' => array('name'),
+    'indexes' => array(
+      'type' => array('space_type'),
+    ),
+  );
+  return $schema;
+}
+
+/**
+ * Add update hook for upgrade from 6.x-3.x to 7.x-1.x (if needed)
+ */

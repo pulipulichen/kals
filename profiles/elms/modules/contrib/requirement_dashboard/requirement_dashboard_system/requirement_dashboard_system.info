@@ -1,0 +1,14 @@
+; $Id: requirement_dashboard_system.info
+name = "Requirement Dashboard System"
+description = "Implementation of the Requirement Dashboard API for a system wide dashboard"
+package = "Requirement Dashboard"
+dependencies[] = "requirement_dashboard"
+core = 7.x
+
+
+; Information added by drupal.org packaging script on 2012-07-19
+version = "7.x-1.2"
+core = "7.x"
+project = "requirement_dashboard"
+datestamp = "1342737453"
+

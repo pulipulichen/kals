@@ -1,0 +1,14 @@
+; $Id: feeds_ridmap.info
+name = Feeds RID Map
+description = This module provides targets for Feeds module user import so that you can import user roles globally or per organic group
+package = Feeds
+dependencies[] = feeds
+project = "feeds_ridmap"
+
+
+; Information added by drupal.org packaging script on 2012-06-26
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "feeds_ridmap"
+datestamp = "1340713151"
+

@@ -1,0 +1,23 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the outline_child_pages module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function outline_child_pages_install() { }
+
+/**
+ * Implements hook_uninstall().
+ */
+function outline_child_pages_uninstall() {
+  // Delete variables
+  $variables = array(
+    'outline_child_pages_type',
+  );
+  foreach ($variables as $variable) {
+    variable_del($variable);
+  }
+}

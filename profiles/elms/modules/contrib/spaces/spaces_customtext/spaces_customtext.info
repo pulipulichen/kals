@@ -1,0 +1,16 @@
+core = 7.x
+dependencies[] = "spaces"
+description = "Allows a space administrator to customize text used in that space."
+name = "Spaces Custom Text"
+package = "Spaces"
+
+files[] = spaces_customtext.admin.inc
+files[] = spaces_customtext.module
+files[] = plugins/spaces_controller_customtext.inc
+
+; Information added by drupal.org packaging script on 2012-03-06
+version = "7.x-3.0-alpha1"
+core = "7.x"
+project = "spaces"
+datestamp = "1331005546"
+

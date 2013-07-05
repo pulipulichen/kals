@@ -1,0 +1,12 @@
+name = "Hidden Nodes"
+description = "Create the ability to hide nodes from users based on a checkbox setting without having to unpublish them."
+package = "Permissions"
+core = 7.x
+configure = admin/config/content/hidden_nodes
+
+; Information added by drupal.org packaging script on 2012-09-20
+version = "7.x-1.0"
+core = "7.x"
+project = "hidden_nodes"
+datestamp = "1348163667"
+

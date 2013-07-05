@@ -1,0 +1,14 @@
+name = Autocomplete Widgets
+description = Provides autocomplete widgets for Text and List fields 
+core = 7.x
+
+files[] = autocomplete_widgets.admin.inc
+files[] = autocomplete_widgets.common.inc
+files[] = autocomplete_widgets.module
+dependencies[] = list
+; Information added by drupal.org packaging script on 2012-03-22
+version = "7.x-1.0-beta2"
+core = "7.x"
+project = "autocomplete_widgets"
+datestamp = "1332436840"
+

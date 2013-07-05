@@ -1,0 +1,59 @@
+/*
+  CSS Reset Style Guide 
+  inspiration by http://www.blueprintcss.org/ reset.css and typography.css
+*/
+
+/* Admin Toolbar to repair il-made themes */
+body {font-size:75%;}
+/* GLOBAL */
+#skip-nav a, skip-nav a, #skip-nav a:hover,#skip-nav a:visited{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
+#skip-nav a:active,#skip-nav a:focus{position:static;width:auto;height:auto;left:0px;top:20px;overflow:visible;color:#222;background-color:#FFF;}
+a:focus {outline:2px solid #3F0;}
+a:focus * {outline:2px solid #3F0;}
+/* Resets for content */
+/* Links */
+div.node *{font:1em Arial, Verdana, Helvetica, sans-serif;line-height:1.5em;color:#333;}
+div.node {line-height:1.5em;margin:0px;padding:5px;border:0;vertical-align:baseline;}
+div.node a, div.node a:link, div.node a:visited{color:#26F;text-decoration:underline;}
+div.node a:hover,div.node a:active{text-decoration:underline;}
+div.node a img {border:none;}
+/* Headings */
+div.node h2 {line-height:1em;margin-top:1em;margin-bottom:0.25em;text-decoration:none;}
+div.node h3 {line-height:1em;margin-top:1em;margin-bottom:0.25em;text-decoration:none;}
+/* Paragraph */
+div.node p{margin:0 0 10px 0;font:1em Arial, Verdana, Helvetica, sans-serif;line-height:1.5em;}
+div.node em{font-style:italic;}
+div.node strong{font-weight:bold;}
+div.node sup, div.node sub {line-height:0;font-size:.5em;padding:1px;}
+/* Table elements */
+div.node table{vertical-align:middle;width:98%;margin-bottom:1.4em;border-collapse:separate;border-spacing:0;}
+div.node tr{border-left:1px solid #333;border-right:1px solid #333;}
+div.node th{padding:4px 10px 4px 5px;vertical-align:middle;text-align:left;font-weight:bold;float:none !important;}
+div.node thead th{background:#CCC;vertical-align:middle;text-align:left;font-weight:normal;float:none !important;padding:5px; border-bottom:1px solid #555;border-top:1px solid #555;}
+div.node tbody th{background:#CCC;vertical-align:middle;text-align:left;font-weight:normal;float:none !important;padding:5px; border-bottom:1px solid #555;border-top:1px solid #555;}
+div.node td{vertical-align:middle; border-bottom:1px solid #555;text-align:left;font-weight:normal;float:none !important;padding:4px 10px 4px 5px;}
+div.node tbody tr:nth-child(even) {background:#EEE;}
+div.node tbody tr:nth-child(odd) {background:#DDD;}
+div.node tbody tr:hover th{background:#CCE !important;}
+div.node tbody tr:hover{background:#CCE !important;}
+div.node caption {margin:0px;clear:both;padding:4px 10px 4px 5px;font-size:1.2em;font-weight:normal;width:auto;background:#eee;}
+/* List elements */
+div.node ul, div.node ol{margin:0 1.5em 1.0em 0;padding-left:4.0em;font-size:1em;}
+div.node ul{list-style-type:disc;}
+div.node ul ul{list-style-type:circle;}
+div.node ul ul ul{list-style-type:square;}
+div.node ul ul ul ul{list-style-type:circle;}
+div.node ol{list-style-type:decimal;}
+div.node ol ol{list-style-type:lower-alpha;}
+div.node ol ol ol{list-style-type:decimal;}
+div.node ol li, div.node ul li{margin:0.25em 0}
+div.node .book-navigation ol li, div.node .book-navigation  ul li{margin:0px;}
+div.node iframe{margin:1em}
+/* Abbreviation */
+div.node abbr{border-bottom:1px dotted #666666;cursor:help;white-space:nowrap;}
+/* Blockquotes */
+div.node blockquote{quotes:"" "";margin:1.5em;font-style:italic;}
+div.node blockquote:before, blockquote:after{content:'';}
+/* Headings */
+div.node h2{font-size:1.75em;font-weight:bold;} /* small */
+div.node h3{font-size:1.5em;font-weight:bold;} /* vsmall */

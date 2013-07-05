@@ -1,0 +1,14 @@
+name = "Node Reference Highlight"
+description = "Adds the ability to highlight text in the body content of nodes and streamline the association of other node types"
+dependencies[] = "entityreference"
+dependencies[] = "entityreference_prepopulate"
+dependencies[] = "prepopulate"
+package = "Entity"
+core = 7.x
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.0-alpha1"
+core = "7.x"
+project = "nodereference_highlight"
+datestamp = "1350358618"
+

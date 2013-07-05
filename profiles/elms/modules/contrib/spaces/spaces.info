@@ -1,0 +1,32 @@
+core = 7.x
+dependencies[] = "ctools"
+dependencies[] = "features"
+description = "Provides a customizable spaces layer on top of Drupal."
+name = "Spaces"
+package = "Spaces"
+
+files[] = spaces.admin.inc
+files[] = spaces.api.php
+files[] = spaces.install
+files[] = spaces.module
+files[] = spaces.overrides.inc
+files[] = includes/spaces.views.inc
+files[] = includes/spaces_handler_field_node.inc
+files[] = includes/spaces_handler_field_spaces_feature.inc
+files[] = includes/spaces_handler_filter_spaces_current.inc
+files[] = includes/spaces_handler_filter_spaces_feature.inc
+files[] = includes/spaces_plugin_access_spaces_feature.inc
+files[] = plugins/space.inc
+files[] = plugins/space_type.inc
+files[] = plugins/space_type_purl.inc
+files[] = plugins/spaces_controller.inc
+files[] = plugins/spaces_controller_context.inc
+files[] = plugins/spaces_controller_variable.inc
+files[] = theme/theme.inc
+
+; Information added by drupal.org packaging script on 2012-03-06
+version = "7.x-3.0-alpha1"
+core = "7.x"
+project = "spaces"
+datestamp = "1331005546"
+

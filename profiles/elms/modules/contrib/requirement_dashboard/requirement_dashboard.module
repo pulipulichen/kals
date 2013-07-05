@@ -1,0 +1,100 @@
+<?php
+// ELMS: Requirement Dashboard
+// Development Sponsored by The Pennsylvania State University
+// ELMS is Copyright (C) 2008-2012  The Pennsylvania State University
+//
+// Bryan Ollendyke
+// bto108@psu.edu
+//
+// Keith D. Bailey
+// kdb163@psu.edu
+//
+// 12 Borland
+// University Park,  PA 16802
+
+/**
+ * @file
+ * Add dashboards to drupal that act like the system status page
+ */
+
+/**
+ * Implements hook_help().
+ */
+function requirement_dashboard_help($path, $arg) {
+  if ($path == 'admin/help#requirement_dashboard') {
+    return '<p>' . t('Requirements Dashboard allows you to add new dashboards to drupal') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function requirement_dashboard_menu() {
+  $list = _requirement_dashboard_provider_list();
+  // loop through and build the menu based on providers we've found
+  foreach ($list as $key => $dashboard) {
+    $items[$dashboard['path']] = array(
+      'title' => 'Dashboard',
+      'title callback' => 'requirement_dashboard_title',
+      'title arguments' => array($dashboard),
+      'description' => 'A dashboard of requirements and status overview.',
+      'page callback' => 'requirement_dashboard_status',
+      'page arguments' => array($key),
+      'access arguments' => array('view ' . $key . ' requirements dashboard'),
+      'type' => MENU_LOCAL_TASK,
+    );
+  }
+  return $items;
+}
+
+/**
+ * Menu title callback.
+ */
+function requirement_dashboard_title($dashboard = NULL) {
+  return $dashboard['title'];
+}
+
+/**
+ * Implements hook_permission().
+ */
+function requirement_dashboard_permission() {
+  $list = _requirement_dashboard_provider_list();
+  // generate a list of requirement dashboards and the permissions for them
+  foreach ($list as $key => $dashboard) {
+    $perms['view ' . $key . ' requirements dashboard'] = array(
+      'title' => $dashboard['title'],
+      'description' => t('Grant access to use the %title requirements dashboard', array('%title' => $dashboard['title'])),
+    );
+  }
+  return $perms;
+}
+
+/**
+ * Menu callback: displays the provider's status report.
+ *
+ * @param $check
+ *   The provider to list the requirements of
+ */
+function requirement_dashboard_status($provider = FALSE) {
+  // include install file as this has REQUIREMENT definitions
+  include_once DRUPAL_ROOT . '/includes/install.inc';
+  // invoke hook to pull all requirements of the provider
+  $requirements['requirements'] = module_invoke_all('dashboard_requirements', $provider);
+  // allow other projects to alter this one
+  drupal_alter('dashboard_requirements', $requirements['requirements'], $provider);
+  // if provider isn't set do nothing
+  if (!$provider) {
+    return t('Provider needs to be set to render anything.');
+  }
+  // render the provider requirements the same way drupal core would render its status page
+  return theme('status_report', $requirements);
+}
+
+// helper function to return an array of the available requirement dashboards
+function _requirement_dashboard_provider_list() {
+  // invoke the hook and get all the providers
+  $requirement_dashboards = module_invoke_all('requirement_dashboard_provider');
+  // allow other projects to alter this one
+  drupal_alter('requirement_dashboard_provider', $requirement_dashboards);
+  return $requirement_dashboards;
+}

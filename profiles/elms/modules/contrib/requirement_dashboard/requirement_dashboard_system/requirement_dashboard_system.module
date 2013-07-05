@@ -1,0 +1,62 @@
+<?php
+// ELMS: Requirement Dashboard System
+// Development Sponsored by The Pennsylvania State University
+// ELMS is Copyright (C) 2008-2012  The Pennsylvania State University
+//
+// Bryan Ollendyke
+// bto108@psu.edu
+//
+// Keith D. Bailey
+// kdb163@psu.edu
+//
+// 12 Borland
+// University Park,  PA 16802
+
+/**
+ * @file
+ * Add requirement dashboards to System level for
+ */
+
+/**
+ * Implements hook_requirement_dashboard_provider().
+ */
+function requirement_dashboard_system_requirement_dashboard_provider() {
+  $dashboards['system'] = array(
+    'title' => t('System stats'),
+    'path' => 'system_stats',
+  );
+  return $dashboards;
+}
+
+/**
+ * Implements hook_dashboard_requirements().
+ */
+function requirement_dashboard_system_dashboard_requirements($provider) {
+  $requirements = array();
+	switch ($provider) {
+    case 'system':
+      $requirements['name'] = array(
+        'title' => t('Site name'),
+        'value' => variable_get('site_name', ''),
+        'severity' => REQUIREMENT_INFO,
+        'description' => t('The name of your site'),
+      );
+      $requirements['site_mail'] = array(
+        'title' => t('Site email'),
+        'value' => variable_get('site_mail', ''),
+        'severity' => REQUIREMENT_INFO,
+        'description' => t('The email address to send to for this site'),
+      );
+      break;
+  }
+  return $requirements;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function requirement_dashboard_system_menu_alter(&$items) {
+  if (isset($items['system_stats'])) {
+    $items['system_stats']['type'] = MENU_NORMAL_ITEM;
+  }
+}

@@ -1,0 +1,265 @@
+<?php
+/**
+ * @file spaces_taxonomy.module
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function spaces_taxonomy_enable() {
+  // Weight spaces_taxonomy to be after taxonomy.
+  $weight = db_query("SELECT weight FROM {system} WHERE type = :type AND name = :name", array(':type' => 'module', ':name' => 'taxonomy'))->fetchField();
+  db_update('system')
+      ->fields(array('weight' => ($weight + 1)))
+      ->condition('name', 'spaces_taxonomy')
+      ->execute();
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function spaces_taxonomy_ctools_plugin_api($module, $api) {
+  if ($module == 'spaces' && $api == 'plugins') {
+    return array('version' => 3);
+  }
+}
+
+/**
+ * Implements hook_purl_provider().
+ */
+function spaces_taxonomy_purl_provider() {
+  $items = array();
+  $items["spaces_taxonomy"] = array(
+    'name' => t('Term space'),
+    'description' => t('Sets a space as the active space.'),
+    'callback' => 'spaces_init_space',
+    'callback arguments' => array('taxonomy'),
+    'example' => 'my-space',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_spaces_plugins().
+ */
+function spaces_taxonomy_spaces_plugins() {
+  $plugins = array();
+  $plugins['space_taxonomy'] = array(
+    'handler' => array(
+      'path' => drupal_get_path('module', 'spaces_taxonomy') . '/plugins',
+      'file' => 'space_taxonomy.inc',
+      'class' => 'space_taxonomy',
+      'parent' => 'space_type_purl',
+    ),
+  );
+  return $plugins;
+}
+
+/**
+ * Implements hook_spaces_registry().
+ */
+function spaces_taxonomy_spaces_registry() {
+  return array(
+    'types' => array(
+      'taxonomy' => array(
+        'title' => t('Term space'),
+        'plugin' => 'space_taxonomy',
+        'path' => 'taxonomy/term/%',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function spaces_taxonomy_menu() {
+  $items = array();
+  $items['admin/structure/spaces/taxonomy'] = array(
+    'title' => 'Taxonomy',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('spaces_taxonomy_settings'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer spaces'),
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function spaces_taxonomy_menu_alter(&$items) {
+  if (isset($items['taxonomy/term/%'])) {
+    $items['taxonomy/term/%/view'] = $items['taxonomy/term/%'];
+    $items['taxonomy/term/%/view']['type'] = MENU_DEFAULT_LOCAL_TASK;
+    $items['taxonomy/term/%/view']['title'] = 'View';
+    $items['taxonomy/term/%/view']['weight'] = -10;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * This disables the term selection field on a node for the currently enabled taxonomy
+ * space. This is a precaution so that the node is not moved form one space to another.
+ */
+function spaces_taxonomy_form_alter(&$form, $form_state, $form_id) {
+  if (!empty($form['#node_edit_form']) && (arg(0) . '/' . arg(1) != 'admin/content')) {
+    $vocab = variable_get('spaces_taxonomy_machine_name', 0);
+    $space = spaces_get_space();
+
+    if ($vocab && $space && $space->type == 'taxonomy') {
+      // Find term fields that are for the current spaces vocab
+      $fields = field_info_fields();
+      foreach ($fields as $name => $field) {
+        if ($field['type'] == 'taxonomy_term_reference' && $vocab == $field['settings']['allowed_values'][0]['vocabulary']) {
+          if ($term_field = &$form[$name]) {
+            //TODO: Fix this whole 'und' thing
+            $term_field['und']['#disabled'] = TRUE;
+            $term_field['und']['#default_value'] = $space->id;
+            $term_field['und']['#description'] = t('Spaces has disabled this field.  You cannot move a node from one term space to another.');
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter() for taxonomy_form_term().
+ */
+function spaces_taxonomy_form_taxonomy_form_term_alter(&$form, $form_state) {
+  $vocab_name = variable_get('spaces_taxonomy_machine_name', 0);
+  if ($vocab_name && $form['vocabulary_machine_name']['#value'] == $vocab_name) {
+    $tid = isset($form['tid']['#value']) ? $form['tid']['#value'] : 0;
+    $space = spaces_load('taxonomy', $tid);
+
+    if ($space) {
+      $space->activate();
+
+      $form['spaces'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Spaces'),
+        '#tree' => FALSE,
+        '#weight' => 0,
+      );
+
+      // Add PURL modifier form
+      $modifier = purl_load(array('id' => $tid, 'provider' => 'spaces_taxonomy'));
+      $form['spaces']['purl'] = purl_form('spaces_taxonomy', $tid, isset($modifier['value']) ? $modifier['value'] : '');
+
+      // Add presets form
+      $presets = spaces_preset_load(NULL, 'taxonomy');
+      if (count($presets) > 1) {
+        module_load_include('inc', 'spaces', 'spaces.admin');
+        $form['spaces']['spaces_preset'] = spaces_preset_form($presets, 'taxonomy');
+        $space = spaces_load('taxonomy', $tid);
+        $default_value = $space->controllers->variable->get('spaces_preset_taxonomy', 'space');
+        if (isset($default_value, $form['spaces']['spaces_preset']['spaces_preset_taxonomy']['#options'][$default_value])) {
+          $form['spaces']['spaces_preset']['spaces_preset_taxonomy']['#default_value'] = $default_value;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_taxonomy_term_insert().
+ */
+function spaces_taxonomy_taxonomy_term_insert($term) {
+  _spaces_taxonomy_term_save_preset_and_modifier($term);
+}
+
+/**
+ * Implements hook_taxonomy_term_update().
+ */
+function spaces_taxonomy_taxonomy_term_update($term) {
+  _spaces_taxonomy_term_save_preset_and_modifier($term);
+}
+
+
+/**
+ * Save the Taxonomy Term preset values
+ *
+ * @param  $term  A term object
+ */
+function _spaces_taxonomy_term_save_preset_and_modifier($term) {
+  $space = spaces_load('taxonomy', $term->tid);
+  if ($space) {
+    // Save preset values.
+    if (!empty($term->spaces_preset_taxonomy)) {
+      $space->controllers->variable->set('spaces_preset_taxonomy', $term->spaces_preset_taxonomy);
+    }
+
+    // Save PURL modifier.
+    $modifier = array(
+      'provider' => 'spaces_taxonomy',
+      'id' => $term->tid,
+      'value' => $term->purl['value'],
+    );
+    purl_save($modifier);
+  }
+}
+
+
+/**
+ * Implements hook_taxonomy_term_delete().
+ */
+function spaces_taxonomy_taxonomy_term_delete($term) {
+  spaces_delete('taxonomy', $term->tid);
+  
+  $modifier = array(
+    'provider' => 'spaces_taxonomy',
+    'id' => $term->tid,
+  );
+  purl_delete($modifier);
+}
+
+/**
+ * TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+ * Implement a form alter to disable changing the selected spaces
+ * vocabulary to free tagging or multiple.
+ * TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+ */
+
+
+/**
+ * Spaces Taxonomy settings form.
+ *
+ * A node can only belong to one space, so only provide options for the Space
+ * vocabulary that are single valued.  This means that:
+ *
+ *  1) In various hook_form_alters we will need to disable the cardinality
+ *     selection on term references that are for this specified Spaces vocab.
+ *  2) On any term reference field in a node form, do not allow them to change
+ *     the value of this vocabulary once it has been selected.
+ */
+function spaces_taxonomy_settings($form, &$form_state) {
+  $form = array();
+  
+  // Collect an array of valid vocab options
+  $vocabs = array(0 => '---');
+  foreach (taxonomy_get_vocabularies() as $vocab) {
+    $vocabs[$vocab->machine_name] = $vocab->name;
+  }
+
+  // Get all fields that are taxonomy terms, if they allow more than one
+  // term to be selected remove them from this dropdown.
+  $fields = field_info_fields();
+  foreach ($fields as $name => $field) {
+    if ($field['type'] == 'taxonomy_term_reference' && $field['cardinality'] != 1) {
+      unset($vocabs[$field['settings']['allowed_values'][0]['vocabulary']]);
+    }
+  }
+
+  $form['spaces_taxonomy_machine_name'] = array(
+    '#type' => 'select',
+    '#title' => t('Spaces vocabulary'),
+    '#description' => t('Choose one of the following vocabularies to enable for use with Spaces.'),
+    '#options' => $vocabs,
+    '#default_value' => variable_get('spaces_taxonomy_machine_name', 0),
+  );
+  $form = system_settings_form($form);
+  return $form;
+}
