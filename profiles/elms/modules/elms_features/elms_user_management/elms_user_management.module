@@ -1,0 +1,66 @@
+<?php
+
+include_once 'elms_user_management.features.inc';
+
+/**
+ * Implements hook_init().
+ */
+function elms_user_management_init() {
+  if (arg(0) == 'elms_user_management') {
+    drupal_add_css(drupal_get_path('module', 'elms_user_management') . '/css/elms_user_management.css');
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function elms_user_management_permission() {
+  return array(
+    'use elms user management' => array(
+      'title' => t('use elms user management'),
+      'description' => t('TODO Add a description for \'use elms user management\''),
+    ),
+    'edit elms user management' => array(
+      'title' => t('edit elms user management'),
+      'description' => t('TODO Add a description for \'edit elms user management\''),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function elms_user_management_menu() {
+  $items['elms_site_admin/user_management'] = array(
+    'title' => 'User management',
+    'description' => "All user management options",
+    'weight' => -20,
+    'access callback' => '_elms_user_management_admin_access',
+    'access arguments' => array(),
+    'page callback' => 'elms_user_management_settings_overview',
+    'file' => 'elms_user_management.admin.inc',
+  );
+  $items['elms_site_admin/user_management/import'] = array(
+    'title' => 'User management',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_user_management_import_form'),
+    'access arguments' => array('use elms user management'),
+    'file' => 'elms_user_management.pages.inc',
+  );
+  $items['admin/elms/user_management'] = array(
+    'title' => 'User management',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_user_management_admin_form'),
+    'access arguments' => array('edit elms user management'),
+    'file' => 'elms_user_management.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Callback for access.
+ */
+function _elms_user_management_admin_access() {
+  $group = og_context();
+  return (og_user_access($group, 'administer group') || user_access('administer site configuration'));
+}

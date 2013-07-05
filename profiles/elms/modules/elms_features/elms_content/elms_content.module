@@ -1,0 +1,382 @@
+<?php
+
+include_once 'elms_content.features.inc';
+
+/**
+ * Implements hook_node_load().
+ */
+function elms_content_node_load($node, $types) {
+  // for group nodes, load in the ID of the book outline
+  if (og_is_group_type($node->type)) {
+    // there's only 1 book per group so load the id and store it in the node object
+    // also store the outline mlid to avoid duplicate querying in the future
+    $result = db_query("SELECT mlid,{book}.nid FROM {og_ancestry} JOIN {book} ON {book}.nid = {og_ancestry}.nid WHERE {book}.nid = :{book}.nid AND group_nid = :group_nid", array(':{book}.nid' => '{book} . bid', ':group_nid' => $node->nid));
+    $val = db_fetch_array($result);
+    $node->book_outline_mlid = $val['mlid'];
+    $node->book_nid = $val['nid'];
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function elms_content_node_view($node, $view_mode = 'full') {
+  // for referenced nodes we want to populate the content with the other node's body
+  if ($node->type == 'referenced_page') {
+    if (is_numeric($node->field_reference_page[0]['nid'])) {
+      $ref_node = node_load($node->field_reference_page[0]['nid']);
+      $node->content['body']['#value'] = $ref_node->body;
+    }
+  }
+}
+
+/**
+ * Implements hook_nodeapi().
+ */
+function elms_content_nodeapi_OLD(&$node, $op, $a3 = NULL, $a4 = NULL) { }
+
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function elms_content_theme_registry_alter(&$vars) {
+  // alter the way book nav functions
+  $vars['book_navigation']['theme path'] = drupal_get_path('module', 'elms_content');
+  $vars['book_navigation']['path'] = drupal_get_path('module', 'elms_content');
+  $vars['book_navigation']['theme paths'] = array(0 => drupal_get_path('module', 'elms_content'));
+}
+
+/**
+ * Implements hook_init().
+ */
+function elms_content_init() {
+  drupal_add_css(drupal_get_path('module', 'elms_content') . '/css/style.css', array('type' => 'file', 'weight' => CSS_THEME));
+}
+
+/**
+ * Implements hook_menu().
+ */
+function elms_content_menu() {
+  $items = array();
+  $items['elms_content'] = array(
+    'page callback' => '_elms_content_root',
+    'access callback' => 'spaces_access_feature',
+    'access arguments' => array('view', 'elms_content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'elms_content.pages.inc',
+  );
+
+  return $items;
+}
+
+// helper function for access verification of settings page
+function _elms_content_access_check() {
+  // make sure the feature is activated
+  if (spaces_access_feature('view', 'elms_content')) {
+    return user_access('manage features');
+  }
+  return 0;
+}
+
+// helper function for access verification of settings page, as admin
+function _elms_content_access_check_admin() {
+  // make sure the feature is activated
+  if (spaces_access_feature('view', 'elms_content')) {
+    return user_access('spaces_access_admin');
+  }
+  return 0;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function elms_content_block_info() {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  if (TRUE) {
+    $blocks['delta-0'] = array(
+      'info' => t('ELMS content nav'),
+      'weight' => -10,
+      'status' => 0,
+    );
+    return $blocks;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function elms_content_block_view($delta) {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  if (TRUE) {
+    switch ($delta) {
+      case 'delta-0':
+        // account for non-node pages, make sure feature is turned on
+        if (spaces_access_feature('view', 'elms_content')) {
+          $group = og_context();
+          if (isset($group->nid)) {
+            // if this is a node, load it
+            if (arg(0) == 'node' && is_numeric(arg(1)) && arg(1) != $group->nid) {
+              $node = menu_get_object();
+              if (isset($node->book)) {
+                $block = module_invoke('book', 'block', 'view', 0);
+              }
+            }
+            // if it wasn't a node page, load the highest level manually
+            if (!isset($block['content'])) {
+              $node = node_load($group->book_nid);
+              $tree = menu_tree_all_data($node->book['menu_name'], $node->book);
+              // There should only be one element at the top level.
+              $data = array_shift($tree);
+              $block['content'] = ($data['below']) ? menu_tree_output($data['below']) : '';
+            }
+            $block['subject'] = t('Content outline');
+            $block['title'] = t('Content outline');
+          }
+        }
+        break;
+    }
+    return $block;
+  }
+}
+
+/**
+ * Implements hook_block().
+ */
+function elms_content_block_OLD($op = 'list', $delta = 0, $edit = array()) { }
+
+/**
+ * Implements hook_link_alter().
+ */
+function elms_content_link_alter(&$links, $node, $comment = NULL) {
+  // check print setting
+  $print_option = variable_get('elms_print_options', 'both');
+  if ($print_option == 'none') {
+    unset($links['book_printer']);
+  }
+}
+
+// helper function for how we render the pager navigation
+function _elms_content_toc($bid, $exclude = array(), $depth_limit = 10) {
+  $tree = menu_tree_all_data(book_menu_name($bid));
+  $header = array(t('Table of contents'));
+  $toc = array();
+  _elms_content_toc_recurse($tree, $toc, $exclude, $depth_limit);
+  array_shift($toc);
+  return theme('table', array('header' => $header, 'rows' => $toc, 'attributes' => array('id' => 'course-outline')));
+}
+
+// helper function for looping through a tree to build out the display
+function _elms_content_toc_recurse($tree, &$toc, $exclude, $depth_limit) {
+  foreach ($tree as $data) {
+    if ($data['link']['depth'] > $depth_limit) {
+      // Don't iterate through any links on this level.
+      break;
+    }
+    if (!in_array($data['link']['mlid'], $exclude)) {
+      $toc[] = array('data' => array(theme('indentation', array('size' => $data['link']['depth'])) . l(t($data['link']['title']), $data['link']['href'])));
+      if ($data['below']) {
+        _elms_content_toc_recurse($data['below'], $toc, $exclude, $depth_limit);
+      }
+    }
+  }
+}
+
+// helper function to create a book for a site and populate it based on preset chosen
+function _elms_content_create_root($group, $template = NULL) {
+  global $user;
+  // creating a blank node
+  $node = new stdClass();
+  $node->uid = $user->uid;
+  $node->type = 'folder';
+  $node->status = 1;
+  $node->log = 'ELMS outline root created';
+  $node->revision = 1;
+  $node->book['mlid'] = NULL;
+  $node->title = 'Content';
+  // settings based on group context in ELMS
+  // set group association
+  $node->og_groups = array($group->nid => $group->nid);
+  $node->og_groups_both = array($group->nid => $group->title);
+  // save the book root
+  node_save($node);
+  // set book outline association automatically
+  $node->book['bid'] = $node->nid;
+  $node->book['menu_name'] = book_menu_name($node->book['bid']);
+  $node->book['module'] = 'book';
+  // update outline for new book
+  _book_update_outline($node);
+  // see if we were passed an instructional template to use, should be
+  if ($template != NULL) {
+    $id_template = _book_outline_builder_get_site_template($template);
+    // start the recursive loop
+    _book_outline_builder_build_node_structure($id_template, $node->book['bid'], $node->book['mlid'], array('group' => $group));
+  }
+  watchdog('elms', 'New book outline created for the site');
+}
+
+
+
+
+/**
+ * Implements hook_book_outline_builder_template_alter().
+ */
+function elms_content_book_outline_builder_template_alter(&$templates) {
+  // alter the default template so that it's in an elms context
+  $templates['default'] = array(
+    'title' => 'Default outline', array(
+      'type' => 'folder',
+      'title' => 'Lesson @i',
+      'duplicate' => TRUE,
+      'children' => array(
+        array(
+          'type' => 'page',
+          'title' => 'Introduction',
+        ),
+        array(
+          'type' => 'page',
+          'title' => 'Content',
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_book_outline_builder_loop_alter().
+ */
+function elms_content_book_outline_builder_loop_alter(&$loop, $book_item, $additional_parms) {
+  // anything set to true in the API responds to the lesson count set
+  if ($book_item['duplicate'] === TRUE) {
+    // use the included lesson count
+    $loop = $additional_parms['group']->field_lesson_count[0]['value'];
+  }
+}
+
+/**
+ * Implements hook_book_outline_builder_node_alter().
+ */
+function elms_content_book_outline_builder_node_alter(&$node, $book_item, $additional_parms) {
+  // if this is a link, populate the link field
+  if ($book_item['type'] == 'link') {
+    $node->field_link[0]['value'] = $book_item['link'];
+  }
+  // dset the group based on current group being loaded into
+  $group = $additional_parms['group'];
+  $node->og_groups = array($group->nid => $group->nid);
+  $node->og_groups_both = array($group->nid => $group->title);
+}
+
+/**
+ * adds target of the book associated to this feature
+ */
+function elms_content_feeds_node_processor_targets_alter(&$targets, $content_type) {
+  $targets['elms_book'] = array(
+    'name' => t('ELMS book root'),
+    'description' => t('Associate node to ELMS Content book node'),
+    'callback' => 'elms_content_feeds_set_elms_book_target',
+  );
+}
+/**
+ * Set the book to the group context
+ */
+function elms_content_feeds_set_elms_book_target($node, $target, $value) {
+  // we know in ELMS there is only 1 book for the group
+  $group = og_context();
+  // set the book root as the group's global book
+  $node->book['bid'] = $group->book_nid;
+  return $node;
+}
+
+/**
+ * Implements hook_dashboard_requirements().
+ */
+function elms_content_dashboard_requirements($provider) {
+  switch ($provider) {
+    case 'og':
+      // list of active features
+      $group = og_context();
+      $active_features = variable_get('spaces_features', array());
+      // see if this feature is active
+      // loop through and list all features and their status
+      if (isset($active_features['elms_content']) && $active_features['elms_content'] == 1) {
+        $requirements['elms_content'] = array(
+          'title' => t('ELMS content feature'),
+          'value' => t('Active'),
+          'severity' => REQUIREMENT_OK,
+        );
+        $content_count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {og_ancestry} AS oga ON n.nid=oga.nid WHERE group_nid = :group_nid AND type IN('page', 'folder', 'link', 'reference_page')", array(':group_nid' => $group->nid))->fetchField();
+        $requirements['content_count'] = array(
+          'title' => t('Total content'),
+          'value' => $content_count,
+          'severity' => REQUIREMENT_INFO,
+        );
+        $page_count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {og_ancestry} AS oga ON n.nid=oga.nid WHERE group_nid = :group_nid AND type = :type", array(':group_nid' => $group->nid, ':type' => 'page'))->fetchField();
+        $requirements['page_count'] = array(
+          'title' => t('Total pages'),
+          'value' => $page_count,
+          'severity' => REQUIREMENT_INFO,
+        );
+        $folder_count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {og_ancestry} AS oga ON n.nid=oga.nid WHERE group_nid = :group_nid AND type = :type", array(':group_nid' => $group->nid, ':type' => 'folder'))->fetchField();
+        $requirements['folder_count'] = array(
+          'title' => t('Total folders'),
+          'value' => $folder_count,
+          'severity' => REQUIREMENT_INFO,
+        );
+        $link_count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {og_ancestry} AS oga ON n.nid=oga.nid WHERE group_nid = :group_nid AND type = :type", array(':group_nid' => $group->nid, ':type' => 'link'))->fetchField();
+        $requirements['link_count'] = array(
+          'title' => t('Total links'),
+          'value' => $link_count,
+          'severity' => REQUIREMENT_INFO,
+        );
+        $reference_count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {og_ancestry} AS oga ON n.nid=oga.nid WHERE group_nid = :group_nid AND type = :type", array(':group_nid' => $group->nid, ':type' => 'reference_page'))->fetchField();
+        $requirements['reference_count'] = array(
+          'title' => t('Total reference pages'),
+          'value' => $reference_count,
+          'severity' => REQUIREMENT_INFO,
+        );
+      }
+      else {
+        $requirements['elms_content'] = array(
+          'title' => t('ELMS content feature'),
+          'value' => t('Inactive'),
+          'severity' => REQUIREMENT_WARNING,
+        );
+      }
+      break;
+    case 'system':
+      // add system level information
+      // TODO Please convert this statement to the D7 database API syntax.
+      $content_count = db_query("SELECT COUNT(nid) FROM {node} WHERE type IN('page', 'folder', 'link', 'reference_page')")->fetchField();
+      $requirements['content_count'] = array(
+        'title' => t('Total content'),
+        'value' => $content_count,
+        'severity' => REQUIREMENT_INFO,
+      );
+      $page_count = db_query("SELECT COUNT(nid) FROM {node} WHERE type = :type", array(':type' => 'page'))->fetchField();
+      $requirements['page_count'] = array(
+        'title' => t('Total pages'),
+        'value' => $page_count,
+        'severity' => REQUIREMENT_INFO,
+      );
+      $folder_count = db_query("SELECT COUNT(nid) FROM {node} WHERE type = :type", array(':type' => 'folder'))->fetchField();
+      $requirements['folder_count'] = array(
+        'title' => t('Total folders'),
+        'value' => $folder_count,
+        'severity' => REQUIREMENT_INFO,
+      );
+      $link_count = db_query("SELECT COUNT(nid) FROM {node} WHERE type = :type", array(':type' => 'link'))->fetchField();
+      $requirements['link_count'] = array(
+        'title' => t('Total links'),
+        'value' => $link_count,
+        'severity' => REQUIREMENT_INFO,
+      );
+      $reference_count = db_query("SELECT COUNT(nid) FROM {node} WHERE type = :type", array(':type' => 'reference_page'))->fetchField();
+      $requirements['reference_count'] = array(
+        'title' => t('Total reference pages'),
+        'value' => $reference_count,
+        'severity' => REQUIREMENT_INFO,
+      );
+      break;
+  }
+  return $requirements;
+}

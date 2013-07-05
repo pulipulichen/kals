@@ -1,0 +1,44 @@
+name = ELMS Webform
+description = Wrapper feature to enable Webform in ELMS
+core = 7.x
+package = Features
+php = 5.2.4
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = node
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[node][] = webform
+features[variable][] = comment_anonymous_webform
+features[variable][] = comment_controls_webform
+features[variable][] = comment_default_mode_webform
+features[variable][] = comment_default_order_webform
+features[variable][] = comment_default_per_page_webform
+features[variable][] = comment_form_location_webform
+features[variable][] = comment_preview_webform
+features[variable][] = comment_subject_field_webform
+features[variable][] = comment_webform
+features[variable][] = node_options_webform
+features[variable][] = nodeformscols_field_placements_webform_default
+features[variable][] = og_content_type_usage_webform
+features[variable][] = og_max_groups_webform
+features[variable][] = webform_csv_delimiter
+features[variable][] = webform_default_format
+features[variable][] = webform_disabled_components
+features[variable][] = webform_email_address_format
+features[variable][] = webform_export_format
+features[variable][] = webform_format_override
+features[variable][] = webform_node_types
+features[variable][] = webform_search_index
+features[variable][] = webform_submission_access_control
+features[variable][] = webform_use_cookies
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

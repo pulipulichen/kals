@@ -1,0 +1,36 @@
+name = ELMS Parent
+description = All functionality for establishing the parent listings and pages
+core = 7.x
+package = ELMS
+php = 5.2.4
+project = elms_parent
+dependencies[] = context
+dependencies[] = features
+dependencies[] = link
+dependencies[] = menu
+dependencies[] = og_views
+dependencies[] = profile2
+dependencies[] = references
+dependencies[] = strongarm
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = views
+dependencies[] = views_fluid_grid
+dependencies[] = views_slideshow
+dependencies[] = workflow
+features[context][] = elms_parent-pages-faculty
+features[context][] = elms_parent-pages-marketing
+features[context][] = elms_parent-pages-student
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[node][] = parent
+features[variable][] = content_extra_weights_parent
+features[variable][] = node_options_parent
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

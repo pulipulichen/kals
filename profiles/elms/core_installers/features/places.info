@@ -1,0 +1,14 @@
+name = "ELMS Places"
+description = "Enable google maps functionality"
+type = "features"
+dependencies[] = "elms_places"
+dependencies[] = "gmap"
+dependencies[] = "gmap_location"
+dependencies[] = "location"
+dependencies[] = "location_node"
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

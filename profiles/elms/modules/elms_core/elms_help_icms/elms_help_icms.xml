@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?><xml>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Welcome</title>
+    <body>&lt;p&gt;Welcome to ELMS!  ELMS stands for e-Learning Management System created by the e-Learning Institute, in the College of Arts and Architecture at Penn State.  The ELMS: ICMS (Instructional Content Management System) is one of the primary focuses of the institute as it is used to power many of the online courses at the college.&lt;/p&gt;
+&lt;iframe frameborder="0" height="400" name="bryan" src="http://www.youtube.com/embed/QvXufxrWGrA" width="600"&gt;&lt;/iframe&gt;</body>
+    <parent>ba8c5674-58a8-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b71a7df2-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>Orientation</title>
+    <body>&lt;p&gt;This orientation is meant to help you get familiar with the termininology and interface used in ELMS.  This will also cover how to get started with the creation of a course.&lt;/p&gt;</body>
+    <parent>ba8c5674-58a8-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b717c210-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Terminology</title>
+    <body>&lt;div class="elms_objectives"&gt;
+  &lt;table class="elms_objectives-table" summary="A list of all terminology used in ELMS"&gt;&lt;caption class="elms_objectives-header"&gt;Common ELMS Terms&lt;/caption&gt;
+    &lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;ELMS&lt;/th&gt;
+        &lt;td&gt;E-Learning Management System (ELMS) is the name of the Drupal based distribution that is this system.  Development under the ELMS brand originally started in 2007 and continues today in a much more sophisticated form.  ELMS is much more then a content platform, it is a platform for developing systems as part of the "Suite of Tools" instructional design philosophy for rethinking the traditional LMS.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Drupal&lt;/th&gt;
+        &lt;td&gt;A popular Content Management System (CMS) for the creation and management of information.  ELMS is built on top of the powerful Drupal framework.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Distribution&lt;/th&gt;
+        &lt;td&gt;A bundling of Drupal modules and configuration settings to allow someone to install all at once.  If you think of Drupal as a framework for developers, Distributions are off the shelf solutions / products for vendors and end-users.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Course Space&lt;/th&gt;
+        &lt;td&gt;A Course Space is for the reservation of name space in the system.  It is equivalent to a college publishing the fact that a course exists in their "Blue book" and by itself serves no other function.  It helps organize Versions.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Course Version&lt;/th&gt;
+        &lt;td&gt;A Course Version is the actual running of a course.  It is the organizing unit which allows you to implement and offer a course.  Versions can be in different states of development such as a sandbox, offered to students, and archived.  There are also specialized versions of courses like Master versions used to mark the original copy and promotional versions for showcasing content publicly for sample lessons / units.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr class="elms_row"&gt;&lt;th class="elms_col1" scope="row"&gt;Region&lt;/th&gt;
+        &lt;td&gt;The four areas of the user interface in ELMS are commonly referred to as regions.  This is to simplify communication between developers and instructional designers as the term makes sense in both contexts.  There are four major regions in elms, all corresponding to different sides of the screen.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr class="elms_row"&gt;&lt;th class="elms_col1" scope="row"&gt;Outline Designer&lt;/th&gt;
+        &lt;td&gt;Content outline editing tool used for the rapid creation and modification of content outlines.  This is the tool that most people are asking for when they say they "want elms".  Also known as Content Outline.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;ELIMedia&lt;/th&gt;
+        &lt;td&gt;System Utilized by the e-Learning Institute for the storage and integration of copyright / accessible learning assets.  Also known as ELMS: Media.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Text Editor&lt;/th&gt;
+        &lt;td&gt;When editing a piece of content, the interface that is presented with buttons.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Format dropdown&lt;/th&gt;
+        &lt;td&gt;Format dropdown in the text editor allows you to add / remove HTML structures from the content you are working with.  This is things like &lt;p&gt; and &lt;/p&gt;&lt;h2&gt; tags.&lt;/h2&gt;&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Styles Dropdown&lt;/th&gt;
+        &lt;td&gt;Styles dropdown in the text editor allows you to add / remove class based styling from structures.  This would be a class to make the text look red, bold or italicized text, or alignment on the page.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Templates&lt;/th&gt;
+        &lt;td&gt;Reusable page components that have been created with stylistic and accessibility design considerations.  These are good starting points for the creation of any page and more can be added with ease.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;WYSIWYG&lt;/th&gt;
+        &lt;td&gt;What you see is what you get (WYSIWYG) is often the technical acronym used when talking about Text Editors.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;ID Best Practices&lt;/th&gt;
+        &lt;td&gt;A Feature that helps in the implementation of standardized Instructional Design best practices.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Instructional Design Templates&lt;/th&gt;
+        &lt;td&gt;Structures that make up the initial best practices of a course.  These can be created by developers so that instructional designers and instructors can select how many lessons they want and what structure to use as a template.  The ID Template then creates the outline and populates it with sample content (optional). This is important for rapid prototyping of courses.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Course Content&lt;/th&gt;
+        &lt;td&gt;A Feature that helps bundle together everything related to the creation and management of the course content outline.  This was the original reason for creation of the ELMS platform.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr class="elms_row"&gt;&lt;th class="elms_col1" scope="row"&gt;Feature&lt;/th&gt;
+        &lt;td&gt;Features can be found in the instructional design toolkit on the left-hand region.  Features help to provide standardization across courses in ELMS while still enabling new and innovative functionality to be created.  Common Features enabled by default include ID Best Practices and Course Content.&lt;/td&gt;
+      &lt;/tr&gt;&lt;tr&gt;&lt;th class="elms_col1" scope="row"&gt;Studio&lt;/th&gt;
+        &lt;td&gt;Studio is a Feature of ELMS that's focused on student to instructor collaboration.&lt;/td&gt;
+      &lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</body>
+    <parent>b717c210-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b714e19e-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>User Interface</title>
+    <body>&lt;iframe frameborder="0" height="400" name="userinterface" src="http://www.youtube-nocookie.com/embed/psxpBvVkja0?rel=0" width="600"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS uses a region based approach to interface design. The region approach to interface design forms a type of wrapper that sits on top of the traditional interface, allowing the user to perform various operations in a consistent manner.  This also allows ELMS to utilize &lt;strong&gt;&lt;em&gt;any Drupal theme&lt;/em&gt;&lt;/strong&gt; because the user interface has been completely abstracted from theme design.&lt;/p&gt;
+&lt;p&gt;Each region of the interface bundles together specific types of operations and are organized as follows:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;The top region has three areas that help provide context about what you are viewing. The top left is always the current path to where you are in the system.  The top right can optionally display notifications such as warning and error messages.  The top right corner displays the currently logged in user and a menu of additional displays for information specific to the user.&lt;/li&gt;
+  &lt;li&gt;The left region always contains operations that can be executed at the current page.  In the case of a system display, this will display system options such as adding new courses or sandboxes.  While viewing a piece of content in a course this will display the different actions you can perform on the page (such as checking accessibility or editing the content).&lt;/li&gt;
+  &lt;li&gt;The bottom region always displays navigational or display actions.  This is things like pagination between pieces of content in an outline, as well as book mark, printing and page scaling options.&lt;/li&gt;
+  &lt;li&gt;The right region optionally displays additional content that has been associated to the content currently being viewed.  It is meant to help provide additional context about the information being displayed.  This contextual information can include things like a list of terms used in the content, a map of locations associated to the content or a timeline visualizing important points in time.  There are many other types of associations that can be made to material, which content authors can activate in the instructional design toolkit.&lt;/li&gt;
+&lt;/ul&gt;</body>
+    <parent>b717c210-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b711f754-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Creating Courses</title>
+    <body>&lt;iframe frameborder="0" height="400" name="createcourse" src="http://www.youtube-nocookie.com/embed/AS-6x_3drf8?rel=0" width="600"&gt;&lt;/iframe&gt;
+&lt;p&gt;To create a new course.  Go to the front page of your ELMS environment.  The easiest way of doing this is clicking the first link in the top left corner of the screen.  This will always return you to the homepage for the system.&lt;/p&gt;
+&lt;p&gt;Now you should see a list of icons on the left region.  Click on the one that looks like a little person pointing to a chalkboard with a plus sign.  The only required information to create a course is Department and Title.  By default, ELMS will create an example course version as well.  You can prevent this from happening by clicking the "use as listing only" checkbox.&lt;/p&gt;
+&lt;p&gt;Courses in ELMS are basically just for reserving the name-space of the course.  Think of this as the way it would be listed in your information system such as COURSEMAME COURSENUMBER (example: Art 100).  This name will be converted to a path automatically in ELMS (example: Art 100 becomes /art100/).  All versions that you associate to this course will follow the same naming convention (example: /art100_fall/).&lt;/p&gt;</body>
+    <parent>b717c210-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b70f2fce-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>Content Management</title>
+    <body>This topic covers everything related to content management within a course version. This covers the common content types in ELMS as well as the Outline Designer.</body>
+    <parent>ba8c5674-58a8-11e1-9a79-005056807d81</parent>
+    <weight>-5</weight>
+    <uuid>b70ac0e2-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>Text Editor</title>
+    <body>&lt;p&gt;This section covers how to use the text editor visible on the edit form of all cotent in ELMS.&lt;/p&gt;</body>
+    <parent>b70ac0e2-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-11</weight>
+    <uuid>b708021c-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Introduction</title>
+    <body>&lt;p&gt;This video covers the different buttons in the ELMS text editor interface.&lt;/p&gt;
+&lt;iframe frameborder="0" height="480" name="introvideo" src="https://www.youtube.com/embed/pK2goOazLss?hd=1" width="640"&gt;&lt;/iframe&gt;</body>
+    <parent>b708021c-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b705029c-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Outline Designer</title>
+    <body>&lt;p&gt;The outline designer is used for modifying the content outline of your course version.  To access the outline designer, click on the piece of paper with bullets on it in the left hand menu that says "Content Outline".  To add items to the content outline, click add content and tell the system what title and type you'd like to create.  This is used for rapidly generating instructional flows and having conversations around the structure of the material.&lt;/p&gt;
+&lt;p&gt;It also helps streamline the handling of all links and nesting of content as you can drag and drop items around based on how you'd like it structured.&lt;/p&gt;
+&lt;iframe frameborder="0" height="400" name="outlinedesigner" src="http://www.youtube.com/embed/ovkxCHyfyz8" width="600"&gt;&lt;/iframe&gt;</body>
+    <parent>b70ac0e2-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b70216ea-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>Content Types</title>
+    <body>&lt;p&gt;This will cover the core content types provided by the ELMS Content feature, the key component to the ICMS.  ICMS ships with four major content types: Pages, Folders, Links and Reference Pages.&lt;/p&gt;</body>
+    <parent>b70ac0e2-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b6ff29a8-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Page</title>
+    <body>&lt;p&gt;Page is the most common type of content in the system.  Most of the time you will want to use this to get material onto the screen using the text editor.&lt;/p&gt;
+&lt;iframe frameborder="0" height="400" name="pagevideo" src="http://www.youtube.com/embed/yeXGFkXoIrE" width="600"&gt;&lt;/iframe&gt;</body>
+    <parent>b6ff29a8-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b6fc1218-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Folder</title>
+    <body>&lt;p&gt;Folders are similar to Pages but with one major difference.  A Folder will display a list of all content contained with in it below the material.  This way if you want to essentially create a listing page of topics below the current organizer you can do so just by changing a Page to a Folder.  This is a manual change in-case you don't want to display an outline of what is below the current Page.&lt;/p&gt;
+&lt;iframe frameborder="0" height="400" name="foldervideo" src="http://www.youtube.com/embed/vNQsjE3bJos" width="600"&gt;&lt;/iframe&gt;</body>
+    <parent>b6ff29a8-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b6f948b2-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Link</title>
+    <body>&lt;p&gt;Links are used to create a direct link to an external piece of content.  There are many other ways of accomplishing this through the text editor and Reference Links feature (see ID Toolkit).  Typically you should use those methods of adding links to the course but the Link type is for when you want them directly in the instructional flow.&lt;/p&gt;
+&lt;iframe frameborder="0" height="400" name="linkvideo" src="http://www.youtube.com/embed/JAlhezsvGC0" width="600"&gt;&lt;/iframe&gt;</body>
+    <parent>b6ff29a8-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b6f67a1a-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Reference Page</title>
+    <body>&lt;p&gt;Reference Pages aren't really pages at all.  They allow you to create a direct reference to a page outside of the current course.  How to use this:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Your work unit has standard orientation and policy information that you want to include in the instructional flow of courses&lt;/li&gt;
+  &lt;li&gt;You create a sandbox called "Our resources" and mark it as "master" in the workflow settings&lt;/li&gt;
+  &lt;li&gt;Create some pages in Our Resources for the things you want to reference elsewhere&lt;/li&gt;
+  &lt;li&gt;Go to the course in question, create a Reference Page and start typing the name of what you want to reference.&lt;/li&gt;
+  &lt;li&gt;It will start to auto complete with a list, select your content and save&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;When the page goes to load it will display the text from the referenced content.  This allows you to internally cross-link materials as well as update globally since they are managed in a single location.  This is also useful when branching a course into multiple versions or referencing lessons from one course in another.&lt;/p&gt;
+&lt;iframe frameborder="0" height="400" name="referencepagevideo" src="http://www.youtube.com/embed/EE01QZXzjtQ" width="600"&gt;&lt;/iframe&gt;</body>
+    <parent>b6ff29a8-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-12</weight>
+    <uuid>b6f38a94-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Tips and Tricks</title>
+    <body>&lt;p&gt;Here are some additional ways you can use the outline designer and content creation functionality that go above and beyond what was discussed in the previous pages.&lt;/p&gt;
+&lt;iframe frameborder="0" height="480" name="tipsandtricks" src="http://www.youtube.com/embed/pZ5bJslofvY" width="640"&gt;&lt;/iframe&gt;</body>
+    <parent>b70ac0e2-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-12</weight>
+    <uuid>b6ef28b4-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Reference Highlighter</title>
+    <body>&lt;p&gt;Reference Highlighter is a unique way of improving the experience associated to your courses in ELMS.  To utilize Reference Highlighter, go into the ID Toolkit and turn on some features like Places, Timelines, Terms and others.  Then go to some content in your course version and select text on the page.  You'll see a small popup toolbox with different options based on what features you have active.&lt;/p&gt;
+&lt;p&gt;Clicking on one of the icons will streamline the association of material to the content you are currently working with.  ELMS then figures out what associated material should be displayed on the page and builds out tabs that organize that material off to the side of the screen.  Clicking on the previously highlighted text (now a link in the content) will open up the tab and jump to the material in question.&lt;/p&gt;
+&lt;p&gt;Currently this is just for content authors but future plans are to allow for the ability for students to highlight and leave notes on the course content in a similar manner.  This note taking could even be structured as a participation activity or just as a way of enhancing the student experience.&lt;/p&gt;</body>
+    <parent>b70ac0e2-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b6ebc43a-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>Course Management</title>
+    <body>&lt;iframe width="600" height="400" name="courseman" src="http://www.youtube-nocookie.com/embed/tx8Ck-HI1Jw?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;This contains all documentation about what to do with a Course space once you have established one.  Courses in ELMS are essentially for marketing and name space reservation purposes but allow for relation of items back to a public page in a simple and effective way.&lt;/p&gt;</body>
+    <parent>ba8c5674-58a8-11e1-9a79-005056807d81</parent>
+    <weight>-7</weight>
+    <uuid>b6e8570a-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Adding Versions</title>
+    <body>&lt;iframe width="600" height="400" name="addingversions" src="http://www.youtube-nocookie.com/embed/r6a9mSkzvpY?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;To add a version to a course, go to the course landing page.  You will see tabs in the content of the page for options related to the content.  Click on the "Add New Version" tab to get started.  There are lots of options for versions but the only really important things are the title, description, content outline, and version type settings.&lt;/p&gt;
+&lt;p&gt;ELMS believes firmly that rapid prototyping can lead to better course designs through trial and error.  This is where the Content aspect comes into play.  By default, ELMS will start to create a content outline with nothing in it.  This allows you to build out a course from scratch.  But, what is recommended to do is play around with some of the other outline structures to see what they do.&lt;/p&gt;
+&lt;p&gt;ICMS ships with three different types of instructional content outlines.  You can then replicate parts of these instructional flows with the select box below the type of outline.  For example, to get 15 lessons created as your starting point, select 15.  These outlines structure as follows:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Default -- Lesson page that has an introduction under it.  This will create one lesson per number of times you tell it to.  In the future you will be able to define what the default is in the global ELMS settings.&lt;/li&gt;
+  &lt;li&gt;Unit / Topical Outline - one Unit per number of times and each unit has three lessons with short content outlines in each.&lt;/li&gt;
+  &lt;li&gt;Lesson Outline - Similar to Default but with extended default content outline.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Version type can be changed after the fact but is important as it allows you to select between whether or not what you are creating is closed course content or &lt;em&gt;open educational resources (OER).&lt;/em&gt; These types can be extended as well as switched between at any time but a goal of ELMS is to reduce the overhead involved in the production for OER to the point that is a click of a button (you can duplicate versions after they have been created and change this value for the branched content!).&lt;/p&gt;</body>
+    <parent>b6e8570a-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b6e67606-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Creating Sandboxes</title>
+    <body>&lt;iframe width="600" height="400" name="creatingsandboxes" src="http://www.youtube-nocookie.com/embed/TyvncbZmRUA?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;Sandboxes are effectively Course Versions without an association to a course.  This can allow you to rapid prototype what a course might look like with a faculty member without it being associated to anything.  Some use-cases for sandboxes:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;You want to create an open resource that isn't associated to any course (like Our Department's Training)&lt;/li&gt;
+  &lt;li&gt;You want to have a conversation about what a course might look like with each of the different models&lt;/li&gt;
+  &lt;li&gt;You want an internal bank of resources that can be referenced in other courses but is effectively invisible to end-users (like standard orientation materials)&lt;/li&gt;
+  &lt;li&gt;You want to setup a temporary space for a presentation / demo that can be self contained and removed afterwards.&lt;/li&gt;
+  &lt;li&gt;You want to try out different instructional approaches in the ID toolkit without impacting currently active course sections&lt;/li&gt;
+  &lt;li&gt;You want to create ELMS documentation (that's how this was all generated!)&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;A lot of these reasons are mental but there is peace of mind in knowing that a sandbox is more or less in-accessible to the public (unless you want it to be).&lt;/p&gt;</body>
+    <parent>b6e8570a-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b6e349ae-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Course Status</title>
+    <body>&lt;iframe width="600" height="400" name="coursestatus" src="http://www.youtube-nocookie.com/embed/QnCkud5eQts?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;The course status page will tell you about the relative "health" of the course you are viewing.  To access Course Status, go to the front-facing page of a course.  Then click on the Course Status tab that appears on the page.  This will display statistics about the course like:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;How many Versions / Offerings are associated to this course&lt;/li&gt;
+  &lt;li&gt;Pieces of content associated to this course&lt;/li&gt;
+  &lt;li&gt;Settings specific to the configuration of the course (like name)&lt;/li&gt;
+&lt;/ul&gt;</body>
+    <parent>b6e8570a-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b6e026ca-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>Version Management</title>
+    <body>&lt;iframe width="600" height="400" name="versman" src="http://www.youtube-nocookie.com/embed/8vqVY2iMC88?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;This has everything to do with managing a Version of  Course.  To access the different options under this category, click on the "Version Settings" icon on the left region (little system gage).  This will then display tabs on the page with the various options discussed here.&lt;/p&gt;</body>
+    <parent>ba8c5674-58a8-11e1-9a79-005056807d81</parent>
+    <weight>-6</weight>
+    <uuid>b6dcc1a6-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>ID Toolkit</title>
+    <body>&lt;iframe frameborder="0" height="400" name="idtoolkit" src="http://www.youtube-nocookie.com/embed/KCWKB5-n11g?rel=0" width="600"&gt;&lt;/iframe&gt;
+&lt;p&gt;The ID Toolkit is how an instructional designer can craft the experience of this version of a course.  By default there are only a few tools turned on: ELMS Content and ELMS ID Best Practices.  These defaults can be changed and you should play around with the other tools (also known as features) you can activate as they can enhance the experience of students in your course.&lt;/p&gt;</body>
+    <parent>b6dcc1a6-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b71c4f56-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Places</title>
+    <body>&lt;iframe width="600" height="400" name="elmsplaces" src="http://www.youtube-nocookie.com/embed/NtPNlXbr570?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS Places integrates Google Maps with your course version.  To associate a place to content, create some content and hit save.  Then highlight the text of your content and you will see a contextual highlighter menu. Click to add a Place to the material and run through the form.  This will bring you back to your content but add a menu tab to the right-hand side of the screen and create a link in the material to the tab.  Clicking the text in the content will open the tab to the map location.&lt;/p&gt;
+&lt;p&gt;You will also be given a new link under "Course Resources" on the interface that says "Places".  This will display a Google map that has ALL places you have associated to the material.  This can provide a unique way of navigating through location based topics in courses as you can click through to any point on the map to see where it was referenced in the content.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b71f9058-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Timelines</title>
+    <body>&lt;iframe width="600" height="400" name="elmstimelines" src="http://www.youtube-nocookie.com/embed/3KPfIMpTQro?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS Timelines allows you to associate time points to content.  It uses a library for displaying the time points called SIMILE.  To add a time point, highlight text in content and click to make the association.  Put in the start and end point for the time and save.  You will now have a tab as well as highlighted text that's associated to the timeline.&lt;/p&gt;
+&lt;p&gt;Timeline also appears under Course Resources which will display the aggregate of all time points for this course version.  This can provide a very unique way of back-link navigating through content or reviewing everything learned in a course visually.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b7227a02-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>ID Best Practices</title>
+    <body>&lt;iframe width="600" height="400" name="idbestprac" src="http://www.youtube-nocookie.com/embed/z5XgTF4ko_8?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;The ID Best Practices feature bundles together some best practices established by the e-Learning Institute in terms of communication and resources.  From an interface perspective it adds three links under Course Resources: Syllabus, Help and Applications.  By activating this feature and clicking settings you can set what each of these items should contain for your course version.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b7259ce6-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Content</title>
+    <body>&lt;iframe width="600" height="400" name="elmscontent" src="http://www.youtube-nocookie.com/embed/FzTBfpCvi1g?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS Content is a bundling of all functionality related to the course content outline.  It should always be used in ICMS based systems though it is technically modular to conform to the design philosophy of ELMS.  Activating this feature will give you access to the outline designer to build an instructional flow.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b7286854-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Polls</title>
+    <body>&lt;iframe width="600" height="400" name="elmspolls" src="http://www.youtube-nocookie.com/embed/GyCbirDExG0?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS Polls is really just a wrapper for the Polls provided by Drupal.  By activating polls, you can then select created course content and associate a poll to the material.  This will create a tab on the side of all the polls related to the content.  You can also use the outline designer to add polls into the instructional flow of the course.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b72b2328-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Reference Links</title>
+    <body>&lt;p&gt;ELMS Reference Links allow to associate external links as a batch to content.  You could also accomplish this by just creating links through the text editor but this allows them to be quantified separately.  One use-case for this is augmenting an existing course's content with newer findings / articles / resources.  You can also use it almost as a "want to learn more" type of approach as these links will all be aggregated back into a link under Course Resources.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b72e3e14-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Terms</title>
+    <body>&lt;iframe width="600" height="400" name="elmsterms" src="http://www.youtube-nocookie.com/embed/3VAl3Fl346k?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS Terms allows you to create a glossary of terms for a course.  To add something to the glossary, highlight a word in created content and select add glossary term.  An important distinction between glossary terms and other highlighter items is that &lt;em&gt;glossary items will automatically be scanned and associated to content globally once referenced in a course version&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;For example: You find the word "Geodesic" to be an important concept.  You highlight the word, provide a definition for it and then anywhere in the course version that Geodesic is used, it will automatically be highlighted.  Clicking the word will slide open a tab on the right side with a list of the terms used in the content.  There is also a Glossary link for the course that aggregates all of these back to a table display.&lt;/p&gt;</body>
+    <parent>b71c4f56-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b73126ce-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Changing Theme</title>
+    <body>&lt;iframe width="600" height="400" name="themechanging" src="http://www.youtube-nocookie.com/embed/9Zoe1U91bQM?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;Click the theme tab, then see the various options you have for themes.  You can either select an entirely new theme, or make tweaks to the current theme you are using.  You can upload a new logo to replace the one that is the default of this theme, upload a new icon, add custom CSS, change the text font, or tweak specific theme settings.  These settings have to do with placement of items on the theme (like primary / secondary links or whether or not to use a logo).&lt;/p&gt;
+&lt;p&gt;It is important to note that these settings are specific to this version.  If you duplicate this version, these settings will be copied over but you are effectively tweaking global default settings specific to this instance of the use of the theme.&lt;/p&gt;</body>
+    <parent>b6dcc1a6-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b7340eca-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Version Status</title>
+    <body>&lt;iframe width="600" height="400" name="versionstatus" src="http://www.youtube-nocookie.com/embed/9yN58ulI46Q?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;Version Status tells stats about the health of the version you are working on.  It will give you information such as how many students, instructors and TAs are in this version.  It also provides some AI such as recognizing that the current version may be listed as offered to students but there are no students in it and simple error notification like that.&lt;/p&gt;</body>
+    <parent>b6dcc1a6-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b736ecf8-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>folder</type>
+    <title>System Management</title>
+    <body>&lt;p&gt;ELMS is essentially a wrapper on top of the Drupal content management system.  This section discusses how to dig into the ELMS and Drupal system layers if you need to do so.&lt;/p&gt;</body>
+    <parent>ba8c5674-58a8-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b739fc0e-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>System Status</title>
+    <body>&lt;iframe width="600" height="400" name="sysstatus" src="http://www.youtube-nocookie.com/embed/MNQG1tBJiNE?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;There are status consoles at the three major levels of accessing the system in ELMS.  These are the system, course, and version level of working.  The system level provides some information about system health as well as gives you fun-facts like how much content is currently in the system.&lt;/p&gt;</body>
+    <parent>b739fc0e-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-15</weight>
+    <uuid>b73ced6a-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>ELMS Settings</title>
+    <body>&lt;iframe width="640" height="480" name="elmssettings" src="http://www.youtube-nocookie.com/embed/Q4Yyp8VjsJA?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;These settings are specific to the ELMS environment and have been abstracted from the traditional Drupal settings backend to make things easier to manage.  In a perfect world, users of ELMS should never need to know they are using Drupal, and this settings section tries to help keep the two abstracted.&lt;/p&gt;
+&lt;p&gt;To access the ELMS settings dashboard, click on the small black wrench at the bottom left corner of any page.  This will slide out a left-hand menu that is black with white text.  This is effectively how you would configure and control Drupal (see next section fore more details on how to do that).&lt;/p&gt;
+&lt;p&gt;If the world ELMS is not visible, click Administer, then click ELMS.  There are several settings pages that can show up here based on the options in installation but the most common ones are ID Best Practices and System Defaults.&lt;/p&gt;
+&lt;p&gt;ID Best Practices allows you to establish some best practice defaults at a global level.  This way you can start to define what your best practices are in terms of help, syllabus usage, and references to resources.  To add new resources to the system open the Drupal control panel (small wrench in bottom left), click Create Content and then click ELMS Resource.&lt;/p&gt;
+&lt;p&gt;ELMS Resources are systems and services external to your system that you utilize.  This can help give students instructions / help info about other systems they can expect to utilize in their course.  For example, if the Library on campus is used in many courses you could create the library as a resource with information on how to access e-reserves or what the hours of operation are.  YouTube, Vimeo, Google Docs, and other external vendors that you may use in courses are also good services to include documentation on how to use.  These resource defaults can then be set globally in the ID best practice settings page globally and then tweaked per course version based on needs of that offering of the course.&lt;/p&gt;
+&lt;p&gt;System Defaults have to do with the default options for content authors.  Currently this is just what themes they are allowed to select for courses as well as what the default theme is.  This way you can have a default / best practice theme for all your courses as the default but still allow flexibility in design going forward.&lt;/p&gt;</body>
+    <parent>b739fc0e-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-14</weight>
+    <uuid>b73f8af2-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+  <node>
+    <uid>1</uid>
+    <type>page</type>
+    <title>Drupal Administration</title>
+    <body>&lt;iframe width="600" height="400" name="drupaladminvid" src="http://www.youtube-nocookie.com/embed/nZiWI4vTOQA?rel=0" frameborder="0"&gt;&lt;/iframe&gt;
+&lt;p&gt;ELMS is built on top of Drupal.  In the Drupal community, ELMS is known as a distribution of Drupal.  One of the major goals of ELMS is to remove the barrier that Drupal creates in terms of knowledge to use the platform. This provides site builders and developers with the most powerful framework while framing everything in an educational context for end-users.&lt;/p&gt;
+&lt;p&gt;If you need to administer Drupal, such as activating modules, or changing system settings; click the wrench at the bottom left corner of any page.  ELMS uses a project called Admin which provides this functionality and simplified the user experience for developers and site builders.  Click Administer, then Site Building, then Modules in order to activate / disable modules.&lt;/p&gt;
+&lt;p&gt;To change specific system wide settings you can go to Site Configuration under Administer and alter any settings that Drupal provides.  Drupal and ELMS are both extremely modular so if you have questions about how to add or safely modify functionality just &lt;a href="http://drupal.org/project/elms"&gt;ask in the ELMS issue queue on Drupal.org&lt;/a&gt;&lt;/p&gt;</body>
+    <parent>b739fc0e-58aa-11e1-9a79-005056807d81</parent>
+    <weight>-13</weight>
+    <uuid>b74288ce-58aa-11e1-9a79-005056807d81</uuid>
+  </node>
+</xml>

@@ -1,0 +1,37 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the elms_helper module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function elms_helper_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  if ($phase === 'runtime' && file_exists('profiles/elms/VERSION.txt')) {
+    $elms_version = trim(file_get_contents('profiles/elms/VERSION.txt'));
+    $requirements['elms'] = array(
+      'title' => $t('ELMS version'),
+      'value' => check_plain($elms_version),
+      'severity' => REQUIREMENT_OK,
+    );
+  }
+  return $requirements;
+}
+
+/**
+ * Implements hook_install().
+ */
+function elms_helper_install() {
+  // change the weight so that alters fire after others
+  // TODO Please review the conversion of this statement to the D7 database API syntax.
+  /* db_query("UPDATE {system} SET weight = 2 WHERE name = 'elms_helper'") */
+  db_update('system')
+  ->fields(array(
+    'weight' => 2,
+  ))
+  ->condition('name', 'elms_helper')
+  ->execute();
+}

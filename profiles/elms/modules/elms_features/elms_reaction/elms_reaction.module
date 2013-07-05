@@ -1,0 +1,41 @@
+<?php
+
+include_once 'elms_reaction.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function elms_reaction_menu() {
+  $items = array();
+  $items['features/elms_reaction'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_reaction_settings'),
+    'access callback' => '_elms_reaction_access_check',
+    'access arguments' => module_exists('spaces') ? array() : array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+    'file' => 'elms_reaction.pages.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_link_alter().
+ */
+function elms_reaction_link_alter(&$links, $node, $comment = NULL) {
+  $features = variable_get('spaces_features', array());
+  if (!isset($features['elms_reaction']) || !$features['elms_reaction']) {
+    unset($links['reaction_field_related_content']);
+  }
+}
+
+
+// helper function for access verification
+function _elms_reaction_access_check() {
+  if (module_exists('spaces')) {
+    return user_access('spaces_access_admin');
+  }
+  else {
+    return user_access('user_access');
+  }
+}

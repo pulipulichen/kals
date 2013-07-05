@@ -1,0 +1,130 @@
+<?php
+
+/**
+ * Helper function to build out available pages to parent object().
+ */
+function _elms_parent_pages_list_pages() {
+  // hook in all providers of parent pages
+  $list = module_invoke_all('elms_add_parent_pages');
+  drupal_alter('elms_add_parent_pages', $list);
+  // make sure we returned data
+  if (is_array($list) && count($list) > 0) {
+    return $list;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_init().
+ */
+function elms_parent_pages_init() {
+  // if we are on a node we can start checking for it
+  if (arg(0) == 'node' && (arg(2) == '' || (arg(2) == 'view' && arg(3) == ''))) {
+    // load node from menu object cache
+    $node = menu_get_object();
+    // has an id and check for type parent
+    if (isset($node->nid) && $node->type == ELMS_ROOT_TYPE) {
+      // build a list of all parent pages
+      $parent_pages = _elms_parent_pages_list_pages();
+      // see if they have access to any of these pages
+      $view_pages = array();
+      foreach ($parent_pages as $key => $page) {
+        if (user_access('view ' . ELMS_ROOT_TYPE . ' ' . $key . ' page')) {
+          $view_pages[] = $key;
+        }
+      }
+      // see how many pages they can view
+      switch (count($view_pages)) {
+        case 0:
+          // something potentially went wrong in permission config, do nothing
+          break;
+        case 1:
+          // they only have access to 1 page, push them to it
+          drupal_goto('node/' . $node->nid . '/view/' . $view_pages[0]);
+          break;
+        default:
+          // they have access to multiple pages, push them to the default
+          $defaultpage = variable_get('elms_parent_pages_default', '');
+          // if a default was set we push there as priority, assuming access
+          if (in_array($defaultpage, $view_pages)) {
+            drupal_goto('node/' . $node->nid . '/view/' . $defaultpage);
+          }
+          else {
+            // default failed yet can access multiple pages, push to first one
+            drupal_goto('node/' . $node->nid . '/view/' . $view_pages[0]);
+          }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function elms_parent_pages_permission() {
+  $pages = _elms_parent_pages_list_pages();
+  // generate a list of parent pages and the permissions for them
+  foreach ($pages as $key => $page) {
+    $perms[] = 'view ' . ELMS_ROOT_TYPE . ' ' . $key . ' page';
+  }
+  return $perms;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function elms_parent_pages_menu() {
+  $items = array();
+  $pages = _elms_parent_pages_list_pages();
+  // loop through and build the menu based on providers we've found
+  foreach ($pages as $key => $page) {
+    $items['node/%node/view/' . $key] = array(
+      'title' => 'Parent Page',
+      'title callback' => '_elms_parent_pages_page_title',
+      'title arguments' => array(1, $page['title']),
+      'description' => $page['description'],
+      'page callback' => $page['callback'],
+      'access arguments' => array(1, $key),
+      'access callback' => '_elms_parent_pages_access_check',
+      'type' => MENU_LOCAL_TASK,
+    );
+    // weight is not required in API
+    if (isset($page['weight'])) {
+      $items['node/%node/view/' . $key]['weight'] = $page['weight'];
+    }
+    // file is not required in API
+    if (isset($page['file']) && isset($page['file path'])) {
+      $items['node/%node/view/' . $key]['file'] = $page['file'];
+      $items['node/%node/view/' . $key]['file path'] = $page['file path'];
+    }
+  }
+  // admin settings
+  $items['admin/elms/parent_pages'] = array(
+    'title' => 'Parent Pages',
+    'description' => 'System wide parent pages settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_elms_parent_pages_settings'),
+    'access arguments' => array('administer elms configuration'),
+    'file' => 'elms_parent_pages.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Helper function to generate title
+ */
+function _elms_parent_pages_page_title($node, $page_type) {
+  return t($page_type);
+}
+
+/**
+ * Access verification for a page type
+ */
+function _elms_parent_pages_access_check($node, $page_type) {
+  // check that user can access node, type matches and user can access this page
+  if ($node->type == ELMS_ROOT_TYPE && user_access('view ' . ELMS_ROOT_TYPE . ' ' . $page_type . ' page') && node_access('view', $node)) {
+    return 1;
+  }
+  return 0;
+}

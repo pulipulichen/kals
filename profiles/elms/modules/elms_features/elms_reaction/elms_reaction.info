@@ -1,0 +1,46 @@
+name = ELMS Reaction
+description = Allows the user to react to the content they are viewing in a more useful way then traditional comments
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_reaction
+dependencies[] = context
+dependencies[] = context_spaces_features
+dependencies[] = context_var
+dependencies[] = features
+dependencies[] = menu
+dependencies[] = nodereference_url
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views
+features[context][] = elms_reaction-nav-right
+features[context][] = elms_reaction-navigation
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[menu_custom][] = menu-elms-reactions
+features[menu_links][] = menu-elms-reactions:reactions/all
+features[menu_links][] = menu-elms-reactions:reactions/my
+features[node][] = reaction
+features[variable][] = comment_anonymous_reaction
+features[variable][] = comment_controls_reaction
+features[variable][] = comment_default_mode_reaction
+features[variable][] = comment_default_order_reaction
+features[variable][] = comment_default_per_page_reaction
+features[variable][] = comment_form_location_reaction
+features[variable][] = comment_preview_reaction
+features[variable][] = comment_reaction
+features[variable][] = comment_subject_field_reaction
+features[variable][] = content_extra_weights_reaction
+features[variable][] = node_options_reaction
+features[variable][] = og_content_type_usage_reaction
+features[variable][] = upload_reaction
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

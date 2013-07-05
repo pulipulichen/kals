@@ -1,0 +1,33 @@
+name = ELMS Terms
+description = Associate reference terms to content
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_terms
+dependencies[] = context_spaces_features
+dependencies[] = elms_navigation_top
+dependencies[] = og_views
+dependencies[] = semanticviews
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views
+features[context][] = elms_terms-nav-right
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[menu_links][] = features:elms_terms
+features[menu_links][] = menu-usermenu:my_terms
+features[node][] = term
+features[variable][] = content_extra_weights_term
+features[variable][] = node_options_term
+features[variable][] = nodeformscols_field_placements_term_default
+features[variable][] = og_content_type_usage_term
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

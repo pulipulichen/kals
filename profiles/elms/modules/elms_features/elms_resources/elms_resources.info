@@ -1,0 +1,22 @@
+name = ELMS Resources
+description = Definition of what a elms resource is
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_resources
+dependencies[] = features
+dependencies[] = link
+dependencies[] = strongarm
+dependencies[] = text
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[node][] = elms_resource
+features[variable][] = content_extra_weights_elms_resource
+features[variable][] = node_options_elms_resource
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

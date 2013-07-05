@@ -1,0 +1,11 @@
+name = "ELMS Reference Links"
+description = "Enable reference links functionality"
+type = "features"
+dependencies[] = "elms_reference_links"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

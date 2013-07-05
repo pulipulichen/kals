@@ -1,0 +1,878 @@
+<?php
+// Copyright (C) 2011-2012  The Pennsylvania State University
+//
+// Bryan Ollendyke
+// bto108@psu.edu
+//
+// Keith D. Bailey
+// kdb163@psu.edu
+//
+// 12 Borland
+// University Park,  PA 16802
+
+/**
+ * @file
+ * ELMS Schedule builder interface elements
+ */
+
+include_once 'elms_schedule.features.inc';
+
+/**
+ * Implements hook_define_highlight_relationship_alter().
+ */
+function elms_schedule_define_highlight_relationship_alter(&$relationships) {
+  if (spaces_access_feature('view', 'elms_schedule')) {
+    $relationships['enhance_content']['highlight_types']['elms_event'] = array(
+      'id' => 'events',
+      'ref_field' => 'field_event_content_ref',
+      'text_field' => 'title',
+      'icon' => drupal_get_path('module', 'elms_schedule') . '/images/event.png',
+      'display_text' => t('Add an Event'),
+    );
+  }
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function elms_schedule_menu() {
+  $items = array();
+  $items['features/elms_schedule'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_schedule_settings'),
+    'access callback' => '_elms_schedule_access_check',
+    'access arguments' => module_exists('spaces') ? array() : array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+    'file' => 'elms_schedule.pages.inc',
+  );
+  return $items;
+}
+
+
+// helper function for access verification
+function _elms_schedule_access_check() {
+  if (module_exists('spaces')) {
+    return user_access('spaces_access_admin');
+  }
+  else {
+    return user_access('user_access');
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function elms_schedule_theme_registry_alter(&$vars) {
+  // date all day label fix so it doesn't say "All day" for null values
+  $vars['date_all_day_label']['theme path'] = drupal_get_path('module', 'elms_schedule');
+  $vars['date_all_day_label']['function'] = '_elms_schedule_date_all_day_label';
+  $vars['date_all_day_label']['theme paths'] = array(0 => drupal_get_path('module', 'elms_schedule'));
+  // schedule reorder view is now cross-theme
+  $vars['views_view__elms_schedule__page_2']['template'] = 'views-view--parent-schedule--page-2';
+  $vars['views_view__elms_schedule__page_2']['path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view__elms_schedule__page_2']['arguments'] = array('view' => '');
+  $vars['views_view__elms_schedule__page_2']['original hook'] = 'views_view';
+  $vars['views_view__elms_schedule__page_2']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view__elms_schedule__page_2']['type'] = 'theme_engine';
+  $vars['views_view__elms_schedule__page_2']['theme path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view__elms_schedule__page_2']['theme paths'] = array(0 => drupal_get_path('module', 'elms_schedule') . '/views');
+  $vars['views_view__elms_schedule__page_2']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view',
+  );
+  // schedule edit view is now cross-theme
+  $vars['views_view_unformatted__elms_schedule__page_3']['template'] = 'views-view-unformatted--parent-schedule--page-3';
+  $vars['views_view_unformatted__elms_schedule__page_3']['path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_unformatted__elms_schedule__page_3']['arguments'] = array(
+    'view' => '',
+    'options' => '',
+    'rows' => '',
+    'title' => '',
+  );
+  $vars['views_view_unformatted__elms_schedule__page_3']['original hook'] = 'views_view_unformatted';
+  $vars['views_view_unformatted__elms_schedule__page_3']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view_unformatted__elms_schedule__page_3']['type'] = 'theme_engine';
+  $vars['views_view_unformatted__elms_schedule__page_3']['theme path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_unformatted__elms_schedule__page_3']['theme paths'] = array(0 => drupal_get_path('module', 'elms_schedule') . '/views');
+  $vars['views_view_unformatted__elms_schedule__page_3']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view_unformatted',
+  );
+  // fields view that is now cross-theme
+  $vars['views_view_fields__elms_schedule__page_3']['template'] = 'views-view-fields--parent-schedule--page-3';
+  $vars['views_view_fields__elms_schedule__page_3']['path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_fields__elms_schedule__page_3']['arguments'] = array(
+    'view' => '',
+    'options' => '',
+    'row' => '',
+    'field_alias' => '',
+  );
+  $vars['views_view_fields__elms_schedule__page_3']['original hook'] = 'views_view_fields';
+  $vars['views_view_fields__elms_schedule__page_3']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view_fields__elms_schedule__page_3']['type'] = 'theme_engine';
+  $vars['views_view_fields__elms_schedule__page_3']['theme path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_fields__elms_schedule__page_3']['theme paths'] = array(0 => drupal_get_path('module', 'elms_schedule') . '/views');
+  $vars['views_view_fields__elms_schedule__page_3']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view_fields',
+  );
+  // schedule view is now cross-theme
+  $vars['views_view_unformatted__elms_schedule__page_4']['template'] = 'views-view-unformatted--parent-schedule--page-4';
+  $vars['views_view_unformatted__elms_schedule__page_4']['path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_unformatted__elms_schedule__page_4']['arguments'] = array(
+    'view' => '',
+    'options' => '',
+    'rows' => '',
+    'title' => '',
+  );
+  $vars['views_view_unformatted__elms_schedule__page_4']['original hook'] = 'views_view_unformatted';
+  $vars['views_view_unformatted__elms_schedule__page_4']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view_unformatted__elms_schedule__page_4']['type'] = 'theme_engine';
+  $vars['views_view_unformatted__elms_schedule__page_4']['theme path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_unformatted__elms_schedule__page_4']['theme paths'] = array(0 => drupal_get_path('module', 'elms_schedule') . '/views');
+  $vars['views_view_unformatted__elms_schedule__page_4']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view_unformatted',
+  );
+  // fields view for schedule render is cross-theme
+  $vars['views_view_fields__elms_schedule__page_4']['template'] = 'views-view-fields--parent-schedule--page-4';
+  $vars['views_view_fields__elms_schedule__page_4']['path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_fields__elms_schedule__page_4']['arguments'] = array(
+    'view' => '',
+    'options' => '',
+    'row' => '',
+    'field_alias' => '',
+  );
+  $vars['views_view_fields__elms_schedule__page_4']['original hook'] = 'views_view_fields';
+  $vars['views_view_fields__elms_schedule__page_4']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view_fields__elms_schedule__page_4']['type'] = 'theme_engine';
+  $vars['views_view_fields__elms_schedule__page_4']['theme path'] = drupal_get_path('module', 'elms_schedule') . '/views';
+  $vars['views_view_fields__elms_schedule__page_4']['theme paths'] = array(0 => drupal_get_path('module', 'elms_schedule') . '/views');
+  $vars['views_view_fields__elms_schedule__page_4']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view_fields',
+  );
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_schedule_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#elms_schedule':
+      $output = '<p>' . t('ELMS Schedule Builder allows you to setup a Views based schedule for the course.') . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_init().
+ */
+function elms_schedule_init() {
+  // if we're in the schedule portion of the site then load correct css / js
+  if (arg(0) == 'schedule') {
+    // edit for has a lot of special css / js to account for inline editor
+    if (arg(1) == 'edit') {
+      // only add in date popup code if the module is turned on, some older versions of php don't like it
+      if (module_exists('date_popup')) {
+        drupal_add_css(drupal_get_path('module', 'date_popup') . '/themes/calendar.css');
+        drupal_add_css(drupal_get_path('module', 'date_popup') . '/themes/datepicker.css');
+        drupal_add_css(drupal_get_path('module', 'date_popup') . '/themes/timeentry.css');
+      }
+      drupal_add_css(drupal_get_path('module', 'elms_schedule') . '/css/schedule_edit.css', array('type' => 'file', 'weight' => CSS_THEME));
+      drupal_add_js(drupal_get_path('module', 'elms_schedule') . '/js/schedule_edit.js');
+    }
+    // ignore outline and delete for the time being so we don't load needless files
+    elseif (arg(1) == 'outline' || arg(1) == 'delete') {
+    }
+    else {
+      // only add in date popup code if the module is turned on, some older versions of php don't like it
+      if (module_exists('date_popup')) {
+        drupal_add_css(drupal_get_path('module', 'date_popup') . '/themes/calendar.css');
+        drupal_add_css(drupal_get_path('module', 'date_popup') . '/themes/datepicker.css');
+        drupal_add_css(drupal_get_path('module', 'date_popup') . '/themes/timeentry.css');
+        drupal_add_library('system', 'ui.progressbar');
+      }
+      drupal_add_css(drupal_get_path('module', 'elms_schedule') . '/css/schedule.css', array('type' => 'file', 'weight' => CSS_THEME));
+      drupal_add_js(drupal_get_path('module', 'elms_schedule') . '/js/schedule.js');
+    }
+  }
+}
+
+// helper function using batch API to remap an old schedule
+function _elms_schedule_rebuild_schedule($group, &$context) {
+  // get the key dates
+  $semester = $group->field_semester[0]['value'];
+  $year = $group->field_year[0]['value'];
+  if ($semester == 'summer1') {
+    $semester = 'summer';
+    $summer = 1;
+  }
+  elseif ($semester == 'summer2') {
+    $semester = 'summer';
+    $summer = 2;
+  }
+  elseif ($semester == 'summer') {
+    $summer = 'full';
+  }
+  else {
+    $summer = 0;
+  }
+  if (module_exists('psu_schedule') && $group->field_schedule_source[0]['value'] == 'registrar') {
+    $key_dates = _psu_schedule_get_schedule($semester, $year, $summer);
+    $start = $key_dates['start'];
+  }
+  else {
+    // if no registrar then use the 2 important dates supplied to generate the schedule
+    $start = strtotime($group->field_start_date[0]['value']);
+  }
+  $date_diff = '';
+  // grab all the course events, ordered by date that are part of this group
+  // we do checking upstream to ensure there are course events
+  $result = db_rewrite_sql(db_query("SELECT {node}.nid FROM {draggableviews_structure} JOIN {node} ON {node}.nid = {draggableviews_structure}.nid JOIN {og_ancestry} ON {og_ancestry}.nid = {draggableviews_structure}.nid JOIN {content_type_elms_event} ON {content_type_elms_event}.vid = {node}.vid WHERE {og_ancestry}.group_nid = :{og_ancestry}.group_nid AND {draggableviews_structure}.delta = :{draggableviews_structure}.delta AND {draggableviews_structure}.view_name = :{draggableviews_structure}.view_name AND {content_type_elms_event}.field_due_date_value IS NOT NULL ORDER BY {content_type_elms_event}.field_due_date_value ASC", array(':{og_ancestry}.group_nid' => $group->nid, ':{draggableviews_structure}.delta' => 1, ':{draggableviews_structure}.view_name' => 'elms_schedule')));
+  while ($event = db_fetch_array($result)) {
+    $node = NULL;
+    $node = node_load($event['nid']);
+    // we take the starting value of the course and figure out the difference between that day and the new starting value we're setting
+    if ($date_diff == '') {
+      $date_diff = $start - strtotime($node->field_due_date[0]['value']);
+    }
+    $node->field_due_date[0]['value'] = date('c', (strtotime($node->field_due_date[0]['value']) + $date_diff));
+    if (isset($node->field_end_date[0]['value'])) {
+      $node->field_end_date[0]['value'] = date('c', (strtotime($node->field_end_date[0]['value']) + $date_diff));
+    }
+    node_save($node);
+  }
+  // need to pass through the map that has been built
+  $context['finished'] = 1;
+  $context['message'] = t('Rebuilding Dates: Reassigning dates');
+}
+
+// helper function using batch API to build out a new schedule
+function _elms_schedule_build_schedule($group, &$context) {
+  // intial setting of the batch job
+  $group_nid = $group->nid;
+  $group_title = $group->title;
+  $sched_type = $group->field_schedule_to_build[0]['value'];
+  $semester = $group->field_semester[0]['value'];
+  $year = $group->field_year[0]['value'];
+  $topics = $group->field_num_topics[0]['value'];
+  $top_level_name = $group->field_top_level_name[0]['value'];
+  // week structure has been defined in course node
+  if ($group->field_forming_week_structure[0]['value'] == 'define_structure') {
+    $field_week_structure = $group->field_week_structure;
+  }
+  // hand this over to the prototype scraper to do it's dirty work
+  elseif ($group->field_forming_week_structure[0]['value'] == 'prototype') {
+    $field_week_structure = _elms_schedule_from_prototype_builder($group);
+  }
+  else {
+    // not using this so don't add any containers
+    $field_week_structure = array();
+  }
+  if (!isset($context['sandbox']['current_record'])) {
+
+    if ($semester == 'summer1') {
+      $context['sandbox']['semester'] = 'summer';
+      $context['sandbox']['summer'] = 1;
+      if ($topics > 6) {
+        drupal_set_message(t("You can't make @topics @top_level_name in a 6 week summer semester. 6 @top_level_name were created instead.", array('@topics' => $topics, '@top_level_name' => $top_level_name)), 'elms-message');
+        $topics = 6;
+      }
+    }
+    elseif ($semester == 'summer2') {
+      $context['sandbox']['semester'] = 'summer';
+      $context['sandbox']['summer'] = 2;
+      if ($topics > 6) {
+        drupal_set_message(t("You can't make @topics @top_level_name in a 6 week summer semester. 6 @top_level_name were created instead.", array('@topics' => $topics, '@top_level_name' => $top_level_name)), 'elms-message');
+        $topics = 6;
+      }
+    }
+    elseif ($semester == 'summer') {
+      $context['sandbox']['semester'] = $semester;
+      $context['sandbox']['summer'] = 'full';
+    }
+    else {
+      $context['sandbox']['semester'] = $semester;
+      $context['sandbox']['summer'] = 0;
+    }
+    // get the important dates to build this schedule
+    if (module_exists('psu_schedule') && $group->field_schedule_source[0]['value'] == 'registrar') {
+      $key_dates = _psu_schedule_get_schedule($context['sandbox']['semester'], $year, $context['sandbox']['summer']);
+      $context['message'] = t('Assembling Schedule: Importing Schedule from Registrar');
+    }
+    else {
+      // if no registrar then use the 2 important dates supplied to generate the schedule
+      $key_dates = array(
+        'start' => strtotime($group->field_start_date[0]['value']),
+        'finals' => strtotime($group->field_finals_monday[0]['value']),
+        'end' => strtotime($group->field_finals_monday[0]['value'] . '-3days'),
+      );
+    }
+    $context['sandbox']['key_dates'] = $key_dates;
+    $context['sandbox']['current_date'] = $context['sandbox']['key_dates']['start'];
+    // calculate number of weeks in the semester from finals date - start date
+    $context['sandbox']['num_weeks'] = date('W', $key_dates['finals']) - date('W', $key_dates['start']);
+    // account for the topics based outline
+    if ($sched_type == 'topic') {
+      $context['sandbox']['level1'] = $topics;
+      $context['sandbox']['level1_name'] = drupal_ucfirst($top_level_name);
+      $context['sandbox']['level2'] = floor($context['sandbox']['num_weeks'] / $topics);
+      $context['sandbox']['level2_last'] = $context['sandbox']['level2'] + ($context['sandbox']['num_weeks'] % $topics);
+      $context['sandbox']['level2_name'] = t('Week');
+      // pull the user's selection
+      $context['sandbox']['level3'] = $field_week_structure;
+      $context['sandbox']['level3_name'] = _elms_schedule_type_to_title($field_week_structure);
+    }
+    else {
+      if ($context['sandbox']['summer'] == 2) {
+        $context['sandbox']['level1'] = $context['sandbox']['num_weeks'] + 1;
+      }
+      else {
+        $context['sandbox']['level1'] = $context['sandbox']['num_weeks'];
+      }
+      $context['sandbox']['level1_name'] = t('Week');
+      $context['sandbox']['level2'] = $field_week_structure;
+      $context['sandbox']['level2_name'] = _elms_schedule_type_to_title($field_week_structure);
+    }
+    $context['sandbox']['current_record'] = 0;
+  }
+  // as long as this isn't the max record, keep building them
+  if ($context['sandbox']['current_record'] != $context['sandbox']['level1']) {
+    $single_day_event = FALSE;
+    $week_event = FALSE;
+    $node1 = NULL;
+    $node1 = _elms_schedule_clean_node();
+    $node1->field_event_name[0]['value'] = $context['sandbox']['level1_name'] . ' ' . ($context['sandbox']['current_record'] + 1);
+    if ($context['sandbox']['current_record'] != 0) {
+      $context['message'] = t('Assembling Schedule: Creating ' . $context['sandbox']['level1_name'] . ' ' . ($context['sandbox']['current_record'] + 1) . ' of ' . $context['sandbox']['level1']);
+    }
+    $node1->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+    $node1->og_groups = array($group_nid => $group_nid);
+    $node1->og_groups_both = array($group_nid => $group_title);
+    // store the starting date as whatever we are currently on
+    $tmpdatestr = date('m/d/y', $context['sandbox']['current_date']);
+    $node1->field_due_date[0] = array(
+      'value' => date('Y-m-d', $context['sandbox']['current_date']) . 'T00:00:00',
+      'timezone' => date_default_timezone_name(),
+      'timezone_db' => date_default_timezone_name(),
+      'date_type' => 'date',
+    );
+    // for week based schedules we can use the top level in week form
+    if ($sched_type != 'topic') {
+      // see if this is a special week for further title modification
+      foreach ($context['sandbox']['key_dates'] as $key => $datestamp) {
+        if (date('W', $context['sandbox']['current_date']) == date('W', $datestamp)) {
+          // this is a special week, make a modification to the way we normally create the items somehow
+          switch ($key) {
+            // currently we don't do anything special for finals or end of semester here
+            // finals runs at the end and end is used for summer classes only
+            // this way they don't get flagged in any special way
+            case 'finals':
+            case 'end':
+              break;
+            case 'start':
+              $node1->field_detail_text = array(0 => array('value' => t('Course orientation')));
+              break;
+              // take into account holiday weeks
+            case 'springbreak':
+              $node1->field_event_name[0]['value'] = t('Spring break');
+              $node1->field_detail_text = array(0 => array('value' => t('There are no classes this week')));
+              $week_event = TRUE;
+              break;
+            case 'thanksgiving':
+              $node1->field_event_name[0]['value'] = t('Happy thanksgiving!');
+              $node1->field_detail_text = array(0 => array('value' => t('There are no classes this week')));
+              $week_event = TRUE;
+              break;
+            default:
+              // there's an event that isn't a week long during the active week so we need a flag to know to create an extra event with this container as a parent
+              $single_day_event = $key;
+              break;
+          }
+        }
+      }
+      // add 4 days so we can get a complete week cycle, only screwy on summer session 2
+      // on first week and last week they are different date ranges
+      if ($context['sandbox']['summer'] == 2 && $context['sandbox']['current_record'] == 0) {
+        $tmpdate = strtotime($tmpdatestr . ' +2day');
+        $context['sandbox']['current_date'] = strtotime($tmpdatestr . ' +5day');
+      }
+      else {
+        $tmpdate = strtotime($tmpdatestr . ' +4day');
+        $context['sandbox']['current_date'] = strtotime($tmpdatestr . ' +7day');
+      }
+      // this is the last week being set for a summer session 2, use the end date
+      if (($context['sandbox']['current_record'] + 1) == $context['sandbox']['level1'] && ($context['sandbox']['summer'] == 2  || $context['sandbox']['summer'] == 'full')) {
+        $tmpdate = $context['sandbox']['key_dates']['end'];
+      }
+      $node1->field_end_date[0] = array(
+        'value' => date('Y-m-d', $tmpdate) . 'T00:00:00',
+        'timezone' => date_default_timezone_name(),
+        'timezone_db' => date_default_timezone_name(),
+        'date_type' => 'date',
+      );
+    }
+    // for topic based schedules we artificially increment to get the range
+    else {
+      // get the number of week containers that there will be per topic and make that the range of this container, accounting for summer 2
+      if ($context['sandbox']['summer'] == 2 && $context['sandbox']['current_record'] == 0) {
+        $tmpdate = strtotime($tmpdatestr . ' +' . ((7 * $context['sandbox']['level2']) -5) . 'day');
+      }
+      // if this is the last container end the range on the end date
+      elseif (($context['sandbox']['current_record'] + 1) == $context['sandbox']['level1']) {
+        $tmpdate = $context['sandbox']['key_dates']['end'];
+      }
+      else {
+        $tmpdate = strtotime($tmpdatestr . ' +' . ((7 * $context['sandbox']['level2']) -3) . 'day');
+      }
+      $node1->field_end_date = array(0 => array(
+          'value' => date('Y-m-d', $tmpdate) . 'T00:00:00',
+          'timezone' => date_default_timezone_name(),
+          'timezone_db' => date_default_timezone_name(),
+          'date_type' => 'date',
+        ));
+    }
+    node_save($node1);
+    $node1->title = t('Course event #' . $node1->nid);
+    node_save($node1);
+    // get the current max weight since we add all new objects to the end
+    $weight1 = db_query("SELECT MAX(value) FROM {draggableviews_structure} WHERE delta = :delta AND view_name = :view_name", array(':delta' => 0, ':view_name' => 'elms_schedule'))->fetchField();
+    // insert the weight value
+    // TODO Please convert this statement to the D7 database API syntax.
+    /* db_query("INSERT INTO {draggableviews_structure}(view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node1->nid, 0, ($weight1 + 1), '') */
+    NULL;
+    // insert that this has no parent at the moment
+    // TODO Please convert this statement to the D7 database API syntax.
+    /* db_query("INSERT INTO {draggableviews_structure}(view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node1->nid, 1, 0, '') */
+    NULL;
+    // we've detected a special case for a single day event in a week based structure so see which event to create
+    if ($single_day_event) {
+      $node2 = NULL;
+      $node2 = _elms_schedule_clean_node();
+      unset($node2->field_end_date);
+      $node2->og_groups = array($group_nid => $group_nid);
+      $node2->og_groups_both = array($group_nid => $group_title);
+      $node2->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+      switch ($single_day_event) {
+        case 'indep':
+          $node2->field_event_name[0]['value'] = t('Independence day');
+          $node2->field_detail_text = array(0 => array('value' => t('There is no class today')));
+          break;
+        case 'mem':
+          $node2->field_event_name[0]['value'] = t('Memorial day');
+          $node2->field_detail_text = array(0 => array('value' => t('There is no class today')));
+          break;
+        case 'mlk':
+          $node2->field_event_name[0]['value'] = t('Martin luther king day');
+          $node2->field_detail_text = array(0 => array('value' => t('There is no class today')));
+          break;
+        case 'labor':
+          $node2->field_event_name[0]['value'] = t('Labor day');
+          $node2->field_detail_text = array(0 => array('value' => t('There is no class today')));
+          break;
+      }
+      $node2->field_due_date[0] = array(
+        'value' => date('Y-m-d', $context['sandbox']['key_dates'][$single_day_event]) . 'T00:00:00',
+        'timezone' => date_default_timezone_name(),
+        'timezone_db' => date_default_timezone_name(),
+        'date_type' => 'date',
+      );
+      node_save($node2);
+      $node2->title = t('Course Event #' . $node2->nid);
+      node_save($node2);
+      // get the current max weight since we add all new objects to the end
+      $weight2 = db_query("SELECT MAX(value) FROM {draggableviews_structure} WHERE delta = :delta AND view_name = :view_name", array(':delta' => 0, ':view_name' => 'elms_schedule'))->fetchField();
+      // insert the weight value
+      // TODO Please convert this statement to the D7 database API syntax.
+      /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node2->nid, 0, ($weight2 + 1), '') */
+      NULL;
+      // insert that this has no parent at the moment
+      // TODO Please convert this statement to the D7 database API syntax.
+      /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node2->nid, 1, $node1->nid, '') */
+      NULL;
+    }
+    // now we have the parent node built, build the children
+    if (!$week_event) {
+      // on the last run through for a topic based structure we need to use modulus operation for clean up
+      if (($context['sandbox']['current_record'] + 1) == $context['sandbox']['level1'] && $sched_type == 'topic') {
+        $num_sub_events = $context['sandbox']['level2_last'];
+      }
+      else {
+        if ($sched_type == 'topic') {
+          $num_sub_events = $context['sandbox']['level2'];
+        }
+        else {
+          $num_sub_events = count($context['sandbox']['level2']);
+        }
+      }
+      for ($j = 0; $j < $num_sub_events; $j++) {
+        $week_event = FALSE;
+        $node2 = NULL;
+        $single_day_event = FALSE;
+        $node2 = _elms_schedule_clean_node();
+        // for topic outlines we need an iterative name as well as the weeks of instruction label
+        if ($sched_type == 'topic') {
+          $node2->field_event_name[0]['value'] = $context['sandbox']['level2_name'];
+          $tmpcount = ($context['sandbox']['current_record'] * $context['sandbox']['level2']) + ($j + 1);
+          $node2->field_event_name[0]['value'] .= ' ' . $tmpcount;
+          foreach ($context['sandbox']['key_dates'] as $key => $datestamp) {
+            if (date('W', $context['sandbox']['current_date']) == date('W', $datestamp)) {
+              // this is a special week, make a modification to the way we normally create the items somehow
+              switch ($key) {
+                // currently we don't do anything special for finals or end of semester here
+                // finals runs at the end and end is used for summer classes only
+                // this way they don't get flagged in any special way
+                case 'finals':
+                case 'end':
+                  break;
+                case 'start':
+                  $node2->field_detail_text = array(0 => array('value' => t('Course orientation')));
+                  break;
+                  // take into account holiday weeks
+                case 'springbreak':
+                  $node2->field_event_name[0]['value'] = t('Spring break');
+                  $node2->field_detail_text = array(0 => array('value' => t('There are no classes this week')));
+                  $node2->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+                  $week_event = TRUE;
+                  break;
+                case 'thanksgiving':
+                  $node2->field_event_name[0]['value'] = t('Happy thanksgiving');
+                  $node2->field_detail_text = array(0 => array('value' => t('There are no classes this week')));
+                  $node2->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+                  $week_event = TRUE;
+                  break;
+                default:
+                  // there's an event that isn't a week long during the active week so we need a flag to know to create an extra event with this container as a parent
+                  $single_day_event = $key;
+                  break;
+              }
+            }
+          }
+          // add 4 days so we can get a complete week cycle, only screwy on summer session 2
+          $node2->field_due_date[0] = array(
+            'value' => date('Y-m-d', $context['sandbox']['current_date']) . 'T00:00:00',
+            'timezone' => date_default_timezone_name(),
+            'timezone_db' => date_default_timezone_name(),
+            'date_type' => 'date',
+          );
+          $tmpdatestr = date('m/d/y', $context['sandbox']['current_date']);
+          // in a topic based schedule only perform this for the very first week container
+          if ($context['sandbox']['summer'] == 2 && $context['sandbox']['current_record'] == 0 && $j == 0) {
+            $tmpdate = strtotime($tmpdatestr . ' +2day');
+            $context['sandbox']['current_date'] = strtotime($tmpdatestr . ' +5day');
+          }
+          else {
+            $tmpdate = strtotime($tmpdatestr . ' +4day');
+            $context['sandbox']['current_date'] = strtotime($tmpdatestr . ' +7day');
+          }
+          // this is the last week being set for a summer session 2, use the end date
+          if (($context['sandbox']['current_record'] + 1) == $context['sandbox']['level1'] && $sched_type == 'topic' && ($j + 1) == $num_sub_events && ($context['sandbox']['summer'] == 2 || $context['sandbox']['summer'] == 'full')) {
+            $tmpdate = $context['sandbox']['key_dates']['end'];
+          }
+          $node2->field_end_date[0] = array(
+            'value' => date('Y-m-d', $tmpdate) . 'T00:00:00',
+            'timezone' => date_default_timezone_name(),
+            'timezone_db' => date_default_timezone_name(),
+            'date_type' => 'date',
+          );
+        }
+        // not topic based, these are the lowest order items
+        else {
+          // if this is a prototype then we operate a little differently
+          if ($group->field_forming_week_structure[0]['value'] == 'prototype') {
+            $node2->field_event_name[0]['value'] = $context['sandbox']['level2'][$j]['title'];
+            // only link up the first set of nodes
+            if ($context['sandbox']['current_record'] == 0) {
+              $node2->field_event_content_ref = array(0 => array('nid' => $context['sandbox']['level2'][$j]['nid']));
+            }
+          }
+          else {
+            $node2->field_event_name[0]['value'] = $context['sandbox']['level2_name'][$j];
+          }
+          if ($context['sandbox']['level2'][$j]['value'] != '') {
+            $node2->field_event_type = array(0 => array('value' => $context['sandbox']['level2'][$j]['value']));
+          }
+          unset($node2->field_due_date);
+          unset($node2->field_end_date);
+        }
+        $node2->og_groups = array($group_nid => $group_nid);
+        $node2->og_groups_both = array($group_nid => $group_title);
+        // shade thanksgiving and spring breaks
+        if ($week_event) {
+          $node2->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+        }
+        node_save($node2);
+        $node2->title = t('course Event #' . $node2->nid);
+        node_save($node2);
+        // get the current max weight since we add all new objects to the end
+        $weight2 = db_query("SELECT MAX(value) FROM {draggableviews_structure} WHERE delta = :delta AND view_name = :view_name", array(':delta' => 0, ':view_name' => 'elms_schedule'))->fetchField();
+        // insert the weight value
+        // TODO Please convert this statement to the D7 database API syntax.
+        /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node2->nid, 0, ($weight2 + 1), '') */
+        NULL;
+        // insert that this has no parent at the moment
+        // TODO Please convert this statement to the D7 database API syntax.
+        /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node2->nid, 1, $node1->nid, '') */
+        NULL;
+        // we go 3 levels if this is topic based
+        if ($sched_type == 'topic' && !$week_event) {
+          // need to check for special events at this depth too
+          // we've detected a special case for a single day event in a week based structure so see which event to create
+          if ($single_day_event) {
+            $node3 = NULL;
+            $node3 = _elms_schedule_clean_node();
+            unset($node3->field_end_date);
+            $node3->og_groups = array($group_nid => $group_nid);
+            $node3->og_groups_both = array($group_nid => $group_title);
+            $node3->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+            switch ($single_day_event) {
+              case 'indep':
+                $node3->field_event_name[0]['value'] = t('Independence day');
+                $node3->field_detail_text = array(0 => array('value' => t('There is no class today')));
+                break;
+              case 'mem':
+                $node3->field_event_name[0]['value'] = t('Memorial day');
+                $node3->field_detail_text = array(0 => array('value' => t('There is no class today')));
+                break;
+              case 'mlk':
+                $node3->field_event_name[0]['value'] = t('Martin luther king day');
+                $node3->field_detail_text = array(0 => array('value' => t('There is no class today')));
+                break;
+              case 'labor':
+                $node3->field_event_name[0]['value'] = t('Labor day');
+                $node3->field_detail_text = array(0 => array('value' => t('There is no class today')));
+                break;
+            }
+            $node3->field_due_date[0] = array(
+              'value' => date('Y-m-d', $context['sandbox']['key_dates'][$single_day_event]) . 'T00:00:00',
+              'timezone' => date_default_timezone_name(),
+              'timezone_db' => date_default_timezone_name(),
+              'date_type' => 'date',
+            );
+            node_save($node3);
+            $node3->title = t('Course Event #' . $node3->nid);
+            node_save($node3);
+            // get the current max weight since we add all new objects to the end
+            $weight3 = db_query("SELECT MAX(value) FROM {draggableviews_structure} WHERE delta = :delta AND view_name = :view_name", array(':delta' => 0, ':view_name' => 'elms_schedule'))->fetchField();
+            // insert the weight value
+            // TODO Please convert this statement to the D7 database API syntax.
+            /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node3->nid, 0, ($weight3 + 1), '') */
+            NULL;
+            // insert that this has no parent at the moment
+            // TODO Please convert this statement to the D7 database API syntax.
+            /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node3->nid, 1, $node2->nid, '') */
+            NULL;
+          }
+          for ($k = 0; $k < count($context['sandbox']['level3']); $k++) {
+            $node3 = NULL;
+            $node3 = _elms_schedule_clean_node();
+            if ($group->field_forming_week_structure[0]['value'] == 'prototype') {
+              $node3->field_event_name[0]['value'] = $context['sandbox']['level3'][$k]['title'];
+              if ($context['sandbox']['current_record'] == 0) {
+                $node3->field_event_content_ref = array(0 => array('nid' => $context['sandbox']['level3'][$k]['nid']));
+              }
+            }
+            else {
+              $node3->field_event_name[0]['value'] = $context['sandbox']['level3_name'][$k];
+            }
+            if ($context['sandbox']['level3'][$j]['value'] != '') {
+              $node3->field_event_type = array(0 => array('value' => $context['sandbox']['level3'][$k]['value']));
+            }
+            $node3->og_groups = array($group_nid => $group_nid);
+            $node3->og_groups_both = array($group_nid => $group_title);
+            unset($node3->field_due_date);
+            unset($node3->field_end_date);
+            node_save($node3);
+            $node3->title = t('course Event #' . $node3->nid);
+            node_save($node3);
+            // get the current max weight since we add all new objects to the end
+            $weight3 = db_query("SELECT MAX(value) FROM {draggableviews_structure} WHERE delta = :delta AND view_name = :view_name", array(':delta' => 0, ':view_name' => 'elms_schedule'))->fetchField();
+            // insert the weight value
+            // TODO Please convert this statement to the D7 database API syntax.
+            /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node3->nid, 0, ($weight3 + 1), '') */
+            NULL;
+            // insert that this has no parent at the moment
+            // TODO Please convert this statement to the D7 database API syntax.
+            /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node3->nid, 1, $node2->nid, '') */
+            NULL;
+          }
+        }
+      }
+    }
+  }
+  // this is the last run as it's completed the cycle
+  if ($context['sandbox']['current_record'] == $context['sandbox']['level1']) {
+    // if this is a topic based outline, add a record on the end for final exams
+    $node1 = NULL;
+    $node1 = _elms_schedule_clean_node();
+    $node1->field_event_name[0]['value'] = t('Final exam');
+    $node1->field_color = array(0 => array('value' => _elms_schedule_random_color()));
+    $node1->og_groups = array($group_nid => $group_nid);
+    $node1->og_groups_both = array($group_nid => $group_title);
+    $tmpdatestr = date('m/d/y', $context['sandbox']['key_dates']['finals']);
+    $node1->field_due_date[0] = array(
+      'value' => date('Y-m-d', $context['sandbox']['key_dates']['finals']) . 'T00:00:00',
+      'timezone' => date_default_timezone_name(),
+      'timezone_db' => date_default_timezone_name(),
+      'date_type' => 'date',
+    );
+    // summer sessions only have a single day for finals
+    if ($context['sandbox']['semester'] != 'summer') {
+      $tmpdate = strtotime($tmpdatestr . ' +4day');
+      $node1->field_end_date[0] = array(
+        'value' => date('Y-m-d', $tmpdate) . 'T00:00:00',
+        'timezone' => date_default_timezone_name(),
+        'timezone_db' => date_default_timezone_name(),
+        'date_type' => 'date',
+      );
+    }
+    else {
+      unset($node1->field_end_date);
+    }
+    node_save($node1);
+    $node1->title = t('Course event #' . $node1->nid);
+    node_save($node1);
+    // get the current max weight since we add all new objects to the end
+    $weight1 = db_query("SELECT MAX(value) FROM {draggableviews_structure} WHERE delta = :delta AND view_name = :view_name", array(':delta' => 0, ':view_name' => 'elms_schedule'))->fetchField();
+    // insert the weight value
+    // TODO Please convert this statement to the D7 database API syntax.
+    /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node1->nid, 0, ($weight1 + 1), '') */
+    NULL;
+    // insert that this has no parent at the moment
+    // TODO Please convert this statement to the D7 database API syntax.
+    /* db_query("INSERT INTO {draggableviews_structure} (view_name, nid, delta, value, args) VALUES('%s', %d, %d, %d, '%s')", 'elms_schedule', $node1->nid, 1, 0, '') */
+    NULL;
+    $context['message'] = t('Assembling schedule: creating final exam event');
+  }
+  // Batch processing : report progress.
+  if ($context['sandbox']['current_record'] != $context['sandbox']['level1']) {
+    // need to pass through the map that's been built
+    $context['finished'] = $context['sandbox']['current_record'] / $context['sandbox']['level1'];
+  }
+  $context['sandbox']['current_record']++;
+}
+
+function _elms_schedule_random_color() {
+  $output = '#';
+  $output .= dechex(rand(60, 100) + 154);
+  srand();
+  $output .= dechex(rand(60, 100) + 154);
+  srand();
+  $output .= dechex(rand(60, 100) + 154);
+  srand();
+  return $output;
+}
+
+function _elms_schedule_clean_node() {
+  global $user;
+  // creating a blank node
+  $node = new stdClass();
+  $node->uid = $user->uid;
+  $node->type = 'elms_event';
+  $node->status = 1;
+  $node->log = 'ELMS outline root created';
+  $node->revision = 1;
+  $node->book['mlid'] = NULL;
+  $node->title = t('Course event');
+  $node->field_event_name = array(0 => array('value' => t('Course event')));
+  // save node
+  node_save($node);
+  return $node;
+}
+
+function _elms_schedule_type_to_title($ary) {
+  $outary = array();
+  foreach ($ary as $i => $field) {
+    switch ($field['value']) {
+      case 'activity':
+        $outary[$i] = t('Complete activity');
+        break;
+      case 'assessment':
+        $outary[$i] = t('Complete assessment');
+        break;
+      case 'assignment':
+        $outary[$i] = t('Complete assignment');
+        break;
+      case 'discussion':
+        $outary[$i] = t('Participate in discussion');
+        break;
+      case 'lecture':
+        $outary[$i] = t('Attend lecture');
+        break;
+      case 'reading':
+        $outary[$i] = t('Read course text');
+        break;
+    }
+  }
+  return $outary;
+}
+
+// fix for goofy display of dates without times
+function _elms_schedule_date_all_day_label() {
+  return t('');
+}
+
+// helper for rendering the point vs percentage value
+function _elms_schedule_score_format() {
+  $group = og_context();
+  if ($group->field_scoring_method[0]['value'] == 'percentage') {
+    return '%';
+  }
+  return 'Pts';
+}
+
+// helper function to take an existing outline and attempt to make it into a schedule
+function _elms_schedule_from_prototype_builder($group) {
+  $ary = array();
+  $book_nid = db_query("SELECT {book}.nid FROM {og_ancestry} JOIN {book} ON {book}.nid = {og_ancestry}.nid WHERE {book}.nid = :{book}.nid AND group_nid = :group_nid", array(':{book}.nid' => '{book} . bid', ':group_nid' => $group->nid))->fetchField();
+  $val = db_query("SELECT nid FROM {book} JOIN {menu_links} ON {menu_links}.mlid = {book}.mlid WHERE depth = :depth AND bid = :bid ORDER BY weight ASC", array(':depth' => 2, ':bid' => $book_nid))->fetchField();
+  $node1 = node_load($val);
+  $result = db_query("SELECT nid FROM {book} JOIN {menu_links} ON {menu_links}.mlid = {book}.mlid WHERE depth = :depth AND plid = :plid ORDER BY weight ASC", array(':depth' => 3, ':plid' => $node1->book['mlid']));
+  while ($val2 = db_fetch_array($result)) {
+    $node2 = node_load($val2['nid']);
+    $title = ' ' . drupal_strtolower($node2->title);
+    // try to guess type assessment
+    $type = '';
+    $word = '';
+    // Activity
+    if (strpos($title, 'activity')) {
+      $type = 'activity';
+      $word = 'Complete ';
+    }
+    // Assessment
+    if (strpos($title, 'quiz') || strpos($title, 'exam') || strpos($title, 'test') || strpos($title, 'assessment')) {
+      $type = 'assessment';
+      $word = 'Complete ';
+    }
+    // Assignment
+    if (strpos($title, 'assignment') || strpos($title, 'submit') || strpos($title, 'assignment studio') || strpos($title, 'studio')) {
+      $type = 'assignment';
+      $word = 'Complete ';
+    }
+    // Discussion
+    if (strpos($title, 'discussion') || strpos($title, 'discuss')) {
+      $type = 'discussion';
+      $word = 'Discuss ';
+    }
+    // Lecture
+    if (strpos($title, 'lecture')) {
+      $type = 'lecture';
+      $word = 'Attend ';
+    }
+    // Reading
+    if (strpos($title, 'e-text') || strpos($title, 'etext') || strpos($title, 'reading') || strpos($title, 'read') || strpos($title, 'chapter') || strpos($title, 'introduction') || strpos($title, 'overview')) {
+      $type = 'reading';
+      $word = 'Read ';
+    }
+    $ary[] = array(
+      'value' => $type,
+      'nid' => $node2->nid,
+      'title' => $word . $node2->title,
+    );
+  }
+  return $ary;
+}

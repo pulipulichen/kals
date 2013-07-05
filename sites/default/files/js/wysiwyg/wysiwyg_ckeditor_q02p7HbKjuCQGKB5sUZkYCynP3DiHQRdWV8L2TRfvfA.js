@@ -1,0 +1,1 @@
+window.CKEDITOR_BASEPATH = '/kals-drupal/profiles/elms/libraries/ckeditor/';

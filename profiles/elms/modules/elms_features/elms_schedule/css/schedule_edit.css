@@ -1,0 +1,383 @@
+/* CSS Document */
+
+.schedule_add_events_wrapper {
+ display:block;
+ padding:5px;
+ background-color:#FFF;
+ z-index:1000;
+ position:fixed;
+ top:0px;
+ text-align:center;
+}
+.schedule_outline {
+ 
+}
+.schedule_add_events {
+
+}
+.schedule_delete {
+
+}
+
+.schedule_indent {
+ margin-right:10px;
+ display:inline;
+}
+.container_close {
+ float:left;
+ position:absolute;
+ width:13px;
+ height:13px;
+ margin:20px 0px 0px -1px;
+ background-image:url('../images/minus.gif');
+ cursor:pointer;
+ z-index:101;
+}
+
+.container_closed {
+  background-image:url('../images/plus.gif');
+}
+
+.schedule_container .views-row:last-of-type {
+ border-bottom-left-radius: 12px;
+ border-bottom-right-radius: 12px;
+}
+.schedule_container .views-row:last-of-type .schedule_task {
+ border-bottom-left-radius: 12px;
+ border-bottom-right-radius: 12px;
+}
+.schedule_container_closed .schedule_task {
+ border-bottom-left-radius: 12px;
+ border-bottom-right-radius: 12px;
+}
+
+.schedule_heading {
+}
+
+.schedule_container {
+ border:3px #CCC solid;    
+ margin-top:10px;
+ -moz-border-radius: 15px;
+ border-radius: 15px;
+ -moz-box-shadow: 5px 5px 2px #DDD;
+ -webkit-box-shadow: 5px 5px 2px #DDD;
+ box-shadow: 5px 5px 2px #DDD;
+}
+
+/* schedule container */
+.view-edit-parent-schedule .view-content {
+}
+
+.schedule_task_wrapper {
+ /*border:1px solid #CCC;*/
+ height:50px;
+}
+.schedule_row .description {
+ display:none;
+}
+.schedule_heading .description {
+ display:none;
+}
+.schedule_task {
+ height:50px;
+ color:#222;
+ background-repeat:no-repeat;
+ background-position:center left;
+}
+.schedule_content_wrapper {
+ padding-top:10px;
+ float:left;
+}
+.schedule_task span.event_link {
+  color:#00F;
+  text-decoration:none;
+}
+.schedule_task span.event_link:hover {
+ color:#F00;    
+}
+.schedule_task h2 {
+ font-size:18px;
+ font-weight:bold;
+ margin:0px;
+ text-decoration:none;
+}
+.schedule_task h3 {
+ font-size:16px;
+ margin:0px;
+ text-decoration:none;
+}
+.schedule_task h4 {
+ font-size:12px;
+ margin:0px;
+ text-decoration:none;
+}
+
+.schedule_depth_0 {
+ border-top-left-radius: 12px;
+ border-top-right-radius: 12px;
+}
+
+.schedule_depth_0 #edit-field-due-date-0-value-timeEntry-popup-1 {
+ display:none;    
+}
+
+.schedule_depth_1 {
+ padding-left:40px;
+}
+.schedule_depth_2 {
+ padding-left:60px;
+}
+
+.schedule_due_date {
+ float:right;
+ font-weight:bold;
+ vertical-align:middle;
+ margin: 10px -1px 0px 0px;
+ color:#111;
+ font-size:12px;
+}
+.schedule_due_date div {
+ display:inline;
+ float:left;
+}
+.event_time {
+ display:block;
+ float:left;    
+}
+.schedule_points {
+ position: relative;
+ top: 15px;
+ right: 260px;
+ float: right;
+ font-weight: bold;
+ font-size: 16px;
+}
+.schedule_points .clicktoedit {
+ min-height:12px;
+ min-width:40px;
+ text-align:right;
+ float:left;
+ position:absolute;
+}
+.schedule_points .clicktoedit .field-field-score-value {
+ text-alight:right;    
+}
+#edit-field-score-value-0-value {
+ width:40px;    
+}
+.schedule_points_format {
+position: relative;
+top: 15px;
+right: 215px;
+float: right;
+font-weight: bold;
+font-size: 16px;
+width:0px;
+}
+
+.schedule_spacer {
+ margin:0px 5px;    
+}
+.schedule_title {
+ font-weight:normal;
+ color:#222;
+ display:block;    
+}
+
+.schedule_details {
+ font-size:11px;
+ color:#555;
+ display:block;
+}
+
+.schedule_edit_type {
+  width:24px;
+  height:24px;
+  float:left;
+  text-align:center;
+  vertical-align:middle;
+  padding:0px;
+  margin:0px;
+  z-index:100;
+  cursor:pointer;
+  position:absolute;
+  padding:14px;
+}
+
+.schedule_edit_type .field-field-event-type {
+  display:none;    
+}
+
+.schedule_edit_type select{
+  font-size:10px;
+  padding:0px;
+  margin:4px 0px 0px -12px;
+}
+
+.schedule_edit_type .clicktoedit {
+  width:24px;
+  height:24px;
+  min-height:24px;
+  min-width:24px;
+}
+
+.schedule_edit_link {
+  visibility:hidden;
+  width:16px;
+  height:16px;
+  float:right;
+  text-align:center;
+  vertical-align:middle;
+  background-position:bottom;
+  background-repeat:no-repeat;
+  background-image:url('../images/link.png');
+  padding:0px;
+  margin:18px -16px 0px 0px;
+  z-index:101;
+  cursor:pointer;
+}
+
+.schedule_edit_event {
+  visibility:hidden;
+  width:16px;
+  height:16px;
+  float:right;
+  text-align:center;
+  vertical-align:middle;
+  background-position:bottom;
+  background-repeat:no-repeat;
+  background-image:url('../images/edit.png');
+  padding:0px;
+  margin:34px -1px 0px 0px;
+  z-index:101;
+  cursor:pointer;
+}
+
+.schedule_edit_color {
+  width:16px;
+  height:16px;
+  float:right;
+  text-align:center;
+  vertical-align:middle;
+  padding:0px;
+  margin:0px -16px 0px 0px;
+  z-index:101;
+  cursor:pointer;
+}
+.schedule_edit_color .clicktoedit {
+  margin: -18px -50px 0px 0px !important;
+  border:none !important;
+  padding: 0px 0px 0px 0px !important;
+  float:right;
+  border-radius: 10px;
+}
+.schedule_edit_color .clicktoedit input{
+  font-size:9px;
+  width:44px;
+  border-radius: 10px;
+}
+.schedule_edit_color .picker_border {
+  position: relative;
+  bottom:inherit;
+  left: inherit;
+  width: 0px;
+  height: 0px;
+  border: none;
+  background: none;
+}
+.schedule_edit_color .picker_button {
+  display:none;    
+}
+.schedule_edit_color .colorwrapper {
+ left:inherit;
+ top:inherit;
+ margin:2px 0px 0px -150px;    
+}
+.schedule_edit_color .colorpicker {
+  display: none;
+}
+
+.schedule_checkbox_wrapper {
+ float:left;
+ width:7%;
+ height:10px;
+ margin-right:5px;
+ margin-left:5px;
+ padding:16px 0px 0px 0px;
+ }
+.schedule_checkbox {
+ float:right;    
+}
+.schedule_flag a{
+ display:none;
+}
+.schedule_flag .flag-message {
+ display:none;
+}
+.schedule_flag .flag-throbber {
+ vertical-align:middle;
+}
+.schedule_crossoff {
+ background-color:#DDD;
+ filter: alpha(opacity=50); /* internet explorer */
+ -khtml-opacity: 0.50;      /* khtml, old safari */
+ -moz-opacity: 0.5;       /* mozilla, netscape */
+ opacity: 0.5;           /* fx, safari, opera */
+ z-index:10;
+}
+
+.schedule_event_type {
+ float:left;
+ padding:14px;
+ border:none;
+ vertical-align:middle;    
+ position:absolute;
+}
+/* editable field view */
+.clicktoedit {
+ min-height:12px;
+ min-width:60px;
+}
+.row-hover {
+ border:1px dashed #999;
+ margin:-1px;
+}
+.clicktoedit:hover {
+ border:2px dashed #222;
+ margin:-2px;
+ cursor:pointer;
+}
+.form-item {
+ margin:0px;
+ padding:0px;
+}
+/* generic values if I don't specify */
+.form-item input {
+  font-size:10px;
+  color:#333;
+  background-color:#FF9;
+  padding:0px;
+  margin:0px;
+}
+
+#edit-field-event-name-0-value-wrapper input{
+  font-size:16px;
+}
+
+.view-edit-parent-schedule .views-field-value0 {
+ display:none;
+}
+
+#edit-field-due-date-0-value-wrapper label{
+ display:none;
+}
+#edit-field-due-date-0-value-wrapper .description {
+ display:none;    
+}
+
+#edit-field-end-date-0-value-wrapper label{
+ display:none;
+}
+#edit-field-end-date-0-value-wrapper .description {
+ display:none;    
+}

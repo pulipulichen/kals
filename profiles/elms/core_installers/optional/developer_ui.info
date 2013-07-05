@@ -1,0 +1,17 @@
+name = "Developer Site Builder UI"
+description = "Enable modules to help with site building like views ui."
+type = "add-on"
+; UI modules
+dependencies[] = "context_ui"
+dependencies[] = "beautytips_ui"
+dependencies[] = "views_ui"
+dependencies[] = "feeds_ui"
+dependencies[] = "imagecache_ui"
+dependencies[] = "spaces_ui"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

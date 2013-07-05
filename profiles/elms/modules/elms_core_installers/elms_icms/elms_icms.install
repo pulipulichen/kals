@@ -1,0 +1,91 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the elms_icms install core.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function elms_icms_install() {
+  // alter the feature menu to say course resources
+  // TODO Please review the conversion of this statement to the D7 database API syntax.
+  /* db_query("UPDATE {menu_custom} SET title='Course Resources' WHERE menu_name='features'") */
+  db_update('menu_custom')
+  ->fields(array(
+    'title' => 'Course Resources',
+  ))
+  ->condition('menu_name', 'features')
+  ->execute();
+  // install the default settings for oer and closed courses
+  $ary = array(
+    'name' => 'og_private',
+    'title' => 'Closed Enrolement Section',
+    'description' => 'Only registered students will be able to access this section / version of the course',
+    'space_type' => 'og',
+    'value' => array(
+      'variable' => array(
+        'spaces_features' => array(
+          'elms_content' => 1,
+          'elms_id_best_practices' => 1,
+        ),
+        'spaces_preset_og' => 'og_private',
+        'spaces_og_selective' => 3,
+        'spaces_og_register' => 0,
+        'spaces_og_directory' => 0,
+        'spaces_og_private' => 1,
+        'site_frontpage' => 'spaces-frontpage',
+        'site_frontpage_path' => 'spaces-frontpage',
+      ),
+      'context' => array(),
+    ),
+  );
+  drupal_write_record('spaces_presets', $ary);
+  $ary = array(
+    'name' => 'og_public',
+    'title' => 'OER Section',
+    'description' => 'All content will be available to the public',
+    'space_type' => 'og',
+    'value' => array(
+      'variable' => array(
+        'spaces_features' => array(
+          'elms_content' => 1,
+          'elms_id_best_practices' => 1,
+        ),
+        'spaces_og_selective' => 0,
+        'spaces_og_register' => 1,
+        'spaces_og_directory' => 1,
+        'spaces_og_private' => 0,
+        'site_frontpage' => 'spaces-frontpage',
+        'site_frontpage_path' => 'spaces-frontpage',
+      ),
+      'context' => array(),
+    ),
+  );
+  drupal_write_record('spaces_presets', $ary);
+  // geoip doesn't like strongarm
+  variable_set('geoip_data_file', 'profiles/elms/libraries/geoip/GeoIP.dat');
+  // set context values regardless of UI package being installed
+  variable_set('context_block_rebuild_needed', TRUE);
+  variable_set('context_reaction_block_disable_core', '1');
+  variable_set('context_reaction_block_all_regions', 0);
+  variable_set('context_reaction_block_expose_weights', 1);
+  // private download defaults need to be set manually as well
+  variable_set('private_download_directory', 'private');
+  variable_set('private_download_header', 'Content-Transfer-Encoding: binary
+Cache-Control: max-age=60, must-revalidate');
+  variable_set('private_download_htaccess', '<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteBase /system/files/private
+  RewriteRule ^(.*)$ $1 [L,R=301]
+</IfModule>');
+
+  // add suggested optimizations from dbtuner
+  db_query("ALTER TABLE {node_counter} ADD INDEX daycount (daycount)");
+  db_query("ALTER TABLE {node_counter} ADD INDEX timestamp (timestamp)");
+  db_query("ALTER TABLE {node_counter} ADD INDEX totalcount (totalcount)");
+  // install the default library of wysiwyg templates
+  // TODO Please convert this statement to the D7 database API syntax.
+  /* db_query("INSERT INTO {wysiwyg_templates} VALUES ('1', 'Assignment', 'Define an Assignment, Activity or Quiz', '<div class=\"elms_assignment elms_icon-info\">\r\n<h2 class=\"elms_header\">Assignment</h2>\r\n<div class=\"elms_directions\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div>\r\n</div><br/>'), ('2', 'Collapsed Fieldset', 'A fieldset that\'s collapsed by default', '<fieldset class=\"collapsible collapsed elms_collapse\"><legend class=\"elms_collapse-text\">Collapse</legend><div class=\"elms_collapse-body\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></fieldset><br/><br/>'), ('3', 'Collapsible', 'A fieldset that is open by default but can be collapsed', '<fieldset class=\"collapsible elms_collapse\"><legend class=\"elms_collapse-text\">Collapsible</legend><div class=\"elms_collapse-body\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></fieldset><br/><br/>'), ('4', 'Fact', 'Use this for any facts or notes that you want to stand out from the rest of the material', '<div class=\"elms_fact elms_icon-info\"><h2 class=\"elms_size3 elms_style1 elms_header\">Fact</h2><div class=\"elms_directions\">Here are your quiz directions</div></div><br/>'), ('5', 'Ipsum', 'Use this text for laying out a page without content', '<p>Lorem ipsum dolor sit amet, elit fusce erat, arcu pretium et ultricies velit, parturient faucibus sit dignissim varius, dui nibh ut tellus mauris dolor. Cursus vulputate erat dolore arcu sit egestas, suspendilacus vel in fringilla elit. Fusce tempus ante congue faucibus odio sed, gravida eu libero, elit gravida pede a id varius tempus. Aut massa vel sagittis sed vel donec, et eros. Amet nunc vivamus, gravida suspendisse integer vivamus ligula. Ultrices sociosqu ornare duis, eget tempor quisque.</p>\r\n<p>Vestibulum ut est, wisi velit, nulla sollicitudin morbi. Fermentum non wisi. Magna nec id sit consectetuer vel, montes mauris, scelerisque erat purus etiam nisl erat. Sit ut pulvinar quisque quisque. A ante, odio pharetra urna suspendisse nascetur metus. Dignissim dui nullam adipiscing amet, tincidunt tincidunt turpis. Duis a ipsum aliquam purus orci, in nec vel libero fusce, imperdiet quisque sem, in ac aenean ut, ac dolor scelerisque nibh nam.</p>\r\n<p>Sapien vestibulum turpis, commodo arcu tortor massa faucibus molestie. Litora suspendisse etiam a tortor in. Ultricies fringilla. Hac vulputate donec auctor. Viverra at ultrices et mattis volutpat, aenean interdum nec. Condimentum a et amet quia, mi feugiat in suscipit, aliquet parhendrerit fames hymenaeos vel, quam bibendum et massa donec nunc.</p>'), ('6', 'Objectives', 'A table of lesson objectives', '<div class=\"elms_objectives\"><table class=\"elms_objectives-table\" summary=\"A list of objects to complete this section\"><caption class=\"elms_objectives-header\">Objectives</caption><tbody><tr class=\"elms_row\"><th class=\"elms_col1\" scope=\"row\">1</th><td>Review Syllabus</td></tr><tr class=\"elms_row\"><th class=\"elms_col1\" scope=\"row\">2</th><td>Read Course E-Text Chapter</td></tr><tr class=\"elms_row\"><th class=\"elms_col1\" scope=\"row\">3</th><td>Complete Quiz</td></tr></tbody></table></div><p></p>'), ('7', 'Quote', 'Use this for quotes and other materials you want to offset as a block quote', '<blockquote class=\"elms_style1\"><div class=\"inner\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></blockquote><p></p>'), ('8', 'Readings', 'Use this for communicating Reading lists to students', '<div class=\"elms_readings\"><h2 class=\"elms_header\">Readings</h2><ul><li>Reading 1</li><li>Reading 2</li><li>Reading 3</li></ul></div><br/>'), ('9', 'Steps', 'Use this for communicating Steps to Completion as well as lesson objectives', '<div class=\"elms_stepstocompletion\"><table class=\"elms_stepstocompletion-table\" summary=\"A list of steps to complete\"><caption class=\"elms_stepstocompletion-header\">Steps to Completion</caption><thead><tr class=\"elms_row\"><th class=\"elms_col1 elms_colheading\">Step</th><th class=\"elms_col2 elms_colheading\">Activity</th><th class=\"elms_col3 elms_colheading\">Directions</th></tr><tr class=\"elms_row\"><td class=\"elms_col1\">1</td><td>Review Syllabus</td><td><a href=\"https://cms.psu.edu/\">See Angel</a></td></tr><tr class=\"elms_row\"><td class=\"elms_col1\">2</td><td>Read Course E-Text Chapter</td><td>See Orientation Above</td></tr><tr class=\"elms_row\"><td class=\"elms_col1\">3</td><td>Complete Quiz</td><td>Download Quiz Directions</td></tr></table></div><br/>'), ('10', 'Landing Page', 'This is a sample module / unit / lesson landing page', '<p>Lorem ipsum dolor sit amet, elit fusce erat, arcu pretium et ultricies velit, parturient faucibus sit dignissim varius, dui nibh ut tellus mauris dolor. Cursus vulputate erat dolore arcu sit egestas, suspendilacus vel in fringilla elit. Fusce tempus ante congue faucibus odio sed, gravida eu libero, elit gravida pede a id varius tempus. Aut massa vel sagittis sed vel donec, et eros. Amet nunc vivamus, gravida suspendisse integer vivamus ligula. Ultrices sociosqu ornare duis, eget tempor quisque.</p>\r\n<p>Vestibulum ut est, wisi velit, nulla sollicitudin morbi. Fermentum non wisi. Magna nec id sit consectetuer vel, montes mauris, scelerisque erat purus etiam nisl erat. Sit ut pulvinar quisque quisque. A ante, odio pharetra urna suspendisse nascetur metus. Dignissim dui nullam adipiscing amet, tincidunt tincidunt turpis. Duis a ipsum aliquam purus orci, in nec vel libero fusce, imperdiet quisque sem, in ac aenean ut, ac dolor scelerisque nibh nam.</p>\r\n<div class=\"elms_readings\"><h2 class=\"elms_header\">Readings</h2><ul><li>Reading 1</li><li>Reading 2</li><li>Reading 3</li></ul></div><br/>\r\n<div class=\"elms_stepstocompletion\"><table class=\"elms_stepstocompletion-table\" summary=\"A list of steps to complete\"><caption class=\"elms_stepstocompletion-header\">Steps to Completion</caption><thead><tr class=\"elms_row\"><th class=\"elms_col1 elms_colheading\">Step</th><th class=\"elms_col2 elms_colheading\">Activity</th><th class=\"elms_col3 elms_colheading\">Directions</th></tr><tr class=\"elms_row\"><td class=\"elms_col1\">1</td><td>Review Syllabus</td><td><a href=\"https://cms.psu.edu/\">See Angel</a></td></tr><tr class=\"elms_row\"><td class=\"elms_col1\">2</td><td>Read Course E-Text Chapter</td><td>See Orientation Above</td></tr><tr class=\"elms_row\"><td class=\"elms_col1\">3</td><td>Complete Quiz</td><td>Download Quiz Directions</td></tr></table></div><p>&nbsp;</p>'), ('11', 'Right Image Style 1', 'First style of image floated right', '<div class=\"elms_image1 elms_right-col\"><h2 class=\"elms_header2\">Image Title</h2><div></div></div><p></p>'), ('12', 'Left Image Style 1', 'First style of image floated left', '<div class=\"elms_image1 elms_left-col\"><h2 class=\"elms_header2\">Image Title</h2><div></div></div><p></p>'), ('13', 'Sample Layout 1', 'A Sample Page Layout', '<p>Lorem ipsum dolor sit amet, elit fusce erat, arcu pretium et ultricies velit, parturient faucibus sit dignissim varius, dui nibh ut tellus mauris dolor. Cursus vulputate erat dolore arcu sit egestas, suspendilacus vel in fringilla elit. Fusce tempus ante congue faucibus odio sed, gravida eu libero, elit gravida pede a id varius tempus. Aut massa vel sagittis sed vel donec, et eros. Amet nunc vivamus, gravida suspendisse integer vivamus ligula. Ultrices sociosqu ornare duis, eget tempor quisque.</p><div class=\"elms_image1 elms_right-col\"><h2 class=\"elms_header2\">Image Title</h2><div></div></div><p></p><p>Vestibulum ut est, wisi velit, nulla sollicitudin morbi. Fermentum non wisi. Magna nec id sit consectetuer vel, montes mauris, scelerisque erat purus etiam nisl erat. Sit ut pulvinar quisque quisque. A ante, odio pharetra urna suspendisse nascetur metus. Dignissim dui nullam adipiscing amet, tincidunt tincidunt turpis. Duis a ipsum aliquam purus orci, in nec vel libero fusce, imperdiet quisque sem, in ac aenean ut, ac dolor scelerisque nibh nam.</p><div class=\"elms_image1 elms_left-col\"><h2 class=\"elms_header2\">Image Title</h2><div></div></div><p></p><p>Sapien vestibulum turpis, commodo arcu tortor massa faucibus molestie. Litora suspendisse etiam a tortor in. Ultricies fringilla. Hac vulputate donec auctor. Viverra at ultrices et mattis volutpat, aenean interdum nec. Condimentum a et amet quia, mi feugiat in suscipit, aliquet parhendrerit fames hymenaeos vel, quam bibendum et massa donec nunc.Sapien vestibulum turpis, commodo arcu tortor massa faucibus molestie. Litora suspendisse etiam a tortor in. Ultricies fringilla. Hac vulputate donec auctor. Viverra at ultrices et mattis volutpat, aenean interdum nec. Condimentum a et amet quia, mi feugiat in suscipit, aliquet parhendrerit fames hymenaeos vel, quam bibendum et massa donec nunc.</p><p></p><blockquote class=\"elms_style1\"><div class=\"inner\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></blockquote><p></p>'), ('14', 'Sample Layout 2', 'Another sample layout', '<p>Lorem ipsum dolor sit amet, elit fusce erat, arcu pretium et ultricies velit, parturient faucibus sit dignissim varius, dui nibh ut tellus mauris dolor. Cursus vulputate erat dolore arcu sit egestas, suspendilacus vel in fringilla elit. Fusce tempus ante congue faucibus odio sed, gravida eu libero, elit gravida pede a id varius tempus. Aut massa vel sagittis sed vel donec, et eros. Amet nunc vivamus, gravida suspendisse integer vivamus ligula. Ultrices sociosqu ornare duis, eget tempor quisque.</p><p></p><p></p><div class=\"elms_assignment elms_icon-info\"><h2 class=\"elms_header\">Assignment</h2><div class=\"elms_directions\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></div><br /><p>Vestibulum ut est, wisi velit, nulla sollicitudin morbi. Fermentum non wisi. Magna nec id sit consectetuer vel, montes mauris, scelerisque erat purus etiam nisl erat. Sit ut pulvinar quisque quisque. A ante, odio pharetra urna suspendisse nascetur metus. Dignissim dui nullam adipiscing amet, tincidunt tincidunt turpis. Duis a ipsum aliquam purus orci, in nec vel libero fusce, imperdiet quisque sem, in ac aenean ut, ac dolor scelerisque nibh nam.</p><p></p>'), ('15', 'Sample Layout 3', 'Another sample layout', '<p>Lorem ipsum dolor sit amet, elit fusce erat, arcu pretium et ultricies velit, parturient faucibus sit dignissim varius, dui nibh ut tellus mauris dolor. Cursus vulputate erat dolore arcu sit egestas, suspendilacus vel in fringilla elit. Fusce tempus ante congue faucibus odio sed, gravida eu libero, elit gravida pede a id varius tempus. Aut massa vel sagittis sed vel donec, et eros. Amet nunc vivamus, gravida suspendisse integer vivamus ligula. Ultrices sociosqu ornare duis, eget tempor quisque.</p><p>Vestibulum ut est, wisi velit, nulla sollicitudin morbi. Fermentum non wisi. Magna nec id sit consectetuer vel, montes mauris, scelerisque erat purus etiam nisl erat. Sit ut pulvinar quisque quisque. A ante, odio pharetra urna suspendisse nascetur metus. Dignissim dui nullam adipiscing amet, tincidunt tincidunt turpis. Duis a ipsum aliquam purus orci, in nec vel libero fusce, imperdiet quisque sem, in ac aenean ut, ac dolor scelerisque nibh nam.</p><p></p><fieldset class=\"collapsible collapsed elms_collapse\"><legend class=\"elms_collapse-text\">Collapse</legend><div class=\"elms_collapse-body\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></fieldset><br /><fieldset class=\"collapsible collapsed elms_collapse\"><legend class=\"elms_collapse-text\">Collapse</legend><div class=\"elms_collapse-body\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></fieldset><br /><fieldset class=\"collapsible collapsed elms_collapse\"><legend class=\"elms_collapse-text\">Collapse</legend><div class=\"elms_collapse-body\">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</div></fieldset><br /><div class=\"elms_readings\"><h2 class=\"elms_header\">Readings</h2><ul><li>Reading 1</li><li>Reading 2</li><li>Reading 3</li></ul></div><br />');") */
+  NULL;
+}

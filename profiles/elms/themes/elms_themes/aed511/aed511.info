@@ -1,0 +1,14 @@
+name = "AED 511"
+description = "Art Education 511 Theme"
+core = 7.x
+engine = "phptemplate"
+
+stylesheets[all][] = "css/style.css"
+stylesheets[all][] = "css/accessibility.css"
+
+; Information added by drupal.org packaging script on 2012-05-25
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_themes"
+datestamp = "1337905065"
+

@@ -1,0 +1,17 @@
+name = ELMS Objects
+description = Adds a view that displays all nodes in a group
+core = 7.x
+package = Features
+php = 5.2.4
+dependencies[] = spaces
+dependencies[] = views
+features[features_api][] = api:1
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

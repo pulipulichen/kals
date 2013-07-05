@@ -1,0 +1,39 @@
+name = "ICMS: Instructional CMS"
+description = "Install ELMS with a core focus on instructional content management."
+type = "installer"
+
+; Outline Designer
+dependencies[] = "outline_designer"
+dependencies[] = "outline_designer_og"
+dependencies[] = "book_outline_builder"
+dependencies[] = "node_embed"
+; Flags
+dependencies[] = "flag"
+; Feeds
+dependencies[] = "feeds"
+dependencies[] = "feeds_node_helper"
+dependencies[] = "feeds_ridmap"
+dependencies[] = "feeds_tamper"
+dependencies[] = "feeds_xpathparser"
+; HTML Export
+dependencies[] = "html_export"
+dependencies[] = "html_export_og"
+; Data
+dependencies[] = "data"
+; ELMS Core - Features
+dependencies[] = "elms_content"
+dependencies[] = "elms_id_best_practices"
+dependencies[] = "elms_resources"
+dependencies[] = "elms_content_import"
+dependencies[] = "elms_content_export"
+dependencies[] = "elms_parent_pages"
+; ELMS ICMS Core Installer and help
+dependencies[] = "elms_icms"
+dependencies[] = "elms_help_icms"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

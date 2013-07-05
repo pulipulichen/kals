@@ -1,0 +1,13 @@
+core = 7.x
+dependencies[] = "regions"
+description = "Bundling of Right side Navigation with associated blocks"
+name = "ELMS Navigation Right"
+package = "ELMS"
+project = "elms_navigation_right"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

@@ -1,0 +1,66 @@
+name = "ELMS Default Core Install"
+description = "ELMS installation, first pass for Drupal Core"
+type = "required"
+; Core - required
+dependencies[] = "block"
+dependencies[] = "filter"
+dependencies[] = "node"
+dependencies[] = "system"
+dependencies[] = "user"
+; Core - optional
+dependencies[] = "book"
+dependencies[] = "contact"
+dependencies[] = "dblog"
+dependencies[] = "help"
+dependencies[] = "menu"
+dependencies[] = "path"
+dependencies[] = "profile"
+dependencies[] = "search"
+dependencies[] = "syslog"
+dependencies[] = "taxonomy"
+dependencies[] = "update"
+; Administration
+dependencies[] = "admin"
+; Views
+dependencies[] = "views"
+; Organic Groups
+dependencies[] = "og_views"
+dependencies[] = "og"
+dependencies[] = "og_access"
+; Chaos tool suite
+dependencies[] = "ctools"
+; Context
+dependencies[] = "context"
+dependencies[] = "context_og"
+; Date/Time
+dependencies[] = "date"
+dependencies[] = "date_api"
+dependencies[] = "date_timezone"
+; Features
+dependencies[] = "features"
+; ImageCache
+dependencies[] = "imageapi"
+dependencies[] = "imageapi_gd"
+dependencies[] = "imagecache"
+; Token
+dependencies[] = "token"
+; Libraries API
+dependencies[] = "libraries"
+; PURL
+dependencies[] = "purl"
+; Spaces
+dependencies[] = "spaces"
+dependencies[] = "spaces_theme"
+dependencies[] = "spaces_og"
+dependencies[] = "spaces_og_clone"
+; jQuery Update
+dependencies[] = "jquery_update"
+; Regions
+dependencies[] = "regions"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

@@ -1,0 +1,26 @@
+name = "Art 30"
+description = "Theme for Art 30"
+core = 7.x
+engine = "phptemplate"
+
+;block regions
+regions[superfish]       = "Superfish menu"
+regions[content_top]     = "Content top"
+regions[content]         = "Content"
+regions[content_bottom]  = "Content bottom"
+regions[left]            = "Sidebar left"
+regions[right]           = "Sidebar right"
+regions[footer]          = "footer"
+
+;styles
+stylesheets[all][] = "css/style.css"
+stylesheets[all][] = "css/accessibility.css"
+stylesheets[all][] = "superfish/css/superfish.css"
+stylesheets[all][] = "css/nav_horizontal.css"
+
+; Information added by drupal.org packaging script on 2012-05-25
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_themes"
+datestamp = "1337905065"
+

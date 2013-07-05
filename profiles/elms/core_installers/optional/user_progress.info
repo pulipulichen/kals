@@ -1,0 +1,14 @@
+name = "User progress analytics pack"
+description = "Helps track user actions like page and video views if jwplayer is installed"
+type = "add-on"
+; User Progress
+dependencies[] = "user_progress"
+dependencies[] = "user_progress_content"
+dependencies[] = "user_progress_requirement_dashboard"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

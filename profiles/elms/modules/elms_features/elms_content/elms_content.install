@@ -1,0 +1,19 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the elms_content module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function elms_content_install() {
+  $types = array(
+    0 => 'folder',
+    1 => 'link',
+    2 => 'page',
+    3 => 'referenced_page',
+  );
+  variable_set('book_allowed_types', $types);
+  variable_set('book_child_type', 'page');
+}

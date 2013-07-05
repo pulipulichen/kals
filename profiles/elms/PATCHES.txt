@@ -1,0 +1,50 @@
+This file is to keep track of the patches applied to make this stack work:
+
+--Contributed--
+Editable Fields
+-- similar to http://drupal.org/node/777870
+-- editablefields.js
+-- modified included js file to work with date popups
+
+Spaces OG
+-- http://drupal.org/node/1101738
+-- spaces/spaces_og/spaces_og.modules
+-- Helps improve user experience / performance around node access rebuilds
+
+UUID
+-- Fixes a glitch in creation of UUIDs from an admin side
+-- http://drupal.org/node/1236768
+
+OG User Roles
+-- Views Integration
+-- http://drupal.org/node/729256#comment-4835204
+
+WYSIWYG Templates
+-- allow for images to be added (manually) to visualize templates
+-- see lines 164 & 171
+
+Context
+-- Allow for setting block weights through the UI to avoid conflicts between context placement
+-- http://drupal.org/node/455908#comment-4998204
+
+HTML Purifier Library
+-- Allow for matching of the WCAG 2.0 specification
+-- http://htmlpurifier.org/phorum/read.php?2,5688
+
+HTML Purifier
+-- Added a custom configuration file for input format 2 (Content format)
+-- This definition loads the variable driven configuration and then adds support for fieldset and legend, a requirement of the templates system for collapse fields
+-- lines 442 and 485 have also been commented out to allow for the use of both methods
+-- patch applied for iframe support http://drupal.org/node/711728#comment-4444892
+
+Accessible Content
+-- Fixed glitch where saved settings were not presented
+-- http://drupal.org/node/1006724#comment-5451566
+
+Timeline Library
+-- Fixed glitch where it's searching for history file.
+-- See INSTALL.txt in timeline project
+
+Timeline
+-- http://drupal.org/node/1433262
+-- Line 159 changed from file_check_directory to file_exists

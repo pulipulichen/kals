@@ -1,0 +1,225 @@
+; ELMS make file
+core = 7.x
+api = 2
+
+; ELMS specific code to extend it beyond ulmus
+; ELMS feature modules
+projects[elms_features][version] = "1.x-dev"
+
+; Themes
+projects[elms_themes][version] = "1.x-dev"
+projects[elms_themes][type] = "theme"
+
+; Libraries
+
+libraries[simile_timeline][download][type] = "get"
+libraries[simile_timeline][download][url] = "http://simile-widgets.googlecode.com/files/timeline_libraries_v2.3.0.zip"
+libraries[simile_timeline][directory_name] = "simile_timeline"
+libraries[simile_timeline][type] = "library"
+libraries[simile_timeline][destination] = "libraries"
+
+; Ulmus core taken from ulmus install profile base
+; OG/features/context/spaces core and associated projects
+projects[context][version] = "3.0-beta4"
+projects[context][subdir] = "contrib"
+projects[context_og][version] = "2.x-dev"
+projects[context_og][subdir] = "contrib"
+projects[context_spaces_features][version] = "1.0"
+projects[context_spaces_features][subdir] = "contrib"
+projects[context_var][version] = "1.0"
+projects[context_var][subdir] = "contrib"
+projects[features][version] = "1.0"
+projects[features][subdir] = "contrib"
+projects[og][version] = "2.0-beta2"
+projects[og][subdir] = "contrib"
+projects[og_views][version] = "1.0"
+projects[og_views][subdir] = "contrib"
+projects[og_theme][version] = "2.0"
+projects[og_theme][subdir] = "contrib"
+projects[og_extras][version] = "1.1"
+projects[og_extras][subdir] = "contrib"
+projects[purl][version] = "1.0-beta1"
+projects[purl][subdir] = "contrib"
+projects[spaces][version] = "3.0-alpha1"
+projects[spaces][subdir] = "contrib"
+projects[spaces_theme][version] = "1.0-alpha1"
+projects[spaces_theme][subdir] = "contrib"
+projects[views][version] = "3.5"
+projects[views][subdir] = "contrib"
+projects[views_data_export][version] = "3.0-beta6"
+projects[views_data_export][subdir] = "contrib"
+
+; Development best practices / addition required modules
+projects[devel][version] = "1.3"
+projects[devel][subdir] = "contrib"
+projects[diff][version] = "2.0"
+projects[diff][subdir] = "contrib"
+projects[profiler_builder][version] = "1.x-dev"
+projects[profiler_builder][subdir] = "contrib"
+projects[admin_menu][version] = "3.0-rc3"
+projects[admin_menu][subdir] = "contrib"
+projects[views_bulk_operations][version] = "3.0"
+projects[views_bulk_operations][subdir] = "contrib"
+projects[backup_migrate][version] = "2.4"
+projects[backup_migrate][subdir] = "contrib"
+projects[advanced_help][version] = "1.0"
+projects[advanced_help][subdir] = "contrib"
+projects[ctools][version] = "1.x-dev"
+projects[ctools][subdir] = "contrib"
+projects[entity][version] = "1.0-rc3"
+projects[entity][subdir] = "contrib"
+projects[job_scheduler][version] = "2.0-alpha3"
+projects[job_scheduler][subdir] = "contrib"
+projects[jquery_update][version] = "2.2"
+projects[jquery_update][subdir] = "contrib"
+projects[libraries][version] = "2.x-dev"
+projects[libraries][subdir] = "contrib"
+projects[masquerade][version] = "1.0-rc4"
+projects[masquerade][subdir] = "contrib"
+projects[module_filter][version] = "1.7"
+projects[module_filter][subdir] = "contrib"
+projects[pathauto][version] = "1.2"
+projects[pathauto][subdir] = "contrib"
+projects[stringoverrides][version] = "1.8"
+projects[stringoverrides][subdir] = "contrib"
+projects[strongarm][version] = "2.0"
+projects[strongarm][subdir] = "contrib"
+projects[requirement_dashboard][version] = "1.2"
+projects[requirement_dashboard][subdir] = "contrib"
+projects[token][version] = "1.4"
+projects[token][subdir] = "contrib"
+projects[unique_field][version] = "1.0-rc1"
+projects[unique_field][subdir] = "contrib"
+
+; UX projects to refine and manage UX above drupal
+projects[auto_nodetitle][version] = "1.0"
+projects[auto_nodetitle][subdir] = "contrib"
+projects[book_title_override][version] = "1.0-beta4"
+projects[book_title_override][subdir] = "contrib"
+projects[boxes][version] = "1.0"
+projects[boxes][subdir] = "contrib"
+projects[ckeditor_link][version] = "2.2"
+projects[ckeditor_link][subdir] = "contrib"
+projects[delta][version] = "3.0-beta11"
+projects[delta][subdir] = "contrib"
+projects[hidden_nodes][version] = "1.0"
+projects[hidden_nodes][subdir] = "contrib"
+projects[nodeformcols][version] = "1.x-dev"
+projects[nodeformcols][subdir] = "contrib"
+projects[regions][version] = "1.4"
+projects[regions][subdir] = "contrib"
+projects[tinynav][version] = "1.1"
+projects[tinynav][subdir] = "contrib"
+projects[tipsy][version] = "1.0-rc1"
+projects[tipsy][subdir] = "contrib"
+projects[omega_tools][version] = "3.0-rc4"
+projects[omega_tools][subdir] = "contrib"
+projects[outline_designer][version] = "2.x-dev"
+projects[outline_designer][subdir] = "contrib"
+projects[wysiwyg][version] = "2.2"
+projects[wysiwyg][subdir] = "contrib"
+projects[wysiwyg_template][version] = "2.8"
+projects[wysiwyg_template][subdir] = "contrib"
+projects[textbook][version] = "1.0-beta3"
+projects[textbook][subdir] = "contrib"
+projects[imce][version] = "1.5"
+projects[imce][subdir] = "contrib"
+projects[imce_crop][version] = "1.0"
+projects[imce_crop][subdir] = "contrib"
+projects[imce_wysiwyg][version] = "1.0"
+projects[imce_wysiwyg][subdir] = "contrib"
+
+
+; Field / Common content enablers for content types / entities
+projects[field_group][version] = "1.1"
+projects[field_group][subdir] = "contrib"
+projects[autocomplete_widgets][version] = "1.0-beta2"
+projects[autocomplete_widgets][subdir] = "contrib"
+projects[date][version] = "2.6"
+projects[date][subdir] = "contrib"
+projects[link][version] = "1.0"
+projects[link][subdir] = "contrib"
+; make fields that reference entities
+projects[entityreference][version] = "1.0-rc5"
+projects[entityreference][subdir] = "contrib"
+; allow prepopulating based on URL format for entity references
+projects[entityreference_prepopulate][version] = "1.1"
+projects[entityreference_prepopulate][subdir] = "contrib"
+; allow prepopulating of other fields based on URL format
+projects[prepopulate][version] = "2.x-dev"
+projects[prepopulate][subdir] = "contrib"
+; UX improvement for highlighting and referencing content in content
+projects[nodereference_highlight][version] = "1.0-alpha1"
+projects[nodereference_highlight][subdir] = "contrib"
+projects[nodereference_url][version] = "1.12"
+projects[nodereference_url][subdir] = "contrib"
+projects[options_element][version] = "1.7"
+projects[options_element][subdir] = "contrib"
+projects[filefield_paths][version] = "1.0-beta3"
+projects[filefield_paths][subdir] = "contrib"
+
+; Data migration helpers for getting information in
+projects[feeds][version] = "2.0-alpha6"
+projects[feeds][subdir] = "contrib"
+projects[feeds_node_helper][version] = "1.2"
+projects[feeds_node_helper][subdir] = "contrib"
+projects[feeds_ridmap][version] = "1.x-dev"
+projects[feeds_ridmap][subdir] = "contrib"
+projects[feeds_tamper][version] = "1.0-beta4"
+projects[feeds_tamper][subdir] = "contrib"
+projects[feeds_xpathparser][version] = "1.0-beta3"
+projects[feeds_xpathparser][subdir] = "contrib"
+projects[uuid][version] = "1.x-dev"
+projects[uuid][subdir] = "contrib"
+projects[transliteration][version] = "3.1"
+projects[transliteration][subdir] = "contrib"
+; Color picker widget
+projects[jquery_colorpicker][subdir] = "contrib"
+projects[jquery_colorpicker][version] = "1.0-rc1"
+; chamfer default layouts
+projects[chamfer_defaults][subdir] = "contrib"
+projects[chamfer_defaults][version] = "1.0-beta2"
+; Themes
+projects[rubik][version] = "4.0-beta8"
+projects[rubik][type] = "theme"
+projects[rubik][subdir] = "contrib"
+
+projects[tao][version] = "3.0-beta4"
+projects[tao][type] = "theme"
+projects[tao][subdir] = "contrib"
+
+projects[omega][version] = "3.1"
+projects[omega][type] = "theme"
+projects[omega][subdir] = "contrib"
+
+projects[respond][version] = "3.0-beta1"
+projects[respond][type] = "theme"
+projects[respond][subdir] = "contrib"
+
+projects[chamfer][version] = "1.0-beta5"
+projects[chamfer][type] = "theme"
+projects[chamfer][subdir] = "contrib"
+
+; Libraries
+; Color picker for use with jquery_colorpicker
+libraries[colorpicker][download][type] = "get"
+libraries[colorpicker][download][url] = "http://www.eyecon.ro/colorpicker/colorpicker.zip"
+libraries[colorpicker][directory_name] = "colorpicker"
+libraries[colorpicker][type] = "library"
+libraries[colorpicker][destination] = "libraries"
+
+; CKEditor for use as WYSIWYG default text editor
+libraries[ckeditor][download][type] = "get"
+libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.4/ckeditor_3.6.4.tar.gz"
+libraries[ckeditor][directory_name] = "ckeditor"
+libraries[ckeditor][type] = "library"
+
+; Profiler install profile API
+libraries[profiler][download][type] = "get"
+libraries[profiler][download][url] = "http://ftp.drupal.org/files/projects/profiler-7.x-2.x-dev.tar.gz"
+libraries[profiler][directory_name] = "profiler"
+libraries[profiler][type] = "library"
+
+; Patches
+; Spaces patch to account for og 2.x module
+;projects[spaces][patch][] = "http://drupal.org/files/spaces-port_spaces_og_to_og_2-1668636-4.patch"

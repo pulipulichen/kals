@@ -1,0 +1,122 @@
+/* CSS Document */
+#block-feedback-form {
+ bottom:0px;
+ right:0px;
+}
+
+.teaser-checkbox {
+	display:none;
+}
+.vertical-tabs-fieldset.vertical-tabs-spaces {
+	display:none;
+}
+
+div.wysiwyg-field-edit-body ul.tips {
+  display:none;
+}
+
+.node-parent {
+background-image:none !important;    
+}
+
+.dev-timer {
+ z-index:100000;
+ float:right;
+ bottom:0;
+ left:15%;
+ position:fixed;
+}
+#progressbar_wrapper {
+ height:50px;
+ width:100%;
+}
+#progressbar_container.sticky {
+ position:fixed;
+ top:0px; padding:0px 5px 5px 5px;
+ margin:0px -5px 0px -5px;
+ z-index:10000;
+}
+.percent_complete {
+ float:right;
+ margin: 0px 5px 0px 0px;
+ line-height:30px;
+ font-size:14px;
+ font-weight:bold;
+ color:#333;
+}
+#progressbar_container {
+ height:50px;
+ width:100%;
+}
+#progressbar {
+}
+.ui-progressbar-value-add {
+ background-image:url('../images/pbar-ani.gif');
+}
+.ui-progressbar {
+ height:30px;    
+}
+.ui-progressbar-value {
+ height:28px;
+}
+.ui-datepicker-title {
+ float:left;
+}
+.ui-datepicker-header select {
+ position:relative;
+ top:auto;    
+}
+
+.form-region-main {
+ width:auto !important;
+ min-width:70%;    
+}
+/* fix stupid purl / jquery colorpicker conflict */
+#colorSelector div {
+ background: url(images/select.png) center !important;
+}
+/* fix issue with background color influencing wyziwig body area */
+body.cke_show_borders {
+ background-color:#FFFFFF !important;
+}
+/* ELMS messages */
+.elms-message {
+ font-weight:bold;
+ font-size:14px;
+ background-color:#E4F0F8;
+ padding:20px;
+ border:#B5B5B5 2px solid;
+ color:#222 !important;
+}
+.elms-message a {
+ color:#44C !important;
+ font-size:14px;
+ text-decoration:underline;
+ padding-left:5px;
+}
+.elms-message a:hover {
+ color:#00F !important;
+ font-weight:bold;
+ text-decoration:underline;
+}
+
+/* remove check key link we don't need */
+#og-reg-keys-join input[value="Check key"]{
+  display:none;
+}
+#edit-og-reg-key {
+  width:120px;
+}
+
+/* ___________ IE6 IFRAME FIX ________ */
+.ui-datepicker-cover {
+  display: none; /*sorry for IE5*/
+  display/**/: block; /*sorry for IE5*/
+  position: absolute; /*must have*/
+  z-index: -1; /*must have*/
+  filter: mask(); /*must have*/
+  top: -4px; /*must have*/
+  left: -4px; /*must have*/ /* LTR */
+  width: 200px; /*must have*/
+  height: 200px; /*must have*/
+}

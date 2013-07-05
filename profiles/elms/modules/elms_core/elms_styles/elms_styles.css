@@ -1,0 +1,335 @@
+/*
+  ELMS CSS Style Guide 
+  inspiration by http://www.blueprintcss.org/ reset.css and typography.css
+*/
+
+/* Admin Toolbar to repair il-made themes */
+body {font-size:75%;}
+#admin-toolbar a:link, #admin-toolbar a:visited{color:#FFF !important;}
+#admin-toolbar a:hover,#admin-toolbar a:active{color:#333 !important;}
+#admin-toolbar .drilldown-trail a:hover {color:#FFF !important;}
+/* GLOBAL */
+#skip-nav a, skip-nav a, #skip-nav a:hover,#skip-nav a:visited{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}
+#skip-nav a:active,#skip-nav a:focus{position:static;width:auto;height:auto;left:0px;top:20px;overflow:visible;color:#222;background-color:#FFF;}
+a:focus {outline:2px solid #3F0;}
+a:focus * {outline:2px solid #3F0;}
+/* Resets for content */
+/* Links */
+div.node *{font:1em "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;line-height:1.5em;}
+div.node {line-height:1.5em;margin:0px;padding:5px;border:0;vertical-align:baseline;}
+div.node a, div.node a:link, div.node a:visited{text-decoration:underline;}
+div.node a:hover,div.node a:active{text-decoration:underline;}
+div.node a img {border:none;}
+/* Headings */
+div.node h2 {font-weight:bold;line-height:1em;margin-top:1em !important;margin-bottom:0.25em !important;text-decoration:none;}
+/* Paragraph */
+div.node p{margin:0 0 10px 0;font:1em "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;line-height:1.5em;}
+div.node em{font-style:italic;}
+div.node strong{font-weight:bold;}
+div.node sup, div.node sub {line-height:0;font-size:.5em;padding:1px;}
+/* Table elements */
+div.node table{vertical-align:middle;width:98%;margin-bottom:1.4em;border-collapse:separate;border-spacing:0;}
+div.node tr{border-left:1px solid #333;border-right:1px solid #333;}
+div.node th{padding:4px 10px 4px 5px;vertical-align:middle;text-align:left;font-weight:bold;float:none !important;}
+div.node tbody th{background:#c3d9ff;vertical-align:middle;text-align:left;font-weight:normal;float:none !important;padding:5px; border-bottom:1px solid #555;border-top:1px solid #555;}
+div.node td{vertical-align:middle; border-bottom:1px solid #555;text-align:left;font-weight:normal;float:none !important;padding:4px 10px 4px 5px;}
+div.node tbody tr:nth-child(even) {background:#e5ecf9;}
+div.node tr:hover{background:#9CF;}
+div.node caption {margin:0px;clear:both;padding:4px 10px 4px 5px;font-size:1.2em;font-weight:normal;width:auto;background:#eee;}
+/* List elements */
+div.node ul, div.node ol{margin:0 1.5em 1.5em 0;padding-left:1.5em;font-size:1em;}
+div.node ul{list-style-type:disc;}
+div.node ul ul{list-style-type:circle;}
+div.node ul ul ul{list-style-type:square;}
+div.node ul ul ul ul{list-style-type:circle;}
+div.node ol{list-style-type:decimal;}
+div.node ol ol{list-style-type:lower-alpha;}
+div.node ol ol ol{list-style-type:decimal;}
+div.node ol li, div.node ul li{margin:1em 0}
+div.node .book-navigation ol li, div.node .book-navigation  ul li{margin:0px;}
+div.node iframe{margin:1em}
+/* Abbreviation */
+div.node abbr{border-bottom:1px dotted #666666;cursor:help;white-space:nowrap;}
+/* Blockquotes */
+div.node blockquote{quotes:"" "";margin:1.5em;font-style:italic;}
+div.node blockquote:before, blockquote:after{content:'';}
+
+/* ELMS Styles */
+/* Headings */
+h2.elms_header{font-size:2.5em;} /* default */
+h1.elms_header1{font-size:2.5em;} /* large */
+h2.elms_header2{font-size:2em;} /* medium */
+h3.elms_header3{font-size:1.5em;} /* small */
+
+/* Paragraph styles. */
+em.elms_em{}
+strong.elms_strong{font-weight:bold;}
+/*Site Accepted Font Sizes*/
+p.elms_size1{font-size:1.5em;}
+p.elms_size2{font-size:.75em;}
+span.elms_size1{font-size:1.5em;}
+span.elms_size2{font-size:.75em;}
+div.elms_size1{font-size:1.5em;}
+div.elms_size2{font-size:.75em;}
+/*Justifications*/
+div.elms_right{text-align: right;}
+div.elms_center{text-align: center;}
+/*Site Accepted Font Colors*/
+span.elms_color1{color:#900;}
+span.elms_color2{color:#009;}
+span.elms_color3{color:#090;}
+span.elms_color4{color:#990;}
+span.elms_color5{color:#099;}
+span.elms_color6{color:#909;}
+/*Blockquotes */
+
+blockquote.elms_style1{
+  background:#DDD top left no-repeat url('images/quote1.png');
+  margin:10px;
+  padding:0px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  width:auto;
+}
+
+blockquote.elms_style1 div.inner{
+  background:bottom right no-repeat url('images/quote2.png');
+  font-style:italic;
+  margin:0px;
+  padding:35px 80px 35px 80px;
+  height:100%;
+  text-align:center;
+}
+/* List styles. */
+ul .elms_style1{}
+ul .elms_style2{}
+ul .elms_style3{}
+
+ol .elms_style1{}
+ol .elms_style2{}
+ol .elms_style3{}
+
+/* Image style 1 */
+div.elms_image_container {border-style:solid;border-width:1px;border-color:#b6b6b6;background-color:#d3d3d3;padding:4px;width:240px;margin:5px auto;}
+div.elms_image1 {margin:0px auto;padding:8px 10px 4px 12px;border-style:solid;border-width:1px;border-color:#b6b6b6;}
+div.elms_image1 img{border:0px;}
+div.elms_image1 a.lightbox-processed {margin:0px auto;padding:0px; border:0px; line-height:1em;}
+div.elms_image_container .citation{border-style:solid;border-width:1px;border-color:#b6b6b6;font-size:.9em;text-align:center;color:#333;margin:5px auto 0px;}
+
+/* Image style 2 */
+div.elms_image_container2 {width:216px;margin:5px auto;}
+div.elms_image2 {margin:3px auto;padding:0;border:none;}
+div.elms_image2 img{border:0px;}
+div.elms_image2 a.lightbox-processed {margin:0px auto;padding:0px; border:0px; line-height:1em;}
+div.elms_image_container2 div.citation_container{border-style:solid;border-width:1px;border-color:#b6b6b6;margin:0px auto 0px; background-color:#d3d3d3;}
+div.elms_image_container2 .citation{border-style:solid;border-width:1px;border-color:#b6b6b6;font-size:.9em;text-align:center;color:#333;margin:4px;padding:2px;}
+
+/*Misc Styles*/
+/* red */
+div.elms_image_container.elms_style1, .elms_style1 div.elms_image1, div.elms_style1 div.citation_container, div.elms_style1 .citation{background-color:#f2d1d0; border-color:#d798ae;}
+/* green */
+div.elms_image_container.elms_style2, .elms_style2 div.elms_image1, div.elms_style2 div.citation_container, div.elms_style2 .citation{background-color:#e4f2d0; border-color:#bdd798;}
+/* orange */
+div.elms_image_container.elms_style3, .elms_style3 div.elms_image1, div.elms_style3 div.citation_container, div.elms_style3 .citation{background-color:#ffe8bf; border-color:#d7ba98;}
+/* blue */
+div.elms_image_container.elms_style4, .elms_style4 div.elms_image1, div.elms_style4 div.citation_container, div.elms_style4 .citation{background-color:#d0e6f2; border-color:#98a5d7;}
+/* manilla */
+div.elms_image_container.elms_style5, .elms_style5 div.elms_image1, div.elms_style5 div.citation_container, div.elms_style5 .citation{background-color:#e1d1b4; border-color:#a39171;}
+
+div.elms_left-col{margin:10px 10px 10px 0px;float:left;}
+div.elms_right-col{margin:10px 0px 10px 10px;float:right;}
+div.elms_center-col{margin:10px auto;}
+
+/*
+  Templates section for CKeditor HTML templates
+*/
+
+/* Template: Readings list */
+.elms_readings {
+  border:2px solid #666;
+  color:#222;
+  background-color:#FFD;
+  padding:10px;
+  margin:10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+h2.elms_header {
+  color:#222;
+  margin:5px;
+  width:auto;
+}
+.elms_readings ul{
+  list-style-position:inside;
+  list-style-type:disc;
+  margin:0px 0px 0px 5px;
+  width:auto;
+}
+.elms_readings li{
+  margin:0px;
+  padding:0px;
+  width:auto;
+}
+/* Steps to completion Template */
+.elms_stepstocompletion {
+  width:auto;
+  margin:10px;
+  padding:0px;
+}
+.elms_stepstocompletion-header {
+  margin:0px;
+  clear:both;
+  padding:10px;
+  background-color:#EEE;
+  width:auto;
+  -moz-border-radius-topright: 10px;
+  border-top-right-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  border-top-left-radius: 10px;
+}
+.elms_stepstocompletion-table {
+  background-color:#BBD3DD;
+  color:#222;
+  width:99%;
+  margin:0px;
+  padding:0px;
+  -moz-border-radius-bottomright: 10px;
+  border-bottom-right-radius: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-bottom-left-radius: 10px;
+}
+.elms_stepstocompletion-table th{
+  background-color:#DDD;
+  color:#222;
+  font-weight:bold;
+  text-align:left;
+  margin:0px;
+  padding:5px;
+}
+.elms_stepstocompletion-table tr{
+  border-top:#DDD solid 1px;
+}
+
+.elms_stepstocompletion-table tr.elms_row:hover{
+  background:#9CF;
+}
+.elms_stepstocompletion-table td {
+  background:none;
+}
+.elms_stepstocompletion-table .elms_col1{
+  font-weight:bold;
+  text-align:center;
+}
+
+/* Assignment template */
+.elms_assignment {
+  background-color:#FFD47B;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin:20px;
+  padding:5px;
+  color:#222;
+}
+.elms_assignment h2.elms_header{
+  padding:15px 0px 0px 42px !important;
+}
+.elms_icon-info {
+ background-image:url('images/info.png');
+ background-position:top left;
+ background-repeat:no-repeat;
+}
+.elms_directions {
+  margin:0px;
+  padding:0px 5px 5px 5px;
+  color:#222;
+}
+.elms_directions .citation{
+  font-size:.9em;
+  text-align:center;
+}
+
+/* Fact template */
+.elms_fact {
+  background-color:#FFE3E6;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+.elms_fact h2{
+  padding:15px 0px 0px 42px !important; 
+}
+
+/* Collapse templates */
+.elms_collapse {
+}
+
+.elms_collapse-text {
+  font-weight:bold;
+  color:#333;
+  background-color:transparent;
+}
+div.node .elms_collapse-text a,div.node .elms_collapse-text a:link,div.node .elms_collapse-text a:visited{
+  text-decoration:none;
+  background-color:transparent;
+  font-size:1.2em;
+  font-weight:bold;
+}
+
+.elms_collapse-body {
+    color:#222;
+}
+/* Steps to completion Template */
+.elms_objectives {
+  width:auto;
+  margin:10px;
+  padding:0px;
+}
+caption.elms_objectives-header {
+  margin:0px;
+  clear:both;
+  padding:10px;
+  font-size:1.4em;
+  font-weight:bold;
+  background-color:#EEE;
+  width:auto;
+  -moz-border-radius-topright: 10px;
+  border-top-right-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  border-top-left-radius: 10px;
+}
+.elms_objectives-table {
+  width:99%;
+  margin:0px;
+  padding:0px;
+  -moz-border-radius-bottomright: 10px;
+  border-bottom-right-radius: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-bottom-left-radius: 10px;
+}
+.elms_objectives th{
+  background-color:#DDD;
+  font-weight:bold;
+  text-align:left;
+  margin:0px;
+  padding:5px;
+}
+.elms_objectives tr{
+  border-top:#DDD solid 1px;
+}
+
+.elms_objectives td:hover{
+  background-color:#9CF;
+}
+.elms_objectives td{
+  margin:0px;
+  padding:5px;
+  overflow:auto;
+}
+
+.elms_objectives .elms_col1{
+  font-weight:bold;
+  text-align:center;
+}
+.elms_objectives .elms_col2{
+}

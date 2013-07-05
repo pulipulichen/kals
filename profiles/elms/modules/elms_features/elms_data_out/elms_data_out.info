@@ -1,0 +1,17 @@
+core = 7.x
+dependencies[] = "taxonomy"
+dependencies[] = "views_data_export"
+dependencies[] = "workflow"
+description = "All views for getting data out of ELMS"
+features[views][] = "elms_core_data_feeds"
+features[views_api][] = "api:2"
+name = "ELMS Data out"
+package = "ELMS"
+project = "elms_data_out"
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

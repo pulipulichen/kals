@@ -1,0 +1,137 @@
+<?php
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_help_icms_help($path) {
+  switch ($path) {
+    case 'admin':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Drupal-Administration'));
+    case 'admin/elms':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'ELMS-Settings'));
+    case 'node/%/edit':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Content-Management'));
+    case 'node/%/features':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'ID-Toolkit'));
+    case 'node/%/og_stats':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Version-Status'));
+    case 'node/%/parent_status':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Course-Status'));
+    case 'node/%/theme':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Changing-Theme'));
+    case 'node/add/site/%':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Adding-Versions'));
+    case 'node/add/site':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Creating-Sandboxes'));
+    case 'node/add/parent':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Creating-Courses'));
+    case 'outline_designer/%':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'Outline-Designer'));
+    case 'system_stats':
+      return theme('advanced_help_topic', array('module' => 'elms_help_icms', 'topic' => 'System-Status'));
+  }
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_help_icms_step_form(&$element, $form_id, $callback) {
+  foreach (element_children($element) as $child) {
+    elms_help_icms_step_form($element[$child], $form_id . ':' . $child, $callback);
+  }
+  $callback($element, $form_id);
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_help_icms_form_alter(&$form, $form_state, $form_id) {
+  elms_help_icms_step_form($form, $form_id, 'elms_help_icms_help_link');
+  $form['#description'] = isset($form['#description']) ? elms_help_icms_get_from_key('form', $form_id) . ' ' . $form['#description'] : elms_help_icms_get_from_key('form', $form_id);
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_help_icms_get_from_key($key) {
+  static $helpkeys = array(
+    'folder_node_form:title' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Folder',
+    ),
+    'link_node_form' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Link',
+    ),
+    'page_node_form:body_field:body' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Text-Editor',
+    ),
+    'folder_node_form:body_field:body' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Text-Editor',
+    ),
+    'page_node_form:title' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Page',
+    ),
+    'poll_node_form:title' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Polls',
+    ),
+    'referenced_page_node_form:title' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Reference-Page',
+    ),
+    'spaces_features_form:spaces_features:elms_content' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Content',
+    ),
+    'spaces_features_form:spaces_features:elms_id_best_practices' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'ID-Best-Practices',
+    ),
+    'spaces_features_form:spaces_features:elms_places' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Places',
+    ),
+    'spaces_features_form:spaces_features:elms_polls' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Polls',
+    ),
+    'spaces_features_form:spaces_features:elms_reference_links' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Reference-Links',
+    ),
+    'spaces_features_form:spaces_features:elms_terms' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Terms',
+    ),
+    'spaces_features_form:spaces_features:elms_timeline' => array(
+      'module' => 'elms_help_icms',
+      'file' => 'Timelines',
+    ),
+  );
+  return isset($helpkeys[$key]) ? $helpkeys[$key] : FALSE;
+}
+
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_help_icms_help_link(&$element, $form_id) {
+  if (isset($element['#type']) && !in_array($element['#type'], array('button', 'image_button', 'submit', 'markup', 'token', 'hidden', 'form', 'value', 'weight'))) {
+    if ($result = elms_help_icms_get_from_key($form_id)) {
+      $link = theme('advanced_help_topic', array('module' => $result['module'], 'topic' => $result['file']));
+      if ($element['#type'] == 'fieldset') {
+        drupal_add_css(drupal_get_path('module', 'elms_help_icms') . '/elms_help_icms.css');
+        $link = preg_replace('/class="(.+?)"/', 'class="\1 elms_help_icms-nofloat"', $link);
+      }
+      $element['#description'] = isset($element['#description']) ? $link . ' ' . $element['#description'] : $link;
+    }
+  }
+}
+

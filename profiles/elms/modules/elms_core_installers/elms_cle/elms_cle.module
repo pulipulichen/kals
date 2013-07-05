@@ -1,0 +1,15 @@
+<?php
+
+include_once 'elms_cle.features.inc';
+
+/**
+ * Implements hook_menu_alter().
+ */
+function elms_cle_menu_alter(&$items) {
+  // make the default front-page out of the box course content
+  $items['spaces-frontpage']['page callback'] = '_elms_cle_home';
+  $items['spaces-frontpage']['access callback'] = 'spaces_access_feature';
+  $items['spaces-frontpage']['access arguments'] = array('view', 'elms_studio');
+  $items['spaces-frontpage']['file'] = 'elms_cle.pages.inc';
+  $items['spaces-frontpage']['file path'] = drupal_get_path('module', 'elms_cle');
+}

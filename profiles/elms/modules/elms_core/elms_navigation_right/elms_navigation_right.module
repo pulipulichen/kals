@@ -1,0 +1,64 @@
+<?php
+// Copyright (C) 2011-2012  The Pennsylvania State University
+//
+// Bryan Ollendyke
+// bto108@psu.edu
+//
+// Keith D. Bailey
+// kdb163@psu.edu
+//
+// 12 Borland
+// University Park,  PA 16802
+/**
+ * @file
+ * Add a right side region for ELMS for containing social elements
+ */
+
+/**
+ * Implements hook_define_region().
+ */
+function elms_navigation_right_define_regions() {
+  $region['regions_elms_navigation_right'] = array(
+    'title' => 'ELMS navigation right',
+    'js' => drupal_get_path('module', 'elms_navigation_right') . '/elms_navigation_right.js',
+    'css' => drupal_get_path('module', 'elms_navigation_right') . '/elms_navigation_right.css',
+    'render_callback' => '_elms_navigation_right_render_region',
+  );
+  return $region;
+}
+
+/**
+ * Implements hook_regions_region_alter().
+ */
+function elms_navigation_right_regions_region_alter(&$region, $region_name) {
+  // Example to add an inner DIV to the region markup.
+  if (!empty($region['blocks'])) {
+    if ($region_name == 'regions_elms_navigation_right' && !empty($region['blocks'])) {
+      $new_markup = array(
+        'start' => $region['start'],
+        'inner' => '<div class="regions_pre_block_container"></div><div class="regions_block_container">',
+        'blocks' => $region['blocks'],
+        'inner_end' => '</div><div class="regions_post_block_container"></div>',
+        'end' => $region['end'],
+      );
+      $region = $new_markup;
+    }
+  }
+}
+
+/**
+ * Helper function for rendering the blocks in this region
+ */
+function _elms_navigation_right_render_region($block_html, $block) {
+  // build a unique key for this block for theming
+  static $count = 0;
+  $count++;
+  $key = $block->module . '_' . $block->delta;
+  $output .= '<div class="regions_block regions_' . $count . '" id="regions_block_' . $key . '"><div class="regions_block_title">';
+  $output .= '<a id="nrhi_' . strtolower(str_replace(' ', '', $block->subject)) . '" name="nrhi_' . strtolower(str_replace(' ', '', $block->subject)) . '">' . $block->subject . '</a>';
+  $output .= '</div><div class="regions_block_content">' . $block->content . '</div></div>';
+  // if we returned blocks then render the region
+  if ($output != '') {
+    return $output;
+  }
+}

@@ -1,0 +1,22 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the elms_schedule module.
+ *
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function elms_schedule_install() {
+  //fire after other alter statements
+  // TODO Please review the conversion of this statement to the D7 database API syntax.
+  /* db_query("UPDATE {system} SET weight = 1 WHERE name = 'elms_schedule'") */
+  db_update('system')
+  ->fields(array(
+    'weight' =>  1,
+  ))
+  ->condition('name', 'elms_schedule')
+  ->execute();
+}

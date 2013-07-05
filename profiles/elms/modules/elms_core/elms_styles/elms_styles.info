@@ -1,0 +1,14 @@
+; $Id: elms_styles.info
+dependencies[] = wysiwyg_template
+name = "ELMS Styles"
+description = "Style Guide and text editor clean up for a standard approach to handling accessibility and content presentation"
+package = "ELMS"
+core = 7.x
+project = "elms_styles"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

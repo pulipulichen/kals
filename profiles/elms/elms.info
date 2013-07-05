@@ -1,0 +1,161 @@
+name = "ELMS"
+description = "Install ELMS, the e-learning management system"
+core = 7.x
+; Ulmus Core installation
+; Core
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = system
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = update
+dependencies[] = user
+dependencies[] = dblog
+dependencies[] = overlay
+; Spaces
+dependencies[] = spaces
+dependencies[] = spaces_theme
+dependencies[] = spaces_ui
+dependencies[] = spaces_og
+; Administration
+dependencies[] = admin_devel
+dependencies[] = admin_menu
+dependencies[] = admin_menu_toolbar
+; Context
+dependencies[] = context
+dependencies[] = context_og
+dependencies[] = context_spaces_features
+dependencies[] = context_ui
+dependencies[] = context_var
+; Chaos tool suite
+dependencies[] = ctools
+; Date/Time
+dependencies[] = date
+dependencies[] = date_api
+dependencies[] = date_popup
+dependencies[] = date_views
+; Theme Tools
+dependencies[] = delta
+dependencies[] = delta_blocks
+dependencies[] = delta_color
+dependencies[] = delta_ui
+dependencies[] = omega_tools
+; Fields
+dependencies[] = entityreference
+dependencies[] = link
+dependencies[] = field_group
+; Feeds
+dependencies[] = feeds_node_helper
+dependencies[] = feeds_ridmap
+dependencies[] = feeds_tamper
+dependencies[] = feeds_tamper_ui
+dependencies[] = feeds_ui
+dependencies[] = feeds_xpathparser
+dependencies[] = feeds
+; User interface
+dependencies[] = jquery_update
+dependencies[] = wysiwyg
+dependencies[] = wysiwyg_template
+dependencies[] = ckeditor_link
+; Organic groups
+dependencies[] = og
+dependencies[] = og_access
+dependencies[] = og_context
+dependencies[] = og_ui
+dependencies[] = og_views
+dependencies[] = og_extras
+dependencies[] = og_theme
+; Development
+dependencies[] = profiler_builder
+dependencies[] = devel
+; Regions
+dependencies[] = regions
+; Requirement Dashboard
+dependencies[] = requirement_dashboard
+dependencies[] = requirement_dashboard_og
+dependencies[] = requirement_dashboard_system
+; UUID
+dependencies[] = uuid
+; Views
+dependencies[] = views_bulk_operations
+dependencies[] = views_ui
+dependencies[] = views
+; Node form columns
+dependencies[] = nodeformcols
+; Features
+dependencies[] = features
+; Outline Designer
+dependencies[] = outline_designer
+dependencies[] = outline_designer_og
+dependencies[] = outline_designer_book
+; Other
+dependencies[] = strongarm
+dependencies[] = masquerade
+dependencies[] = advanced_help
+dependencies[] = autocomplete_widgets
+dependencies[] = backup_migrate
+dependencies[] = entity
+dependencies[] = entity_token
+dependencies[] = job_scheduler
+dependencies[] = libraries
+dependencies[] = module_filter
+dependencies[] = options_element
+dependencies[] = stringoverrides
+dependencies[] = token
+dependencies[] = unique_field
+dependencies[] = pathauto
+dependencies[] = auto_nodetitle
+dependencies[] = prepopulate
+dependencies[] = tipsy
+dependencies[] = purl
+dependencies[] = entityreference_prepopulate
+dependencies[] = diff
+dependencies[] = hidden_nodes
+dependencies[] = book_title_override
+dependencies[] = boxes
+
+; Media
+dependencies[] = imce
+dependencies[] = imce_crop
+; User interface
+dependencies[] = imce_wysiwyg
+; Textbook
+dependencies[] = textbook
+dependencies[] = textbook_editor
+dependencies[] = textbook_templates
+
+; ELMS install core
+dependencies[] = "elms_parent"
+dependencies[] = "elms_site"
+dependencies[] = "elms_helper"
+dependencies[] = "elms_user_management"
+; ELMS UI
+dependencies[] = "elms_styles"
+dependencies[] = "elms_navigation_top"
+dependencies[] = "elms_navigation_left"
+dependencies[] = "elms_navigation_bottom"
+dependencies[] = "elms_navigation_right"
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

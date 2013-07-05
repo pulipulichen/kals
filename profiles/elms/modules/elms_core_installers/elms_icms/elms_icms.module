@@ -1,0 +1,47 @@
+<?php
+
+include_once 'elms_icms.features.inc';
+
+/**
+ * Implements hook_menu_alter().
+ */
+function elms_icms_menu_alter(&$items) {
+  // make the default front-page out of the box course content
+  $items['spaces-frontpage']['page callback'] = '_elms_icms_root';
+  $items['spaces-frontpage']['access callback'] = 'spaces_access_feature';
+  $items['spaces-frontpage']['access arguments'] = array('view', 'elms_content');
+  $items['spaces-frontpage']['file'] = 'elms_icms.pages.inc';
+  $items['spaces-frontpage']['file path'] = drupal_get_path('module', 'elms_icms');
+}
+
+/**
+ * Implements hook_elms_add_parent_pages().
+ */
+function elms_icms_elms_add_parent_pages() {
+  return array(
+    'student' => array(
+      'title' => 'Student',
+      'callback' => '_elms_icms_student_page',
+      'description' => 'Funnel page to get students started with a parent',
+      'weight' => -9,
+      'file' => 'elms_icms.pages.inc',
+      'file path' => drupal_get_path('module', 'elms_icms'),
+    ),
+    'marketing' => array(
+      'title' => 'Marketing',
+      'callback' => '_elms_icms_marketing_page',
+      'description' => '',
+      'weight' => -8,
+      'file' => 'elms_icms.pages.inc',
+      'file path' => drupal_get_path('module', 'elms_icms'),
+    ),
+    'instructor' => array(
+      'title' => 'Instructor',
+      'callback' => '_elms_icms_instructor_page',
+      'description' => '',
+      'weight' => -7,
+      'file' => 'elms_icms.pages.inc',
+      'file path' => drupal_get_path('module', 'elms_icms'),
+    ),
+  );
+}

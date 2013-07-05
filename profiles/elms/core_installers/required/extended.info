@@ -1,0 +1,121 @@
+name = "ELMS Core Install Extended"
+description = "Extended Core installation, second pass for ELMS Core"
+type = "required"
+
+; ELMS Core
+dependencies[] = "elms_parent"
+dependencies[] = "elms_site"
+dependencies[] = "elms_helper"
+dependencies[] = "elms_user_management"
+; ELMS UI
+dependencies[] = "elms_styles"
+dependencies[] = "elms_navigation_top"
+dependencies[] = "elms_navigation_left"
+dependencies[] = "elms_navigation_bottom"
+dependencies[] = "elms_navigation_right"
+
+; Contrib
+dependencies[] = "strongarm"
+; Organic groups
+dependencies[] = "og_node_access"
+; Administration
+dependencies[] = "adminrole"
+dependencies[] = "module_filter"
+dependencies[] = "protect_critical_users"
+; CCK
+dependencies[] = "content"
+dependencies[] = "masquerade"
+dependencies[] = "advanced_help"
+dependencies[] = "backup_migrate"
+dependencies[] = "customerror"
+dependencies[] = "htmlpurifier"
+dependencies[] = "imce"
+dependencies[] = "imce_crop"
+dependencies[] = "imce_kama"
+dependencies[] = "job_scheduler"
+dependencies[] = "jquery_colorpicker"
+dependencies[] = "lightbox2"
+dependencies[] = "options_element"
+dependencies[] = "private_download"
+dependencies[] = "stringoverrides"
+dependencies[] = "unique_field"
+dependencies[] = "uuid"
+dependencies[] = "pathauto"
+dependencies[] = "auto_nodetitle"
+dependencies[] = "better_formats"
+dependencies[] = "tipsy"
+
+; User interface
+dependencies[] = "ajax_load"
+dependencies[] = "ckeditor_link"
+dependencies[] = "ckeditor_link_og"
+dependencies[] = "imce_wysiwyg"
+dependencies[] = "jquery_ui"
+dependencies[] = "wysiwyg"
+dependencies[] = "wysiwyg_template"
+dependencies[] = "beautytips"
+dependencies[] = "extlink"
+dependencies[] = "vertical_tabs"
+dependencies[] = "nodeformcols"
+; CCK
+dependencies[] = "nodereference"
+dependencies[] = "number"
+dependencies[] = "optionwidgets"
+dependencies[] = "text"
+dependencies[] = "userreference"
+dependencies[] = "cck_redirection"
+dependencies[] = "colorpicker_cck"
+dependencies[] = "filefield"
+dependencies[] = "imagefield"
+dependencies[] = "link"
+dependencies[] = "nodereference_url"
+dependencies[] = "autocomplete_widgets"
+dependencies[] = "jquery_colorpicker_cck"
+dependencies[] = "fieldgroup"
+dependencies[] = "conditional_fields"
+; Colorpicker
+dependencies[] = "colorpicker"
+; Contact fields
+dependencies[] = "contact_field"
+dependencies[] = "contact_listfield"
+dependencies[] = "contact_option"
+dependencies[] = "contact_textfield"
+; Date/Time
+dependencies[] = "date_popup"
+; Views
+dependencies[] = "draggableviews"
+dependencies[] = "draggableviews_cck"
+dependencies[] = "views_bonus_export"
+dependencies[] = "views_bulk_operations"
+dependencies[] = "views_fluid_grid"
+dependencies[] = "views_slideshow_singleframe"
+dependencies[] = "views_slideshow_thumbnailhover"
+dependencies[] = "views_slideshow"
+; FileField Paths
+dependencies[] = "filefield_paths"
+
+
+; Printer, e-mail and PDF
+dependencies[] = "print"
+; Requirement Dashboard
+dependencies[] = "requirement_dashboard"
+dependencies[] = "requirement_dashboard_og"
+dependencies[] = "requirement_dashboard_system"
+; Workflow
+dependencies[] = "workflow"
+dependencies[] = "workflow_purl"
+; Accessible Content
+dependencies[] = "accessible_content"
+; Context
+dependencies[] = "context_var"
+dependencies[] = "context_spaces_features"
+; Node reference highlighter
+dependencies[] = "nodereference_highlight"
+dependencies[] = "prepopulate"
+
+; Information added by drupal.org packaging script on 2012-10-16
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms"
+datestamp = "1350392016"
+

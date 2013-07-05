@@ -1,0 +1,38 @@
+name = ELMS Reference Links
+description = Add reference links to content
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_reference_links
+dependencies[] = context_spaces_features
+dependencies[] = elms_navigation_top
+dependencies[] = link
+dependencies[] = nodereference_url
+dependencies[] = og_views
+dependencies[] = references
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views
+features[context][] = elms_reference_links-nav-right
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[menu_links][] = menu-usermenu:my_related_links
+features[node][] = content_links
+features[variable][] = ant_content_links
+features[variable][] = ant_pattern_content_links
+features[variable][] = ant_php_content_links
+features[variable][] = content_extra_weights_content_links
+features[variable][] = node_options_content_links
+features[variable][] = nodeformscols_field_placements_content_links_default
+features[variable][] = og_content_type_usage_content_links
+features[variable][] = og_max_groups_content_links
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+
