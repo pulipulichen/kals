@@ -1,7 +1,6 @@
-# IDE, don't track them
-aptana/
-/aptana/
+# Ignore configuration files that may contain sensitive information.
+sites/*/settings*.php
 
-/system/cache
-/system/logs
-/nbproject/private/
+# Ignore paths that contain user-generated content.
+sites/*/files
+sites/*/private
