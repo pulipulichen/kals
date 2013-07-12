@@ -793,7 +793,7 @@ class Annotation extends KALS_resource {
             $data['annotation_id'] = $this->get_id();
             $note = $this->get_note();  //note?
             if (isset($note))
-                $data['note'] = $note;
+            $data['note'] = $note;
             $data['user'] = $this->get_user()->export_simple_data();
             $data['type'] = $this->get_type()->export_data();
             $data['scope'] = $this->get_scopes()->export_data();
@@ -824,6 +824,13 @@ class Annotation extends KALS_resource {
             }
         }
 
+      //在這邊加入order的條件排序？  
+      //這邊回傳的data是回傳到哪邊呢？->output  
+        
+        
+        
+        
+        
         return $data;
     }
 

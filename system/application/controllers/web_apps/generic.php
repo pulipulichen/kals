@@ -248,7 +248,7 @@ class generic extends Web_apps_controller {
             'annotation_editor/Policy_component',
             'annotation_editor/Window_policy',
             'annotation_editor/Window_policy_submit',
-        	'annotation_editor/Web_search_component',
+            'annotation_editor/Web_search_component',
 
             'annotation_list/List_collection',
             'annotation_list/List_collection_like',

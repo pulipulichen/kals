@@ -28,12 +28,22 @@ class Search_engine extends Generic_collection {
     protected $segmentor;
     protected $other_from = array();
     
+    protected $webpage_id;
+
+
+
+
     protected $order_coll;
-    function  __construct() {
+    function  __construct($url = NULL) {
         parent::__construct();
         $this->_CI_load('library', 'search/Search_order_collection', 'search_order_collection');
         $this->order_coll = new Search_order_collection();
         $this->is_loaded = FALSE;
+        
+        if (isset($url)) {
+            $this->set_target_url($url);
+        }
+        
         return $this;
     }
 
@@ -258,7 +268,9 @@ class Search_engine extends Generic_collection {
         // 第十二關 search_anchor_text * 設定
 
         $search_anchor_text_query = NULL;
-        if (isset($this->search_anchor_text))
+        $segmentor = $this->CI->config->item('segmentor.default');
+            
+        if ($segmentor !== "segmentor.disable" && isset($this->search_anchor_text))
         {
             $query = $this->search_anchor_text;
             $query_with_segment = TRUE;
@@ -441,15 +453,23 @@ class Search_engine extends Generic_collection {
         
         //------------------------------------------------
         // 第十二關 search_anchor_text * 查詢
-        if (isset($search_anchor_text_query))
+        if ($segmentor !== "segmentor.disable" && isset($search_anchor_text_query)) //如果使用斷詞器
         {
-            $query = $search_anchor_text_query;
+            $query = $this->search_anchor_text_query;
+            
             $db->join('annotation2anchor_text AS search_anchor_text', 'search_anchor_text.annotation_id = annotation.annotation_id '
-                . 'AND search_anchor_text.indexed @@ to_tsquery(\''.$query.'\')');
-            //$db->from('to_tsquery(\''.$query.'\') search_anchor_text_query');
+            . 'AND search_anchor_text.indexed @@ to_tsquery(\''.$query.'\')');
             $this->other_from[] = 'to_tsquery(\''.$query.'\') search_anchor_text_query';
-        }   //if (isset($this->search_anchor_text))
 
+        }   
+        //如果不使用斷詞器，就直接使用$this->search_anchor_text進行查詢，不使用query，搭配第十七關 target_url 查詢使用
+        if ($segmentor === "segmentor.disable" && isset($this->search_anchor_text)) 
+        {
+            $db->join('annotation2anchor_text AS search_anchor_text', 'search_anchor_text.annotation_id = annotation.annotation_id '
+            . "AND search_anchor_text.text like '%".$this->search_anchor_text."%'");             
+            //$db->limit(1);
+        }   //if (isset($this->search_anchor_text))
+        
         //------------------------------------------------
         // 第十三關 target_over_score * 查詢
 
@@ -535,6 +555,17 @@ class Search_engine extends Generic_collection {
         }
 
         //------------------------------------------------
+        // 第十七關 target_url 查詢
+        if (isset($this->target_url)) 
+        {
+            //@todo
+            //要把url轉成id再搜尋：先從表中用url找出webpage_id->使用filter_webpage_object來轉換url->webpage_id
+            //in webpage.php
+       
+            $webpage_id = $this->CI->webpage->filter_webpage_id($this->target_url);
+        }
+        
+        //------------------------------------------------
         // 大魔王 order *
 
         $this->order_coll->setup_order($db);
@@ -559,7 +590,7 @@ class Search_engine extends Generic_collection {
         $this->target_webpage_id = $this->CI->webpage->filter_webpage_id($webpage_id);
         return $this;
     }
-
+    
     //-----------------------------------------
     //scope系列
 
@@ -728,6 +759,16 @@ class Search_engine extends Generic_collection {
             $this->target_topic_id = $topic_id;
         }
 
+        return $this;
+    }
+    
+    protected $target_url; //宣告設定參數
+    public function set_target_url($url)
+    {
+        if (isset($url))
+        {
+           $this->target_url = $url;
+        }//@todo
         return $this;
     }
 

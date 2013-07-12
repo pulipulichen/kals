@@ -116,7 +116,7 @@ $lang['web_apps.window.content.searchrange'] = '搜尋範圍';
 $lang['web_apps.window.content.search.field.note'] = '標註內容';
 $lang['web_apps.window.content.search.field.author'] = '作者';
 $lang['web_apps.window.content.search.field.annotation_type'] = '類別';
-$lang['web_apps.window.content.search.field.annotation_anchor'] = '內文';
+$lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文';
 $lang['web_apps.window.content.searchkey'] = '關鍵字';
 $lang['web_apps.window.content.searchresult'] = '搜尋結果';
     

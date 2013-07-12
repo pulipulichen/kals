@@ -759,7 +759,7 @@ class Annotation_getter extends Web_apps_controller {
 
     function search_annotation($json, $callback = NULL)
     {
-         $enable_profiler = FALSE; //？
+         $enable_profiler = true; //？
 
         if ($enable_profiler == TRUE)
             $this->output->enable_profiler(TRUE);  
@@ -774,17 +774,23 @@ class Annotation_getter extends Web_apps_controller {
             $data = $json;
         }
         
-
         $user = get_context_user();
         $url = $this->url;  //存放目前data來源的頁面連結
-        $search = new Search_annotation_collection(); //Search_annotation_collection→Search_engine
+        $search = new Search_annotation_collection($url); //Search_annotation_collection→Search_engine
 
         $search_id = null;
         //if (isset($data->limit)) //limit：無限捲軸的極限值
           //  $search_id = new Search_annotation_collection();
         
+          //test_msg("輸入資料", $json);
+        
+        //$data->searchrange = "author";
         switch ($data->searchrange) {
-            case "note": //標註
+            case "author": 
+                //示範用
+                $search->set_target_user(new User(1701));
+                break;
+            case "note": //標註內容
                 $search->set_search_note($data->keyword);
                 break;
            //case "annotation_type": //標註類型
@@ -807,7 +813,7 @@ class Annotation_getter extends Web_apps_controller {
         {
             if ($data->order_by == 'update')
             {
-                $search->add_order (6, TRUE);
+                $search->add_order (6, TRUE); 
                 if (isset($search_id))
                     $search_id->add_order (6, TRUE);
             }
@@ -819,16 +825,16 @@ class Annotation_getter extends Web_apps_controller {
             }
             else
             {
-                $search->add_order (1, TRUE);
+                $search->add_order (2, TRUE);
                 if (isset($search_id))
-                    $search_id->add_order (1, TRUE);
+                    $search_id->add_order (2, TRUE);
             }
         }
         else
         {
-            $search->add_order (1, TRUE);
+            $search->add_order (2, TRUE);
             if (isset($search_id))
-                $search_id->add_order (1, TRUE);
+                $search_id->add_order (2, TRUE);
         }
 
         if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
@@ -850,11 +856,12 @@ class Annotation_getter extends Web_apps_controller {
         {
             $totally_loaded = TRUE;
         }
-
         $annotation_collection = array();
 
         //test_msg('Search Length', $search->length());
 
+        //test_msg($url);
+        //test_msg($this->webpage->filter_webpage_id($url));
         foreach ($search AS $search_annotation)
         {
             $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
@@ -872,7 +879,7 @@ class Annotation_getter extends Web_apps_controller {
             'annotation_collection' => $annotation_collection,
             'totally_loaded' => $totally_loaded
         );
-
+        
         if (isset($data->show_total_count)
             && $data->show_total_count === TRUE)
         {
@@ -903,7 +910,7 @@ class Annotation_getter extends Web_apps_controller {
         $do_log = TRUE;
         if (isset($data->limit) && $data->limit == 5)
             $do_log = FALSE;
-
+        
         if (isset($data->target_my))
         {
             if ($data->target_my == FALSE)
@@ -923,11 +930,11 @@ class Annotation_getter extends Web_apps_controller {
         {
             kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
         }
-
         context_complete();
 
-        if ($enable_profiler != TRUE)
+        if ($enable_profiler != TRUE) {
             return $this->_display_jsonp($output_data, $callback);
+        }
     }
     
     

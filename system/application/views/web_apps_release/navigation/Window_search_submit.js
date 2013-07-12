@@ -46,9 +46,9 @@ Window_search_submit.prototype.complete_handle = function (_data) { // complete_
         var _input_data = this.get_data();
         
         var _search = KALS_context.search;   //in KALS_context
-        _search.set_field(_input_data['searchrange']); //取得欄位中的值→Context_search.js
-        _search.set_keyword(_input_data['keyword']);
-		 _search.set_order(_input_data['order_by']);
+        _search.set_field(_input_data.searchrange); //取得欄位中的值→Context_search.js
+        _search.set_keyword(_input_data.keyword);
+		_search.set_order(_input_data.order_by);
 
     }
     
