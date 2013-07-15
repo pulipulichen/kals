@@ -760,6 +760,7 @@ class Annotation_getter extends Web_apps_controller {
     function search_annotation($json, $callback = NULL)
     {
          $enable_profiler = true; //？
+         //$enable_profiler = false; //？
 
         if ($enable_profiler == TRUE)
             $this->output->enable_profiler(TRUE);  
@@ -784,7 +785,7 @@ class Annotation_getter extends Web_apps_controller {
         
           //test_msg("輸入資料", $json);
         
-        //$data->searchrange = "author";
+       // $data->searchrange = "annotation_anchor";
         switch ($data->searchrange) {
             case "author": 
                 //示範用
@@ -799,9 +800,7 @@ class Annotation_getter extends Web_apps_controller {
             case "annotation_anchor":
                 $search->set_search_anchor_text($data->keyword);
                 break;
-           // case "author": //設定作者
-              //  $search->set_target_user($data->keyword)  
-             //   break;
+
             
         }
 
@@ -857,9 +856,8 @@ class Annotation_getter extends Web_apps_controller {
             $totally_loaded = TRUE;
         }
         $annotation_collection = array();
-
+        
         //test_msg('Search Length', $search->length());
-
         //test_msg($url);
         //test_msg($this->webpage->filter_webpage_id($url));
         foreach ($search AS $search_annotation)

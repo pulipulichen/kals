@@ -241,7 +241,9 @@ class Search_engine extends Generic_collection {
 
         //------------------------------------------------
         //第十關 search_note * 設定
+        //test_msg($this->search_note);    //this->search_note空值
 
+        
         $search_note_query = NULL;
         if (isset($this->search_note))
         {
@@ -346,7 +348,7 @@ class Search_engine extends Generic_collection {
         }   //if ($this->check_auth)
 
         //-------------------------------------
-        // 第二關 webpage_id
+        // 第二關 設定webpage_id(取得目前的webpage_id資料)
 
         if (isset($this->target_webpage_id))
         {
@@ -432,16 +434,45 @@ class Search_engine extends Generic_collection {
 
         
         //------------------------------------------------
-        //第十關 search_note * 查詢
-
-        if (isset($search_note_query))
+        //第十關 search_note * 查詢  -分成使用斷詞器和不使用的情況(參考search_anchor_text)
+        //1.使用斷詞器
+      /* if (isset($this->search_note))
+        {
+            test_msg($this->search_note);
+        }
+        else {
+            $this->search_note = 0;
+            echo $this->search_note;
+        }*/
+        
+        
+        if ($segmentor !== "segmentor.disable" && isset($search_note_query))
         {
             $query = $search_note_query;
             //$db->from('to_tsquery(\''.$query.'\') search_note_query');
             $this->other_from[] = 'to_tsquery(\''.$query.'\') search_note_query';
             $db->where('annotation.note_index @@ search_note_query', NULL, FALSE);
         }   //if (isset($this->search_note))
-
+        //2.不使用斷詞器的情況
+        
+        //test_msg(array($segmentor, $this->search_note)); 
+        if($segmentor === "segmentor.disable" && isset($this->search_note))
+         {
+                       
+             $db->like('note',  $this->search_note );  // 生成: WHERE title LIKE '%match%'
+             $db->limit(10);
+             //判斷this->search_note裡面有抓到值嗎？
+            /*if (isset($this->search_note))
+               {
+                 test_msg($this->search_note);
+               }
+           else {
+                 $this->search_note = 0;
+                 echo $this->search_note;
+                }*/
+           
+            
+         }
         //------------------------------------------------
         // 第十一關 target_over_like 查詢
 
@@ -462,12 +493,15 @@ class Search_engine extends Generic_collection {
             $this->other_from[] = 'to_tsquery(\''.$query.'\') search_anchor_text_query';
 
         }   
-        //如果不使用斷詞器，就直接使用$this->search_anchor_text進行查詢，不使用query，搭配第十七關 target_url 查詢使用
+        //如果不使用斷詞器，就直接使用$this->search_anchor_text進行查詢，不使用query，搭配第二關 target_url 查詢使用
+        //test_msg(array($segmentor, $this->search_anchor_text)); 
         if ($segmentor === "segmentor.disable" && isset($this->search_anchor_text)) 
         {
             $db->join('annotation2anchor_text AS search_anchor_text', 'search_anchor_text.annotation_id = annotation.annotation_id '
-            . "AND search_anchor_text.text like '%".$this->search_anchor_text."%'");             
-            //$db->limit(1);
+            . "AND search_anchor_text.text like '%".$this->search_anchor_text."%'");    
+            $db->limit(5);
+          echo $this->webpage_id;
+            
         }   //if (isset($this->search_anchor_text))
         
         //------------------------------------------------
@@ -556,20 +590,25 @@ class Search_engine extends Generic_collection {
 
         //------------------------------------------------
         // 第十七關 target_url 查詢
-        if (isset($this->target_url)) 
-        {
+        //if (isset($this->target_url)) 
+        //{
             //@todo
-            //要把url轉成id再搜尋：先從表中用url找出webpage_id->使用filter_webpage_object來轉換url->webpage_id
+            //1.要把url轉成id再搜尋：先從表中用url找出webpage_id->使用filter_webpage_object來轉換url->webpage_id
             //in webpage.php
-       
-            $webpage_id = $this->CI->webpage->filter_webpage_id($this->target_url);
-        }
+            //$this->webpage_id = $this->CI->webpage->filter_webpage_id($this->target_url);
+            //2.設定search條件
+            /* $db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id'
+            . 'AND webpage2annotation.webpage_id = '.$this->webpage_id);*/
+                      
+        //}
         
         //------------------------------------------------
+        
         // 大魔王 order *
 
         $this->order_coll->setup_order($db);
-
+        
+        
         return $db;
     }
 
@@ -583,7 +622,7 @@ class Search_engine extends Generic_collection {
         return $this;
     }
 
-    protected $target_webpage_id;
+    protected $target_webpage_id; //設定target_webpage_id
     public function set_target_webpage($webpage_id)
     {
         $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');
@@ -651,10 +690,13 @@ class Search_engine extends Generic_collection {
     protected $search_note;
     public function set_search_note($note)
     {
-        $this->search_note = $note;
-        return $this;
+        $this->search_note = $note;       
+        return $this;       
     }
-
+    
+    
+    
+     
     //-------------------------------------------------------
     //annotation周遭屬性
 
@@ -762,17 +804,29 @@ class Search_engine extends Generic_collection {
         return $this;
     }
     
+    /**
+     * Webpage的URL
+     * @var String 
+     */
     protected $target_url; //宣告設定參數
+    
+    /**
+     * 設定要搜尋的URL
+     * @param String $url Webpage的URL
+     * @return Search_engine
+     */
     public function set_target_url($url)
     {
-        if (isset($url))
+        /*
+        if ($url !== NULL)
         {
            $this->target_url = $url;
-        }//@todo
-        return $this;
+        }
+         * return $this;
+         */
+        
+        return $this->set_target_webpage($url);
     }
-
-
 
     //---------------------------------------------------------
     //以下是order篇
