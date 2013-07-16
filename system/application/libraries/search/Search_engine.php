@@ -603,7 +603,16 @@ class Search_engine extends Generic_collection {
         //}
         
         //------------------------------------------------
-        
+        //第十八關 search_username 查詢
+ 
+        if (isset($this->search_username))
+        {
+
+            $db->join('user AS search_username', 'search_username.user_id = annotation.user_id '. "AND search_username.name like '%".$this->search_username."%'" );
+            $db->limit(15);
+        }
+  
+        //------------------------------------------------
         // 大魔王 order *
 
         $this->order_coll->setup_order($db);
@@ -696,10 +705,12 @@ class Search_engine extends Generic_collection {
         return $this;       
     }
     
-     
-     public function set_search_user_name($username)      
+    protected $search_username; //設定要尋找的username
+    public function set_search_user_name($username)      
      {
-        $db-> 
+       $this->search_username = $username; 
+       return $this;
+       
      }
      
     //-------------------------------------------------------
