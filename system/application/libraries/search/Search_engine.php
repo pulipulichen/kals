@@ -665,13 +665,15 @@ class Search_engine extends Generic_collection {
         return $this;
     }
 
-    protected $target_user_id;
+    protected $target_user_id; //取得標註user的id？
     public function set_target_user(User $user)
     {
         $this->target_user_id = $user->get_id();
         return $this;
     }
 
+   
+    
     protected $exclude_user_id;
     public function set_exclude_user(User $user)
     {
@@ -694,8 +696,11 @@ class Search_engine extends Generic_collection {
         return $this;       
     }
     
-    
-    
+     
+     public function set_search_user_name($username)      
+     {
+        $db-> 
+     }
      
     //-------------------------------------------------------
     //annotation周遭屬性
