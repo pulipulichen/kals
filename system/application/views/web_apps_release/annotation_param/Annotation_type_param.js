@@ -172,6 +172,9 @@ Annotation_type_param.prototype.set_custom = function () {
     return this;
 };
 
+/**
+ * get_type_name的別名
+ */
 Annotation_type_param.prototype.get_name = function () {
     /*
     if (this.custom_name === null) {
@@ -184,6 +187,11 @@ Annotation_type_param.prototype.get_name = function () {
     return this.get_type_name();
 };
 
+/**
+ * 標註類型的名字
+ * 
+ * @return {String} 
+ */
 Annotation_type_param.prototype.get_type_name = function () {
     /*
     var _id = this.get_id();
@@ -200,6 +208,31 @@ Annotation_type_param.prototype.get_type_name = function () {
     else {
         return this.custom_name;
     }
+};
+
+/**
+ * 標註類型的語系檔
+ * 
+ * @return {KALS_language_param}
+ */
+Annotation_type_param.prototype.get_type_name_lang = function () {
+	var _name = this.get_type_name();
+	
+	var _lang;
+	if (this.is_basic()) {
+		_lang = new KALS_language_param(
+			_name,
+			"annotation.type." + _name
+		);
+	}
+	else {
+		//如果是自訂類型的話
+		_lang = new KALS_language_param(
+			_name
+		);
+	}
+	
+	return _lang;
 };
 
 Annotation_type_param.prototype.get_custom_name = function () {

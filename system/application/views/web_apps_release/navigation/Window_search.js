@@ -15,6 +15,8 @@ function Window_search() {
     Window_content.call(this);
     
 	this._setup_submit(new Window_search_submit()); // send keyword and searchrange
+	
+	this.child("list", new List_collection_search());
 }
 
 Window_search.prototype = new Window_content();
@@ -34,6 +36,12 @@ Window_search.prototype.nav_heading = new KALS_language_param (
 Window_search.prototype._$load_config = 'Window_search';
 
 Window_search.prototype.width = 500;
+
+/**
+ * 搜尋結果
+ * @type {List_collection_search}
+ */
+Window_search.prototype.list;
 
 /**
  * Create UI
@@ -78,11 +86,67 @@ Window_search.prototype._$create_ui = function (){  //建立UI
             _searchrange_list	
         ).appendTo(_subpanel);
 
+
+	//標註類型選單
+	var _type_param_list = KALS_text.tool.editor_container.editor.type.menu.create_type_param_list();
+	var _type_options = [];
+	var _default_type = null;
+	for (var _i in _type_param_list) {
+		// _type_param = new Annotation_type_param();
+		var _type_param = _type_param_list[_i];
+		var _value = _type_param.get_id();
+		if (_default_type === null) {
+			_default_type = _value;
+		}
+		var _lang = _type_param.get_type_name_lang();
+		
+		var _option = _factory.radio_option(_lang, _value);
+		
+		_option.change(function () {
+			
+			var _value = $(this).parents(".searchrange-type").find(":radio:checked").val();
+			//現在在option下用this，去找上面名為.searchrange-type的層別，在此層級下找:radio:checked，選擇現在所點選的值
+			$(this).parents(".window-panel").find(".search-keyword:first").val(_value);
+			//在option下用parents去找上面名為window-panel的層別，在此層級下找到要代入的search-keyword，將value代入
+		});
+		
+        _type_options.push(_option);
+	}
+	var _type_radio = _factory.radio_list('type', _type_options, _default_type);
+	_type_radio.addClass("searchrange-type");
+	
+	
+	//_searchrange_list.after(_type_radio);  //_type_radio緊接在_searchrange_list
+	var _type_radio_row = _factory.row(
+        new KALS_language_param('type_radio', 'window.content.type_radio'),
+		 _type_radio).appendTo(_ui); //"關鍵字"標題	
+      _type_radio_row.hide();//平常時候把_type_radio隱藏起來
+	 
+	
+// 改變 _searchrange_list 時，控制_type_radio顯示與否
+	
+_searchrange_list.change( function(){
+	
+	//var _value = this.value;
+	var _value = $(this).val();
+    //若searchrange為annotation_type時，隱藏關鍵字欄位，顯示類別radio_list
+	if (_value !== "annotation_type") {
+		_type_radio_row.hide();
+		_searchkey_row.show();
+	}
+   	else {
+        _type_radio_row.show();
+		_searchkey_row.hide();
+   }
+			
+});
 			
     //=輸入關鍵字====
+	var _keyword_input = _factory.input('keyword');
+	_keyword_input.addClass("search-keyword");
 	var _searchkey_row = _factory.row(
         new KALS_language_param('Searchkey', 'window.content.searchkey'),
-        _factory.input('keyword')).appendTo(_ui); //"關鍵字"標題	
+        _keyword_input).appendTo(_ui); //"關鍵字"標題	
         
 
 	
@@ -134,10 +198,12 @@ Window_search.prototype._$create_ui = function (){  //建立UI
    //=====搜尋結果標題===	   
 	var _searchresult_row = _factory.row(
         new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_ui); //"搜尋結果"標題	
-    
+  
+    var _list_ui = this.list.get_ui();
+	_list_ui.appendTo(_ui);
 	
 	return _ui;
-	};	
+};	
 	
 	
 

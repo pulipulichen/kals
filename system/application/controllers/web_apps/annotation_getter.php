@@ -759,8 +759,8 @@ class Annotation_getter extends Web_apps_controller {
 
     function search_annotation($json, $callback = NULL)
     {
-         $enable_profiler = true; //？
-         //$enable_profiler = false; //？
+         //$enable_profiler = true; //？
+         $enable_profiler = false; //？
 
         if ($enable_profiler == TRUE)
             $this->output->enable_profiler(TRUE);  
@@ -796,9 +796,9 @@ class Annotation_getter extends Web_apps_controller {
             case "note": //標註內容
                 $search->set_search_note($data->keyword);
                 break;
-           //case "annotation_type": //標註類型
-                //$search->set_target_type($type_id);
-               // break;
+           case "annotation_type": //標註類型
+                $search->set_target_type(intval($data->keyword));
+                break;
             case "annotation_anchor":
                 $search->set_search_anchor_text($data->keyword);
                 break;

@@ -117,9 +117,11 @@ $lang['web_apps.window.content.search.field.note'] = '標註內容';
 $lang['web_apps.window.content.search.field.author'] = '作者';
 $lang['web_apps.window.content.search.field.annotation_type'] = '類別';
 $lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文';
+$lang['web_apps.window.content.type_radio'] = '標註類別';
 $lang['web_apps.window.content.searchkey'] = '關鍵字';
 $lang['web_apps.window.content.searchresult'] = '搜尋結果';
-    
+ 
+
 $lang['web_apps.window.content.oreder_by'] = '排序方式';
 $lang['web_apps.window.content.oreder_by.update'] = '更新日期';
 $lang['web_apps.window.content.oreder_by.create'] = '最新建立';

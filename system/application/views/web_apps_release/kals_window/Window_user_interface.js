@@ -175,6 +175,16 @@ Window_user_interface.prototype.list_option = function (_lang_param, _value) {
     return _option;
 };
 
+/**
+ * list_option的別名
+ * 
+ * @param {KALS_language_param} _lang_param
+ * @param {Object} _value
+ */
+Window_user_interface.prototype.radio_option = function(_lang_param, _value){
+	return this.list_option(_lang_param, _value);
+};
+
 Window_user_interface.prototype.radio_list = function (_name, _options, _default_value) {
     
     var _list = $('<span></span>')

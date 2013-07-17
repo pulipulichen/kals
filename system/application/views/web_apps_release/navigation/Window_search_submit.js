@@ -38,24 +38,45 @@ Window_profile_submit.prototype.failed_notification = new KALS_language_param(
     'window.profile.submit.failed'
 );
 */
-//====↓取得查詢欄位中的資料====
-Window_search_submit.prototype.complete_handle = function (_data) { // complete_handle in window_content_submit.js
-                                                                    //取得資料
-    if (_data === true)
-    {
-        var _input_data = this.get_data();
-        
-        var _search = KALS_context.search;   //in KALS_context
-        _search.set_field(_input_data.searchrange); //取得欄位中的值→Context_search.js
-        _search.set_keyword(_input_data.keyword);
-		_search.set_order(_input_data.order_by);
 
-    }
+/**
+ * 取得查詢欄位中的資料
+ * @param {Object} _data
+ */
+Window_search_submit.prototype.complete_handle = function () {
+	// complete_handle in window_content_submit.js 
+	//取得資料
+    var _input_data = this.get_data();
+        
+    var _search = KALS_context.search;   //in KALS_context
+    _search.set_field(_input_data.searchrange); //取得欄位中的值→Context_search.js
+    _search.set_keyword(_input_data.keyword);
+	//_search.set_order_by(_input_data.order_by);
     
-    return Window_content_submit.prototype.complete_handle.call(this, _data);
+    //return Window_content_submit.prototype.complete_handle.call(this, _data);
 };
 
-
+/**
+ * 把參數丟給List_collection_submit
+ */
+Window_search_submit.prototype.submit = function(){
+	
+	var _list = this._content.list;
+	
+	var _data = this.get_data();
+	
+	_list.set_searchrange(_data.searchrange);
+	_list.set_keyword(_data.keyword);
+	_list.set_order_by(_data.order_by);
+	
+	_list.reset();
+	
+	// 我們要叫List_collection_search進行搜尋
+	var _this = this;
+	_list.load_list(function () {
+		_this.complete_handle();
+	});
+};
 
 /* End of file Window_profile_submit */
 /* Location: ./system/application/views/web_apps/Window_profile_submit.js */
