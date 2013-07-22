@@ -1,5 +1,5 @@
 /**
- * Window_search_submit
+ * Window_search_submit -啟動List_collection_search來送出查詢
  *
  * @package    KALS
  * @category   Webpage Application Libraries
@@ -13,16 +13,18 @@
 function Window_search_submit() {
     
     Window_content_submit.call(this);
-    
-    this._$input_names = ['searchrange', 'keyword', 'order_by']; //送出seatchrange與keyword
+   
+    // 送出seatchrange,keyword,order_by
+    this._$input_names = ['searchrange', 'keyword', 'order_by']; 
 }
 
 Window_search_submit.prototype = new Window_content_submit();
 
-Window_search_submit.prototype.url = 'annotation_getter/search_annotation'; //將資料包成json送出的目的路徑-
-                                                                    //使用annotation_getter   
-
-Window_search_submit.prototype.lang = new KALS_language_param(  //顯示的文字-查詢
+//將資料包成json送出的目的路徑-使用annotation_getter
+Window_search_submit.prototype.url = 'annotation_getter/search_annotation';
+                                                                     
+//顯示的文字-查詢
+Window_search_submit.prototype.lang = new KALS_language_param(  
     'Send',
     'window.send'
 );
@@ -44,20 +46,22 @@ Window_profile_submit.prototype.failed_notification = new KALS_language_param(
  * @param {Object} _data
  */
 Window_search_submit.prototype.complete_handle = function () {
-	// complete_handle in window_content_submit.js 
-	//取得資料
+	//complete_handle in window_content_submit.js 
+
     var _input_data = this.get_data();
         
     var _search = KALS_context.search;   //in KALS_context
     _search.set_field(_input_data.searchrange); //取得欄位中的值→Context_search.js
     _search.set_keyword(_input_data.keyword);
-	//_search.set_order_by(_input_data.order_by);
+	//_search.set_order_by(_input_data.order_by); 
     
-    //return Window_content_submit.prototype.complete_handle.call(this, _data);
+    //return Window_content_submit.prototype.complete_handle.call(this, _data); 
+	//因為complete_handle.call做完後會自動關閉視窗，所以不使用
 };
 
 /**
- * 把參數丟給List_collection_submit
+ * 把參數丟給List_collection_search，讓他開始送出做查詢
+ * 覆寫Window_content_submit-Window_content_submit.prototype.submit
  */
 Window_search_submit.prototype.submit = function(){
 	

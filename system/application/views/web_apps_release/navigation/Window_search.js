@@ -58,10 +58,11 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	//var _searchrange_row = _factory.row(
     //new KALS_language_param('Searchrange', 'window.content.searchrange')).appendTo(_ui); //"搜尋範圍"標題
         
-	
-	 var _subpanel = _factory.subpanel('range').appendTo(_ui); //新增一層subplan	
+	 // 新增一層subplan來畫搜尋表單	
+	 var _subpanel = _factory.subpanel('range').appendTo(_ui);
 	 var _this = this;
     
+	// searchrange為下拉式選單
 		var _searchrange_config = [ "note","author","annotation_type","annotation_anchor" ];
         var _searchrange_options = [];
         for (var _i in _searchrange_config) 
@@ -87,7 +88,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         ).appendTo(_subpanel);
 
 
-	//標註類型選單
+	// 選擇類別時，呈現標註類型radio選單
 	var _type_param_list = KALS_text.tool.editor_container.editor.type.menu.create_type_param_list();
 	var _type_options = [];
 	var _default_type = null;
@@ -95,6 +96,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 		// _type_param = new Annotation_type_param();
 		var _type_param = _type_param_list[_i];
 		var _value = _type_param.get_id();
+		//預設值
 		if (_default_type === null) {
 			_default_type = _value;
 		}
@@ -102,12 +104,15 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 		
 		var _option = _factory.radio_option(_lang, _value);
 		
+		// 當使用者有點選動作時的事件
 		_option.change(function () {
 			
+			// 現在在option下用this，去找上面名為.searchrange-type的層別，在此層級下找:radio:checked，選擇現在所點選的值
 			var _value = $(this).parents(".searchrange-type").find(":radio:checked").val();
-			//現在在option下用this，去找上面名為.searchrange-type的層別，在此層級下找:radio:checked，選擇現在所點選的值
+			// 在option下用parents去找上面名為window-panel的層別，在此層級下找到要代入的search-keyword，將value代入
 			$(this).parents(".window-panel").find(".search-keyword:first").val(_value);
-			//在option下用parents去找上面名為window-panel的層別，在此層級下找到要代入的search-keyword，將value代入
+			
+			
 		});
 		
         _type_options.push(_option);
@@ -116,32 +121,45 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	_type_radio.addClass("searchrange-type");
 	
 	
-	//_searchrange_list.after(_type_radio);  //_type_radio緊接在_searchrange_list
+	//_searchrange_list.after(_type_radio); //_type_radio緊接在_searchrange_list
+	
 	var _type_radio_row = _factory.row(
         new KALS_language_param('type_radio', 'window.content.type_radio'),
-		 _type_radio).appendTo(_ui); //"關鍵字"標題	
-      _type_radio_row.hide();//平常時候把_type_radio隱藏起來
-	 
+		 _type_radio).appendTo(_ui); 
+		 
+    _type_radio_row.hide(); // 平常時候把_type_radio隱藏起來
+	_type_radio_row.find("dt:first").css("margin-bottom", "1em");
 	
 // 改變 _searchrange_list 時，控制_type_radio顯示與否
 	
 _searchrange_list.change( function(){
 	
-	//var _value = this.value;
+	// var _value = this.value;
 	var _value = $(this).val();
-    //若searchrange為annotation_type時，隱藏關鍵字欄位，顯示類別radio_list
+	var _panel = $(this).parents(".window-panel:first");
+    // 若searchrange為annotation_type時，隱藏關鍵字欄位，顯示類別radio_list
 	if (_value !== "annotation_type") {
 		_type_radio_row.hide();
+		_panel.find(".search-keyword:first").val("");
+		//$.test_msg("_searchrange_list.change", $(this).parents(".window-panel").find(".search-keyword:first").length);
 		_searchkey_row.show();
-	}
+	    
+	} 
    	else {
         _type_radio_row.show();
 		_searchkey_row.hide();
+		//$.test_msg("_searchrange_list.change", _panel.find(".searchrange-type input:checked:first").length);
+		if (_panel.find(".searchrange-type input:checked:first").length === 1) {
+			var _type_value = _panel.find(".searchrange-type input:checked:first").val();
+			_panel.find(".search-keyword:first").val(_type_value);
+		}
+		
+		
    }
 			
 });
 			
-    //=輸入關鍵字====
+    // 輸入關鍵字
 	var _keyword_input = _factory.input('keyword');
 	_keyword_input.addClass("search-keyword");
 	var _searchkey_row = _factory.row(
@@ -150,7 +168,7 @@ _searchrange_list.change( function(){
         
 
 	
-	//==選擇排序方式===
+	// 選擇排序方式-update,create,scope
 	
 	var _subpanel = _factory.subpanel('order').appendTo(_ui); //新增一層subplan	
 	 var _this = this;
@@ -195,9 +213,11 @@ _searchrange_list.change( function(){
 
 */
    
-   //=====搜尋結果標題===	   
-	var _searchresult_row = _factory.row(
+   // 搜尋結果標題	   //改用只有標題的
+	var _searchresult_row = _factory.heading_row(
         new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_ui); //"搜尋結果"標題	
+  
+    _searchresult_row.css("font-size","medium");
   
     var _list_ui = this.list.get_ui();
 	_list_ui.appendTo(_ui);

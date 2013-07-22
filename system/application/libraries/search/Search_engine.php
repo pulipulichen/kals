@@ -674,7 +674,7 @@ class Search_engine extends Generic_collection {
         return $this;
     }
 
-    protected $target_user_id; //取得標註user的id？
+    protected $target_user_id; 
     public function set_target_user(User $user)
     {
         $this->target_user_id = $user->get_id();

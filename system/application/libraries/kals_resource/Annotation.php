@@ -199,7 +199,7 @@ class Annotation extends KALS_resource {
     }
      */
 
-    public function set_note($value)  //是你嗎？
+    public function set_note($value)  
     {
         if (is_string($value))
         {
