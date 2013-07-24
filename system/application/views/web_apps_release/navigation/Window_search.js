@@ -54,11 +54,10 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
     var _factory = KALS_window.ui;
 
-	//=*===TEST01 FILED========
 	//var _searchrange_row = _factory.row(
     //new KALS_language_param('Searchrange', 'window.content.searchrange')).appendTo(_ui); //"搜尋範圍"標題
         
-	 // 新增一層subplan來畫搜尋表單	
+	 // 新增一層subplan來畫SEARCH表單	
 	 var _subpanel = _factory.subpanel('range').appendTo(_ui);
 	 var _this = this;
     
@@ -92,9 +91,9 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	var _type_param_list = KALS_text.tool.editor_container.editor.type.menu.create_type_param_list();
 	var _type_options = [];
 	var _default_type = null;
-	for (var _i in _type_param_list) {
+	for (var _r in _type_param_list) {
 		// _type_param = new Annotation_type_param();
-		var _type_param = _type_param_list[_i];
+		var _type_param = _type_param_list[_r];
 		var _value = _type_param.get_id();
 		//預設值
 		if (_default_type === null) {
