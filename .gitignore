@@ -1,6 +1,12 @@
 # IDE, don't track them
 aptana/
+nbproject/
+test/
+.settings/
+/aptana/
+/nbproject/
+/test/
+/.settings/
 
-/system/cache
-/system/logs
-/nbproject/private/
+/system/cache/
+/system/logs/

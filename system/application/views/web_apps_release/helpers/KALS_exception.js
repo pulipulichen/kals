@@ -18,8 +18,7 @@ function KALS_exception(_class, _message) {
     if ($.is_object(_class) 
         && (typeof(_class.heading) != 'undefined' 
         || typeof(_class.message) != 'undefined'
-        || typeof(_class.request_uri) != 'undefined'))
-    {
+        || typeof(_class.request_uri) != 'undefined')) {
         var _server_error = _class;
         if (typeof(_server_error.heading) != 'undefined') {
 			this.heading = _server_error.heading;
@@ -31,10 +30,8 @@ function KALS_exception(_class, _message) {
 			this.request_uri = _server_error.request_uri;
 		}
     }
-    else
-    {
-        if ($.is_null(_message) && $.is_string(_class))
-        {
+    else {
+        if ($.is_null(_message) && $.is_string(_class)) {
             _message = _class;
             _class = null;
         }

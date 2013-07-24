@@ -22,7 +22,7 @@ function KALS_toolbar() {
     this.child('loading', new Loading_component());
     this.child('search', new Search_component());
     
-    this._common_windows = [new Window_filter()];
+    this._common_windows = (new Common_navigation()).get_nav_items();
     this.child('anonymous_nav', new Anonymous_navigation(this._common_windows));
     this.child('avatar', new Avatar_component(this._common_windows));
     //this.child('common_nav', new Common_navigation());
@@ -98,7 +98,8 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     var _ui = this._$create_ui_prototype();
     _ui.removeClass('kals-modal');
-    _ui.addClass('kals-toolbar');
+    _ui.addClass('kals-toolbar')
+		.addClass("KALS");
     
     var _toolbar_ui = this.toolbar.get_ui();
     var _toggle_ui = this.toggle.get_ui();
@@ -185,28 +186,23 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     
     var _ui_toggle = this.toggle.get_ui();
     var _padding_ui = this.padding.get_ui();
-    if ($.is_small_height())
-    {   
-        if (this.toggle.is_show() === false)
-        {
+    if ($.is_small_height()) {   
+        if (this.toggle.is_show() === false) {
             this.toggle_toolbar(false);
             this.toggle.show();    
         }
         
-        if (_padding_ui.hasClass('compact-height') === false)
-        {
+        if (_padding_ui.hasClass('compact-height') === false) {
             _padding_ui.slideUp(function () {
                 _padding_ui.addClass('compact-height');    
             });
         } 
     }
-    else
-    {
+    else {
         this.toggle_toolbar(true);
         this.toggle.hide();
         
-        if (_padding_ui.hasClass('compact-height'))
-        {
+        if (_padding_ui.hasClass('compact-height')) {
             _padding_ui.removeClass('compact-height');
             _padding_ui.slideDown(function () {
                 //_padding_ui.css('display', null);
@@ -215,13 +211,11 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
         }
     }
     
-    if ($.is_small_width())
-    {
+    if ($.is_small_width()) {
         _ui.addClass('compact-width');
         //this.toolbar.toggle_left(false);
     }
-    else
-    {
+    else {
         _ui.removeClass('compact-width');
         //this.toolbar.toggle_left(true);
     }
@@ -230,8 +224,7 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
 		_ui.valign('top');
 	}
     
-    if (this.toolbar_visible() === false)
-    {
+    if (this.toolbar_visible() === false) {
         _ui.align('center');
     }
     
@@ -249,13 +242,12 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    var _ui = this.get_ui();
    var _ui_hidden = _ui.hasClass('hide');
    
-   if ($.is_null(_display))
-   {
+   if ($.is_null(_display)) {
        if (_ui_hidden) {
-	   	_display = true;
+		   _display = true;
 	   }
 	   else {
-	   	_display = false;
+	       _display = false;
 	   }
    }
    
@@ -266,8 +258,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    
    //$.test_msg('display', _display);
    var _height;
-   if (_display === true && _ui_hidden)
-   {
+   if (_display === true && _ui_hidden) {
        //_toolbar_ui.slideDown(_callback);
        _ui.removeClass('hide');
        _height = _toolbar_ui.height();
@@ -286,8 +277,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
            }
        });
    }
-   else if (_display === false && _ui_hidden === false)
-   {
+   else if (_display === false && _ui_hidden === false) {
        _height = _toolbar_ui.height();
        _height = (_height * -1) + 'px';
        //$.test_msg(_height);
@@ -304,8 +294,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
            }
        });
    }
-   else
-   {
+   else {
        $.trigger_callback(_callback);
    }
    
@@ -325,16 +314,13 @@ KALS_toolbar.prototype.toggle_loading = function (_is_loading) {
     
     var _class_name = 'loading';
     
-    if ($.is_null(_is_loading))
-    {
+    if ($.is_null(_is_loading)) {
         _ui.toggleClass(_class_name);
     }
-    else if (_is_loading === true)
-    {
+    else if (_is_loading === true) {
         _ui.addClass(_class_name);
     }
-    else
-    {
+    else {
         _ui.removeClass(_class_name);
     }
     

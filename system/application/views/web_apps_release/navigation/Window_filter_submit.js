@@ -31,14 +31,12 @@ Window_filter_submit.prototype.submit = function () {
     
     
     
-    if ($.isset(_data))
-    {
+    if ($.isset(_data)) {
         _style_manager.clear_style(_style_name);
         var _url = 'custom';
         
         var _config = [];
-        if (typeof(_data.my) == 'object' && _data.my.length > 0)
-        {
+        if (typeof(_data.my) == 'object' && _data.my.length > 0) {
             var _my_style = {
                 //'background_color': 'transparent'
                 'border-bottom-style': 'none'
@@ -65,8 +63,7 @@ Window_filter_submit.prototype.submit = function () {
             });
             */
         }
-        if (typeof(_data.nav) == 'object')
-        {
+        if (typeof(_data.nav) == 'object') {
             var _nav_style = {
                 'color': 'inherit'
                 //'text_decoration': 'none'
@@ -83,8 +80,7 @@ Window_filter_submit.prototype.submit = function () {
         //_style_manager.load_style(_style_name, _url, _config);
         
     }
-    else
-    {
+    else {
         _style_manager.remove_style(_style_name);
         //_style_manager.unload_style(_style_name);
     }
@@ -100,23 +96,21 @@ Window_filter_submit.prototype.get_data = function () {
     var _is_login = KALS_context.auth.is_login();
     var _word_classname = '.kals-paragraph .kals-word';
     //如果有登入，才需要取得my資料
-    if (_is_login == true)
-    {
+    if (_is_login === true) {
         var _my = [];
         var _inputs = _content_ui.find('.my-type-div input');
         //$.test_msg('Window_filter_submit.get_data() my', _inputs.length);
-        for (var _i = 0; _i < _inputs.length; _i++)
-        {
+        for (var _i = 0; _i < _inputs.length; _i++) {
             var _input = _inputs.eq(_i);
-            if (_input.attr('checked') == true)
-                continue;
+            if (_input.attr('checked') === true) {
+				continue;
+			}
             
             var _classname = _input.attr('value');
             _my.push(_word_classname + '.' + _classname);
         }
         
-        if (_my.length > 0)
-        {
+        if (_my.length > 0) {
             _data.my = _my;
             _has_data = true;
         }
@@ -124,13 +118,11 @@ Window_filter_submit.prototype.get_data = function () {
     
     //如果有show navigation，才需要取得nav資料
     var _allow_show_navigation = KALS_context.policy.allow_show_navigation();
-    if (_allow_show_navigation)
-    {
+    if (_allow_show_navigation) {
         
         var _nav_input = _content_ui.find('.nav-div input');
         var _nav_checked = _nav_input.attr('checked');
-        if (_nav_checked == false)
-        {
+        if (_nav_checked === false) {
             var _nav = [];
             _nav.push(_word_classname + '.nav_bad');
             _nav.push(_word_classname + '.nav_normal');
@@ -141,10 +133,12 @@ Window_filter_submit.prototype.get_data = function () {
         }
     }
     
-    if (_has_data == true)
-        return _data;
-    else
-        return null;
+    if (_has_data === true) {
+		return _data;
+	}
+	else {
+		return null;
+	}
 };
 
 /* End of file Window_filter_submit */

@@ -95,13 +95,10 @@ class Annotation_setter extends Web_apps_controller {
 
         //建立標註
         $annotation = $this->annotation->create_annotation($user, $scope_coll);
-
         $data = $this->_setup_annotation($annotation, $data);
-
         set_ignore_authorize(true);
-
+        
         $annotation = new Annotation($annotation->get_id());
-
         if ($annotation->is_respond() === FALSE)
         {
             $annotation = $this->_setup_scores_recommend($annotation);
@@ -110,11 +107,11 @@ class Annotation_setter extends Web_apps_controller {
             if (isset($recommend))
             {
                 $recommend_data =  $recommend->export_webpage_data($this->url);
-                if (isset($recommend_data))
+                if (isset($recommend_data)) {
                     $data['recommend'] = $recommend_data;
+                }
             }
         }
-
         // 標註共識的分數都重新計算
         $annotation = new Annotation($annotation->get_id());
         $consensus_coll = $annotation->get_consensus_coll();
@@ -128,8 +125,9 @@ class Annotation_setter extends Web_apps_controller {
         $array_data = $annotation->export_webpage_data($this->url);
 
         $action = 13;
-        if (isset($data['recommend']))
+        if (isset($data['recommend'])) {
             $action = 14;
+        }
         if ($annotation->is_respond())
         {
             $action = 20;

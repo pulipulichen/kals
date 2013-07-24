@@ -41,8 +41,7 @@ My_custom_annotation_loader.prototype._$load_url = 'annotation_getter/my_custom'
  */
 My_custom_annotation_loader.prototype.load_annotation = function (_data, _callback) {
     
-    if ($.is_function(_data) && $.is_null(_callback))
-    {
+    if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
         _data = null;
     }
@@ -53,8 +52,7 @@ My_custom_annotation_loader.prototype.load_annotation = function (_data, _callba
     
     //$.test_msg('My_custom_annotation_loader.load_annotation() data', _data);
     
-    for (var _i in _custom_scope)
-    {
+    for (var _i in _custom_scope) {
         var _type_id = _i;
         var _scope_coll_json = _custom_scope[_i];
         
@@ -84,8 +82,7 @@ My_custom_annotation_loader.prototype.clear = function () {
 
 My_custom_annotation_loader.prototype.initialize = function () {
     
-    if (typeof(KALS_text) == 'object')
-    {
+    if (typeof(KALS_text) == 'object') {
         this._selection = KALS_text.selection.my_custom;
         
         var _this = this;
@@ -97,8 +94,7 @@ My_custom_annotation_loader.prototype.initialize = function () {
             
             //$.test_msg('my_custom initialize', [$.isset(_my), _is_login]);
             
-            if ($.isset(_my) && _is_login)
-            {
+            if ($.isset(_my) && _is_login) {
                 if (_this.is_loaded()) {
 					return;
 				}
@@ -106,8 +102,7 @@ My_custom_annotation_loader.prototype.initialize = function () {
                     _this.stop_loader();
                 });
             }
-            else
-            {
+            else {
                 _this.reset();
             }
         });
@@ -115,8 +110,7 @@ My_custom_annotation_loader.prototype.initialize = function () {
 };
 
 My_custom_annotation_loader.prototype._$exception_handle = function (_data) {
-    if (this.is_initialized() === false)
-    {
+    if (this.is_initialized() === false) {
         var _this = this;
         setTimeout(function () {
             _this.setup_loader(function () {

@@ -29,8 +29,7 @@ Notification_component.prototype = new KALS_user_interface();
  * @memberOf {Notification_component}
  * @type {jQuery} UI
  */
-Notification_component.prototype._$create_ui = function ()
-{
+Notification_component.prototype._$create_ui = function () {
     var _ui = $('<div><div class="unread"></div></div>')
         .addClass('notification-component');
     
@@ -45,7 +44,7 @@ Notification_component.prototype.get_unread = function () {
 		_unread = 0;
 	}
 	else {
-		_unread = parseInt(_unread,10);
+		_unread = parseInt(_unread, 10);
 	}
     return _unread;
 };
@@ -56,21 +55,18 @@ Notification_component.prototype.get_unread = function () {
  */
 Notification_component.prototype.set_unread = function (_unread) {
     
-    if (_unread === null)
-    {
+    if (_unread === null) {
         _unread = 0;
     }
     
     var _unread_div = this.get_ui('.unread:first');
     
     var _has_unread_classname = 'has-unread';
-    if (_unread === 0)
-    {
+    if (_unread === 0) {
         this.add_class(_has_unread_classname);
         _unread_div.empty();
     }
-    else
-    {
+    else {
         this.add_class(_has_unread_classname);
         _unread_div(_unread);
     }
@@ -135,13 +131,11 @@ Notification_component.prototype.toggle_hover = function (_is_hover) {
  */
 Notification_component.prototype._set_interval_check = function (_excute) {
     
-    if (_excute === null)
-    {
+    if (_excute === null) {
         _excute = true;
     }
     
-    if (_excute === true)
-    {
+    if (_excute === true) {
         var _this = this;
         this._interval_checker = setInterval(function () {
             
@@ -150,8 +144,7 @@ Notification_component.prototype._set_interval_check = function (_excute) {
         }, this._interval_time);
         this.load_unread();
     }
-    else
-    {
+    else {
         clearInterval(this._interval_checker);
         this._interval_checker = null;
     }

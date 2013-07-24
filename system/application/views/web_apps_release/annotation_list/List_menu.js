@@ -113,7 +113,7 @@ List_menu.prototype._$create_ui = function ()
 };
 
 List_menu.prototype.is_enable = function (_option_name) {
-    if (_option_name === null || this._disable_option === null) {
+    if (_option_name === undefined || _option_name === null || this._disable_option === null || this._disable_option === undefined || this._disable_option.length === 0) {
 		return true;
 	}
 	else {
@@ -129,9 +129,10 @@ List_menu.prototype.is_enable = function (_option_name) {
  * @type {List_timestamp_component}
  */
 List_menu.prototype.timestamp = null;
+List_menu.prototype.timestamp_full_dispaly = false;
 
 List_menu.prototype._setup_timestamp = function () {
-    var _component = new List_timestamp_component(this._item);
+    var _component = new List_timestamp_component(this._item, this.timestamp_full_dispaly);
     this.child('timestamp', _component);
     return _component;
 };
@@ -154,8 +155,10 @@ List_menu.prototype._create_edit_ui = function () {
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
+    _ui.click(function (_e) {
         _this.edit_annotation();
+		_e.preventDefault();
+		return false;
     });
     
     _ui.setup_hover();
@@ -177,8 +180,10 @@ List_menu.prototype._create_delete_ui = function () {
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
+    _ui.click(function (_e) {
         _this.delete_annotation();
+		_e.preventDefault();
+		return false;
     });
     
     _ui.setup_hover();
@@ -272,10 +277,16 @@ List_menu.prototype.get_annotation_id = function () {
     return this._item.get_data().annotation_id;
 };
 
+/**
+ * 顯示討論視窗
+ * @param {function} _callback
+ */
 List_menu.prototype.view_thread = function (_callback) {
     if ($.isset(this._item))
     {
-        this._item.view_thread(_callback);
+		// @20130604 Pudding Chen
+		// 不知道為什麼關掉這串就會恢復正常
+        //this._item.view_thread(_callback);
         this.close();
     }   
     return this;
@@ -337,8 +348,7 @@ List_menu.prototype.delete_annotation = function () {
         
     var _callback = function (_data) {
         //回傳的資料是重新讀取的my annotation範圍，回傳資料的形態請參考annotation_getter/my
-        if (_data !== false)    //如果是錯誤的狀況，才會回傳false
-        {
+        if (_data !== false) {   //如果是錯誤的狀況，才會回傳false
             //因為範圍改變了，所以需要重新讀取
             KALS_text.load_my.reload(_data, function () {
                 _this._item.remove();
@@ -361,8 +371,7 @@ List_menu.prototype.delete_annotation = function () {
                 }
             });
             
-            if (typeof(_data.nav) != 'undefined')
-            {
+            if (typeof(_data.nav) != 'undefined') {
                 var _nav_data = _data.nav;
                 if (KALS_context.user.get_anchor_navigation_type() == 'all') {
 					KALS_text.load_navigation.reload(_nav_data);

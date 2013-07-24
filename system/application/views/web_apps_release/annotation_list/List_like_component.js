@@ -30,8 +30,7 @@ List_like_component.prototype = new JSONP_dispatcher();
 List_like_component.prototype._item = null;
 
 List_like_component.prototype._set_list_item = function (_item) {
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
@@ -70,8 +69,7 @@ List_like_component.prototype._hover_classname = 'hover';
  * @memberOf {List_like_component}
  * @type {jQuery} UI
  */
-List_like_component.prototype._$create_ui = function ()
-{
+List_like_component.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('list-like-component');
     
@@ -163,12 +161,10 @@ List_like_component.prototype.set_is_like = function (_is_like) {
         KALS_util.notify(_lang);
         
         //調整次數
-        if (_is_like === true)
-        {
+        if (_is_like === true) {
             _this.add_like_count();
         }
-        else
-        {
+        else {
             _this.reduce_like_count();
         }
     });
@@ -218,16 +214,13 @@ List_like_component.prototype._toggle_like = function (_is_like) {
 
 List_like_component.prototype._like_count = 0;
 
-List_like_component.prototype._set_like_count = function (_count)
-{
-    if ($.is_null(_count) || _count < 1)
-    {
+List_like_component.prototype._set_like_count = function (_count) {
+    if ($.is_null(_count) || _count < 1) {
         this._count_component.hide();
         this._count_component.empty();
         this._like_count = 0;
     }
-    else
-    {
+    else {
         this._count_component.show();
         
         var _lang = new KALS_language_param(

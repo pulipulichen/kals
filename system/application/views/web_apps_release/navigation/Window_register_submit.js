@@ -34,16 +34,18 @@ Window_register_submit.prototype.submit = function () {
     var _data = this.get_data();
     var _inputs = this.get_inputs();
     
-    if (this.validate(_inputs, _data) == false)
-        return;
+    if (this.validate(_inputs, _data) === false) {
+		return;
+	}
     
     this._setup_auth(_data);
     
     // ---------
     // 接下來要準備登入囉
     
-    if (this._lock_submit() == false)
-        return this;
+    if (this._lock_submit() === false) {
+		return this;
+	}
     
     var _this = this;
     
@@ -53,15 +55,13 @@ Window_register_submit.prototype.submit = function () {
             
             //$.test_msg('Window_register_submit()', $.is_class(_data, 'KALS_language_param'));
             
-            if ($.is_class(_data, 'KALS_language_param'))
-            {
+            if ($.is_class(_data, 'KALS_language_param')) {
                 _this._content.set_error(_data);
                 KALS_window.toggle_loading(false, function () {
                     _this._unlock_submit();
                 });
             }
-            else
-            {
+            else {
                 var _username = KALS_context.user.get_name();
                 _this.complete_notification.arg = _username;
                 KALS_util.notify(_this.complete_notification);

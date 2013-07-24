@@ -114,8 +114,7 @@ List_collection.prototype._offset = null;
  * @memberOf {List_collection}
  * @type {jQuery} UI
  */
-List_collection.prototype._$create_ui = function ()
-{
+List_collection.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-collection')
         .addClass(this._$name);
@@ -129,8 +128,8 @@ List_collection.prototype._$create_ui = function ()
     //var _loading = this._create_loading_component()
     //    .appendTo(_ui);
     
-    //if (this._$limit == null
-    //    || this.is_totally_loaded() == true)
+    //if (this._$limit === null
+    //    || this.is_totally_loaded() === true)
     //{
     //    _loading.hide();
     //}
@@ -142,8 +141,7 @@ List_collection.prototype._$create_ui = function ()
  * @type {jQuery}
  */
 /*
-List_collection.prototype._create_loading_component = function()
-{
+List_collection.prototype._create_loading_component = function() {
     var _ui = jQuery('<div></div>')
         .addClass('loading-component');
     
@@ -165,14 +163,12 @@ List_collection.prototype._create_loading_component = function()
  * @param {Boolean|null} _display
  */
 /*
-List_collection.prototype._toggle_loading = function(_display)
-{
-    if ($.is_null(_display))
-    {
+List_collection.prototype._toggle_loading = function(_display) {
+    if ($.is_null(_display)) {
         _display = (this._load_component.css('display') != 'block');
     }
     
-    if (_display == true)
+    if (_display === true)
         this._list_container.show();
     else
         this._list_container.hide();
@@ -187,26 +183,21 @@ List_collection.prototype._toggle_loading = function(_display)
 
 List_collection.prototype._load_lock = false;
 
-List_collection.prototype.load_list = function(_data, _callback) 
-{
-    if ($.is_function(_data) && $.is_null(_callback))
-    {
+List_collection.prototype.load_list = function(_data, _callback) {
+    if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
         _data = null;
     }
     
-    if ($.isset(_data))
-    {
-        if ($.is_class(_data, 'Annotation_param'))
-        {
+    if ($.isset(_data)) {
+        if ($.is_class(_data, 'Annotation_param')) {
             var _annotation_param = _data.export_json();
             _data = {
                 annotation_collection: [ _annotation_param ],
                 totally_loaded: true
             };    
         }
-        else if ($.is_class(_data, 'Annotation_collection_param'))
-        {
+        else if ($.is_class(_data, 'Annotation_collection_param')) {
             var _coll_param = _data.export_json();
             _data = {
                 annotation_collection: _coll_param,
@@ -225,8 +216,7 @@ List_collection.prototype.load_list = function(_data, _callback)
     }
     
     if (this.is_totally_loaded() === true
-        || this._check_login() === false)
-    {
+        || this._check_login() === false) {
         $.trigger_callback(_callback);
         return this;
     }
@@ -237,8 +227,7 @@ List_collection.prototype.load_list = function(_data, _callback)
     
     var _search_data = this.get_search_data();
     
-    if ($.isset(_search_data))
-    {
+    if ($.isset(_search_data)) {
         //$.test_msg('List_coll.load_list', _search_data);
         
         this._load_lock = true;
@@ -253,51 +242,51 @@ List_collection.prototype.load_list = function(_data, _callback)
     return this;
 };
 
-List_collection.prototype.get_search_data = function(){
-
-	var _search_data = {};
-	
-	//如果有指定target id，則就不需要其他參考資料
-	if ($.isset(this._$topic_id)) {
-		_search_data.topic_id = this._$topic_id;
-		
-		if ($.isset(this._$limit)) {
+List_collection.prototype.get_search_data = function () {
+    
+    var _search_data = {};
+    
+    //如果有指定target id，則就不需要其他參考資料
+    if ($.isset(this._$topic_id)) {
+        _search_data.topic_id = this._$topic_id;
+        
+        if ($.isset(this._$limit)) {
 			_search_data.limit = this._$limit;
 		}
-		
-		if ($.isset(this._$target_topic)) {
+            
+        if ($.isset(this._$target_topic)) {
 			_search_data.target_topic = this._$target_topic;
 		}
-		if ($.isset(this._$order_by) && this._$order_by != 'score') {
+        if ($.isset(this._$order_by) && this._$order_by != 'score') {
 			_search_data.order_by = this._$order_by;
 		}
-		
-		if ($.isset(this._offset)) {
+            
+        if ($.isset(this._offset)) {
 			_search_data.offset = this._offset;
 		}
-		
-		return _search_data;
-	}
-	
-	//一定要有範圍資料！
-	if ($.is_null(this._scope_coll)) {
+            
+        return _search_data;
+    }
+    
+    //一定要有範圍資料！
+    if ($.is_null(this._scope_coll)) {
 		return null;
 	}
-	
-	_search_data.scope = this._scope_coll.export_json(false);
-	
-	//需要登入身分的兩個參數
-	if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
+    
+    _search_data.scope = this._scope_coll.export_json(false);
+    
+    //需要登入身分的兩個參數
+    if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
 	KALS_context.auth.is_login() === false) {
 		return null;
 	}
-	
-	if ($.isset(this._$target_like)) {
+    
+    if ($.isset(this._$target_like)) {
 		_search_data.target_like = this._$target_like;
 	}
-	if ($.isset(this._$target_my)) {
+    if ($.isset(this._$target_my)) {
 		_search_data.target_my = this._$target_my;
-}
+	}
     
     if ($.isset(this._$limit)) {
 		_search_data.limit = this._$limit;
@@ -327,8 +316,7 @@ List_collection.prototype._check_login = function () {
 	}
     
     var _pass = (this._$need_login == KALS_context.auth.is_login());
-    if (_pass === false)
-    {
+    if (_pass === false) {
         this._totally_loaded = true;
     } 
     return _pass;
@@ -364,8 +352,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
     //$.test_msg('List_coll.setup_load_list()', _data);
     //$.test_msg('List_coll.setup_load_list()', $.is_array(_data.annotation_collection));
     
-    if (this._check_login() === false)
-    {
+    if (this._check_login() === false) {
         $.trigger_callback(_callback);
         return this;
     }
@@ -381,8 +368,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         //_this._ready = true;
         _this._check_load_id = false;
         
-        if (_this._set_focus_param !== null)
-        {
+        if (_this._set_focus_param !== null) {
             _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
             
             _this._set_focus_param = null;
@@ -391,8 +377,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         $.trigger_callback(_callback);
     };
     
-    if ($.is_array(_data.annotation_collection))
-    {
+    if ($.is_array(_data.annotation_collection)) {
         //要先把_data.annotation_collection轉換成Anntation_collection_param()
         
         var _loop_annotation_complete = function () {
@@ -413,8 +398,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         var _annotation_coll = new Annotation_collection_param(_data.annotation_collection);
         
         /*
-        for (var _i = 0; _i < _annotation_coll.length(); _i++)
-        {
+        for (var _i = 0; _i < _annotation_coll.length(); _i++) {
             var _param = _annotation_coll.get(_i);
             var _list_item = this.add_list_item(_param);
             
@@ -435,33 +419,49 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
        
         var _load_id = this._load_id;
         var _loop_annotation = function (_i) {
-            if (_this.check_load_id(_load_id) === false)
-            {
+            if (_this.check_load_id(_load_id) === false) {
                 //$.test_msg('List_collection.setup_load_list()', 'lost load id');
                 return;
             }
             
-            if (_i < _annotation_coll.length())
-            {
+            if (_i < _annotation_coll.length()) {
                 var _param = _annotation_coll.get(_i);
                 //var _list_item = _this.add_list_item(_param);
-                _this.add_list_item(_param);
+				
+				if (KALS_context.policy.allow_show_navigation() === false) {
+					var _user_name = KALS_context.user.get_name();
+					//$.test_msg("setup_load_list", _param.user);
+					
+					
+					if (_param.user.name === _user_name) {
+						_this.add_list_item(_param);
+					}
+					else if (typeof(_data.total_count) !== "undefined") {
+						// @20130603 Pudding Chen
+						// 有個Bug，我必須要在這邊說清楚
+						// 當列表未顯示，卻又有超過數量的非自己標註時，數字上就會大於0，Bug就會出現
+						// 目前還沒有想法可以解決，先擺著
+						_data.total_count--;
+					}
+				}
+				else {
+					_this.add_list_item(_param);
+				}
+                
                 
                 setTimeout(function () {
                     _i++;
                     _loop_annotation(_i);
                 }, 0);
             }
-            else
-            {
+            else {
                 _loop_annotation_complete();
             }
         };
         
         _loop_annotation(0);
     }
-    else
-    {
+    else {
         _setup_list_complete();
     }
     
@@ -486,8 +486,7 @@ List_collection.prototype.reset = function() {
     return this;
 };
 
-List_collection.prototype.reload = function(_callback)
-{
+List_collection.prototype.reload = function(_callback) {
     this.reset();
     return this.load_list(_callback);
 };
@@ -497,12 +496,11 @@ List_collection.prototype.reload = function(_callback)
  * @param {Annotation_param} _param
  * @type {List_item_topic|List_item_repond|List_item} 
  */
-List_collection.prototype.create_list_item = function(_param)
-{
+List_collection.prototype.create_list_item = function(_param) {
     if (this._$target_topic === true) {
 		return new List_item_topic(_param);
 	}
-	//else if (this._$target_topic == false)
+	//else if (this._$target_topic === false)
 	//    return new List_item_respond(_param);
 	else {
 		return new List_item(_param);
@@ -513,18 +511,15 @@ List_collection.prototype.create_list_item = function(_param)
  * 
  * @param {Boolean} _is_totally
  */
-List_collection.prototype._set_is_totally = function(_is_totally) 
-{
+List_collection.prototype._set_is_totally = function(_is_totally) {
     this._totally_loaded = _is_totally;
 };
 
-List_collection.prototype.is_totally_loaded = function()
-{
+List_collection.prototype.is_totally_loaded = function() {
     return this._totally_loaded;
 };
 
-List_collection.prototype.set_topic_id = function(_id) 
-{
+List_collection.prototype.set_topic_id = function(_id) {
     this._$topic_id = _id;
     
     return this;
@@ -539,22 +534,18 @@ List_collection.prototype.set_topic_id = function(_id)
  * @param {Annotation_param} _param
  * @param {Boolean} _from_head = false; 是否從頭加入，或是從尾加入
  */
-List_collection.prototype.add_list_item = function(_param, _from_head)
-{
+List_collection.prototype.add_list_item = function(_param, _from_head) {
     var _list_item = this.create_list_item(_param);
     
-    if (_list_item !== null)
-    {
+    if (_list_item !== null) {
         this._list_items.push(_list_item);
         
         var _list_item_ui = _list_item.get_ui();
         
-        if ($.is_null(_from_head) || _from_head === false)
-        {
+        if ($.is_null(_from_head) || _from_head === false) {
             this._list_container.append(_list_item_ui);
         }
-        else
-        {
+        else {
             this._list_container.prepend(_list_item_ui);
         }
         
@@ -575,19 +566,16 @@ List_collection.prototype.editor_add_list_item = function (_param, _from_head) {
 List_collection.prototype.remove_list_item = function (_param) {
     
     var _delete_index;
-    for (var _i in this._list_items)
-    {
+    for (var _i in this._list_items) {
         var _list_item = this._list_items[_i];
-        if (_list_item.equals(_param))
-        {
+        if (_list_item.equals(_param)) {
             _list_item.remove();
             _delete_index = _i;
             break;
         }
     }
     
-    if ($.isset(_delete_index))
-    {
+    if ($.isset(_delete_index)) {
         this._list_items = $.array_remove(this._list_items, _delete_index);
     }
     return this;
@@ -598,20 +586,17 @@ List_collection.prototype.remove_list_item = function (_param) {
  * @param {Annotation_param|Number} _param
  * @type {List_item|null} 找不到的話就會回傳null
  */
-List_collection.prototype.focus = function(_param, _scrollto) 
-{
+List_collection.prototype.focus = function(_param, _scrollto) {
     if ($.is_null(_param)) {
 		return null;
 	}
     
-    for (var _i in this._list_items)
-    {
+    for (var _i in this._list_items) {
         var _list_item = this._list_items[_i];
         /*
         var _list_id = _list_item.get_annotation_id();
         
-        if (_list_id == _annotation_id)
-        {
+        if (_list_id == _annotation_id) {
             var _list_item_ui = _list_item.get_ui();
             
             //讓他focus
@@ -620,8 +605,7 @@ List_collection.prototype.focus = function(_param, _scrollto)
             return _list_item;
         }
         */
-        if (_list_item.equals(_param))
-        {
+        if (_list_item.equals(_param)) {
             //2010.10.29 這些工作交給List_item.focus()去做
             //var _list_item_ui = _list_item.get_ui();
             
@@ -634,14 +618,14 @@ List_collection.prototype.focus = function(_param, _scrollto)
             return _list_item;
         }
         else if (typeof(_list_item.respond_list) != 'undefined'
-            && _list_item.respond_list !== null)
-        {
+            && _list_item.respond_list !== null) {
             //$.test_msg('List_collection.focus() has respond list', _list_item.get_annotation_id());
             var _result = _list_item.respond_list.focus(_param, _scrollto);
             if (_result !== null) {
 				return _result;
 			}
         }
+		
     }
     
     //如果到最後都沒找到的話
@@ -676,8 +660,8 @@ List_collection.prototype._mark_first = function () {
     if (this._is_marked_first === true) {
 		return this;
 	}
-    if (this._list_items.length > 0)
-    {
+    
+    if (this._list_items.length > 0) {
         var _list_item = this._list_items[0];
         _list_item.get_ui().addClass('first');
         this._is_marked_first = true;    
@@ -695,12 +679,11 @@ List_collection.prototype._mark_first = function () {
  */
 /*
 List_collection.prototype.is_ready = function () {
-    if (this._ready == false)
+    if (this._ready === false)
         return false;
     
-    for (var _i in this._list_items)
-    {
-        if (this._list_items[_i].is_ready() == false)
+    for (var _i in this._list_items) {
+        if (this._list_items[_i].is_ready() === false)
             return false;
     }
     

@@ -25,7 +25,7 @@ Init_profile.prototype = new Task_event_dispatcher();
 Init_profile.prototype._$onstart = function () {
     //KALS_context資料初始化之後，才能進行其他資料的讀取
     
-    $.test_msg('Init_profile._$onstart()');
+    //$.test_msg('Init_profile._$onstart()');
     
     KALS_context.init_profile.complete('notification');
     
@@ -75,8 +75,9 @@ Init_profile.prototype._$oncomplete = function () {
     KALS_context.completed = true;
 	
 	/**
-	 * 布丁測試用
+	 * @version 20130224 布丁測試用
 	 */
+	/*
 	var _sentence_list = KALS_text.selection.text.get_sentence_index();
 	
 	var _php_array = 'new Array(';
@@ -91,7 +92,7 @@ Init_profile.prototype._$oncomplete = function () {
 	$.test_msg('count .kals-sentence-punctuation', $('.kals-sentence-punctuation').length);
 	$.test_msg('list .kals-sentence-punctuation', _sentence_list);
 	$.test_msg('list php array .kals-sentence-punctuation', _php_array);
-	
+	*/
 };
 
 /* End of file Init_profile */

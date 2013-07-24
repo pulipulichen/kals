@@ -49,7 +49,7 @@ Scope_param.prototype._filter_index = function (_index) {
 			}
 			else {
 				try {
-					_index = parseInt(_index,10);
+					_index = parseInt(_index, 10);
 					return _index;
 				} 
 				catch (e) {
@@ -118,8 +118,7 @@ Scope_param.prototype._check_order = function () {
     
     //$.test_msg('Scope_param', [this.from, this.to]);
     
-    if (this.from > this.to)
-    {
+    if (this.from > this.to) {
         var _temp = this.from;
         this.from = this.to;
         this.to = _temp;
@@ -136,8 +135,7 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
     ];
     
     if (_export_anchor_text !== false
-        && this.get_anchor_text() !== null)
-    {
+        && this.get_anchor_text() !== null) {
         var _anchor_text = this.get_anchor_text();
         _anchor_text = encodeURIComponent(_anchor_text); 
         _json.push(_anchor_text);

@@ -16,14 +16,16 @@ function Note_editor(_editor) {
     Event_dispatcher.call(this);
             
     this._$apply_types = [];
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;
         //this.listen_editor();
         
     }
 }
 
+/**
+ * 繼承自Event_dispatcher
+ */
 Note_editor.prototype = new Event_dispatcher();
 
 /**
@@ -50,15 +52,13 @@ Note_editor.prototype._$apply_type = [];
  * @memberOf {Note_editor}
  * @type {jQuery} UI
  */
-Note_editor.prototype._$create_ui = function ()
-{   
-    var _this;
+Note_editor.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .append(this.create_textarea());
-     _this = this;
+    var _this = this;
     this.notify_ready();
     
-       _this = this;
+        _this = this;
         setTimeout(function() {
             _this.notify_ready();    
         }, 0);
@@ -85,6 +85,10 @@ Note_editor.prototype.get_text = function () {
 	}
 };
 
+/**
+ * 設定指定文字到筆記編輯器中
+ * @param {string} _text
+ */
 Note_editor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
     
@@ -96,7 +100,7 @@ Note_editor.prototype.set_text = function (_text) {
     
     if (_text == _setted_text) {
 		return this;
-	}   
+	}
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);
@@ -124,6 +128,14 @@ Note_editor.prototype.notify_ready = function () {
     }, 0);
     
     return this;
+};
+
+Note_editor.prototype.focus = function () {
+	var _ui = this.get_ui('.note-editor-textarea:first');
+	if (_ui.length > 0) {
+		_ui.focus();	
+	}
+	return this;
 };
 
 

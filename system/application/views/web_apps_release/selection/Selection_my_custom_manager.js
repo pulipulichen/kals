@@ -15,6 +15,13 @@ function Selection_my_custom_manager(_text) {
     KALS_user_interface.call(this);
     
     this._text = _text;
+	
+	var _this = this;
+	KALS_context.auth.add_listener(function (_auth) {
+		if (_auth.is_login() === false) {
+			_this.clear();
+		}
+	});
 }
 
 // Extend from KALS_user_interface
@@ -36,11 +43,13 @@ Selection_my_custom_manager.prototype._my_selections = {
  */
 Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scope_coll, _is_initialize) {
     
-    if (_scope_coll.length() == 0)
-        return this;
+    if (_scope_coll.length() === 0) {
+		return this;
+	}
         
-    if ($.is_null(_is_initialize))
-        _is_initialize = false;
+    if ($.is_null(_is_initialize)) {
+		_is_initialize = false;
+	}
     
     //$.test_msg('my_custom_manager set_scope_coll 1'
     //    , typeof(this._my_selections[_type_id]));
@@ -53,12 +62,13 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
     _type_id = decodeURIComponent(_type_id);
     
     var _my_type = KALS_context.custom_type.find_type(_type_id);
-    if ($.isset(_my_type) && _my_type.is_predefined())
-        _my_custom_type_name = _my_type.get_my_classname();
+	//$.test_msg('my_custom_manager 轉換成_my_custom_type_name', [$.isset(_my_type) , _my_type.is_predefined()]);
+    if ($.isset(_my_type) && _my_type.is_predefined()) {
+		_my_custom_type_name = _my_type.get_my_classname();
+	}
     
     //$.test_msg('Selection_my_custom_manager.set_scope_coll', [_type_id, _my_custom_type_name, typeof(_my_type)]);
-    if (typeof(this._my_selections[_type_id]) == 'undefined')
-    {
+    if (typeof(this._my_selections[_type_id]) == 'undefined') {
         this._my_selections[_type_id] = _my_custom_type_name;
         this.child(_my_custom_type_name, new Selection_my_custom_type(this._text, _my_custom_type_name));
     }
@@ -66,18 +76,15 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
     //$.test_msg('my_custom_manager set_scope_coll 2'
     //    , typeof(this._my_selections[_type_id]));
     
-    for (var _i in this._my_selections)
-    {
+    for (var _i in this._my_selections) {
         var _type_name = this._my_selections[_i];
         
         //$.test_msg('my_custom_manager', [_type_name, _i, _type_id, typeof(this[_type_name])]);
-        if (_i == _type_id)
-        {
+        if (_i == _type_id) {
             this[_type_name].set_scope_coll(_scope_coll);
             continue;
         }   
-        else if (_is_initialize == false)
-        {
+        else if (_is_initialize === false) {
             //其他的則是刪除標註
             this[_type_name].clear_scope_coll(_scope_coll);
         }
@@ -88,8 +95,7 @@ Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scop
 
 Selection_my_custom_manager.prototype.clear = function () {
     
-    for (var _i in this._my_selections)
-    {
+    for (var _i in this._my_selections) {
         var _type_name = this._my_selections[_i];
         this[_type_name].clear();
     }

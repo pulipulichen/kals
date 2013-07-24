@@ -14,8 +14,9 @@ function Selection_my_custom_type(_text, _type_name) {
     
     Selection_my.call(this,_text);
     
-    if ($.isset(_type_name))
-        this._$name = _type_name;
+    if ($.isset(_type_name)) {
+		this._$name = _type_name;
+	}
 }
 
 Selection_my_custom_type.prototype = new Selection_my();

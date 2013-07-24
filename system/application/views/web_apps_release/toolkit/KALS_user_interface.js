@@ -39,15 +39,17 @@ KALS_user_interface.prototype._children = [];
  * @param {null|string} _selector 選取UI裡面的特定物件
  */
 KALS_user_interface.prototype.get_ui = function (_selector) {
-    if (this.has_setup_ui() == false)
+    if (this.has_setup_ui() === false)
     {
         this._setup_ui();
     }
     
-    if (_selector == null)
-        return this._ui;
-    else
-        return this._ui.find(_selector);
+    if (_selector === undefined  || _selector === null) {
+		return this._ui;
+	}
+	else {
+		return this._ui.find(_selector);
+	}
 };
 
 /**
@@ -55,7 +57,7 @@ KALS_user_interface.prototype.get_ui = function (_selector) {
  * @type {boolean}
  */
 KALS_user_interface.prototype.has_setup_ui = function () {
-    return (this._ui != null);
+    return (this._ui !== null);
 };
 
 /**
@@ -83,12 +85,16 @@ KALS_user_interface.prototype.toggle_ui = function (_display) {
     
     if ($.isset(_ui))
     {
-        if ($.is_null(_display))
-            _ui.toggle();
-        else if (_display == true)
-            _ui.show();
-        else
-            _ui.hide();
+        if ($.is_null(_display)) {
+			_ui.toggle();
+		}
+		else 
+			if (_display === true) {
+				_ui.show();
+			}
+			else {
+				_ui.hide();
+			}
     }
     
     return this;
@@ -112,8 +118,9 @@ KALS_user_interface.prototype.add_class = function (_class_name) {
     if ($.is_string(_class_name))
     {
         var _ui = this.get_ui();
-        if ($.isset(_ui))
-            _ui.addClass(_class_name);
+        if ($.isset(_ui)) {
+			_ui.addClass(_class_name);
+		}
     }        
     return this;
 };
@@ -126,8 +133,9 @@ KALS_user_interface.prototype.remove_class = function (_class_name) {
     if ($.is_string(_class_name))
     {
         var _ui = this.get_ui();
-        if ($.isset(_ui))
-            _ui.removeClass(_class_name);
+        if ($.isset(_ui)) {
+			_ui.removeClass(_class_name);
+		}
     }        
     return this;
 };
@@ -140,8 +148,9 @@ KALS_user_interface.prototype.toggle_class = function (_class_name) {
     if ($.is_string(_class_name))
     {
         var _ui = this.get_ui();
-        if ($.isset(_ui))
-            _ui.toggleClass(_class_name);
+        if ($.isset(_ui)) {
+			_ui.toggleClass(_class_name);
+		}
     }        
     return this;
 };
@@ -164,24 +173,21 @@ KALS_user_interface.prototype.has_child = function (_name) {
  * @type {KALS_user_interface}
  */
 KALS_user_interface.prototype.child = function (_name, _child) {
-    if (_child != null)
-    {
-        if (this.has_child(_name) == false)
-        {
+    if (_child !== undefined &&  _child !== null) {
+        if (this.has_child(_name) === false) {
             this[_name] = _child;
             this._children[_name] = _child;
             //$.test_msg('child', [_name, $.get_class(_child)]);
             
-            if (typeof(_child.parent) == 'function')
-                _child.parent(this);
+            if (typeof(_child.parent) == 'function') {
+				_child.parent(this);
+			}
         }
         return this;
     }
-    else
-    {
+    else {
         _child = null;
-        if (this.has_child(_name))
-        {
+        if (this.has_child(_name)) {
             _child = this._children[_name];
         }
         return _child;    
@@ -227,11 +233,9 @@ KALS_user_interface.prototype.remove_child = function (_name) {
  * @param {KALS_user_interface|null} _parent
  */
 KALS_user_interface.prototype.parent = function (_parent) {
-    if (_parent == null)
-    {
+    if (_parent === undefined || _parent === null) {
         return this._parent;
-    }
-    else
+    } else
     {
         this._parent = _parent;
         return this;
@@ -250,12 +254,14 @@ KALS_user_interface.prototype.remove_parent = function () {
  * 移除UI元件
  */
 KALS_user_interface.prototype.remove = function () {
-    if (this._ui != null)
+    if (this._ui !== null)
     {
-        if ($.is_jquery(this._ui))
-            this._ui.remove();
-        else
-            delete this._ui;
+        if ($.is_jquery(this._ui)) {
+			this._ui.remove();
+		}
+		else {
+			delete this._ui;
+		}
         
         this._ui = null;
     }

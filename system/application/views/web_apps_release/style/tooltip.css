@@ -39,12 +39,16 @@
     broder-width: 0;
     border-radius: 0 0 10px 10px;
     -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    -khtml-border-radius: 0 0 10px 10px;
     display:block;
 }
 
 .tooltip .tip-needle.top {
     border-radius: 10px 10px 0 0;
     -moz-border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+    -khtml-border-radius: 10px 10px 0 0;
     display:none;
 }
 

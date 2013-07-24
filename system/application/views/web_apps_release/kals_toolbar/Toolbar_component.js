@@ -72,8 +72,7 @@ Toolbar_component.prototype._setup_component = function (_component_class_name, 
     
     _component.empty();
     
-    for (var _i in _ui_list)
-    {
+    for (var _i in _ui_list) {
         _component.append(_ui_list[_i]);
     }
     
@@ -92,8 +91,7 @@ Toolbar_component.prototype.toggle_right = function (_display) {
     return this._toggle_component('toolbar-right', _display);
 };
 
-Toolbar_component.prototype._toggle_component = function (_component_class_name, _display)
-{
+Toolbar_component.prototype._toggle_component = function (_component_class_name, _display) {
     
     var _ui = this.get_ui();
     var _component = _ui.find('.' + _component_class_name + ':first');
@@ -124,8 +122,7 @@ Toolbar_component.prototype.get_right = function () {
     return this._get_component('toolbar-right');
 };
 
-Toolbar_component.prototype._get_component = function (_component_class_name)
-{
+Toolbar_component.prototype._get_component = function (_component_class_name) {
     var _component = this.get_ui('.' + _component_class_name + ':first');
     
     return _component;

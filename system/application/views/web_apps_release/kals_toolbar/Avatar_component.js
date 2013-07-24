@@ -29,8 +29,7 @@ Avatar_component.prototype = new KALS_user_interface();
  * @memberOf {Avatar_component}
  * @type {jQuery} UI
  */
-Avatar_component.prototype._$create_ui = function ()
-{
+Avatar_component.prototype._$create_ui = function () {
     var _ui = $('<table align="right"><tbody><tr>'
             + '<td class="photo"></td>'
             + '<td class="name"></td>'
@@ -56,8 +55,7 @@ Avatar_component.prototype._$create_ui = function ()
     var _this = this;
     KALS_context.user.add_attr_listener('has_photo', function (_user, _has_photo) {
         var _url = null;
-        if (_has_photo === true)
-        {
+        if (_has_photo === true) {
             _url = 'user_profile/photo/';    //controller應該會根據登入的使用者給予預設的id
         }
         _this.set_photo(_url);
@@ -100,7 +98,7 @@ Avatar_component.prototype.embed = null;
 
 /**
  * 設置Avatar元件的照片。注意_url本身不需要加上base_url
- * @param {null|string} _url 如果_url == null，則隱藏photo
+ * @param {null|string} _url 如果_url === null，則隱藏photo
  */
 Avatar_component.prototype.set_photo = function (_url) {
     

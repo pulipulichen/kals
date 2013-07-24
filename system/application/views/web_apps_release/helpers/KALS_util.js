@@ -25,8 +25,7 @@ KALS_util = {};
  *   retry_wait: 3000 //預設嘗試等待時間，單位是毫秒
  * };
  */
-KALS_util.ajax_get = function (_config)
-{
+KALS_util.ajax_get = function (_config) {
     var _url = $.get_parameter(_config, 'url');
     var _data = $.get_parameter(_config, 'data');
     var _callback = $.get_parameter(_config, 'callback');
@@ -56,8 +55,7 @@ KALS_util.ajax_get = function (_config)
 		_url = _url + 'callback=?';
 	}
     
-    if (typeof(KALS_context) != 'undefined')
-    {
+    if (typeof(KALS_context) != 'undefined') {
         //while ($.starts_with(_url, '/'))
         //    _url = _url.substring(1, _url.length);
         //_url = KALS_context.get_base_url() + _url;
@@ -70,15 +68,14 @@ KALS_util.ajax_get = function (_config)
     var _this = this;
     
     //檢查網址是否超過最大長度
-    if (_url.length > 2000)
-    {
-        if ($.is_function(_exception_handle))
-        {
+    if (_url.length > 2000) {
+        if ($.is_function(_exception_handle)) {
             _exception_handle();
         }
-        else
-        {
+        else {
+			
             $.test_msg('KALS_util.ajax_get()'+'超過最大長度囉', _url.length);
+			
             this.show_exception({
                 heading: KALS_context.lang.line(new KALS_language_param(
                     'Data error.',
@@ -94,11 +91,13 @@ KALS_util.ajax_get = function (_config)
         return;
     }
     
-    $.test_msg('ajax_get', '<a href="'+_url+'" target="_blank">' + _url + '</a>');
+    $.test_msg('ajax_get', _url);
     
     var _retry_timer;
     var _retry_exception = function () {
-        $.test_msg('retry exception');
+        
+		$.test_msg('retry exception');
+		
         _this.show_exception();
     };
     
@@ -109,52 +108,45 @@ KALS_util.ajax_get = function (_config)
         
         $.getJSON(_url, function (_data) {
 			
-			$.test_msg('ajax_get return data', _data);
+			//if (typeof(_data.KALS_language) == "undefined"
+			//	&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
+				$.test_msg('ajax_get from ' + _url + ' return data', _data);
+			//}
 			
 			
-            if (typeof(_retry_timer) == 'undefined' || _retry_timer === null)
-            {
+            if (typeof(_retry_timer) == 'undefined' || _retry_timer === null) {
                 return;
             }
-            else if ($.isset(_retry_timer))
-            {
+            else if ($.isset(_retry_timer)) {
                 clearInterval(_retry_timer);
                 _retry_timer = null;
                 delete _retry_timer;
             }
             
-            if (typeof(_data.exception) != 'undefined')
-            {            
-                if ($.is_function(_exception_handle))
-                {
+            if (typeof(_data.exception) != 'undefined') {            
+                if ($.is_function(_exception_handle)) {
                     _exception_handle(_data.exception);
                 }
-                else
-                {
+                else {
                     _this.show_exception(_data.exception);
                 }
             }
-            else
-            {
+            else {
                 _callback(_data);
             }
         }); 
     };
     
-    try
-    {
+    try {
         _get_json();
         
         
-        if (_retry !== null && _retry > 0)
-        {
+        if (_retry !== null && _retry > 0) {
             _retry_timer = setInterval(function () {
                 
                 if (_retry_counter == _retry || _retry_counter > _retry
-                    || typeof(_retry_timer) == 'undefined')
-                {
-                    if (typeof(_retry_timer) != 'undefined')
-                    {
+                    || typeof(_retry_timer) == 'undefined') {
+                    if (typeof(_retry_timer) != 'undefined') {
                         clearInterval(_retry_timer);
                         _retry_timer = null;
                         delete _retry_timer;
@@ -170,21 +162,17 @@ KALS_util.ajax_get = function (_config)
             }, _retry_wait);    
         }
     }
-    catch (e) 
-    {
-        if ($.isset(_retry_timer))
-        {
+    catch (e) {
+        if ($.isset(_retry_timer)) {
             clearInterval(_retry_timer);
             _retry_timer = null;
             delete _retry_timer;
         }
         
-        if ($.is_function(_exception_handle))
-        {
+        if ($.is_function(_exception_handle)) {
             _exception_handle(e);
         }
-        else
-        {
+        else {
             _this.show_exception(e);
         }
     }
@@ -200,8 +188,7 @@ KALS_util.ajax_get = function (_config)
  *   exception_handle: function (_data) //可省略，省略則自動使用KALS_util.show_exception來處理
  * };
  */	
-KALS_util.ajax_post = function (_config)
-{
+KALS_util.ajax_post = function (_config) {
     //如果要檢查資料，請將_debug設為true
     var _debug = false;
     
@@ -212,8 +199,7 @@ KALS_util.ajax_post = function (_config)
     
     _action = $.appends_with(_url, '/');
     
-    if (typeof(KALS_context) != 'undefined')
-    {   
+    if (typeof(KALS_context) != 'undefined') {   
         _action = KALS_context.get_base_url(_action);
     }
     //$.test_msg('ajax_post action: ' + '<a href="'+_action+'" target="_blank">' + _action + '</a>', _data);
@@ -235,8 +221,7 @@ KALS_util.ajax_post = function (_config)
         .attr('name', _name)
         .appendTo(_layer);
     
-    if (_debug === true)
-    {
+    if (_debug === true) {
         _iframe.css('width', '640px')
             .css('height', '480px');
         _layer.css('top', '50px')
@@ -255,8 +240,7 @@ KALS_util.ajax_post = function (_config)
         
     //擺放檔案input並指定成_file_path，
     //建立一個json的input
-    if ($.isset(_data))
-    {
+    if ($.isset(_data)) {
         _data = $.json_encode(_data);
         //_data = encodeURIComponent(_data);
         //_data = escape(_data);
@@ -319,8 +303,7 @@ KALS_util.ajax_upload = function (_config) {
     _url = $.appends_with(_url, '/');
     
     var _action = _url;
-    if (typeof(KALS_context) != 'undefined')
-    {
+    if (typeof(KALS_context) != 'undefined') {
         _action = KALS_context.get_base_url(_action);
     }
     
@@ -359,8 +342,7 @@ KALS_util.ajax_upload = function (_config) {
     var _check = $('<input name="fileupload" value="true" type="hidden" />')
         .appendTo(_form);
     
-    if ($.isset(_userdata))
-    {
+    if ($.isset(_userdata)) {
         _userdata = $.json_encode(_userdata);
         var _input = $('<input type="text" name="userdata" />')
             .attr('value', _userdata)
@@ -386,12 +368,10 @@ KALS_util.ajax_upload = function (_config) {
                     };
                     
                     if (typeof(_data) == 'undefined'
-                        || typeof(_data.completed) == 'undefined')
-                    {
+                        || typeof(_data.completed) == 'undefined') {
                         _this.show_exception(_exception);
                     }
-                    else if (_data.completed === false)
-                    {
+                    else if (_data.completed === false) {
                         if (_data.data !== false) {
 							_exception.message = _data.data;
 						}
@@ -419,8 +399,7 @@ KALS_util.ajax_upload = function (_config) {
  * 在ajax_get()的時候發生錯誤時，會自動將_data.exception送到此方法。
  * 這是處理例外的預設方法，您可以在ajax_get()當中設定exception_handle
  */
-KALS_util.show_exception = function (_exception)
-{
+KALS_util.show_exception = function (_exception) {
     //var _heading = $.get_parameter(_exception, 'heading');
     //var _message = $.get_parameter(_exception, 'message');
     //var _request_uri = $.get_parameter(_exception, 'request_uri');
@@ -448,8 +427,7 @@ KALS_util.show_exception = function (_exception)
     KALS_context.lang.add_listener(_dd, new KALS_language_param('You can press "ESC" key to close message.', 'exception.hint.message'));
         
     
-    if ($.isset(_heading))
-    {
+    if ($.isset(_heading)) {
         _dt = $('<dt>HEADING: </dt>')    //.html(_lang.create_listener('exception.message_heading.heading'))
             .appendTo(_exception_content);
         KALS_context.lang.add_listener(_dt, new KALS_language_param('HEADING: ', 'exception.message_heading.heading'));
@@ -459,8 +437,7 @@ KALS_util.show_exception = function (_exception)
             .html(_heading);
     }
     
-    if ($.isset(_message))
-    {
+    if ($.isset(_message)) {
         _dt = $('<dt>MESSAGE: </dt>')    //.html(_lang.create_listener('exception.message_heading.message'))
             .appendTo(_exception_content);
         KALS_context.lang.add_listener(_dt, new KALS_language_param('MESSAGE: ', 'exception.message_heading.message'));
@@ -469,8 +446,7 @@ KALS_util.show_exception = function (_exception)
             .appendTo(_exception_content);
     }
     
-    if ($.isset(_request_uri))
-    {
+    if ($.isset(_request_uri)) {
         _dt = $('<dt>REQUEST URI: </dt>')    //.html(_lang.create_listener('exception.message_heading.request_uri'))
             .appendTo(_exception_content);
         KALS_context.lang.add_listener(_dt, new KALS_language_param('REQUEST URI: ', 'exception.message_heading.request_uri'));
@@ -510,8 +486,7 @@ KALS_util._confirm_modal = null;
  * @type {Dialog_modal}
  */
 KALS_util._get_alert_modal = function () {
-    if ($.is_null(this._alert_modal))
-    {
+    if ($.is_null(this._alert_modal)) {
         var _modal = new Dialog_modal();
         //var _close_option = _modal.create_close_option();
         var _close_option = new Dialog_close_option();
@@ -537,8 +512,7 @@ KALS_util._get_alert_modal = function () {
  * @memberOf {KALS_util}
  * @method [alert]
  */
-KALS_util.alert = function (_heading, _content, _callback)
-{
+KALS_util.alert = function (_heading, _content, _callback) {
     var _modal = this._get_alert_modal();
     _modal.set_heading(_heading);
     _modal.set_content(_content);
@@ -560,8 +534,7 @@ KALS_util.alert = function (_heading, _content, _callback)
  * @type {Dialog_modal}
  */
 KALS_util._get_confirm_modal = function () {
-    if ($.is_null(this._confirm_modal))
-    {
+    if ($.is_null(this._confirm_modal)) {
         var _modal = new Dialog_modal();
         /**
          * 用來擺放回呼函數使用
@@ -605,8 +578,7 @@ KALS_util._get_confirm_modal = function () {
  * @memberOf {KALS_util}
  * @method [confirm]
  */
-KALS_util.confirm = function (_heading, _content, _callback)
-{   
+KALS_util.confirm = function (_heading, _content, _callback) {   
     var _modal = this._get_confirm_modal();
     _modal.set_heading(_heading);
     _modal.set_content(_content);
@@ -632,8 +604,7 @@ KALS_util.confirm = function (_heading, _content, _callback)
 KALS_util._notify_modal = null;
 
 KALS_util._get_notify_modal = function () {
-    if (this._notify_modal === null)
-    {
+    if (this._notify_modal === null) {
         this._notify_modal = new Notify_modal();
         
         //$.test_msg('KALS_util._get_notify_modal() 有建立Modal嗎？', this._notify_modal);
@@ -647,7 +618,11 @@ KALS_util._get_notify_modal = function () {
  */
 KALS_util.notify = function (_message) {
     var _notify_modal = this._get_notify_modal();
-    _notify_modal.set_message(_message, 10000);
+    
+	// @20130610 Pudding Chen
+	// 修正不知道為什麼不會自動關閉的問題
+	//_notify_modal.set_message(_message, 10000);
+	_notify_modal.set_message(_message, 10);
     
     //$.test_msg('KALS_util.notify()', _message);
     
@@ -681,8 +656,7 @@ KALS_util.select_menu = function (_config) {
     _menu.set_options(_options, false);
     _menu.set_onclose(_onclose);
     
-    if (_heading_close === true)
-    {
+    if (_heading_close === true) {
         var _close_option = new Dialog_close_option();
         _menu.set_forward_option(_close_option);    
     }
@@ -712,8 +686,7 @@ KALS_util.help = function (_url) {
     var _base_url = KALS_CONFIG.help_base_url;
     var _needle = 'http';
     var _help_url = KALS_context.get_base_url([KALS_CONFIG.help_base_url, _url]);
-    if (_base_url.substr(0, _needle.length) == _needle)
-    {
+    if (_base_url.substr(0, _needle.length) == _needle) {
         if (_base_url.substr(_base_url.length - 1, _base_url.length) != '/') {
 			_base_url = _base_url + '/';
 		}
@@ -727,14 +700,14 @@ KALS_util.help = function (_url) {
 
 /**
  * 改良原本的decodeURIComponent
+ * @deprecated 20130222 不採用，請用jQuery.decodeURIComponent()
  * @param  {String} _str 要轉換的字串
  * @return {String}      轉換完成的字串
  */
 KALS_util.decodeURIComponent = function (_str) {
     var _result;
     /*
-    try
-    {
+    try {
         _result = decodeURIComponent(_str);
     }
     catch (_e) {
@@ -745,6 +718,15 @@ KALS_util.decodeURIComponent = function (_str) {
     _str = $.str_replace("%", "%25", _str);
     _result = decodeURIComponent(_str);
     return _result;
+};
+
+/**
+ * 使用console.log來記錄偵錯訊息
+ * @param {String} 
+ */
+KALS_util.log = function (_log) {
+    _log = '[KALS] ' + _log;
+    console.log(_log);
 };
 
 /* End of file KALS_unit */

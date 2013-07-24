@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+/**
+ * toolkit
+ *
+ * @package    KALS
+ * @category   Webpage Application Libraries
+ * @author     Pudding Chen <pulipuli.chen@gmail.com>
+ * @copyright  Copyright (c) 2013, Pudding Chen
+ * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link       https://github.com/pulipulichen/kals/
+ * @version    1.0 2013/6/7 下午 10:30:03
+ */
+
+.KALS.info-box {
+	margin-bottom:1em;
+}
+
+.KALS.info-box .info {
+	display:block;border:1px solid #CCCCCC;padding: 5px;overflow: auto;max-width: 100%;width: 800px;word-wrap: break-word;
+	max-height: 250px;
+}
+
+.KALS.info-box .info .time {
+	background-color: #666;
+	color: white;
+	padding: 0 5px;
+}
+
+/* End of file toolkit.css */
+/* Location: ./system/application/views/web_apps/style/toolkit.css */

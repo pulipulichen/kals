@@ -49,25 +49,29 @@
 /**
  * @section List_item
  */
-.list-item {
+.KALS.annotation-tool .list-item {
     background-color: white;
     
     padding-top: 5px;
     padding-bottom: 5px;
+	padding: 5px;
     clear: both;
+	
+	cursor: pointer;
+	
 }
 
-.list-item-topic {
+.KALS .list-item-topic {
     border-bottom: 1px solid gray;
     background-color: white;
 }
 
-.list-item.focus,
-.list-item.editing {
+.KALS .list-item.focus,
+.KALS .list-item.editing {
     background-color: #FEEEBD;
 }
 
-.list-item p {
+.KALS .list-item p {
     margin: 0;
 }
 
@@ -75,7 +79,7 @@
  * @section List_header_component
  */
 .list-header-component {
-    padding: 5px 0;
+    padding: 5px 0 !important;
 }
 
 .list-header-component .name-container {
@@ -113,7 +117,7 @@
 /**
  * 如果是我的標註，則不顯示like
  */
-.list-header-component.is-my .list-like-component .icon-component {
+.KALS .list-header-component.is-my .list-like-component .icon-component {
     display: none;
 }
 /*
@@ -124,20 +128,22 @@
     background-repeat:no-repeat;
 }
 */
-.list-header-component .type-option
+.KALS .list-header-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
     margin: 0;
     height:18px;
-    padding: 1px 5px;
+    padding: 1px 5px !important;
     font-size:smaller;
     cursor:default;
 }
 
-.list-header-component .id-component {
+.KALS .list-header-component .id-component {
     float:right;
-    color: gray;
+    color: #CCC;
     font-size: smaller;
     margin-left: 5px;
 }
@@ -145,18 +151,18 @@
 /**
  * @section List_like_component
  */
-.list-like-component {
+.KALS .list-like-component {
     cursor: pointer;
     float:right;
 }
 
-.list-like-component .count-component {
+.KALS .list-like-component .count-component {
     font-size:smaller;
     color: #808080;
     float:right;
 }
 
-.list-like-component .icon-component {
+.KALS .list-like-component .icon-component {
     /*height:24px;
     width:24px;
     */ 
@@ -168,7 +174,7 @@
     background-position:center;
     background-repeat:no-repeat;
 }
-.list-like-component.hide .icon-component {
+.KALS .list-like-component.hide .icon-component {
     /*visibility:hidden;*/
     display: none;
 }
@@ -193,19 +199,19 @@
 /**
  * @section List_menu
  */
-.list-item .list-menu {
+.KALS.annotation-tool .list-item .list-menu {
     display: none;
     padding: 0.2em 0;
 }
 
-.tooltip.list-menu {
+.KALS.annotation-tool .tooltip.list-menu {
     text-align:right;
     word-break:keep-all;
     /*padding: 0 0.5em;*/
     min-height: 0;
     /*padding: 0.2em;*/
 }
-.list-menu-tooltip {
+.KALS.annotation-tool .list-menu-tooltip {
     background:#847D63 !important;
     color: #FFFFFF;
     /*border: 1px solid black;*/
@@ -213,20 +219,26 @@
     
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
+    border-radius: 0px;
+    -khtml-border-radius: 0px;
     /*border: 1px solid #515151;*/
     padding: 0;
+	
+}
+.KALS .list-menu-tooltip tr{
+	background: rgba(0,0,0,0)!important;
 }
 
-.list-menu-block {
+.KALS .list-menu-block {
     text-align:right;
 }
 
-.list-menu-block table {
+.KALS .list-menu-block table {
     display: inline;
 }
 
 
-.list-item.menu-style-block .list-menu-block  {
+.KALS .list-item.menu-style-block .list-menu-block  {
     display: block;
 }
 
@@ -237,7 +249,8 @@
 }
 */
 
-.list-menu .list-menu-option {
+.KALS .list-menu .list-menu-option,
+.KALS .list-menu-option {
     cursor: pointer;
     padding: 0.2em 0.5em;
     margin-left: 0.2em;
@@ -246,34 +259,41 @@
     border-left: 2px groove gray;
 }
 
-.list-menu.list-menu-block .list-menu-option {
+.KALS .list-menu.list-menu-block .list-menu-option {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-.list-menu-tooltip .list-menu-option.hover {
+.KALS .list-menu-tooltip .list-menu-option.hover {
     background-color: #FFF;
     color: #8C8473;
 }
 
-.list-menu .list-timestamp-component {
+.KALS .list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
 }
 
-.list-menu.not-login .list-menu-option {
+.KALS .list-menu.not-login .list-menu-option {
     display: none;
 }
 
-.list-menu.not-login .list-menu-option.view {
+.KALS .list-menu.not-login .list-menu-option.view {
     display: table-cell;
 }
 
-.list-menu.is-my .list-menu-option.respond {
+.KALS .list-menu.is-my .list-menu-option.respond {
     display: none;
 }
 
-.list-menu .list-menu-option.edit,
-.list-menu .list-menu-option.delete {
+.KALS.list-menu .list-menu-option.edit,
+.KALS .list-menu .list-menu-option.delete {
+    display: none;
+}
+
+/**
+ * 只有在view當中不需要出現選擇的樣子
+ */
+.KALS.window .list-menu .list-menu-option.select {
     display: none;
 }
 
