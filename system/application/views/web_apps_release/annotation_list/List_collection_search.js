@@ -14,6 +14,10 @@ function List_collection_search() {
     
     List_collection.call(this);
     
+	
+	//.list-collection.search .list-menu {
+	//  text-align: right;
+	//}
 }
 
 List_collection_search.prototype = new List_collection();

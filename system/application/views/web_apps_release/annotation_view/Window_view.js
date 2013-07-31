@@ -272,8 +272,10 @@ Window_view.prototype._$create_ui = function () {
 			_ui.addClass(_not_login_classname);
 		}
     }, true);
+    	
+	_ui.find(".web-search").css("min-height","10px");//調整網頁搜尋的大小
     
-    return _ui;
+	return _ui;
 };
 
 
@@ -295,8 +297,10 @@ Window_view.prototype._create_list_container = function () {
     if ($.is_null(this._list_container)) {
         var _ui = $('<div></div>')
             .addClass('view-list-container');
-        
-        this._list_container = _ui;    
+       
+	    
+       
+	    this._list_container = _ui;    
     }
     return this._list_container;
 };

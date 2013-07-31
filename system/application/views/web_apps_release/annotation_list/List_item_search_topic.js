@@ -13,10 +13,11 @@
  */
 function List_item_search_topic(_param) { 
     
-    View_list_item_topic.call(this, _param);
+    List_item_topic.call(this, _param);
 }
 
-List_item_search_topic.prototype = new View_list_item_topic();
+List_item_search_topic.prototype = new List_item_topic();
+
 
 
 //List_item_search_topic.prototype._$respond_force_load = true;
@@ -27,12 +28,33 @@ List_item_search_topic.prototype._menu_style_default = 'block';
 List_item_search_topic.prototype._note_show_fulltext = false; 
 
 
-List_item_search_topic.prototype._disable_option = ['view','edit','delete','recommend'];
+List_item_search_topic.prototype._disable_option = ['edit','delete','recommend'];
 
-// 想要把留言換成檢視
-//
-//$.test_msg("List_item_search_topic", $(this).find("td.list-menu-option.view").length);
-//$(this).addClass("NOW"); //無效？
+
+// 重新覆寫一個ui，在裡面修改功能
+List_item_search_topic.prototype._$create_ui = function(){
+
+	//View_list_item_topic.prototype._$create_ui(this);
+	var _ui = List_item_topic.prototype._$create_ui.call(this);
+	
+	_ui.addClass("list-item-search-topic");
+	//只有改topic的部分
+	_ui.find(".list-menu-option").css("border-left","none");
+	
+
+	//_ui.css("clear","right"); 
+	_ui.find(".list-menu.list-menu-block").css("padding","5px");
+	
+	
+   //試著把留言換成檢視
+   	
+	
+	
+	return _ui;
+	
+	
+	
+};
 
 
 

@@ -65,10 +65,11 @@ List_menu.prototype._$create_ui = function ()
 {
     var _writable = KALS_context.policy.writable();
     
-    var _ui = $('<div><table cellpadding="0" cellspacing="0"><tbody><tr></tr></tbody></table></div>')
+    var _ui = $('<div><table cellpadding="0" cellspacing="0" align="right"><tbody><tr></tr></tbody></table><span>&nbsp;</span></div>')
         .addClass('list-menu')
         .addClass(this._not_login_classname);
     
+	
     var _tr = _ui.find('tr:first');
     
     if (this.is_enable('edit') && _writable === true)
