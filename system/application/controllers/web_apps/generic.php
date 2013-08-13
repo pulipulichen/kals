@@ -270,6 +270,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_item',
             'annotation_list/List_item_topic',
             'annotation_list/List_item_respond',
+            'annotation_list/List_menu_search',
             
             'annotation_recommend/Recommend_hint',
             'annotation_recommend/Recommend_tooltip',

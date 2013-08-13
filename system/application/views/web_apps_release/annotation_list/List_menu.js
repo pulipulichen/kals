@@ -97,6 +97,11 @@ List_menu.prototype._$create_ui = function ()
         var _view = this._create_view_ui();
         _view.appendTo(_tr);    
     }
+	if (this.is_enable('review'))
+    {
+        var _review = this._create_review_ui();
+        _review.appendTo(_tr);    
+    }
     
     if (this.is_enable('select'))
     {
@@ -237,6 +242,30 @@ List_menu.prototype._create_view_ui = function () {
     
     return _ui;
 };
+
+List_menu.prototype._create_review_ui = function () {
+    var _ui = $('<td></td>')
+        .addClass('list-menu-option')
+        .addClass('review');
+        
+    var _lang = new KALS_language_param(
+        'REVIEW',
+        'list_menu.review'
+    );
+    
+    var _msg = KALS_context.lang.line(_lang);
+    _ui.html(_msg);
+    
+    var _this = this;
+    _ui.click(function () {
+        _this.view_thread();
+    });
+    
+    _ui.setup_hover();
+    
+    return _ui;
+};
+
 
 List_menu.prototype._create_select_ui = function () {
     var _ui = $('<td></td>')

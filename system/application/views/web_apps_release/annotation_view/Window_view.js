@@ -273,7 +273,7 @@ Window_view.prototype._$create_ui = function () {
 		}
     }, true);
     	
-	_ui.find(".web-search").css("min-height","10px");//調整網頁搜尋的大小
+	//_ui.find(".web-search").css("min-height","10px");//調整"網頁搜尋"的大小
     
 	return _ui;
 };

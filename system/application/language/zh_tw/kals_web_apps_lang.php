@@ -251,6 +251,7 @@ $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
 $lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
+$lang['web_apps.list_menu.review'] = '檢視';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
 

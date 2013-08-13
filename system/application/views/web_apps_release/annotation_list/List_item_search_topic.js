@@ -19,6 +19,16 @@ function List_item_search_topic(_param) {
 List_item_search_topic.prototype = new List_item_topic();
 
 
+List_item_search_topic.prototype._setup_menu_block = function () {
+  
+    var _component = new List_menu_search(this, this._disable_option);
+    this.child('menu_block', _component);
+    return _component;  
+
+
+};
+
+
 
 //List_item_search_topic.prototype._$respond_force_load = true;
 
@@ -28,7 +38,10 @@ List_item_search_topic.prototype._menu_style_default = 'block';
 List_item_search_topic.prototype._note_show_fulltext = false; 
 
 
-List_item_search_topic.prototype._disable_option = ['edit','delete','recommend'];
+List_item_search_topic.prototype._disable_option = ['edit','delete','view','recommend'];
+
+
+
 
 
 // 重新覆寫一個ui，在裡面修改功能
@@ -47,15 +60,19 @@ List_item_search_topic.prototype._$create_ui = function(){
 	
 	
    //試著把留言換成檢視
-   	
-	
-	
+   //_ui.find(".list-menu-option.view").css("color","red");
+   //_ui.find(".list-menu-option.view").html("檢視");
+ 
+   
+
+
 	return _ui;
 	
 	
 	
 };
 
+	
 
 
 
