@@ -21,7 +21,7 @@ function Select_tooltip() {
     
     KALS_context.init_profile.add_listener(function () {
         var _ui = _this.get_ui();
-		if (_ui != undefined) {
+		if (_ui !== undefined) {
 	        _ui.removeClass('hide');
 	        _ui.hide();
 		}
