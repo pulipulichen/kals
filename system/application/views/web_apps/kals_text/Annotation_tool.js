@@ -276,7 +276,7 @@ Annotation_tool.prototype.onselectcancel = function () {
 
 Annotation_tool.prototype.open = function (_callback) {
     
-    this.setup_position(4);
+    this.setup_position();
     
     var _scope_coll = KALS_text.selection.select.get_scope_coll();
     this.list.set_scope_coll(_scope_coll);
@@ -304,29 +304,11 @@ Annotation_tool.prototype.close = function (_callback) {
 /**
  * 設置標註工具的位置
  */
-Annotation_tool.prototype.setup_position = function (_align) {
+Annotation_tool.prototype.setup_position = function () {
     
-    //$.test_msg('Annotation_tool.setup_position()');
+    //$.test_msg('Annotation_tool.setup_position() 黑 我有讀到喔');
     
-    var _ui = this.get_ui();
-    if (_align !== undefined) {
-
-if (_align == 4) {
-_ui.css("top", "0px");
-_ui.css("left","0px");
-}
-else if (_align == 6) {
-
-//偵測螢幕的高度
-//螢幕高度/2
-// – _ui.height()
-
-_ui.css("top", "center");
-_ui.css("right","0px");
-}
-
-return;
-}
+    
 	
 if ($.is_small_width())
     {
