@@ -156,7 +156,16 @@ KALS_toolbar.prototype._$create_ui = function () {
             $(this).removeAttr('style');
         });
         
-        _this.open();
+		
+		if (KALS_CONFIG.reading_mode == "gesture") {
+			_ui.hide();
+		}
+	if(KALS_CONFIG.disable_toobar == false){
+		
+		_this.open();
+	}
+
+       
     }, 0);
     
     
