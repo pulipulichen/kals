@@ -21,8 +21,10 @@ function Select_tooltip() {
     
     KALS_context.init_profile.add_listener(function () {
         var _ui = _this.get_ui();
-        _ui.removeClass('hide');
-        _ui.hide();
+		if (_ui != undefined) {
+	        _ui.removeClass('hide');
+	        _ui.hide();
+		}
         _this.enable_select = true;
     });
     
@@ -343,7 +345,14 @@ Select_tooltip.prototype._$create_ui = function ()
             _select_tooltip.addClass(_deny_read_classname);
     }, true);
     
-    return _select_tooltip;
+	//體感互動時隱藏選擇的UI，其他模式時則顯示
+	if(KALS_CONFIG.reading_mode == "gesture"){
+		_select_tooltip.hide();
+	}
+	else{
+		return _select_tooltip;
+	}
+    
 };
 
 

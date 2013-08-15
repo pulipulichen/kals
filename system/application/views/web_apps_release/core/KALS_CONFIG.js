@@ -23,7 +23,9 @@ DEFAULT_KALS_CONFIG = {
      *     預設是選擇全部的網頁。
      */
     annotation_scope_selector: null,
-    
+	
+	
+	
     /**
      * 標題圖示
      * 工具列左方的顯示內容
@@ -179,6 +181,20 @@ DEFAULT_KALS_CONFIG = {
 	 */
 	isolation_mode: false,
 	
+	/**
+	 * 關閉工具列
+	 * 
+	 * @type {boolean} true是關閉，false是打開，預設是false
+	 */
+	disable_toolbar: true,
+	
+	/**
+	 * 閱讀模式
+	 * 
+	 * @type{String} 體感是gesture, 觸控是touch, 預設是mouse
+	 */
+	reading_mode: "gesture",
+	
     //----------------------------
     
     //以下是版面調整
@@ -229,6 +245,11 @@ if (typeof(KALS_CONFIG) != 'undefined') {
 }
 
 KALS_CONFIG = DEFAULT_KALS_CONFIG;
+
+
+
+
+
 
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */
