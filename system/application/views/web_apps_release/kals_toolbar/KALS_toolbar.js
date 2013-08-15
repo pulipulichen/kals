@@ -97,7 +97,6 @@ KALS_toolbar.prototype._common_windows = null;
 KALS_toolbar.prototype._$create_ui = function () {
     
     var _ui = this._$create_ui_prototype();
-	
     _ui.removeClass('kals-modal');
     _ui.addClass('kals-toolbar')
 		.addClass("KALS");
@@ -157,21 +156,10 @@ KALS_toolbar.prototype._$create_ui = function () {
             $(this).removeAttr('style');
         });
         
-		
-		if (KALS_CONFIG.reading_mode == "gesture") {
-			_ui.hide();
-		}
-	if(KALS_CONFIG.disable_toobar == false){
-		
-		_this.open();
-	}
-
-       
+        _this.open();
     }, 0);
     
-  
-
-	
+    
     KALS_context.auth.add_listener(function (_auth, _data) {
         if (_data === null) {
 			return;

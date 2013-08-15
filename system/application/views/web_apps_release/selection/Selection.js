@@ -157,35 +157,6 @@ Selection.prototype.clear_scope_coll = function (_scope_coll) {
     return this;
 };
 
-/**
- * title
- * 
- * @type {number} 1~9
- */
-Selection.prototype.get_select_align = function(){
-	var _selection = KALS_text.selection.select;
-	
-	var _left = _selection.get_offset_left();
-	var _top = _selection.get_offset_top();
-	
-	var _align = 5;
-	// 1. 取得window的width	
-		// 左右的判斷 width/2
-		var win_width = $(window).width()/2;
-	// 2. 取得window的height	
-		// 上下的判斷height/2
-		var win_height = $(window).height()/2;		
-	// 跟left跟top判斷數字
-	if(_left > win_width){
-		_align = 6;
-	}
-	else{
-		_align = 4;
-	}
-	
-	return _align;
-}
-
 Selection.prototype.set_classname = function (_classname) {
     this._classname = _classname;
     return this;
