@@ -289,6 +289,13 @@ Annotation_tool.prototype.open = function (_callback) {
     
     this.setup_position();
     
+	var pos_align = 0;
+	//體感模式下使用UI左右判斷式
+	if(KALS_CONFIG.reading_mode == "gesture"){
+		pos_align = Selection.prototype.get_select_align();
+	}
+	
+	this.setup_position(pos_align);   
     var _scope_coll = KALS_text.selection.select.get_scope_coll();
     this.list.set_scope_coll(_scope_coll);
     
@@ -321,12 +328,40 @@ Annotation_tool.prototype.close = function (_callback) {
 /**
  * 設置標註工具的位置
  */
-Annotation_tool.prototype.setup_position = function () {
+Annotation_tool.prototype.setup_position = function (_align) {
     
     //$.test_msg('Annotation_tool.setup_position()');
     
     var _ui = this.get_ui();
-    if ($.is_small_width()) {
+
+	//css position fixed
+	//體感互動模式下執行左右判斷
+	if(KALS_CONFIG.reading_mode == "gesture"){
+		
+		_ui.css("position","fixed");
+		
+		if (_align !== undefined) {
+			if (_align == 6) {
+				_ui.css("top", "50px");
+				_ui.css("left","0px");
+			}
+			else if (_align == 4) {
+				//偵測螢幕的高度
+				//螢幕高度/2
+				// – _ui.height()
+				_ui.css("top", "50px");
+				
+				var _left = $(window).width()-_ui.width();
+				_ui.css("left",_left+"px");
+			}
+			return;
+		}
+		
+	}
+		
+
+
+	if ($.is_small_width()) {
         _ui.css('top', '0px');
         _ui.css('left', '0px');
         return this;
