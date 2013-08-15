@@ -754,9 +754,39 @@ Selectable_text.prototype.setup_word_tooltip = function (_word) {
 Selectable_text.prototype.setup_word_selectable = function (_callback) {
     
     var _select = KALS_text.selection.select;
-    
+    //體感互動模式，mouseover開啟
+	if(KALS_CONFIG.reading_mode == "gesture"){
+		if (typeof(this.locks.word_click) == 'undefined') {
+            var _this = this;
+			
+			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
+			_words.mouseover(function () {
+				var _click_evt = function(_callback) {
+                	if (_this.initialized === false) {
+					return this;
+					}
+                
+                var _word = $(this);
+                	setTimeout(function () {
+                    	_word.tooltip().hide();
+                	}, 100);
+                
+                	//_manager.listen_select(_word);
+                	_select.set_select(_word);
+				
+					if ($.is_function(_callback)) {
+						_callback();
+					}
+            	};
+				_words.mouseover(_click_evt);	
+
+			});
+			this.locks.word_click = true;
+        }	//if (typeof(this.locks.word_click) == 'undefined') {		
+	}
+	
 	// 如果是一般模式
-    if ($.is_mobile_mode() === false) {
+    else if ($.is_mobile_mode() === false) {
         if (typeof(this.locks.word_click) == 'undefined') {
             var _this = this;
 			
