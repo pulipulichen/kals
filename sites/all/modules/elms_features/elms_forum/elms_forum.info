@@ -1,0 +1,22 @@
+name = ELMS Forum
+description = Wrapper for the core optional forum module for inclusion in ELMS
+core = 7.x
+package = Features
+php = 5.2.4
+dependencies[] = forum
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[variable][] = node_options_forum
+features[variable][] = nodeformscols_field_placements_forum_default
+features[variable][] = og_content_type_usage_forum
+features[variable][] = og_max_groups_forum
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

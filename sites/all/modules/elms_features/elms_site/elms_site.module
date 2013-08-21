@@ -1,0 +1,307 @@
+<?php
+define('ELMS_GROUP_TYPE', 'site');
+include_once 'elms_site.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function elms_site_menu() {
+  $items = array();
+  $items['elms_site_admin'] = array(
+    'title' => 'Site settings',
+    'description' => "Adjust this site's configuration options.",
+    'weight' => -20,
+    'access callback' => '_elms_site_admin_access',
+    'access arguments' => array(),
+    'page callback' => 'elms_site_settings_overview',
+    'file' => 'elms_site.admin.inc',
+  );
+  $items['elms_site_admin/import_export'] = array(
+    'title' => 'Import / Export',
+    'description' => "All methods of importing and exporting data",
+    'weight' => -20,
+    'access callback' => '_elms_site_admin_access',
+    'access arguments' => array(),
+    'page callback' => 'elms_site_settings_overview',
+    'file' => 'elms_site.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function elms_site_menu_alter(&$items) {
+  // replicate the features dashboard at new path
+  $items['elms_site_admin/id_toolkit'] = $items['node/%node/features'];
+  $items['elms_site_admin/id_toolkit']['access callback'] = '_elms_site_admin_access';
+  $items['elms_site_admin/id_toolkit']['access arguments'] = array();
+  // workflow for edit of the node
+  $items['elms_site_admin/workflow'] = $items['node/%node/edit'];
+  $items['elms_site_admin/workflow']['access callback'] = '_elms_site_admin_access';
+  $items['elms_site_admin/workflow']['access arguments'] = array();
+  //TODO: redirect to the correct location possibly or replicate if possible
+
+  // add another way of getting to theme
+  $items['elms_site_admin/theme'] = $items['theme'];
+  //TODO: add callback to redirect to theme so its viewed in context
+  // replicate the og_stats dashboard
+  $items['elms_site_admin/stats'] = $items['node/%node/og_stats'];
+  $items['elms_site_admin/stats']['access callback'] = '_elms_site_admin_access';
+  $items['elms_site_admin/stats']['access arguments'] = array();
+
+  // unset the type so that it defaults to normal item
+  unset($items['elms_site_admin/id_toolkit']['type']);
+  unset($items['elms_site_admin/theme']['type']);
+  unset($items['elms_site_admin/workflow']['type']);
+  unset($items['elms_site_admin/stats']['type']);
+}
+
+/**
+ * Callback for access.
+ */
+function _elms_site_admin_access() {
+  $group = og_context();
+  return (og_user_access($group, 'administer group') || user_access('administer site configuration'));
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function elms_site_form_alter(&$form, &$form_state, $form_id) {
+  // alter the version form
+  if ($form_id == ELMS_GROUP_TYPE . '_node_form') {
+    // always hide purl, they shouldn't need to know anything about it, it just happens
+    $form['purl']['value']['#type'] = 'hidden';
+    // because purl wants a url, generate a temporary, random one
+    // this has to be done because the nid hasn't been set yet and we can't submit the node until we have a PURL identifier yet the NID is supposed to be part of the address, once submitted the node will automatically change thing
+    if (arg(1) == 'add') {
+      // set a random value initially
+      $form['purl']['value']['#default_value'] = '_tmp_' . rand(1, 1000);
+      // fill the default theme value if it exists
+      if (variable_get('elms_helper_default_theme', 'chamfer') != variable_get('theme_default', '')) {
+        $form['themes']['theme']['#default_value'] = variable_get('elms_helper_default_theme', 'chamfer');
+      }
+      // auto populate the descriptive field if it isn't set
+      if ($form['og_description']['#value'] == '') {
+        $nid = arg(3);
+        if (isset($nid)) {
+          $node = node_load(arg(3));
+          $form['og_description']['#value'] = $node->field_parent_title[0]['value'];
+        }
+      }
+    }
+    $form['#content_extra_fields']['spaces_preset']['weight'] = 8;
+    // unset values that have been deselected
+    $theme_ary = variable_get('elms_helper_disallowed_themes', array('cube'));
+    $form_themes = $form['themes'];
+    // remove non-theme defaults
+    unset($form_themes['#type']);
+    unset($form_themes['#title']);
+    unset($form_themes['#description']);
+    unset($form_themes['#collapsible']);
+    unset($form_themes['#theme']);
+    unset($form_themes['#weight']);
+    unset($form_themes['theme']);
+    foreach ($form_themes as $key => $theme) {
+      if (in_array($theme['description']['#title'], $theme_ary)) {
+        unset($form['themes'][$key]);
+        unset($form['themes']['theme']['#options'][$key]);
+      }
+    }
+    // account for space cloning
+    if (arg(0) == 'spaces_og_clone') {
+      // set a random value initially to work with workflow_purl
+      $form['purl']['value']['#default_value'] = '_tmp_' . rand(1, 1000);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function elms_site_node_insert($node) {
+  // check for groups created
+  if (og_is_group_type($node->type)) {
+    // set the theme variable defaults before we are strongarmed into this group
+    $theme_ary = variable_get('theme_settings', array());
+    $space = spaces_load('og', $node->nid, TRUE);
+    if ($space) {
+      // load the course node for the name space info
+      if (!empty($node->field_parent_ref[0]['nid'])) {
+        $parent = node_load($node->field_parent_ref[0]['nid']);
+        $parent_name = $parent->title;
+        $parent_title = $parent->field_parent_title[0]['value'];
+      }
+      else {
+        // if this is a sandbox then there won't be a value here so use the node's
+        $parent_name = $node->title;
+        $parent_title = $node->og_description;
+      }
+      // site the site name
+      $space->controllers->variable->set('site_name', $parent_name);
+      // set slogan to the description of the course
+      $space->controllers->variable->set('site_slogan', $parent_title);
+      // site footer if its been set
+      if (!empty($parent->field_footer[0]['value'])) {
+        $space->controllers->variable->set('site_footer', $parent->field_footer[0]['value']);
+      }
+      // establish default theme settings
+      $space->controllers->variable->set('theme_settings', $theme_ary);
+      // establish default theme settings for the selected theme
+      $space->controllers->variable->set('theme_' . $node->og_theme . '_settings', $theme_ary);
+      // turn on our default area as content
+      // $space->controllers->variable->set('spaces_features', array('elms_content' => 1));
+      // set some defaults for the version as they might not be set in the node form
+      if (isset($node->default_version)) {
+        $space->controllers->variable->set('spaces_preset_og', 'og_private');
+        $node->og_private = 1;
+      }
+      // allow for modules to hook in and provide additional space logic here
+      // this is because create_root function, if run, will exit insert logic
+      drupal_alter('elms_site_access_routine', $space, $node);
+      // build course root since all parents come with content by default
+      // check for the default argument coming from the course creation form making a version
+      if (module_exists('elms_content') && !isset($node->default_version) && !isset($node->spaces_og_clone)) {
+        _elms_content_create_root($node, $node->field_instructional_template[0]['value']);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function elms_site_node_update($node) {
+  if (og_is_group_type($node->type)) {
+    // load the space on group update
+    $space = spaces_load('og', $node->nid, TRUE);
+    if ($space) {
+      // load the course node for the name space info
+      if (!empty($node->field_parent_ref[0]['nid'])) {
+        $parent = node_load($node->field_parent_ref[0]['nid']);
+        $parent_name = $parent->title;
+        $parent_title = $parent->field_parent_title[0]['value'];
+      }
+      else {
+        // if this is a sandbox then there won't be a value here so use the node's
+        $parent_name = $node->title;
+        $parent_title = $node->og_description;
+      }
+      // site the site name
+      $space->controllers->variable->set('site_name', $parent_name);
+      // set slogan to the description of the course
+      $space->controllers->variable->set('site_slogan', $parent_title);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function elms_site_node_delete($node) {
+  // clean up all space overrides just to be safe
+  if (og_is_group_type($node->type)) {
+    // TODO Please review the conversion of this statement to the D7 database API syntax.
+    /* db_query("DELETE FROM {spaces_overrides} WHERE id=%d", $node->nid) */
+    db_delete('spaces_overrides')
+  ->condition('id', $node->nid)
+  ->execute();
+  }
+}
+
+/**
+ * Implements hook_nodeapi().
+ */
+function elms_site_nodeapi_OLD(&$node, $op, $a3 = NULL, $a4 = NULL) { }
+
+/**
+ * Implements hook_dashboard_requirements().
+ */
+function elms_site_dashboard_requirements($provider) {
+  switch ($provider) {
+    case 'og':
+      $group = og_context();
+      // add in the status from current workflow state
+      $workflow_name = workflow_get_state_name($group->_workflow);
+      $requirements['workflow_name'] = array(
+        'title' => t('Status'),
+        'value' => $workflow_name . ' (' . l(t('Change workflow state'), 'node/' . $group->nid . '/workflow') . ')',
+        'severity' => REQUIREMENT_OK,
+      );
+      if ($group->field_section_semester[0]['value'] != '') {
+        $offering_details .= $group->field_section_semester[0]['value'];
+      }
+      if ($group->field_section_year[0]['value'] != '') {
+        $offering_details .= $group->field_section_year[0]['value'];
+      }
+      if ($group->field_campus[0]['value'] != '') {
+        $offering_details .= $group->field_campus[0]['value'];
+      }
+      if ($group->field_section_number[0]['value'] != '') {
+        $offering_details .= $group->field_section_number[0]['value'];
+      }
+      if ($offering_details == '') {
+        $sev = REQUIREMENT_ERROR;
+      }
+      else {
+        $sev = REQUIREMENT_INFO;
+      }
+      $requirements['offering_details'] = array(
+        'title' => t('Offering details'),
+        'value' => $offering_details . '(' . l(t('Change offering details'), 'node/' . $group->nid . '/edit') . ')',
+        'severity' => $sev,
+      );
+      break;
+    case 'system':
+      // add system level information
+      $site_count = db_query("SELECT COUNT(nid) FROM {node} WHERE type = :type", array(':type' => ELMS_GROUP_TYPE))->fetchField();
+      $requirements['total_sites'] = array(
+        'title' => t('Total sites'),
+        'value' => $site_count,
+        'severity' => REQUIREMENT_INFO,
+      );
+      break;
+    case 'elms_parent':
+      // get a high level version count
+      $site_count = _elms_site_get_site_count(arg(1));
+      if ($site_count == 0) {
+        $site_warning = REQUIREMENT_WARNING;
+      }
+      else {
+        $site_warning = REQUIREMENT_INFO;
+      }
+      $requirements['site_count'] = array(
+        'title' => t('# of Sites'),
+        'value' => $site_count,
+        'severity' => $site_warning,
+      );
+      // get counts for all workflow states
+      $states = workflow_get_states();
+      // make a count of each workflow state if it's greater then 0
+      foreach ($states as $sid => $state) {
+        $count = _elms_site_get_site_count(arg(1), $sid);
+        if ($count != 0) {
+          $requirements['workflow_count_' . $sid] = array(
+            'title' => t($state),
+            'value' => $count,
+            'severity' => REQUIREMENT_INFO,
+          );
+        }
+      }
+      break;
+  }
+  return $requirements;
+}
+
+// helper function to count number of versions for a course per workflow state
+function _elms_site_get_site_count($nid, $sid = FALSE) {
+  if ($sid) {
+    $count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {content_type_%s} as ctv ON n.nid=ctv.nid JOIN {workflow_node} AS wn ON wn.nid=n.nid WHERE type = :type AND field_parent_ref_nid = :field_parent_ref_nid AND wn.sid = :wn.sid", array(':type' => ELMS_GROUP_TYPE, ':field_parent_ref_nid' => ELMS_GROUP_TYPE, ':wn.sid' => $nid, '' => $sid))->fetchField();
+  }
+  else {
+    $count = db_query("SELECT COUNT(n.nid) FROM {node} AS n JOIN {content_type_%s} as ctv ON n.nid=ctv.nid WHERE type = :type AND field_parent_ref_nid = :field_parent_ref_nid", array(':type' => ELMS_GROUP_TYPE, ':field_parent_ref_nid' => ELMS_GROUP_TYPE, '' => $nid))->fetchField();
+  }
+  return $count;
+}

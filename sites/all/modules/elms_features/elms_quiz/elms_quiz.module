@@ -1,0 +1,3 @@
+<?php
+
+include_once 'elms_quiz.features.inc';

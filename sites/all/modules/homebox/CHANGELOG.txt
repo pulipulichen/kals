@@ -1,0 +1,20 @@
+// $Id: CHANGELOG.txt,v 1.2.2.6.2.14 2011/02/15 19:43:56 brianV Exp $
+
+CHANGELOG for Homebox for Drupal
+
+7.x-2.x-dev xxxx/xx/xx
+  - by brianV: update arguments to og_is_group_type() in homebox_og.module.
+  - by brianV: remove navigation menu from homebox_example to avoid throwing errors.
+  - by brianV: make sure the block still exists before adding it to the list of allowed blocks.
+  - by brianV: make sure a views display with the given display_id exists before attempting to fetch a block description from it.
+  - by brianV: if custom widths aren't set, make each width a percentage of the total available.
+  - by brianV: make custom widths code compatible with PHP <= 5.3.0.
+
+7.x-2.0-beta1 2011/02/14
+  - by brianV: Initial D7 port.
+  - by brianV: Match column widths with case-insensitive regex rather than exact match in homebox.js due to IE irregularity.
+  - #1049416 by grobot: Fixed Missing argument 3 for db_query_range().
+  - #1053946 by thekevinday: Fixed Homebox doesn't display views properly.
+  - #1052456 by thekevingday: Fixed Invalid json uses.
+  - by brianV: Remove unneeded hook_requirements().
+  - by brianV: Fix the bad deltas in homebox_example.module.

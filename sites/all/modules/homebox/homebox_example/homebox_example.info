@@ -1,0 +1,12 @@
+; $Id: homebox_example.info,v 1.1.2.4.2.1 2011/02/02 19:01:05 brianV Exp $
+name = Homebox example
+description = An example implementation of the Homebox API
+dependencies[] = homebox
+package = Homebox
+core = 7.x
+; Information added by drupal.org packaging script on 2011-02-15
+version = "7.x-2.0-beta2"
+core = "7.x"
+project = "homebox"
+datestamp = "1297799635"
+

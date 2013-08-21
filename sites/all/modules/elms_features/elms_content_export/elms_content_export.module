@@ -1,0 +1,57 @@
+<?php
+
+include_once 'elms_content_export.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function elms_content_export_permission() {
+  return array(
+    'access elms book export' => array(
+      'title' => t('access elms book export'),
+      'description' => t('TODO Add a description for \'access elms book export\''),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function elms_content_export_menu_alter(&$callbacks) {
+  // override the way the book admin page is rendered
+  $callbacks['admin/content/book']['page callback'] = 'elms_content_export_book_admin_overview';
+}
+
+/**
+ * Menu callback.  Overrides the book_admin_overview at admin/content/book.
+ *
+ * make sure that the weight of this module is higher then book_delete
+ */
+function elms_content_export_book_admin_overview() {
+  // since book_delete module takes a similar approach, account for it
+  if (module_exists('book_delete')) {
+    // Users must have access to delete all book nodes in order to safely delete a book.
+    if ((user_access('administer nodes') || user_access('delete any book content')) && user_access('access elms book export')) {
+      $rows = array();
+      foreach (book_get_books() as $book) {
+        $rows[] = array(l($book['title'], $book['href'], $book['options']), l(t('edit order and titles'), "admin/content/book/" . $book['nid']), l(t('export book'), 'elms_export.xml/' . $book['nid']), l(t('delete book'), 'admin/content/book/delete/' . $book['nid']));
+      }
+      $headers = array(t('book'), t('edit'), t('export'), t('delete'));
+      return theme('table', array('header' => $headers, 'rows' => $rows));
+    }
+    else { // The user may not have access to delete all book nodes.  Show them the generic book admin page.
+      include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'book') . '/book.admin.inc';
+      return book_admin_overview();
+    }
+  }
+  else { // book_delete is not turned on
+    if (user_access('access elms book export')) {
+      $rows = array();
+      foreach (book_get_books() as $book) {
+        $rows[] = array(l($book['title'], $book['href'], $book['options']), l(t('edit order and titles'), "admin/content/book/" . $book['nid']), l(t('export book'), 'elms_export.xml/' . $book['nid']));
+      }
+      $headers = array(t('book'), t('edit'), t('export'));
+      return theme('table', array('header' => $headers, 'rows' => $rows));
+    }
+  }
+}

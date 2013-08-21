@@ -1,0 +1,259 @@
+<?php
+
+include_once 'elms_navigation_left.features.inc';
+
+// Copyright (C) 2011-2012  The Pennsylvania State University
+//
+// Bryan Ollendyke
+// bto108@psu.edu
+//
+// Keith D. Bailey
+// kdb163@psu.edu
+//
+// 12 Borland
+// University Park,  PA 16802
+
+/**
+ * @file
+ * Add a left side region to elms
+ */
+
+/**
+ * Implements hook_define_region().
+ */
+function elms_navigation_left_define_regions() {
+  $region['regions_elms_navigation_left'] = array(
+    'title' => 'ELMS navigation left',
+    'js' => drupal_get_path('module', 'elms_navigation_left') . '/elms_navigation_left.js',
+    'css' => drupal_get_path('module', 'elms_navigation_left') . '/elms_navigation_left.css',
+    'render_callback' => '_elms_navigation_left_render_region',
+  );
+  return $region;
+}
+
+/**
+ * Implements hook_init().
+ */
+function elms_navigation_left_init() {
+  // remove tabs and display as a block only if this is content in a group
+  $group = og_context();
+  if (isset($group->nid) && arg(1) != $group->nid) {
+    drupal_add_css(drupal_get_path('module', 'elms_navigation_left') . '/hide_tabs.css');
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function elms_navigation_left_form_alter(&$form, &$form_state, $form_id) {
+  // make the masquerade block display differently in the left hand menu to fit one line
+  if ($form_id == 'masquerade_block_1' && isset($form['masquerade_user_field'])) {
+    // remove message
+    unset($form['masquerade_desc']);
+    // help it fit in the left collapse
+    $form['masquerade_user_field']['#size'] = 8;
+    $form['#prefix'] .= '<li class="leaf click_handler"><a name="masquerade" title="Open to Masquerade"></a></li>';
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function elms_navigation_left_block_info() {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  if (TRUE) {
+    $blocks['delta-0'] = array(
+      'info' => t('System Level Navigation'),
+      'weight' => 0,
+      'status' => 0,
+    );
+    $blocks['delta-1'] = array(
+      'info' => t('Parent Level Navigation'),
+      'weight' => 0,
+      'status' => 0,
+    );
+    $blocks['delta-2'] = array(
+      'info' => t('Actions Level Navigation'),
+      'weight' => 0,
+      'status' => 0,
+    );
+    $blocks['delta-3'] = array(
+      'info' => t('Help Popup'),
+      'weight' => 0,
+      'status' => 0,
+    );
+    return $blocks;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function elms_navigation_left_block_view($delta) {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  if (TRUE) {
+    $group = og_context();
+    switch ($delta) {
+      case 'delta-0':
+        $block['title'] = t('System');
+        $block['content'] = _elms_navigation_left_system_block();
+        break;
+      case 'delta-1':
+        if (isset($group->nid)) {
+          $block['title'] = t('Site');
+          $block['content'] = _elms_navigation_left_parent_block($group);
+        }
+        break;
+      case 'delta-2':
+        if (isset($group->nid) && arg(1) != $group->nid) {
+          $block['title'] = t('Content');
+          $block['content'] = _elms_navigation_left_page_block();
+        }
+        break;
+      case 'delta-3':
+        $block['title'] = '<none>';
+        $block['content'] = _elms_navigation_left_help_block();
+        break;
+    }
+    return $block;
+  }
+}
+
+/**
+ * Implements hook_block().
+ */
+function elms_navigation_left_block_OLD($op = 'list', $delta = 0, $edit = array()) { }
+
+// helper function for system level items
+function _elms_navigation_left_system_block() {
+  $output = '';
+  if (user_access('administer elms configuration')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('System settings'), 'admin/elms', array('attributes' => array('title' => t('System settings')))), 0, '', FALSE, 'system');
+  }
+  if (user_access('create parent content')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('Add Parent'), 'node/add/parent', array('attributes' => array('title' => t('Add Parent')))), 0, '', FALSE, 'elms_parent');
+  }
+  if (user_access('create site content')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('Add Site'), 'node/add/site', array('attributes' => array('title' => t('Add Site')))), 0, '', FALSE, 'elms_site');
+  }
+  return $output;
+}
+
+// helper function for Help icon addition
+function _elms_navigation_left_help_block() {
+  if (user_access('view advanced help popup')) {
+    if (module_exists('elms_help_icms')) {
+      $help_file = 'elms_help_icms';
+    }
+    elseif (module_exists('elms_help_cle')) {
+      $help_file = 'elms_help_cle';
+    }
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    return theme('menu_item', l(t('ELMS Help'), 'admin/advanced_help/' . $help_file, array('query' => array('popup' => TRUE), 'attributes' => array('onclick' => "var w=window.open(this.href, 'advanced_help_window', 'width=640,height=480,scrollbars,resizable'); w.focus(); return false;", 'title' => t('ELMS Help')))), 0, '', FALSE, 'help');
+  }
+}
+
+// helper function Page level tasks
+function _elms_navigation_left_page_block() {
+  $output = menu_local_tasks();
+  // annoying but can't find a way into this layer at this time to add classes a good way
+  $output = preg_replace('/<a/', '<a  title="' . t('View content') . '" class="page_view"', $output, 1);
+  // add edit class
+  $output = str_replace('/edit">', '/edit" class="page_edit" title="' . t('Edit content') . '">', $output);
+  // add accessibility class
+  $output = str_replace('/accessibility">', '/accessibility/highlight" class="page_accessibility" title="' . t('Run accessibility test') . '">', $output);
+  // add track class
+  $output = str_replace('/track">', '/track" class="page_track" title="' . t('Track') . '">', $output);
+  // add devel class -- admin/developer only
+  $output = str_replace('/devel">', '/devel" class="page_devel" title="' . t('Developer node debug') . '">', $output);
+  // add track class for user progress stats
+  $output = str_replace('/up_stats">', '/up_stats" class="page_ups" title="' . t('Content statistics') . '">', $output);
+  // add track class for user progress stats
+  $output = str_replace('/revisions">', '/revisions" class="page_revisions" title="' . t('Revision history') . '">', $output);
+  return $output;
+}
+
+// helper function Parent level tasks
+function _elms_navigation_left_parent_block($group) {
+  $output = '';
+  // make the current workflow state as visible as possible
+  if (user_access('administer workflow')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t(workflow_get_state_name($group->_workflow)),   'node/' . $group->nid . '/workflow', array('query' => 'destination=' . $_GET['q'], 'attributes' => array('title' => t('Site State: @workflow', array('@workflow' => workflow_get_state_name($group->_workflow)))))), 0, '', FALSE, 'workflow_state workflow_state_' . $group->_workflow);
+  }
+  // if course content active, add the outline designer link
+  if (module_exists('elms_content') && spaces_access_feature('view', 'elms_content')) {
+    if (user_access('administer book outlines')) {
+      // TODO Please change this theme call to use an associative array for the $variables parameter.
+      $output .= theme('menu_item', l(t('Content Outline'), 'outline_designer/book/' . $group->book_nid, array('attributes' => array('title' => t('Content Outline')))), 0, '', FALSE, 'content_outline');
+    }
+  }
+  if (user_access('edit own site content') || user_access('edit any site content')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('Site Settings'), 'node/' . $group->nid, array('attributes' => array('title' => t('Site Settings')))), 0, '', FALSE, 'system');
+  }
+  // import content
+  if (module_exists('elms_content_import') && user_access('import elms_node_import feeds') && spaces_access_feature('view', 'elms_content')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('Import Content'), 'import/elms_node_import', array('attributes' => array('title' => t('Import Outline')))), 0, '', FALSE, 'manage_content');
+  }
+  // export content outline
+  if (module_exists('elms_content_export') && user_access('access elms book export') && spaces_access_feature('view', 'elms_content')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('Export Content'), 'elms_export.xml/' . $group->book_nid, array('attributes' => array('title' => t('Export Outline')))), 0, '', FALSE, 'manage_content');
+  }
+  // export content outline
+  if (module_exists('html_export') && user_access('use html export')) {
+    // TODO Please change this theme call to use an associative array for the $variables parameter.
+    $output .= theme('menu_item', l(t('HTML export'), 'html_export', array('attributes' => array('title' => t('HTML export')))), 0, '', FALSE, 'manage_content');
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_regions_region_alter().
+ */
+function elms_navigation_left_regions_region_alter(&$region, $region_name) {
+  // Example to add an inner DIV to the region markup.
+  if ($region_name == 'regions_elms_navigation_left' && !empty($region['blocks'])) {
+    $new_markup = array(
+      'start' => $region['start'],
+      'inner' => '<div class="regions_pre_block_container"></div><div class="regions_block_container">',
+      'blocks' => $region['blocks'],
+      'inner_end' => '</div><div class="regions_post_block_container"></div>',
+      'end' => $region['end'],
+    );
+    $region = $new_markup;
+  }
+}
+
+/**
+ * Helper function for rendering the blocks in this region
+ */
+function _elms_navigation_left_render_region($block_html, $block) {
+  // build a unique key for this block for theming
+  static $count = 0;
+  $count++;
+  $key = $block->module . '_' . $block->delta;
+  $output .= '<div class="regions_block regions_' . $count . '" id="regions_block_' . $key . '"><div class="regions_block_title">';
+  $output .= $block->subject;
+  $output .= '</div><div class="regions_block_content">' . $block->content . '</div></div>';
+  // if we returned blocks then render the region
+  if ($output != '') {
+    return $output;
+  }
+}
+
+/**
+ * Implements hook_features_export_alter().
+ */
+function elms_navigation_left_features_export_alter(&$export, $module_name) {
+  // these keep exporting for some reason, tell features explicitely that they are NOT to be included
+  if ($module_name == 'elms_navigation_left') {
+    unset($export['dependencies']['elms_content']);
+    unset($export['dependencies']['poll']);
+  }
+}

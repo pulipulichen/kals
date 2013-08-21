@@ -1,0 +1,31 @@
+<?php
+
+include_once 'elms_places.features.inc';
+
+/**
+ * Implements hook_init().
+ */
+function elms_places_init() {
+  if (variable_get('googlemap_api_key', '') == '') {
+    if (arg(2) == 'gmap') {
+      drupal_set_message(t('<a href="@click">Click here to get an API code</a>, then enter it in the field below.', array('@click' => url('http://code.google.com/apis/maps/signup.html'))), 'warning', FALSE);
+    }
+    else {
+      drupal_set_message(t('Please enter a Google Maps API key in order to use ELMS Places. <a href="@click">Click to resolve API Key message</a>.', array('@click' => url('admin/config/gmap'))), 'warning', FALSE);
+    }
+  }
+}
+/**
+ * Implements hook_define_highlight_relationship_alter().
+ */
+function elms_places_define_highlight_relationship_alter(&$relationships) {
+  if (spaces_access_feature('view', 'elms_places')) {
+    $relationships['enhance_content']['highlight_types']['place'] = array(
+      'id' => 'places',
+      'ref_field' => 'field_location_content_ref',
+      'text_field' => 'title',
+      'icon' => drupal_get_path('module', 'elms_places') . '/images/place.png',
+      'display_text' => t('Reference a Place'),
+    );
+  }
+}

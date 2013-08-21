@@ -1,0 +1,46 @@
+name = ELMS Places
+description = Associate Google Map locations to content
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_places
+dependencies[] = context
+dependencies[] = context_spaces_features
+dependencies[] = elms_navigation_top
+dependencies[] = gmap
+dependencies[] = gmap_location
+dependencies[] = location
+dependencies[] = location_node
+dependencies[] = nodereference_url
+dependencies[] = og_views
+dependencies[] = references
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views
+features[context][] = elms_place-nav-right
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[menu_links][] = features:places
+features[menu_links][] = menu-usermenu:my_places
+features[node][] = place
+features[variable][] = content_extra_weights_place
+features[variable][] = gmap_default
+features[variable][] = gmap_markermanager
+features[variable][] = gmap_mm_type
+features[variable][] = gmap_node_markers
+features[variable][] = location_defaultnum_place
+features[variable][] = location_maxnum_place
+features[variable][] = location_settings_node_place
+features[variable][] = location_usegmap
+features[variable][] = node_options_place
+features[variable][] = og_content_type_usage_place
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

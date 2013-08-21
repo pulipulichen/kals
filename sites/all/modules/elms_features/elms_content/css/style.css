@@ -1,0 +1,29 @@
+/* style the book navigation somewhat consistently across any theme */
+.elms_page_next {
+ font-size:11px;
+ float:right;
+ font-weight:bold;
+ text-decoration:none;
+ margin:10px;
+}
+
+.elms_page_previous {
+ font-size:11px;
+ float:left;
+ font-weight:bold;
+ text-decoration:none;
+ margin:10px;
+}
+
+.book-navigation {
+ float:left;
+ width:100%;
+}
+
+.book-navigation .page-links {
+ border-bottom: 0px;
+ border-top: 1px solid #888;
+ padding: 0px;
+ text-align: center;
+ width:100%;
+}

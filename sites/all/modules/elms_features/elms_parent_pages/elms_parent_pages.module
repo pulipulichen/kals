@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * Implementation of hook_perm().
+ */
+function elms_parent_pages_perm() {
+  return array('view parent student page', 'view parent marketing page', 'view parent instructor page');
+}
+
+
+/**
+ * Implementation of hook_menu().
+ */
+function elms_parent_pages_menu() {
+  $items = array();
+  $items['node/%node/view/student'] = array(
+    'title callback' => '_elms_parent_pages_page_title',
+    'title arguments' => array(1, 'Student'),
+    'description' => 'Funnel page to get students started with a parent',
+    'page callback' => '_elms_parent_pages_student',
+    'access arguments' => array(1, 'student'),
+    'access callback' => '_elms_parent_pages_access_check',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -9,
+  );
+  $items['node/%node/view/instructor'] = array(
+    'title callback' => '_elms_parent_pages_page_title',
+    'title arguments' => array(1, 'Instructor'),
+    'description' => 'Funnel page to get instructors started with a parent',
+    'page callback' => '_elms_parent_pages_instructor',
+    'access arguments' => array(1, 'instructor'),
+    'access callback' => '_elms_parent_pages_access_check',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -8,
+  );
+  $items['node/%node/view/marketing'] = array(
+    'title callback' => '_elms_parent_pages_page_title',
+    'title arguments' => array(1, 'Marketing'),
+    'description' => 'Marketing page for the parent',
+    'page callback' => '_elms_parent_pages_marketing',
+    'access arguments' => array(1, 'marketing'),
+    'access callback' => '_elms_parent_pages_access_check',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -7,
+  );
+  return $items;
+}
+
+/**
+ * Helper function to generate title
+ */
+function _elms_parent_pages_page_title($node, $page_type) {
+  return t($page_type);
+}
+
+/**
+ * Helper page for student funnel page for a parent.
+ */
+function _elms_parent_pages_access_check($node, $page_type) {
+  // check that user can access node, type matches and user can access this page
+  if (node_access('view', $node) && $node->type == ELMS_ROOT_TYPE && user_access('view parent '. $page_type .' page')) {
+    return 1;
+  }
+  return 0;
+}
+
+/**
+ * Helper page for student funnel page for a parent.
+ */
+function _elms_parent_pages_student() {
+  return '<ol>
+  <li>Read the help documents</li>
+  <li>Get your welcome letter</li>
+  <li>Get your activation code</li>
+  <li>Do things</li>
+  <li>Check below</li>
+  </ol>';
+}
+
+/**
+ * Helper page for marketing funnel page for a parent.
+ */
+function _elms_parent_pages_marketing() {
+  return '';
+}
+
+/**
+ * Helper page for instructor funnel page for a parent.
+ */
+function _elms_parent_pages_instructor() {
+  return '';
+}
+
+/**
+ * Helper page for sites management page for a parent.
+ */
+function _elms_parent_pages_sites() {
+  return '';
+}

@@ -1,0 +1,36 @@
+name = ELMS Polls
+description = Associate Polls to content
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_polls
+dependencies[] = ajax_poll
+dependencies[] = context_spaces_features
+dependencies[] = elms_navigation_top
+dependencies[] = location
+dependencies[] = nodereference_url
+dependencies[] = poll
+dependencies[] = poll_extras
+dependencies[] = references
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views
+features[context][] = elms_poll-nav-right
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[menu_links][] = features:polls
+features[menu_links][] = menu-usermenu:my_polls
+features[variable][] = better_formats_allowed_poll
+features[variable][] = node_options_poll
+features[variable][] = og_content_type_usage_poll
+features[variable][] = og_max_groups_poll
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

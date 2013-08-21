@@ -1,0 +1,4 @@
+/*hide tabs from the main content area since we have a block rendering them*/
+ul.tabs {
+  display:none;
+}

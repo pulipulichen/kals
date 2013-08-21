@@ -1,0 +1,21 @@
+name = ELMS ID Best Practices
+description = Instructional design best practices
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_id_best_practices
+dependencies[] = elms_resources
+dependencies[] = features
+dependencies[] = menu
+dependencies[] = spaces
+dependencies[] = views_fluid_grid
+features[features_api][] = api:1
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

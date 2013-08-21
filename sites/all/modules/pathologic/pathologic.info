@@ -1,0 +1,13 @@
+name = Pathologic
+description = Helps avoid broken links and incorrect paths in content.
+package = "Input filters"
+dependencies[] = filter
+core = 7.x
+files[] = pathologic.test
+
+; Information added by drupal.org packaging script on 2013-07-09
+version = "7.x-2.11"
+core = "7.x"
+project = "pathologic"
+datestamp = "1373385363"
+

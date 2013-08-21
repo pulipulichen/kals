@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the jqgrid module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function jqgrid_requirements($phase) {
+  $requirements = array();
+  if ($phase == 'runtime') {
+    $t = get_t();
+    $jqgrid_library = drupal_get_library('jqgrid', 'jqgrid');
+    foreach ($jqgrid_library['js'] as $path => $js) {
+      if (!file_exists($path)) {
+        $requirements['jqgrid'] = array(
+          'severity' => REQUIREMENT_ERROR,
+          'title' => $jqgrid_library['title'],
+          'value' => $t('Missing'),
+          'description' => $t('The jqgrid library isn\'t available so this module will not work. Please download jqgrid %version from !website.', array(
+            '!website' => l($jqgrid_library['website'], $jqgrid_library['website']),
+            '%version' => $jqgrid_library['version'],
+            )
+          ),
+        );
+        break;
+      }
+    }
+    if (!isset($requirements['jqgrid'])) {
+      $requirements['jqgrid'] = array(
+        'severity' => REQUIREMENT_OK,
+        'title' => $jqgrid_library['title'],
+        'value' => $jqgrid_library['version'],
+      );
+    }
+  }
+  return $requirements;
+}
+
+/**
+ * Implements hook_schema().
+ */
+function jqgrid_schema() {
+  $schema['jqgrid'] = array(
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The users UID.',
+      ),
+      'view_name' => array(
+        'type' => 'varchar',
+        'length' => '32',
+        'default' => '',
+        'not null' => TRUE,
+        'description' => 'The unique name of the view. May only be alphanumeric characters plus underscores.',
+      ),
+      'display_id' => array(
+        'type' => 'varchar',
+        'length' => '64',
+        'default' => '',
+        'not null' => TRUE,
+        'description' => 'An identifier for this display; usually generated from the display_plugin, so should be something like page or page_1 or block_2, etc.',
+      ),
+      'settings' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+        'size' => 'big',
+        'description' => 'A serialized array of view settings.',
+      ),
+    ),
+    'primary key' => array(
+      'uid',
+      'view_name',
+    ),
+    'foreign keys' => array(
+      'id' => array(
+        'table' => 'views_display',
+        'columns' => array(
+          'id' => 'display_id',
+        ),
+      ),
+      'name' => array(
+        'table' => 'views_view',
+        'columns' => array(
+          'name' => 'view_name',
+        ),
+      ),
+    ),
+  );
+  return $schema;
+}

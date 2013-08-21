@@ -1,0 +1,54 @@
+<?php
+
+include_once 'elms_content_import.features.inc';
+
+/**
+ * Implements hook_node_update().
+ */
+function elms_content_import_node_update($node) {
+  if (TRUE && isset($node->revision_uuid) && $node->revision_uuid == '') {
+    $node->revision_uuid = uuid_uuid();
+  }
+}
+
+/**
+ * Implements hook_nodeapi().
+ */
+function elms_content_import_nodeapi_OLD(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  // TODO Remaining code in this function needs to be moved to the appropriate new hook function.
+  // fallback in case a uuid was never assigned which can happen via outline designer and this module
+}
+
+/**
+ * Implements hook_feeds_after_import().
+ */
+function elms_content_import_feeds_after_import($importer, $source) {
+  // need to clear the UUIDs of all imported nodes from the
+  // get a list of nodes that were just imported
+  $ary = array();
+  $result = db_query("SELECT nid FROM {feeds_node_item} WHERE id = :id", array(':id' => 'elms_node_import'));
+  while ($val = db_fetch_array($result)) {
+    $ary[] = $val['nid'];
+  }
+  if (count($ary) != 0) {
+    // clear all nodes that came across
+    // TODO Please convert this statement to the D7 database API syntax.
+    db_query("DELETE FROM {uuid_node} WHERE nid IN(" . db_placeholders($ary) . ")", $ary);
+    // clean up revisions if they exist
+    // TODO Please convert this statement to the D7 database API syntax.
+    db_query("DELETE FROM {uuid_node_revisions} WHERE nid IN(" . db_placeholders($ary) . ")", $ary);
+    // clean up original import table
+    // TODO Please review the conversion of this statement to the D7 database API syntax.
+    /* db_query("DELETE FROM {feeds_node_item} WHERE id='elms_node_import'") */
+    db_delete('feeds_node_item')
+  ->condition('id', 'elms_node_import')
+  ->execute();
+    // seed all nodes by saving them all again
+    foreach ($ary as $nid) {
+      $node = node_load($nid);
+      $node->uuid = uuid_uuid();
+      $node->revision_uuid = uuid_uuid();
+      node_save($node);
+    }
+  }
+}

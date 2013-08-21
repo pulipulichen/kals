@@ -1,0 +1,16 @@
+core = 7.x
+dependencies[] = "og_user_roles"
+dependencies[] = "profile2"
+description = "Bundling of User Management functionality"
+features[views][] = "elms_user_management"
+features[views_api][] = "api:2"
+name = "ELMS User Management"
+package = "ELMS"
+project = "elms_user_management"
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

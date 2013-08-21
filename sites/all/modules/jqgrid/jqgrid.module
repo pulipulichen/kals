@@ -1,0 +1,215 @@
+<?php
+
+/**
+ * @file
+ * Provides new view through jqgrid plugin.
+ */
+
+// UPDATE/DELETE.
+define('JQGRID_CALLBACK_PATH', 'jqgrid/callback');
+
+// JSON.
+define('JQGRID_JSON_PATH', 'jqgrid/json');
+
+/**
+ * Implements hook_permission().
+ */
+function jqgrid_permission() {
+  return array(
+    'edit jqgrid' => array(
+      'title' => t('Edit value from the jqGrid'),
+      'description' => t('Allow users to edit from the grid'),
+    ),
+    'delete jqgrid' => array(
+      'title' => t('Delete value from the jqGrid'),
+      'description' => t('Allow users to delete from the grid'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function jqgrid_menu() {
+  // Menu callbacks.
+  $items[JQGRID_JSON_PATH . '/%/%'] = array(
+    'page callback' => 'jqgrid_json',
+    'page arguments' => array(2, 3),
+    'access arguments' => array(
+      'access content',
+    ),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/jqgrid.json.inc',
+  );
+  $items[JQGRID_CALLBACK_PATH . '/update'] = array(
+    'page callback' => 'jqgrid_callback_update',
+    'access arguments' => array(
+      'access content',
+    ),
+    'type' => MENU_CALLBACK,
+    'file' => 'includes/jqgrid.callbacks.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function jqgrid_views_api() {
+  $path = drupal_get_path('module', 'jqgrid');
+  return array(
+    'api' => '3',
+    'path' => $path . '/includes',
+    'template path' => $path . '/theme',
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function jqgrid_theme() {
+  $path = drupal_get_path('module', 'jqgrid');
+  return array(
+    // JQGRID theme function.
+    'jqgrid' => array(
+      'arguments' => array(
+        'view' => array(),
+      ),
+    ),
+    // Theme the views plugin form table.
+    'jqgrid_views_plugin_table' => array(
+      'render element' => 'form',
+      'path' => $path . '/theme',
+      'file' => 'theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_library().
+ */
+function jqgrid_library() {
+  $path = libraries_get_path('jqgrid');
+  $libraries['jqgrid'] = array(
+    'title' => 'jqGrid',
+    'website' => 'http://www.trirand.com/blog',
+    'version' => 'Master',
+    'js' => array(
+      $path . '/js/i18n/grid.locale-en.js' => array(),
+      $path . '/js/jquery.jqGrid.min.js' => array(),
+    ),
+    'css' => array(
+      $path . '/css/ui.jqgrid.css' => array(),
+    ),
+    'dependencies' => array(
+      // Require jQuery UI DatePicker by System module.
+      array(
+        'system',
+        'ui.datepicker',
+      ),
+      // Require jQuery UI sortable by System module.
+      array(
+        'system',
+        'ui.sortable',
+      ),
+      // Require jQuery UI Position by System module.
+      array(
+        'system',
+        'ui.position',
+      ),
+      // Require jQuery UI Draggable by System module.
+      array(
+        'system',
+        'ui.draggable',
+      ),
+      // Require jQuery UI Dialog by System module.
+      array(
+        'system',
+        'ui.dialog',
+      ),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_user_delete().
+ */
+function jqgrid_user_delete($account) {
+  jqgrid_delete_settings(array(
+    'uid' => $account->uid,
+  ));
+}
+
+/**
+ * Set setting for user.
+ */
+function jqgrid_set_settings($uid, $view_name, $display_id, $settings) {
+  $record = new stdClass();
+  $record->uid = $uid;
+  $record->view_name = $view_name;
+  $record->display_id = $display_id;
+  if ($record->settings = jqgrid_get_settings(array(
+    'uid' => $uid,
+    'view_name' => $view_name,
+    'display_id' => $display_id,
+  ))) {
+    $update = array(
+      'uid',
+      'view_name',
+      'display_id',
+    );
+  }
+  else {
+    $update = array();
+  }
+  foreach ($settings as $setting => $value) {
+    $record->settings[$setting] = $value;
+  }
+  $record->settings = serialize($record->settings);
+  drupal_write_record('jqgrid', $record, $update);
+}
+
+/**
+ * Get settings from the DB.
+ * Pass in $setting to retrieve a particular setting,
+ * NULL to get all for a UID / View
+ *
+ * @param array $conditions
+ *
+ * @param string $setting
+ */
+function jqgrid_get_settings($conditions = array(), $setting = NULL) {
+  $query = db_select('jqgrid', 'sg');
+  foreach ($conditions as $field => $condition) {
+    $query->condition($field, $condition);
+  }
+  $query->fields('sg', array(
+    'settings',
+  ));
+  $result = $query->execute();
+  $settings = unserialize($result->fetchField());
+  if ($setting) {
+    return $settings[$setting];
+  }
+  else {
+    return $settings;
+  }
+}
+
+/**
+ * Delete Setting for user.
+ *
+ * @param array $conditions
+ *   match user
+ */
+function jqgrid_delete_settings($conditions = array()) {
+  if (count($conditions)) {
+    $query = db_delete('jqgrid');
+    foreach ($conditions as $field => $condition) {
+      $query->condition($field, $condition);
+    }
+    return $query->execute();
+  }
+  return FALSE;
+}

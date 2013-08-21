@@ -1,0 +1,19 @@
+name = jqGrid
+description = Provides integration of the jquery grid plugin into views.
+core = 7.x
+dependencies[] = views
+dependencies[] = ctools
+dependencies[] = libraries
+dependencies[] = jquery_update
+package = "Views"
+core = 7.x
+
+; Views
+files[] = includes/jqgrid_views_plugin.inc
+
+; Information added by drupal.org packaging script on 2012-08-21
+version = "7.x-1.3"
+core = "7.x"
+project = "jqgrid"
+datestamp = "1345561396"
+

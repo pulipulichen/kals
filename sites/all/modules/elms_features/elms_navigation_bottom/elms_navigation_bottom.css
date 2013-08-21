@@ -1,0 +1,143 @@
+/* right side blocks */
+body {
+ margin-bottom: 50px !important;    
+}
+#regions_elms_navigation_bottom {
+  font:normal 11px "Lucida Grande",Verdana,sans-serif !important;
+  background-color:#222;
+  bottom:5px;
+  /*left:0px;*/
+  right:5px;
+  height:50px;
+  /*width: 100%;*/
+  z-index:1000;
+  float:left;
+  position:fixed;
+  padding:5px;
+  margin:0px;
+  color:#ccc;
+  line-height:50px;
+    -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+/**
+ * Aggressive resets so we can achieve a consistent look in
+ * hostile CSS environments.
+ */
+#regions_elms_navigation_bottom,
+#regions_elms_navigation_bottom * {
+  margin:0px;
+  padding:0px;
+  font-size:100%;
+  vertical-align:bottom;
+  line-height:50px;
+  text-align:left;
+  color:#ccc;
+}
+
+#regions_elms_navigation_bottom div.regions_post_block_container {
+  position:fixed;
+  left:0px;
+  right:0px;
+  bottom:50px;
+  height:10px;
+}
+
+#regions_elms_navigation_bottom a {
+  text-decoration:none;
+  color:#ccc !important;
+  clear: both;
+  float: left;
+  height: 50px;
+  padding: 0px;
+}
+
+#regions_elms_navigation_bottom ul.links {
+  font: 11px/20px "Lucida Grande", Verdana, sans-serif;
+}
+
+#regions_elms_navigation_bottom li {
+ list-style-image:none;
+ list-style-type:none;
+ list-style-position:inside;
+}
+
+#regions_elms_navigation_bottom a:hover {
+ background-color:#666;
+}
+
+#regions_elms_navigation_bottom li a.active {
+  text-shadow:#333 0px 1px 0px;
+}
+
+#regions_block_elms_navigation_bottom_0 {
+  float:right;
+  line-height:50px;
+  height:50px;
+}
+
+#regions_block_elms_navigation_bottom_0 li {
+  list-style-image:none;
+  list-style-position:inside;
+  list-style-type:none;
+  display:inline;
+  margin:0px;
+  padding:0px 0px;
+  height:50px;
+  width:50px;
+  float:left;
+  background-position:right;
+  background-repeat:no-repeat;
+}
+#regions_block_elms_navigation_bottom_0 a {
+  width:50px;
+  height:50px;
+}
+
+/* icons for the bottom items */
+#regions_block_elms_navigation_bottom_0 .elms_zoom_in {
+  background-image:url(images/zoomin.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_zoom_out {
+  background-image:url(images/zoomout.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_zoom_reset {
+  background-image:url(images/zoomreset.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_next_page {
+  background-image:url(images/nextpage.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_prev_page {
+  background-image:url(images/prevpage.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_print_page {
+  background-image:url(images/print.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_book_toc {
+  background-image:url(images/table_of_contents.png);  
+}
+#regions_block_elms_navigation_bottom_0 .elms_reactions {
+  background-image:url(images/reactions.png);
+}
+#regions_block_elms_navigation_bottom_0 .elms_helpdesk {
+  background-image:url(images/helpdesk.png);
+}
+#regions_block_elms_navigation_bottom_0 .flag-bookmarks {
+  background-image:url(images/bookmark.png);
+}
+#regions_block_elms_navigation_bottom_0 .flag-bookmarks-flagged {
+  background-image:url(images/bookmarked.png);
+}
+
+/* always hide the flag state change message when in the bottom bar */
+#regions_block_elms_navigation_bottom_0 .flag-message {
+ display:none !important;  
+}
+#regions_block_elms_navigation_bottom_0 a:hover {
+ background-color:transparent;
+}
+#regions_block_elms_navigation_bottom_0 li:hover {
+ background-color:#666;
+}

@@ -1,0 +1,247 @@
+<?php
+
+include_once 'elms_open_studio.features.inc';
+
+// ELMS: Open Studio - 2010 Campus Technology Innovator award winning feature
+// Copyright (C) 2012  The Pennsylvania State University
+
+/**
+ * Implements hook_init().
+ */
+function elms_open_studio_init() {
+  drupal_add_css(drupal_get_path('module', 'elms_open_studio') . '/css/elms_open_studio.css');
+  drupal_add_js(drupal_get_path('module', 'elms_open_studio') . '/js/elms_open_studio.js');
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function elms_open_studio_theme_registry_alter(&$vars) {
+  // allow node templates to be defined by open studio feature
+  $vars['node']['theme paths'][] = drupal_get_path('module', 'elms_open_studio') . '/templates';
+  // open studio page 1 cross theme compliance
+  $vars['views_view__open_studio__page_1']['template'] = 'views-view--open-studio--page-1';
+  $vars['views_view__open_studio__page_1']['path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio__page_1']['arguments'] = array('view' => '');
+  $vars['views_view__open_studio__page_1']['original hook'] = 'views_view';
+  $vars['views_view__open_studio__page_1']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view__open_studio__page_1']['type'] = 'theme_engine';
+  $vars['views_view__open_studio__page_1']['theme path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio__page_1']['theme paths'] = array(0 => drupal_get_path('module', 'elms_open_studio') . '/views');
+  $vars['views_view__open_studio__page_1']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view',
+  );
+  // open studio page 2 cross theme compliance
+  $vars['views_view__open_studio__page_2']['template'] = 'views-view--open-studio--page-2';
+  $vars['views_view__open_studio__page_2']['path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio__page_2']['arguments'] = array('view' => '');
+  $vars['views_view__open_studio__page_2']['original hook'] = 'views_view';
+  $vars['views_view__open_studio__page_2']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view__open_studio__page_2']['type'] = 'theme_engine';
+  $vars['views_view__open_studio__page_2']['theme path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio__page_2']['theme paths'] = array(0 => drupal_get_path('module', 'elms_open_studio') . '/views');
+  $vars['views_view__open_studio__page_2']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view',
+  );
+  // open studio page 3 cross theme compliance
+  $vars['views_view__open_studio__page_3']['template'] = 'views-view--open-studio--page-3';
+  $vars['views_view__open_studio__page_3']['path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio__page_3']['arguments'] = array('view' => '');
+  $vars['views_view__open_studio__page_3']['original hook'] = 'views_view';
+  $vars['views_view__open_studio__page_3']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view__open_studio__page_3']['type'] = 'theme_engine';
+  $vars['views_view__open_studio__page_3']['theme path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio__page_3']['theme paths'] = array(0 => drupal_get_path('module', 'elms_open_studio') . '/views');
+  $vars['views_view__open_studio__page_3']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view',
+  );
+  // open studio helper block cross theme compliance
+  $vars['views_view__open_studio_helpers__block_2']['template'] = 'views-view--open-studio-helpers--block-2';
+  $vars['views_view__open_studio_helpers__block_2']['path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio_helpers__block_2']['arguments'] = array('view' => '');
+  $vars['views_view__open_studio_helpers__block_2']['original hook'] = 'views_view';
+  $vars['views_view__open_studio_helpers__block_2']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view__open_studio_helpers__block_2']['type'] = 'theme_engine';
+  $vars['views_view__open_studio_helpers__block_2']['theme path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view__open_studio_helpers__block_2']['theme paths'] = array(0 => drupal_get_path('module', 'elms_open_studio') . '/views');
+  $vars['views_view__open_studio_helpers__block_2']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view',
+  );
+  // fields for studio pages
+  $vars['views_view_fields__open_studio__page']['template'] = 'views-view-fields--open-studio--page';
+  $vars['views_view_fields__open_studio__page']['path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view_fields__open_studio__page']['arguments'] = array(
+    'view' => '',
+    'options' => '',
+    'row' => '',
+    'field_alias' => '',
+  );
+  $vars['views_view_fields__open_studio__page']['original hook'] = 'views_view_fields';
+  $vars['views_view_fields__open_studio__page']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view_fields__open_studio__page']['type'] = 'theme_engine';
+  $vars['views_view_fields__open_studio__page']['theme path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view_fields__open_studio__page']['theme paths'] = array(0 => drupal_get_path('module', 'elms_open_studio') . '/views');
+  $vars['views_view_fields__open_studio__page']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view_fields',
+  );
+  // fields for helper block
+  $vars['views_view_fields__open_studio_helpers__block_1']['template'] = 'views-view-fields--open-studio-helpers--block-1';
+  $vars['views_view_fields__open_studio_helpers__block_1']['path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view_fields__open_studio_helpers__block_1']['arguments'] = array(
+    'view' => '',
+    'options' => '',
+    'row' => '',
+    'field_alias' => '',
+  );
+  $vars['views_view_fields__open_studio_helpers__block_1']['original hook'] = 'views_view_fields';
+  $vars['views_view_fields__open_studio_helpers__block_1']['include files'] = array(0 => './' . drupal_get_path('module', 'views') . '/theme/theme.inc');
+  $vars['views_view_fields__open_studio_helpers__block_1']['type'] = 'theme_engine';
+  $vars['views_view_fields__open_studio_helpers__block_1']['theme path'] = drupal_get_path('module', 'elms_open_studio') . '/views';
+  $vars['views_view_fields__open_studio_helpers__block_1']['theme paths'] = array(0 => drupal_get_path('module', 'elms_open_studio') . '/views');
+  $vars['views_view_fields__open_studio_helpers__block_1']['preprocess functions'] = array(
+    0 => 'template_preprocess',
+    1 => 'template_preprocess_views_view_fields',
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function elms_open_studio_menu() {
+  $items = array();
+  $items['elms_open_studio_stats'] = array(
+    'title' => 'Comment Statistics',
+    'page callback' => '_elms_open_studio_stats',
+    'access arguments' => array('access instructor reports'),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 3,
+  );
+  $items['features/elms_open_studio'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_open_studio_settings'),
+    'access callback' => '_elms_open_studio_access_check',
+    'access arguments' => module_exists('spaces') ? array() : array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+    'file' => 'elms_open_studio.pages.inc',
+  );
+  return $items;
+}
+
+/**
+ * Access callback for elms_open_studio.
+ */
+function _elms_open_studio_access_check() {
+  if (module_exists('spaces')) {
+    return user_access('spaces_access_admin');
+  }
+  else {
+    return user_access('user_access');
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function elms_open_studio_permission() {
+  return array(
+    'access instructor reports' => array(
+      'title' => t('access instructor reports'),
+      'description' => t('TODO Add a description for \'access instructor reports\''),
+    ),
+  );
+}
+
+/**
+ * Implementation of export_gradebook -- Export grades to csv if permissions are correct
+ */
+function _elms_open_studio_stats() {
+  header('Content-disposition: attachment; filename=comment_stats.csv');
+  $terms = array();
+  $output = 'PSUID,Last Name,First Name,Group,';
+  // grab all the assignments to throw up all the assignments
+  // TODO: rewrite this to use non-taxonomy based method
+  $result = db_query("SELECT tid,name FROM {taxonomy_term_data} WHERE vid = :vid ORDER BY weight", array(':vid' => 2));
+  while ($term = db_fetch_array($result)) {
+    $output .= '"' . $term['name'] . '","' . $term['name'] . ' counted comments",';
+    $terms[$term['tid']] = $term['name'];
+  }
+  $output .= "\n";
+  $roles_ary = variable_get("assignment_studio_student_roles", array());
+  $roles_string = '';
+  foreach ($roles_ary as $role) {
+    $roles_string .= " OR rid=" . $role;
+  }
+  $result = db_query("SELECT {users}.uid FROM {users} JOIN {users_roles} ON {users}.uid = {users_roles}.uid WHERE rid = :rid %s", array(':rid' => 0, '' => $roles_string));
+  // loop through all active users
+  while ($usr = db_fetch_array($result)) {
+    $account = user_load($usr['uid']);
+    $group = db_query("SELECT value FROM {profile_values} JOIN {profile_fields} ON {profile_values}.fid = {profile_fields}.fid WHERE name = :name AND uid = :uid", array(':name' => 'profile_group', ':uid' => $account->uid))->fetchField();
+    // set no group
+    if ($group == '') {
+      $group = '-none-';
+    }
+    $student_name = $account->profile_last_name . ',' . $account->profile_first_name;
+    if ($student_name == ',') {
+      $student_name = 'ZZZ,No Name';
+    }
+    $output .= $account->name . ',' . $student_name . ',"' . $group . '",';
+    // figure out how many comments were left per term
+    $comment_count = array();
+    $comment_nodes = array();
+    $sql = "SELECT cid, {node}.nid
+    FROM {comments}
+    JOIN {node} ON {node}.nid = {comments}.nid
+    WHERE {comments}.uid = %s AND {node}.uid<>%s AND ({node}.type='exhibit_image' OR {node}.type='exhibit')
+    GROUP BY {node}.nid";
+    $result2 = db_query("SELECT cid, {node}.nid
+    FROM {comments}
+    JOIN {node} ON {node}.nid = {comments}.nid
+    WHERE {comments}.uid = :{comments}.uid AND {node}.uid< > :{node}.uid< AND ({node}.type = :({node}.type OR {node}.type = :{node}.type)
+    GROUP BY {node}.nid", array(':{comments}.uid' => $account->uid, ':{node}.uid<' => $account->uid, ':({node}.type' => 'exhibit_image', ':{node}.type' => 'exhibit'));
+    while ($value = db_fetch_array($result2)) {
+      $tmpnode = node_load($value['nid']);
+      if ($tmpnode->type == 'exhibit' && !isset($comment_nodes[$tmpnode->nid])) {
+        $tmptid = array_keys($tmpnode->taxonomy);
+        $comment_count[$tmptid[0]]++;
+        $comment_nodes[$tmpnode->nid]++;
+      }
+      elseif (!isset($comment_nodes[$tmpnode->field_exhibit_reference[0]['nid']])) {
+        $tmpnode2 = node_load($tmpnode->field_exhibit_reference[0]['nid']);
+        $tmptid = array_keys($tmpnode2->taxonomy);
+        $comment_count[$tmptid[0]]++;
+        $comment_nodes[$tmpnode2->nid]++;
+      }
+    }
+    // print comment count and if they submitted assignments
+    foreach ($terms as $tid => $name) {
+      // did they submit the assignment
+      $submitted_assignment = 0;
+      $sql = "SELECT {node}.nid
+      FROM {node}
+      JOIN {taxonomy_term_node} ON {taxonomy_term_node}.vid = {node}.vid
+      WHERE {node}.uid=%s AND {node}.type='exhibit' AND tid=%s";
+      $result2 = db_query("SELECT {node}.nid
+      FROM {node}
+      JOIN {taxonomy_term_node} ON {taxonomy_term_node}.vid = {node}.vid
+      WHERE {node}.uid = :{node}.uid AND {node}.type = :{node}.type AND tid = :tid", array(':{node}.uid' => $account->uid, ':{node}.type' => 'exhibit', ':tid' => $tid));
+      $value = db_fetch_array($result2);
+      if ($value['nid'] != '') {
+        $submitted_assignment = 1;
+      }
+      // handle null case comments
+      if (!isset($comment_count[$tid])) {
+        $comment_count[$tid] = 0;
+      }
+      $output .= $submitted_assignment . ',' . $comment_count[$tid] . ',';
+    }
+    $output .= "\n";
+  }
+  print substr($output, 0, strlen($output) -2);
+  exit;
+}

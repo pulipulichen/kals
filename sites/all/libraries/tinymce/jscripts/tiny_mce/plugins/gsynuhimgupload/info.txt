@@ -1,0 +1,9 @@
+gsynuh image uploader
+by Thomas Lefevre aka Gsynuh @ gsynuh-labs.com
+
+
+read about it at: http://www.gsynuh-labs.com/?p=389 and leave me any requests there.
+
+---
+
+take a look at the config.php for configuration over thumbnail size, the upload folder and security.

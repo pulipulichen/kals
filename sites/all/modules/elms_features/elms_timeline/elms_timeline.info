@@ -1,0 +1,37 @@
+name = ELMS Timeline
+description = Associate timelines to content
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_timeline
+dependencies[] = context
+dependencies[] = context_spaces_features
+dependencies[] = date
+dependencies[] = elms_navigation_top
+dependencies[] = nodereference_url
+dependencies[] = og_views
+dependencies[] = references
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = timeline
+dependencies[] = views
+features[context][] = elms_timeline-nav-right
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[menu_links][] = features:timeline
+features[menu_links][] = menu-usermenu:my_timelines
+features[node][] = timeline_item
+features[variable][] = content_extra_weights_timeline_item
+features[variable][] = node_options_timeline_item
+features[variable][] = og_content_type_usage_timeline_item
+features[variable][] = timeline_library_source
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

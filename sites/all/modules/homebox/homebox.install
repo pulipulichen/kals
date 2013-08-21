@@ -1,0 +1,166 @@
+<?php
+// $Id: homebox.install,v 1.1.4.14.2.1 2011/02/02 19:01:05 brianV Exp $
+
+/**
+ * @file
+ * The install file for Homebox allows the module to install (and uninstall) itself. This is required as this module uses its own table.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function homebox_schema() {
+  // Schema for homebox pages
+  $schema['homebox_pages'] = array(
+    'fields' => array(
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'settings' => array(
+        'type' => 'blob',
+        'size' => 'big',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'object default' => array(),
+      ),
+    ),
+    'primary key' => array('name'),
+  );
+  // Schema for user custom settings
+  $schema['homebox_users'] = array(
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'settings' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'object default' => array(),
+      ),
+    ),
+    'primary key' => array('uid', 'name'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function homebox_uninstall() {
+  // Remove variables
+  variable_del('homebox_user_tab');
+  variable_del('homebox_version');
+}
+
+/**
+ * Add {homebox_users} primary key.
+ */
+function homebox_update_6000() {
+  $return = array();
+
+  db_add_primary_key($return, 'homebox_users', array('uid', 'name'));
+
+  return $return;
+}
+
+/**
+ * Use 'custom' delta for homebox blocks.
+ */
+function homebox_update_6001() {
+  $return = array();
+
+  $result = db_query("SELECT uid, name, settings FROM {homebox_users}");
+  while ($row = db_fetch_object($result)) {
+    $row->settings = unserialize($row->settings);
+
+    foreach ($row->settings as $key => $block) {
+      if (isset($block['module']) && $block['module'] === 'homebox') {
+        // Save the new key for later.
+        $new_key = 'homebox_custom-' . $block['delta'];
+
+        // Set delta to standard.
+        $block['delta'] = 'custom';
+
+        // Move title.
+        $block['title_custom'] = $block['title'];
+        $block['title'] = '';
+
+        // Move block to new key.
+        unset($row->settings[$key]);
+        $row->settings[$new_key] = $block;
+      }
+    }
+
+    drupal_write_record('homebox_users', $row, array('uid', 'name'));
+  }
+
+  return $return;
+}
+
+/**
+ * Replace page custom setting with a regular block.
+ */
+function homebox_update_6002() {
+  $return = array();
+
+  $result = db_query('SELECT name, settings FROM {homebox_pages}');
+  while ($row = db_fetch_object($result)) {
+    $row->settings = unserialize($row->settings);
+    if ($row->settings['custom']) {
+      unset($row->settings['custom']);
+      $row->settings['blocks']['homebox_custom'] = array(
+        'module' => 'homebox',
+        'delta' => 'custom',
+        'region' => 1,
+        'movable' => 1,
+        'status' => 0,
+        'open' => 1,
+        'closable' => 1,
+        'title' => '',
+        'weight' => -45,
+      );
+    }
+    drupal_write_record('homebox_pages', $row, 'name');
+  }
+
+  return $return;
+}
+
+/**
+ * Make sure all user blocks have a module and delta.
+ */
+function homebox_update_6003() {
+  $return = array();
+
+  $result = db_query("SELECT uid, name, settings FROM {homebox_users}");
+  while ($row = db_fetch_object($result)) {
+    $row->settings = unserialize($row->settings);
+
+    if ($page = homebox_get_page($row->name)) {
+      foreach ($row->settings as $key => $block) {
+        if ((!isset($block['module']) || !isset($block['delta'])) && isset($page->settings['blocks'][$key])) {
+          $row->settings[$key]['module'] = $page->settings['blocks'][$key]['module'];
+          $row->settings[$key]['delta'] = $page->settings['blocks'][$key]['delta'];
+        }
+      }
+
+      drupal_write_record('homebox_users', $row, array('uid', 'name'));
+    }
+  }
+
+  return $return;
+}

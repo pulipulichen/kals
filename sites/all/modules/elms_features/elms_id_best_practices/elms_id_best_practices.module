@@ -1,0 +1,220 @@
+<?php
+
+include_once 'elms_id_best_practices.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function elms_id_best_practices_menu() {
+  $items = array();
+  $items['syllabus'] = array(
+    'title' => 'Syllabus',
+    'page callback' => '_elms_id_best_practices_page_syllabus',
+    'access callback' => 'spaces_access_feature',
+    'access arguments' => array('view', 'elms_id_best_practices'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'features',
+    'file' => 'elms_id_best_practices.pages.inc',
+    'weight' => -2,
+  );
+  $items['elms_help'] = array(
+    'title' => 'Help',
+    'page callback' => '_elms_id_best_practices_page_help',
+    'access callback' => 'spaces_access_feature',
+    'access arguments' => array('view', 'elms_id_best_practices'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'features',
+    'file' => 'elms_id_best_practices.pages.inc',
+    'weight' => -1,
+  );
+  $items['features/elms_id_best_practices'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_id_best_practices_settings'),
+    'access callback' => '_elms_id_best_practices_access_check_admin',
+    'access arguments' => module_exists('spaces') ? array() : array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+    'file' => 'elms_id_best_practices.pages.inc',
+  );
+  $items['admin/elms/id_best_practices'] = array(
+    'title' => 'ID best practices',
+    'description' => 'Default settings related to instructional best practices',
+    'page callback' => 'elms_id_best_practices_settings_overview',
+    'access arguments' => array('administer elms configuration'),
+    'file' => 'elms_id_best_practices.admin.inc',
+  );
+  $items['admin/elms/id_best_practices/settings'] = array(
+    'title' => 'ID default settings',
+    'description' => 'Default settings related to instructional best practices',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_id_best_practices_settings'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'elms_id_best_practices.pages.inc',
+  );
+  return $items;
+}
+// helper function for access verification
+function _elms_id_best_practices_access_check() {
+  // make sure the feature is activated
+  if (spaces_access_feature('view', 'elms_id_best_practices')) {
+    return user_access('manage features');
+  }
+  return 0;
+}
+// helper function for access verification
+function _elms_id_best_practices_access_check_admin() {
+  // make sure the feature is activated
+  if (spaces_access_feature('view', 'elms_id_best_practices')) {
+    return user_access('spaces_access_admin');
+  }
+  return 0;
+}
+
+/**
+ * Implementation content generation from wysiwyg templates module.
+ */
+function _elms_id_best_practices_get_template($tid) {
+  $body = '';
+  // try and match the template to one in the database
+  if (module_exists('wysiwyg_template')) {
+    $body = db_query("SELECT body FROM {wysiwyg_templates} WHERE tid = :tid", array(':tid' => $tid))->fetchField();
+  }
+  return $body;
+}
+
+/**
+ * Implements hook_book_outline_builder_template().
+ */
+function elms_id_best_practices_book_outline_builder_template() {
+  $outline['unit_outline'] = array(
+    'title' => 'Unit / topical outline', array(
+      'type' => 'page',
+      'title' => 'Introduction',
+      'content' => _elms_id_best_practices_get_template(10),
+      'format' => 2,
+    ), array(
+      'type' => 'folder',
+      'title' => 'Unit @i',
+      'content' => _elms_id_best_practices_get_template(10),
+      'format' => 2,
+      'duplicate' => TRUE,
+      'children' => array(
+        array(
+          'type' => 'folder',
+          'title' => 'Lesson @i',
+          'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+          'format' => 2,
+          'duplicate' => 3,
+          'children' => array(
+            array(
+              'type' => 'page',
+              'title' => 'Introduction',
+              'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+              'format' => 2,
+            ),
+            array(
+              'type' => 'page',
+              'title' => 'Content page',
+              'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+              'format' => 2,
+            ),
+            array(
+              'type' => 'page',
+              'title' => 'Summary',
+              'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+              'format' => 2,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  $outline['lesson_outline'] = array(
+    'title' => 'Lesson outline', array(
+      'type' => 'folder',
+      'title' => 'Lesson @i',
+      'content' => _elms_id_best_practices_get_template(10),
+      'format' => 2,
+      'duplicate' => TRUE,
+      'children' => array(
+        array(
+          'type' => 'page',
+          'title' => 'Introduction',
+          'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+          'format' => 2,
+        ),
+        array(
+          'type' => 'page',
+          'title' => 'Page 1',
+          'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+          'format' => 2,
+        ),
+        array(
+          'type' => 'page',
+          'title' => 'Page 2',
+          'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+          'format' => 2,
+        ),
+        array(
+          'type' => 'page',
+          'title' => 'Page 3',
+          'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+          'format' => 2,
+        ),
+        array(
+          'type' => 'page',
+          'title' => 'Summary',
+          'content' => _elms_id_best_practices_get_template(rand(13, 15)),
+          'format' => 2,
+        ),
+      ),
+    ),
+  );
+  return $outline;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function elms_id_best_practices_block_info() {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  if (TRUE) {
+    $blocks['delta-0'] = array(
+      'info' => t('Instructor contact info'),
+      'weight' => 0,
+      'status' => 0,
+    );
+    return $blocks;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function elms_id_best_practices_block_view($delta) {
+  // TODO Rename block deltas (e.g. delta-0) to readable strings.
+  if (TRUE) {
+    switch ($delta) {
+      case 'delta-0':
+        $block['title'] = t('Instructor contact info');
+        $block['content'] = _elms_id_best_practices_contact_info_block();
+        break;
+    }
+    return $block;
+  }
+}
+
+/**
+ * Implements hook_block().
+ */
+function elms_id_best_practices_block_OLD($op = 'list', $delta = 0, $edit = array()) { }
+
+/**
+ * Callback for instructor contact info block.
+ */
+function _elms_id_best_practices_contact_info_block() {
+  $content = variable_get('elms_id_bp_instructor_block', '');
+  if ($content != '') {
+    return $content;
+  }
+}

@@ -1,0 +1,17 @@
+core = "7.x"
+dependencies[] = "views"
+description = "Replacement administrative views for Drupal"
+features[ctools][] = "views:views_default:3.0"
+features[views_view][] = "clone_of_content_vbo_"
+features[views_view][] = "comments_admin"
+features[views_view][] = "people_vbo_"
+name = "Admin VBO Views"
+package = "Features"
+php = "5.2.4"
+
+; Information added by drupal.org packaging script on 2011-11-29
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "admin_vbo_views"
+datestamp = "1322568071"
+

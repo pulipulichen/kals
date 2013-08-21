@@ -1,0 +1,46 @@
+name = ELMS Schedule
+description = Provide a Schedule for course planning
+core = 7.x
+package = Features
+php = 5.2.4
+project = elms_schedule
+dependencies[] = date
+dependencies[] = date_popup
+dependencies[] = draggableviews
+dependencies[] = features
+dependencies[] = flag
+dependencies[] = jquery_colorpicker
+dependencies[] = link
+dependencies[] = number
+dependencies[] = og_views
+dependencies[] = references
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views_bulk_operations
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[flag][] = complete
+features[node][] = elms_event
+features[variable][] = comment_anonymous_elms_event
+features[variable][] = comment_controls_elms_event
+features[variable][] = comment_default_mode_elms_event
+features[variable][] = comment_default_order_elms_event
+features[variable][] = comment_default_per_page_elms_event
+features[variable][] = comment_elms_event
+features[variable][] = comment_form_location_elms_event
+features[variable][] = comment_preview_elms_event
+features[variable][] = comment_subject_field_elms_event
+features[variable][] = content_extra_weights_elms_event
+features[variable][] = node_options_elms_event
+features[variable][] = og_content_type_usage_elms_event
+features[variable][] = og_max_groups_elms_event
+features[variable][] = upload_elms_event
+kitf = 1.0-draft
+spaces[types][] = og
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

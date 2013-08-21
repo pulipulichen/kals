@@ -1,0 +1,13 @@
+name = VBO Search And Replace
+description = Exposes a new Views Bulk Operations action "Search and replace on Entity values" that allows you to perform a search and replace on the values (fields/properties) of selected entities in a view.
+dependencies[] = views_bulk_operations
+package = Views
+core = 7.x
+
+
+; Information added by drupal.org packaging script on 2013-04-17
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "vbo_search_and_replace"
+datestamp = "1366209587"
+

@@ -1,0 +1,3 @@
+<?php
+
+include_once 'elms_forum.features.inc';

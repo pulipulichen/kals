@@ -1,0 +1,44 @@
+name = ELMS Site
+description = Provides all core site functionality
+core = 7.x
+package = ELMS
+php = 5.2.4
+project = elms_site
+dependencies[] = autocomplete_widgets
+dependencies[] = book
+dependencies[] = context
+dependencies[] = date
+dependencies[] = features
+dependencies[] = menu
+dependencies[] = nodereference_url
+dependencies[] = og_views
+dependencies[] = search
+dependencies[] = spaces
+dependencies[] = strongarm
+dependencies[] = views
+features[context][] = elms_site-features
+features[context][] = elms_site-sandboxes
+features[ctools][] = context:context:3
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[node][] = site
+features[variable][] = comment_anonymous_site
+features[variable][] = comment_controls_site
+features[variable][] = comment_default_mode_site
+features[variable][] = comment_default_order_site
+features[variable][] = comment_default_per_page_site
+features[variable][] = comment_form_location_site
+features[variable][] = comment_preview_site
+features[variable][] = comment_site
+features[variable][] = comment_subject_field_site
+features[variable][] = content_extra_weights_site
+features[variable][] = node_options_site
+features[variable][] = og_content_type_usage_site
+features[variable][] = upload_site
+
+; Information added by drupal.org packaging script on 2012-09-19
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "elms_features"
+datestamp = "1348014379"
+

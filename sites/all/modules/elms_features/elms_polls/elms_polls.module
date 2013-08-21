@@ -1,0 +1,18 @@
+<?php
+
+include_once 'elms_polls.features.inc';
+
+/**
+ * Implements hook_define_highlight_relationship_alter().
+ */
+function elms_polls_define_highlight_relationship_alter(&$relationships) {
+  if (spaces_access_feature('view', 'elms_polls')) {
+    $relationships['enhance_content']['highlight_types']['poll'] = array(
+      'id' => 'polls',
+      'ref_field' => 'field_poll_content_ref',
+      'text_field' => 'field_poll_text_ref',
+      'icon' => drupal_get_path('module', 'elms_polls') . '/images/poll.png',
+      'display_text' => t('Add a Poll'),
+    );
+  }
+}

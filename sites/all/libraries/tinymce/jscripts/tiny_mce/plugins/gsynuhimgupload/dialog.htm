@@ -1,0 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#gsynuhimgupload_dlg.title}</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+    <script type="text/javascript" src="js/dialog.js"></script>
+</head>
+<body>
+<form name="fileuploadform" target="upload_iframe" enctype="multipart/form-data" action="upload.php" method="post">
+    <p><center>Choose an image :</center></p>
+    <p><center><input type="file" name="uploaded_file" onchange="form.submit();" /></center></p>
+</form>
+<iframe style="display:none; width:3px; height:3px; overflow:hidden;" name="upload_iframe" id="upload_iframe" />
+
+</body>
+</html>

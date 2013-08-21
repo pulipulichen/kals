@@ -1,0 +1,264 @@
+/* left side blocks */
+#regions_elms_navigation_left {
+  font:normal 12px "Lucida Grande",Verdana,sans-serif !important;
+  background-color:#222;
+  width:210px;
+  top:50px;
+  z-index:1000;
+  left:-182px;
+  float:left;
+  position:fixed;
+  padding:5px;
+  margin-left:5px;
+  text-align:left;
+  font-size:12px;
+  font-weight: normal;
+  color:#ccc;
+ /* background-image:url(images/sidebarbgtop.png);
+  background-repeat:repeat-y;*/
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+}
+/* need to allow admin-toolbar to display higher then left nav if both are installed */
+div#admin-toolbar {
+ z-index:1001 !important;    
+}
+
+#regions_elms_navigation_left .regions_pre_block_container {
+ height: 24px;
+ width: 210px;
+ background-repeat:no-repeat;
+ background-position:right;
+ display:block;
+ cursor:pointer;
+
+}
+
+#regions_block_elms_navigation_left_3 div.regions_block_title {
+  display:none;
+}
+
+#regions_elms_navigation_left li {
+  list-style-type: none;
+  list-style-image: none;
+  padding: 0px 0px 0px 10px;
+  border:none;
+  clear: both;
+  height:30px;
+  line-height:30px;
+}
+#regions_elms_navigation_left li {
+  padding-top:5px;
+}
+/*#regions_block_elms_navigation_left_2 li:hover {
+  background-image:url(images/sidebarmouseover.png);
+  background-repeat:repeat-y;
+  background-position:-10px;
+}
+
+
+#regions_block_menu_menu-elms-system li.leaf:hover {
+  background-image:url(images/sidebarmouseover.png);
+  background-repeat:repeat-y;
+  background-position:-10px;
+}
+#regions_block_elms_navigation_left_1 li a:hover {
+  background-image:url(images/sidebarmouseover.png);
+  background-repeat:repeat-y;
+  background-position:-20px;
+}
+#regions_block_elms_navigation_left_0 li a:hover {
+  background-image:url(images/sidebarmouseover.png);
+  background-repeat:repeat-y;
+  background-position:-20px;
+}*/
+#regions_elms_navigation_left li:hover {
+  color:#CCC !important;
+}
+#regions_elms_navigation_left li a:hover {
+  color:#CCC !important;
+}
+#regions_elms_navigation_left li a.active {
+  text-shadow:#333 0px 1px 0px;
+  font-weight:bold;
+  color:#0C0 !important;
+}
+#regions_elms_navigation_left li a {
+  color:#CCC !important;
+  text-decoration:none;
+  clear: both;
+  float:left;
+  height:30px;
+  width:100%;
+  line-height:30px;
+  font-weight: normal;
+  font-size:12px;
+}
+#regions_elms_navigation_left .regions_block_title {
+  font-size:16px;
+  font-weight:bold;
+  text-align:left;
+  cursor:pointer;
+  padding: 2px 0px 2px 10px;
+  clear: both;
+  height:30px;
+}
+
+#regions_elms_navigation_left .regions_block {
+ padding:0px 0px 0px 0px;
+ /*background-image:url(images/sidebarbgtop.png);
+ background-repeat:repeat-y;*/
+}
+#regions_elms_navigation_left li, #regions_elms_navigation_left a, #regions_elms_navigation_left .regions_block_title {
+  background-position:right;
+  background-repeat:no-repeat;
+}
+#regions_elms_navigation_left .page_view {
+  background-image:url(images/view.png);
+}
+#regions_elms_navigation_left .page_edit {
+  background-image:url(images/edit.png);
+}
+#regions_elms_navigation_left .manage_users {
+  background-image:url(images/manage_users.png);
+}
+#regions_elms_navigation_left .manage_content {
+  background-image:url(images/manage_content.png);
+}
+#regions_elms_navigation_left .page_accessibility {
+  background-image:url(images/accessibility.png);
+}
+#regions_elms_navigation_left .page_track {
+  background-image:url(images/track.png);
+}
+#regions_elms_navigation_left .page_devel {
+  background-image:url(images/admin.png);
+}
+#regions_elms_navigation_left .help {
+  background-image:url(images/helpdesk.png);
+}
+#regions_elms_navigation_left .page_ups {
+  background-image:url(images/track.png);
+}
+#regions_elms_navigation_left .page_revisions {
+  background-image:url(images/change_shape.png);
+}
+
+#regions_elms_navigation_left .feed_reader_field_associated_to {
+  background-image:url(images/social_media.png) !important;
+  background-position:right !important;
+  background-repeat:no-repeat !important;
+}
+#regions_elms_navigation_left .content_outline {
+  background-image:url(images/outline.png);
+}
+#regions_elms_navigation_left .change_features {
+  background-image:url(images/features.png);
+}
+#regions_elms_navigation_left .change_theme {
+  background-image:url(images/change_theme.png);
+}
+#regions_elms_navigation_left .public_home {
+  background-image:url(images/publichome.png);
+}
+#regions_elms_navigation_left .admin_settings {
+  background-image:url(images/admin.png);
+}
+#regions_elms_navigation_left .system {
+  background-image:url(images/system.png);
+}
+#regions_elms_navigation_left .elms_site {
+  background-image:url(images/sandbox.png);
+}
+#regions_elms_navigation_left .export {
+  background-image:url(images/export.png);
+}
+#regions_elms_navigation_left .new_parent_site {
+  background-image:url(images/newversion.png);
+}
+#regions_elms_navigation_left  .elms_parent {
+  background-image:url(images/newcourse.png);    
+}
+#regions_elms_navigation_left  #masquerade-block-1 li a {
+  background-image:url(images/masquerade.png);
+}
+
+#regions_elms_navigation_left .workflow_state {
+  height: 30px;
+  line-height:30px;
+}
+
+#regions_elms_navigation_left #masquerade-block-1 input {
+ padding:0px;
+ font-size:10px;
+ margin:0px;
+}
+#regions_elms_navigation_left #masquerade-block-1 .container-inline {
+ margin: 0px 0px 5px 0px;
+}
+#regions_elms_navigation_left .click_handler {
+ cursor:pointer;
+ float:right;
+ position:static;
+ width:30px;
+ height:30px;
+ background-image:url(images/masquerade.png);
+ background-position:top right !important;
+ background-repeat:no-repeat !important;
+}
+
+#regions_elms_navigation_left #masquerade-block-1 .form-submit {
+ padding:0px;
+ font-size:10px;
+ margin:0px;
+}
+#regions_elms_navigation_left #masquerade-block-1 a {
+ color:#CCC;
+}
+.workflow_state_3 { /*sandbox*/
+  background-color:#C66;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 5px;
+}
+#regions_elms_navigation_left li.workflow_state_3 a,
+#regions_elms_navigation_left li.workflow_state_5 a,
+#regions_elms_navigation_left li.workflow_state_6 a,
+#regions_elms_navigation_left li.workflow_state_7 a,
+#regions_elms_navigation_left li.workflow_state_10 a {
+ color:#fff !important;  
+}
+
+.workflow_state_5 { /*offered*/
+  background-color:#356090;
+    -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 5px;
+}
+.workflow_state_6 { /*archive*/
+  background-color:#e6e6d4;
+    -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 5px;
+}
+.workflow_state_7 { /*demo*/
+  background-color:#327944;
+    -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 5px;
+}
+.workflow_state_10 { /*master*/
+  background-color:#AA5;
+    -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 5px;
+}
+
+/* open / close block display */
+#regions_elms_navigation_left .regions_toggle_open {
+ background-image: url(images/open.png);
+}
+#regions_elms_navigation_left .regions_toggle_closed {
+ background-image: url(images/close.png);
+}

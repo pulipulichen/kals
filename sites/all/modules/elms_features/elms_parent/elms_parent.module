@@ -1,0 +1,179 @@
+<?php
+// define what a root organizational unit is
+define('ELMS_ROOT_TYPE', 'parent');
+include_once 'elms_parent.features.inc';
+
+/**
+ * Implements hook_node_insert().
+ */
+function elms_parent_node_insert($node) {
+  // when a course is inserted we automatically create a version for it
+  if ($node->type == ELMS_ROOT_TYPE) {
+    // verify that we weren't told this is just a listing
+    if ($node->field_listing_only[0]['value'] == NULL) {
+      _elms_parent_create_default($node);
+    }
+  }
+}
+
+/**
+ * Implements hook_nodeapi().
+ */
+function elms_parent_nodeapi_OLD(&$node, $op, $a3 = NULL, $a4 = NULL) { }
+
+// create a site off of default settings
+function _elms_parent_create_default($parent) {
+  global $user;
+  // creating a blank node
+  $group = new stdClass();
+  // setting this flag avoids a conflict with instructional outline auto creation
+  $group->default_version = 1;
+  $group->uid = $user->uid;
+  // this title will change anyway on node insert
+  $group->title = $parent->title . ' Sandbox';
+  $group->type = ELMS_GROUP_TYPE;
+  $group->status = 1;
+  $group->log = 'ELMS Parent: Default settings used to create an initial site sandbox';
+  // don't need to bloat revisions table
+  $group->revision = 0;
+  $group->field_footer[0]['value'] = variable_get('site_footer', '');
+  // Set the course reference
+  $group->field_parent_ref[0]['nid'] = $parent->nid;
+  // og settings
+  $group->theme = variable_get('elms_helper_default_theme', 'chamfer');
+  $group->og_theme = variable_get('elms_helper_default_theme', 'chamfer');
+  $group->og_private = 1;
+  // set the description to the title of the course
+  $group->og_description = $parent->field_parent_title[0]['value'];
+  $group->field_lesson_count[0]['value'] = 15;
+  // save node
+  node_save($group);
+  // create the book root now that we have the group node finished
+  if (module_exists('elms_content')) {
+    _elms_content_create_root($group, 'default');
+  }
+}
+
+/**
+ * Implements hook_requirement_dashboard_provider().
+ */
+function elms_parent_requirement_dashboard_provider() {
+  $dashboards['elms_parent'] = array(
+    'title' => t('Parent status'),
+    'path' => 'node/%node/parent_status',
+  );
+  return $dashboards;
+}
+
+/**
+ * Implements hook_dashboard_requirements().
+ */
+function elms_parent_dashboard_requirements($provider) {
+  switch ($provider) {
+    case 'og':
+      $group = og_context();
+      // get a list of users per role
+      $counts = array(
+        'instructor' => 0,
+        'student' => 0,
+        'teaching assistant' => 0,
+      );
+      $result = db_query("SELECT r.name AS rolename FROM {users} AS u JOIN {og_users_roles} AS ur ON u.uid=ur.uid JOIN {role} AS r ON ur.rid=r.rid WHERE r.name IN('instructor', 'student', 'teaching assistant') AND status = :status", array(':status' => 1));
+      while ($val = db_fetch_array($result)) {
+        $counts[$val['rolename']]++;
+      }
+      // loop through and render all this info
+      foreach ($counts as $rolename => $count) {
+        $requirements['og_active_' . str_replace(' ', '', $rolename) . '_count'] = array(
+          'title' => t('@account', array('@account' => ucwords($rolename . 's'))),
+          'value' => $count,
+          'severity' => REQUIREMENT_INFO,
+        );
+      }
+      break;
+    case 'elms_parent':
+      $node = menu_get_object();
+      // add name
+      $requirements['name'] = array(
+        'title' => t('Name'),
+        'value' => $node->field_parent_name[0]['value'],
+        'severity' => REQUIREMENT_INFO,
+      );
+      // add title
+      $requirements['title'] = array(
+        'title' => t('Title'),
+        'value' => $node->field_parent_title[0]['value'],
+        'severity' => REQUIREMENT_INFO,
+      );
+      // add description
+      $requirements['description'] = array(
+        'title' => t('Description'),
+        'value' => $node->field_description[0]['value'],
+        'severity' => REQUIREMENT_INFO,
+      );
+      break;
+      // add system level data
+    case 'system':
+      $count_parents = db_query("SELECT COUNT(nid) FROM {node} WHERE type = :type", array(':type' => ELMS_ROOT_TYPE))->fetchField();
+      $requirements['total_parents'] = array(
+        'title' => t('Total parents'),
+        'value' => $count_parents,
+        'severity' => REQUIREMENT_INFO,
+      );
+      break;
+  }
+  return $requirements;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function elms_parent_menu() {
+  $items['node/%node/add-' . ELMS_GROUP_TYPE] = array(
+    'title' => 'Add new site',
+    'page callback' => 'elms_parent_add_redirect',
+    'page arguments' => array(1),
+    'access callback' => 'elms_parent_add_redirect_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+// redirect to the noderef url
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_parent_add_redirect($node) {
+  drupal_goto('node/add/' . ELMS_GROUP_TYPE . '/' . $node->nid);
+}
+// redirect access
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function elms_parent_add_redirect_access($node) {
+  if (node_access('create', ELMS_GROUP_TYPE) && $node->type == ELMS_ROOT_TYPE) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+/**
+ * Implements hook_menu_alter().
+ */
+function elms_parent_menu_alter(&$items) {
+  if (isset($items['node/%node/parent_status'])) {
+    $items['node/%node/parent_status']['access callback'] = 'elms_parent_status_access';
+    $items['node/%node/parent_status']['access arguments'] = array(1);
+  }
+}
+
+/**
+ * Callback allows us to make sure this is a parent before rendering
+ */
+function elms_parent_status_access($node) {
+  return ($node->type == ELMS_ROOT_TYPE) ? user_access('view elms_parent requirements dashboard') : FALSE;
+}

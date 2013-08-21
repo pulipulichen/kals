@@ -1,0 +1,30 @@
+<?php
+
+include_once('elms_studio.features.inc');
+
+/**
+ * Implementation of hook_menu().
+ */
+function elms_studio_menu() {
+  $items = array();
+  $items['features/elms_studio'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elms_studio_settings'),
+    'access callback' => '_elms_studio_access_check',
+    'access arguments' => module_exists('spaces') ? array() : array('administer site configuration'),
+    'type' => MENU_CALLBACK,
+    'file' => 'elms_studio.pages.inc',
+  );
+  return $items;
+}
+
+// helper function for access verification
+function _elms_studio_access_check() {
+  if (module_exists('spaces')) {
+    return user_access('spaces_access_admin');
+  }
+  else {
+    return user_access('user_access');
+  }
+}
