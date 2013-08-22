@@ -10,3 +10,4 @@ test/
 
 /system/cache/
 /system/logs/
+/drupal/*
