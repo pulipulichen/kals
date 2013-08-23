@@ -6,7 +6,6 @@
 </head>
 <body>
 
-
 <?php
 if($_POST["submit"]=="submit"){
 
@@ -16,19 +15,21 @@ define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
-//Your code will go here.
+//Code will go here.
 
-  $nid = $_POST["nid"];
-  $vp = $_POST["vp"];
-  $node = node_load($nid);
-  $node->field_vp[$node->language][0]['value'] = $vp;
-  node_save($node);}
+$nid = $_POST["nid"];
+$vp = $_POST["vp"];
+$node = node_load($nid);
+$node->field_vp[$node->language][0]['value'] = $vp;
+node_save($node);}
+
 ?>
+
 <br>
 <hr>
 <form action="" method="post" name="form1">
-nid<INPUT TYPE = "TEXT" NAME="nid" VALUE ="">
-vp<INPUT TYPE = "TEXT" NAME="vp" VALUE ="">
+Nid<INPUT TYPE = "TEXT" NAME="nid" VALUE ="">
+Vp<INPUT TYPE = "TEXT" NAME="vp" VALUE ="">
 <input name="submit" type="submit" value="submit"></form>
 </body>
 </html>

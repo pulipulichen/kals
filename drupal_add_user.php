@@ -6,7 +6,6 @@
 </head>
 <body>
 
-
 <?php
 if($_POST["submit"]=="submit"){
 
@@ -16,8 +15,7 @@ define('DRUPAL_ROOT', getcwd());
 require_once DRUPAL_ROOT . '/includes/bootstrap.inc';
 drupal_bootstrap(DRUPAL_BOOTSTRAP_FULL);
 
-
-//Your code will go here.
+//Code will go here.
 print '<pre>';
 print '--->add a new user';
 print '<pre>';
@@ -25,52 +23,47 @@ print '--->start';
 print '<pre>';
 print '===========================================================================';
 
- //This will generate a random password, you could set your own here
-  $password = $_POST["password"];
-    $name = $_POST["name"];
-      $eemail = $_POST["eemail"];
+//This will generate a random password, you could set your own here
+$password = $_POST["password"];
+$name = $_POST["name"];
+$eemail = $_POST["eemail"];
  
-  //set up the user fields
-  $fields = array(
-    'name' => $name,
-    'mail' =>  $eemail,
-    'pass' => $password,
-    'status' => 1,
-    'init' => 'email address',
-    'roles' => array(
-      DRUPAL_AUTHENTICATED_RID => 'authenticated user',
-    ),
+//set up the user fields
+$fields = array(
+'name' => $name,
+'mail' =>  $eemail,
+'pass' => $password,
+'status' => 1,
+'init' => 'email address',
+'roles' => array(
+     DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+  ),
   );
  
-  //the first parameter is left blank so a new user is created
-  $account = user_save('', $fields);
+//the first parameter is left blank so a new user is created
+$account = user_save('', $fields);
+
+// Manually set the password so it appears in the e-mail.
+$account->password = $fields['pass'];
  
-  // If you want to send the welcome email, use the following code
- 
-  // Manually set the password so it appears in the e-mail.
-  $account->password = $fields['pass'];
- 
-  // Send the e-mail through the user module.
-  drupal_mail('user', 'register_no_approval_required', $email, NULL, array('account' => $account), variable_get('site_mail', 'noreply@example..com'));
+// Send the e-mail through the user module.
+drupal_mail('user', 'register_no_approval_required', $email, NULL, array('account' => $account), variable_get('site_mail', 'noreply@example..com'));
   
   
   
-  print '<pre>';
-  print 'user with name:'.$account->name.' saved!';
-  print '<pre>';
+print '<pre>';
+print 'user with name:'.$account->name.' saved!';
+print '<pre>';
 
-
-
-
-  }
+}
 
 ?>
 <br>
 <hr>
 <form action="" method="post" name="form1">
-name<INPUT TYPE = "TEXT" NAME="name" VALUE ="">
-email<INPUT TYPE = "TEXT" NAME="eemail" VALUE ="">
-password<INPUT TYPE = "TEXT" NAME="password" VALUE ="">
+Name<INPUT TYPE = "TEXT" NAME="name" VALUE ="">
+E-mail<INPUT TYPE = "TEXT" NAME="eemail" VALUE ="">
+Password<INPUT TYPE = "TEXT" NAME="password" VALUE ="">
 <input name="submit" type="submit" value="submit"></form>
 </body>
 </html>
