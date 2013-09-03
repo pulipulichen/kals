@@ -169,7 +169,7 @@ Window_user_interface.prototype.list_option = function (_lang_param, _value) {
 			_value = _lang_param;
 		}
     }
-    
+    	
     _heading.attr('value', _value);
     
     return _option;
