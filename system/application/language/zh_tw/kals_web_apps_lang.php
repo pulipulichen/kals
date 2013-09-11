@@ -162,6 +162,14 @@ $lang['web_apps.window.filter.content.option.my'] = '我的標註';
 $lang['web_apps.window.filter.content.option.navigation'] = '推薦的標註';
 
 
+$lang['web_apps.window.map.heading'] = '請勾選要顯示的標註';
+$lang['web_apps.window.map.nav_heading'] = '標註顯示';
+$lang['web_apps.window.map.content.option.my'] = '我的標註';
+$lang['web_apps.window.map.content.option.navigation'] = '推薦的標註';
+
+
+
+
 /**
  * KALS_text
  */
