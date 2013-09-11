@@ -14,7 +14,6 @@ function Window_filter() {
     
     Window_content.call(this);
     
-	// 確認按鈕，小地圖可以省略此步驟
     this._setup_submit(new Window_filter_submit());
     
 }
@@ -25,24 +24,20 @@ Window_filter.prototype.name = 'Filter';
 
 Window_filter.prototype.width = 220;
 
-// 視窗上的標題
 Window_filter.prototype.heading = new KALS_language_param (
     'Annotation Filter',
     'window.filter.heading'
 );
 
-// 工具列上的「標註顯示」
 Window_filter.prototype.nav_heading = new KALS_language_param (
     'Annotation Filter',
     'window.filter.nav_heading'
 );
 
-// 視窗的內容
 Window_filter.prototype._$create_ui = function () {
     
     var _factory = KALS_window.ui;
     
-	// 重要!所有視窗內容都應該貼到_ui，最後要回傳_ui
     var _ui = _factory.panel('window-filter');
         
     var _my_div = $('<div></div>')

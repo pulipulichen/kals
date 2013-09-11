@@ -14,15 +14,12 @@ function Common_navigation() {
     
     Navigation_list.call(this);
     
-	this._$nav_items = [
-         new Window_map()
-    ];
-	
 	// @20130603 Pudding Chen
 	// Isolation Mode
 	if (KALS_context.policy.allow_show_navigation()) {
 		this._$nav_items = [
-	        new Window_filter()
+	        new Window_filter(),
+			new Window_map()
 	    ];
 	}
 }

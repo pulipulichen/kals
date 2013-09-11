@@ -400,6 +400,7 @@ this.complete = function ()
 
 
 $(function() {
+	alert(12121212);
     KALS_loader = new KALS_loader();
 })
 
