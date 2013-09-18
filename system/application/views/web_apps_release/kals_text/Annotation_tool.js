@@ -79,10 +79,15 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('annotation-tool')
         .addClass('draggable-tool')
         .addClass('kals-modal')
-		.addClass("KALS")
-        .hide()
+		.addClass("KALS")	
+		.hide()
         .appendTo($('body'));
-        
+		
+	if(KALS_CONFIG.reading_mode == "gesture")
+	{
+		_ui.addClass("gesture");
+	} 	
+       
     var _config = this._$get_config();
     
     //$.test_msg('Annotation_tool._$create_ui()', _config.onBeforeLoad);
@@ -293,6 +298,7 @@ Annotation_tool.prototype.open = function (_callback) {
 	//體感模式下使用UI左右判斷式
 	if(KALS_CONFIG.reading_mode == "gesture"){
 		pos_align = Selection.prototype.get_select_align();
+		this.maxmize();
 	}
 	
 	this.setup_position(pos_align);   
@@ -340,16 +346,17 @@ Annotation_tool.prototype.setup_position = function (_align) {
 		
 		_ui.css("position","fixed");
 		
+		
 		if (_align !== undefined) {
 			if (_align == 6) {
-				_ui.css("top", "50px");
+				_ui.css("top", "0px");
 				_ui.css("left","0px");
 			}
 			else if (_align == 4) {
 				//偵測螢幕的高度
 				//螢幕高度/2
 				// – _ui.height()
-				_ui.css("top", "50px");
+				_ui.css("top", "0px");
 				
 				var _left = $(window).width()-_ui.width();
 				_ui.css("left",_left+"px");
@@ -594,6 +601,30 @@ Annotation_tool.prototype.check_editing = function () {
     }
     return this;
     
+};
+
+Annotation_tool.prototype.maxmize = function(){
+	
+	var _mode = KALS_CONFIG.reading_mode;
+	
+	// 取得Annotation_tool的_ui, get_ui()
+	var _ui = this.get_ui();
+	
+	if (_mode == "gesture") {
+		
+		// 取得_ui的高度 var _h = 視窗高度()
+		var _h = $(window).height();
+		// 取得_ui的寬度 var _w = parseInt(視窗寬度 / 3)
+		var _w = parseInt($(window).width()/3);
+	}	
+		// 設定高度到 _ui.css("height", _h);
+		_ui.css("height", _h);
+		// 設定寬度
+		_ui.css("width", _w);
+		
+	
+		
+	return this;
 };
 
 /* End of file Annotation_tool */

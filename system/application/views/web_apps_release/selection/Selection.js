@@ -171,17 +171,20 @@ Selection.prototype.get_select_align = function(){
 	var _align = 5;
 	// 1. 取得window的width	
 		// 左右的判斷 width/2
-		var win_width = $(window).width()/2;
+		var _win_width = $(window).width()/2;
 	// 2. 取得window的height	
 		// 上下的判斷height/2
-		var win_height = $(window).height()/2;		
+		var _win_height = $(window).height()/2;		
 	// 跟left跟top判斷數字
-	if(_left > win_width){
+	if(_left > _win_width){
 		_align = 6;
 	}
 	else{
 		_align = 4;
 	}
+	
+	
+	$.test_msg('Selection.prototype.get_select_align()', [_selection.get_anchor_text(), _left, _win_width, _align]);
 	
 	return _align;
 }

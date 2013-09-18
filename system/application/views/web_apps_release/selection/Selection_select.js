@@ -23,6 +23,10 @@ function Selection_select(_text) {
         //$.test_msg('Selection_select()', _policy.readable());
         _this._selectable = _policy.readable();
     }, true);
+	
+	if (KALS_CONFIG.reading_mode = "gesture") {
+		this._$name = this._$name + '-gesture';
+	}
 }
 
 Selection_select.prototype = new Selection();
@@ -46,71 +50,105 @@ Selection_select.prototype._selectable = true;
 /**
  * 設定選取
  * @param {jQuery} _word
+ * @param {boolean} _is_single 選取一次就完成？預設是false
  */
-Selection_select.prototype.set_select = function (_word) {
+Selection_select.prototype.set_select = function (_word, _is_single) {
 	//$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
     if (this._selectable === false) {
 		KALS_context.hash.delete_field('select');
 		return this;
 	}
     
+	if (_is_single === undefined) {
+		_is_single = false;
+	}
+	
     var _id = $.get_prefixed_id(_word);
 	
-	//第一次點選
-    if (this._select_from === null) {
-        var _classname = this.get_classname();
-        this.clear();
-        this._select_from = _id;
-        this._select_from_word = _word;
-        _word.addClass(_classname);
-        
-        //2010.11.3 取消自動取消選取功能
-        //var _this = this;
-        //this._select_timer = setTimeout(function () {
-        //    //$.test_msg('Selection_select.set_select() autocancel');
-        //    _this._select_from = null;
-        //    _word.removeClass(_classname);
-        //    _this._select_timer = null;
-        //}, this.auto_cancel_wait);
-    }
-    else {
-		//第二次點選，顯示Editor_contrainer
+	if (_is_single === false) {
+		//第一次點選
+	    if (this._select_from === null) {
+	        var _classname = this.get_classname();
+	        this.clear();
+	        this._select_from = _id;
+	        this._select_from_word = _word;
+	        _word.addClass(_classname);
+	        
+	        //2010.11.3 取消自動取消選取功能
+	        //var _this = this;
+	        //this._select_timer = setTimeout(function () {
+	        //    //$.test_msg('Selection_select.set_select() autocancel');
+	        //    _this._select_from = null;
+	        //    _word.removeClass(_classname);
+	        //    _this._select_timer = null;
+	        //}, this.auto_cancel_wait);
+	    }	//if (this._select_from === null) {
+	    else {
+			//第二次點選，顯示Editor_contrainer
+			
+	        //2010.11.3 取消自動取消選取功能
+	        //if ($.isset(this._select_timer))
+	        //    clearTimeout(this._select_timer);
+	        
+	        //$.test_msg('Selection_select.set_select()', [this._select_from, _id]);
+	        
+	        //在做add_select的時候，就會進行通知
+	        var _scope_coll = new Scope_collection_param(this._select_from, _id);
+	        
+	        if (_scope_coll.length() > 0) {
+	            var _anchor_text = this._text.get_anchor_text(_scope_coll);
+	            
+	            //$.test_msg('Selection_select.set_select()', [_anchor_text.length, KALS_CONFIG.anchor_length_max]);
+	            
+	            //2010.12.3 改用ajax_post之後就突破字數限制了
+	            //if (_anchor_text.length > KALS_CONFIG.anchor_length_max)
+	            //{
+	            //    _anchor_text = _anchor_text.substring(0, KALS_CONFIG.anchor_length_max);
+	            //}
+				
+	            _scope_coll.get(0).set_anchor_text(_anchor_text);
+	        
+	            this.set_scope_coll(_scope_coll);
+	            
+	            KALS_context.hash.set_field('select', this._select_from + ',' + _id);
+				
+	            this._setted_hash = true;
+				
+	        }
+	        
+	        this._select_from = null;
+	        this._select_from_word = null;
+	        
+	        //$.test_msg('Selection_select.set_select()', [this._select_from, _id]);
+	    }	//else {
+	}	//if (_is_single === false) {
+	else {
 		
-        //2010.11.3 取消自動取消選取功能
-        //if ($.isset(this._select_timer))
-        //    clearTimeout(this._select_timer);
-        
-        //$.test_msg('Selection_select.set_select()', [this._select_from, _id]);
-        
-        //在做add_select的時候，就會進行通知
-        var _scope_coll = new Scope_collection_param(this._select_from, _id);
-        
-        if (_scope_coll.length() > 0) {
-            var _anchor_text = this._text.get_anchor_text(_scope_coll);
-            
-            //$.test_msg('Selection_select.set_select()', [_anchor_text.length, KALS_CONFIG.anchor_length_max]);
-            
-            //2010.12.3 改用ajax_post之後就突破字數限制了
-            //if (_anchor_text.length > KALS_CONFIG.anchor_length_max)
-            //{
-            //    _anchor_text = _anchor_text.substring(0, KALS_CONFIG.anchor_length_max);
-            //}
+	        var _classname = this.get_classname();
+	        this.clear();
+	        this._select_from = _id;
+	        this._select_from_word = _word;
+	        _word.addClass(_classname);
 			
-            _scope_coll.get(0).set_anchor_text(_anchor_text);
-        
-            this.set_scope_coll(_scope_coll);
-            
-            KALS_context.hash.set_field('select', this._select_from + ',' + _id);
-			
-            this._setted_hash = true;
-			
-        }
-        
-        this._select_from = null;
-        this._select_from_word = null;
-        
-        //$.test_msg('Selection_select.set_select()', [this._select_from, _id]);
-    }
+			var _scope_coll = new Scope_collection_param(this._select_from, _id);
+	        
+	        if (_scope_coll.length() > 0) {
+	            var _anchor_text = this._text.get_anchor_text(_scope_coll);
+				
+	            _scope_coll.get(0).set_anchor_text(_anchor_text);
+	        
+	            this.set_scope_coll(_scope_coll);
+	            
+	            //KALS_context.hash.set_field('select', this._select_from + ',' + _id);
+				
+	            this._setted_hash = true;
+				
+	        }
+	        
+	        this._select_from = null;
+	        this._select_from_word = null;
+	}	//else {
+		
     return this;
 };
 

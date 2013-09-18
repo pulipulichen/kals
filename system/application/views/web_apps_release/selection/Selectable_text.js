@@ -753,6 +753,7 @@ Selectable_text.prototype.setup_word_tooltip = function (_word) {
  */
 Selectable_text.prototype.setup_word_selectable = function (_callback) {
     
+	var _select_timer = null;
     var _select = KALS_text.selection.select;
     //體感互動模式，mouseover開啟
 	if(KALS_CONFIG.reading_mode == "gesture"){
@@ -760,28 +761,45 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
             var _this = this;
 			
 			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
-			_words.mouseover(function () {
-				var _click_evt = function(_callback) {
-                	if (_this.initialized === false) {
+			
+			var _evt = function(_word, _callback) {
+            	if (_this.initialized === false) {
 					return this;
-					}
-                
-                var _word = $(this);
-                	setTimeout(function () {
-                    	_word.tooltip().hide();
-                	}, 100);
-                
-                	//_manager.listen_select(_word);
-                	_select.set_select(_word);
+				}
+            
+            	//setTimeout(function () {
+                //	_word.tooltip().hide();
+            	//}, 0);
+            
+            	//_manager.listen_select(_word);
+            	//_select.set_select(_word);
 				
-					if ($.is_function(_callback)) {
-						_callback();
-					}
-            	};
-				_words.mouseover(_click_evt);	
-
+				_select.set_select(_word, true);
+				//_select.set_select(_word);
+				
+				if ($.is_function(_callback)) {
+					_callback();
+				}
+        	};
+			
+			_words.mouseover(function () {
+				
+				//_evt($(this), _callback);
+				clearTimeout(_select_timer);
+				//if (_select_timer != null) {
+				//	clearTimeout(_select_timer);
+				//}
+				
+				var _work = $(this);
+				
+				_select_timer = setTimeout(function() {
+					
+					_evt(_work, _callback);
+					
+					//_select_timer = null;
+				}, 1000);
 			});
-			this.locks.word_click = true;
+			//this.locks.word_click = true;
         }	//if (typeof(this.locks.word_click) == 'undefined') {		
 	}
 	
