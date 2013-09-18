@@ -83,11 +83,6 @@ Annotation_tool.prototype._$create_ui = function () {
 		.hide()
         .appendTo($('body'));
 		
-	if(KALS_CONFIG.reading_mode == "gesture")
-	{
-		_ui.addClass("gesture");
-	} 	
-       
     var _config = this._$get_config();
     
     //$.test_msg('Annotation_tool._$create_ui()', _config.onBeforeLoad);

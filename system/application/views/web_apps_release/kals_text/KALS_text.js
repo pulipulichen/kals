@@ -27,7 +27,14 @@ function KALS_text(_selector) {
     this.child('selection', new Selection_manager(_selector));
     this.child('load_my', new My_annotation_loader());
     this.child('load_navigation', new Navigation_loader());
-    this.child('tool', new Annotation_tool(_selector));
+	if(KALS_CONFIG.reading_mode == "gesture")
+	{
+		this.child('tool', new Annotation_gesture_tool(_selector));
+	}
+	else{
+		this.child('tool', new Annotation_tool(_selector));
+	}
+    
     
     var _this = this;
     setTimeout(function() {

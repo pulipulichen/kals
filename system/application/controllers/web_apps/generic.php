@@ -255,6 +255,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_collection_anonymous',
             'annotation_list/Respond_list_collection',
             'annotation_list/Topic_list',
+            'annotation_list/Gesture_topic_list',
 
 
             'annotation_list/List_timestamp_component',
@@ -282,6 +283,7 @@ class generic extends Web_apps_controller {
             'annotation_view/Window_view',
 
             'kals_text/Annotation_tool',
+            'kals_text/Annotation_gesture_tool',
             'kals_text/Annotation_scope_loader',
             'kals_text/My_annotation_loader',
             'kals_text/My_basic_annotation_loader',
