@@ -342,6 +342,7 @@ Annotation_tool.prototype.setup_position = function (_align) {
 
 	//css position fixed
 	//體感互動模式下執行左右判斷
+	$.test_msg("Annotation_tool.prototype.setup_position", KALS_CONFIG.reading_mode);
 	if(KALS_CONFIG.reading_mode == "gesture"){
 		
 		_ui.css("position","fixed");

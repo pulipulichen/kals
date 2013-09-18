@@ -152,15 +152,16 @@ KALS_toolbar.prototype._$create_ui = function () {
         //2010.10.5 測試顯示avatar-component看看？
         //_this.toggle_navigation('avatar-component');
         
-        _padding.slideDown(function () {
-            $(this).removeAttr('style');
-        });
-        
+		if (KALS_CONFIG.disable_toolbar == false) { // toolbar disable
+	        _padding.slideDown(function () {
+	            $(this).removeAttr('style');
+	        });
+        }
 		
 		if (KALS_CONFIG.reading_mode == "gesture") {
 			_ui.hide();
 		}
-	if(KALS_CONFIG.disable_toobar == false){
+	if(KALS_CONFIG.disable_toolbar == false){
 		
 		_this.open();
 	}

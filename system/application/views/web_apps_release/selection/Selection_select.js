@@ -24,7 +24,7 @@ function Selection_select(_text) {
         _this._selectable = _policy.readable();
     }, true);
 	
-	if (KALS_CONFIG.reading_mode = "gesture") {
+	if (KALS_CONFIG.reading_mode == "gesture") {
 		this._$name = this._$name + '-gesture';
 	}
 }
