@@ -790,14 +790,13 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 				//	clearTimeout(_select_timer);
 				//}
 				
-				var _work = $(this);
-				
-				_select_timer = setTimeout(function() {
-					
-					_evt(_work, _callback);
-					
-					//_select_timer = null;
-				}, 1000);
+				var _word = $(this);
+				if (_word.hasClass("nav_normal") === true) {		
+						_select_timer = setTimeout(function() {
+								_evt(_word, _callback);
+							//_select_timer = null;
+						}, 1000);
+				} 
 			});
 			//this.locks.word_click = true;
         }	//if (typeof(this.locks.word_click) == 'undefined') {		

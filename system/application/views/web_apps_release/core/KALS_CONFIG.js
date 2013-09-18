@@ -186,14 +186,14 @@ DEFAULT_KALS_CONFIG = {
 	 * 
 	 * @type {boolean} true是關閉，false是打開，預設是false
 	 */
-	disable_toolbar: false,
+	disable_toolbar: true,
 	
 	/**
 	 * 閱讀模式
 	 * 
 	 * @type{String} 體感是gesture, 觸控是touch, 預設是mouse
 	 */
-	reading_mode: "mouse",
+	reading_mode: "gesture",
 	
     //----------------------------
     
