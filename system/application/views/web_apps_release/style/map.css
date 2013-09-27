@@ -1,0 +1,13 @@
+/**
+ * 婷芸的小地圖的CSS
+ */
+
+.KALS .window-map .my-div {
+	text-align:left !important;
+	
+}
+
+
+.KALS .window-map .my-div .highlight a { color: red !important; }
+
+.KALS .window-map .my-div .highlight li a { color: black !important; }
