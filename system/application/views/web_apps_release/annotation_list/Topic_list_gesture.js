@@ -25,31 +25,17 @@ Topic_list_gesture.prototype._toggle_complete = function (_is_complete) {
 
 Topic_list_gesture.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
-        .addClass('topic-list');
+        .addClass('topic-list')
+		.addClass('gesture');
     
     var _loading = this._create_loading_component();
     _loading.appendTo(_ui);
     
-    var _my = new List_collection_my();
-    _my.get_ui().appendTo(_ui);
-    this._list_colls.push(_my);
-    this.child('my', _my);
-    
-    var _like = new List_collection_like();
-	var _like_ui = _like.get_ui();
-    _like_ui.appendTo(_ui);
-    this._list_colls.push(_like);
-    
-    var _other = new List_collection_other();
-	var _other_ui = _other.get_ui();
-    _other_ui.appendTo(_ui);
-    this._list_colls.push(_other);
+    var _gesture = new List_collection_gesture();
+    _gesture.get_ui().appendTo(_ui);
+    this._list_colls.push(_gesture);
+    this.child('gesture', _gesture);
 	
-    var _anonymous = new List_collection_anonymous();
-	var _anonymous_ui = _anonymous.get_ui(); 
-    _anonymous_ui.appendTo(_ui);
-    this._list_colls.push(_anonymous);
-   
     var _blank = this._create_blank_component();
     _blank.appendTo(_ui);
     

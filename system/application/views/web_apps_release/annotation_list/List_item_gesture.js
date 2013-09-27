@@ -58,19 +58,7 @@ List_item_gesture.prototype._$create_ui = function () {
 };
 
 List_item_gesture.prototype.show_recommend = function (_callback) {
-    
-    var _param = this.get_data();
-    
-    if (_param.has_recommend() === false) {
-        $.trigger_callback(_callback);
-        return this;
-    }
-    
-    //var _recommnend_by = _param.recommend_by;
-    //$.test_msg('TODO List_item_gesture.show_recommend(_callback)', _recommnend_by.export_json());
-    
-    KALS_text.tool.recommend_hint.setup_recommend(this.get_annotation_param());
-    
+  
     return this; 
 };
 
@@ -96,22 +84,12 @@ List_item_gesture.prototype._setup_respond_list = function () {
 // --------
 
 List_item_gesture.prototype.focus = function (_scrollto) {
-    
-    List_item.prototype.focus.call(this, _scrollto);
-    
-    var _param = this.get_data();
-    
-    if (_param.is_my_annotation()) {
-		this.show_recommend();
-	}
-        
+
     return this; 
 };
 
 List_item_gesture.prototype.blur_other_focus = function () {
-    
-    KALS_text.tool.recommend_hint.close();
-    
+ 
     return List_item.prototype.blur_other_focus.call(this);
 };
 
@@ -143,7 +121,7 @@ List_item_gesture.prototype.clear_selection = function () {
 
 List_item_gesture.prototype.respond_annotation = function () {
     
-    return this.view_thread();
+    return this;
 };
 
 /* End of file List_item_gesture */
