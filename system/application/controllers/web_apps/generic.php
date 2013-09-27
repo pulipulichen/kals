@@ -252,10 +252,11 @@ class generic extends Web_apps_controller {
             'annotation_list/List_collection_like',
             'annotation_list/List_collection_my',
             'annotation_list/List_collection_other',
+            'annotation_list/List_collection_gesture',
             'annotation_list/List_collection_anonymous',
             'annotation_list/Respond_list_collection',
             'annotation_list/Topic_list',
-            'annotation_list/Gesture_topic_list',
+            'annotation_list/Topic_list_gesture',
 
 
             'annotation_list/List_timestamp_component',
@@ -268,6 +269,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_note_component',
             'annotation_list/List_item',
             'annotation_list/List_item_topic',
+            'annotation_list/List_item_gesture',
             'annotation_list/List_item_respond',
 
             'annotation_recommend/Recommend_hint',
