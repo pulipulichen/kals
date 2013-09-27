@@ -1,0 +1,18 @@
+.KALS.annotation-tool.gesture {
+	border: 3px solid red !important;
+}
+
+.KALS.annotation-tool.gesture .annotation-tool-header {
+	display:none;
+}
+
+.KALS.annotation-tool.gesture .topic-list-blank {
+	display:none;
+}
+.KALS.annotation-tool.gesture .annotation-tool-editor{
+	height:100px;
+}
+
+.KALS.annotation-tool.gesture .topic-list-complete{
+	display:none;
+}
