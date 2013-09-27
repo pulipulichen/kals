@@ -193,8 +193,8 @@ DEFAULT_KALS_CONFIG = {
 	 * 
 	 * @type{String} 體感是gesture, 觸控是touch, 預設是mouse
 	 */
-	//reading_mode: "gesture",
-	reading_mode: "mouse",
+	reading_mode: "gesture",
+	//reading_mode: "mouse",
 	
 	
     //----------------------------
