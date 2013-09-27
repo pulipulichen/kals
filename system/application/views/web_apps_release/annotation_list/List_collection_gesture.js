@@ -26,5 +26,9 @@ List_collection_gesture.prototype._$target_like = null;
 
 List_collection_gesture.prototype._$need_login = null;
 
+List_collection_gesture.prototype.create_list_item = function(_param) {
+	return new List_item_gesture(_param);
+};
+
 /* End of file List_collection_gesture */
 /* Location: ./system/application/views/web_apps/List_collection_gesture.js */

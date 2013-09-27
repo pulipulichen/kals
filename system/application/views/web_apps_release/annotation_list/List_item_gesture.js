@@ -18,6 +18,8 @@ function List_item_gesture(_param) {
 
 List_item_gesture.prototype = new List_item_topic();
 
+List_item_gesture.prototype._note_show_fulltext = true;
+
 
 /**
  * Create UI
@@ -25,12 +27,73 @@ List_item_gesture.prototype = new List_item_topic();
  * @type {jQuery} UI
  */
 List_item_gesture.prototype._$create_ui = function () {
+    
+	var _this = this;
+    
     var _ui = $('<div></div>')
-        .addClass('list-item-gesture');
+        .addClass(this._classname)
+        .addClass('list-item');
     
-    var _item = List_item.prototype._$create_ui.call(this);
-    _item.appendTo(_ui);
+    if ($.isset(this._annotation_param)) {
+        _ui.attr('annotation_id', this._annotation_param.annotation_id);
+        
+        var _topic_id = this.get_topic_id();
+        _ui.attr('topic_id', _topic_id);
+    }
     
+    var _header = this._setup_header();
+    _header.get_ui().appendTo(_ui);
+    
+    var _note = this._setup_note();
+    _note.get_ui().appendTo(_ui);
+    
+    var _menu_block, _menu_tooltip;
+    if (this._menu_style_default === null) {
+        _menu_block = this._setup_menu_block();
+        _menu_block.get_ui().appendTo(_ui);
+        
+        _menu_tooltip = this._setup_menu_tooltip();
+        _menu_tooltip.get_ui().appendTo(_ui);
+    }
+    else if (this._menu_style_default == 'block') {
+        _menu_block = this._setup_menu_block();
+        _menu_block.get_ui().appendTo(_ui);
+    }
+    
+    _ui.mouseover(function() {
+        _this.focus(false);
+    });
+    _ui.mouseout(function () {
+        _this.blur();
+    }); 
+    
+	// @20130609 Pudding Chen
+	// 只有在不顯示全文的情況下，按下內容才會顯示thread
+	if (this._note_show_fulltext === false) {
+		_ui.click(function () {
+			_this.view_thread();
+		});
+	}
+	
+    setTimeout(function() {
+        //$.test_msg('List_item._$create_ui()', _config);
+        
+        if (_this._menu_style_default === null 
+            || _this._menu_style_default == 'tooltip') {
+            var _config = _menu_tooltip._$get_config();
+            _ui.tooltip(_config);        
+        }
+            
+        _this._toggle_menu_style();
+    }, 0);
+    
+    
+    this.notify_listeners('set');
+    
+    //this._ready = true;
+	
+    var _item = _ui;
+	
     var _respond_list = this._setup_respond_list();
     //$.test_msg('List_item_gesture._$create_ui()', [$.isset(_respond_list), $.get_class(_respond_list)]);
     _respond_list.get_ui().appendTo(_ui);
@@ -84,13 +147,13 @@ List_item_gesture.prototype._setup_respond_list = function () {
 // --------
 
 List_item_gesture.prototype.focus = function (_scrollto) {
-
+	//$.test_msg("List_item_gesture", "是你嗎?")
     return this; 
 };
 
 List_item_gesture.prototype.blur_other_focus = function () {
  
-    return List_item.prototype.blur_other_focus.call(this);
+    return this;
 };
 
 /*
@@ -110,9 +173,9 @@ List_item_gesture.prototype.set_selection = function () {
 
 List_item_gesture.prototype.clear_selection = function () {
     
-    List_item.prototype.clear_selection.call(this);
+    //L/ist_item.prototype.clear_selection.call(this);
     
-    KALS_text.selection.recommend.clear();
+    //KALS_text.selection.recommend.clear();
     
     return this;
 };
