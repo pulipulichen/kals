@@ -20,11 +20,11 @@ List_collection_gesture.prototype = new List_collection();
 
 List_collection_gesture.prototype._$name = 'gesture';
 
-List_collection_gesture.prototype._$target_my = true;
+List_collection_gesture.prototype._$target_my = null;
 
-List_collection_gesture.prototype._$target_like = false;
+List_collection_gesture.prototype._$target_like = null;
 
-List_collection_gesture.prototype._$need_login = false;
+List_collection_gesture.prototype._$need_login = null;
 
 /* End of file List_collection_gesture */
 /* Location: ./system/application/views/web_apps/List_collection_gesture.js */
