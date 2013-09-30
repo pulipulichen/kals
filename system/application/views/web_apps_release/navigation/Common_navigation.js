@@ -18,10 +18,17 @@ function Common_navigation() {
 	// Isolation Mode
 	if (KALS_context.policy.allow_show_navigation()) {
 		this._$nav_items = [
-	        new Window_filter()
+	        new Window_filter(),
+			new Window_map()
 	    ];
-	}
+	}	
+		
+		
 }
+	
+
+	
+
 
 Common_navigation.prototype = new Navigation_list();
 

@@ -257,6 +257,15 @@ _factory.hr_row().appendTo(_ui);
   
     _searchresult_row.css("font-size","medium");
   
+  // 搜尋結果數量
+    //var _result_number = _search_data.item_number;
+	
+	var _search_number_row = _factory.row(
+	    new KALS_language_param('Searchnumber','window.content.searchnumber'), '1'
+	).appendTo(_ui); 
+
+    
+  
     var _list_ui = this.list.get_ui();
 	_list_ui.appendTo(_ui);
 	

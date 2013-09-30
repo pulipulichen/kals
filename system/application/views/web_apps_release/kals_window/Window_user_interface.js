@@ -496,19 +496,6 @@ Window_user_interface.prototype.create_pager = function (_now_page, _all_page, _
 	return _button;
 }; 
 
-//========================
 
-/**
- * 畫出搜尋結果
- * @param {KALS_language_param} _author 作者
- * @param {KALS_language_param} _sort 類別
- * @param {KALS_language_param} _content 內文
- * @param {KALS_language_param} _note 筆記
-
- */
-
-
-	
-//=============	
 /* End of file Window_user_interface */
 /* Location: ./system/application/views/web_apps/Window_user_interface.js */

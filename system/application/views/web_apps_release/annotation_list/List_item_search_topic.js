@@ -58,13 +58,6 @@ List_item_search_topic.prototype._$create_ui = function(){
 	//_ui.css("clear","right"); 
 	_ui.find(".list-menu.list-menu-block").css("padding","5px");
 	
-	
-   //試著把留言換成檢視
-   //_ui.find(".list-menu-option.view").css("color","red");
-   //_ui.find(".list-menu-option.view").html("檢視");
- 
-   
-
 
 	return _ui;
 	

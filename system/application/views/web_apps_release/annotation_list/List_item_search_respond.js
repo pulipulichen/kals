@@ -2,7 +2,7 @@
  * View_list_item_respond
  *
  * @package    KALS
- * @category   Webpage Application Libraries
+
  * @author     Pudding Chen <puddingchen.35@gmail.com>
  * @copyright  Copyright (c) 2010, Pudding Chen
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
@@ -10,35 +10,36 @@
  * @version    1.0 2010/11/8 下午 11:42:54
  * @extends {List_item_respond}
  */
-function List_item_search_respond(_param, _topic_item) {
+function List_item_search_respond(_param) { 
     
-    View_list_item_respond.call(this, _param, _topic_item);
-    
+    List_item_respond.call(this, _param);
 }
 
-List_item_search_respond.prototype = new View_list_item_respond();
+List_item_search_respond.prototype = new List_item_respond();
 
 
-//View_list_item_respond.prototype._menu_style_default = 'block';
-
-//View_list_item_respond.prototype._note_show_fulltext = true;
-
-//View_list_item_respond.prototype._disable_option = ['view', 'like'];
-
-/*
-View_list_item_respond.prototype.editor_set_data = function (_param) {
-    KALS_text.tool.view.set_modified();
-    return this.set_data(_param);
-};
+/*List_item_search_respond.prototype.row = function(){
+	new KALS_language_param('no-result', 'window.content.noresult');
+	
+	
+};	
 */
 
-/*View_list_item_respond.prototype.get_editor = function () {
-    return KALS_text.tool.view.editor_container.editor;
-};
 
-View_list_item_respond.prototype.get_list = function () {
-    return KALS_text.tool.view.list;
-};*/
+
+List_item_search_respond.prototype._$create_ui = function(){
+    
+    //var _ui = KALS_window.ui.panel('no-result');
+    var _ui = List_item_respond.prototype._$create_ui.call(this);
+    //var _factory = KALS_window.ui;
+	
+    var _no_result_row = _factory.row(
+	    new KALS_language_param('no-result','window.content.noresult'),'1'
+	).appendTo(_ui); 
+
+		
+    return _ui;	
+};
 
 /**
  * 使用最原始的List_item.respond_annotation()

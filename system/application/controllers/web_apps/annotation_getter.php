@@ -653,9 +653,10 @@ class Annotation_getter extends Web_apps_controller {
 
         //輸出
         $totally_loaded = TRUE;
+        $totally_count = 0;
         if (isset ($search_id))
             $totally_loaded = FALSE;
-        
+            
         //不作limit的情況下讀完，表示完全讀取
         if (isset($search_id)
             && ($search->length() == $search_id->length() || $search->length() == 0))
@@ -665,7 +666,7 @@ class Annotation_getter extends Web_apps_controller {
 
         $annotation_collection = array();
 
-        //test_msg('Search Length', $search->length());
+        test_msg('Search Length', $search->length());
 
         foreach ($search AS $search_annotation)
         {
@@ -679,38 +680,49 @@ class Annotation_getter extends Web_apps_controller {
                 $search_data->limit = 5;
                 //$search_data->is_like = NULL;
                 $search_data->order_by = 'create';
-                $search_data->show_total_count = TRUE;
+                $search_data->show_total_count = TRUE; 
+                $search_data->total_countN = 0;
 
                 $search_result = $this->list_annotation($search_data);
                 
-                //test_msg($search_result);
+                test_msg('total_countN',$search_data->total_countN);
 
                 if (count($search_result['annotation_collection']) > 0)
                 {
                     $annotation_data['respond_list'] = $search_result;
+                    
                 }
+                
+                $search_data->total_countN = count($search_result['annotation_collection']);
+                test_msg('total_countN',$search_data->total_countN);
+                
             }
 
             array_push($annotation_collection, $annotation_data);
         }
 
 
-        $output_data = array(
-            'annotation_collection' => $annotation_collection,
-            'totally_loaded' => $totally_loaded
-        );
+        
 
-        if (isset($data->show_total_count)
-            && $data->show_total_count === TRUE)
+        if ($data->show_total_count === TRUE )
         {
             if (count($annotation_collection) === 0)
-                $output_data['total_count'] = 0;
+            { $output_data['total_count'] = 0;}
             else if (isset($search_id))
-                $output_data['total_count'] = $search_id->length();
+            {$output_data['total_count'] = $search_id->length();}
             else
-                $output_data['total_count'] = count($annotation_collection);
+            {$output_data['total_count'] = count($annotation_collection);}
+           
+            test_msg('total_count', $output_data['total_count']);
+            $totally_count = $output_data['total_count'];
         }
 
+        $output_data = array(
+            'annotation_collection' => $annotation_collection,
+            'totally_loaded' => $totally_loaded,
+            'show_total_count' => $totally_count
+        );
+        
         //log區
         $array_data = NULL;
         if (is_string($json))
@@ -848,6 +860,8 @@ class Annotation_getter extends Web_apps_controller {
 
         //輸出
         $totally_loaded = TRUE;
+        $totally_count = 0;
+        
         if (isset ($search_id))
             $totally_loaded = FALSE;
         
@@ -859,7 +873,8 @@ class Annotation_getter extends Web_apps_controller {
         }
         $annotation_collection = array();
         
-        //test_msg('Search Length', $search->length());
+        test_msg('Search Length', $search->length());
+        
         //test_msg($url);
         //test_msg($this->webpage->filter_webpage_id($url));
         foreach ($search AS $search_annotation)
@@ -874,14 +889,16 @@ class Annotation_getter extends Web_apps_controller {
 
        // array_push($annotation_collection, $annotation_data);
 
-
+            
         $output_data = array(
             'annotation_collection' => $annotation_collection,
             'totally_loaded' => $totally_loaded
+            //'show_total_count' => $data->show_total_count     
         );
+        //test_msg('total_conutN',$data->show_total_count);
         
-        if (isset($data->show_total_count)
-            && $data->show_total_count === TRUE)
+        if (isset($data->show_total_count) 
+            && ($data->show_total_count === TRUE))
         {
             if (count($annotation_collection) === 0)
                 $output_data['total_count'] = 0;
@@ -889,6 +906,8 @@ class Annotation_getter extends Web_apps_controller {
                 $output_data['total_count'] = $search_id->length();
             else
                 $output_data['total_count'] = count($annotation_collection);
+            //test_msg('total_count', $output_data['total_count']);
+            
         }   
 
         //log區
