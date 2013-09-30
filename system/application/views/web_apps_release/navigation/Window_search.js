@@ -192,6 +192,9 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	
 	_keyword_input.addClass("search-keyword");
 	
+	// 測試用市
+	_keyword_input.val("test");
+	
 	var _searchkey_row = _factory.row(
         new KALS_language_param('Searchkey', 'window.content.searchkey'),
         _keyword_input).appendTo(_ui); //"關鍵字"標題	
@@ -238,7 +241,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         ).appendTo(_subpanel);
 
 	
-_factory.hr_row().appendTo(_ui);	
+	_factory.hr_row().appendTo(_ui);	
 	
 	
   	

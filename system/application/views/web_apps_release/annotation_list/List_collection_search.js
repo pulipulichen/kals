@@ -113,12 +113,68 @@ List_collection_search.prototype.create_list_item = function(_param) {
 };
 
 List_collection_search.prototype.get_search_data = function () {
-    var _data = List_collection.prototype.get_search_data.call(this);
+	
+    var _search_data = {};
     
-    _data.show_total_count = true;
+    //如果有指定target id，則就不需要其他參考資料
+    if ($.isset(this._$topic_id)) {
+        _search_data.topic_id = this._$topic_id;
+        
+        if ($.isset(this._$limit)) {
+			_search_data.limit = this._$limit;
+		}
+            
+        if ($.isset(this._$target_topic)) {
+			_search_data.target_topic = this._$target_topic;
+		}
+        if ($.isset(this._$order_by) && this._$order_by != 'score') {
+			_search_data.order_by = this._$order_by;
+		}
+            
+        if ($.isset(this._offset)) {
+			_search_data.offset = this._offset;
+		}
+            
+        return _search_data;
+    }
+       
+    //需要登入身分的兩個參數
+    if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
+	KALS_context.auth.is_login() === false) {
+		return null;
+	}
+    
+    if ($.isset(this._$target_like)) {
+		_search_data.target_like = this._$target_like;
+	}
+    if ($.isset(this._$target_my)) {
+		_search_data.target_my = this._$target_my;
+	}
+    
+    if ($.isset(this._$limit)) {
+		_search_data.limit = this._$limit;
+	}
+    
+    if ($.isset(this._$target_topic)) {
+		_search_data.target_topic = this._$target_topic;
+	}
+    if ($.isset(this._$order_by) && this._$order_by != 'score') {
+		_search_data.order_by = this._$order_by;
+	}
+        
+    if ($.isset(this._offset)) {
+		_search_data.offset = this._offset;
+	}
     
     //$.test_msg('Respond_list_collection.get_search_data()', _data);
+    _search_data.searchrange = this._searchrange;
+	_search_data.keyword = this._keyword;
+	_search_data.order_by = this._$order_by;
+	
+    _search_data.show_total_count = true;
     
+
+	return _search_data;
     return _data;
 };
 
