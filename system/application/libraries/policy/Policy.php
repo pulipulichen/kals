@@ -55,7 +55,7 @@ ALTER TABLE policy2actor OWNER TO postgres;
 
  * </code>
  */
-class Policy extends Generic_object {
+class Policy extends Drupal_generic_object {
 
     protected $table_name = 'policy';
     protected $table_fields = array('policy_id', 'action_id', 'resource_type_id', 'resource_id');

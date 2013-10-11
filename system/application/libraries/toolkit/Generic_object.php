@@ -1190,6 +1190,7 @@ class Generic_object extends KALS_object {
      */
     public function find($cond, $value = NULL)
     {
+        
         $cond = self::_set_default_field($this->default_field, $cond, $value);
         $cond = $this->_set_field_filter($cond);
         $cond = self::_get_table_data($cond, $this->table_fields);
@@ -1207,6 +1208,11 @@ class Generic_object extends KALS_object {
                 return $obj;
         }
 
+        $cond = array(
+            'field1' => 'value',
+            'field2' => 'value2'
+        );
+        
         $this->db->where($cond);
         if (is_string($this->fake_delete))
             $this->db->where ($this->fake_delete, 'FALSE');
@@ -1227,6 +1233,15 @@ class Generic_object extends KALS_object {
             return NULL;
         }
     }
+    
+        // Policy
+        // policy_id (node_id) = 14
+        // resource_id = 4
+        $policy = new Policy();
+        $result = $policy->find("resource_id", 4);
+        // 14
+        $id = $result->get_id();
+        run($id, 14, '能找到find');
 
     /**
      * 搜尋多個物件
