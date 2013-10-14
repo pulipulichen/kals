@@ -41,12 +41,13 @@ List_item_gesture.prototype._$create_ui = function () {
         _ui.attr('topic_id', _topic_id);
     }
     
-    var _header = this._setup_header();
-    _header.get_ui().appendTo(_ui);
+    //var _header = this._setup_header();
+    //_header.get_ui().appendTo(_ui);
     
     var _note = this._setup_note();
     _note.get_ui().appendTo(_ui);
-    
+
+/*    
     var _menu_block, _menu_tooltip;
     if (this._menu_style_default === null) {
         _menu_block = this._setup_menu_block();
@@ -60,12 +61,16 @@ List_item_gesture.prototype._$create_ui = function () {
         _menu_block.get_ui().appendTo(_ui);
     }
     
-    _ui.mouseover(function() {
+     _ui.mouseover(function() {
         _this.focus(false);
     });
-    _ui.mouseout(function () {
+     
+    
+   	_ui.mouseout(function () {
         _this.blur();
-    }); 
+    	}); 
+ */    
+	
     
 	// @20130609 Pudding Chen
 	// 只有在不顯示全文的情況下，按下內容才會顯示thread
@@ -74,7 +79,7 @@ List_item_gesture.prototype._$create_ui = function () {
 			_this.view_thread();
 		});
 	}
-	
+/*	
     setTimeout(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         
@@ -86,7 +91,7 @@ List_item_gesture.prototype._$create_ui = function () {
             
         _this._toggle_menu_style();
     }, 0);
-    
+  */  
     
     this.notify_listeners('set');
     

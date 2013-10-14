@@ -47,7 +47,7 @@ jQuery.test_msg = function (_title, _test) {
         
 		//_info_box.hide();
         _info_box.dblclick(function () {
-            $(this).toggle();
+            $(this).hide();
         });
     }
 	

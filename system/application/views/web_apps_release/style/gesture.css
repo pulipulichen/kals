@@ -16,3 +16,36 @@
 .KALS.annotation-tool.gesture .topic-list-complete{
 	display:none;
 }
+
+.KALS.annotation-tool.gesture .close-button.left{
+	
+	display:inline-block;
+	color:#777777;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:50px;
+	line-height:50px;
+	width:86px;
+	text-decoration:none;
+	text-align:center;	
+	background-color:#dfdfdf;
+	float:left;
+}
+
+.KALS.annotation-tool.gesture .close-button.right{
+	display:inline-block;
+	color:#777777;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:50px;
+	line-height:50px;
+	width:86px;
+	text-decoration:none;
+	text-align:center;
+	background-color:#dfdfdf;
+	float:right;
+}
