@@ -601,3 +601,14 @@ table.cke_editor.inline-table {
 	text-align:left;
 	padding: 0 1em !important; 
 }
+
+.container-td .annotation-editor table tbody tr{
+	background: rgba(0, 0, 0, 0) !important;
+}
+
+.container-td .annotation-editor table tbody .left{
+	border-right-width:0px !important;
+}
+.container-td .annotation-editor table tbody .right{
+	border-left-width:0px !important;
+}

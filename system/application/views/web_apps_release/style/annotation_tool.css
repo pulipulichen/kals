@@ -172,3 +172,8 @@
 .KALS.annotation-tool .enable-editor-hint {
 	display: none;
 }
+
+.annotation-tool .editor-tool table{
+   margin-top:0px !important;
+   margin-bottom:0px !important;
+}
