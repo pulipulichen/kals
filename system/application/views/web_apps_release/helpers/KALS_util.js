@@ -542,7 +542,7 @@ KALS_util._get_confirm_modal = function () {
          */
         _modal.confirm_callback = null;
         
-        var _yes_lang = new KALS_language_param('YES', 'dialog.option.yes');
+/*        var _yes_lang = new KALS_language_param('YES', 'dialog.option.yes');
         var _no_lang = new KALS_language_param('NO', 'dialog.option.no');
         
         var _yes_option = new Dialog_close_option(_yes_lang, function () {
@@ -557,7 +557,7 @@ KALS_util._get_confirm_modal = function () {
 			}
         });
         
-        _modal.set_options([_yes_option, _no_option]);
+        _modal.set_options([_yes_option, _no_option]);  */
         _modal.get_ui().addClass('confirm');
         
         this._confirm_modal = _modal;
@@ -578,6 +578,7 @@ KALS_util._get_confirm_modal = function () {
  * @memberOf {KALS_util}
  * @method [confirm]
  */
+
 KALS_util.confirm = function (_heading, _content, _callback) {   
     var _modal = this._get_confirm_modal();
     _modal.set_heading(_heading);
@@ -593,7 +594,7 @@ KALS_util.confirm = function (_heading, _content, _callback) {
     _modal.open();
     
     return _modal;
-};
+};  
 
 /**
  * 通知功能的Modal
@@ -728,6 +729,31 @@ KALS_util.log = function (_log) {
     _log = '[KALS] ' + _log;
     console.log(_log);
 };
+
+/**
+ * 傳送紀錄到伺服器的資料庫儲存
+ * @param {int} _action
+ * @param {string} _note
+ */
+KALS_util.log = function (_action, _note) {
+    
+	// 組合參數成為_data
+	var _data = {
+		action: _action,
+		note: _note
+	};
+
+	// 以KALS_util.ajax_get() 送出資料給web_apps/log/save
+	var _config = {
+		url: "web_apps/log/save",
+		data: _data
+	};
+	KALS_util.ajax_get(_config);
+	
+	return this;
+};
+
+
 
 /* End of file KALS_unit */
 /* Location: ./libraries/helpers/kals_unit.js */

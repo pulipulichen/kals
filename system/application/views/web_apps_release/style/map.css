@@ -8,6 +8,14 @@
 }
 
 
-.KALS .window-map .my-div .highlight a { color: red !important; }
+.KALS.overlay-map.dialog-modal .content .highlight a { color: red !important; }
 
-.KALS .window-map .my-div .highlight li a { color: black !important; }
+.KALS.overlay-map.dialog-modal .content .highlight li a { color: black !important; }
+
+
+.KALS.overlay-map.dialog-modal .content { overflow-y: auto; max-height: 150px; }
+
+.KALS.overlay-map.dialog-modal { min-width: 200px; 
+								 max-width: 300px; 
+								 max-height: 200px;  
+ 								 font-size: 12pt;  }

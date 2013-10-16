@@ -95,9 +95,15 @@ Navigation_list.prototype._create_nav = function() {
             //var _content = _this._$nav_items[_i];
             var _content = _this._get_window_content(_i);
             
-            //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
-            
-            KALS_window.setup_window(_content);
+			if (_content.is_absolute() === false) {
+	            //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
+	            
+	            KALS_window.setup_window(_content);
+			}
+			else {
+				//KALS_util.confirm('test', "content");
+				_content.open();
+			}
             
             return false;
         });

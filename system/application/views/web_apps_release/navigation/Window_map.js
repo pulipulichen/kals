@@ -13,14 +13,21 @@
 
 function Window_map() {
     
-    Overlay_modal.call(this);
+    Dialog_modal.call(this);
     
+	//var _this = this;
+	//setTimeout(function () {
+	//	_this.open();
+	//	$.test_msg("Open MAP!!");
+	//}, 1000);
     //this._setup_submit(new Window_filter_submit());
+	
 }
+
 
 //Window_map.prototype = new Window_content();
 // 先繼承Overlay_modal
-Window_map.prototype = new Overlay_modal();
+Window_map.prototype = new Dialog_modal();
 
 // 多重繼承自Window_content
 var _windows_content_prototype = new Window_content();
@@ -42,14 +49,43 @@ Window_map.prototype.nav_heading = new KALS_language_param (
     'window.map.nav_heading'
 );
 
+/**
+ * 獨立視窗
+ * 
+ * 如果是false，則會依附在KALS_window底下
+ * 如果是true，則會直接open
+ */
+Window_map.prototype._$absolute = true;
+
 Window_map.prototype._$create_ui = function () {
     
     var _factory = KALS_window.ui;
-    
-    var _ui = _factory.panel('window-map');
+	
+    var _ui = this._$create_ui_prototype();
+	_ui.addClass("overlay-map");
+    _ui.append(_factory.panel('window-map'));
+
+	
+	_ui.addClass('dialog-modal')
+		.addClass('KALS').addClass('window')
+        .html('<table align="center" class="dialog-table" height="100%" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
+        + '<tr class="dialog-toolbar-tr"><th class="dialog-toolbar" valign="middle">'
+            + '<table class="dialog-toolbar-table" width="100%" align="center" cellpadding="0" cellspacing="0" border="0"><tbody><tr>'
+            + '<td class="toolbar-options toolbar-backward"></td>'
+            + '<td class="dialog-heading"></td>'
+            + '<td class="toolbar-options toolbar-forward"></td>'
+            + '</tr></tbody></table>'
+        + '</th></tr>' 
+        + '<tr class="dialog-content-tr"><td class="dialog-content-td">'
+            + '<div class="dialog-content"></div></td></tr>'
+        + '</tbody></table>');
+	
+	//_ui.css('font-size', '20pt');
+	
+
         
     var _map = $('<div></div>')
-        .addClass('my-div')
+        .addClass('content')
         .appendTo(_ui);
  
 
@@ -173,15 +209,16 @@ Window_map.prototype._$create_ui = function () {
 				_first_top = $(_ele).offset().top;
 			}
 			
-			if( _offset >= _header_array[_count] 
-				&& ( (_header_array.length == _count+1) || (_offset < _header_array[_count+1]) ) ){
+			if( _offset >= _header_array[_count]-10 
+				&& ( (_header_array.length == _count+1) || (_offset < _header_array[_count+1]-10) ) ){
 				
 				$(_ele).addClass("highlight");
 				
 				//_highlight = $("#header"+count+"").position().top;
 				
 				
-				var _div = _map.parents(".dialog-content:first");
+				var _div = _map;
+				//.parents(".dialog-content:first");
 				var _top = $(_ele).offset().top;
 				_top = _top - _first_top;
 				
@@ -203,8 +240,94 @@ Window_map.prototype._$create_ui = function () {
 	};
 	
 	$(window).scroll(_scroll_event);
-	_scroll_event(); 
+	_scroll_event();
+
+	//$("<div>121212112121</div>").appendTo(_ui);
+	
+	_ui.appendTo("body");
+    var _config = this._$get_config();
+    _ui.overlay(_config);	//jQuery TOOL Overlay
+	
+	var _this = this;
+	setTimeout(function () {
+		
+		var _close_option = new Dialog_close_option();
+	    _this.set_forward_option(_close_option);
+	}, 0);
+	
+	//設定可拖曳
+    var _draggable_config = {
+        handle: 'div.annotation-tool-header'	//TODO 請調整handle
+        
+    };
+    
+	//設定游標變成手指
+	$('.dialog-heading').css( 'cursor', 'pointer' );
+	
+    if ($('body').height() > _ui.height() + 100) {
+        _draggable_config.containment = 'parent';
+    }
+    
+    _ui.draggable(_draggable_config);
+	
     return _ui;
+};
+
+
+
+/**
+ * 開啟視窗
+ * 
+ * 加入一些設定，才能順利開啟視窗
+ * @param {function} _callback
+ */
+Window_map.prototype.open = function (_callback) {
+	
+	// 加入open()之前需要的設定
+	// 參考KALS_util.confirm()
+
+    var _modal = this;
+    /**
+     * 用來擺放回呼函數使用
+     * @type {function}
+     */
+    _modal.confirm_callback = null;
+
+    
+    var _id = 'Confirm_' + $.create_id();
+    this.set_modal_name(_id);
+	var _ui = this.get_ui();
+    _ui.attr('id', _id);
+
+    _modal.set_heading("map");
+    //_modal.set_content("asasa");
+    
+    if ($.is_function(_callback)) {
+		_modal.confirm_callback = _callback;
+	}
+	else {
+		_modal.confirm_callback = null;
+	}
+        
+    //_modal.open();
+	
+	// 用原來的方式執行open
+	//$.test_msg("Window_map.open()", this.is_opened());
+	return Dialog_modal.prototype.open.call(this, _callback);
+};
+
+/**
+ * @type {object}
+ */
+Window_map.prototype._$get_config = function () {
+    
+	var _config = Dialog_modal.prototype._$get_config.call(this);
+	
+	// http://jquerytools.org/documentation/overlay/
+	_config.top = "5px";
+	_config.left = "800px";
+	
+    return _config; 
 };
 
 /* End of file Window_filter */
