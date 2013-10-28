@@ -230,10 +230,6 @@ class Webpage extends KALS_resource {
         return new Annotation_tutor($this);
     }
     
-    
-    public function create($url) {
-        return $this->filter_webpage_object($url);
-    }
 }
 
 
