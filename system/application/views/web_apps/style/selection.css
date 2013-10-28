@@ -2,6 +2,8 @@
     cursor:pointer;
     border-radius: 0.4em;
     -moz-border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    -khtml-border-radius: 0.4em;
     border: 1px solid #22272C;
     background-color: #576570;
     
@@ -72,6 +74,17 @@
     text-align:center;
     z-index: 999;
     width: 60px;
+	
+	/**
+	 * @ 20130612 Pudding Chen
+	 * 不給你們選取
+	 */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .kals-word.tooltip-trigger-hover {
@@ -91,23 +104,24 @@
 }
 */
 
-/*
 .kals-word.nav_bad {
-    color: #900; 
+    color: #A64B00; 
 }
 
 .kals-word.nav_normal {
-    color: #B00;
+    /*color: #FF7400;*/
+    color: #A64B00;
 }
-*/
 
 .kals-word.nav_good {
-    color: #F00;
+   /*color: #A60000;*/
+   color: #A64B00;
 }
 
 .kals-word.nav_great {
-    /*color: #A62F00;*/
-    color: #F00;
+   /*color: #A62F00;*/
+   /*color: #F00;*/
+   color: #A64B00;
 }
 
 /**
@@ -121,6 +135,8 @@
     z-index:1;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
 }
 
 .kals-paragraph .select.select_from {
@@ -128,6 +144,8 @@
     
     -moz-border-radius: 8px 0 0 8px;
     -webkit-border-radius: 8px 0 0 8px;
+    border-radius: 8px 0 0 8px;
+    -khtml-border-radius: 8px 0 0 8px;
 }
 
 .kals-paragraph .select.select_to {
@@ -135,6 +153,8 @@
     
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
+    border-radius: 0 8px 8px 0;
+    -khtml-border-radius: 0 8px 8px 0;
 }
 
 .kals-paragraph .select.select_middle {
@@ -143,12 +163,16 @@
     
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
+    border-radius: 0;
+    -khtml-border-radius: 0;
 }
 
 .kals-paragraph .select.select_to.select_from {
     border-style: solid;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
 }
 
 /**

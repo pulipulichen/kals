@@ -17,17 +17,18 @@ function Dialog_option(_lang, _callback, _arg) {
     
     KALS_user_interface.call(this);
     
-    if ($.is_function(_lang))
-    {
+    if ($.is_function(_lang)) {
         _arg = _callback;
         _callback = _lang;
         _lang = null;
     }
     
-    if ($.is_class(_lang, 'KALS_language_param'))
-        this.lang = _lang;
-    if ($.is_function(_callback))
-        this.callback = _callback;
+    if ($.is_class(_lang, 'KALS_language_param')) {
+		this.lang = _lang;
+	}
+    if ($.is_function(_callback)) {
+		this.callback = _callback;
+	}
     this.arg = _arg;
 }
 
@@ -57,13 +58,13 @@ Dialog_option.prototype._$create_ui = function () {
         .addClass('dialog-option');
     
     var _lang = this.lang;
-    if ($.is_null(_lang))
-        _lang = this._default_lang;
+    if ($.is_null(_lang)) {
+		_lang = this._default_lang;
+	}
     
     KALS_context.lang.add_listener(_button, _lang);
     
-    if ($.is_function(this.callback))
-    {
+    if ($.is_function(this.callback)) {
         var _this = this;
         _button.click(function () {
             _this.callback(_this.arg);
@@ -75,8 +76,9 @@ Dialog_option.prototype._$create_ui = function () {
         $(this).addClass('hover');
     }, function () {
         
-        if ($(this).hasClass('focus') == false)
-            $(this).removeClass('hover');
+        if ($(this).hasClass('focus') === false) {
+			$(this).removeClass('hover');
+		}
     });
     
     _button.focus(function () {

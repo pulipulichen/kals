@@ -18,30 +18,32 @@ function KALS_exception(_class, _message) {
     if ($.is_object(_class) 
         && (typeof(_class.heading) != 'undefined' 
         || typeof(_class.message) != 'undefined'
-        || typeof(_class.request_uri) != 'undefined'))
-    {
+        || typeof(_class.request_uri) != 'undefined')) {
         var _server_error = _class;
-        if (typeof(_server_error.heading) != 'undefined')
-            this.heading = _server_error.heading;
-        if (typeof(_server_error.message) != 'undefined')
-            this.message = _server_error.message;
-        if (typeof(_server_error.request_uri) != 'undefined')
-            this.request_uri = _server_error.request_uri;
+        if (typeof(_server_error.heading) != 'undefined') {
+			this.heading = _server_error.heading;
+		}
+        if (typeof(_server_error.message) != 'undefined') {
+			this.message = _server_error.message;
+		}
+        if (typeof(_server_error.request_uri) != 'undefined') {
+			this.request_uri = _server_error.request_uri;
+		}
     }
-    else
-    {
-        if ($.is_null(_message) && $.is_string(_class))
-        {
+    else {
+        if ($.is_null(_message) && $.is_string(_class)) {
             _message = _class;
             _class = null;
         }
         
         var _class_name = false;
-        if ($.isset(_class))
-            _class_name = $.get_class(_class);
+        if ($.isset(_class)) {
+			_class_name = $.get_class(_class);
+		}
             
-        if (false != _class_name)
-            _message = '['+_class_name+'] ' + _message;
+        if (false != _class_name) {
+			_message = '[' + _class_name + '] ' + _message;
+		}
         
         this.message = _message;
         //return _message;   

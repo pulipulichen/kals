@@ -1234,15 +1234,6 @@ class Generic_object extends KALS_object {
         }
     }
     
-        // Policy
-        // policy_id (node_id) = 14
-        // resource_id = 4
-        $policy = new Policy();
-        $result = $policy->find("resource_id", 4);
-        // 14
-        $id = $result->get_id();
-        run($id, 14, '能找到find');
-
     /**
      * 搜尋多個物件
      * @param array $cond 必須是以key跟value搭配的搜尋條件
