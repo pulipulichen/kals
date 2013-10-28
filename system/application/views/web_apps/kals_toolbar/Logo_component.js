@@ -20,7 +20,7 @@ Logo_component.prototype = new KALS_user_interface();
 
 Logo_component.prototype._$create_ui = function () {
     
-    var _ui = $('<div class="logo-component">KALS!</div>');
+    var _ui = $('<div class="logo-component">' + KALS_CONFIG.logo + '</div>');
     
     return _ui;
 };

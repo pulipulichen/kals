@@ -38,14 +38,13 @@ Window_profile_submit.prototype.failed_notification = new KALS_language_param(
 
 Window_profile_submit.prototype.complete_handle = function (_data) {
     
-    if (_data == true)
-    {
+    if (_data === true) {
         var _input_data = this.get_data();
         
         var _user = KALS_context.user;
-        _user.set_name(_input_data['name']);
-        _user.set_sex(_input_data['sex']);
-        _user.set_locale(_input_data['locale']);
+        _user.set_name(_input_data.name);
+        _user.set_sex(_input_data.sex);
+        _user.set_locale(_input_data.locale);
     }
     
     return Window_content_submit.prototype.complete_handle.call(this, _data);
@@ -55,8 +54,7 @@ Window_profile_submit.prototype.validate = function (_inputs, _data) {
     
     //$.test_msg('Window_profile_submit.validate()', _data);
     
-    if (_data['name'] == null || _data['name'] == '')
-    {
+    if (_data.name === null || _data.name === '') {
         this.set_error(new KALS_language_param(
             'Please write name.',
             'window.profile.submit.error.name_empty'

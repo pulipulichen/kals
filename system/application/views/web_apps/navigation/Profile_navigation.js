@@ -23,10 +23,10 @@ function Profile_navigation(_common_windows) {
         //, 'Window_logout'
     ];
     
-    if ($.isset(_common_windows))
-    {
-        for (var _i in _common_windows)
-            this._$nav_items.push(_common_windows[_i]);
+    if ($.isset(_common_windows)) {
+        for (var _i in _common_windows) {
+			this._$nav_items.push(_common_windows[_i]);
+		}
     }
 }
 

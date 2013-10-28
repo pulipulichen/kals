@@ -62,8 +62,9 @@ Toolbar_component.prototype.setup_right = function (_ui_list) {
  */
 Toolbar_component.prototype._setup_component = function (_component_class_name, _ui_list) {
     
-    if ($.is_array(_ui_list) == false)
-        _ui_list = [ _ui_list ];
+    if ($.is_array(_ui_list) === false) {
+		_ui_list = [_ui_list];
+	}
     
     var _ui = this.get_ui();
     
@@ -71,8 +72,7 @@ Toolbar_component.prototype._setup_component = function (_component_class_name, 
     
     _component.empty();
     
-    for (var _i in _ui_list)
-    {
+    for (var _i in _ui_list) {
         _component.append(_ui_list[_i]);
     }
     
@@ -91,18 +91,21 @@ Toolbar_component.prototype.toggle_right = function (_display) {
     return this._toggle_component('toolbar-right', _display);
 };
 
-Toolbar_component.prototype._toggle_component = function (_component_class_name, _display)
-{
+Toolbar_component.prototype._toggle_component = function (_component_class_name, _display) {
     
     var _ui = this.get_ui();
     var _component = _ui.find('.' + _component_class_name + ':first');
     
-    if (_display == null)
-        _component.toggle();
-    else if (_display == true)
-        _component.show();
-    else
-        _component.hide();
+    if (_display === null) {
+		_component.toggle();
+	}
+	else 
+		if (_display === true) {
+			_component.show();
+		}
+		else {
+			_component.hide();
+		}
         
     return this;
 };
@@ -119,12 +122,11 @@ Toolbar_component.prototype.get_right = function () {
     return this._get_component('toolbar-right');
 };
 
-Toolbar_component.prototype._get_component = function (_component_class_name)
-{
+Toolbar_component.prototype._get_component = function (_component_class_name) {
     var _component = this.get_ui('.' + _component_class_name + ':first');
     
     return _component;
-}
+};
 
 /* End of file Toolbar_component */
 /* Location: ./system/application/views/web_apps/Toolbar_component.js */

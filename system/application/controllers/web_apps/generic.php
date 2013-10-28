@@ -18,7 +18,7 @@ class generic extends Web_apps_controller {
 
     protected $controller_enable_cache = FALSE;
     
-    private $dirmap_path = "./system/application/views/web_apps_release/";
+    private $dirmap_path = "./system/application/views/web_apps/";
 
     function toolkit($return_list = NULL)
     {
@@ -562,10 +562,9 @@ class generic extends Web_apps_controller {
             if (isset($input_data->anchor_navigation_type))
             {
                 $type = $input_data->anchor_navigation_type;
-                $GLOBALS['context']->set_anchor_navigation_type ($type);
+                $GLOBALS['context']->set_anchor_navigation_type($type);
             }
         }
-
         $data = array();
 
         $data['KALS_language'] = $this->_load_lang();

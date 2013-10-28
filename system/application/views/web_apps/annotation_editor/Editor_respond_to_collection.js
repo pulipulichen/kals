@@ -33,8 +33,7 @@ Editor_respond_to_collection.prototype = new KALS_user_interface();
 Editor_respond_to_collection.prototype._editor = null;
 
 Editor_respond_to_collection.prototype.set_editor = function (_editor) {
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;   
         this._listen_editor();    
     }
@@ -46,8 +45,7 @@ Editor_respond_to_collection.prototype.set_editor = function (_editor) {
  * @memberOf {Editor_respond_to_collection}
  * @type {jQuery} UI
  */
-Editor_respond_to_collection.prototype._$create_ui = function ()
-{
+Editor_respond_to_collection.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('editor-respond-to-collection');
       
@@ -70,31 +68,27 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
     
     var _removable = this._$removable;
     
-    if ($.is_array(_param))
-    {
-        for (var _i in _param)
-        {
+    if ($.is_array(_param)) {
+        for (var _i in _param) {
             this.add_respond_to(_param[_i], _removable);
         }
         return this;
     }
-    else if ($.is_class(_param, 'Annotation_collection_param'))
-    {
+    else if ($.is_class(_param, 'Annotation_collection_param')) {
         var _coll = _param.annotations;
-        for (var _i in _coll)
-        {
+        for (_i in _coll) {
             this.add_respond_to(_coll[_i], _removable);
         }
         return this;
     }
-    else if ($.is_class(_param, 'Annotation_param') == false)
-    {
+    else if ($.is_class(_param, 'Annotation_param') === false) {
         return this;
     }
     
     //要先確認是否已經有這個respond
-    if (this.has_respond_to(_param) == true)
-        return this;
+    if (this.has_respond_to(_param) === true) {
+		return this;
+	}
     
     var _respond = new Editor_respond_to(this._editor, _param, _removable);
     
@@ -117,13 +111,11 @@ Editor_respond_to_collection.prototype.has_respond_to = function (_param) {
     
     //$.test_msg('Editor_respond_to_colleciton.has_respond_to()', [_annotation_id, this._responds.length]);
     
-    for (var _i in this._responds)
-    {
+    for (var _i in this._responds) {
         var _respond = this._responds[_i];
         var _respond_param = _respond.get_respond_to();
         
-        if ($.is_null(_respond_param))
-        {
+        if ($.is_null(_respond_param)) {
             continue;
         }
         
@@ -131,8 +123,7 @@ Editor_respond_to_collection.prototype.has_respond_to = function (_param) {
         
         //$.test_msg('Editor_respond_to_colleciton.has_respond_to() for loop ', [(_respond_id == _annotation_id), _respond_id]);
         
-        if (_respond_id == _annotation_id)
-        {
+        if (_respond_id == _annotation_id) {
             return true;
         }
     }
@@ -143,8 +134,7 @@ Editor_respond_to_collection.prototype.has_respond_to = function (_param) {
 Editor_respond_to_collection.prototype.reset = function () {
     
     var _responds = this._responds;
-    for (var _i in _responds)
-    {
+    for (var _i in _responds) {
         _responds[_i].remove();
     }
     
@@ -172,8 +162,7 @@ Editor_respond_to_collection.prototype.get_respond_to_coll = function () {
     var _coll = [];
     
     var _responds = this._responds;
-    for (var _i in _responds)
-    {
+    for (var _i in _responds) {
         var _param = _responds[_i].get_respond_to();
         if (_param != null)
             _coll.push(_param);
@@ -181,13 +170,13 @@ Editor_respond_to_collection.prototype.get_respond_to_coll = function () {
     
     return _coll;
     */
-    if (this._responds.length == 0)
-        return null;
+    if (this._responds.le === 0) {
+		return null;
+	}
     
     var _coll = new Annotation_collection_param();
     
-    for (var _i in this._responds)
-    {
+    for (var _i in this._responds) {
         var _respond = this._responds[_i];
         var _param = _respond.get_respond_to();
         _coll.add(_param);
@@ -211,8 +200,9 @@ Editor_respond_to_collection.prototype._listen_editor = function () {
         var _data = _this.get_data();
         //$.test_msg('Editor_respond_to_collection._listen_editor() get', _data);
         
-        if ($.isset(_data))
-            _param[_this._$listen_field] = _data;
+        if ($.isset(_data)) {
+			_param[_this._$listen_field] = _data;
+		}
     });
 };
 
@@ -223,13 +213,13 @@ Editor_respond_to_collection.prototype._listen_editor = function () {
 Editor_respond_to_collection.prototype.get_data = function () {
     
     var _coll = this.get_respond_to_coll();
-    if ($.is_null(_coll))
-        return null;
+    if ($.is_null(_coll)) {
+		return null;
+	}
     
     var _new_coll = new Annotation_collection_param();
     
-    for (var _i = 0; _i < _coll.length(); _i++)
-    {
+    for (var _i = 0; _i < _coll.length(); _i++) {
         var _param = _coll.get(_i);
         var _annotation_id = _param.annotation_id;
         var _user = _param.user;
@@ -248,11 +238,13 @@ Editor_respond_to_collection.prototype.get_data = function () {
  */
 Editor_respond_to_collection.prototype.set_data = function (_param) {
     
-    if (typeof(_param[this._$listen_field]) == 'undefined')
-        return this;
+    if (typeof(_param[this._$listen_field]) == 'undefined') {
+		return this;
+	}
     
     var _respond_to_coll = _param[this._$listen_field];
     this.reset();
+	
     return this.set_respond_to_coll(_respond_to_coll);
 };
 

@@ -1195,8 +1195,9 @@ class Generic_object extends KALS_object {
         $cond = $this->_set_field_filter($cond);
         $cond = self::_get_table_data($cond, $this->table_fields);
 
-        if (count($cond) == 0)
+        if (count($cond) == 0) {
             return NULL;
+        }
 
         $pk = self::_get_pk($this->primary_key, $this->table_name);
 
@@ -1208,11 +1209,6 @@ class Generic_object extends KALS_object {
                 return $obj;
         }
 
-        $cond = array(
-            'field1' => 'value',
-            'field2' => 'value2'
-        );
-        
         $this->db->where($cond);
         if (is_string($this->fake_delete))
             $this->db->where ($this->fake_delete, 'FALSE');
@@ -1234,15 +1230,6 @@ class Generic_object extends KALS_object {
         }
     }
     
-        // Policy
-        // policy_id (node_id) = 14
-        // resource_id = 4
-        $policy = new Policy();
-        $result = $policy->find("resource_id", 4);
-        // 14
-        $id = $result->get_id();
-        run($id, 14, '能找到find');
-
     /**
      * 搜尋多個物件
      * @param array $cond 必須是以key跟value搭配的搜尋條件
@@ -1313,6 +1300,7 @@ class Generic_object extends KALS_object {
             && self::_match_unique($data, $this->unique_restriction, $this->table_fields))
         {
             //符合單一約束的話，表示只要先經過搜尋再確認
+            //test_msg("$this->table_name : match unique", $data);
             $obj = $this->find($data);
             if (NULL !== $obj)
             {
@@ -1320,7 +1308,6 @@ class Generic_object extends KALS_object {
             }
         }
         
-
         $data = $this->_pre_create($data);
         
         $cache_cond = $this->_get_cache_cond($data);
