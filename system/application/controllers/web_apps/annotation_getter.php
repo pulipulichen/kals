@@ -786,7 +786,10 @@ class Annotation_getter extends Web_apps_controller {
           //test_msg("輸入資料", $json);
         
         //$data->searchrange = "annotation_anchor"; //測試用
-        switch ($data->searchrange) {
+        if (isset($data->searchrange) === FALSE) {
+            $data->searchrange = "annotation_anchor";
+        }
+        switch ( $data->searchrange ) {
             case "author": 
                 //示範用
                 //$search->set_target_user(new User(1701));

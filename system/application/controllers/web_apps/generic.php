@@ -173,6 +173,8 @@ class generic extends Web_apps_controller {
             'navigation/Window_password_change_submit',
             'navigation/Window_search',
             'navigation/Window_search_submit',
+            'navigation/Window_map',
+            
 
             'navigation/Common_navigation',
             'navigation/Window_filter',
@@ -270,6 +272,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_item',
             'annotation_list/List_item_topic',
             'annotation_list/List_item_respond',
+            'annotation_list/List_menu_search',
             
             'annotation_recommend/Recommend_hint',
             'annotation_recommend/Recommend_tooltip',

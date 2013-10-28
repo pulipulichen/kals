@@ -94,6 +94,7 @@ $lang['web_apps.toolbar.search.advanced_search'] = '進階搜尋';
 $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
 $lang['web_apps.toolbar.search.search_result'] = '搜尋結果: ';
 
+
 $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
 $lang['web_apps.toolbar.navigation_list.help'] = '說明';
 
@@ -120,7 +121,11 @@ $lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文'
 $lang['web_apps.window.content.type_radio'] = '標註類別';
 $lang['web_apps.window.content.searchkey'] = '關鍵字';
 $lang['web_apps.window.content.searchresult'] = '搜尋結果';
- 
+$lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
+$lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';
+$lang['web_apps.window.content.loaded_already'] = '沒有其他搜尋結果';
+$lang['web_apps.window.map.nav_heading'] = '小地圖';
+
 
 $lang['web_apps.window.content.oreder_by'] = '排序方式';
 $lang['web_apps.window.content.oreder_by.update'] = '更新日期';
@@ -251,6 +256,7 @@ $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
 $lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
+$lang['web_apps.list_menu.review'] = '檢視';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
 

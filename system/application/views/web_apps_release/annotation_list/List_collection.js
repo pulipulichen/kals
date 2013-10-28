@@ -184,7 +184,7 @@ List_collection.prototype._toggle_loading = function(_display) {
 List_collection.prototype._load_lock = false;
 
 List_collection.prototype.load_list = function(_data, _callback) {
-	$.test_msg("List_collection" + this._$name + ".load_list() 1", _data);
+	//$.test_msg("List_collection" + this._$name + ".load_list() 1", _data);
 	
     if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
@@ -219,7 +219,7 @@ List_collection.prototype.load_list = function(_data, _callback) {
     }
 	
 	
-    $.test_msg("List_collection" + this._$name + ".load_list() 2", [this.is_totally_loaded(), this._check_login()]);
+    //$.test_msg("List_collection" + this._$name + ".load_list() 2", [this.is_totally_loaded(), this._check_login()]);
     
     if (this.is_totally_loaded() === true
         || this._check_login() === false ) {
@@ -227,17 +227,17 @@ List_collection.prototype.load_list = function(_data, _callback) {
         return this;
     }
 	
-    $.test_msg("List_collection" + this._$name + ".load_list() 3");
+    //$.test_msg("List_collection" + this._$name + ".load_list() 3");
     
     if (this._load_lock === true) {
 		return this;
 	}
 	
-    $.test_msg("List_collection" + this._$name + ".load_list() 4");
+    //$.test_msg("List_collection" + this._$name + ".load_list() 4");
     
     var _search_data = this.get_search_data();
 	
-    $.test_msg("List_collection" + this._$name + ".load_list()5 "  , _search_data);
+    //$.test_msg("List_collection" + this._$name + ".load_list()5 "  , _search_data);
 	
     if ($.isset(_search_data)) {
         //$.test_msg('List_coll.load_list', _search_data);
@@ -251,7 +251,7 @@ List_collection.prototype.load_list = function(_data, _callback) {
         });    
     }
 	
-	$.test_msg("List_collection" + this._$name + ".load_list()6 " , _search_data);
+	//$.test_msg("List_collection" + this._$name + ".load_list()6 " , _search_data);
     
     return this;
 };
@@ -404,7 +404,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
 			}
             _this._offset = _this._offset + _length;
             
-            //$.test_msg('List_collection.setup_load_list()', 'before complete');
+            $.test_msg('List_collection.setup_load_list()', 'before complete');
             
             _setup_list_complete();
         };
