@@ -357,8 +357,6 @@ class Context extends KALS_object {
         if (isset($wepage)) {
             $output = $output . $wepage->get_id();
         }
-            
-
         return $output;
     }
 }

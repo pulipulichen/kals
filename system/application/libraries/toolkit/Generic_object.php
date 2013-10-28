@@ -1311,7 +1311,6 @@ class Generic_object extends KALS_object {
             }
         }
         
-
         $data = $this->_pre_create($data);
         
         $cache_cond = $this->_get_cache_cond($data);

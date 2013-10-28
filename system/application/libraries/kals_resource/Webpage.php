@@ -229,6 +229,11 @@ class Webpage extends KALS_resource {
         $this->_CI_load('library', 'recommend/Annotation_tutor', 'annotation_tutor');
         return new Annotation_tutor($this);
     }
+    
+    
+    public function create($url) {
+        return $this->filter_webpage_object($url);
+    }
 }
 
 

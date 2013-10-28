@@ -563,7 +563,6 @@ class generic extends Web_apps_controller {
             {
                 $type = $input_data->anchor_navigation_type;
                 $GLOBALS['context']->set_anchor_navigation_type($type);
-                return;
             }
         }
         $data = array();
