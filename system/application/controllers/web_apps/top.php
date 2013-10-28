@@ -53,18 +53,21 @@ class Top extends Web_apps_controller {
         $top5 = pg_query($qry);
         $data = pg_fetch_all($top5);
         
+        
+        // 20131029 Pulipuli Chen
+        // 多餘的
         $data = array(
                     array(
                             "user_id" => 1700,
-                            "name" => "布丁"
+                            "user_name" => "布丁"
                     ),
                     array(
                             "user_id" => 1701,
-                            "name" => "北極熊"
+                            "user_name" => "北極熊"
                     ),
                     array(
                             "user_id" => 1702,
-                            "name" => "陳老師"
+                            "user_name" => "陳老師"
                     )
         );
                 

@@ -1,3 +1,0 @@
-RewriteEngine on
-RewriteCond $1 !^(index\.php|images|js|help|libraries|user_photo|robots\.txt)
-RewriteRule ^(.*)$ /kals/index.php/$1 [L]
