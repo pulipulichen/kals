@@ -127,6 +127,7 @@ class Context extends KALS_object {
             //$this->CI->load->library('kals_resource/Webpage');
             $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');
             $this->webpage = $this->CI->webpage->create($url);
+            return;
         }
         return $this->webpage;
     }
@@ -305,7 +306,6 @@ class Context extends KALS_object {
         //{
         //    $this->load->library('session');
         //}
-
         $this->_anchor_navigation_type = $type;
         $session_name = $this->_get_anchor_navigation_type_session_name();
         //test_msg('設置成功？', set_session($session_name, $type));
@@ -354,8 +354,10 @@ class Context extends KALS_object {
         $output = 'anchor_navigation_type_';
 
         $wepage = get_context_webpage();
-        if (isset($wepage))
+        if (isset($wepage)) {
             $output = $output . $wepage->get_id();
+        }
+            
 
         return $output;
     }

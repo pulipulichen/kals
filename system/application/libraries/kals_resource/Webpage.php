@@ -116,7 +116,6 @@ class Webpage extends KALS_resource {
     {
         //插入權限檢查
         //$this->auth->allow(2);
-
         if ((FALSE === isset($data['domain_id'])
             OR is_null($data['domain_id']))
             && isset($data['url']))

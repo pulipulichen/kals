@@ -562,10 +562,10 @@ class generic extends Web_apps_controller {
             if (isset($input_data->anchor_navigation_type))
             {
                 $type = $input_data->anchor_navigation_type;
-                $GLOBALS['context']->set_anchor_navigation_type ($type);
+                $GLOBALS['context']->set_anchor_navigation_type($type);
+                return;
             }
         }
-
         $data = array();
 
         $data['KALS_language'] = $this->_load_lang();
