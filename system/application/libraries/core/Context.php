@@ -127,7 +127,6 @@ class Context extends KALS_object {
             //$this->CI->load->library('kals_resource/Webpage');
             $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');
             $this->webpage = $this->CI->webpage->create($url);
-            return;
         }
         return $this->webpage;
     }
