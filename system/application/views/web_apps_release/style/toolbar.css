@@ -383,3 +383,16 @@
 	border-bottom:0px !important;
 	border-top:0px !important;
 }
+
+.toolbar-right .navigation-container .avatar-component tbody tr .photo{
+	border: 0px !important;
+}
+.toolbar-right .navigation-container .avatar-component tbody tr .name{
+	border: 0px !important;
+}
+.toolbar-right .navigation-container .avatar-component tbody tr .notification{
+	border: 0px !important;
+}
+.toolbar-right .navigation-container .avatar-component tbody tr .navigation.profile{
+	border: 0px !important;
+}

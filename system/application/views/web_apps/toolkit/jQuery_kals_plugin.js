@@ -18,64 +18,80 @@ if (typeof($jquery_extends) == 'undefined') {
 
 /**
  * 顯示測試訊息
+ * @version 20130222 Pulipuli Chen 把錯誤訊息改成console.log()輸出
  * @param {string} _title
  * @param {Object} _test
  */
-jQuery.test_msg = function (_title, _test)
-{
-    //return;
+jQuery.test_msg = function (_title, _test) {
+	
+	//return;
+	
+	// @20130607 Pudding Chen
+	// 加入原本的底層吧XD
     
-    var _info_box = this('#info_box');
-    if (_info_box.length == 0)
-    {   
+    var _info_box = this('.KALS.info-box:first');
+	
+    if (_info_box.length == 0) {   
         var _toggle = $('<div></div>')
             .css('height', '15px')
             .dblclick(function () {
-                $('#info_box').show();
+                _info_box.show();
             })
             .appendTo(this('body'));
         
-         _info_box = this('<fieldset id="info_box" style="margin-bottom:1em;"><legend>Test Message Box</legend></fieldset>')
+         _info_box = this('<fieldset class="KALS info-box"><legend>Test Message Box</legend></fieldset>')
             //.prependTo(this('body'));
             .appendTo(this('body'));
         
         //if (location.href.toLowerCase().indexOf('homework') > -1)    
-            _info_box.hide();
+        
+		_info_box.hide();
         _info_box.dblclick(function () {
             $(this).hide();
         });
-        
     }
-    if (this.isset(_title) && this.is_null(_test))
-    {
+	
+    if (this.isset(_title) && this.is_null(_test)) {
         _test = _title;
         _title = null;
     }
-    else if (this.is_null(_title) && this.is_null(_test))
-    {
-        this('<hr />').appendTo(_info_box);
+    else if (this.is_null(_title) && this.is_null(_test)) {
+        _test = '---------------';
+		this('<hr />').appendTo(_info_box);
         return;
     }
     
-    if (this.is_object(_test))
-    {
+    if (this.is_object(_test)) {
         _test = '[Object: '+this.json_encode(_test)+']';
     }
+	
+	var _info_test = _test;
+	
+	if ($.starts_with(_info_test, "http")) {
+		_info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
+	}
+	
+    var _info = this('<pre>'+_info_test+'</pre>')
+		.addClass("info")
+        .appendTo(_info_box);
 
-    var _info = this('<pre>'+_test+'</pre>')
-        .attr('style', 'display:block;border:1px solid #CCCCCC;padding: 5px;')
-        .appendTo(this('#info_box'));
-
-    if (this.isset(_title))
-        _info.prepend('<strong>'+_title+': </strong>');
+	if (this.isset(_title)) {
+		console.log('[KALS]' + '[' + _title + '] ' + _test);
+		_info.prepend('<strong>' + _title + ': </strong>');
+	}
+	else {
+		console.log('[KALS] ' + _test);
+	}
         
     //加上時間
     var _d = new Date();
     var _time = $('<div></div>')
+		.addClass("time")
         .html(_d.getHours() + ':' + _d.getMinutes() + ':' + _d.getSeconds())
         .css('float', 'right')
         .prependTo(_info);
-    
+	
+	return this;
 };
 
 // --------
@@ -88,17 +104,15 @@ jQuery.test_msg = function (_title, _test)
  * @param {number} _start 起始位置。如果是負數，則從最後面開始算
  * @param {number} _length 長度
  */
-jQuery.substr = function(_str, _start, _length)
-{
+jQuery.substr = function(_str, _start, _length) {
     _str = _str + '';
-    if (_start < 0)
-        _start = _str.length + _start;
-    if (this.isset(_length) == false)
-    {
+    if (_start < 0) {
+		_start = _str.length + _start;
+	}
+    if (this.isset(_length) === false) {
         return _str.substr(_start);
     }
-    else
-    {
+    else {
         return _str.substr(_start, _length);
     }
 };
@@ -111,15 +125,16 @@ jQuery.substr = function(_str, _start, _length)
  * @param {string} _suffix
  * @type {string}
  */
-jQuery.ends_with = function(_str, _suffix)
-{
+jQuery.ends_with = function(_str, _suffix) {
     _str = _str + '';
     var _len = _suffix.length;
     var _start = 0 - _len;
-    if (this.substr(_str, _start, _len) == _suffix)
-        return true;
-    else
-        return false;
+    if (this.substr(_str, _start, _len) == _suffix) {
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
 /**
@@ -129,15 +144,16 @@ jQuery.ends_with = function(_str, _suffix)
  * @param {string} _str
  * @param {string} _prefix
  */
-jQuery.starts_with = function(_str, _prefix)
-{
+jQuery.starts_with = function(_str, _prefix) {
     _str = _str + '';
     var _len = _prefix.length;
     var _start = 0;
-    if (_str.substr(_start, _len) == _prefix)
-        return true;
-    else
-        return false;
+    if (_str.substr(_start, _len) == _prefix) {
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
 /**
@@ -148,12 +164,13 @@ jQuery.starts_with = function(_str, _prefix)
  * @param {string} _suffix
  * @type {string}
  */
-jQuery.appends_with = function(_str, _suffix)
-{
-    if (this.ends_with(_str, _suffix) == false)
-        return _str + _suffix;
-    else
-        return _str;
+jQuery.appends_with = function(_str, _suffix) {
+    if (this.ends_with(_str, _suffix) === false) {
+		return _str + _suffix;
+	}
+	else {
+		return _str;
+	}
 };
 
 /**
@@ -163,12 +180,13 @@ jQuery.appends_with = function(_str, _suffix)
  * @param _prefix
  * @type boolean
  */
-jQuery.prepends_with = function(_str, _prefix)
-{
-    if (this.starts_with(_str, _prefix) == false)
-        return _str + _prefix;
-    else
-        return _str;
+jQuery.prepends_with = function(_str, _prefix) {
+    if (this.starts_with(_str, _prefix) === false) {
+		return _str + _prefix;
+	}
+	else {
+		return _str;
+	}
 };
 
 jQuery.str_replace = function (_search, _replace, _subject, _count) {
@@ -223,16 +241,21 @@ jQuery.str_replace = function (_search, _replace, _subject, _count) {
 // JSON與AJAX
 // --------
 
-jQuery.json_encode = function (_json)
-{
-    if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json))
-        return _json;
-    else if(this.is_string(_json))
-        return this.serialize_string(_json);
-    else if (this.is_array(_json))
-        return this.serialize_array(_json);
-    else
-        return this.serialize_json(_json);
+jQuery.json_encode = function (_json) {
+    if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
+		return _json;
+	}
+	else 
+		if (this.is_string(_json)) {
+			return this.serialize_string(_json);
+		}
+		else 
+			if (this.is_array(_json)) {
+				return this.serialize_array(_json);
+			}
+			else {
+				return this.serialize_json(_json);
+			}
 };
 
 /**
@@ -242,41 +265,50 @@ jQuery.json_encode = function (_json)
  * @param {Object} _json
  * @type {string}
  */
-jQuery.serialize_json = function (_json)
-{
-    if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json))
-        return _json;
-    else if(this.is_string(_json))
-        return this.serialize_string(_json);
-    else if (this.is_array(_json))
-        return this.serialize_array(_json);
+jQuery.serialize_json = function (_json) {
+    if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
+		return _json;
+	}
+	else 
+		if (this.is_string(_json)) {
+			return this.serialize_string(_json);
+		}
+		else 
+			if (this.is_array(_json)) {
+				return this.serialize_array(_json);
+			}
 
     var _output = '';
 
-    for (var _key in _json)
-    {
+    for (var _key in _json) {
         var _attr = '"'+_key+'":';
         var _value = _json[_key];
-        if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value))
-            _attr += _value;
-        else if (this.is_string(_value))
-            _attr += this.serialize_string(_value);
-        else if (this.is_array(_value))
-            _attr += this.serialize_array(_value);
-        else if (this.is_object(_value))
-        {
-            if (typeof(_value.to_string) == 'function') {
-                _attr += _value.to_string();
-            }
-            else
-            {
-                var _class_name = $.get_class(_value);
-                if (_class_name == 'Object')
-                    _attr += this.serialize_json(_value);
-                else
-                    _attr += '[Object: '+_class_name+']';
-            }
-        }
+        if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value)) {
+			_attr += _value;
+		}
+		else 
+			if (this.is_string(_value)) {
+				_attr += this.serialize_string(_value);
+			}
+			else 
+				if (this.is_array(_value)) {
+					_attr += this.serialize_array(_value);
+				}
+				else 
+					if (this.is_object(_value)) {
+						if (typeof(_value.to_string) == 'function') {
+							_attr += _value.to_string();
+						}
+						else {
+							var _class_name = $.get_class(_value);
+							if (_class_name == 'Object') {
+								_attr += this.serialize_json(_value);
+							}
+							else {
+								_attr += '[Object: ' + _class_name + ']';
+							}
+						}
+					}
 
         _output = this.combine_comma(_output);
         _output += _attr;
@@ -286,29 +318,39 @@ jQuery.serialize_json = function (_json)
     return _output;
 };
 
-jQuery.serialize_array = function (_array)
-{
-    if (this.is_number(_array) || this.is_boolean(_array) || this.is_null(_array))
-        return _array;
-    else if(this.is_string(_array))
-        return this.serialize_string(_array);
-    else if (this.is_object(_array))
-        return this.serialize_json(_array);
+jQuery.serialize_array = function (_array) {
+    if (this.is_number(_array) || this.is_boolean(_array) || this.is_null(_array)) {
+		return _array;
+	}
+	else 
+		if (this.is_string(_array)) {
+			return this.serialize_string(_array);
+		}
+		else 
+			if (this.is_object(_array)) {
+				return this.serialize_json(_array);
+			}
 
     var _output = '';
 
-    for (var _key in _array)
-    {
+    for (var _key in _array) {
         var _attr = "";
         var _value = _array[_key];
-        if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value))
-            _attr += _value;
-        else if (this.is_string(_value))
-            _attr += this.serialize_string(_value);
-        else if (this.is_array(_value))
-            _attr += this.serialize_array(_value);
-        else if (this.is_object(_value))
-            _attr += this.serialize_json(_value);
+        if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value)) {
+			_attr += _value;
+		}
+		else 
+			if (this.is_string(_value)) {
+				_attr += this.serialize_string(_value);
+			}
+			else 
+				if (this.is_array(_value)) {
+					_attr += this.serialize_array(_value);
+				}
+				else 
+					if (this.is_object(_value)) {
+						_attr += this.serialize_json(_value);
+					}
 
         _output = this.combine_comma(_output);
         _output += _attr;
@@ -318,14 +360,18 @@ jQuery.serialize_array = function (_array)
     return _output;
 };
 
-jQuery.serialize_string = function (_str)
-{
-    if (this.is_number(_str) || this.is_boolean(_str) || this.is_null(_str))
-        return _str;
-    else if (this.is_array(_str))
-        return this.serialize_array(_str);
-    else if (this.is_object(_str))
-        return this.serialize_json(_str);
+jQuery.serialize_string = function (_str) {
+    if (this.is_number(_str) || this.is_boolean(_str) || this.is_null(_str)) {
+		return _str;
+	}
+	else 
+		if (this.is_array(_str)) {
+			return this.serialize_array(_str);
+		}
+		else 
+			if (this.is_object(_str)) {
+				return this.serialize_json(_str);
+			}
 
     _str = this.addslashes(_str);
     return '"'+_str+'"';
@@ -347,10 +393,10 @@ jQuery.addslashes = function (_str) {
     return (_str+'').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
 };
 
-jQuery.combine_comma = function (_str)
-{
-    if (_str != '')
-        _str += ',';
+jQuery.combine_comma = function (_str) {
+    if (_str !== '') {
+		_str += ',';
+	}
     return _str;
 };
 
@@ -375,45 +421,47 @@ jQuery.get_class = function (_obj) {
     // *     example 6: get_class(function MyFunction() {});
     // *     returns 6: false
     
-    if ($.is_jquery(_obj))
-        return 'jQuery';
-    else if ($.is_array(_obj))
-        return 'Array';
+    if ($.is_jquery(_obj)) {
+		return 'jQuery';
+	}
+	else 
+		if ($.is_array(_obj)) {
+			return 'Array';
+		}
     
     var _class_name;
     if (_obj instanceof Object
         && !(_obj instanceof Array)
         && !(_obj instanceof Function)
         && _obj.constructor
-        && _obj != this.window)
-    {
+        && _obj != this.window) {
         var _arr = _obj.constructor.toString().match(/function\s*(\w+)/);
         if (_arr && _arr.length == 2) {
             return _arr[1];
         }
-        else
-        {
+        else {
             _class_name = _obj.constructor.toString();
             
             //$.test_msg('$.get_class()', _class_name);
     
-            if (this.starts_with(_class_name, '[object '))
-                _class_name = _class_name.substring(8, _class_name.length);
-            else
-                return false;
+            if (this.starts_with(_class_name, '[object ')) {
+				_class_name = _class_name.substring(8, _class_name.length);
+			}
+			else {
+				return false;
+			}
             
-            if (this.ends_with(_class_name, ']'))
-                _class_name = _class_name.substring(0, _class_name.length-1);
+            if (this.ends_with(_class_name, ']')) {
+				_class_name = _class_name.substring(0, _class_name.length - 1);
+			}
             return _class_name;
         }
     }
     
-    try
-    {
+    try {
         var _constructor = _obj.constructor + '';
         
-        if ($.starts_with(_constructor, '[object'))
-        {
+        if ($.starts_with(_constructor, '[object')) {
             //$.test_msg('get_class', [_constructor, typeof(_constructor)]);
             var _space_pos = _constructor.lastIndexOf(' ');
             _class_name = _constructor.substring(_space_pos + 1, _constructor.length -1);
@@ -426,24 +474,24 @@ jQuery.get_class = function (_obj) {
     return false;
 };
 
-jQuery.is_null = function (_obj)
-{
-    if (typeof(_obj) == 'undefined'
-        || (typeof(_obj) == 'string' && _obj == 'null'))
-        return true;
-    else
-        return (_obj == null);
+jQuery.is_null = function (_obj) {
+    if (typeof(_obj) == 'undefined' ||
+	(typeof(_obj) == 'string' && _obj == 'null')) {
+		return true;
+	}
+	else {
+		return (_obj === null);
+	}
 };
 
-jQuery.is_class = function(_obj, _class_name)
-{
-    if ($.is_null(_class_name))
-        return false;
+jQuery.is_class = function(_obj, _class_name) {
+    if ($.is_null(_class_name)) {
+		return false;
+	}
     
-    try
-    {
+    try {
         return (typeof(_obj) == 'object' 
-            && _obj != null 
+            && _obj !== null 
             //&& (_obj instanceof _class_name));
             && $.get_class(_obj) == _class_name);
     }
@@ -452,8 +500,7 @@ jQuery.is_class = function(_obj, _class_name)
     }
 };
 
-jQuery.is_boolean = function(_obj)
-{
+jQuery.is_boolean = function(_obj) {
     return (typeof(_obj) == 'boolean');
 };
 
@@ -464,27 +511,25 @@ jQuery.is_boolean = function(_obj)
  * @return 驗證結果
  * @type boolean
  */
-jQuery.is_array = function(_obj)
-{
+jQuery.is_array = function(_obj) {
     return (typeof(_obj) == 'object' && (_obj instanceof Array));
 };
 
-jQuery.filter_array = function (_obj)
-{
+jQuery.filter_array = function (_obj) {
     var _is_array = (typeof(_obj) == 'object' && (_obj instanceof Array));
-    if (false == _is_array)
-        return [_obj];
-    else
-        return _obj;
+    if (false == _is_array) {
+		return [_obj];
+	}
+	else {
+		return _obj;
+	}
 };
 
-jQuery.is_string = function (_obj)
-{
+jQuery.is_string = function (_obj) {
     return (typeof(_obj) == 'string');
 };
 
-jQuery.is_number = function (_obj)
-{
+jQuery.is_number = function (_obj) {
     return (typeof(_obj) == 'number');
 };
 
@@ -493,42 +538,37 @@ jQuery.is_number = function (_obj)
  * @see   Wikipedia - ASCII: http://zh.wikipedia.org/zh-tw/Ascii
  * @param {Object} _text
  */
-jQuery.is_ascii = function (_text)
-{
-    if ($.is_number(_text))
-        return true;
-    else if ($.is_string(_text))
-    {
-        
-        for (var _i = 0; _i < _text.length; _i++)
-        {
-            _ascii_num = _text.charCodeAt(_i);
-            
-            //$.test_msg('$.is_ascii', [_ascii_num, _i, _text, _text.length]);
-            
-            if (_ascii_num > 32 && _ascii_num < 126)
-            {
-                //return true; 
-            } 
-            else 
-            {
-                return false;
-                break; 
-            }
-        }
-        return true;
-    }
-    else
-        return false;
+jQuery.is_ascii = function (_text) {
+    if ($.is_number(_text)) {
+		return true;
+	}
+	else 
+		if ($.is_string(_text)) {
+		
+			for (var _i = 0; _i < _text.length; _i++) {
+				_ascii_num = _text.charCodeAt(_i);
+				
+				//$.test_msg('$.is_ascii', [_ascii_num, _i, _text, _text.length]);
+				
+				if (_ascii_num > 32 && _ascii_num < 126) {
+				//return true; 
+				}
+				else {
+					return false;
+				}
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
 };
 
-jQuery.is_object = function (_obj)
-{
+jQuery.is_object = function (_obj) {
     return (typeof(_obj) == 'object' && !(_obj instanceof Array));
 };
 
-jQuery.is_function = function (_obj)
-{
+jQuery.is_function = function (_obj) {
     return (typeof(_obj) == 'function');
 };
 
@@ -536,8 +576,7 @@ jQuery.is_function = function (_obj)
  * 驗證是否物件為jQuery物件
  * @param {Object} _obj
  */
-jQuery.is_jquery = function (_obj)
-{
+jQuery.is_jquery = function (_obj) {
     return (typeof(_obj) == 'object' && (_obj instanceof jQuery));
 };
 
@@ -545,34 +584,35 @@ jQuery.is_jquery = function (_obj)
  * 驗證是否物件_element為HTML物件
  * @param {Object} _element
  */
-jQuery.is_html_element = function (_element)
-{
+jQuery.is_html_element = function (_element) {
     var _class_name = this.get_class(_element);
     
     //$.test_msg([_class_name, _element.constructor]);
-    if (_class_name == false)
-        return false;
-    if (this.starts_with(_class_name, 'HTML')
-        && (this.ends_with(_class_name, 'Element') || this.ends_with(_class_name, 'ElementConstructor')))
-    // 2010.9.3 Android會把HTML元素判斷為「HTMLDivElementConstructor」之類的
-    {
-        return true;
-    }   
-    else
-        return false;
+    if (_class_name === false) {
+		return false;
+	}
+    if (this.starts_with(_class_name, 'HTML') &&
+	(this.ends_with(_class_name, 'Element') || this.ends_with(_class_name, 'ElementConstructor'))) {
+		// 2010.9.3 Android會把HTML元素判斷為「HTMLDivElementConstructor」之類的
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
 /**
  * 檢測變數是否存在，如果是null，也作為不存在
  * @param {Object} _obj
  */
-jQuery.isset = function (_obj)
-{
-    if (typeof(_obj) == "undefined"
-        || this.is_null(_obj) == true)
-        return false;
-    else
-        return true;
+jQuery.isset = function (_obj) {
+    if (typeof(_obj) == "undefined" ||
+	this.is_null(_obj) === true) {
+		return false;
+	}
+	else {
+		return true;
+	}
 };
 
 /**
@@ -582,23 +622,24 @@ jQuery.isset = function (_obj)
  * @param {string} _object_path 要偵測的路徑
  * @type {boolean}
  */
-jQuery.object_isset = function (_object_path)
-{
+jQuery.object_isset = function (_object_path) {
     var _paths = _object_path.split('.');
     var _path_now = '';
-    for (var _key in _paths)
-    {
-        if (_path_now != '')
-            _path_now = _path_now + '.';
+    for (var _key in _paths) {
+        if (_path_now !== '') {
+			_path_now = _path_now + '.';
+		}
         _path_now = _path_now + _paths[_key];
         
         var _test_path = _path_now;
-        if (this.ends_with(_test_path, '()'))
-            _test_path = _test_path.substr(0, _test_path.length - 2);
+        if (this.ends_with(_test_path, '()')) {
+			_test_path = _test_path.substr(0, _test_path.length - 2);
+		}
         
         var _result = eval('typeof('+_test_path+')');     
-        if (_result == 'undefined')
-            return false;
+        if (_result == 'undefined') {
+			return false;
+		}
     }
     return true;
 };
@@ -607,14 +648,15 @@ jQuery.object_isset = function (_object_path)
 // URL類
 // --------
 
-jQuery.is_link = function(_url)
-{
-    if (this.starts_with(_url, 'http://')
-        || this.starts_with(_url, 'https://')
-        || this.starts_with(_url, 'ftp://'))
-        return true;
-    else
-        return false;
+jQuery.is_link = function(_url) {
+    if (this.starts_with(_url, 'http://') ||
+	this.starts_with(_url, 'https://') ||
+	this.starts_with(_url, 'ftp://')) {
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
 jQuery.parse_url = function (_str, _component) {
@@ -689,41 +731,38 @@ jQuery.parse_url = function (_str, _component) {
     }
 };
 
-jQuery.is_image = function(_url)
-{
-    if (false == this.is_link(_url))
-        return false;
+jQuery.is_image = function(_url) {
+    if (false == this.is_link(_url)) {
+		return false;
+	}
     var _param = this.parse_url(_url);
-    if (this.is_null(_param) || this.is_null(_param.path))
-        return false;
+    if (this.is_null(_param) || this.is_null(_param.path)) {
+		return false;
+	}
     var _path = _param.path;
     var _ext = this.parse_extension_name(_path);
-    if (this.is_null(_ext))
-        return false;
-    if (this.inArray(_ext, ['jpg', 'jpeg', 'gif', 'png']) != -1)
-        return true;
-    else
-        return false;
+    if (this.is_null(_ext)) {
+		return false;
+	}
+    if (this.inArray(_ext, ['jpg', 'jpeg', 'gif', 'png']) != -1) {
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
-jQuery.parse_extension_name = function (_path)
-{
+jQuery.parse_extension_name = function (_path) {
     var _dot = _path.lastIndexOf('.');
     var _slash = _path.lastIndexOf('/');
-    if (_dot == -1
-        || _dot < _slash)
-        return null;
-    else
-    {
-        var _ext = _path.substr(_dot+1);
-        return _ext;
-    }
-};
-
-jQuery.get_time_interval = function (_time)
-{
-    // TODO 留到server端去做
-
+    if (_dot == -1 ||
+	_dot < _slash) {
+		return null;
+	}
+	else {
+		var _ext = _path.substr(_dot + 1);
+		return _ext;
+	}
 };
 
 /**
@@ -763,12 +802,11 @@ jQuery.extend({
      * @method [init]
      * @param {function} _callback 要初始化的動作
      */
-    init: function (_callback)
-    {
-        if (false == $(this).hasClass('inited'))
-        {
-            if (this.is_function(_callback))
-                _callback(this);
+    init: function (_callback) {
+        if (false == $(this).hasClass('inited')) {
+            if (this.is_function(_callback)) {
+				_callback(this);
+			}
             $(this).addClass('inited');
         }
         return this;
@@ -786,14 +824,17 @@ jQuery.fn.extend({
      * - offset: 位移。會受到scale影響。
      * - scale: 手機模式用的縮放比例
      */
-    align: function (_options) 
-    {
-        if (_options == 'left' || _options == 'center' || _options == 'right')
-            _options = {option: _options};
+    align: function (_options) {
+        if (_options == 'left' || _options == 'center' || _options == 'right') {
+			_options = {
+				option: _options
+			};
+		}
                     
         var _option = $.get_parameter(_options, 'option');
-        if ($.is_null(_option))
-            return this;
+        if ($.is_null(_option)) {
+			return this;
+		}
         var _scale = $.get_parameter(_options, 'scale', 1);
         _scale = 1;
         var _offset = $.get_parameter(_options, 'offset', 0);
@@ -807,12 +848,13 @@ jQuery.fn.extend({
         var _mobile_mode = $.is_mobile_mode();
         //_mobile_mode = false;
         
-        if (_this.is_layer()) 
-        {
-            if (_mobile_mode)
-                _this.css('position', 'absolute');
-            else
-                _this.css('position', 'fixed');
+        if (_this.is_layer()) {
+            if (_mobile_mode) {
+				_this.css('position', 'absolute');
+			}
+			else {
+				_this.css('position', 'fixed');
+			}
             
             var _direction = 'left';
             
@@ -827,8 +869,7 @@ jQuery.fn.extend({
             _max_width = _max_width * _scale;
             
             
-            if (_option == 'left') 
-            {
+            if (_option == 'left') {
                 if (_mobile_mode) {
                     _option = window.pageXOffset;
                     _option = _option + _offset;
@@ -846,14 +887,12 @@ jQuery.fn.extend({
                        - _max_width
                        + _offset;
                }
-               else
-               {
+               else {
                    _direction = 'right';
                    _option = _offset;    
                }
             }
-            else if (_option == 'center') 
-            {
+            else if (_option == 'center') {
                 var _width = _this.width();
                 
                 var _padding_left = $.strip_unit(_this.css('padding-left'));
@@ -868,8 +907,9 @@ jQuery.fn.extend({
                 
                 _option = (_max_width - _width) / 2 
                     + _offset;
-                if (_mobile_mode)
-                    _option = _option + window.pageXOffset;
+                if (_mobile_mode) {
+					_option = _option + window.pageXOffset;
+				}
     
             }
             
@@ -883,8 +923,7 @@ jQuery.fn.extend({
                 _this.animate(_animate_option, {
                     queue:false,
                     complete: function () {
-                        if (_this.width() != ALIGN_CHECK)
-                        {
+                        if (_this.width() != ALIGN_CHECK) {
                             $(_this).align(_options);
                         }
                     },
@@ -896,26 +935,21 @@ jQuery.fn.extend({
             _this.css(_direction, _option + 'px');
             
         }
-        else
-        {
-            if (_option == 'left')
-            {
+        else {
+            if (_option == 'left') {
                 _this.css('margin-left', 0)
                     .css('float', 'none');
             }
-            else if (_option == 'right')
-            {
+            else if (_option == 'right') {
                 _this.css('margin-right', 0)
                     .css('float', 'right');
             }
-            else if (_option == 'center')
-            {
+            else if (_option == 'center') {
                 _this.css('margin-right', 'auto')
                     .css('margin-left', 'auto')
                     .css('float', 'none');
             }
-            else
-            {
+            else {
                 _this.css('margin-left', _option)
                     .css('float', 'none');
             }
@@ -931,15 +965,18 @@ jQuery.fn.extend({
      * - offset: 位移。會受到scale影響。
      * - scale: 手機模式用的縮放比例
      */
-    valign: function (_options) 
-    {
-        if (_options == 'top' || _options == 'middle' || _options == 'bottom')
-            _options = {option: _options};
+    valign: function (_options) {
+        if (_options == 'top' || _options == 'middle' || _options == 'bottom') {
+			_options = {
+				option: _options
+			};
+		}
         
         var _option = $.get_parameter(_options, 'option');
         
-        if ($.is_null(_option))
-            return this;
+        if ($.is_null(_option)) {
+			return this;
+		}
             
         var _scale = $.get_parameter(_options, 'scale', 1);
         var _offset = $.get_parameter(_options, 'offset', 0);
@@ -950,18 +987,20 @@ jQuery.fn.extend({
         var _this = $(this);
         //var _position = _this.css('position');
         
-        if ($.is_null(_scale))
-            _scale = 1;
+        if ($.is_null(_scale)) {
+			_scale = 1;
+		}
             
         var _mobile_mode = $.is_mobile_mode();
         
         //if (_position != 'static')
-        if (_this.is_layer()) 
-        {
-            if (_mobile_mode)
-                _this.css('position', 'absolute');
-            else
-                _this.css('position', 'fixed');
+        if (_this.is_layer()) {
+            if (_mobile_mode) {
+				_this.css('position', 'absolute');
+			}
+			else {
+				_this.css('position', 'fixed');
+			}
             
             //探測螢幕高度
             var _max_height = $.get_viewport_height();
@@ -976,8 +1015,7 @@ jQuery.fn.extend({
                     _option = window.pageYOffset
                         + _offset;
                 }
-                else
-                {
+                else {
                     _option = _offset;    
                 }
             }
@@ -992,8 +1030,7 @@ jQuery.fn.extend({
                 }
                 
             }
-            else if (_option == 'middle') 
-            {
+            else if (_option == 'middle') {
                 var _height = _this.height();
                 
                 var _padding_top = $.strip_unit(_this.css('padding-top'));
@@ -1029,31 +1066,25 @@ jQuery.fn.extend({
             //2010.9.10 取消動畫
             _this.css(_direction, _option + 'px');
         }
-        else
-        {
-            if (_option == 'top')
-            {
+        else {
+            if (_option == 'top') {
                 _this.css('margin-top', 0);
             }
-            else if (_option == 'bottom')
-            {
+            else if (_option == 'bottom') {
                 _this.css('margin-bottom', 0);
             }
-            else if (_option == 'middle')
-            {
+            else if (_option == 'middle') {
                 _this.css('margin-top', 0)
                     .css('margin-bottom', 0);
             }
-            else
-            {
+            else {
                 _this.css('margin-top', _option);
             }
         }
         
         return this;
     },
-    center: function (_scale)
-    {
+    center: function (_scale) {
         var _this = $(this);
         
         _this.valign({
@@ -1096,12 +1127,12 @@ jQuery.fn.extend({
      * @class {jQuery}
      * @param {Object} _scale 縮放比率
      */
-    fullscreen_width: function (_scale)
-    {
+    fullscreen_width: function (_scale) {
         var _this = $(this);
         
-        if ($.is_null(_scale))
-            _scale = 1;
+        if ($.is_null(_scale)) {
+			_scale = 1;
+		}
         //探測螢幕寬度
         //var _max_width = Math.min(window.innerWidth, window.outerWidth, $(document).width());
         var _max_width = $.get_viewport_width();
@@ -1125,12 +1156,12 @@ jQuery.fn.extend({
         
         return this;
     },
-    fullscreen_height: function (_scale)
-    {
+    fullscreen_height: function (_scale) {
         var _this = $(this);
         
-        if ($.is_null(_scale))
-            _scale = 1;
+        if ($.is_null(_scale)) {
+			_scale = 1;
+		}
         
         //探測螢幕高度
         var _max_height = $.get_viewport_height();
@@ -1167,38 +1198,37 @@ jQuery.fn.extend({
      * @param {string} _option "width", "height", "x", "y"
      * @param {number} _scale 比例
      */
-    fullscreen: function (_option, _scale)
-    {
+    fullscreen: function (_option, _scale) {
         var _this = $(this);
-        if ($.is_number(_option) && $.is_null(_scale))
-        {
+        if ($.is_number(_option) && $.is_null(_scale)) {
             _scale = _option;
             _option = null;
         }
-        if ($.is_null(_scale))
-            _scale = 1;
-        if (_option == 'width' || _option == 'x')
-            _this.fullscreen_width(_scale);
-        else if (_option == 'height' || _option == 'y')
-            _this.fullscreen_height(_scale);
-        else
-        {
-            _this.fullscreen_width(_scale);
-            _this.fullscreen_height(_scale);
-            
-        }
+        if ($.is_null(_scale)) {
+			_scale = 1;
+		}
+        if (_option == 'width' || _option == 'x') {
+			_this.fullscreen_width(_scale);
+		}
+		else 
+			if (_option == 'height' || _option == 'y') {
+				_this.fullscreen_height(_scale);
+			}
+			else {
+				_this.fullscreen_width(_scale);
+				_this.fullscreen_height(_scale);
+				
+			}
         return this;
     },
     restore: function () {
         var _this = $(this);
-        if (_this.hasAttr('restore_width'))
-        {
+        if (_this.hasAttr('restore_width')) {
             //_this.css('width', _this.attr('restore_width'));
             _this.css('width', 'auto');
             _this.removeAttr('restore_width');
         }
-        if (_this.hasAttr('restore_height'))
-        {
+        if (_this.hasAttr('restore_height')) {
             //_this.css('width', _this.attr('restore_width'));
             _this.css('width', 'auto');
             _this.removeAttr('restore_height');
@@ -1213,28 +1243,29 @@ jQuery.fn.extend({
     attr_to_css: function (_attr, _css, _reset) {
         var _this = $(this);
         var _value = _this.attr(_attr);
-        if ($.isset(_value))
-        {
+        if ($.isset(_value)) {
             _this.css(_css, _value);
             if ($.is_null(_reset)) {
-                _this.removeAttr(_attr);
-            }
-            else 
-                _this.attr(_attr, _reset);
+				_this.removeAttr(_attr);
+			}
+			else {
+				_this.attr(_attr, _reset);
+			}
         }
         return this;
     },
     css_to_attr: function (_css, _attr, _reset) {
         var _this = $(this);
-        if (_this.hasAttr(_attr))
-            return this;
+        if (_this.hasAttr(_attr)) {
+			return this;
+		}
         
         var _value = _this.css(_css);
-        if ($.isset(_value) && _value != 0 && _value != '')
-        {
+        if ($.isset(_value) && _value !== 0 && _value !== '') {
             _this.attr(_attr, _value);
-            if ($.isset(_reset))
-                _this.css(_css, _reset);
+            if ($.isset(_reset)) {
+				_this.css(_css, _reset);
+			}
         }
         return this;
     },
@@ -1285,102 +1316,104 @@ jQuery.fn.extend({
      * @param {string|number} _expect 預期值
      * @param {number|null} _scale 比例值
      */
-    css_scale: function (_css, _expect, _scale)
-    {   
-        if ($.is_object(_css) && $.is_null(_scale))
-        {
+    css_scale: function (_css, _expect, _scale) {   
+        if ($.is_object(_css) && $.is_null(_scale)) {
             _scale = _expect;
             _expect = _css.expect;
             _css = _css.css;
         }
     
-        if ($.is_array(_css))
-        {
-            for (var _i in _css)
-            {
+        if ($.is_array(_css)) {
+            for (var _i in _css) {
                 this.css_scale(_css[_i], _expect, _scale);
             }
             return this;
         }
         
-        if ($.is_null(_scale))
-            _scale = 1;
+        if ($.is_null(_scale)) {
+			_scale = 1;
+		}
         //var _this = $(this);
         
         //var _value = this.css(_css);
         
-        if ($.is_null(_expect)
-            || _expect == 0
-            || _expect == '')
-            return this;
+        if ($.is_null(_expect) ||
+		_expect === 0 ||
+		_expect === '') {
+			return this;
+		}
         
         var _scale_length = function (_expect, _scale) {
             if ($.is_number(_expect)) {
                 _expect = _expect * _scale;
-                if (_expect < 1) 
-                    _expect = 1;
+                if (_expect < 1) {
+					_expect = 1;
+				}
             }
             else {
                 if ($.is_string(_expect)) {
                     if ($.ends_with(_expect, '%')) {
                         _expect = _expect.substr(0, _expect.length - 1);
                         _expect = _expect * _scale;
-                        if (_expect < 1) 
-                            _expect = 1;
+                        if (_expect < 1) {
+							_expect = 1;
+						}
                         _expect = _expect + '%';
                     }
                     else {
                         if ($.ends_with(_expect, 'px') ||
-                        $.ends_with(_expect, 'em') ||
-                        $.ends_with(_expect, 'cm') ||
-                        $.ends_with(_expect, 'pt') ||
-                        $.ends_with(_expect, 'ex') ||
-                        $.ends_with(_expect, 'px') ||
-                        $.ends_with(_expect, 'in') ||
-                        $.ends_with(_expect, 'mm') ||
-                        $.ends_with(_expect, 'pc')) {
-                            var _len = _expect.length;
-                            var _unit = _expect.substr(_len - 2, _len);
-                            _expect = _expect.substr(0, _len - 2);
-                            _expect = _expect * _scale;
-                            
-                            if (_expect < 1) 
-                                _expect = 1;
-                            
-                            _expect = _expect + _unit;
-                        }
-                        else 
-                            return null;
+						$.ends_with(_expect, 'em') ||
+						$.ends_with(_expect, 'cm') ||
+						$.ends_with(_expect, 'pt') ||
+						$.ends_with(_expect, 'ex') ||
+						$.ends_with(_expect, 'px') ||
+						$.ends_with(_expect, 'in') ||
+						$.ends_with(_expect, 'mm') ||
+						$.ends_with(_expect, 'pc')) {
+							var _len = _expect.length;
+							var _unit = _expect.substr(_len - 2, _len);
+							_expect = _expect.substr(0, _len - 2);
+							_expect = _expect * _scale;
+							
+							if (_expect < 1) {
+								_expect = 1;
+							}
+							
+							_expect = _expect + _unit;
+						}
+						else {
+							return null;
+						}
                     }
                 }
             }
             return _expect;
         };
         
-        if ($.is_string(_expect) && _expect.indexOf(' ') > -1)
-        {
+        if ($.is_string(_expect) && _expect.indexOf(' ') > -1) {
             var _expects = _expect.split(' ');
-            for (var _key in _expects)
-            {
+            for (var _key in _expects) {
                 _expects[_key] = _scale_length(_expects[_key], _scale);
             }
             _expect = _expects.join(' ');
         }
-        else
-        {
+        else {
             _expect = _scale_length(_expect, _scale);
         }
-        if ($.is_null(_expect))
-            return this;
+        if ($.is_null(_expect)) {
+			return this;
+		}
         
         this.css(_css, _expect);
         return this;
     },
     id: function(_set) {
-        if ($.isset(_set))
-            return $(this).attr('id', _set);
-        else
-            return $(this).attr('id');
+        if ($.isset(_set)) {
+			return $(this).attr('id', _set);
+		}
+		else {
+			return $(this).attr('id');
+		}
     }
 });
 
@@ -1391,27 +1424,30 @@ jQuery.fn.extend({
  * @type {type}
  */
 jQuery.append_unit = function (_length, _default_unit) {
-    if (this.is_null(_default_unit))
-        _default_unit = 'px';
+    if (this.is_null(_default_unit)) {
+		_default_unit = 'px';
+	}
     
-    if (this.is_number(_length))
-        return _length + _default_unit;
-    else
-    {
-        if (this.ends_with(_length, 'px')
-            || this.ends_with(_length, '%')
-            || this.ends_with(_length, 'em')
-            || this.ends_with(_length, 'cm')
-            || this.ends_with(_length, 'pt')
-            || this.ends_with(_length, 'ex')
-            || this.ends_with(_length, 'px')
-            || this.ends_with(_length, 'in')
-            || this.ends_with(_length, 'mm')
-            || this.ends_with(_length, 'pc'))
-            return _length;
-        else
-            return _length + _default_unit;
-    }
+    if (this.is_number(_length)) {
+		return _length + _default_unit;
+	}
+	else {
+		if (this.ends_with(_length, 'px') ||
+		this.ends_with(_length, '%') ||
+		this.ends_with(_length, 'em') ||
+		this.ends_with(_length, 'cm') ||
+		this.ends_with(_length, 'pt') ||
+		this.ends_with(_length, 'ex') ||
+		this.ends_with(_length, 'px') ||
+		this.ends_with(_length, 'in') ||
+		this.ends_with(_length, 'mm') ||
+		this.ends_with(_length, 'pc')) {
+			return _length;
+		}
+		else {
+			return _length + _default_unit;
+		}
+	}
 };
 
 /**
@@ -1420,29 +1456,32 @@ jQuery.append_unit = function (_length, _default_unit) {
  * @type {number}
  */
 jQuery.strip_unit = function (_length) {
-    if (this.is_number(_length))
-        return _length;
-    else
-    {
-        if (this.ends_with(_length, '%'))
-            _length = _length.substr(0, _length.length -1);
-        if (this.ends_with(_length, 'px')
-            || this.ends_with(_length, 'em')
-            || this.ends_with(_length, 'cm')
-            || this.ends_with(_length, 'pt')
-            || this.ends_with(_length, 'ex')
-            || this.ends_with(_length, 'px')
-            || this.ends_with(_length, 'in')
-            || this.ends_with(_length, 'mm')
-            || this.ends_with(_length, 'pc'))
-            _length = _length.substr(0, _length.length -2);
-            
-            //$.test_msg(_length);
-        var _output = parseInt(_length);
-        if (isNaN(_output))
-            _output = 0;
-        return _output;
-    }
+    if (this.is_number(_length)) {
+		return _length;
+	}
+	else {
+		if (this.ends_with(_length, '%')) {
+			_length = _length.substr(0, _length.length - 1);
+		}
+		if (this.ends_with(_length, 'px') ||
+		this.ends_with(_length, 'em') ||
+		this.ends_with(_length, 'cm') ||
+		this.ends_with(_length, 'pt') ||
+		this.ends_with(_length, 'ex') ||
+		this.ends_with(_length, 'px') ||
+		this.ends_with(_length, 'in') ||
+		this.ends_with(_length, 'mm') ||
+		this.ends_with(_length, 'pc')) {
+			_length = _length.substr(0, _length.length - 2);
+		}
+		
+		//$.test_msg(_length);
+		var _output = parseInt(_length,10);
+		if (isNaN(_output)) {
+			_output = 0;
+		}
+		return _output;
+	}
 };
 
 /**
@@ -1452,25 +1491,27 @@ jQuery.strip_unit = function (_length) {
  */
 jQuery.get_unit = function (_length) {
     var _unit = null;
-    if (this.is_number(_length))
-        return _unit;
-    else
-    {
-        var _len = _length.length;
-        if (this.ends_with(_length, '%'))
-            _unit = _length.substr(_len -1, _len);
-        if (this.ends_with(_length, 'px')
-            || this.ends_with(_length, 'em')
-            || this.ends_with(_length, 'cm')
-            || this.ends_with(_length, 'pt')
-            || this.ends_with(_length, 'ex')
-            || this.ends_with(_length, 'px')
-            || this.ends_with(_length, 'in')
-            || this.ends_with(_length, 'mm')
-            || this.ends_with(_length, 'pc'))
-            _unit = _length.substr(_len -2, _len);
-        return _unit;
-    }
+    if (this.is_number(_length)) {
+		return _unit;
+	}
+	else {
+		var _len = _length.length;
+		if (this.ends_with(_length, '%')) {
+			_unit = _length.substr(_len - 1, _len);
+		}
+		if (this.ends_with(_length, 'px') ||
+		this.ends_with(_length, 'em') ||
+		this.ends_with(_length, 'cm') ||
+		this.ends_with(_length, 'pt') ||
+		this.ends_with(_length, 'ex') ||
+		this.ends_with(_length, 'px') ||
+		this.ends_with(_length, 'in') ||
+		this.ends_with(_length, 'mm') ||
+		this.ends_with(_length, 'pc')) {
+			_unit = _length.substr(_len - 2, _len);
+		}
+		return _unit;
+	}
 };
 
 /**
@@ -1479,7 +1520,7 @@ jQuery.get_unit = function (_length) {
  * @param {number} _scale 比例
  */
 jQuery.css_scale = function (_length , _scale) {
-    if (_scale != 1 && _length != 0) {
+    if (_scale != 1 && _length !== 0) {
         var _unit = $.get_unit(_length);
         _length = $.strip_unit(_length) * _scale;
         _length = _length + _unit;
@@ -1489,34 +1530,38 @@ jQuery.css_scale = function (_length , _scale) {
 
 jQuery.get_viewport_width = function () {
     var _max_width = window.innerWidth;
-    if (isNaN(window.innerWidth) || window.innerWidth > window.outerWidth )
-        _max_width = window.outerWidth;
-    if (isNaN(_max_width) || _max_width > $(document).width())
-        _max_width = $(document).width();
+    if (isNaN(window.innerWidth) || window.innerWidth > window.outerWidth) {
+		_max_width = window.outerWidth;
+	}
+    if (isNaN(_max_width) || _max_width > $(document).width()) {
+		_max_width = $(document).width();
+	}
     
-    if (document.documentElement && document.documentElement.clientWidth) 
-    {
+    if (document.documentElement && document.documentElement.clientWidth) {
         //IE 6+ in 'standards compliant mode'
         _ie_width = document.documentElement.clientWidth;
-        if (isNaN(_max_width) || _max_width > _ie_width)
-            _max_width = _ie_width;
+        if (isNaN(_max_width) || _max_width > _ie_width) {
+			_max_width = _ie_width;
+		}
     }
     return _max_width;
 };
 
 jQuery.get_viewport_height = function () {
     var _max_length = window.innerHeight;
-    if (isNaN(_max_length) || _max_length > window.outerHeight )
-        _max_length = window.outerHeight;
-    if (isNaN(_max_length) || _max_length > $(document).height())
-        _max_length = $(document).height();
+    if (isNaN(_max_length) || _max_length > window.outerHeight) {
+		_max_length = window.outerHeight;
+	}
+    if (isNaN(_max_length) || _max_length > $(document).height()) {
+		_max_length = $(document).height();
+	}
     
-    if (document.documentElement && document.documentElement.clientHeight) 
-    {
+    if (document.documentElement && document.documentElement.clientHeight) {
         //IE 6+ in 'standards compliant mode'
         _ie_height = document.documentElement.clientHeight;
-        if (isNaN(_max_length) || _max_length > _ie_height)
-            _max_length = _ie_height;
+        if (isNaN(_max_length) || _max_length > _ie_height) {
+			_max_length = _ie_height;
+		}
     }
     
     return _max_length;
@@ -1530,43 +1575,42 @@ jQuery.get_viewport_height = function () {
  */
 jQuery.create_once = function (_html, _append_to) {
     
-    if (this.is_null(_append_to))
-        _append_to = this('body');
+    if (this.is_null(_append_to)) {
+		_append_to = this('body');
+	}
     
     var _temp_obj = this(_html);
     var _tag_name = _temp_obj.attr('tagName');
 
     var _class_name = _temp_obj.attr('class');
-    if (_class_name != '' && _class_name != null)
-    {
-        var _classes = _class_name.split(' ');
-        _class_name = '';
-        for (var _key in _classes)
-        {
-            _class_name += '.'+_classes[_key];
-        }
-    }
-    else
-        _class_name = '';
+    if (_class_name !== '' && _class_name !== null) {
+		var _classes = _class_name.split(' ');
+		_class_name = '';
+		for (var _key in _classes) {
+			_class_name += '.' + _classes[_key];
+		}
+	}
+	else {
+		_class_name = '';
+	}
 
     var _id = _temp_obj.attr('id');
-    if (_id != '' && _id != null)
-        _id = '#'+_id;
-    else
-        _id = '';
+    if (_id !== '' && _id !== null) {
+		_id = '#' + _id;
+	}
+	else {
+		_id = '';
+	}
 
 
-    if (_class_name == '' && _id == '')
-    {
+    if (_class_name === '' && _id === '') {
         _temp_obj.appendTo(_append_to);
         return _temp_obj;
     }
-    else
-    {
+    else {
         var _selector = _tag_name+_class_name+_id;
         var _obj = this(_selector);
-        if (false == _obj.exists())
-        {
+        if (false == _obj.exists()) {
             _temp_obj.appendTo(_append_to);
             _obj = _temp_obj;
         }
@@ -1595,12 +1639,29 @@ jQuery.check_interface = function(_theObject, _theInterface) {
  * 去除HTML標籤
  * @memberOf {jQuery}
  * @param {string} _html 含有HTML標籤的字串
+ * @param {string} _except_tags 不要移除的標籤
  * @type {string}
  */
-jQuery.strip_html_tag = function(_html)
-{
+jQuery.strip_html_tag = function(_html, _except_tags) {
     //var _reTag = /<(?:.|\s)*?/g;
     var _reTag = /<[^>].*?>/g;
+    
+    if (typeof(_except_tags) == "string") {
+        _except_tags = [_except_tags];
+    }
+    if (typeof(_except_tags) != "undefined" 
+		&& typeof(_except_tags[0]) == "string") {
+		_reTag = "<[^(";
+		for (var _i = 0; _i < _except_tags.length; _i++) {
+			if (_i > 0) {
+				_reTag = _reTag + "|";
+			}
+			_reTag = _reTag + _except_tags[_i];
+		}
+		_reTag = _reTag + ")>].*?>";
+		_reTag = new RegExp(_reTag, "g");
+	}
+    
     return _html.replace(_reTag,"");
 };
 
@@ -1614,11 +1675,23 @@ jQuery.css_border_radius = {
         '-moz-border-radius-bottomleft' ,
         '-moz-border-radius-bottomright'
     ],
-    webkit: [
+    general: [
         'border-top-left-radius' ,
         'border-top-right-radius' ,
         'border-bottom-left-radius' ,
         'border-bottom-right-radius'
+    ],
+    khtml: [
+        '-khtml-border-radius-topleft' ,
+        '-khtml-border-radius-topright' , 
+        '-khtml-border-radius-bottomleft' ,
+        '-khtml-border-radius-bottomright'
+    ],
+    webkit: [
+        '-webkit-border-radius-topleft' ,
+        '-webkit-border-radius-topright' , 
+        '-webkit-border-radius-bottomleft' ,
+        '-webkit-border-radius-bottomright'
     ]
 };
 
@@ -1631,7 +1704,9 @@ jQuery.css_finger_friendly = {
         {css: 'border-width', expect: '3px'},
         {css: 'padding', expect: '5px'},
         {css: jQuery.css_border_radius.moz, expect: '10px'},
-        {css: jQuery.css_border_radius.webkit, expect: '10px 10px'}
+        {css: jQuery.css_border_radius.webkit, expect: '10px 10px'},
+        {css: jQuery.css_border_radius.khtml, expect: '10px 10px'},
+        {css: jQuery.css_border_radius.general, expect: '10px 10px'}
     ]
 };
 
@@ -1647,14 +1722,17 @@ jQuery.mobile_mode = null;
  * @memberOf {jQuery}
  * @method [is_mobile_mode]
  */
-jQuery.is_mobile_mode = function ()
-{
-    if (this.mobile_mode == null) {
+jQuery.is_mobile_mode = function () {
+    if (this.mobile_mode === null) {
         var _this = this;
-        YUI().use("", function(Y){
-            var _mode = (!$.is_null(Y.UA.mobile));
-            _this.mobile_mode = _mode;
-        });
+		var _yui = YUI();
+		if (typeof(_yui.use) == "function") {
+			_yui.use("", function(Y){
+	            var _mode = (!$.is_null(Y.UA.mobile));
+	            _this.mobile_mode = _mode;
+	        });	
+		}
+        
     }
     return this.mobile_mode;
 };
@@ -1669,16 +1747,19 @@ jQuery.is_mobile_mode = function ()
  */
 jQuery.is_small_screen = function (_strict) {
     
-    if ($.is_null(_strict))
-        _strict = true;
+    if ($.is_null(_strict)) {
+		_strict = true;
+	}
     
     var _width = $.get_viewport_width();
     var _height = $.get_viewport_height();
     
-    if (_strict)
-        return (!(_width > 400 && _height > 480));
-    else
-        return (!(_width > 400 || _height > 480));
+    if (_strict) {
+		return (!(_width > 400 && _height > 480));
+	}
+	else {
+		return (!(_width > 400 || _height > 480));
+	}
 };
 
 jQuery.is_small_width = function () {
@@ -1698,15 +1779,14 @@ jQuery.touchable = null;
  */
 jQuery.is_touchable = function () {
    
-   if (this.touchable == null)
-   {
+   if (this.touchable === null) {
        var _touchable = false;
-        try 
-        {            
+        try {            
             var _el = document.createElement('div');
             _el.setAttribute('ontouchstart', 'return;');
-           if (typeof(_el.ontouchstart) == "function")
-              _touchable = true;
+           if (typeof(_el.ontouchstart) == "function") {
+		   	_touchable = true;
+		   }
        } catch (_e) { }
        this.touchable = _touchable;
    }
@@ -1743,43 +1823,67 @@ jQuery.fn.extend({
  * @param {string} _name
  * @param {Object} _default_value
  */
-jQuery.get_parameter = function(_parameters, _name, _default_value) 
-{
-    if ($.is_null(_parameters))
-        return null;
+jQuery.get_parameter = function(_parameters, _name, _default_value) {
+    if ($.is_null(_parameters)) {
+		return null;
+	}
     
-    if ($.is_array(_name))
-    {
-        for (var _key in _name)
-        {
-            var _n = _name[_key];
-            //if (typeof(_parameters[_n])!= 'undefined' && _parameters[_n] != null)
-            if (typeof(_parameters[_n])!= 'undefined' && $.isset(_parameters[_n]))
-            //if ($.isset(_parameters[_n])) 
-                return _parameters[_n];
-        }
+    if ($.is_array(_name)) {
+		for (var _key in _name) {
+			var _n = _name[_key];
+			//if (typeof(_parameters[_n])!= 'undefined' && _parameters[_n] != null)
+			if (typeof(_parameters[_n]) != 'undefined' && $.isset(_parameters[_n])) {
+				//if ($.isset(_parameters[_n])) 
+				return _parameters[_n];
+			}
+		}
+	}
+	else 
+		if (typeof(_parameters[_name]) != 'undefined' && $.isset(_parameters[_name])) {
+			//else if ($.isset(_parameters[_name])) 
+			return _parameters[_name];
+		}
+    
+    if ($.isset(_default_value)) {
+		return _default_value;
+	}
+	else {
+		return null;
+	}
+};
+
+jQuery._match_config = {
+    english: {
+        'q':1,'w':1,'e':1,'r':1,'t':1,'y':1,'u':1,'i':1,'o':1,'p':1,'a':1,'s':1,'d':1,'f':1,'g':1,'h':1,'j':1,'k':1,'l':1,'z':1,'x':1,'c':1,'v':1,'b':1,'n':1,'m':1
+        ,
+        'Q':1,'W':1,'E':1,'R':1,'T':1,'Y':1,'U':1,'I':1,'O':1,'P':1,'A':1,'S':1,'D':1,'F':1,'G':1,'H':1,'J':1,'K':1,'L':1,'Z':1,'X':1,'C':1,'V':1,'B':1,'N':1,'M':1
+    },
+    upper_english: {
+        'Q':1,'W':1,'E':1,'R':1,'T':1,'Y':1,'U':1,'I':1,'O':1,'P':1,'A':1,'S':1,'D':1,'F':1,'G':1,'H':1,'J':1,'K':1,'L':1,'Z':1,'X':1,'C':1,'V':1,'B':1,'N':1,'M':1
+    },
+    punctuation: {
+        '，':1,',':1,'。':1,'.':1,'：':1,':':1,'；':1,';':1,'、':1,'？':1,'?':1,'！':1,'!':1,'-':1
+    },
+    sentence_punctuation: {
+        '。':1,'.':1,'：':1,':':1,'；':1,'？':1,'?':1,'！':1,'!':1
+    },
+    english_sentence_punctuation: {
+        '.':1,':':1,'?':1,'!':1
     }
-    else if (typeof(_parameters[_name]) != 'undefined' && $.isset(_parameters[_name]))
-    //else if ($.isset(_parameters[_name])) 
-        return _parameters[_name];
-    
-    if ($.isset(_default_value))
-        return _default_value;
-    else
-        return null;
+}; 
+
+jQuery.match_english = function(_text) {
+	//var _reg = /^([a-z]|[A-Z])$/;
+	//return _reg.test(_text);
+    return (typeof(jQuery._match_config.english[_text]) == 'number');
 };
-jQuery.match_english = function(_text)
-{
-	var _reg = /^([a-z]|[A-Z])$/;
-	return _reg.test(_text);
+
+jQuery.match_upper_english = function(_text) {
+	//var _reg = /^([A-Z])$/;
+	//return _reg.test(_text);
+    return (typeof(jQuery._match_config.upper_english[_text]) == 'number');
 };
-jQuery.match_upper_english = function(_text)
-{
-	var _reg = /^([A-Z])$/;
-	return _reg.test(_text);
-};
-jQuery.match_number = function(_text)
-{
+jQuery.match_number = function(_text) {
 	var _reg = /^\d$/;
 	return _reg.test(_text);
 };
@@ -1787,37 +1891,36 @@ jQuery.match_number = function(_text)
  * 測試是否為標點符號
  * @param {String} _text
  */
-jQuery.match_punctuation = function(_text)
-{
+jQuery.match_punctuation = function(_text) {
 	//var _reg = /^(，|,|。|\.|\'|")$/;
-    var _reg = /^(，|,|。|\.|：|:|；|;|、|？|\?|！|!|-)$/;
-	return _reg.test(_text);
+    //var _reg = /^(，|,|。|\.|：|:|；|;|、|？|\?|！|!|-)$/;
+	//return _reg.test(_text);
+    return (typeof(jQuery._match_config.punctuation[_text]) == 'number');
 };
 
 /**
  * 測試是否為斷句的標點符號
  * @param {String} _text
  */
-jQuery.match_sentence_punctuation = function(_text)
-{
+jQuery.match_sentence_punctuation = function(_text) {
 	//var _reg = /^(，|,|。|\.|\'|")$/;
-    var _reg = /^(。|\.|：|:|；|？|\?|！|!)$/;
-	return _reg.test(_text);
+    //var _reg = /^(。|\.|：|:|；|？|\?|！|!)$/;
+	//return _reg.test(_text);
+    return (typeof(jQuery._match_config.sentence_punctuation[_text]) == 'number');
 };
 
 /**
  * 測試是否為斷句的標點符號
  * @param {String} _text
  */
-jQuery.match_english_sentence_punctuation = function(_text)
-{
+jQuery.match_english_sentence_punctuation = function(_text) {
 	//var _reg = /^(，|,|。|\.|\'|")$/;
-    var _reg = /^(\.|:|\?|!)$/;
-	return _reg.test(_text);
+    //var _reg = /^(\.|:|\?|!)$/;
+	//return _reg.test(_text);
+    return (typeof(jQuery._match_config.english_sentence_punctuation[_text]) == 'number');
 };
 
-jQuery.match_space = function(_text)
-{
+jQuery.match_space = function(_text) {
 	var _reg = /^(\s|　)$/;
 	return _reg.test(_text);
 };
@@ -1825,59 +1928,99 @@ jQuery.match_space = function(_text)
 /**
  * 取消選擇範圍
  */
-jQuery.cancel_select = function() 
-{
-	if ($.browser.msie == true)
+jQuery.cancel_select = function() {
+	if ($.browser.msie === true) {
 		top.document.selection.empty();
-	else
+	}
+	else {
 		window.getSelection().removeAllRanges();
+	}
 };
 
-jQuery.lock_viewport = function () 
-{
+jQuery.lock_viewport = function () {
     var _new_viewport = $('<meta name="viewport" id="kals_viewport_lock" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes" />')
         .appendTo($('head'));
 };
 
-jQuery.unlock_viewport = function () 
-{
+jQuery.unlock_viewport = function () {
     $('head meta[name=viewport]#kals_viewport');
 };
 
 jQuery.get_prefixed_id = function (_prefixed_id) {
-    if ($.is_null(_prefixed_id))
-        return null;
+    if ($.is_null(_prefixed_id)) {
+		return null;
+	}
     
-    if ($.is_number(_prefixed_id))
-        return _prefixed_id;
-    if ($.is_object(_prefixed_id))
-    {
-        if ($.is_jquery(_prefixed_id))
-            _prefixed_id = _prefixed_id.attr('id');
-        else if ($.is_null(_prefixed_id))
-            return null;
-        else if (typeof(_prefixed_id) != 'undefined'
-            && typeof(_prefixed_id.id) != 'undefined')
-        {
-            _prefixed_id = _prefixed_id.id;
-        }
-        else
-            return null;
+    if ($.is_number(_prefixed_id)) {
+		return _prefixed_id;
+	}
+    if ($.is_object(_prefixed_id)) {
+        if ($.is_jquery(_prefixed_id)) {
+			_prefixed_id = _prefixed_id.attr('id');
+		}
+		else 
+			if ($.is_null(_prefixed_id)) {
+				return null;
+			}
+			else 
+				if (typeof(_prefixed_id) != 'undefined' &&
+				typeof(_prefixed_id.id) != 'undefined') {
+					_prefixed_id = _prefixed_id.id;
+				}
+				else {
+					return null;
+				}
     }
     
-    if ($.is_null(_prefixed_id) || $.trim(_prefixed_id) == '')
-    {
+    if ($.is_null(_prefixed_id) || $.trim(_prefixed_id) === '') {
         return null;
     }
     _prefixed_id = _prefixed_id + '';
     
     var _parts = _prefixed_id.split('_');
     var _id = _parts[ (_parts.length-1) ];
-    _id = parseInt(_id);
-    if (isNaN(_id))
-        return null;
-    else
-        return _id;
+    _id = parseInt(_id,10);
+    if (isNaN(_id)) {
+		return null;
+	}
+	else {
+		return _id;
+	}
+};
+
+jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
+	
+	if ($.is_jquery(_classname)) {
+		_classname = _classname.attr('className');
+	}
+		
+	var _classname_ary = _classname.split(' ');
+	var _id = null;
+	if (_prefixed === null)
+	{
+		for (var _i = 0; _i < _classname_ary.length; _i++)
+		{
+			_id = $.get_prefixed_id(_classname_ary[_i]);
+			if (_id !== null) {
+				return _id;
+			}
+		}
+	}
+	else
+	{
+		for (_i = 0; _i < _classname_ary.length; _i++)
+		{
+			var _c = _classname_ary[_i];
+			if ($.starts_with(_c, _prefixed))
+			{
+				_id = $.get_prefixed_id(_c);
+				if (_id !== null) {
+					return _id;
+				}
+			}
+		}
+	}
+	return _id;
 };
 
 /**
@@ -1906,62 +2049,67 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     
     //確定位置資料
     _target_x = $.get_parameter(_position, ['x', 'left', 'pageXOffset'], window.pageXOffset);
-    if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-'))
-        _target_x = eval(window.pageXOffset + _target_x);
+    if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-')) {
+		_target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
+	}
     _target_y = $.get_parameter(_position, ['y', 'top', 'pageYOffset'], window.pageYOffset);
-    if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-'))
-        _target_y = eval(window.pageYOffset + _target_y);
+    if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-')) {
+		_target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
+	}
     
-    if ($.is_number(_target_x) == false || $.is_number(_target_y) == false)
-        return this;
+    if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
+		return this;
+	}
     
     //調整_speed跟_callback
-    if ($.is_function(_speed) && $.is_null(_callback))
-    {
+    if ($.is_function(_speed) && $.is_null(_callback)) {
         _callback = _speed;
         _speed = 1000;
     }
     
     //取得_speed
-    if (_speed == 'fast')
-        _speed = 200;
-    else if (_speed == 'slow')
-        _speed = 2000;
-    else if ($.is_number(_speed) == false)
-        _speed = 1000;
+    if (_speed == 'fast') {
+		_speed = 200;
+	}
+	else 
+		if (_speed == 'slow') {
+			_speed = 2000;
+		}
+		else 
+			if ($.is_number(_speed) === false) {
+				_speed = 1000;
+			}
         
     //確認要移動的次數
-    _repeat_count = parseInt(_speed / _interval_time)+1;
+    _repeat_count = parseInt(_speed / _interval_time,10)+1;
     
     //確認要移動的距離
-    _interval_x = parseInt((_target_x - window.pageXOffset) / _repeat_count)+1;
-    _interval_y = parseInt((_target_y - window.pageYOffset) / _repeat_count)+1;
+    _interval_x = parseInt((_target_x - window.pageXOffset) / _repeat_count,10)+1;
+    _interval_y = parseInt((_target_y - window.pageYOffset) / _repeat_count,10)+1;
     
     
-    var _loop = function (_i, _count, _callback)
-    {
-        if (_i == _count || _i > _count)
-        {
-            if ($.is_function(_callback))
-                _callback();
+    var _loop = function (_i, _count, _callback) {
+        if (_i == _count || _i > _count) {
+            if ($.is_function(_callback)) {
+				_callback();
+			}
             return;
         }
-        else
-        {
-            if (_i < _count -1)
-            {
+        else {
+            if (_i < _count -1) {
                 var _offset_x = window.pageXOffset;
                 _next_x = _offset_x + _interval_x;
-                if (_next_x > _target_x)
-                    _next_x = _target_x;
+                if (_next_x > _target_x) {
+					_next_x = _target_x;
+				}
                 
                 var _offset_y = window.pageYOffset;
                 _next_y = _offset_y + _interval_y;
-                if (_next_y > _target_y)
-                    _next_y = _target_y;
+                if (_next_y > _target_y) {
+					_next_y = _target_y;
+				}
             }
-            else
-            {
+            else {
                 _next_x = _target_x;
                 _next_y = _target_y;
             }
@@ -1988,13 +2136,11 @@ jQuery.save_scroll_position = function () {
 jQuery.load_scroll_position = function () {
     
     
-    if (window.pageXOffset != this._scroll_position[0])
-    {
+    if (window.pageXOffset != this._scroll_position[0]) {
         //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
     }
     
-    if (window.pageYOffset != this._scroll_position[1])
-    {
+    if (window.pageYOffset != this._scroll_position[1]) {
         //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }
@@ -2016,35 +2162,41 @@ jQuery.create_id = function () {
  * @param {Object} _arg4 參數
  * @param {Object} _arg5 參數
  */
-jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5)
-{
+jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5) {
     var _delay = 0;
     
-    if (typeof(_callback) == 'number')
-    {
-        if (typeof(_arg1) == 'function')
-        {
+    if (typeof(_callback) == 'number') {
+        if (typeof(_arg1) == 'function') {
             _delay = _callback;
             _callback = _arg1;
         }
     }
     
-    if ($.is_function(_callback))
-    {
+    if ($.is_function(_callback)) {
         setTimeout(function () {
             
-            if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4) && $.isset(_arg5))
-                _callback(_arg1, _arg2, _arg3, _arg4, _arg5);
-            else if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4))
-                _callback(_arg1, _arg2, _arg3, _arg4);
-            else if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3))
-                _callback(_arg1, _arg2, _arg3);
-            else if ($.isset(_arg1) && $.isset(_arg2))
-                _callback(_arg1, _arg2);
-            else if ($.isset(_arg1))
-                _callback(_arg1);
-            else
-                _callback();
+            if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4) && $.isset(_arg5)) {
+				_callback(_arg1, _arg2, _arg3, _arg4, _arg5);
+			}
+			else 
+				if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4)) {
+					_callback(_arg1, _arg2, _arg3, _arg4);
+				}
+				else 
+					if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3)) {
+						_callback(_arg1, _arg2, _arg3);
+					}
+					else 
+						if ($.isset(_arg1) && $.isset(_arg2)) {
+							_callback(_arg1, _arg2);
+						}
+						else 
+							if ($.isset(_arg1)) {
+								_callback(_arg1);
+							}
+							else {
+								_callback();
+							}
                 
         }, _delay);
     }
@@ -2063,12 +2215,9 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
  * @param {Object} _this_class
  * @param {Object} _super_class
  */
-jQuery.multi_extend = function (_this_class, _super_class)
-{
-    if ($.is_object(_super_class))
-    {
-        for (var _key in _super_class)
-        {
+jQuery.multi_extend = function (_this_class, _super_class) {
+    if ($.is_object(_super_class)) {
+        for (var _key in _super_class) {
             _this_class[_key] = _super_class[_key];
         }
     }
@@ -2080,16 +2229,17 @@ jQuery.multi_extend = function (_this_class, _super_class)
  * @param {number|string} _time 請輸入從1970/01/01到現在秒的格式
  */
 jQuery.get_interval_time = function (_time) {
-    if ($.is_string(_time))
-        _time = parseInt(_time);
+    if ($.is_string(_time)) {
+		_time = parseInt(_time, 10);
+	}
     
-    if ($.is_number(_time))
-    {
-        var _now = parseInt((new Date()).getTime()/1000);
-        return _now - _time;
-    }
-    else
-        return 0;
+    if ($.is_number(_time)) {
+		var _now = parseInt((new Date()).getTime() / 1000, 10);
+		return _now - _time;
+	}
+	else {
+		return 0;
+	}
 };
 
 /**
@@ -2099,10 +2249,8 @@ jQuery.get_interval_time = function (_time) {
  */
 jQuery.array_remove = function (_ary, _index) {
     if(isNaN(_index)||_index>_ary.length){return false;}
-    for(var i=0,n=0;i<_ary.length;i++)
-    {
-        if(_ary[i]!=_ary[_index])
-        {
+    for(var i=0,n=0;i<_ary.length;i++) {
+        if(_ary[i]!=_ary[_index]) {
             _ary[n++]=_ary[i];
         }
     }
@@ -2116,7 +2264,7 @@ jQuery.array_remove = function (_ary, _index) {
  * @type {number}
  */
 jQuery.get_epoch_time = function () {
-    return parseInt((new Date()).getTime()/1000);
+    return parseInt((new Date()).getTime()/1000,10);
 };
 
 jQuery.fn.setup_hover = function () {
@@ -2129,8 +2277,58 @@ jQuery.fn.setup_hover = function () {
 
 jQuery.browser.msie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);
 
-if (false)
-{
+/**
+ * 移除反斜線
+ * @param {string} _str
+ * @return {string}
+ */
+jQuery.stripslashes = function (_str) {
+	_str=_str.replace(/\\'/g,'\'');
+	_str=_str.replace(/\\"/g,'"');
+	_str=_str.replace(/\\0/g,'\0');
+	_str=_str.replace(/\\\\/g,'\\');
+	return _str;
+};
+
+/**
+ * 改良原本的decodeURIComponent
+ * @version 20130222 Pullipuli
+ * @param  {String} _str 要轉換的字串
+ * @return {String}      轉換完成的字串
+ */
+jQuery.decodeURIComponent = function (_str) {
+    var _result;
+    /*
+    try {
+        _result = decodeURIComponent(_str);
+    }
+    catch (_e) {
+        _str = $.str_replace("%", "%25", _str);
+        _result = decodeURIComponent(_str);
+    }
+    */
+    //_str = $.str_replace("%", "%25", _str);
+	try {
+		_result = decodeURIComponent(_str);
+	}
+	catch (e) {
+		_str = $.str_replace("%", "%25", _str);
+		_result = decodeURIComponent(_str);
+	}
+    return _result;
+};
+
+$.widget("ui.dialog", $.ui.dialog, {
+	_allowInteraction: function(event) {
+		return !!$(event.target).closest(".cke").length || this._super(event);
+	}
+});
+
+/**
+ * 20130222 Pulipuli Chen
+ * 不採用
+ */
+if (false) {
     /**
      * @type {jQuery}
      * @alias $

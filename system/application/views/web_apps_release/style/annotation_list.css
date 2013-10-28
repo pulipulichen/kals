@@ -369,3 +369,25 @@
 }
 */
 
+/*.list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table{
+	margin:1px !important;
+}*/
+/*.list-container .list-item-topic .list-item .list-menu table{
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}*/
+/*??? table{
+	margin: 0px 0 !important;
+}*/
+
+.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table {
+    margin: 0px 0 !important;
+}
+
+.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table tbody{
+    border: 0px !important;
+}
+
+.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table td{
+    border: 0px !important;
+}

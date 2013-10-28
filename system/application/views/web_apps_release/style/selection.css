@@ -74,6 +74,17 @@
     text-align:center;
     z-index: 999;
     width: 60px;
+	
+	/**
+	 * @ 20130612 Pudding Chen
+	 * 不給你們選取
+	 */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .kals-word.tooltip-trigger-hover {

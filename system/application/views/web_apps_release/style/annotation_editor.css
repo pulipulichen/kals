@@ -193,7 +193,7 @@
 .kals-modal .annotation-editor.editing .submit-container .edit,
 .kals-modal .annotation-editor.editing .submit-container .cancel,
 .kals-modal .annotation-editor .submit-container .create {
-    padding: 3px;
+    padding: 0.4em;
     display: inline;
 }
 
@@ -600,4 +600,15 @@ table.cke_editor.inline-table {
 	font-size: small;
 	text-align:left;
 	padding: 0 1em !important; 
+}
+
+.container-td .annotation-editor table tbody tr{
+	background: rgba(0, 0, 0, 0) !important;
+}
+
+.container-td .annotation-editor table tbody .left{
+	border-right-width:0px !important;
+}
+.container-td .annotation-editor table tbody .right{
+	border-left-width:0px !important;
 }

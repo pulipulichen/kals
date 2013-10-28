@@ -116,7 +116,6 @@ class Webpage extends KALS_resource {
     {
         //插入權限檢查
         //$this->auth->allow(2);
-
         if ((FALSE === isset($data['domain_id'])
             OR is_null($data['domain_id']))
             && isset($data['url']))
@@ -230,6 +229,7 @@ class Webpage extends KALS_resource {
         $this->_CI_load('library', 'recommend/Annotation_tutor', 'annotation_tutor');
         return new Annotation_tutor($this);
     }
+    
 }
 
 

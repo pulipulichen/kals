@@ -15,8 +15,9 @@ function Window_policy(_trigger) {
     
     Window_content.call(this);
     
-    if ($.isset(_trigger))
-        this._trigger = _trigger;
+    if ($.isset(_trigger)) {
+		this._trigger = _trigger;
+	}
     
     this._setup_submit(new Window_policy_submit());
 }
@@ -74,8 +75,7 @@ Window_policy.prototype._policy_type = 'public';
  * @memberOf {Window_policy}
  * @type {jQuery} UI
  */
-Window_policy.prototype._$create_ui = function ()
-{
+Window_policy.prototype._$create_ui = function () {
     var _ui = $('<form></form>')
         .addClass('window-policy');
     
@@ -110,12 +110,15 @@ Window_policy.prototype._$create_ui = function ()
             'policy_type.' + _type + '.help'
         );
         
-        if (_type == 'public')
-            _help_lang.msg = 'Everyone can read this annotation.';
-        else if (_type == 'private')
-            _help_lang.msg = 'Only you can read this annotation.';
-        else if (_type == 'share')
-            _help_lang.msg = 'People in follow list can read this annotation.';
+        if (_type == 'public') {
+			_help_lang.msg = 'Everyone can read this annotation.';
+		}
+		else if (_type == 'private') {
+			_help_lang.msg = 'Only you can read this annotation.';
+		}
+		else if (_type == 'share') { 
+			_help_lang.msg = 'People in follow list can read this annotation.';
+		}
         
         //$.test_msg('Window_policy._$create_ui()', [_type, _heading.length, _dt.length]);
         
@@ -130,7 +133,7 @@ Window_policy.prototype._$create_ui = function ()
     
     //設定Input、Share、Friend
     
-    var _this  = this;
+    _this  = this;
     setTimeout(function () {
         _this.set_policy_type();
     }, 0);
@@ -147,8 +150,7 @@ Window_policy.prototype.ontypechange = function (_type) {
 
 Window_policy.prototype.set_policy_type = function (_type) {
     
-    if ($.is_null(_type))
-    {
+    if ($.is_null(_type)) {
         _type = this._trigger.get_policy_type();
     }
     
