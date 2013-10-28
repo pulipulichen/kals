@@ -97,7 +97,7 @@ List_header_component.prototype._$create_ui = function ()
         _recommend_component.hide();
     }
     
-    var _id_component = this._create_id_component();
+    var _id_component = this._create_read_component();
     _id_component.prependTo(_ui);
     
     //2010.11.1 測試用的偵錯訊息
@@ -417,6 +417,20 @@ List_header_component.prototype._create_id_component = function () {
     var _param = this._item.get_data();
     if ($.isset(_param))
         _component.html('#' + _param.annotation_id);
+    
+    this._id_component = _component;
+    return _component;
+};
+
+List_header_component.prototype._create_read_component = function () {
+    var _component = $('<span></span>')
+        .addClass('id-component');
+        
+    // 20131029 Pulipuli Chen
+    // 假的已讀
+    var _param = parseInt(Math.random() * 9 - 1);
+    if (_param > 0)
+        _component.html(_param + "人已讀");
     
     this._id_component = _component;
     return _component;

@@ -53,22 +53,20 @@ class Top extends Web_apps_controller {
         $top5 = pg_query($qry);
         $data = pg_fetch_all($top5);
         
-        /*
         $data = array(
-        	array(
-        		"user_id" => 1700,
-        		"name" => "布丁"
-        	),
-        	array(
-        		"user_id" => 1701,
-        		"name" => "北極熊"
-        	),
-        	array(
-        		"user_id" => 1702,
-        		"name" => "陳老師"
-        	)
+                    array(
+                            "user_id" => 1700,
+                            "name" => "布丁"
+                    ),
+                    array(
+                            "user_id" => 1701,
+                            "name" => "北極熊"
+                    ),
+                    array(
+                            "user_id" => 1702,
+                            "name" => "陳老師"
+                    )
         );
-        */
                 
         return $this->_display_jsonp($data, $callback);
     }
