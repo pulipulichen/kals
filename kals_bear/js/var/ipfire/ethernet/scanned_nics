@@ -1,0 +1,6 @@
+desc: "pci: Intel Corporation 82540EM Gigabit Ethernet Controller (rev 02)"
+driver: e1000
+network.hwaddr: 08:00:27:16:d5:96
+desc: "pci: Intel Corporation 82540EM Gigabit Ethernet Controller (rev 02)"
+driver: e1000
+network.hwaddr: 08:00:27:51:2a:2f

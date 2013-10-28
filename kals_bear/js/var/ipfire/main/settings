@@ -1,0 +1,13 @@
+FX=on
+LANGUAGE=en
+RRDLOG=/var/log/rrd
+HOSTNAME=ipfire
+KEYMAP=/lib/kbd/keymaps/i386/qwerty/defkeymap_V1.0.map.gz
+REBOOTQUESTION=on
+SPEED=on
+DOMAINNAME=dlll.nccu.edu.tw
+REFRESHINDEX=off
+THEME=ipfire
+WINDOWWITHHOSTNAME=on
+PPPUPDOWNBEEP=on
+TIMEZONE=/usr/share/zoneinfo/posix/Asia/Taipei

@@ -66,7 +66,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * @type {boolean} = false 阻止註冊
      */
-    deny_register: true,
+    deny_register: false,
     
     /**
      * @{type} string 登入時顯示的訊息，如果不使用的話，值填入null

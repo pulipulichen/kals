@@ -27,7 +27,7 @@ Window_top.prototype.heading = new KALS_language_param (
 );
 
 Window_top.prototype.nav_heading = new KALS_language_param (
-    '',
+    '標註達人排行榜',
     'window.top.nav_heading'
 );
 

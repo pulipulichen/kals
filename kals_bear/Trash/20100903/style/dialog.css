@@ -1,0 +1,240 @@
+/* 
+    Document   : dialog
+    Created on : 2010/9/3, 下午 12:18:05
+    Author     : pudding
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+.kals-modal.dialog-modal {
+    min-width: 260px;
+    max-width: 600px;
+    max-height: 460px;
+    word-wrap:break-word;
+}
+
+.kals-modal.dialog-modal.mobile {
+    max-height: 450px;
+}
+
+.dialog-table {
+    max-height: 300px;
+}
+
+.dialog-modal.with-backward-option,
+.dialog-modal.with-forward-option {
+    min-width: 320px;
+}
+
+.dialog-modal.with-backward-option.with-forward-option {
+    min-width: 380px;
+}
+
+.dialog-modal.mobile.with-backward-option.with-forward-option {
+    min-width: 320px;
+}
+
+.dialog-toolbar {
+	border-bottom: 0px;
+    color: white;
+    /*font-size: 1.2em;*/
+    font-weight: bold;
+    height: 2.4em;
+    line-height: 2.4em;
+
+    /*position: absolute;*/
+    text-align: center;
+    /*top: 0px;
+    right: 0px;
+    left: 0px;
+    */
+
+    text-shadow: black 0px 1px 0px;
+    z-index: 0;
+	-moz-border-radius:4px 4px 0 0;
+    -webkit-border-radius:4px 4px 0 0;
+    margin: 0px;
+    padding: 0px;
+
+    /* 2010.8.19 捨棄此漸層不使用*/
+    /*
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7E8E9B', endColorstr='#2D343A');
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#7E8E9B), color-stop(0.02, #4E5B65), to(#2D343A));
+    background: -moz-linear-gradient(#7E8E9B 0%, #4E5B65 5%, #2D343A 100%);
+    background-color: #525963;
+    */
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#D49768)
+        , color-stop(0.00, #D09042), color-stop(0.5, #D09042)
+        , color-stop(0.51, #CB842E), to(#D2944A));
+    background: -moz-linear-gradient(#D09042 0%, #D09042 50%, #CB842E 51%, #D2944A 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D09042', endColorstr='#D2944A');
+
+
+    vertical-align:middle;
+}
+
+.dialog-toolbar .dialog-option {
+    border-top-color: rgb(34, 39, 44);
+    border-bottom-color: rgb(34, 39, 44);
+    border: 1px solid rgb(34, 39, 44);
+    -webkit-box-shadow: rgb(78, 90, 101) 0px 0px 0.1em 0.1em inset, rgba(255, 255, 255, 0.246094) 0px 0.1em 0px;
+    -moz-box-shadow: rgb(78, 90, 101) 0px 0px 0.1em 0.1em inset, rgba(255, 255, 255, 0.246094) 0px 0.1em 0px;
+    text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
+    float:left;
+    margin: 0.2em;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8C9AA7', endColorstr='#384049'); /* for IE */
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(rgb(140, 154, 167)), color-stop(0.02, rgb(89, 103, 116)), to(rgb(56, 64, 73)));
+    background: -moz-linear-gradient(rgb(140, 154, 167) 0%, rgb(89, 103, 116) 5%, rgb(56, 64, 73) 100%);
+    background-color: #576570;
+    border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    line-height: 1.5em;
+    padding: 0.3em 0.8em;
+    vertical-align: middle;
+    font-size: 14px;
+    color: white;
+    font-family: 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, Helvetica, sans-serif;
+    font-weight:bold;
+    position:relative;
+    z-index: 2;
+    max-width: 80px;
+    text-align:center;
+    overflow:hidden;
+}
+
+.dialog-option.toolbar-forward {
+    float:right;
+}
+
+.dialog-modal.mobile .dialog-toolbar .dialog-option {
+    max-width: 60px;
+}
+
+.dialog-heading {
+    margin:0;padding:0;
+    font-size: 16px;
+    position:absolute;left: 0;right: 0;top: 0;bottom:0;
+    z-index: 1;
+    line-height:2.4em;
+    height: 2.4em;
+    margin-top: 6px;
+}
+
+.dialog-content {
+    background-color: white;
+    -moz-border-radius: 0 0 4px 4px;
+	-webkit-border-radius: 0 0 4px 4px;
+    padding: 19px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*height: 100%;*/
+    vertical-align:top;
+    color: black;
+    max-height: 300px;
+    min-height: 100px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    word-break:break-all;
+}
+
+.dialog-modal.mobile .dailog-content {
+    overflow:hidden;
+    max-height: 200px;
+}
+
+.dialog-options {
+    height: 1.5em;
+    text-align:center;
+}
+
+.dialog-option {
+    width: 100%;
+    height: 100%;
+
+
+    border-width: 1px 0;
+    float:left;
+    margin-top: 0.2em;
+
+    /* 2010.8.19 捨棄此漸層不使用*/
+    /*
+    -webkit-box-shadow: rgb(78, 90, 101) 0px 0px 0.1em 0.1em inset, rgba(255, 255, 255, 0.246094) 0px 0.1em 0px;
+    -moz-box-shadow: rgb(78, 90, 101) 0px 0px 0.1em 0.1em inset, rgba(255, 255, 255, 0.246094) 0px 0.1em 0px;
+    text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
+
+    border: 1px solid #22272C;
+    background-color: #576570;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8C9AA7', endColorstr='#384049');
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(rgb(140, 154, 167)), color-stop(0.02, rgb(89, 103, 116)), to(rgb(56, 64, 73)));
+    background: -moz-linear-gradient(rgb(140, 154, 167) 0%, rgb(89, 103, 116) 5%, rgb(56, 64, 73) 100%);
+    */
+
+    border: 1px solid #D49768;
+    background-color: #CB842E;
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#D49768)
+        , color-stop(0.00, #D09042), color-stop(0.5, #D09042)
+        , color-stop(0.51, #CB842E), to(#D2944A));
+    background: -moz-linear-gradient(#D09042 0%, #D09042 50%, #CB842E 51%, #D2944A 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#D09042', endColorstr='#D2944A');
+    -webkit-box-shadow: #E3AF86 0px 0px 0.1em 0.1em inset, rgba(255, 255, 255, 0.246094) 0px 0.1em 0px;
+    -moz-box-shadow: #E3AF86 0px 0px 0.1em 0.1em inset, rgba(255, 255, 255, 0.246094) 0px 0.1em 0px;
+    text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
+
+
+
+    border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    line-height: 1.5em;
+    padding: 0.3em 0.8em;
+    vertical-align: middle;
+    font-size: 14px;
+    color: white;
+    font-family: 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, Helvetica, sans-serif;
+    font-weight:bold;
+    position:relative;
+    z-index: 2;
+}
+
+.dialog-option.option-left,
+.dialog-option.option-right {
+   width: 49.5%;
+   float:right;
+}
+
+.dialog-option.option-left {
+    float:left;
+}
+
+.kals-modal .scroll-container {
+    width: 5px;
+    position: absolute;
+    right: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.kals-modal .scroll {
+    background-color: #666666;
+    border-radius: 2.5px;
+    -moz-border-radius: 2.5px;
+    position:relative;
+}
+
+.dialog-content .exception {
+    margin-top:0;
+    margin-bottom: 0;
+}
+
+.dialog-content .exception dd p {
+    margin: 0;
+}
+
+.dialog-content .exception dd {
+    word-break:break-all;
+}
+

@@ -1,0 +1,37 @@
+    $subservices->{'10.ipsec'} = {
+				'caption' => 'IPSec',
+			     	'uri' => '/cgi-bin/vpnmain.cgi',
+			     	'title' => "$Lang::tr{'virtual private networking'}",
+			     	'enabled' => 1,
+			 	};
+    $subservices->{'20.openvpn'} = {
+				'caption' => 'OpenVPN',
+			     	'uri' => '/cgi-bin/ovpnmain.cgi',
+			     	'title' => "$Lang::tr{'virtual private networking'}",
+			       'enabled' => 1,
+			   	};
+    $subservices->{'30.dyndns'} = {'caption' => $Lang::tr{'dynamic dns'},
+				'uri' => '/cgi-bin/ddns.cgi',
+				'title' => "$Lang::tr{'dynamic dns'}",
+				'enabled' => 1,
+				};
+    $subservices->{'40.time'} = {'caption' => $Lang::tr{'time server'},
+				'uri' => '/cgi-bin/time.cgi',
+				'title' => "$Lang::tr{'time server'}",
+				'enabled' => 1,
+				};
+    $subservices->{'50.qos'} = {'caption' => 'Quality of Service',
+				'uri' => '/cgi-bin/qos.cgi',
+				'title' => "Quality of Service",
+				'enabled' => 1,
+				};
+    $subservices->{'60.ids'} = {'caption' => $Lang::tr{'intrusion detection'},
+				'enabled' => 1,
+				'uri' => '/cgi-bin/ids.cgi',
+				'title' => "$Lang::tr{'intrusion detection system'}",
+				};
+    $subservices->{'70.extrahd'} = {'caption' => "ExtraHD",
+				'enabled' => 1,
+				'uri' => '/cgi-bin/extrahd.cgi',
+				'title' => "ExtraHD",
+				};

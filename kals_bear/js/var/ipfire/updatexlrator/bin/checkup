@@ -1,0 +1,170 @@
+#!/usr/bin/perl
+#
+# This code is distributed under the terms of the GPL
+#
+# (c) 2006-2008 marco.s - http://update-accelerator.advproxy.net
+#
+# Portions (c) 2008 by dotzball - http://www.blockouttraffic.de
+#
+# $Id: checkup,v 1.0 2008/07/15 00:00:00 marco.s Exp $
+#
+
+use strict;
+
+use HTTP::Date;
+
+require '/var/ipfire/updatexlrator/updxlrator-lib.pl';
+
+my $logfile="/var/log/updatexlrator/checkup.log";
+my $repository='/var/updatecache';
+my %proxysettings=();
+my %xlratorsettings=();
+my $download=0;
+my $updatefile='';
+my $sourceurl='';
+my @sources=();
+my @updatelist=();
+my $logging=0;
+
+
+if (-e "$UPDXLT::swroot/updatexlrator/settings")
+{
+	&UPDXLT::readhash("$UPDXLT::swroot/updatexlrator/settings", \%xlratorsettings);
+	if ($xlratorsettings{'FULL_AUTOSYNC'} eq 'on') { $download=1; };
+	if ($xlratorsettings{'ENABLE_LOG'} eq 'on') { $logging=1; };
+}
+
+if (-e "$UPDXLT::swroot/proxy/settings") { &UPDXLT::readhash("$UPDXLT::swroot/proxy/settings", \%proxysettings); }
+
+if (-e "$UPDXLT::swroot/proxy/advanced/settings")
+{
+	%proxysettings=();
+	&UPDXLT::readhash("$UPDXLT::swroot/proxy/advanced/settings", \%proxysettings);
+}
+
+foreach (<$repository/*>)
+{
+	if (-d $_)
+	{
+		unless (/^$repository\/download$/) { push(@sources,$_); }
+	}
+}
+
+foreach (@sources)
+{
+	@updatelist=<$_/*>;
+	foreach(@updatelist)
+	{
+		if (-e "$_/source.url")
+		{
+			open (FILE,"$_/source.url");
+			$sourceurl=<FILE>;
+			close FILE;
+			chomp($sourceurl);
+			$updatefile = substr($sourceurl,rindex($sourceurl,'/')+1,length($sourceurl));
+			&checksource($_);
+		}
+	}
+}
+
+# dotzball: check for dead downloads
+system("$UPDXLT::apphome/bin/checkdeaddl");
+
+# -------------------------------------------------------------------
+
+sub writelog
+{
+	print "$_[0]\n";
+	if ($logging)
+	{
+	        open (LOGFILE,">>$logfile");
+        	my @now = localtime(time);
+	        printf LOGFILE "%04d-%02d-%02d %02d:%02d:%02d %s\n",$now[5]+1900,$now[4]+1,$now[3],$now[2],$now[1],$now[0],$_[0];
+        	close LOGFILE;
+	}
+}
+
+
+# -------------------------------------------------------------------
+
+sub checksource
+{
+	my @http_header=();
+	my $http_result='000 n/a';
+	my $returncode=0;
+	my $localfile='';
+	my $remote_size=0;
+	my $remote_mtime=0;
+	my $login='';
+	my $url='';
+	my $cdir=$_[0];
+
+	open (FILE,"$cdir/source.url");
+	$url=<FILE>;
+	close FILE;
+	chomp($url);
+
+	$localfile = $cdir . substr($url,rindex($url,'/'),length($url));
+
+	if (($proxysettings{'UPSTREAM_PROXY'}) && ($proxysettings{'UPSTREAM_USER'}))
+	{
+		$login = "--proxy-user=\"$proxysettings{'UPSTREAM_USER'}\"";
+		if ($proxysettings{'UPSTREAM_PASSWORD'})
+		{
+			$login .= " --proxy-password=\"$proxysettings{'UPSTREAM_PASSWORD'}\"";
+		}
+	}
+
+	$ENV{'http_proxy'} = $proxysettings{'UPSTREAM_PROXY'};
+	@http_header = `$UPDXLT::wget $login --user-agent="$UPDXLT::useragent" --spider -S $url 2>&1`;
+	$ENV{'http_proxy'} = '';
+
+	foreach (@http_header) 
+	{
+		chomp;
+		if (/^\s*HTTP\/\d+\.\d+\s\d+\s+\w+/) { $http_result = $_; $http_result =~ s/^\s*HTTP\/\d+\.\d+\s+//; }
+		if (/^\s*Content-Length:\s/) { $remote_size = $_; $remote_size =~ s/[^0-9]//g; }
+		if (/^\s*Last-Modified:\s/) { $remote_mtime = $_; $remote_mtime =~ s/^\s*Last-Modified:\s//; $remote_mtime = HTTP::Date::str2time($remote_mtime) }
+	}
+
+	&writelog($localfile);
+	&writelog("HTTP result: $http_result");
+	&writelog("Source size: $remote_size");
+	&writelog("Cached size: " . (-s $localfile));
+	&writelog("Source time: $remote_mtime");
+	&writelog("Cached time: " . &UPDXLT::getmtime($localfile));
+
+	if ($http_result =~ /\d+\s+OK$/)
+	{
+		if (($remote_size == -s $localfile) && ($remote_mtime == &UPDXLT::getmtime($localfile)))
+		{
+			&writelog("Status: Ok");
+			&UPDXLT::setcachestatus("$cdir/status",$UPDXLT::sfOk);
+		} else {
+			&writelog("Status: Outdated");
+			&UPDXLT::setcachestatus("$cdir/status",$UPDXLT::sfOutdated);
+			if ($download)
+			{
+				&writelog("Retrieving file from source: $remote_size bytes");
+				$_ = system("$UPDXLT::wget $login --user-agent=\"$UPDXLT::useragent\" -q -O $localfile $url");
+				&writelog("Download finished with code: $_");
+				if ($_ == 0) { &UPDXLT::setcachestatus("$cdir/status",$UPDXLT::sfOk); }
+			}
+		}
+	} else {
+		$_ =  $http_result;
+		s/\D+//;
+		if ($_ eq '404')
+		{
+			&writelog("Status: No source");
+			&UPDXLT::setcachestatus("$cdir/status",$UPDXLT::sfNoSource);
+		} else {
+			&writelog("Status: Error");
+			&UPDXLT::setcachestatus("$cdir/status",$UPDXLT::sfUnknown);
+		}
+	}
+
+	&UPDXLT::setcachestatus("$cdir/checkup.log",time);
+}
+
+# -------------------------------------------------------------------

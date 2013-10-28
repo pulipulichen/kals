@@ -1,0 +1,42 @@
+    $subsystem->{'10.home'} = {
+				'caption' => $Lang::tr{'alt home'},
+				'uri' => '/cgi-bin/index.cgi',
+				'title' => "$Lang::tr{'alt home'}",
+				'enabled' => 1,
+				};
+    $subsystem->{'20.dialup'} = {
+				'caption' => $Lang::tr{'alt dialup'},
+				'uri' => '/cgi-bin/pppsetup.cgi',
+				'title' => "$Lang::tr{'alt dialup'}",
+				'enabled' => 1,
+				};
+    $subsystem->{'30.ssh'} = {
+				'caption' => $Lang::tr{'ssh access'},
+				'uri' => '/cgi-bin/remote.cgi',
+				'title' => "$Lang::tr{'ssh access'}",
+				'enabled' => 1,
+				};
+    $subsystem->{'40.gui'} = {
+				'caption' => $Lang::tr{'gui settings'},
+				'uri' => '/cgi-bin/gui.cgi',
+				'title' => "$Lang::tr{'gui settings'}",
+				'enabled' => 1,
+				};
+    $subsystem->{'40.backup'} = {
+				'caption' => $Lang::tr{'backup'},
+				'uri' => '/cgi-bin/backup.cgi',
+				'title' => "$Lang::tr{'backup'}",
+				'enabled' => 1,
+				};
+    $subsystem->{'41.fireinfo'} = {
+				'caption' => $Lang::tr{'system information'},
+				'uri' => '/cgi-bin/fireinfo.cgi',
+				'title' => "$Lang::tr{'system information'}",
+				'enabled' => 1,
+				};
+    $subsystem->{'99.credits'} = {
+				'caption' => $Lang::tr{'credits'},
+				'uri' => '/cgi-bin/credits.cgi',
+				'title' => "$Lang::tr{'credits'}",
+				'enabled' => 1,
+				};

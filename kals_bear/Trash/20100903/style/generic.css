@@ -1,0 +1,42 @@
+.kals-modal {
+
+
+    /*漸層設定*/
+
+
+    /* 2010.8.19 捨棄此漸層不使用*/
+    /*
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#272E35', endColorstr='#21272C');
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#617385), color-stop(0.00, #252C32), color-stop(0.5, #272E35), color-stop(0.51, #21272C), to(#0B0D0F));
+    background: -moz-linear-gradient(#617385 0%, #252C32 5%, #272E35 50%, #0B0D0F 100%);
+    background-color: #292C31;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.796875) 0px 2px 10px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.796875) 0px 2px 10px;
+    */
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#6F5A40)
+        , color-stop(0.00, #6F5A40), color-stop(0.5, #6F5A40)
+        , color-stop(0.51, #664B2B), to(#715C43));
+    background: -moz-linear-gradient(#6F5A40 0%, #6F5A40 50%
+        , #664B2B 51%, #715C43 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6F5A40'
+        , endColorstr='#715C43');
+    background-color: #664B2B;
+    -webkit-box-shadow: #6F5A40 0px 2px 10px;
+    -moz-box-shadow: #6F5A40 0px 2px 10px;
+
+    -moz-border-radius:8px;
+	-webkit-border-radius:8px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    color: #D49768;
+    margin: 0px;
+    padding: 6px;
+    backgruond-color: gray;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, Helvetica, sans-serif;
+
+}

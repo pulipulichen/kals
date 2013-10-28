@@ -15,7 +15,8 @@ function Common_navigation() {
     Navigation_list.call(this);
     
     this._$nav_items = [
-        new Window_filter()
+        new Window_filter(),
+        new Window_top()
     ];
 }
 
