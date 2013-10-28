@@ -121,9 +121,11 @@ $lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文'
 $lang['web_apps.window.content.type_radio'] = '標註類別';
 $lang['web_apps.window.content.searchkey'] = '關鍵字';
 $lang['web_apps.window.content.searchresult'] = '搜尋結果';
-$lang['web_apps.window.content.searchnumber'] = '結果數量：';
+$lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
 $lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';
+$lang['web_apps.window.content.loaded_already'] = '沒有其他搜尋結果';
 $lang['web_apps.window.map.nav_heading'] = '小地圖';
+
 
 $lang['web_apps.window.content.oreder_by'] = '排序方式';
 $lang['web_apps.window.content.oreder_by.update'] = '更新日期';

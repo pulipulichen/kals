@@ -192,8 +192,8 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	
 	_keyword_input.addClass("search-keyword");
 	
-	// 測試用市
-	_keyword_input.val("test");
+	// 測試
+	//_keyword_input.val("test");
 	
 	var _searchkey_row = _factory.row(
         new KALS_language_param('Searchkey', 'window.content.searchkey'),
@@ -263,9 +263,9 @@ Window_search.prototype._$create_ui = function (){  //建立UI
   // 搜尋結果數量
     //var _result_number = _search_data.item_number;
 	
-	var _search_number_row = _factory.row(
+	/*var _search_number_row = _factory.row(
 	    new KALS_language_param('Searchnumber','window.content.searchnumber'), '1'
-	).appendTo(_ui); 
+	).appendTo(_ui); */
 
     
   
