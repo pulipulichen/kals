@@ -572,11 +572,12 @@ table.cke_editor.inline-table {
  * @section Web_search_component
  */
 .kals-modal .annotation-editor .web-search.button.dialog-option {
-	min-height: 0;
+	min-height: 10px;
 	background-image: url('${base_url}images/web_search.png');
 	padding-right: 18px !important;
 	background-repeat:no-repeat;
 	background-position: right center;
+	
 	/*
 	font-size: smaller;
 	

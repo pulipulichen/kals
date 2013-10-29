@@ -21,6 +21,7 @@ function Profile_navigation(_common_windows) {
         , new Window_logout()
         //'Window_profile'
         //, 'Window_logout'
+		, new Window_search()
     ];
     
     if ($.isset(_common_windows)) {
