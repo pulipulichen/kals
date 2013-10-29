@@ -41,14 +41,14 @@ Recommend_hint.prototype._recommended = null;
  * @param {List_item}
  */
 Recommend_hint.prototype.setup_recommend = function(_recommended) {
-    if ($.isset(_recommended))
-    {   
+    if ($.isset(_recommended)) {   
         //this._recommended_item = _recommended_item;
         //this._recommended = _recommended_item.get_annotation_param();
         this._recommended = _recommended;
         
-        if (this.has_recommend() == false)
-            return this;
+        if (this.has_recommend() === false) {
+			return this;
+		}
         
         this._setup_position_words();
         this.setup_position();
@@ -60,10 +60,15 @@ Recommend_hint.prototype.setup_recommend = function(_recommended) {
     return this;
 };
 
+/**
+ * 是否有建議標註？
+ * @return {boolean}
+ */
 Recommend_hint.prototype.has_recommend = function () {
     
-    if ($.is_null(this._recommended))
-        return false;
+    if ($.is_null(this._recommended)) {
+		return false;
+	}
     //$.test_msg('Recommend_hint.has_reocmmend()', this._recommended.recommend);
     //$.test_msg('Recommend_hint.has_reocmmend()', [(this.has_recommend_by() || this.has_tips()), this.has_recommend_by(), this.has_tips()]);
     return (this.has_recommend_by() || this.has_tips());
@@ -73,7 +78,7 @@ Recommend_hint.prototype.has_recommend = function () {
 Recommend_hint.prototype.has_recommend_by = function () {
     return ($.isset(this._recommended)
         && typeof(this._recommended.recommend) != 'undefined'
-        && this._recommended.recommend != null
+        && this._recommended.recommend !== null
         && typeof(this._recommended.recommend.recommend_by) == 'object'
         && $.is_class(this._recommended.recommend.recommend_by, 'Annotation_param'));
 };
@@ -87,17 +92,25 @@ Recommend_hint.prototype.has_tips = function () {
 };
 
 Recommend_hint.prototype.get_recommended_id = function () {
-    if ($.is_null(this._recommended))
-        return null;
-    else
-        return this._recommended.annotation_id;
+    if ($.is_null(this._recommended)) {
+		return null;
+	}
+	else {
+		return this._recommended.annotation_id;
+	}
 };
 
+/**
+ * 取得被建議的標註
+ * @return {Annotation_param}
+ */
 Recommend_hint.prototype.get_recommend_by = function () {
-    if (this.has_recommend_by())
-        return this._recommended.recommend.recommend_by;
-    else
-        return null;
+    if (this.has_recommend_by()) {
+		return this._recommended.recommend.recommend_by;
+	}
+	else {
+		return null;
+	}
 };
 
 // --------
@@ -109,8 +122,7 @@ Recommend_hint.prototype.get_recommend_by = function () {
  * @memberOf {Recommend_hint}
  * @type {jQuery} UI
  */
-Recommend_hint.prototype._$create_ui = function ()
-{
+Recommend_hint.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('tooltip recommend-hint')
         .appendTo($('body'))
@@ -160,8 +172,9 @@ Recommend_hint.prototype._last_word = null;
 
 Recommend_hint.prototype._setup_position_words = function () {
     
-    if (this.has_recommend() == false)
-        return this;
+    if (this.has_recommend() === false) {
+		return this;
+	}
     
     var _scope = this._recommended.scope;
     var _first_index = _scope.get_first_index();
@@ -182,8 +195,9 @@ Recommend_hint.prototype._touch_top = function () {
     var _first_word_top = _first_word.offset().top;
     
     var _body_top = 0;
-    if ($.is_small_height() == false)
-        _body_top = KALS_toolbar.get_ui().height();
+    if ($.is_small_height() === false) {
+		_body_top = KALS_toolbar.get_ui().height();
+	}
     //$.test_msg('Recommend_hint._touch_top()', [_body_top, _first_word_top, _ui_height]);
     return (_first_word_top - _ui_height - 5 < _body_top);
 };
@@ -202,14 +216,12 @@ Recommend_hint.prototype._touch_bottom = function () {
 
 Recommend_hint.prototype.setup_position = function (_callback) {
     
-    if (KALS_CONFIG.enable_annotation_recommend == false)
-    {
+    if (KALS_CONFIG.enable_annotation_recommend === false) {
         $.trigger_callback(_callback);
         return;
     }
     
-    if (this.has_recommend() == false)
-    {
+    if (this.has_recommend() === false) {
         //$.test_msg('Recommend_hint.setup_position()'
         //    , [this.has_recommend(), this.has_recommend_by(), this.has_tips()]);
         return this;
@@ -218,13 +230,11 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     var _pos = this._$default_position;
     //$.test_msg('Recommend_hint.setup_position() decide pos', [_pos, this._touch_top(), this._touch_bottom()]);
     if (_pos == 'top'
-        && (this._touch_top() == true && this._touch_bottom() == false))
-    {
+        && (this._touch_top() === true && this._touch_bottom() === false)) {
         _pos = 'bottom';
     }
     else if (_pos == 'bottom'
-        && (this._touch_bottom() == true && this._touch_top() == false))
-    {
+        && (this._touch_bottom() === true && this._touch_top() === false)) {
         _pos = 'top';
     }
     //$.test_msg('Recommend_hint.setup_position() final pos', _pos);
@@ -243,8 +253,7 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     var _ui_offset = _ui.offset();
     var _ui_width = _ui.width();
     var _center, _ui_left, _ui_top;
-    if (_pos == 'bottom')
-    {     
+    if (_pos == 'bottom') {     
        /*
        $.test_msg('Recommend_hint.setup_position() bottom before', [_ui.css('position'), _ui.offset().top, this._last_word.offset().top]);
         _ui.position({
@@ -261,8 +270,7 @@ Recommend_hint.prototype.setup_position = function (_callback) {
         
         _ui.addClass(_tooltip_bottom_classname);
     }
-    else
-    {
+    else {
         /*
         _ui.position({
             of: this._first_word,
@@ -285,21 +293,23 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     
     
     //修正左右
-    if (_ui_offset.left < 0)
-        _ui.css('left', '0px');
+    if (_ui_offset.left < 0) {
+		_ui.css('left', '0px');
+	}
     var _body_right = $('body').width();
-    if (_ui_offset.left + _ui_width > _body_right)
-    {
+    if (_ui_offset.left + _ui_width > _body_right) {
         _ui_left = _body_right - _ui_width;
         _ui.css('left', _ui_left + 'px');
     }
     
     //修正最上方
     var _body_top = 0;
-    if ($.is_small_height() == false)
-        _body_top = KALS_toolbar.get_ui().height();
-    if (_ui_offset.top < _body_top)
-        _ui.css('top', _body_top + 'px');
+    if ($.is_small_height() === false) {
+		_body_top = KALS_toolbar.get_ui().height();
+	}
+    if (_ui_offset.top < _body_top) {
+		_ui.css('top', _body_top + 'px');
+	}
     
     $.trigger_callback(_callback);
     

@@ -73,8 +73,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
     
     var _error_lang = null;
     
-    if (_email === '' && _password === '')
-    {
+    if (_email === '' && _password === '') {
         _error_lang = new KALS_language_param(
             'Please write E-mail and Password',
             'window.content.error_no_email_password'
@@ -84,8 +83,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
         KALS_window.ui.check_input(_password_input);
         _email_input.focus();
     }
-    else if (_email === '')
-    {
+    else if (_email === '') {
         _error_lang = new KALS_language_param(
             'Please write E-mail',
             'window.content.error_no_email'
@@ -93,8 +91,7 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
         _email_input.focus();
         KALS_window.ui.check_input(_email_input);
     }
-    else if (_password === '')
-    {
+    else if (_password === '') {
         _error_lang = new KALS_language_param(
             'Please write Password',
             'window.content.error_no_password'
@@ -103,14 +100,12 @@ Window_login_submit.prototype.validate = function (_inputs, _data) {
         KALS_window.ui.check_input(_password_input);
     }
     
-    if (_error_lang !== null)
-    {
+    if (_error_lang !== null) {
         this._content.set_error(_error_lang);
         this._unlock_submit();
         return false;
     }
-    else
-    {
+    else {
         return true;
     }
 };
@@ -150,15 +145,13 @@ Window_login_submit.prototype.submit = function () {
     var _auth = KALS_context.auth;
     KALS_window.toggle_loading(true, function () {
         _auth.login(true, function (_auth, _data) {
-            if ($.is_class(_data, 'KALS_language_param'))
-            {
+            if ($.is_class(_data, 'KALS_language_param')) {
                 _this._content.set_error(_data);
                 KALS_window.toggle_loading(false, function () {
                     _this._unlock_submit();
                 });
             }
-            else
-            {
+            else {
                 var _username = KALS_context.user.get_name();
                 _this.complete_notification.arg = _username;
                 KALS_util.notify(_this.complete_notification);

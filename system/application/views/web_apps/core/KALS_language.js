@@ -20,11 +20,11 @@ function KALS_language() {
     
     var _this = this;
     //Context訂閱一下
-    if (typeof(KALS_context) != 'undefined')
-    {
+    if (typeof(KALS_context) != 'undefined') {
         KALS_context.add_listener(function (_dispatcher, _data) {
-            if (typeof(_data.KALS_language) != 'undefined')
-                _this.set_lang(_data.KALS_language);
+            if (typeof(_data.KALS_language) != 'undefined') {
+				_this.set_lang(_data.KALS_language);
+			}
         });
     }
 }
@@ -70,26 +70,28 @@ KALS_language.prototype.set_lang = function(_lang_data){
  */
 KALS_language.prototype.line = function(_lang_param){
     var _line, _arg;
-    if ($.is_object(_lang_param))
-    {
-        _line = $.get_parameter(_lang_param, 'line');
-        _arg = $.get_parameter(_lang_param, 'arg' );    
-    }
-    else if ($.is_string(_lang_param))
-        _line = _lang_param;
+    if ($.is_object(_lang_param)) {
+		_line = $.get_parameter(_lang_param, 'line');
+		_arg = $.get_parameter(_lang_param, 'arg');
+	}
+	else 
+		if ($.is_string(_lang_param)) {
+			_line = _lang_param;
+		}
     
-    if ($.is_null(_line))
-        return null;
+    if ($.is_null(_line)) {
+		return null;
+	}
     
-    if ($.isset(this._lang) 
-        && $.isset(this._lang[_line])) 
-    {
-        var _lang = this._lang[_line];
-        _lang = this._lang_set_arg(_lang, _arg);
-        return _lang;
-    }   
-    else 
-        return null;
+    if ($.isset(this._lang) &&
+	$.isset(this._lang[_line])) {
+		var _lang = this._lang[_line];
+		_lang = this._lang_set_arg(_lang, _arg);
+		return _lang;
+	}
+	else {
+		return null;
+	}
 };
 
 /**
@@ -99,14 +101,12 @@ KALS_language.prototype.line = function(_lang_param){
  * @type {jQuery}
  */
 KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
-    if ($.isset(_arg))
-    {
+    if ($.isset(_arg)) {
         _arg = $.filter_array(_arg);
         
         //$.test_msg('lang._lang_set_arg' [_lang, _arg]);
         
-        for (var _i in _arg)
-        {
+        for (var _i in _arg) {
             var _search = '{'+_i+'}';
             var _replace = '<span class="lang-arg-'+_i+'"></span>';
             _lang = $.str_replace(_search, _replace, _lang); 
@@ -114,13 +114,17 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
         
         _lang = $('<span>'+_lang+'</span>');
         
-        for (var _i in _arg)
-        {
+        for (_i in _arg) {
             var _a = _arg[_i];
-            if ($.is_object(_a))
-                _lang.find('span.lang-arg-'+_i).append(_a);
-            else
-                _lang.find('span.lang-arg-'+_i).html(_a);
+			if ($.is_object(_a) && typeof(_a.msg) == "string") {
+				_lang.find('span.lang-arg-' + _i).html(_a);
+			}
+            else if ($.is_object(_a)) {
+				_lang.find('span.lang-arg-' + _i).append(_a);
+			}
+			else {
+				_lang.find('span.lang-arg-' + _i).html(_a);
+			}
         }
     }
     return _lang;
@@ -131,33 +135,29 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
  * @param {jQuery} _obj 要顯示語系的容器
  * @param {String|KALS_language_param} _lang_param 語系參數
  */
-KALS_language.prototype.add_listener = function(_obj, _lang_param)
-{
-    if ($.inArray(_obj, this._listeners) == -1) 
-    {
+KALS_language.prototype.add_listener = function(_obj, _lang_param) {
+    if ($.inArray(_obj, this._listeners) == -1) {
         this._listeners.push(_obj);
         var _key = $.inArray(_obj, this._listeners);
         
-        if ($.is_string(_lang_param))
-            _lang_param = new KALS_language_param(_lang_param);
+        if ($.is_string(_lang_param)) {
+			_lang_param = new KALS_language_param(_lang_param);
+		}
        
         this._listeners_lang_param[_key] = _lang_param;
         
         var _lang = this.line(_lang_param);
         
-        if ($.isset(_lang)) 
-        {
+        if ($.isset(_lang)) {
             this._setup_obj(_obj, _lang);
         }   
         else if (typeof(_lang_param.msg) != 'undefined'
-            && $.isset(_lang_param.msg))
-        {
+            && $.isset(_lang_param.msg)) {
             //如果找不到語系檔，則將預設顯示值輸出
             this._setup_obj(_obj, _lang_param.msg);
         }   
     }
-    else
-    {
+    else {
         //如果已經存在此設定，則刪除原本的設定之後，再設定一次
         this.delete_listener(_obj);
         this.add_listener(_obj, _lang_param);
@@ -169,11 +169,9 @@ KALS_language.prototype.add_listener = function(_obj, _lang_param)
  * 移除監聽者
  * @param {Object} _obj
  */
-KALS_language.prototype.delete_listener = function (_obj)
-{
+KALS_language.prototype.delete_listener = function (_obj) {
     var _key = $.inArray(_obj, this._listeners);
-    if (_key > -1) 
-    {
+    if (_key > -1) {
         delete this._listeners[_key];
         delete this._listeners_lang_param[_key];
     }
@@ -183,12 +181,9 @@ KALS_language.prototype.delete_listener = function (_obj)
 /**
  * 當語系檔有所修改時(KALS_language.set_lang())，確認每個觀察者是否有對應的語系檔，然後設定之。
  */
-KALS_language.prototype.notify_listeners = function ()
-{
-    if (this._changed)
-    {
-        for (var _i in this._listeners)
-        {
+KALS_language.prototype.notify_listeners = function () {
+    if (this._changed) {
+        for (var _i in this._listeners) {
             var _lang_param = this._listeners_lang_param[_i];
             var _lang = this.line(_lang_param);
             if ($.isset(_lang)) {
@@ -204,10 +199,8 @@ KALS_language.prototype.notify_listeners = function ()
  * 建立監聽者
  * @param {string|KALS_language_param} _lang_param 語系參數
  */
-KALS_language.prototype.create_listener = function (_lang_param)
-{
-    if ($.is_string(_lang_param))
-    {
+KALS_language.prototype.create_listener = function (_lang_param) {
+    if ($.is_string(_lang_param)) {
         _lang_param = new KALS_language_param(_lang_param);
     }
     
@@ -255,7 +248,8 @@ KALS_language.prototype._date_params = {
         month: new KALS_language_param('1 month ago', 'time.1_month_ago'),
         months: new KALS_language_param('{0} months ago', 'time.n_months_ago'),
         date: new KALS_language_param('{0} {1}', 'time.on_date'),
-        year: new KALS_language_param('{0}', 'time.in_year')
+        year: new KALS_language_param('{0}', 'time.in_year'),
+		fulldate: new KALS_language_param('{0}, {1} {2}', 'time.fulldate')
     },  
     month_name: [
         null,    //編號0沒有月份
@@ -295,8 +289,7 @@ KALS_language.prototype._date_params = {
  * @param {number|strig} _time 單位是秒數
  * @type {KALS_language_param} Lang語言變數的結果
  */
-KALS_language.prototype.get_interval_param = function (_time)
-{
+KALS_language.prototype.get_interval_param = function (_time) {
     var _s, _m, _h, _hh, _d, _hd, _w, _hw, _y;
     _s = 1;    //一秒鐘
     _m = _s * 60;    //一分鐘
@@ -313,30 +306,27 @@ KALS_language.prototype.get_interval_param = function (_time)
     var _lang_param = null;
     var _unit = null;
     
-    if ($.is_string(_time))
-        _time = parseInt(_time);
+    if ($.is_string(_time)) {
+		_time = parseInt(_time, 10);
+	}
     
     var _interval = $.get_interval_time(_time);
     
-    //$.test_msg('lang.get_itnerval_param()', [_time, _interval]);
+    //$.test_msg('lang.get_itnerval_param()', [parseInt((new Date()).getTime() / 1000, 10), _time, _interval]);
     
-    var _test_scope = function (_min, _max) {
+    var _test_scope = function (_interval, _min, _max) {
         
-        if (_min == null)
-        {
+        if (_min === null) {
             _min = 0;
         }
         
-        if (_max != null)
-        {
-            if ($.is_number(_max))
-            {
+        if (_max !== null) {
+            if ($.is_number(_max)) {
                 _max--;
             }
             return (_interval > _min && _interval < _max);
         }
-        else
-        {
+        else {
             return (_interval > _min);
         }
     };
@@ -347,79 +337,66 @@ KALS_language.prototype.get_interval_param = function (_time)
         return _u;
     };
     
-    if (_interval < 30 *_s)
-    {
+    if (_interval < 30 *_s) {
         _lang_param = _date_params.recent;
     }
-    else if (_test_scope(30*_s, _m))
-    {
+    else if (_test_scope(_interval, 30*_s, _m)) {
         _lang_param = _date_params.within_minute;
     }
-    else if (_test_scope(_m, _h))
-    {
+    else if (_test_scope(_interval, _m, _h)) {
         _unit = _parse_unit(_m);
         _lang_param = _date_params.minutes;
     }
-    else if (_test_scope(_h, 2*_h))
-    {
+    else if (_test_scope(_interval, _h, 2*_h)) {
         _lang_param = _date_params.hour;
     }
-    else if (_test_scope(2*_h, 12*_h))
-    {
+    else if (_test_scope(_interval, 2*_h, 12*_h)) {
         _unit = _parse_unit(_h);
         _lang_param = _date_params.hours;
     }
-    else if (_test_scope(12*_h, _d))
-    {
+    else if (_test_scope(_interval, 12*_h, _d)) {
         _lang_param = _date_params.half_day;
     }
-    else if (_test_scope(_d, 2*_d))
-    {
+    else if (_test_scope(_interval, _d, 2*_d)) {
         _lang_param = _date_params.day;
     }
-    else if (_test_scope(2*_d, _w))
-    {
+    else if (_test_scope(_interval, 2*_d, _w)) {
         _unit = _parse_unit(_d);
         _lang_param = _date_params.days;
     }
-    else if (_test_scope(_w, 2*_w))
-    {
+    else if (_test_scope(_interval, _w, 2*_w)) {
         _lang_param = _date_params.week;
     }
-    else if (_test_scope(2*_w, 3*_w))
-    {
+    else if (_test_scope(_interval, 2*_w, 3*_w)) {
         _unit = _parse_unit(_w);
         _lang_param = _date_params.weeks;
     }
-    else if (_test_scope(3*_w, _month))
-    {
+    else if (_test_scope(_interval, 3*_w, _month)) {
         _lang_param = _date_params.month;
     }
-    else if (_test_scope(_month, _y))
-    {
+    else if (_test_scope(_interval, _month, _y)) {
         var _date_obj = new Date();
-        _date_obj.setTime(_time);
-        
-        var _month = this.get_month((_date_obj.getMonth+1));
+        _date_obj.setTime(_time*1000);
+        //$.test_msg("lang date", _time);
+        _month = this.get_month(_date_obj);
         var _date = _date_obj.getDate();
-        
         _lang_param = _date_params.date;
         _lang_param.arg = [_month, _date];
     }
-    else if (_test_scope(_y, null))
-    {
-        var _date_obj = new Date();
-        _date_obj.setTime(_time);
+    else if (_test_scope(_interval, _y, null)) {
+        _date_obj = new Date();
+        _date_obj.setTime(_time*1000);
         
-        var _year = _date_obj.getYear();
+        var _year = _date_obj.getFullYear();
         _lang_param = _date_params.year;
         _unit = _year;
     }
     
-    if (_unit != null
+    //$.test_msg("lang get_interval_param", _lang_param);
+	
+    if (_unit !== null
         && $.is_class(_lang_param, 'KALS_language_param')
-        && $.is_null(_lang_param.arg))
-    {
+        && $.is_null(_lang_param.arg)) {
         _lang_param.arg = [_unit];
     }
     
@@ -428,17 +405,49 @@ KALS_language.prototype.get_interval_param = function (_time)
 
 /**
  * 取得月份
- * @param {number} _month_number 是1~12
+ * @param {date} )_date_obj
  * @type {string} 月份字串，例如Jan、Feb
  */
-KALS_language.prototype.get_month = function (_month_number) {
+KALS_language.prototype.get_month = function (_date_obj) {
+	
+	var _month_number = _date_obj.getMonth();
+	_month_number++;
+	
     if ($.is_number(_month_number)
         && _month_number > 0
-        && _month_number < 13)
-    {
-        return this._data_lang.month_name[_month_number];
+        && _month_number < 13) {
+		//$.test_msg("lang", _month_number);
+		var _month_param = this._date_params.month_name[_month_number];
+		var _month_msg = this.line(_month_param.line); 
+        return _month_msg;
     }
     return null;
+};
+
+/**
+ * 顯示全部日期
+ * @param {number} _time
+ */
+KALS_language.prototype.get_fulldate = function (_time) {
+	if ($.is_string(_time)) {
+		_time = parseInt(_time, 10);
+	}
+	
+    var _date_params = this._date_params.interval;
+	
+    var _date_obj = new Date();
+    _date_obj.setTime(_time*1000);
+    _month = this.get_month(_date_obj);
+    var _date = _date_obj.getDate();
+	
+	var _year = _date_obj.getFullYear();
+    _lang_param = _date_params.fulldate;
+    _lang_param.arg = [_year, _month, _date];
+    
+	//$.test_msg("lang get_fulldate _lang_param_arg", _lang_param);
+	
+    //return _lang_param;
+	return this.line(_lang_param);
 };
 
 /**
@@ -449,13 +458,11 @@ KALS_language.prototype.get_month = function (_month_number) {
 KALS_language.prototype._setup_obj = function (_obj, _lang) {
     var _tag_name = _obj.attr('tagName').toLowerCase();
     if (_tag_name == 'input'
-        || _tag_name == 'textarea')
-    {   
+        || _tag_name == 'textarea') {   
         _obj.attr('placeholder', _lang).val('').blur();    //.change();
         
     }
-    else
-    {
+    else {
         _obj.html(_lang);
     }
     return this;

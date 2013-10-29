@@ -98,7 +98,7 @@ class Authentication extends Web_apps_controller {
         //將使用者寫入Context當中
         set_context_user($user);
 
-        $output = $this->_get_policy_output($output);
+        $output = $this->_get_login_policy_output($output);
 
         require_once 'annotation_getter.php';
         $annotation_getter = new annotation_getter();
@@ -109,7 +109,10 @@ class Authentication extends Web_apps_controller {
         return $output;
     }
 
-    private function _get_policy_output($output = NULL) {
+    /**
+     * 登入之後使用者的權限
+     */
+    private function _get_login_policy_output($output = NULL) {
 
         if (is_null($output))
             $output = array();
@@ -120,7 +123,6 @@ class Authentication extends Web_apps_controller {
             'write' => TRUE,
             'show_navigation' => TRUE
         );
-
         require_once 'annotation_getter.php';
         $annotation_getter = new annotation_getter();
         $output['policy']['navigation_data'] = $annotation_getter->navigation();
@@ -145,9 +147,9 @@ class Authentication extends Web_apps_controller {
                 'sex' => NULL
             ),
             'policy' => array(
-                'read' => TRUE,
-                'write' => FALSE,
-                'show_navigation' => TRUE,
+            	'read' => TRUE,
+            	'write' => FALSE,
+            	'show_navigation' => TRUE,
                 'navigation_data' => $annotation_getter->navigation()
             )
         );
@@ -305,8 +307,10 @@ class Authentication extends Web_apps_controller {
             $output = $this->_create_default_data();
             $action = 2;
         }
+        
         $memo = $this->client_ip;
         kals_log($this->db, $action, array('memo'=>$memo, 'user_id' => $user_id));
+        
         context_complete();
         return $this->_display_jsonp($output, $callback);
     }

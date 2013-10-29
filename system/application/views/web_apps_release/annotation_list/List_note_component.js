@@ -18,8 +18,13 @@ function List_note_component(_item, _show_fulltext) {
     
     this._set_list_item(_item);   
     
-    if ($.isset(_show_fulltext))
-        this._show_fulltext = _show_fulltext;
+	// 20130507 Pudding Chen
+	// 測試一下
+	//_show_fulltext = true;
+	
+    if ($.isset(_show_fulltext)) {
+		this._show_fulltext = _show_fulltext;
+	}
 }
 
 // Extend from KALS_user_interface
@@ -35,8 +40,7 @@ List_note_component.prototype = new KALS_user_interface();
 List_note_component.prototype._item = null;
 
 List_note_component.prototype._set_list_item = function (_item) {
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
@@ -60,7 +64,7 @@ List_note_component.prototype._simple_classname = 'simple';
 
 List_note_component.prototype._show_fulltext = false;
 
-List_note_component.prototype._simple_max_length = 150;
+List_note_component.prototype._simple_max_length = KALS_CONFIG.annotation_list.note.simple_max_length;
 
 /**
  * @type {Annotation_collection_param}
@@ -76,13 +80,13 @@ List_note_component.prototype._respond_to_coll = null;
  * @memberOf {List_note_component}
  * @type {jQuery} UI
  */
-List_note_component.prototype._$create_ui = function ()
-{
+List_note_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-note-component');
     
-    if (this._show_fulltext == false)
-        _ui.addClass('simple');
+    if (this._show_fulltext === false) {
+		_ui.addClass('simple');
+	}
     
     var _respond = this._create_respond_container();
     _respond.appendTo(_ui);
@@ -146,23 +150,22 @@ List_note_component.prototype._create_respond_comma = function () {
  * @param {Annotation_collection_param} _respond_to_coll
  */
 List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) {
-    if ($.is_null(_respond_to_coll))
-    {
+    if ($.is_null(_respond_to_coll)) {
         _respond_to_coll = this._item.get_data().respond_to_coll;
     }
     
-    if ($.is_null(_respond_to_coll))
-        return this;
+    if ($.is_null(_respond_to_coll)) {
+		return this;
+	}
     
-    if ($.is_null(this._respond_container))
-        this.get_ui();
+    if ($.is_null(this._respond_container)) {
+		this.get_ui();
+	}
     
     this._respond_container.empty();
     
-    for (var _i = 0; _i < _respond_to_coll.length(); _i ++)
-    {
-        if (_i > 0)
-        {
+    for (var _i = 0; _i < _respond_to_coll.length(); _i ++) {
+        if (_i > 0) {
             var _comma = this._create_respond_comma();
             _comma.appendTo(this._respond_container);
         }
@@ -172,8 +175,7 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
         _respond_to.appendTo(this._respond_container);
     }
     
-    if (_respond_to_coll.length() > 0)
-    {
+    if (_respond_to_coll.length() > 0) {
         var _to = $('<span></span>')
             .addClass('to')
             .prependTo(this._respond_container);
@@ -216,37 +218,53 @@ List_note_component.prototype._create_note_container = function () {
     return _container;
 };
 
-
+/**
+ * 把筆記的內容放到List當中
+ * @param {String} _note
+ */
 List_note_component.prototype.set_note = function (_note) {
-    if ($.is_null(_note))
-    {
+    if ($.is_null(_note)) {
         _note = this._item.get_data().note;
+		
+		//if (this._show_fulltext === true) {
+		//	$.test_msg("List_note_component.set_note(), get_data", _note);
+		//}
     }
     
-    if ($.is_null(_note))
-        _note = '';
+    if ($.is_null(_note)) {
+		_note = '';
+	}
     
     //$.test_msg('List_note.set_note()', [_note, typeof(_note)]);
     
-    if ($.is_null(this._note_container))
-        this.get_ui();
+    if ($.is_null(this._note_container)) {
+		this.get_ui();
+	}
     
+	
+	//$.test_msg("List_note_component.set_note()", _note);
+	//_note = $(_note);
     this._note_container.html(_note);
     
-    if (this._show_fulltext == false)
-    {
-        var _text = this._note_container.text();
+    if (this._show_fulltext === false) {
+        //var _text = this._note_container.text();
+		_text = this._note_container.html();
+		_origin_text = _text;
+		_allow_html_tags = KALS_CONFIG.annotation_list.note.allow_html_tags;
+		_text = $.strip_html_tag(_text, _allow_html_tags);
         _text = $.trim(_text);
-        if (_text.length > this._simple_max_length)
-        {
-            _text = _text.substr(0, this._simple_max_length) + '...';
-            this._note_container.html(_text);
-            
+        if (_origin_text.length > this._simple_max_length) {
+			if (_text.length > this._simple_max_length) {
+	            _text = _text.substr(0, this._simple_max_length) + '...';
+	            this._note_container.html(_text);
+            } 
+			
             var _view = this._create_view_thread();
             _view.appendTo(this._note_container);
         }
-        else
-            this._note_container.html(_text);
+        else {
+			this._note_container.html(_text);
+		}   
     }
     
     return this;
@@ -273,8 +291,9 @@ List_note_component.prototype._create_view_thread = function () {
 };
 
 List_note_component.prototype.view_thread = function (_callback) {
-    if ($.isset(this._item))
-        this._item.view_thread(_callback);
+    if ($.isset(this._item)) {
+		this._item.view_thread(_callback);
+	}
     return this;
 };
 

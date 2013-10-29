@@ -115,8 +115,9 @@ class Annotation_recommend extends Generic_object {
     {
         $this->recommend_by = $annotation;
         $annotation_id = $annotation->get_id();
-        if (isset($annotation_id))
+        if (isset($annotation_id)) {
             $this->set_field('recommend_by_annotation_id', $annotation_id);
+        }
     }
 
     /**

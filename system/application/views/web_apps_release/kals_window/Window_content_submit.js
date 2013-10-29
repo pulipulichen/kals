@@ -144,8 +144,7 @@ Window_content_submit.prototype.submit = function () {
     //$.test_msg('Window_content_submit.submit() _data', _data);
     
     //先經過驗證
-    if (this.validate(_inputs, _data) === false)
-    {
+    if (this.validate(_inputs, _data) === false) {
         return this;
     }
     
@@ -154,8 +153,7 @@ Window_content_submit.prototype.submit = function () {
 	}
     
     //如果沒有要遞交的資料，則回傳完成訊息
-    if (this.url === null || this._content === null)
-    {
+    if (this.url === null || this._content === null) {
         if ($.is_function(this.complete_handle)) {
 			this.complete_handle(_inputs, _data);
 		}
@@ -174,8 +172,7 @@ Window_content_submit.prototype.submit = function () {
     }; 
     //$.test_msg('Window_content_submit.submit()', _config['callback']);
     
-    if (this.exception_handle !== null)
-    {
+    if (this.exception_handle !== null) {
         _config.exception_handle = this.exception_handle;
     }
     
@@ -192,8 +189,7 @@ Window_content_submit.prototype._lock_submit = function () {
     
     //$.test_msg(typeof(_ui.attr('disabled')), _ui.attr('disabled'));
     if (typeof(_ui.attr('disabled')) != 'undefined'
-        && _ui.attr('disabled') === true)
-    {
+        && _ui.attr('disabled') === true) {
         //不可以重複執行compelte_handle()！
         return false;
     }

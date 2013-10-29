@@ -27,8 +27,7 @@ List_item_respond.prototype._classname = 'list-item-respond';
 List_item_respond.prototype._topic_item = null;
 
 List_item_respond.prototype._set_topic_item = function (_topic_item) {
-    if ($.isset(_topic_item))
-    {
+    if ($.isset(_topic_item)) {
         this._topic_item = _topic_item;
     }
     return this;
@@ -44,17 +43,18 @@ List_item_respond.prototype.get_topic_id = function () {
 
 List_item_respond.prototype.view_thread = function (_focus_id, _callback) {
     
-    if ($.is_function(_focus_id) && $.is_null(_callback))
-    {
+    if ($.is_function(_focus_id) && $.is_null(_callback)) {
         _callback = _focus_id;
         _focus_id = null;
     }
     
     var _content = KALS_text.tool.view;
-    if ($.is_null(_focus_id))
-        _content.set_focus_id(this.get_annotation_id());
-    else
-        _content.set_focus_id(_focus_id);
+    if ($.is_null(_focus_id)) {
+		_content.set_focus_id(this.get_annotation_id());
+	}
+	else {
+		_content.set_focus_id(_focus_id);
+	}
     
     return List_item.prototype.view_thread.call(this, _callback);
 };
@@ -66,8 +66,7 @@ List_item_respond.prototype.focus_respond = function (_respond_to_id) {
     var _result = _list.focus(_respond_to_id, true);
     
     if ($.is_null(_result)
-        && this.is_enable('view'))
-    {
+        && this.is_enable('view')) {
         var _content = KALS_text.tool.view;
         _content.set_focus_id(_respond_to_id);
         

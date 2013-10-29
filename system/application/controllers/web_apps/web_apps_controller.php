@@ -21,8 +21,8 @@ class Web_apps_controller extends Controller {
     protected $package_load = FALSE;
     
     //var $dir = 'web_apps/';
-    var $dir = 'web_apps_release/';
-    var $release_dir = 'web_apps_release/';
+    var $dir = 'web_apps/';
+    var $release_dir = 'web_apps/';
 
     function  __construct()
     {

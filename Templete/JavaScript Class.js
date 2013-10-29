@@ -1,12 +1,12 @@
 /**
  * ${name}
  *
- * @package		KALS
+ * @package		${package}
  * @category		Webpage Application Libraries
- * @author		Pudding Chen <puddingchen.35@gmail.com>
- * @copyright		Copyright (c) 2010, Pudding Chen
+ * @author		Pudding Chen <pulipuli.chen@gmail.com>
+ * @copyright		Copyright (c) 2013, Pudding Chen
  * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link		http://sites.google.com/site/puddingkals/
+ * @link		https://github.com/pulipulichen/kals
  * @version		1.0 ${date} ${time}
  */
 
@@ -69,4 +69,4 @@ ${name}.prototype._$create_ui = function ()
 //});
 
 /* End of file ${name} */
-/* Location: ./system/application/views/web_apps/${name}.js */
+/* Location: ./system/application/views/web_apps_release/${nameAndExt} */

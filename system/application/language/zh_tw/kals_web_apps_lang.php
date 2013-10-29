@@ -65,6 +65,7 @@ $lang['web_apps.time.1_month_ago'] = '1個月之前';
 $lang['web_apps.time.n_months_ago'] = '{0}個月之前';
 $lang['web_apps.time.on_date'] = '{0}月{1}日';
 $lang['web_apps.time.in_year'] = '{0}年';
+$lang['web_apps.time.fulldate'] = '{0}年{1}月{2}日';
 $lang['web_apps.time.month_name.1'] = '1';
 $lang['web_apps.time.month_name.2'] = '2';
 $lang['web_apps.time.month_name.3'] = '3';
@@ -104,11 +105,6 @@ $lang['web_apps.window.content.sex'] = '性別';
 $lang['web_apps.window.content.sex.0'] = '不表示性別';
 $lang['web_apps.window.content.sex.1'] = '男';
 $lang['web_apps.window.content.sex.2'] = '女';
-$lang['web_apps.window.content.top.0'] = '第一名';
-$lang['web_apps.window.content.top.1'] = '第二名';
-$lang['web_apps.window.content.top.2'] = '第三名';
-$lang['web_apps.window.content.top.3'] = '第四名';
-$lang['web_apps.window.content.top.4'] = '第五名';
 $lang['web_apps.window.content.password'] = '密碼';
 $lang['web_apps.window.content.error_no_email'] = '請輸入電子信箱位址。';
 $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
@@ -182,17 +178,17 @@ $lang['web_apps.editor_container.deny_write'] = '您目前沒有權限可以撰�
 
 $lang['web_apps.annotation_editor.note_deny_empty'] = '請填寫回應資料才能送出。';
 $lang['web_apps.annotation_editor.loading'] = '資料處理中，請稍候…';
-$lang['web_apps.annotation_editor.submit.create'] = '新增';
-$lang['web_apps.annotation_editor.submit.edit'] = '更新';
-$lang['web_apps.annotation_editor.submit.cancel'] = '取消';
+$lang['web_apps.annotation_editor.submit.create'] = '新增標註';
+$lang['web_apps.annotation_editor.submit.edit'] = '更新標註';
+$lang['web_apps.annotation_editor.submit.cancel'] = '取消編輯';
 $lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成';
 $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。';
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
 
 $lang['web_apps.annotation.type.importance'] = '重要';
 $lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
-$lang['web_apps.annotation.type.concept'] = '提問';
-$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您可以提問的標註。';
+$lang['web_apps.annotation.type.concept'] = '概念';
+$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您用自己的話來歸納文章中的概念。例如註明原因、影響、特色等等。';
 $lang['web_apps.annotation.type.confusion'] = '困惑';
 $lang['web_apps.annotation.type.confusion.hint'] = '標示您對文章內文產生困惑的地方。';
 $lang['web_apps.annotation.type.question'] = '質疑';
@@ -217,7 +213,11 @@ $lang['web_apps.policy_type.share.help'] = '只有以下名單的使用者能看
 
 $lang['web_apps.window.policy.heading'] = '標註權限設定';
 
+$lang['web_apps.web_search'] = '網頁搜尋';
+
 $lang['web_apps.type_menu.custom_type_dialog.heading'] = '自訂標註類型';
+
+$lang['web_apps.note.ckeditor.edit_hint'] = '如果編輯器無法選取，請按兩下「原始碼」按鈕就可以正常運作。';
 
 /**
  * List_collection
@@ -233,7 +233,7 @@ $lang['web_apps.list_collection.complete'] = '沒有其他標註了';
 $lang['web_apps.list_menu.delete'] = '刪除';
 $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
-$lang['web_apps.list_menu.view'] = '討論';
+$lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
@@ -296,8 +296,6 @@ $lang['web_apps.init_component.excute_confirm.exit'] = '請關閉KALS功能，�
 
 
 $lang['web_apps.login.experiment_message.201012'] = '如果您是數位在職專班的學生，請以您的<strong style="color:red;">學校電子信箱</strong>與學號作為帳號與密碼來登入。<br /><br />舉例來說，學號為「99913001」的學生，請在電子信箱位址輸入「<strong style="color:red;">99913001@nccu.edu.tw</strong>」，密碼輸入「99913001」即可。';
-
-$lang["web_apps.window.top.heading"] = "標註達人排行榜";
 
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */

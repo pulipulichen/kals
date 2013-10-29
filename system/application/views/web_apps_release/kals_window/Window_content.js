@@ -19,8 +19,7 @@ function Window_content(){
     
     // TODO 2010.9.21 這個是幹嘛用的？
     //this._$setup_content = null;
-    if ($.isset(this._$load_config))
-    {
+    if ($.isset(this._$load_config)) {
         var _this = this;
         KALS_context.add_listener(function (_context) {
             _data = _context._data;
@@ -28,8 +27,7 @@ function Window_content(){
             //$.test_msg('Window_content load context data', _data);
             
             if (_data !== null
-                && typeof(_data[_this._$load_config]) != 'undefined')
-            {
+                && typeof(_data[_this._$load_config]) != 'undefined') {
                 _this.set_config(_data[_this._$load_config]);
                 _this.set_config_loaded();
             }
@@ -222,8 +220,7 @@ Window_content.prototype.get_config = function (_index) {
 };
 
 Window_content.prototype.set_config_loaded = function () {
-    if (this._config_loaded === false)
-    {
+    if (this._config_loaded === false) {
         this._config_loaded = true;
         $.trigger_callback(this._config_onload);
         this._config_onload = null;
@@ -237,8 +234,7 @@ Window_content.prototype.set_config_onload = function (_callback) {
     
     //$.test_msg('Window_content.set_config_onload()', this._config_loaded);
     
-    if (this._config_loaded === true)
-    {
+    if (this._config_loaded === true) {
         $.trigger_callback(this._config_onload);
         this._config_onload = null;
     }
@@ -255,13 +251,11 @@ Window_content.prototype.set_error = function (_message) {
     
     var _error_row = _ui.find('.' + KALS_window.ui.error_row_classname + ':first');
     
-    if (_error_row.length == 1)
-    {
+    if (_error_row.length == 1) {
         _error_row.remove();
     }
     
-    if ($.isset(_message))
-    {
+    if ($.isset(_message)) {
         _error_row = KALS_window.ui.error_row(_message)
             .prependTo(_ui);
     }

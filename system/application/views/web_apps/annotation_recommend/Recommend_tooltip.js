@@ -30,26 +30,25 @@ Recommend_tooltip.prototype._$tooltip_id = 'recommend_tooltip';
  * @param {Annotation_param}
  */
 Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to) {
-    if ($.isset(_recommended))
-    {   
-        if ($.is_number(_recommended) || $.is_string(_recommended))
-        {
+    if ($.isset(_recommended)) {   
+        if ($.is_number(_recommended) || $.is_string(_recommended)) {
             return this.load_recommend(_recommended);
         }
     
         this._recommended = _recommended;
         
         //$.test_msg('Recommend_tooltip.setup_recommend()', this.has_recommend());
-        if (this.has_recommend() == false)
-            return this;
+        if (this.has_recommend() === false) {
+			return this;
+		}
             
-        if (this.recommended_item == null)
-        {
-            var _recommended_item = this._setup_recommended_item(_recommended);
-            _recommended_item.get_ui().appendTo(this._recommended_item_container);
-        }
-        else
-            this.recommended_item.set_data(_recommended);
+        if (this.recommended_item === null) {
+			var _recommended_item = this._setup_recommended_item(_recommended);
+			_recommended_item.get_ui().appendTo(this._recommended_item_container);
+		}
+		else {
+			this.recommended_item.set_data(_recommended);
+		}
         
         this.setup_recommend_by();
         this.setup_tips();
@@ -65,8 +64,9 @@ Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to)
         //設定選取範圍
         var _recommended_scope = this._recommended.scope;
         KALS_text.selection.recommended.set_scope_coll(_recommended_scope);
-        if ($.isset(_scroll_to) && _scroll_to == true)
-            KALS_text.selection.recommended.scroll_into_view();
+        if ($.isset(_scroll_to) && _scroll_to === true) {
+			KALS_text.selection.recommended.scroll_into_view();
+		}
         
         KALS_context.hash.set_field('recommend', this._recommended.annotation_id);
         
@@ -95,19 +95,19 @@ Recommend_tooltip.prototype.load_recommend = function (_annotation_id, _callback
 };
 
 Recommend_tooltip.prototype.setup_recommend_by = function () {
-    if (this.has_recommend_by() == false)
-        return this;
+    if (this.has_recommend_by() === false) {
+		return this;
+	}
     
     var _recommend_by = this._recommended.recommend.recommend_by;
-    if ($.is_class(_recommend_by, 'Annotation_param'))
-    {
-        if (this.recommend_by_item == null)
-        {
-            var _recommend_by_item = this._setup_recommend_by_item(_recommend_by);
-            _recommend_by_item.get_ui().appendTo(this._recommend_by_item_container);
-        }
-        else
-            this.recommend_by_item.set_data(_recommend_by);
+    if ($.is_class(_recommend_by, 'Annotation_param')) {
+        if (this.recommend_by_item === null) {
+			var _recommend_by_item = this._setup_recommend_by_item(_recommend_by);
+			_recommend_by_item.get_ui().appendTo(this._recommend_by_item_container);
+		}
+		else {
+			this.recommend_by_item.set_data(_recommend_by);
+		}
         
         //設定選取範圍
         var _recommend_by_scope = _recommend_by.scope;
@@ -121,30 +121,30 @@ Recommend_tooltip.prototype._has_recommend_by_classname = 'has-recommend-by';
 Recommend_tooltip.prototype._setup_has_recommend_by = function () {
     
     var _ui = this.get_ui();
-    if (this.has_recommend_by())
-        _ui.addClass(this._has_recommend_by_classname);
-    else
-        _ui.removeClass(this._has_recommend_by_classname);
+    if (this.has_recommend_by()) {
+		_ui.addClass(this._has_recommend_by_classname);
+	}
+	else {
+		_ui.removeClass(this._has_recommend_by_classname);
+	}
     return this;
 };
 
 Recommend_tooltip.prototype.setup_tips = function () {
     var _tips = this._recommended.recommend.tips;
     
-    if ($.is_array(_tips) && _tips.length > 0 && _tips[0] != false)
-    {
+    if ($.is_array(_tips) && _tips.length > 0 && _tips[0] !== false) {
         this._tips_heading.show();
         this._tips_container.show().empty();
         //$.test_msg('Recommend_tooltip.setup_tips()', _tips.length);
-        for (var _i in _tips)
-        {
+        for (var _i in _tips) {
             var _tip_list = this._create_tip_list(_tips[_i]);
-            if ($.isset(_tip_list))
-                _tip_list.appendTo(this._tips_container);
+            if ($.isset(_tip_list)) {
+				_tip_list.appendTo(this._tips_container);
+			}
         }
     }
-    else
-    {
+    else {
         this._tips_heading.hide();
         this._tips_container.hide();
     }
@@ -161,8 +161,7 @@ Recommend_tooltip.prototype.setup_tips = function () {
  * @memberOf {Recommend_tooltip}
  * @type {jQuery} UI
  */
-Recommend_tooltip.prototype._$create_ui = function ()
-{
+Recommend_tooltip.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('recommend-tooltip tooltip draggable-tool')
         .appendTo($('body'))
@@ -228,12 +227,10 @@ Recommend_tooltip.prototype._$create_ui = function ()
         
     
         KALS_context.policy.add_attr_listener('write', function (_policy) {
-            if (_policy.writable())
-            {
+            if (_policy.writable()) {
                 //_bottom.show();
             }
-            else
-            {
+            else {
                 //_bottom.hide();
                 _this.close();
             }
@@ -252,21 +249,22 @@ Recommend_tooltip.prototype._$create_ui = function ()
         handle: 'div.annotation-tool-header'
     };
     
-    if ($('body').height() > _ui.height() + 100)
-    {
+    if ($('body').height() > _ui.height() + 100) {
         _draggable_config.containment = 'parent';
     }
     
     _ui.draggable(_draggable_config);
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
-        if ($.is_small_height() == false)
-            _body_top = KALS_toolbar.get_ui().height();
-        if (_ui.offset().top < _body_top)
-            _ui.css('top', _body_top + 'px'); 
+        if ($.is_small_height() === false) {
+			_body_top = KALS_toolbar.get_ui().height();
+		}
+        if (_ui.offset().top < _body_top) {
+			_ui.css('top', _body_top + 'px');
+		} 
     });
     
-    var _this = this;
+    _this = this;
     _ui.mouseover(function () {
         $('.draggable-tool.hover').removeClass('hover');
         $(this).addClass('hover');
@@ -303,8 +301,9 @@ Recommend_tooltip.prototype._create_tips_container = function () {
 
 Recommend_tooltip.prototype._create_tip_list = function (_tip) {
     
-    if ($.is_null(_tip))
-        return null;
+    if ($.is_null(_tip)) {
+		return null;
+	}
     
     var _ui = $('<li></li>')
         .addClass('tip-list');
@@ -523,13 +522,11 @@ Recommend_tooltip.prototype._create_submit_loading_component = function () {
 Recommend_tooltip.prototype.toggle_submit_loading = function (_is_loading, _callback) {
     
     var _ui = this.get_ui();
-    if ($.is_null(_is_loading))
-    {
+    if ($.is_null(_is_loading)) {
         _is_loading = !(this.is_loading());
     }
     
-    if (_is_loading)
-    {
+    if (_is_loading) {
         _ui.addClass(this._loading_classname);
         
         var _this = this;
@@ -539,12 +536,12 @@ Recommend_tooltip.prototype.toggle_submit_loading = function (_is_loading, _call
             });
         });
     }
-    else
-    {
+    else {
         _ui.removeClass(this._loading_classname);
         
-        if (this._submit_loading_component == null)
-            return this;
+        if (this._submit_loading_component === null) {
+			return this;
+		}
         this._submit_container.show();
         this._submit_loading_component.hide();
         $.trigger_callback(_callback);
@@ -552,6 +549,10 @@ Recommend_tooltip.prototype.toggle_submit_loading = function (_is_loading, _call
     return this;
 };
 
+/**
+ * 是否正在讀取推薦提交中
+ * @return {boolean}
+ */
 Recommend_tooltip.prototype.is_submit_loading = function () {
     var _ui = this.get_ui();
     return (_ui.hasClass(this._loading_classname));
@@ -565,8 +566,9 @@ Recommend_tooltip.prototype.is_submit_loading = function () {
 Recommend_tooltip.prototype._accept_url = 'annotation_setter/recommend_accept';
 
 Recommend_tooltip.prototype.accept = function () {
-    if (this.is_submit_loading())
-        return this;
+    if (this.is_submit_loading()) {
+		return this;
+	}
     
     var _this = this;
     //注意的是，accept_recommend回傳的資料是更新過後的資料喔！
@@ -574,13 +576,12 @@ Recommend_tooltip.prototype.accept = function () {
         
         KALS_text.selection.select.clear();
         
-        if (_data != false)    //如果是錯誤的狀況，才會回傳false
+        if (_data !== false)    //如果是錯誤的狀況，才會回傳false
         {
             var _reload_my_callback = function () {
                 
                 var _lang;
-                if (typeof(_data.annotation_id) != 'undefined')
-                {
+                if (typeof(_data.annotation_id) != 'undefined') {
                     //將新增的標註作為修改對象
                     var _annotation_id = _data.annotation_id;
                     KALS_text.tool.list.set_editing_param(_annotation_id);
@@ -595,8 +596,7 @@ Recommend_tooltip.prototype.accept = function () {
                         'recommend_tooltip.submit.accept_recommend.notify'
                     );    
                 }
-                else
-                {
+                else {
                     _lang = new KALS_language_param(
                         'Your annotation has been deleted. Try to write another better!',
                         'recommend_tooltip.submit.accept_delete.notify'
@@ -608,10 +608,16 @@ Recommend_tooltip.prototype.accept = function () {
             };
             
             //因為範圍改變了，所以需要重新讀取
-            if (typeof(_data.my) != 'undefined')
-                KALS_text.load_my.reload(_data.my, _reload_my_callback);
-            else
-                _reload_my_callback();
+            if (typeof(_data.my) != 'undefined') {
+				KALS_text.load_my.reload(_data.my, _reload_my_callback);
+				
+				if (typeof(_data.nav) != 'undefined') {
+					KALS_text.load_navigation.reload(_data.nav);
+				}
+			}
+			else {
+				_reload_my_callback();
+			}
         }
     };
     
@@ -634,8 +640,9 @@ Recommend_tooltip.prototype.accept = function () {
 Recommend_tooltip.prototype._reject_url = 'annotation_setter/recommend_reject';
 
 Recommend_tooltip.prototype.reject = function () {
-    if (this.is_submit_loading())
-        return this;
+    if (this.is_submit_loading()) {
+		return this;
+	}
     
     var _this = this;
     //var _recommended_list_item = this._recommended_list_item;
@@ -671,8 +678,7 @@ Recommend_tooltip.prototype.reject = function () {
     return this;
 };
 
-Recommend_tooltip.prototype.close = function (_callback)
-{
+Recommend_tooltip.prototype.close = function (_callback) {
     KALS_text.selection.recommend_by.clear();
     KALS_text.selection.recommended.clear();
     KALS_context.hash.delete_field('recommend');

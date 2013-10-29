@@ -15,7 +15,7 @@ function Search_component() {
     KALS_user_interface.call(this);
     
     this.child('form', new Search_form_component());
-    this.child('result', new Search_result_component);
+    this.child('result', new Search_result_component());
     
 }
 

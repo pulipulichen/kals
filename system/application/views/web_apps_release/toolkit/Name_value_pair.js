@@ -45,22 +45,20 @@ Name_value_pair.prototype._indicator = '=';
  * @param {string} _string_data 要解序列化的字串資料
  * @type {Object} 解序列化之後的物件資料 
  */
-Name_value_pair.prototype.unserialize = function (_string_data)
-{
-    if (false == $.is_string(_string_data))
-    {
+Name_value_pair.prototype.unserialize = function (_string_data) {
+    if (false == $.is_string(_string_data)) {
         return this.reset();
     }
     
     var _string_array = _string_data.split(this._splitter);
     var _object_data = {};
-    for (var _i in _string_array)
-    {
+    for (var _i in _string_array) {
         var _data = _string_array[_i];
         var _pos = _data.indexOf(this._indicator);
         
-        if (_pos == -1)
-            continue;
+        if (_pos == -1) {
+			continue;
+		}
             
         var _key = _data.substring(0, _pos);
         var _value = _data.substring((_pos+1), _data.length);
@@ -77,13 +75,11 @@ Name_value_pair.prototype.unserialize = function (_string_data)
  * 將this._data序列化成字串之後回傳
  * @type {string}
  */
-Name_value_pair.prototype.serialize = function ()
-{
+Name_value_pair.prototype.serialize = function () {
     var _object_data = this._data;
     var _string_data = '';
     
-    for (var _key in _object_data)
-    {
+    for (var _key in _object_data) {
         var _value = _object_data[_key];
         
         _string_data = _string_data + _key + this._indicator + _value + this._splitter;
@@ -109,12 +105,10 @@ Name_value_pair.prototype.to_string = function () {
  * @type {Object}
  */
 Name_value_pair.prototype.get_field = function (_key, _default) {
-    if (typeof(this._data[_key]) != undefined)
-    {
+    if (typeof(this._data[_key]) !== undefined) {
         return this._data[_key];
     }
-    else
-    {
+    else {
         return _default;
     }
 };
@@ -138,8 +132,9 @@ Name_value_pair.prototype.set_field = function (_key, _value) {
  * @param {String} _key
  */
 Name_value_pair.prototype.delete_field = function (_key) {
-    if (typeof(this._data[_key]) != 'undefined')
-        delete this._data[_key];
+    if (typeof(this._data[_key]) != 'undefined') {
+		delete this._data[_key];
+	}
     return this;
 };
 

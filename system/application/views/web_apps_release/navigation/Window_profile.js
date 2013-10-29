@@ -40,8 +40,7 @@ Window_profile.prototype.width = 500;
  * @memberOf {Window_profile}
  * @type {jQuery} UI
  */
-Window_profile.prototype._$create_ui = function ()
-{
+Window_profile.prototype._$create_ui = function () {
     var _ui = KALS_window.ui.panel('window-profile');
     
     var _factory = KALS_window.ui;
@@ -74,8 +73,7 @@ Window_profile.prototype._$create_ui = function ()
     this.set_config_onload(function () {
         var _locale_config = _this.get_config('locale');
         var _locale_options = [];
-        for (var _i in _locale_config)
-        {
+        for (var _i in _locale_config) {
             var _value = _locale_config[_i];
             var _lang_param = new KALS_language_param(
                 _value,
@@ -99,8 +97,7 @@ Window_profile.prototype._$create_ui = function ()
         
         var _sex_config = _this.get_config('sex');
         var _sex_options = [];
-        for (_i in _sex_config)
-        {
+        for (_i in _sex_config) {
             _value = _sex_config[_i];
             _lang_param = new KALS_language_param(
                 _value,
@@ -149,15 +146,12 @@ Window_profile.prototype._$create_ui = function ()
         _password_link_data
     ).appendTo(_ui);
     
-    var _check_embed = function (_is_embed)
-    {
-        if (_is_embed === true)
-        {
+    var _check_embed = function (_is_embed) {
+        if (_is_embed === true) {
             _password_link_data.hide();
             _password_row.hide();
         }
-        else
-        {
+        else {
             _password_link_data.show();
             _password_row.show();
         }

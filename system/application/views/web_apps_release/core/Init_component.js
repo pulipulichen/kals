@@ -26,8 +26,7 @@ Init_component.prototype = new Task_event_dispatcher();
  */
 Init_component.prototype._$onstart = function () {
     
-    if (this._is_ie6)
-    {
+    if (this._is_ie6) {
         /*
         var _line = new KALS_language_param(
             'This browser cannot use KALS, but you still can read this page.',
@@ -51,8 +50,7 @@ Init_component.prototype._$onstart = function () {
     
     KALS_text = new KALS_text();
     //$.test_msg('Init_component.$onstart()');
-    if ($.browser.msie)
-    {
+    if ($.browser.msie) {
         //this.excute_confirm();
     }
 };

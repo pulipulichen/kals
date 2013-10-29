@@ -15,8 +15,7 @@ function Policy_component(_editor) {
     
     KALS_user_interface.call(this);
     
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;
         this._listen_editor();
     }
@@ -72,15 +71,13 @@ Policy_component.prototype._policy_changable = false;
  * @memberOf {Policy_component}
  * @type {jQuery} UI
  */
-Policy_component.prototype._$create_ui = function ()
-{
+Policy_component.prototype._$create_ui = function () {
     var _ui = $('<span></span>')
         .addClass('policy-component');
     
     var _this = this;
     
-    for (var _i in this._policy_type_options)
-    {
+    for (var _i in this._policy_type_options) {
         var _type = this._policy_type_options[_i];
         
         var _option = $('<span></span>')
@@ -114,16 +111,16 @@ Policy_component.prototype._$create_ui = function ()
  */
 Policy_component.prototype.set_policy_type = function(_type) {
     
-    if ($.is_null(_type))
-    {
+    if ($.is_null(_type)) {
         _type = this._default_policy_type;
     }
     
     //$.test_msg('set_policy_type', [_type, this._policy_type]);
     
     //防止重複變更
-    if (_type == this._policy_type)
-        return this;
+    if (_type == this._policy_type) {
+		return this;
+	}
     
     this._policy_type = _type;
     
@@ -138,13 +135,11 @@ Policy_component.prototype.set_policy_type = function(_type) {
     
     _ui.addClass('test' + _type);
     
-    if (_type == 'public')
-    {
+    if (_type == 'public') {
         this._share_list = null;
         _ui.removeClass(_lock_classname);
     }
-    else if (_type == 'private')
-    {
+    else if (_type == 'private') {
         
         var _user_coll = new User_collection_param();
         _user_coll.add(KALS_context.user.get_data());
@@ -152,8 +147,7 @@ Policy_component.prototype.set_policy_type = function(_type) {
         _ui.addClass(_lock_classname);
         //$.test_msg('Policy.set_policy_type', _type);
     }
-    else if (_type == 'share')
-    {
+    else if (_type == 'share') {
         _ui.addClass(_lock_classname);
     }
     
@@ -178,8 +172,9 @@ Policy_component.prototype.set_policy_changable = function (_changable) {
     
     //$.test_msg("set_policy_changable", [_changable, this._config_policy_changable()]);
     
-    if (_changable == true && this._config_policy_changable() == false)
-        _changable = false;
+    if (_changable === true && this._config_policy_changable() === false) {
+		_changable = false;
+	}
     
     
     this._policy_changable = _changable;
@@ -187,12 +182,10 @@ Policy_component.prototype.set_policy_changable = function (_changable) {
     var _ui = this.get_ui();
     var _deny_change_classname = 'deny-change';
     
-    if (_changable == false)
-    {
+    if (_changable === false) {
         _ui.addClass(_deny_change_classname);    
     }
-    else
-    {
+    else {
         _ui.removeClass(_deny_change_classname);
     }
     return this;
@@ -200,18 +193,15 @@ Policy_component.prototype.set_policy_changable = function (_changable) {
 
 Policy_component.prototype.set_share_list = function (_user_coll, _policy_type) {
     
-    if ($.is_class(_user_coll, 'User_collection_param'))
-    {
+    if ($.is_class(_user_coll, 'User_collection_param')) {
         this._share_list = _user_coll;
         this.set_policy_type('share');
     }
     /*
-    else if (_policy_type == 'private')
-    {
+    else if (_policy_type == 'private') {
         //什麼都不做！
     }
-    else
-    {
+    else {
         this._share_list = null;
         this.set_policy_type('public');
     }
@@ -253,16 +243,16 @@ Policy_component.prototype._listen_editor = function () {
         var _policy_type = _this.get_policy_type();
         
         //如果是預設值，則由伺服器端去取得預設值
-        if (_policy_type != this._default_policy_type)
-        {
+        if (_policy_type != this._default_policy_type) {
             //var _policy_type_id = _this.filter_policy_type_id(_policy_type);
             _param.policy_type = _policy_type;
         }
         
         //要注意到，如果type='private'，則是由伺服器端去設定只有該使用者才擁有readable的權限。而不是從這邊指名share_list為該使用者。
         var _share_list = _this.get_share_list();
-        if ($.isset(_share_list) && _policy_type == 'share')
-            _param.share_list = _share_list;
+        if ($.isset(_share_list) && _policy_type == 'share') {
+			_param.share_list = _share_list;
+		}
     });
 };
 
@@ -276,14 +266,18 @@ Policy_component.prototype._listen_editor = function () {
  */
 /*
 Policy_component.prototype.filter_policy_type_id = function (_policy_type) {
-    if (_policy_type == 'public')
+    if (_policy_type == 'public') {
         return 1;
-    else if (_policy_type == 'private')
+    }
+    else if (_policy_type == 'private') {
         return 2;
+    }
     else if (_policy_type == 'share')
         return 3;
-    else
+    }
+    else {
         return 1;
+    }
         
 };
 */
@@ -293,16 +287,18 @@ Policy_component.prototype.filter_policy_type_id = function (_policy_type) {
  * @param {Annotation_param} _annotation_param
  */
 Policy_component.prototype.set_data = function (_annotation_param) {
-    if ($.is_null(_annotation_param))
-        return this;
+    if ($.is_null(_annotation_param)) {
+		return this;
+	}
 
     var _policy_type = _annotation_param.policy_type;
     //$.test_msg('Policy.set_data()', [_policy_type, typeof(_policy_type)]);
     this.set_policy_type(_policy_type);
     
     var _share_list = _annotation_param.share_list;
-    if ($.isset(_share_list))
-        this.set_share_list(_share_list);
+    if ($.isset(_share_list)) {
+		this.set_share_list(_share_list);
+	}
     
     return this;
 };
@@ -314,8 +310,9 @@ Policy_component.prototype.open_window = function () {
     
     //$.test_msg('Policy_component.open_window()', this._policy_changable);
     
-    if (this._policy_changable == false)
-        return this;
+    if (this._policy_changable === false) {
+		return this;
+	}
     
     var _content = new Window_policy(this);
     

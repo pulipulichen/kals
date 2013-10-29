@@ -71,19 +71,19 @@ List_menu.prototype._$create_ui = function ()
     
     var _tr = _ui.find('tr:first');
     
-    if (this.is_enable('edit') && _writable == true)
+    if (this.is_enable('edit') && _writable === true)
     {
         var _edit = this._create_edit_ui();
         _edit.appendTo(_tr);
     }
     
-    if (this.is_enable('delete') && _writable == true)
+    if (this.is_enable('delete') && _writable === true)
     {
         var _delete = this._create_delete_ui();
         _delete.appendTo(_tr);
     }
     
-    if (this.is_enable('respond') && _writable == true)
+    if (this.is_enable('respond') && _writable === true)
     {
         var _respond = this._create_respond_ui();
         _respond.appendTo(_tr);    
@@ -99,7 +99,7 @@ List_menu.prototype._$create_ui = function ()
     
     if (this.is_enable('select'))
     {
-        if (KALS_text.selection.select.equals(this._item.get_scope_coll()) == false)
+        if (KALS_text.selection.select.equals(this._item.get_scope_coll()) === false)
         {
             var _select = this._create_select_ui();
             _select.appendTo(_tr);    
@@ -113,10 +113,12 @@ List_menu.prototype._$create_ui = function ()
 };
 
 List_menu.prototype.is_enable = function (_option_name) {
-    if (_option_name == null || this._disable_option == null)
-        return true;
-    else
-        return ( $.inArray(_option_name, this._disable_option) == -1 );
+    if (_option_name === undefined || _option_name === null || this._disable_option === null || this._disable_option === undefined || this._disable_option.length === 0) {
+		return true;
+	}
+	else {
+		return ($.inArray(_option_name, this._disable_option) == -1);
+	}
 };
 
 // --------
@@ -127,9 +129,10 @@ List_menu.prototype.is_enable = function (_option_name) {
  * @type {List_timestamp_component}
  */
 List_menu.prototype.timestamp = null;
+List_menu.prototype.timestamp_full_dispaly = false;
 
 List_menu.prototype._setup_timestamp = function () {
-    var _component = new List_timestamp_component(this._item);
+    var _component = new List_timestamp_component(this._item, this.timestamp_full_dispaly);
     this.child('timestamp', _component);
     return _component;
 };
@@ -152,8 +155,10 @@ List_menu.prototype._create_edit_ui = function () {
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
+    _ui.click(function (_e) {
         _this.edit_annotation();
+		_e.preventDefault();
+		return false;
     });
     
     _ui.setup_hover();
@@ -175,8 +180,10 @@ List_menu.prototype._create_delete_ui = function () {
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
+    _ui.click(function (_e) {
         _this.delete_annotation();
+		_e.preventDefault();
+		return false;
     });
     
     _ui.setup_hover();
@@ -270,10 +277,16 @@ List_menu.prototype.get_annotation_id = function () {
     return this._item.get_data().annotation_id;
 };
 
+/**
+ * 顯示討論視窗
+ * @param {function} _callback
+ */
 List_menu.prototype.view_thread = function (_callback) {
     if ($.isset(this._item))
     {
-        this._item.view_thread(_callback);
+		// @20130604 Pudding Chen
+		// 不知道為什麼關掉這串就會恢復正常
+        //this._item.view_thread(_callback);
         this.close();
     }   
     return this;
@@ -323,18 +336,19 @@ List_menu.prototype._delete_lock = false;
 
 List_menu.prototype.delete_annotation = function () {
     
-    if (this.is_loading() == true)
-        return this;
+    if (this.is_loading() === true) {
+		return this;
+	}
     
     var _annotation_id = this.get_annotation_id();
     
-    if ($.is_null(_annotation_id))
-        return this;
+    if ($.is_null(_annotation_id)) {
+		return this;
+	}
         
     var _callback = function (_data) {
         //回傳的資料是重新讀取的my annotation範圍，回傳資料的形態請參考annotation_getter/my
-        if (_data != false)    //如果是錯誤的狀況，才會回傳false
-        {
+        if (_data !== false) {   //如果是錯誤的狀況，才會回傳false
             //因為範圍改變了，所以需要重新讀取
             KALS_text.load_my.reload(_data, function () {
                 _this._item.remove();
@@ -357,11 +371,11 @@ List_menu.prototype.delete_annotation = function () {
                 }
             });
             
-            if (typeof(_data.nav) != 'undefined')
-            {
+            if (typeof(_data.nav) != 'undefined') {
                 var _nav_data = _data.nav;
-                if (KALS_context.user.get_anchor_navigation_type() == 'all')
-                    KALS_text.load_navigation.reload(_nav_data);
+                if (KALS_context.user.get_anchor_navigation_type() == 'all') {
+					KALS_text.load_navigation.reload(_nav_data);
+				}
             }
             
         }
@@ -397,7 +411,7 @@ List_menu.prototype._toggle_is_my = function (_is_my) {
     }
     
     var _ui = this.get_ui();
-    if (_is_my == true)
+    if (_is_my === true)
     {
         _ui.addClass(this._is_my_classname);
     }
@@ -427,7 +441,7 @@ List_menu.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable() == true)
+        if (_policy.writable() === true)
         {
             _ui.removeClass(_not_login_classname);
         }
@@ -445,14 +459,17 @@ List_menu.prototype._listen_auth = function () {
 List_menu.prototype._loading_classname = 'loading';
 List_menu.prototype._toggle_loading = function (_is_loading) {
     
-    if ($.is_null(_is_loading))
-        _is_loading = !(this.is_loading());
+    if ($.is_null(_is_loading)) {
+		_is_loading = !(this.is_loading());
+	}
     
     var _ui = this.get_ui();
-    if (_is_loading == true)
-        _ui.addClass(this._loading_classname);
-    else
-        _ui.removeClass(this._loading_classname);
+    if (_is_loading === true) {
+		_ui.addClass(this._loading_classname);
+	}
+	else {
+		_ui.removeClass(this._loading_classname);
+	}
     return this;
 };
 

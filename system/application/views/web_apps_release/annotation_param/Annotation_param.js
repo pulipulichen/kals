@@ -22,8 +22,7 @@ function Annotation_param(_param) {
     this.type = new Annotation_type_param();
     this.navigation_level = 0;
     
-    if ($.isset(_param))
-    {
+    if ($.isset(_param)) {
         this.import_json(_param);
     }
 }
@@ -157,7 +156,7 @@ Annotation_param.prototype.navigation_level = 1;
  * @type {boolean}
  */
 Annotation_param.prototype.is_respond = function () {
-    return (this.topic != null);
+    return (this.topic !== null);
 };
 
 /**
@@ -166,8 +165,9 @@ Annotation_param.prototype.is_respond = function () {
  */
 Annotation_param.prototype.is_my_annotation = function () {
     
-    if (this.user == null)
-        return false;
+    if (this.user === null) {
+		return false;
+	}
     
     var _user_id = KALS_context.user.get_id();
     var _author_id = this.user.get_id();
@@ -180,7 +180,7 @@ Annotation_param.prototype.is_my_annotation = function () {
  * @type {boolean}
  */
 Annotation_param.prototype.has_recommend = function () {
-    return !(this.recommend == null);
+    return !(this.recommend === null);
 };
 
 Annotation_param.prototype._plain_types = [
@@ -222,30 +222,23 @@ Annotation_param.prototype.export_json = function () {
     var _json = {};
     
     var _plain_types = this._plain_types;
-    for (var _i in _plain_types)
-    {
+    for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
-        if ($.isset(this[_attr]))
-        {
+        if ($.isset(this[_attr])) {
             var _value = this[_attr];
-            if (_attr == 'note')
-            {
+            if (_attr == 'note') {
                 _value = encodeURIComponent(_value);
             }
-            else if (_attr == 'policy_type' && $.is_string(_value))
-            {
-                for (var _p in this._policy_types)
-                {
+            else if (_attr == 'policy_type' && $.is_string(_value)) {
+                for (var _p in this._policy_types) {
                     var _policy_type = this._policy_types[_p];
-                    if (_policy_type == _value)
-                    {
-                        _value = parseInt(_p);
+                    if (_policy_type == _value) {
+                        _value = parseInt(_p,10);
                         break;
                     }
                 }
             }
-            else if (_attr == 'respond_list')
-            {
+            else if (_attr == 'respond_list') {
                 continue;
             }
             
@@ -255,30 +248,29 @@ Annotation_param.prototype.export_json = function () {
     
     var _param_types = this._param_types;
     
-    for (var _i in _param_types)
-    {
-        var _attr = _param_types[_i];
+    for (_i in _param_types) {
+        _attr = _param_types[_i];
         //$.test_msg('Annotation_param.export_json', [_attr, ($.isset(this[_attr]))]);
         
-        if ($.isset(this[_attr]))
-        {
-            if (_attr == 'respond_to_coll')
-            {
-                var _data = this[_attr].export_respond_json();
-                if ($.is_array(_data) && _data.length > 0)
-                    _json[_attr] = _data;
-            }  
-            else if (_attr == 'topic')
-            {
-                _json[_attr] = this[_attr].export_respond_json();
-            }
-            else if ($.inArray(_attr, this._only_for_import) > -1)
-            {
-                // 不做輸出！
-                continue;
-            }
-            else
-                _json[_attr] = this[_attr].export_json();
+        if ($.isset(this[_attr])) {
+            if (_attr == 'respond_to_coll') {
+				var _data = this[_attr].export_respond_json();
+				if ($.is_array(_data) && _data.length > 0) {
+					_json[_attr] = _data;
+				}
+			}
+			else 
+				if (_attr == 'topic') {
+					_json[_attr] = this[_attr].export_respond_json();
+				}
+				else 
+					if ($.inArray(_attr, this._only_for_import) > -1) {
+						// 不做輸出！
+						continue;
+					}
+					else {
+						_json[_attr] = this[_attr].export_json();
+					}
         }
     }
     
@@ -288,69 +280,77 @@ Annotation_param.prototype.export_json = function () {
 Annotation_param.prototype.export_respond_json = function () {
     var _data = {};
     
-    if ($.isset(this.annotation_id))
-        _data.annotation_id = this.annotation_id;
+    if ($.isset(this.annotation_id)) {
+		_data.annotation_id = this.annotation_id;
+	}
         
     return _data;
 };
 
-Annotation_param.prototype.import_json = function (_json) 
-{
+Annotation_param.prototype.import_json = function (_json) {
     //取得Annotation的note時，也記得要先做urlencode()跟JavaScript端的decodeURIComponent()
     var _plain_types = this._plain_types;
-    for (var _i in _plain_types)
-    {
+    for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
-        if (typeof(_json[_attr]) != 'undefined')
-        {
+        if (typeof(_json[_attr]) != 'undefined') {
             var _value = _json[_attr];
-            if (_attr == 'note')
-            {
-                _value = decodeURIComponent(_value);
-            }
-            else if (_attr == 'policy_type' && $.is_number(_value))
-            {
-                _value = _value + '';
-                for (var _p in this._policy_types)
-                {
-                    var _policy_type = this._policy_types[_p];
-                    if (_p == _value)
-                    {
-                        _value = _policy_type;
-                        break;
-                    }
-                }
-            }
+            if (_attr == 'note') {
+				//$.test_msg("Annotation_param.import_json Note 1", _value);
+				_value = $.decodeURIComponent(_value);
+				//$.test_msg("Annotation_param.import_json Note 2", _value);
+				_value = unescape(_value);
+				//$.test_msg("Annotation_param.import_json Note 3", _value);
+			}
+			else 
+				if (_attr == 'policy_type' && $.is_number(_value)) {
+					_value = _value + '';
+					for (var _p in this._policy_types) {
+						var _policy_type = this._policy_types[_p];
+						if (_p == _value) {
+							_value = _policy_type;
+							break;
+						}
+					}
+				}
             
             this[_attr] = _value;
         }
     }
     
     var _param_types = this._param_types;
-    for (var _i in _param_types)
-    {
-        var _attr = _param_types[_i];
-        if (typeof(_json[_attr]) != 'undefined')
-        {
-            var _value = _json[_attr];
-            if (_attr == 'respond_to_coll')
-                this[_attr] = new Annotation_collection_param(_value);
-            else if (_attr == 'scope')
-                this[_attr] = new Scope_collection_param(_value);
-            else if (_attr == 'share_list')
-                this[_attr] = new User_collection_param(_value);
-            else if (_attr == 'user')
-                this[_attr] = new User_param(_value);
-            else if (_attr == 'topic')
-                this[_attr] = new Annotation_param(_value);
-            else if (_attr == 'type')
-            {
-                _value = decodeURIComponent(_value);
-                //this[_attr] = new Annotation_type_param(_value);
-                this[_attr] = KALS_context.custom_type.import_json(_value);
-            }
-            else if (_attr == 'recommend')
-                this[_attr] = new Recommend_param(_value);
+    for (_i in _param_types) {
+        _attr = _param_types[_i];
+        if (typeof(_json[_attr]) != 'undefined') {
+            _value = _json[_attr];
+            if (_attr == 'respond_to_coll') {
+				this[_attr] = new Annotation_collection_param(_value);
+			}
+			else if (_attr == 'scope') {
+				this[_attr] = new Scope_collection_param(_value);
+			}
+			else 
+				if (_attr == 'share_list') {
+					this[_attr] = new User_collection_param(_value);
+				}
+				else 
+					if (_attr == 'user') {
+						this[_attr] = new User_param(_value);
+					}
+					else 
+						if (_attr == 'topic') {
+							this[_attr] = new Annotation_param(_value);
+						}
+						else 
+							if (_attr == 'type') {
+								_value = decodeURIComponent(_value);
+								//this[_attr] = new Annotation_type_param(_value);
+								this[_attr] = KALS_context.custom_type.import_json(_value);
+							}
+							else 
+								if (_attr == 'recommend') {
+									this[_attr] = new Recommend_param(_value);
+								}
+						
         }
     }
     
@@ -368,10 +368,12 @@ Annotation_param.prototype.set_type = function (_type) {
 
 Annotation_param.prototype.get_interval_time = function () {
     var _timestamp = this.timestamp;
-    if ($.is_null(_timestamp))
-        return null;
-    else
-        return $.get_interval_time(_timestamp);
+    if ($.is_null(_timestamp)) {
+		return null;
+	}
+	else {
+		return $.get_interval_time(_timestamp);
+	}
 };
 
 /**

@@ -1,5 +1,5 @@
 .view-anchor-text-component {
-    background-color: #white;
+    background-color: white;
 }
 
 .view-anchor-text-component .text-container {
@@ -8,11 +8,13 @@
     font-size: 1em;
     color: black;
     background-color: #CCC;
-    margin: 1em;
+    margin: 1em !important;
     padding: 0.5em;
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     -moz-box-shadow: 0 0 20px #666666;
     -webkit-box-shadow: 0 0 20px #666666;
 }
@@ -40,16 +42,19 @@
     padding-left: 5px;
     padding-right: 5px;
     background-color: white;
+	
+	clear:both;
 }
 
 .window-view-content .list-item-respond .list-item {
     padding-left: 2em;
+	clear:both;
 }
 
 .window-view-content .view-list-container {
     /*max-height:215px;*/
-    max-height:200px;
-    height:200px;
+    max-height:160px;
+    height:160px;
     overflow-x:hidden;
     overflow-y:auto;
     background-color: white;
@@ -85,4 +90,12 @@
 
 .window-view-content .list-menu-block {
     float:right;
+}
+
+.window-view-content .editor-container .toggle.top {
+    border-width:0;
+}
+
+.window-view-content .editor-container .toggle.top td {
+    display: block;
 }
