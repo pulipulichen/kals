@@ -17,8 +17,6 @@ include_once 'web_apps_controller.php';
 class generic extends Web_apps_controller {
 
     protected $controller_enable_cache = FALSE;
-    
-    private $dirmap_path = "./system/application/views/web_apps/";
 
     function toolkit($return_list = NULL)
     {
@@ -33,25 +31,25 @@ class generic extends Web_apps_controller {
          */
         
         $list = array(
-            'libraries/min/jquery.tools'
-            ,'libraries/min/jquery.ba-bbq.min'
-            , 'libraries/min/jquery.jcrop'
-            , 'libraries/min/jquery.ba-hashchange'
-            , 'libraries/min/jquery.placeheld.min'
-            , 'libraries/min/jquery.endless-scroll.1.4.1'
-            , 'libraries/min/yui-min'
-            , 'libraries/min/jQuery_mousewheel_plugin-min'
-            , 'libraries/min/jquery.scrollIntoView-min'
+            'libraries/jquery.tools'
+            ,'libraries/jquery.ba-bbq.min'
+            , 'libraries/jquery.jcrop'
+            , 'libraries/jquery.ba-hashchange'
+            , 'libraries/jquery.placeheld'
+            , 'libraries/jquery.endless-scroll.1.4.1'
         );
 
         $list_package = array(
             'core/KALS_CONFIG'
             , 'core/KALS_language_param'
+            , 'libraries/yui'
+            , 'libraries/jQuery_mousewheel_plugin'
+            , 'libraries/jquery.scrollIntoView'
             , 'toolkit/jQuery_kals_plugin'
             , 'toolkit/KALS_user_interface' //Qunit
             , 'toolkit/KALS_modal'
             , 'toolkit/Overlay_modal'
-            , 'toolkit/Tooltip_modal'
+            ,'toolkit/Tooltip_modal'
             , 'toolkit/Dialog_modal'
             , 'toolkit/Dialog_option'
             , 'toolkit/Dialog_link'
@@ -78,9 +76,8 @@ class generic extends Web_apps_controller {
         else
         {
             $full_list = $list;
-            foreach ($list_package AS $path) {
+            foreach ($list_package AS $path)
                 $full_list[] = $path;
-            }
             return $full_list;
         }
     }
@@ -92,7 +89,6 @@ class generic extends Web_apps_controller {
             ""
         );
 
-        //注意順序！
         $list_package = array(
             'core/KALS_language',
             'core/Viewportmove_dispatcher',
@@ -107,17 +103,10 @@ class generic extends Web_apps_controller {
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',
-            'core/KALS_context'	//必須是最後一個！	
-            //''
+            'core/KALS_context',
+            ''
         );
-        
-        /*
-        $dir_list = array(
-    		'core'
-    	);
-        $files = $this->dirmap($dir_list);
-		*/
-        
+
         if (is_null($return_list))
         {
             //$this->load_js($list);
@@ -126,17 +115,12 @@ class generic extends Web_apps_controller {
         else
         {
             $full_list = $list;
-            foreach ($list_package AS $path) {
+            foreach ($list_package AS $path)
                 $full_list[] = $path;
-            }
             return $full_list;
         }
     }
 
-    /**
-     * 載入Component類型的JavaScript
-     * @param {boolean} 是否要回傳列表
-     */
     function component($return_list = NULL)
     {
         $list = array(            
@@ -217,6 +201,9 @@ class generic extends Web_apps_controller {
             'selection/Selection_my_example',
             'selection/Selection_my_summary',
             'selection/Selection_my_custom',
+            'selection/Selection_my_other',
+            'selection/Selection_my_explain',
+            'selection/Selection_my_debug',
             'selection/Selection_my_manager',
 
             'selection/Selection_my_custom_type',
@@ -261,10 +248,10 @@ class generic extends Web_apps_controller {
             'annotation_editor/Policy_component',
             'annotation_editor/Window_policy',
             'annotation_editor/Window_policy_submit',
-        	'annotation_editor/Web_search_component',
 
             'annotation_list/List_collection',
             'annotation_list/List_collection_like',
+            'annotation_list/List_collection_read',
             'annotation_list/List_collection_my',
             'annotation_list/List_collection_other',
             'annotation_list/List_collection_anonymous',
@@ -278,6 +265,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_menu_tooltip',
             'annotation_list/List_menu_block',
             'annotation_list/List_like_component',
+            'annotation_list/List_read_component',
             'annotation_list/List_header_component',
             'annotation_list/List_note_component',
             'annotation_list/List_item',
@@ -309,72 +297,19 @@ class generic extends Web_apps_controller {
             'kals_text/Init_text',
             'kals_text/KALS_text',
         );
-            'kals_text/Navigation_loader',
 
-            'kals_text/Init_text',
-            'kals_text/KALS_text',
-        );
-        
-    	/*
-    	$dir_list = array(
-    		'kals_window',
-			'navigation',
-			'kals_toolbar',
-			'annotation_param',
-			'selection',
-			'annotation_editor',
-			'annotation_view',
-			'annotation_recommend',
-			'kals_text'
-    	);
-        $files = $this->dirmap($dir_list);
-        */
-        
         if (is_null($return_list))
         {
             //$this->load_js($list);
-            //$this->pack_js($files, 'component');
             $this->pack_js($list_package, 'component');
         }
         else
         {
             $full_list = $list;
-            foreach ($files AS $path)
+            foreach ($list_package AS $path)
                 $full_list[] = $path;
             return $full_list;
         }
-    }
-    
-    /**
-     * 取得目錄陣列底下的檔案列表 
-     *
-     */
-    function dirmap($dirs) {
-    	
-    	if (is_string($dirs)) {
-    		$dirs = array($dirs);
-    	}
-    	
-    	$files = array();
-    	
-    	$this->load->helper('directory');
-    	for ($i = 0; $i < count($dirs); $i++) {
-    		 $f = directory_map($this->dirmap_path . $dirs[$i], TRUE);
-    		 //print_r($f);
-	    	for ($j = 0; $j < count($f); $j++) {
-	        	$f[$j] = $dirs[$i]."/".$f[$j];
-	        }
-    		 $files = array_merge($files, $f);
-    	}
-        
-        for ($i = 0; $i < count($files); $i++) {
-        	$name = $files[$i];
-        	$files[$i] = substr($name, 0 , strrpos($name, "."));
-        }
-        
-        //print_r($files);
-    	
-        return $files;
     }
 
     function package($is_demo = NULL) {
@@ -416,7 +351,6 @@ class generic extends Web_apps_controller {
 
     function style()
     {
-    	/*
         $list = array(
             'generic',
             'dialog',
@@ -433,11 +367,8 @@ class generic extends Web_apps_controller {
             'annotation_editor',
             'annotation_view',
             'annotation_recommend',
-            'core',
-        	'toolkit'
+            'core'
         );
-        */
-        
         /*
         foreach ($list AS $path)
         {
@@ -448,25 +379,12 @@ class generic extends Web_apps_controller {
             
             //$this->_20130219_pack_css($path);
         }*/
-        //$this->pack_css($list, 'style');
-        
-    	/*
-        $this->load->helper('directory');
-        $files = directory_map($this->dirmap_path . 'style/');
-        for ($i = 0; $i < count($files); $i++) {
-        	$files[$i] = substr($files[$i], 0 , -4);
-        }
-        */
-        //print_r($files);
-        $files = $this->dirmap("style");
-        
-        $this->pack_css($files, 'style');
+        $this->pack_css($list, 'style');
     }
 
     /**
      * @deprecated 20111106 Pudding Chen 請使用style
      */
-    /*
     function style_release()
     {
         $list = array(
@@ -496,7 +414,6 @@ class generic extends Web_apps_controller {
             $this->pack_css($path, 'style_release');
         }
     }
-    */
 
     function load_css($path, $path2 = NULL)
     {
@@ -585,9 +502,10 @@ class generic extends Web_apps_controller {
             if (isset($input_data->anchor_navigation_type))
             {
                 $type = $input_data->anchor_navigation_type;
-                $GLOBALS['context']->set_anchor_navigation_type($type);
+                $GLOBALS['context']->set_anchor_navigation_type ($type);
             }
         }
+
         $data = array();
 
         $data['KALS_language'] = $this->_load_lang();

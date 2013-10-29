@@ -16,7 +16,8 @@
 function KALS_language_param (_msg, _line, _arg) {
     
     if ($.is_array(_line)
-        && $.is_null(_arg)) {
+        && $.is_null(_arg))
+    {
         _arg = _line;
         _line = _msg;
         _msg = null;
@@ -25,7 +26,8 @@ function KALS_language_param (_msg, _line, _arg) {
     this.msg = _msg;
     this.line = _line;
     
-    if ($.isset(_arg) && false == $.is_array) {
+    if ($.isset(_arg) && false == $.is_array)
+    {
         _arg = [_arg];
     }
     this.arg = _arg;

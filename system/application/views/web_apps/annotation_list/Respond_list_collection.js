@@ -30,7 +30,8 @@ Respond_list_collection.prototype._topic_item = null;
  * @param {List_item_topic} _topic_item
  */
 Respond_list_collection.prototype._set_topic_item = function (_topic_item) {
-    if ($.isset(_topic_item)) {
+    if ($.isset(_topic_item))
+    {
         this._topic_item = _topic_item;
         
         this._$topic_id = _topic_item.get_annotation_id();
@@ -111,11 +112,13 @@ Respond_list_collection.prototype._set_respond_count = function (_respond_count)
     
     var _item_count = this.count_list_item();
     
-    if (_respond_count > _item_count) {
+    if (_respond_count > _item_count)
+    {
         this._view_component.find('.respond-count:first').html(_respond_count);    
         this._view_component.show();
     }
-    else {
+    else
+    {
         this._view_component.hide();
     }
     
@@ -135,12 +138,14 @@ Respond_list_collection.prototype.get_search_data = function () {
 Respond_list_collection.prototype.setup_load_list = function (_data, _callback) {
     
     var _this = this;
-    List_collection.prototype.setup_load_list.call(this, _data, function () {
+    List_collection.prototype.setup_load_list.call(this,_data, function () {
         var _respond_count = _data.total_count;
-        if (_respond_count === 0) {
+        if (_respond_count == 0)
+        {
             _this.hide();
         }
-        else {
+        else
+        {
             _this._set_respond_count(_respond_count);    
         }
         
@@ -151,7 +156,8 @@ Respond_list_collection.prototype.setup_load_list = function (_data, _callback) 
     return this;
 };
 
-Respond_list_collection.prototype.create_list_item = function(_param) {
+Respond_list_collection.prototype.create_list_item = function(_param)
+{
     return new List_item_respond(_param, this._topic_item);
 };
 

@@ -24,7 +24,8 @@ List_item_topic.prototype = new List_item();
  * @memberOf {List_item_topic}
  * @type {jQuery} UI
  */
-List_item_topic.prototype._$create_ui = function () {
+List_item_topic.prototype._$create_ui = function ()
+{
     var _ui = $('<div></div>')
         .addClass('list-item-topic');
     
@@ -35,15 +36,16 @@ List_item_topic.prototype._$create_ui = function () {
     //$.test_msg('List_item_topic._$create_ui()', [$.isset(_respond_list), $.get_class(_respond_list)]);
     _respond_list.get_ui().appendTo(_ui);
     
-    if (this._$respond_force_load === false) {
+    if (this._$respond_force_load == false)
+    {
         var _param = this.get_data();
         //$.test_msg('List_item_topic._$create_ui()', _param.respond_list);
         
-        if ($.isset(_param.respond_list)) {
-			_respond_list.load_list(_param.respond_list);
-		}    
+        if ($.isset(_param.respond_list))
+            _respond_list.load_list(_param.respond_list);    
     }
-    else {
+    else
+    {
         _respond_list.load_list();
     }
     
@@ -61,7 +63,8 @@ List_item_topic.prototype.show_recommend = function (_callback) {
     
     var _param = this.get_data();
     
-    if (_param.has_recommend() === false) {
+    if (_param.has_recommend() == false)
+    {
         $.trigger_callback(_callback);
         return this;
     }
@@ -101,9 +104,8 @@ List_item_topic.prototype.focus = function (_scrollto) {
     
     var _param = this.get_data();
     
-    if (_param.is_my_annotation()) {
-		this.show_recommend();
-	}
+    if (_param.is_my_annotation())
+        this.show_recommend();
         
     return this; 
 };

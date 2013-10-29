@@ -43,6 +43,7 @@ class Annotation_tutor extends KALS_object {
         if ($score < $threshold)
         {
             //如果分數到達門檻，才進行推薦，否則不作推薦
+
             $recommend_annotation = $this->_find_recommend_annotation($annotation);
 
             $this->_CI_load('library', 'recommend/Annotation_recommend', 'annotation_recommend');
@@ -50,8 +51,8 @@ class Annotation_tutor extends KALS_object {
                 'recommended_annotation_id' => $annotation->get_id(),
                 'recommended_webpage_id' => $this->webpage->get_id()
             );
+
             $recommend = $this->CI->annotation_recommend->find($cond);
-            
             if (is_null($recommend))
             {
                 $recommend = new Annotation_recommend();
@@ -60,10 +61,8 @@ class Annotation_tutor extends KALS_object {
                 $recommend->set_recommended($annotation);
             }
 
-            if (isset($recommend_annotation)) {
+            if (isset($recommend_annotation))
                 $recommend->set_recommend_by($recommend_annotation);
-            }
-            
             $recommend->update();
 
             //加入通知

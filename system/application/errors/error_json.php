@@ -23,9 +23,7 @@
     
         $action = 27;
         $CI =& get_instance();
-        if (isset($CI->db)) {
-            kals_log($CI->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
-        }
+        kals_log($CI->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
         context_complete();
     }
     

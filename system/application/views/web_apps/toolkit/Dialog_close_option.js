@@ -50,9 +50,8 @@ Dialog_close_option.prototype.close_handle = function (_ui, _callback) {
     setTimeout(function () {
             
         var _overlay = $(_ui).parents('.dialog-modal:first').overlay();
-        if (typeof(_overlay.close) == 'function') {
-			_overlay.close();
-		}
+        if (typeof(_overlay.close) == 'function') 
+            _overlay.close();
         
         $.trigger_callback(_callback);
         

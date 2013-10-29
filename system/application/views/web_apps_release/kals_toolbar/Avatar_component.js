@@ -29,7 +29,8 @@ Avatar_component.prototype = new KALS_user_interface();
  * @memberOf {Avatar_component}
  * @type {jQuery} UI
  */
-Avatar_component.prototype._$create_ui = function () {
+Avatar_component.prototype._$create_ui = function ()
+{
     var _ui = $('<table align="right"><tbody><tr>'
             + '<td class="photo"></td>'
             + '<td class="name"></td>'
@@ -55,7 +56,8 @@ Avatar_component.prototype._$create_ui = function () {
     var _this = this;
     KALS_context.user.add_attr_listener('has_photo', function (_user, _has_photo) {
         var _url = null;
-        if (_has_photo === true) {
+        if (_has_photo == true)
+        {
             _url = 'user_profile/photo/';    //controller應該會根據登入的使用者給予預設的id
         }
         _this.set_photo(_url);
@@ -69,12 +71,10 @@ Avatar_component.prototype._$create_ui = function () {
     KALS_context.auth.add_listener(function (_auth, _data) {
         
         var _is_embed = _auth.is_embed();
-        if (_is_embed === true) {
-			_this.toggle_navigation('embed');
-		}
-		else {
-			_this.toggle_navigation('profile');
-		}
+        if (_is_embed == true)
+            _this.toggle_navigation('embed');
+        else
+            _this.toggle_navigation('profile');
     });
     
     return _ui;
@@ -98,25 +98,24 @@ Avatar_component.prototype.embed = null;
 
 /**
  * 設置Avatar元件的照片。注意_url本身不需要加上base_url
- * @param {null|string} _url 如果_url === null，則隱藏photo
+ * @param {null|string} _url 如果_url == null，則隱藏photo
  */
 Avatar_component.prototype.set_photo = function (_url) {
     
-    if (_url === null) {
-		this.toggle_photo(false);
-		return this;
-	}
-	else {
-		this.toggle_photo(true);
-	}
+    if (_url == null)
+    {
+        this.toggle_photo(false);
+        return this;
+    }
+    else
+        this.toggle_photo(true);
     
     var _full_url = KALS_context.get_base_url(_url);
     var _ui = this.get_ui();
     var _photo_td = _ui.find('td.photo:first');
     var _photo_img = _photo_td.find('img:first');
-    if (_photo_img.length === 0) {
-		_photo_img = $('<img />').appendTo(_photo_td);
-	}
+    if (_photo_img.length == 0)
+        _photo_img = $('<img />').appendTo(_photo_td);
     _photo_img.attr('src', _full_url);
     
     return this;
@@ -127,36 +126,32 @@ Avatar_component.prototype.toggle_photo = function (_display) {
     var _ui = this.get_ui();
     var _photo_td = _ui.find('td.photo:first');
     var _photo_hide_classname = 'hide';
-    if (_display === null) {
-		_display = _photo_td.hasClass(_photo_hide_classname);
-	}
+    if (_display == null)
+        _display = _photo_td.hasClass(_photo_hide_classname);
     
-    if (_display) {
-		_photo_td.addClass(_photo_hide_classname);
-	}
-	else {
-		_photo_td.removeClass(_photo_hide_classname);
-		_photo_td.find('img').remove();
-	}
+    if (_display)
+        _photo_td.addClass(_photo_hide_classname);
+    else
+    {
+        _photo_td.removeClass(_photo_hide_classname);
+        _photo_td.find('img').remove();
+    }
     return this;
 };
 
 Avatar_component.prototype.set_name = function (_name) {
     var _name_td = this.get_ui('td.name:first');
     
-    if (_name === null) {
-		_name_td.empty();
-	}
-	else {
-		_name_td.html(_name);
-	}
+    if (_name == null)
+        _name_td.empty();
+    else
+        _name_td.html(_name);
 };
 
 Avatar_component.prototype.toggle_navigation = function (_classname) {
     
-    if ($.is_null(_classname)) {
-		return this;
-	}
+    if ($.is_null(_classname))
+        return this;
     
     var _ui = this.get_ui();
     

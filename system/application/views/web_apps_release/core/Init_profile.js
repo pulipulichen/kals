@@ -25,17 +25,19 @@ Init_profile.prototype = new Task_event_dispatcher();
 Init_profile.prototype._$onstart = function () {
     //KALS_context資料初始化之後，才能進行其他資料的讀取
     
-    //$.test_msg('Init_profile._$onstart()');
+    $.test_msg('Init_profile._$onstart()');
     
     KALS_context.init_profile.complete('notification');
     
     //KALS_text.load_my_basic.initialize();
     //KALS_text.load_my_custom.initialize();
     KALS_text.load_my.initialize();
+    //KALS_text.load_top.initialize();
     
     //KALS_context.init_profile.complete('my_annotation');
     
     KALS_text.load_navigation.initialize();
+    KALS_text.load_top.initialize();
     //KALS_context.init_profile.complete('navigation_annotation');
     
     KALS_context.init_profile.complete('my_style');
@@ -52,13 +54,9 @@ Init_profile.prototype._$onstart = function () {
         //$.test_msg('KALS_context.auth.check_login() callback');
         
         setTimeout(function () {
-			
             KALS_context.hash.check_hash(function () {
                 KALS_context.init_profile.complete('hash');
             });
-            
-			//@TODO 暫時先關掉
-			//KALS_context.init_profile.complete('hash');
         }, 500);
             
     });
@@ -75,9 +73,8 @@ Init_profile.prototype._$oncomplete = function () {
     KALS_context.completed = true;
 	
 	/**
-	 * @version 20130224 布丁測試用
+	 * 布丁測試用
 	 */
-	/*
 	var _sentence_list = KALS_text.selection.text.get_sentence_index();
 	
 	var _php_array = 'new Array(';
@@ -92,7 +89,7 @@ Init_profile.prototype._$oncomplete = function () {
 	$.test_msg('count .kals-sentence-punctuation', $('.kals-sentence-punctuation').length);
 	$.test_msg('list .kals-sentence-punctuation', _sentence_list);
 	$.test_msg('list php array .kals-sentence-punctuation', _php_array);
-	*/
+	
 };
 
 /* End of file Init_profile */

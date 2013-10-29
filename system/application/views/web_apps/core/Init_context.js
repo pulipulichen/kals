@@ -24,11 +24,8 @@ Init_context.prototype = new Task_event_dispatcher();
 
 Init_context.prototype._$onstart = function () {
     //KALS_context資料的讀取
-    
     //$.test_msg('Init_context._$onstart()');
-    
-    //準備基本資料
-    KALS_context.load_info(function () {
+    KALS_context.load(function () {
         KALS_context.init_context.complete('load');
     });
     

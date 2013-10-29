@@ -22,12 +22,12 @@ Window_top.prototype = new Window_content();
 Window_top.prototype.name = 'Top';
 
 Window_top.prototype.heading = new KALS_language_param (
-    '標註達人排行榜',
+    '閱讀排行榜',
     'window.top.heading'
 );
 
 Window_top.prototype.nav_heading = new KALS_language_param (
-    '標註達人排行榜',
+    '閱讀排行榜',
     'window.top.nav_heading'
 );
 
@@ -171,7 +171,7 @@ Window_top.prototype.setup_content = function (_callback) {
 		    //使用語系檔顯示
 		    var _disable = _factory.row(
 		        	_disable_radio,
-		        	"不顯示標註達人標註"
+		        	"不顯示"
 		    	).appendTo(_subpanel);
 			//讀取完成
 		    

@@ -49,27 +49,27 @@ class Top extends Web_apps_controller {
         //$webpage_id = $this->get_webpage_id();
         $webpage_id = get_context_webpage()->get_id();
         
-        $qry = "select user_id, user_name from top_ranking where webpage_id = $webpage_id limit 5";
+        //$qry = "select user_id, user_name from top_ranking where webpage_id = $webpage_id limit 10";
+        $qry = "select user_id, user_name from total_score where webpage_id = $webpage_id limit 10";
         $top5 = pg_query($qry);
         $data = pg_fetch_all($top5);
         
-        
-        // 20131029 Pulipuli Chen
-        // 多餘的
+        /*
         $data = array(
-                    array(
-                            "user_id" => 1700,
-                            "user_name" => "布丁"
-                    ),
-                    array(
-                            "user_id" => 1701,
-                            "user_name" => "北極熊"
-                    ),
-                    array(
-                            "user_id" => 1702,
-                            "user_name" => "陳老師"
-                    )
+        	array(
+        		"user_id" => 1700,
+        		"name" => "布丁"
+        	),
+        	array(
+        		"user_id" => 1701,
+        		"name" => "北極熊"
+        	),
+        	array(
+        		"user_id" => 1702,
+        		"name" => "陳老師"
+        	)
         );
+        */
                 
         return $this->_display_jsonp($data, $callback);
     }

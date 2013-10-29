@@ -73,7 +73,8 @@ Window_filter.prototype._$create_ui = function () {
     var _type_lang_header = Type_menu.prototype._type_lang_header;
     
     var _type_inputs = [];
-    for (var _i in _types) {
+    for (var _i in _types)
+    {
         var _type = _types[_i];
         
         var _type_input = $('<td><label><input type="checkbox" name="filter" value="my_'+_type+'" checked="true" /> <span></span></label></td>');
@@ -93,21 +94,26 @@ Window_filter.prototype._$create_ui = function () {
         _type_checkbox.change(function () {
             var _inputs = _my_type_div.find('input');
             var _state = null;
-            for (var _i = 0; _i < _inputs.length; _i++) {
+            for (var _i = 0; _i < _inputs.length; _i++)
+            {
                 var _checked = _inputs.eq(_i).attr('checked');
-                if (_state === null) {
+                if (_state === null)
+                {
                     _state = _checked;
                 }
-                else if (_state != _checked) {
+                else if (_state != _checked)
+                {
                     _state = 'half';
                     break;
                 }
             }
             
-            if (_state != 'half') {
+            if (_state != 'half')
+            {
                 _my_checkbox.attr('checked', _state);
             }
-            else {
+            else
+            {
                 _my_checkbox.attr('checked', false);
                 _my_checkbox.attr('disabled', true);
             }
@@ -115,8 +121,10 @@ Window_filter.prototype._$create_ui = function () {
     }
     
     var _tr;
-    for (_i in _type_inputs) {
-        if (_i % 2 === 0) {
+    for (_i in _type_inputs)
+    {
+        if (_i % 2 === 0)
+        {
             _tr = $('<tr></tr>')
                 .appendTo(_my_type_div);
         }
@@ -124,7 +132,8 @@ Window_filter.prototype._$create_ui = function () {
         _type_input = _type_inputs[_i];
         _type_input.appendTo(_tr);
         
-        if (_i == _type_inputs && _i % 2 === 0) {
+        if (_i == _type_inputs && _i % 2 === 0)
+        {
             _type_input.attr('colspan', 2);
         }
     }
@@ -142,7 +151,8 @@ Window_filter.prototype._$create_ui = function () {
     _my_input.click(function (_event) {
         var _disabled = _my_checkbox.attr('disabled');
         
-        if (_disabled === true) {
+        if (_disabled == true)
+        {
             _event.preventDefault();
             
             _my_checkbox.attr('disabled', false)

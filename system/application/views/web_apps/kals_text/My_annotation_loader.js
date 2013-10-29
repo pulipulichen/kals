@@ -1,6 +1,5 @@
 /**
  * My_annotation_loader
- * 負責做My_basic_annotation_loader跟My_custom_annotation_loader的中介者
  *
  * @package    KALS
  * @category   Webpage Application Libraries
@@ -8,113 +7,143 @@
  * @copyright  Copyright (c) 2010, Pudding Chen
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://sites.google.com/site/puddingkals/
- * @version    1.0 2011/11/06 上午 00:19:07
+ * @version    1.0 2010/10/24 下午 06:40:07
  * @extends {Annotation_scope_loader}
  */
 function My_annotation_loader() {
     
     Annotation_scope_loader.call(this);
     
-    this.basic = new My_basic_annotation_loader();
-    this.custom = new My_custom_annotation_loader();
-	
-	return this;
 }
 
 My_annotation_loader.prototype = new Annotation_scope_loader();
 
 /**
- * @return {My_basic_annotation_loader}
+ * @type {Selection_my_manager}
  */
-My_annotation_loader.prototype.basic = null;
+My_annotation_loader.prototype._selection = null;
+
+My_annotation_loader.prototype._$load_url = 'annotation_getter/my';
 
 /**
- * @return {My_custom_annotation_loader}
+ * 讀取標註資料並且設置
+ * @param {Object} _data 預設的樣子如下：
+ * _data = {
+ *     1:    //類型代號，表示importance 
+ *     [    //Scope_collection_param的JSON型態
+ *         [1, 2],    //Scope_param的JSON型態
+ *         [6, 9]
+ *     ],
+ *     2: [
+ *     ]
+ * }
+ * @param {function} _callback
  */
-My_annotation_loader.prototype.custom = null;
-
-//----------------------------
-
-My_annotation_loader.prototype.setup_loader = function (_data, _callback) {
-    var _this = this;
-    var _basic_data = _data.basic;
-    var _custom_data = _data.custom;
-    this.basic.setup_loader(_basic_data, function () {
-        _this.custom.setup_loader(_custom_data, function(){
-			
-			if ($.is_function(_callback)) {
-				_callback();
-			}
-			
-		});
-    });
-    return this;
-};
-
-My_annotation_loader.prototype.stop_loader = function () {
-    this.basic.stop_loader();
-    this.custom.stop_loader();
-    return this;
-};
-
-My_annotation_loader.prototype.is_loaded = function () {
-    return (this.basic.is_loaded() && this.custom.is_loaded());
-};
-
-My_annotation_loader.prototype.load = function (_callback) {
-    var _this = this;
-    this.basic.load(function () {
-        _this.custom.load(_callback);
-    });
-    return this;
-};
-
-My_annotation_loader.prototype.load_annotation = function () {
-    this.basic.load_annotation();
-    this.custom.load_annotation();
+My_annotation_loader.prototype.load_annotation = function (_data, _callback) {
+    
+    if ($.is_function(_data) && $.is_null(_callback))
+    {
+        _callback = _data;
+        _data = null;
+    }
+    
+    //$.test_msg('My_annotation_loader.load_annotation() data', _data);
+    
+    var _is_initialize = !(this.is_initialized());
+    
+    for (var _i in _data)
+    {
+        var _type_id = _i;
+        var _scope_coll_json = _data[_i];
+        
+        if (_scope_coll_json == null
+            || _scope_coll_json.length == 0)
+            continue;
+        
+        //$.test_msg('My_annotation_loader.load_annotation()', $.is_array(_scope_coll_json[0]));
+        
+        var _scope_coll = new Scope_collection_param(_scope_coll_json);
+        
+        //$.test_msg('My_annotation_loader.load_annotation() _scope_coll', [_scope_coll.length(), _is_initialize]); 
+        
+        this._selection.set_scope_coll(_type_id, _scope_coll, _is_initialize);
+    }
+    
+    //if (this.is_initialized() == false)
+    //{
+        //回報已經完成初始化
+    //    KALS_context.init_profile.complete('my_annotation');
+    //}
+    
+    $.trigger_callback(_callback);
+    
     return this;
 };
 
 My_annotation_loader.prototype.clear = function () {
-    this.basic.clear();
-    this.custom.clear();
-    return this;
-};
-
-My_annotation_loader.prototype.reset = function () {
-    this.basic.reset();
-    this.custom.reset();
-    return this;
+    //$.test_msg('My_annotation_loader.clear()');
+    this._selection.clear();
+    
 };
 
 My_annotation_loader.prototype.initialize = function () {
-    this.basic.initialize();
-    this.custom.initialize();
+    
+    //$.test_msg('My_annotation_loader.initialize()', typeof(KALS_text));
+    
+    if (typeof(KALS_text) == 'object')
+    {
+        this._selection = KALS_text.selection.my;
+        
+        var _this = this;
+        //KALS_context.auth.add_listener(function (_auth, _data) {
+        KALS_context.policy.add_attr_listener('my_data', function(_policy) {
+            
+            var _my_data = _policy.get_my_data();
+            var _is_login = KALS_context.auth.is_login();
+            
+            //$.test_msg('My_annotation_loader.init()', ($.isset(_my_data) && _is_login));
+            
+            if ($.isset(_my_data) && _is_login)
+            {
+                if (_this.is_loaded())
+                    return;
+                    
+                //_this.setup_loader(_my_data);
+                
+                _this.setup_loader(_my_data, function () {
+                    _this.stop_loader();
+                });
+            }
+            else
+            {
+                //$.test_msg('My_annotation_loader.init()');
+                //_this.stop_loader();
+                //_this._selection.clear();
+                
+                //_this.stop_loader();
+                //_this.clear();
+                _this.reset();
+                
+            }
+        });
+    }
 };
 
-My_annotation_loader.prototype.reload = function (_data, _callback) {
-    var _this = this;
-	var _basic_data, _custom_data;
-	
-	//$.test_msg("My_annotation_loader.reload()", _data);
-	
-	if (typeof(_data) != "undefined") {
-		if (typeof(_data.my_basic) != "undefined") {
-			_basic_data = _data.my_basic;	
-		}
-		if (typeof(_data.my_custom) != "undefined") {
-			_custom_data = _data.my_custom;	
-		}
-	}
-	
-    this.basic.reload(_basic_data, function () {
-        _this.custom.reload(_custom_data, _callback);
-    });
-    return this;
-};
-
-My_annotation_loader.prototype.is_initialized = function () {
-    return (this.basic.is_initialized() && this.custom.is_initialized());
+My_annotation_loader.prototype._$exception_handle = function (_data) {
+    
+    if (this.is_initialized() == false)
+    {
+        //$.test_msg('My_annotation_loader._$exception_handle()');
+        
+        var _this = this;
+        setTimeout(function () {
+            _this.setup_loader(function () {
+                KALS_context.init_profile.complete('my_annotation');
+            });    
+        }, 5000);
+        
+    }
+    
 };
 
 /* End of file My_annotation_loader */

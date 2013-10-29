@@ -55,7 +55,8 @@ Note_editor_manager.prototype._type_mapping = {
     'summary': 'Note_editor_ckeditor',
     'concept': 'Note_editor_ckeditor',
     'example': 'Note_editor_ckeditor',
-    'custom': 'Note_editor_ckeditor'
+    'custom': 'Note_editor_ckeditor',
+	'other': 'Note_editor_ckeditor'
 };
 
 /**
@@ -70,7 +71,8 @@ Note_editor_manager.prototype._type_mapping_ie = {
     'summary': 'Note_editor',
     'concept': 'Note_editor',
     'example': 'Note_editor',
-    'custom': 'Note_editor'
+    'custom': 'Note_editor',
+	'other': 'Note_editor'
 };
 
 Note_editor_manager.prototype._default_editor = 'Note_editor_ckeditor';
@@ -295,9 +297,8 @@ Note_editor_manager.prototype.reset = function () {
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor)) {
-		this._active_editor.reset();
-	}
+    if ($.isset(this._active_editor))
+        this._active_editor.reset();
     
     //$.test_msg('Note_editor_managr.reset()');
     //this.set_text('');
@@ -305,17 +306,6 @@ Note_editor_manager.prototype.reset = function () {
     //var _ui = this.get_ui('textarea');
     //_ui.val('');
     
-    
-    return this;
-};
-
-/**
- * 聚焦於編輯器上
- */
-Note_editor_manager.prototype.focus = function () {
-    if ($.isset(this._active_editor)) {
-		this._active_editor.focus();
-	} 
     
     return this;
 };

@@ -17,8 +17,6 @@ function My_annotation_loader() {
     
     this.basic = new My_basic_annotation_loader();
     this.custom = new My_custom_annotation_loader();
-	
-	return this;
 }
 
 My_annotation_loader.prototype = new Annotation_scope_loader();
@@ -40,13 +38,7 @@ My_annotation_loader.prototype.setup_loader = function (_data, _callback) {
     var _basic_data = _data.basic;
     var _custom_data = _data.custom;
     this.basic.setup_loader(_basic_data, function () {
-        _this.custom.setup_loader(_custom_data, function(){
-			
-			if ($.is_function(_callback)) {
-				_callback();
-			}
-			
-		});
+        _this.custom.setup_loader(_custom_data, _callback);
     });
     return this;
 };
@@ -94,19 +86,8 @@ My_annotation_loader.prototype.initialize = function () {
 
 My_annotation_loader.prototype.reload = function (_data, _callback) {
     var _this = this;
-	var _basic_data, _custom_data;
-	
-	//$.test_msg("My_annotation_loader.reload()", _data);
-	
-	if (typeof(_data) != "undefined") {
-		if (typeof(_data.my_basic) != "undefined") {
-			_basic_data = _data.my_basic;	
-		}
-		if (typeof(_data.my_custom) != "undefined") {
-			_custom_data = _data.my_custom;	
-		}
-	}
-	
+    var _basic_data = _data.basic;
+    var _custom_data = _data.custom;
     this.basic.reload(_basic_data, function () {
         _this.custom.reload(_custom_data, _callback);
     });

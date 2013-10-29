@@ -31,6 +31,18 @@ DEFAULT_KALS_CONFIG = {
      */
     logo: "KALS",
     
+    imp: " 重要 ",
+    
+    //que: " 提問 ",
+    
+    exp: " 困惑 ",
+    
+    lnk: " 質疑 ",
+    
+    ben: " 舉例 ",
+    
+    sum: " 摘要 ",
+    
     /**
      * 預設登入的帳號
      * @type {string} = null E-mail郵件地址
@@ -66,10 +78,10 @@ DEFAULT_KALS_CONFIG = {
      * 顯示其他人的標註
      * @version 20111106 Pudding Chen
      *     2009年的舊稱呼是「navigation_annotation」，2011年改成「anchor_navigation_type」
-     * @type {string} = "all" | "recommend" | "none" | null 預設使用all
+     * @type {string} = "all" | "recommend" | "disable" | null 預設使用all
      *     "all": 顯示所有標註
      *     "recommend": 顯示推薦標註。但並不準確，通常系統找不出推薦的標註。
-     *     "none" | null：不顯示標註
+     *     "disable" | null：不顯示標註
      */
     anchor_navigation_type: "all",
     
@@ -90,21 +102,25 @@ DEFAULT_KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_option: [
+    annotation_type_option:
+	[
         'importance'
         , 'concept'
         , 'confusion'
         , 'question'
         , 'example'
         , 'summary'
-        , 'custom'
+		, 'other'
+		, 'explain'
+		, 'debug'
+        //, 'custom'
     ],
     
     /**
      * 是否讓「自訂」選項可供使用者自由填入資料
      * @type {boolean} = false
      */
-    enable_custom_name: true,
+    enable_custom_name: false,
     
     /**
      * 預先定義標註類型。
@@ -150,35 +166,7 @@ DEFAULT_KALS_CONFIG = {
      *     也可以用http開頭的絕對網址，例如'http://www.google.com.tw/'
      */
     help_base_url: 'help/',
-	
-	/**
-	 * 預設標註類型
-	 *
-	 * @copyright 20130603 Pudding Chen
-	 * @type {string} = "importance" 重要，也可以寫上自訂的名字
-	 */
-	default_annotation_type: "importance",
     
-	/**
-	 * 網頁搜尋
-	 * 
-	 * @copyright 20130603 Pudding Chen
-	 * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
-	 * 
-	 * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
-	 */
-	web_search_url: "http://www.google.com/search?q={query}",
-	//web_search_url: "disable",
-	
-	/**
-	 * 獨立模式
-	 * @type {boolean} isolation_mode: false，預設不開啟
-	 * 
-	 * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
-	 * 但是關閉之後，所有人又能看到別人的標註
-	 */
-	isolation_mode: false,
-	
     //----------------------------
     
     //以下是版面調整
@@ -188,7 +176,6 @@ DEFAULT_KALS_CONFIG = {
         autoGrow_maxWidth: false,
         extraPlugins: 'kals_maximize,youtube',
         toolbar: [
-			//最大化的時候顯示的工具列
             ['Maximize','Source','Preview','-'],
             ['Cut','Copy','Paste','PasteText','PasteFromWord'],
             ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
@@ -201,29 +188,20 @@ DEFAULT_KALS_CONFIG = {
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
-			
-			//最小化的時候顯示的工具列
-            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']	
+            ['Maximize','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
         ],
         height: '50px',
         //width: '261px',
         resize_enabled: false,
         startupFocus: false,
         uiColor : '#CB842E'
-    },
-	//標註列表設定
-	annotation_list: {
-		//筆記顯示設定
-		note: {
-			simple_max_length: 150,
-			//允許顯示的HTML標籤
-			allow_html_tags: ["a", "img", "iframe"]
-		}
-	}
+    }
 };
 
-if (typeof(KALS_CONFIG) != 'undefined') {
-    for (var _i in KALS_CONFIG) {
+if (typeof(KALS_CONFIG) != 'undefined')
+{
+    for (var _i in KALS_CONFIG)
+    {
         DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
     }
 }

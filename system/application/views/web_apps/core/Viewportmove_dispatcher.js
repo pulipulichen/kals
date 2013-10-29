@@ -22,7 +22,8 @@ function Viewportmove_dispatcher() {
     
     var _this = this;
     var _event = function(){
-        if (typeof($viewport_trigger) != 'undefined') {
+        if (typeof($viewport_trigger) != 'undefined')
+        {
             clearTimeout($viewport_trigger);
         }
         $viewport_trigger = setTimeout(function () {
@@ -36,7 +37,8 @@ function Viewportmove_dispatcher() {
         .bind('resize', _event)
         .bind('load', _event);
         
-    if ($.is_mobile_mode()) {
+    if ($.is_mobile_mode())
+    {
         _event = function () {
             _this.set_changed();
             _this.notify_listeners(_this);
@@ -110,7 +112,7 @@ Viewportmove_dispatcher.prototype._setup_zoom_detector = function () {
     
     if (typeof(jQuery) != 'undefined' 
          && typeof(jQuery.is_mobile_mode) == 'function'
-         && jQuery.is_mobile_mode() === false)
+         && jQuery.is_mobile_mode() == false)
         return;
     
     //原程式有這一段，但是用意不明，所以我先把他刪掉了
@@ -155,7 +157,8 @@ Viewportmove_dispatcher.prototype._setup_zoom_detector = function () {
         var _viewport_width = _this.get_viewport_width();
         
         //如果偵測到的寬度與之前設定的寬度不同，則觸發事件
-        if (_detect_width != _viewport_width) {
+        if (_detect_width != _viewport_width) 
+        {
             //將偵測到的寬度存成設定的寬度
             _this.viewport_width = _detect_width;
             _this.update_device_scale_style();
@@ -222,7 +225,8 @@ Viewportmove_dispatcher.prototype._get_detector_width = function () {
 */
 
 /*
-Viewportmove_dispatcher.prototype._get_device_scale = function() {
+Viewportmove_dispatcher.prototype._get_device_scale = function()
+{
     var _deviceWidth = null;
     //偵測方向
     var _landscape = Math.abs(window.orientation) == 90;
@@ -240,7 +244,8 @@ Viewportmove_dispatcher.prototype._get_device_scale = function() {
     var _result = _deviceWidth / window.outerWidth;
     
     // 加入平滑化(smooth)修正比例參數
-    for (var _i = 0; _i < this._scale_range.length-1; _i++) {
+    for (var _i = 0; _i < this._scale_range.length-1; _i++)
+    {
         var _range1 = this._scale_range[_i];
         var _range2 = this._scale_range[(_i+1)];
         
@@ -248,7 +253,8 @@ Viewportmove_dispatcher.prototype._get_device_scale = function() {
             break;
         
         if (_result < _range1 
-            && _result > _range2) {
+            && _result > _range2)
+        {
             var _middle = (_range1 + _range2) / 2;
             if (_result > _middle)
                 _result = _range1;
@@ -270,10 +276,12 @@ Viewportmove_dispatcher.prototype._get_device_scale = function() {
 //Viewportmove_dispatcher.prototype._scale_range = [2.5, 2, 1.5, 1.25, 1, 0.75, 0.625, 0.5, 0.375, 0.3125, 0.25, 0.2];
 
 /*
-Viewportmove_dispatcher.prototype._update_device_scale_style = function () {
+Viewportmove_dispatcher.prototype._update_device_scale_style = function () 
+{
     var _stylesheet = this._width_stylesheet;
     if (typeof(_stylesheet.cssRules) != 'undefined' 
-        && _stylesheet.cssRules.length) {
+        && _stylesheet.cssRules.length) 
+    {
         _stylesheet.deleteRule(0);
     }
     
@@ -291,12 +299,13 @@ Viewportmove_dispatcher.prototype._update_device_scale_style = function () {
 
 /*
 Viewportmove_dispatcher.prototype.lock_viewport = function () {
-    if (this._viewport_locked === true)
+    if (this._viewport_locked == true)
         return;
     
     var _head = $('head');
     var _origin_viewport = $('head meta[name=viewport]');
-    if (_origin_viewport.length === 0) {
+    if (_origin_viewport.length == 0)
+    {
         _origin_viewport = $('<meta name="viewport" ' 
                 + 'content="width='+$(document).width()+', maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes '
                 + ' initial-scale=' + this._zoom_scale+ '" />')
@@ -319,7 +328,7 @@ Viewportmove_dispatcher.prototype.lock_viewport = function () {
 
 /*
 Viewportmove_dispatcher.prototype.unlock_viewport = function(){
-    if (this._viewport_locked === false)
+    if (this._viewport_locked == false)
         return;
     
     var _new_viewport = $('head meta#kals_viewport_lock');
@@ -327,7 +336,8 @@ Viewportmove_dispatcher.prototype.unlock_viewport = function(){
     
     if (_new_viewport.length > 0)
         _new_viewport.remove();
-    if (_origin_viewport.length > 0) {
+    if (_origin_viewport.length > 0)
+    {
         _origin_viewport.attr('name', 'viewport');
         alert(_origin_viewport.attr('content'));
         var _x_offset = _origin_viewport.attr('x_offset');
@@ -343,4 +353,4 @@ Viewportmove_dispatcher.prototype.unlock_viewport = function(){
 */
 
 /* End of file Viewportmove_dispatcher */
-/* Location: ./system/application/views/web_apps/toolkit/Viewportmove_dispatcher.js */
+///* Location: ./system/application/views/web_apps/toolkit/Viewportmove_dispatcher.js */

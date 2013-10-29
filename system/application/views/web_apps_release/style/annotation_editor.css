@@ -1,19 +1,10 @@
-.kals-modal .editor-tool {
+.editor-tool {
     -webkit-box-shadow: 0px 5px 5px #AF9067;
     position:relative;
     z-index: 1;
 }
-.kals-modal .editor-tool tr td{
-	padding: 0 0 !important;
-	border:0px !important;
-	width:330px !important;
-	
-}
-.kals-modal .editor-tool table{
-	border-collapse:inherit !important;
-}
 
-.kals-modal .editor-container {
+.editor-container {
     border:1px none #4A4531;
     border-bottom-style: solid;
     
@@ -22,8 +13,8 @@
 /**
  * @section Editor_container
  */
-.kals-modal .editor-container .toggle {
-    text-align: center !important;
+.editor-container .toggle {
+    text-align: center;
     /*background-color: yellow;*/
     font-size: small;
     /*color: white;*/
@@ -67,21 +58,14 @@
     */
 }
 
-.kals-modal .editor-container .toggle td {
-	text-align:center !important;
-}
-.kals-modal .editor-container .toggle.hide {
+.editor-container .toggle.hide {
     border-radius: 8px;
     -moz-border-radius: 8px;
-    -khtml-border-radius: 8px;
-    -webkit-border-radius: 8px;
 }
 
-.kals-modal .editor-container .toggle.top {
+.editor-container .toggle.top {
     border-radius: 8px 8px 0 0;
     -moz-border-radius: 8px 8px 0 0;
-    -webkit-border-radius: 8px 8px 0 0;
-    -khtml-border-radius: 8px 8px 0 0;
     
     border-top-style: solid;
     border-bottom-style: none;
@@ -95,26 +79,25 @@
     */
 }
 
-.kals-modal .editor-container .toggle td {
+.editor-container .toggle td {
     -moz-box-shadow: 0px 5px 5px #AF9067;
-    
+    -webkit-box-shadow: 0px 5px 5px #AF9067;
     position:relative;
     display: block;
 }
 
-.kals-modal .editor-container .toggle.top td {
+.editor-container .toggle.top td {
     -moz-box-shadow: 0px -5px 5px #AF9067;
     -webkit-box-shadow: 0px -5px 5px #AF9067;
 }
 
 
-.kals-modal .editor-container .container {
+.editor-container .container {
     border:0px solid #4A4531;
     border-style: none solid;
     /*border-radius: 8px;
     -moz-border-radius: 8px;*/
-    padding-top: 3px;
-	
+    /*padding-top: 8px;*/
 }
 
 /*
@@ -123,14 +106,14 @@
 }
 */
 
-.kals-modal .editor-container .editor-message {
+.editor-container .editor-message {
     display:none;
     text-align:center;
     padding: 10px 0;
     font-size: small;
 }
 
-.kals-modal .editor-container .editor-deny .not-login {
+.editor-container .editor-deny .not-login {
     
     color: blue;
     text-decoration:underline;
@@ -141,82 +124,65 @@
 /**
  * @section Annotation_editor
  */
-.kals-modal .annotation-editor .header {
+.annotation-editor .header {
     font-size:small;
 }
 
-.kals-modal .annotation-editor .header th {
+.annotation-editor .header th {
     vertical-align:middle;
     /*width: 50%;*/
     padding-bottom: 5px;
 }
 
-.kals-modal .annotation-editor .header th.left {
+.annotation-editor .header th.left {
     text-align:left;
     padding-left: 0.5em;
     
 }
 
-.kals-modal .annotation-editor .header th.right {
+.annotation-editor .header th.right {
     text-align:right;
     padding-right: 0.5em;
 }
 
-.kals-modal .annotation-editor .loading-component {
+.annotation-editor .loading-component {
     text-align: center;
     padding: 10px 0;
     font-size: small;
     cursor: wait;
 }
 
-.kals-modal .annotation-editor button.create,
-.kals-modal .annotation-editor button.edit,
-.kals-modal .annotation-editor button.cancel {
+.annotation-editor .header button.create,
+.annotation-editor .header button.edit,
+.annotation-editor .header button.cancel {
     min-height: 0;
     border: 1px solid #D19405;
-	width: 96%;
-	
-	-moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    -khtml-border-radius: 3px;
-	padding: 0.4em;
-	margin-top: 0.2em;
 }
 
-.kals-modal .annotation-editor .submit-container .edit,
-.kals-modal .annotation-editor .submit-container .cancel,
-.kals-modal .annotation-editor.editing .submit-container .create {
+.annotation-editor .header .submit-container .edit,
+.annotation-editor .header .submit-container .cancel,
+.annotation-editor.editing .header .submit-container .create {
     display: none;
 }
 
-.kals-modal .annotation-editor.editing .submit-container .edit,
-.kals-modal .annotation-editor.editing .submit-container .cancel,
-.kals-modal .annotation-editor .submit-container .create {
-    padding: 0.4em;
+.annotation-editor.editing .header .submit-container .edit,
+.annotation-editor.editing .header .submit-container .cancel,
+.annotation-editor .header .submit-container .create {
+    padding: 3px;
     display: inline;
-}
-
-.kals-modal .annotation-editor.editing .submit-container .edit,
-.kals-modal .annotation-editor.editing .submit-container .cancel {
-	width: 45%;
-}
-
-.kals-modal .annotation-editor.editing .submit-container .edit {
-	margin-right: 3%;
 }
 
 /**
  * @section User
  */
-.kals-modal .user-component {
+.user-component {
     /*float:left;*/
 }
 
 /**
  * @section type
  */
-.kals-modal .annotation-editor .type-component {
+.type-component {
     margin-right: 5px;
     margin-left: 5px;
     margin-top: 5px;
@@ -229,75 +195,177 @@
     background-repeat:no-repeat;
 }
 
-.KALS.kals-modal .type-option {
+.type-option {
     /*padding: 5px 10px;*/
-    padding: 1px 5px !important;
-    text-align: center !important;
+    padding: 1px 5px;
+    text-align: center;
     color: white;
-    background-color: gray ;
-    font-size: small !important;
+    background-color: gray;
+    font-size: small;
     
-    border-bottom: 1px solid #555 !important;
-    border-left: 1px solid #AAA !important;
-    border-right: 1px solid #555 !important;
-    border-top: 1px solid #AAA !important;
+    border-bottom: 1px solid #555;
+    border-left: 1px solid #AAA;
+    border-right: 1px solid #555;
+    border-top: 1px solid #AAA;
     cursor: pointer;
     
     font-weight: bold;
 }
 
-.kals-modal .type-option.importance {
+.topic-list .type-option.importance {
     background-color: yellow;
     color: black;
 }
 
-.kals-modal .type-option.concept {
+.editor-tool .type-option.importance {
+    background-color: yellow;
+    color: black;
+}
+
+.window-view-content .type-option.importance {
+    background-color: yellow;
+    color: black;
+}
+
+.topic-list .type-option.concept {
     background-color: blue;
 }
 
-.kals-modal .type-option.confusion {
+.editor-tool .type-option.concept {
+    background-color: blue;
+}
+
+.window-view-content .type-option.concept {
+    background-color: blue;
+}
+
+.topic-list .type-option.confusion {
     background-color: #800080;
 }
 
-.kals-modal .type-option.question {
+.editor-tool .type-option.confusion {
+    background-color: #800080;
+}
+
+.window-view-content .type-option.confusion {
+	/*display: none;*/
+	display: none !important;
+}
+
+.topic-list .type-option.question {
     background-color: red;
 }
 
-.kals-modal .type-option.example {
-    background-color: green;
+
+.editor-tool .type-option.question {
+    background-color: red;
 }
 
-.kals-modal .type-option.summary {
+.window-view-content .type-option.question {
+    background-color: red;
+}
+
+.topic-list .type-option.example {
+    background-color: green;
+	
+}
+
+.editor-tool .type-option.example {
+	display: none !important;
+	/*display: none;*/
+}
+
+.window-view-content .type-option.example {
+    background-color: green;
+	
+}
+
+.topic-list .type-option.summary {
     background-color: #670808;
 }
 
-.kals-modal .type-option.custom {
+.editor-tool .type-option.summary {
+    background-color: #670808;
+}
+
+.window-view-content .type-option.summary {
+    display: none !important;
+	/*display: none;*/
+}
+
+.topic-list .type-option.custom {
     background-color: white;
     color: black;
 }
 
-.kals-modal .type-component .type-menu {
-    background-color: #EEE;
+.editor-tool .type-option.custom {
+    background-color: white;
+    color: black;
+}
+
+.window-view-content .type-option.custom {
+    background-color: white;
+    color: black;
+}
+
+.topic-list .type-option.other {
+    background-color: black;
+}
+
+
+.editor-tool .type-option.other {
+    background-color: black;
+}
+
+.window-view-content .type-option.other {
+    background-color: black;
+}
+
+.topic-list .type-option.explain {
+    background-color: gray;
+}
+
+.editor-tool .type-option.explain {
+    background-color: gray;
+}
+
+.window-view-content .type-option.explain {
+    display: none !important;
+}
+
+.topic-list .type-option.debug {
+	background-color: #EE82EE;
+}
+
+.editor-tool .type-option.debug {
+	/*background-color: #EE82EE;*/
+	display: none !important;
+}
+
+.window-view-content .type-option.debug {
+	background-color: #EE82EE;
+}
+
+.type-component .type-menu {
+    /*background-color: #EEE;
     border-bottom: 1px solid #555;
     border-left: 1px solid #AAA;
     border-right: 1px solid #555;
-    border-top: 1px solid #AAA;
+    border-top: 1px solid #AAA;*/
     cursor: default;
     width: 75px;
     z-index: 4;
 }
 
-.kals-modal .type-component .type-menu .type-option {
+.type-component .type-menu .type-option {
     border-style: none;
     display:block;
     width: 100%;
     border-radius: 0px;
     -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    -khtml-border-radius: 0px;
 }
 
-.kals-modal .type-component .type-menu .type-option.hover {
+.type-component .type-menu .type-option.hover {
    /*border-left: 10px solid black;
    padding-left: 0px;*/
    position:relative;
@@ -305,26 +373,22 @@
    -webkit-box-shadow: #FFFFFF 0px 0px 20px;
 }
 
-.kals-modal .type-component .type-option
+.type-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
     margin: 0;
     height:18px;
 }
 
-.kals-modal .type-component .type-option.custom  .type-option {
+.type-component .type-option.custom  .type-option {
     border-radius: 0px;
     -moz-border-radius: 0px;
-    -webkit-border-radius: 0px;
-    -khtml-border-radius: 0px;
     border-style: none;
     padding: 0;
 }
 
-.kals-modal .type-component .type-option .custom-type-option
+.type-component .type-option .custom-type-option
 {
     font-weight: bold;   
     border-width: 0px;
@@ -336,18 +400,18 @@
     /*padding: 5px 10px;*/
 }
 
-.kals-modal .custom-type-dialog {
+.custom-type-dialog {
     text-align: center;
 }
 
-.kals-modal .custom-type-dialog input.text {
+.custom-type-dialog input.text {
     width: 100%;
 }
 
-.kals-modal .type-menu .type-option {
+.type-menu .type-option {
     padding: 5px;
 }
-.kals-modal .type-menu .type-hint {
+.type-menu .type-hint {
     display: none;
     position: absolute;
     background-color: #FEEEBD;
@@ -360,7 +424,7 @@
  /**
   * @section Policy_component
   */
-.kals-modal .annotation-editor .policy-component {
+.policy-component {
     font-size:small;
     cursor: pointer;
     padding-left: 18px;
@@ -374,34 +438,33 @@
     margin-left: 5px;
 }
 
-.kals-modal .annotation-editor .policy-component.lock {
+.policy-component.lock {
     background-image: url('${base_url}images/policy-lock.gif');
 }
 
-.kals-modal .policy-component.deny-change {
+.policy-component.deny-change {
     color: #666;
-    cursor:default;
+    cursor:inherit;
 }
  
-.kals-modal .window-policy label {
+.window-policy label {
     cursor: pointer; 
 }
 
-.kals-modal .window-policy label .heading {
+.window-policy label .heading {
     font-weight: bold;
 }
 
-.kals-modal .window-policy .help {
+.window-policy .help {
     padding-left: 1em;
-    font-size:small;
-	font-weight:normal !important;    
+    font-size:small;    
 }
 
 /**
  * @subsection Submit-button 
  */
 
-.kals-modal .annotation-editor .submit
+.annotation-editor .submit
 {
     /*float: right;*/
 }
@@ -409,7 +472,7 @@
 /**
  * @section Editor_respond_to
  */
-.kals-modal .respond-container {
+.respond-container {
     /*max-height: 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -419,15 +482,13 @@
     overflow-x: auto;
 }
 
-.kals-modal .editor-respond-to-topic {
+.editor-respond-to-topic {
     display: none;
 }
 
-.kals-modal .editor-respond-to {
+.editor-respond-to {
     border-radius: 5px;
     -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
     background-color: #8C8473;
     color: white;
     border: 1px solid #494437;
@@ -439,7 +500,7 @@
     margin-right: 2px;
 }
 
-.kals-modal .editor-respond-to .delete {
+.editor-respond-to .delete {
     padding: 0 3px;
     color: #FDD44B;
     
@@ -447,11 +508,11 @@
     
     margin-left: 3px;
 }
-.kals-modal .editor-respond-to .delete.hover {
+.editor-respond-to .delete.hover {
     color: #D19405;
 }
 
-.kals-modal .editor-respond-to .id {
+.editor-respond-to .id {
     margin-left: 5px;
     
 }
@@ -459,7 +520,7 @@
 /**
  * @section Note_editor
  */
-.kals-modal .note-editor {
+.note-editor {
     
    /*padding-top: 30px;*/
   text-align:center;
@@ -470,56 +531,50 @@
     display: none;
 }
 */
-.kals-modal .note-editor .cke_skin_kama {
+.note-editor .cke_skin_kama {
     padding: 0;
 }
 
 
-.kals-modal .note-editor .cke_toolbox .cke_toolbar {
+.note-editor .cke_toolbox .cke_toolbar {
     display:none !important;
 }
 
-.kals-modal .note-editor .cke_toolbox .cke_toolbar.maximize {
+.note-editor .cke_toolbox .cke_toolbar.maximize {
     display:none !important;
     border: 1px solid green;
 }
 
-.kals-modal .note-editor .cke_toolbox .cke_toolbar.minimize {
+.note-editor .cke_toolbox .cke_toolbar.minimize {
     display:block !important;
     /*border: 1px solid red;*/
 }
 
-.annotation-tool-header .cke_maximized .cke_toolbox .cke_toolbar.maximize {
+.cke_maximized .cke_toolbox .cke_toolbar.maximize {
     display:block !important;
 }
 
-/**
- * 當編輯器最大化時，隱藏最小化時使用的工具列
- * 
- * 因為最大化的時候，編輯器會被移到另一個div底下，沒有class
- * 所以必須直接指定編輯器本身的工具列才行
- */
 .cke_maximized .cke_toolbox .cke_toolbar.minimize {
     display:none !important;
 }
 
-.annotation-editor .note-editor .cke_bottom_tr {
+.note-editor .cke_bottom_tr {
     display:none;
 }
 
-.annotation-tool-header .note-editor .cke_maximized .cke_bottom_tr {
+.note-editor .cke_maximized .cke_bottom_tr {
     display:table-row;
 }
 
-.annotation-editor .note-editor td.cke_contents iframe {
+.note-editor td.cke_contents iframe {
     display:block;
 }
 
-.annotation-editor table.cke_editor {
+table.cke_editor {
     display:table !important;
 }
 
-.KALS .Note_editor textarea {
+.Note_editor textarea {
     width: 90%;
     margin: 0 5px;
     height: 50px;
@@ -548,67 +603,22 @@ table.cke_editor.inline-table {
 /**
  * @section Editor_respond
  */
-.kals-modal .editor-respond {
+ .editor-respond {
      border: 1px solid #800000;
      background-color: #FFFFB9;
      font-size: smaller;
      color: #800000;
  }
-.kals-modal .editor-respond .delete {
+ .editor-respond .delete {
      background-color:#800000;
      color: white;
  }
  
-.kals-modal .editor-respond .name {
+ .editor-respond .name {
      padding: 0 5px;
  }
 
-.kals-modal .editor-container .note-editor-textarea {
+.editor-container .note-editor-textarea {
     width: 90%;
     height: 100px;
-}
-
-/**
- * @section Web_search_component
- */
-.kals-modal .annotation-editor .web-search.button.dialog-option {
-	min-height: auto;
-	background-image: url('${base_url}images/web_search.png');
-	padding-right: 18px !important;
-	background-repeat:no-repeat;
-	background-position: right center;
-	/*
-	font-size: smaller;
-	
-	background-color:white;
-	border: 1px solid #494437;
-	padding: 2px;
-	padding-right: 20px;
-	
-	
-	cursor: pointer;
-	
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    */
-}
-
-/**
- * @section Annotation_type_hint
- */
-.KALS .annotation-editor .annotation-type-hint {
-	font-size: small;
-	text-align:left;
-	padding: 0 1em !important; 
-}
-
-.container-td .annotation-editor table tbody tr{
-	background: rgba(0, 0, 0, 0) !important;
-}
-
-.container-td .annotation-editor table tbody .left{
-	border-right-width:0px !important;
-}
-.container-td .annotation-editor table tbody .right{
-	border-left-width:0px !important;
 }

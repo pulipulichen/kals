@@ -16,7 +16,8 @@ function Editor_container(_list_coll) {
     KALS_user_interface.call(this);
     
     //this.setup_editor(_list_coll, _policy_changable);
-    if ($.isset(_list_coll)) {
+    if ($.isset(_list_coll))
+    {
         this._list_coll = _list_coll;
     }
     
@@ -96,10 +97,9 @@ Editor_container.prototype._$create_ui = function () {
     this._set_toggle_position();
     
     var _this = this;
-	
-    //setTimeout(function () {
-    //    _this.toggle_deny(true);
-    //}, 0);
+    setTimeout(function () {
+        _this.toggle_deny(true);
+    }, 0);
     
     return _ui;
 };
@@ -109,7 +109,8 @@ Editor_container.prototype._$create_ui = function () {
  */
 Editor_container.prototype._setup_editor = function () {
     
-    if ($.is_null(this.editor)) {
+    if ($.is_null(this.editor))
+    {
         var _list_coll = this._list_coll;
         var _disable_option = this._disable_option;
         var _editor = new Annotation_editor(this, _list_coll, _disable_option);
@@ -146,23 +147,23 @@ Editor_container.prototype._create_toggle = function () {
 
 Editor_container.prototype._set_toggle_position = function (_toggle_position) {
     
-    if (_toggle_position == this._toggle_position) {
-		return this;
-	}
+    if (_toggle_position == this._toggle_position)
+        return this;
     
-    if ($.is_null(_toggle_position)) {
-		_toggle_position = this._toggle_position;
-	}
+    if ($.is_null(_toggle_position))
+        _toggle_position = this._toggle_position;
      
     var _container = this._container;
     var _toggle_ui = this._toggle;
     var _top_classname = 'top';
        
-    if (_toggle_position == 'bottom') {
+    if (_toggle_position == 'bottom')
+    {
         _container.after(_toggle_ui);
         _toggle_ui.removeClass(_top_classname);
     }
-    else {
+    else
+    {
         _container.before(_toggle_ui);
         _toggle_ui.addClass(_top_classname);
     }
@@ -175,7 +176,8 @@ Editor_container.prototype._set_toggle_position = function (_toggle_position) {
 /*
 Editor_container.prototype.toggle_editor = function (_display, _callback) {
     
-    if (this.has_setup_ui() === false) {
+    if (this.has_setup_ui() == false)
+    {
         //$.trigger_callback(_callback);
         return this;
     }
@@ -183,7 +185,8 @@ Editor_container.prototype.toggle_editor = function (_display, _callback) {
     var _editor_ui = this.editor.get_ui();
     var _visible = _editor_ui.visible();
     
-    if (_display === null) {
+    if (_display == null)
+    {
         _display = !(_visible);
     }
     
@@ -196,11 +199,13 @@ Editor_container.prototype.toggle_editor = function (_display, _callback) {
         }, 0);
     };
     
-    if (_display === true && _visible === false) {
+    if (_display == true && _visible == false)
+    {
         _editor_ui.show();  
         _parent.removeClass(_hide_classname);
     }
-    else if (_display === false && _visible === true) {
+    else if (_display == false && _visible == true)
+    {
         _editor_ui.hide();
         _parent.addClass(_hide_classname);
     }
@@ -219,7 +224,6 @@ Editor_container.prototype.get_parent_container = function () {
 };
 
 /**
- * 開關編輯器
  * @param {boolean} _display
  * @param {function} _callback
  */
@@ -227,7 +231,8 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     
     //$.test_msg('Editor_container.toggle_container()', this.has_setup_ui());
     
-    if (this.has_setup_ui() === false) {
+    if (this.has_setup_ui() == false)
+    {
         //$.trigger_callback(_callback);
         return this;
     }
@@ -237,7 +242,8 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     
     //$.test_msg('Editor_container.toggle_container() visible', [_display, _visible]);
     
-    if (_display === undefined || _display === null) {
+    if (_display == null)
+    {
         _display = !(_visible);
     }
     
@@ -256,7 +262,8 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     };
     */
     var _hide_classname = 'hide';
-    if (_display === true && _visible === false) {
+    if (_display == true && _visible == false)
+    {
         /*
         if (this._toggle_position == 'bottom')
             _container.slideDown(_complete);
@@ -272,11 +279,11 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
         
 		_parent.removeClass(_hide_editor_classname);
         this._toggle.removeClass(_hide_classname);
-		this.editor.note.focus();
         
         //$.test_msg('Editor_container.toggle_container() if true end', _display);
     }
-    else if (_display === false && _visible === true) {
+    else if (_display == false && _visible == true)
+    {
         /*
         if (this._toggle_position == 'bottom')
             _container.slideUp(_complete);
@@ -308,9 +315,7 @@ Editor_container.prototype.is_container_display = function () {
  */
 Editor_container.prototype._deny = null;
 
-/**
- * 未登入前，顯示禁止留言的訊息
- */
+
 Editor_container.prototype._create_deny = function () {
     
     var _deny = $('<div></div>')
@@ -349,12 +354,13 @@ Editor_container.prototype._create_deny = function () {
     // --------
     
     KALS_context.auth.add_listener(function(_auth) {
-		//$.test_msg("Editor_container", "登入了嗎？: " + _auth.is_login());
-        if (_auth.is_login()) {
+        if (_auth.is_login())
+        {
             _deny_write.show();
             _not_login.hide();
         }
-        else {
+        else
+        {
             _deny_write.hide();
             _not_login.show();
         }
@@ -409,57 +415,41 @@ Editor_container.prototype._create_container = function () {
     return _container;
 };
 
-/**
- * 切換無法禁止留言的功能
- * @param {boolean} _is_deny
- */
 Editor_container.prototype.toggle_deny = function (_is_deny) {
     
     var _deny = this._deny;
     var _editor = this.editor.get_ui();
     
-	//$.test_msg('Editor_container.toggle_deny() 1', _is_deny);
-	
-    if ($.is_null(_is_deny) || _is_deny === undefined) {
-        //_is_deny = !(_deny.visible());
-		_is_deny = (KALS_context.policy.writable() === false);
+    if ($.is_null(_is_deny))
+    {
+        _is_deny = !(_deny.visible());
     }
     
-    //$.test_msg('Editor_container.toggle_deny() 2', _is_deny);
+    //$.test_msg('Editor_container.toggle_deny()', _is_deny);
     
     //如果是一樣的話，那就不用切換啦
-    if (_is_deny === true 
-		&& _deny.css('display') == 'block') {
-		return this;
-	}
+    if (_is_deny == true
+        && _deny.css('display') == 'block')
+        return this;
+    
+    
     
     var _this = this;
-	
-	// @20130603 Pudding Chen
-	// 不知道為什麼加入這段就能正常顯示，非常不能理解
-	//_editor.show();
-	
-	setTimeout(function () {
-		_this.toggle_container(false, function () {
-			//$.test_msg("Editor_container _is_deny", _is_deny);
-	        if (_is_deny === true) {
-	            _deny.show();
-	            _editor.hide();
-	        }
-	        else {
-	            _deny.hide();
-	            _editor.show();
-	        }
-	        
-			// @20130610 Pudding Chen
-			// 讓下面的編輯器，重置吧
-			_this.editor.reset();
-			
-	        _this.toggle_container(true);
-	    });
-	}, 500);
-	    
-	
+    this.toggle_container(false, function () {
+        if (_is_deny == true)
+        {
+            _deny.show();
+            _editor.hide();
+        }
+        else
+        {
+            _deny.hide();
+            _editor.show();
+        }
+        
+        _this.toggle_container(true);
+    });
+    
     return this;
 };
 
@@ -468,26 +458,28 @@ Editor_container.prototype.toggle_loading = function (_is_loading) {
     var _loading = this._loading;
     var _editor = this.editor.get_ui();
     
-    if ($.is_null(_is_loading)) {
+    if ($.is_null(_is_loading))
+    {
         _is_loading = !(_loading.visible());
     }
     
     //$.test_msg('Editor_container.toggle_deny()', _is_deny);
     
     //如果是一樣的話，那就不用切換啦
-    if (_is_loading === true &&
-	_loading.css('display') == 'block') {
-		return this;
-	}
+    if (_is_loading == true
+        && _loading.css('display') == 'block')
+        return this;
     
     var _this = this;
     /*
     this.toggle_container(false, function () {
-        if (_is_loading === true) {
+        if (_is_loading == true)
+        {
             _loading.show();
             _editor.hide();
         }
-        else {
+        else
+        {
             _loading.hide();
             _editor.show();
         }
@@ -495,11 +487,13 @@ Editor_container.prototype.toggle_loading = function (_is_loading) {
         _this.toggle_container(true);
     });
     */
-    if (_is_loading === true) {
+    if (_is_loading == true)
+    {
         _loading.show();
         _editor.hide();
     }
-    else {
+    else
+    {
         _loading.fadeOut(function () {
             _editor.fadeIn();    
         });
@@ -523,36 +517,34 @@ Editor_container.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-		//$.test_msg("Editor_container toggle_deny", _policy.writable());
-		if (_policy.writable()) {
-			_this.toggle_deny(false);
-		}
-		else {
-			_this.toggle_deny(true);
-		}
+        //$.test_msg('Editor_container.listen_auth()', [_auth.is_login(), _auth._is_login]);
+        if (_policy.writable())
+            _this.toggle_deny(false);
+        else
+            _this.toggle_deny(true);
     }, true);
 };
 
 Editor_container.prototype.reset = function (_callback, _reset_container) {
     
-    if ($.is_null(_reset_container)) {
-		_reset_container = true;
-	}
+    if ($.is_null(_reset_container))
+        _reset_container = true;
     
     var _container_display;
-    if (_reset_container === false) {
-		_container_display = this.is_container_display();
-	}
+    if (_reset_container == false)
+        _container_display = this.is_container_display();
     
     this.editor.reset();
     
     //$.test_msg('Editor_contaienr.reset()', _reset_container);
-    if (_reset_container === true) {
+    if (_reset_container == true)
+    {
         this.toggle_container(true, function () {
             $.trigger_callback(_callback);
         });    
     }
-    else {
+    else
+    {
         this.toggle_container(_container_display, function () {
             $.trigger_callback(_callback);
         });    

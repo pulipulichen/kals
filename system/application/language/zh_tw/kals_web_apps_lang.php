@@ -65,7 +65,6 @@ $lang['web_apps.time.1_month_ago'] = '1個月之前';
 $lang['web_apps.time.n_months_ago'] = '{0}個月之前';
 $lang['web_apps.time.on_date'] = '{0}月{1}日';
 $lang['web_apps.time.in_year'] = '{0}年';
-$lang['web_apps.time.fulldate'] = '{0}年{1}月{2}日';
 $lang['web_apps.time.month_name.1'] = '1';
 $lang['web_apps.time.month_name.2'] = '2';
 $lang['web_apps.time.month_name.3'] = '3';
@@ -94,7 +93,7 @@ $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
 $lang['web_apps.toolbar.search.search_result'] = '搜尋結果: ';
 
 $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
-$lang['web_apps.toolbar.navigation_list.help'] = '說明';
+$lang['web_apps.toolbar.navigation_list.help'] = '';
 
 $lang['web_apps.window.content.email'] = '電子信箱位址';
 $lang['web_apps.window.content.name'] = '名字';
@@ -105,6 +104,11 @@ $lang['web_apps.window.content.sex'] = '性別';
 $lang['web_apps.window.content.sex.0'] = '不表示性別';
 $lang['web_apps.window.content.sex.1'] = '男';
 $lang['web_apps.window.content.sex.2'] = '女';
+$lang['web_apps.window.content.top.0'] = '第一名';
+$lang['web_apps.window.content.top.1'] = '第二名';
+$lang['web_apps.window.content.top.2'] = '第三名';
+$lang['web_apps.window.content.top.3'] = '第四名';
+$lang['web_apps.window.content.top.4'] = '第五名';
 $lang['web_apps.window.content.password'] = '密碼';
 $lang['web_apps.window.content.error_no_email'] = '請輸入電子信箱位址。';
 $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
@@ -159,7 +163,7 @@ $lang['web_apps.window.password_change.submit.error.password_confirm_empty'] = '
 $lang['web_apps.window.filter.heading'] = '請勾選要顯示的標註';
 $lang['web_apps.window.filter.nav_heading'] = '標註顯示';
 $lang['web_apps.window.filter.content.option.my'] = '我的標註';
-$lang['web_apps.window.filter.content.option.navigation'] = '推薦的標註';
+$lang['web_apps.window.filter.content.option.navigation'] = '所有的標註';
 
 
 /**
@@ -178,29 +182,33 @@ $lang['web_apps.editor_container.deny_write'] = '您目前沒有權限可以撰�
 
 $lang['web_apps.annotation_editor.note_deny_empty'] = '請填寫回應資料才能送出。';
 $lang['web_apps.annotation_editor.loading'] = '資料處理中，請稍候…';
-$lang['web_apps.annotation_editor.submit.create'] = '新增標註';
-$lang['web_apps.annotation_editor.submit.edit'] = '更新標註';
-$lang['web_apps.annotation_editor.submit.cancel'] = '取消編輯';
+$lang['web_apps.annotation_editor.submit.create'] = '新增';
+$lang['web_apps.annotation_editor.submit.edit'] = '更新';
+$lang['web_apps.annotation_editor.submit.cancel'] = '取消';
 $lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成';
 $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。';
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
 
-$lang['web_apps.annotation.type.importance'] = '重要';
-$lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
-$lang['web_apps.annotation.type.concept'] = '概念';
-$lang['web_apps.annotation.type.concept.hint'] = '這個標註是您用自己的話來歸納文章中的概念。例如註明原因、影響、特色等等。';
-$lang['web_apps.annotation.type.confusion'] = '困惑';
-$lang['web_apps.annotation.type.confusion.hint'] = '標示您對文章內文產生困惑的地方。';
-$lang['web_apps.annotation.type.question'] = '質疑';
-$lang['web_apps.annotation.type.question.hint'] = '標示您質疑文章內文是否正確的地方。';
-$lang['web_apps.annotation.type.example'] = '舉例';
-$lang['web_apps.annotation.type.example.hint'] = '記錄或補充與文章內容的相關資料、舉例。';
+$lang['web_apps.annotation.type.importance'] = '推論';
+$lang['web_apps.annotation.type.importance.hint'] = '根據文中一連串的訊息或他人提出的想法、意見，進行整合、詮釋，並歸納出重點。';
+$lang['web_apps.annotation.type.concept'] = '提問';
+$lang['web_apps.annotation.type.concept.hint'] = '針對文本內容、他人提供的想法或意見，表達自己疑惑並提出問題。';
+$lang['web_apps.annotation.type.confusion'] = '連結';
+$lang['web_apps.annotation.type.confusion.hint'] = '將自己的記憶、生活經驗或先前學到的知識、讀過的文本與現在正在閱讀的內容做連結。';
+$lang['web_apps.annotation.type.question'] = '辨析';
+$lang['web_apps.annotation.type.question.hint'] = '針對文中的訊息或他人提出的想法、意見，進行檢驗、評估，進而提出自己不同的看法。';
+$lang['web_apps.annotation.type.example'] = '釋疑';
+$lang['web_apps.annotation.type.example.hint'] = '針對自己或他人的問題，提出說明、解釋。';
 $lang['web_apps.annotation.type.summary'] = '摘要';
-$lang['web_apps.annotation.type.summary.hint'] = '用自己的話來歸納文章的摘要內容，像是註明原因、影響、特色等等。';
-$lang['web_apps.annotation.type.other'] = '其他';
-$lang['web_apps.annotation.type.other.hint'] = '這個標註不屬於上述類型之中。';
+$lang['web_apps.annotation.type.summary.hint'] = '擷取文章中重要的訊息，經過統整濃縮後，形成能代表文章主旨的簡要敘述。';
 $lang['web_apps.annotation.type.custom'] = '自訂';
 $lang['web_apps.annotation.type.custom.hint'] = '您自己定義的標註類型。';
+$lang['web_apps.annotation.type.other'] = '其他';
+$lang['web_apps.annotation.type.other.hint'] = '無法歸於系統制訂類別的意見或想法。';
+$lang['web_apps.annotation.type.explain'] = '字詞解釋';
+$lang['web_apps.annotation.type.explain.hint'] = '對於文本內的字或詞，提供拼音、意思或例句的補充說明。';
+$lang['web_apps.annotation.type.debug'] = '偵錯';
+$lang['web_apps.annotation.type.debug.hint'] = '針對文本內容或他人提供的意見或資料，指出錯誤的地方並加以修正。';
 
 $lang['web_apps.user.anonymous'] = '匿名';
 
@@ -213,11 +221,7 @@ $lang['web_apps.policy_type.share.help'] = '只有以下名單的使用者能看
 
 $lang['web_apps.window.policy.heading'] = '標註權限設定';
 
-$lang['web_apps.web_search'] = '網頁搜尋';
-
 $lang['web_apps.type_menu.custom_type_dialog.heading'] = '自訂標註類型';
-
-$lang['web_apps.note.ckeditor.edit_hint'] = '如果編輯器無法選取，請按兩下「原始碼」按鈕就可以正常運作。';
 
 /**
  * List_collection
@@ -233,7 +237,7 @@ $lang['web_apps.list_collection.complete'] = '沒有其他標註了';
 $lang['web_apps.list_menu.delete'] = '刪除';
 $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
-$lang['web_apps.list_menu.view'] = '留言';
+$lang['web_apps.list_menu.view'] = '討論';
 $lang['web_apps.list_menu.select'] = '位置';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
@@ -252,6 +256,10 @@ $lang['web_apps.list_like_component.like_count'] = '{0}人喜愛';
 $lang['web_apps.list_like_component.set_like'] = '加入喜愛清單';
 $lang['web_apps.list_like_component.set_not_like'] = '移出喜愛清單';
 
+$lang['web_apps.list_read_component.read_count'] = '{0}人已閱讀';
+$lang['web_apps.list_read_component.set_read'] = '加入已閱讀清單';
+$lang['web_apps.list_read_component.set_not_read'] = '移出閱讀清單';
+
 /**
  * Respond_list_component
  */
@@ -269,7 +277,7 @@ $lang['web_apps.window.view.heading'] = '瀏覽討論';
  */
 $lang['web_apps.recommend_tooltip.heading'] = '有些建議給您！';
 $lang['web_apps.recommend_tooltip.recommend_by.heading1'] = '建議您參考';
-$lang['web_apps.recommend_tooltip.recommend_by.heading2'] = '推薦的標註(用綠字標示)';
+$lang['web_apps.recommend_tooltip.recommend_by.heading2'] = '所有的標註(用綠字標示)';
 $lang['web_apps.recommend_tooltip.recommend_by.heading3'] = '：';
 $lang['web_apps.recommend_tooltip.submit.heading'] = '根據這個建議，您是否會想要：';
 $lang['web_apps.recommend_tooltip.submit.accept_delete'] = '贊成，請刪除我的標註，讓我重寫';

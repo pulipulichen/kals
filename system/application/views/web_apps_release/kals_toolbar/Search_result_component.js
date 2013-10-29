@@ -23,7 +23,8 @@ Search_result_component.prototype = new KALS_user_interface();
  * @memberOf {Search_result_component}
  * @type {jQuery} UI
  */
-Search_result_component.prototype._$create_ui = function () {
+Search_result_component.prototype._$create_ui = function ()
+{
     var _ui = $('<span class="search-result"></span>');
     
     KALS_context.lang.add_listener(_ui, new KALS_language_param('Search result: ',

@@ -23,7 +23,6 @@ class ut_annotation extends Controller {
         parent::Controller();
         $this->load->library('unit_test');
         $this->load->helper('unit_test');
-        
         $this->load->library('scope/Annotation_scope_collection');
         $this->load->library('scope/Annotation_scope');
         $this->load->library('kals_resource/Annotation');
@@ -62,7 +61,7 @@ class ut_annotation extends Controller {
 
         $annotation = $this->annotation->create_annotation($user, $scope_coll);
 
-        $this->unit->run($annotation->get_id()
+        $this->unit->run_false($annotation->get_id()
                 , 9999
                 , '是否有正確地存入資料庫？');
 
@@ -108,9 +107,9 @@ class ut_annotation extends Controller {
         $this->unit->run($coll->length()
                 , 1
                 , '測試respond_to_coll()的length');
-        ///$this->unit->run($coll->get_item(0)->get_id()
-        //        , $annotation_respond->get_id()
-        //        , '測試respond_to_coll()的get_id() | '.$annotation->get_id());
+        $this->unit->run($coll->get_item(0)->get_id()
+                , $annotation_respond->get_id()
+                , '測試respond_to_coll()的get_id() | '.$annotation->get_id());
 
 
         $annotation->set_feature(1, 1);
@@ -279,9 +278,9 @@ class ut_annotation extends Controller {
         $this->unit->run($coll->length()
                 , 1
                 , '測試respond_to_coll()的length');
-        //$this->unit->run($coll->get_item(0)->get_id()
-        //        , $annotation_respond->get_id()
-        //        , '測試respond_to_coll()的get_id()，應該只有找到一個，並且就是剛剛插入的那一個 | '.$annotation3->get_id());
+        $this->unit->run($coll->get_item(0)->get_id()
+                , $annotation_respond->get_id()
+                , '測試respond_to_coll()的get_id()，應該只有找到一個，並且就是剛剛插入的那一個 | '.$annotation3->get_id());
         $this->unit->run($annotation2->get_id()
                 , $annotation3->get_id()
                 , 'annotation2跟3的id是否相同呢？應該一樣才是');

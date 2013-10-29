@@ -20,8 +20,8 @@ Logo_component.prototype = new KALS_user_interface();
 
 Logo_component.prototype._$create_ui = function () {
     
-    //var _ui = $('<div class="logo-component">' + KALS_CONFIG.logo +KALS_CONFIG.imp +KALS_CONFIG.que +KALS_CONFIG.exp +KALS_CONFIG.lnk +KALS_CONFIG.ben +KALS_CONFIG.sum + '</div>');
-    var _ui = $('<div class="logo-component" style= "display:inline ">' + KALS_CONFIG.logo + '</div>' + '<div class="imp-component" style= "display:inline ">' + KALS_CONFIG.imp + '</div>'+ '<div class="exp-component" style= "display:inline ">' + KALS_CONFIG.exp + '</div>'+ '<div class="lnk-component" style= "display:inline ">' + KALS_CONFIG.lnk + '</div>'+ '<div class="ben-component" style= "display:inline ">' + KALS_CONFIG.ben + '</div>'+ '<div class="sum-component" style= "display:inline ">' + KALS_CONFIG.sum + '</div>');
+    var _ui = $('<div class="logo-component">' + KALS_CONFIG.logo + '</div>');
+    //var _ui = $('<div class="logo-component" style= "display:inline ">' + KALS_CONFIG.logo + '</div>' + '<div class="imp-component" style= "display:inline ">' + KALS_CONFIG.imp + '</div>'+ '<div class="exp-component" style= "display:inline ">' + KALS_CONFIG.exp + '</div>'+ '<div class="lnk-component" style= "display:inline ">' + KALS_CONFIG.lnk + '</div>'+ '<div class="ben-component" style= "display:inline ">' + KALS_CONFIG.ben + '</div>'+ '<div class="sum-component" style= "display:inline ">' + KALS_CONFIG.sum + '</div>');
     
     return _ui;
 };

@@ -99,12 +99,10 @@ Context_user.prototype.get_anchor_navigation_type = function () {
  */
 Context_user.prototype.has_photo = function () {
     var _has_photo = this.get_attr('has_photo');
-    if ($.is_null(_has_photo)) {
-		return false;
-	}
-	else {
-		return _has_photo;
-	}
+    if ($.is_null(_has_photo))
+        return false;
+    else
+        return _has_photo;
 };
 
 Context_user.prototype.get_email = function () {
@@ -121,16 +119,14 @@ Context_user.prototype.has_login = function () {
  * @type {User_param}
  */
 Context_user.prototype.get_data = function () {
-    if (KALS_context.auth.is_login() === false) {
-		return null;
-	}
+    if (KALS_context.auth.is_login() == false)
+        return null;
     
     var _id = this.get_id();
     var _name = this.get_name();
     
-    if (_id === null) {
-		return null;
-	}
+    if (_id == null)
+        return null;
     
     var _param = new User_param(_id, _name);
     return _param;

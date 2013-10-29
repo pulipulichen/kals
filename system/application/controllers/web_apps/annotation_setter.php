@@ -95,10 +95,16 @@ class Annotation_setter extends Web_apps_controller {
 
         //建立標註
         $annotation = $this->annotation->create_annotation($user, $scope_coll);
+
         $data = $this->_setup_annotation($annotation, $data);
+
         set_ignore_authorize(true);
-        
+
         $annotation = new Annotation($annotation->get_id());
+
+            //$score = $annotation->get_score(0)->get_score();
+        	//kals_log2($this->db, 13, $annotation->get_id(), array('user_id' => $user->get_id()));
+
         if ($annotation->is_respond() === FALSE)
         {
             $annotation = $this->_setup_scores_recommend($annotation);
@@ -107,11 +113,11 @@ class Annotation_setter extends Web_apps_controller {
             if (isset($recommend))
             {
                 $recommend_data =  $recommend->export_webpage_data($this->url);
-                if (isset($recommend_data)) {
+                if (isset($recommend_data))
                     $data['recommend'] = $recommend_data;
-                }
             }
         }
+
         // 標註共識的分數都重新計算
         $annotation = new Annotation($annotation->get_id());
         $consensus_coll = $annotation->get_consensus_coll();
@@ -125,9 +131,8 @@ class Annotation_setter extends Web_apps_controller {
         $array_data = $annotation->export_webpage_data($this->url);
 
         $action = 13;
-        if (isset($data['recommend'])) {
+        if (isset($data['recommend']))
             $action = 14;
-        }
         if ($annotation->is_respond())
         {
             $action = 20;
@@ -611,6 +616,49 @@ class Annotation_setter extends Web_apps_controller {
         $action = 22;
         if ($is_like == FALSE)
             $action = 23;
+        $user_id = NULL;
+        if (isset($user))
+            $user_id = $user->get_id();
+        kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
+
+        //$annotation->update();
+        context_complete();
+        set_ignore_authorize(false);
+        $data = TRUE;
+        return $this->_display_jsonp($data, $callback);
+    }
+
+    public function read($json, $callback)
+    {
+        $data = json_to_object($json);
+        $annotation_id = $data->annotation_id;
+        $annotation = new Annotation($annotation_id);
+        $is_read = $data->is_read;
+        $user = $this->user;
+        if (is_null($annotation_id) || is_null($is_read)
+            || is_null($user)
+            || $annotation->get_user()->equals($user)
+            || $annotation->is_respond())
+        {
+            $data = show_error('Permission deny.');
+            return $this->_display_jsonp($data, $callback);
+        }
+
+        set_ignore_authorize(true);
+        if ($is_read === TRUE)
+            $annotation->add_read($user);
+        else
+            $annotation->remove_read($user);
+
+        //計算分數吧
+        $this->_setup_scores($annotation);
+
+        //log區
+        $array_data = $annotation_id;
+
+        $action = 29;
+        if ($is_read == FALSE)
+            $action = 30;
         $user_id = NULL;
         if (isset($user))
             $user_id = $user->get_id();

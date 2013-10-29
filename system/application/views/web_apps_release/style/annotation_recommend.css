@@ -76,8 +76,6 @@
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
-    border-radius: 8px;
-    -khtml-border-radius: 8px;
     
     background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
         , #918978 51%, #8C8473 100%);
@@ -102,8 +100,6 @@
 .recommend-tooltip .annotation-tool-header .dialog-option.last {
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
-    border-radius: 0 8px 8px 0;
-    -khtml-border-radius: 0 8px 8px 0;
 }
 
 .recommend-tooltip .annotation-tool-header .dialog-option.hover {
@@ -229,9 +225,6 @@
     margin: 5px;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
-    border-radius: 8px;
-    -khtml-border-radius: 8px;
-
 }
 
 .recommend-tooltip .submit-option.hover {
@@ -262,8 +255,6 @@
     
     -moz-border-radius: 0 0 8px 8px;
     -webkit-border-radius: 0 0 8px 8px;
-    border-radius: 0 0 8px 8px;
-    -khtml-border-radius: 0 0 8px 8px;
 }
 
 .recommend-tooltip .submit-loading-component {
@@ -282,8 +273,6 @@
     z-index:1;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
-    border-radius: 8px;
-    -khtml-border-radius: 8px;
 }
 
 .kals-paragraph .recommended.recommended_from {
@@ -291,8 +280,6 @@
     
     -moz-border-radius: 8px 0 0 8px;
     -webkit-border-radius: 8px 0 0 8px;
-    border-radius: 8px 0 0 8px;
-    -khtml-border-radius: 8px 0 0 8px;
 }
 
 .kals-paragraph .recommended.recommended_to {
@@ -300,8 +287,6 @@
     
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
-    border-radius: 0 8px 8px 0;
-    -khtml-border-radius: 0 8px 8px 0;
 }
 
 .kals-paragraph .recommended.recommended_middle {
@@ -310,16 +295,12 @@
     
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
-    border-radius: 0;
-    -khtml-border-radius: 0;
 }
 
 .kals-paragraph .recommended.recommended_to.recommended_from {
     border-style: solid;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
-    border-radius: 8px;
-    -khtml-border-radius: 8px;
 }
 
 .kals-paragraph .recommend_by {

@@ -23,8 +23,8 @@ $config['output.cache.enable'] = false; //是否使用快取功能，預設是tr
 $config['output.cache.expiration'] = 5;  //快取的單位是「分鐘」
 $config['output.package.enable'] = true; //是否啟用壓縮功能，預設是true;
 
-$config['CACHEABLE_TYPES'] = array('Domain', 'Webpage', 'Annotation', 'User', 'Group', 'Annotation_scope', 'Scope_anchor_text', 'Annotation_like'
-        , 'Annotation_feature_collection', 'Annotation_like_collection', 'Annotation_respond_collection', 'Annotation_topic_respond_collection'
+$config['CACHEABLE_TYPES'] = array('Domain', 'Webpage', 'Annotation', 'User', 'Group', 'Annotation_scope', 'Scope_anchor_text', 'Annotation_like', 'Annotation_read'
+        , 'Annotation_feature_collection', 'Annotation_like_collection', 'Annotation_read_collection', 'Annotation_respond_collection', 'Annotation_topic_respond_collection'
         , 'Annotation_scope_collection', 'Annotation_score_collection'
         , 'Notification_collection', 'Policy', 'Notification', 'Annotation_collection', 'User_friend_collection'
         , 'Search_annotation_collection', 'Search_annotation_id_collection'

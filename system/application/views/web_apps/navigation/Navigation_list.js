@@ -48,13 +48,13 @@ Navigation_list.prototype._$nav_items = [];
  * @memberOf {Navigation_list}
  * @type {jQuery} UI
  */
-Navigation_list.prototype._$create_ui = function () {
+Navigation_list.prototype._$create_ui = function ()
+{
     var _ui = $('<div></div>')
         .addClass('navigation-list');
     
-    if (this._$classname !== null) {
-		_ui.addClass(this._$classname);
-	}
+    if (this._$classname != null)
+        _ui.addClass(this._$classname);
     
     var _nav = this._create_nav();
     var _menu_button = this._create_menu();
@@ -72,14 +72,15 @@ Navigation_list.prototype._create_nav = function() {
     
     var _tr = _ui.find('tr:first');
     var _this = this;
-    for (var _i in this._$nav_items) {
+    for (var _i in this._$nav_items)
+    {
         var _content = this._get_window_content(_i); 
         
         var _td = $('<td></td>')
             .addClass('item')
             .appendTo(_tr);
         
-        //if (_i === 0)
+        //if (_i == 0)
         //    _td.addClass('first');
         
         var _a = $('<a href="#"></a>')
@@ -103,12 +104,13 @@ Navigation_list.prototype._create_nav = function() {
         });
     }
     
-    if (this._$show_help === true) {
-        _td = $('<td></td>')
+    if (this._$show_help == true)
+    {
+        var _td = $('<td></td>')
             .addClass('item')
             .appendTo(_tr);
                 
-        _a = $('<a href="#"></a>')
+        var _a = $('<a href="#"></a>')
             .appendTo(_td)
             .addClass('help');
 
@@ -129,23 +131,23 @@ Navigation_list.prototype._create_nav = function() {
 
 Navigation_list.prototype._get_window_content = function (_index) {
     
-    if (typeof(this._$nav_items[_index]) == 'undefined') {
-		return null;
-	}
-	else 
-		if (typeof(this._$nav_items[_index]) == 'string') {
-			var _window_content = this._$nav_items[_index];
-			eval('var _content = new ' + _window_content + '()');
-			return _content;
-		}
-		else 
-			if (typeof(this._$nav_items[_index]) == 'object') {
-				_window_content = this._$nav_items[_index];
-				return _window_content;
-			}
-			else {
-				return null;
-			}
+    if (typeof(this._$nav_items[_index]) == 'undefined')
+    {
+        return null;
+    }
+    else if (typeof(this._$nav_items[_index]) == 'string')
+    {
+        var _window_content = this._$nav_items[_index];
+        eval('var _content = new ' + _window_content + '()');
+        return _content;
+    }
+    else if (typeof(this._$nav_items[_index]) == 'object')
+    {
+        var _window_content = this._$nav_items[_index];
+        return _window_content;
+    }
+    else
+        return null;
 }; 
 
 Navigation_list.prototype._create_menu = function() {
@@ -161,7 +163,8 @@ Navigation_list.prototype._create_menu = function() {
     KALS_context.lang.add_listener(_ui, _lang_param);
     
     var _options = [];
-    for (var _i in this._$nav_items) {
+    for (var _i in this._$nav_items)
+    {
         //var _content = this._$nav_items[_i];
         var _content = this._get_window_content(_i);
         var _option = new Dialog_close_option(_content.nav_heading, function (_content) {
@@ -180,8 +183,9 @@ Navigation_list.prototype._create_menu = function() {
         _options.push(_option);
     }
     
-    if (this._$show_help === true) {
-        _option = new Dialog_close_option(this._help_lang, function () {
+    if (this._$show_help == true)
+    {
+        var _option = new Dialog_close_option(this._help_lang, function () {
             KALS_util.help();
         });
         _option.add_class('help');
@@ -198,13 +202,6 @@ Navigation_list.prototype._create_menu = function() {
     });
     
     return _ui;
-};
-
-/**
- * @type {Array|KALS_window}
- */
-Navigation_list.prototype.get_nav_items = function () {
-	return this._$nav_items;
 };
 
 /* End of file Navigation_list */

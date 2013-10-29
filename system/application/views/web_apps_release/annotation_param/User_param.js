@@ -13,26 +13,21 @@
  */
 function User_param(_id, _name) {
     
-    if ($.is_null(_id)) {
-		return;
-	}
-	else 
-		if ($.is_object(_id) && $.is_null(_name)) {
-			if (typeof(_id.name) != 'undefined') {
-				_name = _id.name;
-			}
-			if (typeof(_id.id) != 'undefined') {
-				_id = _id.id;
-			}
-		}
+    if ($.is_null(_id))
+        return;
+    else if ($.is_object(_id) && $.is_null(_name))
+    {
+        if (typeof(_id.name) != 'undefined')
+            _name = _id.name;
+        if (typeof(_id.id) != 'undefined')
+            _id = _id.id;
+    }
     
-    if ($.is_number(_id)) {
-		this.set_id(_id);
-	}
+    if ($.is_number(_id))
+        this.set_id(_id);
     
-    if ($.isset(_name)) {
-		this.set_name(_name);
-	}
+    if ($.isset(_name))
+        this.set_name(_name);
     
 }
 
@@ -57,18 +52,15 @@ User_param.prototype.get_name = function () {
 
 User_param.prototype.is_me = function () {
     var _login_user = KALS_context.user.get_data();
-    if ($.is_null(_login_user)) {
-		return false;
-	}
-	else {
-		return this.equals(_login_user);
-	}
+    if ($.is_null(_login_user))
+        return false;
+    else
+        return this.equals(_login_user);
 };
 
 User_param.prototype.equals = function (_other_user) {
-    if ($.is_class(_other_user, 'User_param') === false) {
-		return false;
-	}
+    if ($.is_class(_other_user, 'User_param') == false)
+        return false;
         
     var _other_user_id = _other_user.id;
     return (this.id == _other_user_id);

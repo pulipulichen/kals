@@ -14,13 +14,9 @@ function Common_navigation() {
     
     Navigation_list.call(this);
     
-	// @20130603 Pudding Chen
-	// Isolation Mode
-	if (KALS_context.policy.allow_show_navigation()) {
-		this._$nav_items = [
-	        new Window_filter()
-	    ];
-	}
+    this._$nav_items = [
+        new Window_filter()
+    ];
 }
 
 Common_navigation.prototype = new Navigation_list();

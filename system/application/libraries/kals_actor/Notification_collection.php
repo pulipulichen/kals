@@ -26,7 +26,8 @@ class Notification_collection extends Generic_collection {
     protected $class_name = array(
         1 => 'Notification_responded',
         2 => 'Notification_liked',
-        3 => 'Notification_recommended'
+        3 => 'Notification_recommended',
+        4 => 'Notification_readd'
     );
     protected $class_dir = 'kals_actor/';
 

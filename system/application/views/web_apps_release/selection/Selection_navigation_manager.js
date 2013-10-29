@@ -59,34 +59,31 @@ Selection_navigation_manager.prototype.great = null;
  */
 Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
-	if (KALS_context.policy.allow_show_navigation() === false) {
-		return this;
-	}
-	
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_scope_coll.length(), _type, $.is_number(_type), typeof(this._nav_selections[_type])]);
     
-    if (_scope_coll.length() === 0) {
-		return this;
-	}
+    if (_scope_coll.length() == 0)
+        return this;
         
-    if ($.is_null(_is_initialize)) {
-		_is_initialize = false;
-	}
+    if ($.is_null(_is_initialize))
+        _is_initialize = false;
     
     
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_type, $.is_number(_type), typeof(this._nav_selections[_type])]);
     
-    if (typeof(this._nav_selections[_type]) == 'string') {
+    if (typeof(this._nav_selections[_type]) == 'string')
+    {
         _type = this._nav_selections[_type];
     }
     
-    for (var _i in this._nav_selections) {
+    for (var _i in this._nav_selections)
+    {
         var _type_name = this._nav_selections[_i];
         
         
         //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_type, _type_name, _i]);
         
-        if (_type_name == _type) {
+        if (_type_name == _type)
+        {
             //如果是現在這個類型，則設置
             this[_type].set_scope_coll(_scope_coll);
          
@@ -94,7 +91,7 @@ Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_
                
             //continue;
         }   
-        //else if (_is_initialize === false)
+        //else if (_is_initialize == false)
         //{
             //其他的則是刪除標註
             //this[_type_name].clear_scope_coll(_scope_coll);
@@ -106,7 +103,8 @@ Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_
 
 Selection_navigation_manager.prototype.clear = function () {
     
-    for (var _i in this._nav_selections) {
+    for (var _i in this._nav_selections)
+    {
         var _type = this._nav_selections[_i];
         this[_type].clear();
     }

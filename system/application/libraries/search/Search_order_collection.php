@@ -23,7 +23,8 @@ class Search_order_collection extends Collection {
         6 => 'Search_order_update',
         7 => 'Search_order_create',
         8 => 'Search_order_note',
-        9 => 'Search_order_anchor_text'
+        9 => 'Search_order_anchor_text',
+        10 => 'Search_order_read'
     );
     protected $class_dir = 'search/';
 

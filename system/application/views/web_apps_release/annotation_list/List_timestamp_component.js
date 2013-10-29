@@ -11,17 +11,13 @@
  * @extends {KALS_user_interface}
  * @param {List_item} _item
  */
-function List_timestamp_component(_item, _full_display) {
+function List_timestamp_component(_item) {
     
     KALS_user_interface.call(this);
     
-    if ($.isset(_item)) {
-		this._item = _item;
-	}
-	
-	if ($.is_boolean(_full_display)) {
-		this.full_display = _full_display;
-	}
+    if ($.isset(_item))
+        this._item = _item;
+    
 }
 
 // Extend from KALS_user_interface
@@ -33,17 +29,12 @@ List_timestamp_component.prototype = new KALS_user_interface();
 List_timestamp_component.prototype._item = null;
 
 /**
- * 是否要顯示完整日期
- * @type {boolean} = false，預設顯示相對日期
- */
-List_timestamp_component.prototype.full_display = false;
-
-/**
  * Create UI
  * @memberOf {List_timestamp_component}
  * @type {jQuery} UI
  */
-List_timestamp_component.prototype._$create_ui = function () {
+List_timestamp_component.prototype._$create_ui = function ()
+{
     var _ui = $('<td></td>')
         .addClass('list-timestamp-component');
     
@@ -57,17 +48,13 @@ List_timestamp_component.prototype._$create_ui = function () {
 
 List_timestamp_component.prototype.set_timestamp = function (_timestamp) {
     
-    if ($.is_null(_timestamp)) {
+    if ($.is_null(_timestamp))
+    {
         _timestamp = this._item.get_data().timestamp;
     }
     
     var _until_time = $.get_interval_time(_timestamp);
-    
-	var _message = KALS_context.lang.get_fulldate(_timestamp);
-	if (this.full_display === false) {
-		_message = KALS_context.lang.get_interval_message(_timestamp);
-	}
-	
+    var _message = KALS_context.lang.get_interval_message(_timestamp);
     
     var _ui = this.get_ui();
     _ui.html(_message);

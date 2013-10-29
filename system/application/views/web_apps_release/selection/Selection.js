@@ -18,18 +18,17 @@ function Selection(_text) {
     this._scope_coll = null;
     this._$enable_types = ['select', 'clear'];
     
-    if ($.isset(_text)) {
+    if ($.isset(_text))
+    {
         this._text = _text;
         
-		/*
         var _this = this;
         KALS_context.auth.add_listener(function (_auth) {
-            //if (_this._$logout_clear && _auth.is_login() === false)
-            //if ((_this._$login_clear === true && _auth.is_login() === true)
-            //    || (_this._$logout_clear === true && _auth.is_login() === false))
+            //if (_this._$logout_clear && _auth.is_login() == false)
+            //if ((_this._$login_clear == true && _auth.is_login() == true)
+            //    || (_this._$logout_clear == true && _auth.is_login() == false))
             //    _this.clear();
         });
-        */
     }
 }
 
@@ -68,9 +67,10 @@ Selection.prototype.set_scope_coll = function (_scope_coll) {
     
     //$.test_msg('Selection.set_scope_coll()', [$.is_class(_scope_coll, 'Scope_collection_param'), $.get_class(_scope_coll), _scope_coll.length()]);
     
-    if ($.is_class(_scope_coll, 'Scope_collection_param') === false
-        || _scope_coll.length() === 0) {
-        //$.test_msg('Selection.set_scope_coll()', [($.is_class(_scope_coll, 'Scope_collection_param') === false), $.get_class(_scope_coll), _scope_coll.length()]);
+    if ($.is_class(_scope_coll, 'Scope_collection_param') == false
+        || _scope_coll.length() == 0)
+    {
+        //$.test_msg('Selection.set_scope_coll()', [($.is_class(_scope_coll, 'Scope_collection_param') == false), $.get_class(_scope_coll), _scope_coll.length()]);
         return this;
     }
     
@@ -79,15 +79,15 @@ Selection.prototype.set_scope_coll = function (_scope_coll) {
     
     //如果範圍一樣，則不用重置
     if ($.isset(this._scope_coll)
-        && this._scope_coll.equals(_scope_coll)) {
+        && this._scope_coll.equals(_scope_coll))
+    {
         //$.test_msg('Selection.set_scope_coll()', [this._scope_coll.equals(_scope_coll), this._scope_coll.export_json(), _scope_coll.export_json()]);
         return this;
     }
         
     
-    if (this._$select_once === true) {
-		this.clear();
-	}
+    if (this._$select_once == true)
+        this.clear();
     
     this._scope_coll = _scope_coll;
     
@@ -125,7 +125,8 @@ Selection.prototype.get_recommend_scope_coll = function () {
 
 Selection.prototype.clear = function () {
     //如果本來就是清空的狀態，則不做任何改變
-    if (this._scope_coll === null) {
+    if (this._scope_coll == null)
+    {
         //$.test_msg('Selection.clear() no scope coll' , [this.get_classname()]);
         return this;
     }
@@ -166,7 +167,8 @@ Selection.prototype.get_classname = function () {
     
     var _classname = this._$name;
     
-    if ($.isset(this._classname)) {
+    if ($.isset(this._classname))
+    {
         _classname = _classname + ' ' + this._classname;
     }
     
@@ -250,16 +252,15 @@ Selection.prototype.get_recommend_scope_coll = function () {
  * @type {boolean}
  */
 Selection.prototype.has_selected = function () {
-    return !(this._scope === null);
+    return !(this._scope == null);
 };
 
 Selection.prototype._scroll_lock = false;
 
 Selection.prototype.scroll_into_view = function (_callback) {
     
-    if (this._scroll_lock === true) {
-		return;
-	}
+    if (this._scroll_lock == true)
+        return;
     
     this._scroll_lock = true;
     
@@ -267,28 +268,32 @@ Selection.prototype.scroll_into_view = function (_callback) {
     var _y = this.get_offset_top();
     
     /*
-    if ($.is_null(_x) && $.is_null(_y)) {
+    if ($.is_null(_x) && $.is_null(_y))
+    {
         return this;
     }
     */
     
-    if ($.is_null(_y)) {
+    if ($.is_null(_y))
+    {
         return this;
     }
     
     var _config = {};
     /*
-    if ($.isset(_x)) {
+    if ($.isset(_x))
+    {
         _x = _x - 100;
         _config['x'] = _x;
     }
     */
-    if ($.isset(_y)) {
+    if ($.isset(_y))
+    {
         _y = _y - KALS_toolbar.get_height() - 100;
         
         //$.test_msg('Selection.scroll_into_view()', [this._$name, _y, KALS_toolbar.get_height()]);
         
-        _config.y = _y;
+        _config['y'] = _y;
     }
     
     var _this = this;
@@ -303,12 +308,10 @@ Selection.prototype.scroll_into_view = function (_callback) {
 
 Selection.prototype.equals = function (_scope_coll) {
     
-    if (this._scope_coll === null || _scope_coll === null) {
-		return false;
-	}
-	else {
-		return this._scope_coll.equals(_scope_coll);
-	}
+    if (this._scope_coll == null || _scope_coll == null)
+        return false;
+    else 
+        return this._scope_coll.equals(_scope_coll);
 };
 
 /* End of file Selection */

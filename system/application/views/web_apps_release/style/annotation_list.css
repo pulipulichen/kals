@@ -49,29 +49,25 @@
 /**
  * @section List_item
  */
-.KALS.annotation-tool .list-item {
+.list-item {
     background-color: white;
     
     padding-top: 5px;
     padding-bottom: 5px;
-	padding: 5px;
     clear: both;
-	
-	cursor: pointer;
-	
 }
 
-.KALS .list-item-topic {
+.list-item-topic {
     border-bottom: 1px solid gray;
     background-color: white;
 }
 
-.KALS .list-item.focus,
-.KALS .list-item.editing {
+.list-item.focus,
+.list-item.editing {
     background-color: #FEEEBD;
 }
 
-.KALS .list-item p {
+.list-item p {
     margin: 0;
 }
 
@@ -79,7 +75,7 @@
  * @section List_header_component
  */
 .list-header-component {
-    padding: 5px 0 !important;
+    padding: 5px 0;
 }
 
 .list-header-component .name-container {
@@ -117,9 +113,13 @@
 /**
  * 如果是我的標註，則不顯示like
  */
-.KALS .list-header-component.is-my .list-like-component .icon-component {
+.list-header-component.is-my .list-like-component .icon-component {
     display: none;
 }
+.list-header-component.is-my .list-read-component .icon-component {
+    display: none;
+}
+
 /*
 .list-header-component.has-recommend {
     background-image: url(${base_url}images/has-recommend.gif);
@@ -128,22 +128,20 @@
     background-repeat:no-repeat;
 }
 */
-.KALS .list-header-component .type-option
+.list-header-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
     margin: 0;
     height:18px;
-    padding: 1px 5px !important;
+    padding: 1px 5px;
     font-size:smaller;
     cursor:default;
 }
 
-.KALS .list-header-component .id-component {
+.list-header-component .id-component {
     float:right;
-    color: #CCC;
+    color: gray;
     font-size: smaller;
     margin-left: 5px;
 }
@@ -151,18 +149,27 @@
 /**
  * @section List_like_component
  */
-.KALS .list-like-component {
+.list-like-component {
+    cursor: pointer;
+    float:right;
+}
+.list-read-component {
     cursor: pointer;
     float:right;
 }
 
-.KALS .list-like-component .count-component {
+.list-like-component .count-component {
+    font-size:smaller;
+    color: #808080;
+    float:right;
+}
+.list-read-component .count-component {
     font-size:smaller;
     color: #808080;
     float:right;
 }
 
-.KALS .list-like-component .icon-component {
+.list-like-component .icon-component {
     /*height:24px;
     width:24px;
     */ 
@@ -174,7 +181,24 @@
     background-position:center;
     background-repeat:no-repeat;
 }
-.KALS .list-like-component.hide .icon-component {
+.list-read-component .icon-component {
+    /*height:24px;
+    width:24px;
+    */ 
+    height:20px;
+    width:20px;
+    padding: 10px;
+    margin: 0 5px;
+    background-image:url(${base_url}images/is-not-readd.png);
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.list-like-component.hide .icon-component {
+    /*visibility:hidden;*/
+    display: none;
+}
+.list-read-component.hide .icon-component {
     /*visibility:hidden;*/
     display: none;
 }
@@ -183,35 +207,48 @@
 .window-view-content.not-login .list-like-component .icon-component {
     display: none;
 }
+.annotation-tool.not-login .list-read-component .icon-component,
+.window-view-content.not-login .list-read-component .icon-component {
+    display: none;
+}
 
 .list-like-component.hover .icon-component {
     background-image:url(${base_url}images/set-is-liked.png);
+}
+.list-read-component.hover .icon-component {
+    background-image:url(${base_url}images/set-is-readd.png);
 }
 
 .list-like-component.liked .icon-component {
     background-image:url(${base_url}images/is-liked.png);
 }
+.list-read-component.readd .icon-component {
+    background-image:url(${base_url}images/is-readd.png);
+}
 
 .list-like-component.liked.hover .icon-component {
     background-image:url(${base_url}images/set-is-not-liked.png);
+}
+.list-read-component.readd.hover .icon-component {
+    background-image:url(${base_url}images/set-is-not-readd.png);
 }
 
 /**
  * @section List_menu
  */
-.KALS.annotation-tool .list-item .list-menu {
+.list-item .list-menu {
     display: none;
     padding: 0.2em 0;
 }
 
-.KALS.annotation-tool .tooltip.list-menu {
+.tooltip.list-menu {
     text-align:right;
     word-break:keep-all;
     /*padding: 0 0.5em;*/
     min-height: 0;
     /*padding: 0.2em;*/
 }
-.KALS.annotation-tool .list-menu-tooltip {
+.list-menu-tooltip {
     background:#847D63 !important;
     color: #FFFFFF;
     /*border: 1px solid black;*/
@@ -219,26 +256,20 @@
     
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
-    border-radius: 0px;
-    -khtml-border-radius: 0px;
     /*border: 1px solid #515151;*/
     padding: 0;
-	
-}
-.KALS .list-menu-tooltip tr{
-	background: rgba(0,0,0,0)!important;
 }
 
-.KALS .list-menu-block {
+.list-menu-block {
     text-align:right;
 }
 
-.KALS .list-menu-block table {
+.list-menu-block table {
     display: inline;
 }
 
 
-.KALS .list-item.menu-style-block .list-menu-block  {
+.list-item.menu-style-block .list-menu-block  {
     display: block;
 }
 
@@ -249,8 +280,7 @@
 }
 */
 
-.KALS .list-menu .list-menu-option,
-.KALS .list-menu-option {
+.list-menu .list-menu-option {
     cursor: pointer;
     padding: 0.2em 0.5em;
     margin-left: 0.2em;
@@ -259,41 +289,34 @@
     border-left: 2px groove gray;
 }
 
-.KALS .list-menu.list-menu-block .list-menu-option {
+.list-menu.list-menu-block .list-menu-option {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-.KALS .list-menu-tooltip .list-menu-option.hover {
+.list-menu-tooltip .list-menu-option.hover {
     background-color: #FFF;
     color: #8C8473;
 }
 
-.KALS .list-menu .list-timestamp-component {
+.list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
 }
 
-.KALS .list-menu.not-login .list-menu-option {
+.list-menu.not-login .list-menu-option {
     display: none;
 }
 
-.KALS .list-menu.not-login .list-menu-option.view {
+.list-menu.not-login .list-menu-option.view {
     display: table-cell;
 }
 
-.KALS .list-menu.is-my .list-menu-option.respond {
+.list-menu.is-my .list-menu-option.respond {
     display: none;
 }
 
-.KALS.list-menu .list-menu-option.edit,
-.KALS .list-menu .list-menu-option.delete {
-    display: none;
-}
-
-/**
- * 只有在view當中不需要出現選擇的樣子
- */
-.KALS.window .list-menu .list-menu-option.select {
+.list-menu .list-menu-option.edit,
+.list-menu .list-menu-option.delete {
     display: none;
 }
 
@@ -369,25 +392,3 @@
 }
 */
 
-/*.list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table{
-	margin:1px !important;
-}*/
-/*.list-container .list-item-topic .list-item .list-menu table{
-	margin-top: 0px !important;
-	margin-bottom: 0px !important;
-}*/
-/*??? table{
-	margin: 0px 0 !important;
-}*/
-
-.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table {
-    margin: 0px 0 !important;
-}
-
-.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table tbody{
-    border: 0px !important;
-}
-
-.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table td{
-    border: 0px !important;
-}

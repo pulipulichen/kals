@@ -21,8 +21,10 @@ function Selection_my_manager(_text) {
     this.child('example', new Selection_my_example(_text));
     this.child('summary', new Selection_my_summary(_text));
     this.child('custom', new Selection_my_custom(_text));
-	
-	return this;
+	this.child('other', new Selection_my_other(_text));
+	this.child('explain', new Selection_my_explain(_text));
+	this.child('debug', new Selection_my_debug(_text));
+    
 }
 
 // Extend from KALS_user_interface
@@ -35,7 +37,10 @@ Selection_my_manager.prototype._my_selections = {
 	4: 'summary',
 	5: 'concept',
 	6: 'example',
-	7: 'custom'
+	7: 'custom',
+	8: 'other',
+	9: 'explain',
+	10: 'debug'
 };
 
 /**
@@ -75,6 +80,21 @@ Selection_my_manager.prototype.summary = null;
 Selection_my_manager.prototype.custom = null;
 
 /**
+ * @type {Selection_my_other}
+ */
+Selection_my_manager.prototype.other = null;
+
+/**
+ * @type {Selection_my_explain}
+ */
+Selection_my_manager.prototype.explain = null;
+
+/**
+ * @type {Selection_my_debug}
+ */
+Selection_my_manager.prototype.debug = null;
+
+/**
  * 
  * @param {String} _type
  * @param {Scope_collection_param} _scope_coll
@@ -82,13 +102,11 @@ Selection_my_manager.prototype.custom = null;
  */
 Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
-    if (_scope_coll.length() === 0) {
-		return this;
-	}
+    if (_scope_coll.length() == 0)
+        return this;
         
-    if ($.is_null(_is_initialize)) {
-		_is_initialize = false;
-	}
+    if ($.is_null(_is_initialize))
+        _is_initialize = false;
     
     
     //$.test_msg('Selection_my_manager.set_scope_coll()', [_type, $.is_number(_type), typeof(this._my_selections[_type])]);
@@ -99,26 +117,31 @@ Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _i
     
     //加入基本標註類型檢查
     var _type_param = KALS_context.custom_type.find_type(_type);
-    if (_type_param.is_basic() === true) {
-        _type = _type_param.get_type_name();
+    if (_type_param.is_basic() == true)
+    {
+        _type = _type_param.get_type_name()
     }
-    else {
+    else
+    {
         return KALS_text.selection.my_custom.set_scope_coll(_type, _scope_coll, _is_initialize);
     }
     
-    for (var _i in this._my_selections) {
+    for (var _i in this._my_selections)
+    {
         var _type_name = this._my_selections[_i];
         
         
         //$.test_msg('Selection_my_manager.set_scope_coll()', [_type, _type_name, _i]);
         
-        if (_type_name == _type) {
+        if (_type_name == _type)
+        {
             //如果是現在這個類型，則設置
             this[_type].set_scope_coll(_scope_coll);
             //$.test_msg('Selection_my_manager.set_scope_coll()',[ _scope_coll.length(), typeof(this[_type].set_scope_coll), _type]);
             continue;
         }   
-        else if (_is_initialize === false) {
+        else if (_is_initialize == false)
+        {
             //其他的則是刪除標註
             this[_type_name].clear_scope_coll(_scope_coll);
         }
@@ -129,7 +152,8 @@ Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _i
 
 Selection_my_manager.prototype.clear = function () {
     
-    for (var _i in this._my_selections) {
+    for (var _i in this._my_selections)
+    {
         var _type = this._my_selections[_i];
         //$.test_msg('Selection_my_manager.clear()', _type);
         this[_type].clear();

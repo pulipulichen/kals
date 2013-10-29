@@ -16,7 +16,8 @@ function List_menu_tooltip(_item, _disable_option) {
     
     List_menu.call(this, _item, _disable_option);
     
-    if ($.isset(_item)) {
+    if ($.isset(_item))
+    {
         var _annotation_id = _item.get_annotation_id();
         this._$tooltip_id = this._$tooltip_id + '_' + _annotation_id; 
     }
@@ -34,7 +35,8 @@ List_menu_tooltip.prototype._$tooltip_id = 'list_menu_tooltip';
  * @memberOf {List_menu_tooltip}
  * @type {jQuery} UI
  */
-List_menu_tooltip.prototype._$create_ui = function () {
+List_menu_tooltip.prototype._$create_ui = function ()
+{
     var _ui = List_menu.prototype._$create_ui.call(this);
     
     var _tooltip = this._create_tooltip_prototype({
@@ -59,17 +61,17 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         //$.test_msg('List_menu_tooltip._$get_config() onBeforeShow', _this._item.get_menu_style());
         
         var _menu_style = _this._item.get_menu_style();
-        if (_menu_style == 'block') {
-			return false;
-		}
+        if (_menu_style == 'block')
+            return false;
         
         //先找到其他顯示的tooltip，並把他們關掉
         //$('.list-menu-tooltip:not(#'+_this._$tooltip_id+')').fadeOut();
         
-        var _other_trigger_selector = '.list-item.' + _this._$modal_name + '_trigger';
+        var _other_trigger_selector = '.list-item.' + _this._$modal_name + '_trigger'
         var _other_trigger = $(_other_trigger_selector);
         //$.test_msg('List_menu_tooltip._$get_config()', [_other_trigger_selector, _other_trigger.length]);
-        if (_other_trigger.length > 0) {
+        if (_other_trigger.length > 0)
+        {
             var _api = _other_trigger.data('tooltip');
             _api.hide();    
         }
@@ -78,23 +80,21 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         var _tooltip = this.getTip();
         var _trigger = this.getTrigger();
         
-        var _tooltip_width = _tooltip.width();
+        var _tooltip_width = _tooltip.width()
         var _trigger_left = _trigger.offset().left;
         
         var _trigger_width = _trigger.width();
         var _trigger_padding_left = $.strip_unit(_trigger.css('padding-left'));
         var _trigger_padding_right = $.strip_unit(_trigger.css('padding-right'));
         _trigger_width = _trigger_width + _trigger_padding_left + _trigger_padding_right;
-		
+       
        
         //確認tip不要超過畫面左方
         var _tooltip_left = _trigger_left - _tooltip_width;
         
-        if (_tooltip_left < 0) {
-			// @20130602 Pudding Chen
-			// 不知道為什麼+20之後會出問題，現在先關掉
-            //_tooltip_left = _trigger_width + 20;
-			_tooltip_left = _trigger_width;
+        if (_tooltip_left < 0)
+        {
+            _tooltip_left = _trigger_width + 20;
             
             var _tooltip_right = _tooltip_left + _tooltip_width;
             
@@ -102,7 +102,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
             //    , (_tooltip_right < $('body').width()), _tooltip_right]);
                     
             
-            if (_tooltip_right < $('body').width()) {
+            if (_tooltip_right < $('body').width())
+            {
                 setTimeout(function () {
                     _tooltip.css('left', _tooltip_left + 'px');   
                     _tooltip.css('width', _tooltip_width + 'px'); 
@@ -112,7 +113,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         
         _this.get_ui().show();
         
-        if ($.is_function(_onbeforeshow)) {
+        if ($.is_function(_onbeforeshow))
+        {
             _onbeforeshow.call(this);
         }
         

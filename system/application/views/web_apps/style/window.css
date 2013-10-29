@@ -10,24 +10,13 @@
    Syntax recommendation http://www.w3.org/TR/REC-CSS2/
 */
 
-#exposeMask {
-    margin:0;
-}
-
 .dialog-modal.window {
     /*width: 480px;*/
     width: 100%;
-    font-size:medium;
-    margin:0;
-	height: auto !important;
-}
-
-.dialog-modal.window div {
-    margin:0;
 }
 
 .window-loading {
-    padding: 30px 1em !important;
+    padding: 30px 1em;
     text-align:center;
     line-height: 30px;
     /*width: 480px;
@@ -60,7 +49,7 @@
     text-align:right;
     width: 150px;
     float: left;
-    padding-right: 0.5em !important;
+    padding-right: 0.5em;
     cursor:pointer;
 }
 
@@ -74,7 +63,7 @@
 .window-panel .row dd {
     padding: 0;
     margin: 0;
-    padding-bottom: 0.5em !important;
+    padding-bottom: 0.5em;
 }
 
 .window-panel .text {
@@ -82,7 +71,7 @@
 }
 
 .window-panel .text.empty {
-    border: 2px solid red !important;
+    border: 2px solid red;
 }
 
 .dialog-modal.compact-width .window-panel .text {
@@ -91,8 +80,8 @@
 
 .window-panel h2.heading {
     font-size:large;
-    border-bottom: 1px solid black !important;
-    padding-left: 0.5em !important;
+    border-bottom: 1px solid black;
+    padding-left: 0.5em;
 }
 
 .window-panel .list label {

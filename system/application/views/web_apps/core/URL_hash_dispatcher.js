@@ -32,15 +32,17 @@ URL_hash_dispatcher.prototype._hash_data = null;
  * @memberOf {URL_hash_dispatcher}
  * @type {String} Description about return value.
  */
-URL_hash_dispatcher.prototype._get_location_hash = function () {
+URL_hash_dispatcher.prototype._get_location_hash = function ()
+{
     var _hash = '';
-    if (typeof(location.hash) != 'undefined') {
+    if (typeof(location.hash) != 'undefined')
+    {
         _hash = location.hash;
-        if (_hash.substring(0, 1) == '#') {
-			_hash = _hash.substring(1, _hash.length);
-		}
+        if (_hash.substring(0, 1) == '#')
+            _hash = _hash.substring(1, _hash.length);
     }
-    else {
+    else
+    {
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
         var _url = location.href;
     
@@ -49,20 +51,24 @@ URL_hash_dispatcher.prototype._get_location_hash = function () {
         
         var _start = 0;
         var _end = _url.length;
-        if (_hash_pos == -1) {
+        if (_hash_pos == -1)
+        {
             //情況1：沒有hash
             return '';
         }
-        else if (_query_pos == -1) {
+        else if (_query_pos == -1)
+        {
             //情況2：有hash但沒有query
             _start = _hash_pos + 1;
         }
-        else if (_hash_pos < _query_pos) {
+        else if (_hash_pos < _query_pos)
+        {
             //情況3：hash比query先寫
             _start = _hash_pos + 1;
             _end = _query_pos;
         }
-        else {
+        else
+        {
             //情況4：query比hash
             _start = _hash_pos + 1;
         }
@@ -86,31 +92,34 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
     
     var _pos = this._save_scroll_position();
     
-    if (typeof(location.hash) != 'undefined') {   
+    if (typeof(location.hash) != 'undefined')
+    {   
         //$.test_msg('設定location hash', this._set_lcok);
         window.location.hash = _hash;
     }
-    else {
+    else
+    {
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
         var _url = location.href;
         
         var _hash_pos = _url.indexOf('#');
         
-        if (_hash_pos != -1) {
+        if (_hash_pos != -1)
+        {
             var _start = _hash_pos;
             var _end = _url.length;
             
             var _query_pos = _url.indexOf('?');
             if (_query_pos != -1
-                && (_query_pos > _hash_pos)) {
+                && (_query_pos > _hash_pos))
+            {
                 _end = _query_pos;
             }
             
             var _head = _url.substring(0, _start);
             var _foot = '';
-            if (_url.length != _end) {
-				_foot = _url.substring(_end, _url.length);
-			}
+            if (_url.length != _end);
+                _foot = _url.substring(_end, _url.length);
             
             _url = _head + _foot;
         }
@@ -143,13 +152,13 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
     var _title = document.title;
     var _hash_pos = _title.lastIndexOf('#');
     
-    if (_hash_pos > -1) {
+    if (_hash_pos > -1)
+    {
         _title = _title.substring(0, _hash_pos);
     }
     
-    if (_hash !== '') {
-		_hash = ' #' + _hash;
-	}
+    if (_hash != '')
+        _hash = ' #' + _hash;
     
     _title = _title + _hash;
     document.title = _title;
@@ -162,11 +171,11 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
  * @param {boolean} _force = false：是否要強制覆蓋原本的設定。如果已經從this._get_location_hash()取得過資料，則此處不會再設定。
  */
 URL_hash_dispatcher.prototype._setup_hash_data = function (_force) {
-    if ($.is_null(_force)) {
-		_force = false;
-	}
+    if ($.is_null(_force))
+        _force = false;
     
-    if (this._hash_data === null || _force) {
+    if (this._hash_data == null || _force)
+    {
         var _hash = this._get_location_hash();
         //$.test_msg('setup', _hash);
         this._hash_data = new Name_value_pair(_hash);
@@ -211,7 +220,8 @@ URL_hash_dispatcher.prototype.get_hash_data = function () {
  */
 URL_hash_dispatcher.prototype.set_field = function (_key, _value) {
     
-    try {
+    try
+    {
         //嘗試將值化為字串，因為hash只能存入字串而已
         _value = _value + '';
     }
@@ -286,10 +296,12 @@ URL_hash_dispatcher.prototype._set_lock = false;
  * 
  */
 URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
-    if (this._had_setup_onhashchange === false) {
+    if (this._had_setup_onhashchange == false)
+    {
         var _this = this;
         $(window).hashchange(function () {
-            if (_this._set_lock === false) {
+            if (_this._set_lock == false)
+            {
                 //$.test_msg('backward setup 之前', _this._hash_data.get_data());
                 
                 //只有在沒有特別設定this._set_lock的時候，才會執行這段
@@ -307,7 +319,8 @@ URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
                 _this.notify_listeners(_data);   
                 delete _data[_backward_field]; 
             }
-            else {
+            else
+            {
                 setTimeout(function () {
                     _this._set_lock = false;    
                 }, 2000);
@@ -324,39 +337,27 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     
     //$.test_msg('has check_hash() end', this.has_field('select'));
     
-	//$.test_msg('URL_hash_dispatcher', 'pass1');
-	
     //優先度：view recommend = select
-    if (this.has_field('view') === true) {
-		//$.test_msg('URL_hash_dispatcher', 'pass2');
-		
+    if (this.has_field('view') == true)
+    {
         var _id = this.get_field('view');
-		KALS_context.init_profile.add_listener(function () {
-	        KALS_text.tool.view.load_view(_id);
-	    });
-        
+        KALS_text.tool.view.load_view(_id);
     }
-    else {
-		//$.test_msg('URL_hash_dispatcher', 'pass3');
-		
-        if (this.has_field('recommend') === true) {
-			//$.test_msg('URL_hash_dispatcher', 'pass4');
-            _id = this.get_field('recommend');
+    else
+    {
+        if (this.has_field('recommend') == true)
+        {
+            var _id = this.get_field('recommend');
             //$.test_msg('has check_hash() recommend', _id);
             KALS_text.tool.recommend.load_recommend(_id);
         }
         
-        if (this.has_field('select') === true) {
-            //$.test_msg('URL_hash_dispatcher', 'pass5');
+        if (this.has_field('select') == true)
+        {
+            
             var _scope_text = this.get_field('select');
             //$.test_msg('has check_hash()', _scope_text);
-            
-			KALS_context.init_profile.add_listener(function () {
-		        KALS_text.selection.select.load_select(_scope_text);  
-		    });
-			//setTimeout(function () {
-			//	KALS_text.selection.select.load_select(_scope_text);
-			//}, 3000); 
+            KALS_text.selection.select.load_select(_scope_text); 
         }    
     }
     
@@ -364,8 +365,6 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     
     this.delete_field('backward');
     this.delete_field('model');
-	
-	//$.test_msg('URL_hash_dispatcher', 'pass');
     
     $.trigger_callback(_callback);
     return this;

@@ -29,9 +29,8 @@ Window_logout_submit.prototype.complete_notification = new KALS_language_param(
 );
 
 Window_logout_submit.prototype.submit = function () {
-    if (this._lock_submit() === false) {
-		return this;
-	}
+    if (this._lock_submit() == false)
+        return this;
     
     var _this = this;
     var _auth = KALS_context.auth;

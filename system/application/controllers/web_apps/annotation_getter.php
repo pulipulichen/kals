@@ -185,6 +185,166 @@ class Annotation_getter extends Web_apps_controller {
         return $this->_display_jsonp($output_data, $callback);
     }
 
+    function top($json = NULL, $callback = NULL) {
+
+        $check_time = NULL;
+        if (isset($callback))
+        {
+            $data = json_to_object($json);	//另一種函數是json_to_array($json)，取得的資料就會是array。
+            //不管是object或array都可以用，只是取得資料的方法會不一樣
+            $user_id = $data->user_id;	//->userid的userid，是參考來自View的data的指標	
+            //注意，object取得屬性的用法是->；array取得指標的用法是[index]
+            //$user_id = 1708;
+        }
+        else
+        {
+            $callback = $json;
+        }
+        //login_require(true);
+        /*
+        //不管有沒有登入，排行榜都要顯示資料
+        if (login_require(FALSE) === FALSE)
+        {
+            $output_data = array(
+                'basic'=> array(),
+                'custom'=> array()
+            );
+            return $this->_display_jsonp($output_data, $callback);
+        }
+        */
+
+        //$user = get_context_user();	//這邊不是要取得現在的使用者啊！
+        //context就是現在這個情境底下的狀態…呃……懂嗎？
+        //$user_id = 1708;
+        
+        $user = NULL;
+        if (isset($user_id))
+        	$user = new User($user_id);
+        
+        $output_data = array(
+            'basic' => array(),
+            'custom' => array()
+        );
+        
+        if (isset($user_id) === FALSE)
+        {
+        	//如果沒有$user_id過來，那就直接回傳空資料集，請VIEW端的loader去抹除資料
+        	return $this->_display_jsonp($output_data, $callback);
+        	
+        }
+        
+        $type_scope_colls = array(
+            //1 => new Annotation_scope_collection(), //importance
+            //2 => new Annotation_scope_collection(), //question
+            //3 => new Annotation_scope_collection(), //confusion
+            //4 => new Annotation_scope_collection(), //summary
+            //5 => new Annotation_scope_collection(), //concept
+            //6 => new Annotation_scope_collection(), //example
+            //7 => new Annotation_scope_collection()  //custom
+        );
+
+        /**
+         * @var array 自訂的類型
+         */
+        $custom_type_scope_colls = array();
+
+        $search = new Search_annotation_collection();
+        $search->set_target_user($user);
+        $search->set_target_topic(TRUE);
+
+        if (isset ($check_time))
+        {
+            $search->set_target_newer_update($check_time);
+        }
+
+        $search->add_order(6, FALSE);
+
+        //test_msg('準備要取得資料嚕');
+
+        //取得搜尋結果
+        foreach ($search AS $annotation)
+        {
+            $annotation_type = $annotation->get_type();
+            $annotation_type_id = $annotation_type->get_type_id();
+            $annotation_type_name = $annotation_type->get_custom_name();
+            $is_basic = $annotation_type->is_basic();
+            //test_msg('is_basic', array($is_basic, $annotation_type_id) );
+            $annotation_scope_coll = $annotation->get_scopes();
+
+            if ($is_basic == true)
+            {
+                if (isset($type_scope_colls[$annotation_type_id]) == false)
+                    $type_scope_colls[$annotation_type_id] = new Annotation_scope_collection();
+
+                //test_msg('標註', array($annotation_type_id, $annotation));
+
+                //用$is_basic來區分是否是基本類型吧
+                //if ($annotation_type_id > 7)
+                //    $annotation_type_id = 7;
+
+                foreach ($type_scope_colls AS $type_id => $scope_coll)
+                {
+                    if ($annotation_type_id == $type_id)
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->add_scope($scope);
+                        }
+                    }
+                    else
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->exclude_scope($scope);
+                        }
+                    }
+                }
+            }   //if ($is_basic)
+            else
+            {
+                if (isset($custom_type_scope_colls[$annotation_type_name]) == false)
+                    $custom_type_scope_colls[$annotation_type_name] = new Annotation_scope_collection();
+
+                foreach ($custom_type_scope_colls AS $type_name => $scope_coll)
+                {
+                    if ($annotation_type_name == $type_name)
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->add_scope($scope);
+                        }
+                    }
+                    else
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->exclude_scope($scope);
+                        }
+                    }
+                }
+            }
+            
+            //test_msg('標註3', array($annotation_type_id, $annotation));
+        }
+
+        //test_msg('完成取得標註');
+
+        
+
+        foreach ($type_scope_colls AS $type_id => $scope_coll)
+        {
+            //這是給basic的！
+            $output_data['basic'][$type_id] = $scope_coll->export_webpage_data($this->url);
+        }
+
+        foreach ($custom_type_scope_colls AS $type_id => $scope_coll)
+        {
+            //這是給custom的！
+            $output_data['custom'][$type_id] = $scope_coll->export_webpage_data($this->url);
+        }
+        return $this->_display_jsonp($output_data, $callback);
+    }
+    
     /**
      * 取出basic的範圍
      * @param string $json
@@ -196,12 +356,23 @@ class Annotation_getter extends Web_apps_controller {
         $output_data = array();
 
         $my_annotation = $this->my();
-        if (isset($my_annotation['basic'])) {
+        if (isset($my_annotation['basic']))
             $output_data = $my_annotation['basic'];
-        }
-        else if (is_array($my_annotation)) {
+        else if (is_array($my_annotation))
             $output_data = $my_annotation;
-        }
+
+        return $this->_display_jsonp($output_data, $callback);
+    }
+    
+    function top_basic($json = NULL, $callback = NULL)
+    {
+        $output_data = array();
+
+        $top_annotation = $this->top();
+        if (isset($top_annotation['basic']))
+            $output_data = $top_annotation['basic'];
+        else if (is_array($top_annotation))
+            $output_data = $top_annotation;
 
         return $this->_display_jsonp($output_data, $callback);
     }
@@ -221,6 +392,19 @@ class Annotation_getter extends Web_apps_controller {
             $output_data = $my_annotation['custom'];
         else if (is_array($my_annotation))
             $output_data = $my_annotation;
+
+        return $this->_display_jsonp($output_data, $callback);
+    }
+    
+    function top_custom($json = NULL, $callback = NULL)
+    {
+        $output_data = array();
+
+        $top_annotation = $this->top();
+        if (isset($top_annotation['custom']))
+            $output_data = $top_annotation['custom'];
+        else if (is_array($top_annotation))
+            $output_data = $top_annotation;
 
         return $this->_display_jsonp($output_data, $callback);
     }
@@ -292,17 +476,30 @@ class Annotation_getter extends Web_apps_controller {
         $score_type = 4;
         foreach ($search AS $annotation)
         {
-
+			
             //如果要讓標註指引有分數層次的差別，則請解開這邊的註解
             /*
-            $score = $annotation->get_score(0)->get_score();
-
+            $aid = $annotation->get_id();
+        	$sql = "SELECT f_score FROM top WHERE topic_id = $aid";
+        	$aaa1 = pg_query($sql);
+        	$aa1 = pg_fetch_row($aaa1);
+        	$a1 = $aa1[0];
+        	$score_a = $annotation->get_score(0)->get_score();
+        	$score = array();
+            $score = $score_a * $a1;
+     		
+			//$score = $annotation->get_field('t_score');
+            
+        	$score = $annotation->get_score(0)->get_score();
+        	
+        	
             $score_type = 1;
-            if ($score < 1.5)
+            
+            if ($score < 0.6)
                 $score_type = 1;
-            else if ($score >= 1.5 && $score < 2)
+            else if ($score >= 0.6 && $score < 4)
                 $score_type = 2;
-            else if ($score >= 2 && $score < 2.5)
+            else if ($score >= 4 && $score < 6)
                 $score_type = 3;
             else
                 $score_type = 4;
@@ -397,9 +594,21 @@ class Annotation_getter extends Web_apps_controller {
         //取得搜尋結果
         foreach ($search AS $annotation)
         {
-
+			
             //如果要讓標註指引有分數層次的差別，則請解開這邊的註解
-            $score = $annotation->get_score(0)->get_score();
+            /*
+            $aid = $annotation->get_id();
+        	$sql = "SELECT f_score FROM top WHERE topic_id = $aid";
+        	$aaa1 = pg_query($sql);
+        	$aa1 = pg_fetch_row($aaa1);
+        	$a1 = $aa1[0];
+        	$score_a = $annotation->get_score(0)->get_score();
+            $score = array();
+        	$score = $score_a * $a1;
+            */
+        	
+        	$score = $annotation->get_score(0)->get_score();
+          
 
             $score_type = $this->parse_navigation_level($score);
             
@@ -454,17 +663,8 @@ class Annotation_getter extends Web_apps_controller {
      */
     function navigation_none($json = NULL, $callback = NULL)
     {
-    	if (!isset($callback)) {
-            $callback = $json;
-        }
-    	
         $output_data = array();
         return $this->_display_jsonp($output_data, $callback);
-    }
-    
-    function navigation_disable($json = NULL, $callback = NULL)
-    {
-        return $this->navigation_none($json, $callback);
     }
 
     /**
@@ -475,15 +675,25 @@ class Annotation_getter extends Web_apps_controller {
      */
     public function parse_navigation_level($score)
     {
-        $score_type = 1;
-        if ($score < 1.5)
+        /*$score_type = 1;
+        if ($score < 1.7)
             $score_type = 1;
-        else if ($score >= 1.5 && $score < 2)
+        else if ($score >= 1.7 && $score < 1.9)
             $score_type = 2;
-        else if ($score >= 2 && $score < 2.5)
+        else if ($score >= 1.9 && $score < 2.5)
             $score_type = 3;
         else
-            $score_type = 4;
+            $score_type = 4;*/
+            
+    		$score_type = 1;
+            if ($score < 0)
+                $score_type = 1;
+            else if ($score >= 0 && $score < 4)
+                $score_type = 2;
+            else if ($score >= 4 && $score < 6)
+                $score_type = 3;
+            else
+                $score_type = 4;
         return $score_type;
     }
 
@@ -558,7 +768,7 @@ class Annotation_getter extends Web_apps_controller {
         // 4 [ target my ]
         //test_msg('3 [ target like ] 4 [ target my ]');
 
-        if ((isset($data->target_lik) OR isset($data->target_my) )
+        if ((isset($data->target_like) OR isset($data->target_my) OR isset($data->target_read))
             && is_null($user))
         {
             return $this->_create_null_list($callback);
@@ -569,6 +779,13 @@ class Annotation_getter extends Web_apps_controller {
             $search->set_target_like($data->target_like, $user);
             if (isset($search_id))
                 $search_id->set_target_like($data->target_like, $user);
+        }
+
+        if (isset($data->target_read))
+        {
+            $search->set_target_read($data->target_read, $user);
+            if (isset($search_id))
+                $search_id->set_target_read($data->target_read, $user);
         }
 
         if (isset($data->target_my))
@@ -724,8 +941,11 @@ class Annotation_getter extends Web_apps_controller {
         $action = 12;
         if (isset($data->topic_id)
             && isset($data->target_topic) && $data->target_topic === FALSE
-            && isset($data->limit) == FALSE)
+            && isset($data->limit) == FALSE){
             $action = 16;
+            //kals_log3($this->db, $data->topic_id);
+            }
+            
 
         $do_log = TRUE;
         if (isset($data->limit) && $data->limit == 5)
@@ -742,13 +962,18 @@ class Annotation_getter extends Web_apps_controller {
             $action = 17;
             if (isset($data->topic_id)
                 && isset($data->target_topic) && $data->target_topic === FALSE
-                && isset($data->limit) == FALSE)
+                && isset($data->limit) == FALSE){
                 $action = 18;
+                //kals_log3($this->db, $data->topic_id);
+                }
         }
          
         if ($do_log)
         {
             kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
+                    //if ($action == 16 or $action == 18){
+        		//kals_log3($this->db, $data->topic_id);
+            //}
         }
 
         context_complete();

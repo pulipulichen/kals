@@ -3,7 +3,7 @@
     
     
     
-    border: 1px solid #8E846B !important;
+    border: 1px solid #8E846B;
     
     background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
         , #FEEEBD 70px, #FEEEBD 100%);
@@ -21,16 +21,14 @@
     font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
     font-size: 1.1em;
     
-    -moz-border-radius: 8px !important;
+    -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
-	-khtml-border-radius: 8px;
-	border-radius: 8px;
     
     display: block;
     outline: 0 none;
     
     position: absolute;
-    
+    padding: 10px;
 }
 
 .kals-modal .scroll-container {
@@ -48,8 +46,8 @@
 
 .kals-modal .scroll {
     background-color: #666666;
-    border-radius: 2.5px !important;
-    -moz-border-radius: 2.5px !important;
+    border-radius: 2.5px;
+    -moz-border-radius: 2.5px;
     position:relative;
 }
 
@@ -57,19 +55,16 @@
     padding: 0;
     margin: 0;
 }
-.kals-modal .list-option{
-	display:inline;
-}
 
 /* -------- */
 /* form */
 
-.KALS input.placeheld,
-.KALS textarea.placeheld {
+input.placeheld,
+textarea.placeheld {
     color: gray;
 } 
 
-.KALS .link {
+.link {
     text-decoration:underline;
     cursor: pointer;
 }

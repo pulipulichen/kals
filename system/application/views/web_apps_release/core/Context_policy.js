@@ -16,62 +16,25 @@ function Context_policy(){
     
     //if ($.object_isset('KALS_context.auth.add_listener()'))
     //{
-        //KALS_context.auth.add_listener(this);
-		var _this = this;
-		KALS_context.auth.add_listener(function (_auth) {
-			//$.test_msg("Context_policy", _auth._data.policy);
-			if (typeof (_auth.get_data().policy) != "undefined") {
-				if (_auth.is_login()) {
-					_this.set_attr(_auth.get_data().policy);
-				}
-				else {
-					if (typeof(_auth.get_data().navigation_data) != "undefined") {
-						_this.set_attr("navigation_data", _auth.get_data().policy.navigation_data);
-					}
-					_this.reset();
-				}	
-			}
-			
-		});
+        KALS_context.auth.add_listener(this);
     //}
-	
-	_this.reset();
 }
 
 Context_policy.prototype = new Attribute_event_dispatcher();
 
 Context_policy.prototype._$data_key = 'policy';
 
-Context_policy.prototype.readable = function () {		
-	if (KALS_CONFIG.isolation_mode === true) {
-		//$.test_msg("policy.readable()", this.get_attr('read'));
-		return this.get_attr('read', false);
-	}
+Context_policy.prototype.readable = function () {
     return this.get_attr('read', true);
 };
 
 Context_policy.prototype.writable = function () {
-	if (KALS_CONFIG.isolation_mode === true 
-		&& KALS_context.auth.is_login() === false) {
-			return false;
-		}
     return this.get_attr('write', false);
 };
 
-/**
- * 是否允許顯示別人的標註
- */
 Context_policy.prototype.allow_show_navigation = function () {
-	if (KALS_CONFIG.isolation_mode === true) {
-		return false;
-	}
-	
-	var _allow_show = this.get_attr('show_navigation', true);
-	//$.test_msg("policy show_navigation", _allow_show);
-	return _allow_show; 
-	
     //實驗中，預設是不顯示推薦標註
-    //return this.get_attr('show_navigation', false);
+    return this.get_attr('show_navigation', false);
     
     //正式使用時，預設是顯示推薦標註
     //return this.get_attr('recommend', true);
@@ -81,16 +44,10 @@ Context_policy.prototype.get_navigation_data = function () {
     return this.get_attr('navigation_data');
 };
 
-/**
- * 我的標註的範圍資料
- */
 Context_policy.prototype.get_my_basic = function () {
     return this.get_attr('my_basic');
 };
 
-/**
- * 我的自訂標註的範圍資料
- */
 Context_policy.prototype.get_my_custom = function () {
     return this.get_attr('my_custom');
 };
@@ -113,24 +70,6 @@ Context_policy.prototype.set_writable = function (_boolean) {
 
 Context_policy.prototype.set_show_navigation = function (_boolean) {
     return this.set_attr('show_navigation', _boolean);
-};
-
-Context_policy.prototype.reset = function () {
-	
-	if (KALS_CONFIG.isolation_mode === true) {
-		this.set_attr("read", true);
-		this.set_attr("write", KALS_context.auth.is_login());
-		this.set_attr("show_navigation", false);		
-		this.unset_attr("my_basic");
-		
-		return this;
-	}
-	
-	this.set_attr("read", true);
-	this.set_attr("write", KALS_context.auth.is_login());
-	this.set_attr("show_navigation", true);
-	this.unset_attr("my_basic");
-	return this;
 };
 
 /* End of file Context_policy */

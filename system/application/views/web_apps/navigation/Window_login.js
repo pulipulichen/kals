@@ -73,22 +73,22 @@ Window_login.prototype._$create_ui = function () {
     );
     
     // 2010.11.21 在職專班實驗專用訊息
-    if (typeof(KALS_CONFIG.login_hint) == 'string') {
-        var _login_hint = $('<div></div>')
+    if (KALS_CONFIG.exp2010_lock == true)
+    {
+        var _experiment_message = $('<div></div>')
             .css({
                 fontSize: 'small',
                 'margin': '10px 0',
                 'padding': '10px',
                 'border': '1px solid gray'
             })
-            .html(KALS_CONFIG.login_hint)
-            .appendTo(_ui);
+            .appendTo(_ui);    
         
         
-        //KALS_context.lang.add_listener(_experiment_message, new KALS_language_param(
-        //    'If you are E-learning Master Program\'s student, please login with your school e-mail and student ID. <br /><br />For example, student with ID "96155001" will write "96155001@nccu.edu.tw" in e-mail address and "96155001" in password.',
-        //    'login.experiment_message.201012'
-        //));
+        KALS_context.lang.add_listener(_experiment_message, new KALS_language_param(
+            'If you are E-learning Master Program\'s student, please login with your school e-mail and student ID. <br /><br />For example, student with ID "96155001" will write "96155001@nccu.edu.tw" in e-mail address and "96155001" in password.',
+            'login.experiment_message.201012'
+        ));
     }
     
     
@@ -108,7 +108,8 @@ Window_login.prototype._$create_ui = function () {
     _register_row.addClass('register-link')
         .appendTo(_ui);
         
-    if (KALS_CONFIG.deny_register === true) {
+    if (KALS_CONFIG.exp2010_lock == true)
+    {
         _register_row.hide();
     }
     
@@ -127,7 +128,8 @@ Window_login.prototype.set_error = function (_lang_param) {
     _error.empty();
     if ($.is_null(_lang_param))
         _error.hide();
-    else {
+    else
+    {
         var _error_msg = KALS_context.lang.create_listener(_lang_param);
         _error.append(_error_msg).show();
     }

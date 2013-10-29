@@ -30,7 +30,6 @@ class help extends Web_apps_controller {
            'request_uri' => $_SERVER["REQUEST_URI"]
         );
 
-        create_context();
         $user = get_context_user();
         $user_id = NULL;
         if (isset($user))
