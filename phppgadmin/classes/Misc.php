@@ -22,6 +22,7 @@
 		 */
 		function isDumpEnabled($all = false) {
 			$info = $this->getServerInfo();
+                        
 			return !empty($info[$all ? 'pg_dumpall_path' : 'pg_dump_path']);
 		}
 
@@ -2343,7 +2344,7 @@
 			// Check for the server in the logged-in list
 			if (isset($_SESSION['webdbLogin'][$server_id]))
 				return $_SESSION['webdbLogin'][$server_id];
-
+                        
 			// Otherwise, look for it in the conf file
 			foreach($conf['servers'] as $idx => $info) {
 				if ($server_id == $info['host'].':'.$info['port'].':'.$info['sslmode']) {

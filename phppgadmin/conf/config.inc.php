@@ -32,7 +32,24 @@
 
 	// Specify the path to the database dump utilities for this server.
 	// You can set these to '' if no dumper is available.
-	$conf['servers'][0]['pg_dump_path'] = '/usr/bin/pg_dump';
+        
+        $pg_dump_path = "/usr/bin/pg_dump";
+        if (DIRECTORY_SEPARATOR == "\\") {
+            $possible_list = array(
+                'D:\\Program Files\\PostgreSQL\\9.2\bin\\pg_dump.exe',
+                'C:\\Program Files\\PostgreSQL\\9.2\bin\\pg_dump.exe',
+                'D:\\Program Files\\PostgreSQL\\8.4\bin\\pg_dump.exe',
+                'C:\\Program Files\\PostgreSQL\\8.4\bin\\pg_dump.exe',
+                'D:\\Program Files\\PostgreSQL\\8.3\bin\\pg_dump.exe',
+                'C:\\Program Files\\PostgreSQL\\8.3\bin\\pg_dump.exe'
+            );
+            foreach ($possible_list AS $path) {
+                if (is_file($path)) {
+                    $pg_dump_path = $path;
+                }
+            }
+        }
+	$conf['servers'][0]['pg_dump_path'] = $pg_dump_path;
 	$conf['servers'][0]['pg_dumpall_path'] = '/usr/bin/pg_dumpall';
 
 	// Example for a second server (PostgreSQL for Windows)
