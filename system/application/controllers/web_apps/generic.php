@@ -18,7 +18,7 @@ class generic extends Web_apps_controller {
 
     protected $controller_enable_cache = FALSE;
     
-    private $dirmap_path = "./system/application/views/web_apps_release/";
+    private $dirmap_path = "./system/application/views/web_apps/";
 
     function toolkit($return_list = NULL)
     {
