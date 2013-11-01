@@ -44,9 +44,9 @@ Dialog_modal.prototype._$create_ui = function () {
     }
     
     //$.test_msg('Dialog_modal._$create_ui()', this._$modal_name);
-    
+ 
     var _config = this._$get_config();
-    _ui.overlay(_config);
+    _ui.overlay(_config);	//jQuery TOOL Overlay
     
     if ($.is_mobile_mode()) {
         _ui.addClass('mobile');

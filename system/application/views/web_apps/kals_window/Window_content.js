@@ -263,5 +263,17 @@ Window_content.prototype.set_error = function (_message) {
     return this;
 };
 
+/**
+ * 獨立視窗
+ * 
+ * 如果是false，則會依附在KALS_window底下
+ * 如果是true，則會直接open
+ */
+Window_content.prototype._$absolute = false;
+
+Window_content.prototype.is_absolute = function () {
+	return this._$absolute;
+};
+
 /* End of file Window_content */
 /* Location: ./system/application/views/web_apps/Window_content.js */

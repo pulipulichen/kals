@@ -20,6 +20,8 @@ function View_list_collection(_topic_param) {
 
 View_list_collection.prototype = new List_collection();
 
+View_list_collection.prototype._$name = "view-list";
+
 View_list_collection.prototype._$topic_id = null;
 
 View_list_collection.prototype._$target_topic = true;

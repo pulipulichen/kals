@@ -791,8 +791,9 @@ class Annotation extends KALS_resource {
             //$data['class'] = get_class($this);
             $data['annotation_id'] = $this->get_id();
             $note = $this->get_note();
-            if (isset($note))
+            if (isset($note)) {
                 $data['note'] = $note;
+			}
             $data['user'] = $this->get_user()->export_simple_data();
             $data['type'] = $this->get_type()->export_data();
             $data['scope'] = $this->get_scopes()->export_data();

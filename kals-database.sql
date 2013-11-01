@@ -404,6 +404,22 @@ COMMENT ON VIEW annotation_consensus IS '標註共識的統計表';
 
 
 --
+-- Name: c_score; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+--
+
+CREATE TABLE c_score (
+    c1 numeric DEFAULT 1,
+    c2 numeric DEFAULT 1,
+    c3 numeric DEFAULT 1,
+    uc1 numeric DEFAULT 1,
+    uc2 numeric DEFAULT 1,
+    uc3 numeric DEFAULT 1
+);
+
+
+ALTER TABLE public.c_score OWNER TO kals;
+
+--
 -- Name: ci_sessions; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
 --
 
@@ -644,33 +660,33 @@ ALTER TABLE public.log OWNER TO kals;
 -- Name: TABLE log; Type: COMMENT; Schema: public; Owner: kals
 --
 
-COMMENT ON TABLE log IS '1=檢查登入成功	//記得要取得瀏覽器資料
-2=檢查登入失敗
-3=輸入登入成功
-4=輸入登入失敗
-5=內嵌登入成功
-6=內嵌登入失敗
-7=登出
-8=註冊成功
-9=註冊失敗
-10=變更帳戶
-11=變更密碼
-12=瀏覽標註: 範圍
-13=新增標註沒有建議:type;note
-14=新增標註具有建議:type;note;recommend_id
-15=修改標註:type:note
-16=瀏覽討論
-17=未登入者瀏覽
-18=未登入者瀏覽討論
-19=刪除標註:annotation_id
-20=新增回應標註:type;topic_id;respond_id_list;note
-21=修改回應標註:type;topic_id;respond_id_list;note
-22=加入喜愛清單:被喜愛的annotation_id
-23=移除喜愛清單:被移除的annotation_id
-24=接受建議，沒有推薦:recommend_id
-25=接受建議，有推薦:recommend_id
-26=拒絕建議:recommend_id
-27=發生錯誤:錯誤內容
+COMMENT ON TABLE log IS '1=檢查登入成功	//記得要取得瀏覽器資料
+2=檢查登入失敗
+3=輸入登入成功
+4=輸入登入失敗
+5=內嵌登入成功
+6=內嵌登入失敗
+7=登出
+8=註冊成功
+9=註冊失敗
+10=變更帳戶
+11=變更密碼
+12=瀏覽標註: 範圍
+13=新增標註沒有建議:type;note
+14=新增標註具有建議:type;note;recommend_id
+15=修改標註:type:note
+16=瀏覽討論
+17=未登入者瀏覽
+18=未登入者瀏覽討論
+19=刪除標註:annotation_id
+20=新增回應標註:type;topic_id;respond_id_list;note
+21=修改回應標註:type;topic_id;respond_id_list;note
+22=加入喜愛清單:被喜愛的annotation_id
+23=移除喜愛清單:被移除的annotation_id
+24=接受建議，沒有推薦:recommend_id
+25=接受建議，有推薦:recommend_id
+26=拒絕建議:recommend_id
+27=發生錯誤:錯誤內容
 28=查看說明';
 
 
@@ -911,6 +927,96 @@ ALTER SEQUENCE score_score_id_seq OWNED BY score.score_id;
 
 
 --
+-- Name: top_annotation_id_seq; Type: SEQUENCE; Schema: public; Owner: kals
+--
+
+CREATE SEQUENCE top_annotation_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.top_annotation_id_seq OWNER TO kals;
+
+--
+-- Name: top; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+--
+
+CREATE TABLE top (
+    top_id bigint DEFAULT nextval('top_annotation_id_seq'::regclass) NOT NULL,
+    user_id integer,
+    topic_id integer,
+    action integer,
+    create_timestamp timestamp without time zone DEFAULT now(),
+    u_time timestamp without time zone DEFAULT now(),
+    count integer,
+    a_score numeric DEFAULT 1,
+    f_score numeric DEFAULT 1,
+    t_score numeric DEFAULT 1,
+    top_c numeric,
+    top_u numeric
+);
+
+
+ALTER TABLE public.top OWNER TO kals;
+
+--
+-- Name: user; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+--
+
+CREATE TABLE "user" (
+    user_id integer NOT NULL,
+    name text NOT NULL,
+    email text,
+    sex integer DEFAULT 0 NOT NULL,
+    photo boolean DEFAULT false NOT NULL,
+    locale character varying(20),
+    style text,
+    password text,
+    deleted boolean DEFAULT false NOT NULL,
+    domain_id integer NOT NULL
+);
+
+
+ALTER TABLE public."user" OWNER TO kals;
+
+--
+-- Name: TABLE "user"; Type: COMMENT; Schema: public; Owner: kals
+--
+
+COMMENT ON TABLE "user" IS '使用者';
+
+
+--
+-- Name: webpage2annotation; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW webpage2annotation AS
+    SELECT DISTINCT scope.webpage_id, annotation.annotation_id FROM ((annotation JOIN annotation2scope ON ((annotation.annotation_id = annotation2scope.annotation_id))) JOIN scope ON ((annotation2scope.scope_id = scope.scope_id))) ORDER BY scope.webpage_id;
+
+
+ALTER TABLE public.webpage2annotation OWNER TO kals;
+
+--
+-- Name: VIEW webpage2annotation; Type: COMMENT; Schema: public; Owner: kals
+--
+
+COMMENT ON VIEW webpage2annotation IS '網頁與標註的關聯表';
+
+
+--
+-- Name: top_ranking; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW top_ranking AS
+    SELECT webpage2annotation.webpage_id, "user".user_id, "user".name AS user_name, avg(top.t_score) AS t_score_avg FROM webpage2annotation, top, "user" WHERE ((top.user_id = "user".user_id) AND (webpage2annotation.annotation_id = top.topic_id)) GROUP BY "user".user_id, webpage2annotation.webpage_id, "user".name HAVING (count(top.t_score) >= 5) ORDER BY avg(top.t_score) DESC;
+
+
+ALTER TABLE public.top_ranking OWNER TO kals;
+
+--
 -- Name: type; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
 --
 
@@ -949,33 +1055,6 @@ ALTER TABLE public.type_type_id_seq OWNER TO kals;
 --
 
 ALTER SEQUENCE type_type_id_seq OWNED BY type.type_id;
-
-
---
--- Name: user; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
---
-
-CREATE TABLE "user" (
-    user_id integer NOT NULL,
-    name text NOT NULL,
-    email text,
-    sex integer DEFAULT 0 NOT NULL,
-    photo boolean DEFAULT false NOT NULL,
-    locale character varying(20),
-    style text,
-    password text,
-    deleted boolean DEFAULT false NOT NULL,
-    domain_id integer NOT NULL
-);
-
-
-ALTER TABLE public."user" OWNER TO kals;
-
---
--- Name: TABLE "user"; Type: COMMENT; Schema: public; Owner: kals
---
-
-COMMENT ON TABLE "user" IS '使用者';
 
 
 --
@@ -1018,23 +1097,6 @@ ALTER TABLE public.webpage OWNER TO kals;
 --
 
 COMMENT ON TABLE webpage IS '網頁的資料';
-
-
---
--- Name: webpage2annotation; Type: VIEW; Schema: public; Owner: kals
---
-
-CREATE VIEW webpage2annotation AS
-    SELECT DISTINCT scope.webpage_id, annotation.annotation_id FROM ((annotation JOIN annotation2scope ON ((annotation.annotation_id = annotation2scope.annotation_id))) JOIN scope ON ((annotation2scope.scope_id = scope.scope_id))) ORDER BY scope.webpage_id;
-
-
-ALTER TABLE public.webpage2annotation OWNER TO kals;
-
---
--- Name: VIEW webpage2annotation; Type: COMMENT; Schema: public; Owner: kals
---
-
-COMMENT ON VIEW webpage2annotation IS '網頁與標註的關聯表';
 
 
 --
@@ -1376,6 +1438,14 @@ ALTER TABLE ONLY score
 
 
 --
+-- Name: top_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+--
+
+ALTER TABLE ONLY top
+    ADD CONSTRAINT top_pkey PRIMARY KEY (top_id);
+
+
+--
 -- Name: type_pk_type_id; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
 --
 
@@ -1613,22 +1683,6 @@ GRANT ALL ON TABLE annotation2respond_count TO kals;
 GRANT ALL ON TABLE annotation2respond_count TO postgres;
 GRANT SELECT ON TABLE annotation2respond_count TO PUBLIC;
 
-
---
--- TOC entry 2067 (class 0 OID 24792)
--- Dependencies: 211
--- Data for Name: type; Type: TABLE DATA; Schema: public; Owner: kals
---
-
-COPY type (type_id, name, basic) FROM stdin;
-1	annotation.type.importance	t
-2	annotation.type.question	t
-3	annotation.type.confusion	t
-4	annotation.type.summary	t
-5	annotation.type.concept	t
-6	annotation.type.example	t
-7	annotation.type.custom	t
-\.
 
 --
 -- PostgreSQL database dump complete

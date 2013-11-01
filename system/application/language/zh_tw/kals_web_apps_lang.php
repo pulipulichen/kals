@@ -88,6 +88,7 @@ $lang['web_apps.window.save.success'] = '儲存成功!';
 $lang['web_apps.window.save.failed'] = '儲存失敗';
 $lang['web_apps.window.ok'] = '確定';
 $lang['web_apps.window.loading'] = '讀取中，請稍候';
+$lang['web_apps.window.send'] = '查詢';
 
 $lang['web_apps.toolbar.search.advanced_search'] = '進階搜尋';
 $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
@@ -110,6 +111,25 @@ $lang['web_apps.window.content.error_no_email'] = '請輸入電子信箱位址�
 $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
 $lang['web_apps.window.content.error_no_email_password'] = '請輸入電子信箱位址與密碼。';
 
+$lang['web_apps.window.search.nav_heading'] = '搜尋';
+$lang['web_apps.window.content.searchrange'] = '搜尋範圍';
+$lang['web_apps.window.content.search.field.note'] = '標註內容';
+$lang['web_apps.window.content.search.field.author'] = '作者';
+$lang['web_apps.window.content.search.field.annotation_type'] = '類別';
+$lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文';
+$lang['web_apps.window.content.type_radio'] = '標註類別';
+$lang['web_apps.window.content.searchkey'] = '關鍵字';
+$lang['web_apps.window.content.searchresult'] = '搜尋結果';
+$lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
+$lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';
+$lang['web_apps.window.content.loaded_already'] = '沒有其他搜尋結果';
+$lang['web_apps.window.map.nav_heading'] = '小地圖';
+
+
+$lang['web_apps.window.content.oreder_by'] = '排序方式';
+$lang['web_apps.window.content.oreder_by.update'] = '更新日期';
+$lang['web_apps.window.content.oreder_by.create'] = '最新建立';
+$lang['web_apps.window.content.oreder_by.scope'] = '內文順序';
 
 $lang['web_apps.window.login.heading'] = '登入';
 $lang['web_apps.window.login.nav_heading'] = '登入';
@@ -160,6 +180,14 @@ $lang['web_apps.window.filter.heading'] = '請勾選要顯示的標註';
 $lang['web_apps.window.filter.nav_heading'] = '標註顯示';
 $lang['web_apps.window.filter.content.option.my'] = '我的標註';
 $lang['web_apps.window.filter.content.option.navigation'] = '推薦的標註';
+
+
+$lang['web_apps.window.map.heading'] = '小地圖';
+$lang['web_apps.window.map.nav_heading'] = '小地圖';
+$lang['web_apps.window.map.content.option.my'] = '我的標註';
+$lang['web_apps.window.map.content.option.navigation'] = '推薦的標註';
+
+
 
 
 /**
@@ -235,6 +263,7 @@ $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
 $lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
+$lang['web_apps.list_menu.review'] = '檢視';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
 

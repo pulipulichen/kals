@@ -225,7 +225,7 @@ if ( ! function_exists('retrieve_title'))
         // so, we have to use the classic file reading functions and parse the page manually
         $fh = @fopen($url, "r");
         $str = @fread($fh, 7500);  // read the first 7500 characters, it's gonna be near the top
-        fclose($fh);
+        @fclose($fh);
         //echo $str;
 
         $start = strpos($str, "<title>");
