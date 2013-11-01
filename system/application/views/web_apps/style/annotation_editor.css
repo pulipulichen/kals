@@ -184,6 +184,10 @@
 	margin-top: 0.2em;
 }
 
+.kals-modal .annotation-editor .submit-container {
+    display: block;
+}
+
 .kals-modal .annotation-editor .submit-container .edit,
 .kals-modal .annotation-editor .submit-container .cancel,
 .kals-modal .annotation-editor.editing .submit-container .create {
