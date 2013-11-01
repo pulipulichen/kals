@@ -19,7 +19,8 @@ function Common_navigation() {
 	if (KALS_context.policy.allow_show_navigation()) {
 		this._$nav_items = [
 	        new Window_filter(),
-                new Window_map()
+            new Window_map(),
+			new Window_search()
 	    ];
 	}
 }

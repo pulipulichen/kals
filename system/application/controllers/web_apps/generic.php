@@ -171,7 +171,8 @@ class generic extends Web_apps_controller {
             'navigation/Window_logout_submit',
             'navigation/Window_password_change',
             'navigation/Window_password_change_submit',
-
+            'navigation/Window_search',
+            'navigation/Window_search_submit',
             'navigation/Common_navigation',
             'navigation/Window_filter',
             'navigation/Window_filter_submit',
@@ -253,6 +254,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_collection_like',
             'annotation_list/List_collection_my',
             'annotation_list/List_collection_other',
+            'annotation_list/List_collection_search',
             'annotation_list/List_collection_anonymous',
             'annotation_list/Respond_list_collection',
             'annotation_list/Topic_list',
@@ -269,7 +271,8 @@ class generic extends Web_apps_controller {
             'annotation_list/List_item',
             'annotation_list/List_item_topic',
             'annotation_list/List_item_respond',
-
+            'annotation_list/List_menu_search',
+            
             'annotation_recommend/Recommend_hint',
             'annotation_recommend/Recommend_tooltip',
             'annotation_recommend/Recommend_list_item',
@@ -281,6 +284,9 @@ class generic extends Web_apps_controller {
             'annotation_view/View_editor_container',
             'annotation_view/View_respond_list_collection',
             'annotation_view/Window_view',
+            
+            'annotation_list/List_item_search_topic',
+            'annotation_list/List_item_search_respond',
 
             'kals_text/Annotation_tool',
             'kals_text/Annotation_scope_loader',

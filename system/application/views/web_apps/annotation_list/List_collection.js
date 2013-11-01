@@ -66,7 +66,7 @@ List_collection.prototype._$topic_id = null;
  */
 List_collection.prototype._$order_by = 'score';
 
-List_collection.prototype._$need_login = null;
+List_collection.prototype._$need_login = false;
 
 // --------
 // Private Attributes
