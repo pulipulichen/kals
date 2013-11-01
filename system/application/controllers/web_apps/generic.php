@@ -175,6 +175,7 @@ class generic extends Web_apps_controller {
             'navigation/Common_navigation',
             'navigation/Window_filter',
             'navigation/Window_filter_submit',
+            'navigation/Window_map',
 
             'kals_toolbar/Toolbar_component',
             'kals_toolbar/Toolbar_toggle_component',
@@ -463,6 +464,7 @@ class generic extends Web_apps_controller {
             'annotation_view',
             'annotation_recommend',
             'core'
+            'map'
         );
         foreach ($list AS $path)
         {
