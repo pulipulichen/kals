@@ -28,7 +28,7 @@ List_collection_search.prototype._$target_my = false;
 
 List_collection_search.prototype._$target_like = false;
 
-List_collection_search.prototype._$need_login = false;
+List_collection_search.prototype._$need_login = null;
 
 //接收資料的來源
 List_collection_search.prototype._$load_url = 'annotation_getter/search_annotation'; 
@@ -202,7 +202,8 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 		    _show_no_result_row.hide();
 		}
 	
-        //顯示查詢結果		
+        //顯示查詢結果	
+                _ui.find(".result-number").show();
 		_ui.find(".result-number dd:first").html(_search_count);
  	
 		
@@ -233,6 +234,7 @@ List_collection_search.prototype._$create_ui = function () {
 	var _search_number_row = _factory.row(
         new KALS_language_param('Searchnumber','window.content.searchnumber'), '0')
 	    .addClass('result-number')
+            .hide()
 	    .prependTo(_ui); 
 		
   // _search_number_row.parent(".list-collection search").find('dd').addClass('number');

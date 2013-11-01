@@ -241,7 +241,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         ).appendTo(_subpanel);
 
 	
-	_factory.hr_row().appendTo(_ui);	
 	
 	
   	
@@ -254,12 +253,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
 */
    
-   // 搜尋結果標題	 
-	var _searchresult_row = _factory.heading_row(
-        new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_ui); //"搜尋結果"標題	
-  
-    _searchresult_row.css("font-size","medium");
-  
   // 搜尋結果數量
     //var _result_number = _search_data.item_number;
 	
@@ -268,9 +261,20 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	).appendTo(_ui); */
 
     
-  
+   
+    var _result = _factory.subpanel("search-result-subpanel")
+        .appendTo(_ui)
+        .hide();
+    
+    _factory.hr_row().appendTo(_result);	
+        
+        // 搜尋結果標題	 
+    var _searchresult_row = _factory.heading_row(
+    new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_result); //"搜尋結果"標題	
+    _searchresult_row.css("font-size","medium");
+    
     var _list_ui = this.list.get_ui();
-	_list_ui.appendTo(_ui);
+	_list_ui.appendTo(_result);
 	
 	return _ui;
 };	

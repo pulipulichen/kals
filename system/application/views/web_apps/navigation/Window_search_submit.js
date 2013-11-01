@@ -65,20 +65,24 @@ Window_search_submit.prototype.complete_handle = function () {
  */
 Window_search_submit.prototype.submit = function(){
 	
-	var _list = this._content.list;
-	
+        var _content = this._content;
+	var _list = _content.list;
 	var _data = this.get_data();
 	
+	//$.test_msg("Window_search_submit.prototype.submit", _data);
 	_list.set_searchrange(_data.searchrange);
 	_list.set_keyword(_data.keyword);
 	_list.set_order_by(_data.order_by);
 	
 	_list.reset();
 	
+        
 	// 我們要叫List_collection_search進行搜尋
 	var _this = this;
 	_list.load_list(function () {
+                $.test_msg("Window_search_submit.prototype.submit");
 		_this.complete_handle();
+                _content.get_ui().find(".search-result-subpanel").show();
 	});
 };
 
