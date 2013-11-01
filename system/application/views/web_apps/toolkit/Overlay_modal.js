@@ -132,6 +132,7 @@ Overlay_modal.prototype.open = function (_callback) {
                 
                 //此處的callback會在load的時候就呼叫了
                 var _api = _ui.data("overlay");
+				//$.test_msg('Overlay_modal.open() 有API嗎?', $.isset(_api));
                 if ($.isset(_api)) {
                     _api.setOpened(false);
                     _api.load();    

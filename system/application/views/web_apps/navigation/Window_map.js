@@ -63,7 +63,7 @@ Window_map.prototype._$create_ui = function () {
 	
     var _ui = this._$create_ui_prototype();
 	_ui.addClass("overlay-map");
-    _ui.append(_factory.panel('window-map'));
+        _ui.append(_factory.panel('window-map'));
 
 	
 	_ui.addClass('dialog-modal')
@@ -324,8 +324,11 @@ Window_map.prototype._$get_config = function () {
 	var _config = Dialog_modal.prototype._$get_config.call(this);
 	
 	// http://jquerytools.org/documentation/overlay/
-	_config.top = "5px";
-	_config.left = "800px";
+	_config.top = "10px";
+	_config.left = ($(window).width() - 350) + "px";
+        
+        
+        
 	
     return _config; 
 };
