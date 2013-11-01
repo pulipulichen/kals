@@ -16,7 +16,10 @@
 .kals-modal .editor-container {
     border:1px none #4A4531;
     border-bottom-style: solid;
-    
+}
+
+.kals-modal .window-view-content .editor-container {
+    border-width: 0;
 }
 
 /**
@@ -182,6 +185,10 @@
     -khtml-border-radius: 3px;
 	padding: 0.4em;
 	margin-top: 0.2em;
+}
+
+.kals-modal .annotation-editor .submit-container {
+    display: block;
 }
 
 .kals-modal .annotation-editor .submit-container .edit,

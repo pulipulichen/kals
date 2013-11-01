@@ -1497,6 +1497,9 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
                 && this.is_word_next_span(_word)) {
                 _text = _text + ' ';
             }
+            else if ($.is_ascii(_text.substr(_text.length-1, 1))) {
+                _text = _text + ' ';
+            }
             
             for (var _k in _focus_index) {
                 if ($.inArray(_j, _focus_index[_k]) > -1) {
