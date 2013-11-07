@@ -786,21 +786,41 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 			// 加入了拖曳選取時也能用的選取範圍功能
 			if (typeof(KALS_SELECT_MOUSEDOWN_LOCK) === "undefined") {
 				KALS_SELECT_MOUSEDOWN_LOCK = null;
+                                KALS_SELECT_LOCK = false;
 			}
+                        
+                        _words.mouseout(function () {
+                            KALS_SELECT_LOCK = false;
+                        });
+                        
 			_words.mousedown(function () {
+                                KALS_SELECT_LOCK = true;
 				KALS_SELECT_MOUSEDOWN_LOCK = 1;
 				
 				var _md_this = this;
 				setTimeout(function () {
 					if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
 						var _word = $(_md_this);
+                                                
 						_select.cancel_select();
 						_select.set_select(_word);	
 						
 						KALS_SELECT_MOUSEDOWN_LOCK = 2;
 					}
-				}, 100);
+				}, 300);
+                                
+                                setTimeout(function () {
+                                        if (KALS_SELECT_MOUSEDOWN_LOCK === 2
+                                            && KALS_SELECT_LOCK === true) {
+						var _word = $(_md_this);
+						_select.set_select(_word);	
+                                                KALS_SELECT_MOUSEDOWN_LOCK = null;
+					}
+					
+					
+                                }, 1000);
 			});
+                        
 			_words.mouseup(function () {
 				var _mu_this = this;
 				setTimeout(function () {
@@ -813,6 +833,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 				}, 100);
 				
 				if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
+                                    
 					//表示這是一個Click事件
 					KALS_SELECT_MOUSEDOWN_LOCK = null;
 					
@@ -820,13 +841,13 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 						return this;
 					}
 	                
-	                var _word = $(this);
-	                setTimeout(function () {
-	                    _word.tooltip().hide();
-	                }, 100);
-	                
-	                //_manager.listen_select(_word);
-	                _select.set_select(_word);
+                                        var _word = $(this);
+                                        setTimeout(function () {
+                                            _word.tooltip().hide();
+                                        }, 100);
+
+                                        //_manager.listen_select(_word);
+                                        _select.set_select(_word);
 					
 					if ($.is_function(_callback)) {
 						_callback();
