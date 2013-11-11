@@ -269,7 +269,7 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
        var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
        _script_tag.appendTo($('head'));
        
-       console.log('[KALS] append script: ' + _script_url);
+       //console.log('[KALS] append script: ' + _script_url);
        $.getScript(_script_url, function () {
            
            if (_loaded === false) {

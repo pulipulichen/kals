@@ -110,7 +110,11 @@ KALS_util.ajax_get = function (_config) {
 			
 			//if (typeof(_data.KALS_language) == "undefined"
 			//	&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
+                        
+                        if (KALS_context !== undefined
+                            && KALS_context.completed === true) {
 				$.test_msg('ajax_get from ' + _url + ' return data', _data);
+                        }
 			//}
 			
 			

@@ -177,3 +177,8 @@
    margin-top:0px !important;
    margin-bottom:0px !important;
 }
+
+.KALS span.cke_skin_kama {
+    border-color: transparent; 
+    border-width: 0;
+}

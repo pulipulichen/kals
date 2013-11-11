@@ -73,3 +73,7 @@
     text-decoration:underline;
     cursor: pointer;
 }
+
+.KALS span, .kals-model span {
+    display: inline;
+}
