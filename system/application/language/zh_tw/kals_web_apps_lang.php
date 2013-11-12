@@ -326,5 +326,6 @@ $lang['web_apps.init_component.excute_confirm.exit'] = '請關閉KALS功能，�
 
 $lang['web_apps.login.experiment_message.201012'] = '如果您是數位在職專班的學生，請以您的<strong style="color:red;">學校電子信箱</strong>與學號作為帳號與密碼來登入。<br /><br />舉例來說，學號為「99913001」的學生，請在電子信箱位址輸入「<strong style="color:red;">99913001@nccu.edu.tw</strong>」，密碼輸入「99913001」即可。';
 
+
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */

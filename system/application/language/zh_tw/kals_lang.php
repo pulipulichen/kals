@@ -80,6 +80,20 @@ $lang['tip.location.text.foot'] = '段落最後的內容可能是比較重要的
 
 $lang['tip.length.text'] = '建議您標註範圍盡量不要超過{0}字，讓重點更為聚焦。';
 
+/**
+ * 意見回饋功能
+ */
+$lang['feedback.heading'] = "KALS意見回饋"; //KALS FEEDBACK REPORT 
+$lang['feedback.issue'] = "回饋意見內容"; //ISSUE
+$lang['feedback.additional_information'] = "其他資料"; //ADDTIONAL INFORMATION
+$lang['feedback.report_timestamp'] = "回報時間"; //REPORT TIMESTAMP
+$lang['feedback.kals_server_url'] = "KALS伺服器網址"; //KALS SERVER URL
+$lang['feedback.referer_url'] = "問題網址"; //REFERER URL
+$lang['feedback.domain_id'] = "網域編號(DOMIAN ID)"; //DOMIAN ID
+$lang['feedback.webpage_id'] = "網頁編號(WEBPAGE ID)"; //WEBPAGE ID
+$lang['feedback.user_id'] = "使用者編號(USER ID)"; //USER ID
+$lang['feedback.user_name'] = "使用者名字"; //USER NAME
+$lang['feedback.user_email'] = "使用者信箱"; //USER E-MAIL
 
 /* End of file kals_actor_lang.php */
 /* Location: ./system/language//calendar_lang.php */
