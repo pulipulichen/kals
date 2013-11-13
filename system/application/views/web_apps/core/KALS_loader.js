@@ -202,9 +202,10 @@ this.load_jquery = function (_callback) {
                     }, 0);
                 }
             };
-            _head.appendChild(_script);
             
-            
+            if (_head !== undefined) {
+                _head.appendChild(_script);
+            }
         }
     }
     return this;
