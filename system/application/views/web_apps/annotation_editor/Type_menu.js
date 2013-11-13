@@ -230,29 +230,12 @@ Type_menu.prototype.create_type_option_list = function () {
  * @type {Array|Annotation_type_param} 標註類型選項的列表
  */
 Type_menu.prototype.create_type_param_list = function () {
-    
-    var _list = {};
-    for (var _i in this._type_options) {
-        var _type_string = this._type_options[_i];
-		var _type_param = new Annotation_type_param(_type_string);
-        _list[_type_string] = _type_param;
-    }
-    
-    //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
-    
+	
 	/**
-	 * 20130603 Pudding Chen 
-	 * 加入自訂的標註類型
+	 * Pulipuli Chen 20131114
+	 * 改為KALS_context中使用
 	 */
-    var _custom_type_list = KALS_context.custom_type.get_type_list();
-    for (var _j in _custom_type_list) {
-        _type = _custom_type_list[_j];
-        var _type_name = _type.get_name();
-        _list[_type_name] = _type;
-    }
-    
-    return _list;
-    
+    return KALS_context.create_type_param_list();
 };
 
 Type_menu.prototype.setup_type_option = function (_type_ui) {

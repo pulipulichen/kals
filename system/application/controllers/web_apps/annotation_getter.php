@@ -797,7 +797,9 @@ class Annotation_getter extends Web_apps_controller {
                
                 break;
             case "note": //標註內容
-                $search->set_search_note($data->keyword);
+                if ($data->keyword != "") {
+                    $search->set_search_note($data->keyword);
+                }
                 break;
            case "annotation_type": //標註類型
                 $search->set_target_type(intval($data->keyword));

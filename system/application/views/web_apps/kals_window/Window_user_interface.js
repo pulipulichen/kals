@@ -114,8 +114,10 @@ Window_user_interface.prototype.dropdown = function (_name, _options, _default_v
     
     //選擇預設的選項
     if ($.isset(_default_value)) {
-        _select.children('[value="' + _default_value + '"]').attr('selected', 'selected');
-        //$.test_msg('win ui.dropdown()' , [_default_value
+        //_select.children('[value="' + _default_value + '"]').attr('selected', 'selected');
+		_select.attr("value", _default_value);
+        
+		//$.test_msg('win ui.dropdown()' , [_default_value
         //    , _select.children('[value="' + _default_value + '"]').length
         //    , _select.children('[value="' + _default_value + '"]:selected').length]);
     }
@@ -215,6 +217,62 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
     
     return _list;
 };
+
+/**
+ * 修改指定列表的值
+ * @type {jQuery} _list
+ * @type {String} _value 要設定的值 
+ */
+Window_user_interface.prototype.change_list_value = function (_list, _value) {
+	
+	if (_list.length == 1) {
+		//$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
+		var _classname = _list.attr("className");
+		if (_classname.indexOf("radio-list") != -1) {
+			_list.find("input:radio").attr("checked", false);
+			_list.find("input:radio[value='"+_value+"']").attr("checked", true);
+		}
+		else {
+			_list.attr("value", _value);
+		}
+	}
+	else {
+		/*
+		var _this = this;
+		_list.each(function (_index, _l) {
+			_this.change_list_value(_l, _value);
+		});
+		*/
+		for (var _i = 0; _i < _list.length; _i++) {
+			this.change_list_value(_list.eq(_i), _value);
+		}
+	}
+};
+
+/**
+ * 取得指定列表的值
+ * @type {jQuery} _list 
+ */
+Window_user_interface.prototype.get_list_value = function (_list) {
+	
+	if (_list.length > 1) {
+		_list = _list.eq(0);
+	}
+	
+	var _value;
+	//$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
+	var _classname = _list.attr("className");
+	if (_classname.indexOf("radio-list") != -1) {
+		_value = _list.find("input:radio:checked").attr("value");
+	}
+	else {
+		_value = _list.attr("value");
+	}
+	return _value;
+};
+
+
+//------------------------------------------
 
 Window_user_interface.prototype.window_change_link = function (_lang_param, _content_name) {
     

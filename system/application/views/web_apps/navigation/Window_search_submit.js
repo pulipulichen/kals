@@ -69,7 +69,7 @@ Window_search_submit.prototype.submit = function(){
 	var _list = _content.list;
 	var _data = this.get_data();
 	
-	//$.test_msg("Window_search_submit.prototype.submit", _data);
+	$.test_msg("Window_search_submit.prototype.submit", _data);
 	_list.set_search_range(_data.search_range);
 	_list.set_keyword(_data.keyword);
 	_list.set_order_by(_data.order_by);

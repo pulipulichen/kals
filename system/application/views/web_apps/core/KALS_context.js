@@ -466,6 +466,35 @@ KALS_context.load_info = function (_callback) {
  */
 KALS_context.last_select_annotation_type = null;
 
+/**
+ * 取得標註類型列表
+ * @type {Array} 包含標註類型的列表
+ */
+KALS_context.create_type_param_list = function() {
+	var _list = {};
+	var _type_options = KALS_CONFIG.annotation_type_option;
+    for (var _i in _type_options) {
+        var _type_string = _type_options[_i];
+		var _type_param = new Annotation_type_param(_type_string);
+        _list[_type_string] = _type_param;
+    }
+    
+    //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
+    
+	/**
+	 * 20130603 Pudding Chen 
+	 * 加入自訂的標註類型
+	 */
+    var _custom_type_list = KALS_context.custom_type.get_type_list();
+    for (var _j in _custom_type_list) {
+        _type = _custom_type_list[_j];
+        var _type_name = _type.get_name();
+        _list[_type_name] = _type;
+    }
+    
+    return _list;
+};
+
 // ------------------------------------------------
 
 /**

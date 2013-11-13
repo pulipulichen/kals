@@ -40,7 +40,11 @@ Search_form_component.prototype._$create_ui = function () {
 		.addClass("input")
 		.appendTo(_tr);
 	
-	var _range = this._create_range()
+	var _range = this._create_range_ui()
+		.appendTo(_input_td);
+	
+	var _type = this._create_type_ui()
+		.hide()
 		.appendTo(_input_td);
 		
     var _input = this._create_input()
@@ -86,13 +90,21 @@ Search_form_component.prototype._create_advanced_link = function () {
 
 /**
  * 搜尋視窗
- * @type {Windows_search}
+ * @type {Window_search}
  */
 Search_form_component.prototype._window_search = null;
 
 
+/**
+ * 建立輸入框
+ * 
+ * 採用Window_search.create_keyword_ui
+ * @author 20131114 Pulipuli Chen
+ * @type {jQuery}
+ */
 Search_form_component.prototype._create_input = function () {
-    
+    return this._window_search.create_keyword_ui();
+	/*
     var _input = $('<input type="text" placeholder="Search..." name="keyword" class="search-form-input" />');
     
     KALS_context.lang.add_listener(_input, new KALS_language_param('Search...'
@@ -101,6 +113,7 @@ Search_form_component.prototype._create_input = function () {
     _input.placeHeld();
     
     return _input;
+    */
 };
 
 Search_form_component.prototype._create_submit = function () {
@@ -111,7 +124,8 @@ Search_form_component.prototype._create_submit = function () {
 	var _this = this;
 	_submit.click(function () {
 		//$.test_msg("Search_component advanced");
-		_this._window_search.open_window();
+		//_this._window_search.open_window();
+		_this._window_search.search();
 	});
     
 	return _submit;
@@ -121,13 +135,26 @@ Search_form_component.prototype._create_submit = function () {
  * 建立搜尋範圍的選單
  * @tyep {jQuery}
  */
-Search_form_component.prototype._create_range = function () {
+Search_form_component.prototype._create_range_ui = function () {
 	
 	var _search = this._window_search;
 	
 	var _search_range = _search.create_range_ui("dropdown");
 	
 	return _search_range;
+};
+
+/**
+ * 建立標註類別的選單
+ * @tyep {jQuery}
+ */
+Search_form_component.prototype._create_type_ui = function () {
+	
+	var _search = this._window_search;
+	
+	var _search_type = _search.create_annotation_type_ui("dropdown").hide();
+	
+	return _search_type;
 };
 
 /* End of file Search_form_component */
