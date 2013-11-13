@@ -28,8 +28,6 @@ List_item_search_topic.prototype._setup_menu_block = function () {
 
 };
 
-
-
 //List_item_search_topic.prototype._$respond_force_load = true;
 
 List_item_search_topic.prototype._menu_style_default = 'block';
@@ -61,9 +59,22 @@ List_item_search_topic.prototype._$create_ui = function(){
 	
 };
 
-	
-
-
+/**
+ * 顯示詳細視窗
+ * @author Pulipuli Chen 20131113
+ */
+List_item_search_topic.prototype.view_thread = function (_callback) {
+    var _param = this.get_annotation_param();
+    
+    //$.test_msg("List_item_search_topic _param.is_respond()", _param.is_respond());
+    var _topic_annotation_id = _param.annotation_id;
+    if (_param.is_respond()) {
+        _topic_annotation_id = _param.topic.annotation_id;
+    }
+    $.test_msg("List_item_search_topic _topic_annotation_id", _topic_annotation_id);
+    
+    KALS_text.tool.view.load_view(_topic_annotation_id);
+};
 
 /* End of file List_item_search_topic */
 /* Location: ./system/application/views/web_apps/List_item_search_topic.js */

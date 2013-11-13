@@ -804,12 +804,9 @@ class Annotation_getter extends Web_apps_controller {
                 break;
             case "annotation_anchor":
                 $search->set_search_anchor_text($data->keyword);
-                break;
-
-            
+                break;   
         }
-
-  
+        
         // 6 [ order by ] 設定排序方式(order_by_id,大小|小大 )-data內要有order_by的選項
         //test_msg('6 [ order by ]', isset($data->order_by)); 
         //order_by的typ類型e在Search_order_collection
@@ -848,6 +845,7 @@ class Annotation_getter extends Web_apps_controller {
                 $search_id->add_order (6, TRUE);
         }
 
+        $search->set_target_referer_webpage();
 
         //輸出
         $totally_loaded = TRUE;

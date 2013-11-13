@@ -598,7 +598,10 @@ class Search_engine extends Generic_collection {
         {
 
             $db->join('user AS search_username', 'search_username.user_id = annotation.user_id '. "AND search_username.name like '%".$this->search_username."%'" );
-            $db->limit(15);
+            
+            // 20131113 Pudding Chen
+            // 為什麼要在這裡加limit？
+            //$db->limit(15);
         }
   
         //------------------------------------------------
@@ -625,6 +628,22 @@ class Search_engine extends Generic_collection {
         $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');
         $this->target_webpage_id = $this->CI->webpage->filter_webpage_id($webpage_id);
         return $this;
+    }
+    
+    /**
+     * 設定目前的網頁作為預設的搜尋對象
+     * 
+     * @author Pudding Chen 20131113
+     * @return boolan
+     */
+    public function set_target_referer_webpage() {
+        $webpage = get_context_webpage();
+        if (isset($webpage)) {
+            return $this->set_target_webpage($webpage->get_id());
+        }
+        else {
+            return false;
+        }
     }
 
     //-----------------------------------------

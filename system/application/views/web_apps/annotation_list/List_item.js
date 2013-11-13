@@ -440,11 +440,6 @@ List_item.prototype.view_thread = function (_callback) {
     var _topic_param = this.get_topic_param();
     _content.set_topic_param(_topic_param);
     KALS_window.setup_window(_content);
-    
-    KALS_text.selection.select.set_scope_coll(_topic_param.scope);
-    KALS_text.selection.select.scroll_into_view(function () {
-        $.trigger_callback(_callback);
-    });
     return this;
 };
 

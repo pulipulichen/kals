@@ -59,6 +59,15 @@ Init_component.prototype._is_ie6 = ($.browser.msie && $.browser.version.substr(0
 
 Init_component.prototype._$oncomplete = function () {
     //$.test_msg('Init_component.$oncomplete()');
+    
+        /**
+         * 根據頁面條件，強制調整網頁的樣式
+         * 
+         * 但是應該寫成獨立物件
+         * @20131113 Pulipuli Chen
+         */
+        KALS_text.style_adapter();
+    
     KALS_context.init_profile.start();
 };
 
