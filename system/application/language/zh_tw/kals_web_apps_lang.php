@@ -112,7 +112,7 @@ $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
 $lang['web_apps.window.content.error_no_email_password'] = '請輸入電子信箱位址與密碼。';
 
 $lang['web_apps.window.search.nav_heading'] = '搜尋';
-$lang['web_apps.window.content.searchrange'] = '搜尋範圍';
+$lang['web_apps.window.content.search_range'] = '搜尋範圍';
 $lang['web_apps.window.content.search.field.note'] = '標註內容';
 $lang['web_apps.window.content.search.field.author'] = '作者';
 $lang['web_apps.window.content.search.field.annotation_type'] = '類別';

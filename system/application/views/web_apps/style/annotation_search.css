@@ -1,0 +1,8 @@
+.KALS .window-panel.window-search .result-count-tip {
+    padding-bottom: 5px;
+    border-bottom: 1px solid gray;
+}
+
+.KALS .window-panel.window-search .foot-tip {
+    padding-top: 5px;
+}

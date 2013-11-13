@@ -35,20 +35,17 @@ List_collection_search.prototype._$load_url = 'annotation_getter/search_annotati
 
 List_collection_search.prototype._$limit = null;
 
-
-
-
 /**
  * 搜尋範圍
  * @type {String}
  */
-List_collection_search.prototype._searchrange;
+List_collection_search.prototype._search_range = null;
 
 /**
  * 關鍵字
  * @type {String}
  */
-List_collection_search.prototype._keyword;
+List_collection_search.prototype._keyword = null;
 
 /**
  * 排序
@@ -66,7 +63,7 @@ List_collection_search.prototype._keyword;
 List_collection_search.prototype.get_search_data = function(){
 	var _search_data = {};
 	
-	_search_data.searchrange = this._searchrange;
+	_search_data.search_range = this._search_range;
 	_search_data.keyword = this._keyword;
 	_search_data.order_by = this._$order_by;
 	
@@ -76,10 +73,10 @@ List_collection_search.prototype.get_search_data = function(){
 
 /**
  * 設定搜尋範圍
- * @param {string} _searchrange
+ * @param {string} _search_range
  */
-List_collection_search.prototype.set_searchrange = function (_searchrange) {
-	this._searchrange = _searchrange;
+List_collection_search.prototype.set_search_range = function (_search_range) {
+	this._search_range = _search_range;
 };
 
 /**
@@ -164,7 +161,7 @@ List_collection_search.prototype.get_search_data = function () {
 	}
     
     //$.test_msg('Respond_list_collection.get_search_data()', _data);
-    _search_data.searchrange = this._searchrange;
+    _search_data.search_range = this._search_range;
 	_search_data.keyword = this._keyword;
 	_search_data.order_by = this._$order_by;
 	
@@ -172,7 +169,6 @@ List_collection_search.prototype.get_search_data = function () {
     
 
 	return _search_data;
-    return _data;
 };
 
 // 呈現結果數量
@@ -189,8 +185,8 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 	   var _search_count =_data.total_count;
 	   var _search_loaded = _data.totally_loaded;
 	   
-	   var _show_result_row = _ui.find(".totally_loaded"); //全部讀完
-	   var _show_no_result_row = _ui.find(".no_result");  //無查詢結果
+	   var _show_result_row = _ui.find(".totally-loaded"); //全部讀完
+	   var _show_no_result_row = _ui.find(".no-result");  //無查詢結果
 	  
 	   //顯示查詢訊息
 	   if (_search_loaded === true && _search_count === 0){ 
@@ -203,12 +199,12 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 		}
 	
         //顯示查詢結果	
-                _ui.find(".result-number").show();
-		_ui.find(".result-number dd:first").html(_search_count);
+                _ui.find(".result-count-tip").show();
+		_ui.find(".result-count-tip .result-count").html(_search_count);
  	
 		
-		$.test_msg('_search_count', _search_count);
-		$.test_msg('_search_loaded',_search_loaded);
+		//$.test_msg('_search_count', _search_count);
+		//$.test_msg('_search_loaded',_search_loaded);
 
 		_callback();
 	});
@@ -231,31 +227,34 @@ List_collection_search.prototype._$create_ui = function () {
 		//結果數量
 		
     var _result_number; 
-	var _search_number_row = _factory.row(
-        new KALS_language_param('Searchnumber','window.content.searchnumber'), '0')
-	    .addClass('result-number')
-            .hide()
-	    .prependTo(_ui); 
-		
-  // _search_number_row.parent(".list-collection search").find('dd').addClass('number');
+	var _result_count_tip = _factory.tip(
+        new KALS_language_param('Search Result Count','window.content.searchnumber'), '0')
+    	.addClass('result-count-tip')
+        .hide()
+    	.prependTo(_ui); 
 
-	var _result_row =_factory.heading_row(
+	var _result_count = $("<span></span>")
+		.addClass("result-count")
+		.appendTo(_result_count_tip);
+		
+  	// _search_number_row.parent(".list-collection search").find('dd').addClass('number');
+
+	var _result_row =_factory.tip(
        
 		new KALS_language_param('no-else-result','window.content.loaded_already'))
-		.addClass('totally_loaded')
+		.addClass('totally-loaded')
+		.addClass('foot-tip')
 		.appendTo(_ui);
     
-	var _no_result_row =_factory.heading_row(
-       
+	var _no_result_row =_factory.tip(
 		new KALS_language_param('no-result','window.content.noresult'))
-		.addClass('no_result')
+		.addClass('no-result')
+		.addClass('foot-tip')
 		.appendTo(_ui);
   
 	// 隱藏,再由totally_loaded與 total_count來判斷是否顯示
 	_result_row.hide(); 
 	_no_result_row.hide();
-	
-
 	
     this._list_container = _container;
 	

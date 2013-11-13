@@ -14,7 +14,7 @@ function Window_search() {
     
     Window_content.call(this);
     
-	this._setup_submit(new Window_search_submit()); // send keyword and searchrange
+	this._setup_submit(new Window_search_submit()); // send keyword and search_range
 	
 	this.child("list", new List_collection_search());
 }
@@ -44,8 +44,17 @@ Window_search.prototype.width = 500;
 Window_search.prototype.list;
 
 /**
+ * 搜尋的預設值
+ */
+Window_search.prototype._search_default_option = {
+	range: "note",
+	type: null,
+	order_by: null
+};
+
+/**
  * Create UI
- * @memberOf {Window_profile}
+ * @memberOf {Window_search}
  * @type {jQuery} UI
  */
 Window_search.prototype._$create_ui = function (){  //建立UI
@@ -54,25 +63,23 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
     var _factory = KALS_window.ui;
       
-	 // 新增一層subplan來畫SEARCH表單	
-	 var _subpanel = _factory.subpanel('range').appendTo(_ui);
-	 var _this = this;
+	// 新增一層subplan來畫SEARCH表單	
+	var _subpanel = _factory.subpanel('range').appendTo(_ui);
+	var _this = this;
     
-	
- 
-   // searchrange為radio選單
+   	// search_range為radio選單
    
-  	var _searchrange_param_list = [ "note","author","annotation_type","annotation_anchor" ];
-	var _searchrange_options = [];
-	var _searchrange_default_value = null;
+  	var _search_range_param_list = [ "note","author","annotation_type","annotation_anchor" ];
+	var _search_range_options = [];
+	var _search_range_default_value = this._search_default_option.range;
 	
-	for (var _r in _searchrange_param_list) {
+	for (var _r in _search_range_param_list) {
 		// _type_param = new Annotation_type_param();
-		var _searchrange_param = _searchrange_param_list[_r];
-		var _value =_searchrange_param_list [_r];
+		var _search_range_param = _search_range_param_list[_r];
+		var _value =_search_range_param_list [_r];
 		//預設值
-		if (_searchrange_default_value === null) {
-			_searchrange_default_value = _value;
+		if (_search_range_default_value === null) {
+			_search_range_default_value = _value;
 		}
 		var _lang = new KALS_language_param(
                 _value,
@@ -80,49 +87,45 @@ Window_search.prototype._$create_ui = function (){  //建立UI
             );
 		var _option = _factory.radio_option(_lang, _value);
 		
-        _searchrange_options.push(_option);
+        _search_range_options.push(_option);
 	}
 	
+	var _search_range_radio = _factory.radio_list('search-range', _search_range_options , _search_range_default_value);
+	_search_range_radio.addClass("search-range");
 	
-	
-	var _searchrange_radio = _factory.radio_list('searchrange', _searchrange_options , _searchrange_default_value);
-	_searchrange_radio.addClass("searchrange");
-	
-	//將 _searchrange_row畫上去 
-     var _searchrange_row = _factory.row(
-         new KALS_language_param('searchrange', 'window.content.searchrange'),
-         _searchrange_radio	
+	//將 _search_range_row畫上去 
+     var _search_range_row = _factory.row(
+         new KALS_language_param('search_range', 'window.content.search_range'),
+         _search_range_radio	
        ).appendTo(_subpanel);
 	
-	 _searchrange_row.find("dt:first").css("margin-bottom", "1em");
+	 _search_range_row.find("dt:first").css("margin-bottom", "1em");
 	
-	
-	
-
-
 	// 標註類型radio選單
 	var _type_param_list = KALS_text.tool.editor_container.editor.type.menu.create_type_param_list();
 	var _type_options = [];
-	var _default_type = null;
+	var _default_type = this._search_default_option.type;
 	for (var _r in _type_param_list) {
 		// _type_param = new Annotation_type_param();
 		var _type_param = _type_param_list[_r];
 		var _value = _type_param.get_id();
+		
 		//預設值
 		if (_default_type === null) {
 			_default_type = _value;
 		}
-		var _lang = _type_param.get_type_name_lang();
 		
-		var _option = _factory.radio_option(_lang, _value);
+		_lang = _type_param.get_type_name_lang();
+		
+		_option = _factory.radio_option(_lang, _value);
 		
         _type_options.push(_option);
 	}
 	
 	var _type_radio = _factory.radio_list('type', _type_options, _default_type);
-	_type_radio.addClass("searchrange-type");
+	_type_radio.addClass("search-range-type");
 	
-	//_searchrange_list.after(_type_radio); //_type_radio緊接在_searchrange_list
+	//_search_range_list.after(_type_radio); //_type_radio緊接在_search_range_list
 	var _type_radio_row = _factory.row(
     new KALS_language_param('type_radio', 'window.content.type_radio'),
 		 _type_radio).appendTo(_ui); 
@@ -133,11 +136,11 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	
 	
      // 當使用者有點選動作時的事件
-	 _searchrange_radio.find("input")
+	 _search_range_radio.find("input")
 		.click(function () {
 		
-			// 現在在option下用this，去找上面名為.searchrange-type的層別，在此層級下找:radio:checked，選擇現在所點選的值
-			var _value = $("[name='searchrange']:checked").attr("value");
+			// 現在在option下用this，去找上面名為.search_range-type的層別，在此層級下找:radio:checked，選擇現在所點選的值
+			var _value = $("[name='search_range']:checked").attr("value");
 			// 在option下用parents去找上面名為window-panel的層別，在此層級下找到要代入的search-keyword，將value代入
 			$(this).parents(".window-panel").find(".search-keyword:first").val(_value);
 			
@@ -149,7 +152,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 		        _type_radio_row.hide();
 		        _panel.find(".search-keyword:first").val(""); 
 	
-		       // $.test_msg("_searchrange_list.change", $(this).parents(".window-panel").find(".search-keyword:first").length);
+		       // $.test_msg("_search_range_list.change", $(this).parents(".window-panel").find(".search-keyword:first").length);
 	
 		        _searchkey_row.show();
 	     
@@ -162,7 +165,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	
 	      // 切換標註類型選項 
 		  
-		 if ( _panel.find(".radio-list.list.searchrange-type input:radio:first").length === 1){
+		 if ( _panel.find(".radio-list.list.search-range-type input:radio:first").length === 1){
 		 
 		 // 預設值   
 		    var _type_value =1 ;
@@ -171,9 +174,9 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 		 // 切換選項	
 			_type_radio.click(function (){
 		   		  
-			    _type_value = _panel.find(".radio-list.list.searchrange-type input:radio:checked").val(); //要找到下一層input有點選的部分
+			    _type_value = _panel.find(".radio-list.list.search-range-type input:radio:checked").val(); //要找到下一層input有點選的部分
 			    
-				//$.test_msg("_.searchrange-type", _panel.find(".radio-list.list.searchrange-type input:radio:checked").val() );
+				//$.test_msg("_.search_range-type", _panel.find(".radio-list.list.search_range-type input:radio:checked").val() );
 				
 				_panel.find(".search-keyword:first").val(_type_value);
 				
@@ -183,9 +186,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 		
 	}	
    });
-	
-		
-   
    
     // 輸入關鍵字
 	var _keyword_input = _factory.input('keyword');
@@ -199,8 +199,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         new KALS_language_param('Searchkey', 'window.content.searchkey'),
         _keyword_input).appendTo(_ui); //"關鍵字"標題	
         
-
-	
 	// 選擇排序方式-update,create,scope
 	
 	var _subpanel = _factory.subpanel('order').appendTo(_ui); //新增一層subplan	
@@ -211,7 +209,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
 	var _order_by_config = [ "update","create","scope" ];
 	var _order_by_options = [];
-	var _order_by_default_value = null;
+	var _order_by_default_value = this._search_default_option.order_by;
 	
 	for (var _k in _order_by_config) {
 
@@ -230,8 +228,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         _order_by_options.push(_option);
 	}
 	
-	
-	
 	var _order_by_radio = _factory.radio_list('order_by', _order_by_options ,_order_by_default_value);
 	_order_by_radio.addClass("order_by");
 	
@@ -239,9 +235,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
             new KALS_language_param('order_by', 'window.content.oreder_by'),
             _order_by_radio	
         ).appendTo(_subpanel);
-
-	
-	
 	
   	
  /* 換頁功能 
@@ -277,9 +270,34 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	_list_ui.appendTo(_result);
 	
 	return _ui;
-};	
+};
+
+/**
+ * 顯示最近的標註
+ * @memberOf {indow_search}
+ */
+Window_search.prototype.show_recent_annotation = function(){
+	var _content = this;
+	var _list = _content.list;
+	var _data = this.get_data();
 	
+	//$.test_msg("Window_search_submit.prototype.submit", _data);
+	var _default_option = this._search_default_option;
+	_list.set_search_range(_default_option.range);
+	_list.set_keyword("");
+	_list.set_order_by(_default_option.order_by);
 	
+	_list.reset();
+	    
+	// 我們要叫List_collection_search進行搜尋
+	var _this = this;
+	_list.load_list(function () {
+        //$.test_msg("Window_search_submit.prototype.submit");
+		_this.complete_handle();
+        _content.get_ui().find(".search-result-subpanel").show();
+	});
+};
+
 
 
 /* End of file Window_profile */

@@ -15,7 +15,7 @@ function Window_search_submit() {
     Window_content_submit.call(this);
    
     // 送出seatchrange,keyword,order_by
-    this._$input_names = ['searchrange', 'keyword', 'order_by']; 
+    this._$input_names = ['search_range', 'keyword', 'order_by']; 
 }
 
 Window_search_submit.prototype = new Window_content_submit();
@@ -51,7 +51,7 @@ Window_search_submit.prototype.complete_handle = function () {
     var _input_data = this.get_data();
         
     var _search = KALS_context.search;   //in KALS_context
-    _search.set_field(_input_data.searchrange); //取得欄位中的值→Context_search.js
+    _search.set_field(_input_data.search_range); //取得欄位中的值→Context_search.js
     _search.set_keyword(_input_data.keyword);
 	//_search.set_order_by(_input_data.order_by); 
     
@@ -65,12 +65,12 @@ Window_search_submit.prototype.complete_handle = function () {
  */
 Window_search_submit.prototype.submit = function(){
 	
-        var _content = this._content;
+    var _content = this._content;
 	var _list = _content.list;
 	var _data = this.get_data();
 	
 	//$.test_msg("Window_search_submit.prototype.submit", _data);
-	_list.set_searchrange(_data.searchrange);
+	_list.set_search_range(_data.search_range);
 	_list.set_keyword(_data.keyword);
 	_list.set_order_by(_data.order_by);
 	
@@ -80,8 +80,8 @@ Window_search_submit.prototype.submit = function(){
 	// 我們要叫List_collection_search進行搜尋
 	var _this = this;
 	_list.load_list(function () {
-                $.test_msg("Window_search_submit.prototype.submit");
-		_this.complete_handle();
+                //$.test_msg("Window_search_submit.prototype.submit");
+				_this.complete_handle();
                 _content.get_ui().find(".search-result-subpanel").show();
 	});
 };

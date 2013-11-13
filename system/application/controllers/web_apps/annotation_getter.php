@@ -768,7 +768,7 @@ class Annotation_getter extends Web_apps_controller {
         if (is_string($json)) 
         {
             $data = json_to_object($json); //把js丟過來的資料(search)包成物件data，內含
-                                           // searchrange，keyword，新增order_by
+                                           // search_range，keyword，新增order_by
         
         }    
         else {
@@ -785,11 +785,11 @@ class Annotation_getter extends Web_apps_controller {
         
           //test_msg("輸入資料", $json);
         
-        //$data->searchrange = "annotation_anchor"; //測試用
-        if (isset($data->searchrange) === FALSE) {
-            $data->searchrange = "annotation_anchor";
+        //$data->search_range = "annotation_anchor"; //測試用
+        if (isset($data->search_range) === FALSE) {
+            $data->search_range = "annotation_anchor";
         }
-        switch ( $data->searchrange ) {
+        switch ( $data->search_range ) {
             case "author": 
                 //示範用
                 //$search->set_target_user(new User(1701));
