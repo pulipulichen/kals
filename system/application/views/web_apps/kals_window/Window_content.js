@@ -275,5 +275,33 @@ Window_content.prototype.is_absolute = function () {
 	return this._$absolute;
 };
 
+/**
+ * 獨立開啟視窗
+ * @author Pulipuli Chen 20131113
+ */
+Window_content.prototype.open_window = function () {
+	var _content = this;
+            
+	if (_content.is_absolute() === false) {
+        KALS_window.setup_window(_content);
+	}
+	else {
+		_content.open();
+	}
+};
+
+/**
+ * 開啟視窗後預設要聚焦的可輸入元件
+ * @type {String} jQuery Selector
+ */
+Window_content.prototype.default_focus_input = '.dialog-content:first input:first';
+
+/**
+ * 開啟視窗後預設要聚焦的遞交元件
+ * @type {String} jQuery Selector
+ */
+Window_content.prototype.default_focus_submit = '.dialog-options button.window-content-submit:first';
+
+
 /* End of file Window_content */
 /* Location: ./system/application/views/web_apps/Window_content.js */

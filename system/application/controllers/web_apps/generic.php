@@ -183,7 +183,7 @@ class generic extends Web_apps_controller {
             'kals_toolbar/Toolbar_padding_component',
             'kals_toolbar/Logo_component',
             'kals_toolbar/Loading_component',
-            'kals_toolbar/Search_component',
+            //'kals_toolbar/Search_component',
             'kals_toolbar/Search_form_component',
             'kals_toolbar/Search_result_component',
 

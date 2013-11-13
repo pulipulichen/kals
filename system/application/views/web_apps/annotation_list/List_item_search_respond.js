@@ -42,7 +42,7 @@ List_item_search_respond.prototype.get_topic_id = function () {
     return this.get_annotation_id();
 };
 
-List_item_search_respond.prototype._disable_option = ['edit','delete','view','recommend'];
+List_item_search_respond.prototype._disable_option = ['edit','delete','view','recommend', 'respond'];
 
 List_item_search_respond.prototype._setup_menu_block = function () {
   
@@ -54,7 +54,16 @@ List_item_search_respond.prototype._setup_menu_block = function () {
 List_item_search_respond.prototype._menu_style_default = 'block';
 
 // 開啟留言的瀏覽討論
-List_item_search_respond.prototype._note_show_fulltext = false; 
+List_item_search_respond.prototype._note_show_fulltext = false;
+
+/**
+ * 顯示標註細節，顯示的方式跟預設的有些不同
+ * 直接引用List_item_search_topic的作法
+ * @author Pulipuli Chen 20131113
+ */
+List_item_search_respond.prototype.view_thread = function () {
+	return List_item_search_topic.prototype.view_thread.call(this);
+};
 
 /* End of file View_list_item_respond */
 /* Location: ./system/application/views/web_apps/View_list_item_respond.js */

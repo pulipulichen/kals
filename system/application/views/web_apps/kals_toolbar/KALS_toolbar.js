@@ -20,7 +20,7 @@ function KALS_toolbar() {
     
     this.child('logo', new Logo_component());
     this.child('loading', new Loading_component());
-    this.child('search', new Search_component());
+    this.child('search', new Search_form_component());
     
     this._common_windows = (new Common_navigation()).get_nav_items();
     this.child('anonymous_nav', new Anonymous_navigation(this._common_windows));

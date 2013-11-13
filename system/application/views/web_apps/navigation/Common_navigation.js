@@ -22,10 +22,10 @@ function Common_navigation() {
 		var _search_recent = new Window_search();
 		_search_recent.setup_recent();
 		this._$nav_items = [
-	        new Window_filter(),
-            new Window_map(),
-			_search_recent,
-			_search
+	        new Window_filter()
+            ,new Window_map()
+			,_search_recent
+			//_search
 	    ];
 	}
 }

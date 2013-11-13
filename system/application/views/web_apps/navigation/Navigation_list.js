@@ -96,9 +96,9 @@ Navigation_list.prototype._create_nav = function() {
             var _content = _this._get_window_content(_i);
             
 			if (_content.is_absolute() === false) {
-                            //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
+                //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
 
-                            KALS_window.setup_window(_content);
+                KALS_window.setup_window(_content);
 			}
 			else {
 				//KALS_util.confirm('test', "content");

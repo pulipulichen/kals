@@ -539,8 +539,11 @@ KALS_window.prototype.focus_option = function (_offset) {
  */
 KALS_window.prototype.focus_input = function () {
     var _ui = this.get_ui();
-    var _first_input = _ui.find('.dialog-content:first input:first');
-    var _first_submit = _ui.find('.dialog-options button.window-content-submit:first');
+	
+	var _content = this._content;
+	
+    var _first_input = _ui.find(_content.default_focus_input);
+    var _first_submit = _ui.find(_content.default_focus_submit);
     
     //$.test_msg('KALS_window.toggle_loading() focus', [_first_input.length, _first_submit.length]);
     
@@ -551,7 +554,6 @@ KALS_window.prototype.focus_input = function () {
     else {
         _first_submit.focus();
     }
-        
 };
 
 /* End of file KALS_window */
