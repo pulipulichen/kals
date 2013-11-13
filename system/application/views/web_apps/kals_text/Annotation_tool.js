@@ -81,7 +81,7 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('kals-modal')
 		.addClass("KALS")
         .hide()
-        .appendTo($('body'));
+        .appendTo($('.selectable-text:first'));
         
     var _config = this._$get_config();
     
@@ -178,6 +178,12 @@ Annotation_tool.prototype._$create_ui = function () {
     
     this._setup_recommend();
     this._setup_recommend_hint();
+    
+    /**
+     * @20131113 Pulipuli Chen
+     * 修正他的功能
+     */
+    
     
     return _ui;
 };
