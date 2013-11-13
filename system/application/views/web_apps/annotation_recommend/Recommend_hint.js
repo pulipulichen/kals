@@ -41,6 +41,14 @@ Recommend_hint.prototype._recommended = null;
  * @param {List_item}
  */
 Recommend_hint.prototype.setup_recommend = function(_recommended) {
+    
+    if (KALS_CONFIG.enable_annotation_recommend === false) {
+        /**
+         * 如果允許建議的話，再讓他可以用標註
+         */
+        return this;
+    }
+    
     if ($.isset(_recommended)) {   
         //this._recommended_item = _recommended_item;
         //this._recommended = _recommended_item.get_annotation_param();
