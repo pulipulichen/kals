@@ -89,6 +89,7 @@ Window_register.prototype._$create_ui = function () {
     _login_row.addClass('login-link')
         .appendTo(_ui);
     
+    KALS_context.overlay.lock_mask();
     return _ui;
 };
 

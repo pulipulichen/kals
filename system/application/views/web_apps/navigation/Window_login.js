@@ -102,7 +102,7 @@ Window_login.prototype._$create_ui = function () {
     */
    
     var _register_link = KALS_window.ui.window_change_link(_register_lang
-        , KALS_toolbar.anonymous_nav.register);
+        , 'Window_register');
         //, new Window_register());
     var _register_row = KALS_window.ui.message_row(_register_link);
     _register_row.addClass('register-link')
@@ -112,6 +112,7 @@ Window_login.prototype._$create_ui = function () {
         _register_row.hide();
     }
     
+    KALS_context.overlay.lock_mask();
     return _ui;
 };
 
