@@ -40,10 +40,6 @@ List_item_search_topic.prototype._note_show_fulltext = false;
 
 List_item_search_topic.prototype._disable_option = ['edit','delete','view','recommend'];
 
-
-
-
-
 // 重新覆寫一個ui，在裡面修改功能
 List_item_search_topic.prototype._$create_ui = function(){
 

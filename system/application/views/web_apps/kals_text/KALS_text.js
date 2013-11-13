@@ -32,7 +32,14 @@ function KALS_text(_selector) {
     var _this = this;
     setTimeout(function() {
         _this.init_start();
-          
+        
+        /**
+         * 根據頁面條件，強制調整網頁的樣式
+         * 
+         * 但是應該寫成獨立物件
+         * @20131113 Pulipuli Chen
+         */
+        _this.style_adapter();
         //_this.load_my.initialize();
     }, 0);
 }
@@ -115,6 +122,23 @@ KALS_text.prototype.filter_selector = function (_selector) {
 		KALS_util.show_exception(_exception);
 		return null;
 	}
+};
+
+/**
+ * 根據頁面條件，強制調整網頁的樣式
+ * 
+ * 但是應該寫成獨立物件
+ * @20131113 Pulipuli Chen
+ */
+KALS_text.prototype.style_adapter = function () {
+    
+    // PDF2HTML EX
+    if ($("#sidebar").length == 1 && $("#page-container").length == 1
+        && $("#pf1").length > 0)
+    {
+        $("body").css("background-color", "#2f3236");
+        $("#page-container").css("position", "relative");
+        }
 };
 
 /* End of file KALS_text */
