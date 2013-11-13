@@ -78,38 +78,43 @@
 /**
  * @section List_header_component
  */
-.list-header-component {
+.KALS .list-header-component {
     padding: 5px 0 !important;
 }
 
-.list-header-component .name-container {
+.KALS .list-header-component .respond-container {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.KALS .list-header-component .name-container {
     font-weight: bold;
     margin-right: 0.5em;
 }
 
-.list-header-component.is-my {
+.KALS .list-header-component.is-my {
     /*padding-left: 30px;*/
     
 }
 
-.list-header-component.is-my .name-container {
+.KALS .list-header-component.is-my .name-container {
     text-decoration:underline;
 }
 
-.list-header-component .header-option {
+.KALS .list-header-component .header-option {
     float:right;
 }
 
-.list-header-component .lock,
-.list-header-component .recommend {
+.KALS .list-header-component .lock,
+.KALS .list-header-component .recommend {
     display: none;
 }
 
-.list-header-component.policy-type-lock .lock {
+.KALS .list-header-component.policy-type-lock .lock {
     display: inline;
 }
 
-.list-header-component.has-recommend .recommend {
+.KALS .list-header-component.has-recommend .recommend {
     display: inline;
     cursor: pointer;
 }

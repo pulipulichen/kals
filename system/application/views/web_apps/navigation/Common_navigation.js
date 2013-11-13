@@ -17,10 +17,15 @@ function Common_navigation() {
 	// @20130603 Pudding Chen
 	// Isolation Mode
 	if (KALS_context.policy.allow_show_navigation()) {
+		
+		var _search = new Window_search();
+		var _search_recent = new Window_search();
+		_search_recent.setup_recent();
 		this._$nav_items = [
 	        new Window_filter(),
             new Window_map(),
-			new Window_search()
+			_search_recent,
+			_search
 	    ];
 	}
 }

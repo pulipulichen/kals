@@ -98,11 +98,11 @@ List_collection_search.prototype.set_order_by = function (_order_by) {
 
 // 開始建立List_item-topic & respond
 List_collection_search.prototype.create_list_item = function(_param) {
-    if (this._$target_topic === true) {
-        return new List_item_search_topic(_param, this._topic_param);
+    if (_param.is_respond() === false) {
+        return new List_item_search_topic(_param);
     }
     else {
-        return new List_item_search_respond(_param, this._topic_param);
+        return new List_item_search_respond(_param);
     }
 };
 

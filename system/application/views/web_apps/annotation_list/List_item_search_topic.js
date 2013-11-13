@@ -18,7 +18,6 @@ function List_item_search_topic(_param) {
 
 List_item_search_topic.prototype = new List_item_topic();
 
-
 List_item_search_topic.prototype._setup_menu_block = function () {
   
     var _component = new List_menu_search(this, this._disable_option);
@@ -48,14 +47,10 @@ List_item_search_topic.prototype._$create_ui = function(){
 	//只有改topic的部分
 	_ui.find(".list-menu-option").css("border-left","none");
 	
-
 	//_ui.css("clear","right"); 
 	_ui.find(".list-menu.list-menu-block").css("padding","5px");
-	
 
 	return _ui;
-	
-	
 	
 };
 

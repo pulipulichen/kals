@@ -6,3 +6,27 @@
 .KALS .window-panel.window-search .foot-tip {
     padding-top: 5px;
 }
+
+.KALS .window-panel.window-search .list-item {
+	padding-left: 5px;
+	padding-right: 5px;
+} 
+
+/*
+.KALS .window-panel.window-search .list-menu-option.edit,
+.KALS .window-panel.window-search .list-menu-option.delete,
+.KALS .window-panel.window-search .list-menu-option.respond,
+.KALS .window-panel.window-search .list-menu-option.view {
+	display: none;
+}
+*/
+
+.KALS .window-panel.window-search .list-menu-option {
+	border-left-width: 0;
+}
+
+.KALS .window-panel.window-search .list-item-respond {
+	padding-bottom: 5px;
+	border-bottom: 1px solid gray;
+	border-top-width: 0; 
+}

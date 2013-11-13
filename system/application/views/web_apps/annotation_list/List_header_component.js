@@ -42,6 +42,7 @@ List_header_component.prototype._set_list_item = function (_item) {
 };
 
 List_header_component.prototype.set_data = function () {
+	this.set_respond();
     this.set_user_name();
     this.set_is_my();
     this.set_type();
@@ -65,6 +66,14 @@ List_header_component.prototype._$create_ui = function () {
         _like_component.get_ui().hide();
     }
     
+	var _respond_container = $('<span></span>')
+        .addClass('respond-container')
+		.html("&gt;")
+		.hide()
+        .appendTo(_ui);
+	
+	this._respond_container = _respond_container;
+	
     var _name_container = $('<span></span>')
         .addClass('name-container')
         .appendTo(_ui);
@@ -113,6 +122,24 @@ List_header_component.prototype._$create_ui = function () {
     }, 0);
     */
     return _ui;
+};
+// --------
+// Respond
+// --------
+
+List_header_component.prototype._respond_container = null;
+
+List_header_component.prototype.set_respond = function () {
+	var _param = this._item.get_annotation_param();
+	var _is_respond = _param.is_respond();
+	if (_is_respond) {
+		this._respond_container.show();
+	}
+	else {
+		this._respond_container.hide();
+	}
+		
+	return this;
 };
 
 // --------

@@ -21,7 +21,7 @@ function Window_search() {
 
 Window_search.prototype = new Window_content();
 
-Window_search.prototype.name = 'Search';
+Window_search.prototype.name = 'search';
 
 Window_search.prototype.heading = new KALS_language_param (
     'Search',
@@ -41,13 +41,13 @@ Window_search.prototype.width = 500;
  * 搜尋結果
  * @type {List_collection_search}
  */
-Window_search.prototype.list;
+Window_search.prototype.list = null;
 
 /**
  * 搜尋的預設值
  */
 Window_search.prototype._search_default_option = {
-	range: "note",
+	range: "author",
 	type: null,
 	order_by: null
 };
@@ -73,7 +73,8 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	var _search_range_options = [];
 	var _search_range_default_value = this._search_default_option.range;
 	
-	for (var _r in _search_range_param_list) {
+	var _r;
+	for (_r in _search_range_param_list) {
 		// _type_param = new Annotation_type_param();
 		var _search_range_param = _search_range_param_list[_r];
 		var _value =_search_range_param_list [_r];
@@ -90,7 +91,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         _search_range_options.push(_option);
 	}
 	
-	var _search_range_radio = _factory.radio_list('search-range', _search_range_options , _search_range_default_value);
+	var _search_range_radio = _factory.radio_list('search_range', _search_range_options , _search_range_default_value);
 	_search_range_radio.addClass("search-range");
 	
 	//將 _search_range_row畫上去 
@@ -105,7 +106,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	var _type_param_list = KALS_text.tool.editor_container.editor.type.menu.create_type_param_list();
 	var _type_options = [];
 	var _default_type = this._search_default_option.type;
-	for (var _r in _type_param_list) {
+	for (_r in _type_param_list) {
 		// _type_param = new Annotation_type_param();
 		var _type_param = _type_param_list[_r];
 		var _value = _type_param.get_id();
@@ -274,7 +275,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
 /**
  * 顯示最近的標註
- * @memberOf {indow_search}
+ * @memberOf {window_search}
  */
 Window_search.prototype.show_recent_annotation = function(){
 	var _content = this;
@@ -299,6 +300,22 @@ Window_search.prototype.show_recent_annotation = function(){
 };
 
 
+/**
+ * 回傳一個目前的狀態
+ * @memberOf {window_search}
+ * @author Pulipuli Chen 20131113
+ */
+Window_search.prototype.setup_recent = function(){
+	this.nav_heading = new KALS_language_param (
+	    'Search',
+	    'window.search_recent.nav_heading'
+	);
+	
+	var _this = this;
+	this.onopen = function () {
+		_this.submit.submit();
+	};
+};
 
 /* End of file Window_profile */
 /* Location: ./system/application/views/web_apps/Window_profile.js */
