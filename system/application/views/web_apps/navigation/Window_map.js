@@ -87,7 +87,6 @@ Window_map.prototype._$create_ui = function () {
     var _map = $('<div></div>')
         .addClass('content')
         .appendTo(_ui);
- 
 
 	_map.hover(function () {
 		_map.toggleClass('focus');
@@ -95,7 +94,7 @@ Window_map.prototype._$create_ui = function () {
 		_map.toggleClass('focus');
 	});
 
-	var _map_ol = $("<ul class='H1'></ul>");
+	var _map_ol = $("<ul class='KALS H1'></ul>");
 	
 	
 	
@@ -118,9 +117,10 @@ Window_map.prototype._$create_ui = function () {
 		
 		//將找到的header加上id
 		$(_ele).attr("id", "map-header"+ _count);
-		
-		var _header = $(_ele);
-		var _level = _header.attr("tagName"); 
+                
+                var _header = $(_ele);
+		_header.find(".kals-word:first").attr("id", "map-header"+ _count+"-anchor");
+                var _level = _header.attr("tagName"); 
 		var _level_number = parseInt(_level.substr(1));
 		
 		if (_count == 0) {
@@ -134,8 +134,16 @@ Window_map.prototype._$create_ui = function () {
 		
 		//var _li = $("<li class='" +_level+ "' id=header"+count+"    ></li>");
 		var _header_text = _header.text();
-		_li.html("<a href='#map-header"+ _count +"'>"+ _header_text + "</a><ul></ul>");
-		
+		_li.html("<a href='#map-header"+ _count +"-anchor' class='map-catalog'>"+ _header_text + "</a><ul></ul>");
+                
+                _li.find("a.map-catalog:first").click(function () {
+                    var _id = $(this).attr("href");
+                    //$.test_msg("map-heaer", [$(_id).length, _id]);
+                    var _offset = $(_id).offset();
+                    setTimeout(function () {
+                        $(window).scrollTop(_offset.top - 60);
+                    }, 0);
+                });
 		
 		_header_array[_count] = _header.offset().top;		
 		
