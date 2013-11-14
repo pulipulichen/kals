@@ -46,10 +46,10 @@ List_item_search_topic.prototype._$create_ui = function(){
 	
 	_ui.addClass("list-item-search-topic");
 	//只有改topic的部分
-	_ui.find(".list-menu-option").css("border-left","none");
+	//_ui.find(".list-menu-option").css("border-left","none");
 	
 	//_ui.css("clear","right"); 
-	_ui.find(".list-menu.list-menu-block").css("padding","5px");
+	//_ui.find(".list-menu.list-menu-block").css("padding","5px");
 
 	return _ui;
 };

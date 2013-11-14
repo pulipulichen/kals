@@ -363,10 +363,27 @@ Window_user_interface.prototype.heading_row = function (_heading) {
     return _ui;
 };
 
+/**
+ * 建立Span的HTML物件
+ * @param {KALS_language_param} _lang_param
+ * @type {jQuery}
+ */
 Window_user_interface.prototype.tip = function (_lang_param) {
     var _tip = KALS_context.lang.create_listener(_lang_param);
     _tip.addClass('tip');
     return _tip;
+};
+
+/**
+ * 建立button的HTML物件
+ * @param {KALS_language_param} _lang_param
+ * @type {jQuery}
+ */
+Window_user_interface.prototype.button = function (_lang_param) {
+	var _btn = $("<button type='button'></button>");
+	KALS_context.lang.add_listener(_btn, _lang_param);
+    _btn.addClass('button');
+    return _btn;
 };
 
 Window_user_interface.prototype._setup_content = function (_container, _content) {
@@ -379,7 +396,6 @@ Window_user_interface.prototype._setup_content = function (_container, _content)
     }
     return _container;
 };
-
 
 /**
  * 製造換頁的選單

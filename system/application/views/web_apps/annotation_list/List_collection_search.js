@@ -201,17 +201,29 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
         //顯示查詢結果	
         _ui.find(".result-count-tip").show();
 		_ui.find(".result-count-tip .result-count").html(_search_count);
- 	
-		
+ 		
 		//$.test_msg('_search_count', _search_count);
 		//$.test_msg('_search_loaded',_search_loaded);
+		
+		// ------------
+		
+		var _search_scope = _data.scope_collection;
+		
+		KALS_text.selection.search.set_scope_coll(_search_scope);
+		
+		// ------------
 
-		_callback();
+		// 要改用$._trigger，以免_callback不是function
+		// @20131114 Pulipuli Chen
+		$.trigger_callback(_callback);
 	});
 	
 };
 
-// 沒有其他查詢結果了
+/**
+ * 設定UI介面
+ * @tyep {jQuery}
+ */
 List_collection_search.prototype._$create_ui = function () {
     
 	var _factory = KALS_window.ui; 
@@ -220,21 +232,28 @@ List_collection_search.prototype._$create_ui = function () {
         .addClass('list-collection')
         .addClass(this._$name);
   
+  	
+	var _reset_button = this.create_reset_button();
+	
 	//_factory.hr_row().appendTo(_ui);	
-        
+    
     // 搜尋結果標題	 
     var _searchresult_row = _factory.heading_row(
     new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_ui); //"搜尋結果"標題	
     _searchresult_row.css("font-size","medium");
     
-	//結果數量
+  
+    var _header_panel = _factory.panel("header")
+		.appendTo(_ui);
+  	_reset_button.appendTo(_header_panel);
 	
+	//結果數量
     var _result_number; 
 	var _result_count_tip = _factory.tip(
         new KALS_language_param('Search Result Count','window.content.searchnumber'), '0')
     	.addClass('result-count-tip')
         .hide()
-    	.appendTo(_ui); 
+    	.appendTo(_header_panel); 
 
 	var _result_count = $("<span></span>")
 		.addClass("result-count")
@@ -248,25 +267,47 @@ List_collection_search.prototype._$create_ui = function () {
 	// --------------
   	// _search_number_row.parent(".list-collection search").find('dd').addClass('number');
 
+	var _footer_panel = _factory.panel("footer")
+		.appendTo(_ui);
+	
 	var _result_row =_factory.message_row(new KALS_language_param('no-else-result','window.content.loaded_already'))
 		.addClass('totally-loaded')
 		.addClass('foot-tip')
-		.appendTo(_ui);
+		.appendTo(_footer_panel);
     
 	var _no_result_row =_factory.message_row(new KALS_language_param('no-result','window.content.noresult'))
 		.addClass('no-result')
 		.addClass('foot-tip')
 		.css("display", "block")
-		.appendTo(_ui);
+		.appendTo(_footer_panel);
   
 	// 隱藏,再由totally_loaded與 total_count來判斷是否顯示
 	_result_row.hide(); 
 	_no_result_row.hide();
 	
+	_reset_button.clone(true).appendTo(_footer_panel);
+	
     this._list_container = _container;
 	
-	
     return _ui;
+};
+
+/**
+ * 建立清除搜尋結果按鈕
+ */
+List_collection_search.prototype.create_reset_button = function () {
+	var _factory = KALS_window.ui;
+	var _button = _factory.button(new KALS_language_param(
+		"Clear search result",
+		"window.search.clear_search_result"
+	));
+	
+	var _this = this;
+	_button.click(function () {
+		_this.reset();
+	});
+	
+	return _button;
 };
 
 /**
@@ -274,6 +315,7 @@ List_collection_search.prototype._$create_ui = function () {
  */
 List_collection_search.prototype.reset = function () {
 	this.get_ui().hide();
+	KALS_text.selection.search.clear();
 	return List_collection.prototype.reset.call(this);
 };
 

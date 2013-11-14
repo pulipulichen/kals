@@ -19,7 +19,7 @@ function Selection_search(_text) {
 
 Selection_search.prototype = new Selection();
 
-Selection_search.prototype._$name = 'search';
+Selection_search.prototype._$name = 'search_result';
 
 /* End of file Selection_search */
 /* Location: ./system/application/views/web_apps/Selection_search.js */

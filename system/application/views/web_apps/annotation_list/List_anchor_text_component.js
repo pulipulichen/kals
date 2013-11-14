@@ -91,7 +91,7 @@ List_anchor_text_component.prototype.get_anchor_text = function(){
  * @param {String} _note
  */
 List_anchor_text_component.prototype.set_anchor_text = function (_text) {
-	$.test_msg("set_anchor_text text", _text);
+	//$.test_msg("set_anchor_text text", _text);
 	//$.test_msg("set_anchor_text ui", this.get_ui().length);
 	
 	if (this._item.max_anchor_text_length != null) {

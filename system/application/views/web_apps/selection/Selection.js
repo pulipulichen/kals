@@ -61,13 +61,17 @@ Selection.prototype._$select_once = true;
 Selection.prototype._classname = null;
 
 /**
- * 
+ * 設定選擇的範圍
  * @param {Scope_collection_param} _scope
  */
 Selection.prototype.set_scope_coll = function (_scope_coll) {
     
     //$.test_msg('Selection.set_scope_coll()', [$.is_class(_scope_coll, 'Scope_collection_param'), $.get_class(_scope_coll), _scope_coll.length()]);
     
+	if ($.is_array(_scope_coll)) {
+		_scope_coll = new Scope_collection_param(_scope_coll);
+	}
+	
     if ($.is_class(_scope_coll, 'Scope_collection_param') === false
         || _scope_coll.length() === 0) {
         //$.test_msg('Selection.set_scope_coll()', [($.is_class(_scope_coll, 'Scope_collection_param') === false), $.get_class(_scope_coll), _scope_coll.length()]);

@@ -757,6 +757,12 @@ class Annotation_getter extends Web_apps_controller {
             return $this->_display_jsonp($output_data, $callback);
     }
 
+    /**
+     * 搜尋標註
+     * @param string $json
+     * @param type $callback
+     * @return type
+     */
     function search_annotation($json, $callback = NULL)
     {
          //$enable_profiler = true; //？
@@ -812,29 +818,25 @@ class Annotation_getter extends Web_apps_controller {
         // 6 [ order by ] 設定排序方式(order_by_id,大小|小大 )-data內要有order_by的選項
         //test_msg('6 [ order by ]', isset($data->order_by)); 
         //order_by的typ類型e在Search_order_collection
-        if (isset($data->order_by))
-        {
-            if ($data->order_by == 'update')
-            {
+        if (isset($data->order_by)) {
+            if ($data->order_by == 'update') {
                 $search->add_order (6, TRUE); 
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->add_order (6, TRUE);
+                }
             }
-            else if ($data->order_by == 'create')
-            {
+            else if ($data->order_by == 'create') {
                 $search->add_order (7);
                 if (isset($search_id))
                     $search_id->add_order (7);
             }
-            else
-            {
+            else {
                 $search->add_order (2, TRUE);
                 if (isset($search_id))
                     $search_id->add_order (2, TRUE);
             }
         }
-        else
-        {
+        else {
             $search->add_order (2, TRUE);
             if (isset($search_id))
                 $search_id->add_order (2, TRUE);
@@ -847,6 +849,9 @@ class Annotation_getter extends Web_apps_controller {
                 $search_id->add_order (6, TRUE);
         }
 
+        /**
+         * 限定搜尋範圍只在來源的網頁
+         */
         $search->set_target_referer_webpage();
 
         //輸出
@@ -868,19 +873,26 @@ class Annotation_getter extends Web_apps_controller {
         foreach ($search AS $search_annotation)
         {
             $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
-
             array_push($annotation_collection, $annotation_data);
         }
         
-       // $search_annotation = new Annotation(783);
-       // $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
+        // $search_annotation = new Annotation(783);
+        // $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
+        // array_push($annotation_collection, $annotation_data);
 
-       // array_push($annotation_collection, $annotation_data);
+        // --------------
+               
+        //$scope_collection = $search->get_scope_collection();
 
-
+        // --------------
+        
         $output_data = array(
             'annotation_collection' => $annotation_collection,
-            'totally_loaded' => $totally_loaded
+            'totally_loaded' => $totally_loaded, 
+            'scope_collection' => array(
+                array(0, 1),
+                array(4, 7),
+            )
         );
         
         if (isset($data->show_total_count)
