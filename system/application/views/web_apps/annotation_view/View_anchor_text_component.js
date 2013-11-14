@@ -45,16 +45,16 @@ View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
     return this;
 };
 
+/**
+ * 取得標註範圍文字
+ * @param {Array} _scope_coll
+ */
 View_anchor_text_component.prototype.get_anchor_text = function (_scope_coll) {
     
     var _text = KALS_text.selection.text;
     
     var _recommend_scope_coll = _text.get_recommend_scope_coll(_scope_coll);
     var _focused_anchor_text = _text.get_display_anchor_text(_recommend_scope_coll, _scope_coll);
-    
-    //_focused_anchor_text.find('.focus.head').addClass('from');
-    //_focused_anchor_text.find('.focus.foot').addClass('to');
-    //_focused_anchor_text.find('.focus').addClass('select');
     
     return _focused_anchor_text;
 };

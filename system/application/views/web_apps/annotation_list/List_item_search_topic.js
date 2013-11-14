@@ -14,17 +14,15 @@
 function List_item_search_topic(_param) { 
     
     List_item_topic.call(this, _param);
+	
 }
 
 List_item_search_topic.prototype = new List_item_topic();
 
 List_item_search_topic.prototype._setup_menu_block = function () {
-  
     var _component = new List_menu_search(this, this._disable_option);
     this.child('menu_block', _component);
-    return _component;  
-
-
+    return _component;
 };
 
 //List_item_search_topic.prototype._$respond_force_load = true;
@@ -51,7 +49,6 @@ List_item_search_topic.prototype._$create_ui = function(){
 	_ui.find(".list-menu.list-menu-block").css("padding","5px");
 
 	return _ui;
-	
 };
 
 /**

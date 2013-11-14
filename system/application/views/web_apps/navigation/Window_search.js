@@ -185,7 +185,6 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 	
 	_subpanel = _factory.subpanel('order').appendTo(_ui); //新增一層subplan	
   
-  
    // order_by為radio選單
 
 	var _order_by_config = [ "update","create","scope" ];

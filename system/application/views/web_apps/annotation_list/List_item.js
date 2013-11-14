@@ -61,6 +61,9 @@ List_item.prototype._$create_ui = function () {
     var _header = this._setup_header();
     _header.get_ui().appendTo(_ui);
     
+	var _anchor_text = this._setup_anchor_text_component()
+		.get_ui().appendTo(_ui);
+	
     var _note = this._setup_note();
     _note.get_ui().appendTo(_ui);
     
@@ -165,6 +168,16 @@ List_item.prototype._setup_menu_block = function () {
 List_item.prototype._setup_menu_tooltip = function () {
     var _component = new List_menu_tooltip(this, this._enable_view_thread);
     this.child('menu_tooltip', _component);
+    return _component;  
+};
+
+/**
+ * 設定Anchor Text
+ * @type {List_anchor_text}
+ */
+List_item.prototype._setup_anchor_text_component = function () {
+    var _component = new List_anchor_text_component(this);
+    this.child('anchor_text', _component);
     return _component;  
 };
 

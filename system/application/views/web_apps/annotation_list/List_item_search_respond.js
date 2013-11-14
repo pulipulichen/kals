@@ -65,5 +65,12 @@ List_item_search_respond.prototype.view_thread = function () {
 	return List_item_search_topic.prototype.view_thread.call(this);
 };
 
+/**
+ * 設定menu的部份
+ */
+List_item_search_topic.prototype._setup_menu_block = function () {
+    return List_item_search_topic.prototype._setup_menu_block.call(this);
+};
+
 /* End of file View_list_item_respond */
 /* Location: ./system/application/views/web_apps/View_list_item_respond.js */
