@@ -32,7 +32,7 @@ KALS_util.ajax_get = function (_config) {
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
     
     var _retry = $.get_parameter(_config, 'retry', 3);
-    var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
+    var _retry_wait = $.get_parameter(_config, 'retry_wait', 6 * 1000);
     var _retry_counter = 0;
     
     _url = $.appends_with(_url, '/');

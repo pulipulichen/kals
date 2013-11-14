@@ -86,7 +86,8 @@ class Log extends Web_apps_controller {
         
         set_ignore_authorize(false);
 
-        //$this->_display_jsonp($data, $callback);
+        $data = true;
+        $this->_display_jsonp($data, $callback);
     }
     
     /**
