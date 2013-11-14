@@ -104,6 +104,24 @@ Window_content_submit.prototype.get_inputs = function () {
 };
 
 /**
+ * 取得指定name的input的元件
+ * @param {String} _name
+ * @type {jQuery}
+ */
+Window_content_submit.prototype.get_input = function (_name) {
+	return this._content.get_input(_name);
+};
+
+/**
+ * 取得指定name第一個input的元件
+ * @param {String} _name
+ * @type {jQuery}
+ */
+Window_content_submit.prototype.get_first_input = function (_name) {
+	return this._content.get_first_input(_name);
+};
+
+/**
  * 遞交完成時的處理動作。預設是顯示通知並關閉KALS_window。
  * @type {function}
  * @param {Object} _data 從KALS_util.ajax_get()回傳的資料
@@ -126,7 +144,6 @@ Window_content_submit.prototype.complete_handle = function (_data) {
     
     return this;
 };
-
 /**
  * 遞交錯誤時的處理動作。如果為null，則預設使用KALS_util.show_exception()。
  * @type {null|function} = function (_data) {}: _data是從伺服器上回傳的資料。

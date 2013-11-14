@@ -120,6 +120,7 @@ $lang['web_apps.window.content.search.field.annotation_type'] = '類別';
 $lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文';
 $lang['web_apps.window.content.type_radio'] = '標註類別';
 $lang['web_apps.window.content.searchkey'] = '關鍵字';
+$lang['web_apps.window.search.keyword_empty_hint'] = '請輸入關鍵字';
 $lang['web_apps.window.content.searchresult'] = '搜尋結果';
 $lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
 $lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';

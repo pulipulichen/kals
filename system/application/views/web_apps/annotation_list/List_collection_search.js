@@ -199,7 +199,7 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 		}
 	
         //顯示查詢結果	
-                _ui.find(".result-count-tip").show();
+        _ui.find(".result-count-tip").show();
 		_ui.find(".result-count-tip .result-count").html(_search_count);
  	
 		
@@ -219,37 +219,44 @@ List_collection_search.prototype._$create_ui = function () {
 	var _ui = $('<div></div>')
         .addClass('list-collection')
         .addClass(this._$name);
+  
+	//_factory.hr_row().appendTo(_ui);	
+        
+    // 搜尋結果標題	 
+    var _searchresult_row = _factory.heading_row(
+    new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_ui); //"搜尋結果"標題	
+    _searchresult_row.css("font-size","medium");
     
-    var _container = $('<div></div>')
-        .addClass('list-container')
-        .appendTo(_ui);
-   
-		//結果數量
-		
+	//結果數量
+	
     var _result_number; 
 	var _result_count_tip = _factory.tip(
         new KALS_language_param('Search Result Count','window.content.searchnumber'), '0')
     	.addClass('result-count-tip')
         .hide()
-    	.prependTo(_ui); 
+    	.appendTo(_ui); 
 
 	var _result_count = $("<span></span>")
 		.addClass("result-count")
 		.appendTo(_result_count_tip);
-		
+  
+  	// -------------
+    var _container = $('<div></div>')
+        .addClass('list-container')
+        .appendTo(_ui);
+	
+	// --------------
   	// _search_number_row.parent(".list-collection search").find('dd').addClass('number');
 
-	var _result_row =_factory.tip(
-       
-		new KALS_language_param('no-else-result','window.content.loaded_already'))
+	var _result_row =_factory.message_row(new KALS_language_param('no-else-result','window.content.loaded_already'))
 		.addClass('totally-loaded')
 		.addClass('foot-tip')
 		.appendTo(_ui);
     
-	var _no_result_row =_factory.tip(
-		new KALS_language_param('no-result','window.content.noresult'))
+	var _no_result_row =_factory.message_row(new KALS_language_param('no-result','window.content.noresult'))
 		.addClass('no-result')
 		.addClass('foot-tip')
+		.css("display", "block")
 		.appendTo(_ui);
   
 	// 隱藏,再由totally_loaded與 total_count來判斷是否顯示
@@ -260,6 +267,14 @@ List_collection_search.prototype._$create_ui = function () {
 	
 	
     return _ui;
+};
+
+/**
+ * 修改預設的重設動作
+ */
+List_collection_search.prototype.reset = function () {
+	this.get_ui().hide();
+	return List_collection.prototype.reset.call(this);
 };
 
 /* End of file List_collection_search */

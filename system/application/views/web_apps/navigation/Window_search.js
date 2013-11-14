@@ -173,7 +173,14 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         _keyword_input)
 		.addClass("keyword-row")
 		.appendTo(_ui); //"關鍵字"標題	
-        
+    
+	
+	var _keyword_empty_hint = _factory.tip(new KALS_language_param('Please input keyword', 'window.search.keyword_empty_hint'))
+		.addClass("keyword-empty-hint")
+		.appendTo(_searchkey_row.find("dd"));
+	
+	// ------------------
+	
 	// 選擇排序方式-update,create,scope
 	
 	_subpanel = _factory.subpanel('order').appendTo(_ui); //新增一層subplan	
@@ -220,25 +227,20 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
 */
    
-  // 搜尋結果數量
+  	// 搜尋結果數量
+	/**
+	 * 移至List_collection_search顯示
+	 */
     //var _result_number = _search_data.item_number;
 	
 	/*var _search_number_row = _factory.row(
 	    new KALS_language_param('Searchnumber','window.content.searchnumber'), '1'
 	).appendTo(_ui); */
-
-    
    
     var _result = _factory.subpanel("search-result-subpanel")
         .appendTo(_ui)
         .hide();
     
-    _factory.hr_row().appendTo(_result);	
-        
-        // 搜尋結果標題	 
-    var _searchresult_row = _factory.heading_row(
-    new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_result); //"搜尋結果"標題	
-    _searchresult_row.css("font-size","medium");
     
     var _list_ui = this.list.get_ui();
 	_list_ui.appendTo(_result);
@@ -376,6 +378,8 @@ Window_search.prototype.change_range = function (_range) {
 	
 	this._last_range = _range;
 	
+	this.list.reset();
+	
 	return this;
 };
 
@@ -459,8 +463,12 @@ Window_search.prototype.change_annotation_type = function (_type) {
 	_factory.change_list_value(_type_ui, _type);
 	
 	var _type_value = _factory.get_list_value(_type_ui);
-	$.test_msg("change_annotation_type", _type_value);
+	//$.test_msg("change_annotation_type", _type_value);
 	this.set_keyword_value(_type_value); 
+	
+	this.list.reset();
+	
+	return;
 };
 
 /**
@@ -504,6 +512,7 @@ Window_search.prototype.create_keyword_ui = function(){
  */
 Window_search.prototype.set_keyword_value = function (_value) {
 	this.get_keyword_ui().val(_value);
+	this.list.reset();
 	return this;
 };
 
@@ -629,9 +638,8 @@ Window_search.prototype.default_focus_input = '.dialog-content:first input:radio
  * @param {JSON} 搜尋選項
  */
 Window_search.prototype.search = function (_search_option) {
-	if (_search_option != undefined) {
-		//如果有設定選項的話，則要在這邊設定
-		//不過目前我懶得做
+	if (typeof(_search_option) == "object") {
+		this.set_input_value(_search_option);
 	}
 	
 	this.submit.submit();

@@ -125,7 +125,24 @@ Search_form_component.prototype._create_submit = function () {
 	_submit.click(function () {
 		//$.test_msg("Search_component advanced");
 		//_this._window_search.open_window();
-		_this._window_search.search();
+		
+		var _ui = _this.get_ui();
+		
+		var _range = _ui.find("[name='search_range']").val();
+		var _type = _ui.find("[name='type']").val();
+		var _keyword = _ui.find("[name='keyword']").val();
+		
+		if (_keyword !== "") {
+			_this._window_search.search({
+				"search_range": _range,
+				"keyword": _keyword,
+				"type": _type
+			});	
+		}
+		else {
+			_this._window_search.open_window();
+		}
+		
 	});
     
 	return _submit;

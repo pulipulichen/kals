@@ -143,7 +143,7 @@ Window_content.prototype._setup_submit = function (_submit) {
 
 /**
  * 取得指定_name的值
- * @param {Object} _name
+ * @param {String} _name
  */
 Window_content.prototype.get_input_value = function (_name) {
     
@@ -178,6 +178,40 @@ Window_content.prototype.get_input_value = function (_name) {
 	}
 };
 
+/**
+ * 設定name對應的值
+ * @param {Object} _json 格式是 {name1: value1, name2: value2}
+ */
+Window_content.prototype.set_input_value = function (_json) {
+	
+	if (typeof(_json) != "object") {
+		return this;
+	}
+	
+	var _ui = this.get_ui();
+	for (var _name in _json) {
+		var _value = _json[_name];
+		
+		var _input = _ui.find("[name='"+_name+"']");
+		
+		if (_input.length == 1) {
+			_input.attr("value", _value);
+		}
+		else if (_input.length > 1) {
+			_input.attr("checked", false);
+			_input.filter("[value='"+_value+"']").attr("checked", true);
+		}
+	}
+	
+	return this;
+};
+
+
+/**
+ * 取得指定的input
+ * @param {String} _name
+ * @type {jQuery}
+ */
 Window_content.prototype.get_input = function (_name) {
     if ($.is_null(_name)) {
 		return _name;
@@ -185,6 +219,15 @@ Window_content.prototype.get_input = function (_name) {
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     return _ui;
+};
+
+/**
+ * 取得第一個input
+ * @param {String} _name
+ * @type {jQuery}
+ */
+Window_content.prototype.get_first_input = function (_name) {
+	return this.get_input(_name).eq(0);
 };
 
 // --------

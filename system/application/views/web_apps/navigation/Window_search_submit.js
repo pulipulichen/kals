@@ -65,18 +65,22 @@ Window_search_submit.prototype.complete_handle = function () {
  */
 Window_search_submit.prototype.submit = function(){
 	
+	if (this.validate() === false) {
+		return this;
+	}
+	
     var _content = this._content;
 	var _list = _content.list;
 	var _data = this.get_data();
+	
+	_list.reset();
+	_list.get_ui().show();
 	
 	$.test_msg("Window_search_submit.prototype.submit", _data);
 	_list.set_search_range(_data.search_range);
 	_list.set_keyword(_data.keyword);
 	_list.set_order_by(_data.order_by);
-	
-	_list.reset();
-	
-        
+	    
 	// 我們要叫List_collection_search進行搜尋
 	var _this = this;
 	_list.load_list(function () {
@@ -84,6 +88,33 @@ Window_search_submit.prototype.submit = function(){
 				_this.complete_handle();
                 _content.get_ui().find(".search-result-subpanel").show();
 	});
+	
+	return this;
+};
+
+/**
+ * 檢查是否允許遞交
+ * @type {Boolean} 是否通過 
+ */
+Window_search_submit.prototype.validate = function () {
+    
+	var _data = this.get_data();
+	
+	var _result = true;
+	
+	var _ui = this._get_content_ui();
+	var _keyword_empty_hint = _ui.find(".keyword-empty-hint");
+	
+	if (_data.keyword === "") {
+		_result = false;
+		_keyword_empty_hint.show();
+		this.get_first_input("keyword").focus();
+	}
+	else {
+		_keyword_empty_hint.hide();
+	}
+    
+    return _result;
 };
 
 /* End of file Window_profile_submit */

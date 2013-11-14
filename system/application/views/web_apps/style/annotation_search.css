@@ -1,3 +1,7 @@
+.KALS .window-panel.window-search .list-collection.search {
+	border-top: 1px solid gray;
+}
+
 .KALS .window-panel.window-search .result-count-tip {
     padding-bottom: 5px;
     border-bottom: 1px solid gray;
@@ -5,6 +9,8 @@
 
 .KALS .window-panel.window-search .foot-tip {
     padding-top: 5px;
+	text-align:center;
+	display:block;
 }
 
 .KALS .window-panel.window-search .list-item {
@@ -29,4 +35,9 @@
 	padding-bottom: 5px;
 	border-bottom: 1px solid gray;
 	border-top-width: 0; 
+}
+
+.KALS .window-panel.window-search .keyword-empty-hint {
+	display: none;
+	color:red;
 }
