@@ -17,7 +17,7 @@ if ( ! function_exists('json_to_object'))
 {
     function json_to_object($json)
     {
-        return json_decode($json);
+        return json_decode($json, false, JSON_UNESCAPED_UNICODE);
     }
 }
 
@@ -139,28 +139,43 @@ if ( ! function_exists('kals_log'))
         }
         
         $user_id = NULL;
-        $memo = NULL;
+        $note = NULL;
 
-        if (isset($data['user_id']))
-            $user_id = $data['user_id'];
-        if (isset($data['memo']))
-        {
-            $memo = $data['memo'];
-            if (is_array($memo) || is_object($memo))
-            {
-                $memo = json_encode($memo);
+        if (is_array($data) && 
+                (isset($data['user_id']) || isset($data['memo']) ) ) {
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
             }
+            if (isset($data['memo']))
+            {
+                $note = $data['memo'];
+                if (is_array($note) || is_object($note))
+                {
+                    $note = json_encode($note);
+                }
 
-            if ($memo == '')
-                $memo = NULL;
+                if ($note == '')
+                    $note = NULL;
+            }
         }
+        else {
+            $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+        }
+        
+        if (is_null($user_id)) {
+            $user = get_context_user();
+            if (isset($user)) {
+                $user_id = $user->get_id();
+            }
+        }
+            
 
         $db->insert('log', array(
             'webpage_id' => $webpage_id,
             'user_id' => $user_id,
             'user_ip' => get_client_ip(),
             'action'=> $action,
-            'note'=>$memo
+            'note'=>$note
         ));
     }
 }

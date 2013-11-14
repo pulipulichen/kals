@@ -725,12 +725,24 @@ KALS_util.decodeURIComponent = function (_str) {
 };
 
 /**
- * 使用console.log來記錄偵錯訊息
- * @param {String} 
+ * 將log傳到伺服器
+ * 
+ * @param number _action 動作的ID。關於動作的編號，請查看[KALS]/applications/controllers/web_apps/log.php
  */
-KALS_util.log = function (_log) {
-    _log = '[KALS] ' + _log;
-    console.log(_log);
+KALS_util.log = function (_action, _note) {
+    
+	var _data = {
+		"action": _action,
+		"note": _note
+	};
+	
+	$.test_msg("KALS_util.log", _data);
+	
+	var _config = {
+		"url": "log/create",
+ 		"data": _data
+	};
+	KALS_util.ajax_get(_config);
 };
 
 /* End of file KALS_unit */

@@ -623,6 +623,12 @@ class Search_engine extends Generic_collection {
     }
 
     protected $target_webpage_id;
+    
+    /**
+     * 設定目標網頁
+     * @param Webpage|Int $webpage_id
+     * @return \Search_engine
+     */
     public function set_target_webpage($webpage_id)
     {
         $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');

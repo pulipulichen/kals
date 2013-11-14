@@ -106,8 +106,8 @@ Window_map.prototype._$create_ui = function () {
 	var _count = 0;
 	
 	//建立文章和小地圖中header位置所存放的array
-	var _header_array = new Array();
-	var _map_array = new Array();
+	var _header_array = [];
+	var _map_array = [];
 	
 	
 	// 5. 為所有找到的h1，建立<li>，貼到ol中 (迴圈)
@@ -121,35 +121,52 @@ Window_map.prototype._$create_ui = function () {
                 var _header = $(_ele);
 		_header.find(".kals-word:first").attr("id", "map-header"+ _count+"-anchor");
                 var _level = _header.attr("tagName"); 
-		var _level_number = parseInt(_level.substr(1));
+		var _level_number = parseInt(_level.substr(1), 10);
 		
-		if (_count == 0) {
+		if (_count === 0) {
 			_last_level = _level;
 			_last_level_number = _level_number;
 		}
 		
 		var _li = $("<li class=" +_level+ " ></li>");
-	
 
-		
 		//var _li = $("<li class='" +_level+ "' id=header"+count+"    ></li>");
 		var _header_text = _header.text();
 		_li.html("<a href='#map-header"+ _count +"-anchor' class='map-catalog'>"+ _header_text + "</a><ul></ul>");
                 
                 _li.find("a.map-catalog:first").click(function () {
-                    var _id = $(this).attr("href");
+					var _this = $(this);
+                    var _href = _this.attr("href");
                     //$.test_msg("map-heaer", [$(_id).length, _id]);
-                    var _offset = $(_id).offset();
-                    setTimeout(function () {
-                        $(window).scrollTop(_offset.top - 60);
-                    }, 0);
+					
+                    var _offset = $(_href).offset();
+					if (_offset.top > 60) {
+						setTimeout(function () {
+	                        $(window).scrollTop(_offset.top - 60);
+	                    }, 0);
+					}
+	                
+					//記錄資料
+					var _action = "29";	//29=小地圖點選章節標題，note={index:1, title:"標題內文"}
+					
+					var _title = _this.text();
+					var _id = $.str_replace("#map-header", "", _href);
+					_id = $.str_replace("-anchor", "", _id);
+					_id = parseInt(_id, 10);
+					
+					var _note = {
+						"index": _id,
+						"title": _title 
+					};
+					
+					KALS_util.log(_action, _note);
                 });
 		
 		_header_array[_count] = _header.offset().top;		
 		
 		
 		//判斷上一個_level是否相同
-		if (_count == 0) {
+		if (_count === 0) {
 			_li.addClass("map-header");
 			_li.appendTo(_map_ol);
 			
@@ -160,7 +177,7 @@ Window_map.prototype._$create_ui = function () {
 			
 			var _last_li = _map_ol.find("li."+_last_level+":last");
 			var _last_li_ul = _last_li.children("ul:last");
-			if (_last_li_ul.length == 0) {
+			if (_last_li_ul.length === 0) {
 				_last_li_ul = $("<ul></ul>").appendTo(_last_li);
 			}
 			_li.appendTo(_last_li_ul);
@@ -172,13 +189,13 @@ Window_map.prototype._$create_ui = function () {
 		else if (_level != _last_level && _last_level_number > _level_number) {
 			_li.addClass("map-header");
 			
-			var _last_li = _map_ol.find("li."+_level+":last");
+			_last_li = _map_ol.find("li."+_level+":last");
 			_li.insertAfter(_last_li);
 			
 			_map_array[_count] = _li.offset().top;
 		}
 		else if (_level != "H1" && _level == _last_level) {
-			var _last_li = _map_ol.find("li."+_level+":last");
+			_last_li = _map_ol.find("li."+_level+":last");
 			_li.addClass("map-header");
 			_li.insertAfter(_last_li);
 			
@@ -213,7 +230,7 @@ Window_map.prototype._$create_ui = function () {
 		
 		_map.find('.map-header').each(function (_key, _ele) {
 			
-			if (_count == 0) {
+			if (_count === 0) {
 				_first_top = $(_ele).offset().top;
 			}
 			
@@ -230,7 +247,7 @@ Window_map.prototype._$create_ui = function () {
 				var _top = $(_ele).offset().top;
 				_top = _top - _first_top;
 				
-				if (_map.hasClass('focus') == false) {
+				if (_map.hasClass('focus') === false) {
 					_div.scrollTop( _top );
 				}
 				//$.test_msg('scroll map', _top);
@@ -307,7 +324,7 @@ Window_map.prototype.open = function (_callback) {
 	var _ui = this.get_ui();
     _ui.attr('id', _id);
 
-    _modal.set_heading("map");
+    _modal.set_heading(this.heading);
     //_modal.set_content("asasa");
     
     if ($.is_function(_callback)) {
