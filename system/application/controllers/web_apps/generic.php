@@ -19,10 +19,24 @@ class generic extends Web_apps_controller {
     protected $controller_enable_cache = FALSE;
     
     private $dirmap_path = "./system/application/views/web_apps/";
-
-    function toolkit($return_list = NULL)
-    {
+    
+    /**
+     * JavaScript載入清單
+     * @var Array
+     */
+    public $javascript_import_list = array(
+        
         /**
+         * 會用其他方法載入，在這邊不載入的清單
+         */
+        "exception_list" => array(
+            "core/KALS_loader",
+            "libraries/jquery"
+        ),
+        
+        /**
+         * 基本工具類
+         * 
          * 20130221 Pulipuli Chen
          * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
          * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
@@ -30,9 +44,9 @@ class generic extends Web_apps_controller {
          * http://refresh-sf.com/yui
          * 
          * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
+         * @var Array 
          */
-        
-        $list = array(
+        "toolkit_list" => array(
             'libraries/min/jquery.tools'
             ,'libraries/min/jquery.ba-bbq.min'
             , 'libraries/min/jquery.jcrop'
@@ -42,9 +56,13 @@ class generic extends Web_apps_controller {
             , 'libraries/min/yui-min'
             , 'libraries/min/jQuery_mousewheel_plugin-min'
             , 'libraries/min/jquery.scrollIntoView-min'
-        );
-
-        $list_package = array(
+        ),
+        
+        /**
+         * 工具類壓縮工具基本清單
+         * @var Array
+         */
+        "toolkit_list_package" => array(
             'core/KALS_CONFIG'
             , 'core/KALS_language_param'
             , 'toolkit/jQuery_kals_plugin'
@@ -68,32 +86,13 @@ class generic extends Web_apps_controller {
             , 'helpers/KALS_util'   //Qunit
 
             //, 'toolkit/'
-        );
-
-        if (is_null($return_list))
-        {
-            $this->load_js($list);
-            $this->pack_js($list_package, 'toolkit');
-        }
-        else
-        {
-            $full_list = $list;
-            foreach ($list_package AS $path) {
-                $full_list[] = $path;
-            }
-            return $full_list;
-        }
-    }
-
-    function core($return_list = NULL)
-    {
-        $list = array(
-            //'',
-            ""
-        );
-
-        //注意順序！
-        $list_package = array(
+        ),
+        
+        /**
+         * 核心工具
+         * @type {Array}
+         */
+        "core_list_package" => array(
             'core/KALS_language',
             'core/Viewportmove_dispatcher',
             'core/KALS_authentication',
@@ -109,41 +108,12 @@ class generic extends Web_apps_controller {
             'core/Init_profile',
             'core/KALS_context'	//必須是最後一個！	
             //''
-        );
+        ),
         
-        /*
-        $dir_list = array(
-    		'core'
-    	);
-        $files = $this->dirmap($dir_list);
-		*/
-        
-        if (is_null($return_list))
-        {
-            //$this->load_js($list);
-            $this->pack_js($list_package, 'core');
-        }
-        else
-        {
-            $full_list = $list;
-            foreach ($list_package AS $path) {
-                $full_list[] = $path;
-            }
-            return $full_list;
-        }
-    }
-
-    /**
-     * 載入Component類型的JavaScript
-     * @param {boolean} 是否要回傳列表
-     */
-    function component($return_list = NULL)
-    {
-        $list = array(            
-            ''
-        );
-
-        $list_package = array(
+        /**
+         * 工具類
+         */
+        "component_list_package" => array(
             //'',
             'kals_window/KALS_window',
             'kals_window/Window_loading_component',
@@ -297,22 +267,99 @@ class generic extends Web_apps_controller {
 
             'kals_text/Init_text',
             'kals_text/KALS_text',
+        ),
+    );
+    
+    /**
+     * 載入基本工具類
+     * 
+     * 這是第一次載入的工具
+     * @param Array $return_list
+     * @return string JavaScript
+     */
+    public function toolkit($return_list = NULL)
+    {
+        $list = $this->javascript_import_list["toolkit_list"];
+
+        $list_package = $this->javascript_import_list["toolkit_list_package"];
+
+        if (is_null($return_list))
+        {
+            $this->load_js($list);
+            $this->pack_js($list_package, 'toolkit');
+        }
+        else
+        {
+            $full_list = $list;
+            foreach ($list_package AS $path) {
+                $full_list[] = $path;
+            }
+            return $full_list;
+        }
+    }
+
+    function core($return_list = NULL)
+    {
+        $list = array(
+            //'',
+            ""
         );
+
+        //注意順序！
+        $list_package = $this->javascript_import_list["core_list_package"];
+        
+        /*
+        $dir_list = array(
+    		'core'
+    	);
+        $files = $this->dirmap($dir_list);
+		*/
+        
+        if (is_null($return_list))
+        {
+            //$this->load_js($list);
+            $this->pack_js($list_package, 'core');
+        }
+        else
+        {
+            $full_list = $list;
+            foreach ($list_package AS $path) {
+                $full_list[] = $path;
+            }
+            return $full_list;
+        }
+    }
+
+    /**
+     * 載入Component類型的JavaScript
+     * @param {boolean} 是否要回傳列表
+     */
+    function component($return_list = NULL)
+    {
+        $list = array(            
+            ''
+        );
+
+        $list_package = $this->javascript_import_list["component_list_package"];
         
     	/*
     	$dir_list = array(
     		'kals_window',
-			'navigation',
-			'kals_toolbar',
-			'annotation_param',
-			'selection',
-			'annotation_editor',
-			'annotation_view',
-			'annotation_recommend',
-			'kals_text'
+                'navigation',
+                'kals_toolbar',
+                'annotation_param',
+                'selection',
+                'annotation_editor',
+                'annotation_view',
+                'annotation_recommend',
+                'kals_text'
     	);
         $files = $this->dirmap($dir_list);
         */
+        
+        $exception_list = $this->_get_javascript_exception_list();
+        $other_list_package = $this->_get_javascript_list($exception_list);
+        $list_package = array_merge($list_package, $other_list_package);
         
         if (is_null($return_list))
         {
@@ -348,7 +395,7 @@ class generic extends Web_apps_controller {
 	    	for ($j = 0; $j < count($f); $j++) {
 	        	$f[$j] = $dirs[$i]."/".$f[$j];
 	        }
-    		 $files = array_merge($files, $f);
+    		$files = array_merge($files, $f);
     	}
         
         for ($i = 0; $i < count($files); $i++) {
@@ -359,6 +406,92 @@ class generic extends Web_apps_controller {
         //print_r($files);
     	
         return $files;
+    }
+    
+    /**
+     * 測試用
+     */
+    /*
+    public function show_javascript_list() {
+        $exception_list = $this->_get_javascript_exception_list();
+        $list = $this->_get_javascript_list($exception_list);
+        
+        //print_r($exception_list);
+        print_r($list);
+    }
+    */
+    
+    /**
+     * 取得排除清單
+     * @return array
+     */
+    private function _get_javascript_exception_list() {
+        $list = array();
+        
+        foreach ($this->javascript_import_list AS $l) {
+            //print_r($l);
+            $list = array_merge($list, $l);
+        }
+        
+        return $list;
+    }
+    
+    /**
+     * 取得web_apps底下的資料夾
+     */
+    private function _get_javascript_list($exception_list) {
+        $this->load->helper('directory');
+        
+        $files = array();
+        
+        $file = directory_map($this->dirmap_path, false);
+        $dir = "";
+        
+        //print_r($file);
+        $files = $this->_get_javascript_file_path($files, $dir, $file, $exception_list);
+        
+        return $files;
+    }
+    
+    /**
+     * 取得該檔案的路徑
+     * @param array $files
+     * @param String $dir
+     * @param String|array $file
+     * @param array $exception_list 排除清單
+     * @return array
+     */
+    private function _get_javascript_file_path($files, $dir, $file, $exception_list) {
+       
+        /**
+         * 避免目錄太深
+         */
+       if (strpos($dir, "/") !== FALSE && count(explode("/", $dir)) > 2 ) {
+           return $files;
+       }
+        
+       $needle = ".js";
+       if (is_string($file)) {
+           if (substr($file, (0-strlen($needle))) === $needle) {
+               $file = substr($file, 0, (0-strlen($needle)));
+               $path = $dir . $file;
+               if (FALSE === in_array($path, $exception_list)) {
+                   $files[] = $path;
+               }
+           }
+       }
+       else {
+           foreach ($file AS $d => $f) {
+               $child_dir = $dir;
+               if (FALSE === is_numeric($d)) {
+                   $child_dir = $dir . $d . "/";
+               }
+               
+               $files = $this->_get_javascript_file_path($files, $child_dir, $f, $exception_list);
+           }
+       }
+       
+       return $files;
     }
 
     function package($is_demo = NULL) {
