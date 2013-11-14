@@ -149,7 +149,11 @@ class Annotation_scope_collection extends Generic_association_collection {
 
     public function add_scope_collection(Annotation_scope_collection $scope_collection)
     {
-        return $this->add_collection($scope_collection);
+        //return $this->add_collection($scope_collection);
+        foreach ($scope_collection AS $scope) {
+            $this->add_scope($scope);
+        }
+        return $this;
     }
 
     public function exclude_scope(Annotation_scope $scope)

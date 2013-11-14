@@ -881,18 +881,20 @@ class Annotation_getter extends Web_apps_controller {
         // array_push($annotation_collection, $annotation_data);
 
         // --------------
+        
+        /**
+         * 取得搜尋結果的位置
+         */
                
-        //$scope_collection = $search->get_scope_collection();
+        $scope_collection = $search->get_result_scope_coll();
+        $scope_collection_json = $scope_collection->export_webpage_data(get_context_webpage());
 
         // --------------
         
         $output_data = array(
             'annotation_collection' => $annotation_collection,
             'totally_loaded' => $totally_loaded, 
-            'scope_collection' => array(
-                array(0, 1),
-                array(4, 7),
-            )
+            'scope_collection' => $scope_collection_json
         );
         
         if (isset($data->show_total_count)

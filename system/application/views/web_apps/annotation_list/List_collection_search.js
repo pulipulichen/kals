@@ -187,15 +187,18 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 	   
 	   var _show_result_row = _ui.find(".totally-loaded"); //全部讀完
 	   var _show_no_result_row = _ui.find(".no-result");  //無查詢結果
+	   var _reset_button = _ui.find(".reset-button");  //無查詢結果
 	  
 	   //顯示查詢訊息
 	   if (_search_loaded === true && _search_count === 0){ 
 		    _show_no_result_row.show();
-			_show_result_row.hide();	   
+			_show_result_row.hide();
+			_reset_button.hide();
 		  }
 		else if(_search_loaded === true && _search_count !== 0 ) {
 		    _show_result_row.show();
 		    _show_no_result_row.hide();
+			_reset_button.show();
 		}
 	
         //顯示查詢結果	
@@ -300,7 +303,9 @@ List_collection_search.prototype.create_reset_button = function () {
 	var _button = _factory.button(new KALS_language_param(
 		"Clear search result",
 		"window.search.clear_search_result"
-	));
+	))
+		.addClass("reset-button");
+	
 	
 	var _this = this;
 	_button.click(function () {
@@ -309,6 +314,7 @@ List_collection_search.prototype.create_reset_button = function () {
 	
 	return _button;
 };
+
 
 /**
  * 修改預設的重設動作
