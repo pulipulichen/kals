@@ -61,8 +61,8 @@ List_item.prototype._$create_ui = function () {
     var _header = this._setup_header();
     _header.get_ui().appendTo(_ui);
     
-	var _anchor_text = this._setup_anchor_text_component()
-		.get_ui().appendTo(_ui);
+	//var _anchor_text = this._setup_anchor_text_component()
+	//	.get_ui().appendTo(_ui);
 	
     var _note = this._setup_note();
     _note.get_ui().appendTo(_ui);

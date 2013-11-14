@@ -41,6 +41,9 @@ List_item_search_topic.prototype._$create_ui = function(){
 	//View_list_item_topic.prototype._$create_ui(this);
 	var _ui = List_item_topic.prototype._$create_ui.call(this);
 	
+	var _anchor_text = this._setup_anchor_text_component()
+		.get_ui().insertBefore(_ui.find(".list-note-component"));
+	
 	_ui.addClass("list-item-search-topic");
 	//只有改topic的部分
 	_ui.find(".list-menu-option").css("border-left","none");

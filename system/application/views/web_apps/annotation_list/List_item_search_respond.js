@@ -23,6 +23,11 @@ List_item_search_respond.prototype._$create_ui = function(){
     //var _ui = KALS_window.ui.panel('no-result');
     var _ui = List_item_respond.prototype._$create_ui.call(this);
     
+	var _anchor_text = this._setup_anchor_text_component()
+		.get_ui()
+		.prependTo(_ui);
+		//.insertBefore(_ui.find(".list-note-component"));
+	
 	/*
 	var _factory = KALS_window.ui;
 	
@@ -68,7 +73,7 @@ List_item_search_respond.prototype.view_thread = function () {
 /**
  * 設定menu的部份
  */
-List_item_search_topic.prototype._setup_menu_block = function () {
+List_item_search_respond.prototype._setup_menu_block = function () {
     return List_item_search_topic.prototype._setup_menu_block.call(this);
 };
 

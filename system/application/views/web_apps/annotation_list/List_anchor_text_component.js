@@ -32,7 +32,14 @@ List_anchor_text_component.prototype = new KALS_user_interface();
 List_anchor_text_component.prototype._item = null;
 
 List_anchor_text_component.prototype._set_list_item = function (_item) {
-    return List_note_component.prototype._set_list_item.call(this, _item);
+	//$.test_msg("List_anchor_text, _set_list_item");
+    if ($.isset(_item)) {
+        this._item = _item;
+        var _this = this;
+        this._item.add_listener('set', function (_item) {
+            _this.set_data();
+        });
+    }
 };
 
 List_anchor_text_component.prototype.set_data = function () {
@@ -65,10 +72,10 @@ List_anchor_text_component.prototype.get_anchor_text = function(){
 	
 	var _text = KALS_text.selection.text;
     
-    var _recommend_scope_coll = _text.get_recommend_scope_coll(_scope);
-    var _focused_anchor_text = _text.get_display_anchor_text(_recommend_scope_coll, _scope);
-    
-    return _focused_anchor_text;
+	//$.test_msg("get_anchor_text scope", _scope);
+	var _anchor_text = _text.get_anchor_text(_scope);
+    //$.test_msg("get_anchor_text text", _anchor_text);
+    return _anchor_text;
 };
 
 
@@ -77,7 +84,10 @@ List_anchor_text_component.prototype.get_anchor_text = function(){
  * @param {String} _note
  */
 List_anchor_text_component.prototype.set_anchor_text = function (_text) {
-    this.get_ui(".list-anchor-text-component").html(_text);
+	//$.test_msg("set_anchor_text text", _text);
+	//$.test_msg("set_anchor_text ui", this.get_ui().length);
+	_text = '"' + _text + '"'; 
+    this.get_ui().html(_text);
     return this;
 };
 

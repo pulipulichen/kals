@@ -75,6 +75,13 @@
     margin: 0;
 }
 
+.KALS .list-item .list-anchor-text-component {
+	padding-left: 1em;
+	font-style:italic;
+	color:gray;
+}
+
+
 /**
  * @section List_header_component
  */
