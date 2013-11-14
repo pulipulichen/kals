@@ -178,6 +178,77 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 };
 
 /**
+ * 這樣可以跑嗎？
+ */
+List_collection_search.prototype.load_list = function(_data, _callback) {
+    if ($.is_function(_data) && $.is_null(_callback)) {
+        _callback = _data;
+        _data = null;
+    }
+    
+    if ($.isset(_data)) {
+        if ($.is_class(_data, 'Annotation_param')) {
+            var _annotation_param = _data.export_json();
+            _data = {
+                annotation_collection: [ _annotation_param ],
+                totally_loaded: true
+            };    
+        }
+        else if ($.is_class(_data, 'Annotation_collection_param')) {
+            var _coll_param = _data.export_json();
+            _data = {
+                annotation_collection: _coll_param,
+                totally_loaded: true
+            };
+        }
+        
+        //$.test_msg('List_collection.load_list() has data', _data);
+        
+        var _this = this;
+        this.setup_load_list(_data, function () {
+            $.trigger_callback(_callback);
+            _this.notify_listeners(_data);
+        });
+        
+        return this;
+    }
+    
+    if (this.is_totally_loaded() === true
+        || this._check_login() === false) {
+        $.trigger_callback(_callback);
+        //$.test_msg("is_totally_loaded check_login", [this.is_totally_loaded(), this._check_login()]);
+        return this;
+    }
+    
+    if (this._load_lock === true) {
+        //$.test_msg("_load lock ed");
+        return this;
+    }
+    
+    //$.test_msg('List_coll.load_list check pre _search_data', this.get_name());
+    
+    var _search_data = this.get_search_data();
+    
+    //$.test_msg('List_coll.load_list check _search_data', [_search_data, this.get_name()]);
+    if ($.isset(_search_data)) {
+        this._load_lock = true;
+        
+        //$.test_msg('List_coll.load_list  pre-load()');
+        this.load(_search_data, function (_this, _data) {
+            //$.test_msg('List_coll.load_list load()', _data);
+            _this.setup_load_list(_data, function () {
+                $.trigger_callback(_callback);
+                _this._load_lock = false;    
+            });
+        });
+        return this;
+    }
+    
+    //$.test_msg("List_coll do nothing");
+    return this;
+};
+
+/**
  * 設定UI介面
  * @tyep {jQuery}
  */
@@ -279,6 +350,14 @@ List_collection_search.prototype.reset = function () {
     this.get_ui().hide();
     KALS_text.selection.search.clear();
     return List_collection.prototype.reset.call(this);
+};
+
+/**
+ * 覆寫原本的檢查check_login設定，允許永遠pass
+ * @type boolean
+ */
+List_collection_search.prototype._check_login = function () {
+    return true;
 };
 
 /* End of file List_collection_search */
