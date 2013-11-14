@@ -108,7 +108,7 @@ Type_component.prototype._$create_ui = function () {
 	if (_default_type === null) {
 		for (_i in _options) {
 			_option = _options[_i];
-			var _type_name = _i;
+			_type_name = _i;
 			this._default_type = KALS_context.custom_type.find_type(_i);
 			break;
 		}

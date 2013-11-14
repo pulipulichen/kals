@@ -44,57 +44,6 @@ List_collection_search.prototype._search_range = null;
 List_collection_search.prototype._keyword = null;
 
 /**
- * 排序
- * @type {type}
- */
-//List_collection_search.prototype.order_by;
-//因為List_collection中已經有$order_by，直接拿來使用
-
-
-/**
- * 設定要搜尋的物件
- * 
- * @type {JSON}
- */
-/*
-List_collection_search.prototype.get_search_data = function() {
-    var _search_data = {};
-
-    _search_data.search_range = this._search_range;
-    _search_data.keyword = this._keyword;
-    _search_data.order_by = this._$order_by;
-
-    $.test_msg("List_coll search get_search_data", _search_data);
-    return _search_data;
-};
-*/
-/**
- * 讀取列表
- */
-/*
-List_collection_search.prototype.load_list = function(_data, _callback) {
-    var _search_data = this.get_search_data();
-    
-    $.test_msg('List_coll.load_list', _search_data);
-    if ($.isset(_search_data)) {
-        this._load_lock = true;
-        
-        $.test_msg('List_coll.load_list  pre-load()');
-        this.load(_search_data, function (_this, _data) {
-            $.test_msg('List_coll.load_list load()', _data);
-            _this.setup_load_list(_data, function () {
-                $.trigger_callback(_callback);
-                _this._load_lock = false;    
-            });
-        });
-        return this;
-    }
-    
-    $.test_msg("List_coll do nothing")
-    return this;
-};
-*/
-/**
  * 設定搜尋範圍
  * @param {string} _search_range
  */
@@ -130,7 +79,7 @@ List_collection_search.prototype.create_list_item = function(_param) {
 };
 
 List_collection_search.prototype.get_search_data = function () {
-    $.test_msg("List_coll search get_search_data");
+    //$.test_msg("List_coll search get_search_data");
     var _search_data = {};
        
     //需要登入身分的兩個參數
@@ -168,7 +117,7 @@ List_collection_search.prototype.get_search_data = function () {
 	
     _search_data.show_total_count = true;
     
-        $.test_msg("List_coll get_search_data", _search_data);
+        //$.test_msg("List_coll get_search_data", _search_data);
 	return _search_data;
 };
 
@@ -179,7 +128,7 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 	var _this = this;
 	
         //$.test_msg("search.setup_load_list", _data);
-        $.test_msg("search.setup_load_list", this.get_name());
+        //$.test_msg("search.setup_load_list", this.get_name());
 	return List_collection.prototype.setup_load_list.call(this, _data, function () {
 
 		// 取得UI

@@ -115,6 +115,10 @@ Annotation_type_param.prototype.set = function (_param) {
         //this.custom_name = _param.get_custom_name();
         return _param;
     }
+	else if (_param == "[object Object]") {
+		this.id = 7;
+		this.custom_name = null;
+	}
     else {
         //如果是字串的話，那表示是自訂類型囉
         //this.id = 7;
