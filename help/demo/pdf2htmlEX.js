@@ -106,7 +106,7 @@ var pdf2htmlEX = (function(){
     },
     /* return if this page or any neighbor of it is visible */
     is_nearly_visible : function() {
-        retunr true;
+        return true;
       var off = this.position();
       /* I should use the height of the previous page or the next page here
        * but since they are not easily available, just use '*2', which should be a good estimate in most cases
