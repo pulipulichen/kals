@@ -75,7 +75,7 @@ Type_component.prototype._$create_ui = function () {
     for (var _i in _options) {
         var _option = _options[_i];
         
-        _option.tooltip(_config);
+        //_option.tooltip(_config);
         
         if (_i == 'custom') {
             _option = this._create_custom_type_option(_option);
@@ -84,6 +84,7 @@ Type_component.prototype._$create_ui = function () {
     }
     
     _ui.tooltip(_config);
+	
     //_ui.setup_hover();
     
 	// 20130603 Pudding Chen
@@ -352,7 +353,7 @@ Type_component.prototype._create_custom_type_option = function (_option) {
     
     var _config = this.menu._$get_config();
     //_custom.tooltip(_config);
-    _ui.tooltip(_config);
+    //_ui.tooltip(_config);
     
     _custom.mouseover(function () {
         _ui.tooltip().show();

@@ -44,7 +44,7 @@ Type_menu.prototype._$create_ui = function () {
     
     var _ui = this._create_tooltip_prototype({
         id: _id,
-        classname: 'type-menu'
+        classname: 'type-menu KALS'
     });
     
     var _options = this._type_options;
@@ -60,7 +60,8 @@ Type_menu.prototype._$create_ui = function () {
         //$.test_msg('Type_menu._$create_ui custom_type_lis', _j);
         _type = _custom_type_list[_j];
         this._setup_type_ui(_ui, _type);
-    } 
+    }
+	//_ui.appendTo($("body"));
     
     return _ui;
 };
@@ -306,7 +307,8 @@ Type_menu.prototype._$get_config = function () {
     var _config = Tooltip_modal.prototype._$get_config.call(this, _selector);
     
     _config.position = 'bottom right';
-    _config.offset = [-50, -13];
+    //_config.offset = [-50, -13];
+	_config.offset = [0, 0];
     _config.events = {def: 'click mouseover, mouseleave' };
     
     var _onbeforeshow;
@@ -317,9 +319,12 @@ Type_menu.prototype._$get_config = function () {
     var _this = this;
     _config.onBeforeShow = function () {
         
+		_this.get_ui().css("visibility", "hidden");
         setTimeout(function () {
+			
             _this.setup_position();    
-        }, 10);
+			_this.get_ui().css("visibility", "visible");
+        }, 0);
         
         if ($.is_function(_onbeforeshow)) {
 			_onbeforeshow.call(this);
@@ -339,6 +344,15 @@ Type_menu.prototype.setup_position = function () {
     
     var _ui = this.get_ui();
     
+	var _type_ui = this._type_component.get_ui();
+	
+	var _type_offset = _type_ui.offset();
+	var _type_right = _type_ui.width();
+	$.test_msg("setup_position", [_type_offset.left, _type_ui.width(), _type_right]);
+	_ui.css("left", _type_right + "px");
+	
+	_ui.css("top", "-50px");
+	
     var _top, _left;
     
     //上極限
