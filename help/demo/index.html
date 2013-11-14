@@ -18,7 +18,19 @@ pdf2htmlEX.defaultViewer = new pdf2htmlEX.Viewer({
 });
 </script>
 
-<script type="text/javascript" src="/kals/web_apps/generic/loader"></script>
+<script type="text/javascript" src="/kals/web_apps/generic/loader">
+KALS_CONFIG = {
+    /**
+     * 標註範圍指定區塊
+     * @type {string,null} jQuery的指定語法(selector)
+     *     請盡量以ID為指定區塊。
+     *     例如指定ID名為「annotation_scope」的區塊，請輸入「#annotation_scope」
+     *     如果是指定區有多個區塊，那麼只有第一個區塊能夠進行標註。
+     *     預設是選擇全部的網頁。
+     */
+    login_hint: 'You can use demo account: 電子信箱位址：<strong>demo@dlll.nccu.edu.tw</strong> / 密碼：<strong>demo</strong>'
+};
+</script>
 <title>Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.pdf</title>
 </head>
 <body>
