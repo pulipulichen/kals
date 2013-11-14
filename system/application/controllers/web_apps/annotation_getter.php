@@ -650,6 +650,8 @@ class Annotation_getter extends Web_apps_controller {
 
             //$search_id在此不作設限
         }
+        
+        $search->set_target_webpage(get_context_webpage());
 
         //輸出
         $totally_loaded = TRUE;

@@ -67,7 +67,7 @@ jQuery.test_msg = function (_title, _test) {
 	
 	var _info_test = _test;
 	
-	if ($.starts_with(_info_test, "http")) {
+	if ($.starts_with(_info_test, "http") || $.starts_with(_info_test, "/kals/")) {
 		_info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
 	}
 	
