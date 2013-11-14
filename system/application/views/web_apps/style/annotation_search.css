@@ -16,6 +16,7 @@
 .KALS .window-panel.window-search .list-item {
 	padding-left: 5px;
 	padding-right: 5px;
+	background-color: white;
 } 
 
 /*
@@ -41,3 +42,4 @@
 	display: none;
 	color:red;
 }
+

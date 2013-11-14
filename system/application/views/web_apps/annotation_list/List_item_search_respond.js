@@ -25,8 +25,7 @@ List_item_search_respond.prototype._$create_ui = function(){
     
 	var _anchor_text = this._setup_anchor_text_component()
 		.get_ui()
-		.prependTo(_ui);
-		//.insertBefore(_ui.find(".list-note-component"));
+		.insertBefore(_ui.find(".list-note-component"));
 	
 	/*
 	var _factory = KALS_window.ui;

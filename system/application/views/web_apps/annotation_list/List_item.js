@@ -172,6 +172,12 @@ List_item.prototype._setup_menu_tooltip = function () {
 };
 
 /**
+ * 茅點文字最大長度
+ * @type {int}
+ */
+List_item.prototype.max_anchor_text_length = 20;
+
+/**
  * 設定Anchor Text
  * @type {List_anchor_text}
  */

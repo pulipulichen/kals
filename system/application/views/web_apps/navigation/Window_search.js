@@ -56,7 +56,18 @@ Window_search.prototype._search_default_option = {
  * 搜尋功能選項
  */
 Window_search.prototype._search_param = {
-	range: [ "note","author","annotation_type","annotation_anchor" ]
+	/**
+	 * 搜尋欄位
+	 */
+	range: [ "note","author","annotation_type","annotation_anchor" ],
+	
+	/**
+	 * 排序順序
+	 * 
+	 * 由於內文順序的排序尚未完成，所以先關閉
+	 */
+	//order_by: ["update","create","scope"]
+	order_by: ["update","create"]	
 };
 
 /**
@@ -187,7 +198,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
   
    // order_by為radio選單
 
-	var _order_by_config = [ "update","create","scope" ];
+	var _order_by_config = this._search_param.order_by;
 	var _order_by_options = [];
 	var _order_by_default_value = this._search_default_option.order_by;
 	
@@ -615,14 +626,23 @@ Window_search.prototype.show_recent_annotation = function(){
  * @author Pulipuli Chen 20131113
  */
 Window_search.prototype.setup_recent = function(){
+	
 	this.nav_heading = new KALS_language_param (
-	    'Search',
+	    'Recent',
 	    'window.search_recent.nav_heading'
 	);
+	
+	this.set_input_value({
+		keyword: "*"
+	});
 	
 	var _this = this;
 	this.onopen = function () {
 		_this.submit.submit();
+		
+		_this.set_input_value({
+			keyword: ""
+		});
 	};
 };
 
