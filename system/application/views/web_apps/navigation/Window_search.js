@@ -376,10 +376,11 @@ Window_search.prototype.change_range = function (_range) {
 		this._last_range = this._search_default_option.range;
 	}
 	
-	if (_range == "anntation_type" && this.is_input_keyword()) {
+	$.test_msg("change range", [_range, this.is_input_keyword()]);
+	if (_range == "annotation_type" && this.is_input_keyword()) {
 		this.toggle_input("annotation_type");
 	}
-	else if (_range == "keyword" && this.is_input_keyword() === false) {
+	else if (_range != "annotation_type" && this.is_input_keyword() === false) {
 		this.toggle_input("keyword");
 	}	
 	
@@ -580,8 +581,8 @@ Window_search.prototype.toggle_input = function (_type) {
 Window_search.prototype.is_input_keyword = function () {
 	var _keyword_ui = this.get_keyword_ui().eq(0);
 	var _classname = _keyword_ui.attr("className");
-	var _is_keyword = (_classname.indexOf("use-annotation-type") > -1);
-	$.test_msg("is_input_keyword", _is_keyword);
+	var _is_keyword = (_classname.indexOf("use-annotation-type") == -1);
+	//$.test_msg("is_input_keyword", _is_keyword);
 	return _is_keyword;
 };
 
@@ -645,17 +646,18 @@ Window_search.prototype.setup_recent = function(){
 	    'Recent',
 	    'window.search_recent.nav_heading'
 	);
-	
-	this.set_input_value({
-		keyword: "*"
-	});
-	
 	var _this = this;
 	this.onopen = function () {
-		_this.submit.submit();
 		
+		//$.test_msg("setup_recent", "keyword *");
 		_this.set_input_value({
-			keyword: ""
+			keyword: "*"
+		});
+		
+		_this.submit.submit(function () {
+			_this.set_input_value({
+				keyword: ""
+			});
 		});
 	};
 };

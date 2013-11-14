@@ -81,7 +81,7 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('kals-modal')
 		.addClass("KALS")
         .hide()
-        .appendTo($('.selectable-text:first'));
+        .insertBefore($('.selectable-text:first'));
         
     var _config = this._$get_config();
     

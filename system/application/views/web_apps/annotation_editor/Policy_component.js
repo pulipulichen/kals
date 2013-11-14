@@ -83,10 +83,7 @@ Policy_component.prototype._$create_ui = function () {
         var _option = $('<span></span>')
             .addClass('policy-option')
             .addClass(_type)
-            .hide()
-            .click(function () {
-                _this.open_window();
-            });
+            .hide();
         
         var _lang = new KALS_language_param(
             _type,
@@ -97,6 +94,10 @@ Policy_component.prototype._$create_ui = function () {
         
         _option.appendTo(_ui);
     }
+	
+	_ui.click(function () {
+        _this.open_window();
+    });
     
     setTimeout(function() {
         _this.set_policy_type();

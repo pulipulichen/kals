@@ -532,6 +532,10 @@
     height: 50px;
 }
 
+.annotation-editor .note-editor .cke_button_source .cke_label {
+	display:none;
+}
+
 /*
 table.cke_editor.inline-table {
     display:inline-table !important;

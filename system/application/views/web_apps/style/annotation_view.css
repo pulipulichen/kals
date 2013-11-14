@@ -59,6 +59,7 @@
     overflow-y:auto;
     background-color: white;
     border: 1px solid #494437;
+	padding-bottom: 20px;
 }
 
 .window-view-content.hide-editor .view-list-container {

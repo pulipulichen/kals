@@ -255,11 +255,11 @@ List_note_component.prototype.set_note = function (_note) {
         _text = $.trim(_text);
         if (_origin_text.length > this._simple_max_length) {
 			if (_text.length > this._simple_max_length) {
-	            _text = _text.substr(0, this._simple_max_length) + '...';
-	            this._note_container.html(_text);
+	            _abstract = _text.substr(0, this._simple_max_length) + '...';
+	            this._note_container.html(_abstract);
             } 
 			
-            var _view = this._create_view_thread();
+            var _view = this._create_view_thread(_origin_text.length);
             _view.appendTo(this._note_container);
         }
         else {
@@ -270,22 +270,29 @@ List_note_component.prototype.set_note = function (_note) {
     return this;
 };
 
-List_note_component.prototype._create_view_thread = function () {
+/**
+ * 建立 (詳細內容) 的按鈕
+ * @param {number} _word_count
+ * @type {jQuery}
+ */
+List_note_component.prototype._create_view_thread = function (_word_count) {
     var _ui = $('<span></span>')
         .addClass('view-thread');
     
     var _lang = new KALS_language_param(
-        '(VIEW DETAIL)',
-        'list_note_component.view_thread'
+        '(FULL DETAIL {0} WORDS)',
+        'list_note_component.view_thread',
+		[_word_count]
     );
     
     var _msg = KALS_context.lang.line(_lang);
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
-        _this.view_thread();
-    });
+	
+    //_ui.click(function () {
+    //    _this.view_thread();
+    //});
     
     return _ui;
 };

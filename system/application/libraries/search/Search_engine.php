@@ -489,7 +489,7 @@ class Search_engine extends Generic_collection {
             $db->join('annotation2anchor_text AS search_anchor_text', 'search_anchor_text.annotation_id = annotation.annotation_id '
             . "AND search_anchor_text.text like '%".$this->search_anchor_text."%'");    
             $db->limit(5);
-          echo $this->webpage_id;
+            //echo $this->webpage_id;
             
         }   //if (isset($this->search_anchor_text))
 

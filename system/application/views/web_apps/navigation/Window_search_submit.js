@@ -62,8 +62,9 @@ Window_search_submit.prototype.complete_handle = function () {
 /**
  * 把參數丟給List_collection_search，讓他開始送出做查詢
  * 覆寫Window_content_submit-Window_content_submit.prototype.submit
+ * @param {function} _callback
  */
-Window_search_submit.prototype.submit = function(){
+Window_search_submit.prototype.submit = function(_callback){
 	
 	if (this.validate() === false) {
 		return this;
@@ -89,6 +90,7 @@ Window_search_submit.prototype.submit = function(){
                 _content.get_ui().find(".search-result-subpanel").show();
 	});
 	
+	$.trigger_callback(_callback);
 	return this;
 };
 

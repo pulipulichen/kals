@@ -1490,13 +1490,19 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
         if ($.inArray(_index, _focus_head_index) > -1) {
 			_text = '<span class="select select_from view">' + _text + '</span>';
 		}
-		else 
-			if ($.inArray(_index, _focus_foot_index) > -1) {
-				_text = '<span class="select select_to view">' + _text + '</span>';
-			}
-			else {
-				_text = '<span class="select select_middle view">' + _text + '</span>';
-			}
+		else if ($.inArray(_index, _focus_foot_index) > -1) {
+			_text = '<span class="select select_to view">' + _text + '</span>';
+		}
+		else {
+			_text = '<span class="select select_middle view">' + _text + '</span>';
+		}
+        return _text;
+    };
+	
+	var _focus_single_text = function (_index, _text) {
+        if ($.inArray(_index, _focus_head_index) > -1) {
+			_text = '<span class="select select_from select_to view">' + _text + '</span>';
+		}
         return _text;
     };
         
@@ -1522,9 +1528,15 @@ Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focu
                 _text = _text + ' ';
             }
             
+			
             for (var _k in _focus_index) {
                 if ($.inArray(_j, _focus_index[_k]) > -1) {
-                    _text = _focus_text(_j, _text);
+					if (_focus_index.length > 1) {
+						_text = _focus_text(_j, _text);
+					}
+					else {
+						_text = _focus_single_text(_j, _text);
+					}
                 }    
             }
             

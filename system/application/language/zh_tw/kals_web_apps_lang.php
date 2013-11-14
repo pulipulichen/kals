@@ -266,7 +266,7 @@ $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
 $lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
-$lang['web_apps.list_menu.review'] = '檢視';
+$lang['web_apps.list_menu.review'] = '細節';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
 
@@ -274,7 +274,7 @@ $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
  * List_note_component
  */
 $lang['web_apps.list_note_component.to'] = 'To:';
-$lang['web_apps.list_note_component.view_thread'] = '(詳細內容)';
+$lang['web_apps.list_note_component.view_thread'] = '(詳細內容共{0}字)';
 
 /**
  * List_like_component

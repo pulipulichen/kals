@@ -203,7 +203,7 @@ DEFAULT_KALS_CONFIG = {
             ['TextColor','BGColor'],
 			
 			//最小化的時候顯示的工具列
-            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']	
+            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'Image','Youtube']	
         ],
         height: '50px',
         //width: '261px',
