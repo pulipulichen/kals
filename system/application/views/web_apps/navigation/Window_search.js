@@ -372,14 +372,14 @@ Window_search.prototype.get_range_ui = function () {
  */
 Window_search.prototype.change_range = function (_range) {
 	
-	if (this._last_range == null) {
+	if (this._last_range === null) {
 		this._last_range = this._search_default_option.range;
 	}
 	
-	if (_range == "annotation_type") {
+	if (_range == "anntation_type" && this.is_input_keyword()) {
 		this.toggle_input("annotation_type");
 	}
-	else if (this._last_range == "annotation_type") {
+	else if (_range == "keyword" && this.is_input_keyword() === false) {
 		this.toggle_input("keyword");
 	}	
 	
@@ -554,6 +554,7 @@ Window_search.prototype.toggle_input = function (_type) {
 		var _type_value = _factory.get_list_value(_type_ui);
 		this.set_keyword_value(_type_value);
 		
+		_keyword_ui.addClass("use-annotation-type");
 		_keyword_ui.hide();
 		_keyword_row.hide();
 		_type_ui.show();
@@ -562,6 +563,7 @@ Window_search.prototype.toggle_input = function (_type) {
 	else {
 		this.set_keyword_value(this._last_keyword_value);
 		
+		_keyword_ui.removeClass("use-annotation-type");
 		_keyword_ui.show();
 		_keyword_row.show();
 		_type_ui.hide();
@@ -569,6 +571,18 @@ Window_search.prototype.toggle_input = function (_type) {
 	}
 	
 	return this;
+};
+
+/**
+ * 現在是顯示關鍵字輸入框嗎？
+ * @type {boolean}
+ */
+Window_search.prototype.is_input_keyword = function () {
+	var _keyword_ui = this.get_keyword_ui().eq(0);
+	var _classname = _keyword_ui.attr("className");
+	var _is_keyword = (_classname.indexOf("use-annotation-type") > -1);
+	$.test_msg("is_input_keyword", _is_keyword);
+	return _is_keyword;
 };
 
 /**

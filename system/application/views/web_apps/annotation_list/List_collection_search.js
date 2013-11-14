@@ -214,6 +214,8 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 		
 		KALS_text.selection.search.set_scope_coll(_search_scope);
 		
+		_ui.show();
+		
 		// ------------
 
 		// 要改用$._trigger，以免_callback不是function
