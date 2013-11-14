@@ -14,10 +14,6 @@ function List_collection_search() {
     
     List_collection.call(this);
     
-	
-	//.list-collection.search .list-menu {
-	//  text-align: right;
-	//}
 }
 
 List_collection_search.prototype = new List_collection();
@@ -28,7 +24,7 @@ List_collection_search.prototype._$target_my = false;
 
 List_collection_search.prototype._$target_like = false;
 
-List_collection_search.prototype._$need_login = null;
+List_collection_search.prototype._$need_login = false;
 
 //接收資料的來源
 List_collection_search.prototype._$load_url = 'annotation_getter/search_annotation'; 
@@ -60,17 +56,44 @@ List_collection_search.prototype._keyword = null;
  * 
  * @type {JSON}
  */
-List_collection_search.prototype.get_search_data = function(){
-	var _search_data = {};
-	
-	_search_data.search_range = this._search_range;
-	_search_data.keyword = this._keyword;
-	_search_data.order_by = this._$order_by;
-	
+/*
+List_collection_search.prototype.get_search_data = function() {
+    var _search_data = {};
 
-	return _search_data;
+    _search_data.search_range = this._search_range;
+    _search_data.keyword = this._keyword;
+    _search_data.order_by = this._$order_by;
+
+    $.test_msg("List_coll search get_search_data", _search_data);
+    return _search_data;
 };
-
+*/
+/**
+ * 讀取列表
+ */
+/*
+List_collection_search.prototype.load_list = function(_data, _callback) {
+    var _search_data = this.get_search_data();
+    
+    $.test_msg('List_coll.load_list', _search_data);
+    if ($.isset(_search_data)) {
+        this._load_lock = true;
+        
+        $.test_msg('List_coll.load_list  pre-load()');
+        this.load(_search_data, function (_this, _data) {
+            $.test_msg('List_coll.load_list load()', _data);
+            _this.setup_load_list(_data, function () {
+                $.trigger_callback(_callback);
+                _this._load_lock = false;    
+            });
+        });
+        return this;
+    }
+    
+    $.test_msg("List_coll do nothing")
+    return this;
+};
+*/
 /**
  * 設定搜尋範圍
  * @param {string} _search_range
@@ -107,36 +130,14 @@ List_collection_search.prototype.create_list_item = function(_param) {
 };
 
 List_collection_search.prototype.get_search_data = function () {
-	
+    $.test_msg("List_coll search get_search_data");
     var _search_data = {};
-    
-    //如果有指定target id，則就不需要其他參考資料
-    if ($.isset(this._$topic_id)) {
-        _search_data.topic_id = this._$topic_id;
-        
-        if ($.isset(this._$limit)) {
-			_search_data.limit = this._$limit;
-		}
-            
-        if ($.isset(this._$target_topic)) {
-			_search_data.target_topic = this._$target_topic;
-		}
-        if ($.isset(this._$order_by) && this._$order_by != 'score') {
-			_search_data.order_by = this._$order_by;
-		}
-            
-        if ($.isset(this._offset)) {
-			_search_data.offset = this._offset;
-		}
-            
-        return _search_data;
-    }
        
     //需要登入身分的兩個參數
-    if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
-	KALS_context.auth.is_login() === false) {
-		return null;
-	}
+    //if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
+    //  KALS_context.auth.is_login() === false) {
+    //            return null;
+    //}
     
     if ($.isset(this._$target_like)) {
 		_search_data.target_like = this._$target_like;
@@ -167,7 +168,7 @@ List_collection_search.prototype.get_search_data = function () {
 	
     _search_data.show_total_count = true;
     
-
+        $.test_msg("List_coll get_search_data", _search_data);
 	return _search_data;
 };
 
@@ -177,6 +178,8 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 	// 做一個假的_this，讓function中使用
 	var _this = this;
 	
+        //$.test_msg("search.setup_load_list", _data);
+        $.test_msg("search.setup_load_list", this.get_name());
 	return List_collection.prototype.setup_load_list.call(this, _data, function () {
 
 		// 取得UI
@@ -201,8 +204,8 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 			_reset_button.show();
 		}
 	
-        //顯示查詢結果	
-        _ui.find(".result-count-tip").show();
+                //顯示查詢結果	
+                _ui.find(".result-count-tip").show();
 		_ui.find(".result-count-tip .result-count").html(_search_count);
  		
 		//$.test_msg('_search_count', _search_count);
@@ -293,7 +296,7 @@ List_collection_search.prototype._$create_ui = function () {
 	//_reset_button.clone(true).appendTo(_footer_panel);
 	
     this._list_container = _container;
-	
+
     return _ui;
 };
 
@@ -322,9 +325,11 @@ List_collection_search.prototype.create_reset_button = function () {
  * 修改預設的重設動作
  */
 List_collection_search.prototype.reset = function () {
-	this.get_ui().hide();
-	KALS_text.selection.search.clear();
-	return List_collection.prototype.reset.call(this);
+    //$.test_msg("List_collection_search.prototype.reset");
+    
+    this.get_ui().hide();
+    KALS_text.selection.search.clear();
+    return List_collection.prototype.reset.call(this);
 };
 
 /* End of file List_collection_search */

@@ -376,7 +376,7 @@ Window_search.prototype.change_range = function (_range) {
 		this._last_range = this._search_default_option.range;
 	}
 	
-	$.test_msg("change range", [_range, this.is_input_keyword()]);
+	//$.test_msg("change range", [_range, this.is_input_keyword()]);
 	if (_range == "annotation_type" && this.is_input_keyword()) {
 		this.toggle_input("annotation_type");
 	}

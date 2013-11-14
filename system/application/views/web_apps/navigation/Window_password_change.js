@@ -60,7 +60,7 @@ Window_password_change.prototype._$create_ui = function () {
         _factory.password('password_confirm')
     ).appendTo(_ui);
     
-    KALS_context.overlay.lock_mask();
+    //KALS_context.overlay.lock_mask();
     
     return _ui;
 };

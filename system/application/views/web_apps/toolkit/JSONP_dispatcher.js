@@ -83,8 +83,8 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
             //$.test_msg('JSONP_dispatcher.load() ajax_get', _data);
             
             if ($.is_function(_callback)) {
-				_callback(_this, _data);
-			}
+                    _callback(_this, _data);
+            }
                 
             _this.set_data(_data);
         },
@@ -95,7 +95,6 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
         _config.exception_handle = function (_data) {
             _this._$exception_handle(_data);    
         }; 
-        
     }
     
     KALS_util.ajax_get(_config);

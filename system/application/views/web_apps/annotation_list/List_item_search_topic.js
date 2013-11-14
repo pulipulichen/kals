@@ -68,10 +68,12 @@ List_item_search_topic.prototype.view_thread = function (_callback) {
     }
     //$.test_msg("List_item_search_topic _topic_annotation_id", _topic_annotation_id);
     
-	// 鎖住黑色背景的變換
-	KALS_context.overlay.lock_mask();
+    // 鎖住黑色背景的變換
+    KALS_context.overlay.lock_mask();
 	
-    KALS_text.tool.view.load_view(_topic_annotation_id);
+    KALS_text.tool.view.load_view(_topic_annotation_id, function () {
+        KALS_context.overlay.unlock_mask();
+    });
 };
 
 /* End of file List_item_search_topic */

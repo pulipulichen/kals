@@ -66,7 +66,7 @@ List_collection.prototype._$topic_id = null;
  */
 List_collection.prototype._$order_by = 'score';
 
-List_collection.prototype._$need_login = null;
+List_collection.prototype._$need_login = false;
 
 // --------
 // Private Attributes
@@ -205,44 +205,57 @@ List_collection.prototype.load_list = function(_data, _callback) {
             };
         }
         
-        //$.test_msg('List_collection.load_list() has data', _data);
+        $.test_msg('List_collection.load_list() has data', _data);
         
         var _this = this;
         this.setup_load_list(_data, function () {
             $.trigger_callback(_callback);
             _this.notify_listeners(_data);
         });
+        
         return this;
     }
     
     if (this.is_totally_loaded() === true
         || this._check_login() === false) {
         $.trigger_callback(_callback);
+        $.test_msg("is_totally_loaded check_login", [this.is_totally_loaded(), this._check_login()]);
         return this;
     }
     
     if (this._load_lock === true) {
-		return this;
-	}
+        $.test_msg("_load lock ed");
+        return this;
+    }
+    
+    $.test_msg('List_coll.load_list check pre _search_data', this.get_name());
     
     var _search_data = this.get_search_data();
     
+    $.test_msg('List_coll.load_list check _search_data', [_search_data, this.get_name()]);
     if ($.isset(_search_data)) {
-        //$.test_msg('List_coll.load_list', _search_data);
-        
         this._load_lock = true;
+        
+        $.test_msg('List_coll.load_list  pre-load()');
         this.load(_search_data, function (_this, _data) {
+            $.test_msg('List_coll.load_list load()', _data);
             _this.setup_load_list(_data, function () {
                 $.trigger_callback(_callback);
                 _this._load_lock = false;    
             });
-        });    
+        });
+        return this;
     }
     
+    $.test_msg("List_coll do nothing");
     return this;
 };
 
+/**
+ * 取得要搜尋的資料
+ */
 List_collection.prototype.get_search_data = function () {
+    $.test_msg("List_coll get_search_data start");
     
     var _search_data = {};
     
@@ -264,22 +277,34 @@ List_collection.prototype.get_search_data = function () {
         if ($.isset(this._offset)) {
 			_search_data.offset = this._offset;
 		}
-            
+        
+        $.test_msg("get_search_data first", _search_data);
         return _search_data;
     }
     
     //一定要有範圍資料！
-    if ($.is_null(this._scope_coll)) {
-		return null;
-	}
+    if ($.is_null(this._scope_coll) && this._$need_login === false) {
+        $.test_msg("get_search_data no scope coll", [this.get_name(), this._$need_login]);
+        return null;
+    }
+    else {
+        if ($.isset(this._scope_coll)) {
+            _search_data.scope = this._scope_coll.export_json(false);
+        }
+    }
     
-    _search_data.scope = this._scope_coll.export_json(false);
-    
+    //if (this._scope_coll != null) {
+    //    _search_data.scope = this._scope_coll.export_json(false);
+    //}
+   
     //需要登入身分的兩個參數
-    if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
-	KALS_context.auth.is_login() === false) {
-		return null;
-	}
+    if (this._$need_login === true) {
+        if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
+            KALS_context.auth.is_login() === false) {
+            $.test_msg("get_search_data", [this._$target_like, this._$target_my, KALS_context.auth.is_login()]);
+            return null;
+        }
+    }
     
     if ($.isset(this._$target_like)) {
 		_search_data.target_like = this._$target_like;
@@ -303,6 +328,7 @@ List_collection.prototype.get_search_data = function () {
 		_search_data.offset = this._offset;
 	}
     
+    $.test_msg("get_search_data final", _search_data);
     return _search_data;
     
 };
@@ -311,9 +337,10 @@ List_collection.prototype._check_login = function () {
     
     //$.test_msg('List_coll._check_login()', [this._$name, this._$need_login, KALS_context.auth.is_login()]);
     
-    if ($.isset(this._$need_login) === false) {
-		return true;
-	}
+    if (this._$need_login === null || this._$need_login === false) {
+            $.test_msg('List_coll._check_login() is_null');
+            return true;
+    }
     
     var _pass = (this._$need_login == KALS_context.auth.is_login());
     if (_pass === false) {

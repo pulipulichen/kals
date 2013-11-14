@@ -15,6 +15,10 @@ function Selection_search(_text) {
     
     Selection.call(this, _text);
     
+    var _this = this;
+    KALS_context.auth.add_listener(function (_auth) {
+        _this.clear();
+    }, true);
 }
 
 Selection_search.prototype = new Selection();

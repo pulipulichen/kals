@@ -65,33 +65,36 @@ Window_search_submit.prototype.complete_handle = function () {
  * @param {function} _callback
  */
 Window_search_submit.prototype.submit = function(_callback){
-	
-	if (this.validate() === false) {
-		return this;
-	}
+
+    $.test_msg("Window_search_submit submit");
+    if (this.validate() === false) {
+        $.test_msg("Window_search_submit validate() false");
+        return this;
+    }
 	
     var _content = this._content;
-	var _list = _content.list;
-	var _data = this.get_data();
-	
-	_list.reset();
-	//_list.get_ui().show();
-	
-	//$.test_msg("Window_search_submit.prototype.submit", _data);
-	_list.set_search_range(_data.search_range);
-	_list.set_keyword(_data.keyword);
-	_list.set_order_by(_data.order_by);
-	    
-	// 我們要叫List_collection_search進行搜尋
-	var _this = this;
-	_list.load_list(function () {
-                //$.test_msg("Window_search_submit.prototype.submit");
-				_this.complete_handle();
-                _content.get_ui().find(".search-result-subpanel").show();
-	});
-	
-	$.trigger_callback(_callback);
-	return this;
+    var _list = _content.list;
+    var _data = this.get_data();
+
+    _list.reset();
+    //_list.get_ui().show();
+
+    //$.test_msg("Window_search_submit.prototype.submit", _data);
+    _list.set_search_range(_data.search_range);
+    _list.set_keyword(_data.keyword);
+    _list.set_order_by(_data.order_by);
+
+    // 我們要叫List_collection_search進行搜尋
+    var _this = this;
+    $.test_msg("Window_search_submit _list.load_list()", _list.get_name());
+    _list.load_list(function () {
+            $.test_msg("Window_search_submit.prototype.submit");
+            _this.complete_handle();
+            _content.get_ui().find(".search-result-subpanel").show();
+    });
+
+    $.trigger_callback(_callback);
+    return this;
 };
 
 /**

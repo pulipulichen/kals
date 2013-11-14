@@ -112,7 +112,7 @@ Window_login.prototype._$create_ui = function () {
         _register_row.hide();
     }
     
-    KALS_context.overlay.lock_mask();
+    //KALS_context.overlay.lock_mask();
     return _ui;
 };
 
