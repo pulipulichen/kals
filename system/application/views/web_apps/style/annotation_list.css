@@ -378,19 +378,61 @@
     
     background-color: white;
 }
-
-.respond-list-collection .view-component {
-    padding: 1em;
+/*
+.KALS .respond-list-collection .list-item.first {
+	border-top-width: 0;
+}
+*/
+.KALS .respond-list-collection .view-component,
+.KALS .respond-list-collection .skip-component {
+	border-top: 1px dashed #CCC;
     text-align:center;
     cursor:pointer;
-    border-top: 1px solid #CCC;
+	position:static;
+} 
+
+.KALS .respond-list-collection .view-component .message,
+.KALS .respond-list-collection .skip-component .message {
+    background-color: #CCC;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	display:block;
+	clear: both;
 }
-.respond-list-collection .view-component.hover {
+
+.KALS .respond-list-collection .view-component .message {
+    padding: 1em;
+    margin: 0.5em 1em 0.5em 1em;
+	
+	
+}
+
+.KALS .respond-list-collection .view-component .message.hover {
     background-color: #FEEEBD; 
 }
 
-.list-item-respond {
-    border-top: 1px solid #CCC;
+/**
+ * 新增省略回應的位置
+ * @author Pulipuli Chen 20131116
+ */
+.KALS .respond-list-collection .skip-component .message {
+    padding: 0.5em;
+	border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	margin: 0.5em 1em;
+    background-color: #CCC;
+}
+
+.KALS .respond-list-collection .skip-component .message.hover {
+    background-color: #FEEEBD; 
+}
+
+.KALS .list-item-respond {
+    border-top: 1px dashed #CCC;
     padding-left: 2em !important;
 }
 /*

@@ -103,7 +103,7 @@ Editor_container.prototype._$create_ui = function () {
 	
 	if (this._$default_toggle === true
 	   || this._$default_toggle === false) {
-	   	$.test_msg("編輯器設定預設狀態", this._$default_toggle);
+	   	//$.test_msg("編輯器設定預設狀態", this._$default_toggle);
 		this.toggle_container(this._$default_toggle);
 	}
     
@@ -248,7 +248,7 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     var _container = this._container;
     var _visible = (_container.css('display') != 'none');
     
-    $.test_msg('Editor_container.toggle_container() visible', [_display, _visible]);
+    //$.test_msg('Editor_container.toggle_container() visible', [_display, _visible]);
     
     if (_display === undefined || _display === null) {
         _display = !(_visible);
@@ -468,7 +468,7 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
 			// 讓下面的編輯器，重置吧
 			_this.editor.reset();
 			
-			$.test_msg("toggle editor_container 2", _this._$default_toggle);
+			//$.test_msg("toggle editor_container 2", _this._$default_toggle);
 	        _this.toggle_container(_this._$default_toggle);
 	    });
 	}, 500);
@@ -563,7 +563,7 @@ Editor_container.prototype.reset = function (_callback, _reset_container) {
     //$.test_msg('Editor_contaienr.reset()', _reset_container);
     if (_reset_container === true) {
 		
-		$.test_msg("toggle editor_container 3", this._$default_toggle);
+		//$.test_msg("toggle editor_container 3", this._$default_toggle);
         this.toggle_container(this._$default_toggle, function () {
             $.trigger_callback(_callback);
         });

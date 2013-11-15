@@ -17,6 +17,9 @@
     -khtml-border-radius: 8px;
     -moz-box-shadow: 0 0 20px #666666;
     -webkit-box-shadow: 0 0 20px #666666;
+	
+	max-height: 3em;
+	overflow-y: auto;
 }
 
 .window-view-content .editor-container {
@@ -99,4 +102,8 @@
 
 .window-view-content .editor-container .toggle.top td {
     display: block;
+}
+
+.KALS .list-collection.view-list .skip-component {
+	display: none;
 }

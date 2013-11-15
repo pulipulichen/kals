@@ -76,6 +76,7 @@
 
 .KALS span, .kals-model span {
     display: inline;
+	position: static;
 }
 
 .KALS.info-box {

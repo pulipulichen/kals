@@ -294,6 +294,7 @@ $lang['web_apps.list_like_component.set_not_like'] = '移出喜愛清單';
 
 $lang['web_apps.respond_list_collection.view_thread.1'] = '檢視全部';
 $lang['web_apps.respond_list_collection.view_thread.2'] = '個回應';
+$lang['web_apps.respond_list_collection.skip_message.1'] = '略過舊的';
 
 /**
  * Window_view
