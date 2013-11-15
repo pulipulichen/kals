@@ -248,6 +248,9 @@ Annotation_editor.prototype.submit = function () {
                 && typeof(_data.timestamp) != 'undefined') {
                 _annotation_param.timestamp = _data.timestamp;
             }
+			var _scope_coll = KALS_text.selection.select.get_scope_coll();
+			_annotation_param.scope = _scope_coll;
+			
             _this._edit_callback(_annotation_param);
             
             _annotation_param.scope = _this._editing_param.scope;
@@ -389,18 +392,17 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param) {
     //$.test_msg('Annotation_editor._edit_callback()', [_annotation_param.timestamp]);
     
     //修改this._editing_item
-	/*
     if ($.isset(this._editing_item)) {   
         //$.test_msg('Annotation_editor._edit_callback()', _annotation_param.policy_type);
+		$.test_msg('Annotation_editor._edit_callback()', _annotation_param);
         this._editing_item.editor_set_data(_annotation_param);
     }
-	*/
 	
-	/**
-	 * 編輯完成之後，還原狀態
-	 */
-	this.reset();
-    
+    /**
+     * 編輯完成之後，還原狀態
+     */
+    this.reset();
+	    
     //完成時，要設置notify
     var _notify_lang = new KALS_language_param(
         'Annotation had been updated.',
@@ -444,7 +446,7 @@ Annotation_editor.prototype.reset = function () {
 		 * 改為新增完成之後關閉
 		 */
         //this._editor_container.toggle_container(true);
-		this._editor_container.toggle_container(false);
+		this._editor_container.toggle_container(this._editor_container._$default_toggle);
         
         return this.notify_listeners('reset');    
     }

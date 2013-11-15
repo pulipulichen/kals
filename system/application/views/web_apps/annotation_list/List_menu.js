@@ -163,6 +163,7 @@ List_menu.prototype._create_edit_ui = function () {
     var _this = this;
     _ui.click(function (_e) {
         _this.edit_annotation();
+		_this.close();
 		_e.preventDefault();
 		return false;
     });

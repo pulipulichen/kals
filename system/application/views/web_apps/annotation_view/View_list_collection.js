@@ -80,7 +80,6 @@ View_list_collection.prototype.add_list_item = function(_param, _from_head) {
     }
 };
 
-
 /*
 View_list_collection.prototype.editor_add_list_item = function (_param, _from_head) {
     //KALS_text.tool.view.set_modified();

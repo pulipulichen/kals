@@ -103,7 +103,7 @@ Editor_container.prototype._$create_ui = function () {
 	
 	if (this._$default_toggle === true
 	   || this._$default_toggle === false) {
-	   	$.test_msg("編輯器設定預設狀態", this._$default_toggle);
+	   	//$.test_msg("編輯器設定預設狀態", this._$default_toggle);
 		this.toggle_container(this._$default_toggle);
 	}
     

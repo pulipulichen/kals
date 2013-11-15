@@ -19,6 +19,7 @@ function View_editor_container(_topic_prarm, _list_coll) {
     if ($.isset(_topic_prarm)) {
         this.set_topic_param(_topic_param);
     }
+	
 }
 
 View_editor_container.prototype = new Editor_container();
@@ -63,6 +64,13 @@ View_editor_container.prototype.add_respond_to = function (_respond_param) {
     }
     return this;
 };
+
+
+/**
+ * 預設的開啟狀態
+ * @tyep boolean true=開啟; false=關閉
+ */
+View_editor_container.prototype._$default_toggle = true;
 
 /* End of file View_editor_container */
 /* Location: ./system/application/views/web_apps/View_editor_container.js */

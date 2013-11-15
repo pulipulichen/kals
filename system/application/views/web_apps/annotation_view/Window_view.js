@@ -371,7 +371,15 @@ Window_view.prototype.onload = function () {
         this._respond_param = null;
     }
     else if ($.isset(this._edit_param)) {
-        this.editor_container.editor.set_editing(this._edit_param);
+		//var _editor = this.editor_container.editor; 
+        //_editor.set_editing(this._edit_param);
+		//_editor.set_editing(this._edit_param);
+		
+		var _item = this.list.get_list_item(this._edit_param);
+		if (_item != null) {
+			_item.edit_annotation();
+		}
+		
         this._edit_param = null;
     }            
     
