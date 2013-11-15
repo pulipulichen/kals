@@ -56,10 +56,10 @@ Init_profile.prototype._$onstart = function () {
             KALS_context.hash.check_hash(function () {
                 KALS_context.init_profile.complete('hash');
             });
-            
-			//@TODO 暫時先關掉
-			//KALS_context.init_profile.complete('hash');
-        }, 500);
+
+            //@TODO 暫時先關掉
+            //KALS_context.init_profile.complete('hash');
+        }, 50);
             
     });
 };

@@ -38,8 +38,8 @@ Init_context.prototype._$oncomplete = function () {
     
     KALS_context.init_component.start();
     
-	// 20131115 Pulipuli Chen 測試用
-	//this._test_exception();
+    // 20131115 Pulipuli Chen 測試用
+    //this._test_exception();
 };
 
 /**

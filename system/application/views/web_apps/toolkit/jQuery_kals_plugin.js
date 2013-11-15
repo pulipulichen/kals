@@ -2041,9 +2041,26 @@ jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
  */
 jQuery.scroll_to = function (_position, _speed, _callback) {
     
-    $.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
-    return;
+    //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
+    //return;
+	
+	if (this.scroll_to_lock === true) {
+		return;
+	}
+	this.scroll_to_lock = true;
     
+	// 要確認視窗到底讀完了沒有
+	if (KALS_context.completed === false) {
+		var _this = this;
+		$.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
+		KALS_context.add_listener(function (_dispatcher, _data) {
+			_this.scroll_to_lock = false;
+			_this.scroll_to(_position, _speed, _callback);
+		});
+		return;
+	}
+	
+	
     //宣告基本資料
     var _target_x, _target_y, _interval_x, _interval_y, _interval_time = 10, _repeat_count
         , _next_x, _next_y;
@@ -2058,6 +2075,8 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
 		_target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
 	}
     
+	//$.test_msg('$.scroll_to target', [_target_x, _target_y]);
+	
     if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
 		return this;
 	}
@@ -2080,7 +2099,20 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
 			if ($.is_number(_speed) === false) {
 				_speed = 1000;
 			}
-        
+    
+    
+    $('html, body').animate({
+        scrollTop: _target_y,
+		scrollLeft: _target_x
+    }, _speed);
+	
+    return $.trigger_callback(_callback);
+     
+	/**
+	 * 以下寫太差了，不使用
+	 * @deprecated 20131115 Pulipuli Chen
+	 */
+	/*
     //確認要移動的次數
     _repeat_count = parseInt(_speed / _interval_time,10)+1;
     
@@ -2091,6 +2123,10 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     
     var _loop = function (_i, _count, _callback) {
         if (_i == _count || _i > _count) {
+			
+			// 完成
+			$.scroll_to_lock = false;
+			
             if ($.is_function(_callback)) {
 				_callback();
 			}
@@ -2126,7 +2162,10 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     
     _loop(0, _repeat_count, _callback);
     return this;
+    */
 };
+
+jQuery.scroll_to_lock = false;
 
 jQuery.save_scroll_position = function () {
     
@@ -2149,8 +2188,8 @@ jQuery.load_scroll_position = function () {
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }
     
-    $.test_msg("$.load_scroll_position");
-    //window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
+    //$.test_msg("$.load_scroll_position");
+    window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
 };
 
 jQuery.create_id = function () {

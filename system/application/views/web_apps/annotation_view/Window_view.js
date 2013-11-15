@@ -396,7 +396,7 @@ Window_view.prototype.onload = function () {
     
     if ($.isset(this._topic_param)) {
         KALS_text.selection.select.set_scope_coll(this._topic_param.scope);
-        KALS_text.selection.select.scroll_into_view();
+        //KALS_text.selection.select.scroll_into_view();
     }
     
     

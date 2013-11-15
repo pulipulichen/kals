@@ -139,7 +139,7 @@ URL_hash_dispatcher.prototype._save_scroll_position = function () {
  */
 URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
     
-	//window.scrollTo(_pos.x, _pos.y);
+	window.scrollTo(_pos.x, _pos.y);
 	
 };
 
@@ -241,6 +241,7 @@ URL_hash_dispatcher.prototype.set_field = function (_key, _value) {
  */
 URL_hash_dispatcher.prototype.delete_field = function (_key) {
     
+	
     var _hash_data = this._setup_hash_data();
     _hash_data.delete_field(_key);
     this._hash_data = _hash_data;
@@ -325,6 +326,10 @@ URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
     return this;
 };
 
+/**
+ * 開啟之前檢查網頁的hash
+ * @param {function} _callback
+ */
 URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     
     //$.test_msg('URL_hash_dispatcher.check_hash()', [window.location.hash]);
@@ -338,9 +343,9 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 		//$.test_msg('URL_hash_dispatcher', 'pass2');
 		
         var _id = this.get_field('view');
-		KALS_context.init_profile.add_listener(function () {
-	        KALS_text.tool.view.load_view(_id);
-	    });
+        KALS_context.init_profile.add_listener(function () {
+            KALS_text.tool.view.load_view(_id);
+        });
         
     }
     else {
@@ -352,7 +357,6 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
             //$.test_msg('has check_hash() recommend', _id);
             KALS_text.tool.recommend.load_recommend(_id);
         }
-        
         if (this.has_field('select') === true) {
             //$.test_msg('URL_hash_dispatcher', 'pass5');
             var _scope_text = this.get_field('select');
@@ -364,7 +368,7 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 			//setTimeout(function () {
 			//	KALS_text.selection.select.load_select(_scope_text);
 			//}, 3000); 
-        }    
+        }  
     }
     
     //$.test_msg('has check_hash() end', this.has_field('recommend'));

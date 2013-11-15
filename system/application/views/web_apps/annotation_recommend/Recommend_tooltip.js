@@ -65,7 +65,7 @@ Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to)
         var _recommended_scope = this._recommended.scope;
         KALS_text.selection.recommended.set_scope_coll(_recommended_scope);
         if ($.isset(_scroll_to) && _scroll_to === true) {
-			KALS_text.selection.recommended.scroll_into_view();
+			//KALS_text.selection.recommended.scroll_into_view();
 		}
         
         KALS_context.hash.set_field('recommend', this._recommended.annotation_id);

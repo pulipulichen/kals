@@ -259,11 +259,17 @@ Selection.prototype.has_selected = function () {
 
 Selection.prototype._scroll_lock = false;
 
+/**
+ * 讓捲軸捲到選取範圍位置
+ */
 Selection.prototype.scroll_into_view = function (_callback) {
     
+    $.test_msg("Selection.scroll_into_view", this._$name);
+    return;
+    
     if (this._scroll_lock === true) {
-		return;
-	}
+            return;
+    }
     
     this._scroll_lock = true;
     

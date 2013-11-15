@@ -158,9 +158,9 @@ Selection_select.prototype.load_select = function (_scope_text) {
     //$.test_msg('Selection_select.load_select()');
     
     var _this = this;
-    setTimeout(function () {
-        _this.scroll_into_view();    
-    }, 500);
+    //setTimeout(function () {
+    //    _this.scroll_into_view();    
+    //}, 500);
     
     
     KALS_context.hash.set_field('select', _first_index + ',' + _last_index);

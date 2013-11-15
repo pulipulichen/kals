@@ -321,6 +321,7 @@ Annotation_tool.prototype.scroll_into_view = function () {
     var _position = {
         y: _offset.top - 60
     };
+	//$.test_msg("Annotation_tool.scroll_into_view", _position);
     $.scroll_to(_position);
 };
 
