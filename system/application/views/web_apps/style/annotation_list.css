@@ -292,6 +292,7 @@
 
 .KALS .list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
+	border-left-width: 0 !important;
 }
 
 .KALS .list-menu.not-login .list-menu-option {
@@ -406,9 +407,9 @@
 }
 
 .KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table tbody{
-    border: 0px !important;
+    border-width: 0px !important;
 }
 
 .KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table td{
-    border: 0px !important;
+    border-left: 1px solid white;
 }

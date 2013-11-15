@@ -432,7 +432,12 @@ Annotation_editor.prototype.reset = function () {
         var _ui = this.get_ui();
         _ui.removeClass(this._editing_classname);
         
-        this._editor_container.toggle_container(true);
+		/**
+		 * @20131115 Pulipuli Chen
+		 * 改為新增完成之後關閉
+		 */
+        //this._editor_container.toggle_container(true);
+		this._editor_container.toggle_container(false);
         
         return this.notify_listeners('reset');    
     }

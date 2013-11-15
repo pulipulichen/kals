@@ -32,7 +32,7 @@ Init_context.prototype._$onstart = function () {
         KALS_context.init_context.complete('load');
     });
     
-	this._check_css_loaded();
+	this._check_css_setup();
 };
 
 Init_context.prototype._$oncomplete = function () {
@@ -57,12 +57,20 @@ Init_context.prototype._test_exception = function () {
     });
 };
 
+Init_context.prototype._check_css_setup = function () {
+	$("<span class='KALS check-css'>KALS check css indicator<span>")
+	   .hide()
+	   .appendTo($("body"));
+   
+   this._check_css_loaded();
+};
+
 /**
  * 檢測CSS是否有正常讀取
  */
 Init_context.prototype._check_css_loaded = function () {
     
-    var _ui = $(".KALS.info-box:last");
+    var _ui = $(".KALS.check-css");
     var _color = _ui.css("color");
     var _normal_color = "rgb(128, 128, 128)";
     var _assert = (_color == _normal_color);
