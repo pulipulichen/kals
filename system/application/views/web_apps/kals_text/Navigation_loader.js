@@ -89,7 +89,7 @@ Navigation_loader.prototype.initialize = function () {
 		var _setup = setTimeout(function () {
             
 			var _policy = KALS_context.policy;
-            $.test_msg('Navigation_loader.initialize()', [_policy.allow_show_navigation(), _policy.get_navigation_data()]);
+            //$.test_msg('Navigation_loader.initialize()', [_policy.allow_show_navigation(), _policy.get_navigation_data()]);
             if (_policy.allow_show_navigation() === false) {
                 _this.reset();
                 return;

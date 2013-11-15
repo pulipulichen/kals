@@ -24,6 +24,8 @@ View_list_collection.prototype._$name = "view-list";
 
 View_list_collection.prototype._$topic_id = null;
 
+View_list_collection.prototype._$enable_check_login = false;
+
 View_list_collection.prototype._$target_topic = true;
 
 /**

@@ -42,7 +42,7 @@ List_header_component.prototype._set_list_item = function (_item) {
 };
 
 List_header_component.prototype.set_data = function () {
-	this.set_respond();
+	//this.set_respond();
     this.set_user_name();
     this.set_is_my();
     this.set_type();
@@ -66,13 +66,12 @@ List_header_component.prototype._$create_ui = function () {
         _like_component.get_ui().hide();
     }
     
-	var _respond_container = $('<span></span>')
-        .addClass('respond-container')
+	var _respond_indicator = $('<span></span>')
+        .addClass('respond-indicator')
 		.html("&gt;")
-		.hide()
         .appendTo(_ui);
 	
-	this._respond_container = _respond_container;
+	this._respond_indicator = _respond_indicator;
 	
     var _name_container = $('<span></span>')
         .addClass('name-container')
@@ -127,8 +126,18 @@ List_header_component.prototype._$create_ui = function () {
 // Respond
 // --------
 
-List_header_component.prototype._respond_container = null;
+/**
+ *標示這是不是一個回應的標註 
+ * @type jQuery
+ */
+List_header_component.prototype._respond_indicator = null;
 
+/**
+ *設定這是一個回應的標註或不是
+ * 根據annotation_param來設定
+ * @deprecated 20131115 不使用 Pulipuli
+ */
+/*
 List_header_component.prototype.set_respond = function () {
 	var _param = this._item.get_annotation_param();
 	var _is_respond = _param.is_respond();
@@ -138,9 +147,9 @@ List_header_component.prototype.set_respond = function () {
 	else {
 		this._respond_container.hide();
 	}
-		
 	return this;
 };
+*/
 
 // --------
 // User Name

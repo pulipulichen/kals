@@ -24,5 +24,8 @@ View_respond_list_collection.prototype.create_list_item = function(_param) {
     return new View_list_item_respond(_param, this._topic_item);
 };
 
+
+View_respond_list_collection.prototype._$enable_check_login = false;
+
 /* End of file View_respond_list_collection */
 /* Location: ./system/application/views/web_apps/View_respond_list_collection.js */
