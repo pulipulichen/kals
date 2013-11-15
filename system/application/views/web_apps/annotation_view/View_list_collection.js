@@ -41,6 +41,12 @@ View_list_collection.prototype._$respond_limit = null;
 View_list_collection.prototype._$direction = 'asc';
 
 /**
+ * 回應的排序方向。
+ * @type {string} desc|asc，如果是null，則由系統預設
+ */
+View_list_collection.prototype._$respond_direction = 'asc';
+
+/**
  * @type {Annotation_param}
  */
 View_list_collection.prototype._topic_param = null;

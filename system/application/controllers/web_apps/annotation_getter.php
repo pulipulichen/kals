@@ -600,29 +600,29 @@ class Annotation_getter extends Web_apps_controller {
         // 6 [ order by ]
         // 6 [ is_desc]
         //test_msg('6 [ order by ]', isset($data->order_by));
-        //test_msg('6 [ order by ] is_desc', $data->is_desc);
+        //test_msg('6 [ order by ] direction', $data->direction);
         $order_id = 1;
-        $default_is_desc = TRUE;
+        $default_direction = TRUE;
         if (isset($data->order_by))
         {
             if ($data->order_by == 'update')
             {
                 $order_id = 6;
-                $default_is_desc = TRUE;
+                $default_direction = TRUE;
             }
             else if ($data->order_by == 'create')
             {
                 $order_id = 7;
-                $default_is_desc = TRUE;
+                $default_direction = TRUE;
             }
             else
             {
                 $order_id = 1;
-                $default_is_desc = TRUE;
+                $default_direction = TRUE;
             }
         }
-        if (isset($data->is_desc) && $data->is_desc == 'asc') {
-            $default_is_desc = FALSE;
+        if (isset($data->direction) && $data->direction == 'asc') {
+            $default_direction = FALSE;
         }
         
         /*
@@ -634,9 +634,9 @@ class Annotation_getter extends Web_apps_controller {
         */
         
         //test_msg('6 [ order by ] add_oder', array($order_id, $default_is_desc));
-        $search->add_order ($order_id, $default_is_desc);
+        $search->add_order ($order_id, $default_direction);
         if (isset($search_id)) {
-            $search_id->add_order ($order_id, $default_is_desc);
+            $search_id->add_order ($order_id, $default_direction);
         }
         
         // 7 [ offset ]
@@ -689,7 +689,10 @@ class Annotation_getter extends Web_apps_controller {
                 }
                 //$search_data->is_like = NULL;
                 $search_data->order_by = 'create';
-                $search_data->is_desc = 'asc';
+                
+                if (isset($data->respond_direction)) {
+                    $search_data->direction = $data->respond_direction;
+                }
                 $search_data->show_total_count = TRUE;
 
                 $search_result = $this->list_annotation($search_data);

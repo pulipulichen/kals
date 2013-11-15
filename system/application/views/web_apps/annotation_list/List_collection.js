@@ -79,6 +79,13 @@ List_collection.prototype._$order_by = 'score';
  */
 List_collection.prototype._$direction = null;
 
+
+/**
+ * 回應的排序方向。
+ * @type {string} desc|asc，如果是null，則由系統預設
+ */
+List_collection.prototype._$respond_direction = null;
+
 /**
  * 是否啟用登入檢查
  * @type boolean
@@ -287,11 +294,15 @@ List_collection.prototype.get_search_data = function () {
         if ($.isset(this._$order_by) && this._$order_by != 'score') {
 			_search_data.order_by = this._$order_by;
 		}
+        
+        if ($.isset(this._$direction)) {
+            _search_data.direction = this._$direction;
+        }
             
         if ($.isset(this._offset)) {
 			_search_data.offset = this._offset;
 		}
-            
+        
         return _search_data;
     }
     
@@ -314,6 +325,10 @@ List_collection.prototype.get_search_data = function () {
     if ($.isset(this._$target_my)) {
 		_search_data.target_my = this._$target_my;
 	}
+	
+	if ($.isset(this._$respond_limit)) {
+        _search_data.respond_limit = this._$respond_limit;
+    }
     
     if ($.isset(this._$limit)) {
 		_search_data.limit = this._$limit;
@@ -325,6 +340,10 @@ List_collection.prototype.get_search_data = function () {
     if ($.isset(this._$order_by) && this._$order_by != 'score') {
 		_search_data.order_by = this._$order_by;
 	}
+	
+	if ($.isset(this._$direction)) {
+        _search_data.direction = this._$direction;
+    }
         
     if ($.isset(this._offset)) {
 		_search_data.offset = this._offset;
