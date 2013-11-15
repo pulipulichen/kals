@@ -693,6 +693,9 @@ class Annotation_getter extends Web_apps_controller {
                 if (isset($data->respond_direction)) {
                     $search_data->direction = $data->respond_direction;
                 }
+                else {
+                    //$search_data->direction = "asc";
+                }
                 $search_data->show_total_count = TRUE;
 
                 $search_result = $this->list_annotation($search_data);

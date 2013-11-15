@@ -82,13 +82,13 @@ List_menu.prototype._$create_ui = function ()
         var _delete = this._create_delete_ui();
         _delete.appendTo(_tr);
     }
-    /*
+    
     if (this.is_enable('respond') && _writable === true)
     {
         var _respond = this._create_respond_ui();
         _respond.appendTo(_tr);    
     }
-    */
+    
     //$.test_msg('List_menu._$create_ui() this._enable_view_thread', this._enable_view_thread);
     //if (this._enable_view_thread == true)
     if (this.is_enable('view'))

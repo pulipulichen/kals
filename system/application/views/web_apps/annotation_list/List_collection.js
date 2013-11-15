@@ -586,6 +586,12 @@ List_collection.prototype.set_topic_id = function(_id) {
 // --------
 
 /**
+ * 新增時從頭新增嗎？
+ * @type boolean
+ */
+List_collection.prototype._$default_add_item_from_head = false;
+
+/**
  * 
  * @param {Annotation_param} _param
  * @param {Boolean} _from_head = false; 是否從頭加入，或是從尾加入
@@ -598,7 +604,8 @@ List_collection.prototype.add_list_item = function(_param, _from_head) {
         
         var _list_item_ui = _list_item.get_ui();
         
-        if ($.is_null(_from_head) || _from_head === false) {
+        //if ($.is_null(_from_head) || _from_head === false) {
+		if (this._$default_add_item_from_head === false) {
             this._list_container.append(_list_item_ui);
         }
         else {

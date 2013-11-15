@@ -253,6 +253,12 @@ Respond_list_collection.prototype.hide = function () {
     return this;
 };
 
+/**
+ * 新增時從頭新增嗎？
+ * @type boolean
+ */
+Respond_list_collection.prototype._$default_add_item_from_head = true;
+
 /*
 Respond_list_collection.prototype.is_ready = function () {
     return this._ready;

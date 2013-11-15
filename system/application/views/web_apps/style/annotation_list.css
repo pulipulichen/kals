@@ -307,7 +307,17 @@
     display: table-cell;
 }
 
+/**
+ * 開放自己可以回應自己的標註
+ * @author Pulipuli Chen 20131116
+ */
+/*
 .KALS .list-menu.is-my .list-menu-option.respond {
+    display: none;
+}
+*/
+
+.KALS.annotation-tool .list-menu .list-menu-option.respond {
     display: none;
 }
 
@@ -328,9 +338,15 @@
     display: table-cell;
 }
 
+/**
+ * 開放自己留言自己的標籤
+ * @author Pulipuli Chen 201311116
+ */
+/*
 .KALS .list-menu.is-my .list-menu-option.view {
     display: none;
 }
+*/
 
 .list-menu.loading {
     /*color: gray;*/

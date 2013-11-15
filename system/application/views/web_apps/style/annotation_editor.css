@@ -129,6 +129,10 @@
 	
 }
 
+.KALS.window .editor-container .container {
+	position:relative;
+}
+
 /*
 .editor-container .container .container-td {
     vertical-align:top;
@@ -243,6 +247,8 @@
     background-image: url('${base_url}images/dropdown.png');
     background-position:right center;
     background-repeat:no-repeat;
+	
+	position:relative;
 }
 
 .KALS.kals-modal .type-option {
@@ -431,8 +437,8 @@
     overflow-y: auto;
     */
     padding: 5px 0;
-    max-width:580px;
-    overflow-x: auto;
+    /*max-width:580px;
+    overflow-x: auto;*/
 }
 
 .kals-modal .editor-respond-to-topic {
@@ -453,6 +459,8 @@
     
     cursor: pointer;
     margin-right: 2px;
+	
+	float:left;
 }
 
 .kals-modal .editor-respond-to .delete {

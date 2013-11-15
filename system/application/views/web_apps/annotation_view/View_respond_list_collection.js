@@ -32,5 +32,11 @@ View_respond_list_collection.prototype._$direction = 'asc';
 
 View_respond_list_collection.prototype._$enable_check_login = false;
 
+/**
+ * 新增時從頭新增嗎？
+ * @type boolean
+ */
+View_respond_list_collection.prototype._$default_add_item_from_head = false;
+
 /* End of file View_respond_list_collection */
 /* Location: ./system/application/views/web_apps/View_respond_list_collection.js */

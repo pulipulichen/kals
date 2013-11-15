@@ -199,9 +199,9 @@ Annotation_tool.prototype.setup_list = function () {
 		if (_component.is_totally_loaded() && _component.has_list_item() === false) {
 			_tool.editor_container.toggle_container(true);
 		}
-		else {
-			_tool.editor_container.toggle_container(false);
-		}
+		//else {
+		//	_tool.editor_container.toggle_container(false);
+		//}
     });
     return _component;
 };
