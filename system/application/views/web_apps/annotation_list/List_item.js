@@ -90,12 +90,9 @@ List_item.prototype._$create_ui = function () {
 	// @20130609 Pudding Chen
 	// 只有在不顯示全文的情況下，按下內容才會顯示thread
 	if (this._note_show_fulltext === false) {
-		_ui.find(".list-header-component").click(function () {
+		_ui.find(".name-container, .type-container, .list-note-component").click(function () {
 			_this.view_thread();
 		});
-		_ui.find(".list-note-component").click(function () {
-            _this.view_thread();
-        });
 	}	
 	
     setTimeout(function() {

@@ -233,6 +233,11 @@ List_like_component.prototype._set_like_count = function (_count) {
         
         this._count_component.html(_msg);
         this._like_count = _count;
+		
+		//要修改item的param參數
+		//var _param = this._item.get_annotation_param();
+		//_param.like_count = _count;
+		//this._item.editor_set_data(_param);
     }
     return this;
 };
@@ -240,6 +245,7 @@ List_like_component.prototype._set_like_count = function (_count) {
 List_like_component.prototype.add_like_count = function () {
     
     this._like_count++;
+	this._set_like_count();
     return this._set_like_count(this._like_count);
 }; 
 
@@ -249,7 +255,24 @@ List_like_component.prototype.reset_like_count = function () {
 
 List_like_component.prototype.reduce_like_count = function () {
     this._like_count--;
+	this._set_like_count();
     return this._set_like_count(this._like_count);
+};
+
+/**
+ * 設定list item的參數
+ * @param {number} _count
+ */
+List_like_component.prototype._set_list_item = function () {
+	//if ($.is_null(this._item)) {
+		return this;
+	//}
+	var _count = this._like_count;
+	var _param = this._item.get_annotation_param();
+    _param.like_count = _count;
+    this._item.editor_set_data(_param);
+	
+	return this;
 };
 
 /* End of file List_like_component */
