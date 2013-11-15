@@ -132,8 +132,15 @@ URL_hash_dispatcher.prototype._save_scroll_position = function () {
     return _pos;
 };
 
+/**
+ * 讓網頁開始捲動
+ * @deprecated 20131115 不使用了
+ * @param {Object} _pos
+ */
 URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
-    window.scrollTo(_pos.x, _pos.y);
+    
+	//window.scrollTo(_pos.x, _pos.y);
+	
 };
 
 URL_hash_dispatcher.prototype._set_document_title = function (_hash) {

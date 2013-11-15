@@ -2041,7 +2041,8 @@ jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
  */
 jQuery.scroll_to = function (_position, _speed, _callback) {
     
-    //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
+    $.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
+    return;
     
     //宣告基本資料
     var _target_x, _target_y, _interval_x, _interval_y, _interval_time = 10, _repeat_count
@@ -2133,8 +2134,11 @@ jQuery.save_scroll_position = function () {
     
 };
 
+/**
+ * 讀取捲動位置
+ * @deprecated 20131115 Pudding Chen
+ */
 jQuery.load_scroll_position = function () {
-    
     
     if (window.pageXOffset != this._scroll_position[0]) {
         //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
@@ -2145,8 +2149,8 @@ jQuery.load_scroll_position = function () {
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }
     
-    window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
-    
+    $.test_msg("$.load_scroll_position");
+    //window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
 };
 
 jQuery.create_id = function () {

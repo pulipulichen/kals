@@ -309,7 +309,19 @@ Annotation_tool.prototype.open = function (_callback) {
 	 */
 	this.editor_container.toggle_container(false);
 	
-    KALS_modal.prototype.open.call(this, _callback);
+    KALS_modal.prototype.open.call(this, function () {
+		_this.scroll_into_view();
+		
+		$.trigger_callback(_callback);
+	});
+};
+
+Annotation_tool.prototype.scroll_into_view = function () {
+	var _offset = this.get_ui().offset();
+    var _position = {
+        y: _offset.top - 60
+    };
+    $.scroll_to(_position);
 };
 
 Annotation_tool.prototype.close = function (_callback) {

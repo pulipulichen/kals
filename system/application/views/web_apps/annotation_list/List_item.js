@@ -374,8 +374,8 @@ List_item.prototype.focus = function (_scrollto) {
     _ui.addClass(this._focus_classname);
     
     if (_scrollto === true) {
-		_ui.scrollIntoView();
-	}
+        _ui.scrollIntoView();
+    }
     return this;
 };
 
