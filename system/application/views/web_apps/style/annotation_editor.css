@@ -1,31 +1,31 @@
-.kals-modal .editor-tool {
+.KALS.kals-modal .editor-tool {
     -webkit-box-shadow: 0px 5px 5px #AF9067;
     position:relative;
     z-index: 1;
 }
-.kals-modal .editor-tool tr td{
+.KALS.kals-modal .editor-tool tr td{
 	padding: 0 0 !important;
 	border:0px !important;
 	width:330px !important;
 	
 }
-.kals-modal .editor-tool table{
+.KALS.kals-modal .editor-tool table{
 	border-collapse:inherit !important;
 }
 
-.kals-modal .editor-container {
+.KALS.kals-modal .editor-container {
     border:1px none #4A4531;
     border-bottom-style: solid;
 }
 
-.kals-modal .window-view-content .editor-container {
+.KALS.kals-modal .window-view-content .editor-container {
     border-width: 0;
 }
 
 /**
  * @section Editor_container
  */
-.kals-modal .editor-container .toggle {
+.KALS.kals-modal .editor-container .toggle {
     text-align: center !important;
     /*background-color: yellow;*/
     font-size: small;
@@ -70,10 +70,10 @@
     */
 }
 
-.kals-modal .editor-container .toggle td {
+.KALS.kals-modal .editor-container .toggle td {
 	text-align:center !important;
 }
-.kals-modal .editor-container .toggle.hide td {
+.KALS.kals-modal .editor-container .toggle.hide td {
 	/*
     border-radius: 8px;
     -moz-border-radius: 8px;
@@ -85,11 +85,11 @@
 	background-repeat:no-repeat;
 	height: 30px;
 }
-.kals-modal .editor-container .toggle.hide td .handler {
+.KALS.kals-modal .editor-container .toggle.hide td .handler {
 	visibility:hidden;
 }
 
-.kals-modal .editor-container .toggle.top {
+.KALS.kals-modal .editor-container .toggle.top {
     border-radius: 8px 8px 0 0;
     -moz-border-radius: 8px 8px 0 0;
     -webkit-border-radius: 8px 8px 0 0;
@@ -107,20 +107,20 @@
     */
 }
 
-.kals-modal .editor-container .toggle td {
+.KALS.kals-modal .editor-container .toggle td {
     -moz-box-shadow: 0px 5px 5px #AF9067;
     
     position:relative;
     display: block;
 }
 
-.kals-modal .editor-container .toggle.top td {
+.KALS.kals-modal .editor-container .toggle.top td {
     -moz-box-shadow: 0px -5px 5px #AF9067;
     -webkit-box-shadow: 0px -5px 5px #AF9067;
 }
 
 
-.kals-modal .editor-container .container {
+.KALS.kals-modal .editor-container .container {
     border:0px solid #4A4531;
     border-style: none solid;
     /*border-radius: 8px;
@@ -139,14 +139,14 @@
 }
 */
 
-.kals-modal .editor-container .editor-message {
+.KALS.kals-modal .editor-container .editor-message {
     display:none;
     text-align:center;
     padding: 10px 0;
     font-size: small;
 }
 
-.kals-modal .editor-container .editor-deny .not-login {
+.KALS.kals-modal .editor-container .editor-deny .not-login {
     
     color: blue;
     text-decoration:underline;
@@ -157,37 +157,37 @@
 /**
  * @section Annotation_editor
  */
-.kals-modal .annotation-editor .header {
+.KALS.kals-modal .annotation-editor .header {
     font-size:small;
 }
 
-.kals-modal .annotation-editor .header th {
+.KALS.kals-modal .annotation-editor .header th {
     vertical-align:middle;
     /*width: 50%;*/
     padding-bottom: 5px;
 }
 
-.kals-modal .annotation-editor .header th.left {
+.KALS.kals-modal .annotation-editor .header th.left {
     text-align:left;
     padding-left: 0.5em;
     
 }
 
-.kals-modal .annotation-editor .header th.right {
+.KALS.kals-modal .annotation-editor .header th.right {
     text-align:right;
     padding-right: 0.5em;
 }
 
-.kals-modal .annotation-editor .loading-component {
+.KALS.kals-modal .annotation-editor .loading-component {
     text-align: center;
     padding: 10px 0;
     font-size: small;
     cursor: wait;
 }
 
-.kals-modal .annotation-editor button.create,
-.kals-modal .annotation-editor button.edit,
-.kals-modal .annotation-editor button.cancel {
+.KALS.kals-modal .annotation-editor button.create,
+.KALS.kals-modal .annotation-editor button.edit,
+.KALS.kals-modal .annotation-editor button.cancel {
     min-height: 0;
     border: 1px solid #D19405;
 	width: 96%;
@@ -200,43 +200,43 @@
 	margin-top: 0.2em;
 }
 
-.kals-modal .annotation-editor .submit-container {
+.KALS.kals-modal .annotation-editor .submit-container {
     display: block;
 }
 
-.kals-modal .annotation-editor .submit-container .edit,
-.kals-modal .annotation-editor .submit-container .cancel,
-.kals-modal .annotation-editor.editing .submit-container .create {
+.KALS.kals-modal .annotation-editor .submit-container .edit,
+.KALS.kals-modal .annotation-editor .submit-container .cancel,
+.KALS.kals-modal .annotation-editor.editing .submit-container .create {
     display: none;
 }
 
-.kals-modal .annotation-editor.editing .submit-container .edit,
-.kals-modal .annotation-editor.editing .submit-container .cancel,
-.kals-modal .annotation-editor .submit-container .create {
+.KALS.kals-modal .annotation-editor.editing .submit-container .edit,
+.KALS.kals-modal .annotation-editor.editing .submit-container .cancel,
+.KALS.kals-modal .annotation-editor .submit-container .create {
     padding: 0.4em;
     display: inline;
 }
 
-.kals-modal .annotation-editor.editing .submit-container .edit,
-.kals-modal .annotation-editor.editing .submit-container .cancel {
+.KALS.kals-modal .annotation-editor.editing .submit-container .edit,
+.KALS.kals-modal .annotation-editor.editing .submit-container .cancel {
 	width: 45%;
 }
 
-.kals-modal .annotation-editor.editing .submit-container .edit {
+.KALS.kals-modal .annotation-editor.editing .submit-container .edit {
 	margin-right: 3%;
 }
 
 /**
  * @section User
  */
-.kals-modal .user-component {
+.KALS.kals-modal .user-component {
     /*float:left;*/
 }
 
 /**
  * @section type
  */
-.kals-modal .annotation-editor .type-component {
+.KALS.kals-modal .annotation-editor .type-component {
     margin-right: 5px;
     margin-left: 5px;
     margin-top: 5px;
@@ -268,37 +268,37 @@
     font-weight: bold;
 }
 
-.kals-modal .type-option.importance {
+.KALS.kals-modal .type-option.importance {
     background-color: yellow;
     color: black;
 }
 
-.kals-modal .type-option.concept {
+.KALS.kals-modal .type-option.concept {
     background-color: blue;
 }
 
-.kals-modal .type-option.confusion {
+.KALS.kals-modal .type-option.confusion {
     background-color: #800080;
 }
 
-.kals-modal .type-option.question {
+.KALS.kals-modal .type-option.question {
     background-color: red;
 }
 
-.kals-modal .type-option.example {
+.KALS.kals-modal .type-option.example {
     background-color: green;
 }
 
-.kals-modal .type-option.summary {
+.KALS.kals-modal .type-option.summary {
     background-color: #670808;
 }
 
-.kals-modal .type-option.custom {
+.KALS.kals-modal .type-option.custom {
     background-color: white;
     color: black;
 }
 
-.kals-modal .type-component .type-menu {
+.KALS.kals-modal .type-component .type-menu {
     background-color: #EEE;
     border-bottom: 1px solid #555;
     border-left: 1px solid #AAA;
@@ -309,7 +309,7 @@
     z-index: 4;
 }
 
-.kals-modal .type-component .type-menu .type-option {
+.KALS.kals-modal .type-component .type-menu .type-option {
     border-style: none;
     display:block;
     width: 100%;
@@ -319,7 +319,7 @@
     -khtml-border-radius: 0px;
 }
 
-.kals-modal .type-component .type-menu .type-option.hover {
+.KALS.kals-modal .type-component .type-menu .type-option.hover {
    /*border-left: 10px solid black;
    padding-left: 0px;*/
    position:relative;
@@ -327,7 +327,7 @@
    -webkit-box-shadow: #FFFFFF 0px 0px 20px;
 }
 
-.kals-modal .type-component .type-option
+.KALS.kals-modal .type-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -337,7 +337,7 @@
     height:18px;
 }
 
-.kals-modal .type-component .type-option.custom  .type-option {
+.KALS.kals-modal .type-component .type-option.custom  .type-option {
     border-radius: 0px;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
@@ -346,7 +346,7 @@
     padding: 0;
 }
 
-.kals-modal .type-component .type-option .custom-type-option
+.KALS.kals-modal .type-component .type-option .custom-type-option
 {
     font-weight: bold;   
     border-width: 0px;
@@ -358,18 +358,18 @@
     /*padding: 5px 10px;*/
 }
 
-.kals-modal .custom-type-dialog {
+.KALS.kals-modal .custom-type-dialog {
     text-align: center;
 }
 
-.kals-modal .custom-type-dialog input.text {
+.KALS.kals-modal .custom-type-dialog input.text {
     width: 100%;
 }
 
-.kals-modal .type-menu .type-option {
+.KALS.kals-modal .type-menu .type-option {
     padding: 5px;
 }
-.kals-modal .type-menu .type-hint {
+.KALS.kals-modal .type-menu .type-hint {
     display: none;
     position: absolute;
     background-color: #FEEEBD;
@@ -382,7 +382,7 @@
  /**
   * @section Policy_component
   */
-.kals-modal .annotation-editor .policy-component {
+.KALS.kals-modal .annotation-editor .policy-component {
     font-size:small;
     cursor: pointer;
     padding-left: 18px;
@@ -396,24 +396,24 @@
     margin-left: 5px;
 }
 
-.kals-modal .annotation-editor .policy-component.lock {
+.KALS.kals-modal .annotation-editor .policy-component.lock {
     background-image: url('${base_url}images/policy-lock.gif');
 }
 
-.kals-modal .policy-component.deny-change {
+.KALS.kals-modal .policy-component.deny-change {
     color: #666;
     cursor:default;
 }
  
-.kals-modal .window-policy label {
+.KALS.kals-modal .window-policy label {
     cursor: pointer; 
 }
 
-.kals-modal .window-policy label .heading {
+.KALS.kals-modal .window-policy label .heading {
     font-weight: bold;
 }
 
-.kals-modal .window-policy .help {
+.KALS.kals-modal .window-policy .help {
     padding-left: 1em;
     font-size:small;
 	font-weight:normal !important;    
@@ -423,7 +423,7 @@
  * @subsection Submit-button 
  */
 
-.kals-modal .annotation-editor .submit
+.KALS.kals-modal .annotation-editor .submit
 {
     /*float: right;*/
 }
@@ -431,7 +431,7 @@
 /**
  * @section Editor_respond_to
  */
-.kals-modal .respond-container {
+.KALS.kals-modal .respond-container {
     /*max-height: 20px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -441,11 +441,11 @@
     overflow-x: auto;*/
 }
 
-.kals-modal .editor-respond-to-topic {
+.KALS.kals-modal .editor-respond-to-topic {
     display: none;
 }
 
-.kals-modal .editor-respond-to {
+.KALS.kals-modal .editor-respond-to {
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -463,7 +463,7 @@
 	float:left;
 }
 
-.kals-modal .editor-respond-to .delete {
+.KALS.kals-modal .editor-respond-to .delete {
     padding: 0 3px;
     color: #FDD44B;
     
@@ -471,11 +471,11 @@
     
     margin-left: 3px;
 }
-.kals-modal .editor-respond-to .delete.hover {
+.KALS.kals-modal .editor-respond-to .delete.hover {
     color: #D19405;
 }
 
-.kals-modal .editor-respond-to .id {
+.KALS.kals-modal .editor-respond-to .id {
     margin-left: 5px;
     
 }
@@ -483,7 +483,7 @@
 /**
  * @section Note_editor
  */
-.kals-modal .note-editor {
+.KALS.kals-modal .note-editor {
     
    /*padding-top: 30px;*/
   text-align:center;
@@ -494,26 +494,26 @@
     display: none;
 }
 */
-.kals-modal .note-editor .cke_skin_kama {
+.KALS.kals-modal .note-editor .cke_skin_kama {
     padding: 0;
 }
 
 
-.kals-modal .note-editor .cke_toolbox .cke_toolbar {
+.KALS.kals-modal .note-editor .cke_toolbox .cke_toolbar {
     display:none !important;
 }
 
-.kals-modal .note-editor .cke_toolbox .cke_toolbar.maximize {
+.KALS.kals-modal .note-editor .cke_toolbox .cke_toolbar.maximize {
     display:none !important;
     border: 1px solid green;
 }
 
-.kals-modal .note-editor .cke_toolbox .cke_toolbar.minimize {
+.KALS.kals-modal .note-editor .cke_toolbox .cke_toolbar.minimize {
     display:block !important;
     /*border: 1px solid red;*/
 }
 
-.annotation-tool-header .cke_maximized .cke_toolbox .cke_toolbar.maximize {
+.KALS .annotation-tool-header .cke_maximized .cke_toolbox .cke_toolbar.maximize {
     display:block !important;
 }
 
@@ -523,23 +523,23 @@
  * 因為最大化的時候，編輯器會被移到另一個div底下，沒有class
  * 所以必須直接指定編輯器本身的工具列才行
  */
-.cke_maximized .cke_toolbox .cke_toolbar.minimize {
+.KALS .cke_maximized .cke_toolbox .cke_toolbar.minimize {
     display:none !important;
 }
 
-.annotation-editor .note-editor .cke_bottom_tr {
+.KALS .annotation-editor .note-editor .cke_bottom_tr {
     display:none;
 }
 
-.annotation-tool-header .note-editor .cke_maximized .cke_bottom_tr {
+.KALS .annotation-tool-header .note-editor .cke_maximized .cke_bottom_tr {
     display:table-row;
 }
 
-.annotation-editor .note-editor td.cke_contents iframe {
+.KALS .annotation-editor .note-editor td.cke_contents iframe {
     display:block;
 }
 
-.annotation-editor table.cke_editor {
+.KALS .annotation-editor table.cke_editor {
     display:table !important;
 }
 
@@ -549,7 +549,7 @@
     height: 50px;
 }
 
-.annotation-editor .note-editor .cke_button_source .cke_label {
+.KALS .annotation-editor .note-editor .cke_button_source .cke_label {
 	display:none;
 }
 
@@ -576,22 +576,22 @@ table.cke_editor.inline-table {
 /**
  * @section Editor_respond
  */
-.kals-modal .editor-respond {
+.KALS.kals-modal .editor-respond {
      border: 1px solid #800000;
      background-color: #FFFFB9;
      font-size: smaller;
      color: #800000;
  }
-.kals-modal .editor-respond .delete {
+.KALS.kals-modal .editor-respond .delete {
      background-color:#800000;
      color: white;
  }
  
-.kals-modal .editor-respond .name {
+.KALS.kals-modal .editor-respond .name {
      padding: 0 5px;
  }
 
-.kals-modal .editor-container .note-editor-textarea {
+.KALS.kals-modal .editor-container .note-editor-textarea {
     width: 90%;
     height: 100px;
 }
@@ -599,7 +599,7 @@ table.cke_editor.inline-table {
 /**
  * @section Web_search_component
  */
-.kals-modal .annotation-editor .web-search.button.dialog-option {
+.KALS.kals-modal .annotation-editor .web-search.button.dialog-option {
 	min-height: 0;
 	background-image: url('${base_url}images/web_search.png');
 	padding-right: 18px !important;
@@ -641,13 +641,13 @@ table.cke_editor.inline-table {
 	padding: 0 1em !important; 
 }
 
-.container-td .annotation-editor table tbody tr{
+.KALS .container-td .annotation-editor table tbody tr{
 	background: rgba(0, 0, 0, 0) !important;
 }
 
-.container-td .annotation-editor table tbody .left{
+.KALS .container-td .annotation-editor table tbody .left{
 	border-right-width:0px !important;
 }
-.container-td .annotation-editor table tbody .right{
+.KALS .container-td .annotation-editor table tbody .right{
 	border-left-width:0px !important;
 }

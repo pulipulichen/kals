@@ -14,7 +14,7 @@
     margin:0;
 }
 
-.dialog-modal.window {
+.KALS.dialog-modal.window {
     /*width: 480px;*/
     width: 100%;
     font-size:medium;
@@ -22,11 +22,11 @@
 	height: auto !important;
 }
 
-.dialog-modal.window div {
+.KALS.dialog-modal.window div {
     margin:0;
 }
 
-.window-loading {
+.KALS .window-loading {
     padding: 30px 1em !important;
     text-align:center;
     line-height: 30px;
@@ -36,7 +36,7 @@
     cursor: wait;
 }
 
-.window.mobile .dialog-content {
+.KALS.window.mobile .dialog-content {
     
     /*max-width:100%;
     overflow:hidden;*/
@@ -51,12 +51,12 @@
     */
 }
 
-.window-panel .row {
+.KALS .window-panel .row {
     margin: 0;
     clear:both;
 }
 
-.window-panel .row dt {
+.KALS .window-panel .row dt {
     text-align:right;
     width: 150px;
     float: left;
@@ -64,60 +64,60 @@
     cursor:pointer;
 }
 
-.dialog-modal.compact-width .window-panel .row dt {
+.KALS.dialog-modal.compact-width .window-panel .row dt {
     text-align:left;
     width: 100%;
     float: none;
     padding: 0;
 }
 
-.window-panel .row dd {
+.KALS .window-panel .row dd {
     padding: 0;
     margin: 0;
     padding-bottom: 0.5em !important;
 }
 
-.window-panel .text {
+.KALS .window-panel .text {
     /*width: 80%;*/
 }
 
-.window-panel .text.empty {
+.KALS .window-panel .text.empty {
     border: 2px solid red !important;
 }
 
-.dialog-modal.compact-width .window-panel .text {
+.KALS.dialog-modal.compact-width .window-panel .text {
     width: 100%;
 }
 
-.window-panel h2.heading {
+.KALS .window-panel h2.heading {
     font-size:large;
     border-bottom: 1px solid black !important;
     padding-left: 0.5em !important;
 }
 
-.window-panel .list label {
+.KALS .window-panel .list label {
     margin-right: 0.5em;
     cursor: pointer;
 }
 
-.window-panel .tip {
+.KALS .window-panel .tip {
     font-size:small;
     display:block;
     text-align:center;
 }
 
-.window-panel .error-row { font-size: smaller;color:red;text-align:center; } 
+.KALS .window-panel .error-row { font-size: smaller;color:red;text-align:center; } 
 
 /**
  * @subsection Window_login & Window_register
  */
-.window-login .register-link,
-.window-register .login-link { font-size: small; text-align:center; }
+.KALS .window-login .register-link,
+.KALS .window-register .login-link { font-size: small; text-align:center; }
 
 /**
  * @subsection Window_password_change
  */
 
-.window-password-change .row dt {
+.KALS .window-password-change .row dt {
     width: 170px;
 }

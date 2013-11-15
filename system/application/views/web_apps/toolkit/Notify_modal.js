@@ -29,6 +29,7 @@ Notify_modal.prototype._$create_ui = function () {
     _ui.addClass('notify-modal')
         .removeClass( this.class_name )
         .attr('id', 'notify_modal')
+		.addClass("KALS")
         .html('<div class="wrapper"></div>');
     
     var _config = this._$get_config();

@@ -20,14 +20,14 @@
 	
 }
 
-.dialog-modal.compact-width {
+.KALS.dialog-modal.compact-width {
     
     min-width: 0;
     max-width: 100%;
     
 }
 
-.dialog-modal.compact-height {
+.KALS.dialog-modal.compact-height {
     
     max-height:100%;
     overflow:auto;
@@ -39,18 +39,18 @@
     border-bottom-width: 0;
 }
 
-.dialog-modal.compact-height .dialog-table {
+.KALS.dialog-modal.compact-height .dialog-table {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.dialog-toolbar-tr,
-.dialog-toolbar-table {
+.KALS .dialog-toolbar-tr,
+.KALS .dialog-toolbar-table {
     height: 36px;
 	margin:0px !important;
 	background: rgba(0,0,0,0)!important;
 }
-.dialog-toolbar-table tr{
+.KALS .dialog-toolbar-table tr{
 	background: rgba(0,0,0,0)!important;
 }
 
@@ -100,12 +100,12 @@
     height: 30px;
 }
 
-.dialog-toolbar tr td {
+.KALS .dialog-toolbar tr td {
 	padding:0px 0px !important;
 	border:0px !important;
 	border-collapse:inherit !important;
 }
-.dialog-heading {
+.KALS .dialog-heading {
     margin: 0.1em 16px 0.2em 0;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -117,17 +117,17 @@
     line-height: 1.1em;
 }
 
-.dialog-content-td {
+.KALS .dialog-content-td {
     vertical-align:top;
 }
 
-.toolbar-options {
+.KALS .toolbar-options {
     display: none;
     width: 40px;
     overflow:hidden;
 }
 
-.toolbar-options .dialog-option {
+.KALS .toolbar-options .dialog-option {
     font-size: 0.7em;
     min-height: 0;
     height: 30px;
@@ -138,19 +138,19 @@
     margin-bottom: 10px;
 }
 
-.dialog-toolbar.hide-option .dialog-option {
+.KALS .dialog-toolbar.hide-option .dialog-option {
     visibility:hidden;
 }
 
-.toolbar-forward {
+.KALS .toolbar-forward {
     text-align:right;
 }
 
-.toolbar-backward .dialog-option {
+.KALS .toolbar-backward .dialog-option {
     margin-left: 3px;
 }
 
-.toolbar-forward .dialog-option {
+.KALS .toolbar-forward .dialog-option {
     margin-right: 3px;
 }
 
@@ -191,11 +191,11 @@
 
 
 
-.dialog-option.link {
+.KALS .dialog-option.link {
     color: blue;
 }
 
-.button.dialog-option.hover {
+.KALS .button.dialog-option.hover {
     
     background: -moz-linear-gradient(#FFE08E 0%, #FFDE7D 100%);
     background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FFE08E)
@@ -209,11 +209,11 @@
 }
 
 /*
-.dialog-content-tr {
+.KALS .dialog-content-tr {
     display: none;
 }
 */
-.dialog-content-tr{
+.KALS .dialog-content-tr{
 	background: rgba(0,0,0,0)!important;
 }
 
@@ -227,80 +227,80 @@
 	line-height:normal !important;
 }
 
-.dialog-modal.compact-height .dialog-content {
+.KALS.dialog-modal.compact-height .dialog-content {
     overflow:visible;
     max-height:inherit;
     height:auto;
 }
 
-.dialog-options .dialog-option {
+.KALS .dialog-options .dialog-option {
     
     width: 100%;
     margin-top: 5px;
 }
 
-.dialog-option.option-left {
+.KALS .dialog-option.option-left {
     float:left;
     width: 49%;
 }
 
-.dialog-option.option-right {
+.KALS .dialog-option.option-right {
     float:right;
     width: 49%;
 }
 
-.dialog-modal.with-content.with-options .dialog-content {
+.KALS.dialog-modal.with-content.with-options .dialog-content {
     border-bottom:1px solid #8E846B !important;
     margin-bottom: 5px;
 }
 
-.dialog-modal.with-content.with-options.hide-options .dialog-content {
+.KALS.dialog-modal.with-content.with-options.hide-options .dialog-content {
     border-bottom-width: 0;
     margin-bottom: auto;
 }
 
-.dialog-modal.hide-options .dialog-options {
+.KALS.dialog-modal.hide-options .dialog-options {
     display: none;
 }
 
 /* -------- */
 /* exception */
 
-.dialog-content .exception {
+.KALS .dialog-content .exception {
     margin-top:0;
     margin-bottom: 0;
 }
 
-.dialog-content .exception dd p {
+.KALS .dialog-content .exception dd p {
     margin: 0;
 }
 
-.dialog-content .exception dd {
+.KALS .dialog-content .exception dd {
     word-break:break-all;
 }
-.window-loading-tr{
+.KALS .window-loading-tr{
 	height:0px !important;
 	padding:0px 0px !important;
 	background: rgba(0,0,0,0)!important;
 }
-.window-loading-tr td{
+.KALS .window-loading-tr td{
 	height:0px !important;
 	padding:0px 0px !important;
 	border: 0px !important;
 }
-.dialog-content-tr{
+.KALS .dialog-content-tr{
 	padding:0px 0px !important;
 }
-.dialog-content-td{
+.KALS .dialog-content-td{
 	padding:0px 0px !important;
 	border: 0px !important;
 	
 }
-.dialog-options{
+.KALS .dialog-options{
 	height:28px !important;
 	padding:0px 0px !important;
 	background: rgba(0,0,0,0)!important;
 }
-.dialog-options td{
+.KALS .dialog-options td{
 	border: 0px !important;
 }

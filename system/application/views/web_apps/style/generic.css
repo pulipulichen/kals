@@ -1,5 +1,5 @@
 
-.kals-modal {
+.KALS.kals-modal {
     
     
     
@@ -33,7 +33,7 @@
     
 }
 
-.kals-modal .scroll-container {
+.KALS.kals-modal .scroll-container {
     width: 5px;
     position: fixed;
     top: 0;
@@ -46,18 +46,18 @@
     /*background-color:red;*/
 }
 
-.kals-modal .scroll {
+.KALS.kals-modal .scroll {
     background-color: #666666;
     border-radius: 2.5px !important;
     -moz-border-radius: 2.5px !important;
     position:relative;
 }
 
-.kals-modal .scroll-wrapper {
+.KALS.kals-modal .scroll-wrapper {
     padding: 0;
     margin: 0;
 }
-.kals-modal .list-option{
+.KALS.kals-modal .list-option{
 	display:inline;
 }
 
@@ -74,7 +74,8 @@
     cursor: pointer;
 }
 
-.KALS span, .kals-model span {
+.KALS span, 
+.KALS.kals-model span {
     display: inline;
 	position: static;
 }

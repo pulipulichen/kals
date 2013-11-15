@@ -133,6 +133,7 @@ Tooltip_modal.prototype._create_tooltip_prototype = function (_config) {
     if (_tooltip_existed === false) {  
         _tooltip = _content
             .addClass('tooltip')
+			.addClass("KALS")
             .appendTo($('body'));
         
         if ($.isset(_id)) {
