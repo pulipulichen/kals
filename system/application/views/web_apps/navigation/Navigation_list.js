@@ -37,6 +37,17 @@ Navigation_list.prototype._help_lang = new KALS_language_param(
     'toolbar.navigation_list.help'
 );
 
+
+/**
+ * 決定是否要顯示錯誤回報
+ * @type {boolean} 
+ */
+Navigation_list.prototype._$show_feedback = true;
+Navigation_list.prototype._feedback_lang = new KALS_language_param(
+    'Feedback',
+    'toolbar.navigation_list.feedback'
+);
+
 /**
  * 主要設定。子類別請覆寫此屬性。
  * @type {Window_content[]}
@@ -110,27 +121,63 @@ Navigation_list.prototype._create_nav = function() {
     }
     
     if (this._$show_help === true) {
-        _td = $('<td></td>')
-            .addClass('item')
-            .appendTo(_tr);
-                
-        _a = $('<a href="#"></a>')
-            .appendTo(_td)
-            .addClass('help');
-
-        KALS_context.lang.add_listener(_a, this._help_lang);
-        
-        _a.click(function() {
-            
-            KALS_util.help();
-            
-            return false;
-        });
+        this._setup_help().appendTo(_tr);
+    }
+	if (this._$show_feedback === true) {
+        this._setup_feedback().appendTo(_tr);
     }
     
-    _td.addClass('last');
+	_ui.find('td:last').addClass('last');
     
     return _ui;
+};
+
+/**
+ * 建立說明按鈕
+ * @type jQuery
+ */
+Navigation_list.prototype._setup_help = function () {
+	_td = $('<td></td>')
+        .addClass('item');
+            
+    _a = $('<a href="#"></a>')
+        .appendTo(_td)
+        .addClass('help');
+
+    KALS_context.lang.add_listener(_a, this._help_lang);
+    
+    _a.click(function() {
+        
+        KALS_util.help();
+        
+        return false;
+    });
+	
+	return _td;
+};
+
+/**
+ * 建立錯誤回報按鈕
+ * @type jQuery
+ */
+Navigation_list.prototype._setup_feedback = function () {
+    _td = $('<td></td>')
+        .addClass('item');
+            
+    _a = $('<a href="#"></a>')
+        .appendTo(_td)
+        .addClass('feedback');
+
+    KALS_context.lang.add_listener(_a, this._feedback_lang);
+    
+    _a.click(function() {
+        
+        KALS_context.feedback.open();
+        
+        return false;
+    });
+    
+    return _td;
 };
 
 Navigation_list.prototype._get_window_content = function (_index) {

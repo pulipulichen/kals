@@ -105,10 +105,12 @@
     cursor: pointer;
 }
 
+.KASL.feedback-btn {
+	display:none;
+}
 
 .feedback-btn {
-    /*display: inline-block;*/
-	display: none;
+    display: inline-block;
     padding: 4px 10px 4px;
     margin-bottom: 0;
     font-size: 13px;

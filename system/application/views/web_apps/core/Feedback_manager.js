@@ -44,6 +44,7 @@ Feedback_manager.prototype.init = function () {
 
 Feedback_manager.prototype.open = function () {
 	this._feedback.open();
+	//$(".feedback-btn.KALS").click();
 };
 
 /* End of file Feedback_manager */
