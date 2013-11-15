@@ -28,11 +28,11 @@ KALS_util = {};
 KALS_util.ajax_get = function (_config) {
     var _url = $.get_parameter(_config, 'url');
     var _data = $.get_parameter(_config, 'data');
-    var _callback = $.get_parameter(_config, 'callback');
+    var _callback = $.get_parameter(_config, 'callback', function() {});
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
     
     var _retry = $.get_parameter(_config, 'retry', 3);
-    var _retry_wait = $.get_parameter(_config, 'retry_wait', 6 * 1000);
+    var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
     var _retry_counter = 0;
     
     _url = $.appends_with(_url, '/');
@@ -198,7 +198,7 @@ KALS_util.ajax_post = function (_config) {
     
     var _url = $.get_parameter(_config, 'url');
     var _data = $.get_parameter(_config, 'data');
-    var _callback = $.get_parameter(_config, 'callback');
+    var _callback = $.get_parameter(_config, 'callback', function() {});
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
     
     _action = $.appends_with(_url, '/');
@@ -232,7 +232,7 @@ KALS_util.ajax_post = function (_config) {
             .css('position', 'fixed')
             .css('background-color', 'white');
     }
-    
+
     //建立一個FORM
     //然後讓form target到該iframe
     var _form = $('<form></form>')

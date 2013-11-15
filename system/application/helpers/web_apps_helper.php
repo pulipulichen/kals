@@ -17,7 +17,12 @@ if ( ! function_exists('json_to_object'))
 {
     function json_to_object($json)
     {
-        return json_decode($json, false, JSON_UNESCAPED_UNICODE);
+        if (defined("JSON_UNESCAPED_UNICODE") ) {
+            return json_decode($json, false, JSON_UNESCAPED_UNICODE);
+        }
+        else {
+            return json_decode($json, false);
+        }
     }
 }
 
@@ -119,6 +124,15 @@ if ( ! function_exists('get_client_ip'))
     }
 }
 
+if ( !function_exists("kals_json_encode")) {
+    function kals_json_encode($arr)
+    {
+            //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
+            array_walk_recursive($arr, function (&$item, $key) { if (is_string($item)) $item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8'); });
+            return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+    }
+}
+
 
 if ( ! function_exists('kals_log'))
 {
@@ -159,7 +173,13 @@ if ( ! function_exists('kals_log'))
             }
         }
         else {
-            $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            if (defined("JSON_UNESCAPED_UNICODE")) {
+                $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            else {
+                $note = kals_json_encode($data);
+            }
+            
         }
         
         if (is_null($user_id)) {

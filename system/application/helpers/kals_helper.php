@@ -427,7 +427,12 @@ if ( ! function_exists('test_msg'))
                 echo test_array($msg);
             }
             else if (is_object($msg)) {
-                echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+                if (defined("JSON_UNESCAPED_UNICODE")) {
+                    echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+                }
+                else {
+                    echo json_encode($msg);
+                }
             }
             else
             {

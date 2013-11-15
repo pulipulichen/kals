@@ -394,9 +394,13 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 	
 	//為了避免CKeditor還沒初始化前就設定，我們必須等它一下。
 	var _set_data = function () {
+                if (typeof(_ui.ckeditorGet) != "function") {
+                    throw "CKeditor_not_ready";                
+                }
+
 		_ui.ckeditorGet().setData(_text, function () {
-			//$.test_msg("Note_editor_ckeditor.set_text() ok", _text);
-	        setTimeout(function () {
+                    //$.test_msg("Note_editor_ckeditor.set_text() ok", _text);
+                    setTimeout(function () {
 	            $.load_scroll_position();    
 	        }, 0);
 	        
@@ -405,12 +409,12 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
     
 	var _loop = function () {
 		try {
-			_set_data();
+                    _set_data();
 		}
 		catch (_e) {
-			setTimeout(function () {
-				_loop();
-			}, 500);
+                    setTimeout(function () {
+                            _loop();
+                    }, 500);
 		}
 	};
 	

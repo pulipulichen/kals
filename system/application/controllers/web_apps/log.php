@@ -78,7 +78,7 @@ class Log extends Web_apps_controller {
         $note = $data->note;
         
         //$t = "\u6578\u4f4d\u5716\u66f8\u9928\u6982\u8aaa";
-        //test_msg($note);
+        //test_msg(kals_json_encode($note));
 
         kals_log($this->db, $action, $note);
 
