@@ -63,8 +63,8 @@
 }
 
 .window-view-content.hide-editor .view-list-container {
-    max-height:365px;
-    height:365px;
+    max-height:340px;
+    height:345px;
 }
 
 .window-view-content.not-login .view-list-container,

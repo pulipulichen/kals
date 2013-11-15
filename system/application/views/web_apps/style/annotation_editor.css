@@ -73,11 +73,20 @@
 .kals-modal .editor-container .toggle td {
 	text-align:center !important;
 }
-.kals-modal .editor-container .toggle.hide {
+.kals-modal .editor-container .toggle.hide td {
+	/*
     border-radius: 8px;
     -moz-border-radius: 8px;
     -khtml-border-radius: 8px;
     -webkit-border-radius: 8px;
+	*/
+	background-image: url('${base_url}images/has-recommend.gif');
+	background-position:center;
+	background-repeat:no-repeat;
+	height: 30px;
+}
+.kals-modal .editor-container .toggle.hide td .handler {
+	visibility:hidden;
 }
 
 .kals-modal .editor-container .toggle.top {

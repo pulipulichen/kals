@@ -45,7 +45,7 @@ $lang['web_apps.authentication.logout_error.message'] = '登出動作失敗。';
 $lang['web_apps.authentication.deregister_error.heading'] = '注銷錯誤';
 $lang['web_apps.authentication.deregister_error.message'] = '注銷動作失敗。';
 
-$lang['web_apps.toolbar.loading_message'] = '讀取中，請稍候。';
+$lang['web_apps.toolbar.loading_message'] = '讀取中，請稍候';
 
 $lang['web_apps.dialog.option.button'] = '按鈕';
 $lang['web_apps.dialog.option.close'] = '關閉';

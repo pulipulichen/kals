@@ -195,15 +195,18 @@ Annotation_tool.prototype.setup_list = function () {
 	var _tool = this;
 	//註冊一下
 	_component.add_listener(function () {
-		if (_component.is_totally_loaded()) {
+		$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
+		if (_component.is_totally_loaded() && _component.has_list_item() === false) {
 			_tool.editor_container.toggle_container(true);
+		}
+		else {
+			_tool.editor_container.toggle_container(false);
 		}
     });
     return _component;
 };
 
 Annotation_tool.prototype._$get_config = function () {
-    
     var _config = Overlay_modal.prototype._$get_config.call(this);
     _config.fixed = false;
     return _config;

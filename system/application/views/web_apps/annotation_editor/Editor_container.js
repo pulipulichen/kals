@@ -47,6 +47,12 @@ Editor_container.prototype._disable_option = [];
 Editor_container.prototype._toggle_position = 'bottom';
 
 /**
+ * 預設的開啟狀態
+ * @tyep boolean true=開啟; false=關閉
+ */
+Editor_container.prototype._$default_toggle = false;
+
+/**
  * 編輯器。
  * @type {Annotation_editor}
  */
@@ -94,6 +100,11 @@ Editor_container.prototype._$create_ui = function () {
     
     this._create_toggle();
     this._set_toggle_position();
+	
+	if (this._$default_toggle === true
+	   || this._$default_toggle === false) {
+		this.toggle_container(this._$default_toggle);
+	}
     
     var _this = this;
 	
@@ -133,7 +144,7 @@ Editor_container.prototype._create_toggle = function () {
     var _toggle = $('<tr><td></td></tr>')
         .addClass('toggle');
     
-    _toggle.find('td').html(': : : :');
+    _toggle.find('td').append($('<span class="handler">: : : :</span>'));
     
     var _this = this;
     _toggle.click(function () {
