@@ -199,6 +199,10 @@ Annotation_editor.prototype.get_data = function () {
     return _annotation_param;
 };
 
+/**
+ * 送出標註
+ * 
+ */
 Annotation_editor.prototype.submit = function () {
     
     //讀取中就不設定
