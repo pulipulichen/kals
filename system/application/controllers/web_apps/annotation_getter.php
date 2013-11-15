@@ -494,10 +494,12 @@ class Annotation_getter extends Web_apps_controller {
         if ($enable_profiler == TRUE)
             $this->output->enable_profiler(TRUE);
 
-        if (is_string($json))
+        if (is_string($json)) {
             $data = json_to_object($json);
-        else
+        }
+        else {
             $data = $json;
+        }
 
         $user = get_context_user();
         $url = $this->url;
@@ -596,42 +598,47 @@ class Annotation_getter extends Web_apps_controller {
         }
 
         // 6 [ order by ]
+        // 6 [ is_desc]
         //test_msg('6 [ order by ]', isset($data->order_by));
+        //test_msg('6 [ order by ] is_desc', $data->is_desc);
+        $order_id = 1;
+        $default_is_desc = TRUE;
         if (isset($data->order_by))
         {
             if ($data->order_by == 'update')
             {
-                $search->add_order (6, TRUE);
-                if (isset($search_id))
-                    $search_id->add_order (6, TRUE);
+                $order_id = 6;
+                $default_is_desc = TRUE;
             }
             else if ($data->order_by == 'create')
             {
-                $search->add_order (7);
-                if (isset($search_id))
-                    $search_id->add_order (7);
+                $order_id = 7;
+                $default_is_desc = TRUE;
             }
             else
             {
-                $search->add_order (1, TRUE);
-                if (isset($search_id))
-                    $search_id->add_order (1, TRUE);
+                $order_id = 1;
+                $default_is_desc = TRUE;
             }
         }
-        else
-        {
-            $search->add_order (1, TRUE);
-            if (isset($search_id))
-                $search_id->add_order (1, TRUE);
+        if (isset($data->is_desc) && $data->is_desc == 'asc') {
+            $default_is_desc = FALSE;
         }
-
+        
+        /*
         if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
         {
-            $search->add_order (6, TRUE);
-            if (isset($search_id))
-                $search_id->add_order (6, TRUE);
+            $order_id = 6;
+            $default_is_desc = TRUE;
         }
-
+        */
+        
+        //test_msg('6 [ order by ] add_oder', array($order_id, $default_is_desc));
+        $search->add_order ($order_id, $default_is_desc);
+        if (isset($search_id)) {
+            $search_id->add_order ($order_id, $default_is_desc);
+        }
+        
         // 7 [ offset ]
         //test_msg('7 [ offset ]', isset($data->offset));
         if (isset($data->offset))
@@ -647,7 +654,6 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->limit))
         {
             $search->set_limit($data->limit);
-
             //$search_id在此不作設限
         }
         
@@ -678,9 +684,12 @@ class Annotation_getter extends Web_apps_controller {
                 $search_data = json_to_object('{}');
                 $search_data->target_topic = FALSE;
                 $search_data->topic_id = $search_annotation->get_id();
-                $search_data->limit = 5;
+                if (isset($data->respond_limit)) {
+                    $search_data->limit = $data->respond_limit;
+                }
                 //$search_data->is_like = NULL;
                 $search_data->order_by = 'create';
+                $search_data->is_desc = 'asc';
                 $search_data->show_total_count = TRUE;
 
                 $search_result = $this->list_annotation($search_data);

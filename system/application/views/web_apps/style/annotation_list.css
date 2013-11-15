@@ -272,12 +272,16 @@
     padding: 0.2em 0.5em;
     margin-left: 0.2em;
     font-weight: bold;
-    
+    border-left: 1px groove white; 
+}
+
+.KALS.window .list-menu .list-menu-option,
+.KALS.window .list-menu-option {
     /**
      * 由於看起來挺醜的，所以刪掉了
      * @20131115 Pulipuli Chen
      */
-    /* border-left: 2px groove gray; */
+    border-left-width: 0px; 
 }
 
 .KALS .list-menu.list-menu-block .list-menu-option {
@@ -307,7 +311,7 @@
     display: none;
 }
 
-.KALS.list-menu .list-menu-option.edit,
+.KALS .list-menu .list-menu-option.edit,
 .KALS .list-menu .list-menu-option.delete {
     display: none;
 }
@@ -319,9 +323,13 @@
     display: none;
 }
 
-.list-menu.is-my .list-menu-option.edit,
-.list-menu.is-my .list-menu-option.delete {
+.KALS .list-menu.is-my .list-menu-option.edit,
+.KALS .list-menu.is-my .list-menu-option.delete {
     display: table-cell;
+}
+
+.KALS .list-menu.is-my .list-menu-option.view {
+    display: none;
 }
 
 .list-menu.loading {
@@ -408,8 +416,4 @@
 
 .KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table tbody{
     border-width: 0px !important;
-}
-
-.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table td{
-    border-left: 1px solid white;
 }

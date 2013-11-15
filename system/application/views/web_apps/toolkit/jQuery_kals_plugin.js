@@ -40,6 +40,7 @@ jQuery.test_msg = function (_title, _test) {
             .appendTo(this('body'));
         
          _info_box = this('<fieldset class="KALS info-box"><legend>Test Message Box</legend></fieldset>')
+		    .css("background-color", "white")
             //.prependTo(this('body'));
             .appendTo(this('body'));
         

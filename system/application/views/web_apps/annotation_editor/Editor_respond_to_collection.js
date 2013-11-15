@@ -86,7 +86,8 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
     }
     
 	// 如果是回應的才要加入
-	if (_param.is_respond() === false) {
+	if (_param.is_respond() === false ||
+	       _param.is_my_annotation() === false) {
 		return this;
 	}
 	

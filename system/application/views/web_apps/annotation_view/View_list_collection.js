@@ -29,6 +29,18 @@ View_list_collection.prototype._$enable_check_login = false;
 View_list_collection.prototype._$target_topic = true;
 
 /**
+ * 預設讀取的回應標註
+ * @type {number|null} 如果是null，表示讀取全部
+ */
+View_list_collection.prototype._$respond_limit = null;
+
+/**
+ * 排序的方向。
+ * @type {string} desc|asc，如果是null，則由系統預設
+ */
+View_list_collection.prototype._$direction = 'asc';
+
+/**
  * @type {Annotation_param}
  */
 View_list_collection.prototype._topic_param = null;

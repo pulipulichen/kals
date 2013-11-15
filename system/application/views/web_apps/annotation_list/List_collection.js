@@ -29,9 +29,16 @@ List_collection.prototype.get_name = function () {
 };
 
 /**
+ * 一次讀取的標註數量
  * @type {number|null} 如果是null，表示讀取全部
  */
 List_collection.prototype._$limit = 10;
+
+/**
+ * 預設讀取的回應標註
+ * @type {number|null} 如果是null，表示讀取全部
+ */
+List_collection.prototype._$respond_limit = 5;
 
 /**
  * 是否排除或只含括登入的該使用者。null表示不限定。
@@ -65,6 +72,12 @@ List_collection.prototype._$topic_id = null;
  * @type {String}
  */
 List_collection.prototype._$order_by = 'score';
+
+/**
+ * 排序的方向。
+ * @type {string} desc|asc，如果是null，則由系統預設
+ */
+List_collection.prototype._$direction = null;
 
 /**
  * 是否啟用登入檢查
@@ -263,6 +276,10 @@ List_collection.prototype.get_search_data = function () {
         if ($.isset(this._$limit)) {
 			_search_data.limit = this._$limit;
 		}
+		
+		if ($.isset(this._$respond_limit)) {
+            _search_data.respond_limit = this._$respond_limit;
+        }
             
         if ($.isset(this._$target_topic)) {
 			_search_data.target_topic = this._$target_topic;

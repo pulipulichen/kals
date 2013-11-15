@@ -24,6 +24,11 @@ View_respond_list_collection.prototype.create_list_item = function(_param) {
     return new View_list_item_respond(_param, this._topic_item);
 };
 
+/**
+ * 排序的方向。
+ * @type {string} desc|asc，如果是null，則由系統預設
+ */
+View_respond_list_collection.prototype._$direction = 'asc';
 
 View_respond_list_collection.prototype._$enable_check_login = false;
 
