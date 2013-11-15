@@ -237,13 +237,13 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
         .prepend(_container);
     
 	if (_ui.hasClass("fadeout")) {
-		$.test_msg("ui fadeout");
+		//$.test_msg("ui fadeout");
 		_ui.removeClass("fadeout");
 		//_ui.fadeIn().stop(false, true);
 		_ui.stop(true, false).fadeIn();
 	}
 	
-	$.test_msg("container fadeIn", _lang_time);
+	//$.test_msg("container fadeIn", _lang_time);
     _container.fadeIn(function () {
 		
 		_this.open();
@@ -289,7 +289,7 @@ Notify_modal.prototype._close_message = function (_container) {
     
 	// 先檢查其他的message
 	var _count = this.count_message();
-	$.test_msg("close message count", _count);
+	//$.test_msg("close message count", _count);
 	
 	if (_count > 1) {
 		_container.fadeOut('slow', function () {
@@ -305,9 +305,9 @@ Notify_modal.prototype._close_message = function (_container) {
 	}
 	else {
 		_ui.addClass("fadeout");
-        $.test_msg("close message add fadeout");
+        //$.test_msg("close message add fadeout");
 		this.close(function () {
-			$.test_msg("close message remove fadeout");
+			//$.test_msg("close message remove fadeout");
 			_ui.removeClass("fadeout");
 			
 			//_this.clear_message();

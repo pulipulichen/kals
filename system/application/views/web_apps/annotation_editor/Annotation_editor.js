@@ -275,8 +275,7 @@ Annotation_editor.prototype.submit = function () {
                     _annotation_param.navigation_level = _data.nav;
                 }
             }
-                
-            
+			
             _this._create_callback(_annotation_param);
         }
         
