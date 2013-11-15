@@ -25,7 +25,9 @@ $lang['web_apps.exception.hint.heading'] = '提示：';
 $lang['web_apps.exception.hint.message'] = '您可以按「ESC」鍵關閉提示訊息或是停止不動的讀取視窗。';
 $lang['web_apps.exception.message_heading.heading'] = '錯誤標頭：';
 $lang['web_apps.exception.message_heading.message'] = '訊息：';
+$lang['web_apps.exception.error_link.heading'] = '錯誤網址：';
 $lang['web_apps.exception.message_heading.request_uri'] = '請求網址：';
+$lang['web_apps.exception.retry_exception'] = '一直無法連線到伺服器';
 
 $lang['web_apps.exception.url_too_large.heading'] = '資料傳輸錯誤';
 $lang['web_apps.exception.url_too_large.message'] = '請求網址過長，無法處理。';

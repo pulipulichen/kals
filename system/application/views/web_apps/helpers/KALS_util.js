@@ -96,9 +96,9 @@ KALS_util.ajax_get = function (_config) {
     var _retry_timer;
     var _retry_exception = function () {
         
-		$.test_msg('retry exception');
-		
-        _this.show_exception();
+        $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
+	    var _exception = new KALS_exception('exception.retry_exception');
+        _this.show_exception(_exception, _url);
     };
     
     var _get_json = function() {
@@ -110,11 +110,10 @@ KALS_util.ajax_get = function (_config) {
 			
 			//if (typeof(_data.KALS_language) == "undefined"
 			//	&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
-                        
-                        if (KALS_context !== undefined
-                            && KALS_context.completed === true) {
-				$.test_msg('ajax_get from ' + _url + ' return data', _data);
-                        }
+                if (KALS_context !== undefined
+                    && KALS_context.completed === true) {
+		            $.test_msg('ajax_get from ' + _url + ' return data', _data);
+                }
 			//}
 			
 			
@@ -373,13 +372,15 @@ KALS_util.ajax_upload = function (_config) {
                     
                     if (typeof(_data) == 'undefined'
                         || typeof(_data.completed) == 'undefined') {
-                        _this.show_exception(_exception);
+					    $.test_msg("show_exception 1");
+                        _this.show_exception(_exception, _url);
                     }
                     else if (_data.completed === false) {
                         if (_data.data !== false) {
 							_exception.message = _data.data;
 						}
-                        _this.show_exception(_exception);
+						$.test_msg("show_exception 2");
+                        _this.show_exception(_exception, _url);
                     }
                     
                     if ($.is_function(_callback)) {
@@ -403,7 +404,7 @@ KALS_util.ajax_upload = function (_config) {
  * 在ajax_get()的時候發生錯誤時，會自動將_data.exception送到此方法。
  * 這是處理例外的預設方法，您可以在ajax_get()當中設定exception_handle
  */
-KALS_util.show_exception = function (_exception) {
+KALS_util.show_exception = function (_exception, _uri) {
     //var _heading = $.get_parameter(_exception, 'heading');
     //var _message = $.get_parameter(_exception, 'message');
     //var _request_uri = $.get_parameter(_exception, 'request_uri');
@@ -415,6 +416,9 @@ KALS_util.show_exception = function (_exception) {
     var _heading = _exception.heading;
     var _message = _exception.message;
     var _request_uri = _exception.request_uri;
+	if (_request_uri == null) {
+		_request_uri = _uri;
+	}
     
     $.test_msg('KALS_util.show_exception()', [_heading, _message, '<a href="'+_request_uri+'" target="_blank">' + _request_uri + '</a>']);
     

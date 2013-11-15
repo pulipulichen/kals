@@ -98,7 +98,18 @@ class Log extends Web_apps_controller {
         return $note;
     }
     
-    
+    /**
+     * 故意顯示錯誤
+     * @param type $json
+     * @param type $callback
+     */
+    /*
+    public function error($json, $callback) {
+        $data = true;
+        test_msg("錯誤訊息");
+        //$this->_display_jsonp($data, $callback);
+    }
+     */
 }
 
 /* End of file log.php */

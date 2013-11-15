@@ -36,16 +36,30 @@ function KALS_exception(_class, _message) {
             _class = null;
         }
         
-        var _class_name = false;
-        if ($.isset(_class)) {
-			_class_name = $.get_class(_class);
+		var _base_url = KALS_context.get_base_url();
+		if ($.is_string(_class) && _class.substr(0, _base_url.length) == _base_url) {
+			_message = KALS_context.lang.line(_message);
+			
+			var _url = _class;
+			//_message = _message + '\n <br /><a href="'+_url+'" target="_blank">'+_url+'</a>';
+			this.request_uri = _url;
 		}
-            
-        if (false != _class_name) {
-			_message = '[' + _class_name + '] ' + _message;
-		}
+		else {
+			var _class_name = false;
+            if ($.isset(_class)) {
+                _class_name = $.get_class(_class);
+            }
+                
+            if (false != _class_name) {
+                _message = '[' + _class_name + '] ' + _message;
+            }
+			
+	        //_message = new KALS_language_param(_message, _message);
+	        _message = KALS_context.lang.line(_message);
+		}   
         
         this.message = _message;
+		
         //return _message;   
     }
 }

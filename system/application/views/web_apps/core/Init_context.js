@@ -38,6 +38,22 @@ Init_context.prototype._$oncomplete = function () {
     
     KALS_context.init_component.start();
     
+	// 20131115 Pulipuli Chen 測試用
+	//this._test_exception();
+};
+
+/**
+ * 測試錯誤訊息
+ * 沒用的話就可以關閉
+ */
+Init_context.prototype._test_exception = function () {
+	$.test_msg("初始化完成");
+    KALS_util.ajax_get({
+        url: "log/error",
+        data: {},
+        retry: 1,
+        retry_wait: 1000
+    });
 };
 
 
