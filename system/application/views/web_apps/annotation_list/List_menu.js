@@ -266,7 +266,10 @@ List_menu.prototype._create_review_ui = function () {
     return _ui;
 };
 
-
+/**
+ * 選擇位置的按鈕
+ * @author 20131115 Pulipuli Chen
+ */
 List_menu.prototype._create_select_ui = function () {
     var _ui = $('<td></td>')
         .addClass('list-menu-option')
@@ -322,6 +325,10 @@ List_menu.prototype.view_thread = function (_callback) {
     return this;
 };
 
+/**
+ * 選擇標註所在的指定位置
+ * @param {function} _callback
+ */
 List_menu.prototype.select = function (_callback) {
     if ($.isset(this._item))
     {

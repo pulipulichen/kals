@@ -394,8 +394,8 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 	
 	//為了避免CKeditor還沒初始化前就設定，我們必須等它一下。
 	var _set_data = function () {
-                $.test_msg("ckeditor check _ui.ckeditorGet()", typeof(_ui.ckeditorGet));
                 if (typeof(_ui.ckeditorGet) != "function") {
+					$.test_msg("check _ui.ckeditorGet() failed", typeof(_ui.ckeditorGet));
                     throw "CKeditor_not_ready"; 
                     return;
                 }

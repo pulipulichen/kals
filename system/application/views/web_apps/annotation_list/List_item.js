@@ -314,13 +314,17 @@ List_item.prototype.clear_selection = function () {
     return this;
 };
 
+/**
+ * 擺放標註位置
+ */
 List_item.prototype.select = function () {
     var _scope = this.get_scope_coll();
     
     KALS_text.tool.close();
-    KALS_text.selection.select.set_scope_coll(_scope);
     //$.test_msg('List_item.select', this.get_annotation_param());
     KALS_text.tool.list.set_focus(this.get_annotation_param(), true);
+	
+    KALS_text.selection.select.set_scope_coll(_scope);
     
     return this;
 };

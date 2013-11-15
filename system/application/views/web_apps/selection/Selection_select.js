@@ -50,7 +50,10 @@ Selection_select.prototype._selectable = true;
 Selection_select.prototype.set_select = function (_word) {
 	//$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
     if (this._selectable === false) {
+		
+		$.test_msg("delete_field select 3");
 		KALS_context.hash.delete_field('select');
+		
 		return this;
 	}
     
@@ -100,8 +103,6 @@ Selection_select.prototype.set_select = function (_word) {
         
             this.set_scope_coll(_scope_coll);
             
-            KALS_context.hash.set_field('select', this._select_from + ',' + _id);
-			
             this._setted_hash = true;
 			
         }
@@ -114,6 +115,23 @@ Selection_select.prototype.set_select = function (_word) {
     return this;
 };
 
+/**
+ * 選取物件時加上hash，這是覆蓋Selection的功能
+ * @author Pulipuli Chen 20131115
+ */
+Selection_select.prototype.set_scope_coll = function (_scope_coll) {
+	
+	Selection.prototype.set_scope_coll.call(this, _scope_coll);
+	
+	var _from = _scope_coll.get_from();
+	var _to = _scope_coll.get_to();
+	
+	//$.test_msg("select set_scope_coll", [_from, _to]);
+	KALS_context.hash.set_field('select', _from + ',' + _to);
+	
+	return this;
+};
+
 Selection_select.prototype.cancel_select = function () {
     
     if ($.isset(this._select_from_word)) {
@@ -123,6 +141,8 @@ Selection_select.prototype.cancel_select = function () {
     this._select_from = null;
     this._select_from_word = null;
     this._setted_hash = false;
+	
+	//$.test_msg("delete_field select 1");
 	KALS_context.hash.delete_field('select');
     
     return this;
@@ -130,6 +150,7 @@ Selection_select.prototype.cancel_select = function () {
 
 Selection_select.prototype.clear = function () {
     if (this._setted_hash === true) {
+		//$.test_msg("delete_field select 2");
 		KALS_context.hash.delete_field('select');
 	}
     
@@ -161,7 +182,6 @@ Selection_select.prototype.load_select = function (_scope_text) {
     //setTimeout(function () {
     //    _this.scroll_into_view();    
     //}, 500);
-    
     
     KALS_context.hash.set_field('select', _first_index + ',' + _last_index);
     

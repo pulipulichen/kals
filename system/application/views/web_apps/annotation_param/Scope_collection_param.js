@@ -269,6 +269,14 @@ Scope_collection_param.prototype.get_first_index = function () {
     return _index;
 };
 
+/**
+ * 取得第一個from
+ * @type number
+ */
+Scope_collection_param.prototype.get_from = function(){
+	return this.get_first_index();
+};
+
 Scope_collection_param.prototype.get_last_index = function () {
     
     var _index;
@@ -279,6 +287,14 @@ Scope_collection_param.prototype.get_last_index = function () {
     }
     
     return _index;
+};
+
+/**
+ * 取得最後一個to
+ * @type number
+ */
+Scope_collection_param.prototype.get_to = function(){
+    return this.get_last_index();
 };
 
 Scope_collection_param.prototype.export_json = function (_export_anchor_text) {
