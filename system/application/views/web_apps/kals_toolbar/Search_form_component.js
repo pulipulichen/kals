@@ -117,9 +117,12 @@ Search_form_component.prototype._create_input = function () {
 };
 
 Search_form_component.prototype._create_submit = function () {
-    
-    var _submit = $('<button type="button" class="search-form-submit"></button>')
-        .append(KALS_context.get_image_url('search.gif'));
+    var _submit = (new Dialog_option()).get_ui();
+	_submit.empty()
+	   .addClass("search-form-submit");
+	
+    //var _submit = $('<button type="button" class="search-form-submit"></button>')
+    //    .append(KALS_context.get_image_url('search.gif'));
     
 	var _this = this;
 	_submit.click(function () {

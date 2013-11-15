@@ -588,6 +588,17 @@ table.cke_editor.inline-table {
 	padding-right: 18px !important;
 	background-repeat:no-repeat;
 	background-position: right center;
+	
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -khtml-border-radius: 5px;
+	
+	height: 17px;
+	font-size: small;
+	margin:0;
+	padding: 1px;
+	top: 2px;
 	/*
 	font-size: smaller;
 	

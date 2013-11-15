@@ -66,9 +66,9 @@ Window_search_submit.prototype.complete_handle = function () {
  */
 Window_search_submit.prototype.submit = function(_callback){
 
-    $.test_msg("Window_search_submit submit");
+    //$.test_msg("Window_search_submit submit");
     if (this.validate() === false) {
-        $.test_msg("Window_search_submit validate() false");
+        //$.test_msg("Window_search_submit validate() false");
         return this;
     }
 	
@@ -86,9 +86,9 @@ Window_search_submit.prototype.submit = function(_callback){
 
     // 我們要叫List_collection_search進行搜尋
     var _this = this;
-    $.test_msg("Window_search_submit _list.load_list()", _list.get_name());
+    //$.test_msg("Window_search_submit _list.load_list()", _list.get_name());
     _list.load_list(function () {
-            $.test_msg("Window_search_submit.prototype.submit");
+            //$.test_msg("Window_search_submit.prototype.submit");
             _this.complete_handle();
             _content.get_ui().find(".search-result-subpanel").show();
     });

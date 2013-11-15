@@ -229,12 +229,21 @@
     -khtml-border-radius: 5px;
 }
 
-.search-component .search-form-submit {
-    height: 1.8em;
-    width: 1.8em;
+.KALS .search-component .search-form-submit {
+    height: 25px;
+    width: 25px;
     display: block;
 	float:right;
     padding: 0;
+	
+	border-radius: 5px;
+	min-height: 25px;
+	background-image:url("${base_url}images/web_search.png");
+	background-repeat:no-repeat;
+	background-position: center;
+	
+	border-width: 0 !important;
+	background-color: transparent;
     /*float:right;*/
 }
 
