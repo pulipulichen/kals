@@ -74,26 +74,75 @@ Init_profile.prototype._$oncomplete = function () {
     
     KALS_context.completed = true;
 	
+	
+    for (var _t in this._test) {
+		this._test[_t]();
+	}	
+};
+
+// --------------------------------
+// 以下是讀取完成之後的測試區
+
+
+/*
+Init_profile.prototype._test_sentence_index = ;
+*/
+
+/**
+ * 測試功能保存區
+ * 
+ * 不使用的時候就註解起來吧
+ */
+Init_profile.prototype._test = [
+    /**
+     * 第一個，不使用
+     */
+    function () {}
+	
+    /**
+     * 測試通知功能
+     * @20131115 Pulipuli Chen
+     */
+	/*
+	,function () {
+		KALS_util.notify("要通知什麼好呢？", 3000);
+		
+		setTimeout(function () {
+			KALS_util.notify("第二次要通知什麼好呢？", 10000);
+		}, 1000);
+		
+		setTimeout(function () {
+            KALS_util.notify("第三次通知！", 3000);
+        }, 1500);
+		
+		setTimeout(function () {
+            KALS_util.notify("隔很久的通知！", 1000);
+        }, 6000);
+	}
+	*/
 	/**
 	 * @version 20130224 布丁測試用
 	 */
 	/*
-	var _sentence_list = KALS_text.selection.text.get_sentence_index();
-	
-	var _php_array = 'new Array(';
-	for (var _i = 0; _i < _sentence_list.length; _i++)
-	{
-		if (_i != 0)
-			_php_array = _php_array + ',';
-		_php_array = _php_array + _sentence_list[_i];
+    function () {
+	    var _sentence_list = KALS_text.selection.text.get_sentence_index();
+	    
+	    var _php_array = 'new Array(';
+	    for (var _i = 0; _i < _sentence_list.length; _i++)
+	    {
+	        if (_i != 0)
+	            _php_array = _php_array + ',';
+	        _php_array = _php_array + _sentence_list[_i];
+	    }
+	    _php_array = _php_array + ');';
+	    
+	    $.test_msg('count .kals-sentence-punctuation', $('.kals-sentence-punctuation').length);
+	    $.test_msg('list .kals-sentence-punctuation', _sentence_list);
+	    $.test_msg('list php array .kals-sentence-punctuation', _php_array);
 	}
-	_php_array = _php_array + ');';
-	
-	$.test_msg('count .kals-sentence-punctuation', $('.kals-sentence-punctuation').length);
-	$.test_msg('list .kals-sentence-punctuation', _sentence_list);
-	$.test_msg('list php array .kals-sentence-punctuation', _php_array);
 	*/
-};
+];
+
 
 /* End of file Init_profile */
 /* Location: ./system/application/views/web_apps/Init_profile.js */

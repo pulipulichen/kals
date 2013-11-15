@@ -32,7 +32,10 @@ Init_context.prototype._$onstart = function () {
         KALS_context.init_context.complete('load');
     });
     
-	this._check_css_setup();
+	var _this = this;
+	$(function () {
+	   _this._check_css_setup();	
+	});
 };
 
 Init_context.prototype._$oncomplete = function () {
@@ -75,7 +78,7 @@ Init_context.prototype._check_css_loaded = function () {
     var _normal_color = "rgb(128, 128, 128)";
     var _assert = (_color == _normal_color);
 	
-	$.test_msg("check css load", [_color, _normal_color, _assert]);
+	//$.test_msg("check css load", [_color, _normal_color, _assert]);
 	
     
     if (_assert === false) {

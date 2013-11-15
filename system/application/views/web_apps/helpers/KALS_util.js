@@ -624,13 +624,17 @@ KALS_util._get_notify_modal = function () {
  * KALS專案使用的通知功能
  * @param {KALS_language_param|String} _message
  */
-KALS_util.notify = function (_message) {
+KALS_util.notify = function (_message, _wait) {
     var _notify_modal = this._get_notify_modal();
     
+	if (_wait === undefined) {
+		_wait = 10000;
+	}
+	
 	// @20130610 Pudding Chen
 	// 修正不知道為什麼不會自動關閉的問題
 	//_notify_modal.set_message(_message, 10000);
-	_notify_modal.set_message(_message, 10);
+	_notify_modal.set_message(_message, _wait);
     
     //$.test_msg('KALS_util.notify()', _message);
     
