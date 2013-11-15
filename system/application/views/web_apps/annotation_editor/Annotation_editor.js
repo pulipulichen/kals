@@ -389,10 +389,17 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param) {
     //$.test_msg('Annotation_editor._edit_callback()', [_annotation_param.timestamp]);
     
     //修改this._editing_item
+	/*
     if ($.isset(this._editing_item)) {   
         //$.test_msg('Annotation_editor._edit_callback()', _annotation_param.policy_type);
         this._editing_item.editor_set_data(_annotation_param);
     }
+	*/
+	
+	/**
+	 * 編輯完成之後，還原狀態
+	 */
+	this.reset();
     
     //完成時，要設置notify
     var _notify_lang = new KALS_language_param(
