@@ -46,6 +46,8 @@ Respond_list_collection.prototype._$order_by = 'create';
 
 Respond_list_collection.prototype._$topic_id = null;
 
+Respond_list_collection.prototype._$enable_check_login = false;
+
 // --------
 // UI
 // --------
