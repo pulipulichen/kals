@@ -32,6 +32,12 @@ List_collection_search.prototype._$load_url = 'annotation_getter/search_annotati
 List_collection_search.prototype._$limit = null;
 
 /**
+ * 是否啟用登入檢查
+ * @type boolean
+ */
+List_collection_search.prototype._$enable_check_login = false;
+
+/**
  * 搜尋範圍
  * @type {String}
  */
@@ -350,14 +356,6 @@ List_collection_search.prototype.reset = function () {
     this.get_ui().hide();
     KALS_text.selection.search.clear();
     return List_collection.prototype.reset.call(this);
-};
-
-/**
- * 覆寫原本的檢查check_login設定，允許永遠pass
- * @type boolean
- */
-List_collection_search.prototype._check_login = function () {
-    return true;
 };
 
 /* End of file List_collection_search */

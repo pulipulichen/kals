@@ -353,14 +353,19 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
     //完成時，要設置notify
     var _notify_lang;
     
-    //變成編輯模式
+    //變成新增模式
     if ($.is_null(_annotation_param.recommend)) {
         //完成時，要設置notify
         _notify_lang = new KALS_language_param(
             'Annotation had been created.',
             'annotation_editor.submit.create_complete'
         );
-        this.set_editing(_annotation_param);
+		
+		// @20131115 Pulipuli Chen
+		// 不使用編輯模式，改用新增模式
+		//this.set_editing(_annotation_param);
+		
+		this.reset();
     }
     else {
         _notify_lang = new KALS_language_param(

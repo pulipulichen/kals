@@ -66,6 +66,16 @@ List_collection.prototype._$topic_id = null;
  */
 List_collection.prototype._$order_by = 'score';
 
+/**
+ * 是否啟用登入檢查
+ * @type boolean
+ */
+List_collection.prototype._$enable_check_login = true;
+
+/**
+ * 限定必須是登入或是未登入的狀態
+ * @type boolean true=登入; false=未登入
+ */
 List_collection.prototype._$need_login = false;
 
 // --------
@@ -307,8 +317,18 @@ List_collection.prototype.get_search_data = function () {
     
 };
 
+/**
+ * 檢查登入狀態
+ * 
+ * 如果有設定this._$enable_check_login = false，則會強制回傳true
+ * @type boolean
+ */
 List_collection.prototype._check_login = function () {
     
+	if (this._$enable_check_login === false) {
+		return true;
+	}
+	
     //$.test_msg('List_coll._check_login()', [this._$name, this._$need_login, KALS_context.auth.is_login()]);
     
     if ($.isset(this._$need_login) === false) {

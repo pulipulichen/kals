@@ -26,6 +26,8 @@ List_collection_my.prototype._$limit = null;
 
 List_collection_my.prototype._$order_by = 'create';
 
+List_collection_my.prototype._$enable_check_login = true;
+
 List_collection_my.prototype._$need_login = true;
 
 /* End of file List_collection_my */

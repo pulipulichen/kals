@@ -28,6 +28,8 @@ List_collection_like.prototype._$target_topic = true;
 
 List_collection_like.prototype._$target_my = false;
 
+List_collection_like.prototype._$enable_check_login = true;
+
 List_collection_like.prototype._$need_login = true;
 
 /* End of file List_collection_like */
