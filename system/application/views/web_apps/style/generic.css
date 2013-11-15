@@ -77,3 +77,8 @@
 .KALS span, .kals-model span {
     display: inline;
 }
+
+.KALS.info-box {
+	border: 1px solid gray;
+	color: gray;
+}

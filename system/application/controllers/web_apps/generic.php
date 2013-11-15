@@ -575,7 +575,9 @@ class generic extends Web_apps_controller {
         }
         */
         //print_r($files);
+        
         $files = $this->dirmap("style");
+        //$files = array();
         
         $this->pack_css($files, 'style');
     }

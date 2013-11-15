@@ -197,12 +197,15 @@
 
 .kals-toolbar.compact-width .loading-component .message {
     display: none;
-	margin-right: 0.5em !important;
 }
 
 .kals-toolbar.loading .loading-component {
     display: inline;
     cursor: wait;
+}
+
+.kals-toolbar.loading .loading-component .message {
+	margin-right: 0.5em;
 }
 
 /* --------- */

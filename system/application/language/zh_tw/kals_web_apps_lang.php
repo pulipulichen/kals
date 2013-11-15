@@ -32,6 +32,8 @@ $lang['web_apps.exception.retry_exception'] = '一直無法連線到伺服器';
 $lang['web_apps.exception.url_too_large.heading'] = '資料傳輸錯誤';
 $lang['web_apps.exception.url_too_large.message'] = '請求網址過長，無法處理。';
 
+$lang['web_apps.exception.css_not_load_complete'] = '樣式沒有讀取完成。請問要重新整理網頁嗎？';
+
 $lang['web_apps.authentication.login_error.heading'] = '登入錯誤';
 $lang['web_apps.authentication.register_error.heading'] = '註冊錯誤';
 $lang['web_apps.authentication.error.message_empty_email_and_password'] = '沒有電子信箱跟密碼。';
