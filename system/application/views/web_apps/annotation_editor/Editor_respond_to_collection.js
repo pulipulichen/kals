@@ -85,6 +85,11 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
         return this;
     }
     
+	// 如果是回應的才要加入
+	if (_param.is_respond() === false) {
+		return this;
+	}
+	
     //要先確認是否已經有這個respond
     if (this.has_respond_to(_param) === true) {
 		return this;

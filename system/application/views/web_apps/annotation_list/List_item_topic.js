@@ -141,9 +141,11 @@ List_item_topic.prototype.clear_selection = function () {
 
 //List_item_topic.prototype._classname = 'list-item';
 
+/**
+ * 回應標註
+ */
 List_item_topic.prototype.respond_annotation = function () {
-    
-    return this.view_thread();
+    return List_item_respond.prototype.respond_annotation.call(this);
 };
 
 /* End of file List_item_topic */

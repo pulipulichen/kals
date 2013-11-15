@@ -217,13 +217,13 @@
 	background: rgba(0,0,0,0)!important;
 }
 
-.dialog-content {
+.KALS .dialog-content {
     border:0 none;
     overflow: auto;
     padding: 0.5em 1em !important;
     color: #383838;
     cursor: auto;    
-    max-height: 400px;
+    /*max-height: 400px;*/
 	line-height:normal !important;
 }
 

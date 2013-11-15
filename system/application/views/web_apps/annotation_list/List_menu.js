@@ -69,7 +69,6 @@ List_menu.prototype._$create_ui = function ()
         .addClass('list-menu')
         .addClass(this._not_login_classname);
     
-	
     var _tr = _ui.find('tr:first');
     
     if (this.is_enable('edit') && _writable === true)
@@ -83,13 +82,13 @@ List_menu.prototype._$create_ui = function ()
         var _delete = this._create_delete_ui();
         _delete.appendTo(_tr);
     }
-    
+    /*
     if (this.is_enable('respond') && _writable === true)
     {
         var _respond = this._create_respond_ui();
         _respond.appendTo(_tr);    
     }
-    
+    */
     //$.test_msg('List_menu._$create_ui() this._enable_view_thread', this._enable_view_thread);
     //if (this._enable_view_thread == true)
     if (this.is_enable('view'))
@@ -236,7 +235,8 @@ List_menu.prototype._create_view_ui = function () {
     
     var _this = this;
     _ui.click(function () {
-        _this.view_thread();
+        //_this.view_thread();
+		_this.respond_annotation();
     });
     
     _ui.setup_hover();

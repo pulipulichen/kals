@@ -90,9 +90,12 @@ List_item.prototype._$create_ui = function () {
 	// @20130609 Pudding Chen
 	// 只有在不顯示全文的情況下，按下內容才會顯示thread
 	if (this._note_show_fulltext === false) {
-		_ui.click(function () {
+		_ui.find(".list-header-component").click(function () {
 			_this.view_thread();
 		});
+		_ui.find(".list-note-component").click(function () {
+            _this.view_thread();
+        });
 	}	
 	
     setTimeout(function() {
@@ -489,6 +492,9 @@ List_item.prototype.focus_respond = function (_respond_to_id) {
     return this;
 };
 
+/**
+ * 從列表中回應標註
+ */
 List_item.prototype.respond_annotation = function () {
     
     var _respond_to = this.get_data();

@@ -48,6 +48,7 @@ Window_view.prototype._topic_param = null;
 Window_view.prototype._focus_id = null;
 
 Window_view.prototype.set_focus_id = function (_annotation_id) {
+	//$.test_msg("view focus", _annotation_id);
     this._focus_id = _annotation_id;
     return this;
 };
@@ -58,6 +59,7 @@ Window_view.prototype.set_focus_id = function (_annotation_id) {
 Window_view.prototype._respond_param = null;
 
 Window_view.prototype.set_respond_param = function (_param) {
+	//$.test_msg("view set respond", _param.annotation_id);
     this._respond_param = _param;
     return this;
 };
@@ -338,8 +340,8 @@ Window_view.prototype._loaded = false;
 
 Window_view.prototype.onload = function () {
     
-        //$.test_msg('設定！！')
-        this.editor_container.editor.note.set_text(' ');    
+    //$.test_msg('設定！！')
+    this.editor_container.editor.note.set_text(' ');    
     
     
     //$.test_msg('Window_view.onload()');
@@ -366,8 +368,12 @@ Window_view.prototype.onload = function () {
         this.anchor.focus();
     }
     
+    $.test_msg("isset respond_param", $.isset(this._respond_param));
     if ($.isset(this._respond_param)) {
-        this.editor_container.add_respond_to(this._respond_param);
+		
+		this.editor_container.add_respond_to(this._respond_param);
+		this.editor_container.toggle_container(true);
+		
         this._respond_param = null;
     }
     else if ($.isset(this._edit_param)) {
@@ -376,7 +382,7 @@ Window_view.prototype.onload = function () {
 		//_editor.set_editing(this._edit_param);
 		
 		var _item = this.list.get_list_item(this._edit_param);
-		if (_item != null) {
+		if (_item !== null) {
 			_item.edit_annotation();
 		}
 		
@@ -406,8 +412,7 @@ Window_view.prototype.onload = function () {
         KALS_text.selection.select.set_scope_coll(this._topic_param.scope);
         //KALS_text.selection.select.scroll_into_view();
     }
-    
-    
+	
     return this;
 };
 

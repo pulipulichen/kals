@@ -62,6 +62,9 @@ View_editor_container.prototype.add_respond_to = function (_respond_param) {
             this.add_respond_to(_respond_param[_i]);
         }
     }
+	
+	//$.test_msg("add_respond_to");
+    this.toggle_container(true);
     return this;
 };
 

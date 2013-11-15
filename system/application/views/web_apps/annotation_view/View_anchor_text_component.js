@@ -120,7 +120,7 @@ View_anchor_text_component.prototype.reset = function () {
 
 View_anchor_text_component.prototype.focus = function () {
     var _anchor = this.get_ui();
-    $.test_msg("View_anchor_text_component", "focus");
+    //$.test_msg("View_anchor_text_component", "focus");
     _anchor.scrollIntoView();
 };
 
