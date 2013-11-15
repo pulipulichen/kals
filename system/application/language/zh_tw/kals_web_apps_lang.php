@@ -334,5 +334,18 @@ $lang['web_apps.init_component.excute_confirm.exit'] = '請關閉KALS功能，�
 
 $lang['web_apps.login.experiment_message.201012'] = '如果您是數位在職專班的學生，請以您的<strong style="color:red;">學校電子信箱</strong>與學號作為帳號與密碼來登入。<br /><br />舉例來說，學號為「99913001」的學生，請在電子信箱位址輸入「<strong style="color:red;">99913001@nccu.edu.tw</strong>」，密碼輸入「99913001」即可。';
 
+$lang['web_apps.feedback.ui.label'] = "錯誤回報";   //"Send Feedback";
+$lang['web_apps.feedback.ui.header'] = "錯誤回報";   //"Send Feedback";
+$lang['web_apps.feedback.ui.nextLabel'] = "下一步";   //"Continue";
+$lang['web_apps.feedback.ui.reviewLabel'] = "檢視回報訊息";   //"Review";
+$lang['web_apps.feedback.ui.sendLabel'] = "寄出訊息";   //"Send";
+$lang['web_apps.feedback.ui.closeLabel'] = "關閉";   //"Close";
+$lang['web_apps.feedback.ui.messageSuccess'] = "您的錯誤回報已經成功寄出";   //"Your feedback was sent succesfully.";
+$lang['web_apps.feedback.ui.messageError'] = "寄出回報的過程發生了錯誤，您的錯誤回報沒有寄出";   // "There was an error sending your feedback to the server.";
+$lang['web_apps.feedback.ui.issueLabel'] = "請敘述您遇到的問題，並在下一步指出發生問題的位置";   // "Please describe the issue you are experiencing";
+$lang['web_apps.feedback.ui.blackout'] = "遮黑";   // "Blackout"
+$lang['web_apps.feedback.ui.highlight'] = "標亮";   // "Highlight"
+$lang['web_apps.feedback.ui.screenshot_hint'] = "請利用標亮標示錯誤的區域，用遮黑掩蓋不想要透漏的區域。";   // "Highlight or blackout important information"
+        
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */

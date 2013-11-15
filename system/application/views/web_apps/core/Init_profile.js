@@ -99,6 +99,13 @@ Init_profile.prototype._test = [
      */
     function () {}
 	
+	/**
+	 * 測試意見回饋功能
+	 * @20131116 Pulipuli Chen
+	 */
+	, function () {
+		KALS_context.feedback.open();
+	}
     /**
      * 測試通知功能
      * @20131115 Pulipuli Chen

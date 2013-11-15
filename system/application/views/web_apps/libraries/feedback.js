@@ -94,11 +94,15 @@ window.Feedback = function( options ) {
     
     options.messageSuccess = options.messageSuccess || "Your feedback was sent succesfully.";
     options.messageError = options.messageError || "There was an error sending your feedback to the server.";
+
+    options.issueLabel = options.issueLabel || "Please describe the issue you are experiencing";
     
+
+    this.options = options;
   
     if (options.pages === undefined ) {
         options.pages = [
-            new window.Feedback.Form(),
+            new window.Feedback.Form(options.issueLabel),
             new window.Feedback.Screenshot( options ),
             new window.Feedback.Review()
         ];
@@ -290,6 +294,8 @@ window.Feedback = function( options ) {
     if ( options.appendTo !== null ) {
         ((options.appendTo !== undefined) ? options.appendTo : document.body).appendChild( button );
     }
+
+    this.options = options;
     
     return returnMethods;
 };
@@ -318,13 +324,14 @@ window.Feedback.Send.prototype = {
 
 };
 
-window.Feedback.Form = function( elements ) {
+window.Feedback.Form = function( label ) {
 
-    this.elements = elements || [{
+    this.elements = [{
         type: "textarea",
         name: "Issue",
-        label: "Please describe the issue you are experiencing",
-        required: false
+        //label: "Please describe the issue you are experiencing",
+        label: label,
+        required: true
     }];
 
     this.dom = document.createElement("div");
@@ -638,8 +645,10 @@ window.Feedback.Screenshot.prototype.start = function( modal, modalHeader, modal
             highlightClose.style.top =  "-50px";
 
         },
-        blackoutButton = element("a", "Blackout"),
-        highlightButton = element("a", "Highlight"),
+        //blackoutButton = element("a", "Blackout"),
+        blackoutButton = element("a", KALS_context.lang.line('feedback.ui.blackout')),
+        //highlightButton = element("a", "Highlight"),
+        highlightButton = element("a", KALS_context.lang.line('feedback.ui.highlight')),
         previousElement;
 
 
@@ -663,7 +672,8 @@ window.Feedback.Screenshot.prototype.start = function( modal, modalHeader, modal
 
         var buttonItem = [ highlightButton, blackoutButton ];
 
-        this.dom.appendChild( element("p", "Highlight or blackout important information") );
+        //this.dom.appendChild( element("p", "Highlight or blackout important information") );
+        this.dom.appendChild( element("p", KALS_context.lang.line('feedback.ui.screenshot_hint')) );
 
         // add highlight and blackout buttons
         for (var i = 0; i < 2; i++ ) {

@@ -52,6 +52,12 @@ Init_component.prototype._$onstart = function () {
     if ($.browser.msie) {
         //this.excute_confirm();
     }
+	
+    $(function() {
+	    KALS_context.feedback.init();
+	});
+    
+    
 };
 
 Init_component.prototype._is_ie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);

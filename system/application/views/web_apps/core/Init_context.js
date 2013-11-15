@@ -29,16 +29,13 @@ Init_context.prototype._$onstart = function () {
     
     //準備基本資料
     KALS_context.load_info(function () {
+
         KALS_context.init_context.complete('load');
     });
     
 	var _this = this;
 	$(function () {
 	   _this._check_css_setup();	
-	});
-	
-	$(function() {
-		KALS_context.feedback.init();
 	});
 };
 
