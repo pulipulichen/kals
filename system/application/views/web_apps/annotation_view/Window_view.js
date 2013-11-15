@@ -368,7 +368,7 @@ Window_view.prototype.onload = function () {
         this.anchor.focus();
     }
     
-    $.test_msg("isset respond_param", $.isset(this._respond_param));
+    //$.test_msg("isset respond_param", $.isset(this._respond_param));
     if ($.isset(this._respond_param)) {
 		
 		this.editor_container.add_respond_to(this._respond_param);

@@ -15,6 +15,7 @@ function List_like_component(_item) {
     
     JSONP_dispatcher.call(this);
     
+	//$.test_msg("set item了嗎？", $.isset(_item));
     this._set_list_item(_item);
 }
 
@@ -30,12 +31,14 @@ List_like_component.prototype = new JSONP_dispatcher();
 List_like_component.prototype._item = null;
 
 List_like_component.prototype._set_list_item = function (_item) {
+	//$.test_msg("set item了嗎？", this._item._annotation_param.annotation_id);
     if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
             _this.set_param();
         });
+		//$.test_msg("設進去了嗎？set item了嗎？", $.isset(this._item._annotation_param.annotation_id));
     }
     return this;
 };
@@ -125,10 +128,12 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     if (this._lock === true) {
 		return;
 	}
-    
+	
     if ($.is_null(_is_like)) {
 		_is_like = !(this.is_liked());
 	}
+    
+    $.test_msg("set_is_like", [_is_like, this.is_liked()]);
                 
     var _annotation_id = this._item.get_annotation_id();
     
@@ -147,7 +152,7 @@ List_like_component.prototype.set_is_like = function (_is_like) {
             
         _this._lock = false;
         
-        _this._toggle_like(_is_like);
+        //_this._toggle_like(_is_like);
         
         //var _param = _this._item.get_data();
         var _lang;
@@ -193,13 +198,12 @@ List_like_component.prototype.is_liked = function () {
 List_like_component.prototype._toggle_like = function (_is_like) {
     
     var _ui = this.get_ui();
-    //$.test_msg('List_like_component.toggle_like 1', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
+    $.test_msg('List_like_component.toggle_like 1', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
     
     if ($.is_null(_is_like)) {
 		_is_like = (!(this.is_liked()));
 	}
-    
-    
+	
     if (_is_like === true) {
 		_ui.addClass(this.like_classname);
 	}
@@ -245,7 +249,8 @@ List_like_component.prototype._set_like_count = function (_count) {
 List_like_component.prototype.add_like_count = function () {
     
     this._like_count++;
-	this._set_like_count();
+    this._toggle_like(true);
+	this._set_list_item_count();
     return this._set_like_count(this._like_count);
 }; 
 
@@ -255,7 +260,8 @@ List_like_component.prototype.reset_like_count = function () {
 
 List_like_component.prototype.reduce_like_count = function () {
     this._like_count--;
-	this._set_like_count();
+	this._toggle_like(false);
+	this._set_list_item_count();
     return this._set_like_count(this._like_count);
 };
 
@@ -263,13 +269,14 @@ List_like_component.prototype.reduce_like_count = function () {
  * 設定list item的參數
  * @param {number} _count
  */
-List_like_component.prototype._set_list_item = function () {
-	//if ($.is_null(this._item)) {
+List_like_component.prototype._set_list_item_count = function () {
+	if ($.is_null(this._item)) {
 		return this;
-	//}
+	}
 	var _count = this._like_count;
 	var _param = this._item.get_annotation_param();
     _param.like_count = _count;
+	_param.is_like = this.is_liked();
     this._item.editor_set_data(_param);
 	
 	return this;
