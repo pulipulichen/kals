@@ -259,6 +259,7 @@ List_menu.prototype._create_review_ui = function () {
     
     var _this = this;
     _ui.click(function () {
+		$.test_msg("click review_ui");
         _this.view_thread();
     });
     
@@ -320,7 +321,7 @@ List_menu.prototype.view_thread = function (_callback) {
     {
 		// @20130604 Pudding Chen
 		// 不知道為什麼關掉這串就會恢復正常
-        //this._item.view_thread(_callback);
+        this._item.view_thread(_callback);
         this.close();
     }   
     return this;
