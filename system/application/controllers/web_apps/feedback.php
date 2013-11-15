@@ -39,6 +39,7 @@ class feedback extends Web_apps_controller {
     function index()
     {
         $issue = NULL;
+        $browser = NULL;
         $imageData = NULL;
         
         if (FALSE === isset($_POST) 
@@ -49,6 +50,7 @@ class feedback extends Web_apps_controller {
             // 接收資料
             $feedback_data = json_decode($_POST["data"]);
             $issue = $feedback_data[0]->Issue;
+            $browser = $feedback_data[0]->browser;
             $imageData = $feedback_data[1];
         }
         
@@ -93,7 +95,7 @@ class feedback extends Web_apps_controller {
         //$message_list[] = "Referer URL: " . $this->url;
         $message_list[] = $this->lang->line("feedback.referer_url"). ": " . $this->url;
         
-        //$message_list[] = $this->lang->line("feedback.browser"). ": " . get_browser();
+        $message_list[] = $this->lang->line("feedback.browser"). ": " . $browser;
         
         // Domain
         $domain_id = NULL;
@@ -187,8 +189,8 @@ class feedback extends Web_apps_controller {
          * 寄出並記錄後續動作
          */
         
-        //if (TRUE) {
-        if (FALSE) {
+        if (TRUE) {
+        //if (FALSE) {
             $this->email->send();
             echo $this->email->print_debugger();
 

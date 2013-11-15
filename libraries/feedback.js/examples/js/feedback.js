@@ -880,8 +880,8 @@ window.Feedback.XHR.prototype.send = function( data, callback ) {
         }
     };
 	
-	data[0].browser = $.browser;
-	data[0].os = navigator.appVersion;
+	//data[0].browser = $.browser;
+	data[0].browser = navigator.appVersion;
 	//console.log(window.JSON.stringify( data ));
     
     xhr.open( "POST", this.url, true);
