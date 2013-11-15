@@ -133,6 +133,25 @@ if ( !function_exists("kals_json_encode")) {
     }
 }
 
+if ( !function_exists("get_kals_base_url")) {
+    
+    /**
+     * 取得KALS伺服器的根網址
+     */
+    function get_kals_base_url() {
+        $s = &$_SERVER;
+        $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
+        $sp = strtolower($s['SERVER_PROTOCOL']);
+        $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+        $port = $s['SERVER_PORT'];
+        $port = ((!$ssl && $port=='80') || ($ssl && $port=='443')) ? '' : ':'.$port;
+        $host = isset($s['HTTP_X_FORWARDED_HOST']) ? $s['HTTP_X_FORWARDED_HOST'] : isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : $s['SERVER_NAME'];
+        $uri = $protocol . '://' . $host . $port . base_url();
+        $segments = explode('?', $uri, 2);
+        $url = $segments[0];
+        return $url;
+    }
+ }
 
 if ( ! function_exists('kals_log'))
 {

@@ -33,6 +33,18 @@ $config['CACHEABLE_TYPES'] = array('Domain', 'Webpage', 'Annotation', 'User', 'G
         );
 $config['CACHEABLE_TYPES_CLOSE'] = array();
 
+$config["TIMEZONE"] = "Asia/Taipei";
+date_default_timezone_set($config["TIMEZONE"]);
+
+/**
+ * 意見回饋設定
+ */
+
+// 當使用者未登入時，採用以下設定寄信
+$config["feedback.default_sender_email"] = "anonymous@localhost"; //預設寄出的EMAIL。預設是anonymous@localhost
+$config["feedback.default_sender_name"] = "Anonymous Feedback"; // 預設寄出EMAIL的名字
+
+$config["feedback.receiver_email"] = "pudding@nccu.edu.tw"; //接收EMAIL。預設是 kals@localhost
 
 // ---------
 // 斷詞器設定

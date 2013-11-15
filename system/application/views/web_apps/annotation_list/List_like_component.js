@@ -133,7 +133,7 @@ List_like_component.prototype.set_is_like = function (_is_like) {
 		_is_like = !(this.is_liked());
 	}
     
-    $.test_msg("set_is_like", [_is_like, this.is_liked()]);
+    //$.test_msg("set_is_like", [_is_like, this.is_liked()]);
                 
     var _annotation_id = this._item.get_annotation_id();
     
@@ -198,7 +198,7 @@ List_like_component.prototype.is_liked = function () {
 List_like_component.prototype._toggle_like = function (_is_like) {
     
     var _ui = this.get_ui();
-    $.test_msg('List_like_component.toggle_like 1', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
+    //$.test_msg('List_like_component.toggle_like 1', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
     
     if ($.is_null(_is_like)) {
 		_is_like = (!(this.is_liked()));
