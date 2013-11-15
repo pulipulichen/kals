@@ -36,6 +36,10 @@ Init_context.prototype._$onstart = function () {
 	$(function () {
 	   _this._check_css_setup();	
 	});
+	
+	$(function() {
+		KALS_context.feedback.init();
+	});
 };
 
 Init_context.prototype._$oncomplete = function () {
