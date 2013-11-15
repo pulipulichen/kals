@@ -4,6 +4,18 @@
  * @date       2010/9/3, 下午 12:20:08
  */
 
+/**
+ * 調整工具列的範例
+ * max-width的切換點：1024 800 640 400 
+@media screen and (max-width: 800px){
+    .KALS.kals-toolbar .toolbar-center {
+        max-width: 30px;
+        overflow: hidden;
+    }
+}
+
+ */
+
 /* -------- */
 
 .kals-toolbar {
@@ -85,6 +97,13 @@
 	vertical-align:middle !important;
 }
 
+@media screen and (max-width: 800px){
+    .KALS .toolbar-left { 
+        max-width: 50px;
+		overflow: hidden;
+    }
+}
+
 .kals-toolbar.compact-width .toolbar-left {
     display: none;
 }
@@ -106,9 +125,18 @@
     /*display: none;*/
 }
 
+@media screen and (max-width: 800px){
+    .KALS.kals-toolbar .toolbar-center {
+        max-width: 30px;
+        overflow: hidden;
+    }
+}
+
 .KALS.kals-toolbar.compact-width .toolbar-center {
     width: 100px;
 }
+
+
 
 .toolbar-right {
     padding-right: 0.5em;
@@ -262,6 +290,7 @@
     display: none !important;
 }
 
+
 .search-form {
     margin: 0;
 }
@@ -299,6 +328,13 @@
     margin-right: 0.5em;
 	
 	
+}
+
+@media screen and (max-width: 800px){
+	.KALS .search-component .search-range,
+    .KALS .search-component .search-form-input {
+    	display:none;
+    }
 }
 
 /* -------- */
@@ -347,6 +383,15 @@
 /**
  * @subsection Avatar_component
  */
+
+/**
+ * 因為還沒使用，所以先關閉
+ * @20131115 Pulipuli Chen
+ */
+.KALS .avatar-component .photo {
+	display: none;
+}
+
 .avatar-component .photo.hide {
     display: none;
 }
@@ -358,6 +403,14 @@
 /**
  * @subsection Notification_component
  */
+/**
+ * 因為還沒使用，所以先關閉
+ * @20131115 Pulipuli Chen
+ */
+.KALS .avatar-component .notification {
+    display: none;
+}
+
 .notification-component {
     border: 1px solid white;
     
