@@ -103,6 +103,7 @@ Editor_container.prototype._$create_ui = function () {
 	
 	if (this._$default_toggle === true
 	   || this._$default_toggle === false) {
+	   	$.test_msg("編輯器設定預設狀態", this._$default_toggle);
 		this.toggle_container(this._$default_toggle);
 	}
     
@@ -466,7 +467,7 @@ Editor_container.prototype.toggle_deny = function (_is_deny) {
 			// 讓下面的編輯器，重置吧
 			_this.editor.reset();
 			
-	        _this.toggle_container(true);
+	        _this.toggle_container(_this._$default_toggle);
 	    });
 	}, 500);
 	    
@@ -559,7 +560,7 @@ Editor_container.prototype.reset = function (_callback, _reset_container) {
     
     //$.test_msg('Editor_contaienr.reset()', _reset_container);
     if (_reset_container === true) {
-        this.toggle_container(true, function () {
+        this.toggle_container(this._$default_toggle, function () {
             $.trigger_callback(_callback);
         });    
     }
