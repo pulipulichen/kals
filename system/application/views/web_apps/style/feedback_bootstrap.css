@@ -954,7 +954,7 @@
 .KALS select,
 .KALS textarea,
 .KALS input[type="text"],
-.KALS input[type="password"],
+.KALS input[type="password"],/*
 .KALS input[type="datetime"],
 .KALS input[type="datetime-local"],
 .KALS input[type="date"],
@@ -966,7 +966,7 @@
 .KALS input[type="url"],
 .KALS input[type="search"],
 .KALS input[type="tel"],
-.KALS input[type="color"],
+.KALS input[type="color"],*/
 .KALS .uneditable-input {
   display: inline-block;
   height: 20px;
@@ -992,7 +992,7 @@
 
 .KALS textarea,
 .KALS input[type="text"],
-.KALS input[type="password"],
+.KALS input[type="password"],/*
 .KALS input[type="datetime"],
 .KALS input[type="datetime-local"],
 .KALS input[type="date"],
@@ -1004,7 +1004,7 @@
 .KALS input[type="url"],
 .KALS input[type="search"],
 .KALS input[type="tel"],
-.KALS input[type="color"],
+.KALS input[type="color"],*/
 .KALS .uneditable-input {
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -1017,31 +1017,6 @@
           transition: border linear 0.2s, box-shadow linear 0.2s;
 }
 
-.KALS textarea:focus,
-.KALS input[type="text"]:focus,
-.KALS input[type="password"]:focus,
-.KALS input[type="datetime"]:focus,
-.KALS input[type="datetime-local"]:focus,
-.KALS input[type="date"]:focus,
-.KALS input[type="month"]:focus,
-.KALS input[type="time"]:focus,
-.KALS input[type="week"]:focus,
-.KALS input[type="number"]:focus,
-.KALS input[type="email"]:focus,
-.KALS input[type="url"]:focus,
-.KALS input[type="search"]:focus,
-.KALS input[type="tel"]:focus,
-.KALS input[type="color"]:focus,
-.KALS .uneditable-input:focus {
-  border-color: rgba(82, 168, 236, 0.8);
-  outline: 0;
-  outline: thin dotted \9;
-  /* IE6-9 */
-
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-}
 
 .KALS input[type="radio"],
 .KALS input[type="checkbox"] {
@@ -1193,19 +1168,6 @@
 .KALS .row-fluid .uneditable-input[class*="span"] {
   float: none;
   margin-left: 0;
-}
-
-.KALS .input-append input[class*="span"],
-.KALS .input-append .uneditable-input[class*="span"],
-.KALS .input-prepend input[class*="span"],
-.KALS .input-prepend .uneditable-input[class*="span"],
-.KALS .row-fluid input[class*="span"],
-.KALS .row-fluid select[class*="span"],
-.KALS .row-fluid textarea[class*="span"],
-.KALS .row-fluid .uneditable-input[class*="span"],
-.KALS .row-fluid .input-prepend [class*="span"],
-.KALS .row-fluid .input-append [class*="span"] {
-  display: inline-block;
 }
 
 .KALS input,
@@ -1702,34 +1664,6 @@
           border-radius: 14px 0 0 14px;
 }
 
-.KALS .form-search input,
-.KALS .form-inline input,
-.KALS .form-horizontal input,
-.KALS .form-search textarea,
-.KALS .form-inline textarea,
-.KALS .form-horizontal textarea,
-.KALS .form-search select,
-.KALS .form-inline select,
-.KALS .form-horizontal select,
-.KALS .form-search .help-inline,
-.KALS .form-inline .help-inline,
-.KALS .form-horizontal .help-inline,
-.KALS .form-search .uneditable-input,
-.KALS .form-inline .uneditable-input,
-.KALS .form-horizontal .uneditable-input,
-.KALS .form-search .input-prepend,
-.KALS .form-inline .input-prepend,
-.KALS .form-horizontal .input-prepend,
-.KALS .form-search .input-append,
-.KALS .form-inline .input-append,
-.KALS .form-horizontal .input-append {
-  display: inline-block;
-  *display: inline;
-  margin-bottom: 0;
-  vertical-align: middle;
-  *zoom: 1;
-}
-
 .KALS .form-search .hide,
 .KALS .form-inline .hide,
 .KALS .form-horizontal .hide {
@@ -2155,24 +2089,6 @@
   background-image: url("../img/glyphicons-halflings.png");
   background-position: 14px 14px;
   background-repeat: no-repeat;
-}
-
-/* White icons with optional class, or on hover/active states of certain elements */
-
-.KALS .icon-white,
-.KALS .nav-tabs > .active > a > [class^="icon-"],
-.KALS .nav-tabs > .active > a > [class*=" icon-"],
-.KALS .nav-pills > .active > a > [class^="icon-"],
-.KALS .nav-pills > .active > a > [class*=" icon-"],
-.KALS .nav-list > .active > a > [class^="icon-"],
-.KALS .nav-list > .active > a > [class*=" icon-"],
-.KALS .navbar-inverse .nav > .active > a > [class^="icon-"],
-.KALS .navbar-inverse .nav > .active > a > [class*=" icon-"],
-.KALS .dropdown-menu > li > a:hover > [class^="icon-"],
-.KALS .dropdown-menu > li > a:hover > [class*=" icon-"],
-.KALS .dropdown-menu > .active > a > [class^="icon-"],
-.KALS .dropdown-menu > .active > a > [class*=" icon-"] {
-  background-image: url("../img/glyphicons-halflings-white.png");
 }
 
 .KALS .icon-glass {
