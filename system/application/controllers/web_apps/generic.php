@@ -65,6 +65,8 @@ class generic extends Web_apps_controller {
         "toolkit_list_package" => array(
             'core/KALS_CONFIG'
             , 'core/KALS_language_param'
+            , 'core/feedback/feedback'
+            , 'core/feedback/html2canvas'
             , 'toolkit/jQuery_kals_plugin'
             , 'toolkit/KALS_user_interface' //Qunit
             , 'toolkit/KALS_modal'
@@ -95,6 +97,7 @@ class generic extends Web_apps_controller {
         "core_list_package" => array(
             'core/KALS_language',
             'core/Viewportmove_dispatcher',
+            'core/feedback/Feedback_manager',
             'core/KALS_authentication',
             'core/URL_hash_dispatcher',
             'core/Style_manager',
@@ -141,8 +144,8 @@ class generic extends Web_apps_controller {
             'navigation/Window_logout_submit',
             'navigation/Window_password_change',
             'navigation/Window_password_change_submit',
-            'navigation/Window_search',
-            'navigation/Window_search_submit',
+            //'navigation/Window_search',
+            //'navigation/Window_search_submit',
             'navigation/Common_navigation',
             'navigation/Window_filter',
             'navigation/Window_filter_submit',
@@ -154,8 +157,8 @@ class generic extends Web_apps_controller {
             'kals_toolbar/Logo_component',
             'kals_toolbar/Loading_component',
             //'kals_toolbar/Search_component',
-            'kals_toolbar/Search_form_component',
-            'kals_toolbar/Search_result_component',
+            //'kals_toolbar/Search_form_component',
+            //'kals_toolbar/Search_result_component',
 
             'kals_toolbar/Avatar_component',
             'kals_toolbar/Notification_component',
@@ -174,7 +177,7 @@ class generic extends Web_apps_controller {
             'selection/Selection',
             'selection/Selection_view',
             'selection/Selection_select',
-            'selection/Selection_search',
+            //'selection/Selection_search',
             'selection/Selection_recommend',
             'selection/Selection_recommended',
             'selection/Selection_recommend_by',
@@ -218,13 +221,13 @@ class generic extends Web_apps_controller {
             'annotation_editor/Policy_component',
             'annotation_editor/Window_policy',
             'annotation_editor/Window_policy_submit',
-        	'annotation_editor/Web_search_component',
+            'annotation_editor/Web_search_component',
 
             'annotation_list/List_collection',
             'annotation_list/List_collection_like',
             'annotation_list/List_collection_my',
             'annotation_list/List_collection_other',
-            'annotation_list/List_collection_search',
+            //'annotation_list/List_collection_search',
             'annotation_list/List_collection_anonymous',
             'annotation_list/Respond_list_collection',
             'annotation_list/Topic_list',
@@ -241,7 +244,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_item',
             'annotation_list/List_item_topic',
             'annotation_list/List_item_respond',
-            'annotation_list/List_menu_search',
+            //'annotation_list/List_menu_search',
             
             'annotation_recommend/Recommend_hint',
             'annotation_recommend/Recommend_tooltip',
@@ -255,8 +258,8 @@ class generic extends Web_apps_controller {
             'annotation_view/View_respond_list_collection',
             'annotation_view/Window_view',
             
-            'annotation_list/List_item_search_topic',
-            'annotation_list/List_item_search_respond',
+            //'annotation_list/List_item_search_topic',
+            //'annotation_list/List_item_search_respond',
 
             'kals_text/Annotation_tool',
             'kals_text/Annotation_scope_loader',
