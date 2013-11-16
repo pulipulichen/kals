@@ -18,6 +18,9 @@ $lang['web_apps.modal.move'] = '移動';
 $lang['web_apps.selection_manager.select_tooltip'] = '選擇';
 $lang['web_apps.selection_manager.select_tooltip.cancel'] = '取消';
 
+$lang['web_apps.selection_manager.select_tooltip.annotation_count1'] = '此處共';
+$lang['web_apps.selection_manager.select_tooltip.annotation_count2'] = '筆標註';
+
 $lang['web_apps.exception.alert.heading'] = '很抱歉，系統發生錯誤了！';
 $lang['web_apps.exception.heading'] = '發生了無法判斷的錯誤。';
 $lang['web_apps.exception.unknow'] = '請將錯誤通知管理者，請管理者處理。';

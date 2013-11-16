@@ -111,6 +111,13 @@
 	display:block;
 }
 
+.KALS.tooltip.has-annotation .list-item-tooltip .count-component {
+	float:right;
+	font-size: smaller;
+	color:gray;
+	margin-right: 2px;
+}
+
 .KALS.tooltip.has-annotation.bottom .list-item-tooltip {
 	border-radius: 0 0 5px 5px ;
     -moz-border-radius: 0 0 5px 5px ;

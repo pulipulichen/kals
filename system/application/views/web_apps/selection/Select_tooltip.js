@@ -511,9 +511,14 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 	var _ajax_callback = function (_data) {
 		$.test_msg("load_tooltip_annotation", _data);
 		
-		if (_data !== false) {
-			var _param = new Annotation_param(_data);
+		if (_data.count > 0) {
+			var _annotation_json = _data.annotation;
+			var _param = new Annotation_param(_annotation_json);
             _this._item.set_data(_param);
+			
+			var _count = _data.count;
+			_this._item.set_count(_count);
+			
 			//_item_ui.show();
 			_this.set_has_annotation();
 		}

@@ -799,11 +799,15 @@ class Annotation extends KALS_resource {
             $data['scope'] = $this->get_scopes()->export_data();
 
             $respond_to_topic= $this->get_respond_to_topic();
-            if (isset($respond_to_topic))
-                $data['topic'] = $respond_to_topic->export_respond_to_data();
+            if (isset($respond_to_topic)) {
+                //test_msg(get_class($respond_to_topic));
+                //$data['topic'] = $respond_to_topic->export_data();
+                $data['topic'] = $respond_to_topic->get_id();
+            }
             $respond_to_coll = $this->get_respond_to_coll();
-            if (isset($respond_to_coll))
+            if (isset($respond_to_coll)) {
                 $data['respond_to_coll'] = $respond_to_coll->export_respond_to_data();
+            }
 
             $current_user = get_context_user();
             if (is_class($current_user, 'User'))

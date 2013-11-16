@@ -1029,7 +1029,7 @@ class Annotation_getter extends Web_apps_controller {
         $search->add_order(1, TRUE);
         
         // 只輸出一份
-        $search->set_limit(1);
+        //$search->set_limit(1);
         
         // 限定該網頁
         $search->set_target_referer_webpage();
@@ -1040,22 +1040,20 @@ class Annotation_getter extends Web_apps_controller {
         //$annotation = new Annotation();
         //$annotation = null;
         $annotation = null;
-        $output_data = FALSE;
+        $output_data = array();
+        $result = null;
         foreach ($search AS $search_annotation) {
             $annotation = $search_annotation;
-            $output_data = $annotation->export_data();
+            $result = $annotation->get_id();
+            $output_data["annotation"] = $annotation->export_data();
+            break;
         }
-        
+        $output_data["count"] = $search->length();
         
         //--------------
         // 記錄
         
         $action = 35;
-        
-        $result = null;
-        if ($output_data !== FALSE) {
-            $result = $annotation->get_id();
-        }
         
         $log_note = array(
             'index'=> $annotation_index,
