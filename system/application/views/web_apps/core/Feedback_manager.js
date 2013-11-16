@@ -21,14 +21,14 @@ Feedback_manager.prototype._feedback = null;
 
 Feedback_manager.prototype.init = function () {
 	
-	var _base_url = KALS_context.get_base_url();
+	var _base_url = KALS_context.get_library_url();
 	
 	var _lang = KALS_context.lang;
 	
 	//$.test_msg('feedback init', _lang.line('feedback.ui.label'));
 	
 	this._feedback = Feedback({
-        h2cPath:'js/html2canvas.js',
+        h2cPath: 'js/html2canvas.js',
         url: _base_url + '/feedback',
 		label: _lang.line('feedback.ui.label'),   //"Send Feedback";
 		header: _lang.line('feedback.ui.header'),   //"Send Feedback";

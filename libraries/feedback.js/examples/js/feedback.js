@@ -747,7 +747,7 @@ window.Feedback.Screenshot.prototype.render = function() {
         script.onerror = function() {
             log("Failed to load html2canvas library, check that the path is correctly defined");
         };
-
+    
         script.onload = (scriptLoader)(script, function() {
 
             if (window.html2canvas === undefined) {

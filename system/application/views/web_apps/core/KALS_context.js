@@ -190,6 +190,39 @@ KALS_context.get_image_url = function (_img) {
 	}
 };
 
+
+/**
+ * 回傳libraries網址
+ * @param {string} _file 檔案名稱
+ * @type {string} 檔案的完整網址
+ */
+KALS_context.get_library_url = function (_file) {
+    
+	var _img = _file;
+    if ($.is_null(_img)) {
+        _img = '';
+    }
+    
+    if ($.is_string(_img) && $.starts_with(_img, '/')) {
+        _img = _img.substring(1, _img.length);
+    }
+    
+    if (this.base_url === null) {
+        return _img;
+    }
+        
+    var _img_url = this.get_base_url();
+    var _pos = _img_url.lastIndexOf('/web_apps');
+    if (_pos == -1) {
+        return _img;
+    }
+    
+    _img_url = _img_url.substring(0, _pos + 1);
+    _img_url = _img_url + 'libraries/' + _img;
+    
+    return _img_url;
+};
+
 /**
  * 將KALS_context.load()讀取進來的資料清空
  * @param {function} _callback
