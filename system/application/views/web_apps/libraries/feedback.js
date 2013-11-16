@@ -116,14 +116,20 @@ window.Feedback = function( options ) {
 
         // open send feedback modal window
         open: function() {
+			
+			//$.test_msg("feedback open 1");
+			
             var len = options.pages.length;
             currentPage = 0;
             for (; currentPage < len; currentPage++) {
                 // create DOM for each page in the wizard
                 if ( !(options.pages[ currentPage ] instanceof window.Feedback.Review) ) {
+					//$.test_msg("render currentPage", currentPage);
                     options.pages[ currentPage ].render();
                 }
             }
+			
+			//$.test_msg("feedback open 2");
 
             var a = element("a", "×"),
             modalHeader = document.createElement("div"),
@@ -132,6 +138,8 @@ window.Feedback = function( options ) {
 
             modal = document.createElement("div");
             document.body.appendChild( glass );
+			
+			//$.test_msg("feedback open 3");
 
             // modal close button
             a.className =  "feedback-close";
@@ -144,6 +152,8 @@ window.Feedback = function( options ) {
             modalHeader.appendChild( a );
             modalHeader.appendChild( element("h3", options.header ) );
             modalHeader.className =  "feedback-header";
+			
+			//$.test_msg("feedback open 4");
 
             modalBody.className = "feedback-body";
 
@@ -151,6 +161,7 @@ window.Feedback = function( options ) {
             currentPage = 0;
             modalBody.appendChild( options.pages[ currentPage++ ].dom );
 
+            //$.test_msg("feedback open 5");
 
             // Next button
             nextButton = element( "button", options.nextLabel );
@@ -195,6 +206,8 @@ window.Feedback = function( options ) {
                 }
 
             };
+			
+			//$.test_msg("feedback open 6");
 
             modalFooter.className = "feedback-footer";
             modalFooter.appendChild( nextButton );
@@ -203,12 +216,15 @@ window.Feedback = function( options ) {
             modal.className =  "feedback-modal";
             modal.setAttribute(H2C_IGNORE, true); // don't render in html2canvas
 
+            //$.test_msg("feedback open 7");
 
             modal.appendChild( modalHeader );
             modal.appendChild( modalBody );
             modal.appendChild( modalFooter );
 
             document.body.appendChild( modal );
+			
+			//$.test_msg("feedback open 8");
         },
 
 
@@ -733,12 +749,15 @@ window.Feedback.Screenshot.prototype.render = function() {
     options = this.options,
     runH2c = function(){
         try {
-
+			options = {};
             options.onrendered = options.onrendered || function( canvas ) {
                 $this.h2cCanvas = canvas;
                 $this.h2cDone = true;
             };
 
+            //for (var _i in options) {
+				//$.test_msg("options " + _i, typeof(options[_i]));
+			//}
             window.html2canvas([ document.body ], options);
 
         } catch( e ) {
@@ -748,17 +767,14 @@ window.Feedback.Screenshot.prototype.render = function() {
         }
     };
 
+ 
     if ( window.html2canvas === undefined && script === undefined ) {
 
         // let's load html2canvas library while user is writing message
 
         script = document.createElement("script");
-        script.src = options.h2cPath || "libs/html2canvas.js";
-        script.onerror = function() {
-            log("Failed to load html2canvas library, check that the path is correctly defined");
-        };
-
-        script.onload = (scriptLoader)(script, function() {
+		
+		var _onload = function() {
 
             if (window.html2canvas === undefined) {
                 log("Loaded html2canvas, but library not found");
@@ -769,13 +785,22 @@ window.Feedback.Screenshot.prototype.render = function() {
             runH2c();
 
 
-        });
-
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(script, s);
+        };
+		
+		if (options.h2cPath != null) {
+	        script.src = options.h2cPath || "libs/html2canvas.js";
+	        script.onerror = function() {
+	            log("Failed to load html2canvas library, check that the path is correctly defined");
+	        };
+	
+	        script.onload = (scriptLoader)(script, _onload);
+	        var s = document.getElementsByTagName('script')[0];
+	        s.parentNode.insertBefore(script, s);   
+        }
 
     } else {
         // html2canvas already loaded, just run it then
+		
         runH2c();
     }
 
@@ -867,6 +892,7 @@ window.Feedback.Screenshot.prototype.review = function( dom ) {
         img.style.width = "300px";
         
         dom.insertBefore(img,dom.childNodes[0]);
+		
 		//dom.appendChild( img );
     }
     

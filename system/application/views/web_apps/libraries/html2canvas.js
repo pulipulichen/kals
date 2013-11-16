@@ -2217,7 +2217,8 @@ _html2canvas.Preload = function( options ) {
 
 
 
-
+    //$.test_msg("Preload 1");
+	
 
 
     function isSameOrigin(url){
@@ -2233,11 +2234,18 @@ _html2canvas.Preload = function( options ) {
             h2clog("Finished loading images: # " + images.numTotal + " (failed: " + images.numFailed + ")");
 
             if (typeof options.complete === "function"){
-                options.complete(images);
+				try{
+					options.complete(images);
+				}
+				catch (e) {
+					//$.test_msg("firstRun 1 ERROR", e);
+				}
             }
 
         }
     }
+	
+	//$.test_msg("Preload 2");
 
     // TODO modify proxy to serve images with CORS enabled, where available
     function proxyGetImage(url, img, imageObj){
@@ -2361,6 +2369,8 @@ _html2canvas.Preload = function( options ) {
             }
         }
     }
+	
+	//$.test_msg("Preload 3");
 
     function setImageLoadHandlers(img, imageObj) {
         img.onload = function() {
@@ -2413,6 +2423,7 @@ _html2canvas.Preload = function( options ) {
          */
     }
 
+    //$.test_msg("Preload 4");
 
     methods = {
         loadImage: function( src ) {
@@ -2516,25 +2527,42 @@ _html2canvas.Preload = function( options ) {
 
     };
 
+    //$.test_msg("Preload 5");
+
     if (options.timeout > 0) {
         timeoutTimer = window.setTimeout(methods.cleanupDOM, options.timeout);
     }
     h2clog('html2canvas: Preload starts: finding background-images');
     images.firstRun = true;
 
+    //$.test_msg("Preload 6");
+
     getImages( element );
+	
+	//$.test_msg("Preload 7", imgLen);
 
     h2clog('html2canvas: Preload: Finding images');
     // load <img> images
+	
+    
     for (i = 0; i < imgLen; i+=1){
+		//$.test_msg("imgLen " + i, domImages[i].getAttribute( "src" ));
         methods.loadImage( domImages[i].getAttribute( "src" ) );
     }
+	//$.test_msg("Preload 8");
 
-    images.firstRun = false;
+    // 關鍵出錯的地方！
+	images.firstRun = false;
+	
     h2clog('html2canvas: Preload: Done.');
+	
+    //return;
+	//$.test_msg("Preload 9");
     if ( images.numTotal === images.numLoaded ) {
         start();
     }
+	
+	//$.test_msg("Preload Final");
 
     return methods;
 
@@ -2634,7 +2662,7 @@ function h2cRenderContext(width, height) {
 */
 _html2canvas.Renderer = function(parseQueue, options){
 
-
+    //$.test_msg("Renderer 1");
     var queue = [];
 
     function sortZ(zStack){
@@ -2682,12 +2710,26 @@ _html2canvas.Renderer = function(parseQueue, options){
         }
 
     }
-
+    //$.test_msg("Renderer 2");
 
     sortZ(parseQueue.zIndex);
     if ( typeof options._renderer._create !== "function" ) {
+		//$.test_msg("Invalid renderer defined");
         throw new Error("Invalid renderer defined");
     }
+	
+	//$.test_msg("Renderer 3", typeof options._renderer);
+	/*
+	for (var _i in options) {
+		//$.test_msg("Renderer 3 options: " + _i, typeof(options[_i]));
+	}
+	
+	for (var _i in queue) {
+        //$.test_msg("Renderer 3 queue: " + _i, typeof(queue[_i]));
+    }
+	*/
+    //return;
+	//$.test_msg( "html2canvas", [parseQueue, options, document, queue, _html2canvas]);
     return options._renderer._create( parseQueue, options, document, queue, _html2canvas );
 
 };
@@ -2717,7 +2759,7 @@ html2canvas = function( elements, opts ) {
         allowTaint: false, // whether to allow images to taint the canvas, won't need proxy if set to true
 
         // parse options
-        svgRendering: false, // use svg powered rendering where available (FF11+)
+        svgRendering: true, // use svg powered rendering where available (FF11+)
         iframeDefault: "default",
         ignoreElements: "IFRAME|OBJECT|PARAM",
         useOverflow: true,
@@ -2733,6 +2775,11 @@ html2canvas = function( elements, opts ) {
     }, renderer;
 
     options = _html2canvas.Util.Extend(opts, options);
+	
+	for (var _i in options) {
+        //$.test_msg("html2canvas options " + _i, typeof(options[_i]));
+    }
+	
 
   if (typeof options.renderer === "string" && _html2canvas.Renderer[options.renderer] !== undefined) {
     options._renderer = _html2canvas.Renderer[options.renderer]( options );
@@ -2741,10 +2788,8 @@ html2canvas = function( elements, opts ) {
   } else {
     throw("Unknown renderer");
   }
-
     _html2canvas.logging = options.logging;
     options.complete = function( images ) {
-
         if (typeof options.onpreloaded === "function") {
             if ( options.onpreloaded( images ) === false ) {
                 return;
@@ -2752,16 +2797,18 @@ html2canvas = function( elements, opts ) {
         }
         queue = _html2canvas.Parse( images, options );
 
+        
         if (typeof options.onparsed === "function") {
             if ( options.onparsed( queue ) === false ) {
                 return;
             }
         }
 
-        canvas = _html2canvas.Renderer( queue, options );
+        var _canvas;
+        var _canvas = _html2canvas.Renderer( queue, options );
 
         if (typeof options.onrendered === "function") {
-            options.onrendered( canvas );
+            options.onrendered( _canvas );
         }
 
 
@@ -2784,7 +2831,7 @@ html2canvas = function( elements, opts ) {
         },
         log: h2clog
     };
-};
+};  //html2canvas = function( elements, opts ) {
 
 html2canvas.log = h2clog; // for renderers
 html2canvas.Renderer = {
@@ -2872,11 +2919,15 @@ _html2canvas.Renderer.Canvas = function( options ) {
     methods = {
         _create: function( zStack, options, doc, queue, _html2canvas ) {
 
+            //$.test_msg("_create 0");
+
             if ( !canvasReadyToDraw ) {
                 _createCalled = arguments;
                 return canvas;
             }
-
+            
+			//$.test_msg("_create 1");
+			
             var ctx = canvas.getContext("2d"),
             storageContext,
             i,
@@ -2899,16 +2950,23 @@ _html2canvas.Renderer.Canvas = function( options ) {
             ctx.fillStyle = zStack.backgroundColor;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = fstyle;
+			
+			//$.test_msg("_create 2");
 
             if ( options.svgRendering && zStack.svgRender !== undefined ) {
                 // TODO: enable async rendering to support this
+				
+				//$.test_msg("_create 2-1");
                 ctx.drawImage( zStack.svgRender, 0, 0 );
             } else {
+				//$.test_msg("_create 2-2", queue.length);
+				//return;
                 for ( i = 0, queueLen = queue.length; i < queueLen; i+=1 ) {
-
+					
                     storageContext = queue.splice(0, 1)[0];
                     storageContext.canvasPosition = storageContext.canvasPosition || {};
-
+                    
+					
                     //this.canvasRenderContext(storageContext,parentctx);
 
                     // set common settings for canvas
@@ -2922,26 +2980,37 @@ _html2canvas.Renderer.Canvas = function( options ) {
                         ctx.clip();
 
                     }
-
+                    
                     if (storageContext.ctx.storage){
-
+                        //$.test_msg("queue storageContext.ctx.storage.length", storageContext.ctx.storage.length); 
                         for (a = 0, storageLen = storageContext.ctx.storage.length; a < storageLen; a+=1){
 
                             renderItem = storageContext.ctx.storage[a];
-
 
                             switch(renderItem.type){
                                 case "variable":
                                     ctx[renderItem.name] = renderItem['arguments'];
                                     break;
                                 case "function":
+								
+								    /**
+								     * 為了避免錯誤，關閉drawImage方法
+								     * @author Pulipuli Chen 20131116
+								     */
+								    if (renderItem.name === "drawImage") {
+										renderItem.name = "fillRect";
+									}
+								
                                     if (renderItem.name === "fillRect") {
 
+                                        //continue;
                                         if (!usingFlashcanvas || renderItem['arguments'][0] + renderItem['arguments'][2] < flashMaxSize  && renderItem['arguments'][1] + renderItem['arguments'][3] < flashMaxSize) {
                                             ctx.fillRect.apply( ctx, renderItem['arguments'] );
                                         }
-                                    } else if (renderItem.name === "drawShape") {
+                                    } 
+									else if (renderItem.name === "drawShape") {
                                         
+                                        //continue;
                                         ( function( args ) {
                                           
                                             var i, len = args.length;
@@ -2953,24 +3022,34 @@ _html2canvas.Renderer.Canvas = function( options ) {
                                             ctx.fill();
                                         })( renderItem['arguments'] );
                                         
-                                    } else if (renderItem.name === "fillText") {
+                                    } 
+									else if (renderItem.name === "fillText") {
+										
+                                        //continue;
                                         if (!usingFlashcanvas || renderItem['arguments'][1] < flashMaxSize  && renderItem['arguments'][2] < flashMaxSize) {
                                             ctx.fillText.apply( ctx, renderItem['arguments'] );
                                         }
-                                    } else if (renderItem.name === "drawImage") {
+                                    } 
+									else if (renderItem.name === "drawImage") {
 
                                         if (renderItem['arguments'][8] > 0 && renderItem['arguments'][7]){
                                             if ( hasCTX && options.taintTest ) {
                                                 if ( safeImages.indexOf( renderItem['arguments'][ 0 ].src ) === -1 ) {
                                                     testctx.drawImage( renderItem['arguments'][ 0 ], 0, 0 );
-                                                    try {
-                                                        testctx.getImageData( 0, 0, 1, 1 );
-                                                    } catch(e) {
-                                                        testCanvas = doc.createElement("canvas");
-                                                        testctx = testCanvas.getContext("2d");
-                                                        continue;
-                                                    }
-
+													
+													//setTimeout(function () {
+	                                                    try {
+															
+															// 發生問題的就是這一行，就只有這一行而已
+															testctx.getImageData( 0, 0, 1, 1 );
+															
+															
+	                                                    } catch(e) {
+	                                                        testCanvas = doc.createElement("canvas");
+	                                                        testctx = testCanvas.getContext("2d");
+	                                                        continue;
+	                                                    }  
+													//}, 1);
                                                     safeImages.push( renderItem['arguments'][ 0 ].src );
 
                                                 }
@@ -2983,8 +3062,7 @@ _html2canvas.Renderer.Canvas = function( options ) {
                                     break;
                                 default:
 
-                            }
-
+                            }   //switch(renderItem.type){
                         }
 
                     }
@@ -2994,10 +3072,14 @@ _html2canvas.Renderer.Canvas = function( options ) {
 
                 }
             }
+			
+			//$.test_msg("_create 3");
 
-            h2clog("html2canvas: Renderer: Canvas renderer done - returning canvas obj");
+            //h2clog("html2canvas: Renderer: Canvas renderer done - returning canvas obj");
 
             queueLen = options.elements.length;
+
+            //$.test_msg("_create 4");
 
             if (queueLen === 1) {
                 if (typeof options.elements[ 0 ] === "object" && options.elements[ 0 ].nodeName !== "BODY" && usingFlashcanvas === false) {
@@ -3024,7 +3106,7 @@ _html2canvas.Renderer.Canvas = function( options ) {
         }
         */
 
-
+            //$.test_msg("_create 5");
 
             return canvas;
         }

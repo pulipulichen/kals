@@ -98,12 +98,18 @@
 	 */
     line-height: 30px;
     height: 30px;
+	
+	padding: 0 0.2em;
 }
 
 .KALS .dialog-toolbar tr td {
-	padding:0px 0px !important;
-	border:0px !important;
-	border-collapse:inherit !important;
+	padding:0px 0px;
+	border:0px;
+	border-collapse:inherit;
+}
+
+.KALS .dialog-toolbar tr td.toolbar-options.toolbar-forward {
+    padding-right: 5px;
 }
 .KALS .dialog-heading {
     margin: 0.1em 16px 0.2em 0;
@@ -186,7 +192,7 @@
     -webkit-border-radius: 8px;
     border-radius: 8px;
     -khtml-border-radius: 8px;
-    min-height: 33px;
+    /*min-height: 33px;*/
 }
 
 

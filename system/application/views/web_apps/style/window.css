@@ -121,3 +121,7 @@
 .KALS .window-password-change .row dt {
     width: 170px;
 }
+
+.KALS.window .dialog-options .dialog-option {
+	height: 33px;
+}

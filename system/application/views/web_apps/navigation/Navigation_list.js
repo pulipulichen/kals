@@ -123,8 +123,10 @@ Navigation_list.prototype._create_nav = function() {
     if (this._$show_help === true) {
         this._setup_help().appendTo(_tr);
     }
+	
+	// 插入錯誤回報功能
 	if (this._$show_feedback === true) {
-        //this._setup_feedback().appendTo(_tr);
+        this._setup_feedback().appendTo(_tr);
     }
     
 	_ui.find('td:last').addClass('last');
