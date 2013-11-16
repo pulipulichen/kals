@@ -160,7 +160,7 @@ List_header_component.prototype._name_container = null;
 List_header_component.prototype.set_user_name = function (_name) {
     if ($.is_null(_name)) {
         var _param = this._item.get_data();
-        if ($.isset(_param)) {
+        if ($.isset(_param) && $.isset(_param.user)) {
 			_name = _param.user.get_name();
 		}
 		else {

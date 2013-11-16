@@ -1039,7 +1039,8 @@ class Annotation_getter extends Web_apps_controller {
         
         //$annotation = new Annotation();
         //$annotation = null;
-        $output_data = false;
+        $annotation = null;
+        $output_data = FALSE;
         foreach ($search AS $search_annotation) {
             $annotation = $search_annotation;
             $output_data = $annotation->export_data();
@@ -1053,7 +1054,7 @@ class Annotation_getter extends Web_apps_controller {
         
         $result = null;
         if ($output_data !== FALSE) {
-            $result = $output_data->get_id();
+            $result = $annotation->get_id();
         }
         
         $log_note = array(

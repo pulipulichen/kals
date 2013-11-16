@@ -251,7 +251,7 @@
 	position:relative;
 }
 
-.KALS.kals-modal .type-option {
+.KALS .type-option {
     /*padding: 5px 10px;*/
     padding: 1px 5px !important;
     text-align: center !important;
@@ -268,32 +268,32 @@
     font-weight: bold;
 }
 
-.KALS.kals-modal .type-option.importance {
+.KALS .type-option.importance {
     background-color: yellow;
     color: black;
 }
 
-.KALS.kals-modal .type-option.concept {
+.KALS .type-option.concept {
     background-color: blue;
 }
 
-.KALS.kals-modal .type-option.confusion {
+.KALS .type-option.confusion {
     background-color: #800080;
 }
 
-.KALS.kals-modal .type-option.question {
+.KALS .type-option.question {
     background-color: red;
 }
 
-.KALS.kals-modal .type-option.example {
+.KALS .type-option.example {
     background-color: green;
 }
 
-.KALS.kals-modal .type-option.summary {
+.KALS .type-option.summary {
     background-color: #670808;
 }
 
-.KALS.kals-modal .type-option.custom {
+.KALS .type-option.custom {
     background-color: white;
     color: black;
 }
