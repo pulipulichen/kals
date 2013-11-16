@@ -475,7 +475,8 @@ class generic extends Web_apps_controller {
         /**
          * 避免目錄太深
          */
-       if (strpos($dir, "/") !== FALSE && count(explode("/", $dir)) > 2 ) {
+       if (strpos($dir, "/") !== FALSE && count(explode("/", $dir)) > 3 ) {
+           test_msg("太深了 " . $dir);
            return $files;
        }
         
@@ -591,6 +592,8 @@ class generic extends Web_apps_controller {
         //$files = $this->dirmap("style");
         
         $files = $this->_dir_get_list(".css");
+        
+        //test_msg($files);
         
         $this->pack_css($files, 'style');
     }

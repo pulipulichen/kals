@@ -40,7 +40,8 @@ include_once 'web_apps_controller.php';
 31=搜尋 作者
 32=搜尋 標註類型
 33=搜尋 文章
-34=最新標註
+34=瀏覽最新標註
+35=tooltip放在文章上面的顯示標註
 
  * 
  *

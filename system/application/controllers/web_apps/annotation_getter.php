@@ -617,6 +617,7 @@ class Annotation_getter extends Web_apps_controller {
             }
             else
             {
+                // 依照分數排序
                 $order_id = 1;
                 $default_direction = TRUE;
             }
@@ -785,14 +786,13 @@ class Annotation_getter extends Web_apps_controller {
          //$enable_profiler = true; //？
          $enable_profiler = false; //？
 
-        if ($enable_profiler == TRUE)
-            $this->output->enable_profiler(TRUE);  
+        if ($enable_profiler == TRUE) {
+            $this->output->enable_profiler(TRUE); 
+        }
 
-        if (is_string($json)) 
-        {
+        if (is_string($json)) {
             $data = json_to_object($json); //把js丟過來的資料(search)包成物件data，內含
                                            // search_range，keyword，新增order_by
-        
         }    
         else {
             $data = $json;
@@ -1007,6 +1007,69 @@ class Annotation_getter extends Web_apps_controller {
         return $this->_display_jsonp($output_data, $callback);
     }
      */
+    
+    /**
+     * 取得tooltip指定的標註
+     * @param int $annotation_index 標註的位置
+     * @param string $callback
+     */
+    public function tooltip($annotation_index, $callback) {
+        
+        // -------------
+        // 搜尋
+        
+        //$annotation_index = 100000;
+        
+        $search = new Search_annotation_collection();
+        
+        // 限定範圍
+        $search->set_overlap_scope_index($annotation_index, $annotation_index);
+        
+        // 依照分數排序，由高到低
+        $search->add_order(1, TRUE);
+        
+        // 只輸出一份
+        $search->set_limit(1);
+        
+        // 限定該網頁
+        $search->set_target_referer_webpage();
+        
+        //--------------
+        // 轉換資料
+        
+        //$annotation = new Annotation();
+        //$annotation = null;
+        $output_data = false;
+        foreach ($search AS $search_annotation) {
+            $annotation = $search_annotation;
+            $output_data = $annotation->export_data();
+        }
+        
+        
+        //--------------
+        // 記錄
+        
+        $action = 35;
+        
+        $result = null;
+        if ($output_data !== FALSE) {
+            $result = $output_data->get_id();
+        }
+        
+        $log_note = array(
+            'index'=> $annotation_index,
+            'result' => $result
+        );
+        
+        kals_log($this->db, $action, $log_note);
+
+        context_complete();
+        
+        // -------------
+        // 輸出
+        
+        return $this->_display_jsonp($output_data, $callback);
+    }
 }
 
 /* End of file annotation_getter.php */

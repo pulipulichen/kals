@@ -668,6 +668,29 @@ class Search_engine extends Generic_collection {
         $this->overlap_scope = $scope;
         return $this;
     }
+    
+    /**
+     * 根據$from跟$to來指定覆蓋範圍
+     * @param int $from
+     * @param int $to
+     * @param Webpage $webpage
+     * @return \Search_engine
+     */
+    public function set_overlap_scope_index($from, $to, Webpage $webpage = null)
+    {
+        if (is_null($webpage)) {
+            $webpage = get_context_webpage();
+        }
+        
+        $scope_coll = new Annotation_scope_collection();
+        $scope_coll_data = array(
+            array($from, $to)
+        );
+        $scope_coll = $scope_coll->import_webpage_search_data($webpage, $scope_coll_data);
+        
+        $this->overlap_scope = $scope_coll;
+        return $this;
+    }
 
     protected $exclude_scope;
     public function set_exclude_scope(Annotation_scope_collection $scope)

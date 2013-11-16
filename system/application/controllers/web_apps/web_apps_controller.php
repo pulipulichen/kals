@@ -407,8 +407,8 @@ class Web_apps_controller extends Controller {
             $path .= '/'.$path2;
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
-            $path = 'style/'.$path;
+        //if (FALSE === starts_with($path, 'style/'))
+        //    $path = 'style/'.$path;
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         if ($this->config->item('output.package.enable'))
