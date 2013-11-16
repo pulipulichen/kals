@@ -105,6 +105,13 @@ Scope_collection_param.prototype.import_coll = function (_scope_coll) {
         //this.resort();
         //$.test_msg('Scope_collection_para.import_coll()', this.scopes[0].get_to());
     }
+	else if ($.is_object(_scope_coll)) {
+		
+		for (var _i in _scope_coll) {
+			var _webpage_scope_coll = _scope_coll[_i];
+			this.import_coll(_webpage_scope_coll);
+		}
+	}
     return this;
 };
 

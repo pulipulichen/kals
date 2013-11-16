@@ -303,8 +303,12 @@ List_item.prototype.get_scope_coll = function () {
 	}
 };
 
+/**
+ * 選擇指定的位置
+ */
 List_item.prototype.set_selection = function () {
     var _scope = this.get_scope_coll();
+	//$.test_msg('List_item.set_selection', _scope);
     KALS_text.selection.view.set_scope_coll(_scope);
     return this;
 };

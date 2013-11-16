@@ -20,12 +20,18 @@ function Select_tooltip() {
     }, 0);
     
     KALS_context.init_profile.add_listener(function () {
-        var _ui = _this.get_ui();
-        _ui.removeClass('hide');
-        _ui.hide();
-        _this.enable_select = true;
+        _this.reset();
     });
-    
+	
+	setTimeout(function () {
+		KALS_text.selection.select.add_listener("select", function() {
+			_this.reset();
+		});
+		
+	    KALS_text.selection.select.add_listener("clear", function() {
+	        _this.reset();
+	    });
+    }, 0);
 }
 
 Select_tooltip.prototype = new Tooltip_modal();
@@ -33,6 +39,16 @@ Select_tooltip.prototype = new Tooltip_modal();
 Select_tooltip.prototype.enable_select = false;
 
 Select_tooltip.prototype.tooltip_id = 'kals_select_tooltip';
+
+/**
+ * 重置成為初始狀態
+ */
+Select_tooltip.prototype.reset = function () {
+	var _ui = this.get_ui();
+    _ui.removeClass('hide');
+    _ui.hide();
+    this.enable_select = true;
+};
 
 Select_tooltip.prototype._$get_config = function () {
     

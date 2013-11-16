@@ -326,6 +326,7 @@ Annotation_param.prototype.import_json = function (_json) {
 				this[_attr] = new Annotation_collection_param(_value);
 			}
 			else if (_attr == 'scope') {
+				//$.test_msg("Annotation_param.import_json", _value);
 				this[_attr] = new Scope_collection_param(_value);
 			}
 			else 
