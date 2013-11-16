@@ -649,17 +649,37 @@ Window_search.prototype.setup_recent = function(){
 	var _this = this;
 	this.onopen = function () {
 		
+		var _save_input_value = {
+			search_range: _this.get_input_value("search_range"),
+            keyword: _this.get_input_value("keyword"),
+            order_by: _this.get_input_value("order_by")
+		};
+		
+		//$.test_msg("setup_recent", _save_input_value);
+		
 		//$.test_msg("setup_recent", "keyword *");
 		_this.set_input_value({
-			keyword: "*"
+			search_range: "note",
+			keyword: "*",
+			order_by: "update"
 		});
 		
 		_this.submit.submit(function () {
-			_this.set_input_value({
-				keyword: ""
-			});
+			_this.set_input_value(_save_input_value);
 		});
 	};
+};
+
+/**
+ * 設置input的值，覆寫Window_content
+ * @param {JSON} _data
+ */
+Window_search.prototype.set_input_value = function(_data){
+	if (typeof _data.search_range == 'string') {
+		this.toggle_input(_data.search_range);
+	}
+	
+	return Window_content.prototype.set_input_value.call(this, _data);
 };
 
 /**
