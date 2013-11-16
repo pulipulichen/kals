@@ -244,30 +244,181 @@ List_note_component.prototype.set_note = function (_note) {
 	
 	//$.test_msg("List_note_component.set_note()", _note);
 	//_note = $(_note);
+	if (this._show_fulltext === false) {
+        _note = this.extract_abstract(_note);
+    }
+	
+	//if ($.is_string(_note)) {
+    //    $.test_msg('note', _note);
+	//	this._note_container.html(_note);
+	//}
+    //else {
+	//	this._note_container.append(_note);
+	//}
     this._note_container.html(_note);
     
-    if (this._show_fulltext === false) {
-        //var _text = this._note_container.text();
-		_text = this._note_container.html();
-		_origin_text = _text;
-		_allow_html_tags = KALS_CONFIG.annotation_list.note.allow_html_tags;
-		_text = $.strip_html_tag(_text, _allow_html_tags);
-        _text = $.trim(_text);
-        if (_origin_text.length > this._simple_max_length) {
-			if (_text.length > this._simple_max_length) {
-	            _abstract = _text.substr(0, this._simple_max_length) + '...';
-	            this._note_container.html(_abstract);
-            } 
-			
-            var _view = this._create_view_thread(_origin_text.length);
-            _view.appendTo(this._note_container);
-        }
-        else {
-			this._note_container.html(_text);
-		}   
-    }
+	var _this = this;
+        _this.adjust_note();
+	setTimeout(function () {
+		_this.adjust_note();
+	}, 200);
     
     return this;
+};
+
+/**
+ * 篩選摘要
+ * @author Pulipuli Chen 20131117
+ * @param {String} _note
+ * @type {String|jQuery}
+ */
+List_note_component.prototype.extract_abstract = function (_note) {
+	//var _text = this._note_container.text();
+    var _text = _note;
+    var _origin_text = _text;
+    var _allow_html_tags = KALS_CONFIG.annotation_list.note.allow_html_tags;
+    _text = $.strip_html_tag(_text, _allow_html_tags);
+    _text = $.trim(_text);
+	
+	var _plain_text = $.strip_html_tag(_text);
+	
+	var _result = _text;
+    if (_plain_text.length > this._simple_max_length) {
+		_result = $('<span></span>').html(_origin_text);
+		/*
+		
+        if (_text.length > this._simple_max_length) {
+            _abstract = _text.substr(0, this._simple_max_length) + '...';
+            //this._note_container.html(_abstract);
+			_result.html(_abstract);
+        } 
+        
+        var _view = this._create_view_thread(_origin_text.length);
+        //_view.appendTo(this._note_container);
+		_view.appendTo(_result);
+		*/
+		
+		var _abstract = null;
+		
+		// 先選出有影片的
+		if (_abstract === null) {
+			var _video = _result.find('object, iframe').eq(0);
+			if (_video.length > 0) {
+				_abstract = _video;
+			}
+		}
+		
+		// 再選出圖片
+		if (_abstract === null) {
+			var _img = _result.find('img').eq(0);
+            if (_img.length > 0) {
+                _abstract = _img;
+            }
+		}
+		
+		// 如果沒有只好選出文字
+		if (_abstract === null) {
+            var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
+			var _foot_part = this._simple_max_length - _head_part;
+			 
+			_abstract =  _plain_text.substr(0, _head_part)
+			     + '...'
+				 + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
+				 
+			_abstract = $('<span>' + _abstract + '</span>');
+        }
+		
+		if (_abstract !== null) {
+			_result = _abstract;
+		}
+		
+		var _view = this._create_view_thread(_plain_text.length);
+		_view.appendTo(_result);
+    }
+	else {
+		_result = $('<span>'+_result+'</span>');
+	}
+	
+	//var _max_width = this.get_ui().parents('.KALS').width();
+	
+	//_result.appendTo($('body'));
+	
+	return _result;   
+};
+
+/**
+ * 縮小圖片
+ */
+List_note_component.prototype.adjust_note = function () {
+	//if (this._note_container.hasClass('adjusted')) {
+	//	return this;
+	//}
+	
+	var _max_width = this._note_container.width();
+	if (_max_width == 0) {
+		//return this;
+		var _this = this;
+		/*
+		setTimeout(function () {
+			_this.adjust_note;
+		}, 100);
+		*/
+		$.test_msg('adjust_note', _max_width);
+		//this._note_container.ready(function () {
+		//setTimeout(function () {
+		//	_this.adjust_note();
+		//}, 100);
+			
+		//});
+		return this;
+	}
+	//var _safe_margin = 25;
+	//_max_width = _max_width - _safe_margin;
+	
+	var _result = this._note_container;
+    // 縮小筆記內的資料
+    _result.find('img, iframe, object, embed').each(function (_index, _ele) {
+        _ele = $(_ele);
+        //_ele.css('border', '1px solid red');
+        var _width = _ele.width();
+        
+        $.test_msg('縮小圖片', [_width, _max_width]);
+        if (_width > _max_width) {
+            var _height = _ele.height();
+            
+            var _width_ratio = (_max_width / _width);
+            var _adjusted_height = parseInt(_height * _width_ratio, 10);
+            
+            var _final_width = _max_width;
+            var _final_height = _adjusted_height;
+            //if (_ele.hasAttr('width')) {
+                //_ele.attr('width', _final_width).attr('height', _final_height);
+            //}
+            //else {
+                //_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
+            //}
+			_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
+            
+            //加上連結
+            if (_ele.attr('tagName').toLowerCase() == 'img' && _ele.hasAttr('src')) {
+                _ele.click(function (_e) {
+                    _e.preventDefault();
+                    var _src = this.src;
+                    window.open(_src, '_blank');
+                });
+            }
+        }
+    });
+     
+    // 幫超連結加上target=_blank
+    _result.find('a').each(function (_index, _a) {
+        _a = $(_a);
+        _a.attr('target', '_blank');
+    });
+    
+	//this._note_container.addClass('adjusted');
+	
+	return this;
 };
 
 /**

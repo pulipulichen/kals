@@ -139,10 +139,24 @@ List_item.prototype.note = null;
 
 List_item.prototype._note_show_fulltext = false;
 
+/**
+ * 設定筆記顯示的元件
+ * @type {List_note_component}
+ */
 List_item.prototype._setup_note = function () {
     var _component = new List_note_component(this, this._note_show_fulltext);
     this.child('note', _component);
     return _component;
+};
+
+/**
+ * 調整筆記的內容
+ */
+List_item.prototype.adjust_note = function () {
+	if (this.note !== null) {
+		this.note.adjust_note();
+	}
+	return this;
 };
 
 // --------

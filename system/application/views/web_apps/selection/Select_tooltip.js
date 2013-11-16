@@ -313,7 +313,13 @@ Select_tooltip.prototype.setup_position = function (_callback) {
     //}, 0);    //setTimeout(function () {
 };
 
+/**
+ * 切換bottom模式
+ * @param {boolean} _is_bottom
+ */
 Select_tooltip.prototype.toggle_bottom = function (_is_bottom) {
+	$.test_msg('Tooltip toggle_bottom', _is_bottom);
+	
 	var _content = this.get_ui().find(".tip-content:first");
 	var _item_ui = this._item.get_ui();
 	
@@ -526,6 +532,7 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 		
 		setTimeout(function () {
              _ui.removeClass("loading");
+			 _this._item.adjust_note();
              _this.setup_position();
 			 $.trigger_callback(_callback);    
         }, 0);
