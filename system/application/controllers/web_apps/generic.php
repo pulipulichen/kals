@@ -149,7 +149,11 @@ class generic extends Web_apps_controller {
             'navigation/Common_navigation',
             'navigation/Window_filter',
             'navigation/Window_filter_submit',
-            'navigation/Window_map',
+            
+            /**
+             * 20131116 婷芸小地圖
+             */
+            'extension/map/Window_map',
 
             'kals_toolbar/Toolbar_component',
             'kals_toolbar/Toolbar_toggle_component',
@@ -361,7 +365,7 @@ class generic extends Web_apps_controller {
         */
         
         $exception_list = $this->_get_javascript_exception_list();
-        $other_list_package = $this->_get_javascript_list($exception_list);
+        $other_list_package = $this->_dir_get_list(".js", $exception_list);
         $list_package = array_merge($list_package, $other_list_package);
         
         if (is_null($return_list))
@@ -411,6 +415,8 @@ class generic extends Web_apps_controller {
         return $files;
     }
     
+    // --------------------------------
+    
     /**
      * 測試用
      */
@@ -442,7 +448,7 @@ class generic extends Web_apps_controller {
     /**
      * 取得web_apps底下的資料夾
      */
-    private function _get_javascript_list($exception_list) {
+    private function _dir_get_list($needle, $exception_list = array()) {
         $this->load->helper('directory');
         
         $files = array();
@@ -451,7 +457,7 @@ class generic extends Web_apps_controller {
         $dir = "";
         
         //print_r($file);
-        $files = $this->_get_javascript_file_path($files, $dir, $file, $exception_list);
+        $files = $this->_dir_get_file_path($needle, $files, $dir, $file, $exception_list);
         
         return $files;
     }
@@ -464,7 +470,7 @@ class generic extends Web_apps_controller {
      * @param array $exception_list 排除清單
      * @return array
      */
-    private function _get_javascript_file_path($files, $dir, $file, $exception_list) {
+    private function _dir_get_file_path($needle, $files, $dir, $file, $exception_list = array()) {
        
         /**
          * 避免目錄太深
@@ -473,11 +479,12 @@ class generic extends Web_apps_controller {
            return $files;
        }
         
-       $needle = ".js";
+       //$needle = ".js";
        if (is_string($file)) {
            if (substr($file, (0-strlen($needle))) === $needle) {
                $file = substr($file, 0, (0-strlen($needle)));
                $path = $dir . $file;
+               
                if (FALSE === in_array($path, $exception_list)) {
                    $files[] = $path;
                }
@@ -490,12 +497,14 @@ class generic extends Web_apps_controller {
                    $child_dir = $dir . $d . "/";
                }
                
-               $files = $this->_get_javascript_file_path($files, $child_dir, $f, $exception_list);
+               $files = $this->_dir_get_file_path($needle, $files, $child_dir, $f, $exception_list);
            }
        }
        
        return $files;
     }
+    
+    // --------------------------
 
     function package($is_demo = NULL) {
 	
@@ -579,8 +588,9 @@ class generic extends Web_apps_controller {
         */
         //print_r($files);
         
-        $files = $this->dirmap("style");
-        //$files = array();
+        //$files = $this->dirmap("style");
+        
+        $files = $this->_dir_get_list(".css");
         
         $this->pack_css($files, 'style');
     }
