@@ -587,7 +587,7 @@ List_collection.prototype.set_topic_id = function(_id) {
 
 /**
  * 新增時從頭新增嗎？
- * @type boolean
+ * @type boolean true=從頭; false=從尾巴
  */
 List_collection.prototype._$default_add_item_from_head = false;
 

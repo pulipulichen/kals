@@ -36,6 +36,13 @@ include_once 'web_apps_controller.php';
 27=發生錯誤:錯誤內容
 28=查看說明
 29=小地圖點選章節標題，note={index:1, title:"標題內文"}
+30=搜尋 標註筆記
+31=搜尋 作者
+32=搜尋 標註類型
+33=搜尋 文章
+34=最新標註
+
+ * 
  *
  * @package		KALS
  * @category		Controllers

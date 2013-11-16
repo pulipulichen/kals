@@ -926,44 +926,30 @@ class Annotation_getter extends Web_apps_controller {
         }   
 
         //log區
-        $array_data = NULL;
-        if (is_string($json))
-            $array_data = json_to_array($json);
-        else
-            $array_data = (array) $json;
-        $user_id = NULL;
-        if (isset($user))
-            $user_id = $user->get_id();
-
-        $action = 12;
-        if (isset($data->topic_id)
-            && isset($data->target_topic) && $data->target_topic === FALSE
-            && isset($data->limit) == FALSE)
-            $action = 16;
-
-        $do_log = TRUE;
-        if (isset($data->limit) && $data->limit == 5)
-            $do_log = FALSE;
-        
-        if (isset($data->target_my))
-        {
-            if ($data->target_my == FALSE)
-                $do_log = FALSE;
+        $action = 30;
+        switch ( $data->search_range ) {
+            case "author": 
+                $action = 31;
+                break;
+           case "annotation_type": //標註類型
+                $action = 32;
+                break;
+            case "annotation_anchor":
+                $action = 33;
+                break;   
         }
-        else if ($user_id == NULL)
-        {
-
-            $action = 17;
-            if (isset($data->topic_id)
-                && isset($data->target_topic) && $data->target_topic === FALSE
-                && isset($data->limit) == FALSE)
-                $action = 18;
+        
+        if ($data->search_range == "note" && $data->keyword == "*"
+            && $data->order_by == "update") {
+            $action = 34;
         }
          
-        if ($do_log)
-        {
-            kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
-        }
+        kals_log($this->db, $action, array(
+            "keyword" => $data->keyword,
+            "order_by" => $data->order_by,
+            "total_count" => $output_data['total_count']
+        ));
+        
         context_complete();
 
         if ($enable_profiler != TRUE) {
