@@ -348,7 +348,7 @@ Type_menu.prototype.setup_position = function () {
 	
 	var _type_offset = _type_ui.offset();
 	var _type_right = _type_ui.width();
-	$.test_msg("setup_position", [_type_offset.left, _type_ui.width(), _type_right]);
+	//$.test_msg("setup_position", [_type_offset.left, _type_ui.width(), _type_right]);
 	_ui.css("left", _type_right + "px");
 	
 	_ui.css("top", "-50px");
