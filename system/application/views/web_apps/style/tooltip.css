@@ -109,6 +109,10 @@
     -khtml-border-radius: 5px 5px 0 0 ;
 	
 	display:block;
+	
+	max-height: 200px;
+	max-width: 200px;
+	overflow: hidden;
 }
 
 .KALS.tooltip.has-annotation .list-item-tooltip .count-component {

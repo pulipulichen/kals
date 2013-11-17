@@ -249,7 +249,8 @@ Select_tooltip.prototype.setup_position = function (_callback) {
         }   //if (Math.abs( _tip_left - _trigger_offset.left) > 50 ) {
         */
 		
-		_tip.removeClass('bottom')
+		_tip
+                  //.removeClass('bottom')
 		  .removeClass('left')
 		  .removeClass('right');
 		
@@ -271,14 +272,18 @@ Select_tooltip.prototype.setup_position = function (_callback) {
 		var _at_x = "center";
 		var _changed = false;
 		
-		if (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) {
-			_tip.addClass('bottom');
+		if ( _tip_offset.top > _trigger.offset().top && 
+                    (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
+			//_tip.addClass('bottom');
 			_my_y = "top";
 			_at_y = "bottom";
 			_is_bottom = true;
 			_changed = true;
 		}
+		
+                $.test_msg('tooltip is bottom', [_tip_offset.top, [window.pageYOffset, _margin_width, KALS_toolbar.get_height()], _is_bottom]);
 		this.toggle_bottom(_is_bottom);
+		//this.toggle_bottom(true);
 		
 		if (_tip_offset.left < window.pageXOffset + _margin_width) {
 			_my_x = "left";
@@ -309,8 +314,30 @@ Select_tooltip.prototype.setup_position = function (_callback) {
 		
         
 		$.trigger_callback(_callback);
-		
+    return this;
     //}, 0);    //setTimeout(function () {
+};
+
+/**
+ * 確認是否是bottom模式
+ */
+Select_tooltip.prototype.check_bottom = function () {
+	var _tip = this._tip;
+    var _trigger = this._trigger; 
+    var _event = this._event;
+	
+	var _bottom = "bottom";
+	var _tip_offset = _tip.offset();
+	var _margin_width = 5; 
+	//var _is_bottom = false;
+	if ( _tip_offset.top > _trigger.offset().top && 
+                    (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
+        //_is_bottom = true;
+		_tip.addClass(_bottom);
+    }
+	else {
+		_tip.removeClass(_bottom);
+	}
 };
 
 /**
@@ -323,11 +350,15 @@ Select_tooltip.prototype.toggle_bottom = function (_is_bottom) {
 	var _content = this.get_ui().find(".tip-content:first");
 	var _item_ui = this._item.get_ui();
 	
+        var _tip = _content.parent();
+        
 	if (_is_bottom) {
 		_item_ui.appendTo(_content);
+                _tip.addClass('bottom');
 	}
 	else {
 		_item_ui.prependTo(_content);
+                _tip.removeClass('bottom');
 	}
 };
 
@@ -520,7 +551,7 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 		if (_data.count > 0) {
 			var _annotation_json = _data.annotation;
 			var _param = new Annotation_param(_annotation_json);
-            _this._item.set_data(_param);
+                        _this._item.set_data(_param);
 			
 			var _count = _data.count;
 			_this._item.set_count(_count);
@@ -530,11 +561,34 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 		}
 		//_ui.css("visibility", "visible");
 		
+         _this._item.adjust_note();
 		setTimeout(function () {
-             _ui.removeClass("loading");
-			 _this._item.adjust_note();
-             _this.setup_position();
-			 $.trigger_callback(_callback);    
+             
+			 
+			 _ui.removeClass("loading");
+			 
+			 _this.setup_position(function () {
+			 	//setTimeout(function () {
+				//	_this.check_bottom();
+				//}, 1000);	
+			 });
+			 $.trigger_callback(_callback);
+			 
+			 /*
+			 _ui.appendTo($('body'));
+			 
+			 setTimeout(function () {
+			 	_this._item.adjust_note(function () {
+					_ui.addClass("loading");
+                    _this.setup_position(function () {
+						_ui.removeClass("loading");
+					});
+                 });
+			 }, 0);
+			 */ 
+             
+				
+			     
         }, 0);
 	};
 	

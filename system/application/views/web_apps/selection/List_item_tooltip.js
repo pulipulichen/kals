@@ -48,6 +48,8 @@ List_item_tooltip.prototype._$create_ui = function () {
     return _ui;
 };
 
+List_item_tooltip.prototype._$max_width = 200;
+
 /**
  * 顯示標註數量
  */

@@ -222,7 +222,7 @@ List_note_component.prototype._create_note_container = function () {
  * 把筆記的內容放到List當中
  * @param {String} _note
  */
-List_note_component.prototype.set_note = function (_note) {
+List_note_component.prototype.set_note = function (_note, _callback) {
     if ($.is_null(_note)) {
         _note = this._item.get_data().note;
 		
@@ -259,9 +259,15 @@ List_note_component.prototype.set_note = function (_note) {
     
 	var _this = this;
         _this.adjust_note();
-	setTimeout(function () {
-		_this.adjust_note();
-	}, 200);
+		
+    if (true) {
+		setTimeout(function () {
+            _this.adjust_note(function () {
+                $.trigger_callback(_callback);
+            });
+        }, 200);
+	}
+		
     
     return this;
 };
@@ -349,7 +355,7 @@ List_note_component.prototype.extract_abstract = function (_note) {
 /**
  * 縮小圖片
  */
-List_note_component.prototype.adjust_note = function () {
+List_note_component.prototype.adjust_note = function (_callback) {
 	//if (this._note_container.hasClass('adjusted')) {
 	//	return this;
 	//}
@@ -370,7 +376,10 @@ List_note_component.prototype.adjust_note = function () {
 		//}, 100);
 			
 		//});
-		return this;
+		$.trigger_callback(_callback);
+	    return this;
+		
+		//_max_width = 195;
 	}
 	//var _safe_margin = 25;
 	//_max_width = _max_width - _safe_margin;
@@ -418,6 +427,7 @@ List_note_component.prototype.adjust_note = function () {
     
 	//this._note_container.addClass('adjusted');
 	
+	$.trigger_callback(_callback);
 	return this;
 };
 

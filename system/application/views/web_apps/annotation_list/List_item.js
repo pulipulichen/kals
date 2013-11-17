@@ -149,12 +149,14 @@ List_item.prototype._setup_note = function () {
     return _component;
 };
 
+List_item.prototype._$max_width = 300;
+
 /**
  * 調整筆記的內容
  */
-List_item.prototype.adjust_note = function () {
+List_item.prototype.adjust_note = function (_callback) {
 	if (this.note !== null) {
-		this.note.adjust_note();
+		this.note.adjust_note(_callback);
 	}
 	return this;
 };
