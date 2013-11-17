@@ -375,6 +375,10 @@
     cursor:pointer;   
 }
 
+.KALS .list-note-component .link-setted {
+	cursor:pointer;
+}
+
 .KALS .list-note-component .respond-container .respond-to {
     cursor:pointer;
     text-decoration:underline;

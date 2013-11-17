@@ -342,7 +342,7 @@ List_note_component.prototype.extract_abstract = function (_note) {
 		_view.appendTo(_result);
     }
 	else {
-		_result = $('<span>'+_result+'</span>');
+		_result = $('<span>'+_origin_text+'</span>');
 	}
 	
 	//var _max_width = this.get_ui().parents('.KALS').width();
@@ -360,7 +360,42 @@ List_note_component.prototype.adjust_note = function (_callback) {
 	//	return this;
 	//}
 	
-	$.test_msg('adjust note start');
+	//$.test_msg('adjust note start');
+	
+    
+    var _result = this._note_container;
+	
+     
+    // 幫超連結加上target=_blank
+    _result.find('a, img').each(function (_index, _a) {
+		
+        _a = $(_a);
+		
+		if (_a.hasClass('link-setted')) {
+			return;
+		}
+		
+        //_a.attr('target', '_blank');
+        //_a.css('border', '1px solid red');
+        
+		var _link;
+		if (_a.hasAttr('src')) {
+			_link = _a.attr('src');
+		}
+		else if (_a.hasAttr('href')) {
+            _link = _a.attr('href');
+        }
+		
+        //防止點選時跳出網頁
+        _a.click(function (_e) {
+			window.open(_link, '_blank');
+            _e.preventDefault();
+        });
+		
+		_a.addClass('link-setted');
+    });
+	
+	
 	
 	var _max_width = this._note_container.width();
 	if (_max_width === 0) {
@@ -371,7 +406,7 @@ List_note_component.prototype.adjust_note = function (_callback) {
 			_this.adjust_note;
 		}, 100);
 		*/
-		$.test_msg('adjust_note', _max_width);
+		//$.test_msg('adjust_note', _max_width);
 		//this._note_container.ready(function () {
 		//setTimeout(function () {
 		//	_this.adjust_note();
@@ -385,15 +420,13 @@ List_note_component.prototype.adjust_note = function (_callback) {
 	}
 	//var _safe_margin = 25;
 	//_max_width = _max_width - _safe_margin;
-	
-	var _result = this._note_container;
     // 縮小筆記內的資料
     _result.find('img, iframe, object, embed').each(function (_index, _ele) {
         _ele = $(_ele);
         //_ele.css('border', '1px solid red');
         var _width = _ele.width();
         
-        $.test_msg('縮小圖片', [_width, _max_width]);
+        //$.test_msg('縮小圖片', [_width, _max_width]);
         if (_width > _max_width) {
             var _height = _ele.height();
             
@@ -409,27 +442,7 @@ List_note_component.prototype.adjust_note = function (_callback) {
                 //_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
             //}
 			_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
-            
-            //加上連結
-            if (_ele.attr('tagName').toLowerCase() == 'img' && _ele.hasAttr('src')) {
-                _ele.click(function (_e) {
-                    _e.preventDefault();
-                    var _src = this.src;
-                    window.open(_src, '_blank');
-                });
-            }
         }
-    });
-     
-    // 幫超連結加上target=_blank
-    _result.find('a').each(function (_index, _a) {
-        _a = $(_a);
-        _a.attr('target', '_blank');
-		
-		//防止點選時跳出網頁
-		_a.click(function (_e) {
-            _e.preventDefault();
-		});
     });
     
 	//this._note_container.addClass('adjusted');
