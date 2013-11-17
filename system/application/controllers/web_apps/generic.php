@@ -67,7 +67,7 @@ class generic extends Web_apps_controller {
             , 'core/KALS_language_param'
             , 'core/feedback/feedback'
             , 'core/feedback/html2canvas'
-            , 'toolkit/jQuery_kals_plugin'
+            , 'helpers/jQuery_kals_plugin'
             , 'toolkit/KALS_user_interface' //Qunit
             , 'toolkit/KALS_modal'
             , 'toolkit/Overlay_modal'

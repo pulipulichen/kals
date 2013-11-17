@@ -55,6 +55,12 @@ KALS_util.ajax_get = function (_config) {
 		_url = _url + 'callback=?';
 	}
     
+	if (_url.indexOf('http') === 0 || _url.indexOf('%22') === 0) {
+		$.test_msg('ajax get exception', 'KALS_util.ajax_get try to load exception url: ' + _url);
+		//throw ;
+		return this;
+	}
+	
     if (typeof(KALS_context) != 'undefined') {
         //while ($.starts_with(_url, '/'))
         //    _url = _url.substring(1, _url.length);
@@ -112,7 +118,8 @@ KALS_util.ajax_get = function (_config) {
 			//	&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
                 if (KALS_context !== undefined
                     && KALS_context.completed === true) {
-		            $.test_msg('ajax_get from ' + _url + ' return data', _data);
+						
+		            $.test_msg('ajax_get from ' + _url + ' \n return data', _data);
                 }
 			//}
 			
