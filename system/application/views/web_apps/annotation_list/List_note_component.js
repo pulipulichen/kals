@@ -360,8 +360,10 @@ List_note_component.prototype.adjust_note = function (_callback) {
 	//	return this;
 	//}
 	
+	$.test_msg('adjust note start');
+	
 	var _max_width = this._note_container.width();
-	if (_max_width == 0) {
+	if (_max_width === 0) {
 		//return this;
 		var _this = this;
 		/*
@@ -423,6 +425,11 @@ List_note_component.prototype.adjust_note = function (_callback) {
     _result.find('a').each(function (_index, _a) {
         _a = $(_a);
         _a.attr('target', '_blank');
+		
+		//防止點選時跳出網頁
+		_a.click(function (_e) {
+            _e.preventDefault();
+		});
     });
     
 	//this._note_container.addClass('adjusted');

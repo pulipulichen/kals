@@ -272,7 +272,7 @@ Select_tooltip.prototype.setup_position = function (_callback) {
 		var _at_x = "center";
 		var _changed = false;
 		
-		if ( _tip_offset.top > _trigger.offset().top && 
+		if ( _tip_offset.top > _trigger.offset().top || 
                     (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
 			//_tip.addClass('bottom');
 			_my_y = "top";
@@ -281,7 +281,8 @@ Select_tooltip.prototype.setup_position = function (_callback) {
 			_changed = true;
 		}
 		
-                $.test_msg('tooltip is bottom', [_tip_offset.top, [window.pageYOffset, _margin_width, KALS_toolbar.get_height()], _is_bottom]);
+		//$.test_msg('tooltip is bottom [1]', [_tip_offset.top, _trigger.offset().top]);
+        //$.test_msg('tooltip is bottom [2]', [_tip_offset.top, [window.pageYOffset, _margin_width, KALS_toolbar.get_height()], _is_bottom]);
 		this.toggle_bottom(_is_bottom);
 		//this.toggle_bottom(true);
 		
@@ -293,7 +294,7 @@ Select_tooltip.prototype.setup_position = function (_callback) {
 		}
 		
 		if (_tip_offset.left + _tip.width() > window.pageXOffset + $("body").width() + _margin_width) {
-			$.test_msg("tip right", [[_tip_offset.left, _tip.width(), _tip_offset.left + _tip.width()], [window.pageXOffset, $("body").width(), _margin_width]]);
+			//$.test_msg("tip right", [[_tip_offset.left, _tip.width(), _tip_offset.left + _tip.width()], [window.pageXOffset, $("body").width(), _margin_width]]);
 			
             _my_x = "right";
             _at_x = "right"; 
@@ -345,7 +346,7 @@ Select_tooltip.prototype.check_bottom = function () {
  * @param {boolean} _is_bottom
  */
 Select_tooltip.prototype.toggle_bottom = function (_is_bottom) {
-	$.test_msg('Tooltip toggle_bottom', _is_bottom);
+	//$.test_msg('Tooltip toggle_bottom', _is_bottom);
 	
 	var _content = this.get_ui().find(".tip-content:first");
 	var _item_ui = this._item.get_ui();
@@ -546,7 +547,7 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 	
 	var _this = this;
 	var _ajax_callback = function (_data) {
-		$.test_msg("load_tooltip_annotation", _data);
+		//$.test_msg("load_tooltip_annotation", _data);
 		
 		if (_data.count > 0) {
 			var _annotation_json = _data.annotation;
@@ -564,31 +565,41 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
          _this._item.adjust_note();
 		setTimeout(function () {
              
+			 // @author Pulipuli Chen 20131117 17:16 
+			 // 這是可以用的版本
 			 
 			 _ui.removeClass("loading");
-			 
 			 _this.setup_position(function () {
-			 	//setTimeout(function () {
-				//	_this.check_bottom();
-				//}, 1000);	
+			 	_this._item.adjust_note(function () {
+					
+					// 調整過note之後，位置會有所改變，所以需要再調整
+					
+					setTimeout(function () {
+						//$.test_msg('第二次 setup_position');
+						_this.setup_position();
+					}, 0);
+				});
 			 });
 			 $.trigger_callback(_callback);
 			 
-			 /*
-			 _ui.appendTo($('body'));
+			 //_this.setup_position(function () {
+			 	//setTimeout(function () {
+				//	_this.check_bottom();
+				//}, 1000);	
+			 //});
 			 
-			 setTimeout(function () {
-			 	_this._item.adjust_note(function () {
-					_ui.addClass("loading");
-                    _this.setup_position(function () {
-						_ui.removeClass("loading");
-					});
-                 });
-			 }, 0);
-			 */ 
-             
-				
-			     
+			 
+			 
+			 //_ui.appendTo($('body'));
+			 
+			 //setTimeout(function () {
+			 //	_this._item.adjust_note(function () {
+			 //		_ui.addClass("loading");
+             //       _this.setup_position(function () {
+			 //			_ui.removeClass("loading");
+			 //		});
+             //    });
+			 //}, 0);     
         }, 0);
 	};
 	
