@@ -14,7 +14,7 @@
 /* tooltip */
 
 .KALS.tooltip {
-    display:none;
+    /*display:none;*/
     font-size: 14px;
     margin: 0;
 }

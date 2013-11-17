@@ -2362,6 +2362,45 @@ jQuery.decodeURIComponent = function (_str) {
     return _result;
 };
 
+/**
+ * 把文字字串轉換成為html
+ * @param {String} _text
+ */
+jQuery.replace_url_with_html_links = function (_text) {
+    var _exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    return _text.replace(_exp,"<a href='$1'>$1</a>"); 
+};
+
+/**
+ * 把文字字串轉換成為YouTube
+ * @param {String} _message
+ */
+jQuery.find_and_replace_youtube_links = function (_message) {
+	
+    //return _message.replace(/(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([^&]+).*/g,
+	//   function ($1) {
+	//   	   return $.embad_youtube_script($1);
+	//   });
+   return _message.replace(/(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, '<iframe width="420" height="345" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>'); 
+};
+
+/**
+ * 輸入ID轉換成為YouTube播放介面
+ * @param {String} youtube_id
+ */
+jQuery.embad_youtube_script = function(_youtube_id)
+{
+	$.test_msg('embed_youtube_script', _youtube_id);
+    return '<object height="250" width="300">'
+	   //+ '<param name="movie" value="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
+	   + '<param name="movie" value="' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
+	   + '<param name="allowFullScreen" value="true">'
+	   + '<param name="allowscriptaccess" value="always">'
+	   //+ '<embed allowfullscreen="true" allowscriptaccess="always" src="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
+	   + '<embed allowfullscreen="true" allowscriptaccess="always" src="' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
+	   + '</object>';   
+};
+
 $.widget("ui.dialog", $.ui.dialog, {
 	_allowInteraction: function(event) {
 		return !!$(event.target).closest(".cke").length || this._super(event);

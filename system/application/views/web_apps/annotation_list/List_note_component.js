@@ -349,6 +349,8 @@ List_note_component.prototype.extract_abstract = function (_note) {
 	
 	//_result.appendTo($('body'));
 	
+	_result.addClass('note-content');
+	
 	return _result;   
 };
 
@@ -365,6 +367,37 @@ List_note_component.prototype.adjust_note = function (_callback) {
     
     var _result = this._note_container;
 	
+	/*
+	var _text = _result.html();
+	_text = $.find_and_replace_youtube_links(_text);
+	_result.html(_text);
+	*/
+	
+	/*
+	_result.find('.note-content:first').contents().each(function() {
+	
+	    // Skip non text nodes.
+	    if (this.nodeType !== 3) {
+	        return true;
+	    }
+	
+	    // Grab text
+	    var matches = $(this).html().match(/(?:https:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g);
+	
+	    if (!matches) {
+	        return true;
+	    }
+	
+	    var iframe = $('<iframe width="420" height="345" frameborder="0" allowfullscreen />', {
+	        src: 'http://www.youtube.com/embed/' + matches[1]
+	    });
+	
+	    iframe.insertAfter(this);
+	
+	    $(this).remove();
+	
+	});
+	*/
      
     // 幫超連結加上target=_blank
     _result.find('a, img').each(function (_index, _a) {
