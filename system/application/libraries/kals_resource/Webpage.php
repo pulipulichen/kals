@@ -95,6 +95,11 @@ class Webpage extends KALS_resource {
         //插入權限檢查
         //$this->auth->allow(2);
 
+        // 過濾url
+        if (isset($data['url'])) {
+            $data['url'] = url_strip_index($data['url']);
+        }
+        
         if (FALSE === isset($data['title'])
             OR is_null($data['title']))
         {
@@ -116,10 +121,15 @@ class Webpage extends KALS_resource {
     {
         //插入權限檢查
         //$this->auth->allow(2);
+        
+        // 過濾url
+        if (isset($data['url'])) {
+            $data['url'] = url_strip_index($data['url']);
+        }
+        
         if ((FALSE === isset($data['domain_id'])
             OR is_null($data['domain_id']))
-            && isset($data['url']))
-        {
+            && isset($data['url'])) {
             $domain = $this->CI->domain->create($data['url']);
             $data['domain_id'] = $domain->get_id();
         }
@@ -135,18 +145,21 @@ class Webpage extends KALS_resource {
     public function get_domain()
     {
         $domain_id = $this->get_field('domain_id');
-        if ($domain_id != NULL)
+        if ($domain_id != NULL) {
             return new Domain($domain_id);
-        else
+        }
+        else {
             return NULL;
+        }
     }
 
     public function get_url()
     {
         $uri = $this->get_field('uri');
         $domain = $this->get_domain();
-        if (is_null($domain))
+        if (is_null($domain)) {
             return NULL;
+        }
         $host = $domain->get_field('host');
         $url = combine_url($host, $uri);
         return $url;
@@ -162,16 +175,20 @@ class Webpage extends KALS_resource {
         return $this->get_field('title');
     }
 
+    /**
+     * 搜尋出$webpage的ID
+     * @param String|Int|Webpage $webpage_id 可以輸入網址或是Webpage物件
+     * @return Webpage
+     */
     public function filter_webpage_id($webpage_id)
     {
-        if (is_object($webpage_id))
-            $webpage_id = $webpage_id->get_id();
-        if (is_string($webpage_id) && url_is_link($webpage_id, FALSE))
-        {
-            $webpage = $this->create(array('url' => $webpage_id));
-            $webpage_id = $webpage->get_id();
+        $webpage = $this->filter_webpage_object($webpage_id);
+        if (is_null($webpage) === FALSE) {
+            return $webpage->get_id();
         }
-        return $webpage_id;
+        else {
+            return null;
+        }
     }
 
     /**
@@ -180,11 +197,15 @@ class Webpage extends KALS_resource {
      */
     public function filter_webpage_object($webpage)
     {
-        if (is_object($webpage))
+        if (is_object($webpage)) {
             return $webpage;
+        }
         if (is_string($webpage) && url_is_link($webpage, FALSE))
         {
-            $webpage = $this->create(array('url' => $webpage));
+            // Pulipuli Chen 2013117
+            // 加入網址過濾
+            $url = url_strip_index($webpage);
+            $webpage = $this->create(array('url' => $url));
             return $webpage;
         }
         else

@@ -127,9 +127,49 @@ if ( ! function_exists('get_client_ip'))
 if ( !function_exists("kals_json_encode")) {
     function kals_json_encode($arr)
     {
-            //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
-            array_walk_recursive($arr, function (&$item, $key) { if (is_string($item)) $item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8'); });
-            return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+        if (defined('JSON_UNESCAPED_UNICODE') === TRUE ) {
+            //return json_encode($arr, JSON_UNESCAPED_UNICODE);
+        }
+        
+        //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
+        array_walk_recursive($arr, 
+            function (&$item, $key) { 
+                if (is_string($item)) {
+                    //$item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+                    mb_convert_encoding($item, 'HTML-ENTITIES', 'utf-8');
+                }
+            });
+        //return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+        //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
+        $arr = json_encode($arr);
+        
+        $arr = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                        function($matches) {
+                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+                        }, $arr);
+        return $arr;
+        
+        //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
+        
+        /*
+        array_walk_recursive($arr, 
+            function (&$item, $key) { 
+                if (is_string($item)) {
+                    $item = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                        function($matches) {
+                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+                        }, $item);
+                }
+            });
+        */
+        /*
+        array_walk_recursive($arr, function(&$item, $key) {
+            if(is_string($item)) {
+                $item = htmlentities($item);
+            }
+        });
+         */
+        //return json_encode($arr);
     }
 }
 
