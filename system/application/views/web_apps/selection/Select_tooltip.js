@@ -568,7 +568,7 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 			 // @author Pulipuli Chen 20131117 17:16 
 			 // 這是可以用的版本
 			 
-			 _ui.removeClass("loading");
+			 
 			 _this.setup_position(function () {
 			 	_this._item.adjust_note(function () {
 					
@@ -576,6 +576,7 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 					
 					setTimeout(function () {
 						//$.test_msg('第二次 setup_position');
+						_ui.removeClass("loading");
 						_this.setup_position();
 					}, 0);
 				});

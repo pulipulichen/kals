@@ -110,7 +110,7 @@
 	
 	display:block;
 	
-	max-height: 200px;
+	/*max-height: 200px;*/
 	max-width: 200px;
 	overflow: hidden;
 }
@@ -137,7 +137,8 @@
 
 .KALS.tooltip.loading .tip-needle,
 .KALS.tooltip.loading .tip-content {
-    display:none !important;
+    /*display:none !important;*/
+	visibility:hidden;
 }
 
 .KALS.tooltip.selected.bottom.has-annotation .tip-content {
