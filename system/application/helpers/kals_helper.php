@@ -17,6 +17,12 @@ if ( ! function_exists('get_referer_url'))
 	function get_referer_url($show_exception = FALSE)
 	{
             $url = getenv("HTTP_REFERER");
+            if ($url === FALSE) {
+                if (isset($GLOBALS['context']) !== FALSE) {
+                    $url = $GLOBALS['context']->get_referer_url();
+                }
+            }
+            
             if ($url !== FALSE)
             {
                 /**
@@ -28,10 +34,18 @@ if ( ! function_exists('get_referer_url'))
                 if (substr($url, -1, 1) == "/") {
                     $url = substr($url, 0, -1);
                 }
+                
+                if (isset($GLOBALS['context']) !== FALSE) {
+                    $GLOBALS['context']->set_referer_url($url);
+                }
+                
                 return $url;
             }
             else
             {
+                
+            
+                
                 if ($show_exception)
                 {
                     handle_error ('Cannot get referer url.');
