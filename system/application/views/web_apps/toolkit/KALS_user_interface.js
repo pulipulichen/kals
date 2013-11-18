@@ -121,6 +121,7 @@ KALS_user_interface.prototype._$create_ui_prototype = function (_element) {
 KALS_user_interface.prototype._load_template = function () {
     if (typeof(KALS_context) !== 'undefined' && KALS_context.template !== null) {
 		var _template = KALS_context.template.get_template(this._$template);
+		_template = this._initialize_template(_template);
         return _template;
     }
     else {
@@ -133,7 +134,7 @@ KALS_user_interface.prototype._load_template = function () {
  * @param {Object} _template
  */
 KALS_user_interface.prototype._initialize_template = function (_template) {
-	_template = this._initialize_event(_template);
+	_template = this._initialize_events(_template);
 	return _template;
 };
 
@@ -407,20 +408,20 @@ KALS_user_interface.prototype.find = function(_param) {
  * @param {String} _field
  * @param {String} _value
  */
-KALS_user_interface.prototype.set_field = function (_field, _value) {
+KALS_user_interface.prototype.set_field = function (_field, _value, _ele) {
 	
 	// 如果是多個欄位，則使用set_fields
 	if ($.is_object(_field)) {
-		return this.set_fields(_field);
+		return this.set_fields(_field, _ele);
 	}
 	
 	// 如果是單一欄位，則繼續處理
 	this._data[_field] = _value;
 	
-    this.reset_field_text(_field);
-	this.set_field_text(_field, _value);
+    this.reset_field_text(_field, _ele);
+	this.set_field_text(_field, _value, _ele);
 	
-	this.set_field_attrs(_field, _value);
+	this.set_field_attrs(_field, _value, _ele);
 	
 	return this;
 };
@@ -432,19 +433,19 @@ KALS_user_interface.prototype.set_field = function (_field, _value) {
  * @param {String} _field
  * @param {String} _value
  */
-KALS_user_interface.prototype.set_sub_field = function (_field, _value) {
+KALS_user_interface.prototype.set_sub_field = function (_field, _value, _ele) {
     
     // 如果是多個欄位，則使用set_fields
     if ($.is_object(_field)) {
-        return this.set_fields(_field);
+        return this.set_sub_fields(_field, _ele);
     }
     
     // 如果是單一欄位，則繼續處理
     
-    this.reset_field_text(_field);
-    this.set_field_text(_field, _value);
+    this.reset_field_text(_field, _ele);
+    this.set_field_text(_field, _value, _ele);
     
-    this.set_field_attrs(_field, _value);
+    this.set_field_attrs(_field, _value, _ele);
     
     return this;
 };
@@ -453,10 +454,20 @@ KALS_user_interface.prototype.set_sub_field = function (_field, _value) {
  * 設定多個欄位時使用的方式
  * @param {Object} _fields
  */
-KALS_user_interface.prototype.set_fields = function (_fields) {
+KALS_user_interface.prototype.set_fields = function (_fields, _ele) {
 	for (var _field_name in _fields) {
-		this.set_field(_field_name, _fields[_field_name]);
+		this.set_field(_field_name, _fields[_field_name], _ele);
 	}
+};
+
+/**
+ * 設定多個欄位時使用的方式
+ * @param {Object} _fields
+ */
+KALS_user_interface.prototype.set_sub_fields = function (_fields, _ele) {
+    for (var _field_name in _fields) {
+        this.set_sub_field(_field_name, _fields[_field_name], _ele);
+    }
 };
 
 /**
@@ -481,6 +492,12 @@ KALS_user_interface.prototype._init_attrs = KALS_CONFIG.template.init_attrs;;
 KALS_user_interface.prototype._kals_attrs = KALS_CONFIG.template.kals_attrs;;
 
 /**
+ * KALS自訂的事件
+ */
+KALS_user_interface.prototype._kals_events = KALS_CONFIG.template.kals_events;
+
+
+/**
  * 設定文字節點
  * @param {String} _field
  * @param {String} _value
@@ -492,7 +509,10 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 	}
     
 	var _this = this;
-	var _selector = '['+this._kals_attrs.field+'="'+_field+'"]'; 
+	var _selector = '['+this._kals_attrs.field+'="'+_field+'"]';
+	
+	var _event_field_set = this._kals_events.field_set;
+	 
 	_ui.find(_selector).each(function (_index, _ele) {
         
         _ele = $(_ele);
@@ -536,12 +556,21 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 						_this.set_sub_field(_sub_field, _sub_value[_sub_field], _parent_clone);
 					}
 				}
+				//_this.set_sub_fields(_sub_value, _parent_clone);
             }
             _parent.remove();
 		}
         else {
             _value = _this._value_filter_lang(_value);
-            $(_ele).html(_value);
+			//$(_ele).html(_value);
+			_ele.html(_value);
+			
+			
+			if (_parent.hasAttr(_event_field_set)) {
+				//var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
+				var _event_config = _this._parse_event_config(_parent, _event_field_set);
+				_this._trigger_controller(_ele, _event_config);
+			}
         }
     }); 
 	
@@ -558,7 +587,7 @@ KALS_user_interface.prototype._get_field_parent = function (_field, _ele) {
 	
 	var _parent = _field_parent.parents('['+this._kals_attrs.field_repeat+'="'+_field+'"]:first');
 	if (_parent.length === 0) {
-		_parent = _parent.parent();
+		_parent = _field_parent.parent();
 	}
 	return _parent;
 };
@@ -568,11 +597,11 @@ KALS_user_interface.prototype._get_field_parent = function (_field, _ele) {
  * @param {String} _field
  * @param {String|Object} _value
  */
-KALS_user_interface.prototype.set_field_attrs = function (_field, _value) {
+KALS_user_interface.prototype.set_field_attrs = function (_field, _value, _ele) {
 	var _attr_names = this._attr_names;
 	for (var _i in _attr_names) {
         var _attr_name = _attr_names[_i];
-		this.set_field_attr(_field, _value, _attr_name);
+		this.set_field_attr(_field, _value, _attr_name, _ele);
     }
 	return this;
 }; 
@@ -582,8 +611,11 @@ KALS_user_interface.prototype.set_field_attrs = function (_field, _value) {
  * @param {String} _field
  * @param {String} _value
  */
-KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_name) {
-    var _ui = this.get_ui();
+KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_name, _ui) {
+    if (_ui === undefined) {
+		_ui = this.get_ui();
+	}
+	
     var _this = this;
     var _find = "{{" + _field + "}}";
     _ui.find('['+this._kals_attrs.attr_prefix+_attr_name+'*="'+_field+'"]').each(function (_index, _ele) {
@@ -592,15 +624,24 @@ KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_n
         
 		if ($.is_object(_value)) {
 			for (var _i in _value) {
-				_this.set_field(_i, _value[_i], _jquery_ele);
+				_this.set_sub_field(_i, _value[_i], _jquery_ele);
 			}
 		}
 		else {
+			// 真正設置值
 			var _original_value = _jquery_ele.attr(_attr_name);
             
             var _text = _original_value.replace(new RegExp(_find, 'g'), _value);
             //alert(_text);
             _jquery_ele.attr(_attr_name, _text);
+			
+			if (_jquery_ele.hasAttr(_event_field_set)) {
+                //var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
+                var _event_config = _this._parse_event_config(_jquery_ele, _event_field_set);
+                
+                // 因為沒有事件參數，所以第二個留空？
+                _this._trigger_controller(_jquery_ele, _event_config);
+            }
 		}
     });
 	
@@ -608,12 +649,38 @@ KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_n
 };
 
 /**
+ * 重設欄位
+ * @param {String} _field
+ * @param {jQuery} _ui
+ */
+KALS_user_interface.prototype.reset_field = function (_field, _ui) {
+	this.reset_field_text(_field, _ui);
+	this.reset_field_attr(_field, _ui);
+	return this;
+};
+
+/**
+ * 重設屬性
+ * @param {String} _field
+ * @param {jQuery} _ui
+ */
+KALS_user_interface.prototype.set_field_attrs = function (_field, _ui) {
+    var _attr_names = this._attr_names;
+    for (var _i in _attr_names) {
+        this.reset_field_attr(_field, _attr_name, _ui);
+    }
+    return this;
+}; 
+
+/**
  * 重設屬性
  * @param {String} _field
  * @param {String} _value
  */
-KALS_user_interface.prototype.reset_field_attr = function (_field, _attr_name) {
-    var _ui = this.get_ui();
+KALS_user_interface.prototype.reset_field_attr = function (_field, _attr_name, _ui) {
+    if (_ui === undefined) {
+        _ui = this.get_ui();
+    }
     
     var _find = "{{" + _field + "}}";
 	var _this = this;
@@ -637,24 +704,34 @@ KALS_user_interface.prototype.reset_field_attr = function (_field, _attr_name) {
  * 重設欄位資料
  * @param {String} _field
  */
-KALS_user_interface.prototype.reset_field_text = function (_field) {
-	var _ui = this.get_ui();
+KALS_user_interface.prototype.reset_field_text = function (_field, _ui) {
+	if (_ui === undefined) {
+        _ui = this.get_ui();
+    }
     
     //$.test_msg('reset: ' + '[kals-field="'+_field+'"', _ui.find('[kals-field="'+_field+'"').length);
 	
 	var _repeat_index = this._kals_attrs.repeat_index;
+	var _event_field_reset = this._kals_events.field_reset
 	var _field_origin_value = this._kals_attrs.field
 	   + this._kals_attrs.origin_value_postfix;
 	var _this = this;
-	this.find('[kals-field="'+_field+'"]').each(function (_index, _ele) {
+	_ui.find('[kals-field="'+_field+'"]').each(function (_index, _ele) {
 		_ele = $(_ele);
+		var _parent = _this._get_field_parent(_field, _ele); 
 		if (_ele.hasAttr(_repeat_index) && _ele.attr(_repeat_index) !== '0') {
-			var _parent = _this._get_field_parent(_field, _ele); 
 			_parent.remove();
 			return;
 		}
 		
 		_ele.html(_ele.attr(_field_origin_value));
+		
+		// 觸發重設事件
+		if (_parent.hasAttr(_event_field_reset)) {
+            //var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
+            var _event_config = _this._parse_event_config(_parent, _event_field_reset);
+            _this._trigger_controller(_ele, _event_config);
+        }
 	});
 	
 	return this;
@@ -709,7 +786,7 @@ KALS_user_interface.prototype._event_names = KALS_CONFIG.template.event_names;
 KALS_user_interface.prototype._initialize_events = function (_template) {
 	
 	var _event_names = this._event_names;
-	
+	//$.test_msg('init events', _event_names);
 	for (var _i in _event_names) {
 		var _event_name = _event_names[_i];
 		
@@ -728,43 +805,86 @@ KALS_user_interface.prototype._initialize_event = function(_template, _event_nam
 	var _this = this;
 	var _event_prefix = this._kals_attrs.event_prefix;
     var _kals_event_name = _event_prefix + _event_name;
-        
+    
+	//$.test_msg('init evetn: ' + _event_name, _kals_event_name);
+	
 	_template.find('['+_kals_event_name+']').each(function (_index, _ele) {
 		var _jqele = $(_ele);
 		
-		var _controller = _jqele.attr(_event_name);
-		
-		// 先不支援參數輸入，刪除(之後的值
-		var _function_point = _controller.indexOf("(");
-		var _controller_name = _controller;
-		
-		var _params = [];
-		
-		if (_function_point > -1) {
-			_controller_name = _controller.substr(0, _function_point);
-			
-			
-			var _param_list = _controller.substr(_function_point, _controller.length - _function_point);
-			_param_list = _param_list.substr(1, _param_list.length - 1);
-			_param_list = _param_list.split(',');
-			
-			for (var _i in _param_list) {
-				var _param_value = _param_list[_i];
-				_param_value = $.trim(_param_value);
-				_params.push(_param_value);
-			}
-		}
-		
+		var _event_config = _this._parse_event_config(_jqele, _kals_event_name);
+		var _controller_name = _event_config.name;
+		var _params = _event_config.params;
 		
 		// 要找到這個controller是有值的
 		if (typeof(_this[_controller_name]) == 'function') {
 			_jqele.bind(_event_name, function (_e) {
-				_this[_controller_name](_jqele, _e, _params);
+				_jqele = $(this);
+				_event_config = _this._parse_event_config(_jqele, _event_prefix + _e.type);
+				_controller_name = _event_config.name;
+				_params = _event_config.params;
+				_params.event = _e;
+				$.test_msg('event trigger', [_controller_name, _params]);
+				
+				_this[_controller_name](_jqele, _params);
+				
 			});
 		}
 	});
 	
 	return _template;
+};
+
+/**
+ * 觸動指定事件
+ * @param {jQuery} _ele
+ * @param {String} _event_name
+ */
+KALS_user_interface.prototype._parse_event_config = function (_ele, _event_name) {
+	
+	var _jqele = _ele;
+    //var _kals_event_name = this._event_names._event_prefix + _event_name;
+    
+	if (_jqele.hasAttr(_event_name) === false) {
+		return undefined;
+	}
+	
+    var _controller = _jqele.attr(_event_name);
+    
+    // 先不支援參數輸入，刪除(之後的值
+    var _function_point = _controller.indexOf("(");
+    var _controller_name = _controller;
+    
+    var _params = [];
+    
+    if (_function_point > -1) {
+        _controller_name = _controller.substr(0, _function_point);
+        
+        
+        var _param_list = _controller.substr(_function_point, _controller.length - _function_point);
+        _param_list = _param_list.substr(1, _param_list.length - 1);
+        _param_list = _param_list.split(',');
+        
+        for (var _i in _param_list) {
+            var _param_value = _param_list[_i];
+            _param_value = $.trim(_param_value);
+            _params.push(_param_value);
+        }
+    }
+    
+	return {
+		'name': _controller_name,
+		'params': _params
+	};
+};
+
+KALS_user_interface.prototype._trigger_controller = function (_ele, _config) {
+	var _controller_name = _config.name;
+	
+	if (typeof(this[_controller_name]) == 'function') {
+		var _params = _config.params;
+		return this[_controller_name](_ele, _params);
+	}
+	return this;
 };
 
 /* End of file KALS_user_interface */

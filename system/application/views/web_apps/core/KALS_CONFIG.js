@@ -245,6 +245,10 @@ DEFAULT_KALS_CONFIG = {
             'dblclick',
             'submit'
         ],
+		kals_events: {
+            'field_set': 'kals-event-field-set',
+			'field_reset': 'kals-event-field-reset',
+        },
 		kals_attrs: {
 		    'field': 'kals-field',
 		    'field_parent': 'kals-field-parent',

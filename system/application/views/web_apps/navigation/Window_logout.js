@@ -24,7 +24,8 @@ function Window_logout() {
 	setTimeout(function() {
 		_this.get_ui();
 		
-		_this.set_field('test', ['12121212', '如何？', '試試看吧！！']);
+		_this.set_field('first', '這是第一個值')
+		_this.set_field('test', ['TEST A', 'TEST B 如何？', 'TEST C試試看吧！！']);
 		//_this.set_field('repeat', ['重複1', '重複2', '重複3']);
 		//_this.set_field('repeat', ['重複4', '重複5', '重複6']);
 		//_this.set_field('repeat', ['不重複 啦 7']);
@@ -37,6 +38,8 @@ function Window_logout() {
                 'foot': [2, 'a', 'b']
             }
 		});
+		
+		_this.reset_field('foot');
 	}, 0);
 }
 
@@ -59,8 +62,14 @@ Window_logout.prototype.nav_heading = new KALS_language_param (
 Window_logout.prototype._$template = 'navigation/Window_logout';
 
 
-Window_logout.prototype.action = function (_ele, _event, _params) {
-	alert(1);
+Window_logout.prototype.action = function (_ele, _params) {
+	//alert(121212);
+	_ele.css('color', 'red');
+};
+
+Window_logout.prototype.action_reset = function (_ele, _params) {
+    //alert(121212);
+    _ele.css('color', 'green');
 };
 
 /*
