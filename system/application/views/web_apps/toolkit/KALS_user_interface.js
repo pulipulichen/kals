@@ -421,6 +421,7 @@ KALS_user_interface.prototype.set_field = function (_field, _value, _ele) {
     this.reset_field_text(_field, _ele);
 	this.set_field_text(_field, _value, _ele);
 	
+	//$.test_msg('ui set_field', [_field, _value]);
 	this.set_field_attrs(_field, _value, _ele);
 	
 	return this;
@@ -598,13 +599,21 @@ KALS_user_interface.prototype._get_field_parent = function (_field, _ele) {
  * @param {String|Object} _value
  */
 KALS_user_interface.prototype.set_field_attrs = function (_field, _value, _ele) {
-	var _attr_names = this._attr_names;
+	var _attr_names = this._init_attrs;
+	//$.test_msg('ui set_field_attrs', _attr_names);
 	for (var _i in _attr_names) {
         var _attr_name = _attr_names[_i];
+		//$.test_msg('ui set_field_attrs name', _attr_name);
 		this.set_field_attr(_field, _value, _attr_name, _ele);
     }
 	return this;
 }; 
+/**
+ * 找尋變數的規則
+ * @type {RegExp}
+ */
+KALS_user_interface.prototype._template_regular_expression = KALS_CONFIG.template.regular_expression;
+
 
 /**
  * 設定指定的屬性
@@ -618,10 +627,17 @@ KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_n
 	
     var _this = this;
     var _find = "{{" + _field + "}}";
+	var _event_field_set = this._kals_events.field_set;
+	
+	var _kals_prefix = 'kals-';
+	
+    //$.test_msg('!!!!ui set_field_attr', '['+this._kals_attrs.attr_prefix+_attr_name+'*="'+_field+'"]');
+	var _regexp = this._template_regular_expression;
     _ui.find('['+this._kals_attrs.attr_prefix+_attr_name+'*="'+_field+'"]').each(function (_index, _ele) {
         
         var _jquery_ele = $(_ele);
-        
+        //$.test_msg('get');
+		
 		if ($.is_object(_value)) {
 			for (var _i in _value) {
 				_this.set_sub_field(_i, _value[_i], _jquery_ele);
@@ -631,9 +647,15 @@ KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_n
 			// 真正設置值
 			var _original_value = _jquery_ele.attr(_attr_name);
             
-            var _text = _original_value.replace(new RegExp(_find, 'g'), _value);
+            var _text = _original_value.replace(_regexp, _value);
             //alert(_text);
-            _jquery_ele.attr(_attr_name, _text);
+			//$.test_msg('set_field_attr', [_original_value, _text]);
+			
+			var _name = _attr_name;
+			if (_attr_name.substr(0, _kals_prefix.length) == _kals_prefix) {
+				_name = _attr_name.substr(_kals_prefix.length, _attr_name.length - _kals_prefix.length);
+			}
+            _jquery_ele.attr(_name, _text);
 			
 			if (_jquery_ele.hasAttr(_event_field_set)) {
                 //var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
@@ -664,6 +686,7 @@ KALS_user_interface.prototype.reset_field = function (_field, _ui) {
  * @param {String} _field
  * @param {jQuery} _ui
  */
+/*
 KALS_user_interface.prototype.set_field_attrs = function (_field, _ui) {
     var _attr_names = this._attr_names;
     for (var _i in _attr_names) {
@@ -671,6 +694,7 @@ KALS_user_interface.prototype.set_field_attrs = function (_field, _ui) {
     }
     return this;
 }; 
+*/
 
 /**
  * 重設屬性
@@ -823,7 +847,7 @@ KALS_user_interface.prototype._initialize_event = function(_template, _event_nam
 				_controller_name = _event_config.name;
 				_params = _event_config.params;
 				_params.event = _e;
-				$.test_msg('event trigger', [_controller_name, _params]);
+				//$.test_msg('event trigger', [_controller_name, _params]);
 				
 				_this[_controller_name](_jqele, _params);
 				

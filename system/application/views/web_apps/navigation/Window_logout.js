@@ -39,7 +39,10 @@ function Window_logout() {
             }
 		});
 		
-		_this.reset_field('foot');
+		//_this.reset_field('foot');
+		
+		_this.set_field('color', 'blue');
+		//_this.set_field('display', 'none');
 	}, 0);
 }
 
@@ -59,7 +62,7 @@ Window_logout.prototype.nav_heading = new KALS_language_param (
     'window.logout.nav_heading'
 );
 
-Window_logout.prototype._$template = 'navigation/Window_logout';
+Window_logout.prototype._$template = 'navigation/template/Window_logout';
 
 
 Window_logout.prototype.action = function (_ele, _params) {

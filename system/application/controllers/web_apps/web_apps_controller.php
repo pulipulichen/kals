@@ -337,7 +337,9 @@ class Web_apps_controller extends Controller {
         if (FALSE === starts_with($path, 'style/'))
             $path = 'style/'.$path;
 
-        $style = $this->load->view($this->dir.$path, NULL, TRUE);
+        //$style = $this->load->view($this->dir.$path, NULL, TRUE);
+        $style = $this->_initialize_css($path);
+
 
         //取代網址
         $base_url = base_url();
@@ -409,8 +411,11 @@ class Web_apps_controller extends Controller {
         $path .= '.css';
         //if (FALSE === starts_with($path, 'style/'))
         //    $path = 'style/'.$path;
-        $style = $this->load->view($this->dir.$path, NULL, TRUE);
+        
+        //$style = $this->load->view($this->dir.$path, NULL, TRUE);
+        $style = $this->_initialize_css($path);
 
+        
         if ($this->config->item('output.package.enable'))
         {
             //$style = $this->_compress_css($style);
@@ -432,6 +437,97 @@ class Web_apps_controller extends Controller {
         return $style;
     }
     
+    /**
+     * 過濾CSS，把template的CSS處理掉
+     * @param String $path
+     * @return String 過濾過的CSS檔案
+     */
+    private function _initialize_css($path) {
+        $style = $this->load->view($this->dir.$path, NULL, TRUE);
+        
+        if (strpos($path, 'template/')) {
+            $classname = $path;
+            $classname = substr($classname,0, -4);
+            $classname = preg_replace('/[\W|\_]/', "-", $classname);
+            /*
+            $class_array1 = explode('}', $classname);
+            foreach ($class_array1 AS $c_ary1) {
+                $class_ary2 = explode('{', $c_ary1);
+                if (count($class_ary2) > 0) {
+                    $selectors_list = $class_ary2[0];
+                }
+                else {
+                    $selectors_list = $c_ary1;
+                }
+                
+                $selectors = explode(',', $selectors_list);
+                
+            }
+             */
+            
+            $classname = strtolower($classname);
+            $classname = '.kals-template.' . $classname . ' ';
+            
+            //test_msg($classname);
+            
+            // 如果是樣板的話
+            //preg_replace($style, $path, $style);
+            //$style = preg_replace('/[\}|\,]*[\{|\,]/', "" .$classname+"\$0", $style);
+            
+            
+$parts = explode('}', $style);
+foreach ($parts as &$part) {
+    if (empty($part) 
+            || strlen($part) === 0 
+            || strpos($part, '{') === FALSE) {
+        continue;
+    }
+    
+    $part = trim($part);
+    if (substr($part, 0, 1) == '@') {
+        $media_parts = explode('{', $part);
+        foreach ($media_parts AS $media_index => $media_part) {
+            $media_part = trim($media_part);
+            
+            if ($media_index > 0 
+                    && $media_index < count($media_parts) -1
+                    && substr($media_part, 0, 1) != '@') {
+                $media_part = $classname . $media_part;
+                $media_part = trim($media_part);
+            }
+            $media_parts[$media_index] = $media_part; 
+        }
+        $part = implode("{", $media_parts);
+        $part = trim($part);
+    }
+    
+    
+    $subParts = explode(',', $part);
+    foreach ($subParts as &$subPart) {
+        $subPart = trim($subPart);
+        if (substr($part, 0, 1) != '@') {
+            $subPart = $classname . ' ' . $subPart;
+            $subPart = trim($subPart);
+        }
+    }
+
+    $part = implode(', ', $subParts);
+    $part = trim($part);
+}
+
+$style = implode("}\n", $parts);
+            
+            $style = trim($style);
+            $style = str_replace('  ', ' ', $style);
+            //if ($style != '') {
+            //    $style = $classname . $style;
+            //}
+            //test_msg($style);
+        }
+        return $style;
+    }
+            
+
     /**
      * 舊的pack css程式
      * 不應該使用，這只是測試用的

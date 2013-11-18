@@ -227,12 +227,13 @@ DEFAULT_KALS_CONFIG = {
 		init_attrs: [
 		    'class',
 		    'value',
-		    'style',
+		    //'style',
 		    'src',
 		    'height',
 		    'width',
 		    'alt',
-		    'title'
+		    'title',
+			'kals-style'
 		],
 		event_names: [
             'click',
@@ -247,7 +248,7 @@ DEFAULT_KALS_CONFIG = {
         ],
 		kals_events: {
             'field_set': 'kals-event-field-set',
-			'field_reset': 'kals-event-field-reset',
+			'field_reset': 'kals-event-field-reset'
         },
 		kals_attrs: {
 		    'field': 'kals-field',
@@ -257,7 +258,13 @@ DEFAULT_KALS_CONFIG = {
 		    'attr_prefix': 'kals-attr-',
 		    'origin_value_postfix': '-origin-value',
 		    'event_prefix': 'kals-event-'
-		}
+		},
+		/**
+		 * 找尋變數的規則
+		 * @type {RegExp}
+		 */
+		regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
+
 	}
 		
 };
