@@ -17,42 +17,24 @@ function KALS_modal() {
 }
 
 KALS_modal.prototype = new KALS_user_interface();
-        
-/**
- * 建立Modal的原形物件
- * @memberOf {KALS_modal}
- * @param {string|jQuery|null} _element = div 可以指定原形物件的標籤名稱
- * @type {jQuery}
- */
-KALS_modal.prototype._$create_ui_prototype = function (_element) {
-    
-    var _ui;
-    if ($.is_null(_element)) {
-		_element = 'div';
-	}
-    
-    if ($.is_string(_element)) {
-        _ui = $('<' + _element + '></' + _element + '>');
-    }
-    else {
-        _ui =  $(_element);
-    }
-    
-    _ui.addClass(this.class_name)
-        .hide()
-        .appendTo($('body'));
-    
-    return _ui;
-};
+
+
+
 
 /**
  * 建立Modal的UI
  * @type {jQuery}
  */
+/*
 KALS_modal.prototype._$create_ui = function () {
-    return this._$create_ui_prototype();
+	var _ui = this._load_template();
+	$.test_msg('KALS_modal', _ui);
+	if (_ui === null) {
+		_ui = this._$create_ui_prototype(); 
+	}
+    return _ui;
 };
-
+*/
 /**
  * 可否關閉
  * @type {boolean}

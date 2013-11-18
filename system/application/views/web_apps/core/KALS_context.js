@@ -36,6 +36,7 @@ KALS_context.initialize = function () {
     this.style = new Style_manager();
     this.custom_type = new Context_custom_type();
 	this.feedback = new Feedback_manager();
+	this.template = new KALS_template();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -296,6 +297,11 @@ KALS_context.custom_type = null;
  * @type Feedback_manager
  */
 KALS_context.feedback = null;
+
+/**
+ * @type {KALS_template}
+ */
+KALS_context.template = null;
 
 /**
  * @type {Init_context}

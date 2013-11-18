@@ -12,7 +12,7 @@
  */
 function Window_content(){
     
-    KALS_user_interface.call(this);
+    JSONP_dispatcher.call(this);
     
     this._window = null;
     this.submit = null;
@@ -35,7 +35,10 @@ function Window_content(){
     }
 }
 
-Window_content.prototype = new KALS_user_interface();
+/**
+ * 改為繼承自JSONP_dispatcher
+ */
+Window_content.prototype = new JSONP_dispatcher();
 
 /**
  * 顯示在Hash的名稱。如果是null，則會顯示KALS_modal._$modal_name
@@ -95,9 +98,11 @@ Window_content.prototype.submit = null;
 /**
  * 建立KALS_window中content處的UI。請覆寫此方法。
  */
+/*
 Window_content.prototype._$create_ui = function () {
     return null;
 };
+*/
 
 /**
  * 設定KALS_window的內容，預設是在設置完成之後直接完成loading。請覆寫此方法。

@@ -16,6 +16,10 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+	  
+	  .test-1-0 {
+	  	color:red;
+	  }
     </style>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -25,6 +29,12 @@
   </head>
 
   <body>
+    
+    <div id="test">
+    	<span>
+    	4rwerwe{{kalslang:test}} ewrwer {{te-s:t(2}} <span class="test-{{color}}-{{color2}}">AAAAA</span> asdas{{t}}dasd
+		</span>
+	</div>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -89,6 +99,114 @@
             h2cPath:'js/html2canvas.js',
             url: '/kals/web_apps/feedback'
         });
-      });      
+      });
+	  
+// 先找值
+var _ui = $('#test');
+_ui.find(':contains("{{")').filter(':contains("}}")').each(function (_index, _ele) {
+	
+    var _jquery_ele = $(_ele);
+	//alert(_jquery_ele.text());
+    
+    _jquery_ele.contents()
+      .filter(function () {
+        return this.nodeType !== 1;
+      })
+	  .filter(function () {
+        return (this.textContent.indexOf("{{") !== -1);
+      })
+	  .wrap("<span></span>")
+      .each(function (_content_index, _content_ele) {
+	  	
+        var _jquery_content_ele = $(_content_ele);
+        var _text = _jquery_content_ele.text();
+		//alert(_text);
+        //_text = _text.replace(/\{\$[]}/g);
+		//_jquery_content_ele.text("??");
+		//_jquery_content_ele.remove();
+		
+		_text = _text.replace(/\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g, function (_match) {
+			alert(1212);
+			var _field_name = _match.substr(2, _match.length-4);
+			return '<span kals-field="' + _field_name + '" kals-field-origin-value="'+_match+'">' + _match + "</span>";
+		});
+		
+		//_text = "???";
+		
+		_jquery_content_ele.parent().html(_text);
+    });
+});
+
+// 測試值
+var _set_field = function(_field, _value) {
+	_ui.find("[kals-field='"+_field+"']").html(_value);
+};
+
+var _reset_field = function (_field) {
+	_ui.find("[kals-field='"+_field+"']").each(function (_index, _ele) {
+		var _j_ele = $(_ele);
+		_j_ele.html(_j_ele.attr('kals-field-origin-value'));
+	});
+};
+
+_set_field('t', "[REPLACED]");
+_set_field('kalslang:test', "[REPLACED]");
+//_reset_field('test');
+
+
+// 處理屬性
+_ui.find('[class*="{{"]')
+   .filter('[class*="}}"]')
+   .each(function (_index, _ele) {
+   	   var _jquery_ele = $(_ele);
+	   var _origin_value = _jquery_ele.attr('class');
+	   var _field_name_array = _origin_value.match(/\{\{[\w]{1,}\}\}/g);
+	   
+	   
+	   for (var _i in _field_name_array) {
+	   	  var _name = _field_name_array[_i];
+		  _name = _name.substr(2, _name.length -3); 
+	   	  _field_name_array[_i] = _name;
+	   }
+	   
+	   var _field_name = _field_name_array.join(' '); 
+	   
+	   _jquery_ele.attr("kals-attr-classname", _field_name);
+	   _jquery_ele.attr("kals-attr-classname-origin-value", _origin_value);
+   });
+
+var _set_attr_class = function (_field, _value) {
+	
+	var _attr_name = 'class';
+	var _find = "{{" + _field + "}}";
+    _ui.find('[kals-attr-classname*="'+_field+'"]').each(function (_index, _ele) {
+		
+		var _jquery_ele = $(_ele);
+		
+		var _original_value = _jquery_ele.attr(_attr_name);
+		
+		var _text = _original_value.replace(new RegExp(_find, 'g'), _value);
+		//alert(_text);
+		_jquery_ele.attr(_attr_name, _text);
+	});
+};
+
+var _reset_attr_class = function (_field, _value) {
+    
+    var _attr_name = 'class';
+    var _find = "{{" + _field + "}}";
+    _ui.find('[kals-attr-classname*="'+_field+'"]').each(function (_index, _ele) {
+        
+        var _jquery_ele = $(_ele);
+        
+        var _original_value = _jquery_ele.attr("kals-attr-classname-origin-value");
+        
+        _jquery_ele.attr(_attr_name, _original_value);
+    });
+};
+
+_set_attr_class('color', '1');
+_set_attr_class('color2', '0');
+      
     </script>
 </body></html>

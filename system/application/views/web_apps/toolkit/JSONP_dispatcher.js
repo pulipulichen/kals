@@ -22,7 +22,8 @@ function JSONP_dispatcher(_url) {
     if ($.isset(_url)) {
 		this.set_load_url(_url);
 	}
-        
+    
+	this._register_context();
 }
 
 JSONP_dispatcher.prototype = new Event_dispatcher();
@@ -141,6 +142,45 @@ JSONP_dispatcher.prototype.get_data = function () {
 JSONP_dispatcher.prototype.reset_data = function () {
     this._data = this._default_reset_data;
     return this._data;
+};
+
+/**
+ * 取得指定欄位的資料
+ * @param {String} _field
+ * @type {Object}
+ */
+JSONP_dispatcher.prototype.get_field = function (_field) {
+	if (this._data !== null && typeof(this._data[_field]) !== 'undefind') {
+		return this._data[_field];
+	}
+	else {
+		return;
+	}
+};
+
+/**
+ * 如果要向KALS_context註冊，則填入自己的Class Name
+ * 設定null表示不註冊
+ */
+JSONP_dispatcher.prototype._$context_register = null;
+
+/**
+ * 向KALS_context註冊，索取資料
+ */
+JSONP_dispatcher.prototype._register_context = function () {
+	if (this._$context_register !== null) {
+		
+		var _register = this._$context_register;
+		var _this = this;
+		//Context訂閱一下
+	    if (typeof(KALS_context) != 'undefined') {
+	        KALS_context.add_listener(function (_dispatcher, _data) {
+	            if (typeof(_data[_register]) != 'undefined') {
+	                _this.set_data(_data[_register]);
+	            }
+	        });
+	    }
+	};
 };
 
 JSONP_dispatcher.prototype._default_reset_data = null;

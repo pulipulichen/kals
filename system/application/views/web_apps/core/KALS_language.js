@@ -90,7 +90,7 @@ KALS_language.prototype.line = function(_lang_param){
 		return _lang;
 	}
 	else {
-		return null;
+		return _lang_param;
 	}
 };
 

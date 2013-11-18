@@ -96,6 +96,7 @@ class generic extends Web_apps_controller {
          */
         "core_list_package" => array(
             'core/KALS_language',
+            'core/KALS_template',
             'core/Viewportmove_dispatcher',
             'core/feedback/Feedback_manager',
             'core/KALS_authentication',
@@ -737,6 +738,8 @@ class generic extends Web_apps_controller {
 
         $data['KALS_authentication'] = $authentication->default_data();
 
+        $data['KALS_template'] = $this->_load_templates();
+        
         $this->_display_jsonp($data, $callback);
     }
 
@@ -766,6 +769,59 @@ class generic extends Web_apps_controller {
 
         $data = true;
         $this->_display_jsonp($data, $callback);
+    }
+    
+    /**
+     * 讀取樣板
+     * @return Array 
+     * array(
+     *  '樣板路徑' => '樣板內容'
+     * )
+     */
+    private function _load_templates() {
+        $files = $files = $this->_dir_get_list(".html");
+        
+        $output = array();
+        foreach ($files AS $file) {
+            $output[$file] = $this->_get_templete($file);
+        }
+        
+        return $output;
+        //$this->_display_jsonp($output, 'template');
+    }
+    
+    //public function template() {
+    //    $template = $this->_load_templates();
+    //    test_msg($template);
+    //}
+    
+    private function _get_templete($path) {
+        $path = $this->dirmap_path . $path . '.html';
+        
+        $d = new DOMDocument;
+        $mock = new DOMDocument;
+        $text = file_get_contents($path);
+        
+        if (strpos($text, '<body') !== FALSE) {
+            $d->loadHTML($text);
+            $body_element = $d->getElementsByTagName('body');
+            //test_msg($body_element->length);
+            if (count($body_element) > 0) {
+                $body = $body_element->item(0);
+                foreach ($body->childNodes as $child){
+                    $mock->appendChild($mock->importNode($child, true));
+                }
+
+                $text = $mock->saveHTML();
+            }
+        }
+        $text = trim($text);
+        //test_msg($text);
+        //test_msg($path);
+        
+        //$text = '';
+        //$text = file_get_contents($path);
+        return $text;
     }
 }
 
