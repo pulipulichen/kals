@@ -18,7 +18,7 @@ function JSONP_dispatcher(_url) {
     
     this._default_reset_data = null;
     
-    this._data = null;
+    //this._data = null;
     if ($.isset(_url)) {
 		this.set_load_url(_url);
 	}
@@ -33,7 +33,7 @@ JSONP_dispatcher.prototype = new Event_dispatcher();
  * @type {Object}
  * @private
  */
-JSONP_dispatcher.prototype._data = null;
+//JSONP_dispatcher.prototype._data = {};
 
 /**
  * 此類別要讀取的url網址。

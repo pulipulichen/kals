@@ -58,8 +58,9 @@ Window_logout.prototype.nav_heading = new KALS_language_param (
 
 Window_logout.prototype._$template = 'navigation/Window_logout';
 
-Window_logout.prototype.action = function (_node) {
-	
+
+Window_logout.prototype.action = function (_ele, _event, _params) {
+	alert(1);
 };
 
 /*
@@ -77,6 +78,8 @@ Window_logout.prototype._$create_ui = function () {
     return _ui;
 };
 */
+
+
 
 /* End of file Window_logout */
 /* Location: ./system/application/views/web_apps/Window_logout.js */

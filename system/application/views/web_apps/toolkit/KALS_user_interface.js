@@ -8,7 +8,6 @@ function KALS_user_interface() {
     
     this._children = [];
     
-	this._kals_attrs = KALS_context.temp.get_kals_attrs();
 }
 
 /**
@@ -121,13 +120,22 @@ KALS_user_interface.prototype._$create_ui_prototype = function (_element) {
  */
 KALS_user_interface.prototype._load_template = function () {
     if (typeof(KALS_context) !== 'undefined' && KALS_context.template !== null) {
-        return KALS_context.template.get_template(this._$template);
+		var _template = KALS_context.template.get_template(this._$template);
+        return _template;
     }
     else {
         return null;
     }
 };
 
+/**
+ * 初始化樣板
+ * @param {Object} _template
+ */
+KALS_user_interface.prototype._initialize_template = function (_template) {
+	_template = this._initialize_event(_template);
+	return _template;
+};
 
 /**
  * 樣板編號
@@ -462,8 +470,15 @@ KALS_user_interface.prototype._value_filter_lang = function(_line){
     return _line;
 };
 
+/**
+ * 需要初始化的屬性
+ */
+KALS_user_interface.prototype._init_attrs = KALS_CONFIG.template.init_attrs;;
 
-KALS_user_interface.prototype._kals_attrs = {};
+/**
+ * KALS自訂的屬性
+ */
+KALS_user_interface.prototype._kals_attrs = KALS_CONFIG.template.kals_attrs;;
 
 /**
  * 設定文字節點
@@ -495,7 +510,7 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 				//_child.html(_v);
 				_this.set_sub_field(_field, _value[_i], _parent_clone);
 				
-                _child.attr(this._kals_attrs.repeat_index, _i);
+                _child.attr(_this._kals_attrs.repeat_index, _i);
                 _parent_clone.insertBefore(_parent); 
             }
             _parent.remove();
@@ -509,7 +524,7 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
                 //_child.html(_v);
 				_this.set_field_text(_field, _i, _parent_clone);
                 
-				_child.attr(this._kals_attrs.repeat_index, _i);
+				_child.attr(_this._kals_attrs.repeat_index, _i);
                 _parent_clone.insertBefore(_parent);
 				
 				var _sub_value = _value[_i];
@@ -542,7 +557,7 @@ KALS_user_interface.prototype._get_field_parent = function (_field, _ele) {
 	var _field_parent = _ele.parents("."+this._kals_attrs.field_parent+":first");
 	
 	var _parent = _field_parent.parents('['+this._kals_attrs.field_repeat+'="'+_field+'"]:first');
-	if (_parent.length == 0) {
+	if (_parent.length === 0) {
 		_parent = _parent.parent();
 	}
 	return _parent;
@@ -554,7 +569,7 @@ KALS_user_interface.prototype._get_field_parent = function (_field, _ele) {
  * @param {String|Object} _value
  */
 KALS_user_interface.prototype.set_field_attrs = function (_field, _value) {
-	var _attr_names = KALS_context.template.get_attr_names();
+	var _attr_names = this._attr_names;
 	for (var _i in _attr_names) {
         var _attr_name = _attr_names[_i];
 		this.set_field_attr(_field, _value, _attr_name);
@@ -601,13 +616,14 @@ KALS_user_interface.prototype.reset_field_attr = function (_field, _attr_name) {
     var _ui = this.get_ui();
     
     var _find = "{{" + _field + "}}";
+	var _this = this;
     _ui.find('['+ this._kals_attrs.attr_prefix+_attr_name+'*="'+_field+'"]').each(function (_index, _ele) {
         
         var _jquery_ele = $(_ele);
         
-		var _attr_name_origin_value = this._kals_attrs.attr_prefix 
+		var _attr_name_origin_value = _this._kals_attrs.attr_prefix 
 		  + _attr_name 
-		  + this._kals_attrs.origin_value_postfix;
+		  + _this._kals_attrs.origin_value_postfix;
         var _original_value = _jquery_ele.attr(_attr_name_origin_value);
         
         //alert(_text);
@@ -672,6 +688,83 @@ KALS_user_interface.prototype.get_field = function (_field) {
 	else {
 		return undefined;
 	}
+};
+
+/**
+ * ============================
+ * 接著處理事件的部份
+ * ============================
+ */
+
+
+/**
+ * 需要初始化的屬性
+ */
+KALS_user_interface.prototype._event_names = KALS_CONFIG.template.event_names;
+
+/**
+ * 初始化事件名稱
+ * @param {jQuery} _template
+ */
+KALS_user_interface.prototype._initialize_events = function (_template) {
+	
+	var _event_names = this._event_names;
+	
+	for (var _i in _event_names) {
+		var _event_name = _event_names[_i];
+		
+		_template = this._initialize_event(_template, _event_name);
+	}
+	
+	return _template;
+};
+
+/**
+ * 初始化單一事件
+ * @param {jQuery} _template
+ * @param {String} _event_name
+ */
+KALS_user_interface.prototype._initialize_event = function(_template, _event_name){
+	var _this = this;
+	var _event_prefix = this._kals_attrs.event_prefix;
+    var _kals_event_name = _event_prefix + _event_name;
+        
+	_template.find('['+_kals_event_name+']').each(function (_index, _ele) {
+		var _jqele = $(_ele);
+		
+		var _controller = _jqele.attr(_event_name);
+		
+		// 先不支援參數輸入，刪除(之後的值
+		var _function_point = _controller.indexOf("(");
+		var _controller_name = _controller;
+		
+		var _params = [];
+		
+		if (_function_point > -1) {
+			_controller_name = _controller.substr(0, _function_point);
+			
+			
+			var _param_list = _controller.substr(_function_point, _controller.length - _function_point);
+			_param_list = _param_list.substr(1, _param_list.length - 1);
+			_param_list = _param_list.split(',');
+			
+			for (var _i in _param_list) {
+				var _param_value = _param_list[_i];
+				_param_value = $.trim(_param_value);
+				_params.push(_param_value);
+			}
+		}
+		
+		
+		// 要找到這個controller是有值的
+		if (typeof(_this[_controller_name]) == 'function') {
+			_jqele.bind(_event_name, function (_e) {
+				_this[_controller_name](_jqele, _e, _params);
+			});
+		}
+	});
+	
+	return _template;
 };
 
 /* End of file KALS_user_interface */

@@ -219,7 +219,43 @@ DEFAULT_KALS_CONFIG = {
 			//允許顯示的HTML標籤
 			allow_html_tags: ["a", "img", "iframe"]
 		}
+	},
+	/**
+	 * 需要初始化的事件名稱
+	 */
+	template: {
+		init_attrs: [
+		    'class',
+		    'value',
+		    'style',
+		    'src',
+		    'height',
+		    'width',
+		    'alt',
+		    'title'
+		],
+		event_names: [
+            'click',
+            'mouseover',
+            'mouseout',
+            'mouseenter',
+            'blur',
+            'focus',
+            'change',
+            'dblclick',
+            'submit'
+        ],
+		kals_attrs: {
+		    'field': 'kals-field',
+		    'field_parent': 'kals-field-parent',
+		    'field_repeat': 'kals-field-repeat',
+		    'repeat_index': 'kals-field-repeat-index',
+		    'attr_prefix': 'kals-attr-',
+		    'origin_value_postfix': '-origin-value',
+		    'event_prefix': 'kals-event-'
+		}
 	}
+		
 };
 
 if (typeof(KALS_CONFIG) != 'undefined') {
