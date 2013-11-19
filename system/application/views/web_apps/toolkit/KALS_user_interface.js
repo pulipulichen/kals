@@ -432,6 +432,9 @@ KALS_user_interface.prototype.set_field = function (_field, _value, _ele) {
 		return this.set_fields(_field, _ele);
 	}
 	
+	// 過濾資料
+	_value = this._$set_field_filter(_field, _value, _ele);
+	
 	// 如果是單一欄位，則繼續處理
 	this._data[_field] = _value;
 	
@@ -442,6 +445,18 @@ KALS_user_interface.prototype.set_field = function (_field, _value, _ele) {
 	this.set_field_attrs(_field, _value, _ele);
 	
 	return this;
+};
+
+/**
+ * 過濾資料
+ * ※請覆寫
+ * @param {String} _field
+ * @param {String|Object} _value
+ * @param {jQuery} _ele
+ */
+KALS_user_interface.prototype._$set_field_filter = function (_field, _value, _ele) {
+	// 預設不做任何過濾
+	return _value;
 };
 
 /**
@@ -457,6 +472,9 @@ KALS_user_interface.prototype.set_sub_field = function (_field, _value, _ele) {
     if ($.is_object(_field)) {
         return this.set_sub_fields(_field, _ele);
     }
+	
+	// 過濾資料
+    _value = this._$set_field_filter(_field, _value, _ele);
     
     // 如果是單一欄位，則繼續處理
     
