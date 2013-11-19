@@ -131,10 +131,25 @@ KALS_user_interface.prototype._load_template = function () {
 
 /**
  * 初始化樣板
- * @param {Object} _template
+ * @param {jQuery} _template
  */
 KALS_user_interface.prototype._initialize_template = function (_template) {
 	_template = this._initialize_events(_template);
+	_template = this._initialize_template_data(_template);
+	return _template;
+};
+
+/**
+ * 初始化樣板資料
+ * @param {jQuery} _template
+ */
+KALS_user_interface.prototype._initialize_template_data = function (_template) {
+	if ($.is_object(this._data)) {
+        for (var _field in this._data) {
+            var _value = this._data[_field];
+            _template = this.set_sub_field(_field, _value, _template);
+        }
+    }
 	return _template;
 };
 

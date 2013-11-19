@@ -58,6 +58,18 @@ JSONP_dispatcher.prototype.set_load_url = function (_url) {
     return this;
 };
 
+JSONP_dispatcher.prototype.get_load_url = function () {
+	var _url = this._$load_url;
+	if ($.is_null(_url)) {
+		return _url;
+	}
+	
+	if ($.ends_with(_url, '/')) {
+		_url = _url.substr(0, _url.length-1);
+	}
+	return _url;
+};
+
 /**
  * 開始讀取資料
  * @param {Object} _arg

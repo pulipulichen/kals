@@ -18,9 +18,6 @@ function KALS_modal() {
 
 KALS_modal.prototype = new KALS_user_interface();
 
-
-
-
 /**
  * 建立Modal的UI
  * @type {jQuery}

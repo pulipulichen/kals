@@ -64,7 +64,7 @@ class Rest_controller extends Rest_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定
@@ -148,6 +148,7 @@ class Rest_controller extends Rest_controller {
         $data["user_count"] = rand(1, 6);
         $data["last_annotation_id"] = 14848;
         $data["last_annotation_timestamp"] = time();
+        $data["activity"] = "Good";
         
         return $data;
     }
@@ -186,7 +187,7 @@ class Rest_controller extends Rest_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'post',
+        "method" => 'POST',
         
         /**
          * 權限控管設定
@@ -304,7 +305,7 @@ class Rest_controller extends Rest_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定
@@ -422,7 +423,7 @@ class Rest_controller extends Rest_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定

@@ -95,7 +95,7 @@ class Rest_controller extends Web_apps_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定
@@ -210,7 +210,7 @@ class Rest_controller extends Web_apps_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'post',
+        "method" => 'POST',
         
         /**
          * 權限控管設定
@@ -325,7 +325,7 @@ class Rest_controller extends Web_apps_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定
@@ -440,7 +440,7 @@ class Rest_controller extends Web_apps_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定
@@ -617,7 +617,7 @@ class Rest_controller extends Web_apps_controller {
          * 接收資料的形態
          * @type String get|post
          */
-        "method" => 'get',
+        "method" => 'GET',
         
         /**
          * 權限控管設定
@@ -700,10 +700,10 @@ class Rest_controller extends Web_apps_controller {
         }
         
         // 取得資料
-        if ($config["request_type"] == 'get') {
+        if ($config["method"] == 'GET') {
             $data = $this->_retrieve_get_data($json);
         }
-        else if ($config["request_type"] == 'post') {
+        else if ($config["method"] == 'POST') {
             $data = $this->_retrieve_post_data($json);
         }
         

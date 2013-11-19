@@ -8,7 +8,7 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/9/9 下午 01:27:09
- * @extends {KALS_user_interface}
+ * @extends {JSONP_dispatcher}
  */
 function Window_content(){
     

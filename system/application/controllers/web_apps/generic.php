@@ -365,6 +365,7 @@ class generic extends Web_apps_controller {
         $files = $this->dirmap($dir_list);
         */
         
+        // 取得其他的JavaScript
         $exception_list = $this->_get_javascript_exception_list();
         $other_list_package = $this->_dir_get_list(".js", $exception_list);
         $list_package = array_merge($list_package, $other_list_package);
@@ -403,12 +404,15 @@ class generic extends Web_apps_controller {
 	    	for ($j = 0; $j < count($f); $j++) {
 	        	$f[$j] = $dirs[$i]."/".$f[$j];
 	        }
-    		$files = array_merge($files, $f);
+                $file_name = $f;
+    		$files = array_merge($files, $file_name);
     	}
         
         for ($i = 0; $i < count($files); $i++) {
         	$name = $files[$i];
-        	$files[$i] = substr($name, 0 , strrpos($name, "."));
+                $name = substr($name, 0 , strrpos($name, "."));
+                
+        	$files[$i] = $name;
         }
         
         //print_r($files);
@@ -476,10 +480,10 @@ class generic extends Web_apps_controller {
         /**
          * 避免目錄太深
          */
-       if (strpos($dir, "/") !== FALSE && count(explode("/", $dir)) > 3 ) {
-           test_msg("太深了 " . $dir);
-           return $files;
-       }
+       //if (strpos($dir, "/") !== FALSE && count(explode("/", $dir)) > 3 ) {
+           //test_msg("太深了 " . $dir);
+           //return $files;
+       //}
         
        //$needle = ".js";
        if (is_string($file)) {
@@ -487,7 +491,8 @@ class generic extends Web_apps_controller {
                $file = substr($file, 0, (0-strlen($needle)));
                $path = $dir . $file;
                
-               if (FALSE === in_array($path, $exception_list)) {
+               if (FALSE === in_array($path, $exception_list)
+                    && $this->_filter_file($path)) {
                    $files[] = $path;
                }
            }
@@ -504,6 +509,17 @@ class generic extends Web_apps_controller {
        }
        
        return $files;
+    }
+    
+    /**
+     * 過濾指定的檔案名稱
+     * @param type $file_name
+     */
+    private function _filter_file($file_name) {
+        if (strpos($file_name, '-locale_') !== FALSE) {
+            return FALSE;
+        }
+        return TRUE;
     }
     
     // --------------------------

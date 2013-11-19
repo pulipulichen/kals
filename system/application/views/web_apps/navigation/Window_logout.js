@@ -20,6 +20,7 @@ function Window_logout() {
 	 * 布丁測試用
 	 * @author Pulipuli Chen 2013117
 	 */
+	/*
 	var _this = this;
 	setTimeout(function() {
 		_this.get_ui();
@@ -44,6 +45,7 @@ function Window_logout() {
 		_this.set_field('color', 'blue');
 		//_this.set_field('display', 'none');
 	}, 0);
+	*/
 }
 
 Window_logout.prototype = new Window_content();
