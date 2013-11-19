@@ -667,7 +667,8 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
 KALS_user_interface.prototype._create_annotation = function (_value) {
 	var _param = new Annotation_param();
 	_param.import_json(_value);
-	var _list_item = new Template_list_item(_param);
+	//var _list_item = new Template_list_item(_param);
+	var _list_item = new List_item(_param);
 	$.test_msg('create annotation', _list_item.get_ui().html());
 	return _list_item;
 };
@@ -680,7 +681,8 @@ KALS_user_interface.prototype._create_annotation = function (_value) {
 KALS_user_interface.prototype._create_annotation_collection = function (_value) {
     var _param = new Annotation_param_collection();
     _param.import_json(_value);
-    var _list_item = new Template_list_collection(_param);
+    //var _list_item = new Template_list_collection(_param);
+	var _list_item = new List_collection(_param);
     return _list_item;
 };
 

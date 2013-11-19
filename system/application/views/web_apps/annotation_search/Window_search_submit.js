@@ -44,15 +44,23 @@ Window_profile_submit.prototype.failed_notification = new KALS_language_param(
 /**
  * 取得查詢欄位中的資料
  * @param {Object} _data
+ * @deprecated Pulipuli 20131119
  */
 Window_search_submit.prototype.complete_handle = function () {
+	
+	// 不做任何事情
+	
+	//var _search = KALS_context.search;   //in KALS_context
+    //_search.set_field(_input_data.search_range); //取得欄位中的值→Context_search.js
+    //_search.set_keyword(_input_data.keyword);
+    
+	
+	
 	//complete_handle in window_content_submit.js 
 
-    var _input_data = this.get_data();
+    //var _input_data = this.get_data();
         
-    var _search = KALS_context.search;   //in KALS_context
-    _search.set_field(_input_data.search_range); //取得欄位中的值→Context_search.js
-    _search.set_keyword(_input_data.keyword);
+    
 	//_search.set_order_by(_input_data.order_by); 
     
     //return Window_content_submit.prototype.complete_handle.call(this, _data); 
