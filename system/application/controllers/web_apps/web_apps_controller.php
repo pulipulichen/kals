@@ -438,6 +438,25 @@ class Web_apps_controller extends Controller {
     }
     
     /**
+     * 取得
+     * @param type $path
+     * @param type $replace
+     * @param type $strip_end
+     * @return type
+     */
+    protected function _get_template_prefix($path, $replace = '-', $strip_end = NULL) {
+        $classname = $path;
+        if (!is_null($strip_end)) {
+            $classname = substr($classname,0, (1-  strlen($strip_end)));
+        }
+        $classname = preg_replace('/[\W|\_]/', $replace, $classname);
+
+        $classname = strtolower($classname);
+        return $classname;
+        //$classname = '.kals-template.' . $classname . ' ';
+    }
+    
+    /**
      * 過濾CSS，把template的CSS處理掉
      * @param String $path
      * @return String 過濾過的CSS檔案

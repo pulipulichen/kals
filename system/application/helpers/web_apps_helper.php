@@ -196,6 +196,38 @@ if ( !function_exists("get_kals_base_url")) {
         return $url;
     }
  }
+ 
+if ( !function_exists("get_kals_root_path")) {
+    
+    /**
+     * 取得KALS伺服器的根網址
+     */
+    function get_kals_root_path($path = NULL) {
+        $dir = __DIR__;
+        $dir_sep = DIRECTORY_SEPARATOR;
+        
+        $strip_end = 'system'.$dir_sep.'application'.$dir_sep.'helpers'.$dir_sep;
+        $dir = substr($dir, 0, (1-strlen($strip_end)));
+        
+        if (isset($path)) {
+            //$detectdir_sep = '/';
+            if (DIRECTORY_SEPARATOR == '\\') {
+                $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+            }
+            
+            if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
+                $path = substr($path, 1);
+            }
+            
+            $dir = $dir . $path;
+        }
+        
+        //test_msg($dir);
+        return $dir;
+    }
+ }
+ 
+  
 
 if ( ! function_exists('kals_log'))
 {

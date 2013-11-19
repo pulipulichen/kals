@@ -32,16 +32,20 @@ KALS_template.prototype.get_template = function (_index) {
 	   .addClass('KALS')
 	   .addClass("kals-template")
 	   .addClass(_classname);
-	_template = this._template_initialize(_template);
+	_template = this._template_initialize(_template, _index);
 	return _template;
 };
 
 /**
  * 將index轉換成classname
  * @param {String} _index
+ * @param {String} _replace 要取代的變數
  */
-KALS_template.prototype._get_template_classname = function (_index) {
-	return _index.replace(/[\W|\_]/g, '-').toLowerCase();
+KALS_template.prototype._get_template_classname = function (_index, _replace) {
+	if (_replace === undefined) {
+		_replace = '-';
+	}
+	return _index.replace(/[\W|\_]/g, _replace).toLowerCase();
 };
 
 /**
@@ -52,13 +56,15 @@ KALS_template.prototype._kals_events = KALS_CONFIG.template.kals_events;
 /**
  * 取得語言
  * @param {jQuery} _template
+ * @param {String}
  * @type {jQuery}
  */
-KALS_template.prototype._template_initialize_language = function(_template) {
+KALS_template.prototype._template_initialize_language = function(_template, _index) {
 	
 	//var _container = $("<div></div>").append(_template);
 	var _kals_lang = _template.find('*[kals-lang]');
-	
+	var _template_classname = this._get_template_classname(_index, '_');
+	_template_classname = 'template.' + _template_classname + '.';
 	//$.test_msg('parse lang', [_kals_lang.length, _template.html()]);
 	
 	_kals_lang.each(function (_index, _ele) {
@@ -68,11 +74,11 @@ KALS_template.prototype._template_initialize_language = function(_template) {
 		var _line = _ele.attr('kals-lang');
 		
 		if (KALS_context.lang.has_line(_line)) {
-			KALS_context.lang.add_listener(_ele, new KALS_language_param(
-              _text,
-              _line
-            ));
-		}	
+			KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+		}
+		else if (KALS_context.lang.has_line(_template_classname + _line)) {
+			KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _template_classname + _line));
+		}
 	});
 	
 	return _template;
@@ -80,8 +86,10 @@ KALS_template.prototype._template_initialize_language = function(_template) {
 
 /**
  * 特殊樣板初始化
+ * @param {jQuery} _template
+ * @param {String} _index
  */
-KALS_template.prototype._template_initialize = function (_template) {
+KALS_template.prototype._template_initialize = function (_template, _index) {
 	
 	_template = this._template_initialize_text(_template);
 	
@@ -92,7 +100,7 @@ KALS_template.prototype._template_initialize = function (_template) {
 		_template = this._template_initialize_attr(_template, _init_attrs[_i]);
 	}
 	
-    _template = this._template_initialize_language(_template);
+    _template = this._template_initialize_language(_template, _index);
 	
 	return _template;
 };

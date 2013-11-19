@@ -761,11 +761,63 @@ class generic extends Web_apps_controller {
         $this->_display_jsonp($data, $callback);
     }
 
+    /**
+     * 讀取語系檔案
+     * @return Array
+     * @author Pulipuli Chen 20131119
+     */
     private function _load_lang()
     {
         $this->lang->load('kals_web_apps');
         $web_apps_lang = $this->lang->package('web_apps');
+        
+        // 加入
+        $template_lang = $this->_load_template_lang();
+        $web_apps_lang = array_merge($web_apps_lang, $template_lang);
+        
         return $web_apps_lang;
+    }
+    
+    /**
+     * 讀取樣板的語系檔案
+     * @return Array
+     * @author Pulipuli Chen 20131119
+     */
+    private function _load_template_lang() {
+        //$lang = 'zh_tw';
+        $lang = $this->config->item('language');
+        $postfix = '_locale_' . $lang . '.php';
+        $prefix_dir = 'system/application/views/';
+        
+        //test_msg(__DIR__);
+        $paths = $this->_dir_get_list($postfix);
+        //test_msg(get_kals_root_path(''));
+        //test_msg($paths);
+        
+        $template_lang = array();
+        foreach ($paths AS $path) {
+            $template_prefix = $this->_get_template_prefix($path, '_');
+            $template_prefix = 'template.' . $template_prefix . '.';
+            
+            $lang = array();
+            $template_lang_path = $prefix_dir.$this->dir.$path.$postfix;
+            $template_lang_path = get_kals_root_path($template_lang_path);
+            
+            require_once $template_lang_path;
+            //require_once 'D:\xampp\htdocs\kals\system\application\views\web_apps\extension\dashboard\template\Dashboard_locale_zh_tw.php';
+            //get_kals_root_path($template_lang)
+            //test_msg($template_lang_path);
+            
+            //$lang = $this->load->view($template_lang_path, NULL, TRUE);
+            
+            //test_msg($lang);
+            
+            foreach ($lang AS $line => $value) {
+                $template_line = $template_prefix . $line;
+                $template_lang[$template_line] = $value;
+            }
+        }
+        return $template_lang;
     }
 
     /**
