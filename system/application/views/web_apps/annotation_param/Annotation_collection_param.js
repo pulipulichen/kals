@@ -13,6 +13,11 @@ function Annotation_collection_param(_param) {
     
     this.annotations = [];
     
+	if ($.is_class(_param, 'Annotation_collection_param')) {
+		this.annotations = _param.annotations;
+		return;
+	}
+	
     if ($.isset(_param)) {
         if ($.is_array(_param)) {
 			this.import_json(_param);
@@ -39,16 +44,22 @@ Annotation_collection_param.prototype.add = function (_param) {
 		return this;
 	}
     
-    if ($.is_array(_param)) {
+    if ($.is_array(_param) && _param.length > 0) {
         var _coll = _param;
+		$.test_msg('anno coll add is array', _param);
         for (var _i in _coll) {
+			$.test_msg('anno coll coll', _coll[_i].annotation_id);
             this.add(_coll[_i]);
         }
         return this;
     }
     
     if (typeof(_param.annotation_id) != 'undefined') {
-        _param = new Annotation_param(_param);
+		$.test_msg('anno coll convert anno param, before', [_param.annotation_id, ($.is_class(_param) != 'Annotation_param')]);
+		if ($.is_class(_param, 'Annotation_param') == false) {
+			_param = new Annotation_param(_param);
+		}
+		$.test_msg('anno coll convert anno param, after', _param.annotation_id);
         this.annotations.push(_param);
     }
     return this;
@@ -105,14 +116,16 @@ Annotation_collection_param.prototype.get = function (_index) {
 
 Annotation_collection_param.prototype.get_annotations = function () {
 	var _output = [];
-	for (var _i in this.annotations) {
-		var _annotation_param = this.annotations[_i];
-		
+	$.test_msg(this.length());
+	/*
+	for (var _i = 0; _i < this.length(); _i++) {
+		var _annotation_param = this.get(_i);
 		if ($.is_class(_annotation_param, 'Annotation_param') === false) {
 			_annotation_param = new Annotation_param(_annotation_param);
 		}
 		_output.push(_annotation_param);
 	}
+	*/
 	return _output;
 };
 

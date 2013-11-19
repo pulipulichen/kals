@@ -121,7 +121,11 @@ Window_view.prototype.load_topic_param = function (_topic_id) {
                     && $.is_array(_data.annotation_collection)
                     && _data.annotation_collection.length > 0) {
                     var _topic_data = _data.annotation_collection[0];
-                    var _topic_param = new Annotation_param(_data);
+					var _topic_param = _data;
+					if ($.is_class(_topic_data, 'Annotation_param') === false) {
+						_topic_param = new Annotation_param(_topic_param); 
+					}
+					
                     _this.set_topic_param(_topic_param);    
                 }
             }

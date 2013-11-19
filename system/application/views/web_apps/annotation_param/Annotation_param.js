@@ -245,7 +245,7 @@ Annotation_param.prototype.export_json = function () {
             _json[_attr] = _value;
         }
     }
-    
+	
     var _param_types = this._param_types;
     
     for (_i in _param_types) {
@@ -288,10 +288,19 @@ Annotation_param.prototype.export_respond_json = function () {
 };
 
 Annotation_param.prototype.import_json = function (_json) {
+	/*
 	if ($.is_class(_json, 'Annotation_param')) {
-		return _json;
+		//for (var _i in this._plain_types) {
+		//	var _attr = this._plain_types[_i];
+		//	this[_attr] = _json[_attr];
+		//}
+		//for (var _i in this._param_types) {
+		//	var _attr = this._param_types[_i];
+        //    this[_attr] = _json[_attr];
+        //}
+		return this;
 	}
-	
+	*/
     //取得Annotation的note時，也記得要先做urlencode()跟JavaScript端的decodeURIComponent()
     var _plain_types = this._plain_types;
     for (var _i in _plain_types) {
@@ -320,6 +329,7 @@ Annotation_param.prototype.import_json = function (_json) {
             this[_attr] = _value;
         }
     }
+	
     
     var _param_types = this._param_types;
     for (_i in _param_types) {
@@ -327,6 +337,7 @@ Annotation_param.prototype.import_json = function (_json) {
         if (typeof(_json[_attr]) != 'undefined') {
             _value = _json[_attr];
             if (_attr == 'respond_to_coll') {
+				$.test_msg('respond_to_coll', _value);
 				this[_attr] = new Annotation_collection_param(_value);
 			}
 			else if (_attr == 'scope') {
@@ -356,8 +367,8 @@ Annotation_param.prototype.import_json = function (_json) {
 									this[_attr] = new Recommend_param(_value);
 								}
 						
-        }
-    }
+        }   //if (typeof(_json[_attr]) != 'undefined') {
+    }   //for (_i in _param_types) {
     
     return this;
 };
