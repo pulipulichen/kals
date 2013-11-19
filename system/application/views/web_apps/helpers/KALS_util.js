@@ -476,6 +476,8 @@ KALS_util.show_exception = function (_exception, _uri) {
         var _alert = _this.alert(_exception_heading, _exception_content);
         _alert.get_ui().addClass('exception');    
     }, 1000);
+	
+	throw _message;
     //$.test_msg('KALS_util.show_exception() end');
     
     //return _alert;

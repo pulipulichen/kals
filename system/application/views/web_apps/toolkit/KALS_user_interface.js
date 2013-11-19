@@ -7,7 +7,8 @@
 function KALS_user_interface() {
     
     this._children = [];
-    
+	this._data = {};
+    this._default_data = this._data;
 }
 
 /**
@@ -63,6 +64,7 @@ KALS_user_interface.prototype.get_ui = function (_selector) {
  * @type {boolean}
  */
 KALS_user_interface.prototype.has_setup_ui = function () {
+	//$.test_msg('has_setup_ui', (this._ui !== null));
     return (this._ui !== null);
 };
 
@@ -378,41 +380,73 @@ KALS_user_interface.prototype.remove = function () {
  * @param {Object} _element
  */
 KALS_user_interface.prototype.append = function(_element) {
+	if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+		_element = _element.get_ui();
+	}
 	this.get_ui().append(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.appendTo = function(_element) {
+	if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().appendTo(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.prepend = function(_element) {
+    if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().prepend(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.prependTo = function(_element) {
+    if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().appendTo(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.after = function(_element) {
+    if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().after(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.insertAfter = function(_element) {
+    if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().after(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.before = function(_element) {
+    if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().after(_element);
 	return this;
 };
 
 KALS_user_interface.prototype.insertBefore = function(_element) {
+    if (typeof(_element) !== 'undefined'
+       && typeof(_element.get_ui) == 'function') {
+        _element = _element.get_ui();
+    }
     this.get_ui().after(_element);
 	return this;
 };
@@ -422,10 +456,18 @@ KALS_user_interface.prototype.find = function(_param) {
 };
 
 KALS_user_interface.prototype.html = function(_param) {
+    if (typeof(_param) !== 'undefined'
+       && typeof(_param.get_ui) == 'function') {
+        _param = _param.get_ui();
+    }
     return this.get_ui().html(_param);
 };
 
 KALS_user_interface.prototype.text = function(_param) {
+    if (typeof(_param) !== 'undefined'
+	   && typeof(_param.get_ui) == 'function') {
+        _param = _param.get_ui().text();
+    }
     return this.get_ui().text(_param);
 };
 
@@ -570,15 +612,18 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 		
 		if (_value_class !== false) {
 			var _value_object;
-			$.test_msg('create object', _value_class);
+			//$.test_msg('create object', _value_class);
 			if (_value_class == 'Annotation') {
 				_value_object = _this._create_annotation(_value);
 			}
 			else if (_value_class == 'Annotation_collection') {
                 _value_object = _this._create_annotation_collection(_value);
             } 
-			$.test_msg('value object', _value_object.html());
-			_ele.html(_value_object);
+			//$.test_msg('value object', _value_object.html());
+			//_ele.css('border', '1px solid red');
+			if (_value_object !== undefined) {
+				_ele.html(_value_object.get_ui());
+			}
 		}
         else if ($.is_array(_value)) {
 			
@@ -667,9 +712,8 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
 KALS_user_interface.prototype._create_annotation = function (_value) {
 	var _param = new Annotation_param();
 	_param.import_json(_value);
-	//var _list_item = new Template_list_item(_param);
-	var _list_item = new List_item(_param);
-	$.test_msg('create annotation', _list_item.get_ui().html());
+	var _list_item = new Template_list_item(_param);
+	//$.test_msg('create annotation', _list_item.get_ui().html());
 	return _list_item;
 };
 
@@ -679,10 +723,10 @@ KALS_user_interface.prototype._create_annotation = function (_value) {
  * @type {Template_list_item} 
  */
 KALS_user_interface.prototype._create_annotation_collection = function (_value) {
-    var _param = new Annotation_param_collection();
+    var _param = new Annotation_collection_param();
     _param.import_json(_value);
-    //var _list_item = new Template_list_collection(_param);
-	var _list_item = new List_collection(_param);
+    var _list_item = new Template_list_collection(_param);
+	//var _list_item = new List_collection(_param);
     return _list_item;
 };
 

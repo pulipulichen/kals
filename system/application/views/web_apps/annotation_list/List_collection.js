@@ -605,8 +605,11 @@ List_collection.prototype.add_list_item = function(_param, _from_head) {
         var _list_item_ui = _list_item.get_ui();
         
         //if ($.is_null(_from_head) || _from_head === false) {
+		
+        var _ui = this.get_ui();
+		//$.test_msg('add_list_item', _ui.html());
 		if (this._$default_add_item_from_head === false) {
-            this._list_container.append(_list_item_ui);
+			this._list_container.append(_list_item_ui);
         }
         else {
             this._list_container.prepend(_list_item_ui);
@@ -614,6 +617,28 @@ List_collection.prototype.add_list_item = function(_param, _from_head) {
         
     }
     return _list_item;
+};
+
+List_collection.prototype.set_annotation_collection = function (_coll) {
+	
+	//$.test_msg('set anno coll', _coll);
+	
+	if ($.is_class(_coll, 'Annotation_collection_param') === false) {
+		return this;
+	}
+	
+	this.reset();
+	var _annotations = _coll.get_annotations();
+	for (var _i in _annotations) {
+		var _annotation = _annotations[_i];
+		//$.test_msg('set anno coll', _annotation);
+		//$.test_msg('is_null', $.is_null(_annotation));
+        if ($.is_null(_annotation) === false) {
+            this.add_list_item(_annotation);
+		}
+	}
+	
+	return this;
 };
 
 List_collection.prototype.editor_add_list_item = function (_param, _from_head) {

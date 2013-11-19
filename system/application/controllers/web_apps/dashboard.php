@@ -150,7 +150,9 @@ class dashboard extends rest_controller {
         $data["last_annotation_timestamp"] = time();
         
         $last_annotation = new Annotation(14848);
-        $data["last_annotation"] = $last_annotation->export_data();
+        $annotation_json = $last_annotation->export_data();
+        $data["last_annotation"] = array($annotation_json, $annotation_json);
+        
         $data["activity"] = "Good";
         
         return $data;

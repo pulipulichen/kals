@@ -101,7 +101,19 @@ Annotation_collection_param.prototype.get = function (_index) {
 	else {
 		return null;
 	}
-    
+};
+
+Annotation_collection_param.prototype.get_annotations = function () {
+	var _output = [];
+	for (var _i in this.annotations) {
+		var _annotation_param = this.annotations[_i];
+		
+		if ($.is_class(_annotation_param, 'Annotation_param') === false) {
+			_annotation_param = new Annotation_param(_annotation_param);
+		}
+		_output.push(_annotation_param);
+	}
+	return _output;
 };
 
 Annotation_collection_param.prototype.length = function () {

@@ -64,7 +64,7 @@ Template_controller.prototype._$request_url = null;
  */
 Template_controller.prototype.request_get = function (_callback) {
 	
-        $.test_msg('temp, request_get');
+    //$.test_msg('temp, request_get');
     return this._request('get', 'get', _callback);
 };
 
@@ -167,27 +167,49 @@ Template_controller.prototype.set_data = function (_data) {
 };
 
 /**
+ * 重置取得的資料
+ */
+Template_controller.prototype.reset_data = function () {
+    this._data = this._default_reset_data;
+    return this._data;
+};
+
+
+/**
  * 開啟UI
  * @param {function|null} _callback
  */
+/*
 Template_controller.prototype.open = function (_callback) {
 	var _this = this;
-	this.request_get(function() {
-		KALS_modal.prototype.open.call(this, _callback);
-	});
+	
+	if (this._$request_url !== null) {
+		//this.request_get(function() {
+	        KALS_modal.prototype.open.call(_this, _callback);
+	    });
+	}
+	else {
+		$.trigger_callback(_callback);
+	}
+	
+	//http://localhost/kals/help/config_annotation_scope.html#modal=Dashboard&select=69,127
     return this;
 };
-
+*/
 /**
  * 初始化樣板資料，覆寫KALS_user_interface的作法
  * @param {jQuery} _template
  */
 Template_controller.prototype._initialize_template_data = function (_template) {
 	var _this = this;
-	this.request_get(function () {
-		$.test_msg('temp, init data');
-		KALS_user_interface.prototype._initialize_template_data.call(_this, _template);
-	});
+	
+	if (this._$request_url !== null) {
+        this.request_get(function () {
+			$.test_msg('temp, init data');
+			KALS_user_interface.prototype._initialize_template_data.call(_this, _template);
+		});
+    }
+	
     return _template;
 };
 

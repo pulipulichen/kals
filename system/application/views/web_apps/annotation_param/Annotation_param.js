@@ -288,6 +288,10 @@ Annotation_param.prototype.export_respond_json = function () {
 };
 
 Annotation_param.prototype.import_json = function (_json) {
+	if ($.is_class(_json, 'Annotation_param')) {
+		return _json;
+	}
+	
     //取得Annotation的note時，也記得要先做urlencode()跟JavaScript端的decodeURIComponent()
     var _plain_types = this._plain_types;
     for (var _i in _plain_types) {
