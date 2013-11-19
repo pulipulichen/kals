@@ -22,7 +22,9 @@
     <dd>{{user_count}}</dd>
     
     <dt>{{kals-lang:window.dashboard.last_annotation}}:</dt>
-    <dd kals-event-click="open_last_annotation()">{{last_annotation_id}} - {{last_annotation_timestamp}}</dd>
+    <dd kals-event-click="open_last_annotation()">{{last_annotation_id}} - {{last_annotation_timestamp}} 
+	   <div>{{last_annotation}}</div>
+    </dd>
     
     <dt>{{kals-lang:activity}}:</dt>
     <dd kals-event-field-set="setup_activity()">{{activity}}</dd>

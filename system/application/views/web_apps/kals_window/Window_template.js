@@ -22,17 +22,13 @@ function Window_template(){
 Window_template.prototype = new Window_content();
 
 /**
- * 繼承自KALS_modal，要結合起來
+ * 繼承自Template_controller，要結合起來
  */
-//(function () {
+var _prototype = new Template_controller();
 	
-	var _prototype = new Template_controller();
-	
-    for (var _i in _prototype) {
-        Window_template.prototype[_i] = _prototype[_i];
-    }
-	
-//});
+for (var _i in _prototype) {
+    Window_template.prototype[_i] = _prototype[_i];
+}
 
 Window_template.prototype.close = function (_callback) {
     KALS_window.close(_callback);

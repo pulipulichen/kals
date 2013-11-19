@@ -119,7 +119,8 @@ KALS_user_interface.prototype._$create_ui_prototype = function (_element) {
  * @type {jQuery}
  */
 KALS_user_interface.prototype._load_template = function () {
-    if (typeof(KALS_context) !== 'undefined' && KALS_context.template !== null) {
+    if (typeof(KALS_context) !== 'undefined' && KALS_context.template !== null
+	   && this._$template !== null) {
 		var _template = KALS_context.template.get_template(this._$template);
 		_template = this._initialize_template(_template);
         return _template;
@@ -420,6 +421,14 @@ KALS_user_interface.prototype.find = function(_param) {
     return this.get_ui().find(_param);
 };
 
+KALS_user_interface.prototype.html = function(_param) {
+    return this.get_ui().html(_param);
+};
+
+KALS_user_interface.prototype.text = function(_param) {
+    return this.get_ui().text(_param);
+};
+
 /**
  * 在UI中設定值
  * @param {String} _field
@@ -556,7 +565,22 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
         
 		var _parent = _this._get_field_parent(_field, _ele);
 		var _i, _child, _parent_clone;
-        if ($.is_array(_value)) {
+		
+		var _value_class = _this._value_class_filter(_value); 
+		
+		if (_value_class !== false) {
+			var _value_object;
+			$.test_msg('create object', _value_class);
+			if (_value_class == 'Annotation') {
+				_value_object = _this._create_annotation(_value);
+			}
+			else if (_value_class == 'Annotation_collection') {
+                _value_object = _this._create_annotation_collection(_value);
+            } 
+			$.test_msg('value object', _value_object.html());
+			_ele.html(_value_object);
+		}
+        else if ($.is_array(_value)) {
 			
             for (_i in _value) {
                 _parent_clone = _parent.clone(true);
@@ -612,6 +636,55 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 	
 	return this;
 };
+
+/**
+ * 要設定資料之前，先過濾一下
+ * @param {jQuery} _ele
+ * @param {Object} _value
+ */
+KALS_user_interface.prototype._value_class_filter = function(_value){
+	// 判斷是否是Annotation
+    if (typeof(_value.annotation_id) !== 'undefined'
+	   && $.is_number(_value.annotation_id)) {
+	    return 'Annotation';
+    }
+	// 判斷是否是Annotation_collection
+	else if ($.is_array(_value)
+	   && _value.length > 0
+	   && typeof(_value[0].annotation_id) != 'undefined'
+	   && $.is_number(_value[0].annotation_id) ) {
+	   	return 'Annotation_collection';
+   }
+   
+    return false;
+};
+
+/**
+ * 建立Template_list_item
+ * @param {JSON} _value 是Annotation輸出的JSON
+ * @type {Template_list_item} 
+ */
+KALS_user_interface.prototype._create_annotation = function (_value) {
+	var _param = new Annotation_param();
+	_param.import_json(_value);
+	var _list_item = new Template_list_item(_param);
+	$.test_msg('create annotation', _list_item.get_ui().html());
+	return _list_item;
+};
+
+/**
+ * 建立Template_list_collection
+ * @param {JSON} _value 是Annotation_collection輸出的JSON
+ * @type {Template_list_item} 
+ */
+KALS_user_interface.prototype._create_annotation_collection = function (_value) {
+    var _param = new Annotation_param_collection();
+    _param.import_json(_value);
+    var _list_item = new Template_list_collection(_param);
+    return _list_item;
+};
+
+
 
 /**
  * 取得上層欄位的資料

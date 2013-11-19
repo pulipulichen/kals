@@ -148,6 +148,9 @@ class dashboard extends rest_controller {
         $data["user_count"] = rand(1, 6);
         $data["last_annotation_id"] = 14848;
         $data["last_annotation_timestamp"] = time();
+        
+        $last_annotation = new Annotation(14848);
+        $data["last_annotation"] = $last_annotation->export_data();
         $data["activity"] = "Good";
         
         return $data;

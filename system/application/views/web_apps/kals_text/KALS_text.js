@@ -133,5 +133,13 @@ KALS_text.prototype.style_adapter = function () {
     }
 };
 
+/**
+ * 讀取指定的標註
+ * @param {Int} _annotation_id
+ */
+KALS_text.prototype.load_annotation = function (_annotation_id) {
+	KALS_text.tool.view.load_view(_annotation_id);
+};
+
 /* End of file KALS_text */
 /* Location: ./system/application/views/web_apps/KALS_text.js */

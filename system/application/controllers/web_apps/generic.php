@@ -238,6 +238,8 @@ class generic extends Web_apps_controller {
             'annotation_list/List_collection_anonymous',
             'annotation_list/Respond_list_collection',
             'annotation_list/Topic_list',
+            'annotation_list/Template_list_collection',
+            'annotation_list/Template_list_item',
 
 
             'annotation_list/List_timestamp_component',
