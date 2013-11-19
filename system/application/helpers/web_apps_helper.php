@@ -132,13 +132,17 @@ if ( !function_exists("kals_json_encode")) {
         }
         
         //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
-        array_walk_recursive($arr, 
-            function (&$item, $key) { 
-                if (is_string($item)) {
-                    //$item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
-                    mb_convert_encoding($item, 'HTML-ENTITIES', 'utf-8');
-                }
-            });
+        
+        if (is_array($arr)) {
+            array_walk_recursive($arr, 
+                function (&$item, $key) { 
+                    if (is_string($item)) {
+                        //$item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+                        mb_convert_encoding($item, 'HTML-ENTITIES', 'utf-8');
+                    }
+                });
+        }
+        
         //return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
         //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
         $arr = json_encode($arr);

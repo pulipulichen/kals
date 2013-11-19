@@ -95,6 +95,25 @@ KALS_language.prototype.line = function(_lang_param){
 };
 
 /**
+ * 是否有該語系檔
+ * @param {KALS_language_param|String} _lang_param
+ */
+KALS_language.prototype.has_line = function (_lang_param) {
+	//var _line, _arg;
+	if ($.is_object(_lang_param)) {
+		_lang_param = $.get_parameter(_lang_param, 'line');
+	}
+	
+	if ($.isset(this._lang) &&
+	$.isset(this._lang[_lang_param])) {
+		return true;
+	}
+	else {
+		return false;
+	}
+};
+
+/**
  * 將lang字串中取代參數
  * @param {string} _lang
  * @param {Array} _arg

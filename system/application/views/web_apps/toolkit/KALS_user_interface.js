@@ -144,6 +144,8 @@ KALS_user_interface.prototype._initialize_template = function (_template) {
  * @param {jQuery} _template
  */
 KALS_user_interface.prototype._initialize_template_data = function (_template) {
+	$.test_msg('ui, init data');
+	
 	if ($.is_object(this._data)) {
         for (var _field in this._data) {
             var _value = this._data[_field];

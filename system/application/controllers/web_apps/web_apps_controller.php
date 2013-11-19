@@ -624,6 +624,7 @@ $style = implode("}\n", $parts);
 
         send_js_header($this->output);
         //test_msg($object['policy']['my_custom']);
+        
         $json = kals_json_encode($object);
         $pos = stripos($callback, '='); // 取得 = 號的位置
         $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串

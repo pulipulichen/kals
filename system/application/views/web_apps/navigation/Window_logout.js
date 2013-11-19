@@ -66,7 +66,7 @@ Window_logout.prototype.nav_heading = new KALS_language_param (
 
 Window_logout.prototype._$template = 'navigation/template/Window_logout';
 
-
+/*
 Window_logout.prototype.action = function (_ele, _params) {
 	//alert(121212);
 	_ele.css('color', 'red');
@@ -76,7 +76,7 @@ Window_logout.prototype.action_reset = function (_ele, _params) {
     //alert(121212);
     _ele.css('color', 'green');
 };
-
+*/
 /*
 Window_logout.prototype._$create_ui = function () {
     

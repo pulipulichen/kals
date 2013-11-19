@@ -1,0 +1,22 @@
+/**
+ * CSS for template Dashboard.html
+ */
+dt {
+	font-weight:bold;
+}
+
+.activity-good {
+	font-weight: bold;
+	font-size: larger;
+	color:green;
+}
+.activity-normal {
+    font-weight: bold;
+    font-size: larger;
+    color:blue;
+}
+.activity-bad {
+    font-weight: bold;
+    font-size: larger;
+    color:red;
+}

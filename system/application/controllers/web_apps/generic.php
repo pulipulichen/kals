@@ -85,6 +85,7 @@ class generic extends Web_apps_controller {
             , 'toolkit/Task_event_dispatcher'
             , 'helpers/KALS_exception'
             , 'toolkit/Name_value_pair'
+            , 'toolkit/Template_controller' // Pulipuli Chen 20131119
             , 'helpers/KALS_util'   //Qunit
 
             //, 'toolkit/'
@@ -122,6 +123,7 @@ class generic extends Web_apps_controller {
             'kals_window/KALS_window',
             'kals_window/Window_loading_component',
             'kals_window/Window_content',
+            'kals_window/Window_template',  // Pulipuli Chen 201311119
             'kals_window/Window_content_submit',
             'kals_window/Window_user_interface',
             'kals_window/Window_change_link',

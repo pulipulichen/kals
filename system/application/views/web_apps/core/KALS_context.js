@@ -54,7 +54,10 @@ KALS_context.initialize = function () {
             _this.lang = new KALS_language();
             _this.user = new Context_user();
             _this.policy = new Context_policy();
-            _this.search = new Context_search();
+            
+			//_this.search = new Context_search();
+			_this.search = new Window_search();
+			
             _this.overlay = new Overlay_manager();
             
             _this.init_context.start();

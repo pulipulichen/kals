@@ -67,10 +67,12 @@ KALS_template.prototype._template_initialize_language = function(_template) {
 		var _text = _ele.html();
 		var _line = _ele.attr('kals-lang');
 		
-		KALS_context.lang.add_listener(_ele, new KALS_language_param(
-		  _text,
-		  _line
-		));
+		if (KALS_context.lang.has_line(_line)) {
+			KALS_context.lang.add_listener(_ele, new KALS_language_param(
+              _text,
+              _line
+            ));
+		}	
 	});
 	
 	return _template;

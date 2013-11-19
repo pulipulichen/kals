@@ -350,6 +350,13 @@ $lang['web_apps.feedback.ui.issueLabel'] = "請敘述您遇到的問題，並在
 $lang['web_apps.feedback.ui.blackout'] = "遮黑";   // "Blackout"
 $lang['web_apps.feedback.ui.highlight'] = "標亮";   // "Highlight"
 $lang['web_apps.feedback.ui.screenshot_hint'] = "請利用標亮標示錯誤的區域，用遮黑掩蓋不想要透漏的區域。";   // "Highlight or blackout important information"
+
+$lang['web_apps.window.dashboard.heading'] = "資訊版";
+$lang['web_apps.window.dashboard.nav_heading'] = "資訊版";
+$lang['web_apps.window.dashboard.annotation_count'] = "標註數量";
+$lang['web_apps.window.dashboard.user_count'] = "使用者數量";
+$lang['web_apps.window.dashboard.last_annotation'] = "最近的標註";
+$lang['web_apps.window.dashboard.activity'] = "活躍度";
         
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */

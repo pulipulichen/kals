@@ -81,6 +81,14 @@ Window_content.prototype.height = null;
 
 // --------
 
+Window_content.prototype.open = function (_callback) {
+	this.open_window(_callback);
+};
+
+Window_content.prototype.close = function (_callback) {
+    KALS_window.close(_callback);
+};
+
 /**
  * KALS_window的保存位置
  * @type {KALS_window}
@@ -327,14 +335,18 @@ Window_content.prototype.is_absolute = function () {
  * 獨立開啟視窗
  * @author Pulipuli Chen 20131113
  */
-Window_content.prototype.open_window = function () {
+Window_content.prototype.open_window = function (_callback) {
 	var _content = this;
             
 	if (_content.is_absolute() === false) {
-        KALS_window.setup_window(_content);
+        KALS_window.setup_window(_content, function () {
+			$.trigger_callback(_callback);
+		});
 	}
 	else {
-		_content.open();
+		_content.open(function() {
+			$.trigger_callback(_callback);
+		});
 	}
 };
 

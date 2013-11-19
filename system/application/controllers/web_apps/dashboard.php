@@ -1,5 +1,5 @@
 <?php
-include_once '../rest_controller.php';
+include_once 'rest_controller.php';
 /**
  * Dashboard
  *
@@ -14,7 +14,7 @@ include_once '../rest_controller.php';
  * @version		1.0 2013/11/19 下午 03:51:22
  */
 
-class Rest_controller extends Rest_controller {
+class dashboard extends rest_controller {
 
     
     /**
@@ -29,7 +29,7 @@ class Rest_controller extends Rest_controller {
     public function _after_construct() {
         // 請覆寫此處
     }
-
+    
     /**
      * ===========================
      * GET方法（請覆寫以下設定）

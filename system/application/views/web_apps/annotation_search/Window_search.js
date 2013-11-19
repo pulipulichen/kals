@@ -612,7 +612,7 @@ Window_search.prototype.get_annotation_type_ui = function () {
  * 顯示最近的標註
  * @memberOf {window_search}
  */
-Window_search.prototype.show_recent_annotation = function(){
+Window_search.prototype.show_recent_annotation = function(_callback){
 	var _content = this;
 	var _list = _content.list;
 	var _data = this.get_data();
@@ -627,12 +627,26 @@ Window_search.prototype.show_recent_annotation = function(){
 	    
 	// 我們要叫List_collection_search進行搜尋
 	var _this = this;
+        
 	_list.load_list(function () {
         //$.test_msg("Window_search_submit.prototype.submit");
-		_this.complete_handle();
+        //_this.complete_handle();
         _content.get_ui().find(".search-result-subpanel").show();
+        $.trigger_callback(_callback);
 	});
 };
+
+Window_search.prototype.open_recent_annotation = function (_callback) {
+	var _this = this;
+    this.show_recent_annotation(function () {
+		_this.open_window(function () {
+			$.trigger_callback(_callback);
+		}); 
+    });
+    return this;
+};
+
+
 
 
 /**

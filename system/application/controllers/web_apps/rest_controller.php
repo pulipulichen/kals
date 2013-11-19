@@ -14,7 +14,7 @@ include_once 'web_apps_controller.php';
  * @version		1.0 2010/10/23 下午 03:51:22
  */
 
-class Rest_controller extends Web_apps_controller {
+class rest_controller extends Web_apps_controller {
 
     protected $controller_enable_cache = FALSE;
     protected $login_require = FALSE;
@@ -701,41 +701,39 @@ class Rest_controller extends Web_apps_controller {
         
         // 取得資料
         if ($config["method"] == 'GET') {
-            $data = $this->_retrieve_get_data($json);
+            $data = $this->_retrieve_get_json($json);
         }
         else if ($config["method"] == 'POST') {
-            $data = $this->_retrieve_post_data($json);
+            $data = $this->_retrieve_post_json($json);
         }
         
         $output_data = TRUE;
         // 處理輸出資料
         switch ($rest_type) {
             case 'get':
-                $outout_data = $this->_process_request_data($data);
+                $output_data = $this->_process_get_data($data);
                 break;
             case 'put':
-                $outout_data = $this->_process_request_put($data);
+                $output_data = $this->_process_put_data($data);
                 break;
             case 'post':
-                $outout_data = $this->_process_request_post($data);
+                $output_data = $this->_process_post_data($data);
                 break;
             case 'delete':
-                $outout_data = $this->_process_request_delete($data);
+                $output_data = $this->_process_delete_data($data);
                 break;
         }
         
         // 留下記錄
         if (is_numeric($config["action_id"])) {
-            kals_log($this->db, $config["action_id"], $outout_data);
+            kals_log($this->db, $config["action_id"], $output_data);
             context_complete();
         }
-
-        
         
         // 偵錯確認
-        if ($config['get_enable_profiler'] != TRUE) {
-            
+        if ($config['enable_profiler'] != TRUE) {
             // 最終回傳資料
+            //test_msg($output_data);
             return $this->_display_jsonp($output_data, $callback);
         }
     }
