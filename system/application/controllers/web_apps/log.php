@@ -42,7 +42,7 @@ include_once 'web_apps_controller.php';
 33=搜尋 文章
 34=瀏覽最新標註
 35=tooltip放在文章上面的顯示標註
-
+36=查詢Dashboard
  * 
  *
  * @package		KALS

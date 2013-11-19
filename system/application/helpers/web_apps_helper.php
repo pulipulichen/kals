@@ -238,7 +238,6 @@ if ( ! function_exists('kals_log'))
             else {
                 $note = kals_json_encode($data);
             }
-            
         }
         
         if (is_null($user_id)) {
