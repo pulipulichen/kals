@@ -617,18 +617,21 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 		if (_value_class !== false) {
 			
 			var _value_object;
-			$.test_msg('create object', _value_class);
+			//$.test_msg('create object', _value_class);
 			if (_value_class == 'Annotation') {
-				_value_object = _this._create_annotation(_value);
+				_value_object = _this._filter_annotation(_value);
 			}
-			//else if (_value_class == 'Annotation_collection') {
+			else if (_value_class == 'KALS_user_interface') {
+				_value_object = _this._filter_kals_user_interface(_value);
+			}
+	 		//else if (_value_class == 'Annotation_collection') {
             //    _value_object = _this._create_annotation_collection(_value);
             //} 
 			//$.test_msg('value object', _value_object.html());
 			//_ele.css('border', '1px solid red');
 			
 			if (_value_object !== undefined) {
-				_ele.html(_value_object.get_ui());
+				_ele.html(_value_object);
 			}
 		}
         else if ($.is_array(_value)) {
@@ -694,6 +697,7 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
  * 要設定資料之前，先過濾一下
  * @param {jQuery} _ele
  * @param {Object} _value
+ * @type {String} 回傳Class的名稱
  */
 KALS_user_interface.prototype._value_class_filter = function(_value){
 	// 判斷是否是Annotation
@@ -701,6 +705,9 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
 	   && $.is_number(_value.annotation_id)) {
 	    return 'Annotation';
     }
+	else if (typeof(_value.get_ui) == 'function') {
+		return 'KALS_user_interface';
+	}
 	// 判斷是否是Annotation_collection
 	//else if ($.is_array(_value)
 	//   && _value.length > 0
@@ -715,16 +722,25 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
 /**
  * 建立Template_list_item
  * @param {JSON} _value 是Annotation輸出的JSON
- * @type {Template_list_item} 
+ * @type {jQuery} 
  */
-KALS_user_interface.prototype._create_annotation = function (_value) {
+KALS_user_interface.prototype._filter_annotation = function (_value) {
 	var _param = _value;
-	if ($.is_class(_param, 'Annotation_param') == false) {
+	if ($.is_class(_param, 'Annotation_param') === false) {
 		_param = new Annotation_param(_param);
 	}
 	var _list_item = new Template_list_item(_param);
 	//$.test_msg('create annotation', _list_item.get_ui().html());
-	return _list_item;
+	return _list_item.get_ui();
+};
+
+/**
+ * 過濾出KALS_user_interface
+ * @param {KALS_user_interface} _value
+ * @type {jQuery}
+ */
+KALS_user_interface.prototype._filter_kals_user_interface = function (_value) {
+	return _value.get_ui();
 };
 
 /**
