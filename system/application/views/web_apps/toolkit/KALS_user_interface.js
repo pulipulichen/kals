@@ -146,7 +146,7 @@ KALS_user_interface.prototype._initialize_view = function (_view) {
  * @param {jQuery} _view
  */
 KALS_user_interface.prototype._initialize_view_data = function (_view) {
-	$.test_msg('ui, init data');
+	//$.test_msg('ui, init data');
 	
 	if ($.is_object(this._data)) {
         for (var _field in this._data) {
@@ -269,7 +269,7 @@ KALS_user_interface.prototype.toggleClass = function (_class_name) {
 KALS_user_interface.prototype.has_child = function (_name) {
     //return (typeof(this._children[_name]) != 'undefined'
     //    && this._children[_name] != null);
-    return (typeof(this._children[_name]) != 'undefined');
+    return (typeof(this._children[_name]) !== 'undefined');
 };
 
 /**
@@ -285,7 +285,7 @@ KALS_user_interface.prototype.child = function (_name, _child) {
             this._children[_name] = _child;
             //$.test_msg('child', [_name, $.get_class(_child)]);
             
-            if (typeof(_child.parent) == 'function') {
+            if (typeof(_child.parent) === 'function') {
 				_child.parent(this);
 			}
         }
@@ -380,7 +380,7 @@ KALS_user_interface.prototype.remove = function () {
  */
 KALS_user_interface.prototype.append = function(_element) {
 	if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
 		_element = _element.get_ui();
 	}
 	this.get_ui().append(_element);
@@ -389,7 +389,7 @@ KALS_user_interface.prototype.append = function(_element) {
 
 KALS_user_interface.prototype.appendTo = function(_element) {
 	if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().appendTo(_element);
@@ -398,7 +398,7 @@ KALS_user_interface.prototype.appendTo = function(_element) {
 
 KALS_user_interface.prototype.prepend = function(_element) {
     if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().prepend(_element);
@@ -407,7 +407,7 @@ KALS_user_interface.prototype.prepend = function(_element) {
 
 KALS_user_interface.prototype.prependTo = function(_element) {
     if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().appendTo(_element);
@@ -416,7 +416,7 @@ KALS_user_interface.prototype.prependTo = function(_element) {
 
 KALS_user_interface.prototype.after = function(_element) {
     if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().after(_element);
@@ -425,7 +425,7 @@ KALS_user_interface.prototype.after = function(_element) {
 
 KALS_user_interface.prototype.insertAfter = function(_element) {
     if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().after(_element);
@@ -434,7 +434,7 @@ KALS_user_interface.prototype.insertAfter = function(_element) {
 
 KALS_user_interface.prototype.before = function(_element) {
     if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().after(_element);
@@ -443,7 +443,7 @@ KALS_user_interface.prototype.before = function(_element) {
 
 KALS_user_interface.prototype.insertBefore = function(_element) {
     if (typeof(_element) !== 'undefined'
-       && typeof(_element.get_ui) == 'function') {
+       && typeof(_element.get_ui) === 'function') {
         _element = _element.get_ui();
     }
     this.get_ui().after(_element);
@@ -456,7 +456,7 @@ KALS_user_interface.prototype.find = function(_param) {
 
 KALS_user_interface.prototype.html = function(_param) {
     if (typeof(_param) !== 'undefined'
-       && typeof(_param.get_ui) == 'function') {
+       && typeof(_param.get_ui) === 'function') {
         _param = _param.get_ui();
     }
     return this.get_ui().html(_param);
@@ -468,7 +468,7 @@ KALS_user_interface.prototype.html = function(_param) {
  */
 KALS_user_interface.prototype.text = function(_param) {
     if (typeof(_param) !== 'undefined'
-	   && typeof(_param.get_ui) == 'function') {
+	   && typeof(_param.get_ui) === 'function') {
         _param = _param.get_ui().text();
     }
     return this.get_ui().text(_param);
@@ -482,6 +482,8 @@ KALS_user_interface.prototype.text = function(_param) {
 KALS_user_interface.prototype.attr = function(_attr_name, _param) {
     return this.get_ui().attr(_attr_name, _param);
 };
+
+// -----------------------------
 
 /**
  * 在UI中設定值
@@ -541,9 +543,9 @@ KALS_user_interface.prototype.set_sub_field = function (_field, _value, _ele) {
 	// 過濾資料
     _value = this._$set_field_filter(_field, _value, _ele);
     
-	if ($.is_array(_value)) {
-		$.test_msg('after filter', _value[0]);
-	}
+	//if ($.is_array(_value)) {
+	//	$.test_msg('after filter', _value[0]);
+	//}
     // 如果是單一欄位，則繼續處理
     
     this.reset_field_text(_field, _ele);

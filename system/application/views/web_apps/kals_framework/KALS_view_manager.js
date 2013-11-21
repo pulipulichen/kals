@@ -25,7 +25,7 @@ KALS_view_manager.prototype._$context_register = 'KALS_view_manager';
  * @type {String}
  */
 KALS_view_manager.prototype.get_view = function (_index) {
-    $.test_msg('KALS_view_manager', this._data);
+    //$.test_msg('KALS_view_manager', this._data);
 	//return JSONP_dispatcher.prototype.get_field.call(this, _index);
 	var _view = JSONP_dispatcher.prototype.get_field.call(this, _index);
         if (_view === undefined) {
@@ -68,7 +68,7 @@ KALS_view_manager.prototype._view_initialize_language = function(_view, _index) 
 	//var _container = $("<div></div>").append(_view);
 	var _kals_lang = _view.find('*[kals-lang]');
 	var _view_classname = this._get_view_classname(_index, '_');
-	_view_classname = 'template.' + _view_classname + '.';
+	_view_classname = 'view.' + _view_classname + '.';
 	//$.test_msg('parse lang', [_kals_lang.length, _view.html()]);
 	
 	_kals_lang.each(function (_index, _ele) {

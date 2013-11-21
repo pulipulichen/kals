@@ -44,6 +44,10 @@ Dashboard.prototype._$model = 'dashboard';
 
 Dashboard.prototype._$view = 'extension/dashboard/view/Dashboard';
 
+Dashboard.prototype._$init_request_action = 'init';
+
+KALS_controller.prototype._$enable_debug = false;
+
 Dashboard.prototype.name = 'Dashboard';
 
 Dashboard.prototype.heading = new KALS_language_param (
@@ -63,7 +67,7 @@ Dashboard.prototype.open_last_annotation = function () {
 
 Dashboard.prototype.setup_activity = function (_ele) {
 	var _activity = this.get_field('activity').toLowerCase();
-    _ele.attr('className', 'activity-' + _activity);
+        _ele.attr('className', 'activity-' + _activity);
 };
 
 Dashboard.prototype.open_recent_annotation = function() {

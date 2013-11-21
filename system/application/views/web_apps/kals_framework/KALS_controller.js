@@ -81,7 +81,7 @@ KALS_controller.prototype._$enable_debug = true;
  * @type {String}
  */
 KALS_controller.prototype.get_request_url = function () {
-	var _url = this._$request_url;
+	var _url = this._$model;
     
 	if ($.is_null(_url)) {
         return _url;
@@ -115,7 +115,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         return $.trigger_callback(_callback);
     }
 
-    _url = _url + '/' + _rest_type;
+    _url = _url + '/request';
 
     if (this._enable_debug_flag === true) {
         _data["_enable_debug"] = true;
@@ -201,7 +201,7 @@ KALS_controller.prototype.reset_data = function () {
 KALS_controller.prototype.open = function (_callback) {
 	var _this = this;
 	
-	if (this._$request_url !== null) {
+	if (this._$model !== null) {
 		//this.request_get(function() {
 	        KALS_modal.prototype.open.call(_this, _callback);
 	    });
@@ -214,22 +214,110 @@ KALS_controller.prototype.open = function (_callback) {
     return this;
 };
 */
+
+/**
+ * 初始化要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$init_request_action = null;
+
+/**
+ * 開啟要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$open_request_action = null;
+
+/**
+ * 關閉時要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$close_request_action = null;
+
 /**
  * 初始化樣板資料，覆寫KALS_user_interface的作法
- * @param {jQuery} _template
+ * @param {jQuery} _view
  */
-KALS_controller.prototype._initialize_template_data = function (_template) {
-	var _this = this;
+KALS_controller.prototype._initialize_view_data = function (_view) {
+    var _this = this;
 	
-	if (this._$request_url !== null) {
-        this.request_get(function () {
-			$.test_msg('temp, init data');
-			KALS_user_interface.prototype._initialize_template_data.call(_this, _template);
-		});
+    if (this._$model !== null
+        && this._$init_request_action !== null) {
+        this.request('get', this._$init_request_action, this.get_data(), function (_data) {
+                _this.debug('VIEW, init data', _data);
+                _this.set_data(_data);
+                KALS_user_interface.prototype._initialize_view_data.call(_this, _view);
+        });
     }
-	
-    return _template;
+    else {
+        KALS_user_interface.prototype._initialize_view_data.call(_this, _view);
+    }	
+    return _view;
 };
+
+/**
+ * 覆寫開啟時的動作
+ * @param {funciton} _callback
+ * @returns {KALS_controller.prototype}
+ */
+KALS_controller.prototype.open = function (_callback) {
+    if (this._$model !== null
+        && this._$open_request_action !== null) {
+        var _this = this;
+        this.request('get', this._$open_request_action, this.get_data(), function (_data) {
+                _this.debug('VIEW, open data', _data);
+                _this.set_data(_data);
+                JSONP_dispatcher.prototype.open.call(this, _callback);
+        });
+    }
+    else {
+        JSONP_dispatcher.prototype.open.call(this, _callback);
+    }
+    return this;
+};
+
+/**
+ * 覆寫關閉時的動作
+ * @param {funciton} _callback
+ * @returns {KALS_controller.prototype}
+ */
+KALS_controller.prototype.close = function (_callback) {
+    if (this._$model !== null
+        && this._$close_request_action !== null) {
+        var _this = this;
+        this.request('get', this._$close_request_action, this.get_data(), function (_data) {
+                _this.debug('VIEW, close data', _data);
+                _this.set_data(_data);
+                JSONP_dispatcher.prototype.close.call(this, _callback);
+        });
+    }
+    else {
+        JSONP_dispatcher.prototype.close.call(this, _callback);
+    }
+    return this;
+};
+
+/**
+ * 以GET方式
+ * @param {String} _action
+ * @param {JSON} _data
+ * @param {function} _callback
+ * @returns {KALS_controller.prototype@call;request}
+ */
+KALS_controller.prototype.request_get = function(_action, _data, _callback) {
+    return this.request('get', _action, _data, _callback);
+};
+
+/**
+ * 以POST方式
+ * @param {String} _action
+ * @param {JSON} _data
+ * @param {function} _callback
+ * @returns {KALS_controller.prototype@call;request}
+ */
+KALS_controller.prototype.request_post = function(_action, _data, _callback) {
+    return this.request('post', _action, _data, _callback);
+};
+
 
 // --------------------------
 // 內部方法

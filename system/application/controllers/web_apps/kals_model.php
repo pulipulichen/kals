@@ -45,8 +45,9 @@ class KALS_model extends Web_apps_controller {
 
         $this->url = get_referer_url(TRUE);
         
-        $this->_after_construct();
+        $this->_initialize_model();
     }
+    
     
     /**
      * ===========================
@@ -57,7 +58,7 @@ class KALS_model extends Web_apps_controller {
     /**
      * 如果呼叫此controller之後還要做其他事情，請在此設定
      */
-    public function _initialize_model() {
+    protected function _initialize_model() {
         // @TODO
         // 請覆寫此處
     }
@@ -153,7 +154,7 @@ class KALS_model extends Web_apps_controller {
         )
     );
 
-    private $model_action_id = 37
+    private $model_action_id = 37;
 
     /**
      * 運作方法的函式
@@ -161,7 +162,7 @@ class KALS_model extends Web_apps_controller {
      * @param String $callback
      * @return String
      */
-    private function request ($json = NULL, $callback = NULL) {
+    public function request ($json = NULL, $callback = NULL) {
         // 取得資料
         $data = $this->_retrieve_get_json($json);
         if (is_null($data)) {
@@ -169,12 +170,14 @@ class KALS_model extends Web_apps_controller {
         }
         
         // 偵錯
-        if ($data['_enable_debug'] === TRUE) {
+        if (isset($data['_enable_debug']) 
+            && $data['_enable_debug'] === TRUE) {
             $this->output->enable_profiler(TRUE);
         }
         
         // 快取
-        if ($data["_enable_cache"] === TRUE) {
+        if (isset($data['_enable_cache']) 
+            && $data["_enable_cache"] === TRUE) {
             $this->_enable_cache();
         }
 
@@ -194,7 +197,8 @@ class KALS_model extends Web_apps_controller {
         }
 
         // 偵錯確認
-        if ($data['_enable_debug'] != TRUE) {
+        if (isset($data['_enable_debug']) === FALSE
+            || $data['_enable_debug'] != TRUE) {
 
             // 刪除多餘的欄位
             $strip_fields = array(
@@ -203,7 +207,7 @@ class KALS_model extends Web_apps_controller {
 
             $output_data = array();
             foreach ($data AS $field => $value) {
-                if (!is_array($field, $strip_fields)) {
+                if (!in_array($field, $strip_fields)) {
                     $output_data[$field] = $value;
                 }
             }
