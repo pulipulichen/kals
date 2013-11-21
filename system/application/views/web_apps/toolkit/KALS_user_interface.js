@@ -483,6 +483,31 @@ KALS_user_interface.prototype.attr = function(_attr_name, _param) {
     return this.get_ui().attr(_attr_name, _param);
 };
 
+/**
+ * 等同jQuery的hide效果
+ * @param {Object} _param1
+ * @param {Object} _param2
+ * @param {Object} _param3
+ * @returns {KALS_user_interface.prototype}
+ */
+KALS_user_interface.prototype.hide = function (_param1, _param2, _param3) {
+    this.get_ui().hide(_param1, _param2, _param3);
+    return this;
+};
+
+/**
+ * 等同jQuery的show效果
+ * http://api.jquery.com/show/
+ * @param {Object} _param1
+ * @param {Object} _param2
+ * @param {Object} _param3
+ * @returns {KALS_user_interface.prototype}
+ */
+KALS_user_interface.prototype.show = function (_param1, _param2, _param3) {
+    this.get_ui().show(_param1, _param2, _param3);
+    return this;
+};
+
 // -----------------------------
 
 /**

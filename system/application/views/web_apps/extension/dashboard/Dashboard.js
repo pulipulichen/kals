@@ -44,9 +44,11 @@ Dashboard.prototype._$model = 'dashboard';
 
 Dashboard.prototype._$view = 'extension/dashboard/view/Dashboard';
 
-Dashboard.prototype._$init_request_action = 'init';
+Dashboard.prototype._$open_request_action = 'init';
 
-KALS_controller.prototype._$enable_debug = false;
+Dashboard.prototype._$enable_debug = true;
+
+Dashboard.prototype._$auth_allow_anonymous = true;
 
 Dashboard.prototype.name = 'Dashboard';
 

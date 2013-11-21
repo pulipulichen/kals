@@ -111,7 +111,7 @@ Init_profile.prototype._test = [
 		//_logout.open_window();
 		
 		var _window = new Dashboard();
-        _window.open_window();
+                _window.open();
 	}
 	/**
 	 * 測試意見回饋功能

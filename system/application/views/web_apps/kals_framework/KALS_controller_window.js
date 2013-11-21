@@ -32,11 +32,20 @@ for (var _i in _prototype) {
 }
 
 /**
+ * 開啟
+ * @param {function} _callback
+ * @returns {KALS_controller_window}
+ */
+KALS_controller_window.prototype.open = function (_callback) {
+    return this.open_window(_callback);
+};
+
+/**
  * 使用Window_content的close功能
  * @param {Object} _callback
  */
 KALS_controller_window.prototype.close = function (_callback) {
-    KALS_window.close(_callback);
+    return KALS_window.close(_callback);
 };
 
 /**

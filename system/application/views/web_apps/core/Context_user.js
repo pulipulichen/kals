@@ -136,5 +136,14 @@ Context_user.prototype.get_data = function () {
     return _param;
 };
 
+Context_user.prototype.get_user_param = function () {
+    if (this.has_login()) {
+        return new User_param(this.get_id(), this.get_name());
+    }
+    else {
+        return null;
+    }
+};
+
 /* End of file Context_user */
 /* Location: ./system/application/views/web_apps/Context_user.js */

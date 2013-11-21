@@ -58,15 +58,12 @@ KALS_controller.prototype._$view = null;
 KALS_controller.prototype._$model = null;
 
 /**
- * 啟用此Controller的權限控制
+ * 允許未登入使用者
+ * @type {Boolean}
  */
-KALS_controller.prototype._$auth = {
-    /**
-     * 允許未登入使用者
-     * @type {Boolean}
-     */
-    'allow_anonymous': true
-};
+KALS_controller.prototype._$auth_allow_anonymous = false;
+
+KALS_controller.prototype._enable_flag = true;
 
 KALS_controller.prototype._$enable_debug = true;
 
@@ -108,6 +105,11 @@ KALS_controller.prototype.get_request_url = function () {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.request = function (_method, _action, _data, _callback) {
+    if (this._enable_flag === false) {
+        this.debug('request', 'enable flag is false');
+        return this;
+    }
+    
     var _url = this.get_request_url();
 
     if ($.is_null(_url)) {
@@ -260,17 +262,22 @@ KALS_controller.prototype._initialize_view_data = function (_view) {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.open = function (_callback) {
+    if (this._enable_flag === false) {
+        return $.trigger_callback(_callback);
+    }
+    
+    //this.debug('open', this._enable_flag);
     if (this._$model !== null
         && this._$open_request_action !== null) {
         var _this = this;
         this.request('get', this._$open_request_action, this.get_data(), function (_data) {
                 _this.debug('VIEW, open data', _data);
                 _this.set_data(_data);
-                JSONP_dispatcher.prototype.open.call(this, _callback);
+                KALS_modal.prototype.open.call(_this, _callback);
         });
     }
     else {
-        JSONP_dispatcher.prototype.open.call(this, _callback);
+        KALS_modal.prototype.open.call(this, _callback);
     }
     return this;
 };
@@ -281,17 +288,21 @@ KALS_controller.prototype.open = function (_callback) {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.close = function (_callback) {
+    if (this._enable_flag === false) {
+        return $.trigger_callback(_callback);
+    }
+    
     if (this._$model !== null
         && this._$close_request_action !== null) {
         var _this = this;
         this.request('get', this._$close_request_action, this.get_data(), function (_data) {
                 _this.debug('VIEW, close data', _data);
                 _this.set_data(_data);
-                JSONP_dispatcher.prototype.close.call(this, _callback);
+                KALS_modal.prototype.close.call(_this, _callback);
         });
     }
     else {
-        JSONP_dispatcher.prototype.close.call(this, _callback);
+        KALS_modal.prototype.close.call(this, _callback);
     }
     return this;
 };
@@ -318,6 +329,14 @@ KALS_controller.prototype.request_post = function(_action, _data, _callback) {
     return this.request('post', _action, _data, _callback);
 };
 
+/**
+ * 建立UI的動作
+ */
+KALS_controller.prototype._setup_ui = function () {
+    this._ui = this._$create_ui();
+    this._auth_check();
+    return this;
+};
 
 // --------------------------
 // 內部方法
@@ -328,7 +347,7 @@ KALS_controller.prototype.request_post = function(_action, _data, _callback) {
  * @type {User_param}
  */
 KALS_controller.prototype.get_user = function () {
-	// @todo
+    return KALS_context.user.get_user_param();
 };
 
 /**
@@ -398,11 +417,34 @@ KALS_controller.prototype.debug = function (_header, _message) {
     return this;
 };
 
+/**
+ * 檢查權限
+ * @returns {KALS_controller.prototype}
+ */
+KALS_controller.prototype._auth_check = function () {
+    $.test_msg('check auth', this._$auth_allow_anonymous);
+    if (this._$auth_allow_anonymous === false) {
+        $.test_msg('check anonymous');
+        if (this.get_user() === null) {
+            this.hide();
+            this._enable_flag = false;
+            this.debug('not allow anonymous');
+        }
+    }
+    return this;
+};
 
+KALS_controller.prototype.disable_controller = function () {
+    this.hide();
+    this._enable_flag = false;
+    //this.debug('not allow anonymous');
+};
 
-
-
-
+KALS_controller.prototype.enable_controller = function () {
+    this.show();
+    this._enable_flag = true;
+    //this.debug('allow anonymous');
+};
 
 /* End of file KALS_controller */
 /* Location: ./system/application/views/web_apps/toolkit/KALS_controller.js */

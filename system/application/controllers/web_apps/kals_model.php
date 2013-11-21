@@ -173,6 +173,7 @@ class KALS_model extends Web_apps_controller {
         if (isset($data['_enable_debug']) 
             && $data['_enable_debug'] === TRUE) {
             $this->output->enable_profiler(TRUE);
+            $this->enable_debug = TRUE;
         }
         
         // 快取
@@ -449,6 +450,45 @@ class KALS_model extends Web_apps_controller {
         if ($passed === FALSE) {
             handle_error('auth_check_allow_groups');
         }
+    }
+    
+    /**
+     * 取得請求網址
+     * @return String
+     */
+    protected function get_url() {
+        return get_referer_url();
+    }
+    
+    /**
+     * 取得網頁
+     * @return Webpage
+     */
+    protected function get_current_webpage() {
+        return get_context_webpage();
+    }
+    
+    /**
+     * 取得現在登入的使用者
+     * @return User
+     */
+    protected function get_current_user() {
+        return get_context_user();
+    }
+    
+    protected $enable_debug = FALSE;
+
+    /**
+     * 顯示偵錯訊息
+     * @param String $header
+     * @param Object $message
+     * @return \KALS_model
+     */
+    protected function debug($header, $message) {
+        if ($this->enable_debug === TRUE) {
+            test_msg($header, $message);
+        }
+        return $this;
     }
 }
 
