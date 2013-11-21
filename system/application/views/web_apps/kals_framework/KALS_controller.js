@@ -391,7 +391,7 @@ KALS_controller.prototype.get_user = function () {
  * @param {function} _callback
  */
 KALS_controller.prototype.set_hotkey = function (_hotkey, _callback) {
-	// @TODO
+    KALS_context.hotkey.add_listener(_hotkey, _callback);
 };
 
 /**
@@ -497,7 +497,7 @@ KALS_controller.prototype.disable_controller = function (_callback) {
     //this.addClass('controller-disable');
     this._enable_controller_flag = false;
     $.trigger_callback(_callback);
-    this.debug('disable_controller');
+    //this.debug('disable_controller');
     
     var _this = this;
     setTimeout(function () {
@@ -514,7 +514,7 @@ KALS_controller.prototype.disable_controller = function (_callback) {
  */
 KALS_controller.prototype.enable_controller = function (_callback) {
     this._enable_controller_flag = true;
-    this.debug('enable_controller');
+    //this.debug('enable_controller');
     $.trigger_callback(_callback);
     
     var _this = this;

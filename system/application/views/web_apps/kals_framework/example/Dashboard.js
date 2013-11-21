@@ -15,6 +15,8 @@
  */
 function Dashboard() {
     KALS_controller_window.call(this);
+    
+    this.init_hotkey();
 }
 
 /**
@@ -41,7 +43,7 @@ Dashboard.prototype = new KALS_controller_window();
  * 指定View
  * @type String
  */
-Dashboard.prototype._$view = 'modules/dashboard/view/Dashboard';
+Dashboard.prototype._$view = 'kals_framework/example/view/Dashboard';
 
 /**
  * ====================
@@ -117,8 +119,9 @@ Dashboard.prototype._$enable_auth_check = true;
  * @returns {boolean} true=通過;false=未通過
  */
 Dashboard.prototype._$auth_check = function (_is_login, _user) {
-    //this.debug('auth check: has login', _has_login);
-    return _has_login;
+    //this.debug('auth check: has login', _is_login);
+    //return _is_login;
+    return true;
 };
 
 /**
@@ -184,9 +187,33 @@ Dashboard.prototype.setup_activity = function (_ele) {
  * @returns {Dashboard.prototype}
  */
 Dashboard.prototype.open_recent_annotation = function() {
-    this.close(function () {
+    if (this.is_opened()) {
+        this.close(function () {
+            KALS_context.search.open_recent_annotation();
+        });
+    }
+    else {
         KALS_context.search.open_recent_annotation();
+    }
+        
+    return this;
+};
+
+/**
+ * 使用Hotkey的範例
+ * http://unixpapa.com/js/key.html
+ * @returns {Dashboard.prototype}
+ */
+Dashboard.prototype.init_hotkey = function () {
+    // 65表示A
+    // 按鍵對應的編號請參考http://unixpapa.com/js/key.html
+    var _hotkey = 65;   
+    
+    var _this = this;
+    this.set_hotkey(_hotkey, function () {
+        _this.open();
     });
+    
     return this;
 };
 

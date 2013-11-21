@@ -46,20 +46,20 @@ Annotation_collection_param.prototype.add = function (_param) {
     
     if ($.is_array(_param) && _param.length > 0) {
         var _coll = _param;
-		$.test_msg('anno coll add is array', _param);
+		//$.test_msg('anno coll add is array', _param);
         for (var _i in _coll) {
-			$.test_msg('anno coll coll', _coll[_i].annotation_id);
+			//$.test_msg('anno coll coll', _coll[_i].annotation_id);
             this.add(_coll[_i]);
         }
         return this;
     }
     
     if (typeof(_param.annotation_id) != 'undefined') {
-		$.test_msg('anno coll convert anno param, before', [_param.annotation_id, ($.is_class(_param) != 'Annotation_param')]);
+		//$.test_msg('anno coll convert anno param, before', [_param.annotation_id, ($.is_class(_param) != 'Annotation_param')]);
 		if ($.is_class(_param, 'Annotation_param') == false) {
 			_param = new Annotation_param(_param);
 		}
-		$.test_msg('anno coll convert anno param, after', _param.annotation_id);
+		//$.test_msg('anno coll convert anno param, after', _param.annotation_id);
         this.annotations.push(_param);
     }
     return this;
