@@ -46,17 +46,16 @@ KALS_user_interface.prototype._data = {};
  * @param {null|string} _selector 選取UI裡面的特定物件
  */
 KALS_user_interface.prototype.get_ui = function (_selector) {
-    if (this.has_setup_ui() === false)
-    {
+    if (this.has_setup_ui() === false) {
         this._setup_ui();
     }
     
     if (_selector === undefined  || _selector === null) {
-		return this._ui;
-	}
-	else {
-		return this._ui.find(_selector);
-	}
+        return this._ui;
+    }
+    else {
+        return this._ui.find(_selector);
+    }
 };
 
 /**
@@ -81,7 +80,7 @@ KALS_user_interface.prototype._setup_ui = function () {
  * @type {jQuery}
  */
 KALS_user_interface.prototype._$create_ui = function () {
-    var _ui = this._load_template();
+    var _ui = this._load_view();
     //$.test_msg('KALS_modal', _ui);
     if (_ui === null) {
         _ui = this._$create_ui_prototype(); 
@@ -120,12 +119,12 @@ KALS_user_interface.prototype._$create_ui_prototype = function (_element) {
  * 讀取指定的樣板
  * @type {jQuery}
  */
-KALS_user_interface.prototype._load_template = function () {
-    if (typeof(KALS_context) !== 'undefined' && KALS_context.template !== null
-	   && this._$template !== null) {
-		var _template = KALS_context.template.get_template(this._$template);
-		_template = this._initialize_template(_template);
-        return _template;
+KALS_user_interface.prototype._load_view = function () {
+    if (typeof(KALS_context) !== 'undefined' && KALS_context.view_manager !== null
+	   && this._$view !== null) {
+		var _view = KALS_context.view_manager.get_view(this._$view);
+		_view = this._initialize_view(_view);
+        return _view;
     }
     else {
         return null;
@@ -134,28 +133,28 @@ KALS_user_interface.prototype._load_template = function () {
 
 /**
  * 初始化樣板
- * @param {jQuery} _template
+ * @param {jQuery} _view
  */
-KALS_user_interface.prototype._initialize_template = function (_template) {
-	_template = this._initialize_events(_template);
-	_template = this._initialize_template_data(_template);
-	return _template;
+KALS_user_interface.prototype._initialize_view = function (_view) {
+	_view = this._initialize_events(_view);
+	_view = this._initialize_view_data(_view);
+	return _view;
 };
 
 /**
  * 初始化樣板資料
- * @param {jQuery} _template
+ * @param {jQuery} _view
  */
-KALS_user_interface.prototype._initialize_template_data = function (_template) {
+KALS_user_interface.prototype._initialize_view_data = function (_view) {
 	$.test_msg('ui, init data');
 	
 	if ($.is_object(this._data)) {
         for (var _field in this._data) {
             var _value = this._data[_field];
-            _template = this.set_sub_field(_field, _value, _template);
+            _view = this.set_sub_field(_field, _value, _view);
         }
     }
-	return _template;
+	return _view;
 };
 
 /**
@@ -163,7 +162,7 @@ KALS_user_interface.prototype._initialize_template_data = function (_template) {
  * 如果有設定的話，預設就會載入樣板
  * @type {String}
  */
-KALS_user_interface.prototype._$template = null;
+KALS_user_interface.prototype._$view = null;
 
 /**
  * 利用jQuery的toggle()、show()與hide()來切換UI的顯示狀態 
@@ -463,6 +462,10 @@ KALS_user_interface.prototype.html = function(_param) {
     return this.get_ui().html(_param);
 };
 
+/**
+ * 等同jQuery的test()
+ * @param {jQuery|KALS_user_interface} _param
+ */
 KALS_user_interface.prototype.text = function(_param) {
     if (typeof(_param) !== 'undefined'
 	   && typeof(_param.get_ui) == 'function') {
@@ -472,9 +475,19 @@ KALS_user_interface.prototype.text = function(_param) {
 };
 
 /**
+ * 等同jQuery的attr()
+ * @param {String} _attr_name
+ * @param {Object} _param
+ */
+KALS_user_interface.prototype.attr = function(_attr_name, _param) {
+    return this.get_ui().attr(_attr_name, _param);
+};
+
+/**
  * 在UI中設定值
  * @param {String} _field
  * @param {String} _value
+ * @param {jQuery} _ele
  */
 KALS_user_interface.prototype.set_field = function (_field, _value, _ele) {
 	
@@ -575,17 +588,17 @@ KALS_user_interface.prototype._value_filter_lang = function(_line){
 /**
  * 需要初始化的屬性
  */
-KALS_user_interface.prototype._init_attrs = KALS_CONFIG.template.init_attrs;;
+KALS_user_interface.prototype._init_attrs = KALS_CONFIG.view.init_attrs;;
 
 /**
  * KALS自訂的屬性
  */
-KALS_user_interface.prototype._kals_attrs = KALS_CONFIG.template.kals_attrs;;
+KALS_user_interface.prototype._kals_attrs = KALS_CONFIG.view.kals_attrs;;
 
 /**
  * KALS自訂的事件
  */
-KALS_user_interface.prototype._kals_events = KALS_CONFIG.template.kals_events;
+KALS_user_interface.prototype._kals_events = KALS_CONFIG.view.kals_events;
 
 
 /**
@@ -720,7 +733,7 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
 };
 
 /**
- * 建立Template_list_item
+ * 建立View_annotation
  * @param {JSON} _value 是Annotation輸出的JSON
  * @type {jQuery} 
  */
@@ -729,7 +742,7 @@ KALS_user_interface.prototype._filter_annotation = function (_value) {
 	if ($.is_class(_param, 'Annotation_param') === false) {
 		_param = new Annotation_param(_param);
 	}
-	var _list_item = new Template_list_item(_param);
+	var _list_item = new View_annotation(_param);
 	//$.test_msg('create annotation', _list_item.get_ui().html());
 	return _list_item.get_ui();
 };
@@ -742,28 +755,6 @@ KALS_user_interface.prototype._filter_annotation = function (_value) {
 KALS_user_interface.prototype._filter_kals_user_interface = function (_value) {
 	return _value.get_ui();
 };
-
-/**
- * 建立Template_list_collection
- * @param {JSON} _value 是Annotation_collection輸出的JSON
- * @type {Template_list_item} 
- */
-/*
-KALS_user_interface.prototype._create_annotation_collection = function (_value) {
-	$.test_msg('create anno coll before', _value[0].annotation_id);
-	var _param = _value;
-	if ($.is_class(_param, 'Annotation_param_collection') == false) {
-        _param = new Annotation_collection_param(_param);
-		//_param.import_json(_param);
-    }
-	$.test_msg('create anno coll after', _param.get(0).annotation_id);
-    //_param.import_json();
-    var _list_item = new Template_list_collection(_param);
-	//var _list_item = new List_collection(_param);
-    return _list_item;
-};
-*/
-
 
 /**
  * 取得上層欄位的資料
@@ -784,22 +775,23 @@ KALS_user_interface.prototype._get_field_parent = function (_field, _ele) {
  * 設定屬性
  * @param {String} _field
  * @param {String|Object} _value
+ * @param {jQuery} _ele
  */
 KALS_user_interface.prototype.set_field_attrs = function (_field, _value, _ele) {
-	var _attr_names = this._init_attrs;
-	//$.test_msg('ui set_field_attrs', _attr_names);
-	for (var _i in _attr_names) {
+    var _attr_names = this._init_attrs;
+    //$.test_msg('ui set_field_attrs', _attr_names);
+    for (var _i in _attr_names) {
         var _attr_name = _attr_names[_i];
-		//$.test_msg('ui set_field_attrs name', _attr_name);
-		this.set_field_attr(_field, _value, _attr_name, _ele);
+        //$.test_msg('ui set_field_attrs name', _attr_name);
+        this.set_field_attr(_field, _value, _attr_name, _ele);
     }
-	return this;
+    return this;
 }; 
 /**
  * 找尋變數的規則
  * @type {RegExp}
  */
-KALS_user_interface.prototype._template_regular_expression = KALS_CONFIG.template.regular_expression;
+KALS_user_interface.prototype._view_regular_expression = KALS_CONFIG.view.regular_expression;
 
 
 /**
@@ -819,7 +811,7 @@ KALS_user_interface.prototype.set_field_attr = function (_field, _value, _attr_n
 	var _kals_prefix = 'kals-';
 	
     //$.test_msg('!!!!ui set_field_attr', '['+this._kals_attrs.attr_prefix+_attr_name+'*="'+_field+'"]');
-	var _regexp = this._template_regular_expression;
+	var _regexp = this._view_regular_expression;
     _ui.find('['+this._kals_attrs.attr_prefix+_attr_name+'*="'+_field+'"]').each(function (_index, _ele) {
         
         var _jquery_ele = $(_ele);
@@ -948,8 +940,6 @@ KALS_user_interface.prototype.reset_field_text = function (_field, _ui) {
 	return this;
 };
 
-
-
 /**
  * 取得UI中的設定值
  * @param {String} _field
@@ -979,6 +969,30 @@ KALS_user_interface.prototype.get_field = function (_field) {
 };
 
 /**
+ * 取得data資料
+ * @param {Array} _fields 包含指定欄位的陣列。如果不是陣列，則一律回傳所有_data
+ * 
+ */
+KALS_user_interface.prototype.get_data = function (_fields) {
+	
+	if (_fields === undefined || $.is_array(_field) === false) {
+		return this._data;
+	}
+	
+	var _data = {};
+	
+	for (var _i in _fields) {
+		var _field = _fields[_i];
+		var _value = this.get_field(_field);
+		if (_value !== undefined) {
+			_data[_field] = _value;
+		}
+	}
+	
+	return _data;
+};
+
+/**
  * ============================
  * 接著處理事件的部份
  * ============================
@@ -988,38 +1002,38 @@ KALS_user_interface.prototype.get_field = function (_field) {
 /**
  * 需要初始化的屬性
  */
-KALS_user_interface.prototype._event_names = KALS_CONFIG.template.event_names;
+KALS_user_interface.prototype._event_names = KALS_CONFIG.view.event_names;
 
 /**
  * 初始化事件名稱
- * @param {jQuery} _template
+ * @param {jQuery} _view
  */
-KALS_user_interface.prototype._initialize_events = function (_template) {
+KALS_user_interface.prototype._initialize_events = function (_view) {
 	
 	var _event_names = this._event_names;
 	//$.test_msg('init events', _event_names);
 	for (var _i in _event_names) {
 		var _event_name = _event_names[_i];
 		
-		_template = this._initialize_event(_template, _event_name);
+		_view = this._initialize_event(_view, _event_name);
 	}
 	
-	return _template;
+	return _view;
 };
 
 /**
  * 初始化單一事件
- * @param {jQuery} _template
+ * @param {jQuery} _view
  * @param {String} _event_name
  */
-KALS_user_interface.prototype._initialize_event = function(_template, _event_name){
+KALS_user_interface.prototype._initialize_event = function(_view, _event_name){
 	var _this = this;
 	var _event_prefix = this._kals_attrs.event_prefix;
     var _kals_event_name = _event_prefix + _event_name;
     
 	//$.test_msg('init evetn: ' + _event_name, _kals_event_name);
 	
-	_template.find('['+_kals_event_name+']').each(function (_index, _ele) {
+	_view.find('['+_kals_event_name+']').each(function (_index, _ele) {
 		var _jqele = $(_ele);
 		
 		var _event_config = _this._parse_event_config(_jqele, _kals_event_name);
@@ -1042,7 +1056,7 @@ KALS_user_interface.prototype._initialize_event = function(_template, _event_nam
 		}
 	});
 	
-	return _template;
+	return _view;
 };
 
 /**

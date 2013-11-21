@@ -85,8 +85,9 @@ class generic extends Web_apps_controller {
             , 'toolkit/Task_event_dispatcher'
             , 'helpers/KALS_exception'
             , 'toolkit/Name_value_pair'
-            , 'toolkit/Template_controller' // Pulipuli Chen 20131119
             , 'helpers/KALS_util'   //Qunit
+
+            , 'kals_framework/KALS_controller' // Pulipuli Chen 20131119
 
             //, 'toolkit/'
         ),
@@ -97,7 +98,7 @@ class generic extends Web_apps_controller {
          */
         "core_list_package" => array(
             'core/KALS_language',
-            'core/KALS_template',
+            'kals_framework/KALS_view_manager',
             'core/Viewportmove_dispatcher',
             'core/feedback/Feedback_manager',
             'core/KALS_authentication',
@@ -123,7 +124,7 @@ class generic extends Web_apps_controller {
             'kals_window/KALS_window',
             'kals_window/Window_loading_component',
             'kals_window/Window_content',
-            'kals_window/Window_template',  // Pulipuli Chen 201311119
+            'kals_framework/KALS_controller_window',  // Pulipuli Chen 201311119
             'kals_window/Window_content_submit',
             'kals_window/Window_user_interface',
             'kals_window/Window_change_link',
@@ -253,7 +254,7 @@ class generic extends Web_apps_controller {
             'annotation_list/List_item_respond',
             //'annotation_list/List_menu_search',
             
-            'annotation_list/Template_list_item',
+            'kals_framework/View_annotation',
             
             'annotation_recommend/Recommend_hint',
             'annotation_recommend/Recommend_tooltip',
@@ -666,10 +667,10 @@ class generic extends Web_apps_controller {
 
         $file_path = './system/application/views/'.$this->dir.$path;
         //test_msg($file_path, is_file($file_path));
-        if (is_file($file_path) == FALSE)
+        if (is_file($file_path) == FALSE) {
             return;
-
-
+        }
+        
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         //取代網址
@@ -758,7 +759,7 @@ class generic extends Web_apps_controller {
 
         $data['KALS_authentication'] = $authentication->default_data();
 
-        $data['KALS_template'] = $this->_load_templates();
+        $data['KALS_view_manager'] = $this->_load_viewes();
         
         $this->_display_jsonp($data, $callback);
     }
@@ -774,8 +775,8 @@ class generic extends Web_apps_controller {
         $web_apps_lang = $this->lang->package('web_apps');
         
         // 加入
-        $template_lang = $this->_load_template_lang();
-        $web_apps_lang = array_merge($web_apps_lang, $template_lang);
+        $view_lang = $this->_load_view_lang();
+        $web_apps_lang = array_merge($web_apps_lang, $view_lang);
         
         return $web_apps_lang;
     }
@@ -785,7 +786,7 @@ class generic extends Web_apps_controller {
      * @return Array
      * @author Pulipuli Chen 20131119
      */
-    private function _load_template_lang() {
+    private function _load_view_lang() {
         //$lang = 'zh_tw';
         $lang = $this->config->item('language');
         $postfix = '_locale_' . $lang . '.php';
@@ -796,30 +797,30 @@ class generic extends Web_apps_controller {
         //test_msg(get_kals_root_path(''));
         //test_msg($paths);
         
-        $template_lang = array();
+        $view_lang = array();
         foreach ($paths AS $path) {
-            $template_prefix = $this->_get_template_prefix($path, '_');
-            $template_prefix = 'template.' . $template_prefix . '.';
+            $view_prefix = $this->_get_view_prefix($path, '_');
+            $view_prefix = 'view.' . $view_prefix . '.';
             
             $lang = array();
-            $template_lang_path = $prefix_dir.$this->dir.$path.$postfix;
-            $template_lang_path = get_kals_root_path($template_lang_path);
+            $view_lang_path = $prefix_dir.$this->dir.$path.$postfix;
+            $view_lang_path = get_kals_root_path($view_lang_path);
             
-            require_once $template_lang_path;
-            //require_once 'D:\xampp\htdocs\kals\system\application\views\web_apps\extension\dashboard\template\Dashboard_locale_zh_tw.php';
-            //get_kals_root_path($template_lang)
-            //test_msg($template_lang_path);
+            require_once $view_lang_path;
+            //require_once 'D:\xampp\htdocs\kals\system\application\views\web_apps\extension\dashboard\view\Dashboard_locale_zh_tw.php';
+            //get_kals_root_path($view_lang)
+            //test_msg($view_lang_path);
             
-            //$lang = $this->load->view($template_lang_path, NULL, TRUE);
+            //$lang = $this->load->view($view_lang_path, NULL, TRUE);
             
             //test_msg($lang);
             
             foreach ($lang AS $line => $value) {
-                $template_line = $template_prefix . $line;
-                $template_lang[$template_line] = $value;
+                $view_line = $view_prefix . $line;
+                $view_lang[$view_line] = $value;
             }
         }
-        return $template_lang;
+        return $view_lang;
     }
 
     /**
@@ -850,7 +851,7 @@ class generic extends Web_apps_controller {
      *  '樣板路徑' => '樣板內容'
      * )
      */
-    private function _load_templates() {
+    private function _load_viewes() {
         $files = $files = $this->_dir_get_list(".html");
         
         $output = array();
@@ -859,12 +860,12 @@ class generic extends Web_apps_controller {
         }
         
         return $output;
-        //$this->_display_jsonp($output, 'template');
+        //$this->_display_jsonp($output, 'view');
     }
     
-    //public function template() {
-    //    $template = $this->_load_templates();
-    //    test_msg($template);
+    //public function view() {
+    //    $view = $this->_load_views();
+    //    test_msg($view);
     //}
     
     private function _get_templete($path) {

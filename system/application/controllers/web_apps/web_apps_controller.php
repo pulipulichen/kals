@@ -444,7 +444,7 @@ class Web_apps_controller extends Controller {
      * @param type $strip_end
      * @return type
      */
-    protected function _get_template_prefix($path, $replace = '-', $strip_end = NULL) {
+    protected function _get_view_prefix($path, $replace = '-', $strip_end = NULL) {
         $classname = $path;
         if (!is_null($strip_end)) {
             $classname = substr($classname,0, (1-  strlen($strip_end)));
@@ -453,18 +453,20 @@ class Web_apps_controller extends Controller {
 
         $classname = strtolower($classname);
         return $classname;
-        //$classname = '.kals-template.' . $classname . ' ';
+        //$classname = '.kals-view.' . $classname . ' ';
     }
     
     /**
-     * 過濾CSS，把template的CSS處理掉
+     * 過濾CSS，把view的CSS處理掉
      * @param String $path
      * @return String 過濾過的CSS檔案
      */
     private function _initialize_css($path) {
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
         
-        if (strpos($path, 'template/')) {
+        
+        
+        if (strpos($path, 'view/') !== FALSE) {
             $classname = $path;
             $classname = substr($classname,0, -4);
             $classname = preg_replace('/[\W|\_]/', "-", $classname);
@@ -485,7 +487,7 @@ class Web_apps_controller extends Controller {
              */
             
             $classname = strtolower($classname);
-            $classname = '.kals-template.' . $classname . ' ';
+            $classname = '.kals-view.' . $classname . ' ';
             
             //test_msg($classname);
             
@@ -532,6 +534,7 @@ foreach ($parts as &$part) {
 
     $part = implode(', ', $subParts);
     $part = trim($part);
+    
 }
 
 $style = implode("}\n", $parts);
@@ -541,7 +544,7 @@ $style = implode("}\n", $parts);
             //if ($style != '') {
             //    $style = $classname . $style;
             //}
-            //test_msg($style);
+            test_msg($style);
         }
         return $style;
     }

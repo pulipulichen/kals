@@ -10,10 +10,10 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://github.com/pulipulichen/kals/
  * @version    1.0 2011/11/19 下午 03:36:17
- * @extends {Window_template}
+ * @extends {KALS_controller_window}
  */
 function Dashboard() {
-    Window_template.call(this);
+    KALS_controller_window.call(this);
 }
 
 /**
@@ -22,7 +22,7 @@ function Dashboard() {
  * ===========================
  */
 
-Dashboard.prototype = new Window_template();
+Dashboard.prototype = new KALS_controller_window();
 
 /**
  * ===========================
@@ -40,9 +40,9 @@ Dashboard.prototype = new Window_template();
  * @type {string}
  * @protected
  */
-Dashboard.prototype._$request_url = 'dashboard';
+Dashboard.prototype._$model = 'dashboard';
 
-Dashboard.prototype._$template = 'extension/dashboard/template/Dashboard';
+Dashboard.prototype._$view = 'extension/dashboard/view/Dashboard';
 
 Dashboard.prototype.name = 'Dashboard';
 

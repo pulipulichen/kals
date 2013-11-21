@@ -223,7 +223,7 @@ DEFAULT_KALS_CONFIG = {
 	/**
 	 * 需要初始化的事件名稱
 	 */
-	template: {
+	view: {
 		init_attrs: [
 		    'class',
 		    'value',

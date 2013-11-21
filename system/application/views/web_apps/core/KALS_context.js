@@ -36,7 +36,7 @@ KALS_context.initialize = function () {
     this.style = new Style_manager();
     this.custom_type = new Context_custom_type();
 	this.feedback = new Feedback_manager();
-	this.template = new KALS_template();
+	this.view_manager = new KALS_view_manager();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -302,9 +302,9 @@ KALS_context.custom_type = null;
 KALS_context.feedback = null;
 
 /**
- * @type {KALS_template}
+ * @type {KALS_view_manager}
  */
-KALS_context.template = null;
+KALS_context.view_manager = null;
 
 /**
  * @type {Init_context}

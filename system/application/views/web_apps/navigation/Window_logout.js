@@ -64,7 +64,7 @@ Window_logout.prototype.nav_heading = new KALS_language_param (
     'window.logout.nav_heading'
 );
 
-Window_logout.prototype._$template = 'navigation/template/Window_logout';
+Window_logout.prototype._$view = 'navigation/view/Window_logout';
 
 /*
 Window_logout.prototype.action = function (_ele, _params) {

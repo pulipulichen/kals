@@ -1,27 +1,11 @@
-<!--
 <dl>
-	<dt>{{kals-lang:annotation_count}}:</dt>
-	<dd>{{annotation_count}}</dd>
-	
-	<dt>{{kals-lang:user_count}}:</dt>
-    <dd>{{user_count}}</dd>
-	
-	<dt>{{kals-lang:last_annotation}}:</dt>
-    <dd>{{last_annotation_id}} - {{last_annotation_timestamp}}</dd>
-	
-	<dt>{{kals-lang:activity}}:</dt>
-    <dd>{{activity}}</dd>
-</dl>
--->
-
-<dl>
-    <dt>{{kals-lang:window.dashboard.annotation_count}}:</dt>
+    <dt>{{kals-lang:annotation_count}}:</dt>
     <dd kals-event-click="open_recent_annotation()">{{annotation_count}}</dd>
     
-    <dt>{{kals-lang:window.dashboard.user_count}}:</dt>
+    <dt>{{kals-lang:user_count}}:</dt>
     <dd>{{user_count}}</dd>
     
-    <dt>{{kals-lang:window.dashboard.last_annotation}}:</dt>
+    <dt>{{kals-lang:last_annotation}}:</dt>
     <dd kals-event-click="open_last_annotation()">{{last_annotation_id}} - {{last_annotation_timestamp}} 
 	   <div>{{last_annotation}}</div>
     </dd>
