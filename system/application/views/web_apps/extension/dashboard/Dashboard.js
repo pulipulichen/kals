@@ -63,20 +63,21 @@ Dashboard.prototype.nav_heading = new KALS_language_param (
 );
 
 Dashboard.prototype.open_last_annotation = function () {
-	var _id = this.get_field("last_annotation_id");
-	KALS_text.tool.view.load_view(_id);
+    var _id = this.get_field("last_annotation_id");
+    KALS_text.tool.view.load_view(_id);
 };
 
 Dashboard.prototype.setup_activity = function (_ele) {
-	var _activity = this.get_field('activity').toLowerCase();
+    if (this.has_field("activity")) {
+        var _activity = this.get_field('activity').toLowerCase();
         _ele.attr('className', 'activity-' + _activity);
+    }
 };
 
 Dashboard.prototype.open_recent_annotation = function() {
-	this.close(function () {
-		KALS_context.search.open_recent_annotation();
-	});
-	
+    this.close(function () {
+        KALS_context.search.open_recent_annotation();
+    });
 };
 
 /* End of file Dashboard */
