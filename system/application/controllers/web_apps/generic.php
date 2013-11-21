@@ -157,7 +157,7 @@ class generic extends Web_apps_controller {
             /**
              * 20131116 婷芸小地圖
              */
-            'extension/map/Window_map',
+            'modules/map/Window_map',
 
             'kals_toolbar/Toolbar_component',
             'kals_toolbar/Toolbar_toggle_component',

@@ -675,7 +675,7 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 			}
 		}
         else if ($.is_array(_value)) {
-			$.test_msg('is array', _value[0]);
+			//$.test_msg('is array', _value[0]);
             for (_i in _value) {
                 _parent_clone = _parent.clone(true);
 				
@@ -683,7 +683,7 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
                 _child = _parent_clone.children().children(_selector);
 				//_child.html(_v);
 				
-				$.test_msg('set sub field', _value[_i]);
+				//$.test_msg('set sub field', _value[_i]);
 				_this.set_sub_field(_field, _value[_i], _parent_clone);
 				
                 _child.attr(_this._kals_attrs.repeat_index, _i);

@@ -3,8 +3,9 @@ include_once 'kals_model.php';
 /**
  * Dashboard
  *
+ * KALS Framework範例：Model的設定
  * 輸出網頁標註資訊的位置
- *
+ * 
  * @package		KALS
  * @category		Controllers
  * @author		Pudding Chen <pulipuli.chen@gmail.com>
@@ -13,11 +14,34 @@ include_once 'kals_model.php';
  * @link                https://github.com/pulipulichen/kals/
  * @version		1.0 2013/11/19 下午 03:51:22
  */
-
 class dashboard extends KALS_model {
 
-    
-    public function init($data) {
+     
+    /**
+     * Action範例
+     * 
+     * @param Array $data 由KALS_controller傳入的資料，組成是關連式的陣列
+     * 
+     * [Controller的JSON格式]
+     * _data = {
+     *  "field": "value"
+     * };
+     * 
+     * //取用範例
+     * _data["field];   //回傳value
+     * 
+     * [Model的Array格式]
+     * $data = array(
+     *  "field" => "value"
+     * );
+     * 
+     * $data["field"];  //回傳value
+     * 
+     * @return Array 要回傳給KALS_controller的資料
+     * 一樣是以關聯式陣列組成
+     * 
+     */
+    public function open($data) {
         $data["annotation_count"] = rand(5, 100);
         $data["user_count"] = rand(1, 6);
         $data["last_annotation_id"] = 14848;

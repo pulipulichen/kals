@@ -15,6 +15,19 @@
 function KALS_controller() {
     
     JSONP_dispatcher.call(this);
+    
+    var _this = this;
+    
+    if (this._$enable_auth_check === true) {
+        //this.debug('init view data', 'check auth');
+        
+        if (typeof(KALS_context) === 'object') {
+            KALS_context.auth.add_listener(function () {
+                _this._auth_check();
+            });
+        }
+        _this._auth_check();
+    }
 }
 
 /**
@@ -57,15 +70,24 @@ KALS_controller.prototype._$view = null;
  */
 KALS_controller.prototype._$model = null;
 
+KALS_controller.prototype._$enable_debug = true;
+
 /**
- * 允許未登入使用者
+ * 啟用權限檢查機制
  * @type {Boolean}
  */
-KALS_controller.prototype._$enable_auth_check = false;
+KALS_controller.prototype._$enable_auth_check = true;
 
-KALS_controller.prototype._enable_controller_flag = true;
-
-KALS_controller.prototype._$enable_debug = true;
+/**
+ * 權限檢查
+ * @param {boolean} _is_login
+ * @param {User_param} _user
+ * @returns {boolean} true=通過;false=未通過
+ */
+KALS_controller.prototype._$auth_check = function (_is_login, _user) {
+    //this.debug('auth check', _is_login);
+    return true;
+};
 
 /**
  * ===========================
@@ -105,8 +127,9 @@ KALS_controller.prototype.get_request_url = function () {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.request = function (_method, _action, _data, _callback) {
-    if (this._enable_flag === false) {
+    if (this._enable_controller_flag === false) {
         this.debug('request', 'enable flag is false');
+        $.trigger_callback(_callback);
         return this;
     }
     
@@ -254,7 +277,20 @@ KALS_controller.prototype._initialize_view_data = function (_view) {
     }
     else {
         KALS_user_interface.prototype._initialize_view_data.call(_this, _view);
-    }	
+    }
+    
+    //this.debug('KALS context', typeof(KALS_context));
+    if (this._$enable_auth_check === true) {
+        //this.debug('init view data', 'check auth');
+        
+        if (typeof(KALS_context) === 'object') {
+            KALS_context.auth.add_listener(function () {
+                _this._auth_check();
+            });
+        }
+        _this._auth_check();
+    }
+    
     return _view;
 };
 
@@ -264,9 +300,9 @@ KALS_controller.prototype._initialize_view_data = function (_view) {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.open = function (_callback) {
-    this.debug('open');
+    //this.debug('open');
     if (this._enable_controller_flag === false) {
-        this.debug('open', 'controller disabled');
+        //this.debug('open', 'controller disabled');
         return $.trigger_callback(_callback);
     }
     
@@ -274,10 +310,10 @@ KALS_controller.prototype.open = function (_callback) {
     if (this._$model !== null
         && this._$open_request_action !== null) {
         var _this = this;
-        this.debug('open', [this._$open_request_action, this.get_data()]);
+        //this.debug('open', [this._$open_request_action, this.get_data()]);
         //return;
         this.request('get', this._$open_request_action, {}, function (_data) {
-            _this.debug('VIEW, open data', _data);
+            //_this.debug('VIEW, open data', _data);
             _this.set_data(_data);
             KALS_modal.prototype.open.call(_this, _callback);
         });
@@ -295,7 +331,7 @@ KALS_controller.prototype.open = function (_callback) {
  */
 KALS_controller.prototype.close = function (_callback) {
     if (this._enable_controller_flag === false) {
-        this.debug('close', 'controller disabled');
+        //this.debug('close', 'controller disabled');
         return $.trigger_callback(_callback);
     }
     
@@ -303,7 +339,7 @@ KALS_controller.prototype.close = function (_callback) {
         && this._$close_request_action !== null) {
         var _this = this;
         this.request('get', this._$close_request_action, this.get_data(), function (_data) {
-                _this.debug('VIEW, close data', _data);
+                //_this.debug('VIEW, close data', _data);
                 _this.set_data(_data);
                 KALS_modal.prototype.close.call(_this, _callback);
         });
@@ -334,15 +370,6 @@ KALS_controller.prototype.request_get = function(_action, _data, _callback) {
  */
 KALS_controller.prototype.request_post = function(_action, _data, _callback) {
     return this.request('post', _action, _data, _callback);
-};
-
-/**
- * 建立UI的動作
- */
-KALS_controller.prototype._setup_ui = function () {
-    this._ui = this._$create_ui();
-    this._auth_check();
-    return this;
 };
 
 // --------------------------
@@ -424,34 +451,83 @@ KALS_controller.prototype.debug = function (_header, _message) {
     return this;
 };
 
+// ----------------------
+
 /**
  * 檢查權限
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype._auth_check = function () {
-    $.test_msg('check auth', this._$auth_allow_anonymous);
-    if (this._$enable_auth_check === true) {
-        $.test_msg('check anonymous');
-        if (this.get_user() === null) {
-            this.hide();
-            this._enable_flag = false;
-            this.debug('not allow anonymous');
+    if (this._$enable_auth_check === false) {
+        return;
+    }
+    
+    //this.debug('_auth_check 1', this._enable_controller_flag);
+    //this._$auth_check();
+    //this._enable_controller_flag = false;
+    
+    var _is_login = false; 
+    var _user = null;
+    if (typeof(KALS_context) === 'object') {
+        _is_login = KALS_context.auth.is_login();
+        _user = KALS_context.user.get_user_param();
+    }
+        
+    if (this._$auth_check(_is_login, _user)) {
+        if (this._enable_controller_flag === false) {
+            this.enable_controller();
         }
     }
+    else {
+        if (this._enable_controller_flag === true) {
+            this.disable_controller();
+        }
+    }
+    //this.debug('_auth_check 2', this._enable_controller_flag);
+};
+
+/**
+ * 關閉控制器
+ * 
+ * 一旦關閉，則不能使用open(), close(), request()等方法
+ * @param {function} _callback
+ * @returns {KALS_controller.prototype}
+ */
+KALS_controller.prototype.disable_controller = function (_callback) {
+    //this.addClass('controller-disable');
+    this._enable_controller_flag = false;
+    $.trigger_callback(_callback);
+    this.debug('disable_controller');
+    
+    var _this = this;
+    setTimeout(function () {
+        _this.addClass('controller-disable');
+    }, 0);
+    return this;
+    
+};
+
+/**
+ * 開啟控制器
+ * @param {function} _callback
+ * @returns {KALS_controller.prototype}
+ */
+KALS_controller.prototype.enable_controller = function (_callback) {
+    this._enable_controller_flag = true;
+    this.debug('enable_controller');
+    $.trigger_callback(_callback);
+    
+    var _this = this;
+    setTimeout(function () {
+        _this.removeClass('controller-disable');
+    }, 0);
     return this;
 };
 
-KALS_controller.prototype.disable_controller = function () {
-    this.hide();
-    this._enable_controller_flag = false;
-    //this.debug('not allow anonymous');
-};
 
-KALS_controller.prototype.enable_controller = function () {
-    this.show();
-    this._enable_controller_flag = true;
-    //this.debug('allow anonymous');
-};
+KALS_controller.prototype._enable_controller_flag = true;
+
+// ------------------
 
 /**
  * 檢查是否有欄位

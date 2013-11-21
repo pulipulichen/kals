@@ -33,6 +33,7 @@ KALS_context.initialize = function () {
     this.view = new Viewportmove_dispatcher();
     this.auth = new KALS_authentication();
     this.hash = new URL_hash_dispatcher();
+    this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
     this.custom_type = new Context_custom_type();
 	this.feedback = new Feedback_manager();
