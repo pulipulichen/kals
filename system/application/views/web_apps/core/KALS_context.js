@@ -517,7 +517,7 @@ KALS_context.last_select_annotation_type = null;
 
 /**
  * 取得標註類型列表
- * @type {Array} 包含標註類型的列表
+ * @type {Array} 包含標註類型的陣列
  */
 KALS_context.create_type_param_list = function() {
 	var _list = {};

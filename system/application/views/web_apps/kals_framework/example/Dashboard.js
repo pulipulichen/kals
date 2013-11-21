@@ -217,5 +217,12 @@ Dashboard.prototype.init_hotkey = function () {
     return this;
 };
 
+Dashboard.prototype.select = function (_ele) {
+    this.debug('select', this._data);
+    var _annotation_id = this.get_field('last_annotation_id');
+    this.select_annotation(_annotation_id);
+    return this;
+};
+
 /* End of file Dashboard */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Dashboard.js */

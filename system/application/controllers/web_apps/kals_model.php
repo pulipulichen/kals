@@ -490,6 +490,19 @@ class KALS_model extends Web_apps_controller {
         }
         return $this;
     }
+    
+    public function get_annotation($json, $callback) {
+        $data = json_to_array($json);
+        
+        $annotation_id = $data["annotation_id"];
+        //test_msg($annotation_id);
+        $annotation = new Annotation($annotation_id);
+        $data = array(
+            'annotation' => $annotation->export_data()
+        );
+                
+        $this->_display_jsonp($data, $callback);
+    }
 }
 
 /* End of file KALS_model.php */

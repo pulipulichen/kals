@@ -207,7 +207,11 @@ KALS_controller.prototype._enable_cache_flag = false;
  */
 KALS_controller.prototype.set_data = function (_data) {
     //JSONP_dispatcher.prototype.set_data.call(this, _data);
-    this.set_sub_field(_data);
+    
+    //this._data = _data;
+    //this.set_sub_field(_data);
+    
+    this.set_field(_data);
     return this;
 };
 
@@ -313,7 +317,7 @@ KALS_controller.prototype.open = function (_callback) {
         //this.debug('open', [this._$open_request_action, this.get_data()]);
         //return;
         this.request('get', this._$open_request_action, {}, function (_data) {
-            //_this.debug('VIEW, open data', _data);
+            _this.debug('VIEW, open data', _data);
             _this.set_data(_data);
             KALS_modal.prototype.open.call(_this, _callback);
         });
@@ -398,24 +402,24 @@ KALS_controller.prototype.set_hotkey = function (_hotkey, _callback) {
  * 輸入搜尋條件，開啟搜尋視窗搜尋標註
  * @param {JSON} _param
  * _param = {
- *  range: "note|author|type|anchor_text",
- *  keyword:"keyword",
- *  order_by: "update|create"
+ *      range: "note","author","annotation_type","annotation_anchor",
+ *      keyword:"keyword",
+ *      order_by: "update|create"
  * }
  * @returns {KALS_controller.protoype}
  */
 KALS_controller.prototype.search_annotation = function (_param) {
-    // @TODO
+    KALS_context.search.search(_param);
     return this;
 };
 
 /**
  * 取得現在使用的標註類型
- * @returns {KALS_controller.prototype}
+ * @returns {Array|Annotation_type_param} 包含標註類型的陣列
  */
 KALS_controller.prototype.get_annotation_types = function () {
-    // @TODO
-    return this;
+    var _type_param_list = KALS_context.create_type_param_list();
+    return _type_param_list;
 };
 
 /**
@@ -424,7 +428,7 @@ KALS_controller.prototype.get_annotation_types = function () {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.view_annotation = function (_annotation_id) {
-    // @TODO
+    KALS_text.load_annotation(_annotation_id);
     return this;
 };
 
@@ -434,7 +438,24 @@ KALS_controller.prototype.view_annotation = function (_annotation_id) {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.select_annotation = function (_annotation_id) {
-    // @TODO
+    if (_annotation_id === undefined) {
+        //KALS_util.show_exception('KALS_controller.select_annotation');
+        return this;
+    }
+    
+    KALS_util.ajax_get({
+        url: 'kals_model/get_annotation',
+        data: {
+            'annotation_id': _annotation_id
+        },
+        callback: function (_data) {
+            var _annotation_json = _data.annotation;
+            var _param = new Annotation_param(_annotation_json);
+            var _scope = _param.scope;
+            KALS_text.selection.select.set_scope_coll(_scope);
+        }
+    });
+    
     return this;
 };
 

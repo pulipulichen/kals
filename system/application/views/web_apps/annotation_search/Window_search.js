@@ -704,15 +704,28 @@ Window_search.prototype.default_focus_input = '.dialog-content:first input:radio
 
 /**
  * 執行搜尋
- * @param {JSON} 搜尋選項
+ * @param {JSON} _search_option 搜尋選項
+ * _param = {
+ *      range: "note","author","annotation_type","annotation_anchor",
+ *      keyword:"keyword",
+ *      order_by: "update|create"
+ * }
+ * @paam {Boolean} _open_window 預設是true
  */
-Window_search.prototype.search = function (_search_option) {
-	if (typeof(_search_option) == "object") {
-		this.set_input_value(_search_option);
-	}
-	
-	this.submit.submit();
-	this.open_window();
+Window_search.prototype.search = function (_search_option, _open_window) {
+    if (typeof(_search_option) === "object") {
+            this.set_input_value(_search_option);
+    }
+
+    this.submit.submit();
+
+    if (_open_window === undefined) {
+        _open_window = true;
+    }
+
+    if (_open_window) {
+        this.open_window();
+    }
 };
 
 
