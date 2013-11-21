@@ -337,7 +337,7 @@ Annotation_param.prototype.import_json = function (_json) {
         if (typeof(_json[_attr]) != 'undefined') {
             _value = _json[_attr];
             if (_attr == 'respond_to_coll') {
-				$.test_msg('respond_to_coll', _value);
+				//$.test_msg('respond_to_coll', _value);
 				this[_attr] = new Annotation_collection_param(_value);
 			}
 			else if (_attr == 'scope') {

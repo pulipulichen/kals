@@ -19,7 +19,7 @@
     width: 100%;
     font-size:medium;
     margin:0;
-	height: auto !important;
+    height: auto;
 }
 
 .KALS.dialog-modal.window div {

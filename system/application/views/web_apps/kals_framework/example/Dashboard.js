@@ -135,7 +135,7 @@ Dashboard.prototype._$auth_check = function (_is_login, _user) {
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  * @author Pulipuli Chen 20131121 尚未完成 
  */
-Dashboard.prototype._$absolute = false;
+Dashboard.prototype._$absolute = true;
 
 /**
  * 視窗的Class Name

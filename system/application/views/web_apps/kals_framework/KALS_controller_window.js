@@ -433,6 +433,117 @@ KALS_controller_window.prototype.default_focus_input = '.dialog-content:first in
  */
 KALS_controller_window.prototype.default_focus_submit = '.dialog-options button.window-content-submit:first';
 
+KALS_controller_window.prototype._initialize_view_data = function (_view) {
+    _view = KALS_controller.prototype._initialize_view_data.call(this, _view);
+    _view = this._initialize_absolute_window(_view);
+    return _view;
+};
+
+KALS_controller_window.prototype._initialize_absolute_window = function (_view) {
+    
+    var _ui = this._$create_ui_prototype();
+    
+    _ui.addClass('dialog-modal')
+		.addClass('KALS').addClass('window')
+                .addClass('kals-controller-window')
+                .addClass('absolute')
+        .html('<div class="dialog-table container"><table align="center" class="dialog-table heading" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
+        //+ "<tr><td class='resize-handler horizontal top' colspan='3'></td></tr>"
+        + '<tr class="dialog-toolbar-tr">'
+           // + '<td class="resize-handler vertical left"></td>'
+            + '<th class="dialog-toolbar" valign="middle">'
+            + '<table class="dialog-toolbar-table" width="100%" align="center" cellpadding="0" cellspacing="0" border="0"><tbody><tr>'
+            //+ '<td class="toolbar-options toolbar-backward"></td>'
+            + '<td class="dialog-heading"></td>'
+            //+ '<td class="toolbar-options toolbar-forward"></td>'
+            //+ '<td class="resize-handler vertical right"></td>'
+            + '</tr></tbody></table>'
+        + '</th></tr>' 
+        + "</tbody></tbable>"
+        + '<table align="center" class="dialog-table content" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
+        + '<tr class="dialog-content-tr"><td class="dialog-content-td">'
+            + '<div class="dialog-content"></div></td></tr>'
+        //+ "<tr><td class='resize-handler horizontal top' colspan='3'></td></tr>"
+        + '</tbody></table></div>');
+    
+    if ($.browser.msie6) {
+        _ui.css('width', '480px');
+        //_ui.css('font-size', '1.5em');
+    }
+    
+    //this.get_ui().after(_ui);
+    //_ui.appendTo($('body'));
+    //_ui.find('.dialog-content').append(this.get_ui());
+    _ui.find('.dialog-content:first').append(_view);
+    
+    //$.test_msg('Dialog_modal._$create_ui()', this._$modal_name);
+    
+    var _container = _ui.find('.dialog-heading:first');
+    if (_container.length == 1) {
+        KALS_context.lang.add_listener(_container, this.heading);
+    }
+    
+    // 設置關閉按鈕
+    var _option = new Dialog_close_option();
+    var _close_ui = _option.get_ui();
+    _close_ui.css("float", "right").prependTo(_ui.find(".dialog-heading:first"));
+    _close_ui.clone()
+            .css("float", "left")
+            .css("visibility", "hidden")
+            .prependTo(_ui.find(".dialog-heading:first"));
+    
+    
+    //同時擁有.with-backward-option.with-forward-option的.dialog-modal，會改變min-width
+    _ui.addClass('with-forward-option');
+    
+    // 設定overlay
+    var _config = this._$get_config();
+    
+    //_config.load = true;
+    this._setup_effect();
+    _config.effect = 'fade';
+    _ui.overlay(_config);	//jQuery TOOL Overlay
+    
+    //設定可拖曳
+    var _draggable_config = {
+        handle: _ui.find('.dialog-heading')	//TODO 請調整handle
+        
+    };
+    
+    //設定游標變成手指
+    _ui.find('.dialog-heading').css( 'cursor', 'pointer' );
+	
+    if ($('body').height() > _ui.height() + 100) {
+        _draggable_config.containment = 'parent';
+    }
+    
+    _ui.draggable(_draggable_config);
+    /*
+    var _resizable_config = {
+        containment: "body",
+        minWidth: 300,
+        minHeight: 300,
+        resize:function (_event, _ui) {
+            _ui = _ui.element;
+            var _content = _ui.find('.dialog-table.container:first');
+            _ui.resizable({minHeight: _content.height()});
+            //if ()
+        }
+    };
+    _ui.resizable(_resizable_config);
+    */
+    /*
+    if ($.is_mobile_mode()) {
+        _ui.addClass('mobile');
+        //var _el = _ui.find('.dialog-content');  
+        //this.enable_touch_scroll(_el);
+        this.enable_touch_scroll(_ui);
+    }
+    */
+    
+    return _ui;
+};
+
 /**
  * 開啟視窗
  * 
@@ -440,78 +551,9 @@ KALS_controller_window.prototype.default_focus_submit = '.dialog-options button.
  * @param {function} _callback
  */
 KALS_controller_window.prototype.open_absolute_window = function (_callback) {
-	
-    // 加入open()之前需要的設定
-    // 參考KALS_util.confirm()
-    
-    var _modal = this;
-    /**
-     * 用來擺放回呼函數使用
-     * @type {function}
-     */
-    _modal.confirm_callback = null;
-
-    
-    var _id = 'Confirm_' + $.create_id();
-    this.set_modal_name(_id);
-    var _ui = this.get_ui();
-    _ui.attr('id', _id);
-
-    _modal.set_heading(this.heading);
-    
-    if ($.is_function(_callback)) {
-        _modal.confirm_callback = _callback;
-    }
-    else {
-        _modal.confirm_callback = null;
-    }
-
-    //_modal.open();
-	
-    // 用原來的方式執行open
-    //$.test_msg("Window_map.open()", this.is_opened());
-    //return KALS_controller_window.prototype.open.call(this, _callback);
-    
-    //this.dialog_open();
-    
-    var _ui = this._$create_ui_prototype();
-    
-    _ui.addClass('dialog-modal')
-		.addClass('KALS').addClass('window')
-        .html('<table align="center" class="dialog-table" height="100%" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
-        + '<tr class="dialog-toolbar-tr"><th class="dialog-toolbar" valign="middle">'
-            + '<table class="dialog-toolbar-table" width="100%" align="center" cellpadding="0" cellspacing="0" border="0"><tbody><tr>'
-            + '<td class="toolbar-options toolbar-backward"></td>'
-            + '<td class="dialog-heading"></td>'
-            + '<td class="toolbar-options toolbar-forward"></td>'
-            + '</tr></tbody></table>'
-        + '</th></tr>' 
-        + '<tr class="dialog-content-tr"><td class="dialog-content-td">'
-            + '<div class="dialog-content"></div></td></tr>'
-        + '</tbody></table>');
-    
-    if ($.browser.msie6) {
-        _ui.css('width', '480px');
-        //_ui.css('font-size', '1.5em');
-    }
-    
-    this.get_ui().after(_ui);
-    _ui.find('.dialog-content').append(this.get_ui());
-    
-    //$.test_msg('Dialog_modal._$create_ui()', this._$modal_name);
- 
-    var _config = this._$get_config();
-    _config.load = true;
-    _ui.overlay(_config);	//jQuery TOOL Overlay
-    
-    if ($.is_mobile_mode()) {
-        _ui.addClass('mobile');
-        //var _el = _ui.find('.dialog-content');  
-        //this.enable_touch_scroll(_el);
-        this.enable_touch_scroll(_ui);
-    }
-    
-    this.debug('open absolute window', _config);
+    //this.overlay_open(_callback);
+    //this.debug('open absolute window', _config);
+    this.get_ui().overlay().load();
     return this;
 };
 
@@ -703,10 +745,13 @@ KALS_controller_window.prototype._$get_config = function () {
     return _config; 
 };
 
+KALS_controller_window.prototype._setup_effect_flag = false;
+
 /**
  * 設定好effect
  */
 KALS_controller_window.prototype._setup_effect = function () {
+    if (this._setup_effect_flag === false) {
 	$.tools.overlay.addEffect("fade", function(position, done) {
 	      this.getOverlay().css(position).fadeIn(this.getConf().speed, done);
 	   },// close function
@@ -715,6 +760,8 @@ KALS_controller_window.prototype._setup_effect = function () {
 	      this.getOverlay().fadeOut(this.getConf().closeSpeed, done);
 	   }
 	); 
+    }
+    return this;
 };
 
 /**
