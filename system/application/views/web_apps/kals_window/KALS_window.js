@@ -214,19 +214,41 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         _content._window = _this;
         
         if ($.is_string(_content.name)) {
-			_this.set_modal_name(_content.name);
-		}
-        
+            _this.set_modal_name(_content.name);
+        }
         if ($.isset(_content.width)) {
-			_this.set_width(_content.width);
-		}
+            _this.set_width(_content.width);
+        }
         if ($.isset(_content.height)) {
-			_this.set_height(_content.height);
-		}
+            _this.set_height(_content.height);
+        }
         //if ($.isset(_content.overflow))
         //    _this.set_overflow(_content.overflow);
         
-        _this.set_heading(_content.heading);
+        if ($.isset(_content.heading)) {
+            _this.set_heading(_content.heading);
+        }
+        // -------------
+        // 加上_$的參數
+        if ($.is_string(_content._$name)) {
+            _this.set_modal_name(_content._$name);
+        }
+        if ($.isset(_content._$width)) {
+            _this.set_width(_content._$width);
+        }
+        if ($.isset(_content._$height)) {
+            _this.set_height(_content._$height);
+        }
+        //if ($.isset(_content.overflow))
+        //    _this.set_overflow(_content.overflow);
+        
+        if ($.isset(_content._$heading)) {
+            _this.set_heading(_content._$heading);
+        }
+            
+        
+        
+        // -------------
         
         //$.test_msg('KALS_window.setup_window() setting window 1');
         

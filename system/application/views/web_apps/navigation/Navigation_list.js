@@ -98,7 +98,13 @@ Navigation_list.prototype._create_nav = function() {
             .addClass(_content.name)
             .attr('content_index', _i);
 
-        KALS_context.lang.add_listener(_a, _content.nav_heading);
+        if ($.isset(_content.nav_heading)) {
+            KALS_context.lang.add_listener(_a, _content.nav_heading);
+        }
+        else if ($.isset(_content._$nav_heading)) {
+            _content._lang_filter();
+            KALS_context.lang.add_listener(_a, _content._$nav_heading);
+        }
         
         _a.click(function() {
             

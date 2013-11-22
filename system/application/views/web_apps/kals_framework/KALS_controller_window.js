@@ -85,12 +85,12 @@ KALS_controller_window.prototype.name = 'Content';
  * 標頭
  * @type {KALS_language_param}
  */
-KALS_controller_window.prototype.heading = new KALS_language_param(
+KALS_controller_window.prototype._$heading = new KALS_language_param(
     '-',
     'window.noheading'
 );
 
-KALS_controller_window.prototype.nav_heading = new KALS_language_param(
+KALS_controller_window.prototype._$nav_heading = new KALS_language_param(
     'Option',
     'window.noheading'
 );
@@ -290,7 +290,8 @@ KALS_controller_window.prototype.set_input_value = function (_json) {
  */
 KALS_controller_window.prototype.open_kals_window = function (_callback) {
     var _content = this;
-
+    
+    //this.debug('open kals window');
     KALS_window.setup_window(_content, function () {
             $.trigger_callback(_callback);
     });
@@ -435,10 +436,52 @@ KALS_controller_window.prototype.default_focus_submit = '.dialog-options button.
 
 KALS_controller_window.prototype._initialize_view_data = function (_view) {
     _view = KALS_controller.prototype._initialize_view_data.call(this, _view);
-    _view = this._initialize_absolute_window(_view);
+    
+    this._lang_filter();
+    
+    if (this.is_absolute()) {
+        _view = this._initialize_absolute_window(_view);
+    }
+    
     return _view;
 };
 
+KALS_controller_window.prototype._lang_filter_flag = false;
+
+KALS_controller_window.prototype._lang_filter = function () {
+    if (this._lang_filter_flag === false) {
+        var _check_lang = ['_$heading', '_$nav_heading'];
+        for (var _i in _check_lang) {
+            var _attr = _check_lang[_i];
+            var _lang = this[_attr];
+            var _line;
+            
+            if ($.is_class(_lang, 'KALS_language_param')) {
+                _line = _lang.line;
+            }
+            
+            if (KALS_context.lang.has_line(_line) === false) {
+                var _view_index = KALS_context.view_manager._get_view_classname(this._$view, '_');
+                _line = 'view.' + _view_index + '.' + _line;
+                this.debug('_lang_filter', _line);
+                //"view.kals_framework_example_view_dashboard.heading":"資訊版"
+                if (KALS_context.lang.has_line(_line) === true) {
+                    this[_attr] = new KALS_language_param(
+                         _lang.msg,
+                         _line
+                    );
+                }
+            }
+        }
+    }
+    return this;
+};
+
+/**
+ * 建立小型視窗
+ * @param {jQuery} _view
+ * @returns {jQuery}
+ */
 KALS_controller_window.prototype._initialize_absolute_window = function (_view) {
     
     var _ui = this._$create_ui_prototype();
@@ -465,6 +508,13 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
             + '<div class="dialog-content"></div></td></tr>'
         //+ "<tr><td class='resize-handler horizontal top' colspan='3'></td></tr>"
         + '</tbody></table></div>');
+    
+    if (this._$width !== null) {
+        _ui.css('width', this._$width + 'px');
+    }
+    if (this._$height !== null) {
+        _ui.css('height', this._$height + 'px');
+    }
     
     if ($.browser.msie6) {
         _ui.css('width', '480px');
@@ -543,6 +593,20 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     
     return _ui;
 };
+
+/**
+ * 視窗寬度
+ * @type Number|null null表示未設定，單位是px
+ */
+KALS_controller_window.prototype._$width = null;
+
+/**
+ * 視窗高度
+ * @type Number|null null表示未設定，單位是px
+ */
+KALS_controller_window.prototype._$height = null;
+
+
 
 /**
  * 開啟視窗

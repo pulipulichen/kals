@@ -133,9 +133,8 @@ Dashboard.prototype._$auth_check = function (_is_login, _user) {
 /**
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
- * @author Pulipuli Chen 20131121 尚未完成 
  */
-Dashboard.prototype._$absolute = true;
+Dashboard.prototype._$absolute = false;
 
 /**
  * 視窗的Class Name
@@ -147,19 +146,25 @@ Dashboard.prototype.name = 'Dashboard';
  * 視窗的標題
  * @type KALS_language_param
  */
-Dashboard.prototype.heading = new KALS_language_param (
+Dashboard.prototype._$heading = new KALS_language_param (
     'Dashboard',
-    'window.dashboard.heading'
+    'heading'
 );
 
 /**
  * 視窗位於導覽列的按鈕名稱
  * @type KALS_language_param
  */
-Dashboard.prototype.nav_heading = new KALS_language_param (
+Dashboard.prototype._$nav_heading = new KALS_language_param (
     'Dashboard',
     'window.dashboard.heading'
 );
+
+/**
+ * 設定視窗的寬度
+ * @type Number 單位是px
+ */
+Dashboard.prototype._$width = 200;
 
 /**
  * ====================
