@@ -11,6 +11,9 @@
  * @link       https://github.com/pulipulichen/kals/
  * @version    1.0 2011/11/19 下午 03:36:17
  * @extends {JSON_dispatcher}
+ * @extends {KALS_modal}
+ * @constructor
+ * @class {KALS_controller}
  */
 function KALS_controller() {
     
@@ -58,6 +61,7 @@ for (var _i in _modal_prototype) {
  * 
  * @type {string}
  * @protected
+ * @class {KALS_controller}
  */
 KALS_controller.prototype._$view = null;
 
@@ -128,7 +132,7 @@ KALS_controller.prototype.get_request_url = function () {
  */
 KALS_controller.prototype.request = function (_method, _action, _data, _callback) {
     if (this._enable_controller_flag === false) {
-        this.debug('request', 'enable flag is false');
+        //this.debug('request', 'enable flag is false');
         $.trigger_callback(_callback);
         return this;
     }
@@ -136,7 +140,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
     var _url = this.get_request_url();
 
     if ($.is_null(_url)) {
-        $.test_msg('temp', 'url is null');
+        //$.test_msg('temp', 'url is null');
         return $.trigger_callback(_callback);
     }
 
@@ -164,7 +168,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         }
     };
 
-    this.debug('request', _callback);
+    //this.debug('request', _callback);
     //return;
     if (_method === 'get') {
         KALS_util.ajax_get(_ajax_config);
@@ -310,7 +314,7 @@ KALS_controller.prototype.open = function (_callback) {
         return $.trigger_callback(_callback);
     }
     
-    this.debug('open', this._enable_flag);
+    //this.debug('open', this._enable_flag);
     if (this._$model !== null
         && this._$open_request_action !== null) {
         var _this = this;

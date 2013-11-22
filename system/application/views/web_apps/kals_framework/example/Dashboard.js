@@ -14,9 +14,8 @@
  * @extends {KALS_controller_window}
  */
 function Dashboard() {
+    // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
-    
-    this.init_hotkey();
 }
 
 /**
@@ -44,6 +43,22 @@ Dashboard.prototype = new KALS_controller_window();
  * @type String
  */
 Dashboard.prototype._$view = 'kals_framework/example/view/Dashboard';
+
+/**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 這個方法只會執行一次
+ */
+Dashboard.prototype._$initialize_view = function () {
+    this.init_hotkey();
+    
+    var _types = this.get_annotation_types();
+    //this.set_field('annotation_type', ['1', '2', '3']);
+    //_types = _types.question;
+    //this.debug('init view', typeof(_types.get_ui));
+    this.set_field('annotation_type', _types);
+};
 
 /**
  * ====================

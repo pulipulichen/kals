@@ -292,6 +292,10 @@ Type_component.prototype._listen_editor = function () {
     
     var _this = this;
     
+    if ($.is_null(this._editor)) {
+        return;
+    }
+    
     this._editor.add_listener('reset', function () {
         _this.reset_type();
     });
@@ -313,6 +317,8 @@ Type_component.prototype._listen_editor = function () {
 		// 因為現在預設值都可以做修改，所以不管怎樣都要回傳預設值
 		_annotation_param.set_type(_type);
     });
+    
+    return this;
 };
 
 /**

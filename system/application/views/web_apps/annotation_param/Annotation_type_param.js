@@ -8,7 +8,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/10/26 下午 02:07:24
- * @extends {KALS_user_interface}
  */
 function Annotation_type_param(_param) {
     if ($.isset(_param)) {
@@ -521,6 +520,16 @@ Annotation_type_param.prototype.get_option_style = function () {
     var _style = 'background-color:' + this._option_background_color
         + ';color:' + this._option_font_color;
     return _style;
+};
+
+/**
+ * 建立標註類別的按鈕
+ * @returns {jQuery}
+ */
+Annotation_type_param.prototype.get_ui = function () {
+    var _view = new View_annotation_type(this);
+    _view = _view.get_ui();
+    return _view;
 };
 
 /* End of file Annotation_type_param */

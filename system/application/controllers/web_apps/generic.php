@@ -218,6 +218,7 @@ class generic extends Web_apps_controller {
             'annotation_editor/Editor_container',
             'annotation_editor/Annotation_editor',
             'annotation_editor/Type_component',
+            'kals_framework/View_annotation_type',
             'annotation_editor/Type_menu',
             'annotation_editor/Note_editor',
             'annotation_editor/Note_editor_ckeditor',

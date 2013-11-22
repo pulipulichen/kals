@@ -10,6 +10,15 @@
     line-height: 30px;
 }
 
+.KALS .view-annotation-type {
+    cursor: default;
+}
+
+.KALS.window .dialog-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 /*
 .KALS.kals-controller-window .resize-handler {
     cursor: 

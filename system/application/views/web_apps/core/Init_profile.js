@@ -106,7 +106,6 @@ Init_profile.prototype._test = [
 	 * 測試樣板功能
 	 * @author Pulipuli Chen 20131117
 	 */
-        /*
 	, function () {
 		//var _template = KALS_context.template.get_template('helpers/test');
 		//$.test_msg('KALS_template', _template);
@@ -117,7 +116,6 @@ Init_profile.prototype._test = [
 		var _window = new Dashboard();
                 _window.open();
 	}
-        */
 	/**
 	 * 測試意見回饋功能
 	 * @20131116 Pulipuli Chen

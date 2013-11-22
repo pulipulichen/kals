@@ -463,7 +463,7 @@ KALS_controller_window.prototype._lang_filter = function () {
             if (KALS_context.lang.has_line(_line) === false) {
                 var _view_index = KALS_context.view_manager._get_view_classname(this._$view, '_');
                 _line = 'view.' + _view_index + '.' + _line;
-                this.debug('_lang_filter', _line);
+                //this.debug('_lang_filter', _line);
                 //"view.kals_framework_example_view_dashboard.heading":"資訊版"
                 if (KALS_context.lang.has_line(_line) === true) {
                     this[_attr] = new KALS_language_param(
@@ -514,6 +514,10 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     }
     if (this._$height !== null) {
         _ui.css('height', this._$height + 'px');
+    }
+    
+    if (this._$max_height !== null) {
+        _ui.find(".dialog-content:first").css('max-height', this._$max_height + 'px');
     }
     
     if ($.browser.msie6) {
@@ -605,6 +609,12 @@ KALS_controller_window.prototype._$width = null;
  * @type Number|null null表示未設定，單位是px
  */
 KALS_controller_window.prototype._$height = null;
+
+/**
+ * 視窗最大高度
+ * @type Number|null null表示未設定，單位是px
+ */
+KALS_controller_window.prototype._$max_height = null;
 
 
 
