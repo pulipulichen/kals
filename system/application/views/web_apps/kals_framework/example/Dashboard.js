@@ -2,7 +2,7 @@
  * Dashboard
  *
  * 結合樣板的控制器
- * 作為示範用
+ * KALS Framework的Controller示範
  *
  * @package    KALS
  * @category   Webpage Application Libraries
@@ -140,31 +140,35 @@ Dashboard.prototype._$absolute = false;
  * 視窗的Class Name
  * @type String
  */
-Dashboard.prototype.name = 'Dashboard';
+Dashboard.prototype._$name = 'Dashboard';
 
 /**
  * 視窗的標題
+ * 
  * @type KALS_language_param
+ * 對應到樣板的語系檔
  */
-Dashboard.prototype._$heading = new KALS_language_param (
-    'Dashboard',
-    'heading'
-);
+Dashboard.prototype._$heading = 'heading';
 
 /**
  * 視窗位於導覽列的按鈕名稱
- * @type KALS_language_param
+ * 
+ * @type KALS_language_param|String
+ * 對應到樣板的語系檔
  */
-Dashboard.prototype._$nav_heading = new KALS_language_param (
-    'Dashboard',
-    'window.dashboard.heading'
-);
+Dashboard.prototype._$nav_heading = 'heading';
 
 /**
  * 設定視窗的寬度
- * @type Number 單位是px
+ * @type Number 單位是px，null表示不設定
  */
-Dashboard.prototype._$width = 200;
+Dashboard.prototype._$width = 400;
+
+/**
+ * 設定視窗的高度
+ * @type Number 單位是px，null表示不設定
+ */
+Dashboard.prototype._$height = null;
 
 /**
  * ====================
@@ -174,6 +178,8 @@ Dashboard.prototype._$width = 200;
 
 /**
  * 開啟最新的標註
+ * 
+ * 這是kals-event-field-set的範例
  * 
  * @param {jQuery} _ele
  * 由於是kals-event-field-set事件，所以固定會回傳觸發事件的jQuery物件
@@ -207,6 +213,9 @@ Dashboard.prototype.open_recent_annotation = function() {
 /**
  * 使用Hotkey的範例
  * http://unixpapa.com/js/key.html
+ * 
+ * 這是this.set_hotkey()的範例
+ * 
  * @returns {Dashboard.prototype}
  */
 Dashboard.prototype.init_hotkey = function () {
@@ -222,6 +231,14 @@ Dashboard.prototype.init_hotkey = function () {
     return this;
 };
 
+/**
+ * 選擇指定標註的action
+ * 
+ * 這是this.select_annotation()的範例
+ * 
+ * @param {jQuery} _ele
+ * @returns {Dashboard.prototype}
+ */
 Dashboard.prototype.select = function (_ele) {
     this.debug('select', this._data);
     var _annotation_id = this.get_field('last_annotation_id');

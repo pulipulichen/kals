@@ -43,22 +43,15 @@ class dashboard extends KALS_model {
      */
     public function open($data) {
         
-        // 取得現在的網頁物件
+        // -----------------------
+        // 從現在的網頁來計算標註跟使用者
         $webpage = $this->get_current_webpage();
-        //$data["annotation_count"] = rand(5, 100);
         $data["annotation_count"] = $webpage->get_written_annotations_count();
         
-        //$data["user_count"] = rand(1, 6);
         $data["user_count"] = $webpage->get_written_users_count();
         
         // ------------------
-        
-        //$data["last_annotation_id"] = 14848;
-        //$data["last_annotation_timestamp"] = time();
-        
-        //$last_annotation = new Annotation(14848);
-        //$annotation_json = $last_annotation->export_data();
-        //$data["last_annotation"] = array($annotation_json, $annotation_json);
+        // 取出最近的標註
         
         $search = new Search_annotation_collection();
         $search->set_target_webpage($webpage->get_id());
@@ -89,6 +82,7 @@ class dashboard extends KALS_model {
         $data["last_annotation"] = $search;
         
         // -------------------
+        // 依照標註數量來判斷熱門程度
         
         $activity = "bad";
         if ($data["annotation_count"] > 20) {

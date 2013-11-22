@@ -454,7 +454,7 @@ KALS_controller_window.prototype._lang_filter = function () {
         for (var _i in _check_lang) {
             var _attr = _check_lang[_i];
             var _lang = this[_attr];
-            var _line;
+            var _line = _lang;
             
             if ($.is_class(_lang, 'KALS_language_param')) {
                 _line = _lang.line;
