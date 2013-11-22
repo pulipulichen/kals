@@ -211,6 +211,26 @@ Dashboard.prototype.open_recent_annotation = function() {
 };
 
 /**
+ * 這是一個action
+ * 
+ * function的細節
+ * 
+ * @param {JSON} _param 傳入的參數
+ * @returns {Boolean} true=成功;false=失敗
+ * @author Pulipuli Chen 20131122
+ */
+Dashboard.prototype.action = function (_param) {
+    
+    /**
+     * @type {boolean} 這個變數的名字
+     */
+    var _param2 = true;
+    
+    
+    return false;
+};
+
+/**
  * 使用Hotkey的範例
  * http://unixpapa.com/js/key.html
  * 
