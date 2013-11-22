@@ -958,6 +958,18 @@ class Annotation extends KALS_resource {
         $json = json_encode($data);
         return $json;
     }
+    
+    /**
+     * 輸出成為陣列物件
+     * @return Array
+     */
+    public function export_to_array() {
+        return $this->export_data();
+    }
+    
+    public function __toString() {
+        return $this->export_json();
+    }
 }
 
 

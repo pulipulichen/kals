@@ -578,6 +578,15 @@ class Annotation_scope_collection extends Generic_association_collection {
         $json = json_encode($webpage_scope);
         return $json;
     }
+    
+    /**
+     * 範圍位置輸出成為陣列
+     * @param boolean $export_anchor
+     * @return Array
+     */
+    public function export_to_array($export_anchor = FALSE) {
+        return $this->export_data($export_anchor);
+    }
 
     public function export_data($export_anchor = FALSE)
     {

@@ -459,6 +459,14 @@ class User extends KALS_actor {
         $data['photo'] = $this->has_photo();
         return $data;
     }
+    
+    /**
+     * 輸出成為陣列
+     * @return Array
+     */
+    public function export_to_array() {
+        return $this->export_data();
+    }
 
     public function export_json()
     {

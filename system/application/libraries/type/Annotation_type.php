@@ -37,6 +37,14 @@ class Annotation_type {
     {
         return $this->get_type_id();
     }
+    
+    /**
+     * 回傳基本標註類型的ID
+     * @return Int
+     */
+    public function export_to_array() {
+        return $this->export_data();
+    }
 
     /**
      * 是否是基本的標註類型

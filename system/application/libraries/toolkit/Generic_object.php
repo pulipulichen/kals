@@ -595,6 +595,8 @@ class Generic_object extends KALS_object {
 
     /**
      * 取得ID
+     * 
+     * 如果尚未設置ID，則會回傳NULL
      * @return int
      */
     public function get_id()
@@ -609,8 +611,9 @@ class Generic_object extends KALS_object {
             $id = intval($this->id);
             return $id;
         }
-        else
+        else {
             return NULL;
+        }
     }
 
     /**

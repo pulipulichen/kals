@@ -224,6 +224,14 @@ class Webpage extends KALS_resource {
         
         return $search;
     }
+    
+    /**
+     * 取得該網頁底下撰寫的標註
+     * @return Annotation_collection
+     */
+    public function get_written_annotations() {
+        return $this->get_appended_annotation();
+    }
 
     /**
      * @return Language_variable_collection
@@ -251,8 +259,61 @@ class Webpage extends KALS_resource {
         return new Annotation_tutor($this);
     }
     
+    /**
+     * 回傳該網頁的標註數量
+     * 
+     * 如果該Webpage尚未準備好，則會回傳Null
+     * @return int|null
+     */
+    public function get_written_annotations_count() {
+        
+        if (is_null($this->get_id())) {
+            return NULL;
+        }
+        
+        $annotation_coll = $this->get_appended_annotation();
+        return $annotation_coll->length();
+    }
+    
+     /**
+     * 回傳該網頁中撰寫標註的使用者
+     * 
+     * 如果該Webpage尚未準備好，則會回傳Null
+     * @return array|User
+     */
+    public function get_written_users() {
+        
+        if (is_null($this->get_id())) {
+            return NULL;
+        }
+        
+        $this->_CI_load('library', 'search/Search_annotation_user_collection', 'search_annotation_user_collection');
+
+        $search = new Search_annotation_user_collection();
+        $search->set_target_webpage($this->get_id());
+        $search->set_check_authorize(FALSE);
+        $search->disable_limit();
+        $search->disable_offset();
+        
+        return $search;
+    }
+    
+    /**
+     * 回傳該網頁中撰寫標註的使用者數量
+     * 
+     * 如果該Webpage尚未準備好，則會回傳Null
+     * @return Null|Int
+     */
+    public function get_written_users_count() {
+        $users = $this->get_written_users();
+        if (is_null($users)) {
+            return NULL;
+        }
+        else {
+            return $users->length();
+        }
+    }
+
 }
-
-
-/* End of file Webpage.php */
+    /* End of file Webpage.php */
 /* Location: ./system/application/libraries/kals_resource/Webpage.php */

@@ -188,6 +188,8 @@ class KALS_model extends Web_apps_controller {
             $action = $data['_action'];
             if (method_exists($this, $action)) {
                 $data = $this->$action($data);
+                
+                $data = $this->_object_export($data);
             }
         }
         
@@ -222,6 +224,33 @@ class KALS_model extends Web_apps_controller {
     // ---------------
     // 處理資料的方式
     // ---------------
+    
+    private function _object_export($data) {
+        
+        if (is_array($data)) {
+            foreach ($data AS $key => $item) {
+                if (is_object($item)) {
+                    /*
+                    if (is_class($item, 'Annotation')) {
+                        $data[$key] = $item->export_data();
+                    }
+                    else if (is_class($item, 'Annotation_collection')) {
+                        test_msg('anno coll');
+                        //$data[$key] = $item->export_data();
+                    }
+                     */
+                    if (method_exists($item, 'export_to_array')) {
+                        $data[$key] = $item->export_to_array();
+                    }
+                }
+                else if (is_array($item)) {
+                    $data[$key] = $this->_object_export($item);
+                }
+            }
+        }
+        
+        return $data;
+    }
     
     /**
      * 從JSON取得資料
