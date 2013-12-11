@@ -6,6 +6,7 @@
  */
 
 $lang["heading"] = "資訊版";
+//$lang["heading"] = "結構式筆記";
 $lang["annotation_count"] = '標註數量';
 $lang["user_count"] = '撰寫標註人數';
 $lang["used_annotation_type"] = '使用標註類型';

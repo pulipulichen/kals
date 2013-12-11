@@ -15,15 +15,15 @@ function Note_editor_manager(_editor) {
     
     KALS_user_interface.call(this);
     
-    if ($.isset(_editor))
-    {
+    if ($.isset(_editor)) {
         this._editor = _editor;
         this._listen_editor();
     }
     this.child('init', new Init_note_editor());
     
-    if ($.browser.msie)
+    if ($.browser.msie) {
         this._type_mapping = this._type_mapping_ie;
+    }
 }
 
 Note_editor_manager.prototype = new KALS_user_interface();
@@ -79,6 +79,12 @@ Note_editor_manager.prototype._default_editor = 'Note_editor_ckeditor';
 Note_editor_manager.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('note-editor');
+
+    // 加入防止被hotkey影響的設定
+    _ui.keydown(function (_event) {
+        _event.preventDefault();
+    });
+    
     return _ui;
 };
 

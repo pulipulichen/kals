@@ -29,8 +29,12 @@ KALS_hotkey_manager.prototype.init_hotkey = function () {
    setTimeout(function () {
        $("body").keydown(function (_event) {
            var _key = _event.which;
-           //$.test_msg('hotkey', [_key, _this.has_type(_key)]);
+           $.test_msg('hotkey', [_key, _this.has_type(_key)]);
            if (_this.has_type(_key)) {
+               _this.notify_listeners(_key);
+               _event.preventDefault();
+           }
+           else if (_this.has_type(_key + '')) {
                _this.notify_listeners(_key);
                _event.preventDefault();
            }
