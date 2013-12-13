@@ -20,6 +20,12 @@ class Api extends Controller {
     // ------------------
     
     var $dir = 'web_apps/';
+    
+    /**
+     * 預先載入相關的library
+     * 
+     * 如果還有用到其他的library，請在此載入
+     */
     function  __construct()
     {
         parent::Controller();
@@ -32,6 +38,8 @@ class Api extends Controller {
     
     /**
      * 以HTML顯示資料
+     * 
+     * 不需要變動了
      * @param Array $data 以關聯式陣列組成的回傳資料
      */
     private function _display_data($data) {
@@ -41,6 +49,8 @@ class Api extends Controller {
     
     /**
      * 以JSONP顯示資料
+     * 
+     * 不需要變動了
      * @param Array $data 以關聯式陣列組成的回傳資料
      * @param String $callback
      */
@@ -71,7 +81,12 @@ class Api extends Controller {
     
     /**
      * 取得目前KALS當中所有的閱讀標註網頁資訊
+     * 用法：http://localhost/kals/api/webpage/callback=jsonp1386943076032
      * 
+     * 取得指定$webpage_id網頁中的所有Topic Annotation
+     * 用法：http://localhost/kals/api/webpage/231/callback=jsonp1386943076032
+     * 
+     * 不需要變動了
      * @param type $webpage_id 指定查詢網頁ID。省略則會顯示所有網頁
      */
     public function webpage($webpage_id = NULL, $callback = NULL) {
@@ -187,6 +202,9 @@ class Api extends Controller {
         // 實作開始
         // ---------------
         
+        // ---------------
+        // 資料回傳
+        // ---------------
         return $list;
     }
     
@@ -196,7 +214,9 @@ class Api extends Controller {
     
     /**
      * 取得指定Topic以及底下的標註資訊
+     * 用法：http://localhost/kals/api/topic_annotation/15531/callback=jsonp1386943076032
      * 
+     * 不需要變動了
      * @param Int $topic_id 指定查詢的標題標註ID
      * @param String
      */
@@ -307,7 +327,52 @@ class Api extends Controller {
         // 實作開始
         // ---------------
         
+        
+        // ---------------
+        // 資料回傳
+        // ---------------
         return $list;
+    }
+    
+    
+    // ------------------
+    // 實作區：Auth Check
+    // ------------------
+    
+    /**
+     * 確認身分
+     * 
+     * 只確認有註冊這個人，不確認密碼
+     * 密碼由取用API的網站自行管理吧？
+     * 
+     * @param String $user_email
+     * @param String $callback
+     */
+    public function auth_check($user_email, $callback = NULL) {
+        
+        $topic_id = intval($topic_id);
+        
+        $message = $this->_check_user_exist($user_email);
+        
+        $this->_display_jsonp($message, $callback);
+    }
+    
+    /**
+     * 確認是否有這位email的使用者
+     * @param String $user_email
+     * @return boolean
+     */
+    private function _check_user_exist($user_email) {
+        $exist = false;
+        
+        // ---------------
+        // 實作開始：請在此去確認是否有此email
+        // ---------------
+        
+        // ---------------
+        // 資料回傳
+        // ---------------
+        return $exist;
     }
 }
 
