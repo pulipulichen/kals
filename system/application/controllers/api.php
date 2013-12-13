@@ -30,8 +30,39 @@ class Api extends Controller {
         create_context();
     }
     
+    /**
+     * 以HTML顯示資料
+     * @param Array $data 以關聯式陣列組成的回傳資料
+     */
     private function _display_data($data) {
+        $data = kals_json_encode($data);
         $this->load->view($this->dir.'display', array('data'=>$data));
+    }
+    
+    /**
+     * 以JSONP顯示資料
+     * @param Array $data 以關聯式陣列組成的回傳資料
+     * @param String $callback
+     */
+    private function _display_jsonp($data, $callback = NULL) {
+        
+        send_js_header($this->output);
+        
+        if (is_null($callback)) {
+            return $this->_display_data($data);
+        }
+        else {
+            $data = kals_json_encode($data);
+            
+            $pos = stripos($callback, '='); // 取得 = 號的位置
+            $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
+            
+            $vars = array(
+                'callback_hash' => $callback_hash,
+                'json' => $data
+            );
+            $this->load->view($this->dir.'display_jsonp', $vars);
+        }
     }
     
     // ------------------
@@ -43,7 +74,18 @@ class Api extends Controller {
      * 
      * @param type $webpage_id 指定查詢網頁ID。省略則會顯示所有網頁
      */
-    public function webpage($webpage_id = NULL) {
+    public function webpage($webpage_id = NULL, $callback = NULL) {
+        
+        if (!is_null($webpage_id) && is_null($callback)) {
+            if (strpos($webpage_id, "callback=") !== FALSE) {
+                $callback = $webpage_id;
+                $webpage_id = NULL;
+            }
+        }
+        
+        if (is_string($webpage_id)) {
+            $webpage_id = intval($webpage_id);
+        }
         
         $message;
         
@@ -55,7 +97,7 @@ class Api extends Controller {
             $message = $this->_get_webpage_topics($webpage_id);
         }
         
-        $this->_display_data($message);
+        $this->_display_jsonp($message, $callback);
     }
     
     /**
@@ -155,13 +197,15 @@ class Api extends Controller {
     /**
      * 取得指定Topic以及底下的標註資訊
      * 
-     * @param type $topic_id 指定查詢的標題標註ID
+     * @param Int $topic_id 指定查詢的標題標註ID
+     * @param String
      */
-    public function topic_annotation($topic_id) {
+    public function topic_annotation($topic_id, $callback = NULL) {
         
+        $topic_id = intval($topic_id);
         $message = $this->_get_topic_annotations($topic_id);
         
-        $this->_display_data($message);
+        $this->_display_jsonp($message, $callback);
     }
         
     /**
