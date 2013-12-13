@@ -51,7 +51,9 @@ Dashboard.prototype._$view = 'kals_framework/example/view/Dashboard';
  * 這個方法只會執行一次
  */
 Dashboard.prototype._$initialize_view = function () {
-    this.init_hotkey();
+    
+    // 設置熱鍵
+    //this.init_hotkey();
     
     var _types = this.get_annotation_types();
     //this.set_field('annotation_type', ['1', '2', '3']);
@@ -258,7 +260,7 @@ Dashboard.prototype.init_hotkey = function () {
     // 按鍵對應的編號請參考http://unixpapa.com/js/key.html
     var _hotkey = 65;   
     
-    var _this = this;
+    var _this = this;    
     this.set_hotkey(_hotkey, function () {
         _this.open();
     });
