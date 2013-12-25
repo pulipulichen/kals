@@ -224,11 +224,11 @@ Annotation_editor.prototype.submit = function () {
     var _load_url;
     var _is_editing_mode = this.is_editing(); 
     if (_is_editing_mode) {
-		_load_url = this._edit_url;
-	}
-	else {
-		_load_url = this._create_url;
-	}
+        _load_url = this._edit_url;
+    }
+    else {
+        _load_url = this._create_url;
+    }
     
     var _this = this;
     
@@ -245,7 +245,7 @@ Annotation_editor.prototype.submit = function () {
         if (_is_editing_mode)    //編輯模式
         {
             if ($.isset(_data)
-                && typeof(_data.timestamp) != 'undefined') {
+                && typeof(_data.timestamp) !== 'undefined') {
                 _annotation_param.timestamp = _data.timestamp;
             }
 			var _scope_coll = KALS_text.selection.select.get_scope_coll();
@@ -258,19 +258,19 @@ Annotation_editor.prototype.submit = function () {
         else    //新增模式
         {
             if ($.isset(_data)) {
-                if (typeof(_data.annotation_id) != 'undefined') {
+                if (typeof(_data.annotation_id) !== 'undefined') {
 					_annotation_param.annotation_id = _data.annotation_id;
 				}
                 
-                if (typeof(_data.timestamp) != 'undefined') {
+                if (typeof(_data.timestamp) !== 'undefined') {
 					_annotation_param.timestamp = _data.timestamp;
 				}
                     
-                if (typeof(_data.recommend) != 'undefined' 
+                if (typeof(_data.recommend) !== 'undefined' 
 					&& KALS_CONFIG.enable_annotation_recommend === true) {
 					_annotation_param.recommend = new Recommend_param(_data.recommend);
 				}
-                if (typeof(_data.nav) != 'undefined') {
+                if (typeof(_data.nav) !== 'undefined') {
                     //$.test_msg('_data.nav', _data.nav);
                     _annotation_param.navigation_level = _data.nav;
                 }

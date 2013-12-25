@@ -101,7 +101,6 @@ KALS_util.ajax_get = function (_config) {
     
     var _retry_timer;
     var _retry_exception = function () {
-        
         $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
 	    var _exception = new KALS_exception('exception.retry_exception');
         _this.show_exception(_exception, _url);
@@ -209,7 +208,7 @@ KALS_util.ajax_post = function (_config) {
     
     _action = $.appends_with(_url, '/');
     
-    if (typeof(KALS_context) != 'undefined') {   
+    if (typeof(KALS_context) !== 'undefined') {   
         _action = KALS_context.get_base_url(_action);
     }
     //$.test_msg('ajax_post action: ' + '<a href="'+_action+'" target="_blank">' + _action + '</a>', _data);
@@ -744,22 +743,26 @@ KALS_util.decodeURIComponent = function (_str) {
 /**
  * 將log傳到伺服器
  * 
+ * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+ * 20131225 將傳遞資料改成用Post傳遞
  * @param number _action 動作的ID。關於動作的編號，請查看[KALS]/applications/controllers/web_apps/log.php
  */
 KALS_util.log = function (_action, _note) {
     
-	var _data = {
-		"action": _action,
-		"note": _note
-	};
-	
-	$.test_msg("KALS_util.log", _data);
-	
-	var _config = {
-		"url": "log/create",
- 		"data": _data
-	};
-	KALS_util.ajax_get(_config);
+    //_note = null;
+    var _data = {
+        "action": _action,
+        "note": _note
+    };
+
+    $.test_msg("KALS_util.log", _data);
+
+    var _config = {
+        "url": "log/create",
+        "data": _data
+    };
+    //KALS_util.ajax_get(_config);
+    KALS_util.ajax_post(_config);
 };
 
 /* End of file KALS_unit */

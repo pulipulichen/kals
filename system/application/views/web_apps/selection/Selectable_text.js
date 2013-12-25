@@ -761,6 +761,8 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
             var _this = this;
 			
 			var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
+                        
+                        
 			/*
 			var _click_evt = function(_callback) {
                 if (_this.initialized === false) {
@@ -794,13 +796,50 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
                         });
                         
 			_words.mousedown(function () {
+                            /**
+                             * 先做超連結偵測
+                             * @author Pulipuli Chen <pulipuli.chen@gmail.com> 
+                             */
+                            var _md_this = this;
+                            var _word = $(_md_this);
+                            var _is_link = false;
+                            
+                            var _link_tag = _word.parents("a[href]:first");
+                            if (_link_tag.length == 1) {
+                                // 如果是超連結的話
+                                _is_link = true;
+                                
+                                //alert(_link_tag.attr("target"));
+                                var _target = "_blank";
+                                if (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") {
+                                    _link_tag.attr("target", "_blank");
+                                }
+                                else {
+                                    _target = _link_tag.attr("target");
+                                }
+                                
+                                var _link_url = _link_tag.attr("href");
+                                //_link_url = "//";
+                                
+                                var _log_data = {
+                                    "url": _link_url,
+                                    "target": _target
+                                };
+                                
+                                //$.test_msg("送出超連結", _log_data);
+                                var _action = 39;
+                                KALS_util.log(_action, _log_data);
+                                
+                                return;
+                            }
+                            
                                 KALS_SELECT_LOCK = true;
 				KALS_SELECT_MOUSEDOWN_LOCK = 1;
 				
-				var _md_this = this;
+				
 				setTimeout(function () {
 					if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
-						var _word = $(_md_this);
+						_word = $(_md_this);
                                                 
 						_select.cancel_select();
 						_select.set_select(_word);	
@@ -812,7 +851,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
                                 setTimeout(function () {
                                         if (KALS_SELECT_MOUSEDOWN_LOCK === 2
                                             && KALS_SELECT_LOCK === true) {
-						var _word = $(_md_this);
+						_word = $(_md_this);
 						_select.set_select(_word);	
                                                 KALS_SELECT_MOUSEDOWN_LOCK = null;
 					}

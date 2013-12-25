@@ -55,12 +55,6 @@ class Annotation_setter extends Web_apps_controller {
     {
         //$this->output->enable_profiler(TRUE);
         
-        /**
-         * 20121224 Pulipuli Chen
-         * 移除scope中text包含\'的資料
-         */
-        $json = str_replace("\\'", "'", $json);
-        
         $data = json_to_object($json);
         
         //檢視資料
@@ -146,30 +140,6 @@ class Annotation_setter extends Web_apps_controller {
         set_ignore_authorize(false);
 
         return $data;
-    }
-
-    private function _is_callback ($param = NULL) {
-        if (is_null($param))
-            return FALSE;
-        else
-            return (starts_with($param, 'callback='));
-    }
-
-    private function _get_post_json() {
-        if (isset($_POST['json']))
-        {
-            //return urldecode($_POST['json']);
-            return $_POST['json'];
-        }
-        else
-        {
-            handle_error ('Cannot get json data.');
-        }
-    }
-
-    protected function _display_post_complete() {
-        send_js_header($this->output);
-        $this->load->view('web_apps/display_post_complete');
     }
 
     public function create_post ($json = NULL) {
