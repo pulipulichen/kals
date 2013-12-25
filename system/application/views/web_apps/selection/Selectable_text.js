@@ -809,16 +809,23 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
                                 // 如果是超連結的話
                                 _is_link = true;
                                 
+                                var _link_url = _link_tag.attr("href");
+                                
                                 //alert(_link_tag.attr("target"));
+                                /*
                                 var _target = "_blank";
-                                if (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") {
+                                if (_link_url.substr(0,1) != "#"
+                                        && (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") ) {
                                     _link_tag.attr("target", "_blank");
                                 }
                                 else {
                                     _target = _link_tag.attr("target");
                                 }
-                                
-                                var _link_url = _link_tag.attr("href");
+                                */
+                                var _target = "_self";
+                                if (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") {
+                                    _target = _link_tag.attr("target");
+                                }
                                 //_link_url = "//";
                                 
                                 var _log_data = {
