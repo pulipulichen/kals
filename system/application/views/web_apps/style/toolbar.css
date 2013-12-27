@@ -233,6 +233,7 @@
     cursor: wait;
 }
 
+.KALS.kals-toolbar.loading .loading-component .progress,
 .KALS.kals-toolbar.loading .loading-component .message {
 	margin-right: 0.5em;
 }

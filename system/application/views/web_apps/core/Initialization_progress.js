@@ -8,18 +8,18 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://github.com/pulipulichen/kals
  * @version    1.0 2013/12/27 下午 08:10:10
- * @extends {Task_event_dispatcher}
+ * @extends {Event_dispatcher}
  */
 function Initialization_progress() {
     
-    Task_event_dispatcher.call(this);
+    Event_dispatcher.call(this);
     
 }
 
 /**
  * 繼承自Task_event_dispatcher
  */
-Initialization_progress.prototype = new Task_event_dispatcher();
+Initialization_progress.prototype = new Event_dispatcher();
 
 /**
  * 記數
@@ -32,6 +32,32 @@ Initialization_progress.prototype._progress_count = 0;
  * @type Number
  */
 Initialization_progress.prototype._progress_total = 0;
+
+/**
+ * 最後一次計算時的進度百分比
+ * @type Number
+ */
+Initialization_progress.prototype._last_progress_percent = 0;
+
+/**
+ * 要顯示的最小底限百分比
+ * @type Number
+ */
+Initialization_progress.prototype._display_min_percent = 0;
+
+/**
+ * 要顯示的最大底限百分比，超過這個百分比就先等待finish完成
+ * @type Number
+ * @deprecated 使用_slow_rate
+ */
+Initialization_progress.prototype._display_max_percent = 99;
+
+/**
+ * 增加速率變緩
+ * @type Number
+ */
+Initialization_progress.prototype._slow_rate = 0.8;
+
 
 /**
  * 是否已經完成
@@ -60,7 +86,23 @@ Initialization_progress.prototype.set_total = function (_total) {
 Initialization_progress.prototype.add_count = function () {
     this._progress_count++;
     
-    $.test_msg("init progress", this.get_percent(true));
+    var _percent = this.get_percent();
+    
+    if (_percent > this._display_min_percent && 
+            _percent > this._last_progress_percent) {
+        
+        if (_percent > this._display_max_percent) {
+            //超過比例，那就不做任何事情
+            //$.test_msg("init progress: over max percent", this.get_percent(true));
+        }
+        else {
+            //$.test_msg("init progress", this.get_percent(true));
+            this.notify_listeners();    //通知大家改變了
+        }
+        
+        this._last_progress_percent = _percent;
+    }
+    
     return this;
 };
 
@@ -79,7 +121,15 @@ Initialization_progress.prototype.get_percent = function (_with_unit) {
     else if (this._progress_total !== 0) {
         // 計算
         _percent = (this._progress_count / this._progress_total) * 100;
+        
+        _percent = _percent * this._slow_rate;
+        
         _percent = parseInt( _percent, 10 );
+        
+        
+        if (_percent > this._display_max_percent) {
+            _percent = this._display_max_percent;
+        }
     }
     
     // 輸出
@@ -99,7 +149,7 @@ Initialization_progress.prototype.get_percent = function (_with_unit) {
 Initialization_progress.prototype.set_finished = function () {
     this._is_finished = true;
     
-    $.test_msg("init progress finished", this.get_percent(true));
+    //$.test_msg("init progress finished", this.get_percent(true));
     return this;
 };
 

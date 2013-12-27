@@ -138,14 +138,11 @@ Selectable_text.prototype.initialize = function (_callback) {
     var _this = this;
     
     /**
-     * 加入字串偵測的功能
+     * 加入預測進度的功能
      * @author Pulipuli Chen 20131227 
      */
     var _estimate_words = _element.text();
-    // 去掉空格
-    _estimate_words = _estimate_words.replace(/([\s|\t]*)/g, "");
-    //$.test_msg("預測字", _estimate_words);
-    _estimate_words_length = _estimate_words.length;
+    _estimate_words_length = this.get_estimate_total(_estimate_words);
     
     KALS_context.progress.set_total(_estimate_words_length);
     
@@ -185,8 +182,19 @@ Selectable_text.prototype.initialize = function (_callback) {
     return this; 
 };
 
+/**
+ * 執行間隔參數
+ */
 Selectable_text.prototype.excute_interval = {
+    /**
+     * 批次執行的間隔
+     * @type Number
+     */
     batch_excute: 20,
+    /**
+     * 中間等待時間
+     * @type Number
+     */
     wait: 0
 };
 
@@ -2041,213 +2049,28 @@ Selectable_text.prototype.get_sentence_index = function () {
 	return _sentence_index;
 };
 
-// --------
-// Selection @deprecated
-// --------
-
 /**
- * 取消選取
+ * 估算大概會多少字
+ * @param {String} _text
+ * @returns {Number}
  */
-/*
-Selectable_text.prototype.cancel_select = function () {
+Selectable_text.prototype.get_estimate_total = function (_text) {
     
-    var _selected = this.selected_classname;
-    var _from = this.selected_from_classname;
-    var _to = this.selected_to_classname;
-    var _middle = this.selected_middle_classname;
+    //$.test_msg("預測字 1", _text);
     
-    //還要清理Selectable_element的樣式
-    $('.'+_selected+'.'+_from).removeClass(_from);
-    $('.'+_selected+'.'+_to).removeClass(_to);
-    $('.'+_selected+'.'+_middle).removeClass(_middle);
-    $('.'+_selected).removeClass(_selected);
+    // 濃縮英數
+    _text = _text.replace(/[\w]{1,}/gi, "_");
     
-    return this;
+    // 去掉空格
+    _text = _text.replace(/([\s|\t]*)/g, "");
+    
+    //$.test_msg("預測字 2", _text);
+    
+    var _total = 0;
+    _total = _text.length;
+    
+    return _total;
 };
-*/
-
-/**
- * 增加選擇範圍
- * @param {Scope_param|Scope_param[]} _scope 範圍。example: {
- *     from: 0,
- *     to: 12
- * }
- * @type {jQuery[]}
- */
-/*
-Selectable_text.prototype.add_select = function (_scope) {
-    var _from_classname = this.selected_from_classname;
-    var _to_classname = this.selected_to_classname;
-    var _middle_classname = this.selected_middle_classname;
-    
-    var _from, _to, _from_id, _to_id;
-    
-    if ($.is_array(_scope) && _scope.length > 0) {
-        _from = _scope[0];
-        if (_scope.length > 1)
-            _to = _scope[1];
-        else
-            _to = _from;
-    }
-    else if ($.is_object(_scope)) {
-        _from = $.get_parameter(_scope, 'from');
-        _to = $.get_parameter(_scope, 'to');
-    }
-    
-    var _id_prefix = this.word_id_prefix;
-    
-    if ($.is_object(_from))
-        _from_id = $.get_prefixed_id(_from);
-    else {
-        _from_id = parseInt(_from);
-        _from = $('#' + _id_prefix + _from_id );
-    }
-    
-    if ($.is_object(_to))
-        _to_id = $.get_prefixed_id(_to);
-    else {
-        _to_id = parseInt(_to);
-        _to = $('#' + _id_prefix + _to_id );
-    }
-    
-    if (_to_id < _from_id) {
-        var _temp = _from;
-        var _temp_id = _from_id;
-        _from = _to;
-        _from_id = _to_id;
-        _to = _temp;
-        _to_id = _temp_id;
-    }
-    
-    var _selected_class_name = this.selected_classname;
-    
-    _from.addClass(_from_classname)
-        .addClass( _selected_class_name );
-    _to.addClass(_to_classname)
-        .addClass( _selected_class_name);
-    
-    _scope = [];
-    _scope.push(_from);
-    for (var _i = _from_id+1; _i < _to_id; _i++) {
-        var _middle = $('#' + _id_prefix + _i)
-            .addClass( _selected_class_name )
-            .addClass(_middle_classname);
-        _scope.push(_middle);
-    }
-    if (_to_id != _from_id)
-        _scope.push(_to);
-    
-    return _scope;
-};
-*/
-
-
-/**
- * 取得推薦範圍
- * 
- * 將原有選取範圍擴展成推薦範圍
- * @type {array} 範圍
- */
-/*
-Selectable_text.prototype.get_recommend_scope = function () {
-    
-    var _word_id_prefix = this.word_id_prefix;
-    var _sentence_punctuation_class_name = this.punctuation_classname;
-    var _recommend_scope = [];
-    var _sentence = 0;
-    var _paragraph_id;
-    
-    for (var _i in this.selected_scope) {
-        var _scope = this.selected_scope[_i];
-        var _from = _scope[0];
-        var _to = _scope[(_scope.length-1)];
-        
-        //在此做調整
-        
-        //調整from
-        _sentence = 0;
-        _paragraph_id = this.get_paragraph_id(_from);
-        var _from_id = $.get_prefixed_id(_from.id());
-        var _prev_word = $('#' + _word_id_prefix + (_from_id) );
-        
-        while (_prev_word.exists()
-            && this.get_paragraph_id(_prev_word) == _paragraph_id) {
-            if (_prev_word.hasClass(_sentence_punctuation_class_name)) {
-                if (_sentence === 0)
-                    _sentence++
-                else {
-                    break;
-                }
-            }
-            
-            _from_id = $.get_prefixed_id(_prev_word);
-            _prev_word = $('#' + _word_id_prefix + (_from_id-1) );
-        }        
-        
-        //調整to
-        _sentence = 0;
-        _paragraph_id = this.get_paragraph_id(_to);
-        var _to_id = $.get_prefixed_id(_to.id());
-        var _next_word = $('#' + _word_id_prefix + (_to_id) );
-        if (_next_word.hasClass(_sentence_punctuation_class_name))
-            _sentence++;
-                    
-        while (_next_word.exists()
-            && this.get_paragraph_id(_next_word) == _paragraph_id) {
-            _to_id = $.get_prefixed_id(_next_word);
-            _next_word = $('#' + _word_id_prefix + (_to_id+1) );
-            
-            if (_next_word.hasClass(_sentence_punctuation_class_name)) {
-                if (_sentence === 0)
-                    _sentence++;
-                else {
-                    _to_id = $.get_prefixed_id(_next_word);
-                    break;
-                }
-            }
-        }
-        
-        _recommend_scope.push([_from_id, _to_id]);
-    }
-    
-    //重疊的區域做整理
-    var _resort_scope = [];
-    var _hold = false;
-    
-    for (var _i = 0; _i < _recommend_scope.length; _i++) {
-        var _scope = _recommend_scope[_i];
-        if (_i < _recommend_scope.length - 1) {
-            var _next_scope = _recommend_scope[(_i+1)];
-            
-            if (_scope[1] < _next_scope[0]) {
-                if (_hold === false)
-                    _resort_scope.push(_scope);
-                    
-                _hold = false;
-                continue;
-            }
-            else {
-                if (_hold === true)
-                    _scope = _resort_scope.pop();
-                    
-                _scope = [_scope[0], _next_scope[1]];
-                _resort_scope.push(_scope);
-                _hold = true;
-                continue;
-            }
-            
-            //做完是做完了，尚未經過驗證 
-        }
-        else {
-            _resort_scope.push(_scope);
-        }
-    }
-    
-    return _resort_scope;
-};
-*/
-
-
 
 /* End of file Selectable_text */
 /* Location: ./system/application/views/web_apps/Selectable_text.js */
