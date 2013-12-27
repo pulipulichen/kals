@@ -19,15 +19,20 @@ KALS_SITE_REFORM_CONFIG = [
          * 標題，只有偵錯訊息會用到
          * @type String
          */
-        title: "pdf2html",
+        title: "pdf2htmlEx",
         
         /**
          * 該網站的特徵，請以jQuery Selector輸入
          * @type {Array|String}
          */
         feature: [
-            "div:first",
-            "img:first"
+            "#sidebar",
+            "#page-container",
+            "#pf1:first",
+            //".t:first",
+            //".m0:first",
+            //".ls0:first",
+            //"._0:first",
         ],
         
         /**
@@ -35,8 +40,14 @@ KALS_SITE_REFORM_CONFIG = [
          * @type {Function}
          */
         reform: function (_callback) {
-            //$.test_msg("是pdf2html");
-            $("body").css("color", "green");
+            
+            $("body").css("background-color", "#2f3236");
+            $("#page-container").css("position", "relative");
+            
+            //pdf2htmlEX = KALS_pdf2htmlEX();
+            //$.test_msg("pdf2htmlEx ", typeof(pdf2htmlEX.Viewer));
+            
+            // 最後一定要callback
             _callback();
         }
     }   //site_title: "pdf2html",

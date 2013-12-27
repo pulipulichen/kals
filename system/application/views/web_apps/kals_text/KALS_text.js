@@ -122,16 +122,20 @@ KALS_text.prototype.filter_selector = function (_selector) {
  * 
  * 但是應該寫成獨立物件
  * @20131113 Pulipuli Chen
+ * @deprecated 20131227 寫成了Site_reform，不使用了
  */
+/*
 KALS_text.prototype.style_adapter = function () {
     
     // PDF2HTML EX
     if ($("#sidebar").length == 1 && $("#page-container").length == 1
         && $("#pf1").length > 0) {
+        
         $("body").css("background-color", "#2f3236");
         $("#page-container").css("position", "relative");
     }
 };
+*/
 
 /**
  * 讀取指定的標註

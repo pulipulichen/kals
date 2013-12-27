@@ -56,9 +56,8 @@ Init_component.prototype._$onstart = function () {
     }
 	
     $(function() {
-	    KALS_context.feedback.init();
-	});
-    
+        KALS_context.feedback.init();
+    });
     
 };
 
@@ -72,8 +71,9 @@ Init_component.prototype._$oncomplete = function () {
      * 
      * 但是應該寫成獨立物件
      * @20131113 Pulipuli Chen
+     * @deprecated 20131227 寫成了Site_reform，所以不使用這個了
      */
-    KALS_text.style_adapter();
+    //KALS_text.style_adapter();
 
     //this._check_css_loaded();
 
