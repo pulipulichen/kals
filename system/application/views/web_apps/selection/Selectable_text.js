@@ -136,7 +136,28 @@ Selectable_text.prototype.initialize = function (_callback) {
     // 開始作初始化
     // ---------
     var _this = this;
+    
+    /**
+     * 加入字串偵測的功能
+     * @author Pulipuli Chen 20131227 
+     */
+    var _estimate_words = _element.text();
+    // 去掉空格
+    _estimate_words = _estimate_words.replace(/([\s|\t]*)/g, "");
+    //$.test_msg("預測字", _estimate_words);
+    _estimate_words_length = _estimate_words.length;
+    
+    KALS_context.progress.set_total(_estimate_words_length);
+    
+    /*
+    this._estimate_words_length = _estimate_words_length;
+    */
+    //$.test_msg("預測字數", _estimate_words_length);
+    
     this.setup_selectable_element(_element, function () {
+        
+        KALS_context.progress.set_finished();
+        
         // ---------
         // 開始標示段落位置
         // ---------
@@ -176,6 +197,10 @@ Selectable_text.prototype.excute_interval_ie = {
 
 Selectable_text.prototype.excute_timer = null;
 
+/**
+ * 停止初始化動作
+ * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+ */
 Selectable_text.prototype.stop_initialize = function () {
     try {
         clearTimeout(this.excute_timer);
@@ -211,15 +236,22 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     var _batch_excute = this.excute_interval.batch_excute;
     var _wait = this.excute_interval.wait;
     
-    var _loop = function (_i, _child_nodes, _cb)
-	{
+    /**
+     * 實際執行的迴圈
+     * 
+     * @param {number} _i 迴圈編號
+     * @param {jQuery} _child_nodes 子節點
+     * @param {function} _cb 迴呼函數
+     */
+    var _loop = function (_i, _child_nodes, _cb) {
+        
         //停止迴圈的判定
         if (_i == _child_nodes.length || _i > _child_nodes.length) {
             //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
             
             if ($.is_function(_cb)) {
-				_cb();
-			}
+                _cb();
+            }
             return;
         }
         
@@ -234,8 +266,9 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             return;
         }
 		
-		if (_child_obj.nodeName != '#text' &&
+        if (_child_obj.nodeName != '#text' &&
             _this.element_has_class(_child_obj, _para_classname) === false) {
+        
             var _check_word_count = _this.word_count;
             
             _this.setup_selectable_element($(_child_obj), function () {
@@ -252,6 +285,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 }
 				
                 _i++;
+                
                 if (_i % _batch_excute === 0) {
                     _this.excute_timer = setTimeout(function () {
                         _loop(_i, _child_nodes, _cb);
@@ -273,8 +307,8 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 _loop(_i, _child_nodes, _cb);
                 return;
             }
-    		
-    		var _next_element = null;
+
+            var _next_element = null;
             
             _next_element = _this.create_selectable_paragraph(_this.paragraph_count);
             $(_next_element).hide();
@@ -286,90 +320,76 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
              */
             //_child_obj.parentNode.insertBefore(_next_element, _child_obj);
             
-    		for (var _s = 0; _s < _text.length; _s++)
-    		{
-    			var _t = _text.substr(_s, 1);
+            for (var _s = 0; _s < _text.length; _s++) {
+                var _t = _text.substr(_s, 1);
                 var _t_prev = '',  _t_next = '';
                 
                 if (_s > 0) {
-					_t_prev = _text.substr(parseInt(_s,10) - 1, 1);
-				}
-                if (_s < _text.length - 1) {
-					_t_next = _text.substr(parseInt(_s,10) + 1, 1);
-				}
+                    _t_prev = _text.substr(parseInt(_s,10) - 1, 1);
+                }
                 
-    			if ($.match_english(_t) === true)
-    			{	
-    				while ($.match_english(_t_next) === true)
-    				{
-    					_t = _t + _t_next;
-    					_s++;
-    					_t_next = _text.substr(parseInt(_s,10)+1, 1);
-    				}
-    			}
-    			else if ($.match_number(_t) === true)
-    			{
-    				while ($.match_number(_t_next) === true)
-    				{
-    					_t = _t + _t_next;
-    					_s++;
-    					_t_next = _text.substr(parseInt(_s,10)+1, 1);
-    				}
-    			}
+                if (_s < _text.length - 1) {
+                    _t_next = _text.substr(parseInt(_s,10) + 1, 1);
+                }
+                
+                if ($.match_english(_t) === true) {	
+                    while ($.match_english(_t_next) === true) {
+                            _t = _t + _t_next;
+                            _s++;
+                            _t_next = _text.substr(parseInt(_s,10)+1, 1);
+                    }
+                }
+                else if ($.match_number(_t) === true) {
+                    while ($.match_number(_t_next) === true) {
+                        _t = _t + _t_next;
+                        _s++;
+                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
+                    }
+                }
                 
                 var _t_element = null;
                 
-    			if ($.match_space(_t) === false) {
+                if ($.match_space(_t) === false) {
                     _t_element = _this.create_selectable_word(_this.paragraph_count, _this.word_count, _t);
                     if ($.match_sentence_punctuation(_t)) {
-						if ($.match_english_sentence_punctuation(_t)) {
-							if (_t_next === '') {
-								$(_t_element).addClass(_sentence_punctuation_class_name);
-							}
-							else 
-								if ($.match_space(_t_next)) {
-									/*
-			 if (_t_prev !== '' && $.match_number(_t_prev) === false) {
-			 $(_t_element).addClass(_sentence_punctuation_class_name);
-			 }
-			 else {
-			 $(_t_element).addClass(_punctuation_classname);
-			 }
-			 */
-									if (_s < _text.length - 2) {
-										//檢測下下個字是否是大寫英文
-										var _t_nnext = _text.substr(parseInt(_s, 10) + 2, 1);
-										if ($.match_upper_english(_t_nnext)) {
-											$(_t_element).addClass(_sentence_punctuation_class_name);
-										}
-										else {
-											$(_t_element).addClass(_punctuation_classname);
-										}
-									}
-									else {
-										$(_t_element).addClass(_sentence_punctuation_class_name);
-									}
-								}
-								else {
-									$(_t_element).addClass(_punctuation_classname);
-								}
-						}
-						else {
-							$(_t_element).addClass(_sentence_punctuation_class_name);
-						}
-					}
-					else 
-						if ($.match_punctuation(_t)) {
-							$(_t_element).addClass(_punctuation_classname);
-						}
+                        if ($.match_english_sentence_punctuation(_t)) {
+                            if (_t_next === '') {
+                                $(_t_element).addClass(_sentence_punctuation_class_name);
+                            }
+                            else if ($.match_space(_t_next)) {
+                                if (_s < _text.length - 2) {
+                                    //檢測下下個字是否是大寫英文
+                                    var _t_nnext = _text.substr(parseInt(_s, 10) + 2, 1);
+                                    if ($.match_upper_english(_t_nnext)) {
+                                        $(_t_element).addClass(_sentence_punctuation_class_name);
+                                    }   //if ($.match_upper_english(_t_nnext)) {
+                                    else {
+                                        $(_t_element).addClass(_punctuation_classname);
+                                    }
+                                }   //if (_s < _text.length - 2) {
+                                else {
+                                        $(_t_element).addClass(_sentence_punctuation_class_name);
+                                }
+                            }   // else if ($.match_space(_t_next)) {
+                            else {
+                                    $(_t_element).addClass(_punctuation_classname);
+                            }
+                        }   //if ($.match_sentence_punctuation(_t)) {
+                        else {
+                                $(_t_element).addClass(_sentence_punctuation_class_name);
+                        }
+                    }   //if ($.match_sentence_punctuation(_t)) {
+                    else if ($.match_punctuation(_t)) {
+                            $(_t_element).addClass(_punctuation_classname);
+                    }   //else if ($.match_punctuation(_t)) {
                     _this.word_count++;
-                }
+                }   //if ($.match_space(_t) === false) {
                 else {
                     _t_element = _this.create_span_word(_t);
                 }
                 
-    			_next_element.appendChild(_t_element);
-    		}    //for (var _s = 0; _s < _text.length; _s++)
+                _next_element.appendChild(_t_element);
+            }    //for (var _s = 0; _s < _text.length; _s++)
     		
             _child_obj.parentNode.insertBefore(_next_element, _child_obj);
             $(_next_element).show().css("display", "inline");
@@ -388,7 +408,8 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             }
         }    //else if (_child_obj.nodeName != '#text' &&
 	};    //var _loop = function (_i, _child_nodes, _callback)
-	
+    
+    // 開始進行設定化
     this.excute_timer = setTimeout(function () {
         _loop(0, _child_nodes, _callback);
     }, 0);
@@ -396,6 +417,13 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     
 };    //Selectable_text.prototype.setup_scope
 
+/**
+ * 記錄估算的字數
+ * @type {number} _estimate_words_length 記錄估算的字數
+ * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20131227 
+ * @deprecated 不使用，以Initialization_progress取代之
+ */
+//Selectable_text.prototype._estimate_words_length = null;
 
 /**
  * 設定各個字在段落中的位置
@@ -685,18 +713,17 @@ Selectable_text.prototype.element_has_class = function (_element, _class_name) {
  */
 Selectable_text.prototype.get_element_content = function (_element) {
     if ($.is_object(_element) === false) {
-		return '';
+        return '';
 	}
-	else 
-		if (typeof(_element.nodeValue) != 'undefined' &&
-		$.trim(_element.nodeValue) !== '') {
-			//2010.10.15 還是保留空格好了
-			//return $.trim(_element.nodeValue);
-			return _element.nodeValue;
-		}
-		else {
-			return '';
-		}
+    else if (typeof(_element.nodeValue) != 'undefined' &&
+            $.trim(_element.nodeValue) !== '') {
+        //2010.10.15 還是保留空格好了
+        //return $.trim(_element.nodeValue);
+        return _element.nodeValue;
+    }
+    else {
+        return '';
+    }
 };
 
 /**
@@ -715,29 +742,48 @@ Selectable_text.prototype.create_selectable_paragraph = function (_id) {
 
 /**
  * 建立一個可選取的文字
- * @param {number} _para_id
- * @param {number} _point_id
- * @param {string} _text
+ * @param {number} _para_id Paragraph ID
+ * @param {number} _point_id Word ID
+ * @param {string} _text 內容文字
  * @type {jQuery}
  */
 Selectable_text.prototype.create_selectable_word = function(_para_id, _point_id, _text) {
-	var _word = document.createElement("span");
+    var _word = document.createElement("span");
 
-	_word.className = this.word_classname
-        + ' ' + this.tooltip.trigger_classname;
-        
-	var _word_id = this.word_id_prefix + _point_id; 
-    
-	_word.id = _word_id;
-    
-	var _t_text = document.createTextNode(_text);
-	_word.appendChild(_t_text);
-    
+    _word.className = this.word_classname
+    + ' ' + this.tooltip.trigger_classname;
+
+    var _word_id = this.word_id_prefix + _point_id; 
+
+    _word.id = _word_id;
+
+    var _t_text = document.createTextNode(_text);
+    _word.appendChild(_t_text);
+
     _word = this.setup_word_tooltip(_word);
-    
-	return _word;
+
+    /**
+     * 加入統計目前字串次數的功能
+     * @author Pulipuli Chen  20131227
+     */
+    KALS_context.progress.add_count();
+    /*
+    var _progress = _point_id;
+    //每10統計一次
+    if (_progress % 10 === 0) {
+        _progress = (_progress / this._estimate_words_length) * 100;
+        _progress = parseInt(_progress, 10);
+        $.test_msg("[create_selectable_word] _point_id", _progress + "%");
+    }
+    */
+    return _word;
 };
 
+/**
+ * 設定Word的Tooltip
+ * @param {jQuery|HTMLElement} _word
+ * @returns {jQuery}
+ */
 Selectable_text.prototype.setup_word_tooltip = function (_word) {
     
     var _tooltip_config = this.tooltip.get_tooltip_config();
@@ -1031,9 +1077,7 @@ Selectable_text.prototype.get_paragraph_id = function(_word) {
  * @param {Object} _word
  * @deprecated
  */
-Selectable_text.prototype.get_word_id = function (_word)
-
-{
+Selectable_text.prototype.get_word_id = function (_word) {
     if ($.is_object(_word)) {
         if ($.is_jquery(_word)) {
             _word = _word.attr('id');

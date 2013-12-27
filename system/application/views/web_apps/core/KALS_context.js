@@ -36,8 +36,9 @@ KALS_context.initialize = function () {
     this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
     this.custom_type = new Context_custom_type();
-	this.feedback = new Feedback_manager();
-	this.view_manager = new KALS_view_manager();
+    this.feedback = new Feedback_manager();
+    this.view_manager = new KALS_view_manager();
+    this.progress = new Initialization_progress();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -306,6 +307,12 @@ KALS_context.feedback = null;
  * @type {KALS_view_manager}
  */
 KALS_context.view_manager = null;
+
+/**
+ * @type {Initialization_progress}
+ */
+KALS_context.progress = null;
+
 
 /**
  * @type {Init_context}

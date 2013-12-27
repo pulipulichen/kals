@@ -213,6 +213,14 @@ jQuery.prepends_with = function(_str, _prefix) {
 	}
 };
 
+/**
+ * 取代字串
+ * @param {String} _search 要被取代的字串
+ * @param {String} _replace 要取而代之的字串
+ * @param {String} _subject 進行處理的字串
+ * @param {number} _count 最多的處理次數
+ * @returns {String}
+ */
 jQuery.str_replace = function (_search, _replace, _subject, _count) {
     // http://kevin.vanzonneveld.net
     // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
