@@ -23,8 +23,7 @@ function Init_profile(_onstart, _oncomplete) {
         'notification', 
         'navigation_annotation', 
         'my_style', 
-        'hash', 
-        'site_reform'
+        'hash'
     ];
 }
 
@@ -49,9 +48,6 @@ Init_profile.prototype._$onstart = function () {
     // 因為My_style尚未實作，所以my_style直接算是完成
     KALS_context.init_profile.complete('my_style');
     
-    KALS_context.site_reform.reform(function () {
-        KALS_context.init_profile.complete('site_reform');
-    });
     
     //check_login是指去確認遠端伺服器上是否已經有登入的資料，如果有的話，則將現在狀況設為登入的狀況
     //KALS_context.init_profile.complete('check_login');
@@ -77,6 +73,10 @@ Init_profile.prototype._$onstart = function () {
     });
 };
 
+/**
+ * 所有工作都讀取完成了
+ * 最後只剩下測試而已了
+ */
 Init_profile.prototype._$oncomplete = function () {
     
     //2010.10.21 在Init_component時已經load了
@@ -87,6 +87,7 @@ Init_profile.prototype._$oncomplete = function () {
     
     KALS_context.completed = true;
 
+    // 以下啟動測試區
     var _this = this;
     setTimeout(function () {
         for (var _t in _this._test) {

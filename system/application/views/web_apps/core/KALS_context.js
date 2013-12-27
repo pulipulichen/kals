@@ -23,8 +23,8 @@ KALS_context.initialize = function () {
         this.base_url = KALS_loader.get_base_url();
     }
     else {
-            // TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
-            this.setup_base_url();
+        // TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
+        this.setup_base_url();
     }
     
     if (this.base_url === null || this.base_url === '') {
@@ -61,15 +61,14 @@ KALS_context.initialize = function () {
             _this.user = new Context_user();
             _this.policy = new Context_policy();
             
-			//_this.search = new Context_search();
-			_this.search = new Window_search();
+            //_this.search = new Context_search();
+            _this.search = new Window_search();
 			
             _this.overlay = new Overlay_manager();
             
             _this.init_context.start();
         });    
     }, 0);
-    
 };
 
 /**
@@ -95,8 +94,8 @@ KALS_context.base_url = null;
  */
 KALS_context.setup_base_url = function () {
     if (this.base_url !== null) {
-		return this;
-	}
+        return this;
+    }
     
     var _scripts = $('script');
     

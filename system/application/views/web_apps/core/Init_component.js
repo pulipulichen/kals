@@ -18,7 +18,12 @@ function Init_component (_onstart, _oncomplete) {
     
     Task_event_dispatcher.call(this, _onstart, _oncomplete);
     
-    this._$schedule_task = ['KALS_toolbar', 'KALS_text', 'KALS_window'];
+    this._$schedule_task = [
+        'KALS_toolbar', 
+        'KALS_text', 
+        'KALS_window', 
+        'site_reform'
+    ];
 }
 
 Init_component.prototype = new Task_event_dispatcher();
@@ -40,6 +45,11 @@ Init_component.prototype._$onstart = function () {
         */
         return this.deny_ie6();
     }
+    
+    // 執行Site_reform
+    KALS_context.site_reform.reform(function () {
+        KALS_context.init_component.complete('site_reform');
+    });
         
     //初始化時大概是這項這樣子的
     //KALS_toolbar = new KALS_toolbar(); 

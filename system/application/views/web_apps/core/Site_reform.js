@@ -119,9 +119,27 @@ Site_reform.prototype._reform_loop = function (_i, _config, _callback) {
         
         $.test_msg("[Site_reform] match", _site.title);
         
-        _site.reform(function () {
-            _callback();
-        });
+        if ($.is_function(_site.reform)) {
+            _site.reform(function () {
+                _callback();
+            });
+        }
+        else if ($.is_object(_site.reform)) {
+            
+            if ($.is_function(_site.reform.before_init)) {
+                _site.reform.before_init(function () {
+                    _callback();
+                });
+            }
+            
+            if ($.is_function(_site.reform.after_init)) {
+                //$.test_msg("完成？");
+                KALS_context.init_profile.add_listener(function () {
+                    //$.test_msg("完成？111");
+                    _site.reform.after_init();
+                });
+            }
+        }
     }
     else {
         _callback();
