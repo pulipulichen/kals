@@ -100,12 +100,20 @@ var pdf2htmlEX = (function(){
     },
     /* return if any part of this page is shown in the container */
     is_visible : function() {
+        /**
+         * 避免卡住
+         * @author Pulipuli Cuen <pulipuli.chen@gmail.com>
+         */
         return true;
       var off = this.position();
       return !((off[1] > this.height()) || (off[1] + this.$container.height() < 0));
     },
     /* return if this page or any neighbor of it is visible */
     is_nearly_visible : function() {
+        /**
+         * 避免卡住
+         * @author Pulipuli Cuen <pulipuli.chen@gmail.com>
+         */
         return true;
       var off = this.position();
       /* I should use the height of the previous page or the next page here
