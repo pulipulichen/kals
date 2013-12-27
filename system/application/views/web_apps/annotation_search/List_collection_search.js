@@ -328,6 +328,7 @@ List_collection_search.prototype._$create_ui = function () {
 
 /**
  * 建立清除搜尋結果按鈕
+ * @return jQuery
  */
 List_collection_search.prototype.create_reset_button = function () {
 	var _factory = KALS_window.ui;
@@ -346,6 +347,25 @@ List_collection_search.prototype.create_reset_button = function () {
 	return _button;
 };
 
+/**
+ * 建立搜尋結果導讀按鈕
+ */
+List_collection_search.prototype.create_guiding_button = function () {
+	var _factory = KALS_window.ui;
+	var _button = _factory.button(new KALS_language_param(
+		"Guiding Reading",
+		"window.search.guiding_reading"
+	))
+		.addClass("guiding-button");
+	
+	
+	var _this = this;
+	_button.click(function () {
+		//_this.reset();
+	});
+	
+	return _button;
+};
 
 /**
  * 修改預設的重設動作
