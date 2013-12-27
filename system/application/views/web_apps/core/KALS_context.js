@@ -13,20 +13,23 @@
  */
 KALS_context = new JSONP_dispatcher();
 
+/**
+ * 初始化KALS_context
+ */
 KALS_context.initialize = function () {
-    
     
     //設定基本網址
     if (typeof(KALS_loader) != 'undefined') {
-		this.base_url = KALS_loader.get_base_url();
-	}
-	else {
-		// TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
-		this.setup_base_url();
-	}
+        this.base_url = KALS_loader.get_base_url();
+    }
+    else {
+            // TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
+            this.setup_base_url();
+    }
+    
     if (this.base_url === null || this.base_url === '') {
-		this.base_url = 'http://192.168.11.2/kals/web_apps/';
-	}
+        this.base_url = 'http://demo-kals.lias.nccu.edu.tw/kals/web_apps/';
+    }
     //$.test_msg('KALS_context() base url', this.base_url);
     
     //基礎元件 Basic Components
@@ -39,6 +42,7 @@ KALS_context.initialize = function () {
     this.feedback = new Feedback_manager();
     this.view_manager = new KALS_view_manager();
     this.progress = new Initialization_progress();
+    this.site_reform = new Site_reform();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -313,6 +317,10 @@ KALS_context.view_manager = null;
  */
 KALS_context.progress = null;
 
+/**
+ * @type {Site_reform}
+ */
+KALS_context.site_reform = null;
 
 /**
  * @type {Init_context}
