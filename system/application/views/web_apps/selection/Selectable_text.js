@@ -187,10 +187,15 @@ Selectable_text.prototype.initialize = function (_callback) {
  */
 Selectable_text.prototype.excute_interval = {
     /**
-     * 批次執行的間隔
+     * 批次執行的數量
+     * 
+     * 若批次執行的數量越多，則效能越好
+     * 但設定太高的話，可能會導致瀏覽器回應速度下降
+     * 
+     * 20131228 設為200已經差不多沒什麼差別了
      * @type Number
      */
-    batch_excute: 20,
+    batch_excute: 1000,
     /**
      * 中間等待時間
      * @type Number
@@ -226,7 +231,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
      * @type {Array}
      */
     var _child_nodes = _element.attr('childNodes');
-    if (typeof(_child_nodes) == 'undefined') {
+    if (typeof(_child_nodes) === 'undefined') {
         //$.test_msg('Selectable_text.setup_selectable_element() callback');
         
         if ($.is_function(_callback)) {
@@ -245,6 +250,12 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     var _wait = this.excute_interval.wait;
     
     /**
+     * 用來儲存任務的變數
+     * @type Array
+     */
+    var _task_stack = [];
+    
+    /**
      * 實際執行的迴圈
      * 
      * @param {number} _i 迴圈編號
@@ -253,9 +264,22 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
      */
     var _loop = function (_i, _child_nodes, _cb) {
         
-        //停止迴圈的判定
-        if (_i == _child_nodes.length || _i > _child_nodes.length) {
+        // 完成迴圈了，停止迴圈的判定
+        if (_i === _child_nodes.length || _i > _child_nodes.length) {
             //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
+            
+            // 把剩餘的任務執行完
+            //if (_task_stack.length > 00) {
+                //$.test_msg("剩餘的任務？", _task_stack.length);
+                //for (var _t = 0; _t < _task_stack.length; _t++) {
+                for (var _t in _task_stack) {
+                    //if ($.is_function(_task_stack[_t])) {
+                        _task_stack[_t]();
+                    //}
+                }
+                _task_stack = [];
+            //}
+                
             
             if ($.is_function(_cb)) {
                 _cb();
@@ -267,28 +291,28 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
          * _child_obj
          * @type {jQuery}
          */
-		var _child_obj = _child_nodes.item(_i);
+        var _child_obj = _child_nodes.item(_i);
         if (_this.element_has_class(_child_obj, _para_classname)) {
             _i++;
             _loop(_i, _child_nodes, _cb);
             return;
         }
 		
-        if (_child_obj.nodeName != '#text' &&
+        if (_child_obj.nodeName !== '#text' &&
             _this.element_has_class(_child_obj, _para_classname) === false) {
         
             var _check_word_count = _this.word_count;
             
-            _this.setup_selectable_element($(_child_obj), function () {
+            var _deeper_parse = function () {
                 var _node_name = _child_obj.nodeName;
                 if (_check_word_count < _this.word_count
-                    && typeof(_node_name) == 'string' 
-                    && $.inArray(_node_name.toLowerCase(), _para_tag_names) != -1) {
+                    && typeof(_node_name) === 'string' 
+                    && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
                     _this.paragraph_count++;
                     _this.paragraph_count++;
                 }   
-                else if (typeof(_node_name) == 'string'
-                    && _node_name.toLowerCase() == 'br') {
+                else if (typeof(_node_name) === 'string'
+                    && _node_name.toLowerCase() === 'br') {
                     _this.paragraph_count++;
                 }
 				
@@ -304,7 +328,9 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     _loop(_i, _child_nodes, _cb);
                     return;
                 }
-            });
+            };
+            
+            _this.setup_selectable_element($(_child_obj), _deeper_parse);
             return;
         }
         else {
@@ -358,7 +384,9 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 var _t_element = null;
                 
                 if ($.match_space(_t) === false) {
+                    
                     _t_element = _this.create_selectable_word(_this.paragraph_count, _this.word_count, _t);
+                    
                     if ($.match_sentence_punctuation(_t)) {
                         if ($.match_english_sentence_punctuation(_t)) {
                             if (_t_next === '') {
@@ -398,13 +426,27 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 
                 _next_element.appendChild(_t_element);
             }    //for (var _s = 0; _s < _text.length; _s++)
-    		
-            _child_obj.parentNode.insertBefore(_next_element, _child_obj);
-            $(_next_element).show().css("display", "inline");
-            $(_child_obj).remove();
+    	
+            var _insert_action = function () {
+                _child_obj.parentNode.insertBefore(_next_element, _child_obj);
+                $(_next_element).css("display", "inline");
+                $(_child_obj).remove();
+            };
+            _task_stack.push(_insert_action);
             
             _i++;
             if (_i % _batch_excute === 0) {
+                
+                // 開始批次執行
+                /*
+                if (_task_stack.length > 0) {
+                    for (var _t in _task_stack) {
+                        _task_stack[_t]();
+                    }
+                    _task_stack = [];
+                }
+                */
+                
                 _this.excute_timer = setTimeout(function () {
                     _loop(_i, _child_nodes, _cb);
                     return;
@@ -424,6 +466,21 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     return this;
     
 };    //Selectable_text.prototype.setup_scope
+
+
+Selectable_text.prototype.add_task = function (_task) {
+    this._task_stack.push(_task);
+    
+    if (this._task_stack.length > 100) {
+        for (var _i in this._task_stack) {
+            this._task_stack[_i]();
+        }
+        
+        this._task_stack = [];
+    }
+};
+
+Selectable_text.prototype._task_stack = [];
 
 /**
  * 記錄估算的字數

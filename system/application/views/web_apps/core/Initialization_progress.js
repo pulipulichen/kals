@@ -14,12 +14,19 @@ function Initialization_progress() {
     
     Event_dispatcher.call(this);
     
+    this._start_timestamp = (new Date()).getTime();
 }
 
 /**
  * 繼承自Task_event_dispatcher
  */
 Initialization_progress.prototype = new Event_dispatcher();
+
+/**
+ * 開始時間
+ * @type Number
+ */
+Initialization_progress.prototype._start_timestamp;
 
 /**
  * 記數
@@ -57,7 +64,6 @@ Initialization_progress.prototype._display_max_percent = 99;
  * @type Number
  */
 Initialization_progress.prototype._slow_rate = 0.8;
-
 
 /**
  * 是否已經完成
@@ -116,7 +122,7 @@ Initialization_progress.prototype.get_percent = function (_with_unit) {
     var _percent = 0;
     
     if (this._is_finished === true) {
-        _percent = 100;
+        _percent = this._display_max_percent;
     }
     else if (this._progress_total !== 0) {
         // 計算
@@ -149,7 +155,15 @@ Initialization_progress.prototype.get_percent = function (_with_unit) {
 Initialization_progress.prototype.set_finished = function () {
     this._is_finished = true;
     
-    //$.test_msg("init progress finished", this.get_percent(true));
+    this.notify_listeners();    //通知大家改變了
+    
+    // 計算耗費時間
+    var _timestamp = (new Date()).getTime();
+    var _cost = _timestamp - this._start_timestamp;
+    
+    _cost = parseInt(_cost / 60, 10);    
+    $.test_msg("init progress finished", _cost);
+    
     return this;
 };
 
