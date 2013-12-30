@@ -2081,22 +2081,22 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
     //return;
 	
-	if (this.scroll_to_lock === true) {
-		return;
-	}
-	this.scroll_to_lock = true;
-    
-	// 要確認視窗到底讀完了沒有
-	if (KALS_context.completed === false) {
-		var _this = this;
-		$.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
-		KALS_context.add_listener(function (_dispatcher, _data) {
-			_this.scroll_to_lock = false;
-			_this.scroll_to(_position, _speed, _callback);
-		});
-		return;
-	}
-	
+    if (this.scroll_to_lock === true) {
+        return;
+    }
+    this.scroll_to_lock = true;
+
+    // 要確認視窗到底讀完了沒有
+    if (KALS_context.completed === false) {
+        var _this = this;
+        $.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
+        KALS_context.add_listener(function (_dispatcher, _data) {
+            _this.scroll_to_lock = false;
+            _this.scroll_to(_position, _speed, _callback);
+        });
+        return;
+    }
+
 	
     //宣告基本資料
     var _target_x, _target_y, _interval_x, _interval_y, _interval_time = 10, _repeat_count
@@ -2125,22 +2125,20 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     }
     
     //取得_speed
-    if (_speed == 'fast') {
-		_speed = 200;
-	}
-	else 
-		if (_speed == 'slow') {
-			_speed = 2000;
-		}
-		else 
-			if ($.is_number(_speed) === false) {
-				_speed = 1000;
-			}
+    if (_speed === 'fast') {
+        _speed = 200;
+    }
+    else if (_speed === 'slow') {
+        _speed = 2000;
+    }
+    else if ($.is_number(_speed) === false) {
+        _speed = 1000;
+    }
     
     
     $('html, body').animate({
         scrollTop: _target_y,
-		scrollLeft: _target_x
+        scrollLeft: _target_x
     }, _speed);
 	
     return $.trigger_callback(_callback);

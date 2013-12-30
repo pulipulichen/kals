@@ -158,7 +158,7 @@ KALS_text.prototype.load_annotation = function (_annotation_id) {
  * @author Pulipuli Chen 20131230
  */
 KALS_text.prototype.set_select = function (_scope_coll) {
-    this.selection.select.set_select(_scope_coll);
+    this.selection.select.set_scope_coll(_scope_coll);
     return this;
 };
 

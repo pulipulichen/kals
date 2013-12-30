@@ -6,6 +6,7 @@ li {
     /*overflow-x: hidden;*/
     color:blue;
     cursor: pointer;
+    text-decoration: underline;
 }
 .steps {
     max-height: 200px;

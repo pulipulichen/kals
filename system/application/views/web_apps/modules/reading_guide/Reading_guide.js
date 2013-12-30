@@ -190,7 +190,8 @@ Reading_guide.prototype._$height = null;
  */
 Reading_guide.prototype.setup_steps = function (_coll) {
     
-    this.set_field("step_index", -1);
+    //this.set_field("step_index", -1);
+    this.reset_step_index();
     
     $.test_msg("設定步驟參數", _coll.annotations.length);
     
@@ -273,8 +274,13 @@ Reading_guide.prototype.select_this_step = function (_step_list) {
     var _index = this.get_ui(".step-list").index(_step_list);
     //$.test_msg("select_step", _index);
     var _scope_coll_param = this._scope_coll_array[_index];
-    //KALS_text.set_select(_scope_coll_param);
-    this.set_field("step_index", _index);
+    //$.test_msg("select_step", _scope_coll_param.export_json());
+    KALS_text.set_select(_scope_coll_param);
+    
+    // @TODO 20131230 選動到指定位置
+    
+    //this.set_field("step_index", _index);
+    this.set_step_index(_index);
     
     return this;
 };
@@ -285,7 +291,8 @@ Reading_guide.prototype.select_step = function (_step_index) {
 };
 
 Reading_guide.prototype.reset_steps = function () {
-    this.set_field("step_index", -1);
+    //this.set_field("step_index", -1);
+    this.reset_step_index();
     
     this.get_ui(".step-list.read").removeClass('read');
     
@@ -305,12 +312,29 @@ Reading_guide.prototype.goto_prev_step = function () {
     var _index = this.get_field("step_index");
     _index--;
     if (_index === -1) {
-        this.set_field("step_index", _index);
+        //this.set_field("step_index", _index);
+        this.reset_step_index();
     }
     else if (_index > -1) {
         this.select_step(_index);
     }
     return this;
+};
+
+Reading_guide.prototype.set_step_index = function (_index) {
+    this.set_field("step_index", _index);
+    this.set_field("step_index_display", (_index+1));
+    return this;
+};
+
+Reading_guide.prototype.reset_step_index = function () {
+    this.set_field("step_index_display", "尚未開始");
+    this.set_field("step_index", -1);
+    return this;
+};
+
+Reading_guide.prototype.get_step_index = function () {
+    return this.get_field("step_index");
 };
 
 /* End of file Reading_guide */
