@@ -6,7 +6,9 @@
  */
 
 $lang["heading"] = "導讀精靈";
-$lang["nav_heading"] = "導讀精靈";
+$lang["button_prev"] = "上一步";
+$lang["button_next"] = "下一步";
+$lang["button_replay"] = "重新開始";
 //$lang["heading"] = "結構式筆記";
 //$lang["annotation_count"] = '標註數量';
 //$lang["user_count"] = '撰寫標註人數';

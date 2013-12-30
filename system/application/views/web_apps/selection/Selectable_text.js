@@ -1630,7 +1630,7 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
                 && this.is_word_next_english(_word)) {
                 _sentence = _sentence + ' ';
                 
-                $.test_msg("is_word_next_english", _sentence);
+                //$.test_msg("is_word_next_english", _sentence);
             }
         }
         
@@ -1651,6 +1651,30 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
 	//_text= $.str_replace("'", "&amp;", _text);
 	
     return _anchor_text;
+};
+
+/**
+ * 取得部份的標註範圍文字
+ * @param {Scope_collection_param} _scope_coll 要選取的範圍
+ * @param {Number} _max_length 最長字數，預設是50個字。低於這個數字以下不省略
+ * @return {String}
+ */
+Selectable_text.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
+    
+    if (_max_length === undefined) {
+        _max_length = 50;
+    }
+    
+    var _text = this.get_anchor_text(_scope_coll);
+
+    if (_text.length > _max_length) {
+        var _half = parseInt(_max_length / 2);
+
+        var _first_part = _text.substr(0, _half);
+        var _last_part = _text.substr(_text.length - _half, _half);
+        _text = _first_part + "..." + _last_part; 
+    }
+    return _text;
 };
 
 /**

@@ -16,7 +16,7 @@ function KALS_text(_selector) {
     
     KALS_user_interface.call(this);
     
-	if (typeof(_selector) == "undefined") {
+	if (typeof(_selector) === "undefined") {
 		_selector = this.get_selector();	
 	}
     //$.test_msg('KALS_text()', _selector);
@@ -149,6 +149,17 @@ KALS_text.prototype.style_adapter = function () {
  */
 KALS_text.prototype.load_annotation = function (_annotation_id) {
 	KALS_text.tool.view.load_view(_annotation_id);
+};
+
+/**
+ * 選擇物件
+ * @param {Scope_collection_param} _scope_coll
+ * @returns {KALS_text}
+ * @author Pulipuli Chen 20131230
+ */
+KALS_text.prototype.set_select = function (_scope_coll) {
+    this.selection.select.set_select(_scope_coll);
+    return this;
 };
 
 /* End of file KALS_text */

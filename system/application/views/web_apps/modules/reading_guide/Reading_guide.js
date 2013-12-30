@@ -190,6 +190,8 @@ Reading_guide.prototype._$height = null;
  */
 Reading_guide.prototype.setup_steps = function (_coll) {
     
+    this.set_field("step_index", -1);
+    
     $.test_msg("設定步驟參數", _coll.annotations.length);
     
     if ($.is_class(_coll, "Annotation_collection_param")) {
@@ -211,16 +213,14 @@ Reading_guide.prototype.setup_steps = function (_coll) {
             //    $.test_msg("沒有差異2", _last_scope_json);
             //}
             
-            // 取出文字
-            var _text = KALS_text.selection.text;
-            var _anchor_text = _text.get_anchor_text(_scope_coll_param);
-            _output_scope_coll.push(_anchor_text + ", " + _scope_json);    
+            var _step_list = this.create_step_list(_scope_coll_param, _s);
+            _output_scope_coll.push(_step_list);
             
             _last_scope_json = _scope_json;
         }
         
         //$.test_msg("取得位置？", _output_scope_coll);
-        this.set_field("select_step", _output_scope_coll);
+        this.set_field("step_list", _output_scope_coll);
     }
         
     
@@ -230,6 +230,86 @@ Reading_guide.prototype.setup_steps = function (_coll) {
     this.open(function () {
         //_this.set_field("annotation_step", "12112");
     });
+    return this;
+};
+
+/**
+ * 建立步驟的選單
+ * @param {Scope_collection_param} _scope_coll_param
+ * @param {Number} _index
+ * @returns {jQuery}
+ */
+Reading_guide.prototype.create_step_list = function (_scope_coll_param, _index) {
+
+    var _scope_json = _scope_coll_param.export_json(false); //$.json_encode(_scope_array);
+    _scope_json = $.json_encode(_scope_json);
+            
+    // 取出文字
+    var _text = KALS_text.selection.text;
+    var _anchor_text = _text.get_abbreviated_anchor_text(_scope_coll_param);
+    var _step_list = _anchor_text + ", " + _scope_json;    
+    
+    this._scope_coll_array.push(_scope_coll_param);
+    
+    //_step_list.attr("scope", _scope_json);
+    //_step_list.attr("step-index", _index);
+    
+    return _step_list;
+};
+
+Reading_guide.prototype._scope_coll_array = [];
+
+Reading_guide.prototype.select_this_step = function (_step_list) {
+    
+    //var _stpe_list = this.get_ui(".step-list").eq(_index);
+    
+    if (_step_list.length === 0) {
+        return this;
+    }
+    
+    _step_list.addClass("read");
+    //var _index = _step_list.find.attr("kals-field-repeat-index");
+    //_step_list.css("border", "1px solid red");
+    var _index = this.get_ui(".step-list").index(_step_list);
+    //$.test_msg("select_step", _index);
+    var _scope_coll_param = this._scope_coll_array[_index];
+    //KALS_text.set_select(_scope_coll_param);
+    this.set_field("step_index", _index);
+    
+    return this;
+};
+
+Reading_guide.prototype.select_step = function (_step_index) {
+    var _step_list = this.get_ui(".step-list").eq(_step_index);
+    return this.select_this_step(_step_list);
+};
+
+Reading_guide.prototype.reset_steps = function () {
+    this.set_field("step_index", -1);
+    
+    this.get_ui(".step-list.read").removeClass('read');
+    
+    return this;
+};
+
+Reading_guide.prototype.goto_next_step = function () {
+    var _index = this.get_field("step_index");
+    _index++;
+    if (_index < this.get_ui(".step-list").length) {
+        this.select_step(_index);
+    }
+    return this;
+};
+
+Reading_guide.prototype.goto_prev_step = function () {
+    var _index = this.get_field("step_index");
+    _index--;
+    if (_index === -1) {
+        this.set_field("step_index", _index);
+    }
+    else if (_index > -1) {
+        this.select_step(_index);
+    }
     return this;
 };
 
