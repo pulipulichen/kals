@@ -298,7 +298,7 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         // 準備開啟囉！
         _this.open(function () {
             
-            $.test_msg('檢查window open之後的callback', $.is_function(_content.setup_content));
+            //$.test_msg('檢查window open之後的callback', $.is_function(_content.setup_content));
             
             if ($.is_function(_content.setup_content)) {
                 

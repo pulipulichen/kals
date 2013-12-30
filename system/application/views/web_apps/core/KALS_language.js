@@ -155,13 +155,20 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
  * @param {String|KALS_language_param} _lang_param 語系參數
  */
 KALS_language.prototype.add_listener = function(_obj, _lang_param) {
-    if ($.inArray(_obj, this._listeners) == -1) {
+    /*
+    if (_lang_param === undefined) {
+        return this;
+    }
+    */
+    
+    if ($.inArray(_obj, this._listeners) === -1) {
         this._listeners.push(_obj);
         var _key = $.inArray(_obj, this._listeners);
         
+        //$.test_msg("語系設定是？", _lang_param);
         if ($.is_string(_lang_param)) {
-			_lang_param = new KALS_language_param(_lang_param);
-		}
+            _lang_param = new KALS_language_param(_lang_param);
+        }
        
         this._listeners_lang_param[_key] = _lang_param;
         
@@ -170,7 +177,7 @@ KALS_language.prototype.add_listener = function(_obj, _lang_param) {
         if ($.isset(_lang)) {
             this._setup_obj(_obj, _lang);
         }   
-        else if (typeof(_lang_param.msg) != 'undefined'
+        else if (typeof(_lang_param.msg) !== 'undefined'
             && $.isset(_lang_param.msg)) {
             //如果找不到語系檔，則將預設顯示值輸出
             this._setup_obj(_obj, _lang_param.msg);

@@ -95,6 +95,38 @@ Annotation_collection_param.prototype.export_respond_json = function () {
     return _json;
 };
 
+/**
+ * 取得標註範圍的參數陣列
+ * @returns {Array|Scope_collection_param}
+ */
+Annotation_collection_param.prototype.get_scope_colleciotn_param_array = function () {
+    var _scope_coll = [];
+    
+    for (var _i in this.annotations) {
+        var _annotation = this.annotations[_i];
+        var _scope = _annotation.scope;
+        _scope_coll.push(_scope);
+    }
+    
+    return _scope_coll;
+};
+
+/**
+ * 取得標註範圍的JSON陣列
+ * @returns {Array|JSON}
+ */
+Annotation_collection_param.prototype.export_scope_colleciotn_json = function () {
+    var _scope_coll = [];
+    
+    for (var _i in this.annotations) {
+        var _annotation = this.annotations[_i];
+        var _scope = _annotation.scope.export_json(true);
+        _scope_coll.push(_scope);
+    }
+    
+    return _scope_coll;
+};
+
 Annotation_collection_param.prototype.import_json = function (_json) {
     return this.add(_json);
 };

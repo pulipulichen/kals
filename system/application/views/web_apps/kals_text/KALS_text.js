@@ -28,6 +28,7 @@ function KALS_text(_selector) {
     this.child('load_my', new My_annotation_loader());
     this.child('load_navigation', new Navigation_loader());
     this.child('tool', new Annotation_tool(_selector));
+    this.child('guide', new Reading_guide());
     
     var _this = this;
     setTimeout(function() {
@@ -70,6 +71,11 @@ KALS_text.prototype.load_my_custom = null;
  * @type {Recommend_loader}
  */
 KALS_text.prototype.load_recommend = null;
+
+/**
+ * @type {Reading_guide}
+ */
+KALS_text.prototype.guide;
 
 KALS_text.prototype.init_start = function () {
     

@@ -134,7 +134,7 @@ $lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
 $lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';
 $lang['web_apps.window.content.loaded_already'] = '沒有其他搜尋結果';
 $lang['web_apps.window.search.clear_search_result'] = '清除搜尋結果';
-$lang['web_apps.window.search.guiding_reading'] = '導讀';
+$lang['web_apps.window.search.reading_guide'] = '導讀';
 
 $lang['web_apps.window.content.oreder_by'] = '排序方式';
 $lang['web_apps.window.content.oreder_by.update'] = '更新日期';

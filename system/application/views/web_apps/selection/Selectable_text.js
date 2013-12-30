@@ -1139,8 +1139,7 @@ Selectable_text.prototype.get_paragraph_id = function(_word) {
 
 /**
  * 取得word id，但似乎沒有人使用他
- * @param {Object} _word
- * @deprecated
+ * @param {jQuery} _word
  */
 Selectable_text.prototype.get_word_id = function (_word) {
     if ($.is_object(_word)) {
@@ -1174,6 +1173,32 @@ Selectable_text.prototype.get_word_by_index = function(_index) {
     return _word;
 };
 
+/**
+ * 如果下一個字是英文的話
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
+Selectable_text.prototype.is_word_next_english = function (_word) {
+    var _word_id = this.get_word_id(_word);
+    _word_id++;
+    var _next = this.get_word_by_index(_word_id);
+    var _text = _next.text();
+    if (_text.length > 1) {
+        // 如果超過一個字，那大概就是英文了
+        return true;
+    }
+    else if ($.match_english(_text)) {
+        return true;
+    }
+    
+    return false;
+};
+
+/**
+ * 如果下一個字是空格的話
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
 Selectable_text.prototype.is_word_next_span = function (_word) {
     var _next = _word.next();
     if (_next.length === 0) {
@@ -1591,12 +1616,21 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
             var _index = _j;
             var _word = this.get_word_by_index(_index);
             var _text = _word.text();
-			
+            		
             _sentence = _sentence + _text;
             
             if (_j < _to
                 && this.is_word_next_span(_word)) {
                 _sentence = _sentence + ' ';
+            }
+            
+            // @author Pulipuli Chen <pulipuli.chen@gmail.com> 20131230
+            // 如果這裡面很多字的話，表示這是一個英文，應該加上空格
+            if (_j < _to
+                && this.is_word_next_english(_word)) {
+                _sentence = _sentence + ' ';
+                
+                $.test_msg("is_word_next_english", _sentence);
             }
         }
         
@@ -2067,7 +2101,7 @@ Selectable_text.prototype.get_sentence_index = function () {
 	{
 		var _paragraph = $('.' + this.paragraph_id_prefix + _i + ":last");
 		
-		if (_paragraph.length == 1) 
+		if (_paragraph.length === 1) 
 		{
 			_last_word = _paragraph.find('.'+this.word_classname+'.tooltip-trigger:last:not(.'+this.sententce_punctuation_classname+')');
 			

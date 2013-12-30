@@ -304,6 +304,11 @@ Scope_collection_param.prototype.get_to = function(){
     return this.get_last_index();
 };
 
+/**
+ * 匯出標註範圍的資料
+ * @param {boolean} _export_anchor_text 是否匯出標註範圍文字，預設是false
+ * @returns {Array}
+ */
 Scope_collection_param.prototype.export_json = function (_export_anchor_text) {
     
     var _json = [];

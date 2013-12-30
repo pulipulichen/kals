@@ -26,6 +26,7 @@ function Common_navigation() {
             , new Window_map()
 			, _search_recent
 			, new Dashboard()
+                        //, KALS_text.guide
 			//_search
 	    ];
 	}

@@ -558,8 +558,13 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     //$.test_msg('Dialog_modal._$create_ui()', this._$modal_name);
     
     var _container = _ui.find('.dialog-heading:first');
-    if (_container.length == 1) {
-        KALS_context.lang.add_listener(_container, this.heading);
+    if (_container.length === 1) {
+        if (this.heading !== undefined && this.heading !== null) {
+            KALS_context.lang.add_listener(_container, this.heading);
+        }
+        else {
+            KALS_context.lang.add_listener(_container, this._$heading);
+        }
     }
     
     // 設置關閉按鈕

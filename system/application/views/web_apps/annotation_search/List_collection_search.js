@@ -279,7 +279,7 @@ List_collection_search.prototype._$create_ui = function () {
     _reset_button.appendTo(_header_panel);
     
     // 建立導覽的按鈕
-    var _guide_button = this.create_guiding_button();
+    var _guide_button = this.create_guide_button();
     _guide_button.appendTo(_header_panel);
 
     //_factory.hr_row().appendTo(_ui);	
@@ -355,18 +355,22 @@ List_collection_search.prototype.create_reset_button = function () {
  * @author Pulipuli Chen  
  * @type {jQuery}
  */
-List_collection_search.prototype.create_guiding_button = function () {
+List_collection_search.prototype.create_guide_button = function () {
     var _factory = KALS_window.ui;
     var _button = _factory.button(new KALS_language_param(
-                "Guiding Reading",
-                "window.search.guiding_reading"
+                "Reading Guide",
+                "window.search.reading_guide"
         ))
-        .addClass("guiding-button");
+        .addClass("guide-button");
 
     var _this = this;
     _button.click(function () {
         //_this.reset();
         var _coll = _this.get_annotation_collection_param();
+        
+        // @TODO 20131230 要輸出到導讀的功能中
+        KALS_text.guide.setup_steps(_coll);
+        KALS_window.close();
         
         //$.test_msg("create guiding button", _coll.annotations.length);
     });

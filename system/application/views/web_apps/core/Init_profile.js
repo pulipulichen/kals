@@ -122,7 +122,9 @@ Init_profile.prototype._test = [
      */
     , function () {
         //$.test_msg("如何？");
-        KALS_context.search.open_recent_annotation();
+        KALS_context.search.open_recent_annotation(function () {
+            //$(".button.dialog-option.guide-button").click();
+        });
     }
     /**
      * 測試樣板功能

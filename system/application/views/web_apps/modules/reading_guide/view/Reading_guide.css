@@ -1,0 +1,7 @@
+/**
+ * CSS for template Reading_guide.html
+ */
+li {
+    max-width: 100px;
+    /*overflow-x: hidden;*/
+}
