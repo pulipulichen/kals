@@ -260,40 +260,43 @@ List_collection_search.prototype.load_list = function(_data, _callback) {
  */
 List_collection_search.prototype._$create_ui = function () {
     
-	var _factory = KALS_window.ui; 
-	
-	var _ui = $('<div></div>')
-        .addClass('list-collection')
-        .addClass(this._$name);
-  
-  	
-	var _reset_button = this.create_reset_button();
-	
-	//_factory.hr_row().appendTo(_ui);	
-    
+    var _factory = KALS_window.ui; 
+
+    var _ui = $('<div></div>')
+    .addClass('list-collection')
+    .addClass(this._$name);
+
     // 搜尋結果標題	 
-    var _searchresult_row = _factory.heading_row(
-    new KALS_language_param('Searchresult', 'window.content.searchresult')).appendTo(_ui); //"搜尋結果"標題	
+    var _searchresult_row = _factory.heading_row(new KALS_language_param('Searchresult', 'window.content.searchresult'))
+        .appendTo(_ui); //"搜尋結果"標題	
     _searchresult_row.css("font-size","medium");
     
-  
     var _header_panel = _factory.panel("header")
 		.appendTo(_ui);
-  	_reset_button.appendTo(_header_panel);
-	
-	//結果數量
-    var _result_number; 
-	var _result_count_tip = _factory.tip(
-        new KALS_language_param('Search Result Count','window.content.searchnumber'), '0')
-    	.addClass('result-count-tip')
-        .hide()
-    	.appendTo(_header_panel); 
 
-	var _result_count = $("<span></span>")
-		.addClass("result-count")
-		.appendTo(_result_count_tip);
+    // 建立清除搜尋結果的按鈕
+    var _reset_button = this.create_reset_button();
+    _reset_button.appendTo(_header_panel);
+    
+    // 建立導覽的按鈕
+    var _guide_button = this.create_guiding_button();
+    _guide_button.appendTo(_header_panel);
+
+    //_factory.hr_row().appendTo(_ui);	
+    	
+    //結果數量
+    //var _result_number; 
+    var _result_count_tip = _factory.tip(
+    new KALS_language_param('Search Result Count','window.content.searchnumber'), '0')
+        .addClass('result-count-tip')
+        .hide()
+        .appendTo(_header_panel); 
+
+    var _result_count = $("<span></span>")
+        .addClass("result-count")
+        .appendTo(_result_count_tip);
   
-  	// -------------
+    // -------------
     var _container = $('<div></div>')
         .addClass('list-container')
         .appendTo(_ui);
@@ -349,22 +352,23 @@ List_collection_search.prototype.create_reset_button = function () {
 
 /**
  * 建立搜尋結果導讀按鈕
+ * @author Pulipuli Chen  
+ * @type {jQuery}
  */
 List_collection_search.prototype.create_guiding_button = function () {
-	var _factory = KALS_window.ui;
-	var _button = _factory.button(new KALS_language_param(
-		"Guiding Reading",
-		"window.search.guiding_reading"
-	))
-		.addClass("guiding-button");
-	
-	
-	var _this = this;
-	_button.click(function () {
-		//_this.reset();
-	});
-	
-	return _button;
+    var _factory = KALS_window.ui;
+    var _button = _factory.button(new KALS_language_param(
+            "Guiding Reading",
+            "window.search.guiding_reading"
+    ))
+            .addClass("guiding-button");
+
+    var _this = this;
+    _button.click(function () {
+            //_this.reset();
+    });
+
+    return _button;
 };
 
 /**

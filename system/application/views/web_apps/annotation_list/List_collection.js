@@ -219,6 +219,8 @@ List_collection.prototype.load_list = function(_data, _callback) {
         _data = null;
     }
     
+    var _this = this;
+    
     if ($.isset(_data)) {
         if ($.is_class(_data, 'Annotation_param')) {
             var _annotation_param = _data.export_json();
@@ -237,7 +239,6 @@ List_collection.prototype.load_list = function(_data, _callback) {
         
         //$.test_msg('List_collection.load_list() has data', _data);
         
-        var _this = this;
         this.setup_load_list(_data, function () {
             $.trigger_callback(_callback);
             _this.notify_listeners(_data);
@@ -251,9 +252,10 @@ List_collection.prototype.load_list = function(_data, _callback) {
         return this;
     }
     
+    // 如果有讀取鎖的話，那就不做任何事情
     if (this._load_lock === true) {
-		return this;
-	}
+        return this;
+    }
     
     var _search_data = this.get_search_data();
     
@@ -264,7 +266,7 @@ List_collection.prototype.load_list = function(_data, _callback) {
         this.load(_search_data, function (_this, _data) {
             _this.setup_load_list(_data, function () {
                 $.trigger_callback(_callback);
-                _this._load_lock = false;    
+                _this._load_lock = false;
             });
         });    
     }
@@ -272,6 +274,10 @@ List_collection.prototype.load_list = function(_data, _callback) {
     return this;
 };
 
+/**
+ * 取得要搜尋的資料
+ * @returns {List_collection}
+ */
 List_collection.prototype.get_search_data = function () {
     
     var _search_data = {};
@@ -403,6 +409,7 @@ List_collection.prototype.check_load_id = function (_load_id) {
 	}
 };
 
+
 List_collection.prototype.setup_load_list = function (_data, _callback) {
     
     //$.test_msg('List_coll.setup_load_list()', _data);
@@ -415,11 +422,15 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
     
     var _this = this;
     
+    /**
+     * 讀取完成的動作
+     */
     var _setup_list_complete = function () {
         
-        if (typeof(_data.totally_loaded) == 'boolean' && _data.totally_loaded === true) {
-			_this._totally_loaded = _data.totally_loaded;
-		}
+        if (typeof(_data.totally_loaded) === 'boolean' 
+                && _data.totally_loaded === true) {
+            _this._totally_loaded = _data.totally_loaded;
+        }
 
         //_this._ready = true;
         _this._check_load_id = false;
@@ -483,26 +494,26 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
             if (_i < _annotation_coll.length()) {
                 var _param = _annotation_coll.get(_i);
                 //var _list_item = _this.add_list_item(_param);
-				
-				if (KALS_context.policy.allow_show_navigation() === false) {
-					var _user_name = KALS_context.user.get_name();
-					//$.test_msg("setup_load_list", _param.user);
-					
-					
-					if (_param.user.name === _user_name) {
-						_this.add_list_item(_param);
-					}
-					else if (typeof(_data.total_count) !== "undefined") {
-						// @20130603 Pudding Chen
-						// 有個Bug，我必須要在這邊說清楚
-						// 當列表未顯示，卻又有超過數量的非自己標註時，數字上就會大於0，Bug就會出現
-						// 目前還沒有想法可以解決，先擺著
-						_data.total_count--;
-					}
-				}
-				else {
-					_this.add_list_item(_param);
-				}
+
+                if (KALS_context.policy.allow_show_navigation() === false) {
+                    var _user_name = KALS_context.user.get_name();
+                    //$.test_msg("setup_load_list", _param.user);
+
+
+                    if (_param.user.name === _user_name) {
+                            _this.add_list_item(_param);
+                    }
+                    else if (typeof(_data.total_count) !== "undefined") {
+                        // @20130603 Pudding Chen
+                        // 有個Bug，我必須要在這邊說清楚
+                        // 當列表未顯示，卻又有超過數量的非自己標註時，數字上就會大於0，Bug就會出現
+                        // 目前還沒有想法可以解決，先擺著
+                        _data.total_count--;
+                    }
+                }
+                else {
+                        _this.add_list_item(_param);
+                }
                 
                 
                 setTimeout(function () {

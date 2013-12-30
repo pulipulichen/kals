@@ -117,7 +117,7 @@ Site_reform.prototype._reform_loop = function (_i, _config, _callback) {
     var _matched = this.match(_site.feature);
     if (_matched === true) {
         
-        $.test_msg("[Site_reform] match", _site.title);
+        $.test_msg("Site_reform: match!", _site.title);
         
         if ($.is_function(_site.reform)) {
             _site.reform(function () {

@@ -93,7 +93,7 @@ Init_profile.prototype._$oncomplete = function () {
         for (var _t in _this._test) {
             _this._test[_t]();
         }	
-    }, 2000);
+    }, 1000);
         
 };
 
@@ -115,32 +115,40 @@ Init_profile.prototype._test = [
      * 第一個，不使用
      */
     function () {}
-	
-	/**
-	 * 測試樣板功能
-	 * @author Pulipuli Chen 20131117
-	 */
-        /*
-	, function () {
-		//var _template = KALS_context.template.get_template('helpers/test');
-		//$.test_msg('KALS_template', _template);
-		
-		//var _logout = new Window_logout();
-		//_logout.open_window();
-		
-		var _window = new Dashboard();
-                _window.open();
-	}
-        */
-	/**
-	 * 測試意見回饋功能
-	 * @20131116 Pulipuli Chen
-	 */
-	/*
-	, function () {
-		KALS_context.feedback.open();
-	}
-	*/
+
+    /**
+     * 測試導讀功能
+     * @author Pulipuli Chen 20131230
+     */
+    , function () {
+        //$.test_msg("如何？");
+        //KALS_context.search.open_recent_annotation();
+    }
+    /**
+     * 測試樣板功能
+     * @author Pulipuli Chen 20131117
+     */
+    /*
+    , function () {
+            //var _template = KALS_context.template.get_template('helpers/test');
+            //$.test_msg('KALS_template', _template);
+
+            //var _logout = new Window_logout();
+            //_logout.open_window();
+
+            var _window = new Dashboard();
+            _window.open();
+    }
+    */
+    /**
+     * 測試意見回饋功能
+     * @20131116 Pulipuli Chen
+     */
+    /*
+    , function () {
+            KALS_context.feedback.open();
+    }
+    */
     /**
      * 測試通知功能
      * @20131115 Pulipuli Chen

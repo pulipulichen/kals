@@ -290,17 +290,22 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
             
             
         if ($.is_function(_content.onviewportmove)) {
-			_this.set_onviewportmove(_content.onviewportmove);
-		}
+            _this.set_onviewportmove(_content.onviewportmove);
+        }
         
         //$.test_msg('準備檢查window open之後的callback', _this._$modal_name);
         
+        // 準備開啟囉！
         _this.open(function () {
             
-            //$.test_msg('檢查window open之後的callback', $.is_function(_content.setup_content));
+            $.test_msg('檢查window open之後的callback', $.is_function(_content.setup_content));
             
             if ($.is_function(_content.setup_content)) {
+                
+                // 開始設定內容囉
                 _content.setup_content(function () {
+                    
+                    // 設定完成囉
                     $.trigger_callback(_callback);
                 });
             }   
@@ -448,7 +453,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     }
     
     if (_is_loading !== null
-       && this.is_loading() == _is_loading) {
+       && this.is_loading() === _is_loading) {
         $.trigger_callback(_callback);
         return;
     }
@@ -546,7 +551,7 @@ KALS_window.prototype.is_loading = function () {
     var _ui = this.get_ui();
     var _loading = _ui.find('.window-loading:first');
     
-    return (!(_loading.css('display') == 'none'));
+    return (!(_loading.css('display') === 'none'));
 };
 
 KALS_window.prototype.focus_option = function (_offset) {
@@ -563,8 +568,8 @@ KALS_window.prototype.focus_input = function () {
     var _ui = this.get_ui();
 	
 	var _content = this._content;
-	if (_content == null) {
-		return;
+	if (_content === null) {
+            return;
 	}
 	
     var _first_input = _ui.find(_content.default_focus_input);

@@ -184,7 +184,32 @@ KALS_controller_window.prototype.setup_content = function (_callback) {
     //2010.9.9 觀察loading狀態測試用
     //return;
     
-    KALS_window.loading_complete(_callback);
+    var _this = this;
+    KALS_window.loading_complete(function () {
+        // 調整內部的物件
+        _this.adjust_note();
+        
+        $.trigger_callback(_callback);
+    });
+    return this;
+};
+
+/**
+ * 調整視窗內部的note大小
+ * @returns {KALS_window.prototype}
+ */
+KALS_controller_window.prototype.adjust_note = function () {
+    
+    var _ui = this.get_ui();
+    
+    //$.test_msg("有嗎？", _ui.find(".note-container").length);
+    var _this = this;
+    _ui.find(".note-container").each(function (_index, _value) {
+        var _node_container = $(_value);
+        //_node_container.css("border", "1px solid red");
+        List_note_component.prototype.adjust_note.call(_this, _node_container);
+    });
+    
     return this;
 };
 
