@@ -108,7 +108,7 @@ List_collection_search.prototype.get_search_data = function () {
     if ($.isset(this._$target_topic)) {
 		_search_data.target_topic = this._$target_topic;
 	}
-    if ($.isset(this._$order_by) && this._$order_by != 'score') {
+    if ($.isset(this._$order_by) && this._$order_by !== 'score') {
 		_search_data.order_by = this._$order_by;
 	}
         
@@ -358,14 +358,17 @@ List_collection_search.prototype.create_reset_button = function () {
 List_collection_search.prototype.create_guiding_button = function () {
     var _factory = KALS_window.ui;
     var _button = _factory.button(new KALS_language_param(
-            "Guiding Reading",
-            "window.search.guiding_reading"
-    ))
-            .addClass("guiding-button");
+                "Guiding Reading",
+                "window.search.guiding_reading"
+        ))
+        .addClass("guiding-button");
 
     var _this = this;
     _button.click(function () {
-            //_this.reset();
+        //_this.reset();
+        var _coll = _this.get_annotation_collection_param();
+        
+        //$.test_msg("create guiding button", _coll.annotations.length);
     });
 
     return _button;

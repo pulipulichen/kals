@@ -686,28 +686,43 @@ List_collection.prototype.remove_list_item = function (_param) {
  */
 List_collection.prototype.get_list_item = function(_param){
 	
-	//$.test_msg("list count", this.count_list_item());
-	//$.test_msg("list get", _param);
+    //$.test_msg("list count", this.count_list_item());
+    //$.test_msg("list get", _param);
     for (var _i in this._list_items) {
         var _list_item = this._list_items[_i];
         if (_list_item.equals(_param)) {
             //_list_item.remove();
             //_delete_index = _i;
-			return _list_item;
+            return _list_item;
             //break;
         }
 		
-		if (typeof(_list_item.respond_list) != 'undefined') {
-			var _respond_list = _list_item.respond_list;
-			var _result = _respond_list.get_list_item(_param);
-			if (_result != null) {
-				return _result;
-			}
-		}
-		
+        if (typeof(_list_item.respond_list) !== 'undefined') {
+            var _respond_list = _list_item.respond_list;
+            var _result = _respond_list.get_list_item(_param);
+            if (_result !== null) {
+                return _result;
+            }
+        }
     }
     
     return null;
+};
+
+/**
+ * 取得標註資料集
+ * @returns {Annotation_collection_param}
+ */
+List_collection.prototype.get_annotation_collection_param = function () {
+    var _coll = new Annotation_collection_param();
+    
+    for (var _i in this._list_items) {
+        var _list_item = this._list_items[_i];
+        var _param = _list_item.get_annotation_param();
+        _coll.add(_param);
+    }
+    
+    return _coll;
 };
 
 /**

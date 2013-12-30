@@ -375,11 +375,11 @@ Window_search.prototype.change_range = function (_range) {
 	}
 	
 	//$.test_msg("change range", [_range, this.is_input_keyword()]);
-	if (_range == "annotation_type" && this.is_input_keyword()) {
-		this.toggle_input("annotation_type");
+	if (_range === "annotation_type" && this.is_input_keyword()) {
+            this.toggle_input("annotation_type");
 	}
-	else if (_range != "annotation_type" && this.is_input_keyword() === false) {
-		this.toggle_input("keyword");
+	else if (_range !== "annotation_type" && this.is_input_keyword() === false) {
+            this.toggle_input("keyword");
 	}	
 	
 	var _range_ui = this.get_range_ui();
