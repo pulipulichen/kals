@@ -193,6 +193,9 @@ Selectable_text_sentence.prototype.add_structure_last_word = function () {
     var _word_count = this._selectable_text.word.word_count;
     _word_count--;
     
+    if (_word_count < 1) {
+        return this;
+    }
     if (this.sentence_structure.length === 0) {
         this.sentence_structure.push(_word_count);
     }

@@ -221,6 +221,9 @@ Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
 Selectable_text_paragraph.prototype.add_structure = function () {
     var _word_count = this._selectable_text.word.word_count;
     
+    if (_word_count < 1) {
+        return this;
+    }
     if (this.paragraph_structure.length === 0) {
         this.paragraph_structure.push(_word_count);
     }

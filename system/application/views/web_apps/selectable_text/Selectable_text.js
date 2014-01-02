@@ -160,8 +160,15 @@ Selectable_text.prototype.initialize = function (_callback) {
     this.setup_selectable_element(_element, function () {
         
         // 全部處理完了
+        _this.sentence.add_structure();
+        _this.paragraph.add_structure();
+        _this.chapter.add_structure();
+        
+        // 全部處理完了
         //$.test_msg("paragraph feature", _this.paragraph_feature);
         $.test_msg("sentence structure", _this.sentence.get_structure());
+        $.test_msg("paragraph structure", _this.paragraph.get_structure());
+        $.test_msg("chapter structure", _this.chapter.get_structure());
         
         KALS_context.progress.set_finished();
         
@@ -273,6 +280,9 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     
     var _selectable_text_word = this.word;
     
+    var _chapter_tag_names = this.chapter.chapter_tag_names;
+    var _selectable_text_chapter = this.chapter;
+    
     var _this = this;
     
     var _batch_excute = this.excute_interval.batch_excute;
@@ -349,6 +359,12 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     // 20140102 Pulipuli Chen
                     // 增加句子的計算數量
                     _selectable_text_sentence.add_structure_last_word();
+                    
+                    // 20140103 Pulipuli Chen
+                    // 是章節嗎？
+                    if ($.inArray(_node_name.toLowerCase(), _chapter_tag_names) !== -1) {
+                        _selectable_text_chapter.add_structure(_child_obj);
+                    }
                 }   
                 else if (typeof(_node_name) === 'string'
                     && _node_name.toLowerCase() === 'br') {
