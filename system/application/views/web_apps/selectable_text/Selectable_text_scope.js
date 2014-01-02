@@ -106,7 +106,7 @@ Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
 Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _callback) {
     
     var _selectable_text_word = this._selectable_text_word;
-    var _words = _selectable_text_word.get_words_by_scope_coll(_scope_coll);
+    var _words = this.get_words_by_scope_coll(_scope_coll);
     
     var _classnames = this._filter_classname(_classname);
     
@@ -145,27 +145,29 @@ Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _c
         }
     };
     
-    var _loop_j = function (_j) {
-        if (_j < _words[_i].length) {
-            for (_j; _j < _j + 5 && _j < _words[_i].length; _j++) {
-                _add_class(_i, _j);
-            }
-
-            setTimeout(function () {
-                //_j++;
-                _loop_j(_j);
-            }, 1);
-        }
-        else {
-            setTimeout(function () {
-                _i++;
-                _loop_i(_i);
-            }, 1);
-        }
-    };
     
     var _loop_i = function (_i) {
         if (_i < _words.length) {
+            
+        var _loop_j = function (_j) {
+            if (_j < _words[_i].length) {
+                for (_j; _j < _j + 5 && _j < _words[_i].length; _j++) {
+                    _add_class(_i, _j);
+                }
+
+                setTimeout(function () {
+                    //_j++;
+                    _loop_j(_j);
+                }, 1);
+            }
+            else {
+                setTimeout(function () {
+                    _i++;
+                    _loop_i(_i);
+                }, 1);
+            }
+        };
+    
             _loop_j(0);
         }
         else {
@@ -221,7 +223,7 @@ Selectable_text_scope.prototype.remove_class = function (_scope_coll, _classname
     var _classnames = this._filter_classname(_classname);
     
     if ($.isset(_scope_coll)) {
-        var _words = _selectable_text_word.get_words_by_scope_coll(_scope_coll);
+        var _words = this.get_words_by_scope_coll(_scope_coll);
         for (var _i in _words) {
             for (var _j in _words[_i]) {
                 var _word = _words[_i][_j];

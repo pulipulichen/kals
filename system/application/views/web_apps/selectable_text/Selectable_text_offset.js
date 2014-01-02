@@ -107,7 +107,7 @@ Selectable_text_offset.prototype.get_offset_bottom = function (_scope_coll) {
 Selectable_text_offset.prototype.get_offset_left = function (_scope_coll) {
     var _offset = null;
     
-    var _words = this._selectable_text_word.get_words_by_scope_coll(_scope_coll);
+    var _words = this._selectable_text.scope.get_words_by_scope_coll(_scope_coll);
     for (var _i in _words) {
         for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
@@ -134,7 +134,7 @@ Selectable_text_offset.prototype.get_offset_left = function (_scope_coll) {
 Selectable_text_offset.prototype.get_offset_right = function (_scope_coll) {
     var _offset = null;
     
-    var _words = this._selectable_text_word.get_words_by_scope_coll(_scope_coll);
+    var _words = this._selectable_text.scope.get_words_by_scope_coll(_scope_coll);
     for (var _i in _words) {
         for (var _j in _words[_i]) {
             var _word = _words[_i][_j];

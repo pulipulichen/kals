@@ -83,7 +83,7 @@ Selectable_text_location.prototype.location_classnames = [
 Selectable_text_location.prototype.get_location_feature = function (_scope_coll) {
 	
     var _classnames = this.location_classnames;
-    var _words = this._selectable_text.word.get_words_by_scope_coll(_scope_coll);
+    var _words = this._selectable_text.scope.get_words_by_scope_coll(_scope_coll);
     
     var _location_id_ary = [];
     

@@ -23,6 +23,7 @@ function Selectable_text(_selector) {
     
     // Selectable_text_component
     this.child('word', new Selectable_text_word(this));
+    
     this.child('offset', new Selectable_text_offset(this));
     this.child('scope', new Selectable_text_scope(this));
     this.child('anchor', new Selectable_text_anchor(this));
@@ -971,8 +972,8 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
  * @param {Number} _max_length 最長字數，預設是50個字。低於這個數字以下不省略
  * @return {String}
  */
-Seleactable_text.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
-    return this.get_abbreviated_anchor_text(_scope_coll, _max_length);
+Selectable_text.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
+    return this.anchor.get_abbreviated_anchor_text(_scope_coll, _max_length);
 };
 
 // -------------------------------------

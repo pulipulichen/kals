@@ -20,6 +20,7 @@
 function Selectable_text_anchor(_selectable_text) {
     
     this._selectable_text = _selectable_text;
+    this._selectable_text_word = _selectable_text.word;
     return this;
     
 }
@@ -83,7 +84,7 @@ Selectable_text_anchor.prototype.get_anchor_text = function (_scope_coll) {
             _sentence = _sentence + _text;
             
             if (_j < _to
-                && _selectable_text_word.word.is_word_next_span(_word)) {
+                && _selectable_text_word.is_word_next_span(_word)) {
                 _sentence = _sentence + ' ';
             }
             
@@ -125,7 +126,7 @@ Selectable_text_anchor.prototype.get_anchor_text = function (_scope_coll) {
  * @param {Number} _max_length 最長字數，預設是50個字。低於這個數字以下不省略
  * @return {String}
  */
-Seleactable_text_anchor.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
+Selectable_text_anchor.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
     
     if (_max_length === undefined) {
         _max_length = 50;
