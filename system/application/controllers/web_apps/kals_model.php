@@ -24,7 +24,7 @@ class KALS_model extends Web_apps_controller {
     var $put_action_id = NULL;
     var $post_action_id = NULL;
     var $delete_action_id = NULL;
-
+    
     function __construct() {
         parent::__construct();
 
