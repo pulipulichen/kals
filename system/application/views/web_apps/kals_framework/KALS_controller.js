@@ -144,7 +144,12 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         return $.trigger_callback(_callback);
     }
 
-    _url = _url + '/request';
+    if (_method === 'get') {
+        _url = _url + '/request_get';        
+    }
+    else {
+        _url = _url + '/request_post/' + _action;
+    }
 
     if (this._enable_debug_flag === true) {
         _data["_enable_debug"] = true;

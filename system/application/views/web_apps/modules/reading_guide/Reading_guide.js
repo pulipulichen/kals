@@ -62,7 +62,7 @@ Reading_guide.prototype._$view = 'modules/reading_guide/view/Reading_guide';
  * 指定Model
  * @type String
  */
-Reading_guide.prototype._$model = null;
+Reading_guide.prototype._$model = "reading_guide";
 
 /**
  * 初始化物件時執行的Action
@@ -193,7 +193,12 @@ Reading_guide.prototype.setup_steps = function (_coll) {
     //this.set_field("step_index", -1);
     this.reset_step_index();
     
-    $.test_msg("設定步驟參數", _coll.annotations.length);
+    if ($.is_array(_coll)) {
+        //$.test_msg("是JSON陣列嗎？", _coll);
+        _coll = new Annotation_collection_param(_coll);
+    }
+    
+    //$.test_msg("設定步驟參數", _coll.annotations.length);
     
     if ($.is_class(_coll, "Annotation_collection_param")) {
         //var _scope_coll = _coll.export_scope_colleciotn_json();
@@ -222,6 +227,9 @@ Reading_guide.prototype.setup_steps = function (_coll) {
         
         //$.test_msg("取得位置？", _output_scope_coll);
         this.set_field("step_list", _output_scope_coll);
+    }
+    else {
+        $.test_msg("什麼參數都不是");
     }
         
     
@@ -347,6 +355,31 @@ Reading_guide.prototype.reset_step_index = function () {
 
 Reading_guide.prototype.get_step_index = function () {
     return this.get_field("step_index");
+};
+
+/**
+ * ====================
+ * 各種導讀的開啟方式
+ * ====================
+ */
+
+/**
+ * 開啟所有的標註
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype.open_whole_annotations = function () {
+    var _data = {
+        "sentence_structure": [4,77]
+    };
+    var _this = this;
+    this.request_post("whole_annotations", _data, function (_data) {
+        var _steps = _data.steps;
+        
+        $.test_msg("讀取到了什麼呢？", _steps);
+        _this.setup_steps(_steps);
+    });
+    
+    return this;
 };
 
 /* End of file Reading_guide */

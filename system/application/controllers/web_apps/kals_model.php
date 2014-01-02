@@ -157,12 +157,12 @@ class KALS_model extends Web_apps_controller {
     private $model_action_id = 37;
 
     /**
-     * 運作方法的函式
+     * 運作方法的函式，GET的作法
      * @param String $json
      * @param String $callback
      * @return String
      */
-    public function request ($json = NULL, $callback = NULL) {
+    public function request_get ($json = NULL, $callback = NULL) {
         // 取得資料
         $data = $this->_retrieve_get_json($json);
         if (is_null($data)) {
@@ -217,8 +217,37 @@ class KALS_model extends Web_apps_controller {
             
             // 最終回傳資料
             //test_msg($output_data);
-            return $this->_display_jsonp($output_data, $callback);
+            if (isset($callback)) {
+                return $this->_display_jsonp($output_data, $callback);
+            }
+            else {
+                return $output_data;
+            }
         }
+    }
+    
+    /**
+     * 運作方法的函式，GET的作法
+     */
+    public function request_post($action, $callback = NULL) {
+        
+        $index = 'kals_model_' . $action;
+        if ($this->_is_callback($callback) == false)
+        {
+            //從POST中取得JSON的資料
+            $json = $this->_get_post_json();
+            $data = $this->request_get($json);
+            
+            //然後把data存入session中
+            $this->_set_post_session($index, $data);
+            $this->_display_post_complete();
+        }
+        else
+        {
+            $data = $this->_get_post_session($index);
+            $this->_display_jsonp($data, $callback);
+        }
+        context_complete();
     }
     
     // ---------------
