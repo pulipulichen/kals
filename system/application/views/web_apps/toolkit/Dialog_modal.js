@@ -694,7 +694,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             
             setTimeout(function () {
                 var _top_padding = _el.find('.top-padding:first');
-                if (_top_padding.length == 1) {
+                if (_top_padding.length === 1) {
                     var _option = {};
                     _option.height = 0;
                     _top_padding.animate(_option, {

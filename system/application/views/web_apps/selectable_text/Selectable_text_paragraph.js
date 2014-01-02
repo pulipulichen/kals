@@ -214,5 +214,38 @@ Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
     _loop(_first_paragraph_id);
 };
 
+/**
+ * 增加句子的結構
+ * @returns {Selectable_text_sentence.prototype}
+ */
+Selectable_text_paragraph.prototype.add_structure = function () {
+    var _word_count = this._selectable_text.word.word_count;
+    
+    if (this.paragraph_structure.length === 0) {
+        this.paragraph_structure.push(_word_count);
+    }
+    else if (_word_count !== this.paragraph_structure[this.paragraph_structure.length-1]) {
+        this.paragraph_structure.push(_word_count);
+    }
+    return this;
+};
+
+/**
+ * 取得目前計算的句子數量
+ * @returns {number}
+ */
+Selectable_text_paragraph.prototype.count_strucutre = function () {
+    return this.paragraph_structure.length;
+};
+
+/**
+ * 取得句子的結構
+ * @returns {Selectable_text_sentence.prototype}
+ */
+Selectable_text_paragraph.prototype.get_structure = function () {
+    return this.paragraph_structure;
+};
+
+
 /* End of file Selectable_text_paragraph */
 /* Location: ./system/application/views/web_apps/Selectable_text_paragraph.js */

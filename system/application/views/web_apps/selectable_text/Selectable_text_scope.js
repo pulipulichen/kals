@@ -45,6 +45,11 @@ Selectable_text_scope.prototype._selectable_text_word;
 // 內部參數設定
 // -----------------------------------
 
+Selectable_text_scope.prototype.selected_classname = 'selected';
+Selectable_text_scope.prototype.selected_from_classname = 'from';
+Selectable_text_scope.prototype.selected_to_classname = 'to';
+Selectable_text_scope.prototype.selected_middle_classname = 'middle';
+
 // -----------------------------------
 // 方法
 // -----------------------------------

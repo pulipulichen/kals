@@ -276,7 +276,13 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
                 KALS_SELECT_LOCK = false;
             });
 
-            _words.mousedown(function () {
+            _words.mousedown(function (_event) {
+                
+                // 限制只能用左鍵選取
+                if (_event.which !== 1) {
+                    return;
+                }
+                
                 /**
                  * 先做超連結偵測
                  * @author Pulipuli Chen <pulipuli.chen@gmail.com> 

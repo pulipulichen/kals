@@ -67,7 +67,7 @@ Selectable_text_sentence.prototype.sententce_index_classname = 'kals-sentence-in
  * 句子特徵，保存句子切割的特徵。
  * @type {Array|number}
  */
-Selectable_text_sentence.prototype.sententce_structure = [];
+Selectable_text_sentence.prototype.sentence_structure = [];
 
 
 // -----------------------------------
@@ -173,6 +173,49 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     //});
 
     return _sentence_index;
+};
+
+/**
+ * 增加句子的結構
+ * @returns {Selectable_text_sentence.prototype}
+ */
+Selectable_text_sentence.prototype.add_structure = function () {
+    var _word_count = this._selectable_text.word.word_count;
+    this.sentence_structure.push(_word_count);
+    return this;
+};
+
+/**
+ * 增加句子的結構，但是是句子的最後一句
+ * @returns {Selectable_text_sentence.prototype}
+ */
+Selectable_text_sentence.prototype.add_structure_last_word = function () {
+    var _word_count = this._selectable_text.word.word_count;
+    _word_count--;
+    
+    if (this.sentence_structure.length === 0) {
+        this.sentence_structure.push(_word_count);
+    }
+    else if (_word_count !== this.sentence_structure[this.sentence_structure.length-1]) {
+        this.sentence_structure.push(_word_count);
+    }
+    return this;
+};
+
+/**
+ * 取得目前計算的句子數量
+ * @returns {number}
+ */
+Selectable_text_sentence.prototype.count_strucutre = function () {
+    return this.sentence_structure.length;
+};
+
+/**
+ * 取得句子的結構
+ * @returns {Selectable_text_sentence.prototype}
+ */
+Selectable_text_sentence.prototype.get_structure = function () {
+    return this.sentence_structure;
 };
 
 /* End of file Selectable_text_sentence */
