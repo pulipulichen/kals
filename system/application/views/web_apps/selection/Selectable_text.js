@@ -28,6 +28,7 @@ function Selectable_text(_selector) {
     this.child('anchor', new Selectable_text_anchor(this));
     this.child('sentence', new Selectable_text_sentence(this));
     this.child('paragraph', new Selectable_text_paragraph(this));
+    this.child('location', new Selectable_text_location(this));
     this.child('chapter', new Selectable_text_chapter(this));
 }
 
@@ -74,12 +75,15 @@ Selectable_text.prototype.anchor;
  */
 Selectable_text.prototype.sentence;
 
-
 /**
  * @type {Selectable_text_paragraph}
  */
 Selectable_text.prototype.paragraph;
 
+/**
+ * @type {Selectable_text_location}
+ */
+Selectable_text.prototype.location;
 
 /**
  * @type {Selectable_text_chapter}
@@ -159,7 +163,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     this.setup_selectable_element(_element, function () {
         
         // 全部處理完了
-        $.test_msg("paragraph feature", _this.paragraph_feature);
+        //$.test_msg("paragraph feature", _this.paragraph_feature);
         
         KALS_context.progress.set_finished();
         
@@ -504,7 +508,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     
 };    //Selectable_text.prototype.setup_scope
 
-
+/*
 Selectable_text.prototype.add_task = function (_task) {
     this._task_stack.push(_task);
     
@@ -518,6 +522,7 @@ Selectable_text.prototype.add_task = function (_task) {
 };
 
 Selectable_text.prototype._task_stack = [];
+*/
 
 /**
  * 記錄估算的字數
@@ -590,13 +595,13 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         
         //沒有段落了，結束了，所以呼叫完結的函數
         //$.test_msg('selectable.setup_paragraph_location()', [_i, _last_paragraph_id]);
-        if (_i == _last_paragraph_id + 1 || _i > _last_paragraph_id + 1) {
+        if (_i === _last_paragraph_id + 1 || _i > _last_paragraph_id + 1) {
             _complete();
             return;
         }
         
         //如果找不到下一個段落，則結束迴圈
-        if (false == _first_paragraph.exists()) {
+        if (false === _first_paragraph.exists()) {
             //$.test_msg('_text.setup_paragraph_location()',' Cannot found ' + _i);
            _continue(_i);
            return;
@@ -606,8 +611,8 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
         var _first_word = _first_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):first');
         var _last_word = _last_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):last');
         
-        if (false == _first_word.exists()
-            || false == _last_word.exists()) {
+        if (false === _first_word.exists()
+            || false === _last_word.exists()) {
             _continue(_i, _callback);
             return;
         }
@@ -641,7 +646,7 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
                 
                 if (_w < _last_id - 3
                     && _word.hasClass(_sentence_punctuation_class_name)) {
-                    if (_location == 1) {
+                    if (_location === 1) {
                         _location = 4;
                     }
                     else {
@@ -663,131 +668,6 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
     return this;
 };
 
-
-/**
- * 標註相對位置的classname，以及其代號
- * @type {Array} 
- */
-Selectable_text.prototype.location_classnames = [
-                             //view modal
-    'location-head',         //0    0 表示開頭
-    'location-foot',         //1    4 表示結尾
-    null,                    //2    2 表示同時是接近開頭與結尾
-    'location-near-head',    //3    1 表示接近開頭
-    'location-near-foot'     //4    3 標示接近結尾
-                             //     6 表示同時是開頭與結尾
-                             //     5 其他位置
-];
-
-/**
- * 取得選取位置的代號。
- * 以下代號會由先而後選擇最先出現的一項
- * 
- * 2010.11.26 不使用了
- * 
- * 0 => head : location-head
- * 1 => foot : location-foot
- * 2 => near head & foot : 此情況並不標示，由get_paragraph_location()去判斷
- * 3 => near head : location-near-head
- * 4 => near foot : location-near-foot
- * 5 => body : 沒有標示
- * 
- * @type {number} 位置代號
- * 
- */
-/*
-Selectable_text.prototype.get_paragraph_location = function () {
-    
-    var _selected_classname = this.selected_classname;
-    var _location_classnames = this.location_classnames;
-    
-    var _selected = $('.' + _selected_class_name);
-    
-    if (_selected.filter('.' + _location_classnames[0]).exists())
-        return 0;
-    else if (_selected.filter('.' + _location_classnames[1]).exists())
-        return 1;
-    else if (_selected.filter('.' + _location_classnames[3]).exists()
-        && _selected.filter('.' + _location_classnames[4]).exists())
-        return 2;
-    else if (_selected.filter('.' + _location_classnames[3]).exists())
-        return 3;
-    else if (_selected.filter('.' + _location_classnames[4]).exists())
-        return 4;
-    else
-        return 5;
-};
-*/
-
-Selectable_text.prototype.count_paragraph_words_avg = function () {
-    
-    var _paragraph_class_name = this.paragraph_classname;
-    var _paragraph_id_prefix = this.paragraph_id_prefix;
-    
-    
-    var _first_paragraph = this._text.find('.' + _paragraph_class_name + ':first');
-    var _last_paragraph = this._text.find('.' + _paragraph_class_name + ':last');
-    
-    var _first_paragraph_id = this.get_paragraph_id(_first_paragraph);
-    var _last_paragraph_id = this.get_paragraph_id(_last_paragraph);
-    
-    var _word_classname = this.word_classname;
-    
-    var _para_ary = [];
-    
-    /*
-    for (var _i = _first_paragraph_id; _i < _last_paragraph_id + 1; _i++) {
-        _length = this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+this.punctuation_classname+'):not(.'+this.sententce_punctuation_classname+')').length;
-        
-        //$.test_msg(_length);
-        if (_length < 10)
-            continue;
-        else
-            _para_ary.push(_length);
-    }
-    
-    //輸出結果
-    $.test_msg('Total words', this.word_count);
-    
-    var _sum = 0;
-    for (var _i in _para_ary)
-        _sum = _sum + _para_ary[_i];
-    var _avg = _sum / _para_ary.length;
-    
-    $.test_msg('Per paragraph avg words', _avg);
-    */
-
-    var _this = this;   
-    var _loop = function (_i) {
-        if (_i < _last_paragraph_id + 1) {
-            _length = _this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+_this.punctuation_classname+'):not(.'+_this.sententce_punctuation_classname+')').length;
-        
-            //$.test_msg(_length);
-            if (_length > 10) {
-				_para_ary.push(_length);
-			}
-            
-            setTimeout(function () {
-                _i++;
-                _loop(_i);
-            }, 0);
-        }
-        else {
-            $.test_msg('Total words', _this.word_count);
-    
-            var _sum = 0;
-            for (_i in _para_ary) {
-				_sum = _sum + _para_ary[_i];
-			}
-            var _avg = _sum / _para_ary.length;
-            
-            $.test_msg('Per paragraph avg words', _avg);
-        }
-    };
-    
-    _loop(_first_paragraph_id);
-};
-
 // --------
 // Initialize Helpers
 // --------
@@ -800,7 +680,7 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
  */
 Selectable_text.prototype.element_has_class = function (_element, _class_name) {
     if ($.is_object(_element) === false
-        || typeof(_element.className) == 'undefined') {
+        || typeof(_element.className) === 'undefined') {
         return false;
     }
     else {
@@ -817,7 +697,7 @@ Selectable_text.prototype.get_element_content = function (_element) {
     if ($.is_object(_element) === false) {
         return '';
 	}
-    else if (typeof(_element.nodeValue) != 'undefined' &&
+    else if (typeof(_element.nodeValue) !== 'undefined' &&
             $.trim(_element.nodeValue) !== '') {
         //2010.10.15 還是保留空格好了
         //return $.trim(_element.nodeValue);
@@ -826,23 +706,6 @@ Selectable_text.prototype.get_element_content = function (_element) {
     else {
         return '';
     }
-};
-
-/**
- * 建立一個可以選取Word的容器
- * @param {number} _id
- * @type {HTMLElementSpan}
- */
-Selectable_text.prototype.create_selectable_paragraph = function (_id) {
-    return this.paragraph.create_selectable_paragraph(_id);
-};
-
-/**
- * 取得段落的ID
- * @param {number|string|Object} _word
- */
-Selectable_text.prototype.get_paragraph_id = function(_word) { 
-    return this.paragraph.get_paragraph_id(_word);
 };
 
 
@@ -931,8 +794,40 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
     return _recommend_scope_coll;
 };
 
+
+// --------------------------
+// Selectable_text_paragraph
+// --------------------------
+
+/**
+ * 建立一個可以選取Word的容器
+ * @param {number} _id
+ * @type {HTMLElementSpan}
+ */
+Selectable_text.prototype.create_selectable_paragraph = function (_id) {
+    return this.paragraph.create_selectable_paragraph(_id);
+};
+
+/**
+ * 取得段落的ID
+ * @param {number|string|Object} _word
+ */
+Selectable_text.prototype.get_paragraph_id = function(_word) { 
+    return this.paragraph.get_paragraph_id(_word);
+};
+
+/**
+ * 計算段落的平均字數
+ * 
+ * 測試用，結果顯示在console端
+ */
+Selectable_text.prototype.count_paragraph_words_avg = function () {
+    return this.paragraph.count_paragraph_words_avg();
+};
+
+
 // --------
-// Data mining
+// Selectable_text_location
 // --------
 
 /**
@@ -948,8 +843,12 @@ Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
  * @param {Scope_collection_param} _scope_coll
  */
 Selectable_text.prototype.get_location_feature = function (_scope_coll) {
-    return this.sentence.get_location_feature(_scope_coll);
+    return this.location.get_location_feature(_scope_coll);
 };
+
+// -------------------------------------
+// Selectable_text_sentence
+// -------------------------------------
 
 /**
  * 取得句子位置的索引
@@ -960,6 +859,32 @@ Selectable_text.prototype.get_location_feature = function (_scope_coll) {
  */
 Selectable_text.prototype.get_sentence_index = function () {
     return this.sententce.get_sentence_index();
+};
+
+
+// -------------------------------------
+// Selectable_text_anchor
+// -------------------------------------
+
+/**
+ * 取得該範圍的文字
+ * 
+ * @param {Scope_collection_param} _scope_coll
+ * @type {String}
+ */
+Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
+    return this.anchor.get_anchor_text(_scope_coll);
+};
+
+/**
+ * 取得部份的標註範圍文字
+ * 
+ * @param {Scope_collection_param} _scope_coll 要選取的範圍
+ * @param {Number} _max_length 最長字數，預設是50個字。低於這個數字以下不省略
+ * @return {String}
+ */
+Seleactable_text.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
+    return this.get_abbreviated_anchor_text(_scope_coll, _max_length);
 };
 
 /* End of file Selectable_text */

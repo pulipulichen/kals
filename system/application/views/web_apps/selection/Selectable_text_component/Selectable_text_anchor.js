@@ -1,6 +1,7 @@
 /**
  * Selectable_text_anchor
  *
+ * 2014/1/2 檢查完成
  * @package     KALS
  * @category    Webpage Application Libraries
  * @author      Pulipuli Chen <pulipuli.chen@gmail.com>
@@ -36,11 +37,30 @@ Selectable_text_anchor.prototype = new KALS_user_interface();
 Selectable_text_anchor.prototype._selectable_text;
 
 /**
+ * 文字相關的物件
+ * @type {Selectable_text_word}
+ */
+Selectable_text_anchor.prototype._selectable_text_word;
+
+// -----------------------------------
+// 內部參數設定
+// -----------------------------------
+
+// -----------------------------------
+// 方法
+// -----------------------------------
+
+/**
  * 取得該範圍的文字
+ * 
+ * 2014/1/2 21:55 檢查完畢
+ * 22:00 轉接完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {String}
  */
 Selectable_text_anchor.prototype.get_anchor_text = function (_scope_coll) {
+    
+    var _selectable_text_word = this._selectable_text_word;
     
     if ($.is_null(_scope_coll)) {
         return null;
@@ -57,20 +77,20 @@ Selectable_text_anchor.prototype.get_anchor_text = function (_scope_coll) {
         
         for (var _j = _from; _j < _to + 1; _j++) {
             var _index = _j;
-            var _word = this._selectable_text.word.get_word_by_index(_index);
+            var _word = _selectable_text_word.get_word_by_index(_index);
             var _text = _word.text();
             		
             _sentence = _sentence + _text;
             
             if (_j < _to
-                && this._selectable_text.word.is_word_next_span(_word)) {
+                && _selectable_text_word.word.is_word_next_span(_word)) {
                 _sentence = _sentence + ' ';
             }
             
             // @author Pulipuli Chen <pulipuli.chen@gmail.com> 20131230
             // 如果這裡面很多字的話，表示這是一個英文，應該加上空格
             if (_j < _to
-                && this.is_word_next_english(_word)) {
+                && _selectable_text_word.is_word_next_english(_word)) {
                 _sentence = _sentence + ' ';
                 
                 //$.test_msg("is_word_next_english", _sentence);
@@ -98,6 +118,9 @@ Selectable_text_anchor.prototype.get_anchor_text = function (_scope_coll) {
 
 /**
  * 取得部份的標註範圍文字
+ * 
+ * 21:56 檢查完畢
+ * 22:00 轉接完畢
  * @param {Scope_collection_param} _scope_coll 要選取的範圍
  * @param {Number} _max_length 最長字數，預設是50個字。低於這個數字以下不省略
  * @return {String}
@@ -144,25 +167,25 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
     
     var _focus_text = function (_index, _text) {
         if ($.inArray(_index, _focus_head_index) > -1) {
-                _text = '<span class="select select_from view">' + _text + '</span>';
+            _text = '<span class="select select_from view">' + _text + '</span>';
         }
         else if ($.inArray(_index, _focus_foot_index) > -1) {
-                _text = '<span class="select select_to view">' + _text + '</span>';
+            _text = '<span class="select select_to view">' + _text + '</span>';
         }
         else {
-                _text = '<span class="select select_middle view">' + _text + '</span>';
+            _text = '<span class="select select_middle view">' + _text + '</span>';
         }
         return _text;
     };
 	
     var _focus_single_text = function (_index, _text) {
         if ($.inArray(_index, _focus_head_index) > -1) {
-                    _text = '<span class="select select_from select_to view">' + _text + '</span>';
-            }
+            _text = '<span class="select select_from select_to view">' + _text + '</span>';
+        }
         return _text;
     };
     
-    var _word = this._selectable_text.word;
+    var _selectable_text_word = this._selectable_text_word;
     var _ellipsis = '<span class="ellipsis">...</span>';
     var _last_id = _word.word_count;
     for (var _i = 0; _i < _scope_coll.length(); _i++) {
@@ -174,25 +197,24 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
         
         for (var _j = _from; _j < _to + 1; _j++) {
             var _index = _j;
-            var _word = _word.get_word_by_index(_index);
+            var _word = _selectable_text_word.get_word_by_index(_index);
             var _text = _word.text();
             
             if (_j < _to
-                && _word.is_word_next_span(_word)) {
+                && _selectable_text_word.is_word_next_span(_word)) {
                 _text = _text + ' ';
             }
             else if ($.is_ascii(_text.substr(_text.length-1, 1))) {
                 _text = _text + ' ';
             }
             
-			
             for (var _k in _focus_index) {
                 if ($.inArray(_j, _focus_index[_k]) > -1) {
                     if (_focus_index.length > 1) {
-                            _text = _focus_text(_j, _text);
+                        _text = _focus_text(_j, _text);
                     }
                     else {
-                            _text = _focus_single_text(_j, _text);
+                        _text = _focus_single_text(_j, _text);
                     }
                 }    
             }

@@ -74,7 +74,8 @@ Selectable_text_paragraph.prototype.paragraph_structure = [];
 
 
 // -----------------------------------
-
+// 方法
+// -----------------------------------
 
 /**
  * 建立一個可以選取Word的容器
@@ -129,6 +130,81 @@ Selectable_text_paragraph.prototype.get_paragraph_id = function(_word) {
     }
     return null;
 };
+
+/**
+ * 計算段落的平均字數
+ * 
+ * 測試用，結果顯示在console端
+ */
+Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
+    
+    var _paragraph_class_name = this.paragraph_classname;
+    var _paragraph_id_prefix = this.paragraph_id_prefix;
+    
+    
+    var _first_paragraph = this._text.find('.' + _paragraph_class_name + ':first');
+    var _last_paragraph = this._text.find('.' + _paragraph_class_name + ':last');
+    
+    var _first_paragraph_id = this.get_paragraph_id(_first_paragraph);
+    var _last_paragraph_id = this.get_paragraph_id(_last_paragraph);
+    
+    var _word_classname = this.word_classname;
+    
+    var _para_ary = [];
+    
+    /*
+    for (var _i = _first_paragraph_id; _i < _last_paragraph_id + 1; _i++) {
+        _length = this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+this.punctuation_classname+'):not(.'+this.sententce_punctuation_classname+')').length;
+        
+        //$.test_msg(_length);
+        if (_length < 10)
+            continue;
+        else
+            _para_ary.push(_length);
+    }
+    
+    //輸出結果
+    $.test_msg('Total words', this.word_count);
+    
+    var _sum = 0;
+    for (var _i in _para_ary)
+        _sum = _sum + _para_ary[_i];
+    var _avg = _sum / _para_ary.length;
+    
+    $.test_msg('Per paragraph avg words', _avg);
+    */
+
+    var _this = this;   
+    var _loop = function (_i) {
+        if (_i < _last_paragraph_id + 1) {
+            _length = _this._text.find('.' + _paragraph_id_prefix + _i + ' .' + _word_classname + ':not(.span):not(.'+_this.punctuation_classname+'):not(.'+_this.sententce_punctuation_classname+')').length;
+        
+            //$.test_msg(_length);
+            if (_length > 10) {
+                _para_ary.push(_length);
+            }
+            
+            setTimeout(function () {
+                _i++;
+                _loop(_i);
+            }, 0);
+        }
+        else {
+            $.test_msg('Total words', _this.word_count);
+    
+            var _sum = 0;
+            for (_i in _para_ary) {
+                _sum = _sum + _para_ary[_i];
+            }
+            var _avg = _sum / _para_ary.length;
+            
+            $.test_msg('Per paragraph avg words', _avg);
+        }
+    };
+    
+    _loop(_first_paragraph_id);
+};
+
 
 /* End of file Selectable_text_paragraph */
 /* Location: ./system/application/views/web_apps/Selectable_text_paragraph.js */
