@@ -72,8 +72,6 @@ class Annotation_setter extends Web_apps_controller {
         //  "type":1
         //   }
             
-        
-        
         //先將權限設成管理者
         set_ignore_authorize(true);
 

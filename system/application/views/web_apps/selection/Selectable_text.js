@@ -116,6 +116,12 @@ Selectable_text.prototype.selected_middle_classname = 'middle';
 Selectable_text.prototype.paragraph_count = 0;
 
 /**
+ * 段落特徵，保存段落切割的特徵。
+ * @type {Array|number}
+ */
+Selectable_text.prototype.paragraph_feature = [];
+
+/**
  * 文字記數，初始化時使用。
  * @type {number}
  */
@@ -152,6 +158,9 @@ Selectable_text.prototype.initialize = function (_callback) {
     //$.test_msg("預測字數", _estimate_words_length);
     
     this.setup_selectable_element(_element, function () {
+        
+        // 全部處理完了
+        $.test_msg("paragraph feature", _this.paragraph_feature);
         
         KALS_context.progress.set_finished();
         
@@ -308,12 +317,19 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 if (_check_word_count < _this.word_count
                     && typeof(_node_name) === 'string' 
                     && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
+                    // 20131231 連續加兩次是刻意的
                     _this.paragraph_count++;
                     _this.paragraph_count++;
+                    
+                    //$.test_msg("deeper parse 1", _this.word_count);
+                    _this.paragraph_feature.push(_this.word_count);
                 }   
                 else if (typeof(_node_name) === 'string'
                     && _node_name.toLowerCase() === 'br') {
                     _this.paragraph_count++;
+                    
+                    //$.test_msg("deeper parse 2", _this.word_count);
+                    _this.paragraph_feature.push(_this.word_count);
                 }
 				
                 _i++;

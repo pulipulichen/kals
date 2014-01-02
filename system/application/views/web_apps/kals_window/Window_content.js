@@ -334,7 +334,7 @@ Window_content.prototype.set_error = function (_message) {
     
     var _error_row = _ui.find('.' + KALS_window.ui.error_row_classname + ':first');
     
-    if (_error_row.length == 1) {
+    if (_error_row.length === 1) {
         _error_row.remove();
     }
     

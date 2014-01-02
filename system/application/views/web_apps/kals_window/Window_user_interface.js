@@ -74,16 +74,20 @@ Window_user_interface.prototype._setup_text_input = function (_input, _default_v
     return _input;
 };
 
-Window_user_interface.prototype.check_input = function (_input) {
+Window_user_interface.prototype.check_input = function (_input, _force_empty) {
     
     //$.test_msg('win ui.check_input()', _input.length);
+    
+    if (_force_empty === undefined || typeof _force_empty !== "boolean") {
+        _force_empty = true;
+    }
     
     _input.change(function () {
         var _input = $(this);
         
         //$.test_msg('window ui.check_input()', _input.val());
         
-        if (_input.val() === '') {
+        if (_input.val() === '' || _force_empty) {
             _input.addClass('empty');
         }
         else {

@@ -268,7 +268,10 @@ Reading_guide.prototype.select_this_step = function (_step_list) {
         return this;
     }
     
-    _step_list.addClass("read");
+    this.clear_read_now();
+    
+    _step_list.addClass("read")
+            .addClass("now");
     //var _index = _step_list.find.attr("kals-field-repeat-index");
     //_step_list.css("border", "1px solid red");
     var _index = this.get_ui(".step-list").index(_step_list);
@@ -282,6 +285,11 @@ Reading_guide.prototype.select_this_step = function (_step_list) {
     //this.set_field("step_index", _index);
     this.set_step_index(_index);
     
+    return this;
+};
+
+Reading_guide.prototype.clear_read_now = function () {
+    this.get_ui(".read.now").removeClass("now");
     return this;
 };
 
@@ -308,6 +316,10 @@ Reading_guide.prototype.goto_next_step = function () {
     return this;
 };
 
+/**
+ * 前往下一步
+ * @returns {Reading_guide.prototype}
+ */
 Reading_guide.prototype.goto_prev_step = function () {
     var _index = this.get_field("step_index");
     _index--;

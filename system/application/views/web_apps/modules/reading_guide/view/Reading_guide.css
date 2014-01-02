@@ -16,3 +16,6 @@ li {
 li.read {
     color: mediumvioletred;
 }
+li.read.now {
+    border: 1px solid mediumvioletred;
+}

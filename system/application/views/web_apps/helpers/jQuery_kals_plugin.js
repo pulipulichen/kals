@@ -14,7 +14,7 @@
  */
 
 // Deny defined again.
-if (typeof($jquery_extends) == 'undefined') {
+if (typeof($jquery_extends) === 'undefined') {
 
 /**
  * 顯示測試訊息
@@ -31,7 +31,7 @@ jQuery.test_msg = function (_title, _test) {
     
     var _info_box = this('.KALS.info-box:first');
 	
-    if (_info_box.length == 0) {   
+    if (_info_box.length === 0) {   
         var _toggle = $('<div></div>')
             .css('height', '15px')
             .dblclick(function () {
@@ -2424,16 +2424,27 @@ jQuery.find_and_replace_youtube_links = function (_message) {
  */
 jQuery.embad_youtube_script = function(_youtube_id)
 {
-	$.test_msg('embed_youtube_script', _youtube_id);
+    $.test_msg('embed_youtube_script', _youtube_id);
     return '<object height="250" width="300">'
-	   //+ '<param name="movie" value="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
-	   + '<param name="movie" value="' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
-	   + '<param name="allowFullScreen" value="true">'
-	   + '<param name="allowscriptaccess" value="always">'
-	   //+ '<embed allowfullscreen="true" allowscriptaccess="always" src="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
-	   + '<embed allowfullscreen="true" allowscriptaccess="always" src="' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
-	   + '</object>';   
+           //+ '<param name="movie" value="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
+           + '<param name="movie" value="' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
+           + '<param name="allowFullScreen" value="true">'
+           + '<param name="allowscriptaccess" value="always">'
+           //+ '<embed allowfullscreen="true" allowscriptaccess="always" src="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
+           + '<embed allowfullscreen="true" allowscriptaccess="always" src="' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
+           + '</object>';   
 };
+
+/**
+ * 檢查是否是email
+ * @param {String} _email
+ * @returns {Boolean}
+ * @author Pulipuli Chen 20140102
+ */
+jQuery.is_email = function (_email) {
+    var _regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return _regex.test(_email);
+}
 
 $.widget("ui.dialog", $.ui.dialog, {
 	_allowInteraction: function(event) {
