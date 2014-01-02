@@ -162,5 +162,9 @@ KALS_text.prototype.set_select = function (_scope_coll) {
     return this;
 };
 
+KALS_text.prototype.get_sentence_structure = function () {
+    return this.selection.text.sentence.get_structure();
+};
+
 /* End of file KALS_text */
 /* Location: ./system/application/views/web_apps/KALS_text.js */

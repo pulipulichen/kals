@@ -33,7 +33,6 @@ class reading_guide extends KALS_model {
         //$limit = 5;
         //$search->set_limit($limit);
         
-        
         $order_type_id = 6;
         $desc = FALSE;
         $search->add_order($order_type_id, $desc);

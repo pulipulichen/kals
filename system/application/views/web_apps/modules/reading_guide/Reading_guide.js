@@ -368,14 +368,17 @@ Reading_guide.prototype.get_step_index = function () {
  * @returns {Reading_guide}
  */
 Reading_guide.prototype.open_whole_annotations = function () {
+    
+    var _structure = KALS_text.get_sentence_structure();
+    //$.test_msg("準備開啟所有標註", _structure);
     var _data = {
-        "sentence_structure": [4,77]
+        "sentence_structure": _structure
     };
     var _this = this;
     this.request_post("whole_annotations", _data, function (_data) {
         var _steps = _data.steps;
         
-        $.test_msg("讀取到了什麼呢？", _steps);
+        //$.test_msg("讀取到了什麼呢？", _steps);
         _this.setup_steps(_steps);
     });
     
