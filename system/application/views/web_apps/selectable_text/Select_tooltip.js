@@ -9,8 +9,9 @@
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/10/15 下午 08:23:13
  * @extends {Tooltip_modal}
+ * @param {Selectable_text} _selectable_text 父物件
  */
-function Select_tooltip() {
+function Select_tooltip(_selectable_text) {
     
     Tooltip_modal.call(this);
     
@@ -23,22 +24,47 @@ function Select_tooltip() {
         _this.reset();
     });
 	
-	setTimeout(function () {
-		KALS_text.selection.select.add_listener("select", function() {
-			_this.reset();
-		});
-		
-	    KALS_text.selection.select.add_listener("clear", function() {
-	        _this.reset();
-	    });
+    setTimeout(function () {
+        KALS_text.selection.select.add_listener("select", function() {
+                _this.reset();
+        });
+
+        KALS_text.selection.select.add_listener("clear", function() {
+            _this.reset();
+        });
     }, 0);
+    
+    this._selectable_text = _selectable_text;
 }
 
 Select_tooltip.prototype = new Tooltip_modal();
 
+/**
+ * 父物件
+ * @type {Selectable_text}
+ */
+Select_tooltip.prototype._selectable_text;
+
+// -----------------------------------
+// 內部參數設定
+// -----------------------------------
+
+/**
+ * 允許選取
+ * @type Boolean
+ */
 Select_tooltip.prototype.enable_select = false;
 
+/**
+ * 開始的ID
+ * @type String
+ */
 Select_tooltip.prototype.tooltip_id = 'kals_select_tooltip';
+
+// -----------------------------------
+// 方法
+// -----------------------------------
+
 
 /**
  * 重置成為初始狀態
@@ -78,7 +104,7 @@ Select_tooltip.prototype._$get_config = function () {
        
        var _trigger_class_name = this.trigger_classname;
        
-       if (typeof(TRIGGER_TOUCHSTART_EVENT_LOCK) == 'undefined')
+       if (typeof(TRIGGER_TOUCHSTART_EVENT_LOCK) === 'undefined')
        {
            $('.' + _trigger_class_name).live('touchstart', function (_event) {
                _event.preventDefault();
@@ -93,10 +119,10 @@ Select_tooltip.prototype._$get_config = function () {
             _this = this;
         
         var _tip = _this.getTip();
-        if (_tip.length == 0)
+        if (_tip.length === 0)
             return;
             
-        if (_select_tooltip.enable_select == false) {
+        if (_select_tooltip.enable_select === false) {
             return;
         }
         
@@ -122,7 +148,7 @@ Select_tooltip.prototype._$get_config = function () {
 	        
 	        //在顯示之前，決定是否要調整
 	        var _selected_classname = 'selected';
-	        if (KALS_text.selection.select._select_from != null) {
+	        if (KALS_text.selection.select._select_from !== null) {
 	            _tip.addClass(_selected_classname);
 	        }
 	        else {
@@ -143,7 +169,7 @@ Select_tooltip.prototype._$get_config = function () {
     var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
     _config['onBeforeHide'] = function (_this) {
         
-        if (_select_tooltip.enable_select == false) {
+        if (_select_tooltip.enable_select === false) {
             return;
         }
         
@@ -152,8 +178,8 @@ Select_tooltip.prototype._$get_config = function () {
             _this = this;
         //}
         
-        if (typeof(_this.getTrigger) != 'function'
-            && typeof(this.getTrigger) == 'function')
+        if (typeof(_this.getTrigger) !== 'function'
+            && typeof(this.getTrigger) === 'function')
             _this.getTrigger = this.getTrigger;
         var _trigger = _this.getTrigger();
         _trigger.removeClass('tooltip-trigger-hover');
@@ -463,6 +489,7 @@ Select_tooltip.prototype._$create_ui = function ()
     //var _word_id_prefix = Selection_manager.prototype.word_id_prefix;
     //var _word_id_prefix = Selectable_text_word.prototype.word_id_prefix;
     //var _word_id_prefix = KALS_CONFIG.classname.selectable_text.word_id_prefix;
+    var _selectable_text = this._selectable_text;
     
     var _select_event = function (_event)
     {
@@ -473,7 +500,8 @@ Select_tooltip.prototype._$create_ui = function ()
         var _tooltip = $('#' + _tooltip_id);
         var _word_id = _tooltip.attr('word_id');
         //var _word = $('#' + _word_id_prefix + _word_id );
-        var _word = KALS_text.get_word(_word);
+        var _word = _selectable_text.get_word(_word);
+        
         _word.tooltip().hide();
         
         //呼叫Selection_manager.listen_select()事件
@@ -491,7 +519,7 @@ Select_tooltip.prototype._$create_ui = function ()
         var _tooltip = $('#' + _tooltip_id);
         var _word_id = _tooltip.attr('word_id');
         //var _word = $('#' + _word_id_prefix + _word_id );
-        var _word = KALS_text.get_word(_word);
+        var _word = _selectable_text.get_word(_word);
         _word.tooltip().hide();
         
         KALS_text.selection.select.cancel_select();
@@ -521,9 +549,9 @@ Select_tooltip.prototype._$create_ui = function ()
 Select_tooltip.prototype._item = null;
 
 Select_tooltip.prototype._setup_item = function () {
-	var _item = new List_item_tooltip();
-	this._item = _item;
-	return _item;
+    var _item = new List_item_tooltip();
+    this._item = _item;
+    return _item;
 };
 
 /**

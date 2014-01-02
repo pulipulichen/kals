@@ -15,7 +15,7 @@ function Selectable_text(_selector) {
     KALS_user_interface.call(this);
     
     this.locks = [];
-    this.child('tooltip', new Select_tooltip());
+    this.child('tooltip', new Select_tooltip(this));
     
     if ($.isset(_selector)) {
         this.set_text(_selector);
@@ -760,6 +760,16 @@ Selectable_text.prototype.set_class = function (_scope_coll, _classname) {
     return this.scope.set_class(_scope_coll, _classname);
 };
 
+/**
+ * 將範圍轉換成jQuery陣列來選取
+ * @param {Scope_collection_param} _scope_coll
+ * @type {jQuery[][]} 注意，陣列是兩階層喔！
+ * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
+ */
+Selectable_text.prototype.get_words_by_scope_coll = function (_scope_coll) {
+    return this.scope.get_words_by_scope_coll(_scope_coll);
+};
+
 // ---------------------------------------
 // Selectable_text_paragraph
 // ---------------------------------------
@@ -863,6 +873,81 @@ Selectable_text.prototype.get_word_by_index = function(_index) {
  */
 Selectable_text.prototype.get_word = function (_word_id) {
     return this.text.get_word(_word_id);
+};
+
+/**
+ * 取得word id，但似乎沒有人使用他
+ * @param {jQuery} _word
+ */
+Selectable_text.prototype.get_word_id = function (_word) {
+    return this.word.get_word_id(_word);
+};
+
+/**
+ * 如果下一個字是英文的話
+ * 
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
+Selectable_text.prototype.is_word_next_english = function (_word) {
+    return this.word.is_word_next_english(_word);
+};
+
+/**
+ * 如果下一個字是空格的話
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
+Selectable_text.prototype.is_word_next_span = function (_word) {
+    return this.word.is_word_next_span(_word);
+};
+
+/**
+ * 取得下一個span
+ * @param {jQuery} _word
+ * @returns {jQuery|null}
+ */
+Selectable_text.prototype.get_word_next_span = function (_word) {
+    return this.word.get_word_next_span(_word);
+};
+
+/**
+ * 建立一個不可選取的文字
+ * 
+ * @param {String} _text
+ * @type {jQuery}
+ */
+Selectable_text.prototype.create_span_word = function(_text) {
+    return this.word.create_span_word(_text);
+};
+
+/**
+ * 建立一個可選取的文字
+ * @param {number} _para_id Paragraph ID
+ * @param {number} _point_id Word ID
+ * @param {string} _text 內容文字
+ * @type {jQuery}
+ */
+Selectable_text.prototype.create_selectable_word = function(_para_id, _point_id, _text) {
+    return this.word.create_selectable_word(_para_id, _point_id, _text);
+};
+
+/**
+ * 設定Word的Tooltip
+ * @param {jQuery|HTMLElement} _word
+ * @returns {jQuery}
+ */
+Selectable_text.prototype.setup_word_tooltip = function (_word) {
+    return this.word.setup_word_tooltip(_word);
+};
+
+/**
+ * 估算大概會多少字
+ * @param {String} _text
+ * @returns {Number}
+ */
+Selectable_text.prototype.get_estimate_total_words = function (_text) {
+    return this.word.get_estimate_total_words(_text);
 };
 
 // -------------------------------------

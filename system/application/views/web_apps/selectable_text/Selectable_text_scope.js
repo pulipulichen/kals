@@ -19,7 +19,7 @@
 function Selectable_text_scope(_selectable_text) {
     
     this._selectable_text = _selectable_text;
-    this._word = _selectable_text.word;
+    this._selectable_text_word = _selectable_text.word;
     return this;
 }
 
@@ -366,6 +366,39 @@ Selectable_text_scope.prototype.get_recommend_scope_coll = function (_scope_coll
     return _recommend_scope_coll;
 };
 
+/**
+ * 將範圍轉換成jQuery陣列來選取
+ * 
+ * 2322 檢查完成，轉接完成
+ * @param {Scope_collection_param} _scope_coll
+ * @type {jQuery[][]} 注意，陣列是兩階層喔！
+ * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
+ */
+Selectable_text_scope.prototype.get_words_by_scope_coll = function (_scope_coll) {
+    
+    var _coll = [];
+    
+    if ($.is_null(_scope_coll)) {
+        return _coll;
+    }
+    
+    var _index_array = _scope_coll.get_index_array();
+    
+    //$.test_msg('Selectable_text.get_words_by_scope_coll()', _index_array);
+    
+    for (var _i in _index_array) {
+        var _ary = [];
+        var _index_ary = _index_array[_i];
+        for (var _j in _index_ary) {
+            var _index = _index_ary[_j];
+            var _word = this._selectable_text_word.get_word_by_index(_index);
+            _ary.push(_word);
+        }
+        _coll.push(_ary);
+    }
+    
+    return _coll;
+};
 
 /* End of file Selectable_text_scope */
 /* Location: ./system/application/views/web_apps/Selectable_text_scope.js */

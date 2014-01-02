@@ -108,8 +108,9 @@ Selectable_text_word.prototype.get_word = function (_word_id) {
 
 /**
  * 取得word id，但似乎沒有人使用他
+ * 
+ * 2317 轉接完成，檢查完成
  * @param {jQuery} _word
- * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
  */
 Selectable_text_word.prototype.get_word_id = function (_word) {
     if ($.is_object(_word)) {
@@ -131,9 +132,11 @@ Selectable_text_word.prototype.get_word_id = function (_word) {
 
 /**
  * 如果下一個字是英文的話
+ * 
+ * 2316 檢查完成
+ * 2317 轉接完成
  * @param {jQuery} _word
  * @returns {Boolean}
- * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
  */
 Selectable_text_word.prototype.is_word_next_english = function (_word) {
     var _word_id = this.get_word_id(_word);
@@ -153,9 +156,10 @@ Selectable_text_word.prototype.is_word_next_english = function (_word) {
 
 /**
  * 如果下一個字是空格的話
+ * 
+ * 2318 轉接完成，檢查完成
  * @param {jQuery} _word
  * @returns {Boolean}
- * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
  */
 Selectable_text_word.prototype.is_word_next_span = function (_word) {
     var _next = _word.next();
@@ -167,6 +171,13 @@ Selectable_text_word.prototype.is_word_next_span = function (_word) {
     }
 };
 
+/**
+ * 取得下一個span
+ * 
+ * 2319 檢查完成，轉接完成
+ * @param {jQuery} _word
+ * @returns {jQuery|null}
+ */
 Selectable_text_word.prototype.get_word_next_span = function (_word) {
     var _next = _word.next();
     //_next.css('background-color', 'red');
@@ -180,39 +191,9 @@ Selectable_text_word.prototype.get_word_next_span = function (_word) {
 };
 
 /**
- * 將範圍轉換成jQuery陣列來選取
- * @param {Scope_collection_param} _scope_coll
- * @type {jQuery[][]} 注意，陣列是兩階層喔！
- * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
- */
-Selectable_text_word.prototype.get_words_by_scope_coll = function (_scope_coll) {
-    
-    var _coll = [];
-    
-    if ($.is_null(_scope_coll)) {
-        return _coll;
-    }
-    
-    var _index_array = _scope_coll.get_index_array();
-    
-    //$.test_msg('Selectable_text.get_words_by_scope_coll()', _index_array);
-    
-    for (var _i in _index_array) {
-        var _ary = [];
-        var _index_ary = _index_array[_i];
-        for (var _j in _index_ary) {
-            var _index = _index_ary[_j];
-            var _word = this.get_word_by_index(_index);
-            _ary.push(_word);
-        }
-        _coll.push(_ary);
-    }
-    
-    return _coll;
-};
-
-/**
  * 建立一個不可選取的文字
+ * 
+ * 2323 轉接完成，檢查完成
  * @param {String} _text
  * @type {jQuery}
  */
@@ -228,6 +209,8 @@ Selectable_text_word.prototype.create_span_word = function(_text) {
 
 /**
  * 建立一個可選取的文字
+ * 
+ * 2324 轉接完畢，檢查完畢
  * @param {number} _para_id Paragraph ID
  * @param {number} _point_id Word ID
  * @param {string} _text 內容文字
@@ -246,7 +229,7 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
     var _t_text = document.createTextNode(_text);
     _word.appendChild(_t_text);
 
-    _word = this._selectable_text.setup_word_tooltip(_word);
+    _word = this.setup_word_tooltip(_word);
 
     /**
      * 加入統計目前字串次數的功能
@@ -466,6 +449,8 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
 
 /**
  * 設定Word的Tooltip
+ * 
+ * 2325 轉接完畢，檢查完畢
  * @param {jQuery|HTMLElement} _word
  * @returns {jQuery}
  */
@@ -480,6 +465,8 @@ Selectable_text_word.prototype.setup_word_tooltip = function (_word) {
 
 /**
  * 估算大概會多少字
+ * 
+ * 2326 檢查完畢，轉接完畢
  * @param {String} _text
  * @returns {Number}
  */

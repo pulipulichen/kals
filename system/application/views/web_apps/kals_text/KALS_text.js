@@ -16,9 +16,9 @@ function KALS_text(_selector) {
     
     KALS_user_interface.call(this);
     
-	if (typeof(_selector) === "undefined") {
-		_selector = this.get_selector();	
-	}
+    if (typeof(_selector) === "undefined") {
+        _selector = this.get_selector();	
+    }
     //$.test_msg('KALS_text()', _selector);
     
     _selector = this.filter_selector(_selector);
