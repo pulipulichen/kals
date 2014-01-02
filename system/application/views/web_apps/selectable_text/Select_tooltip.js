@@ -461,7 +461,8 @@ Select_tooltip.prototype._$create_ui = function ()
     var _this = this;
     
     //var _word_id_prefix = Selection_manager.prototype.word_id_prefix;
-    var _word_id_prefix = Selectable_text.prototype.word_id_prefix;
+    //var _word_id_prefix = Selectable_text_word.prototype.word_id_prefix;
+    //var _word_id_prefix = KALS_CONFIG.classname.selectable_text.word_id_prefix;
     
     var _select_event = function (_event)
     {
@@ -471,7 +472,8 @@ Select_tooltip.prototype._$create_ui = function ()
         //先關掉上一個的word的Tooltip
         var _tooltip = $('#' + _tooltip_id);
         var _word_id = _tooltip.attr('word_id');
-        var _word = $('#' + _word_id_prefix + _word_id );
+        //var _word = $('#' + _word_id_prefix + _word_id );
+        var _word = KALS_text.get_word(_word);
         _word.tooltip().hide();
         
         //呼叫Selection_manager.listen_select()事件
@@ -488,7 +490,8 @@ Select_tooltip.prototype._$create_ui = function ()
         
         var _tooltip = $('#' + _tooltip_id);
         var _word_id = _tooltip.attr('word_id');
-        var _word = $('#' + _word_id_prefix + _word_id );
+        //var _word = $('#' + _word_id_prefix + _word_id );
+        var _word = KALS_text.get_word(_word);
         _word.tooltip().hide();
         
         KALS_text.selection.select.cancel_select();

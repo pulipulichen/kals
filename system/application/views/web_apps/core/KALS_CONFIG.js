@@ -211,60 +211,65 @@ DEFAULT_KALS_CONFIG = {
         startupFocus: false,
         uiColor : '#CB842E'
     },
-	//標註列表設定
-	annotation_list: {
-            //筆記顯示設定
-            note: {
-                simple_max_length: 150,
-                //允許顯示的HTML標籤
-                allow_html_tags: ["a", "img", "iframe"]
-            }
-	},
-	/**
-	 * 需要初始化的事件名稱
-	 */
-	view: {
-            init_attrs: [
-                'class',
-                'value',
-                //'style',
-                'src',
-                'height',
-                'width',
-                'alt',
-                'title',
-                'kals-style'
-            ],
-            event_names: [
-                'click',
-                'mouseover',
-                'mouseout',
-                'mouseenter',
-                'blur',
-                'focus',
-                'change',
-                'dblclick',
-                'submit'
-            ],
-            kals_events: {
-                'field_set': 'kals-event-field-set',
-                'field_reset': 'kals-event-field-reset'
-            },
-            kals_attrs: {
-                'field': 'kals-field',
-                'field_parent': 'kals-field-parent',
-                'field_repeat': 'kals-field-repeat',
-                'repeat_index': 'kals-field-repeat-index',
-                'attr_prefix': 'kals-attr-',
-                'origin_value_postfix': '-origin-value',
-                'event_prefix': 'kals-event-'
-            },
-            /**
-             * 找尋變數的規則
-             * @type {RegExp}
-             */
-            regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
-	}   //view: {
+    //標註列表設定
+    annotation_list: {
+        //筆記顯示設定
+        note: {
+            simple_max_length: 150,
+            //允許顯示的HTML標籤
+            allow_html_tags: ["a", "img", "iframe"]
+        }
+    },
+    
+    // --------------------------
+    // KALS framework
+    // --------------------------
+    
+    /**
+     * 需要初始化的事件名稱
+     */
+    view: {
+        init_attrs: [
+            'class',
+            'value',
+            //'style',
+            'src',
+            'height',
+            'width',
+            'alt',
+            'title',
+            'kals-style'
+        ],
+        event_names: [
+            'click',
+            'mouseover',
+            'mouseout',
+            'mouseenter',
+            'blur',
+            'focus',
+            'change',
+            'dblclick',
+            'submit'
+        ],
+        kals_events: {
+            'field_set': 'kals-event-field-set',
+            'field_reset': 'kals-event-field-reset'
+        },
+        kals_attrs: {
+            'field': 'kals-field',
+            'field_parent': 'kals-field-parent',
+            'field_repeat': 'kals-field-repeat',
+            'repeat_index': 'kals-field-repeat-index',
+            'attr_prefix': 'kals-attr-',
+            'origin_value_postfix': '-origin-value',
+            'event_prefix': 'kals-event-'
+        },
+        /**
+         * 找尋變數的規則
+         * @type {RegExp}
+         */
+        regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
+    }   //view: {
 };
 
 /**

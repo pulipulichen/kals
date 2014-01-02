@@ -332,26 +332,26 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         if (_child_obj.nodeName !== '#text' &&
             _this.element_has_class(_child_obj, _para_classname) === false) {
         
-            var _check_word_count = _this.word_count;
+            var _check_word_count = _selectable_text_word.word_count;
             
             var _deeper_parse = function () {
                 var _node_name = _child_obj.nodeName;
-                if (_check_word_count < _this.word_count
+                if (_check_word_count < _selectable_text_word.word_count
                     && typeof(_node_name) === 'string' 
                     && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
                     // 20131231 連續加兩次是刻意的
                     _selectable_text_paragraph.paragraph_count++;
                     _selectable_text_paragraph.paragraph_count++;
                     
-                    //$.test_msg("deeper parse 1", _this.word_count);
-                    _selectable_text_paragraph.paragraph_structure.push(_this.word_count);
+                    //$.test_msg("deeper parse 1", _selectable_text_word.word_count);
+                    _selectable_text_paragraph.paragraph_structure.push(_selectable_text_word.word_count);
                 }   
                 else if (typeof(_node_name) === 'string'
                     && _node_name.toLowerCase() === 'br') {
                     _selectable_text_paragraph.paragraph_count++;
                     
-                    //$.test_msg("deeper parse 2", _this.word_count);
-                    _selectable_text_paragraph.paragraph_structure.push(_this.word_count);
+                    //$.test_msg("deeper parse 2", _selectable_text_word.word_count);
+                    _selectable_text_paragraph.paragraph_structure.push(_selectable_text_word.word_count);
                 }
 				
                 _i++;
@@ -382,7 +382,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
 
             var _next_element = null;
             
-            _next_element = _this.create_selectable_paragraph(_this.paragraph_count);
+            _next_element = _this.create_selectable_paragraph(_selectable_text_paragraph.paragraph_count);
             $(_next_element).hide();
             
             /**
@@ -459,7 +459,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     else if ($.match_punctuation(_t)) {
                             $(_t_element).addClass(_punctuation_classname);
                     }   //else if ($.match_punctuation(_t)) {
-                    _this.word_count++;
+                    _selectable_text_word.word_count++;
                 }   //if ($.match_space(_t) === false) {
                 else {
                     _t_element = _this.create_span_word(_t);
@@ -826,6 +826,44 @@ Selectable_text.prototype.get_sentence_index = function () {
     return this.sententce.get_sentence_index();
 };
 
+// -------------------------------------
+// Selectable_text_word
+// -------------------------------------
+
+/**
+ * 取得word_id_prefix
+ * @returns {Selectable_text_word.word_id_prefix}
+ */
+Selectable_text.prototype.get_word_id_prefix = function () {
+    return this.word.get_word_id_prefix();
+};
+
+/**
+ * 讓所有文字都保持在可選取的狀態
+ * 
+ * @param {function} _callback
+ */
+Selectable_text.prototype.setup_word_selectable = function (_callback) {
+    return this.word.setup_word_selectable(_callback);
+};
+
+/**
+ * 從ID取得Word
+ * @param {number} _id
+ * @return {jQuery}
+ */
+Selectable_text.prototype.get_word_by_index = function(_index) {
+    return this.word.get_word_by_index(_index);
+};
+
+/**
+ * 取得指定ID的word
+ * @param {int} _word_id
+ * @returns {jQuery}
+ */
+Selectable_text.prototype.get_word = function (_word_id) {
+    return this.text.get_word(_word_id);
+};
 
 // -------------------------------------
 // Selectable_text_anchor

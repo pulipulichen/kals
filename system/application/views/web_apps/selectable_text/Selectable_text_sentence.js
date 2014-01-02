@@ -76,11 +76,18 @@ Selectable_text_sentence.prototype.sententce_structure = [];
  * 取得句子位置的索引
  * 
  * 用來分析標註所在句子，跟段落paragraph是不一樣的。
+ * 布丁測試用
+ * 
+ * 2243 轉接完成
+ * 2246 檢查完成
+ * 
  * @author Pudding Chen 20121228
  * @return {Array}
  */
 Selectable_text_sentence.prototype.get_sentence_index = function () {
-	
+    
+    var _selectable_text_word = this._selectable_text.word;
+    
     //如果已經作過這樣的分析的話
     if (this._text.find('.'+this.sententce_index_classname).length > 0)
     {
@@ -90,7 +97,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
             {
                     var _sentence = _sentences.eq(_i);
                     var _word_id = _sentence.attr('id');
-                    _word_id = _word_id.substr(this.word_id_prefix.length, _word_id);
+                    _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
                     _word_id = parseInt(_word_id,10);
                     _sentence_index.push(_word_id);
             }
@@ -112,8 +119,8 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     }
 
     //再來看段落的最後一個字
-    var _last_word = this._text.find('.'+this.word_classname+':last');
-    var _last_paragraph = _last_word.parents("."+this.paragraph_classname+":first");
+    var _last_word = this._text.find('.'+_selectable_text_word.word_classname+':last');
+    var _last_paragraph = _last_word.parents("."+_selectable_text_word.paragraph_classname+":first");
 
     //var _last_paragraph_classname = _last_paragraph.attr('className');
     //var _paragraph_classname_header = this.paragraph_classname + ' ' + this.paragraph_id_prefix;  
@@ -126,7 +133,10 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
 
         if (_paragraph.length === 1) 
         {
-            _last_word = _paragraph.find('.'+this.word_classname+'.tooltip-trigger:last:not(.'+this.sententce_punctuation_classname+')');
+            _last_word = _paragraph.find('.'
+                    + _selectable_text_word.word_classname 
+                    + '.tooltip-trigger:last:not(.' 
+                    + this.sententce_punctuation_classname+')');
 
             if (_last_word.length > 0) {
                 _id = _last_word.attr('id');
@@ -147,7 +157,9 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     //檢查測試結果用
     for (_i = 0; _i < _sentence_index.length; _i++) {
 
-        var _sentense_index_word = $('#' + this.word_id_prefix + _sentence_index[_i]);
+        var _sentense_index_word = $('#' 
+                + _selectable_text_word.word_id_prefix 
+                + _sentence_index[_i]);
         _sentense_index_word.addClass(this.sententce_index_classname);
 
         //檢測找到的字是否真的是分句點，平時不使用應關掉
