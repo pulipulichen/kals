@@ -193,19 +193,42 @@ Reading_guide.prototype.setup_steps = function (_coll) {
     //this.set_field("step_index", -1);
     this.reset_step_index();
     
-    if ($.is_array(_coll)) {
+    _coll = this._filter_scope_coll(_coll);
+    
+    //$.test_msg("設定步驟參數", _coll.annotations.length);
+    
+    
+    var _output_scope_coll = [];
+    
+    for (var _i in _coll) {
+        var _scope = _coll[_i];
+        var _step_list = this.create_step_list(_scope, _i);
+        _output_scope_coll.push(_step_list);
+    }
+    this.set_field("step_list", _output_scope_coll);
+    
+   //this.set_field("annotation_step", "12112");
+    
+    //var _this = this;
+    this.open(function () {
+        //_this.set_field("annotation_step", "12112");
+    });
+    return this;
+};
+
+Reading_guide.prototype._filter_scope_coll = function (_coll) {
+    
+    var _output_coll = [];
+    if ($.is_array(_coll) && _coll.length > 0 && typeof(_coll[0].annotation_id) !== "undefined") {
         //$.test_msg("是JSON陣列嗎？", _coll);
         _coll = new Annotation_collection_param(_coll);
     }
-    
-    //$.test_msg("設定步驟參數", _coll.annotations.length);
     
     if ($.is_class(_coll, "Annotation_collection_param")) {
         //var _scope_coll = _coll.export_scope_colleciotn_json();
         var _scope_coll = _coll.get_scope_colleciotn_param_array();
         //$.test_msg("匯出位置參數", _scope_coll.length);
         
-        var _output_scope_coll = [];
         var _last_scope_json = null;
         for (var _s in _scope_coll) {
             var _scope_coll_param = _scope_coll[_s];
@@ -214,32 +237,24 @@ Reading_guide.prototype.setup_steps = function (_coll) {
             if (_scope_json === _last_scope_json) {
                 continue;
             }
-            //else {
-            //    $.test_msg("沒有差異1", _scope_json);
-            //    $.test_msg("沒有差異2", _last_scope_json);
-            //}
             
-            var _step_list = this.create_step_list(_scope_coll_param, _s);
-            _output_scope_coll.push(_step_list);
+            _output_coll.push(_scope_coll_param);
             
             _last_scope_json = _scope_json;
         }
-        
-        //$.test_msg("取得位置？", _output_scope_coll);
-        this.set_field("step_list", _output_scope_coll);
     }
-    else {
-        $.test_msg("什麼參數都不是");
-    }
+    else if ($.is_array(_coll)) {
+        $.test_msg('是普通的陣列嗎？');
+        for (var _c in _coll) {
+            var _from = _coll[_c][0];
+            var _to = _coll[_c][1];
+            var _scope_coll = new Scope_collection_param(_from, _to);
+            _output_coll.push(_scope_coll);
+        }
         
+    }
     
-   //this.set_field("annotation_step", "12112");
-    
-    var _this = this;
-    this.open(function () {
-        //_this.set_field("annotation_step", "12112");
-    });
-    return this;
+    return _output_coll;
 };
 
 /**
@@ -368,6 +383,22 @@ Reading_guide.prototype.get_step_index = function () {
  * @returns {Reading_guide}
  */
 Reading_guide.prototype.open_whole_annotations = function () {
+    //$.test_msg("準備開啟所有標註", _structure);
+    var _data = {};
+    var _this = this;
+    this.request_get("whole_annotations", _data, function (_data) {
+        var _steps = _data.steps;
+        _this.setup_steps(_steps);
+    });
+    
+    return this;
+};
+
+/**
+ * 開啟所有的標註，以句子切割
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype.open_whole_annotations_by_sentence = function () {
     
     var _structure = KALS_text.get_sentence_structure();
     //$.test_msg("準備開啟所有標註", _structure);
@@ -375,10 +406,11 @@ Reading_guide.prototype.open_whole_annotations = function () {
         "sentence_structure": _structure
     };
     var _this = this;
-    this.request_post("whole_annotations", _data, function (_data) {
+    this.request_post("whole_annotations_by_sentence", _data, function (_data) {
         var _steps = _data.steps;
         
-        //$.test_msg("讀取到了什麼呢？", _steps);
+        $.test_msg("讀取到了什麼呢？ from_index", _data.from_index_array);
+        $.test_msg("讀取到了什麼呢？ scope", _steps);
         _this.setup_steps(_steps);
     });
     

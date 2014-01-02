@@ -126,7 +126,8 @@ Init_profile.prototype._test = [
         //    $(".button.dialog-option.guide-button").click();
         //});
         
-        KALS_text.guide.open_whole_annotations();
+        //KALS_text.guide.open_whole_annotations();
+        KALS_text.guide.open_whole_annotations_by_sentence();
     }
     /**
      * 測試樣板功能
