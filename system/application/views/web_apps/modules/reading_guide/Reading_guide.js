@@ -417,5 +417,28 @@ Reading_guide.prototype.open_whole_annotations_by_sentence = function () {
     return this;
 };
 
+
+/**
+ * 開啟Apriopri ALL演算法的標註
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype.open_apriori_all = function () {
+    
+    var _structure = KALS_text.get_sentence_structure();
+    $.test_msg("準備開啟 apriori_all", _structure);
+    var _data = {
+        "sentence_structure": _structure
+    };
+    var _this = this;
+    this.request_post("apriori_all", _data, function (_data) {
+        var _steps = _data.steps;
+        
+        $.test_msg("讀取到了什麼呢？ scope", _steps);
+        //_this.setup_steps(_steps);
+    });
+    
+    return this;
+};
+
 /* End of file Reading_guide */
 /* Location: ./system/application/views/web_apps/extension/Reading_guide/Reading_guide.js */

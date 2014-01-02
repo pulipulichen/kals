@@ -232,7 +232,7 @@ class KALS_model extends Web_apps_controller {
     public function request_post($action, $callback = NULL) {
         
         $index = 'kals_model_' . $action;
-        if ($this->_is_callback($callback) == false)
+        if ($this->_is_callback($callback) === false)
         {
             //從POST中取得JSON的資料
             $json = $this->_get_post_json();

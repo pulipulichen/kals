@@ -100,11 +100,12 @@ KALS_util.ajax_get = function (_config) {
     $.test_msg('ajax_get', _url);
     
     var _retry_timer;
-    var _retry_exception = function () {
-        $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
-	    var _exception = new KALS_exception('exception.retry_exception');
-        _this.show_exception(_exception, _url);
-    };
+    //var _retry_exception = function () {
+    //    $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
+    //    var _exception = new KALS_exception('exception.retry_exception');
+    //    _this.show_exception(_exception, _url);
+    //};
+    //var _retry_exception = this.re
     
     var _get_json = function() {
         
@@ -160,7 +161,7 @@ KALS_util.ajax_get = function (_config) {
                         _retry_timer = null;
                         delete _retry_timer;
                     }
-                    _retry_exception();
+                    _this._retry_exception(_url);
                     return;
                 }
                 
@@ -262,33 +263,53 @@ KALS_util.ajax_post = function (_config) {
     
     
     var _this = this;
-    //當iframe讀取完畢時，等待三秒鐘
-    _iframe.load(function () {
-        
-        setTimeout(function () {
+    var _post_retry_count = 0;
+    var _post_retry_max = 3;
     
-            //以同樣路徑，用ajax_get去取得資料，並回傳給callback
-            _this.ajax_get({
-                url: _url, 
-                callback: function (_data) {
-                    
-                    if (_debug === false) {
-						_layer.remove();
-					}
-                    
-                    if ($.is_function(_callback)) {
-						_callback(_data);
-					}
-                },
-                exception_handle: _exception_handle 
-            });
-            
-        }, 500);    //setTimeout(function () {
-        
+    var _iframe_load_callback = function () {
+        //以同樣路徑，用ajax_get去取得資料，並回傳給callback
+        _this.ajax_get({
+            url: _url, 
+            callback: function (_data) {
+                
+                // 如果回傳了false，表示要重新讀取一次
+                if (_data === false) {
+                    _post_retry_count++;
+                    if (_post_retry_count > _post_retry_max) {
+                        _this._retry_exception(_url);
+                    }
+                    else {
+                        _form.submit();
+                    }
+                    return;
+                }
+
+                if (_debug === false) {
+                    _layer.remove();
+                }
+
+                if ($.is_function(_callback)) {
+                    _callback(_data);
+                }
+            },
+            exception_handle: _exception_handle 
+        });
+    };
+    
+    _iframe.load(function () {
+        setTimeout(function () {
+            _iframe_load_callback();
+        }, 500);
     });    //_iframe.load(function () {
     
     //準備完畢，遞交
     _form.submit();
+};
+
+KALS_util._retry_exception = function (_url) {
+    $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
+    var _exception = new KALS_exception('exception.retry_exception');
+    this.show_exception(_exception, _url);
 };
 
 /**
