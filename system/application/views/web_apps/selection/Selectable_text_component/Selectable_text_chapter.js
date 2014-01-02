@@ -42,7 +42,12 @@ Selectable_text_chapter.prototype._selectable_text;
 Selectable_text_chapter.prototype._text;
 
 // -----------------------------------
+// 內部參數設定
+// -----------------------------------
 
+// -----------------------------------
+// 方法
+// -----------------------------------
 
 /* End of file Selectable_text_chapter */
 /* Location: ./system/application/views/web_apps/Selectable_text_chapter.js */

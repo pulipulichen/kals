@@ -19,7 +19,7 @@
 function Selectable_text_offset(_selectable_text) {
    
     this._selectable_text = _selectable_text;
-    this._word = _selectable_text.word;
+    this._selectable_text_word = _selectable_text.word;
     return this;
 }
 
@@ -41,12 +41,20 @@ Selectable_text_offset.prototype._selectable_text;
  */
 Selectable_text_offset.prototype._selectable_text_word;
 
-// --------
-// Offset
-// --------
+
+// -----------------------------------
+// 內部參數設定
+// -----------------------------------
+
+// -----------------------------------
+// 方法
+// -----------------------------------
 
 /**
  * 取得選取範圍的top位置
+ * 
+ * 2223 轉接完畢
+ * 2224 檢查完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -68,10 +76,13 @@ Selectable_text_offset.prototype.get_offset_top = function (_scope_coll) {
 
 /**
  * 取得選取範圍最底部的位置
+ * 
+ * 2224 轉接完畢，檢查完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
 Selectable_text_offset.prototype.get_offset_bottom = function (_scope_coll) {
+    
     var _offset = null;
     if ($.is_null(_scope_coll)) {
         return _offset;
@@ -88,6 +99,8 @@ Selectable_text_offset.prototype.get_offset_bottom = function (_scope_coll) {
 
 /**
  * 取得標註範圍最左邊的位置
+ * 
+ * 2230 轉接完畢，檢查完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -113,6 +126,8 @@ Selectable_text_offset.prototype.get_offset_left = function (_scope_coll) {
 
 /**
  * 取得現在標註範圍最右邊的位置
+ * 
+ * 2231 轉接完畢，檢查完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -138,6 +153,8 @@ Selectable_text_offset.prototype.get_offset_right = function (_scope_coll) {
 
 /**
  * 取得標註範圍中，第一個範圍的第一個字的左邊位置
+ * 
+ * 2233 轉接完畢，檢查完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */
@@ -156,6 +173,8 @@ Selectable_text_offset.prototype.get_offset_first_left = function (_scope_coll) 
 
 /**
  * 取得標註範圍中，最後一個範圍的最後一個字的右邊位置
+ * 
+ * 2233 轉接完畢，檢查完畢
  * @param {Scope_collection_param} _scope_coll
  * @type {int}
  */

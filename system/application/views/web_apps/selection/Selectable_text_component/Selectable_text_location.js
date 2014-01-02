@@ -47,6 +47,7 @@ Selectable_text_location.prototype._text;
 /**
  * 標註相對位置的classname，以及其代號
  * 
+ * 2221 檢查完畢
  * @type {Array} 
  */
 Selectable_text_location.prototype.location_classnames = [
@@ -75,65 +76,11 @@ Selectable_text_location.prototype.location_classnames = [
  *  'location-near-foot'     //4    3
  *  'location-head-foot'     //     5
  *  (other)                  //     6
+ *  
+ *  2221 檢查完畢，轉接完畢
  * @param {Scope_collection_param} _scope_coll
  */
 Selectable_text_location.prototype.get_location_feature = function (_scope_coll) {
-    
-    /*
-    var _classnames = this.location_classnames;
-    var _words = this.get_words_by_scope_coll(_scope_coll);
-    
-    var _location = 5;
-    var _location_id = 5;
-    
-    for (var _i in _words) {
-        for (var _j in _words[_i]) {
-            var _word = _words[_i][_j];
-            
-            var _l = 5;
-            var _id = 5;    //modal端的代號
-            
-            if (_word.hasClass(_classnames[0])) {
-                _l = 0;
-                _id = 0;
-                return 0;
-            }
-            else if (_word.hasClass(_classnames[1])) {
-                _l = 1;
-                _id = 4;
-            }
-            else if (_location > 2
-                && _word.hasClass(_classnames[3])
-                && _word.hasClass(_classnames[4])) {
-                _l = 2;
-                _id = 2;
-            }
-            else if (_location > 3
-                && _word.hasClass(_classnames[3])) {
-                _l = 3;
-                _id = 1;
-            }
-            else if (_location > 4
-                && _word.hasClass(_classnames[4])) {
-                _l = 4;
-                _id = 3;
-            }
-            else {
-                //5的話就不用判斷啦，直接看下一個迴圈
-                continue;
-            }
-            
-            //更新_location
-            if (_l < _location) {
-                _location = _l;
-                _location_id = _id;
-            }
-        }
-    }
-    
-    return _location_id;
-    
-    */
 	
     var _classnames = this.location_classnames;
     var _words = this._selectable_text.word.get_words_by_scope_coll(_scope_coll);

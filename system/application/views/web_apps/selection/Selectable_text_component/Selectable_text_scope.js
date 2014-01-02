@@ -1,5 +1,5 @@
 /**
- * Selectable_text_classname
+ * Selectable_text_scope
  *
  * @package     KALS
  * @category    Webpage Application Libraries
@@ -11,12 +11,12 @@
  */
 
 /**
- * @memberOf {Selectable_text_classname}
+ * @memberOf {Selectable_text_scope}
  * @extends {KALS_user_interface}
  * @constructor
  * @param {Selectable_text} _selectable_text 父物件
  */
-function Selectable_text_classname(_selectable_text) {
+function Selectable_text_scope(_selectable_text) {
     
     this._selectable_text = _selectable_text;
     this._word = _selectable_text.word;
@@ -27,27 +27,37 @@ function Selectable_text_classname(_selectable_text) {
  * Extends from KALS_user_interface.
  * @memberOf {Selectable_text_word}
  */
-Selectable_text_classname.prototype = new KALS_user_interface();
+Selectable_text_scope.prototype = new KALS_user_interface();
 
 /**
  * 父物件
  * @type {Selectable_text}
  */
-Selectable_text_classname.prototype._selectable_text;
+Selectable_text_scope.prototype._selectable_text;
 
 /**
  * 父物件的Selectable_text_word
  * @type {Selectable_text_word}
  */
-Selectable_text_classname.prototype._selectable_text_word;
+Selectable_text_scope.prototype._selectable_text_word;
 
+// -----------------------------------
+// 內部參數設定
+// -----------------------------------
+
+// -----------------------------------
+// 方法
+// -----------------------------------
 
 /**
+ * 從classname取回scope_coll
  * 
+ * 2207 轉接完成
+ * 2207 檢查完成
  * @param {String} _classname
  * @type {Scope_collection_param}
  */
-Selectable_text_classname.prototype.retrieve_scope_coll = function (_classname) {
+Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
     
     var _selectable_text_word = this._selectable_text_word;
     var _word_classname = _selectable_text_word.word_classname;
@@ -70,7 +80,8 @@ Selectable_text_classname.prototype.retrieve_scope_coll = function (_classname) 
             if ((_id - _from) === 1) {
                 _to = _id;
             }
-            else if (_to !== null && (_id - _to) === 1) {
+            else if (_to !== null 
+                    && (_id - _to) === 1) {
                 _to = _id;
             }
             else {
@@ -87,10 +98,12 @@ Selectable_text_classname.prototype.retrieve_scope_coll = function (_classname) 
 
 /**
  * 對指定範圍加上_classname
+ * 
+ * 2208 檢查完成
  * @param {Scope_collection_param} _scope_coll
  * @param {String} _classname
  */
-Selectable_text_classname.prototype.add_class = function(_scope_coll, _classname, _callback) {
+Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _callback) {
     
     var _selectable_text_word = this._selectable_text_word;
     var _words = _selectable_text_word.get_words_by_scope_coll(_scope_coll);
@@ -166,10 +179,13 @@ Selectable_text_classname.prototype.add_class = function(_scope_coll, _classname
 };
 
 /**
+ * 先過濾classname
+ * 
+ * 2209 不需要檢查，也不需要轉接
  * @param {String|String[]} _classname
  * @type {String[]}
  */
-Selectable_text_classname.prototype._filter_classname = function (_classname) {
+Selectable_text_scope.prototype._filter_classname = function (_classname) {
     var _classnames;
     if ($.is_array(_classname)) {
         _classnames = _classname;
@@ -186,12 +202,17 @@ Selectable_text_classname.prototype._filter_classname = function (_classname) {
 
 /**
  * 取消_classname，或是針對_scope取消_classname
+ * 
+ * 2210 轉接完成
+ * 2212 檢查完成
  * @param {Scope_collection_param|String} _scope_coll
  * @param {String|null} _classname
  */
-Selectable_text_classname.prototype.remove_class = function (_scope_coll, _classname, _callback) {
+Selectable_text_scope.prototype.remove_class = function (_scope_coll, _classname, _callback) {
     
+    // 取得word元件
     var _selectable_text_word = this._selectable_text_word;
+    
     if ($.is_string(_scope_coll) && $.is_null(_classname)) {
         _classname = _scope_coll;
         _scope_coll = null;
@@ -226,10 +247,10 @@ Selectable_text_classname.prototype.remove_class = function (_scope_coll, _class
                     
                     _word.removeClass(_classname);
                     
-                }
-            }
-        }
-    }
+                }   //for (var _c in _classnames) {
+            }   //for (var _j in _words[_i]) {
+        }   //for (var _i in _words) {
+    }   //if ($.isset(_scope_coll)) {
     else {
         
         for (_j in _classnames) {
@@ -240,20 +261,111 @@ Selectable_text_classname.prototype.remove_class = function (_scope_coll, _class
                 .removeClass(_classname + '_from')
                 .removeClass(_classname + '_to')
                 .removeClass(_classname + '_middle');
-        }
-    }
-    
+        }   //for (_j in _classnames) {
+    }   //else {
+    return this._selectable_text;
 };
 
 /**
  * 取消_classname，並針對_scope加上_classname
+ * 
+ * 2212 轉接完成，不需檢查
  * @param {Scope_collection_param} _scope_coll
  * @param {String} _classname
  */
-Selectable_text_classname.prototype.set_class = function (_scope_coll, _classname) {
+Selectable_text_scope.prototype.set_class = function (_scope_coll, _classname) {
     this.remove_class(_classname);
     return this.add_class(_scope_coll, _classname);
 };
 
-/* End of file Selectable_text_classname */
-/* Location: ./system/application/views/web_apps/Selectable_text_classname.js */
+
+/**
+ * 取得推薦的範圍
+ * 
+ * 2205 轉接完成
+ * 2217 檢查完畢
+ * @param {Scope_collection_param} _scope_coll
+ * @type {Scope_collection_param}
+ */
+Selectable_text_scope.prototype.get_recommend_scope_coll = function (_scope_coll) {
+    
+    if ($.is_null(_scope_coll)) {
+        return null;
+    }
+    
+    var _selectable_text_word = this._selectable_text.word;
+    var _selectable_text_sentence = this._selectable_text.sentence;
+    var _selectable_text_paragraph = this._selectable_text.paragraph;
+    
+    var _word_id_prefix = _selectable_text_word.word_id_prefix;
+    var _sentence_punctuation_class_name = _selectable_text_sentence.sententce_punctuation_classname;
+    
+    var _recommend_scope_coll = new Scope_collection_param();
+    var _sentence = 0;
+    var _paragraph_id;
+    
+    for (var _i = 0; _i < _scope_coll.length(); _i++) {
+        var _s = _scope_coll.get(_i);
+        var _from_index = _s.get_from();
+        var _from = _selectable_text_word.get_word_by_index(_from_index);
+        var _to_index = _s.get_to();
+        var _to = _selectable_text_word.get_word_by_index(_to_index);
+        
+        //在此做調整
+        
+        //調整from
+        _sentence = 0;
+        _paragraph_id = _selectable_text_paragraph.get_paragraph_id(_from);
+        var _from_id = $.get_prefixed_id(_from.id());
+        var _prev_word = $('#' + _word_id_prefix + (_from_id) );
+        
+        while (_prev_word.exists()
+            && _selectable_text_paragraph.get_paragraph_id(_prev_word) === _paragraph_id) {
+            if (_prev_word.hasClass(_sentence_punctuation_class_name)) {
+                if (_sentence === 0) {
+                    _sentence++;
+                }
+                else {
+                    break;
+                }
+            }
+            
+            _from_id = $.get_prefixed_id(_prev_word);
+            _prev_word = $('#' + _word_id_prefix + (_from_id-1) );
+        }        
+        
+        //調整to
+        _sentence = 0;
+        _paragraph_id = _selectable_text_paragraph.get_paragraph_id(_to);
+        var _to_id = $.get_prefixed_id(_to.id());
+        var _next_word = $('#' + _word_id_prefix + (_to_id) );
+        if (_next_word.hasClass(_sentence_punctuation_class_name)) {
+            _sentence++;
+        }
+                    
+        while (_next_word.exists()
+            && _selectable_text_paragraph.get_paragraph_id(_next_word) === _paragraph_id) {
+            _to_id = $.get_prefixed_id(_next_word);
+            _next_word = $('#' + _word_id_prefix + (_to_id+1) );
+            
+            if (_next_word.hasClass(_sentence_punctuation_class_name)) {
+                if (_sentence === 0) {
+                    _sentence++;
+                }
+                else {
+                    _to_id = $.get_prefixed_id(_next_word);
+                    break;
+                }
+            }
+        }
+        
+        //_recommend_scope.push([_from_id, _to_id]);
+        _recommend_scope_coll.add(_from_id, _to_id);
+    }
+    
+    return _recommend_scope_coll;
+};
+
+
+/* End of file Selectable_text_scope */
+/* Location: ./system/application/views/web_apps/Selectable_text_scope.js */

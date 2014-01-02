@@ -24,7 +24,7 @@ function Selectable_text(_selector) {
     // Selectable_text_component
     this.child('word', new Selectable_text_word(this));
     this.child('offset', new Selectable_text_offset(this));
-    this.child('classname', new Selectable_text_classname(this));
+    this.child('scope', new Selectable_text_scope(this));
     this.child('anchor', new Selectable_text_anchor(this));
     this.child('sentence', new Selectable_text_sentence(this));
     this.child('paragraph', new Selectable_text_paragraph(this));
@@ -61,9 +61,9 @@ Selectable_text.prototype.word;
 Selectable_text.prototype.offset;
 
 /**
- * @type {Selectable_text_classname}
+ * @type {Selectable_text_scope}
  */
-Selectable_text.prototype.classname;
+Selectable_text.prototype.scope;
 
 /**
  * @type {Selectable_text_anchor}
@@ -543,24 +543,25 @@ Selectable_text.prototype._task_stack = [];
  * 4 => near foot : location-near-foot
  * 5 => body : 沒有標示
  * 
+ * 2220 檢查完畢
  * @param {function} _callback
  */
 Selectable_text.prototype.setup_paragraph_location = function(_callback) {
     
-    var _word_class_name = this.word_classname;
-    var _span_classname = this._span_classname;
-    var _word_id_prefix = this.word_id_prefix;
-    var _sentence_punctuation_class_name = this.sententce_punctuation_classname;
-    var _location_class_names = this.location_classnames;
+    var _word_class_name = this.word.word_classname;
+    var _span_classname = this.word._span_classname;
+    var _word_id_prefix = this.word.word_id_prefix;
+    var _sentence_punctuation_class_name = this.sentence.sententce_punctuation_classname;
+    var _location_class_names = this.location.location_classnames;
     
-    var _paragraph_class_name = this.paragraph_classname;
-    var _paragraph_id_prefix = this.paragraph_id_prefix;
+    var _paragraph_class_name = this.paragraph.paragraph_classname;
+    var _paragraph_id_prefix = this.paragraph.paragraph_id_prefix;
     
     var _first_paragraph = this._text.find('.' + _paragraph_class_name + ':first');
     var _last_paragraph = this._text.find('.' + _paragraph_class_name + ':last');
     
-    var _first_paragraph_id = this.get_paragraph_id(_first_paragraph);
-    var _last_paragraph_id = this.get_paragraph_id(_last_paragraph);
+    var _first_paragraph_id = this.paragraph.get_paragraph_id(_first_paragraph);
+    var _last_paragraph_id = this.paragraph.get_paragraph_id(_last_paragraph);
     
     //$.test_msg('selectable.setup_paragraph_location()', [ _first_paragraph_id , _last_paragraph_id]);
     
@@ -708,10 +709,9 @@ Selectable_text.prototype.get_element_content = function (_element) {
     }
 };
 
-
-// --------
-// Selection
-// --------
+// -------------------------------------
+// Selectable_text_scope
+// -------------------------------------
 
 /**
  * 取得推薦的範圍
@@ -719,85 +719,50 @@ Selectable_text.prototype.get_element_content = function (_element) {
  * @type {Scope_collection_param}
  */
 Selectable_text.prototype.get_recommend_scope_coll = function (_scope_coll) {
-    
-    if ($.is_null(_scope_coll)) {
-		return null;
-	}
-    
-    var _word_id_prefix = this.word_id_prefix;
-    var _sentence_punctuation_class_name = this.sententce_punctuation_classname;
-    
-    var _recommend_scope_coll = new Scope_collection_param();
-    var _sentence = 0;
-    var _paragraph_id;
-    
-    
-    for (var _i = 0; _i < _scope_coll.length(); _i++) {
-        var _s = _scope_coll.get(_i);
-        var _from_index = _s.get_from();
-        var _from = this.get_word_by_index(_from_index);
-        var _to_index = _s.get_to();
-        var _to = this.get_word_by_index(_to_index);
-        
-        //在此做調整
-        
-        //調整from
-        _sentence = 0;
-        _paragraph_id = this.get_paragraph_id(_from);
-        var _from_id = $.get_prefixed_id(_from.id());
-        var _prev_word = $('#' + _word_id_prefix + (_from_id) );
-        
-        while (_prev_word.exists()
-            && this.get_paragraph_id(_prev_word) === _paragraph_id) {
-            if (_prev_word.hasClass(_sentence_punctuation_class_name)) {
-                if (_sentence === 0) {
-                    _sentence++;
-                }
-                else {
-                    break;
-                }
-            }
-            
-            _from_id = $.get_prefixed_id(_prev_word);
-            _prev_word = $('#' + _word_id_prefix + (_from_id-1) );
-        }        
-        
-        //調整to
-        _sentence = 0;
-        _paragraph_id = this.get_paragraph_id(_to);
-        var _to_id = $.get_prefixed_id(_to.id());
-        var _next_word = $('#' + _word_id_prefix + (_to_id) );
-        if (_next_word.hasClass(_sentence_punctuation_class_name)) {
-			_sentence++;
-		}
-                    
-        while (_next_word.exists()
-            && this.get_paragraph_id(_next_word) === _paragraph_id) {
-            _to_id = $.get_prefixed_id(_next_word);
-            _next_word = $('#' + _word_id_prefix + (_to_id+1) );
-            
-            if (_next_word.hasClass(_sentence_punctuation_class_name)) {
-                if (_sentence === 0) {
-					_sentence++;
-				}
-				else {
-					_to_id = $.get_prefixed_id(_next_word);
-					break;
-				}
-            }
-        }
-        
-        //_recommend_scope.push([_from_id, _to_id]);
-        _recommend_scope_coll.add(_from_id, _to_id);
-    }
-    
-    return _recommend_scope_coll;
+    return this.scope.get_recommend_scope_coll(_scope_coll);
 };
 
+/**
+ * 從classname取回scope_coll
+ * @param {String} _classname
+ * @type {Scope_collection_param}
+ */
+Selectable_text.prototype.retrieve_scope_coll = function (_classname) {
+    return this.scope.retrieve_scope_coll(_classname);
+};
 
-// --------------------------
+/**
+ * 對指定範圍加上_classname
+ * 
+ * @param {Scope_collection_param} _scope_coll
+ * @param {String} _classname
+ */
+Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callback) {
+    this.scope.add_class(_scope_coll, _classname, _callback);
+};
+
+/**
+ * 取消_classname，或是針對_scope取消_classname
+ * 
+ * @param {Scope_collection_param|String} _scope_coll
+ * @param {String|null} _classname
+ */
+Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _callback) {
+    return this.scope.remove_class(_scope_coll, _classname, _callback);
+};
+
+/**
+ * 取消_classname，並針對_scope加上_classname
+ * @param {Scope_collection_param} _scope_coll
+ * @param {String} _classname
+ */
+Selectable_text.prototype.set_class = function (_scope_coll, _classname) {
+    return this.scope.set_class(_scope_coll, _classname);
+};
+
+// ---------------------------------------
 // Selectable_text_paragraph
-// --------------------------
+// ---------------------------------------
 
 /**
  * 建立一個可以選取Word的容器
@@ -826,9 +791,9 @@ Selectable_text.prototype.count_paragraph_words_avg = function () {
 };
 
 
-// --------
+// --------------------------
 // Selectable_text_location
-// --------
+// --------------------------
 
 /**
  * 取得段落的特徵
@@ -885,6 +850,65 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
  */
 Seleactable_text.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
     return this.get_abbreviated_anchor_text(_scope_coll, _max_length);
+};
+
+// -------------------------------------
+// Selectable_text_offset
+// -------------------------------------
+
+/**
+ * 取得選取範圍的top位置
+ * @param {Scope_collection_param} _scope_coll
+ * @type {int}
+ */
+Selectable_text.prototype.get_offset_top = function (_scope_coll) {
+    return this.offset.get_offset_top(_scope_coll);
+};
+
+/**
+ * 取得選取範圍最底部的位置
+ * @param {Scope_collection_param} _scope_coll
+ * @type {int}
+ */
+Selectable_text.prototype.get_offset_bottom = function (_scope_coll) {
+    return this.offset.get_offset_bottom(_scope_coll);
+};
+
+/**
+ * 取得標註範圍最左邊的位置
+ * @param {Scope_collection_param} _scope_coll
+ * @type {int}
+ */
+Selectable_text.prototype.get_offset_left = function (_scope_coll) {
+    return this.offset.get_offset_left(_scope_coll);
+};
+
+
+/**
+ * 取得現在標註範圍最右邊的位置
+ * @param {Scope_collection_param} _scope_coll
+ * @type {int}
+ */
+Selectable_text.prototype.get_offset_right = function (_scope_coll) {
+    return this.offset.get_offset_right(_scope_coll);
+};
+
+/**
+ * 取得標註範圍中，第一個範圍的第一個字的左邊位置
+ * @param {Scope_collection_param} _scope_coll
+ * @type {int}
+ */
+Selectable_text.prototype.get_offset_first_left = function (_scope_coll) {
+    return this.offset.get_offset_first_left(_scope_coll);
+};
+
+/**
+ * 取得標註範圍中，最後一個範圍的最後一個字的右邊位置
+ * @param {Scope_collection_param} _scope_coll
+ * @type {int}
+ */
+Selectable_text.prototype.get_offset_last_right = function (_scope_coll) {
+    return this.offset.get_offset_last_right(_scope_coll);
 };
 
 /* End of file Selectable_text */
