@@ -16,9 +16,12 @@
  * @memberOf {Selectable_text_word}
  * @extends {KALS_user_interface}
  * @constructor
+ * @param {Selectable_text} _selectable_text 父物件
  */
-function Selectable_text_word() {
+function Selectable_text_word(_selectable_text) {
     
+    this._selectable_text = _selectable_text;
+    this._text = _selectable_text._text;
     return this;
 }
 
@@ -28,6 +31,11 @@ function Selectable_text_word() {
  */
 Selectable_text_word.prototype = new KALS_user_interface();
 
+/**
+ * 父物件
+ * @type {Selectable_text}
+ */
+Selectable_text_offset.prototype._selectable_text;
 
 /**
  * 文字記數，初始化時使用。
@@ -53,6 +61,18 @@ Selectable_text_word.prototype.word_id_prefix = 'kals_word_';
 
 
 Selectable_text_word.prototype._span_classname = 'span';
+
+/**
+ * 鎖
+ * @type Array
+ */
+Selectable_text_word.prototype.locks = [];
+
+/**
+ * 主要可以選擇的物件
+ * @type {jQuery}
+ */
+Selectable_text_word.prototype._text;
 
 // ----------------------------------
 
@@ -192,135 +212,305 @@ Selectable_text_word.prototype.create_span_word = function(_text) {
 };
 
 
-// --------
-// Offset
-// --------
 
 /**
- * 取得選取範圍的top位置
- * @param {Scope_collection_param} _scope_coll
- * @type {int}
+ * 建立一個可選取的文字
+ * @param {number} _para_id Paragraph ID
+ * @param {number} _point_id Word ID
+ * @param {string} _text 內容文字
+ * @type {jQuery}
  */
-Selectable_text_word.prototype.get_offset_top = function (_scope_coll) {
-    
-    var _offset = null;
-    if ($.is_null(_scope_coll)) {
-        return _offset;
+Selectable_text_word.prototype.create_selectable_word = function(_para_id, _point_id, _text) {
+    var _word = document.createElement("span");
+
+    _word.className = this.word_classname
+    + ' ' + this._selectable_text.tooltip.trigger_classname;
+
+    var _word_id = this.word_id_prefix + _point_id; 
+
+    _word.id = _word_id;
+
+    var _t_text = document.createTextNode(_text);
+    _word.appendChild(_t_text);
+
+    _word = this._selectable_text.setup_word_tooltip(_word);
+
+    /**
+     * 加入統計目前字串次數的功能
+     * @author Pulipuli Chen  20131227
+     */
+    KALS_context.progress.add_count();
+    /*
+    var _progress = _point_id;
+    //每10統計一次
+    if (_progress % 10 === 0) {
+        _progress = (_progress / this._estimate_words_length) * 100;
+        _progress = parseInt(_progress, 10);
+        $.test_msg("[create_selectable_word] _point_id", _progress + "%");
     }
-    
-    var _index = _scope_coll.get_first_index();
-    if ($.isset(_index)) {
-        var _word = this.get_word_by_index(_index);
-        _offset = _word.offset().top;
-    }
-    
-    return _offset;
+    */
+    return _word;
 };
 
-/**
- * 取得選取範圍最底部的位置
- * @param {Scope_collection_param} _scope_coll
- * @type {int}
- */
-Selectable_text_word.prototype.get_offset_bottom = function (_scope_coll) {
-    var _offset = null;
-    if ($.is_null(_scope_coll)) {
-        return _offset;
-    }
-    
-    var _index = _scope_coll.get_last_index();
-    if ($.isset(_index)) {
-        var _word = this.get_word_by_index(_index);
-        _offset = _word.offset().top + _word.height();
-    }
-    
-    return _offset;
-};
+
 
 /**
- * 取得標註範圍最左邊的位置
- * @param {Scope_collection_param} _scope_coll
- * @type {int}
+ * 讓所有文字都保持在可選取的狀態
+ * @param {function} _callback
  */
-Selectable_text_word.prototype.get_offset_left = function (_scope_coll) {
-    var _offset = null;
+Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
     
-    var _words = this.get_words_by_scope_coll(_scope_coll);
-    for (var _i in _words) {
-        for (var _j in _words[_i]) {
-            var _word = _words[_i][_j];
-            
-            var _o = _word.offset().left;
-            
-            if (_offset === null ||
-                    _o < _offset) {
-                _offset = _o;
-            }
+    var _select = KALS_text.selection.select;
+    
+	// 如果是一般模式
+    if ($.is_mobile_mode() === false) {
+        if (typeof(this.locks.word_click) === 'undefined') {
+            var _this = this;
+			
+            var _words = this._text.find('.'+ this.word.word_classname + ':not(.' + this.word._span_classname + ')');
+
+                        
+			/*
+			var _click_evt = function(_callback) {
+                if (_this.initialized === false) {
+					return this;
+				}
+                
+                var _word = $(this);
+                setTimeout(function () {
+                    _word.tooltip().hide();
+                }, 100);
+                
+                //_manager.listen_select(_word);
+                _select.set_select(_word);
+				
+				if ($.is_function(_callback)) {
+					_callback();
+				}
+            };
+			_words.click(_click_evt);
+			*/
+			
+			// @20130612 Pudding Chen
+			// 加入了拖曳選取時也能用的選取範圍功能
+			if (typeof(KALS_SELECT_MOUSEDOWN_LOCK) === "undefined") {
+				KALS_SELECT_MOUSEDOWN_LOCK = null;
+                                KALS_SELECT_LOCK = false;
+			}
+                        
+                        _words.mouseout(function () {
+                            KALS_SELECT_LOCK = false;
+                        });
+                        
+			_words.mousedown(function () {
+                            /**
+                             * 先做超連結偵測
+                             * @author Pulipuli Chen <pulipuli.chen@gmail.com> 
+                             */
+                            var _md_this = this;
+                            var _word = $(_md_this);
+                            var _is_link = false;
+                            
+                            var _link_tag = _word.parents("a[href]:first");
+                            if (_link_tag.length === 1) {
+                                // 如果是超連結的話
+                                _is_link = true;
+                                
+                                var _link_url = _link_tag.attr("href");
+                                
+                                //alert(_link_tag.attr("target"));
+                                /*
+                                var _target = "_blank";
+                                if (_link_url.substr(0,1) != "#"
+                                        && (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") ) {
+                                    _link_tag.attr("target", "_blank");
+                                }
+                                else {
+                                    _target = _link_tag.attr("target");
+                                }
+                                */
+                                var _target = "_self";
+                                if (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") {
+                                    _target = _link_tag.attr("target");
+                                }
+                                //_link_url = "//";
+                                
+                                var _log_data = {
+                                    "url": _link_url,
+                                    "target": _target
+                                };
+                                
+                                //$.test_msg("送出超連結", _log_data);
+                                var _action = 39;
+                                KALS_util.log(_action, _log_data);
+                                
+                                return;
+                            }
+                            
+                                KALS_SELECT_LOCK = true;
+				KALS_SELECT_MOUSEDOWN_LOCK = 1;
+				
+				
+				setTimeout(function () {
+					if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
+						_word = $(_md_this);
+                                                
+						_select.cancel_select();
+						_select.set_select(_word);	
+						
+						KALS_SELECT_MOUSEDOWN_LOCK = 2;
+					}
+				}, 300);
+                                
+                                setTimeout(function () {
+                                        if (KALS_SELECT_MOUSEDOWN_LOCK === 2
+                                            && KALS_SELECT_LOCK === true) {
+						_word = $(_md_this);
+						_select.set_select(_word);	
+                                                KALS_SELECT_MOUSEDOWN_LOCK = null;
+					}
+					
+					
+                                }, 1000);
+			});
+                        
+			_words.mouseup(function () {
+				var _mu_this = this;
+				setTimeout(function () {
+					if (KALS_SELECT_MOUSEDOWN_LOCK === 2) {
+						var _word = $(_mu_this);
+						_select.set_select(_word);	
+					}
+					
+					KALS_SELECT_MOUSEDOWN_LOCK = null;
+				}, 100);
+				
+				if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
+                                    
+					//表示這是一個Click事件
+					KALS_SELECT_MOUSEDOWN_LOCK = null;
+					
+					if (_this.initialized === false) {
+						return this;
+					}
+	                
+                                        var _word = $(this);
+                                        setTimeout(function () {
+                                            _word.tooltip().hide();
+                                        }, 100);
+
+                                        //_manager.listen_select(_word);
+                                        _select.set_select(_word);
+					
+					if ($.is_function(_callback)) {
+						_callback();
+					}
+					
+					
+				}
+			});
+			
+			/*
+			_words.mousemove(function () {
+				if (KALS_SELECT_MOUSEDOWN_LOCK !== 2) {
+					KALS_SELECT_MOUSEDOWN_LOCK = null;	
+				}
+			});
+			*/			
+			/**
+			 * 滑鼠放在文字上的自動選取功能
+			 * 
+			 * @author Pudding Chen 20121228
+			 * @param {function} _callback
+			 * @deprecated 不佳，太麻煩了，不使用
+			 */
+			/*
+			var _hover_evt = function (_callback) {
+				_select.set_hover();
+			};
+			
+			var _last_word = null;
+			var _HOVER_TIMER = null;
+			
+			_words.mouseover(function () {
+				var _word = $(this);
+					_HOVER_TIMER = setTimeout(function () {
+						setTimeout(function () {
+		                    _word.tooltip().hide();
+		                }, 100);
+						_select.set_select(_word);
+					}, 1500);
+				})
+				.mouseout(function () {
+					clearTimeout(_HOVER_TIMER);
+				});
+			*/
+			/*
+			var _HOVER_TIMER = null;
+			_words.mouseover(function () {
+				if (_HOVER_TIMER != null)
+					clearTimeout(_HOVER_TIMER);
+				
+				var _word = $(this);
+				_HOVER_TIMER = setTimeout(function () {
+					_word.click();
+					setTimeout(function () {}, 200);
+						_word.click();
+						clearTimeout(_HOVER_TIMER);
+						_HOVER_TIMER = null;
+				}, 800);
+				
+			})
+				.mouseout(function () {
+					clearTimeout(_HOVER_TIMER);
+					_HOVER_TIMER = null;
+				});
+			*/
+			
+            this.locks.word_click = true;
         }
     }
+    $.trigger_callback(_callback);
     
-    return _offset;
+    return this;
+};
+
+
+/**
+ * 設定Word的Tooltip
+ * @param {jQuery|HTMLElement} _word
+ * @returns {jQuery}
+ */
+Selectable_text_word.prototype.setup_word_tooltip = function (_word) {
+    
+    var _tooltip_config = this._selectable_text.tooltip.get_tooltip_config();
+    
+    $(_word).tooltip(_tooltip_config);
+    
+    return _word;
 };
 
 /**
- * 取得現在標註範圍最右邊的位置
- * @param {Scope_collection_param} _scope_coll
- * @type {int}
+ * 估算大概會多少字
+ * @param {String} _text
+ * @returns {Number}
  */
-Selectable_text_word.prototype.get_offset_right = function (_scope_coll) {
-    var _offset = null;
+Selectable_text_word.prototype.get_estimate_total_words = function (_text) {
     
-    var _words = this.get_words_by_scope_coll(_scope_coll);
-    for (var _i in _words) {
-        for (var _j in _words[_i]) {
-            var _word = _words[_i][_j];
-            
-            var _o = _word.offset().left + _word.width();
-            
-            if (_offset === null 
-                || _o > _offset) {
-                _offset = _o;
-            }
-        }
-    }
+    //$.test_msg("預測字 1", _text);
     
-    return _offset;
-};
-
-/**
- * 取得標註範圍中，第一個範圍的第一個字的左邊位置
- * @param {Scope_collection_param} _scope_coll
- * @type {int}
- */
-Selectable_text_word.prototype.get_offset_first_left = function (_scope_coll) {
-    var _offset = null;
+    // 濃縮英數
+    _text = _text.replace(/[\w]{1,}/gi, "_");
     
-    var _index = _scope_coll.get_first_index();
+    // 去掉空格
+    _text = _text.replace(/([\s|\t]*)/g, "");
     
-    if ($.is_number(_index)) {
-        var _word = this.get_word_by_index(_index);
-        _offset = _word.offset().left;
-    }
+    //$.test_msg("預測字 2", _text);
     
-    return _offset;
-};
-
-/**
- * 取得標註範圍中，最後一個範圍的最後一個字的右邊位置
- * @param {Scope_collection_param} _scope_coll
- * @type {int}
- */
-Selectable_text_word.prototype.get_offset_last_right = function (_scope_coll) {
-    var _offset = null;
+    var _total = 0;
+    _total = _text.length;
     
-    var _index = _scope_coll.get_last_index();
-    
-    if ($.is_number(_index)) {
-        var _word = this.get_word_by_index(_index);
-        _offset = _word.offset().left + _word.width();
-    }
-    
-    return _offset;
+    return _total;
 };
 
 /* End of file Selectable_text_word */
