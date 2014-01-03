@@ -770,7 +770,7 @@ Selectable_text.prototype.get_word_by_index = function(_index) {
  * @returns {jQuery}
  */
 Selectable_text.prototype.get_word = function (_word_id) {
-    return this.text.get_word(_word_id);
+    return this.word.get_word(_word_id);
 };
 
 /**
@@ -871,6 +871,15 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
  */
 Selectable_text.prototype.get_abbreviated_anchor_text = function (_scope_coll, _max_length) {
     return this.anchor.get_abbreviated_anchor_text(_scope_coll, _max_length);
+};
+
+/**
+ * 取得該範圍的文字
+ * @param {Scope_collection_param} _scope_coll
+ * @param {Scope_collection_param} _focus_coll
+ */
+Selectable_text.prototype.get_display_anchor_text = function (_scope_coll, _focus_coll) {
+    return this.anchor.get_display_anchor_text(_scope_coll, _focus_coll);
 };
 
 // -------------------------------------

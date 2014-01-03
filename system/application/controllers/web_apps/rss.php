@@ -72,7 +72,7 @@ class rss extends Web_apps_controller {
             $item = new Item();
             $item
                 ->title("Blog Entry Title")
-                ->description("<div>Blog body" . $annotation->get_id() . " </div>")
+                ->description("<div>Blog body [" . $annotation->get_user()->get_name() . "] </div>")
                 ->url('http://blog.example.com/2012/08/21/blog-entry/')
                 ->appendTo($channel);
         }    
