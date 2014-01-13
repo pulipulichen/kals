@@ -31,7 +31,9 @@ class rss extends Web_apps_controller {
         }
         
         $this->load->library('kals_resource/Webpage');
+        $this->load->library('kals_resource/Annotation');
         $this->load->library('search/Search_annotation_collection');
+        $this->lang->load('kals_web_apps'); //語系
         //echo $webpage_id;
         $webpage = new Webpage($webpage_id);
         
@@ -58,7 +60,7 @@ class rss extends Web_apps_controller {
         $this->load->library("web_apps/Suin/RSSWriter/Feed");
         $this->load->library("web_apps/Suin/RSSWriter/Channel");
         $this->load->library("web_apps/Suin/RSSWriter/Item");
-        
+       
         $feed = new Feed();
 
         $channel = new Channel();
@@ -70,10 +72,30 @@ class rss extends Web_apps_controller {
 
         foreach ($search AS $annotation) {
             $item = new Item();
+            $type_name = $annotation->get_type()->get_name();
+            $type_show ; 
+           if ($type_name != 'annotation.type.custom'){  //自定標註顯示
+               $type_show = $this->lang->line("web_apps.". $type_name);
+           }
+           else  {
+               $type_show = $annotation->get_type()->get_name();
+           }
+            
+           // anchor text
+           // user name
+           // date
+           // annotation type
+           // note
+           
             $item
-                ->title("Blog Entry Title")
-                ->description("<div>Blog body [" . $annotation->get_user()->get_name() . "] </div>")
-                ->url('http://blog.example.com/2012/08/21/blog-entry/')
+                ->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
+                        ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
+                ->description("<div>KALS user [" . $annotation->get_user()->get_name() . "] </div>
+                               <div>" . $annotation->get_note() ." </div>
+                        
+                             
+                              ") //user +annotation note
+                ->url('http://localhost/kals/help/config_annotation_scope.html') // webpage_url->view
                 ->appendTo($channel);
         }    
 

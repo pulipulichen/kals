@@ -331,6 +331,27 @@ class Webpage extends KALS_resource {
     {
         return $this->feature_coll->get_item($feature_type_id);
     }
+    
+    /**
+     * 取得all webpage中的所有物件
+     * 
+     * @author Pudding 20131224
+     * @return array|Webpage
+     */
+        static public function get_all_webpages () {
+        $output = array();
+        $query = $this->CI->db->select('webpage_id')
+                ->get('webpage');
+        $this->_CI_load('library', 'kals_resource/Webpage');
+        foreach ($query->result_array() AS $row)
+        {
+            $id = intval($row['webpage_id']);
+            $obj = new Webpage($id);
+            array_push($output, $obj);
+        }
+        return $output;
+    }
+    
 }
     /* End of file Webpage.php */
 /* Location: ./system/application/libraries/kals_resource/Webpage.php */

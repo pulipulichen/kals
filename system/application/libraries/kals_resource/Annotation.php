@@ -189,14 +189,14 @@ class Annotation extends KALS_resource {
         return $this->type_factory->create($type_id);
     }
 
-    /*
-    public function get_type_id()
-    {
+    
+  /*  {
         $type_id = $this->get_field('annotation_type_id');
         $type_id = intval($type_id);
+        
         return $type_id;
-    }
-     */
+    }*/
+     
 
     public function set_note($value)
     {
