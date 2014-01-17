@@ -1,7 +1,9 @@
-<button type="button" class="prev" kals-event-click="goto_prev_step()">{{kals-lang:button_prev}}</button>
-<button type="button" class="next" kals-event-click="goto_next_step()">{{kals-lang:button_next}}</button>
-<button type="button" class="replay" kals-event-click="reset_steps()">{{kals-lang:button_replay}}</button>
+<div class="navigation">
+<button type="button" class="button prev" kals-event-click="goto_prev_step()">{{kals-lang:button_prev}}</button>
+<button type="button" class="button next" kals-event-click="goto_next_step()">{{kals-lang:button_next}}</button>
+<button type="button" class="button replay" kals-event-click="reset_steps()">{{kals-lang:button_replay}}</button>
 <span>STEP: {{step_index_display}}</span>
+</div>
 <div class="steps">
 <ol><li kals-event-click="select_this_step()" class="step-list">{{step_list}}</li></ol>
 </div>

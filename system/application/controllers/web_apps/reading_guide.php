@@ -129,7 +129,7 @@ class reading_guide extends KALS_model {
         
         return $steps;
     }
-    
+        
     // -------------------------------
      
     /**
@@ -238,14 +238,39 @@ class reading_guide extends KALS_model {
         $webpage = $this->get_current_webpage();
         $users = $webpage->get_written_users();
         $users_steps = [];
+        
+        
+        $arff_data = array();
         foreach ($users AS $user) {
             $steps = $this->_get_user_sentences($sentence_scopes, $user);
             $user_id = $user->get_id();
             $users_steps[$user_id] = $steps;
+            foreach ($steps AS $step) {
+                $arff_data[] = array($user_id, $step);
+            }
+        }
+        
+        $this->load->library('exec_cli/Weka_gsp');
+        
+        //echo "<pre>";
+        //print_r($arff_data);
+        //echo "</pre>";
+        
+        // 最小序列數量是文章句字的20%
+        $min = count($sentence_scopes) * 0.2 ;
+        
+        $weka_gsp = new Weka_gsp($arff_data, $webpage->get_id());
+        $weka_gsp->set_step_min($min);
+        $scope_index = $weka_gsp->get_output();
+        
+        $steps = array();
+        foreach ($scope_index AS $scope) {
+            $steps[] = $sentence_scopes[$scope];
         }
         
         $data = array();
-        $data["steps"] = $users_steps;
+        //$data["steps"] = $users_steps;
+        $data["steps"] = $steps;
         
         //$data["steps"] = $sentence_scopes;
         

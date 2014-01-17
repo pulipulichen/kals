@@ -19,3 +19,6 @@ li.read {
 li.read.now {
     border: 1px solid mediumvioletred;
 }
+.navigation {
+    text-align: center;
+}

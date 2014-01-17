@@ -190,6 +190,10 @@ Reading_guide.prototype._$height = null;
  */
 Reading_guide.prototype.setup_steps = function (_coll) {
     
+    if ($.is_array(_coll) === false || _coll.lenght === 0) {
+        return;
+    }
+    
     //this.set_field("step_index", -1);
     this.reset_step_index();
     
@@ -425,7 +429,7 @@ Reading_guide.prototype.open_whole_annotations_by_sentence = function () {
 Reading_guide.prototype.open_apriori_all = function () {
     
     var _structure = KALS_text.get_sentence_structure();
-    $.test_msg("準備開啟 apriori_all", _structure);
+    //$.test_msg("準備開啟 apriori_all", _structure);
     var _data = {
         "sentence_structure": _structure
     };
@@ -434,7 +438,8 @@ Reading_guide.prototype.open_apriori_all = function () {
         var _steps = _data.steps;
         
         $.test_msg("讀取到了什麼呢？ scope", _steps);
-        //_this.setup_steps(_steps);
+        
+        _this.setup_steps(_steps);
     });
     
     return this;
