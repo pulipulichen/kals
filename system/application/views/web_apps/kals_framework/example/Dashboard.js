@@ -187,6 +187,41 @@ Dashboard.prototype._$width = 400;
  */
 Dashboard.prototype._$height = null;
 
+
+/**
+ * 設定視窗的左右位置
+ * 
+ * 可用參數：
+ *  null: 預設center
+ *  left: 置左
+ *  right: 置右
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠左距離10px
+ *  -10px: 靠右距離10px
+ *  10%: 靠左距離視窗寬度的10%
+ *  -10%: 靠右距離視窗寬度的10%
+ * @type String
+ */
+Dashboard.prototype._$position_left = null;
+
+/**
+ * 設定視窗的上下位置
+ * 
+ * 可用參數：
+ *  null: 預設10%
+ *  top: 置頂
+ *  bottom: 置底
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠頂距離10px
+ *  -10px: 靠底距離10px
+ *  10%: 靠頂距離視窗寬度的10%
+ *  -10%: 靠底距離視窗寬度的10%
+ * @type String
+ */
+Dashboard.prototype._$position_top = null;
+
 /**
  * ====================
  * Action設定

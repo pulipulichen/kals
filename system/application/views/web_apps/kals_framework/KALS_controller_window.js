@@ -381,7 +381,7 @@ KALS_controller_window.prototype.set_config = function (_config) {
 KALS_controller_window.prototype.get_config = function (_index) {
     
     if ($.isset(_index) &&
-	typeof(this._config[_index]) != 'undefined') {
+	typeof(this._config[_index]) !== 'undefined') {
 		return this._config[_index];
 	}
 	else {
@@ -435,7 +435,7 @@ KALS_controller_window.prototype.set_error = function (_message) {
     
     var _error_row = _ui.find('.' + KALS_window.ui.error_row_classname + ':first');
     
-    if (_error_row.length == 1) {
+    if (_error_row.length === 1) {
         _error_row.remove();
     }
     
@@ -790,19 +790,31 @@ KALS_controller_window.prototype._$get_config = function () {
     
     var _config = {
         //top: '10%',
-        left: 'center',
+        left: "center",
         closeOnClick: false,
         load: false,
         onBeforeLoad: function() {
             //跟Modal_controller註冊開啟
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
-				KALS_context.overlay.add_opened(_this);
-			}
+            if (typeof(KALS_context) === 'object' 
+                    && typeof(KALS_context.overlay) === 'object') {
+                KALS_context.overlay.add_opened(_this);
+            }
             
-            var _ui = _this.get_ui();
+            if (_this._adjust_position_checked === false) {
+                if ($.is_function(_this._adjust_position_top)) {
+                    _this._adjust_position_top();
+                }
+                if ($.is_function(_this._adjust_position_left)) {
+                    _this._adjust_position_left();
+                }
+                _this._adjust_position_checked = true;
+            }
+                
+            
             if ($.is_function(_this._$onviewportmove)) {
-				_this._$onviewportmove(_ui);
-			}
+                var _ui = _this.get_ui();
+                _this._$onviewportmove(_ui);
+            }
         },
         onLoad: function () {
             
@@ -828,7 +840,8 @@ KALS_controller_window.prototype._$get_config = function () {
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
+            if (typeof(KALS_context) === 'object' 
+                    && typeof(KALS_context.overlay) === 'object') {
                 KALS_context.overlay.delete_opened(_this);
             }
         },
@@ -845,8 +858,187 @@ KALS_controller_window.prototype._$get_config = function () {
             _ui.hide();
         },
         oneInstance: false
-    };   
+    };
+    
     return _config; 
+};
+
+/**
+ * 設定視窗的左右位置
+ * 
+ * 可用參數：
+ *  null: 預設center
+ *  left: 置左
+ *  right: 置右
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠左距離10px
+ *  -10px: 靠右距離10px
+ *  10%: 靠左距離視窗寬度的10%
+ *  -10%: 靠右距離視窗寬度的10%
+ * @type String
+ */
+KALS_controller_window.prototype._$position_left = null;
+
+/**
+ * 設定視窗的上下位置
+ * 
+ * 可用參數：
+ *  null: 預設10%
+ *  top: 置頂
+ *  bottom: 置底
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠頂距離10px
+ *  -10px: 靠底距離10px
+ *  10%: 靠頂距離視窗寬度的10%
+ *  -10%: 靠底距離視窗寬度的10%
+ * @type String
+ */
+KALS_controller_window.prototype._$position_top = null;
+
+KALS_controller_window.prototype._adjust_position_checked = false;
+
+/**
+ * 調整視窗上下位置
+ * 
+ * 要看物件的this._$position_top參數來決定
+ * @author Pulipuli Chen 20140118
+ * @returns {KALS_controller_window}
+ */
+KALS_controller_window.prototype._adjust_position_top = function () {
+    
+    var _ui = this.get_ui();
+    
+    var _top = null;
+    if ( $.isset(this._$position_top) ) {
+        _top = this._$position_top;
+        _top = $.trim(_top);
+        
+        var _window_height = $(window).height();
+        var _ui_height = _ui.height();
+        //var _ui_height = 300;
+        
+        if ($.ends_with(_top, "px")) {
+            //相素類型
+            _top = _top.substr(0, _top.length -2);
+            _top = parseInt(_top, 10);
+            
+            if (_top < 0) {
+                // 如果是負數的情況
+                _top = _window_height - _ui_height + _top;
+            }
+            _top = _top + "px";
+        }
+        else if ($.ends_with(_top, "%") && $.starts_with(_top, "-")) {
+            _top = _top.substr(1, _top.length-1);
+            _top = parseInt(_top, 10);
+            var _bottom_margin = _window_height / 100 * _top;
+            _top = _window_height - _ui_height -_bottom_margin;
+            _top = _top + "px";
+        }
+        else if ($.is_number(_top)) {
+            if (_top < 0) {
+               _top = _window_height - _ui_height + _top; 
+            }
+            _top = _top + "px";
+        }
+        
+        
+        if (_top === "top") {
+            _top = "0px";
+        }
+        else if (_top === "bottom") {
+            _top = _window_height - _ui_height;
+            _top = _top + "px";
+        }
+        else if (_top === "middle" || _top === "center") {
+            _top = (_window_height / 2) - (_ui_height / 2);
+            _top = parseInt(_top, 10);
+            _top = _top + "px";
+        }
+        
+        //$.test_msg("最後算出來的top是：", _top);
+        
+        setTimeout(function () {
+            if ($.isset(_top)) {
+                _ui.css("top", _top);
+            }
+        }, 0);
+    }
+    
+    
+    return this;
+};
+
+/**
+ * 調整視窗上下位置
+ * 
+ * 要看物件的this._$position_left參數來決定
+ * @author Pulipuli Chen 20140118
+ * @returns {KALS_controller_window}
+ */
+KALS_controller_window.prototype._adjust_position_left = function () {
+    
+    var _ui = this.get_ui();
+    
+    var _left = null;
+    if ( $.isset(this._$position_left) ) {
+        _left = this._$position_left;
+        _left = $.trim(_left);
+        
+        var _window_width = $(window).width();
+        var _ui_width = _ui.width();
+        
+        if ($.ends_with(_left, "px")) {
+            //相素類型
+            _left = _left.substr(0, _left.length -2);
+            _left = parseInt(_left, 10);
+            
+            if (_left < 0) {
+                // 如果是負數的情況
+                _left = _window_width - _ui_width + _left;
+            }
+            _left = _left + "px";
+        }
+        else if ($.ends_with(_left, "%") && $.starts_with(_left, "-")) {
+            _left = _left.substr(1, _left.length-1);
+            _left = parseInt(_left, 10);
+            var _bottom_margin = _window_width / 100 * _left;
+            _left = _window_width - _ui_width -_bottom_margin;
+            _left = _left + "px";
+        }
+        else if ($.is_number(_left)) {
+            if (_left < 0) {
+               _left = _window_width - _ui_width + _left; 
+            }
+            _left = _left + "px";
+        }
+        
+        
+        if (_left === "left") {
+            _left = "0px";
+        }
+        else if (_left === "right") {
+            _left = _window_width - _ui_width;
+            _left = _left + "px";
+        }
+        else if (_left === "middle" || _left === "center") {
+            _left = (_window_width / 2) - (_ui_width / 2);
+            _left = parseInt(_left, 10);
+            _left = _left + "px";
+        }
+        
+        //$.test_msg("最後算出來的left是：", _left);
+        setTimeout(function () {
+            if ($.isset(_left)) {
+                _ui.css("left", _left);
+            }
+        }, 0);
+
+    }
+    
+    return this;
 };
 
 KALS_controller_window.prototype._setup_effect_flag = false;
