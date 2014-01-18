@@ -310,7 +310,8 @@ Reading_guide.prototype.create_step_list = function (_scope_coll_param, _index) 
     // 取出文字
     var _text = KALS_text.selection.text;
     var _anchor_text = _text.get_abbreviated_anchor_text(_scope_coll_param);
-    var _step_list = _anchor_text + ", " + _scope_json;    
+    var _step_list = _anchor_text;
+    //_step_list = _step_list + ", " + _scope_json;    
     
     this._scope_coll_array.push(_scope_coll_param);
     
@@ -402,7 +403,7 @@ Reading_guide.prototype.set_step_index = function (_index) {
 };
 
 Reading_guide.prototype.reset_step_index = function () {
-    this.set_field("step_index_display", "尚未開始");
+    this.set_field("step_index_display", "-");
     this.set_field("step_index", -1);
     return this;
 };

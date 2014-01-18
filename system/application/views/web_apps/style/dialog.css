@@ -92,14 +92,12 @@
 }
 
 .KALS.window .dialog-toolbar .button.dialog-option {
-	
-	/**
-	 * @copyright 20130608 Pudding Chen
-	 */
+    /**
+     * @copyright 20130608 Pudding Chen
+     */
     line-height: 30px;
     height: 30px;
-	
-	padding: 0 0.2em;
+    padding: 0 0.2em;
 }
 
 .KALS .dialog-toolbar tr td {
@@ -160,7 +158,9 @@
     margin-right: 3px;
 }
 
-.KALS .button.dialog-option {
+.KALS .button.dialog-option,
+.KALS .kals-view button,
+.KALS .kals-view .button {
     cursor:pointer;
     margin: 0;
     
