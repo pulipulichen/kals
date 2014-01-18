@@ -21,17 +21,12 @@ function Common_navigation() {
         var _search = new Window_search();
         var _search_recent = new Window_search();
         _search_recent.setup_recent();
-        //var _test_nav = new Navigation_item("測試");
-        var _test_nav = new Navigation_item(new KALS_language_param("移動", "modal.move"));
-        _test_nav.set_link_new_window("http://www.google.com.tw");
-        //_test_nav.get_ui();
         
         this._$nav_items = [
             new Window_filter()
             , new Window_map()
             , _search_recent
             , new Dashboard()
-            , _test_nav
             //, KALS_text.guide
             //_search
         ];

@@ -72,7 +72,7 @@ Navigation_item.prototype.set_lang = function (_lang) {
  * @type {jQuery} UI
  */
 Navigation_item.prototype._$create_ui = function () {
-    var _ui = $("<a></a>")
+    var _ui = $("<a href='#'></a>")
             //.html(1212)
             .addClass("navigation-item");
             //.append(KALS_context.lang.create_listener(this._lang));

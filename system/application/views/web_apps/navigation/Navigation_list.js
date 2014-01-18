@@ -183,7 +183,7 @@ Navigation_list.prototype._create_nav_item = function  (_content, _i) {
     var _ui = _content.get_ui();
     _ui.attr("content_index", _i);
     //$.test_msg("Nav_list._create_nav_item", _ui.html());
-    return _ui;
+    return _ui.clone(true);
     //return _content.get_ui();
 };
 
