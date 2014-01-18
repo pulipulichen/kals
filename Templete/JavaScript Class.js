@@ -39,7 +39,8 @@ ${name}.prototype.attribute = null;
  * Reset ${name}
  * @memberOf {${name}}
  */
-${name}.prototype._${name}_reset = function () {
+${name}.prototype._${name}_reset = function ()
+{
     //this.attribute = null;
     return this;
 };
@@ -50,11 +51,13 @@ ${name}.prototype._${name}_reset = function () {
  * @memberOf {${name}}
  * @type {jQuery} UI
  */
-${name}.prototype._$create_ui = function () {
+${name}.prototype._$create_ui = function ()
+{
     return this;
 };
 
-//${name}.prototype.method = function (_param) {
+//${name}.prototype.method = function (_param)
+//{
 //    return this;
 //};
 

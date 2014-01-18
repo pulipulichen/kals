@@ -73,11 +73,11 @@ Navigation_item.prototype.set_lang = function (_lang) {
  */
 Navigation_item.prototype._$create_ui = function () {
     var _ui = $("<a></a>")
-            .html(1212)
+            //.html(1212)
             .addClass("navigation-item");
             //.append(KALS_context.lang.create_listener(this._lang));
     
-    //KALS_context.lang.add_listener(_ui, this._lang);
+    KALS_context.lang.add_listener(_ui, this._lang);
     //$.test_msg("Nav item $create_ui", _ui.html());
     
     if ($.is_string(this._classname)) {

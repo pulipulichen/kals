@@ -23,8 +23,8 @@ function KALS_language() {
     if (typeof(KALS_context) !== 'undefined') {
         KALS_context.add_listener(function (_dispatcher, _data) {
             if (typeof(_data.KALS_language) !== 'undefined') {
-                _this.set_lang(_data.KALS_language);
-            }
+				_this.set_lang(_data.KALS_language);
+			}
         });
     }
 }
@@ -224,7 +224,6 @@ KALS_language.prototype.notify_listeners = function () {
 /**
  * 建立監聽者
  * @param {string|KALS_language_param} _lang_param 語系參數
- * @type jQuery <span>
  */
 KALS_language.prototype.create_listener = function (_lang_param) {
     if ($.is_string(_lang_param)) {
