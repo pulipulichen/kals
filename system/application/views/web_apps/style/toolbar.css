@@ -382,10 +382,12 @@
     border-width: 1px;
     border-left-style: solid;
     padding: 0 0.5em;
+    text-align: center;
 }
 
 .KALS .navigation-list .nav td.item a {
     color:white;
+    text-decoration: underline;
 } 
 
 .KALS .navigation-list .nav td.item.last {

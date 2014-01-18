@@ -154,11 +154,15 @@ KALS_text.prototype.load_annotation = function (_annotation_id) {
 /**
  * 選擇物件
  * @param {Scope_collection_param} _scope_coll
+ * @param {boolean} _scroll_into_view 是否捲動過去
  * @returns {KALS_text}
  * @author Pulipuli Chen 20131230
  */
-KALS_text.prototype.set_select = function (_scope_coll) {
+KALS_text.prototype.set_select = function (_scope_coll, _scroll_into_view) {
     this.selection.select.set_scope_coll(_scope_coll);
+    if (_scroll_into_view !== undefined && _scroll_into_view === true) {
+        this.selection.select.scroll_into_view();
+    }
     return this;
 };
 

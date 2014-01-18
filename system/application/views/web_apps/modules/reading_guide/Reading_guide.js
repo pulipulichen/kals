@@ -341,9 +341,13 @@ Reading_guide.prototype.select_this_step = function (_step_list) {
     //$.test_msg("select_step", _index);
     var _scope_coll_param = this._scope_coll_array[_index];
     //$.test_msg("select_step", _scope_coll_param.export_json());
-    KALS_text.set_select(_scope_coll_param);
+    KALS_text.set_select(_scope_coll_param, true);
     
-    // @TODO 20131230 選動到指定位置
+    // -------------
+    // 內部也捲動到這個位置
+    _step_list.scrollIntoView();
+    
+    // --------------
     
     //this.set_field("step_index", _index);
     this.set_step_index(_index);
@@ -385,10 +389,11 @@ Reading_guide.prototype.goto_next_step = function () {
  */
 Reading_guide.prototype.goto_prev_step = function () {
     var _index = this.get_field("step_index");
+    
     _index--;
     if (_index === -1) {
         //this.set_field("step_index", _index);
-        this.reset_step_index();
+        //this.reset_step_index();
     }
     else if (_index > -1) {
         this.select_step(_index);

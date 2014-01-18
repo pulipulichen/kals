@@ -2113,21 +2113,22 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //return;
 	
     if (this.scroll_to_lock === true) {
+        $.trigger_callback(_callback);
         return;
     }
     this.scroll_to_lock = true;
 
+    var _this = this;
     // 要確認視窗到底讀完了沒有
     if (KALS_context.completed === false) {
-        var _this = this;
-        $.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
+        //$.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
         KALS_context.add_listener(function (_dispatcher, _data) {
             _this.scroll_to_lock = false;
             _this.scroll_to(_position, _speed, _callback);
         });
+        $.trigger_callback(_callback);
         return;
     }
-
 	
     //宣告基本資料
     var _target_x, _target_y, _interval_x, _interval_y, _interval_time = 10, _repeat_count
@@ -2136,18 +2137,19 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //確定位置資料
     _target_x = $.get_parameter(_position, ['x', 'left', 'pageXOffset'], window.pageXOffset);
     if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-')) {
-		_target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
-	}
+        _target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
+    }
     _target_y = $.get_parameter(_position, ['y', 'top', 'pageYOffset'], window.pageYOffset);
     if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-')) {
-		_target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
-	}
+        _target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
+    }
     
 	//$.test_msg('$.scroll_to target', [_target_x, _target_y]);
 	
-    if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
-		return this;
-	}
+    //if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
+    //    $.trigger_callback(_callback);
+    //    return this;
+    //}
     
     //調整_speed跟_callback
     if ($.is_function(_speed) && $.is_null(_callback)) {
@@ -2166,13 +2168,27 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         _speed = 1000;
     }
     
+    var _config = {};
+    var _config_setted = false;
+    if ($.is_number(_target_y)) {
+        _config["scrollTop"] = _target_y;
+        _config_setted = true;
+    }
+    if ($.is_number(_target_x)) {
+        _config["scrollLeft"] = _target_x;
+        _config_setted = true;
+    }
     
-    $('html, body').animate({
-        scrollTop: _target_y,
-        scrollLeft: _target_x
-    }, _speed);
+    $.test_msg("要準備捲動囉", _config);
+    
+    if (_config_setted) {
+        $('html, body').animate(_config, _speed, function () {
+            _this.scroll_to_lock = false;
+        });
+    }
 	
-    return $.trigger_callback(_callback);
+    $.trigger_callback(_callback)
+    return this;
      
 	/**
 	 * 以下寫太差了，不使用
