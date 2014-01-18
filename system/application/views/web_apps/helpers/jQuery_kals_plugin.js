@@ -521,16 +521,22 @@ jQuery.is_null = function (_obj) {
 	}
 };
 
+/**
+ * 檢查是否是這個類別
+ * @param {Object} _obj
+ * @param {String} _class_name
+ * @returns {Boolean}
+ */
 jQuery.is_class = function(_obj, _class_name) {
     if ($.is_null(_class_name)) {
-		return false;
-	}
+        return false;
+    }
     
     try {
-        return (typeof(_obj) == 'object' 
+        return (typeof(_obj) === 'object' 
             && _obj !== null 
             //&& (_obj instanceof _class_name));
-            && $.get_class(_obj) == _class_name);
+            && $.get_class(_obj) === _class_name);
     }
     catch (e) {
         return false;
@@ -562,12 +568,17 @@ jQuery.filter_array = function (_obj) {
 	}
 };
 
+/**
+ * 檢查是否是字串
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
 jQuery.is_string = function (_obj) {
-    return (typeof(_obj) == 'string');
+    return (typeof(_obj) === 'string');
 };
 
 jQuery.is_number = function (_obj) {
-    return (typeof(_obj) == 'number');
+    return (typeof(_obj) === 'number');
 };
 
 /**
@@ -685,15 +696,29 @@ jQuery.object_isset = function (_object_path) {
 // URL類
 // --------
 
+/**
+ * 檢查字串是否是網址
+ * @param {String} _url
+ * @returns {Boolean}
+ */
 jQuery.is_link = function(_url) {
     if (this.starts_with(_url, 'http://') ||
 	this.starts_with(_url, 'https://') ||
 	this.starts_with(_url, 'ftp://')) {
-		return true;
-	}
-	else {
-		return false;
-	}
+            return true;
+    }
+    else {
+            return false;
+    }
+};
+
+/**
+ * 檢查字串是否是網址
+ * @param {String} _url
+ * @returns {Boolean}
+ */
+jQuery.is_url = function (_url) {
+    return this.is_link(_url);
 };
 
 jQuery.parse_url = function (_str, _component) {
@@ -768,25 +793,31 @@ jQuery.parse_url = function (_str, _component) {
     }
 };
 
+/**
+ * 連結是圖片
+ * @param {String} _url
+ * @returns {Boolean}
+ */
 jQuery.is_image = function(_url) {
     if (false == this.is_link(_url)) {
-		return false;
-	}
+        return false;
+    }
     var _param = this.parse_url(_url);
     if (this.is_null(_param) || this.is_null(_param.path)) {
-		return false;
-	}
+        return false;
+    }
     var _path = _param.path;
     var _ext = this.parse_extension_name(_path);
     if (this.is_null(_ext)) {
-		return false;
-	}
-    if (this.inArray(_ext, ['jpg', 'jpeg', 'gif', 'png']) != -1) {
-		return true;
-	}
-	else {
-		return false;
-	}
+        return false;
+    }
+    var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
+    if (this.inArray(_ext, _image_array) != -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 jQuery.parse_extension_name = function (_path) {

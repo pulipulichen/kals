@@ -22,10 +22,16 @@ function KALS_language_param (_msg, _line, _arg) {
         _msg = null;
     }
     
-    this.msg = _msg;
-    this.line = _line;
+    if ($.isset(_msg) && $.isset(_line)) {
+        this.msg = _msg;
+        this.line = _line;
+    }
+    if ($.is_string(_msg) && _line === undefined) {
+        this.msg = _msg;
+        this.line = _msg;
+    }
     
-    if ($.isset(_arg) && false == $.is_array) {
+    if ($.isset(_arg) && false === $.is_array(_arg)) {
         _arg = [_arg];
     }
     this.arg = _arg;

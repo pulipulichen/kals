@@ -64,8 +64,8 @@ Navigation_list.prototype._$create_ui = function () {
         .addClass('navigation-list');
     
     if (this._$classname !== null) {
-		_ui.addClass(this._$classname);
-	}
+        _ui.addClass(this._$classname);
+    }
     
     var _nav = this._create_nav();
     var _menu_button = this._create_menu();
@@ -73,72 +73,118 @@ Navigation_list.prototype._$create_ui = function () {
     _ui.append(_nav)
         .append(_menu_button);
     
+    $.test_msg("Nav_list._$create_ui", _ui.html());
     return _ui;
 };
 
+/**
+ * 建立導覽列
+ * @returns {jQuery}
+ */
 Navigation_list.prototype._create_nav = function() {
     
     var _ui = $('<table align="right"><tbody><tr></tr></tbody></table>')
         .addClass('nav');
     
     var _tr = _ui.find('tr:first');
-    var _this = this;
+    //var _this = this;
     for (var _i in this._$nav_items) {
-        var _content = this._get_window_content(_i); 
-        
         var _td = $('<td></td>')
             .addClass('item')
             .appendTo(_tr);
         
-        //if (_i === 0)
-        //    _td.addClass('first');
+        var _content = this._get_window_content(_i); 
         
-        var _a = $('<a href="#"></a>')
-            .appendTo(_td)
-            .addClass(_content.name)
-            .attr('content_index', _i);
-
-        if ($.isset(_content.nav_heading)) {
-            KALS_context.lang.add_listener(_a, _content.nav_heading);
+        var _a;
+        if ($.is_boolean(_content.nav_item) && _content.nav_item === true) {
+            $.test_msg("nav item " + _i, 1);
+            _a = this._create_nav_item(_content, _i);
+            $.test_msg("Nav_list._create_nav_item", _a.html());
         }
-        else if ($.isset(_content._$nav_heading)) {
-            _content._lang_filter();
-            KALS_context.lang.add_listener(_a, _content._$nav_heading);
+        else {
+            $.test_msg("nav item " + _i, 2);
+            _a = this._create_window_nav_item(_content, _i);
         }
         
-        _a.click(function() {
-            
-            var _i = $(this).attr('content_index');
-            //var _content = _this._$nav_items[_i];
-            var _content = _this._get_window_content(_i);
-            
-			if (_content.is_absolute() === false) {
-                //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
-
-                            //KALS_window.setup_window(_content);
-                            _content.open();
-			}
-			else {
-                            //KALS_util.confirm('test', "content");
-                            _content.open();
-			}
-            
-            return false;
-        });
+        _a.appendTo(_td);
     }
     
     if (this._$show_help === true) {
         this._setup_help().appendTo(_tr);
     }
 	
-	// 插入錯誤回報功能
-	if (this._$show_feedback === true) {
+    // 插入錯誤回報功能
+    if (this._$show_feedback === true) {
         this._setup_feedback().appendTo(_tr);
     }
     
-	_ui.find('td:last').addClass('last');
+    _ui.find('td:last').addClass('last');
     
     return _ui;
+};
+
+/**
+ * 建立Windows_content系列的按鈕
+ * @param {type} _i
+ * @returns {jQuery}
+ */
+Navigation_list.prototype._create_window_nav_item = function (_content, _i) {
+        
+    //if (_i === 0)
+    //    _td.addClass('first');
+
+    var _a = $('<a href="#"></a>')
+        .addClass(_content.name)
+        .attr('content_index', _i);
+
+    if ($.isset(_content.nav_heading)) {
+        $.test_msg("Nav_list._create_window_nav_item() nav_heading", _content.nav_heading);
+        KALS_context.lang.add_listener(_a, _content.nav_heading);
+    }
+    else if ($.isset(_content._$nav_heading)) {
+        $.test_msg("Nav_list._create_window_nav_item() _$nav_heading", _content._$nav_heading);
+        _content._lang_filter();
+        KALS_context.lang.add_listener(_a, _content._$nav_heading);
+    }
+
+    var _this = this;
+    _a.click(function() {
+
+        var _i = $(this).attr('content_index');
+        //var _content = _this._$nav_items[_i];
+        var _content = _this._get_window_content(_i);
+
+        if (typeof(_content.callback) === "function") {
+            _content.callback();
+        }
+        else if (_content.is_absolute() === false) {
+            //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
+            //KALS_window.setup_window(_content);
+            _content.open();
+        }
+        else {
+            //KALS_util.confirm('test', "content");
+            _content.open();
+        }
+
+        return false;
+    });
+    
+    return _a;
+};
+
+/**
+ * 建立Navigation系列的按鈕
+ * @param {Navigation_item} _content
+ * @param {Number} _i
+ * @returns {jQuery}
+ */
+Navigation_list.prototype._create_nav_item = function  (_content, _i) {
+    var _ui = _content.get_ui();
+    _ui.attr("content_index", _i);
+    //$.test_msg("Nav_list._create_nav_item", _ui.html());
+    return _ui;
+    //return _content.get_ui();
 };
 
 /**
