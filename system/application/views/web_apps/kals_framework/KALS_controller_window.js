@@ -14,6 +14,7 @@ function KALS_controller_window(){
     
     KALS_controller.call(this);
     
+    this.child('loading', new Window_loading_component());
 }
 
 /**
@@ -249,34 +250,33 @@ KALS_controller_window.prototype._setup_submit = function (_submit) {
 KALS_controller_window.prototype.get_input_value = function (_name) {
     
     if ($.is_null(_name)) {
-		return _name;
-	}
+        return _name;
+    }
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     
-    if (_ui.length == 1) {
-		return _ui.attr('value');
-	}
-	else {
-		var _type = _ui.eq(0).attr('type').toLowerCase();
-		var _checked = _ui.filter(':checked');
-		if (_type == 'radio') {
-			if (_checked.length == 1) {
-				return _checked.val();
-			}
-			else {
-				return null;
-			}
-		}
-		else 
-			if (_type == 'checkbox') {
-				var _result = [];
-				for (var _i = 0; _i < _checked.length; _i++) {
-					_result.push(_checked.eq(_i).val());
-				}
-				return _result;
-			}
-	}
+    if (_ui.length === 1) {
+            return _ui.attr('value');
+    }
+    else {
+        var _type = _ui.eq(0).attr('type').toLowerCase();
+        var _checked = _ui.filter(':checked');
+        if (_type === 'radio') {
+            if (_checked.length === 1) {
+                return _checked.val();
+            }
+            else {
+                return null;
+            }
+        }
+        else if (_type === 'checkbox') {
+            var _result = [];
+            for (var _i = 0; _i < _checked.length; _i++) {
+                _result.push(_checked.eq(_i).val());
+            }
+            return _result;
+        }
+    }
 };
 
 /**
@@ -286,26 +286,26 @@ KALS_controller_window.prototype.get_input_value = function (_name) {
  */
 KALS_controller_window.prototype.set_input_value = function (_json) {
 	
-	if (typeof(_json) != "object") {
-		return this;
-	}
-	
-	var _ui = this.get_ui();
-	for (var _name in _json) {
-		var _value = _json[_name];
-		
-		var _input = _ui.find("[name='"+_name+"']");
-		
-		if (_input.length == 1) {
-			_input.attr("value", _value);
-		}
-		else if (_input.length > 1) {
-			_input.attr("checked", false);
-			_input.filter("[value='"+_value+"']").attr("checked", true);
-		}
-	}
-	
-	return this;
+    if (typeof(_json) !== "object") {
+        return this;
+    }
+
+    var _ui = this.get_ui();
+    for (var _name in _json) {
+        var _value = _json[_name];
+
+        var _input = _ui.find("[name='"+_name+"']");
+
+        if (_input.length === 1) {
+                _input.attr("value", _value);
+        }
+        else if (_input.length > 1) {
+                _input.attr("checked", false);
+                _input.filter("[value='"+_value+"']").attr("checked", true);
+        }
+    }
+
+    return this;
 };
 
 /**
@@ -318,7 +318,7 @@ KALS_controller_window.prototype.open_kals_window = function (_callback) {
     
     //this.debug('open kals window');
     KALS_window.setup_window(_content, function () {
-            $.trigger_callback(_callback);
+        $.trigger_callback(_callback);
     });
     
     return this;
@@ -331,8 +331,8 @@ KALS_controller_window.prototype.open_kals_window = function (_callback) {
  */
 KALS_controller_window.prototype.get_input = function (_name) {
     if ($.is_null(_name)) {
-		return _name;
-	}
+        return _name;
+    }
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     return _ui;
@@ -530,9 +530,14 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
         + "</tbody></tbable>"
         + '<table align="center" class="dialog-table content" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
         + '<tr class="dialog-content-tr"><td class="dialog-content-td">'
-            + '<div class="dialog-content"></div></td></tr>'
+            + '<div class="dialog-content"></div>'
+            + '</td></tr>'
+        // @20140119 Pulipuli Chen
+        // 加入讀取條的功能
+        + '<tr class="window-loading-tr"><td></td></tr>'
         //+ "<tr><td class='resize-handler horizontal top' colspan='3'></td></tr>"
         + '</tbody></table></div>');
+    
     
     if (this._$width !== null) {
         _ui.css('width', this._$width + 'px');
@@ -624,9 +629,24 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
         this.enable_touch_scroll(_ui);
     }
     */
-    
+   
+    // 20140119 Pulipuli Chen
+    // 加上Loading的功能
+    var _loading_tr = _ui.find(".window-loading-tr:first");
+    var _loading_ui = this.loading.get_ui();
+    _loading_tr.find('td:first').append(_loading_ui);
+    if (this._$default_status_loading) {
+        _ui.addClass("loading");
+    }
+        
     return _ui;
 };
+
+/**
+ * 預設狀態是讀取中
+ * @type Boolean
+ */
+KALS_controller_window.prototype._$default_status_loading = false;
 
 /**
  * 視窗寬度
@@ -807,6 +827,11 @@ KALS_controller_window.prototype._$get_config = function () {
                 if ($.is_function(_this._adjust_position_left)) {
                     _this._adjust_position_left();
                 }
+                var _ui = _this.get_ui();
+                setTimeout(function () {
+                    _ui.css("visibility", "visible");
+                }, 1);
+                
                 //_this._adjust_position_checked = true;
             //}
                 
@@ -958,7 +983,6 @@ KALS_controller_window.prototype._adjust_position_top = function () {
         }
         
         //$.test_msg("最後算出來的top是：", _top);
-        
         setTimeout(function () {
             if ($.isset(_top)) {
                 _ui.css("top", _top);
@@ -1253,5 +1277,110 @@ KALS_controller_window.prototype.cover = function (_callback) {
     
     return this;
 };
+
+// ------------------------------------------------------------
+// 讀取狀態 loading
+// ------------------------------------------------------------
+
+/**
+ * 設置是否為loading中
+ * @param {null|boolean} _is_loading 如果是null，則會切換到另一種狀態 
+ * @param {function} _callback
+ */
+KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callback) {
+    
+    var _this = this;
+    
+    if ($.is_function(_is_loading) && $.is_null(_callback)) {
+        _callback = _is_loading;
+        _is_loading = null;
+    }
+    
+    if (_is_loading !== null
+       && this.is_loading() === _is_loading) {
+        $.trigger_callback(_callback);
+        return;
+    }
+    var _ui = this.get_ui();
+    
+    var _loading = _ui.find('.window-loading:first');
+    var _content = _ui.find('.dialog-content:first');
+    var _submit = _ui.find('.window-content-submit:first');
+    
+    var _close_loading = function () {
+        _loading.slideUp(_speed, function () { _loading.hide(); });
+        _content.slideDown(_speed);
+        //_this.toggle_options(true);
+        _this.toggle_toolbar_option(true);
+    };
+    
+    var _open_loading = function () {
+        _loading.slideDown(_speed);
+        _content.slideUp(_speed, function () { _content.hide(); });
+        //_this.toggle_options(false);
+        _this.toggle_toolbar_option(false);   
+    };
+    
+    //var _speed = 1000;
+    var _speed = 0;    //2010.9.10 取消動畫
+    
+    if (_is_loading === null) {
+        if (this.is_loading()) {
+            _close_loading();
+        }
+        else {
+            _open_loading();
+        }
+    }
+    
+    if (_is_loading === true) {
+        _open_loading();
+    }
+    else {
+        _close_loading();
+    }
+    
+    if ($.is_function(this._$onviewportmove)) {
+        this._$onviewportmove(_ui);
+    }
+    
+    setTimeout(function () {
+        
+        _this.focus_input();
+        
+        if ($.is_function(_this._$onviewportmove)) {
+            _this._$onviewportmove(_ui);
+            _ui.animate({}, {
+                complete: function () {
+                    setTimeout(function () {
+                        $.trigger_callback(_callback);        
+                    }, 0);
+                }
+            }); 
+        }
+        else {
+            $.trigger_callback(_callback);
+        }
+        
+    }, (_speed * 1.2));
+    
+    return this;
+};
+
+/**
+ * 讀取完成，將Loading狀態關閉。
+ * @param {function} _callback
+ */
+KALS_controller_window.prototype.loading_complete = function (_callback) {
+    return this.toggle_loading(false, _callback);
+};
+
+KALS_controller_window.prototype.is_loading = function () {
+    var _ui = this.get_ui();
+    var _loading = _ui.find('.window-loading:first');
+    
+    return (!(_loading.css('display') === 'none'));
+};
+
 /* End of file KALS_controller_window */
 /* Location: ./system/application/views/web_apps/kals_framework/KALS_controller_window.js */

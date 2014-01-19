@@ -31,14 +31,20 @@ function Reading_guide() {
  */
 Reading_guide.prototype = new KALS_controller_window();
 
+Reading_guide.prototype._$default_status_loading = true;
+
 /**
  * 初始化View
  * 
  * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
  * 這個方法只會執行一次
+ * @return {Reading_guide}
  */
 Reading_guide.prototype._$initialize_view = function () {
-    this._init_default_algorithm();
+    var _this = this;
+    return this._init_default_algorithm(function () {
+        _this.toggle_loading(false);
+    });
 };
 
 
@@ -116,31 +122,7 @@ Reading_guide.prototype._$enable_debug = true;
  * 啟用權限檢查機制
  * @type {Boolean}
  */
-Reading_guide.prototype._$enable_auth_check = true;
-
-/**
- * 權限檢查
- * 
- * 請用KALS_controller提供的兩個參數，以及其他自己設定的資料
- * 來決定是否要讓權限檢查通過
- * 
- * 舉例：
- * 
- * 不允許未登入的人使用
- * return _is_login;
- * 
- * 不允許已登入的人使用
- * retunr !(_is_login);
- * 
- * @param {boolean} _is_login 是否已經登入
- * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
- * @returns {boolean} true=通過;false=未通過
- */
-Reading_guide.prototype._$auth_check = function (_is_login, _user) {
-    //this.debug('auth check: has login', _is_login);
-    //return _is_login;
-    return true;
-};
+Reading_guide.prototype._$enable_auth_check = false;
 
 /**
  * ====================
@@ -254,7 +236,6 @@ Reading_guide.prototype.setup_steps = function (_coll) {
     
     //$.test_msg("設定步驟參數", _coll.annotations.length);
     
-    
     var _output_scope_coll = [];
     
     for (var _i in _coll) {
@@ -265,6 +246,10 @@ Reading_guide.prototype.setup_steps = function (_coll) {
     this.set_field("step_list", _output_scope_coll);
     
    //this.set_field("annotation_step", "12112");
+    
+    // @20140119 Pulipuli Chen
+    // 設定完步驟之後，不預設開啟
+    // 要open請自行呼叫
     
     //var _this = this;
     //this.open(function () {
