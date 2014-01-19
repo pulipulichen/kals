@@ -96,7 +96,12 @@ Navigation_list.prototype._create_nav = function() {
         var _content = this._get_window_content(_i); 
         
         var _a;
-        if ($.is_boolean(_content.nav_item) && _content.nav_item === true) {
+        
+        //$.test_msg("nav item " + _i + " content ", _content === null);
+        if ($.is_null(_content) === false
+                && _content.nav_item !== undefined 
+                && $.is_boolean(_content.nav_item) 
+                && _content.nav_item === true) {
             //$.test_msg("nav item " + _i, 1);
             _a = this._create_nav_item(_content, _i);
             //$.test_msg("Nav_list._create_nav_item", _a.html());

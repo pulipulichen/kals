@@ -127,7 +127,7 @@ Init_profile.prototype._test = [
         //});
         
         //KALS_text.guide.open_whole_annotations();
-        KALS_text.guide.open_whole_annotations_by_sentence();
+        //KALS_text.guide.open_whole_annotations_by_sentence();
         //KALS_text.guide.open_apriori_all();
     }
     /**

@@ -32,6 +32,17 @@ function Reading_guide() {
 Reading_guide.prototype = new KALS_controller_window();
 
 /**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 這個方法只會執行一次
+ */
+Reading_guide.prototype._$initialize_view = function () {
+    this._init_default_algorithm();
+};
+
+
+/**
  * ====================
  * View設定
  * ====================
@@ -163,7 +174,7 @@ Reading_guide.prototype._$heading = 'heading';
  * @type KALS_language_param|String
  * 對應到樣板的語系檔
  */
-Reading_guide.prototype._$nav_heading = 'heading';
+Reading_guide.prototype._$nav_heading = 'nav_heading';
 
 /**
  * 設定視窗的寬度
@@ -211,7 +222,11 @@ Reading_guide.prototype._$position_left = "-50px";
  */
 Reading_guide.prototype._$position_top = null;
 
-
+/*
+Reading_guide.prototype._$nav_config = {
+    ""
+};
+*/
 /**
  * ====================
  * Action設定
@@ -220,13 +235,16 @@ Reading_guide.prototype._$position_top = null;
 
 /**
  * 設定步驟參數
+ * 
+ * 20140119 Setup不open了
+ * 
  * @param {Annotation_collection_param} _coll
  * @returns {Reading_guide}
  */
 Reading_guide.prototype.setup_steps = function (_coll) {
     
     if ($.is_array(_coll) === false || _coll.lenght === 0) {
-        return;
+        return this;
     }
     
     //this.set_field("step_index", -1);
@@ -249,16 +267,20 @@ Reading_guide.prototype.setup_steps = function (_coll) {
    //this.set_field("annotation_step", "12112");
     
     //var _this = this;
-    this.open(function () {
+    //this.open(function () {
         //_this.set_field("annotation_step", "12112");
-    });
+    //});
     return this;
 };
 
 Reading_guide.prototype._filter_scope_coll = function (_coll) {
     
     var _output_coll = [];
-    if ($.is_array(_coll) && _coll.length > 0 && typeof(_coll[0].annotation_id) !== "undefined") {
+    if ($.is_array(_coll) 
+            && _coll.length > 0 
+            && typeof(_coll[0]) !== "undefined"
+            && _coll[0] !== null
+            && typeof(_coll[0].annotation_id) !== "undefined") {
         //$.test_msg("是JSON陣列嗎？", _coll);
         _coll = new Annotation_collection_param(_coll);
     }
@@ -283,7 +305,7 @@ Reading_guide.prototype._filter_scope_coll = function (_coll) {
         }
     }
     else if ($.is_array(_coll)) {
-        $.test_msg('是普通的陣列嗎？');
+        //$.test_msg('是普通的陣列嗎？');
         for (var _c in _coll) {
             var _from = _coll[_c][0];
             var _to = _coll[_c][1];
@@ -418,32 +440,123 @@ Reading_guide.prototype.get_step_index = function () {
 };
 
 /**
- * ====================
- * 各種導讀的開啟方式
- * ====================
+ * ================================================
+ * 所有導讀都會用到的功能
+ * ================================================
  */
 
 /**
- * 開啟所有的標註
+ * 開啟所有標註
+ * @param {String} _algorithm 可接受參數有
+ *  whole_annotations
+ *  whole_annotations_by_sentence 預設值
+ *  apriori_all
+ *  
+ * @param {function} _callback
  * @returns {Reading_guide}
  */
-Reading_guide.prototype.open_whole_annotations = function () {
+Reading_guide.prototype.open_guide_reading = function (_algorithm, _callback) {
+    var _default_algorithm = this._default_algorithm;
+    if (_algorithm === undefined) {
+        _algorithm = _default_algorithm;
+    }
+    if ($.is_function(_algorithm) && $.is_undefined(_callback)) {
+        _callback = _algorithm;
+        _algorithm = _default_algorithm;
+    }
+    
+    var _this = this;
+    var _method_name = "_init_" + _algorithm;
+    this[_method_name](function () {
+        _this.open(function () {
+            $.trigger_callback(_callback);
+        });
+    });
+    return this;
+};
+
+/**
+ * 
+ * @type String預設使用的演算法
+ * @type String
+ */
+Reading_guide.prototype._default_algorithm = "whole_annotations_by_sentence";
+
+/**
+ * 預設初始化的演算法
+ * @param {type} _callback
+ * @returns {Reading_guide.prototype}
+ */
+Reading_guide.prototype._init_default_algorithm = function (_callback) {
+    var _method_name = "_init_" + this._default_algorithm;
+    this[_method_name](function () {
+        $.trigger_callback(_callback);
+    });
+    return this;
+};
+
+/**
+ * ================================================
+ * 導讀開啟：open_whole_annotations
+ * ================================================
+ */
+
+/**
+ * 所有標註的標題
+ * @type String
+ */
+Reading_guide.prototype._heading_open_whole_annotations = "open_whole_annotations";
+
+/**
+ * 讀取所有的標註
+ * @param {function} _callback
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype._init_whole_annotations = function (_callback) {
     //$.test_msg("準備開啟所有標註", _structure);
     var _data = {};
     var _this = this;
     this.request_get("whole_annotations", _data, function (_data) {
         var _steps = _data.steps;
+        
+        var _lang = _this._heading_open_whole_annotations_by_sentence_title;
+        _lang = _this.get_view_lang(_lang);
+        _this.set_heading(_lang);
+        
         _this.setup_steps(_steps);
+        $.trigger_callback(_callback);
     });
     
     return this;
 };
 
 /**
- * 開啟所有的標註，以句子切割
+ * 開啟所有標註
+ * @param {function} _callback
  * @returns {Reading_guide}
  */
-Reading_guide.prototype.open_whole_annotations_by_sentence = function () {
+Reading_guide.prototype.open_whole_annotations = function (_callback) {
+    return this.open_guide_reading("whole_annotations", _callback);
+};
+
+/**
+ * ================================================
+ * 導讀開啟：open_whole_annotations_by_sentence_title
+ * ================================================
+ */
+
+/**
+ * 句子標註的標題
+ * @type String
+ */
+Reading_guide.prototype._heading_open_whole_annotations_by_sentence_title = "open_whole_annotations_by_sentence_title";
+
+/**
+ * 開啟所有的標註，以句子切割
+ * @param {function} _callback
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype._init_whole_annotations_by_sentence = function (_callback) {
     
     var _structure = KALS_text.get_sentence_structure();
     //$.test_msg("準備開啟所有標註", _structure);
@@ -454,20 +567,46 @@ Reading_guide.prototype.open_whole_annotations_by_sentence = function () {
     this.request_post("whole_annotations_by_sentence", _data, function (_data) {
         var _steps = _data.steps;
         
-        $.test_msg("讀取到了什麼呢？ from_index", _data.from_index_array);
-        $.test_msg("讀取到了什麼呢？ scope", _steps);
+        //$.test_msg("讀取到了什麼呢？ from_index", _data.from_index_array);
+        //$.test_msg("讀取到了什麼呢？ scope", _steps);
+        var _lang = _this._heading_open_whole_annotations_by_sentence_title;
+        _lang = _this.get_view_lang(_lang);
+        _this.set_heading(_lang);
+        
         _this.setup_steps(_steps);
+        $.trigger_callback(_callback);
     });
     
     return this;
 };
 
+/**
+ * 開啟所有標註
+ * @param {function} _callback
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype.open_whole_annotations_by_sentence = function (_callback) {
+    return this.open_guide_reading("whole_annotations_by_sentence", _callback);
+};
+
+/**
+ * ================================================
+ * 導讀開啟：open_whole_annotations_by_sentence_title
+ * ================================================
+ */
+
+/**
+ * Apriori all標註的標題
+ * @type String
+ */
+Reading_guide.prototype._heading_open_apiori_all = "open_apriori_all";
 
 /**
  * 開啟Apriopri ALL演算法的標註
+ * @param {function} _callback
  * @returns {Reading_guide}
  */
-Reading_guide.prototype.open_apriori_all = function () {
+Reading_guide.prototype._init_apriori_all = function (_callback) {
     
     var _structure = KALS_text.get_sentence_structure();
     //$.test_msg("準備開啟 apriori_all", _structure);
@@ -478,12 +617,25 @@ Reading_guide.prototype.open_apriori_all = function () {
     this.request_post("apriori_all", _data, function (_data) {
         var _steps = _data.steps;
         
-        $.test_msg("讀取到了什麼呢？ scope", _steps);
+        //$.test_msg("讀取到了什麼呢？ scope", _steps);
+        var _lang = _this._heading_open_apriori_all;
+        _lang = _this.get_view_lang(_lang);
+        _this.set_heading(_lang);
         
         _this.setup_steps(_steps);
+        $.trigger_callback(_callback);
     });
     
     return this;
+};
+
+/**
+ * 開啟所有標註
+ * @param {function} _callback
+ * @returns {Reading_guide}
+ */
+Reading_guide.prototype.open_apriori_all = function (_callback) {
+    return this.open_guide_reading("apriori_all", _callback);
 };
 
 /* End of file Reading_guide */

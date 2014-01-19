@@ -616,8 +616,22 @@ jQuery.is_object = function (_obj) {
     return (typeof(_obj) == 'object' && !(_obj instanceof Array));
 };
 
+/**
+ * 檢測變數是否是函式
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
 jQuery.is_function = function (_obj) {
-    return (typeof(_obj) == 'function');
+    return (typeof(_obj) === 'function');
+};
+
+/**
+ * 檢測變數是否是空值
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
+jQuery.is_undefined = function (_obj) {
+    return (_obj === undefined);
 };
 
 /**
@@ -2179,7 +2193,7 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         _config_setted = true;
     }
     
-    $.test_msg("要準備捲動囉", _config);
+    //$.test_msg("要準備捲動囉", _config);
     
     if (_config_setted) {
         $('html, body').animate(_config, _speed, function () {

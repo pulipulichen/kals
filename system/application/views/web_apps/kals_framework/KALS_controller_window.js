@@ -522,7 +522,7 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
             + '<th class="dialog-toolbar" valign="middle">'
             + '<table class="dialog-toolbar-table" width="100%" align="center" cellpadding="0" cellspacing="0" border="0"><tbody><tr>'
             //+ '<td class="toolbar-options toolbar-backward"></td>'
-            + '<td class="dialog-heading"></td>'
+            + '<td class="dialog-heading"><span class="heading"></span></td>'
             //+ '<td class="toolbar-options toolbar-forward"></td>'
             //+ '<td class="resize-handler vertical right"></td>'
             + '</tr></tbody></table>'
@@ -557,7 +557,7 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     
     //$.test_msg('Dialog_modal._$create_ui()', this._$modal_name);
     
-    var _container = _ui.find('.dialog-heading:first');
+    var _container = _ui.find('.dialog-heading:first .heading');
     if (_container.length === 1) {
         if (this.heading !== undefined && this.heading !== null) {
             KALS_context.lang.add_listener(_container, this.heading);
@@ -668,7 +668,7 @@ KALS_controller_window.prototype.open_absolute_window = function (_callback) {
  */
 KALS_controller_window.prototype.set_heading = function (_lang_param) {
     var _container = this.get_heading();
-    if (_container.length == 1) {
+    if (_container.length === 1) {
         if ($.is_string(_lang_param)) {
             _container.html(_lang_param);
         }
@@ -685,7 +685,7 @@ KALS_controller_window.prototype.set_heading = function (_lang_param) {
  */
 KALS_controller_window.prototype.get_heading = function () {
     var _ui = this.get_ui();
-    var _container = _ui.find('.dialog-heading:first');
+    var _container = _ui.find('.dialog-heading:first .heading');
     return _container;
 };
 
@@ -697,7 +697,7 @@ KALS_controller_window.prototype.get_heading = function () {
 KALS_controller_window.prototype.set_forward_option = function (_option) {
     var _ui = this.get_ui();
     
-    if (typeof(_option.get_ui) != 'function') {
+    if (typeof(_option.get_ui) !== 'function') {
 		return this;
 	}
     
@@ -800,15 +800,15 @@ KALS_controller_window.prototype._$get_config = function () {
                 KALS_context.overlay.add_opened(_this);
             }
             
-            if (_this._adjust_position_checked === false) {
+            //if (_this._adjust_position_checked === false) {
                 if ($.is_function(_this._adjust_position_top)) {
                     _this._adjust_position_top();
                 }
                 if ($.is_function(_this._adjust_position_left)) {
                     _this._adjust_position_left();
                 }
-                _this._adjust_position_checked = true;
-            }
+                //_this._adjust_position_checked = true;
+            //}
                 
             
             if ($.is_function(_this._$onviewportmove)) {
@@ -830,8 +830,8 @@ KALS_controller_window.prototype._$get_config = function () {
                 complete: function () {
                     setTimeout(function () {
                         if ($.is_function(_this._$onopen)) {
-							_this._$onopen(_ui);
-						}
+                            _this._$onopen(_ui);
+                        }
                         _this.call_temp_callback(_ui);    
                     }, 1000);
                        
@@ -846,11 +846,10 @@ KALS_controller_window.prototype._$get_config = function () {
             }
         },
         onClose: function () {
-            
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onclose)) {
-				_this._$onclose(_ui);
-			}
+                _this._$onclose(_ui);
+            }
             _this.call_temp_callback(_ui);
             
             
