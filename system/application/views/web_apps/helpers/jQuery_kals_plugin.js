@@ -2517,15 +2517,16 @@ $.widget("ui.dialog", $.ui.dialog, {
  * 20130222 Pulipuli Chen
  * 不採用
  */
-if (false) {
+//if (false) {
     /**
      * @type {jQuery}
      * @alias $
      * @constructor
+     * @extends {jQuery}
      * @method [$]
      */
-    $ = jQuery;
-}
+    //$ = jQuery;
+//}
 
 // ---------
 // 防止重複讀取

@@ -126,6 +126,7 @@
     display: block;
 }
 
-.KALS.kals-controller-window.loading .dialog-content {
+.KALS.kals-controller-window.loading .dialog-content,
+.KALS.kals-controller-window.loading .dialog-heading .dialog-option {
     display: none;
 }

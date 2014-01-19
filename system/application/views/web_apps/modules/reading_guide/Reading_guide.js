@@ -463,9 +463,11 @@ Reading_guide.prototype.open_guide_reading = function (_algorithm, _callback) {
 /**
  * 
  * @type String預設使用的演算法
- * @type String
+ *  whole_annotations
+ *  whole_annotations_by_sentence
+ *  apriori_all
  */
-Reading_guide.prototype._default_algorithm = "whole_annotations_by_sentence";
+Reading_guide.prototype._default_algorithm = "apriori_all";
 
 /**
  * 預設初始化的演算法
@@ -584,7 +586,7 @@ Reading_guide.prototype.open_whole_annotations_by_sentence = function (_callback
  * Apriori all標註的標題
  * @type String
  */
-Reading_guide.prototype._heading_open_apiori_all = "open_apriori_all";
+Reading_guide.prototype._heading_open_apriori_all = "open_apriori_all";
 
 /**
  * 開啟Apriopri ALL演算法的標註

@@ -1310,15 +1310,17 @@ KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callba
     var _close_loading = function () {
         _loading.slideUp(_speed, function () { _loading.hide(); });
         _content.slideDown(_speed);
+        _ui.removeClass("loading");
         //_this.toggle_options(true);
-        _this.toggle_toolbar_option(true);
+        //_this.toggle_toolbar_option(true);
     };
     
     var _open_loading = function () {
         _loading.slideDown(_speed);
         _content.slideUp(_speed, function () { _content.hide(); });
         //_this.toggle_options(false);
-        _this.toggle_toolbar_option(false);   
+        //_this.toggle_toolbar_option(false);   
+        _ui.addClass("loading");
     };
     
     //var _speed = 1000;
@@ -1345,9 +1347,6 @@ KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callba
     }
     
     setTimeout(function () {
-        
-        _this.focus_input();
-        
         if ($.is_function(_this._$onviewportmove)) {
             _this._$onviewportmove(_ui);
             _ui.animate({}, {
@@ -1361,7 +1360,7 @@ KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callba
         else {
             $.trigger_callback(_callback);
         }
-        
+        _this.focus_input();
     }, (_speed * 1.2));
     
     return this;
@@ -1380,6 +1379,61 @@ KALS_controller_window.prototype.is_loading = function () {
     var _loading = _ui.find('.window-loading:first');
     
     return (!(_loading.css('display') === 'none'));
+};
+
+/**
+ * 切換顯示工具列的按鈕
+ * @param {boolean} _display
+ * @returns {Dialog_modal}
+ */
+KALS_controller_window.prototype.toggle_toolbar_option = function(_display) {
+    
+    var _toolbar = this.get_ui('.dialog-toolbar:first');
+    
+    var _classname = 'hide-option';
+    if ($.is_null(_display)) {
+        _toolbar.toggleClass(_classname);
+    }
+    else if (_display) {
+        _toolbar.removeClass(_classname);
+    }
+    else {
+        _toolbar.addClass(_classname);
+    }
+        
+    return this;
+};
+
+/**
+ * 當讀取結束之後，跳到content中的第一個可輸入欄位吧
+ * 
+ * @todo 20140119 無法正常運作
+ * @return {KALS_controller_window}
+ */
+KALS_controller_window.prototype.focus_input = function () {
+    var _ui = this.get_ui();
+    
+    var _input = _ui.find(".default-focus:first");
+    
+    if (_input.length === 0) {
+        _input = _ui.find("input:first");
+    }
+    if (_input.length === 0) {
+        _input = _ui.find("button:first");
+    }
+    if (_input.length === 0) {
+        _input = _ui.find("textarea:first");
+    }
+    
+    $.test_msg("focus_input", _input.length);
+    if (_input.length > 0) {
+        _input.css("border", "3px solid red");
+        _input.css("color", "red");
+        _input.focus();
+        //_input.remove();
+    }
+    
+    return this;
 };
 
 /* End of file KALS_controller_window */
