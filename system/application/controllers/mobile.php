@@ -20,37 +20,64 @@ class mobile extends Web_apps_controller{
      * Output:  webpage id, annotation note, type, anchor text, topic? 
      * Input: note, type,
      * 
-     * 範例：http://localhost/kals/mobile/mobile_setter
+     * 範例：http://localhost/kals/mobile/mobile_setter/mobile_views/14835
      */
     
     
-    public function mobile_setter($view = "mobile_views") {
+    public function mobile_setter($view = "mobile_views", $anchor_text_id = NULL) {
           
         //載入libary
-        // 用poset接收textarea的值:array
+        
         $this->load->library('kals_resource/Webpage');
+       
+        // 取anchor_text_id
+        $this->load->library('kals_resource/Annotation');
+        $this->load->library('scope/Scope_anchor_text');
+        $this->load->library('search/Search_annotation_collection');
         
         // 接收-送回應值
+        // 用post接收textarea的值:array
         $data = array();
         if ( isset($_POST["note_text"]) ) {
             $note_massage = $_POST["note_text"];
             $data["note_massage"] = $note_massage;
+                     
         }
         // 詳見全文url：Webpage -> get_url()
-        $url_msg ='https://www.google.com'; 
-       // $url_msg = get_url();
+        $url_msg ='https://www.google.com';
+        /*$webpage_id = 1573 ;
+        $webpage = new Webpage($webpage_id);
+        $url_msg = $webpage->get_url(); */
         $data['webpage_url'] = $url_msg;
+        
+       //radio 
+        if (isset ($_POST["annotation_type"])){
+        $anno_type = $_POST["annotation_type"];       
+        $data['type'] = $anno_type;
+        }
+        
+       // anchor_text_id
+       if(is_null($anchor_text_id)){
+            //從rss.php取得現在的anchor_text_id  
+            $anchor_text_id = 14835;
+        }
+        $data['anchor_text_id'] = $anchor_text_id;
+        
+        
+        
         
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/'.$view, $data);
+        //$this->load->view('mobile/'.$view.$anchor_text_id , $data);
         $this->load->view('mobile/mobile_views_footer');
 
     }
    
    private function _get_webpage() {
         $webpage = get_context_webpage();
-        return $webpage;
-  
+        $webpage_id = $webpage->get_id();
+        //return $webpage;
+        return;
    }
      
      

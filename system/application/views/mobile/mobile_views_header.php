@@ -18,6 +18,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
 	<title>KALS標註編輯</title> 
       
         
@@ -28,6 +29,13 @@
         <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.0/css/themes/default/jquery.mobile-1.4.0.min.css" />
         <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.0/_assets/css/jqm-demos.css" />
     
+        <script>
+
+         $(function(){
+	      $( "[data-role='header'], [data-role='footer']" ).toolbar();
+          });
+       </script>
+        
    </head>
   <body>
 <!-- header -->
