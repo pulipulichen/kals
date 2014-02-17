@@ -9,7 +9,7 @@
 
 ?>
     <!--test msg  style="display: none" -->
-    <form name="f1" id="f1" action="14835" method="post" style="display: none" > 
+    <form name="f1" id="f1" action="10851" method="post" style="display: none" > 
         <textarea name="note_text"></textarea>
         <input name="annotation_type">
  </form>

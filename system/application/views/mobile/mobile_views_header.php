@@ -23,12 +23,13 @@
       
         
         <!-- load jQuery & css & jQuery mobile -->
-        <script src="http://demos.jquerymobile.com/1.4.0/js/jquery.js"></script>
-        <script src="http://demos.jquerymobile.com/1.4.0/_assets/js/index.js"></script>
-        <script src="http://demos.jquerymobile.com/1.4.0/js/jquery.mobile-1.4.0.min.js"></script>
-        <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.0/css/themes/default/jquery.mobile-1.4.0.min.css" />
-        <link rel="stylesheet" href="http://demos.jquerymobile.com/1.4.0/_assets/css/jqm-demos.css" />
-    
+        <script type="text/javascript" src="http://localhost/kals/stylesheets/jquery-mobile/jquery.js"></script>
+        <script type="text/javascript" src="http://localhost/kals/stylesheets/jquery-mobile/index.js"></script>
+        <script type="text/javascript" src="http://localhost/kals/stylesheets/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
+        
+        <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jqm-demos.css" />
+        <link type ="text/css" rel="stylesheet" href="<?php echo base_url(); ?>web_apps/generic/style" />
         <script>
 
          $(function(){

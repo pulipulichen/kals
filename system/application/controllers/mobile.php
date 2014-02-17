@@ -2,8 +2,11 @@
 include_once 'web_apps/web_apps_controller.php';
 /**
  * mobile
- *
- * 
+ * login->login_view
+ * logout->logout_view
+ * webpage->webpage_view
+ * annotation_topics->annotation_topics_view
+ * annotation_thread->annotation_thread_view  
  * @package		KALS
  * @category		Controllers
  * @author		Pudding Chen <pulipuli.chen@gmail.com>
@@ -20,21 +23,21 @@ class mobile extends Web_apps_controller{
      * Output:  webpage id, annotation note, type, anchor text, topic? 
      * Input: note, type,
      * 
-     * 範例：http://localhost/kals/mobile/mobile_setter/mobile_views/14835
+     * 範例：http://localhost/kals/mobile/annotation_thread/annotation_thread_view/14835
+     * 
      */
     
     
-    public function mobile_setter($view = "mobile_views", $anchor_text_id = NULL) {
+    public function annotation_thread($annotation_id = NULL) {
           
         //載入libary
-        
         $this->load->library('kals_resource/Webpage');
-       
-        // 取anchor_text_id
         $this->load->library('kals_resource/Annotation');
         $this->load->library('scope/Scope_anchor_text');
         $this->load->library('search/Search_annotation_collection');
-        
+        // 語系
+        $this->lang->load('kals_web_apps');
+       
         // 接收-送回應值
         // 用post接收textarea的值:array
         $data = array();
@@ -43,42 +46,79 @@ class mobile extends Web_apps_controller{
             $data["note_massage"] = $note_massage;
                      
         }
-        // 詳見全文url：Webpage -> get_url()
-        $url_msg ='https://www.google.com';
-        /*$webpage_id = 1573 ;
-        $webpage = new Webpage($webpage_id);
-        $url_msg = $webpage->get_url(); */
-        $data['webpage_url'] = $url_msg;
         
-       //radio 
+        // $annotation_id
+        $annotation = new Annotation($annotation_id);
+        
+        
+        $anchor_text = $annotation->get_anchor_text();  
+        $user = $annotation->get_user()->get_name();    
+        $type = $annotation->get_type()->get_name();    
+        $note = $annotation->get_note();   
+        $timestamp = $annotation->get_update_timestamp();   
+        
+        // type
+        if ($type != 'annotation.type.custom'){
+            $type_show = $this->lang->line("web_apps.". $type);
+            $type_name = $type_show;
+        }
+        
+        // annotation_respones
+        $respond_collection = $annotation->get_topic_respond_coll();
+        $respond_json = array(); 
+        foreach ($respond_collection AS $respond_annotation) {
+            $json = array();
+            
+            $json["user"] = $respond_annotation->get_user()->get_name();
+            $res_type = $respond_annotation->get_type()->get_name();
+            if ($res_type != 'annotation.type.custom'){
+                $res_type_show = $this->lang->line("web_apps.". $res_type);
+                $res_type_name = $res_type_show;
+                }
+            $json["type"] = $res_type_name;
+            $json["note"] = $respond_annotation->get_note();
+            $json["timestamp"] = $respond_annotation->get_update_timestamp();
+            
+            $respond_json[] = $json;
+        }//$respond_json[0]['user'];
+        
+        // send data -annotation topic
+        $data["anchor_text"] = $anchor_text;
+        $data["user"] = $user;
+        $data["type_name"] = $type_name;
+        $data["note"] = $note;
+        $data["timestamp"] = $timestamp;
+        
+        $data["respond_json"] = $respond_json;
+        
+        // 詳見全文url：Webpage -> get_url()
+        $webpage_id = null;
+        if(is_null($webpage_id)){
+            $webpage = get_context_webpage();
+            $webpage_id = $webpage->get_id();          
+        }
+            $mobile_webpage = new Webpage($webpage_id);
+            $url = $mobile_webpage->get_url();
+            $data['webpage_url'] = $url;    
+        // radio 
         if (isset ($_POST["annotation_type"])){
         $anno_type = $_POST["annotation_type"];       
-        $data['type'] = $anno_type;
-        }
-        
-       // anchor_text_id
-       if(is_null($anchor_text_id)){
-            //從rss.php取得現在的anchor_text_id  
-            $anchor_text_id = 14835;
-        }
-        $data['anchor_text_id'] = $anchor_text_id;
-        
-        
+        $data['pop_type'] = $anno_type;
+        } 
         
         
         $this->load->view('mobile/mobile_views_header');
-        $this->load->view('mobile/'.$view, $data);
-        //$this->load->view('mobile/'.$view.$anchor_text_id , $data);
+        $this->load->view('mobile/annotation_thread_view', $data);
         $this->load->view('mobile/mobile_views_footer');
 
     }
    
-   private function _get_webpage() {
+   /*private function _get_webpage() {
         $webpage = get_context_webpage();
         $webpage_id = $webpage->get_id();
         //return $webpage;
         return;
-   }
+   }*/
      
      
 

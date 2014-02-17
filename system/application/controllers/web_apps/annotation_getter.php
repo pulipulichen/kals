@@ -168,7 +168,7 @@ class Annotation_getter extends Web_apps_controller {
 
         $output_data = array(
             'basic' => array(),
-            'custom' => array()\
+            'custom' => array()
         );
 
         foreach ($type_scope_colls AS $type_id => $scope_coll)
