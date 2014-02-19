@@ -19,15 +19,16 @@
         echo "[". $pop_type . "]";
         echo "[". $note_massage . "] ". '<br>';      
     }
-    if(isset($webpage_url)){
-        echo "[".$webpage_url. "]".'<br>';
-    }
+    
+    echo "[".$webpage_id. "]".$webpage_url.'<br>';  
+    echo $css_type.'<br>';
     if(isset($respond_json)){
-            foreach ($respond_json AS $json) {
+        foreach ($respond_json AS $json) {
                 echo "test-msg = [".$json['timestamp']."]";
-            }          
-        }
+        }          
+     }
     ?>
+    <!-- </form> -->
     <!--/test msg-->
     <!--top bar-->
 <div data-role="header" data-position="fixed" data-theme="a">
@@ -44,7 +45,7 @@
 <!--/top bar-->
    <!--annotation-->
  <div class="ui-block-a" style="width: 100%">
-    <div class="ui-bar ui-bar-a" style="height:60px">
+    <div class="ui-bar ui-bar-a">
        <h2><?php 
          if(isset($anchor_text)){
             echo '"'.$anchor_text.'"';
@@ -53,23 +54,34 @@
     </div>
  </div> 
    
-   <ul data-role="listview" data-inset="true">
+   <ul data-role="listview" data-inset="true" style=" text-indent: 1em" class="list-header-component">
       <!--$annotation_topic -->      
-    <li style ="margin-left: 8%">
+      <li style ="margin-left: 8%" class="u">
       <?php 
          if(isset($user)&&isset($note)){
-            echo $user."[" .$type_name. "]" .$note. "(" .$timestamp. ")" ;            
+             echo '<span class = "name-container" ><u>'.$user.'</u></span>'
+                 .'<span class = "type-option '.$css_type.'" annotation_type = "'.$css_type.'">'
+                 .$type_name
+                 .'</span>'
+                 .'<span style = "font-size: x-large">'.$note.'</span>'
+                 .'<div style ="color: gray; font-size: 8px; text-align: right"> (' .$timestamp. ') </div>' ; 
          }
       ?>
         </li>
 
- </ul> 
+
 
    <!-- respones -->
-   <ul data-role="listview" data-inset="true"> 
+   <!--<ul data-role="listview" data-inset="true" class="list-header-component"> -->
     <?php    
         foreach ( $respond_json AS $json ){
-          echo '<li style = " margin-left: 15% ">' . ">" .$json['user']. "[" .$json['type']. "]" .$json['note']. "(" .$json['timestamp']. ")" . '</li>' ;         
+          echo '<li style = " margin-left: 15% ">'
+             .'<span class = "name-container"><u>>'.$json['user'].'</u>   <span>'
+             .'<span class = "type-option ' .$json['css_type'].'" annotation_type = "'.$json['css_type'].'">'
+             .$json['type'].'</span>'
+             .'<span style = "font-size: x-large">'.$json['note'].'</span>'
+             .'<div style ="color: gray; font-size: 8px; text-align: right"> (' .$json['timestamp']. ') </div>' 
+             .'</li>' ;                   
          }   
     
         if(isset($note_massage) && isset($pop_type)){

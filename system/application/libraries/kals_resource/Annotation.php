@@ -404,7 +404,16 @@ class Annotation extends KALS_resource {
         }
     }
 
+    /**
+     * 標註所在的Webpage陣列
+     * @var Array|Webpage
+     */
     private $appended_webpages;
+    
+    /**
+     * 取得Webpage陣列
+     * @return Array|Webpage
+     */
     public function get_append_to_webpages()
     {
         if (is_null($this->appended_webpages))

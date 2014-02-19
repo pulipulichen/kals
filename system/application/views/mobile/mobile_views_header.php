@@ -18,15 +18,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0 ,user-scalable = 0" >
 	<title>KALS標註編輯</title> 
       
         
         <!-- load jQuery & css & jQuery mobile -->
-        <script type="text/javascript" src="http://localhost/kals/stylesheets/jquery-mobile/jquery.js"></script>
-        <script type="text/javascript" src="http://localhost/kals/stylesheets/jquery-mobile/index.js"></script>
-        <script type="text/javascript" src="http://localhost/kals/stylesheets/jquery-mobile/jquery.mobile-1.4.0.min.js"></script>
-        
+        <script type="text/javascript" src="http://140.119.61.137/kals/stylesheets/jquery-mobile/jquery.js"></script>
+        <script type="text/javascript" src="http://140.119.61.137/kals/stylesheets/jquery-mobile/index.js"></script>
+        <script type="text/javascript" src="http://140.119.61.137/kals/stylesheets/jquery-mobile/jquery.mobile-1.4.1.min.js"></script>
+     
         <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery.mobile-1.4.0.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jqm-demos.css" />
         <link type ="text/css" rel="stylesheet" href="<?php echo base_url(); ?>web_apps/generic/style" />
@@ -38,5 +38,5 @@
        </script>
         
    </head>
-  <body>
+   <body class="KALS">
 <!-- header -->
