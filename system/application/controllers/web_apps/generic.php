@@ -37,6 +37,8 @@ class generic extends Web_apps_controller {
         /**
          * 基本工具類
          * 
+         * 以下檔案不需要壓縮了，已經壓縮完成了
+         * 
          * 20130221 Pulipuli Chen
          * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
          * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
@@ -44,6 +46,10 @@ class generic extends Web_apps_controller {
          * http://refresh-sf.com/yui
          * 
          * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
+         * 
+         * 20140223 Pudding Chen
+         * 我改用NetBeans的Minify JS壓縮，這是NetBeans的plugin
+         * 
          * @var Array 
          */
         "toolkit_list" => array(
@@ -56,6 +62,7 @@ class generic extends Web_apps_controller {
             , 'libraries/min/yui-min'
             , 'libraries/min/jQuery_mousewheel_plugin-min'
             , 'libraries/min/jquery.scrollIntoView-min'
+            , 'libraries/min/jquery.storageapi.min'
         ),
         
         /**

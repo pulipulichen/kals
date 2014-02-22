@@ -14,7 +14,6 @@
  */
 class Cache_file {
     
-    
     public function __construct($key, $content = NULL, $expire_limit = 30) {
         $this->set_key($key);
         $this->set_content($content);

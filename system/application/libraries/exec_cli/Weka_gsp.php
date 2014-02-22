@@ -35,7 +35,7 @@ class Weka_gsp extends Weka {
     protected function threshold_decrease() {
         
         $this->options["S"] = $this->options["S"] - 0.05;
-        echo $this->options["S"] . " | "; 
+        //echo $this->options["S"] . " | "; 
         return ($this->options["S"] > 0.06) ;
     }
     
