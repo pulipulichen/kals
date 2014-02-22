@@ -292,7 +292,9 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
      * 用來儲存任務的變數
      * @type Array
      */
-    var _task_stack = [];
+    this._task_stack = [];
+    
+
     
     /**
      * 實際執行的迴圈
@@ -305,25 +307,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         
         // 完成迴圈了，停止迴圈的判定
         if (_i === _child_nodes.length || _i > _child_nodes.length) {
-            //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
-            
-            // 把剩餘的任務執行完
-            //if (_task_stack.length > 00) {
-                //$.test_msg("剩餘的任務？", _task_stack.length);
-                //for (var _t = 0; _t < _task_stack.length; _t++) {
-                for (var _t in _task_stack) {
-                    //if ($.is_function(_task_stack[_t])) {
-                        _task_stack[_t]();
-                    //}
-                }
-                _task_stack = [];
-            //}
-                
-            
-            if ($.is_function(_cb)) {
-                _cb();
-            }
-            return;
+            return _this._setup_selectable_element_loop_complete(_cb);
         }
         
         /**
@@ -391,7 +375,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     _loop(_i, _child_nodes, _cb);
                     return;
                 }
-            };
+            };  // var _deeper_parse = function () {
             
             _this.setup_selectable_element($(_child_obj), _deeper_parse);
             return;
@@ -446,6 +430,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 
                 var _t_element = null;
                 
+                // 如果不是空白的話
                 if ($.match_space(_t) === false) {
                     
                     _t_element = _selectable_text_word.create_selectable_word(
@@ -503,18 +488,22 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     _selectable_text_word.word_count++;
                 }   //if ($.match_space(_t) === false) {
                 else {
+                    // 如果是空白的話
                     _t_element = _this.create_span_word(_t);
                 }
                 
                 _next_element.appendChild(_t_element);
             }    //for (var _s = 0; _s < _text.length; _s++)
     	
-            var _insert_action = function () {
-                _child_obj.parentNode.insertBefore(_next_element, _child_obj);
-                $(_next_element).css("display", "inline");
-                $(_child_obj).remove();
-            };
-            _task_stack.push(_insert_action);
+            // 20140223 Pulipuli Chen
+            // 將腳本分離
+            //var _insert_action = function () {
+            //    _child_obj.parentNode.insertBefore(_next_element, _child_obj);
+            //    $(_next_element).css("display", "inline");
+            //    $(_child_obj).remove();
+            //};
+            //_this._task_stack.push(_insert_action);
+            _this._setup_selectable_element_insert_action(_child_obj, _next_element);
             
             _i++;
             if (_i % _batch_excute === 0) {
@@ -548,6 +537,51 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     return this;
     
 };    //Selectable_text.prototype.setup_scope
+
+/**
+ * 新增任務
+ * @param {HTMLNode} _child_obj
+ * @param {HTMLNode} _next_element
+ */
+Selectable_text.prototype._setup_selectable_element_insert_action = function (_child_obj, _next_element) {
+    var _insert_action = function () {
+        _child_obj.parentNode.insertBefore(_next_element, _child_obj);
+        $(_next_element).css("display", "inline");
+        $(_child_obj).remove();
+    };
+    this._task_stack.push(_insert_action);
+};
+
+/**
+ * setup_selectable_element loop完成之後做的事情
+ * @param {function} _callback
+ */
+Selectable_text.prototype._setup_selectable_element_loop_complete = function (_callback) {
+    //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
+
+    // 把剩餘的任務執行完
+    //if (_task_stack.length > 00) {
+        //$.test_msg("剩餘的任務？", _task_stack.length);
+        //for (var _t = 0; _t < _task_stack.length; _t++) {
+        for (var _t in this._task_stack) {
+            //if ($.is_function(_task_stack[_t])) {
+                this._task_stack[_t]();
+            //}
+        }
+        this._task_stack = [];
+    //}
+
+
+    if ($.is_function(_callback)) {
+        _callback();
+    }
+};
+
+/**
+ * 給setup_selectable_element作為儲存任務使用的
+ * @type Array
+ */
+Selectable_text.prototype._task_stack = [];
 
 /**
  * 設定各個字在段落中的位置
