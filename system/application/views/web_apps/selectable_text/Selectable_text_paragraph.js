@@ -249,6 +249,31 @@ Selectable_text_paragraph.prototype.get_structure = function () {
     return this.paragraph_structure;
 };
 
+/**
+ * 儲存到快取中
+ * @param {String} _cache_id
+ * @returns {Selectable_text_paragraph}
+ */
+Selectable_text_paragraph.prototype.cache_save = function (_cache_id) {
+    _cache_id = _cache_id + '_paragraph';
+    //$.test_msg('paragraph save: ' + _cache_id, this.paragraph_count);
+    $.localStorage.set(_cache_id, this.paragraph_count);
+    return this;
+};
+
+/**
+ * 從快取中復原
+ * @param {String} _cache_id
+ * @returns {Selectable_text_paragraph}
+ */
+Selectable_text_paragraph.prototype.cache_restore = function (_cache_id) {
+    _cache_id = _cache_id + '_paragraph';
+    this.paragraph_count = $.localStorage.get(_cache_id);
+    //$.test_msg('paragraph restore: ' + _cache_id, this.paragraph_count);
+    return this;
+};
+
+
 
 /* End of file Selectable_text_paragraph */
 /* Location: ./system/application/views/web_apps/Selectable_text_paragraph.js */

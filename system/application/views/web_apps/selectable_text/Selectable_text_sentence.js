@@ -221,5 +221,31 @@ Selectable_text_sentence.prototype.get_structure = function () {
     return this.sentence_structure;
 };
 
+/**
+ * 儲存到快取中
+ * @param {String} _cache_id
+ * @returns {Selectable_text_sentence}
+ */
+Selectable_text_sentence.prototype.cache_save = function (_cache_id) {
+    _cache_id = _cache_id + '_sentence';
+    var _json = $.json_encode(this.sentence_structure);
+    //$.test_msg('sentence save: ' + _cache_id, _json);
+    $.localStorage.set(_cache_id, _json);
+    return this;
+};
+
+/**
+ * 從快取中復原
+ * @param {String} _cache_id
+ * @returns {Selectable_text_sentence}
+ */
+Selectable_text_sentence.prototype.cache_restore = function (_cache_id) {
+    _cache_id = _cache_id + '_sentence';
+    var _json = $.localStorage.get(_cache_id);
+    //$.test_msg('sentence restore: ' + _cache_id, _json);
+    this.sentence_structure = $.json_decode(_json);
+    return this;
+};
+
 /* End of file Selectable_text_sentence */
 /* Location: ./system/application/views/web_apps/Selectable_text_sentence.js */

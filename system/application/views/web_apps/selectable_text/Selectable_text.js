@@ -540,6 +540,8 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     
 };    //Selectable_text.prototype.setup_scope
 
+Selectable_text.prototype._cache_id = null;
+
 /**
  * 初始化next_element，只用於setup_selectable_element
  * @param {String} _text
@@ -556,16 +558,25 @@ Selectable_text.prototype._setup_selectable_element_init_next_element = function
     // ----------------------
     // 設定快取資訊
     
-    var _cache_id = 'next_element_' + _selectable_text_paragraph.paragraph_count;
+    // 決定是否使用快取
+    var _cache_enable = false;
+    //_cache_enable = true;
+    
+    var _local_storage = $.localStorage;
+    this._cache_id = 'next_element_' + _selectable_text_word.word_count;
     
     // 嘗試取得快取資料
-    var _next_element = $.cookie(_cache_id);
+    var _next_element = _local_storage.get(this._cache_id);
     
     // 如果有資料
-    if (_next_element !== undefined) {
-        var _jquery_object = $(_next_element);
+    //if (_next_element !== undefined) {
+    if (_local_storage.isSet(this._cache_id) && _cache_enable) {
+        var _jquery_object = $("<span>" + _next_element + "</span>");
         var _html_object = _jquery_object.get(0);
         
+        _selectable_text_word.cache_restore(this._cache_id);
+        _selectable_text_sentence.cache_restore(this._cache_id);
+        _selectable_text_paragraph.cache_restore(this._cache_id);
         // 應該還要加上事件的處理，但現在先暫緩
         
         return _html_object;
@@ -574,7 +585,7 @@ Selectable_text.prototype._setup_selectable_element_init_next_element = function
     // ----------------------
     // 以下是正式的初始化
     
-    _next_element = this.create_selectable_paragraph(_selectable_text_paragraph.paragraph_count);
+    _next_element = this.create_selectable_paragraph(_selectable_text_word.word_count);
     $(_next_element).hide();
             
     /**
@@ -668,7 +679,9 @@ Selectable_text.prototype._setup_selectable_element_init_next_element = function
             else if ($.match_punctuation(_t)) {
                 $(_t_element).addClass(_punctuation_classname);
             }   //else if ($.match_punctuation(_t)) {
+            
             _selectable_text_word.word_count++;
+            
         }   //if ($.match_space(_t) === false) {
         else {
             // 如果是空白的話
@@ -680,15 +693,23 @@ Selectable_text.prototype._setup_selectable_element_init_next_element = function
     
     // ---------------------------
     // 儲存快取資料
-    var _next_element_html = $(_next_element).html();
-    var _cookie_param = {
-        //expires: 1,
-    };
-    $.test_msg('cookie next_element: ' +  _cache_id, _next_element_html);
-    $.cookie(_cache_id
-        , _next_element_html
-        //, _cookie_param
-        );
+    
+    if (_cache_enable) {
+        var _next_element_html = $(_next_element).html();
+        var _cookie_param = {
+            //expires: 1,
+        };
+        //$.test_msg('cookie next_element: ' +  _cache_id, _next_element_html);
+        _local_storage.set(this._cache_id
+            , _next_element_html
+            //, _cookie_param
+            );
+
+        _selectable_text_word.cache_save(this._cache_id);
+        _selectable_text_sentence.cache_save(this._cache_id);
+        _selectable_text_paragraph.cache_save(this._cache_id);
+    }
+        
     
     // ---------------------------
     // 回傳

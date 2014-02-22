@@ -494,5 +494,29 @@ Selectable_text_word.prototype.get_estimate_total_words = function (_text) {
     return _total;
 };
 
+/**
+ * 儲存到快取中
+ * @param {String} _cache_id
+ * @returns {Selectable_text_word}
+ */
+Selectable_text_word.prototype.cache_save = function (_cache_id) {
+    _cache_id = _cache_id + '_word';
+    //$.test_msg('word save: ' + _cache_id, this.word_count);
+    $.localStorage.set(_cache_id, this.word_count);
+    return this;
+};
+
+/**
+ * 從快取中復原
+ * @param {String} _cache_id
+ * @returns {Selectable_text_word}
+ */
+Selectable_text_word.prototype.cache_restore = function (_cache_id) {
+    _cache_id = _cache_id + '_word';
+    this.word_count = $.localStorage.get(_cache_id);
+    //$.test_msg('word restore: ' + _cache_id, this.word_count);
+    return this;
+};
+
 /* End of file Selectable_text_word */
 /* Location: ./system/application/views/web_apps/Selectable_text_word.js */

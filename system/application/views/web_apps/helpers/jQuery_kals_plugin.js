@@ -275,19 +275,26 @@ jQuery.str_replace = function (_search, _replace, _subject, _count) {
 
 jQuery.json_encode = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
-		return _json;
-	}
-	else 
-		if (this.is_string(_json)) {
-			return this.serialize_string(_json);
-		}
-		else 
-			if (this.is_array(_json)) {
-				return this.serialize_array(_json);
-			}
-			else {
-				return this.serialize_json(_json);
-			}
+        return _json;
+    }
+    else if (this.is_string(_json)) {
+        return this.serialize_string(_json);
+    }
+    else if (this.is_array(_json)) {
+        return this.serialize_array(_json);
+    }
+    else {
+        return this.serialize_json(_json);
+    }
+};
+
+/**
+ * 將json字串還原成為物件
+ * @param {String} _string
+ * @returns {Object}
+ */
+jQuery.json_decode = function (_string) {
+    return eval(_string);
 };
 
 /**
