@@ -2295,8 +2295,17 @@ jQuery.load_scroll_position = function () {
     window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
 };
 
-jQuery.create_id = function () {
-    return (new Date()).getTime() + '';
+/**
+ * 產生隨機的ID字串
+ * @param {String} _prefix 前置字串
+ * @returns {String}
+ */
+jQuery.create_id = function (_prefix) {
+    var _id = (new Date()).getTime() + '';
+    if (_prefix !== undefined) {
+        _id = _prefix + _id;
+    }
+    return _id;
 };
 
 /**
@@ -2515,10 +2524,23 @@ jQuery.is_email = function (_email) {
 }
 
 $.widget("ui.dialog", $.ui.dialog, {
-	_allowInteraction: function(event) {
-		return !!$(event.target).closest(".cke").length || this._super(event);
-	}
+    _allowInteraction: function(event) {
+        return !!$(event.target).closest(".cke").length || this._super(event);
+    }
 });
+
+/**
+ * 將jQuery加上append事件
+ * 
+ * 參考來源 http://stackoverflow.com/questions/7167085/on-append-do-something
+ */
+(function($) {
+    var origAppend = $.fn.append;
+
+    $.fn.append = function () {
+        return origAppend.apply(this, arguments).trigger("append");
+    };
+})(jQuery);
 
 /**
  * 20130222 Pulipuli Chen

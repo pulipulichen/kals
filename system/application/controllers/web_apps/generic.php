@@ -112,6 +112,7 @@ class generic extends Web_apps_controller {
             'core/URL_hash_dispatcher',
             'core/Style_manager',
             'core/Overlay_manager',
+            'core/KALS_storage',
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',

@@ -229,7 +229,9 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
     var _t_text = document.createTextNode(_text);
     _word.appendChild(_t_text);
 
-    _word = this.setup_word_tooltip(_word);
+    // 20140223 Pudding Chen
+    // 停止在這裡設定事件，移到setup_word_selectable去做
+    //_word = this.setup_word_tooltip(_word);
 
     /**
      * 加入統計目前字串次數的功能
@@ -264,6 +266,8 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
             var _this = this;
 			
             var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
+            
+            _this.setup_word_tooltip(_words);
 			
             // @20130612 Pudding Chen
             // 加入了拖曳選取時也能用的選取範圍功能
@@ -457,6 +461,7 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
  * 設定Word的Tooltip
  * 
  * 2325 轉接完畢，檢查完畢
+ * @deprecated 不使用逐字設定toolip，改用on
  * @param {jQuery|HTMLElement} _word
  * @returns {jQuery}
  */
@@ -467,6 +472,28 @@ Selectable_text_word.prototype.setup_word_tooltip = function (_word) {
     $(_word).tooltip(_tooltip_config);
     
     return _word;
+};
+
+/**
+ * 設定Word的Tooltip
+ * 
+ * 2325 轉接完畢，檢查完畢
+ * @deprecated 不使用逐字設定toolip，改用on
+ * @param {jQuery|HTMLElement} _word
+ * @returns {jQuery}
+ */
+Selectable_text_word.prototype._init_word_tooltip = function () {
+    
+    var _tooltip_config = this._selectable_text.tooltip.get_tooltip_config();
+    
+    var _word_classname = this.word_classname;
+    var _paragraph_classname = this._selectable_text.paragraph.paragraph_classname;
+    var _selector = '.' + _paragraph_classname + ' .' + _word_classname;
+    //$(_word).tooltip(_tooltip_config);
+    this._text.on('append', _selector , function () {
+        
+    });
+    //return _word;
 };
 
 /**

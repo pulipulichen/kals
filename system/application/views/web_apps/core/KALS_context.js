@@ -43,6 +43,7 @@ KALS_context.initialize = function () {
     this.view_manager = new KALS_view_manager();
     this.progress = new Initialization_progress();
     this.site_reform = new Site_reform();
+    this.storage = new KALS_storage();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -320,6 +321,11 @@ KALS_context.progress = null;
  * @type {Site_reform}
  */
 KALS_context.site_reform = null;
+
+/**
+ * @type {KALS_storage}
+ */
+KALS_context.storage = null;
 
 /**
  * @type {Init_context}
