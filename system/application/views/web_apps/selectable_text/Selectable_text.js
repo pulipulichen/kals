@@ -247,7 +247,9 @@ Selectable_text.prototype.initialize = function (_callback) {
                 $.trigger_callback(_callback);
             });
         }
-        
+        else {
+            $.trigger_callback(_callback);
+        }
         return;
     };
     
@@ -324,6 +326,9 @@ Selectable_text.prototype.initialize = function (_callback) {
             
             _loop(_taks_list, 0);
         });
+    }
+    else {
+        _loop(_taks_list, 0);
     }
     
     return this; 
