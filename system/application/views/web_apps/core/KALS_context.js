@@ -564,6 +564,31 @@ KALS_context.create_type_param_list = function() {
     return _list;
 };
 
+/**
+ * 取得根據網址建立的Domain
+ * @returns {String}
+ */
+KALS_context.create_namespace = function () {
+    var _url = location.href;
+    
+    //移除 #之後
+    if (_url.lastIndexOf('#') > -1) {
+        _url = _url.substr(0, _url.lastIndexOf('#'));
+    }
+    
+    // 替換可能出現問題的字串
+    _url = $.str_replace('.', '_', _url);
+    _url = $.str_replace('/', '_', _url);
+    _url = $.str_replace(':', '_', _url);
+    _url = $.str_replace('@', '_', _url);
+    
+    //$.test_msg('KALS_context create_namespace', _url);
+    //_url = 'test';
+    _url = 'test22' + _url;
+    
+    return _url;
+};
+
 // ------------------------------------------------
 
 /**

@@ -63,6 +63,7 @@ class generic extends Web_apps_controller {
             , 'libraries/min/jQuery_mousewheel_plugin-min'
             , 'libraries/min/jquery.scrollIntoView-min'
             , 'libraries/min/jquery.storageapi.min'
+            , 'libraries/min/lz-string-1.3.3-min'
         ),
         
         /**
@@ -71,6 +72,7 @@ class generic extends Web_apps_controller {
          */
         "toolkit_list_package" => array(
             'core/KALS_CONFIG'
+            , 'core/KALS_SITE_REFORM'
             , 'core/KALS_language_param'
             , 'core/feedback/feedback'
             , 'core/feedback/html2canvas'
@@ -113,6 +115,7 @@ class generic extends Web_apps_controller {
             'core/Style_manager',
             'core/Overlay_manager',
             'core/KALS_storage',
+            'core/Site_reform',
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',

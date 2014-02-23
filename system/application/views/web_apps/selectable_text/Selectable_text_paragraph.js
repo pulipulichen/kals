@@ -252,23 +252,30 @@ Selectable_text_paragraph.prototype.get_structure = function () {
 /**
  * 儲存到快取中
  * @param {String} _cache_id
+ * @param {funciton} _callback
  * @returns {Selectable_text_paragraph}
  */
-Selectable_text_paragraph.prototype.cache_save = function (_cache_id) {
+Selectable_text_paragraph.prototype.cache_save = function (_cache_id, _callback) {
     _cache_id = _cache_id + '_paragraph';
     //$.test_msg('paragraph save: ' + _cache_id, this.paragraph_count);
-    $.localStorage.set(_cache_id, this.paragraph_count);
+    KALS_context.storage.set(_cache_id, this.paragraph_count, _callback);
     return this;
 };
 
 /**
  * 從快取中復原
  * @param {String} _cache_id
+ * @param {funciton} _callback
  * @returns {Selectable_text_paragraph}
  */
-Selectable_text_paragraph.prototype.cache_restore = function (_cache_id) {
+Selectable_text_paragraph.prototype.cache_restore = function (_cache_id, _callback) {
     _cache_id = _cache_id + '_paragraph';
-    this.paragraph_count = $.localStorage.get(_cache_id);
+    //this.paragraph_count = $.localStorage.get(_cache_id);
+    var _this = this;
+    KALS_context.storage.get(_cache_id, function (_value) {
+        _this.paragraph_count = _value;
+        $.trigger_callback(_callback);
+    });
     //$.test_msg('paragraph restore: ' + _cache_id, this.paragraph_count);
     return this;
 };
@@ -294,10 +301,12 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
     var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
     
+    var _next_element;
     // ----------------------
     // 設定快取資訊
     
     // 決定是否使用快取
+    /*
     var _cache_enable = false;
     //_cache_enable = true;
     
@@ -305,11 +314,11 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     this._cache_id = 'next_element_' + _selectable_text_word.word_count;
     
     // 嘗試取得快取資料
-    var _next_element = _local_storage.get(this._cache_id);
     
     // 如果有資料
     //if (_next_element !== undefined) {
     if (_local_storage.is_set(this._cache_id) && _cache_enable) {
+        _next_element = _local_storage.get(this._cache_id);
         var _jquery_object = $("<span>" + _next_element + "</span>");
         var _html_object = _jquery_object.get(0);
         
@@ -320,7 +329,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
         
         return _html_object;
     }
-    
+    */
     // ----------------------
     // 以下是正式的初始化
     
@@ -433,6 +442,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     // ---------------------------
     // 儲存快取資料
     
+    /*
     if (_cache_enable) {
         var _next_element_html = $(_next_element).html();
         
@@ -446,7 +456,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
         _selectable_text_sentence.cache_save(this._cache_id);
         _selectable_text_paragraph.cache_save(this._cache_id);
     }
-    
+    */
     // ---------------------------
     // 回傳
     
