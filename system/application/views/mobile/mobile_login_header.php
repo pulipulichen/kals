@@ -15,7 +15,7 @@
 ?>
 
 
-<html>
+<html style="background-color: #D09042">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0 ,user-scalable = 0" >
@@ -31,13 +31,15 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery.mobile-1.4.0.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jqm-demos.css" />
         <link type ="text/css" rel="stylesheet" href="<?php echo base_url(); ?>web_apps/generic/style" />
-        <script>
+        <!--<script>
 
          $(function(){
 	      $( "[data-role='header'], [data-role='footer']" ).toolbar();
           });
-       </script>
+       </script>-->
         
    </head>
    <body class="KALS">
+      
+    
 <!-- header -->

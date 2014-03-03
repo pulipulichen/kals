@@ -2,11 +2,15 @@
 include_once 'web_apps/web_apps_controller.php';
 /**
  * mobile
+ * 
  * login->login_view
  * logout->logout_view
+ * 
  * webpage->webpage_view
  * annotation_topics->annotation_topics_view
  * annotation_thread->annotation_thread_view  
+ * 
+ * 
  * @package		KALS
  * @category		Controllers
  * @author		Pudding Chen <pulipuli.chen@gmail.com>
@@ -57,10 +61,7 @@ class mobile extends Web_apps_controller{
         $css_type = $annotation->get_type()->get_type_id();
         $note = $annotation->get_note();   
         $timestamp = $annotation->get_update_timestamp();
-       
-            
-            
-        
+               
         // type
        if ($type != 'annotation.type.custom'){
             $type_show = $this->lang->line("web_apps.". $type);
@@ -144,7 +145,8 @@ class mobile extends Web_apps_controller{
             $json["css_type"] = $css_res_type;
             $json["type"] = $res_type;
             $json["note"] = $respond_annotation->get_note();
-            $json["timestamp"] = $respond_annotation->get_update_timestamp();
+            $sub_res_timestamp =$respond_annotation->get_update_timestamp();
+            $json["timestamp"] =substr($sub_res_timestamp, 0, 10);
             
             
             $respond_json[] = $json;
@@ -157,19 +159,21 @@ class mobile extends Web_apps_controller{
         $data["type_name"] = $type_name;
         $data["css_type"] = $css_type;
         $data["note"] = $note;
-        $data["timestamp"] = $timestamp;
+        $sub_timestamp = substr($timestamp, 0, 10);
+        $data["timestamp"] = $sub_timestamp;
         
         $data["respond_json"] = $respond_json;
         
         // 詳見全文url：Webpage -> get_url()
         $webpage = $annotation->get_append_to_webpages();            
-        $webpage_id = $webpage[0]->get_id();       
+        $webpage_id = $webpage[0]->get_id();   
         //$webpage_id = 1573;
         $mobile_webpage = new Webpage($webpage_id);
         $url = $mobile_webpage->get_url();
        
         $data['webpage_url'] = $url; 
         $data['webpage_id'] = $webpage_id;
+        $data['webpage'] = $webpage;
 
         // radio 
         if (isset ($_POST["annotation_type"])){
@@ -183,9 +187,136 @@ class mobile extends Web_apps_controller{
 
     }
      
-     
+     /**
+      * mobile_login
+      * 登入
+      * 
+      * 範例：http://localhost/kals/mobile/mobile_user_login
+      */
+    var $url; //來源url
+    var $webpage;
+    var $client_ip;
 
-   /* public function annotation_thread($annotation_id = 3) {
+    var $CI;
+    var $session;
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->library('kals_actor/User');
+        //$this->url = get_referer_url(TRUE);
+
+        $this->client_ip = array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
+    } 
+    
+ 
+    /**
+     *  登入畫面
+     * @param String $url 從其他頁面帶入這個$url
+     */
+     public function mobile_user_login() {
+
+          $data = array(
+              'email' =>  null,
+              'password' => null,
+              'referer_url' => null, 
+              'has_url' => false, //是否有來源url
+              'do_login' => false, //是否有登入動作
+              'disabled' => null //隱藏input_url
+         );
+          
+          // 從引導進入的網頁填入 helpers->kals_helper->get_referer_url         
+          require_once 'system/application/helpers/kals_helper.php'; 
+          
+          //$referer_url = null;
+          $referer_url = get_referer_url();          
+          $data['referer_url'] = $referer_url;
+           
+            
+          $user = NULL;
+          $user_id = NULL;
+          $output = $this->_create_default_data();
+          //echo 'check 0: it is work?'.'<br>';
+          
+          // 有登入動作
+          if (isset($_POST['do_login'])){       
+              $data['do_login'] = $_POST['do_login'];
+              //echo 'check 1:do_login = '.$data['do_login'].'<br>' ; //msg 1
+          }
+          if ($data['do_login']){
+              $data['email'] = $_POST['email'];
+              $data['password'] = $_POST['password'];
+              //echo 'check 2: email & password:'.$data['email'].'&'.$data['password'].'<br>'; //msg 2
+              
+              // search user data 
+              $user = $this->user->find_user($referer_url, $data["email"], $data["password"]);
+                  /*if(isset($user)){
+                  echo 'check 3: get user'.'<br>'; //msg 3
+                  }else 'check 4: not get user'.'<br>'; //msg 4*/
+              
+              // 判斷是否有來源url 
+              if (isset($data['referer_url'])){
+                  $data['has_url'] = true;
+              }
+              // 是否成功登入->$user         
+              if (isset($user)){    
+                  $user_id = $user->get_id(); 
+                  $output['success'] = 'Yes, user exist';
+                  $data['user'] = $output;
+                  
+                  //echo 'check 5: login success?'.$data['user']['success'].'<br>'; //msg 5
+              }
+              else {
+                   $output['error'] = 'user_not_found'; 
+                   $data['do_login'] = FALSE;
+                  // echo 'chehk 6: NO!'.$data['do_login'].'<br>'; //msg 6
+              }
+               
+          }
+     
+        
+       /* 
+        kals_log($this->db, $action, array('memo'=>$this->client_ip, 'user_id' => $user_id));
+        context_complete();*/
+
+        
+        
+        $this->load->view('mobile/mobile_views_header');
+        $this->load->view('mobile/mobile_login_view', $data);
+        $this->load->view('mobile/mobile_views_footer');
+ 
+        }
+   
+   private function _create_default_data() {
+
+        $output = array(
+            'login' => FALSE,
+            'embed_login' => FALSE,
+            'user' => array(
+                'email' => NULL,
+                'name' => NULL,
+                'id' => NULL,
+                'has_photo' => FALSE,
+                'locale' => NULL,
+                'sex' => NULL
+            ),
+            'policy' => array(
+            	'read' => TRUE,
+            	'write' => FALSE,
+            	'show_navigation' => TRUE,    
+            )
+        );
+
+        return $output;
+    }
+   
+    
+    
+    
+    /* public function annotation_thread($annotation_id = 3) {
         
         // load library
         
@@ -231,8 +362,9 @@ class mobile extends Web_apps_controller{
     }
     */
     
+
     
-        }
+}
 
 
 

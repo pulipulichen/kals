@@ -12,22 +12,23 @@
     <form name="f1" id="f1" action="14835" method="post" style="display: none" > 
         <textarea name="note_text"></textarea>
         <input name="annotation_type">
-    </form>
+    
    <!--test msg  style="display: none" --> 
    <?php 
     if (isset($note_massage) && isset($pop_type)) {
         echo "[". $pop_type . "]";
         echo "[". $note_massage . "] ". '<br>';      
     }
-    
     echo "[".$webpage_id. "]".$webpage_url.'<br>';  
+    foreach ($webpage AS $value){
+    echo $value.'<br>';}
     echo $css_type.'<br>';
     if(isset($respond_json)){
         foreach ($respond_json AS $json) {
                 echo "test-msg = [".$json['timestamp']."]";
         }          
      }
-    ?>
+    ?></form>
     <!-- </form> -->
     <!--/test msg-->
     <!--top bar-->
