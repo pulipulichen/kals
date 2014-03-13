@@ -210,7 +210,7 @@ class mobile extends Web_apps_controller{
          $data['title'] = $title;
          
          // 取得網頁中所有的標註並設定collection的排序方式
-         $annotation_order = 6;
+         $annotation_order = 10;
          $annotation_desc = TRUE;
          $written_annotations = $webpage->get_written_annotations($annotation_order, $annotation_desc);
          $data['written_annotations'] = array();
