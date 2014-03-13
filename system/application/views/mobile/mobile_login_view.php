@@ -20,23 +20,21 @@
                              echo $user['success'];
                          }
                          else echo 'user not get';
-                   ?>--></h2>
-        
-           
-        <label for="input_url" >Domain name:</label>
-            
+                   ?>--></h2>           
+        <label for="input_url" style="display: <?php  if (isset($referer_url) && $has_url){echo 'none'; }  ?>">
+            Domain name:</label>        
         <input type="text" name="input_url" id="input_url" 
-                <?php  if (isset($referer_url) && $has_url){
-                           echo 'disabled = "disabled"'; } 
-                ?>  value="<?php echo $referer_url?>"/>            
+               style="display: <?php  if (isset($referer_url) && $has_url){echo 'none'; }  ?>"
+               value="<?php echo $referer_url?>"/>    
+        
         <label for="name">Username(email):</label>
         <input type="text" name="email" id="email" value="" data-clear-btn="true" data-mini="true">
         <label for="password">Password:</label>            
         <input type="password" name="password" id="password" value="" data-clear-btn="true" autocomplete="off" data-mini="true">
                     <!-- do_login 是否登入-->
         <input type="hidden" name="do_login" id="do_login" value="true" />
-        
+      
         <button type="submit" value="true" class="ui-btn ui-btn-a ui-shadow ui-corner-all">Login</button>
-        <a data-rel="back" data-transition="flip" class="ui-btn ui-btn-b ui-shadow ui-corner-all">Back</a>       
+        <a data-rel="http://localhost/kals/mobile/webpage_list" data-transition="flip" class="ui-btn ui-btn-b ui-shadow ui-corner-all">Skip</a>       
      </form>
     </div>

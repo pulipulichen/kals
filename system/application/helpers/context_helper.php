@@ -47,6 +47,16 @@ if ( ! function_exists('get_context_user'))
 
 if ( ! function_exists('set_context_user'))
 {
+    function set_context_user($user)
+    {
+        if (isset($GLOBALS['context']) === FALSE)
+            return NULL;
+        return $GLOBALS['context']->set_current_user($user);
+    }
+}
+
+if ( ! function_exists('set_context_user'))
+{
     function set_context_user(User $user_in)
     {
         if (isset($GLOBALS['context']) === FALSE)

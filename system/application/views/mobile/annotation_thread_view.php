@@ -32,9 +32,9 @@
     <!-- </form> -->
     <!--/test msg-->
     <!--top bar-->
-<div data-role="header" data-position="fixed" data-theme="a">
+<div data-role="header" data-position="fixed" data-theme="a" data-ajax="false">
  
-    <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-carat-l">上一頁</a>
+    <a data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-carat-l">上一頁</a>
     <h1><?php 
          if(isset($anchor_text)){
             echo '"'.$anchor_text.'"';
@@ -45,7 +45,7 @@
 </div>
 <!--/top bar-->
    <!--annotation-->
- <div class="ui-block-a" style="width: 100%">
+ <div class="ui-block-a" style="width: 100%; font-size: x-large">
     <div class="ui-bar ui-bar-a">
        <h2><?php 
          if(isset($anchor_text)){
@@ -55,12 +55,12 @@
     </div>
  </div> 
    
-   <ul data-role="listview" data-inset="true" style=" text-indent: 1em" class="list-header-component">
+   <ul data-role="listview" data-inset="true" style=" text-indent: 1em">
       <!--$annotation_topic -->      
-      <li style ="margin-left: 8%" class="u">
+      <li style="border-bottom-width: 1px;">
       <?php 
          if(isset($user)&&isset($note)){
-             echo '<span class = "name-container" ><u>'.$user.'</u></span>'
+             echo '<span class = "name-container" ><b><u>'.$user.'</u></b>  </span>'
                  .'<span class = "type-option '.$css_type.'" annotation_type = "'.$css_type.'">'
                  .$type_name
                  .'</span>'
@@ -77,7 +77,7 @@
     <?php    
         foreach ( $respond_json AS $json ){
           echo '<li style = " margin-left: 15% ">'
-             .'<span class = "name-container"><u>>'.$json['user'].'</u>   <span>'
+             .'<span class = "name-container"><b><u>'.$json['user'].'</u></b>   <span>'
              .'<span class = "type-option ' .$json['css_type'].'" annotation_type = "'.$json['css_type'].'">'
              .$json['type'].'</span>'
              .'<span style = "font-size: x-large">'.$json['note'].'</span>'

@@ -27,6 +27,13 @@ class Search_order_collection extends Collection {
     );
     protected $class_dir = 'search/';
 
+    /**
+     * 設定排序順序
+     * @param type $type_id
+     * @param type $desc
+     * @return \Search_order_collection\
+     */
+    
     public function add_order($type_id, $desc = NULL)
     {
         if (FALSE === is_object($type_id))

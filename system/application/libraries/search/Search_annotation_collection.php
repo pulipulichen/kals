@@ -18,13 +18,13 @@ class Search_annotation_collection extends Search_engine {
     public function load_default()
     {
         $db = $this->setup_search();
-
         $db->distinct();
         $db->select('annotation.*');
 
         //加入other_from
-        foreach ($this->other_from AS $from)
+        foreach ($this->other_from AS $from){
             $db->from($from);
+        }
         $db->from('annotation');
 
         $query = $db->get();

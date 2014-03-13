@@ -30,8 +30,11 @@ class mobile extends Web_apps_controller{
      * 範例：http://localhost/kals/mobile/annotation_thread/14835
      * 
      */
-    
-    
+  
+    /**
+     * annotation_thread
+     * @param type  $annotation_id
+     */
     public function annotation_thread($annotation_id = NULL) {
           
         //載入libary
@@ -186,7 +189,139 @@ class mobile extends Web_apps_controller{
         $this->load->view('mobile/mobile_views_footer');
 
     }
-     
+    
+
+    /**
+     * annotation_topics
+     * @param type $topic_id
+     */
+     public function annotation_topics($webpage_id = NULL) {
+         //$topic_id = NULL
+         $this->load->library('kals_resource/Webpage');
+         $this->load->library('kals_resource/Annotation');
+         
+         $data = array();
+         $webpage = new Webpage($webpage_id);
+         
+       
+         
+         // 取得文章標題
+         $title = $webpage->get_title();   
+         $data['title'] = $title;
+         
+         // 取得網頁中所有的標註並設定collection的排序方式
+         $annotation_order = 6;
+         $annotation_desc = TRUE;
+         $written_annotations = $webpage->get_written_annotations($annotation_order, $annotation_desc);
+         $data['written_annotations'] = array();
+         $array = array();
+         
+         foreach ($written_annotations AS $annotation) {
+           
+             
+             $anchor_text = $annotation->get_anchor_text(); //topic
+             //$array['note'] = $annotation->get_note(); //note
+             
+             // get annotation id 
+             $annotation_id = $annotation->get_id();
+             $array['annotation_id'] = $annotation_id;
+             
+             // 控制anchor text顯示長度
+             $anchor_length = $annotation->get_scope_length();
+             if ( $anchor_length > 10) {
+                 $array['anchor_text'] = mb_substr($anchor_text, 0, 12, "utf-8");
+             }
+             else { 
+                 $array['anchor_text'] = $anchor_text;             
+             }
+             
+             $respond_collection = $annotation->get_topic_respond_length(); //response  
+             $array['respond_count'] = $respond_collection; //取得長度(only res)
+             
+             // get last response timestamp 
+             if ($array['respond_count'] != 0) {
+                 $last_respond = $annotation->get_last_respond(); 
+                 $last_respond_id = $last_respond->get_id();
+                 $last_item = new $annotation($last_respond_id);
+                 $last_timestamp = $last_item->get_create_timestamp();
+             }
+             else {             
+                 $last_timestamp = $annotation->get_create_timestamp();
+             }
+             $last_short_timestamp = substr($last_timestamp, 0, 10);
+             $array['timestamp'] = $last_short_timestamp;
+             
+             $data['written_annotations'][] = $array;          
+         }
+                 
+        // user
+        /*if ($user_login == TRUE){
+            
+            $data['login_msg'] = '主人你好！';
+        }
+        else{
+           $data['login_msg'] = '訪客你好嗎！';                      
+        }*/
+        
+        // TEST
+        /*$mobile = new mobile;
+        $user_check = $mobile->mobile_user_login();
+        $data['login_msg'] = $user_check;    */
+         
+        $this->load->view('mobile/mobile_views_header');
+        $this->load->view('mobile/annotation_topic_view', $data);
+        $this->load->view('mobile/mobile_views_footer'); 
+         
+     }
+    
+    
+     /**
+     * webpage_list
+     * @param type $topic_id
+     */
+     public function webpage_list() {
+         
+        $this->load->library('kals_resource/Webpage');
+        $this->load->library('kals_resource/Domain');
+        
+        $user = get_context_user();
+        if (is_null($user)) {
+            //check login
+        }
+
+        // get domain's all pages
+        $data = array();
+       
+        //$webpage_list = Domain::get_all_domain_webpages();
+        $domain = new Domain();
+        $all_webpages = $domain->get_all_domain_webpages(); //array
+        $data['all_webpages'] = array();
+        $webpage_array = array();
+        
+        // array：$all_webpages value:array array中為webpage_id
+        foreach ($all_webpages AS $array){
+           // get page's title and id
+           $webpage_id = $array[0]->get_id();
+           $webpage_array['webpage_id'] = $webpage_id;
+           
+           $webpage = new Webpage($webpage_id);
+           $webpage_title = $webpage->get_title();
+           //echo 'msg= '.$webpage_title.'<br>'; //msg
+
+           $webpage_array['webpage_title'] = $webpage_title;
+           
+           // get page's annotation count
+           $annotation_count = $webpage->get_written_annotations_count();
+           $webpage_array['annotation_count'] = $annotation_count;
+          
+           $data['all_webpages'][] = $webpage_array;
+        }
+           
+        $this->load->view('mobile/mobile_views_header');
+        $this->load->view('mobile/webpage_list_view', $data);
+        $this->load->view('mobile/mobile_views_footer'); 
+         
+     }   
      /**
       * mobile_login
       * 登入
@@ -212,13 +347,17 @@ class mobile extends Web_apps_controller{
         );
     } 
     
- 
     /**
      *  登入畫面
      * @param String $url 從其他頁面帶入這個$url
+     * 
      */
+    
      public function mobile_user_login() {
 
+         $this->load->library('core/Context');
+         $context = new Context();
+         
           $data = array(
               'email' =>  null,
               'password' => null,
@@ -242,6 +381,7 @@ class mobile extends Web_apps_controller{
           //echo 'check 0: it is work?'.'<br>';
           
           // 有登入動作
+
           if (isset($_POST['do_login'])){       
               $data['do_login'] = $_POST['do_login'];
               //echo 'check 1:do_login = '.$data['do_login'].'<br>' ; //msg 1
@@ -249,7 +389,7 @@ class mobile extends Web_apps_controller{
           if ($data['do_login']){
               $data['email'] = $_POST['email'];
               $data['password'] = $_POST['password'];
-              //echo 'check 2: email & password:'.$data['email'].'&'.$data['password'].'<br>'; //msg 2
+             // echo 'check 2: email & password:'.$data['email'].'&'.$data['password'].'<br>'; //msg 2
               
               // search user data 
               $user = $this->user->find_user($referer_url, $data["email"], $data["password"]);
@@ -263,27 +403,37 @@ class mobile extends Web_apps_controller{
               }
               // 是否成功登入->$user         
               if (isset($user)){    
-                  $user_id = $user->get_id(); 
+                  $user_id = $user->get_id();
+                  // set current user and let other pages know
+                  $context->set_current_user($user); 
+                  
                   $output['success'] = 'Yes, user exist';
                   $data['user'] = $output;
+                  $data['do_login'] = TRUE;
+                  //echo 'check 5: login success?'.$data['user']['success'].'<br>'; //msg 5  
+                           
+                  // 若有原url則跳轉回原url，若無則到Wabpage_list
+                  $login_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
                   
-                  //echo 'check 5: login success?'.$data['user']['success'].'<br>'; //msg 5
+                  if ($referer_url !== $login_url){
+                      header("Location: ".$referer_url);              
+                  }else {
+                      $referer_url = 'http://140.119.61.137/kals/mobile/webpage_list';
+                      header("Location: ".$referer_url);       
+                  }
+              
+                  
               }
               else {
                    $output['error'] = 'user_not_found'; 
                    $data['do_login'] = FALSE;
                   // echo 'chehk 6: NO!'.$data['do_login'].'<br>'; //msg 6
+                  
+                   echo 'No user!Please rigister!';
               }
                
           }
-     
-        
-       /* 
-        kals_log($this->db, $action, array('memo'=>$this->client_ip, 'user_id' => $user_id));
-        context_complete();*/
 
-        
-        
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/mobile_login_view', $data);
         $this->load->view('mobile/mobile_views_footer');
@@ -313,10 +463,9 @@ class mobile extends Web_apps_controller{
         return $output;
     }
    
-    
-    
-    
-    /* public function annotation_thread($annotation_id = 3) {
+ 
+
+   /* public function annotation_thread($annotation_id = 3) {
         
         // load library
         

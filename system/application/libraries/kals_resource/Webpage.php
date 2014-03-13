@@ -175,7 +175,12 @@ class Webpage extends KALS_resource {
 
     public function get_title()
     {
-        return $this->get_field('title');
+        $title = $this->get_field('title');
+        $title = trim($title);
+        if ($title === "") {
+            $title = $this->get_url();
+        }
+        return $title;
     }
 
     /**
@@ -215,13 +220,22 @@ class Webpage extends KALS_resource {
             return new Webpage($webpage);
     }
 
-    public function get_appended_annotation()
+    /**
+     * 
+     * @param Search_order $order 排序設定，留空等於預設排序
+     * @return \Search_annotation_collection
+     */
+    public function get_appended_annotation($order = NULL, $desc = NULL)
     {
         $this->_CI_load('library', 'search/Search_annotation_collection', 'search_annotation_collection');
 
         $search = new Search_annotation_collection();
         $search->set_target_webpage($this->get_id());
         $search->set_check_authorize(FALSE);
+        // 設定colllection的排序       
+        if (isset($order)) {
+            $search->add_order($order, $desc);
+        }
         $search->disable_limit();
         $search->disable_offset();
         
@@ -230,10 +244,11 @@ class Webpage extends KALS_resource {
     
     /**
      * 取得該網頁底下撰寫的標註
+     * @param Search_order $order 排序順序
      * @return Annotation_collection
      */
-    public function get_written_annotations() {
-        return $this->get_appended_annotation();
+    public function get_written_annotations($order = NULL, $desc = NULL) {
+        return $this->get_appended_annotation($order, $desc);
     }
 
     /**
