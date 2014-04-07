@@ -18,8 +18,9 @@ if ( ! function_exists('create_context'))
 {
     function create_context($test = FALSE)
     {
-        if (isset($GLOBALS['context']) === TRUE)
+        if (isset($GLOBALS['context']) === TRUE) {
             return;
+        }
         $CI =& get_instance();
         $CI->load->library('core/Context');
         $GLOBALS['context'] = $CI->context;

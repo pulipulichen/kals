@@ -784,6 +784,24 @@ class Generic_collection extends Collection {
         return get_class($this).'::$index_id='.$this->get_id();
     }
     
+    
+    /**
+     * 輸出
+     * @return \Generic_collection
+     */
+    public function export_to_array() {
+        $output = array();
+        
+        foreach ($this AS $key => $item) {
+            if (method_exists($item, 'export_to_array')) {
+                $output[$key] = $item->export_to_array();
+            }
+            else {
+                $output[$key] = $item;
+            }
+        }
+        return $output;
+    }
 }
 
 /* End of file Generic_collection.php */

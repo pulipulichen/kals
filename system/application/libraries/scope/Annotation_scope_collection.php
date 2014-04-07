@@ -149,7 +149,11 @@ class Annotation_scope_collection extends Generic_association_collection {
 
     public function add_scope_collection(Annotation_scope_collection $scope_collection)
     {
-        return $this->add_collection($scope_collection);
+        //return $this->add_collection($scope_collection);
+        foreach ($scope_collection AS $scope) {
+            $this->add_scope($scope);
+        }
+        return $this;
     }
 
     public function exclude_scope(Annotation_scope $scope)
@@ -573,6 +577,15 @@ class Annotation_scope_collection extends Generic_association_collection {
 
         $json = json_encode($webpage_scope);
         return $json;
+    }
+    
+    /**
+     * 範圍位置輸出成為陣列
+     * @param boolean $export_anchor
+     * @return Array
+     */
+    public function export_to_array($export_anchor = FALSE) {
+        return $this->export_data($export_anchor);
     }
 
     public function export_data($export_anchor = FALSE)

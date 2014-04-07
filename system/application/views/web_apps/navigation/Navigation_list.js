@@ -37,6 +37,17 @@ Navigation_list.prototype._help_lang = new KALS_language_param(
     'toolbar.navigation_list.help'
 );
 
+
+/**
+ * 決定是否要顯示錯誤回報
+ * @type {boolean} 
+ */
+Navigation_list.prototype._$show_feedback = true;
+Navigation_list.prototype._feedback_lang = new KALS_language_param(
+    'Feedback',
+    'toolbar.navigation_list.feedback'
+);
+
 /**
  * 主要設定。子類別請覆寫此屬性。
  * @type {Window_content[]}
@@ -48,13 +59,13 @@ Navigation_list.prototype._$nav_items = [];
  * @memberOf {Navigation_list}
  * @type {jQuery} UI
  */
-Navigation_list.prototype._$create_ui = function ()
-{
+Navigation_list.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('navigation-list');
     
-    if (this._$classname != null)
-        _ui.addClass(this._$classname);
+    if (this._$classname !== null) {
+		_ui.addClass(this._$classname);
+	}
     
     var _nav = this._create_nav();
     var _menu_button = this._create_menu();
@@ -72,15 +83,14 @@ Navigation_list.prototype._create_nav = function() {
     
     var _tr = _ui.find('tr:first');
     var _this = this;
-    for (var _i in this._$nav_items)
-    {
+    for (var _i in this._$nav_items) {
         var _content = this._get_window_content(_i); 
         
         var _td = $('<td></td>')
             .addClass('item')
             .appendTo(_tr);
         
-        //if (_i == 0)
+        //if (_i === 0)
         //    _td.addClass('first');
         
         var _a = $('<a href="#"></a>')
@@ -88,7 +98,13 @@ Navigation_list.prototype._create_nav = function() {
             .addClass(_content.name)
             .attr('content_index', _i);
 
-        KALS_context.lang.add_listener(_a, _content.nav_heading);
+        if ($.isset(_content.nav_heading)) {
+            KALS_context.lang.add_listener(_a, _content.nav_heading);
+        }
+        else if ($.isset(_content._$nav_heading)) {
+            _content._lang_filter();
+            KALS_context.lang.add_listener(_a, _content._$nav_heading);
+        }
         
         _a.click(function() {
             
@@ -96,58 +112,102 @@ Navigation_list.prototype._create_nav = function() {
             //var _content = _this._$nav_items[_i];
             var _content = _this._get_window_content(_i);
             
-            //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
-            
-            KALS_window.setup_window(_content);
-            
-            return false;
-        });
-    }
-    
-    if (this._$show_help == true)
-    {
-        var _td = $('<td></td>')
-            .addClass('item')
-            .appendTo(_tr);
-                
-        var _a = $('<a href="#"></a>')
-            .appendTo(_td)
-            .addClass('help');
+			if (_content.is_absolute() === false) {
+                //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
 
-        KALS_context.lang.add_listener(_a, this._help_lang);
-        
-        _a.click(function() {
-            
-            KALS_util.help();
+                            //KALS_window.setup_window(_content);
+                            _content.open();
+			}
+			else {
+                            //KALS_util.confirm('test', "content");
+                            _content.open();
+			}
             
             return false;
         });
     }
     
-    _td.addClass('last');
+    if (this._$show_help === true) {
+        this._setup_help().appendTo(_tr);
+    }
+	
+	// 插入錯誤回報功能
+	if (this._$show_feedback === true) {
+        this._setup_feedback().appendTo(_tr);
+    }
+    
+	_ui.find('td:last').addClass('last');
     
     return _ui;
 };
 
+/**
+ * 建立說明按鈕
+ * @type jQuery
+ */
+Navigation_list.prototype._setup_help = function () {
+	_td = $('<td></td>')
+        .addClass('item');
+            
+    _a = $('<a href="#"></a>')
+        .appendTo(_td)
+        .addClass('help');
+
+    KALS_context.lang.add_listener(_a, this._help_lang);
+    
+    _a.click(function() {
+        
+        KALS_util.help();
+        
+        return false;
+    });
+	
+	return _td;
+};
+
+/**
+ * 建立錯誤回報按鈕
+ * @type jQuery
+ */
+Navigation_list.prototype._setup_feedback = function () {
+    _td = $('<td></td>')
+        .addClass('item');
+            
+    _a = $('<a href="#"></a>')
+        .appendTo(_td)
+        .addClass('feedback');
+
+    KALS_context.lang.add_listener(_a, this._feedback_lang);
+    
+    _a.click(function() {
+        
+        KALS_context.feedback.open();
+        
+        return false;
+    });
+    
+    return _td;
+};
+
 Navigation_list.prototype._get_window_content = function (_index) {
     
-    if (typeof(this._$nav_items[_index]) == 'undefined')
-    {
-        return null;
-    }
-    else if (typeof(this._$nav_items[_index]) == 'string')
-    {
-        var _window_content = this._$nav_items[_index];
-        eval('var _content = new ' + _window_content + '()');
-        return _content;
-    }
-    else if (typeof(this._$nav_items[_index]) == 'object')
-    {
-        var _window_content = this._$nav_items[_index];
-        return _window_content;
-    }
-    else
-        return null;
+    if (typeof(this._$nav_items[_index]) == 'undefined') {
+		return null;
+	}
+	else 
+		if (typeof(this._$nav_items[_index]) == 'string') {
+			var _window_content = this._$nav_items[_index];
+			eval('var _content = new ' + _window_content + '()');
+			return _content;
+		}
+		else 
+			if (typeof(this._$nav_items[_index]) == 'object') {
+				_window_content = this._$nav_items[_index];
+				return _window_content;
+			}
+			else {
+				return null;
+			}
 }; 
 
 Navigation_list.prototype._create_menu = function() {
@@ -163,8 +223,7 @@ Navigation_list.prototype._create_menu = function() {
     KALS_context.lang.add_listener(_ui, _lang_param);
     
     var _options = [];
-    for (var _i in this._$nav_items)
-    {
+    for (var _i in this._$nav_items) {
         //var _content = this._$nav_items[_i];
         var _content = this._get_window_content(_i);
         var _option = new Dialog_close_option(_content.nav_heading, function (_content) {
@@ -183,9 +242,8 @@ Navigation_list.prototype._create_menu = function() {
         _options.push(_option);
     }
     
-    if (this._$show_help == true)
-    {
-        var _option = new Dialog_close_option(this._help_lang, function () {
+    if (this._$show_help === true) {
+        _option = new Dialog_close_option(this._help_lang, function () {
             KALS_util.help();
         });
         _option.add_class('help');
@@ -202,6 +260,13 @@ Navigation_list.prototype._create_menu = function() {
     });
     
     return _ui;
+};
+
+/**
+ * @type {Array|KALS_window}
+ */
+Navigation_list.prototype.get_nav_items = function () {
+	return this._$nav_items;
 };
 
 /* End of file Navigation_list */

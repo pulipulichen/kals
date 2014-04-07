@@ -21,7 +21,7 @@ $config['crypt_salt'] = 'kals2010';
 
 $config['output.cache.enable'] = false; //是否使用快取功能，預設是true;
 $config['output.cache.expiration'] = 5;  //快取的單位是「分鐘」
-$config['output.package.enable'] = true; //是否啟用壓縮功能，預設是true;
+$config['output.package.enable'] = false; //是否啟用壓縮功能，預設是true;
 
 $config['CACHEABLE_TYPES'] = array('Domain', 'Webpage', 'Annotation', 'User', 'Group', 'Annotation_scope', 'Scope_anchor_text', 'Annotation_like'
         , 'Annotation_feature_collection', 'Annotation_like_collection', 'Annotation_respond_collection', 'Annotation_topic_respond_collection'
@@ -32,6 +32,19 @@ $config['CACHEABLE_TYPES'] = array('Domain', 'Webpage', 'Annotation', 'User', 'G
         , 'Annotation_recommend'
         );
 $config['CACHEABLE_TYPES_CLOSE'] = array();
+
+$config["TIMEZONE"] = "Asia/Taipei";
+date_default_timezone_set($config["TIMEZONE"]);
+
+/**
+ * 意見回饋設定
+ */
+
+// 當使用者未登入時，採用以下設定寄信
+$config["feedback.default_sender_email"] = "anonymous@localhost"; //預設寄出的EMAIL。預設是anonymous@localhost
+$config["feedback.default_sender_name"] = "Anonymous Feedback"; // 預設寄出EMAIL的名字
+
+$config["feedback.receiver_email"] = "pudding@nccu.edu.tw"; //接收EMAIL。預設是 kals@localhost
 
 // ---------
 // 斷詞器設定

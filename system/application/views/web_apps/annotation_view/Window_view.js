@@ -47,8 +47,8 @@ Window_view.prototype._topic_param = null;
  */
 Window_view.prototype._focus_id = null;
 
-Window_view.prototype.set_focus_id = function (_annotation_id)
-{
+Window_view.prototype.set_focus_id = function (_annotation_id) {
+	//$.test_msg("view focus", _annotation_id);
     this._focus_id = _annotation_id;
     return this;
 };
@@ -58,8 +58,8 @@ Window_view.prototype.set_focus_id = function (_annotation_id)
  */
 Window_view.prototype._respond_param = null;
 
-Window_view.prototype.set_respond_param = function (_param) 
-{
+Window_view.prototype.set_respond_param = function (_param) {
+	//$.test_msg("view set respond", _param.annotation_id);
     this._respond_param = _param;
     return this;
 };
@@ -69,8 +69,7 @@ Window_view.prototype.set_respond_param = function (_param)
  */
 Window_view.prototype._edit_param = null;
 
-Window_view.prototype.set_edit_param = function (_param) 
-{
+Window_view.prototype.set_edit_param = function (_param) {
     this._edit_param = _param;
     return this;
 };
@@ -98,16 +97,14 @@ Window_view.prototype._load_url = 'annotation_getter/list';
 /**
  * @param {number|Annotation_param} _topic_id
  */
-Window_view.prototype.load_topic_param = function (_topic_id)
-{
-    if ($.isset(this._topic_param))
-        return this;
+Window_view.prototype.load_topic_param = function (_topic_id) {
+    if ($.isset(this._topic_param)) {
+		return this;
+	}
     
-    if ($.is_number(_topic_id) || $.is_string(_topic_id))
-    {
-        try
-        {
-            _topic_id = parseInt(_topic_id);
+    if ($.is_number(_topic_id) || $.is_string(_topic_id)) {
+        try {
+            _topic_id = parseInt(_topic_id, 10);
         }
         catch (e) {}
         
@@ -122,17 +119,19 @@ Window_view.prototype.load_topic_param = function (_topic_id)
             callback: function (_data) {
                 if (typeof(_data.annotation_collection) != 'undefined'
                     && $.is_array(_data.annotation_collection)
-                    && _data.annotation_collection.length > 0)
-                {
+                    && _data.annotation_collection.length > 0) {
                     var _topic_data = _data.annotation_collection[0];
-                    var _topic_param = new Annotation_param(_data);
+					var _topic_param = _data;
+					if ($.is_class(_topic_data, 'Annotation_param') === false) {
+						_topic_param = new Annotation_param(_topic_param); 
+					}
+					
                     _this.set_topic_param(_topic_param);    
                 }
             }
         };
     }
-    else if ($.is_class(_topic_param, 'Annotation_param'))
-    {
+    else if ($.is_class(_topic_param, 'Annotation_param')) {
         this.set_topic_param(_topic_id);
     }
     
@@ -144,21 +143,18 @@ Window_view.prototype.load_view = function (_annotation_id, _callback) {
     
     KALS_text.tool.load_annotation_param(_annotation_id, function (_param) {
         
-        if (_param.is_respond() == false)
-        {
+        if (_param.is_respond() === false) {
             _this.set_topic_param(_param);
             KALS_window.setup_window(_this, function () {
                 //KALS_context.hash.set_field('view', _param.annotation_id);
                 $.trigger_callback(_callback);
             });
         }
-        else
-        {
+        else {
             var _topic_id = _param.topic.annotation_id;
             
             _this.set_focus_id(_param.annotation_id);
             _this.load_view(_topic_id, function () {
-                
                 //KALS_context.hash.set_field('view', _param.annotation_id);
                 $.trigger_callback(_callback);
             });
@@ -184,11 +180,10 @@ Window_view.prototype.set_topic_param = function (_topic_param) {
 
 Window_view.prototype.set_selection = function () {
     
-    if ($.isset(this._topic_param))
-    {
+    if ($.isset(this._topic_param)) {
         var _this = this;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope)    
+            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
         }, 1000);
     }
     
@@ -209,9 +204,8 @@ Window_view.prototype.reset = function () {
     
     this._loaded = false;
     
-    //if (this._modified == true)
-    if (KALS_context.policy.writable())
-    {
+    //if (this._modified === true)
+    if (KALS_context.policy.writable()) {
         //連帶Annotation_tool的list也reset吧
         var _this = this;
         KALS_text.tool.list.set_focus(_topic_param, true);
@@ -219,8 +213,7 @@ Window_view.prototype.reset = function () {
             //KALS_text.tool.list.focus(_topic_param, true);
         });
     }
-    else
-    {
+    else {
         KALS_text.tool.list.focus(_topic_param, true);
     }
     
@@ -252,8 +245,7 @@ Window_view.prototype._classname = 'window-view-content';
  * @memberOf {Window_view}
  * @type {jQuery} UI
  */
-Window_view.prototype._$create_ui = function ()
-{
+Window_view.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass(this._classname);
     
@@ -279,10 +271,12 @@ Window_view.prototype._$create_ui = function ()
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable())
-            _ui.removeClass(_not_login_classname);
-        else
-            _ui.addClass(_not_login_classname);
+        if (_policy.writable()) {
+			_ui.removeClass(_not_login_classname);
+		}
+		else {
+			_ui.addClass(_not_login_classname);
+		}
     }, true);
     
     return _ui;
@@ -295,8 +289,7 @@ Window_view.prototype._$create_ui = function ()
 Window_view.prototype.anchor = null;
 
 Window_view.prototype._setup_anchor = function () {
-    if ($.is_null(this.anchor))
-    {
+    if ($.is_null(this.anchor)) {
         this.anchor = new View_anchor_text_component(this._topic_param);
     }
     return this.anchor;
@@ -305,8 +298,7 @@ Window_view.prototype._setup_anchor = function () {
 Window_view.prototype._list_container = null;
 
 Window_view.prototype._create_list_container = function () {
-    if ($.is_null(this._list_container))
-    {
+    if ($.is_null(this._list_container)) {
         var _ui = $('<div></div>')
             .addClass('view-list-container');
         
@@ -321,8 +313,7 @@ Window_view.prototype._create_list_container = function () {
 Window_view.prototype.list = null;
 
 Window_view.prototype._setup_list = function () {
-    if ($.is_null(this.list))
-    {
+    if ($.is_null(this.list)) {
         this.list = new View_list_collection(this._topic_param);
         
         /*
@@ -342,8 +333,7 @@ Window_view.prototype._setup_list = function () {
 Window_view.prototype.editor_container = null;
 
 Window_view.prototype._setup_editor_container = function () {
-    if ($.is_null(this.editor_container))
-    {
+    if ($.is_null(this.editor_container)) {
         var _list = this._setup_list();
         this.editor_container = new View_editor_container(this._topic_param, _list);
     }
@@ -354,15 +344,14 @@ Window_view.prototype._loaded = false;
 
 Window_view.prototype.onload = function () {
     
-        //$.test_msg('設定！！')
-        this.editor_container.editor.note.set_text(' ');    
+    //$.test_msg('設定！！')
+    this.editor_container.editor.note.set_text(' ');    
     
     
     //$.test_msg('Window_view.onload()');
     
     var _focus_anchor = true;
-    if ($.isset(this._focus_id))
-    {
+    if ($.isset(this._focus_id)) {
         var _result = this.list.focus(this._focus_id, true);
         //var _result = this.list.focus(this._focus_id);
         //if (_result != null)
@@ -371,8 +360,7 @@ Window_view.prototype.onload = function () {
         //$.test_msg('Window_view.onload() focus id', $.isset(_result));
         //_result.get_ui().css('color', 'red');
         
-        if ($.isset(_result))
-        {
+        if ($.isset(_result)) {
             _focus_anchor = false;
             KALS_context.hash.set_field('view', this._focus_id);
         }
@@ -380,41 +368,55 @@ Window_view.prototype.onload = function () {
         this._focus_id = null;
     }
     
-    if (_focus_anchor == true)
-    {
+    if (_focus_anchor === true) {
         this.anchor.focus();
     }
     
-    if ($.isset(this._respond_param))
-    {
-        this.editor_container.add_respond_to(this._respond_param);
+    //$.test_msg("isset respond_param", $.isset(this._respond_param));
+    if ($.isset(this._respond_param)) {
+		
+		this.editor_container.add_respond_to(this._respond_param);
+		this.editor_container.toggle_container(true);
+		
         this._respond_param = null;
     }
-    else if ($.isset(this._edit_param))
-    {
-        this.editor_container.editor.set_editing(this._edit_param);
+    else if ($.isset(this._edit_param)) {
+		//var _editor = this.editor_container.editor; 
+        //_editor.set_editing(this._edit_param);
+		//_editor.set_editing(this._edit_param);
+		
+		var _item = this.list.get_list_item(this._edit_param);
+		if (_item !== null) {
+			_item.edit_annotation();
+		}
+		
         this._edit_param = null;
     }            
     
     this._loaded = true;
     
-    if (this._stop_select == false)
-        this.set_selection();
-    else
-        this._stop_select = false;
+    if (this._stop_select === false) {
+		this.set_selection();
+	}
+	else {
+		this._stop_select = false;
+	}
     
     var _ui = this.get_ui();
     var _temp_logout = 'temp-logout';
-    if (this._temp_logout == true)
-    {
+    if (this._temp_logout === true) {
         _ui.addClass(_temp_logout);
         this._temp_logout = false;
     }
-    else
-    {
+    else {
         _ui.removeClass(_temp_logout);
     }
     
+    if ($.isset(this._topic_param)) {
+        KALS_text.selection.select.set_scope_coll(this._topic_param.scope);
+        //KALS_text.selection.select.scroll_into_view();
+    }
+	
     return this;
 };
 
@@ -424,8 +426,7 @@ Window_view.prototype.setup_content = function (_callback) {
     this.list.add_listener(function (_list) {
        
        $.test_msg('Window_view.setup_content() ', _list.is_ready());
-       if (_list.is_ready())
-       {
+       if (_list.is_ready()) {
            _this.onload();
        }
         
@@ -448,12 +449,10 @@ Window_view.prototype.setup_content = function (_callback) {
 
 Window_view.prototype.focus = function (_param) {
     
-    if (this._loaded == false)
-    {
+    if (this._loaded === false) {
         this.set_focus_id(_param);
     }
-    else
-    {
+    else {
         this.list.focus(_param);
     }
     return this;

@@ -15,9 +15,7 @@ function Annotation_tool(_selector) {
     
     Overlay_modal.call(this);
     
-    
-    if ($.isset(_selector))
-    {
+    if ($.isset(_selector)) {
         this._text = _selector;
         //this.child('list', new Topic_list);
         
@@ -28,7 +26,8 @@ function Annotation_tool(_selector) {
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
             KALS_text.selection.select.add_listener('select', function () {
                 //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-                _this.onselect();
+                
+				_this.onselect();
             });
             
             KALS_text.selection.select.add_listener('clear', function () {
@@ -71,8 +70,7 @@ Annotation_tool.prototype.list = null;
  * @memberOf {Annotation_tool}
  * @type {jQuery} UI
  */
-Annotation_tool.prototype._$create_ui = function ()
-{
+Annotation_tool.prototype._$create_ui = function () {
     //var _ui = $('<table height="100%"><tbody>'
     //        + '<tr><td class="editor"></td></tr>'
     //        + '<tr><td class="list"></td></tr>'
@@ -81,8 +79,9 @@ Annotation_tool.prototype._$create_ui = function ()
         .addClass('annotation-tool')
         .addClass('draggable-tool')
         .addClass('kals-modal')
+		.addClass("KALS")
         .hide()
-        .appendTo($('body'));
+        .insertBefore($('.selectable-text:first'));
         
     var _config = this._$get_config();
     
@@ -104,6 +103,7 @@ Annotation_tool.prototype._$create_ui = function ()
     
     //設置編輯器
     var _editor = this._setup_editor(_topic_list);
+    //$.test_msg('Annotation_tool._$create_ui [Editor_container]');
     var _editor_ui = _editor.get_ui();
     _editor_ui.addClass('annotation-tool-editor')
         .appendTo(_editor_tool);
@@ -128,8 +128,7 @@ Annotation_tool.prototype._$create_ui = function ()
         handle: 'div.annotation-tool-header'
     };
     
-    if ($('body').height() > _ui.height() + 100)
-    {
+    if ($('body').height() > _ui.height() + 100) {
         _draggable_config.containment = 'parent';
     }
     
@@ -137,10 +136,12 @@ Annotation_tool.prototype._$create_ui = function ()
     
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
-        if ($.is_small_height() == false)
-            _body_top = KALS_toolbar.get_ui().height();
-        if (_ui.offset().top < _body_top)
-            _ui.css('top', _body_top + 'px'); 
+        if ($.is_small_height() === false) {
+			_body_top = KALS_toolbar.get_ui().height();
+		}
+        if (_ui.offset().top < _body_top) {
+			_ui.css('top', _body_top + 'px');
+		} 
     });
     
     var _this = this;
@@ -163,10 +164,12 @@ Annotation_tool.prototype._$create_ui = function ()
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable())
-            _ui.removeClass(_not_login);
-        else
-            _ui.addClass(_not_login);
+        if (_policy.writable()) {
+			_ui.removeClass(_not_login);
+		}
+		else {
+			_ui.addClass(_not_login);
+		}
             
         _topic_list.reload();
     }, true);
@@ -176,17 +179,34 @@ Annotation_tool.prototype._$create_ui = function ()
     this._setup_recommend();
     this._setup_recommend_hint();
     
+    /**
+     * @20131113 Pulipuli Chen
+     * 修正他的功能
+     */
+    
+    
     return _ui;
 };
 
 Annotation_tool.prototype.setup_list = function () {
     var _component = new Topic_list();
     this.child('list', _component);
+	
+	var _tool = this;
+	//註冊一下
+	_component.add_listener(function () {
+		//$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
+		if (_component.is_totally_loaded() && _component.has_list_item() === false) {
+			_tool.editor_container.toggle_container(true);
+		}
+		//else {
+		//	_tool.editor_container.toggle_container(false);
+		//}
+    });
     return _component;
 };
 
 Annotation_tool.prototype._$get_config = function () {
-    
     var _config = Overlay_modal.prototype._$get_config.call(this);
     _config.fixed = false;
     return _config;
@@ -285,8 +305,27 @@ Annotation_tool.prototype.open = function (_callback) {
     this.list.load_list(function () {
         _this.check_editing();
     });
-    
-    KALS_modal.prototype.open.call(this, _callback);
+	
+	/**
+	 * 20121224 Pulipuli Chen
+	 * 開啟時自動關閉Editor_contrainer
+	 */
+	this.editor_container.toggle_container(false);
+	
+    KALS_modal.prototype.open.call(this, function () {
+		_this.scroll_into_view();
+		
+		$.trigger_callback(_callback);
+	});
+};
+
+Annotation_tool.prototype.scroll_into_view = function () {
+	var _offset = this.get_ui().offset();
+    var _position = {
+        y: _offset.top - 60
+    };
+	//$.test_msg("Annotation_tool.scroll_into_view", _position);
+    $.scroll_to(_position);
 };
 
 Annotation_tool.prototype.close = function (_callback) {
@@ -309,14 +348,12 @@ Annotation_tool.prototype.setup_position = function () {
     //$.test_msg('Annotation_tool.setup_position()');
     
     var _ui = this.get_ui();
-    if ($.is_small_width())
-    {
+    if ($.is_small_width()) {
         _ui.css('top', '0px');
         _ui.css('left', '0px');
         return this;
     }
-    else
-    {
+    else {
         var _mode = 'foot';
         
         var _tool_height = _ui.height();
@@ -332,8 +369,7 @@ Annotation_tool.prototype.setup_position = function () {
         //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
         
         //如果沒有選取，就不會有_selection_bottom，也就不用定位
-        if (_selection_bottom == null)
-        {
+        if (_selection_bottom === null) {
             _ui.css('top', '0px');
             _ui.css('left', '0px');
             _ui.hide();
@@ -344,13 +380,11 @@ Annotation_tool.prototype.setup_position = function () {
         var _margin_bottom = _body_bottom - _selection_bottom;
         
         //如果底下寬度不足的話
-        if (_margin_bottom < _tool_height)
-        {
+        if (_margin_bottom < _tool_height) {
             var _selection_top = _selection.get_offset_top();
             
             //如果上面寬度夠高，則定位於head
-            if (_selection_top > _tool_height)
-            {
+            if (_selection_top > _tool_height) {
                 //$.test_msg('Annotation_tool.setup_position() head', [ _margin_bottom, _tool_height, _selection_top ]);
                 _mode = 'head';
             }   
@@ -358,8 +392,7 @@ Annotation_tool.prototype.setup_position = function () {
         }
         
         var _l, _t, _margin = 10;
-        if (_mode == 'foot')
-        {
+        if (_mode == 'foot') {
             _t = _selection_bottom + _margin;
             
             var _last_right = _selection.get_offset_last_right();
@@ -367,17 +400,14 @@ Annotation_tool.prototype.setup_position = function () {
             var _bottom_width = _last_right - _left;
             
             //$.test_msg([_bottom_width , _tool_width]);
-            if (_bottom_width > _tool_width)
-            {
+            if (_bottom_width > _tool_width) {
                 _l = _last_right - _tool_width;
             }
-            else
-            {
+            else {
                 _l = _left; 
             }
         }
-        else
-        {
+        else {
             _t = _selection_top - _tool_height - _margin;
             
             var _first_left = _selection.get_offset_first_left();
@@ -385,12 +415,10 @@ Annotation_tool.prototype.setup_position = function () {
             //var _top_width = _right - _first_left;
             
             /*
-            if (_top_width > _tool_width)
-            {
+            if (_top_width > _tool_width) {
                 _l = _first_left;
             }
-            else
-            {
+            else {
                 _l = _right - _tool_width; 
             }
             */
@@ -401,19 +429,20 @@ Annotation_tool.prototype.setup_position = function () {
         
         //為了防止超出畫面左右的設置
         var _body_right = $('body').width();
-        if (_l < 0)
-        {
+        if (_l < 0) {
             _l = 0;
         }
-        else if (_l + _tool_width > _body_right)
-        {
+        else if (_l + _tool_width > _body_right) {
             _l = _body_right - _tool_width;
         }
         
-        if (_t < 0)
-            _t = 0;
-        else if ($.is_small_height() == false && _t < KALS_toolbar.get_ui().height())
-            _t = KALS_toolbar.get_ui().height();
+        if (_t < 0) {
+			_t = 0;
+		}
+		else 
+			if ($.is_small_height() === false && _t < KALS_toolbar.get_ui().height()) {
+				_t = KALS_toolbar.get_ui().height();
+			}
         
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
@@ -454,9 +483,8 @@ Annotation_tool.prototype.setup_list_menu_tooltip = function () {
 Annotation_tool.prototype.view = null;
 
 Annotation_tool.prototype.setup_view = function () {
-    if ($.is_null(this.view))
-    {
-        var _view = new Window_view;
+    if ($.is_null(this.view)) {
+        var _view = new Window_view();
         this.child('view', _view);
     }
     return this.view;
@@ -478,37 +506,31 @@ Annotation_tool.prototype._setup_recommend_hint = function () {
 
 Annotation_tool.prototype.load_annotation_param = function (_annotation_id, _callback) {
     
-    if ($.is_string(_annotation_id))
-    {
-        try
-        {
-            _annotation_id = parseInt(_annotation_id);
+    if ($.is_string(_annotation_id)) {
+        try {
+            _annotation_id = parseInt(_annotation_id, 10);
         }
         catch(e) {
             _annotation_id = null;
         }
     }        
     
-    if ($.is_null(_annotation_id))
-    {
+    if ($.is_null(_annotation_id)) {
         $.trigger_callback(_callback);
         return this;
     }
-    else if ($.is_class(_annotation_id, 'Annotation_param'))
-    {
+    else if ($.is_class(_annotation_id, 'Annotation_param')) {
         $.trigger_callback(_callback, _annotation_id);
         return this;
     }
     
     var _load_callback = function (_param) {
         
-        if (_param != false)
-        {
+        if (_param !== false) {
             _param = new Annotation_param(_param);
             $.trigger_callback(_callback, _param);    
         }
-        else
-        {
+        else {
             _exception_handle();
         }
     };
@@ -548,12 +570,10 @@ Annotation_tool.prototype.set_editing_param = function (_editing_param) {
 
 Annotation_tool.prototype.check_editing = function () {
     
-    if ($.isset(this._editing_param))
-    {
+    if ($.isset(this._editing_param)) {
         var _list_item = this.list.focus(this._editing_param, false);
         
-        if ($.isset(_list_item))
-        {
+        if ($.isset(_list_item)) {
             _list_item.edit_annotation();
         }
         this.editor_container.toggle_loading(false);

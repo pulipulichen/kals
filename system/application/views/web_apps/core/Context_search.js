@@ -18,31 +18,42 @@ function Context_search (){
 
 Context_search.prototype = new Attribute_event_dispatcher(); 
 
-Context_search.prototype.set_field = function(_value) {
-    return this.set_attr('field', _value);
+Context_search.prototype.set_field = function(_value) { //設定search_range
+    return this.set_attr('search_range', _value);
 };
 
-Context_search.prototype.set_keyword = function(_value) {
+Context_search.prototype.get_field = function() {  //取得search_range
+    return this.get_attr('search_range');
+};
+
+Context_search.prototype.set_keyword = function(_value) { //設定keyword
     return this.set_attr('keyword', _value);
 };
 
-Context_search.prototype.set_page = function(_value) {
+Context_search.prototype.get_keyword = function() {  //取得keyword
+    return this.get_attr('keyword');
+};
+
+//===頁數===
+/*Context_search.prototype.set_page = function(_value) {
     return this.set_attr('page', _value);
 };
 
 Context_search.prototype.set_page_limit = function(_value) {
     return this.set_attr('page_limit', _value);
 };
+*/
 
 /**
  * 送出查詢時的參數
  */
 Context_search.prototype.get_search_option = function () {
     return {
-        field: this.get_attr('field'),
-        keyword: this.get_attr('keyword'),
-        page: this.get_attr('page', 0),
-        page_limit: this.get_attr('page_litmit', 10)
+        search_range: this.get_attr('search_range'),
+        keyword: this.get_attr('keyword')
+		
+        //page: this.get_attr('page', 0),
+        //page_limit: this.get_attr('page_litmit', 10)
     };
 };
 

@@ -1,37 +1,39 @@
-.annotation-tool {
+.KALS.annotation-tool {
     position:absolute;
     z-index:2;
     width: 330px;
-    height: 320px;
+    /*height: 400px;*/
     /*background-color: white;*/
-    background: white !important;
+    /*background-color: white !important;*/
     cursor:default;
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     
     -webkit-box-shadow: #6F5A40 0px 3px 5px;
     -moz-box-shadow: #A29584 0px 5px 5px;
     
     padding: 0;
+    margin:0;
     border-width: 3px;
+}
+
+.KALS.annotation-tool div {
     margin:0;
 }
 
-.annotation-tool div {
-    margin:0;
-}
 
-
-.annotation-tool.ui-draggable-dragging {
+.KALS.annotation-tool.ui-draggable-dragging {
     cursor: move;
 }
 
-.draggable-tool.hover {
+.KALS.draggable-tool.hover {
     z-index: 3;
 }
 
-.annotation-tool .annotation-tool-header {
+.KALS.annotation-tool .annotation-tool-header {
     text-align:right;
     cursor: crosshair;
     height: 20px;
@@ -64,6 +66,8 @@
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     
     background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
         , #918978 51%, #8C8473 100%);
@@ -75,28 +79,30 @@
     background-color: #8C8473; 
 }
 
-.annotation-tool .annotation-tool-header .dialog-option {
+.KALS.annotation-tool .annotation-tool-header .dialog-option {
     padding: 0 1em;
     border-left: 2px groove #494437;
     /*color: #494437;*/
     color: #FFF;
     text-decoration: none;
     font-weight:bold;
-    font-size:smaller;
+    /* font-size:smaller; */
     line-height: 20px;
 }
 
-.annotation-tool .annotation-tool-header .dialog-option.last {
+.KALS.annotation-tool .annotation-tool-header .dialog-option.last {
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
+    border-radius: 0 8px 8px 0;
+    -khtml-border-radius: 0 8px 8px 0;
 }
 
-.annotation-tool .annotation-tool-header .dialog-option.hover {
+.KALS.annotation-tool .annotation-tool-header .dialog-option.hover {
     /*color: white;*/
     background-color: #B6B4AF;
 }
 
-.annotation-tool .editor-tool {
+.KALS.annotation-tool .editor-tool {
     background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
         , #FEEEBD 70px, #FEEEBD 100%);
     background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FEF8E4)
@@ -105,34 +111,74 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FEF8E4'
         , endColorstr='#FEEEBD');
     background-color: #FEEEBD;
-    margin:0;
 }
 
-.annotation-tool .annotation-tool-editor {
-    height: 180px;
+.KALS.annotation-tool .annotation-tool-editor {
+    /*height: 180px;*/
 }
 
-.annotation-tool.not-login .annotation-tool-editor {
+.KALS.annotation-tool.not-login .annotation-tool-editor {
     height: 30px;
 }
 
-.annotation-tool .annotation-tool-list {
-    max-height: 112px;
+.KALS.annotation-tool .annotation-tool-list {
+    max-height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
     
     -moz-border-radius: 0 0 8px 8px;
     -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px;
+    -khtml-border-radius: 0 0 8px 8px;
 }
 
-.annotation-tool.not-login .annotation-tool-list {
+.KALS.annotation-tool.not-login .annotation-tool-list {
     max-height: 228px;
 }
 
-.annotation-tool.hide-editor .annotation-tool-editor {
+.KALS.annotation-tool.hide-editor .annotation-tool-editor {
     height:20px; 
 }
 
-.annotation-tool.hide-editor .annotation-tool-list {
+.KALS.annotation-tool.hide-editor .annotation-tool-list {
     max-height: 270px;
+}
+
+
+
+/**
+ * @section {Reset recovery}
+ */
+.KALS.annotation-tool tbody tr th{
+	background:rgba(255, 255, 255, 0) !important;
+	color: black;
+}
+
+.KALS.annotation-tool tbody tr td,
+.KALS.annotation-tool tbody tr th {
+	
+	border-bottom:0px !important;
+	border-top:0px !important;
+}
+
+/**
+ * @section {editor-hint}
+ */
+.KALS .enable-editor-hint {
+	font-size: smaller;
+	text-align:left;
+	
+}
+.KALS.annotation-tool .enable-editor-hint {
+	display: none;
+}
+
+.KALS.annotation-tool .editor-tool table{
+   margin-top:0px !important;
+   margin-bottom:0px !important;
+}
+
+.KALS span.cke_skin_kama {
+    border-color: transparent; 
+    border-width: 0;
 }

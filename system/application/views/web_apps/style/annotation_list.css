@@ -1,9 +1,9 @@
 /**
  * @section Topic_list
  */
-.topic-list .topic-list-blank,
-.topic-list .topic-list-loading,
-.topic-list .topic-list-complete {
+.KALS .topic-list .topic-list-blank,
+.KALS .topic-list .topic-list-loading,
+.KALS .topic-list .topic-list-complete {
     display:none;
     text-align:center;
     padding: 0.5em;
@@ -12,36 +12,36 @@
     /*color: white;*/
 }
 
-.topic-list.blank .topic-list-blank,
-.topic-list.loading .topic-list-loading,
-.topic-list.complete .topic-list-complete {
+.KALS .topic-list.blank .topic-list-blank,
+.KALS .topic-list.loading .topic-list-loading,
+.KALS .topic-list.complete .topic-list-complete {
     display:block;
     cursor: default;
 }
 
-.topic-list.loading .topic-list-loading {
+.KALS .topic-list.loading .topic-list-loading {
 	cursor: wait;
 }
 
-.annotation-tool .topic-list {
+.KALS.annotation-tool .topic-list {
     background-color: white;
 }
 
 /**
  * @section List_collection
  */
-.list-collection {
+.KALS .list-collection {
     font-size: small;
 }
 
-.list-collection .loading-component {
+.KALS .list-collection .loading-component {
     text-align: center;
     padding: 1em;
     cursor: wait;
 }
 
 /*
-.list-collection.other {
+.KALS .list-collection.other {
     color: blue;
 }
 */
@@ -49,63 +49,84 @@
 /**
  * @section List_item
  */
-.list-item {
+.KALS.annotation-tool .list-item {
     background-color: white;
     
     padding-top: 5px;
     padding-bottom: 5px;
+	padding: 5px;
     clear: both;
+	
+	cursor: pointer;
+	
 }
 
-.list-item-topic {
+.KALS .list-item-topic {
     border-bottom: 1px solid gray;
     background-color: white;
 }
 
-.list-item.focus,
-.list-item.editing {
+.KALS .list-item.focus,
+.KALS .list-item.editing {
     background-color: #FEEEBD;
 }
 
-.list-item p {
+.KALS .list-item p {
     margin: 0;
 }
+
+.KALS .list-item .list-anchor-text-component {
+	padding-left: 1em;
+	font-style:italic;
+	color:gray;
+}
+
 
 /**
  * @section List_header_component
  */
-.list-header-component {
-    padding: 5px 0;
+.KALS .list-header-component {
+    padding: 5px 0 !important;
 }
 
-.list-header-component .name-container {
+.KALS .list-header-component .respond-indicator {
+    font-weight: bold;
+    margin-right: 5px;
+	display: none;
+}
+
+.KALS .list-item-respond .list-header-component .respond-indicator {
+    display: inline;
+}
+
+.KALS .list-header-component .name-container {
     font-weight: bold;
     margin-right: 0.5em;
 }
 
-.list-header-component.is-my {
+.KALS .list-header-component.is-my {
     /*padding-left: 30px;*/
     
 }
 
-.list-header-component.is-my .name-container {
+.KALS .list-header-component.is-my .name-container {
     text-decoration:underline;
 }
 
-.list-header-component .header-option {
+.KALS .list-header-component .header-option {
     float:right;
 }
 
-.list-header-component .lock,
-.list-header-component .recommend {
+.KALS .list-header-component .lock,
+.KALS .list-header-component .recommend {
     display: none;
 }
 
-.list-header-component.policy-type-lock .lock {
+.KALS .list-header-component.policy-type-lock .lock {
     display: inline;
 }
 
-.list-header-component.has-recommend .recommend {
+.KALS .list-header-component.has-recommend .recommend {
     display: inline;
     cursor: pointer;
 }
@@ -113,31 +134,33 @@
 /**
  * 如果是我的標註，則不顯示like
  */
-.list-header-component.is-my .list-like-component .icon-component {
+.KALS .list-header-component.is-my .list-like-component .icon-component {
     display: none;
 }
 /*
-.list-header-component.has-recommend {
+.KALS .list-header-component.has-recommend {
     background-image: url(${base_url}images/has-recommend.gif);
     background-position-x: 4px;
     background-position-y: center;
     background-repeat:no-repeat;
 }
 */
-.list-header-component .type-option
+.KALS .list-header-component .type-option
 {
     border-radius: 5px;
     -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
     margin: 0;
     height:18px;
-    padding: 1px 5px;
+    padding: 1px 5px !important;
     font-size:smaller;
     cursor:default;
 }
 
-.list-header-component .id-component {
+.KALS .list-header-component .id-component {
     float:right;
-    color: gray;
+    color: #CCC;
     font-size: smaller;
     margin-left: 5px;
 }
@@ -145,18 +168,18 @@
 /**
  * @section List_like_component
  */
-.list-like-component {
+.KALS .list-like-component {
     cursor: pointer;
     float:right;
 }
 
-.list-like-component .count-component {
+.KALS .list-like-component .count-component {
     font-size:smaller;
     color: #808080;
     float:right;
 }
 
-.list-like-component .icon-component {
+.KALS .list-like-component .icon-component {
     /*height:24px;
     width:24px;
     */ 
@@ -168,44 +191,44 @@
     background-position:center;
     background-repeat:no-repeat;
 }
-.list-like-component.hide .icon-component {
+.KALS .list-like-component.hide .icon-component {
     /*visibility:hidden;*/
     display: none;
 }
 
-.annotation-tool.not-login .list-like-component .icon-component,
-.window-view-content.not-login .list-like-component .icon-component {
+.KALS.annotation-tool.not-login .list-like-component .icon-component,
+.KALS .window-view-content.not-login .list-like-component .icon-component {
     display: none;
 }
 
-.list-like-component.hover .icon-component {
+.KALS .list-like-component.hover .icon-component {
     background-image:url(${base_url}images/set-is-liked.png);
 }
 
-.list-like-component.liked .icon-component {
+.KALS .list-like-component.liked .icon-component {
     background-image:url(${base_url}images/is-liked.png);
 }
 
-.list-like-component.liked.hover .icon-component {
+.KALS .list-like-component.liked.hover .icon-component {
     background-image:url(${base_url}images/set-is-not-liked.png);
 }
 
 /**
  * @section List_menu
  */
-.list-item .list-menu {
+.KALS.annotation-tool .list-item .list-menu {
     display: none;
     padding: 0.2em 0;
 }
 
-.tooltip.list-menu {
+.KALS.annotation-tool .tooltip.list-menu {
     text-align:right;
     word-break:keep-all;
     /*padding: 0 0.5em;*/
     min-height: 0;
     /*padding: 0.2em;*/
 }
-.list-menu-tooltip {
+.KALS.annotation-tool .list-menu-tooltip {
     background:#847D63 !important;
     color: #FFFFFF;
     /*border: 1px solid black;*/
@@ -213,103 +236,150 @@
     
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
+    border-radius: 0px;
+    -khtml-border-radius: 0px;
     /*border: 1px solid #515151;*/
     padding: 0;
+	
+}
+.KALS .list-menu-tooltip tr{
+	background: rgba(0,0,0,0)!important;
 }
 
-.list-menu-block {
+.KALS .list-menu-block {
     text-align:right;
 }
 
-.list-menu-block table {
+.KALS .list-menu-block table {
     display: inline;
 }
 
 
-.list-item.menu-style-block .list-menu-block  {
+.KALS .list-item.menu-style-block .list-menu-block  {
     display: block;
 }
 
 
 /*
-.list-menu-tooltip .list-timestamp-component {
+.KALS .list-menu-tooltip .list-timestamp-component {
     display: block;
 }
 */
 
-.list-menu .list-menu-option {
+.KALS .list-menu .list-menu-option,
+.KALS .list-menu-option {
     cursor: pointer;
     padding: 0.2em 0.5em;
     margin-left: 0.2em;
     font-weight: bold;
-    
-    border-left: 2px groove gray;
+    border-left: 1px groove white; 
 }
 
-.list-menu.list-menu-block .list-menu-option {
+.KALS.window .list-menu .list-menu-option,
+.KALS.window .list-menu-option {
+    /**
+     * 由於看起來挺醜的，所以刪掉了
+     * @20131115 Pulipuli Chen
+     */
+    border-left-width: 0px; 
+}
+
+.KALS .list-menu.list-menu-block .list-menu-option {
     padding-top: 0;
     padding-bottom: 0;
 }
 
-.list-menu-tooltip .list-menu-option.hover {
+.KALS .list-menu-tooltip .list-menu-option.hover {
     background-color: #FFF;
     color: #8C8473;
 }
 
-.list-menu .list-timestamp-component {
+.KALS .list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
+	border-left-width: 0 !important;
 }
 
-.list-menu.not-login .list-menu-option {
+.KALS .list-menu.not-login .list-menu-option {
     display: none;
 }
 
-.list-menu.not-login .list-menu-option.view {
+.KALS .list-menu.not-login .list-menu-option.view {
     display: table-cell;
 }
 
-.list-menu.is-my .list-menu-option.respond {
+/**
+ * 開放自己可以回應自己的標註
+ * @author Pulipuli Chen 20131116
+ */
+/*
+.KALS .list-menu.is-my .list-menu-option.respond {
+    display: none;
+}
+*/
+
+.KALS.annotation-tool .list-menu .list-menu-option.respond {
     display: none;
 }
 
-.list-menu .list-menu-option.edit,
-.list-menu .list-menu-option.delete {
+.KALS .list-menu .list-menu-option.edit,
+.KALS .list-menu .list-menu-option.delete {
     display: none;
 }
 
-.list-menu.is-my .list-menu-option.edit,
-.list-menu.is-my .list-menu-option.delete {
+/**
+ * 只有在view當中不需要出現選擇的樣子
+ */
+.KALS.window .list-menu .list-menu-option.select {
+    display: none;
+}
+
+.KALS .list-menu.is-my .list-menu-option.edit,
+.KALS .list-menu.is-my .list-menu-option.delete {
     display: table-cell;
 }
 
-.list-menu.loading {
+/**
+ * 開放自己留言自己的標籤
+ * @author Pulipuli Chen 201311116
+ */
+/*
+.KALS .list-menu.is-my .list-menu-option.view {
+    display: none;
+}
+*/
+
+.KALS .list-menu.loading {
     /*color: gray;*/
    color: #CCC;
     cursor: wait;
 }
 
-.list-menu.loading .list-menu-option {
+.KALS .list-menu.loading .list-menu-option {
     cursor: wait;
 }
 
-.list-menu-tooltip {
+.KALS .list-menu-tooltip {
     /*height: 30px;*/
 }
 
-.list-menu-tooltip td {
+.KALS .list-menu-tooltip td {
     vertical-align:middle;
 }
 
 /**
  * @section List_note_component
  */
-.list-note-component .view-thread {
+.KALS .list-note-component .view-thread {
     color: blue;
     text-decoration:underline;
     cursor:pointer;   
 }
 
-.list-note-component .respond-container .respond-to {
+.KALS .list-note-component .link-setted {
+	cursor:pointer;
+}
+
+.KALS .list-note-component .respond-container .respond-to {
     cursor:pointer;
     text-decoration:underline;
     color:blue;
@@ -319,7 +389,7 @@
 /**
  * @section Respond_list_collection
  */
-.respond-list-collection {
+.KALS .respond-list-collection {
     /*padding-left: 2em;*/
     /*margin-top: 5px;*/
     /*margin-bottom: 5px;*/
@@ -328,19 +398,61 @@
     
     background-color: white;
 }
-
-.respond-list-collection .view-component {
-    padding: 1em;
+/*
+.KALS .respond-list-collection .list-item.first {
+	border-top-width: 0;
+}
+*/
+.KALS .respond-list-collection .view-component,
+.KALS .respond-list-collection .skip-component {
+	border-top: 1px dashed #CCC;
     text-align:center;
     cursor:pointer;
-    border-top: 1px solid #CCC;
+	position:static;
+} 
+
+.KALS .respond-list-collection .view-component .message,
+.KALS .respond-list-collection .skip-component .message {
+    background-color: #CCC;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	display:block;
+	clear: both;
 }
-.respond-list-collection .view-component.hover {
+
+.KALS .respond-list-collection .view-component .message {
+    padding: 1em;
+    margin: 0.5em 1em 0.5em 1em;
+	
+	
+}
+
+.KALS .respond-list-collection .view-component .message.hover {
     background-color: #FEEEBD; 
 }
 
-.list-item-respond {
-    border-top: 1px solid #CCC;
+/**
+ * 新增省略回應的位置
+ * @author Pulipuli Chen 20131116
+ */
+.KALS .respond-list-collection .skip-component .message {
+    padding: 0.5em;
+	border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+	margin: 0.5em 1em;
+    background-color: #CCC;
+}
+
+.KALS .respond-list-collection .skip-component .message.hover {
+    background-color: #FEEEBD; 
+}
+
+.KALS .list-item-respond {
+    border-top: 1px dashed #CCC;
     padding-left: 2em !important;
 }
 /*
@@ -349,3 +461,21 @@
 }
 */
 
+/*.list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table{
+	margin:1px !important;
+}*/
+/*.list-container .list-item-topic .list-item .list-menu table{
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}*/
+/*??? table{
+	margin: 0px 0 !important;
+}*/
+
+.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table {
+    margin: 0px 0 !important;
+}
+
+.KALS .list-menu.tooltip.list-menu-tooltip.kals-modal.is-my table tbody{
+    border-width: 0px !important;
+}

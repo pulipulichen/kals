@@ -21,6 +21,10 @@ function Context_user(){
         KALS_context.auth.add_listener(this);
     //}
     
+    var _this = this;
+    setTimeout(function () {
+        _this.set_anchor_navigation_type(KALS_CONFIG.anchor_navigation_type);
+    }, 0);
 }
 
 Context_user.prototype = new Attribute_event_dispatcher();
@@ -68,16 +72,39 @@ Context_user.prototype.get_sex = function () {
 };
 
 /**
+ * 設定標註指引類型
+ * 有all、recommend、none三種
+ * @param {String} _type 標註指引類型
+ * @version 20111106 Pudding Chen
+ */
+Context_user.prototype.set_anchor_navigation_type = function (_type) {
+    return this.set_attr('anchor_navigation_type', _type);
+};
+
+/**
+ * 取得標註指引類型
+ * 預設存放在KALS_CONFIG.anchor_navigation_type當中
+ * 有all、recommend、none三種
+ * @type {String}
+ * @version 20111106 Pudding Chen
+ */
+Context_user.prototype.get_anchor_navigation_type = function () {
+    return this.get_attr('anchor_navigation_type', KALS_CONFIG.anchor_navigation_type);
+};
+
+/**
  * 是否擁有照片
  * @type {boolean}
  * @memberOf {Context_user}
  */
 Context_user.prototype.has_photo = function () {
     var _has_photo = this.get_attr('has_photo');
-    if ($.is_null(_has_photo))
-        return false;
-    else
-        return _has_photo;
+    if ($.is_null(_has_photo)) {
+		return false;
+	}
+	else {
+		return _has_photo;
+	}
 };
 
 Context_user.prototype.get_email = function () {
@@ -94,17 +121,28 @@ Context_user.prototype.has_login = function () {
  * @type {User_param}
  */
 Context_user.prototype.get_data = function () {
-    if (KALS_context.auth.is_login() == false)
-        return null;
+    if (KALS_context.auth.is_login() === false) {
+		return null;
+	}
     
     var _id = this.get_id();
     var _name = this.get_name();
     
-    if (_id == null)
-        return null;
+    if (_id === null) {
+		return null;
+	}
     
     var _param = new User_param(_id, _name);
     return _param;
+};
+
+Context_user.prototype.get_user_param = function () {
+    if (this.has_login()) {
+        return new User_param(this.get_id(), this.get_name());
+    }
+    else {
+        return null;
+    }
 };
 
 /* End of file Context_user */

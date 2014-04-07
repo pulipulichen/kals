@@ -20,10 +20,23 @@ View_respond_list_collection.prototype = new Respond_list_collection();
 
 View_respond_list_collection.prototype._$limit = null;
 
-View_respond_list_collection.prototype.create_list_item = function(_param)
-{
+View_respond_list_collection.prototype.create_list_item = function(_param) {
     return new View_list_item_respond(_param, this._topic_item);
 };
+
+/**
+ * 排序的方向。
+ * @type {string} desc|asc，如果是null，則由系統預設
+ */
+View_respond_list_collection.prototype._$direction = 'asc';
+
+View_respond_list_collection.prototype._$enable_check_login = false;
+
+/**
+ * 新增時從頭新增嗎？
+ * @type boolean
+ */
+View_respond_list_collection.prototype._$default_add_item_from_head = false;
 
 /* End of file View_respond_list_collection */
 /* Location: ./system/application/views/web_apps/View_respond_list_collection.js */

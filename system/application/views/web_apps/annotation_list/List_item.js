@@ -15,12 +15,10 @@ function List_item(_param) {
     
     Multi_event_dispatcher.call(this);
     
-    if ($.isset(_param))
-    {
+    if ($.isset(_param)) {
         this.set_annotation_param(_param);
         
-        if ($.browser.msie)
-        {
+        if ($.browser.msie) {
             this._menu_style_default = 'block';
         }
     }
@@ -46,16 +44,14 @@ List_item.prototype._classname = 'list-item';
  * @memberOf {List_item}
  * @type {jQuery} UI
  */
-List_item.prototype._$create_ui = function ()
-{
+List_item.prototype._$create_ui = function () {
     var _this = this;
     
     var _ui = $('<div></div>')
         .addClass(this._classname)
         .addClass('list-item');
     
-    if ($.isset(this._annotation_param))
-    {
+    if ($.isset(this._annotation_param)) {
         _ui.attr('annotation_id', this._annotation_param.annotation_id);
         
         var _topic_id = this.get_topic_id();
@@ -65,20 +61,21 @@ List_item.prototype._$create_ui = function ()
     var _header = this._setup_header();
     _header.get_ui().appendTo(_ui);
     
+	//var _anchor_text = this._setup_anchor_text_component()
+	//	.get_ui().appendTo(_ui);
+	
     var _note = this._setup_note();
     _note.get_ui().appendTo(_ui);
     
     var _menu_block, _menu_tooltip;
-    if (this._menu_style_default == null)
-    {
+    if (this._menu_style_default === null) {
         _menu_block = this._setup_menu_block();
         _menu_block.get_ui().appendTo(_ui);
         
         _menu_tooltip = this._setup_menu_tooltip();
         _menu_tooltip.get_ui().appendTo(_ui);
     }
-    else if (this._menu_style_default == 'block')
-    {
+    else if (this._menu_style_default == 'block') {
         _menu_block = this._setup_menu_block();
         _menu_block.get_ui().appendTo(_ui);
     }
@@ -90,12 +87,19 @@ List_item.prototype._$create_ui = function ()
         _this.blur();
     }); 
     
+	// @20130609 Pudding Chen
+	// 只有在不顯示全文的情況下，按下內容才會顯示thread
+	if (this._note_show_fulltext === false) {
+		_ui.find(".name-container, .type-container, .list-note-component").click(function () {
+			_this.view_thread();
+		});
+	}	
+	
     setTimeout(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         
-        if (_this._menu_style_default == null 
-            || _this._menu_style_default == 'tooltip')
-        {
+        if (_this._menu_style_default === null 
+            || _this._menu_style_default == 'tooltip') {
             var _config = _menu_tooltip._$get_config();
             _ui.tooltip(_config);        
         }
@@ -135,10 +139,26 @@ List_item.prototype.note = null;
 
 List_item.prototype._note_show_fulltext = false;
 
+/**
+ * 設定筆記顯示的元件
+ * @type {List_note_component}
+ */
 List_item.prototype._setup_note = function () {
     var _component = new List_note_component(this, this._note_show_fulltext);
     this.child('note', _component);
     return _component;
+};
+
+List_item.prototype._$max_width = 300;
+
+/**
+ * 調整筆記的內容
+ */
+List_item.prototype.adjust_note = function (_callback) {
+	if (this.note !== null) {
+		this.note.adjust_note(_callback);
+	}
+	return this;
 };
 
 // --------
@@ -167,23 +187,38 @@ List_item.prototype._setup_menu_tooltip = function () {
     return _component;  
 };
 
+/**
+ * 茅點文字最大長度
+ * @type {int}
+ */
+List_item.prototype.max_anchor_text_length = 20;
+
+/**
+ * 設定Anchor Text
+ * @type {List_anchor_text}
+ */
+List_item.prototype._setup_anchor_text_component = function () {
+    var _component = new List_anchor_text_component(this);
+    this.child('anchor_text', _component);
+    return _component;  
+};
+
 List_item.prototype.is_enable = function (_option_name) {
-    if (_option_name == null || this._disable_option == null)
-        return true;
-    else
-        return ( $.inArray(_option_name, this._disable_option) == -1 );
+    if (_option_name === null || this._disable_option === null) {
+		return true;
+	}
+	else {
+		return ($.inArray(_option_name, this._disable_option) == -1);
+	}
 };
 
 List_item.prototype._$onviewportmove = function (_ui) {
     
-    if ($.is_null(this._menu_style_default))
-    {
-        if ($.is_small_width())
-        {
+    if ($.is_null(this._menu_style_default)) {
+        if ($.is_small_width()) {
             this._toggle_menu_style('block');
         }
-        else
-        {
+        else {
             this._toggle_menu_style('float');
         }   
     }
@@ -191,26 +226,27 @@ List_item.prototype._$onviewportmove = function (_ui) {
 
 List_item.prototype.get_list_item_ui = function () {
     var _ui = this.get_ui('.list-item:first');
-    if (_ui.length == 0)
-        _ui = this.get_ui();
+    if (_ui.length === 0) {
+		_ui = this.get_ui();
+	}
     return _ui;
 };
 
 List_item.prototype._toggle_menu_style = function (_style) {
     
-    if ($.isset(this._menu_style_default))
-        _style = this._menu_style_default;
-    if ($.is_null(_style) || _style == 'none')
-        return this;
+    if ($.isset(this._menu_style_default)) {
+		_style = this._menu_style_default;
+	}
+    if ($.is_null(_style) || _style == 'none') {
+		return this;
+	}
     
     var _block_classname = this._menu_style_classname;
     var _ui = this.get_list_item_ui();
-    if (_style == 'block')
-    {
+    if (_style == 'block') {
         _ui.addClass(_block_classname);
     }
-    else
-    {
+    else {
         _ui.removeClass(_block_classname);
     }
     return this;
@@ -234,10 +270,12 @@ List_item.prototype.get_annotation_param = function () {
 
 List_item.prototype.get_annotation_id = function () {
     
-    if ($.is_class(this._annotation_param, 'Annotation_param'))
-        return this._annotation_param.annotation_id;
-    else
-        return null;
+    if ($.is_class(this._annotation_param, 'Annotation_param')) {
+		return this._annotation_param.annotation_id;
+	}
+	else {
+		return null;
+	}
 };
 
 List_item.prototype.get_topic_param = function () {
@@ -252,8 +290,9 @@ List_item.prototype.get_menu_style = function () {
     var _style = 'tooltip';
     
     var _ui = this.get_ui();
-    if (_ui.hasClass(this._menu_style_classname))
-        _style = 'block';
+    if (_ui.hasClass(this._menu_style_classname)) {
+		_style = 'block';
+	}
     return _style;
 };
 
@@ -272,14 +311,20 @@ List_item.prototype.editor_set_data = function (_param) {
 };
 
 List_item.prototype.get_scope_coll = function () {
-    if ($.is_class(this._annotation_param, 'Annotation_param'))
-        return this._annotation_param.scope;
-    else
-        return null;
+    if ($.is_class(this._annotation_param, 'Annotation_param')) {
+		return this._annotation_param.scope;
+	}
+	else {
+		return null;
+	}
 };
 
+/**
+ * 選擇指定的位置
+ */
 List_item.prototype.set_selection = function () {
     var _scope = this.get_scope_coll();
+	//$.test_msg('List_item.set_selection', _scope);
     KALS_text.selection.view.set_scope_coll(_scope);
     return this;
 };
@@ -289,13 +334,17 @@ List_item.prototype.clear_selection = function () {
     return this;
 };
 
+/**
+ * 擺放標註位置
+ */
 List_item.prototype.select = function () {
     var _scope = this.get_scope_coll();
     
     KALS_text.tool.close();
-    KALS_text.selection.select.set_scope_coll(_scope);
-    $.test_msg('List_item.select', this.get_annotation_param());
+    //$.test_msg('List_item.select', this.get_annotation_param());
     KALS_text.tool.list.set_focus(this.get_annotation_param(), true);
+	
+    KALS_text.selection.select.set_scope_coll(_scope);
     
     return this;
 };
@@ -306,15 +355,22 @@ List_item.prototype.select = function () {
  */
 List_item.prototype.equals = function (_param) {
     var _annotation_id;
-    if ($.is_class(_param, 'Annotation_param'))
-        _annotation_id = _param.annotation_id;
-    else if ($.is_number(_param))
-        _annotation_id = _param;
-    else if ($.is_string(_param))
-        _annotation_id = parseInt(_param);
-    else if ($.is_class(_param, 'List_item'))
-        _annotation_id = _param.get_annotation_id();
-        
+    if ($.is_class(_param, 'Annotation_param')) {
+		_annotation_id = _param.annotation_id;
+	}
+	else 
+		if ($.is_number(_param)) {
+			_annotation_id = _param;
+		}
+		else 
+			if ($.is_string(_param)) {
+				_annotation_id = parseInt(_param, 10);
+			}
+			else 
+				if ($.is_class(_param, 'List_item')) {
+					_annotation_id = _param.get_annotation_id();
+				}
+				
     return (_annotation_id == this.get_annotation_id());
 };
 
@@ -322,24 +378,28 @@ List_item.prototype._focus_classname = 'focus';
 
 List_item.prototype.focus = function (_scrollto) {
     
-    if ($.is_null(_scrollto))
-        _scrollto = false;
+    if ($.is_null(_scrollto)) {
+		_scrollto = false;
+	}
     
     var _ui = this.get_ui('.list-item:first');
-    if (_ui.length == 0)
-        _ui = this.get_ui();
+    if (_ui.length === 0) {
+		_ui = this.get_ui();
+	}
     
     //如果已經是在focus狀態，則不做任何事情
-    if (_ui.hasClass(this._focus_classname))
-        return this;
+    if (_ui.hasClass(this._focus_classname)) {
+		return this;
+	}
     
     this.blur_other_focus();
     this.set_selection();
     
     _ui.addClass(this._focus_classname);
     
-    if (_scrollto == true)
+    if (_scrollto === true) {
         _ui.scrollIntoView();
+    }
     return this;
 };
 
@@ -350,8 +410,9 @@ List_item._blur_timer = null;
 
 List_item.prototype.blur = function () {
     
-    if (List_item._blur_timer != null)
-        clearTimeout(List_item._blur_timer);
+    if (List_item._blur_timer !== null) {
+		clearTimeout(List_item._blur_timer);
+	}
     
     var _this = this;
     List_item._blur_timer = setTimeout(function () {
@@ -365,8 +426,7 @@ List_item.prototype.blur_other_focus = function () {
     //先檢查是否有其他的focus
     var _other_focus = this.get_other_focus();
     
-    if (_other_focus.length > 0)
-    {
+    if (_other_focus.length > 0) {
         _other_focus.removeClass(this._focus_classname);
     }
     
@@ -403,8 +463,9 @@ List_item.prototype.set_editing = function() {
     var _ui = this.get_ui();
     var _editing_classname = 'editing';
     
-    if (_ui.hasClass(_editing_classname))
-        return this;
+    if (_ui.hasClass(_editing_classname)) {
+		return this;
+	}
     
     //將其他為編輯中的item取消
     var _selector = '.' + this._classname + '.' + _editing_classname;
@@ -419,10 +480,9 @@ List_item.prototype.view_thread = function (_callback) {
     //$.test_msg('TODO List_item.view_thread()', _callback);
     
     var _content = KALS_text.tool.view;
-    _content.set_topic_param(this.get_topic_param());
+    var _topic_param = this.get_topic_param();
+    _content.set_topic_param(_topic_param);
     KALS_window.setup_window(_content);
-    
-    $.trigger_callback(_callback);
     return this;
 };
 
@@ -440,8 +500,7 @@ List_item.prototype.focus_respond = function (_respond_to_id) {
     var _result = _list.focus(_respond_to_id, true);
     
     if ($.is_null(_result)
-        && this.is_enable('view'))
-    {
+        && this.is_enable('view')) {
         var _content = KALS_text.tool.view;
         _content.set_focus_id(_respond_to_id);
         
@@ -450,14 +509,16 @@ List_item.prototype.focus_respond = function (_respond_to_id) {
     return this;
 };
 
+/**
+ * 從列表中回應標註
+ */
 List_item.prototype.respond_annotation = function () {
     
     var _respond_to = this.get_data();
     
     var _editor = this.get_editor();
     
-    if ($.isset(_respond_to))
-    {
+    if ($.isset(_respond_to)) {
         _editor.respond_coll.add_respond_to(_respond_to);
     }
     

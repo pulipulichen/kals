@@ -18,8 +18,13 @@ function List_note_component(_item, _show_fulltext) {
     
     this._set_list_item(_item);   
     
-    if ($.isset(_show_fulltext))
-        this._show_fulltext = _show_fulltext;
+	// 20130507 Pudding Chen
+	// 測試一下
+	//_show_fulltext = true;
+	
+    if ($.isset(_show_fulltext)) {
+		this._show_fulltext = _show_fulltext;
+	}
 }
 
 // Extend from KALS_user_interface
@@ -35,8 +40,7 @@ List_note_component.prototype = new KALS_user_interface();
 List_note_component.prototype._item = null;
 
 List_note_component.prototype._set_list_item = function (_item) {
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
@@ -60,7 +64,7 @@ List_note_component.prototype._simple_classname = 'simple';
 
 List_note_component.prototype._show_fulltext = false;
 
-List_note_component.prototype._simple_max_length = 150;
+List_note_component.prototype._simple_max_length = KALS_CONFIG.annotation_list.note.simple_max_length;
 
 /**
  * @type {Annotation_collection_param}
@@ -76,13 +80,13 @@ List_note_component.prototype._respond_to_coll = null;
  * @memberOf {List_note_component}
  * @type {jQuery} UI
  */
-List_note_component.prototype._$create_ui = function ()
-{
+List_note_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-note-component');
     
-    if (this._show_fulltext == false)
-        _ui.addClass('simple');
+    if (this._show_fulltext === false) {
+		_ui.addClass('simple');
+	}
     
     var _respond = this._create_respond_container();
     _respond.appendTo(_ui);
@@ -146,23 +150,22 @@ List_note_component.prototype._create_respond_comma = function () {
  * @param {Annotation_collection_param} _respond_to_coll
  */
 List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) {
-    if ($.is_null(_respond_to_coll))
-    {
+    if ($.is_null(_respond_to_coll)) {
         _respond_to_coll = this._item.get_data().respond_to_coll;
     }
     
-    if ($.is_null(_respond_to_coll))
-        return this;
+    if ($.is_null(_respond_to_coll)) {
+		return this;
+	}
     
-    if ($.is_null(this._respond_container))
-        this.get_ui();
+    if ($.is_null(this._respond_container)) {
+		this.get_ui();
+	}
     
     this._respond_container.empty();
     
-    for (var _i = 0; _i < _respond_to_coll.length(); _i ++)
-    {
-        if (_i > 0)
-        {
+    for (var _i = 0; _i < _respond_to_coll.length(); _i ++) {
+        if (_i > 0) {
             var _comma = this._create_respond_comma();
             _comma.appendTo(this._respond_container);
         }
@@ -172,8 +175,7 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
         _respond_to.appendTo(this._respond_container);
     }
     
-    if (_respond_to_coll.length() > 0)
-    {
+    if (_respond_to_coll.length() > 0) {
         var _to = $('<span></span>')
             .addClass('to')
             .prependTo(this._respond_container);
@@ -216,65 +218,303 @@ List_note_component.prototype._create_note_container = function () {
     return _container;
 };
 
-
-List_note_component.prototype.set_note = function (_note) {
-    if ($.is_null(_note))
-    {
+/**
+ * 把筆記的內容放到List當中
+ * @param {String} _note
+ */
+List_note_component.prototype.set_note = function (_note, _callback) {
+    if ($.is_null(_note)) {
         _note = this._item.get_data().note;
+		
+		//if (this._show_fulltext === true) {
+		//	$.test_msg("List_note_component.set_note(), get_data", _note);
+		//}
     }
     
-    if ($.is_null(_note))
-        _note = '';
+    if ($.is_null(_note)) {
+		_note = '';
+	}
     
     //$.test_msg('List_note.set_note()', [_note, typeof(_note)]);
     
-    if ($.is_null(this._note_container))
-        this.get_ui();
+    if ($.is_null(this._note_container)) {
+		this.get_ui();
+	}
     
+	
+	//$.test_msg("List_note_component.set_note()", _note);
+	//_note = $(_note);
+	if (this._show_fulltext === false) {
+        _note = this.extract_abstract(_note);
+    }
+	
+	//if ($.is_string(_note)) {
+    //    $.test_msg('note', _note);
+	//	this._note_container.html(_note);
+	//}
+    //else {
+	//	this._note_container.append(_note);
+	//}
     this._note_container.html(_note);
     
-    if (this._show_fulltext == false)
-    {
-        var _text = this._note_container.text();
-        _text = $.trim(_text);
-        if (_text.length > this._simple_max_length)
-        {
-            _text = _text.substr(0, this._simple_max_length) + '...';
-            this._note_container.html(_text);
-            
-            var _view = this._create_view_thread();
-            _view.appendTo(this._note_container);
-        }
-        else
-            this._note_container.html(_text);
-    }
+	var _this = this;
+        _this.adjust_note();
+		
+    if (true) {
+		setTimeout(function () {
+            _this.adjust_note(function () {
+                $.trigger_callback(_callback);
+            });
+        }, 200);
+	}
+		
     
     return this;
 };
 
-List_note_component.prototype._create_view_thread = function () {
+/**
+ * 篩選摘要
+ * @author Pulipuli Chen 20131117
+ * @param {String} _note
+ * @type {String|jQuery}
+ */
+List_note_component.prototype.extract_abstract = function (_note) {
+	//var _text = this._note_container.text();
+    var _text = _note;
+    var _origin_text = _text;
+    var _allow_html_tags = KALS_CONFIG.annotation_list.note.allow_html_tags;
+    _text = $.strip_html_tag(_text, _allow_html_tags);
+    _text = $.trim(_text);
+	
+	var _plain_text = $.strip_html_tag(_text);
+	
+	var _result = _text;
+    if (_plain_text.length > this._simple_max_length) {
+		_result = $('<span></span>').html(_origin_text);
+		/*
+		
+        if (_text.length > this._simple_max_length) {
+            _abstract = _text.substr(0, this._simple_max_length) + '...';
+            //this._note_container.html(_abstract);
+			_result.html(_abstract);
+        } 
+        
+        var _view = this._create_view_thread(_origin_text.length);
+        //_view.appendTo(this._note_container);
+		_view.appendTo(_result);
+		*/
+		
+		var _abstract = null;
+		
+		// 先選出有影片的
+		if (_abstract === null) {
+			var _video = _result.find('object, iframe').eq(0);
+			if (_video.length > 0) {
+				_abstract = _video;
+			}
+		}
+		
+		// 再選出圖片
+		if (_abstract === null) {
+			var _img = _result.find('img').eq(0);
+            if (_img.length > 0) {
+                _abstract = _img;
+            }
+		}
+		
+		// 如果沒有只好選出文字
+		if (_abstract === null) {
+            var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
+			var _foot_part = this._simple_max_length - _head_part;
+			 
+			_abstract =  _plain_text.substr(0, _head_part)
+			     + '...'
+				 + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
+				 
+			_abstract = $('<span>' + _abstract + '</span>');
+        }
+		
+		if (_abstract !== null) {
+			_result = _abstract;
+		}
+		
+		var _view = this._create_view_thread(_plain_text.length);
+		_view.appendTo(_result);
+    }
+	else {
+		_result = $('<span>'+_origin_text+'</span>');
+	}
+	
+	//var _max_width = this.get_ui().parents('.KALS').width();
+	
+	//_result.appendTo($('body'));
+	
+	_result.addClass('note-content');
+	
+	return _result;   
+};
+
+/**
+ * 縮小圖片
+ */
+List_note_component.prototype.adjust_note = function (_callback) {
+	//if (this._note_container.hasClass('adjusted')) {
+	//	return this;
+	//}
+	
+	//$.test_msg('adjust note start');
+	
+    
+    var _result = this._note_container;
+	
+	/*
+	var _text = _result.html();
+	_text = $.find_and_replace_youtube_links(_text);
+	_result.html(_text);
+	*/
+	
+	/*
+	_result.find('.note-content:first').contents().each(function() {
+	
+	    // Skip non text nodes.
+	    if (this.nodeType !== 3) {
+	        return true;
+	    }
+	
+	    // Grab text
+	    var matches = $(this).html().match(/(?:https:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g);
+	
+	    if (!matches) {
+	        return true;
+	    }
+	
+	    var iframe = $('<iframe width="420" height="345" frameborder="0" allowfullscreen />', {
+	        src: 'http://www.youtube.com/embed/' + matches[1]
+	    });
+	
+	    iframe.insertAfter(this);
+	
+	    $(this).remove();
+	
+	});
+	*/
+     
+    // 幫超連結加上target=_blank
+    _result.find('a, img').each(function (_index, _a) {
+		
+        _a = $(_a);
+		
+		if (_a.hasClass('link-setted')) {
+			return;
+		}
+		
+        //_a.attr('target', '_blank');
+        //_a.css('border', '1px solid red');
+        
+		var _link;
+		if (_a.hasAttr('src')) {
+			_link = _a.attr('src');
+		}
+		else if (_a.hasAttr('href')) {
+            _link = _a.attr('href');
+        }
+		
+        //防止點選時跳出網頁
+        _a.click(function (_e) {
+			window.open(_link, '_blank');
+            _e.preventDefault();
+        });
+		
+		_a.addClass('link-setted');
+    });
+	
+	
+	
+	var _max_width = this._note_container.width();
+	if (_max_width === 0) {
+		//return this;
+		var _this = this;
+		/*
+		setTimeout(function () {
+			_this.adjust_note;
+		}, 100);
+		*/
+		//$.test_msg('adjust_note', _max_width);
+		//this._note_container.ready(function () {
+		//setTimeout(function () {
+		//	_this.adjust_note();
+		//}, 100);
+			
+		//});
+		$.trigger_callback(_callback);
+	    return this;
+		
+		//_max_width = 195;
+	}
+	//var _safe_margin = 25;
+	//_max_width = _max_width - _safe_margin;
+    // 縮小筆記內的資料
+    _result.find('img, iframe, object, embed').each(function (_index, _ele) {
+        _ele = $(_ele);
+        //_ele.css('border', '1px solid red');
+        var _width = _ele.width();
+        
+        //$.test_msg('縮小圖片', [_width, _max_width]);
+        if (_width > _max_width) {
+            var _height = _ele.height();
+            
+            var _width_ratio = (_max_width / _width);
+            var _adjusted_height = parseInt(_height * _width_ratio, 10);
+            
+            var _final_width = _max_width;
+            var _final_height = _adjusted_height;
+            //if (_ele.hasAttr('width')) {
+                //_ele.attr('width', _final_width).attr('height', _final_height);
+            //}
+            //else {
+                //_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
+            //}
+			_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
+        }
+    });
+    
+	//this._note_container.addClass('adjusted');
+	
+	$.trigger_callback(_callback);
+	return this;
+};
+
+/**
+ * 建立 (詳細內容) 的按鈕
+ * @param {number} _word_count
+ * @type {jQuery}
+ */
+List_note_component.prototype._create_view_thread = function (_word_count) {
     var _ui = $('<span></span>')
         .addClass('view-thread');
     
     var _lang = new KALS_language_param(
-        '(VIEW DETAIL)',
-        'list_note_component.view_thread'
+        '(FULL DETAIL {0} WORDS)',
+        'list_note_component.view_thread',
+		[_word_count]
     );
     
     var _msg = KALS_context.lang.line(_lang);
     _ui.html(_msg);
     
     var _this = this;
-    _ui.click(function () {
-        _this.view_thread();
-    });
+	
+    //_ui.click(function () {
+    //    _this.view_thread();
+    //});
     
     return _ui;
 };
 
 List_note_component.prototype.view_thread = function (_callback) {
-    if ($.isset(this._item))
-        this._item.view_thread(_callback);
+    if ($.isset(this._item)) {
+		this._item.view_thread(_callback);
+	}
     return this;
 };
 

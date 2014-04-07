@@ -68,18 +68,17 @@ Window_content_submit.prototype.get_data = function () {
     
     //$.test_msg('Window_content_submit.get_data()', this._$input_names);
     
-    if ($.is_null(this._$input_names))
-        return _data;
-    else
-    {           
-        for (var _i in this._$input_names)
-        {
-            var _name = this._$input_names[_i];
-            var _value = this._content.get_input_value(_name);
-            _data[_name] = _value;
-        }
-        return _data;
-    }
+    if ($.is_null(this._$input_names)) {
+		return _data;
+	}
+	else {
+		for (var _i in this._$input_names) {
+			var _name = this._$input_names[_i];
+			var _value = this._content.get_input_value(_name);
+			_data[_name] = _value;
+		}
+		return _data;
+	}
 };
 
 /**
@@ -89,20 +88,37 @@ Window_content_submit.prototype.get_data = function () {
  */
 Window_content_submit.prototype.get_inputs = function () {
     var _inputs = {};
-    if ($.is_null(this._$input_names))
-        return _inputs;
-    else
-    {   
-        for (var _i in this._$input_names)
-        {
-            //$.test_msg('Window_content_submit.get_inputs()', this._$input_names);
-            
-            var _name = this._$input_names[_i];
-            var _input = this._content.get_input(_name);
-            _inputs[_name] = _input;
-        }
-        return _inputs;
-    }
+    if ($.is_null(this._$input_names)) {
+		return _inputs;
+	}
+	else {
+		for (var _i in this._$input_names) {
+			//$.test_msg('Window_content_submit.get_inputs()', this._$input_names);
+			
+			var _name = this._$input_names[_i];
+			var _input = this._content.get_input(_name);
+			_inputs[_name] = _input;
+		}
+		return _inputs;
+	}
+};
+
+/**
+ * 取得指定name的input的元件
+ * @param {String} _name
+ * @type {jQuery}
+ */
+Window_content_submit.prototype.get_input = function (_name) {
+	return this._content.get_input(_name);
+};
+
+/**
+ * 取得指定name第一個input的元件
+ * @param {String} _name
+ * @type {jQuery}
+ */
+Window_content_submit.prototype.get_first_input = function (_name) {
+	return this._content.get_first_input(_name);
 };
 
 /**
@@ -114,10 +130,12 @@ Window_content_submit.prototype.complete_handle = function (_data) {
     
     //$.test_msg('Window_content_subumit.complete_handle()');
     
-    if (_data == true)
-        KALS_util.notify(this.complete_notification);
-    else
-        KALS_util.notify(this.failed_notification);
+    if (_data === true) {
+		KALS_util.notify(this.complete_notification);
+	}
+	else {
+		KALS_util.notify(this.failed_notification);
+	}
     
     var _this = this;
     KALS_window.close(function () {
@@ -126,7 +144,6 @@ Window_content_submit.prototype.complete_handle = function (_data) {
     
     return this;
 };
-
 /**
  * 遞交錯誤時的處理動作。如果為null，則預設使用KALS_util.show_exception()。
  * @type {null|function} = function (_data) {}: _data是從伺服器上回傳的資料。
@@ -144,37 +161,36 @@ Window_content_submit.prototype.submit = function () {
     //$.test_msg('Window_content_submit.submit() _data', _data);
     
     //先經過驗證
-    if (this.validate(_inputs, _data) == false)
-    {
+    if (this.validate(_inputs, _data) === false) {
         return this;
     }
     
-    if (this._lock_submit() == false)
-        return this;
+    if (this._lock_submit() === false) {
+		return this;
+	}
     
     //如果沒有要遞交的資料，則回傳完成訊息
-    if (this.url == null || this._content == null)
-    {
-        if ($.is_function(this.complete_handle))
-            this.complete_handle(_inputs, _data);
+    if (this.url === null || this._content === null) {
+        if ($.is_function(this.complete_handle)) {
+			this.complete_handle(_inputs, _data);
+		}
         return this;
     }
     
     //如果有要遞交的資料，則開始蒐集準備遞交的設定
     var _config = {};
     
-    _config['url'] = this.url;
-    _config['data'] = _data;
+    _config.url = this.url;
+    _config.data = _data;
     
     var _this = this;
-    _config['callback'] = function (_data) {
+    _config.callback = function (_data) {
         _this.complete_handle(_data);    
     }; 
     //$.test_msg('Window_content_submit.submit()', _config['callback']);
     
-    if (this.exception_handle != null)
-    {
-        _config['exception_handle'] = this.exception_handle;
+    if (this.exception_handle !== null) {
+        _config.exception_handle = this.exception_handle;
     }
     
     KALS_window.toggle_loading(true, function () {
@@ -190,8 +206,7 @@ Window_content_submit.prototype._lock_submit = function () {
     
     //$.test_msg(typeof(_ui.attr('disabled')), _ui.attr('disabled'));
     if (typeof(_ui.attr('disabled')) != 'undefined'
-        && _ui.attr('disabled') == true)
-    {
+        && _ui.attr('disabled') === true) {
         //不可以重複執行compelte_handle()！
         return false;
     }

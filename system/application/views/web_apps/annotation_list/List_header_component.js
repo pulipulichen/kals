@@ -31,8 +31,7 @@ List_header_component.prototype = new KALS_user_interface();
 List_header_component.prototype._item = null;
 
 List_header_component.prototype._set_list_item = function (_item) {
-    if ($.isset(_item))
-    {
+    if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
@@ -43,6 +42,7 @@ List_header_component.prototype._set_list_item = function (_item) {
 };
 
 List_header_component.prototype.set_data = function () {
+	//this.set_respond();
     this.set_user_name();
     this.set_is_my();
     this.set_type();
@@ -55,19 +55,24 @@ List_header_component.prototype.set_data = function () {
  * @memberOf {List_header_component}
  * @type {jQuery} UI
  */
-List_header_component.prototype._$create_ui = function ()
-{
+List_header_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('list-header-component');
     
     var _like_component = this._setup_like_component();
     _like_component.get_ui().appendTo(_ui);
     
-    if (this._item.is_enable('like') == false)
-    {
+    if (this._item.is_enable('like') === false) {
         _like_component.get_ui().hide();
     }
     
+	var _respond_indicator = $('<span></span>')
+        .addClass('respond-indicator')
+		.html("&gt;")
+        .appendTo(_ui);
+	
+	this._respond_indicator = _respond_indicator;
+	
     var _name_container = $('<span></span>')
         .addClass('name-container')
         .appendTo(_ui);
@@ -83,16 +88,15 @@ List_header_component.prototype._$create_ui = function ()
     var _lock_component = this._create_lock_component();
     _lock_component.prependTo(_ui);
     
-    if (this._item.is_enable('policy') == false)
-    {
+    if (this._item.is_enable('policy') === false) {
         //_lock_component.hide();
     }
     
     var _recommend_component = this._create_recommend_component();
     _recommend_component.prependTo(_ui);
     
-    if (this._item.is_enable('recommend') == false)
-    {
+    if (this._item.is_enable('recommend') === false
+        || KALS_CONFIG.enable_annotation_recommend === false) {
         _recommend_component.hide();
     }
     
@@ -118,6 +122,34 @@ List_header_component.prototype._$create_ui = function ()
     */
     return _ui;
 };
+// --------
+// Respond
+// --------
+
+/**
+ *標示這是不是一個回應的標註 
+ * @type jQuery
+ */
+List_header_component.prototype._respond_indicator = null;
+
+/**
+ *設定這是一個回應的標註或不是
+ * 根據annotation_param來設定
+ * @deprecated 20131115 不使用 Pulipuli
+ */
+/*
+List_header_component.prototype.set_respond = function () {
+	var _param = this._item.get_annotation_param();
+	var _is_respond = _param.is_respond();
+	if (_is_respond) {
+		this._respond_container.show();
+	}
+	else {
+		this._respond_container.hide();
+	}
+	return this;
+};
+*/
 
 // --------
 // User Name
@@ -125,19 +157,20 @@ List_header_component.prototype._$create_ui = function ()
 
 List_header_component.prototype._name_container = null;
 
-List_header_component.prototype.set_user_name = function (_name) 
-{
-    if ($.is_null(_name))
-    {
+List_header_component.prototype.set_user_name = function (_name) {
+    if ($.is_null(_name)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _name = _param.user.get_name();
-        else
-            return this;
+        if ($.isset(_param) && $.isset(_param.user)) {
+			_name = _param.user.get_name();
+		}
+		else {
+			return this;
+		}
     }
     
-    if ($.is_null(this._name_container))
-        this.get_ui();
+    if ($.is_null(this._name_container)) {
+		this.get_ui();
+	}
     
     this._name_container.html(_name);
 };
@@ -151,23 +184,25 @@ List_header_component.prototype.is_my_classname = 'is-my';
 /**
  * @param {Boolean} _is_my
  */
-List_header_component.prototype.set_is_my = function (_is_my) 
-{
-    if ($.is_null(_is_my))
-    {
+List_header_component.prototype.set_is_my = function (_is_my) {
+    if ($.is_null(_is_my)) {
         var _param = this._item.get_data();
-        if ($.isset(_param)) 
-            _is_my = _param.is_my_annotation();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_is_my = _param.is_my_annotation();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_is_my == true)
-        _ui.addClass(this.is_my_classname);
-    else
-        _ui.removeClass(this.is_my_classname);
+    if (_is_my === true) {
+		_ui.addClass(this.is_my_classname);
+	}
+	else {
+		_ui.removeClass(this.is_my_classname);
+	}
     
     return this;
 };
@@ -202,23 +237,25 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
 /**
  * @param {Boolean} _is_my
  */
-List_header_component.prototype.set_has_recommend = function (_has_recommend) 
-{
-    if ($.is_null(_has_recommend))
-    {
+List_header_component.prototype.set_has_recommend = function (_has_recommend) {
+    if ($.is_null(_has_recommend)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _has_recommend = _param.has_recommend();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_has_recommend = _param.has_recommend();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_has_recommend == true)
-        _ui.addClass(this.is_has_recommend);
-    else
-        _ui.removeClass(this.is_has_recommend);
+    if (_has_recommend === true) {
+		_ui.addClass(this.is_has_recommend);
+	}
+	else {
+		_ui.removeClass(this.is_has_recommend);
+	}
     
     return this;
 };
@@ -238,40 +275,48 @@ List_header_component.prototype._type_container = null;
  * 
  * @param {Annotation_type_param} _type
  */
-List_header_component.prototype.set_type = function (_type) 
-{
-    if ($.is_null(_type))
-    {
+List_header_component.prototype.set_type = function (_type) {
+    //$.test_msg('List_header_component.set_type', _type);
+    
+    if ($.is_null(_type)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _type = _param.type;
-        else
-            return this;
+        if ($.isset(_param)) {
+			_type = _param.type;
+		}
+		else {
+			return this;
+		}
     }
     
-    if ($.is_null(this._type_container))
-        this.get_ui();
+    //$.test_msg('List_header_component.set_type [is_null]', _type);
+    
+    if ($.is_null(this._type_container)) {
+		this.get_ui();
+	}
     
     this._type_container.empty();
     
+    /*
+    //20111105 把建立type_option的工作都統一到某人身上吧
     var _option = $('<span></span>')
         .addClass('type-option')
-        .addClass(_type.get_type_name())
+        .addClass(_type.get_classname())
         .appendTo(this._type_container);
+    
+    if (_type.is_basic() === false) {
+        _option.attr('style', _type.get_menu_style());
+    }
     
     var _type_lang_header = Type_menu.prototype._type_lang_header;
     var _type_name = _type.get_type_name();
-    if (_type.is_custom())
-    {
-        var _custom_name = _type.get_custom_name();
+    if (_type.is_custom()) {
+        var _custom_name = _type.get_type_name();
         
-        if ($.isset(_custom_name))
-        {
+        if ($.isset(_custom_name)) {
             _option.html(_custom_name);
             _option.addClass('other');    
         }
-        else
-        {
+        else {
             var _lang = new KALS_language_param(
                 _type_name,
                 _type_lang_header + _type_name
@@ -280,8 +325,7 @@ List_header_component.prototype.set_type = function (_type)
             KALS_context.lang.add_listener(_option, _lang);
         }
     }
-    else 
-    {
+    else {
         var _lang = new KALS_language_param(
             _type_name,
             _type_lang_header + _type_name
@@ -289,6 +333,10 @@ List_header_component.prototype.set_type = function (_type)
         
         KALS_context.lang.add_listener(_option, _lang);
     }
+    */
+   
+    var _option = KALS_context.custom_type.get_type_option(_type);
+    _option.appendTo(this._type_container);
     
     return this;
 };
@@ -302,27 +350,30 @@ List_header_component.prototype.has_recommend_classname = 'has-recommend';
 /**
  * @param {Boolean} _has_recommend
  */
-List_header_component.prototype.set_has_recommend = function (_has_recommend) 
-{
+List_header_component.prototype.set_has_recommend = function (_has_recommend) {
     //只有我的標註才要設置recommend的喔！
-    if (this.is_my() == false)
-        return this;
+    if (this.is_my() === false) {
+		return this;
+	}
     
-    if ($.is_null(_has_recommend))
-    {
+    if ($.is_null(_has_recommend)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _has_recommend = _param.has_recommend();
-        else
-            return this;
+        if ($.isset(_param)) {
+			_has_recommend = _param.has_recommend();
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     
-    if (_has_recommend == true)
-        _ui.addClass(this.has_recommend_classname);
-    else
-        _ui.removeClass(this.has_recommend_classname);
+    if (_has_recommend === true) {
+		_ui.addClass(this.has_recommend_classname);
+	}
+	else {
+		_ui.removeClass(this.has_recommend_classname);
+	}
     
     return this;
 };
@@ -345,29 +396,30 @@ List_header_component.prototype._create_lock_component = function () {
     var _lock_img = KALS_context.get_image_url('policy-lock.gif');
     _lock_img.addClass('header-option')
         .addClass('lock');
+	var _msg = KALS_context.lang.line("policy_type.private");
+	_lock_img.attr("title", _msg);
     this._lock_component = _lock_img;
     return _lock_img;
 };
 
 List_header_component.prototype.set_policy_type = function (_policy_type) {
     
-    if ($.is_null(_policy_type))
-    {
+    if ($.is_null(_policy_type)) {
         var _param = this._item.get_data();
-        if ($.isset(_param))
-            _policy_type = _param.policy_type;
-        else
-            return this;
+        if ($.isset(_param)) {
+			_policy_type = _param.policy_type;
+		}
+		else {
+			return this;
+		}
     }
     
     var _ui = this.get_ui();
     var _lock_classname = 'policy-type-lock';
-    if (_policy_type == 'private' || _policy_type == 'share')
-    {
+    if (_policy_type == 'private' || _policy_type == 'share') {
         _ui.addClass(_lock_classname);
     }
-    else
-    {
+    else {
         _ui.removeClass(_lock_classname);
     }
     return this;
@@ -394,13 +446,18 @@ List_header_component.prototype._setup_like_component = function () {
 
 List_header_component.prototype._id_component = null;
 
+/**
+ * 建立顯示ID的元件
+ * @return {jQuery}
+ */
 List_header_component.prototype._create_id_component = function () {
     var _component = $('<span></span>')
         .addClass('id-component');
         
     var _param = this._item.get_data();
-    if ($.isset(_param))
-        _component.html('#' + _param.annotation_id);
+    if ($.isset(_param)) {
+		_component.html('#' + _param.annotation_id);
+	}
     
     this._id_component = _component;
     return _component;

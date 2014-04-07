@@ -26,7 +26,15 @@ List_collection_my.prototype._$limit = null;
 
 List_collection_my.prototype._$order_by = 'create';
 
+List_collection_my.prototype._$enable_check_login = true;
+
 List_collection_my.prototype._$need_login = true;
+
+/**
+ * 新增時從頭新增嗎？
+ * @type boolean true=從頭; false=從尾巴
+ */
+List_collection_my.prototype._$default_add_item_from_head = true;
 
 /* End of file List_collection_my */
 /* Location: ./system/application/views/web_apps/List_collection_my.js */

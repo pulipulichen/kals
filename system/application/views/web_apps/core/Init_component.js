@@ -26,8 +26,7 @@ Init_component.prototype = new Task_event_dispatcher();
  */
 Init_component.prototype._$onstart = function () {
     
-    if (this._is_ie6)
-    {
+    if (this._is_ie6) {
         /*
         var _line = new KALS_language_param(
             'This browser cannot use KALS, but you still can read this page.',
@@ -47,20 +46,35 @@ Init_component.prototype._$onstart = function () {
     
     KALS_toolbar = new KALS_toolbar();    
     //KALS_context.init_component.complete('KALS_toolbar');
-    
-    
+        
     KALS_text = new KALS_text();
-    $.test_msg('Init_component.$onstart()');
-    if ($.browser.msie)
-    {
-        this.excute_confirm();
+    //$.test_msg('Init_component.$onstart()');
+    if ($.browser.msie) {
+        //this.excute_confirm();
     }
+	
+    $(function() {
+	    KALS_context.feedback.init();
+	});
+    
+    
 };
 
 Init_component.prototype._is_ie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);
 
 Init_component.prototype._$oncomplete = function () {
     //$.test_msg('Init_component.$oncomplete()');
+    
+    /**
+     * 根據頁面條件，強制調整網頁的樣式
+     * 
+     * 但是應該寫成獨立物件
+     * @20131113 Pulipuli Chen
+     */
+    KALS_text.style_adapter();
+
+    //this._check_css_loaded();
+
     KALS_context.init_profile.start();
 };
 

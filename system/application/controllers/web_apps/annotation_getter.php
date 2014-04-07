@@ -494,10 +494,12 @@ class Annotation_getter extends Web_apps_controller {
         if ($enable_profiler == TRUE)
             $this->output->enable_profiler(TRUE);
 
-        if (is_string($json))
+        if (is_string($json)) {
             $data = json_to_object($json);
-        else
+        }
+        else {
             $data = $json;
+        }
 
         $user = get_context_user();
         $url = $this->url;
@@ -596,42 +598,48 @@ class Annotation_getter extends Web_apps_controller {
         }
 
         // 6 [ order by ]
+        // 6 [ is_desc]
         //test_msg('6 [ order by ]', isset($data->order_by));
+        //test_msg('6 [ order by ] direction', $data->direction);
+        $order_id = 1;
+        $default_direction = TRUE;
         if (isset($data->order_by))
         {
             if ($data->order_by == 'update')
             {
-                $search->add_order (6, TRUE);
-                if (isset($search_id))
-                    $search_id->add_order (6, TRUE);
+                $order_id = 6;
+                $default_direction = TRUE;
             }
             else if ($data->order_by == 'create')
             {
-                $search->add_order (7);
-                if (isset($search_id))
-                    $search_id->add_order (7);
+                $order_id = 7;
+                $default_direction = TRUE;
             }
             else
             {
-                $search->add_order (1, TRUE);
-                if (isset($search_id))
-                    $search_id->add_order (1, TRUE);
+                // 依照分數排序
+                $order_id = 1;
+                $default_direction = TRUE;
             }
         }
-        else
-        {
-            $search->add_order (1, TRUE);
-            if (isset($search_id))
-                $search_id->add_order (1, TRUE);
+        if (isset($data->direction) && $data->direction == 'asc') {
+            $default_direction = FALSE;
         }
-
+        
+        /*
         if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
         {
-            $search->add_order (6, TRUE);
-            if (isset($search_id))
-                $search_id->add_order (6, TRUE);
+            $order_id = 6;
+            $default_is_desc = TRUE;
         }
-
+        */
+        
+        //test_msg('6 [ order by ] add_oder', array($order_id, $default_is_desc));
+        $search->add_order ($order_id, $default_direction);
+        if (isset($search_id)) {
+            $search_id->add_order ($order_id, $default_direction);
+        }
+        
         // 7 [ offset ]
         //test_msg('7 [ offset ]', isset($data->offset));
         if (isset($data->offset))
@@ -647,9 +655,10 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->limit))
         {
             $search->set_limit($data->limit);
-
             //$search_id在此不作設限
         }
+        
+        $search->set_target_webpage(get_context_webpage());
 
         //輸出
         $totally_loaded = TRUE;
@@ -676,9 +685,18 @@ class Annotation_getter extends Web_apps_controller {
                 $search_data = json_to_object('{}');
                 $search_data->target_topic = FALSE;
                 $search_data->topic_id = $search_annotation->get_id();
-                $search_data->limit = 5;
+                if (isset($data->respond_limit)) {
+                    $search_data->limit = $data->respond_limit;
+                }
                 //$search_data->is_like = NULL;
                 $search_data->order_by = 'create';
+                
+                if (isset($data->respond_direction)) {
+                    $search_data->direction = $data->respond_direction;
+                }
+                else {
+                    //$search_data->direction = "asc";
+                }
                 $search_data->show_total_count = TRUE;
 
                 $search_result = $this->list_annotation($search_data);
@@ -757,6 +775,189 @@ class Annotation_getter extends Web_apps_controller {
             return $this->_display_jsonp($output_data, $callback);
     }
 
+    /**
+     * 搜尋標註
+     * @param string $json
+     * @param type $callback
+     * @return type
+     */
+    function search_annotation($json, $callback = NULL)
+    {
+         //$enable_profiler = true; //？
+         $enable_profiler = false; //？
+
+        if ($enable_profiler == TRUE) {
+            $this->output->enable_profiler(TRUE); 
+        }
+
+        if (is_string($json)) {
+            $data = json_to_object($json); //把js丟過來的資料(search)包成物件data，內含
+                                           // search_range，keyword，新增order_by
+        }    
+        else {
+            $data = $json;
+        }
+        
+        $user = get_context_user();
+        $url = $this->url;  //存放目前data來源的頁面連結
+        $search = new Search_annotation_collection($url); //Search_annotation_collection→Search_engine
+
+        $search_id = null;
+        //if (isset($data->limit)) //limit：無限捲軸的極限值
+          //  $search_id = new Search_annotation_collection();
+        
+          //test_msg("輸入資料", $json);
+        
+        //$data->search_range = "annotation_anchor"; //測試用
+        if (isset($data->search_range) === FALSE) {
+            $data->search_range = "annotation_anchor";
+        }
+        switch ( $data->search_range ) {
+            case "author": 
+                //示範用
+                //$search->set_target_user(new User(1701));
+                $search->set_search_user_name($data->keyword);
+               
+                break;
+            case "note": //標註內容
+                if ($data->keyword != "" && $data->keyword != "*") {
+                    $search->set_search_note($data->keyword);
+                }
+                break;
+           case "annotation_type": //標註類型
+                $search->set_target_type(intval($data->keyword));
+                break;
+            case "annotation_anchor":
+                $search->set_search_anchor_text($data->keyword);
+                break;   
+        }
+        
+        // 6 [ order by ] 設定排序方式(order_by_id,大小|小大 )-data內要有order_by的選項
+        //test_msg('6 [ order by ]', isset($data->order_by)); 
+        //order_by的typ類型e在Search_order_collection
+        if (isset($data->order_by)) {
+            if ($data->order_by == 'update') {
+                $search->add_order (6, TRUE); 
+                if (isset($search_id)) {
+                    $search_id->add_order (6, TRUE);
+                }
+            }
+            else if ($data->order_by == 'create') {
+                $search->add_order (7);
+                if (isset($search_id))
+                    $search_id->add_order (7);
+            }
+            else {
+                $search->add_order (2, TRUE);
+                if (isset($search_id))
+                    $search_id->add_order (2, TRUE);
+            }
+        }
+        else {
+            $search->add_order (2, TRUE);
+            if (isset($search_id))
+                $search_id->add_order (2, TRUE);
+        }
+
+        if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
+        {
+            $search->add_order (6, TRUE);
+            if (isset($search_id))
+                $search_id->add_order (6, TRUE);
+        }
+
+        /**
+         * 限定搜尋範圍只在來源的網頁
+         */
+        $search->set_target_referer_webpage();
+
+        //輸出
+        $totally_loaded = TRUE;
+        if (isset ($search_id))
+            $totally_loaded = FALSE;
+        
+        //不作limit的情況下讀完，表示完全讀取
+        if (isset($search_id)
+            && ($search->length() == $search_id->length() || $search->length() == 0))
+        {
+            $totally_loaded = TRUE;
+        }
+        $annotation_collection = array();
+        
+        //test_msg('Search Length', $search->length());
+        //test_msg($url);
+        //test_msg($this->webpage->filter_webpage_id($url));
+        foreach ($search AS $search_annotation)
+        {
+            $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
+            array_push($annotation_collection, $annotation_data);
+        }
+        
+        // $search_annotation = new Annotation(783);
+        // $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
+        // array_push($annotation_collection, $annotation_data);
+
+        // --------------
+        
+        /**
+         * 取得搜尋結果的位置
+         */
+               
+        $scope_collection = $search->get_result_scope_coll();
+        $scope_collection_json = $scope_collection->export_webpage_data(get_context_webpage());
+
+        // --------------
+        
+        $output_data = array(
+            'annotation_collection' => $annotation_collection,
+            'totally_loaded' => $totally_loaded, 
+            'scope_collection' => $scope_collection_json
+        );
+        
+        if (isset($data->show_total_count)
+            && $data->show_total_count === TRUE)
+        {
+            if (count($annotation_collection) === 0)
+                $output_data['total_count'] = 0;
+            else if (isset($search_id))
+                $output_data['total_count'] = $search_id->length();
+            else
+                $output_data['total_count'] = count($annotation_collection);
+        }   
+
+        //log區
+        $action = 30;
+        switch ( $data->search_range ) {
+            case "author": 
+                $action = 31;
+                break;
+           case "annotation_type": //標註類型
+                $action = 32;
+                break;
+            case "annotation_anchor":
+                $action = 33;
+                break;   
+        }
+        
+        if ($data->search_range == "note" && $data->keyword == "*"
+            && $data->order_by == "update") {
+            $action = 34;
+        }
+         
+        kals_log($this->db, $action, array(
+            "keyword" => $data->keyword,
+            "order_by" => $data->order_by,
+            "total_count" => $output_data['total_count']
+        ));
+        
+        context_complete();
+
+        if ($enable_profiler != TRUE) {
+            return $this->_display_jsonp($output_data, $callback);
+        }
+    }
+    
+    
     private function _create_null_list($callback)
     {
         $output_data = array(
@@ -806,6 +1007,68 @@ class Annotation_getter extends Web_apps_controller {
         return $this->_display_jsonp($output_data, $callback);
     }
      */
+    
+    /**
+     * 取得tooltip指定的標註
+     * @param int $annotation_index 標註的位置
+     * @param string $callback
+     */
+    public function tooltip($annotation_index, $callback) {
+        
+        // -------------
+        // 搜尋
+        
+        //$annotation_index = 100000;
+        
+        $search = new Search_annotation_collection();
+        
+        // 限定範圍
+        $search->set_overlap_scope_index($annotation_index, $annotation_index);
+        
+        // 依照分數排序，由高到低
+        $search->add_order(1, TRUE);
+        
+        // 只輸出一份
+        //$search->set_limit(1);
+        
+        // 限定該網頁
+        $search->set_target_referer_webpage();
+        
+        //--------------
+        // 轉換資料
+        
+        //$annotation = new Annotation();
+        //$annotation = null;
+        $annotation = null;
+        $output_data = array();
+        $result = null;
+        foreach ($search AS $search_annotation) {
+            $annotation = $search_annotation;
+            $result = $annotation->get_id();
+            $output_data["annotation"] = $annotation->export_data();
+            break;
+        }
+        $output_data["count"] = $search->length();
+        
+        //--------------
+        // 記錄
+        
+        $action = 35;
+        
+        $log_note = array(
+            'index'=> $annotation_index,
+            'result' => $result
+        );
+        
+        kals_log($this->db, $action, $log_note);
+
+        context_complete();
+        
+        // -------------
+        // 輸出
+        
+        return $this->_display_jsonp($output_data, $callback);
+    }
 }
 
 /* End of file annotation_getter.php */

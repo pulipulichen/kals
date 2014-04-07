@@ -37,8 +37,7 @@ View_anchor_text_component.prototype._scope_coll = null;
 View_anchor_text_component.prototype._anchor_text = null;
 
 View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
-    if ($.is_class(_topic_param, 'Annotation_param'))
-    {
+    if ($.is_class(_topic_param, 'Annotation_param')) {
         this._topic_param = _topic_param;
         var _anchor_text = this.get_anchor_text(_topic_param.scope);
         this.set_anchor_text(_anchor_text);
@@ -46,6 +45,10 @@ View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
     return this;
 };
 
+/**
+ * 取得標註範圍文字
+ * @param {Array} _scope_coll
+ */
 View_anchor_text_component.prototype.get_anchor_text = function (_scope_coll) {
     
     var _text = KALS_text.selection.text;
@@ -53,20 +56,18 @@ View_anchor_text_component.prototype.get_anchor_text = function (_scope_coll) {
     var _recommend_scope_coll = _text.get_recommend_scope_coll(_scope_coll);
     var _focused_anchor_text = _text.get_display_anchor_text(_recommend_scope_coll, _scope_coll);
     
-    //_focused_anchor_text.find('.focus.head').addClass('from');
-    //_focused_anchor_text.find('.focus.foot').addClass('to');
-    //_focused_anchor_text.find('.focus').addClass('select');
-    
     return _focused_anchor_text;
 };
 
 View_anchor_text_component.prototype.set_anchor_text = function (_anchor_text) {
     this._anchor_text = _anchor_text;
     var _text_container = this._create_text_container();
-    if ($.isset(_anchor_text))
-        _text_container.html(_anchor_text);
-    else
-        _text_container.empty();
+    if ($.isset(_anchor_text)) {
+		_text_container.html(_anchor_text);
+	}
+	else {
+		_text_container.empty();
+	}
     return this;
 };
 
@@ -85,8 +86,7 @@ View_anchor_text_component.prototype._classname = 'view-anchor-text-component';
  * @memberOf {View_anchor_text_component}
  * @type {jQuery} UI
  */
-View_anchor_text_component.prototype._$create_ui = function ()
-{
+View_anchor_text_component.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass(this._classname)
         .addClass('kals-paragraph');
@@ -106,8 +106,7 @@ View_anchor_text_component.prototype._text_container = null;
  * @type {jQuery}
  */
 View_anchor_text_component.prototype._create_text_container = function () {
-   if ($.is_null(this._text_container))
-   {
+   if ($.is_null(this._text_container)) {
        var _ui = $('<div></div>')
            .addClass('text-container');
        this._text_container = _ui;
@@ -121,6 +120,7 @@ View_anchor_text_component.prototype.reset = function () {
 
 View_anchor_text_component.prototype.focus = function () {
     var _anchor = this.get_ui();
+    //$.test_msg("View_anchor_text_component", "focus");
     _anchor.scrollIntoView();
 };
 

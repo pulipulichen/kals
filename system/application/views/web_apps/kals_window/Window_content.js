@@ -8,28 +8,26 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/9/9 下午 01:27:09
- * @extends {KALS_user_interface}
+ * @extends {JSONP_dispatcher}
  */
 function Window_content(){
     
-    KALS_user_interface.call(this);
+    JSONP_dispatcher.call(this);
     
     this._window = null;
     this.submit = null;
     
     // TODO 2010.9.21 這個是幹嘛用的？
     //this._$setup_content = null;
-    if ($.isset(this._$load_config))
-    {
+    if ($.isset(this._$load_config)) {
         var _this = this;
         KALS_context.add_listener(function (_context) {
             _data = _context._data;
             
             //$.test_msg('Window_content load context data', _data);
             
-            if (_data != null
-                && typeof(_data[_this._$load_config]) != 'undefined')
-            {
+            if (_data !== null
+                && typeof(_data[_this._$load_config]) != 'undefined') {
                 _this.set_config(_data[_this._$load_config]);
                 _this.set_config_loaded();
             }
@@ -37,7 +35,10 @@ function Window_content(){
     }
 }
 
-Window_content.prototype = new KALS_user_interface();
+/**
+ * 改為繼承自JSONP_dispatcher
+ */
+Window_content.prototype = new JSONP_dispatcher();
 
 /**
  * 顯示在Hash的名稱。如果是null，則會顯示KALS_modal._$modal_name
@@ -80,6 +81,14 @@ Window_content.prototype.height = null;
 
 // --------
 
+Window_content.prototype.open = function (_callback) {
+	this.open_window(_callback);
+};
+
+Window_content.prototype.close = function (_callback) {
+    KALS_window.close(_callback);
+};
+
 /**
  * KALS_window的保存位置
  * @type {KALS_window}
@@ -97,9 +106,11 @@ Window_content.prototype.submit = null;
 /**
  * 建立KALS_window中content處的UI。請覆寫此方法。
  */
+/*
 Window_content.prototype._$create_ui = function () {
     return null;
 };
+*/
 
 /**
  * 設定KALS_window的內容，預設是在設置完成之後直接完成loading。請覆寫此方法。
@@ -145,44 +156,91 @@ Window_content.prototype._setup_submit = function (_submit) {
 
 /**
  * 取得指定_name的值
- * @param {Object} _name
+ * @param {String} _name
  */
 Window_content.prototype.get_input_value = function (_name) {
     
-    if ($.is_null(_name))
-        return _name;
+    if ($.is_null(_name)) {
+		return _name;
+	}
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     
-    if (_ui.length == 1)
-        return _ui.attr('value'); 
-    else
-    {
-        var _type = _ui.eq(0).attr('type').toLowerCase();
-        var _checked = _ui.filter(':checked');
-        if (_type == 'radio')
-        {
-            if (_checked.length == 1)
-                return _checked.val();
-            else
-                return null;
-        }
-        else if (_type == 'checkbox')
-        {
-            var _result = [];
-            for (var _i = 0; _i < _checked.length; _i++)
-                _result.push(_checked.eq(_i).val());
-            return _result;
-        }
-    }
+    if (_ui.length == 1) {
+		return _ui.attr('value');
+	}
+	else {
+		var _type = _ui.eq(0).attr('type').toLowerCase();
+		var _checked = _ui.filter(':checked');
+		if (_type == 'radio') {
+			if (_checked.length == 1) {
+				return _checked.val();
+			}
+			else {
+				return null;
+			}
+		}
+		else 
+			if (_type == 'checkbox') {
+				var _result = [];
+				for (var _i = 0; _i < _checked.length; _i++) {
+					_result.push(_checked.eq(_i).val());
+				}
+				return _result;
+			}
+	}
 };
 
+/**
+ * 設定name對應的值
+ * @param {Object} _json 格式是 {name1: value1, name2: value2}
+ */
+Window_content.prototype.set_input_value = function (_json) {
+	
+	if (typeof(_json) != "object") {
+		return this;
+	}
+	
+	var _ui = this.get_ui();
+	for (var _name in _json) {
+		var _value = _json[_name];
+		
+		var _input = _ui.find("[name='"+_name+"']");
+		
+		if (_input.length == 1) {
+			_input.attr("value", _value);
+		}
+		else if (_input.length > 1) {
+			_input.attr("checked", false);
+			_input.filter("[value='"+_value+"']").attr("checked", true);
+		}
+	}
+	
+	return this;
+};
+
+
+/**
+ * 取得指定的input
+ * @param {String} _name
+ * @type {jQuery}
+ */
 Window_content.prototype.get_input = function (_name) {
-    if ($.is_null(_name))
-        return _name;
+    if ($.is_null(_name)) {
+		return _name;
+	}
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     return _ui;
+};
+
+/**
+ * 取得第一個input
+ * @param {String} _name
+ * @type {jQuery}
+ */
+Window_content.prototype.get_first_input = function (_name) {
+	return this.get_input(_name).eq(0);
 };
 
 // --------
@@ -208,16 +266,17 @@ Window_content.prototype.set_config = function (_config) {
 
 Window_content.prototype.get_config = function (_index) {
     
-    if ($.isset(_index)
-        && typeof(this._config[_index]) != 'undefined')
-        return this._config[_index];
-    else
-        return this._config;
+    if ($.isset(_index) &&
+	typeof(this._config[_index]) != 'undefined') {
+		return this._config[_index];
+	}
+	else {
+		return this._config;
+	}
 };
 
 Window_content.prototype.set_config_loaded = function () {
-    if (this._config_loaded == false)
-    {
+    if (this._config_loaded === false) {
         this._config_loaded = true;
         $.trigger_callback(this._config_onload);
         this._config_onload = null;
@@ -231,8 +290,7 @@ Window_content.prototype.set_config_onload = function (_callback) {
     
     //$.test_msg('Window_content.set_config_onload()', this._config_loaded);
     
-    if (this._config_loaded == true)
-    {
+    if (this._config_loaded === true) {
         $.trigger_callback(this._config_onload);
         this._config_onload = null;
     }
@@ -249,19 +307,61 @@ Window_content.prototype.set_error = function (_message) {
     
     var _error_row = _ui.find('.' + KALS_window.ui.error_row_classname + ':first');
     
-    if (_error_row.length == 1)
-    {
+    if (_error_row.length == 1) {
         _error_row.remove();
     }
     
-    if ($.isset(_message))
-    {
+    if ($.isset(_message)) {
         _error_row = KALS_window.ui.error_row(_message)
             .prependTo(_ui);
     }
     
     return this;
 };
+
+/**
+ * 獨立視窗
+ * 
+ * 如果是false，則會依附在KALS_window底下
+ * 如果是true，則會直接open
+ */
+Window_content.prototype._$absolute = false;
+
+Window_content.prototype.is_absolute = function () {
+	return this._$absolute;
+};
+
+/**
+ * 獨立開啟視窗
+ * @author Pulipuli Chen 20131113
+ */
+Window_content.prototype.open_window = function (_callback) {
+	var _content = this;
+            
+	if (_content.is_absolute() === false) {
+        KALS_window.setup_window(_content, function () {
+			$.trigger_callback(_callback);
+		});
+	}
+	else {
+		_content.open(function() {
+			$.trigger_callback(_callback);
+		});
+	}
+};
+
+/**
+ * 開啟視窗後預設要聚焦的可輸入元件
+ * @type {String} jQuery Selector
+ */
+Window_content.prototype.default_focus_input = '.dialog-content:first input:first';
+
+/**
+ * 開啟視窗後預設要聚焦的遞交元件
+ * @type {String} jQuery Selector
+ */
+Window_content.prototype.default_focus_submit = '.dialog-options button.window-content-submit:first';
+
 
 /* End of file Window_content */
 /* Location: ./system/application/views/web_apps/Window_content.js */

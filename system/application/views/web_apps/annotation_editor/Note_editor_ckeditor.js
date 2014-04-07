@@ -30,18 +30,20 @@ Note_editor_ckeditor.prototype._$apply_type = 'default';
  * @memberOf {Note_editor_ckeditor}
  * @type {jQuery} UI
  */
-Note_editor_ckeditor.prototype._$create_ui = function ()
-{
+Note_editor_ckeditor.prototype._$create_ui = function () {
     var _ui = Note_editor.prototype._$create_ui.call(this);
     
     //_ui.attr('id', 'textarea_' + $.create_id());
     _ui.addClass('ckeditor')
         .addClass('note-editor-ckeditor');
+    _ui.find('textarea:first').show();
+	
+    //$.test_msg('Note_editor_cheditor._$create_ui [stantby ready to call setup]');
     
     var _this = this;
     setTimeout(function () {
         //Note_editor_ckeditor._setup_ckeditor();
-        _this._setup_ckeditor();
+        Note_editor_ckeditor._setup_ckeditor();
     }, 0);
     return _ui;
 };
@@ -56,37 +58,59 @@ Note_editor_ckeditor._ckeditor_config = KALS_CONFIG.ckeditor_config;
 Note_editor_ckeditor._setup_timer = null;
 Note_editor_ckeditor._setup_ckeditor = function () {
     
-    if ($.isset(this._setup_timer))
-    {
+    if ($.isset(this._setup_timer)) {
         clearTimeout(this._setup_timer);
     }
     
-    var _this = this;
+    var _this = Note_editor_ckeditor;
     var _setup = function () {
         
         var _textareas = $('.note-editor-ckeditor');
         
         //$.test_msg('Note_editor_ckeditor.setup_ckeditor() textareas', _textareas.length);
         
-        _textareas.each(function(_index, _textarea)
-        {
+        _textareas.each(function(_index, _textarea) {
             var _ui = $(_textarea).find('textarea:first');
+			
+			var _hint_lang = new KALS_language_param(
+				'If editor could not edit, press "source" button twice to enable it.',
+				"note.ckeditor.edit_hint"
+				
+			);
+			var _hint = KALS_context.lang.create_listener(_hint_lang)
+				.addClass("enable-editor-hint")
+				.insertAfter(_ui);
+			
+			
+            //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [each textarea]', [_ui.length, typeof(_ui.ckeditor)]);
             _ui.ckeditor(function () {
             
                 //$.test_msg('Note_editor_ckeditor.setup_ckeditor() after ckeditor setup ok?');
                 
-                    //var _ui = _textareas.eq(_i);
-                    
-                    var _editor_span = _ui.nextAll('span:first'); 
-                    var _toolbox = _editor_span.find('.cke_toolbox');
-                    
-                    _toolbox.children('.cke_toolbar:last').addClass('minimize');
-                    _toolbox.children('.cke_toolbar:not(:last)').addClass('maximize');
-                    
-                    var _cke_editor = _editor_span.find('table.cke_editor:first');
-                    var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
+                //var _ui = _textareas.eq(_i);
                 
+                var _editor_span = _ui.nextAll('span:first'); 
+                var _toolbox = _editor_span.find('.cke_toolbox');
+                
+                _toolbox.children('.cke_toolbar:last').addClass('minimize');
+                _toolbox.children('.cke_toolbar:not(:last)').addClass('maximize');
+                
+                var _cke_editor = _editor_span.find('table.cke_editor:first');
+                var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
+				
             }, _this._ckeditor_config);
+            
+			
+			
+			
+            /*
+            setTimeout(function () {
+                if ($(_textarea).children('span').length === 0) {
+                    _ui.show();
+                    _ui.css('visibility', 'visible');
+                }
+            }, 500);
+            */
            
            /*
            var _editor_id = 'ckeditor_' + $.create_id();
@@ -94,10 +118,10 @@ Note_editor_ckeditor._setup_ckeditor = function () {
            CKEDITOR.replace(_editor_id);
            */
         });
-        
     };
     
-    this._setup_timer = setTimeout(_setup, 1000);
+    //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [standby ready]');
+    this._setup_timer = setTimeout(_setup, 100);
     
     return this;
 };
@@ -142,14 +166,14 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     //{
         //var _had_setup_classname = 'setted';
         //this._had_setup = false;
-        var _this = this; 
+        _this = this; 
         
         var _afterckeditorsetup = function () {
             
             //if (_ui.hasClass(_had_setup_classname))
             //    return;
             
-            //if (_this._had_setup == true)
+            //if (_this._had_setup === true)
             //    return;
             
             
@@ -164,14 +188,13 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
             
             var _cke_editor = _editor_span.find('table.cke_editor:first');
             var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');    
-            
+			
             /*
             var _toolboxs = $('.cke_toolbox');
             
             $.test_msg('Note_editor_ckeditor.setup_ckeditor() toolboxs', [_toolboxs.length]);
             
-            for (var _i = 0; _i < _toolboxs.length; _i++)
-            {
+            for (var _i = 0; _i < _toolboxs.length; _i++) {
                 var _toolbox = _toolboxs.eq(_i);
                 
                 _toolbox.find('.cke_toolbar:last').addClass('minimize');
@@ -190,8 +213,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
             
             $.test_msg('Note_editor_ckeditor.setup_ckeditor() cke_editors', [_cke_editors.length]);
             
-            for (var _i = 0; _i < _cke_editors.length; _i++)
-            {
+            for (var _i = 0; _i < _cke_editors.length; _i++) {
                 var _cke_editor = _cke_editor.eq(_i);
                 
                 var _cke_toolbox = _cke_editor.find('.cke_toolbox:first');
@@ -202,6 +224,8 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
                 _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
             }
             */
+            
+			
             _this.notify_ready();
             
             //_ui.addClass(_had_setup_classname);
@@ -218,15 +242,12 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     //} catch (e) {} 
     
     /*
-    _ckeditor.on('instanceReady', function( _evt )
-      {
+    _ckeditor.on('instanceReady', function( _evt ) {
          //_evt.preventDefault();
          var _editor = _evt.editor;
          _editor.execCommand('maximize');
          
       });
-      */
-    /*
     _ckeditor.on('focus', function (_evt) {
         
         var _editor = _evt.editor;
@@ -247,6 +268,7 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
         //return false;
         //alert('focuse');
     });
+    */
     /*
     _ckeditor.on('maximize', function (_evt) {
         
@@ -320,14 +342,13 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
 /*
 Note_editor.prototype.get_text = function () {
     var _text;
-    try
-    {
+    try {
         _text = this._ckeditor.getData();    
     }
     catch (e) {}
        
     
-    if ($.trim(_text) == '')
+    if ($.trim(_text) === '')
         return null;
     else
         return _text;
@@ -338,8 +359,7 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
     if (_text == _setted_text)
         return this;
     
-    try
-    {
+    try {
         this._ckeditor.setData(_text);    
     }
     catch (e) {}
@@ -347,26 +367,75 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 };
 */
 
+/**
+ * 設定CKedtior中的文字
+ * 
+ * CKeditor的設定方式比較特別，請小心喔
+ * @param {String} _text
+ */
 Note_editor_ckeditor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
     
-    if ($.is_null(_text))
-        _text = '';
+    if ($.is_null(_text)) {
+		_text = '12212';
+	}
     
-    if (_text == _setted_text)
-        return this;    
+	/*
+    if (_text == _setted_text) {
+		return this;
+	}
+	*/
     
+	//$.test_msg("Note_editor_ckeditor.set_text()", _text);
+	
     var _ui = this.get_ui('.note-editor-textarea:first');
     $.save_scroll_position();
-    _ui.ckeditorGet().setData(_text, function () {
-        setTimeout(function () {
-            $.load_scroll_position();    
-        }, 0);
-        
-    });
+	
+	
+	//為了避免CKeditor還沒初始化前就設定，我們必須等它一下。
+	var _set_data = function () {
+                if (typeof(_ui.ckeditorGet) != "function") {
+					$.test_msg("check _ui.ckeditorGet() failed", typeof(_ui.ckeditorGet));
+                    throw "CKeditor_not_ready"; 
+                    return;
+                }
+
+		_ui.ckeditorGet().setData(_text, function () {
+                    //$.test_msg("Note_editor_ckeditor.set_text() ok", _text);
+                    setTimeout(function () {
+	            $.load_scroll_position();    
+	        }, 0);
+	        
+	    });	
+	};
     
+	var _loop = function () {
+		try {
+                    _set_data();
+		}
+		catch (_e) {
+                    setTimeout(function () {
+                            _loop();
+                    }, 500);
+		}
+	};
+	
+	_loop();
     
     return this;
+};
+
+/**
+ * 將游標聚焦於編輯器上
+ */
+Note_editor_ckeditor.prototype.focus = function () {
+	var _ui = this.get_ui('.note-editor-textarea:first');
+	var _ckeditor = _ui.ckeditorGet();
+	_ckeditor.focus();
+	//$.test_msg(_ckeditor);
+	
+	
+	return this;	
 };
 
 /* End of file Note_editor_ckeditor */

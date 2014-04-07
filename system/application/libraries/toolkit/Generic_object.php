@@ -595,6 +595,8 @@ class Generic_object extends KALS_object {
 
     /**
      * 取得ID
+     * 
+     * 如果尚未設置ID，則會回傳NULL
      * @return int
      */
     public function get_id()
@@ -609,8 +611,9 @@ class Generic_object extends KALS_object {
             $id = intval($this->id);
             return $id;
         }
-        else
+        else {
             return NULL;
+        }
     }
 
     /**
@@ -1190,12 +1193,14 @@ class Generic_object extends KALS_object {
      */
     public function find($cond, $value = NULL)
     {
+        
         $cond = self::_set_default_field($this->default_field, $cond, $value);
         $cond = $this->_set_field_filter($cond);
         $cond = self::_get_table_data($cond, $this->table_fields);
 
-        if (count($cond) == 0)
+        if (count($cond) == 0) {
             return NULL;
+        }
 
         $pk = self::_get_pk($this->primary_key, $this->table_name);
 
@@ -1227,7 +1232,7 @@ class Generic_object extends KALS_object {
             return NULL;
         }
     }
-
+    
     /**
      * 搜尋多個物件
      * @param array $cond 必須是以key跟value搭配的搜尋條件
@@ -1298,6 +1303,7 @@ class Generic_object extends KALS_object {
             && self::_match_unique($data, $this->unique_restriction, $this->table_fields))
         {
             //符合單一約束的話，表示只要先經過搜尋再確認
+            //test_msg("$this->table_name : match unique", $data);
             $obj = $this->find($data);
             if (NULL !== $obj)
             {
@@ -1305,7 +1311,6 @@ class Generic_object extends KALS_object {
             }
         }
         
-
         $data = $this->_pre_create($data);
         
         $cache_cond = $this->_get_cache_cond($data);

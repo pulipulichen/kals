@@ -17,7 +17,12 @@ if ( ! function_exists('json_to_object'))
 {
     function json_to_object($json)
     {
-        return json_decode($json);
+        if (defined("JSON_UNESCAPED_UNICODE") ) {
+            return json_decode($json, false, JSON_UNESCAPED_UNICODE);
+        }
+        else {
+            return json_decode($json, false);
+        }
     }
 }
 
@@ -119,6 +124,110 @@ if ( ! function_exists('get_client_ip'))
     }
 }
 
+if ( !function_exists("kals_json_encode")) {
+    function kals_json_encode($arr)
+    {
+        if (defined('JSON_UNESCAPED_UNICODE') === TRUE ) {
+            //return json_encode($arr, JSON_UNESCAPED_UNICODE);
+        }
+        
+        //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
+        
+        if (is_array($arr)) {
+            array_walk_recursive($arr, 
+                function (&$item, $key) { 
+                    if (is_string($item)) {
+                        //$item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+                        mb_convert_encoding($item, 'HTML-ENTITIES', 'utf-8');
+                    }
+                });
+        }
+        
+        //return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+        //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
+        $arr = json_encode($arr);
+        
+        $arr = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                        function($matches) {
+                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+                        }, $arr);
+        return $arr;
+        
+        //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
+        
+        /*
+        array_walk_recursive($arr, 
+            function (&$item, $key) { 
+                if (is_string($item)) {
+                    $item = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                        function($matches) {
+                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+                        }, $item);
+                }
+            });
+        */
+        /*
+        array_walk_recursive($arr, function(&$item, $key) {
+            if(is_string($item)) {
+                $item = htmlentities($item);
+            }
+        });
+         */
+        //return json_encode($arr);
+    }
+}
+
+if ( !function_exists("get_kals_base_url")) {
+    
+    /**
+     * 取得KALS伺服器的根網址
+     */
+    function get_kals_base_url() {
+        $s = &$_SERVER;
+        $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
+        $sp = strtolower($s['SERVER_PROTOCOL']);
+        $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
+        $port = $s['SERVER_PORT'];
+        $port = ((!$ssl && $port=='80') || ($ssl && $port=='443')) ? '' : ':'.$port;
+        $host = isset($s['HTTP_X_FORWARDED_HOST']) ? $s['HTTP_X_FORWARDED_HOST'] : isset($s['HTTP_HOST']) ? $s['HTTP_HOST'] : $s['SERVER_NAME'];
+        $uri = $protocol . '://' . $host . $port . base_url();
+        $segments = explode('?', $uri, 2);
+        $url = $segments[0];
+        return $url;
+    }
+ }
+ 
+if ( !function_exists("get_kals_root_path")) {
+    
+    /**
+     * 取得KALS伺服器的根網址
+     */
+    function get_kals_root_path($path = NULL) {
+        $dir = __DIR__;
+        $dir_sep = DIRECTORY_SEPARATOR;
+        
+        $strip_end = 'system'.$dir_sep.'application'.$dir_sep.'helpers'.$dir_sep;
+        $dir = substr($dir, 0, (1-strlen($strip_end)));
+        
+        if (isset($path)) {
+            //$detectdir_sep = '/';
+            if (DIRECTORY_SEPARATOR == '\\') {
+                $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+            }
+            
+            if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
+                $path = substr($path, 1);
+            }
+            
+            $dir = $dir . $path;
+        }
+        
+        //test_msg($dir);
+        return $dir;
+    }
+ }
+ 
+  
 
 if ( ! function_exists('kals_log'))
 {
@@ -139,28 +248,48 @@ if ( ! function_exists('kals_log'))
         }
         
         $user_id = NULL;
-        $memo = NULL;
+        $note = NULL;
 
-        if (isset($data['user_id']))
-            $user_id = $data['user_id'];
-        if (isset($data['memo']))
-        {
-            $memo = $data['memo'];
-            if (is_array($memo) || is_object($memo))
-            {
-                $memo = json_encode($memo);
+        if (is_array($data) && 
+                (isset($data['user_id']) || isset($data['memo']) ) ) {
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
             }
+            if (isset($data['memo']))
+            {
+                $note = $data['memo'];
+                if (is_array($note) || is_object($note))
+                {
+                    $note = json_encode($note);
+                }
 
-            if ($memo == '')
-                $memo = NULL;
+                if ($note == '')
+                    $note = NULL;
+            }
         }
+        else {
+            if (defined("JSON_UNESCAPED_UNICODE")) {
+                $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            else {
+                $note = kals_json_encode($data);
+            }
+        }
+        
+        if (is_null($user_id)) {
+            $user = get_context_user();
+            if (isset($user)) {
+                $user_id = $user->get_id();
+            }
+        }
+            
 
         $db->insert('log', array(
             'webpage_id' => $webpage_id,
             'user_id' => $user_id,
             'user_ip' => get_client_ip(),
             'action'=> $action,
-            'note'=>$memo
+            'note'=>$note
         ));
     }
 }

@@ -25,7 +25,11 @@ function Selection_manager(_selector) {
     //this.child('editor', new Selection_editor(_text));
     this.child('view', new Selection_view(_text));
     this.child('search', new Selection_search(_text));
-    this.child('my', new Selection_my_manager(_text));
+	
+    this.child('my_basic', new Selection_my_manager(_text));
+    this.child('my_custom', new Selection_my_custom_manager(_text));
+	
+    
     this.child('recommend', new Selection_recommend(_text));
     this.child('navigation', new Selection_navigation_manager(_text));
     
@@ -69,9 +73,14 @@ Selection_manager.prototype.view = null;
 Selection_manager.prototype.search = null;
 
 /**
- * @type {Selection_my}
+ * @type {Selection_my_manager}
  */
-Selection_manager.prototype.my = null;
+Selection_manager.prototype.my_basic = null;
+
+/**
+ * @type {Selection_my_custom_manager}
+ */
+Selection_manager.prototype.my_custom = null;
 
 /**
  * @type {Selection_recommend}
@@ -92,8 +101,7 @@ Selection_manager.prototype.initialize = function () {
     // 開始作初始化
     // ---------
     var _this = this;
-    this.text.initialize(function () 
-    {
+    this.text.initialize(function () {
         // ---------
         // 完成後的動作
         // ---------
@@ -133,8 +141,7 @@ Selection_manager.prototype.get_selection_scopes = function () {
     
     var _first_id = null;
     var _last_id = null;
-    for (var _key in this.selected_scope)
-    {
+    for (var _key in this.selected_scope) {
         var _s = this.selected_scope[_key];
         
         var _from = _s[0];
@@ -158,14 +165,12 @@ Selection_manager.prototype.get_anchor_text = function () {
     
     var _anchor_text = '';
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         if (_i > 0)
             _anchor_text = _anchor_text + ' ';
         
         var _scope = this.selected_scope[_i];
-        for (var _j in _scope)
-        {
+        for (var _j in _scope) {
             var _word = _scope[_j];
             _anchor_text = _anchor_text + _word.html();
         }
@@ -199,8 +204,7 @@ Selection_manager.prototype.select = function (_scope) {
  * }
  */
 /*
-Selection_manager.prototype.add_select = function (_scope)
-{
+Selection_manager.prototype.add_select = function (_scope) {
     _scope = this.scope.add_select(_scope);
     this.selected_scope.push(_scope);
     this.notify_listeners('select', this);
@@ -223,8 +227,7 @@ Selection_manager.prototype.has_selected = function () {
  * @param {number} _type 標註類型ID
  */
 /*
-Selection_manager.prototype.set_annotation_type = function (_type)
-{
+Selection_manager.prototype.set_annotation_type = function (_type) {
     //有哪些標註的class_name，尚未訂定
     var _anno_class_name = _type;
     this.add_class(_anno_class_name);
@@ -233,8 +236,7 @@ Selection_manager.prototype.set_annotation_type = function (_type)
 };
 */
 /*
-Selection_manager.prototype.unset_annotation_type = function (_type)
-{
+Selection_manager.prototype.unset_annotation_type = function (_type) {
     //有哪些標註的class_name，尚未訂定
     var _anno_class_name = _type;
     this.remove_class(_anno_class_name);
@@ -270,25 +272,19 @@ Selection_manager.prototype.unset_recommend = function () {
  * @param {String} _class_name
  */
 /*
-Selection_manager.prototype.add_class = function (_class_name) 
-{
+Selection_manager.prototype.add_class = function (_class_name) {
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
-        if ($.is_array(_scope))
-        {
-            for (var _j in _scope)
-            {
+        if ($.is_array(_scope)) {
+            for (var _j in _scope) {
                 var _word = _scope[_j];
-                if ($.is_jquery(_word))
-                {
+                if ($.is_jquery(_word)) {
                     _word.addClass(_class_name);
                 }
             }
         }
-        else if ($.is_jquery(_scope))
-        {
+        else if ($.is_jquery(_scope)) {
             _scope.addClass(_class_name);
         }
     }
@@ -300,25 +296,19 @@ Selection_manager.prototype.add_class = function (_class_name)
  * @param {String} _class_name
  */
 /*
-Selection_manager.prototype.remove_class = function (_class_name) 
-{
+Selection_manager.prototype.remove_class = function (_class_name) {
     
-    for (var _i in this.selected_scope)
-    {
+    for (var _i in this.selected_scope) {
         var _scope = this.selected_scope[_i];
-        if ($.is_array(_scope))
-        {
-            for (var _j in _scope)
-            {
+        if ($.is_array(_scope)) {
+            for (var _j in _scope) {
                 var _word = _scope[_j];
-                if ($.is_jquery(_word))
-                {
+                if ($.is_jquery(_word)) {
                     _word.removeClass(_class_name);
                 }
             }
         }
-        else if ($.is_jquery(_scope))
-        {
+        else if ($.is_jquery(_scope)) {
             _scope.removeClass(_class_name);
         }
     }
@@ -349,8 +339,7 @@ Selection_manager.prototype.clear_annotation = function () {
     //有哪些標註的class_name，尚未訂定
     var _anno_class_names = [];
     
-    for (var _i in _anno_class_names)
-    {
+    for (var _i in _anno_class_names) {
         var _class_name = _anno_class_names[_i];
         $('.' + _class_name).removeClass(_class_name);
     }
@@ -367,8 +356,7 @@ Selection_manager.prototype.clear_recommend = function () {
     //有哪些推薦標註的class_name，尚未訂定
     var _recommend_class_names = [];
     
-    for (var _i in _recommend_class_names)
-    {
+    for (var _i in _recommend_class_names) {
         var _class_name = _recommend_class_names[_i];
         $('.' + _class_name).removeClass(_class_name);
     }
@@ -383,8 +371,8 @@ Selection_manager.prototype.clear_recommend = function () {
 /*
 Selection_manager.prototype.get_selection_top = function () {
     
-    if (this.selected_scope == null
-        || this.selected_scope.length == 0)
+    if (this.selected_scope === null
+        || this.selected_scope.length === 0)
         return null;
     
     var _first_group = this.selected_scope[0];
@@ -405,8 +393,8 @@ Selection_manager.prototype.get_selection_top = function () {
 /*
 Selection_manager.prototype.get_selection_bottom = function () {
     
-    if (this.selected_scope == null
-        || this.selected_scope.length == 0)
+    if (this.selected_scope === null
+        || this.selected_scope.length === 0)
         return null;
     
     var _last_scope = this.selected_scope[(this.selected_scope.length - 1)];

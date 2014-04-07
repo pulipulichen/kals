@@ -1,88 +1,109 @@
-.view-anchor-text-component {
-    background-color: #white;
+.KALS .view-anchor-text-component {
+    background-color: white;
 }
 
-.view-anchor-text-component .text-container {
+.KALS .view-anchor-text-component .text-container {
     text-align: left;
     font-style: italic;
     font-size: 1em;
     color: black;
     background-color: #CCC;
-    margin: 1em;
+    margin: 1em !important;
     padding: 0.5em;
     
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
+    border-radius: 8px;
+    -khtml-border-radius: 8px;
     -moz-box-shadow: 0 0 20px #666666;
     -webkit-box-shadow: 0 0 20px #666666;
+	
+	max-height: 3em;
+	overflow-y: auto;
 }
 
-.window-view-content .editor-container {
+.KALS .window-view-content .editor-container {
     border-style: none;
 }
 
-.window-view-content .editor-container .toggle,
-.window-view-content .editor-container .toggle td {
+.KALS .window-view-content .editor-container .toggle,
+.KALS .window-view-content .editor-container .toggle td {
     -moz-box-shadow: 0 0 0;
     -webkit-box-shadow: 0 0 0;
 }
 
-.window-view-content .list-item.focus {
+.KALS .window-view-content .list-item.focus {
     background-color: white;
 }
 
-.window-view-content.not-login .editor-container,
-.window-view-content.temp-logout .editor-container {
+.KALS .window-view-content.not-login .editor-container,
+.KALS .window-view-content.temp-logout .editor-container {
     display: none;
 }
 
-.window-view-content .list-item-topic .list-item {
+.KALS .window-view-content .list-item-topic .list-item {
     padding-left: 5px;
     padding-right: 5px;
     background-color: white;
+	
+	clear:both;
 }
 
-.window-view-content .list-item-respond .list-item {
+.KALS .window-view-content .list-item-respond .list-item {
     padding-left: 2em;
+	clear:both;
 }
 
-.window-view-content .view-list-container {
+.KALS .window-view-content .view-list-container {
     /*max-height:215px;*/
-    max-height:200px;
-    height:200px;
+    max-height:160px;
+    height:160px;
     overflow-x:hidden;
     overflow-y:auto;
     background-color: white;
     border: 1px solid #494437;
+	padding-bottom: 20px;
 }
 
-.window-view-content.hide-editor .view-list-container {
-    max-height:365px;
-    height:365px;
+.KALS .window-view-content.hide-editor .view-list-container {
+    max-height:340px;
+    height:345px;
 }
 
-.window-view-content.not-login .view-list-container,
-.window-view-content.temp-logout .view-list-container {
+.KALS .window-view-content.not-login .view-list-container,
+.KALS .window-view-content.temp-logout .view-list-container {
     max-height: 100%;
     height: 100%;
 } 
 
-.window-view-content .list-item-topic {
+.KALS .window-view-content .list-item-topic {
     border-bottom-style: none;
 }
 
-.window-view-content .editor-container {
+.KALS .window-view-content .editor-container {
     height: 180px;
 }
 
-.window-view-content.hide-editor .editor-container {
+.KALS .window-view-content.hide-editor .editor-container {
     height:30px;
 }
 
-.window-view-content.temp-logout .list-menu-option {
+.KALS .window-view-content.temp-logout .list-menu-option {
     display: none !important;
 }
 
-.window-view-content .list-menu-block {
+.KALS .window-view-content .list-menu-block {
     float:right;
+}
+
+.KALS .window-view-content .editor-container .toggle.top {
+    border-width:0;
+}
+
+.KALS .window-view-content .editor-container .toggle.top td {
+    display: block;
+}
+
+.KALS .list-collection.view-list .skip-component {
+	display: none;
 }

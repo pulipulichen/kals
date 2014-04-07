@@ -791,18 +791,23 @@ class Annotation extends KALS_resource {
             //$data['class'] = get_class($this);
             $data['annotation_id'] = $this->get_id();
             $note = $this->get_note();
-            if (isset($note))
+            if (isset($note)) {
                 $data['note'] = $note;
+			}
             $data['user'] = $this->get_user()->export_simple_data();
             $data['type'] = $this->get_type()->export_data();
             $data['scope'] = $this->get_scopes()->export_data();
 
             $respond_to_topic= $this->get_respond_to_topic();
-            if (isset($respond_to_topic))
-                $data['topic'] = $respond_to_topic->export_respond_to_data();
+            if (isset($respond_to_topic)) {
+                //test_msg(get_class($respond_to_topic));
+                //$data['topic'] = $respond_to_topic->export_data();
+                $data['topic'] = $respond_to_topic->get_id();
+            }
             $respond_to_coll = $this->get_respond_to_coll();
-            if (isset($respond_to_coll))
+            if (isset($respond_to_coll)) {
                 $data['respond_to_coll'] = $respond_to_coll->export_respond_to_data();
+            }
 
             $current_user = get_context_user();
             if (is_class($current_user, 'User'))
@@ -952,6 +957,18 @@ class Annotation extends KALS_resource {
 
         $json = json_encode($data);
         return $json;
+    }
+    
+    /**
+     * 輸出成為陣列物件
+     * @return Array
+     */
+    public function export_to_array() {
+        return $this->export_data();
+    }
+    
+    public function __toString() {
+        return $this->export_json();
     }
 }
 

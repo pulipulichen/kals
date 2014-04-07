@@ -15,7 +15,37 @@ function Window_logout() {
     Window_content.call(this);
     
     this._setup_submit(new Window_logout_submit());
-    
+	
+	/**
+	 * 布丁測試用
+	 * @author Pulipuli Chen 2013117
+	 */
+	/*
+	var _this = this;
+	setTimeout(function() {
+		_this.get_ui();
+		
+		_this.set_field('first', '這是第一個值')
+		_this.set_field('test', ['TEST A', 'TEST B 如何？', 'TEST C試試看吧！！']);
+		//_this.set_field('repeat', ['重複1', '重複2', '重複3']);
+		//_this.set_field('repeat', ['重複4', '重複5', '重複6']);
+		//_this.set_field('repeat', ['不重複 啦 7']);
+		
+		_this.set_field('repeat', {
+			'重複1': {
+				'foot': 1
+			},
+			'重複2': {
+                'foot': [2, 'a', 'b']
+            }
+		});
+		
+		//_this.reset_field('foot');
+		
+		_this.set_field('color', 'blue');
+		//_this.set_field('display', 'none');
+	}, 0);
+	*/
 }
 
 Window_logout.prototype = new Window_content();
@@ -34,6 +64,20 @@ Window_logout.prototype.nav_heading = new KALS_language_param (
     'window.logout.nav_heading'
 );
 
+Window_logout.prototype._$view = 'navigation/view/Window_logout';
+
+/*
+Window_logout.prototype.action = function (_ele, _params) {
+	//alert(121212);
+	_ele.css('color', 'red');
+};
+
+Window_logout.prototype.action_reset = function (_ele, _params) {
+    //alert(121212);
+    _ele.css('color', 'green');
+};
+*/
+/*
 Window_logout.prototype._$create_ui = function () {
     
     var _ui = KALS_window.ui.panel('window-logout');
@@ -47,6 +91,9 @@ Window_logout.prototype._$create_ui = function () {
     
     return _ui;
 };
+*/
+
+
 
 /* End of file Window_logout */
 /* Location: ./system/application/views/web_apps/Window_logout.js */

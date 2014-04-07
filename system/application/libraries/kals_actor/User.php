@@ -379,6 +379,15 @@ class User extends KALS_actor {
     {
         return $this->get_field('style');
     }
+    
+    /**
+     * 取得使用者所在的群組
+     * @author Pulipuli Chen 20131119 尚未實作，先回傳空群組
+     * @return Array
+     */
+    public function get_groups() {
+        return array();
+    }
 
     //------------------------------------------
     //底下是跟通知有關的
@@ -449,6 +458,14 @@ class User extends KALS_actor {
         $data['email'] = $this->get_email();
         $data['photo'] = $this->has_photo();
         return $data;
+    }
+    
+    /**
+     * 輸出成為陣列
+     * @return Array
+     */
+    public function export_to_array() {
+        return $this->export_data();
     }
 
     public function export_json()

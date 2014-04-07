@@ -95,6 +95,11 @@ class Webpage extends KALS_resource {
         //插入權限檢查
         //$this->auth->allow(2);
 
+        // 過濾url
+        if (isset($data['url'])) {
+            $data['url'] = url_strip_index($data['url']);
+        }
+        
         if (FALSE === isset($data['title'])
             OR is_null($data['title']))
         {
@@ -116,11 +121,15 @@ class Webpage extends KALS_resource {
     {
         //插入權限檢查
         //$this->auth->allow(2);
-
+        
+        // 過濾url
+        if (isset($data['url'])) {
+            $data['url'] = url_strip_index($data['url']);
+        }
+        
         if ((FALSE === isset($data['domain_id'])
             OR is_null($data['domain_id']))
-            && isset($data['url']))
-        {
+            && isset($data['url'])) {
             $domain = $this->CI->domain->create($data['url']);
             $data['domain_id'] = $domain->get_id();
         }
@@ -136,18 +145,21 @@ class Webpage extends KALS_resource {
     public function get_domain()
     {
         $domain_id = $this->get_field('domain_id');
-        if ($domain_id != NULL)
+        if ($domain_id != NULL) {
             return new Domain($domain_id);
-        else
+        }
+        else {
             return NULL;
+        }
     }
 
     public function get_url()
     {
         $uri = $this->get_field('uri');
         $domain = $this->get_domain();
-        if (is_null($domain))
+        if (is_null($domain)) {
             return NULL;
+        }
         $host = $domain->get_field('host');
         $url = combine_url($host, $uri);
         return $url;
@@ -163,16 +175,20 @@ class Webpage extends KALS_resource {
         return $this->get_field('title');
     }
 
+    /**
+     * 搜尋出$webpage的ID
+     * @param String|Int|Webpage $webpage_id 可以輸入網址或是Webpage物件
+     * @return Webpage
+     */
     public function filter_webpage_id($webpage_id)
     {
-        if (is_object($webpage_id))
-            $webpage_id = $webpage_id->get_id();
-        if (is_string($webpage_id) && url_is_link($webpage_id, FALSE))
-        {
-            $webpage = $this->create(array('url' => $webpage_id));
-            $webpage_id = $webpage->get_id();
+        $webpage = $this->filter_webpage_object($webpage_id);
+        if (is_null($webpage) === FALSE) {
+            return $webpage->get_id();
         }
-        return $webpage_id;
+        else {
+            return null;
+        }
     }
 
     /**
@@ -181,11 +197,15 @@ class Webpage extends KALS_resource {
      */
     public function filter_webpage_object($webpage)
     {
-        if (is_object($webpage))
+        if (is_object($webpage)) {
             return $webpage;
+        }
         if (is_string($webpage) && url_is_link($webpage, FALSE))
         {
-            $webpage = $this->create(array('url' => $webpage));
+            // Pulipuli Chen 2013117
+            // 加入網址過濾
+            $url = url_strip_index($webpage);
+            $webpage = $this->create(array('url' => $url));
             return $webpage;
         }
         else
@@ -203,6 +223,14 @@ class Webpage extends KALS_resource {
         $search->disable_offset();
         
         return $search;
+    }
+    
+    /**
+     * 取得該網頁底下撰寫的標註
+     * @return Annotation_collection
+     */
+    public function get_written_annotations() {
+        return $this->get_appended_annotation();
     }
 
     /**
@@ -230,8 +258,62 @@ class Webpage extends KALS_resource {
         $this->_CI_load('library', 'recommend/Annotation_tutor', 'annotation_tutor');
         return new Annotation_tutor($this);
     }
+    
+    /**
+     * 回傳該網頁的標註數量
+     * 
+     * 如果該Webpage尚未準備好，則會回傳Null
+     * @return int|null
+     */
+    public function get_written_annotations_count() {
+        
+        if (is_null($this->get_id())) {
+            return NULL;
+        }
+        
+        $annotation_coll = $this->get_appended_annotation();
+        return $annotation_coll->length();
+    }
+    
+     /**
+     * 回傳該網頁中撰寫標註的使用者
+     * 
+     * 如果該Webpage尚未準備好，則會回傳Null
+     * @return array|User
+     */
+    public function get_written_users() {
+        
+        if (is_null($this->get_id())) {
+            return NULL;
+        }
+        
+        $this->_CI_load('library', 'search/Search_annotation_user_collection', 'search_annotation_user_collection');
+
+        $search = new Search_annotation_user_collection();
+        $search->set_target_webpage($this->get_id());
+        $search->set_check_authorize(FALSE);
+        $search->disable_limit();
+        $search->disable_offset();
+        
+        return $search;
+    }
+    
+    /**
+     * 回傳該網頁中撰寫標註的使用者數量
+     * 
+     * 如果該Webpage尚未準備好，則會回傳Null
+     * @return Null|Int
+     */
+    public function get_written_users_count() {
+        $users = $this->get_written_users();
+        if (is_null($users)) {
+            return NULL;
+        }
+        else {
+            return $users->length();
+        }
+    }
+
 }
-
-
-/* End of file Webpage.php */
+    /* End of file Webpage.php */
 /* Location: ./system/application/libraries/kals_resource/Webpage.php */

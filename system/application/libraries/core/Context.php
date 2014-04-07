@@ -37,6 +37,8 @@ class Context extends KALS_object {
     var $webpage;
     var $domain;
     var $user;
+    
+    var $referer_url = FALSE;
 
     var $ignore_auth = FALSE;
 //    static private $CACHEABLE_TYPES = array('Domain', 'Webpage', 'Annotation', 'User', 'Group', 'Annotation_scope', 'Scope_anchor_text', 'Annotation_like'
@@ -305,7 +307,6 @@ class Context extends KALS_object {
         //{
         //    $this->load->library('session');
         //}
-
         $this->_anchor_navigation_type = $type;
         $session_name = $this->_get_anchor_navigation_type_session_name();
         //test_msg('設置成功？', set_session($session_name, $type));
@@ -354,10 +355,28 @@ class Context extends KALS_object {
         $output = 'anchor_navigation_type_';
 
         $wepage = get_context_webpage();
-        if (isset($wepage))
+        if (isset($wepage)) {
             $output = $output . $wepage->get_id();
-
+        }
         return $output;
+    }
+    
+    public function set_referer_url($url) {
+        $this->referer_url = $url;
+        $this->session->set_userdata(array(
+            "referer_url" => $url
+        ));
+        return $this;
+    }
+    
+    public function get_referer_url() {
+        if ($this->referer_url === FALSE) {
+            $url = $this->session->userdata("referer_url");
+            if ($url !== FALSE) {
+                $this->set_referer_url($url);
+            }
+        }
+        return $this->referer_url;
     }
 }
 
