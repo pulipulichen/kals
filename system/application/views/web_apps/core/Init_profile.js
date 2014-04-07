@@ -79,7 +79,7 @@ Init_profile.prototype._$oncomplete = function () {
         for (var _t in _this._test) {
             _this._test[_t]();
         }	
-    }, 2000);
+    }, 200);
         
 };
 
@@ -102,7 +102,7 @@ Init_profile.prototype._test = [
      */
     function () {}
 	, function () {
-            
+            (new Annotation_navigation_map()).open();
         }
 	/**
 	 * 測試樣板功能
