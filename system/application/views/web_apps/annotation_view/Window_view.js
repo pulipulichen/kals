@@ -435,9 +435,8 @@ Window_view.prototype.setup_content = function (_callback) {
    
     var _this = this;
     setTimeout(function () {
-       
        Window_content.prototype.setup_content.call(_this, _callback);
-       _this.onload();   
+       _this.onload();
     }, 500);
     
     return this;

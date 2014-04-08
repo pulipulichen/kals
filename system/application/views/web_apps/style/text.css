@@ -17,10 +17,11 @@
 }
 
 /**
- * 測試，觀察初始化完成的範圍。
+ * 測試，觀察文字初始化完成的範圍與進度。
+ * @author Pulipuli Chen 20131228
  */
 /*
 .kals-paragraph .kals-word {
-    color: green;
+    color: green !important;
 }
 */

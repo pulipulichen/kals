@@ -50,6 +50,11 @@ KALS_user_interface.prototype.get_ui = function (_selector) {
         this._setup_ui();
     }
     
+    if (this._initialize_view_flag === false) {
+        this._initialize_view_flag = true;
+        this._$initialize_view();
+    }
+    
     if (_selector === undefined  || _selector === null) {
         return this._ui;
     }
@@ -71,9 +76,25 @@ KALS_user_interface.prototype.has_setup_ui = function () {
  * 建立UI的動作
  */
 KALS_user_interface.prototype._setup_ui = function () {
-    this._ui = this._$create_ui();
+    var _ui = this._$create_ui();
+    this._ui = _ui;
     return this;
 };
+
+/**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 
+ */
+KALS_user_interface.prototype._$initialize_view = function () {
+};
+
+/**
+ * 防止重複初始化的設定
+ * @type Boolean
+ */
+KALS_user_interface.prototype._initialize_view_flag = false;
 
 /**
  * 建立UI的動作，請覆寫它
@@ -529,7 +550,7 @@ KALS_user_interface.prototype.set_field = function (_field, _value, _ele) {
 	// 如果是單一欄位，則繼續處理
 	this._data[_field] = _value;
 	
-    this.reset_field_text(_field, _ele);
+        this.reset_field_text(_field, _ele);
 		
 	this.set_field_text(_field, _value, _ele);
 	
@@ -657,9 +678,11 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 		if (_value_class !== false) {
 			
 			var _value_object;
-			//$.test_msg('create object', _value_class);
 			if (_value_class == 'Annotation') {
 				_value_object = _this._filter_annotation(_value);
+			}
+                        else if (_value_class == 'Annotation_type_list') {
+				_value_object = _this._filter_annotation_type_list(_value);
 			}
 			else if (_value_class == 'KALS_user_interface') {
 				_value_object = _this._filter_kals_user_interface(_value);
@@ -670,7 +693,14 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 			//$.test_msg('value object', _value_object.html());
 			//_ele.css('border', '1px solid red');
 			
+                        
 			if (_value_object !== undefined) {
+                            
+                            
+                            //if (typeof(_value.id) !== 'undefined') {
+                                   //_value_object = _value.get_ui().get_ui();
+                                    //    $.test_msg('create object', _value_object.html());
+                                //}
 				_ele.html(_value_object);
 			}
 		}
@@ -714,23 +744,22 @@ KALS_user_interface.prototype.set_field_text = function (_field, _value, _ui) {
 				}
 				//_this.set_sub_fields(_sub_value, _parent_clone);
             }
-            _parent.remove();
-		}
+                _parent.remove();
+            }
         else {
             _value = _this._value_filter_lang(_value);
-			//$(_ele).html(_value);
-			_ele.html(_value);
+            //$(_ele).html(_value);
+            _ele.html(_value);
 			
-			
-			if (_parent.hasAttr(_event_field_set)) {
-				//var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
-				var _event_config = _this._parse_event_config(_parent, _event_field_set);
-				_this._trigger_controller(_ele, _event_config);
-			}
+            if (_parent.hasAttr(_event_field_set)) {
+                    //var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
+                    var _event_config = _this._parse_event_config(_parent, _event_field_set);
+                    _this._trigger_controller(_ele, _event_config);
+            }
         }
     }); 
-	
-	return this;
+
+    return this;
 };
 
 /**
@@ -745,15 +774,23 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
 	   && $.is_number(_value.annotation_id)) {
 	    return 'Annotation';
     }
-	else if (typeof(_value.get_ui) == 'function') {
-		return 'KALS_user_interface';
-	}
-	// 判斷是否是Annotation_collection
-	//else if ($.is_array(_value)
-	//   && _value.length > 0
-	//   && typeof(_value[0].annotation_id) != 'undefined'
-	//   && $.is_number(_value[0].annotation_id) ) {
-	//   	return 'Annotation_collection';
+    else if ($.is_class(_value, 'Annotation_type_param')) {
+        return 'KALS_user_interface';
+    }
+    else if (typeof(_value) === 'object' 
+            && typeof(_value['importance']) !== 'undefined' 
+            && $.is_class(_value['importance'], 'Annotation_type_param')) {
+        return 'Annotation_type_list';
+    }
+    else if (typeof(_value.get_ui) == 'function') {
+            return 'KALS_user_interface';
+    }
+    // 判斷是否是Annotation_collection
+    //else if ($.is_array(_value)
+    //   && _value.length > 0
+    //   && typeof(_value[0].annotation_id) != 'undefined'
+    //   && $.is_number(_value[0].annotation_id) ) {
+    //   	return 'Annotation_collection';
     //}
    
     return false;
@@ -765,13 +802,28 @@ KALS_user_interface.prototype._value_class_filter = function(_value){
  * @type {jQuery} 
  */
 KALS_user_interface.prototype._filter_annotation = function (_value) {
-	var _param = _value;
-	if ($.is_class(_param, 'Annotation_param') === false) {
-		_param = new Annotation_param(_param);
-	}
-	var _list_item = new View_annotation(_param);
-	//$.test_msg('create annotation', _list_item.get_ui().html());
-	return _list_item.get_ui();
+    var _param = _value;
+    if ($.is_class(_param, 'Annotation_param') === false) {
+            _param = new Annotation_param(_param);
+    }
+    var _list_item = new View_annotation(_param);
+    //$.test_msg('create annotation', _list_item.get_ui().html());
+    return _list_item.get_ui();
+};
+
+/**
+ * 建立Annotation Type List的物件
+ * @param {JSON} _value
+ * @returns {jQuery}
+ */
+KALS_user_interface.prototype._filter_annotation_type_list = function (_value) {
+    var _container = $('<div></div>');
+    
+    for (var _i in _value) {
+        _value[_i].get_ui().appendTo(_container);
+    }
+    
+    return _container;
 };
 
 /**
@@ -935,36 +987,36 @@ KALS_user_interface.prototype.reset_field_attr = function (_field, _attr_name, _
  * @param {String} _field
  */
 KALS_user_interface.prototype.reset_field_text = function (_field, _ui) {
-	if (_ui === undefined) {
+    if (_ui === undefined) {
         _ui = this.get_ui();
     }
-    
+
     //$.test_msg('reset: ' + '[kals-field="'+_field+'"', _ui.find('[kals-field="'+_field+'"').length);
-	
-	var _repeat_index = this._kals_attrs.repeat_index;
-	var _event_field_reset = this._kals_events.field_reset
-	var _field_origin_value = this._kals_attrs.field
-	   + this._kals_attrs.origin_value_postfix;
-	var _this = this;
-	_ui.find('[kals-field="'+_field+'"]').each(function (_index, _ele) {
-		_ele = $(_ele);
-		var _parent = _this._get_field_parent(_field, _ele); 
-		if (_ele.hasAttr(_repeat_index) && _ele.attr(_repeat_index) !== '0') {
-			_parent.remove();
-			return;
-		}
-		
-		_ele.html(_ele.attr(_field_origin_value));
-		
-		// 觸發重設事件
-		if (_parent.hasAttr(_event_field_reset)) {
+
+    var _repeat_index = this._kals_attrs.repeat_index;
+    var _event_field_reset = this._kals_events.field_reset
+    var _field_origin_value = this._kals_attrs.field
+       + this._kals_attrs.origin_value_postfix;
+    var _this = this;
+    _ui.find('[kals-field="'+_field+'"]').each(function (_index, _ele) {
+        _ele = $(_ele);
+        var _parent = _this._get_field_parent(_field, _ele); 
+        if (_ele.hasAttr(_repeat_index) && _ele.attr(_repeat_index) !== '0') {
+            _parent.remove();
+            return;
+        }
+
+        _ele.html(_ele.attr(_field_origin_value));
+
+        // 觸發重設事件
+        if (_parent.hasAttr(_event_field_reset)) {
             //var _controller = _this._parse_event_controller(_ele.attr(_event_field_set));
             var _event_config = _this._parse_event_config(_parent, _event_field_reset);
             _this._trigger_controller(_ele, _event_config);
         }
-	});
-	
-	return this;
+    });
+
+    return this;
 };
 
 /**

@@ -59,11 +59,11 @@ Window_login_submit.prototype.get_data = function () {
 Window_login_submit.prototype.validate = function (_inputs, _data) {
     
     if (_inputs === null) {
-		_inputs = this.get_inputs();
-	}
+        _inputs = this.get_inputs();
+    }
     if (_data === null) {
-		_data = this.get_data();
-	}
+        _data = this.get_data();
+    }
     
     var _email = _data.email;
         _email = $.trim(_email);

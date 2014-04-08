@@ -32,17 +32,17 @@ List_anchor_text_component.prototype = new KALS_user_interface();
 List_anchor_text_component.prototype._item = null;
 
 List_anchor_text_component.prototype._set_list_item = function (_item) {
-	
-	//$.test_msg("List_anchor_text, _set_list_item");
+
+    //$.test_msg("List_anchor_text, _set_list_item");
 	
     if ($.isset(_item)) {
         this._item = _item;
         var _this = this;
         this._item.add_listener('set', function (_item) {
-			//$.test_msg("List_anchor_text", "set_data");
+            //$.test_msg("List_anchor_text", "set_data");
             _this.set_data();
         });
-		this.set_data();
+        this.set_data();
     }
 };
 
@@ -74,13 +74,13 @@ List_anchor_text_component.prototype._$create_ui = function () {
  * @type {String} 範圍文字
  */
 List_anchor_text_component.prototype.get_anchor_text = function(){
-	var _param = this._item.get_annotation_param();
-	var _scope = _param.scope;
-	
-	var _text = KALS_text.selection.text;
-    
-	//$.test_msg("get_anchor_text scope", _scope);
-	var _anchor_text = _text.get_anchor_text(_scope);
+    var _param = this._item.get_annotation_param();
+    var _scope = _param.scope;
+
+    var _text = KALS_text.selection.text;
+
+    //$.test_msg("get_anchor_text scope", _scope);
+    var _anchor_text = _text.get_anchor_text(_scope);
     //$.test_msg("get_anchor_text text", _anchor_text);
     return _anchor_text;
 };
@@ -91,20 +91,20 @@ List_anchor_text_component.prototype.get_anchor_text = function(){
  * @param {String} _note
  */
 List_anchor_text_component.prototype.set_anchor_text = function (_text) {
-	//$.test_msg("set_anchor_text text", _text);
-	//$.test_msg("set_anchor_text ui", this.get_ui().length);
-	
-	if (this._item.max_anchor_text_length != null) {
-		var _max = this._item.max_anchor_text_length;
-		
-		if (_text.length > _max) {
-			var _half = parseInt(_max / 2);
-			
-			var _first_part = _text.substr(0, _half);
-			var _last_part = _text.substr(_text.length - _half, _half);
-			_text = _first_part + "..." + _last_part; 
-		}
-	}
+    //$.test_msg("set_anchor_text text", _text);
+    //$.test_msg("set_anchor_text ui", this.get_ui().length);
+
+    if (this._item.max_anchor_text_length != null) {
+        var _max = this._item.max_anchor_text_length;
+
+        if (_text.length > _max) {
+            var _half = parseInt(_max / 2);
+
+            var _first_part = _text.substr(0, _half);
+            var _last_part = _text.substr(_text.length - _half, _half);
+            _text = _first_part + "..." + _last_part; 
+        }
+    }
 	
 	_text = '"' + _text + '"'; 
     this.get_ui().html(_text);

@@ -379,8 +379,8 @@ List_item.prototype._focus_classname = 'focus';
 List_item.prototype.focus = function (_scrollto) {
     
     if ($.is_null(_scrollto)) {
-		_scrollto = false;
-	}
+        _scrollto = false;
+    }
     
     var _ui = this.get_ui('.list-item:first');
     if (_ui.length === 0) {

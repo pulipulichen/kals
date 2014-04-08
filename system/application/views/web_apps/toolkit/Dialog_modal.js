@@ -250,21 +250,25 @@ Dialog_modal.prototype.set_forward_option = function (_option) {
     return this;
 };
 
+/**
+ * 切換顯示工具列的按鈕
+ * @param {boolean} _display
+ * @returns {Dialog_modal}
+ */
 Dialog_modal.prototype.toggle_toolbar_option = function(_display) {
     
     var _toolbar = this.get_ui('.dialog-toolbar:first');
     
     var _classname = 'hide-option';
     if ($.is_null(_display)) {
-		_toolbar.toggleClass(_classname);
-	}
-	else 
-		if (_display) {
-			_toolbar.removeClass(_classname);
-		}
-		else {
-			_toolbar.addClass(_classname);
-		}
+        _toolbar.toggleClass(_classname);
+    }
+    else if (_display) {
+        _toolbar.removeClass(_classname);
+    }
+    else {
+        _toolbar.addClass(_classname);
+    }
         
     return this;
 };
@@ -694,7 +698,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             
             setTimeout(function () {
                 var _top_padding = _el.find('.top-padding:first');
-                if (_top_padding.length == 1) {
+                if (_top_padding.length === 1) {
                     var _option = {};
                     _option.height = 0;
                     _top_padding.animate(_option, {

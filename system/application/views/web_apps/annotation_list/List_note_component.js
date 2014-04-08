@@ -225,26 +225,25 @@ List_note_component.prototype._create_note_container = function () {
 List_note_component.prototype.set_note = function (_note, _callback) {
     if ($.is_null(_note)) {
         _note = this._item.get_data().note;
-		
-		//if (this._show_fulltext === true) {
-		//	$.test_msg("List_note_component.set_note(), get_data", _note);
-		//}
+        //if (this._show_fulltext === true) {
+        //	$.test_msg("List_note_component.set_note(), get_data", _note);
+        //}
     }
     
     if ($.is_null(_note)) {
-		_note = '';
-	}
+        _note = '';
+    }
     
     //$.test_msg('List_note.set_note()', [_note, typeof(_note)]);
     
     if ($.is_null(this._note_container)) {
-		this.get_ui();
-	}
+        this.get_ui();
+    }
     
 	
-	//$.test_msg("List_note_component.set_note()", _note);
-	//_note = $(_note);
-	if (this._show_fulltext === false) {
+    //$.test_msg("List_note_component.set_note()", _note);
+    //_note = $(_note);
+    if (this._show_fulltext === false) {
         _note = this.extract_abstract(_note);
     }
 	
@@ -356,16 +355,31 @@ List_note_component.prototype.extract_abstract = function (_note) {
 
 /**
  * 縮小圖片
+ * @param {jQuery} _result 要調整的筆記名稱
+ * @param {function} _callback 回呼函數
  */
-List_note_component.prototype.adjust_note = function (_callback) {
-	//if (this._note_container.hasClass('adjusted')) {
-	//	return this;
-	//}
-	
-	//$.test_msg('adjust note start');
-	
+List_note_component.prototype.adjust_note = function (_result, _callback) {
+    //if (this._note_container.hasClass('adjusted')) {
+    //	return this;
+    //}
+
+    //$.test_msg('adjust note start', [typeof(_result), typeof(_callback)]);
+
+    if (_callback === undefined
+            && $.is_function(_result)) {
+        
+        if ($.is_function(_result)) {
+            _callback = _result;
+        }
+    }
     
-    var _result = this._note_container;
+    if (!$.is_jquery(_result)) {
+        _result = this._note_container;
+    }
+    //else {
+    //    _result.css("border", "1px solid blue");
+    //    $.test_msg("result width", _result.width());
+    //}
 	
 	/*
 	var _text = _result.html();
@@ -404,53 +418,74 @@ List_note_component.prototype.adjust_note = function (_callback) {
 		
         _a = $(_a);
 		
-		if (_a.hasClass('link-setted')) {
-			return;
-		}
+        if (_a.hasClass('link-setted')) {
+            return;
+        }
 		
         //_a.attr('target', '_blank');
         //_a.css('border', '1px solid red');
         
-		var _link;
-		if (_a.hasAttr('src')) {
-			_link = _a.attr('src');
-		}
-		else if (_a.hasAttr('href')) {
+        var _link;
+        if (_a.hasAttr('src')) {
+                _link = _a.attr('src');
+        }
+        else if (_a.hasAttr('href')) {
             _link = _a.attr('href');
         }
 		
         //防止點選時跳出網頁
         _a.click(function (_e) {
-			window.open(_link, '_blank');
+            window.open(_link, '_blank');
             _e.preventDefault();
         });
 		
-		_a.addClass('link-setted');
+        _a.addClass('link-setted');
     });
-	
-	
-	
-	var _max_width = this._note_container.width();
-	if (_max_width === 0) {
-		//return this;
-		var _this = this;
-		/*
-		setTimeout(function () {
-			_this.adjust_note;
-		}, 100);
-		*/
-		//$.test_msg('adjust_note', _max_width);
-		//this._note_container.ready(function () {
-		//setTimeout(function () {
-		//	_this.adjust_note();
-		//}, 100);
-			
-		//});
-		$.trigger_callback(_callback);
-	    return this;
-		
-		//_max_width = 195;
-	}
+
+    var _max_width = _result.width();
+    if (_max_width === 0) {
+        //return this;
+        
+        /**
+         * 貼到外圍去，可是似乎是沒有作用
+         * @author Pulipuli Chen 20131230
+         */
+        //this._note_container.wrap("<span></span>");
+        //var _parent = this._note_container.parent();
+        //this._note_container.appendTo("body");
+        //_max_width = this._note_container.width();
+        //this._note_container.appendTo(_parent);
+        //$.test_msg("note container not setted", _max_width);
+        
+        
+        /**
+         * 延後調整，但是成效不彰
+         * @author Pulipuli Chen 20131230
+         */
+        //setTimeout(function () {
+        //    _this.adjust_note;
+        //}, 100);
+        //$.test_msg('adjust_note', _max_width);
+        //this._note_container.ready(function () {
+        //  setTimeout(function () {
+        //  	_this.adjust_note();
+        //  }, 100);
+        //});
+   
+        /**
+         * 放棄不做調整，不行，還是要列出最大寬度
+         * @author Pulipuli Chen 20131230
+         */
+        //var _this = this;
+        //$.trigger_callback(_callback);
+        //return this;
+
+        /**
+         * 限制最大寬度
+         */
+        //_max_width = 195;
+        _max_width = 450;
+    }
 	//var _safe_margin = 25;
 	//_max_width = _max_width - _safe_margin;
     // 縮小筆記內的資料
@@ -458,6 +493,7 @@ List_note_component.prototype.adjust_note = function (_callback) {
         _ele = $(_ele);
         //_ele.css('border', '1px solid red');
         var _width = _ele.width();
+        //$.test_msg("ele width", _width);
         
         //$.test_msg('縮小圖片', [_width, _max_width]);
         if (_width > _max_width) {
@@ -478,10 +514,10 @@ List_note_component.prototype.adjust_note = function (_callback) {
         }
     });
     
-	//this._note_container.addClass('adjusted');
-	
-	$.trigger_callback(_callback);
-	return this;
+    //this._note_container.addClass('adjusted');
+
+    $.trigger_callback(_callback);
+    return this;
 };
 
 /**

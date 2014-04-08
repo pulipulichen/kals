@@ -810,8 +810,11 @@ class Annotation extends KALS_resource {
             }
 
             $current_user = get_context_user();
-            if (is_class($current_user, 'User'))
+            if (is_class($current_user, 'User')) {
                 $data['is_like'] = $this->is_liked($current_user);
+            }
+            
+            $data["timestamp"] = $this->get_update_epoch();
         }
         else
         {

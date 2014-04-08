@@ -251,11 +251,10 @@ Window_search.prototype._$create_ui = function (){  //建立UI
         .appendTo(_ui)
         .hide();
     
-    
     var _list_ui = this.list.get_ui();
 	_list_ui.appendTo(_result);
 	
-	return _ui;
+    return _ui;
 };
 
 
@@ -268,39 +267,38 @@ Window_search.prototype._$create_ui = function (){  //建立UI
  * @param _type {String} radio|dropdown 選單類型
  */
 Window_search.prototype.create_range_options = function(_type){
-	if (_type === undefined) {
-		_type = "radio";
-	}
+    if (_type === undefined) {
+        _type = "radio";
+    }
 	
     var _factory = KALS_window.ui;
 	
-	var _search_range_options = [];
-	var _search_range_default_value = this._search_default_option.range;
-	var _search_range_param_list = this._search_param.range;
-	var _r;
-	for (_r in _search_range_param_list) {
-		// _type_param = new Annotation_type_param();
-		var _search_range_param = _search_range_param_list[_r];
-		var _value = _search_range_param_list[_r];
-		//預設值
-		if (_search_range_default_value === null) {
-			_search_range_default_value = _value;
-		}
-		var _lang = new KALS_language_param(_value, 'window.content.search.field.' + _value);
-		
-		var _option;
-		if (_type == "radio") {
-			_option = _factory.radio_option(_lang, _value);
-		}
-		else {
-			_option = _factory.dropdown_option(_lang, _value);
-		}
-		 
-		
-		_search_range_options.push(_option);
-	}
-	
-	return _search_range_options;
+    var _search_range_options = [];
+    var _search_range_default_value = this._search_default_option.range;
+    var _search_range_param_list = this._search_param.range;
+    var _r;
+    for (_r in _search_range_param_list) {
+        // _type_param = new Annotation_type_param();
+        var _search_range_param = _search_range_param_list[_r];
+        var _value = _search_range_param_list[_r];
+        //預設值
+        if (_search_range_default_value === null) {
+            _search_range_default_value = _value;
+        }
+        var _lang = new KALS_language_param(_value, 'window.content.search.field.' + _value);
+
+        var _option;
+        if (_type === "radio") {
+            _option = _factory.radio_option(_lang, _value);
+        }
+        else {
+            _option = _factory.dropdown_option(_lang, _value);
+        }
+
+        _search_range_options.push(_option);
+    }
+
+    return _search_range_options;
 };	
 
 /**
@@ -377,11 +375,11 @@ Window_search.prototype.change_range = function (_range) {
 	}
 	
 	//$.test_msg("change range", [_range, this.is_input_keyword()]);
-	if (_range == "annotation_type" && this.is_input_keyword()) {
-		this.toggle_input("annotation_type");
+	if (_range === "annotation_type" && this.is_input_keyword()) {
+            this.toggle_input("annotation_type");
 	}
-	else if (_range != "annotation_type" && this.is_input_keyword() === false) {
-		this.toggle_input("keyword");
+	else if (_range !== "annotation_type" && this.is_input_keyword() === false) {
+            this.toggle_input("keyword");
 	}	
 	
 	var _range_ui = this.get_range_ui();
