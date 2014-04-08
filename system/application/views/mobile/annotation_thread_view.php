@@ -8,8 +8,8 @@
 
 
 ?>
-    
-    <form name="f1" id="f1" action="14835" method="post" style="display: none" > 
+    <!--style="display: none"-->
+    <form name="f1" id="f1" action="annotation_thread" method="post" > 
         <textarea name="note_text"></textarea>
         <input name="annotation_type">
     
@@ -40,7 +40,7 @@
             echo '"'.$anchor_text.'"';
          } 
          ?></h1> 
-    <a href="<?php echo $webpage_url; ?>" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-carat-r">詳見全文</a>
+    <a href="<?php echo $webpage_url; ?>" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-carat-r" data-ajax="false">詳見全文</a>
 
 </div>
 <!--/top bar-->
@@ -99,9 +99,12 @@
     
     <!--POP UP href="#popupCloseRight"-->    
     <a href="#popupCloseRight" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow" style="width:100%" >新增標註回應</a>
+    <a href="<?php echo base_url();?>mobile/mobile_user_login" class="ui-btn ui-btn-b ui-corner-all ui-shadow" style="width:100%">請先登入</a>
     </div>
    
-   <!--/回應標註 FOOTER-->
+  <!-- 先檢查是否有登入-->
+  <div>
+  <!--/回應標註 FOOTER-->
     <div data-role="popup" id="popupCloseRight"  data-overlay-theme="a" class="ui-content" style="max-width:100%">
      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>  
    
@@ -136,12 +139,19 @@
     }      
     </script>
        
-    <label for="note_text">請輸入回應</label>
-    <textarea name="note_text" id="note_text"></textarea>  
+    <label for="note_text" >請輸入回應</label>
+    <textarea name="note_text" <?php if($this->session->userdata('logged_in') == FALSE){
+                                     echo 'disabled="disabled"';}?> 
+       id="note_text"><?php if($this->session->userdata('logged_in') == FALSE){
+                                     echo '請先登入喔！';}?></textarea>  
 
-    <input type="submit" onclick="trans_to_form1()" value="新增標註回應" /> 
+    <input type="submit" <?php if($this->session->userdata('logged_in') == FALSE){
+                                  echo 'disabled="disabled"';}?>
+           onclick="trans_to_form1()" value="新增標註回應" /> 
     <!-- alert($('input[name=annotation_type]:checked').val());-->
         <!--/內部-->
     
-  </div>
+  </div>.
+</div>
+
 

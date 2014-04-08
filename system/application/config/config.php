@@ -13,7 +13,7 @@
 */
 //$config['base_url']	= "http://192.168.11.2/CodeIgniter_1.7.2/";
 $config['base_url']	= "/kals/";
-
+//$config['base_url']	= "http://140.119.61.137/kals/mobile";
 /*
 |--------------------------------------------------------------------------
 | Index File

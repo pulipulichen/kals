@@ -7,7 +7,10 @@ include_once 'web_apps/web_apps_controller.php';
  * logout->logout_view
  * 
  * webpage->webpage_view
+ *      topic_unread + respond_unread
  * annotation_topics->annotation_topics_view
+ *      topic_unread : array(1198, 1132)
+ *      RESPOND UNREAD: array('1401' => 4, '531' => 7)
  * annotation_thread->annotation_thread_view  
  * 
  * 
@@ -56,8 +59,8 @@ class mobile extends Web_apps_controller{
         
         // $annotation_id
         $annotation = new Annotation($annotation_id);
-        
-        
+       
+            
         $anchor_text = $annotation->get_anchor_text();  
         $user = $annotation->get_user()->get_name();    
         $type = $annotation->get_type()->get_name();
@@ -183,7 +186,7 @@ class mobile extends Web_apps_controller{
         $anno_type = $_POST["annotation_type"];       
         $data['pop_type'] = $anno_type;
         } 
-                
+              
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/annotation_thread_view', $data);
         $this->load->view('mobile/mobile_views_footer');
@@ -216,6 +219,36 @@ class mobile extends Web_apps_controller{
          $data['written_annotations'] = array();
          $array = array();
          
+         
+         // session->user_id
+         $user_id = $this->session->userdata('user_id');
+         
+         // 查詢未讀過的annotation
+         $unread_annotation = $this->db->query("SELECT webpage2annotation.webpage_id, annotation_id AS topic_self_id, res.res_id, res.res_topic_id, 
+                                                   (CASE WHEN res.update_timestamp IS NULL THEN annotation.update_timestamp
+                                                         ELSE res.update_timestamp
+                                                    END) AS annotation_timestamp
+                                                FROM annotation JOIN webpage2annotation using (annotation_id) 
+                                                   LEFT JOIN ( 
+                                                             SELECT webpage_id, annotation_id AS res_id, annotation.topic_id AS res_topic_id, annotation.update_timestamp
+                                                             FROM annotation JOIN webpage2annotation using (annotation_id) 
+                                                             WHERE topic_id IS NOT NULL AND webpage_id = ".$webpage_id.") AS res ON (annotation.annotation_id = res.res_topic_id)
+                                                   LEFT JOIN log ON log.action = 16 
+                                                                AND log.user_id =".$user_id."  
+                                                                AND log.note like concat('%topic_id:' , annotation.annotation_id , '%')
+                                                WHERE  
+                                                      annotation.topic_id IS NULL AND webpage2annotation.webpage_id =".$webpage_id."  
+                                                  AND (log.user_id = ".$user_id." OR log.user_id IS NULL)
+                                                  AND (log.log_timestamp IS NULL OR log.log_timestamp < annotation.update_timestamp)");
+         $unread_array = array();
+        
+         // 存放unread topic id(topic and res)
+         foreach($unread_annotation->result_array() as $row){
+             $unread_id = $row['topic_self_id']; 
+             $unread_array[$unread_id] = $row['topic_self_id'];                   
+         }         
+
+         
          foreach ($written_annotations AS $annotation) {
            
              
@@ -229,7 +262,7 @@ class mobile extends Web_apps_controller{
              // 控制anchor text顯示長度
              $anchor_length = $annotation->get_scope_length();
              if ( $anchor_length > 10) {
-                 $array['anchor_text'] = mb_substr($anchor_text, 0, 12, "utf-8");
+                 $array['anchor_text'] = mb_substr($anchor_text, 0, 8, "utf-8");
              }
              else { 
                  $array['anchor_text'] = $anchor_text;             
@@ -251,22 +284,21 @@ class mobile extends Web_apps_controller{
              $last_short_timestamp = substr($last_timestamp, 0, 10);
              $array['timestamp'] = $last_short_timestamp;
              
+             // 判斷有無unread annotation
+             if (isset($unread_array[$annotation_id])) {
+                 $array['is_unread'] = 'inline';
+                 //echo $annotation_id;
+                 //echo 'Y <br>';
+             }
+             else {
+                 $array['is_unread'] = 'none';
+                 //echo $annotation_id;
+                 //echo 'N <br>';
+             }
+            
              $data['written_annotations'][] = $array;          
          }
                  
-        // user
-        /*if ($user_login == TRUE){
-            
-            $data['login_msg'] = '主人你好！';
-        }
-        else{
-           $data['login_msg'] = '訪客你好嗎！';                      
-        }*/
-        
-        // TEST
-        /*$mobile = new mobile;
-        $user_check = $mobile->mobile_user_login();
-        $data['login_msg'] = $user_check;    */
          
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/annotation_topic_view', $data);
@@ -285,9 +317,6 @@ class mobile extends Web_apps_controller{
         $this->load->library('kals_resource/Domain');
         
         $user = get_context_user();
-        if (is_null($user)) {
-            //check login
-        }
 
         // get domain's all pages
         $data = array();
@@ -297,6 +326,29 @@ class mobile extends Web_apps_controller{
         $all_webpages = $domain->get_all_domain_webpages(); //array
         $data['all_webpages'] = array();
         $webpage_array = array();
+        
+        
+        $user_id = $user->get_id();   
+        $unread_search = $this->db->query("SELECT user2webpage.user_id, user2webpage.webpage_id , count(annotation.annotation_id) AS unread_count
+                                           FROM annotation join webpage2annotation using(annotation_id) join 
+                                               (SELECT (".$user_id.") as user_id, webpage.webpage_id, last_login_timestamp 
+                                                FROM webpage LEFT JOIN 
+                                                  (SELECT log.user_id, log.webpage_id, max(log.log_timestamp) AS last_login_timestamp 
+                                                   FROM log 
+                                                   WHERE (log.action = 16 OR log.action = 3 ) AND log.user_id = ".$user_id." 
+                                                   GROUP BY log.user_id, log.webpage_id) AS user_last_login ON (webpage.webpage_id = user_last_login.webpage_id)) AS user2webpage using(webpage_id) 
+                                           WHERE (user2webpage.last_login_timestamp < annotation.create_timestamp OR user2webpage.last_login_timestamp IS NULL) AND annotation.topic_id IS NULL
+                                           GROUP BY user2webpage.user_id, user2webpage.webpage_id
+                                           ORDER BY user2webpage.webpage_id " );
+        
+        $unread_array = array();
+        foreach($unread_search->result_array() as $row ){
+            $webpage_id = $row['webpage_id'];
+            $unread_count = $row['unread_count'];
+            // TST MSG
+            //echo $webpage_id . " - " . $unread_count . " / <br />";
+            $unread_array[$webpage_id] = $unread_count;
+        }
         
         // array：$all_webpages value:array array中為webpage_id
         foreach ($all_webpages AS $array){
@@ -314,9 +366,24 @@ class mobile extends Web_apps_controller{
            $annotation_count = $webpage->get_written_annotations_count();
            $webpage_array['annotation_count'] = $annotation_count;
           
+           // 判斷有無read
+           if (isset($unread_array[$webpage_id])) {
+               $webpage_array['is_unread'] = 'inline';
+           }
+           else {
+               $webpage_array['is_unread'] = 'none';
+           }
+           
            $data['all_webpages'][] = $webpage_array;
         }
-           
+     
+        // session test msg
+        /*echo $this->session->userdata('user_id').'/';
+        echo $this->session->userdata('user_name').'/';
+        echo $this->session->userdata('logged_in');*/
+
+     
+        
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/webpage_list_view', $data);
         $this->load->view('mobile/mobile_views_footer'); 
@@ -354,7 +421,11 @@ class mobile extends Web_apps_controller{
      */
     
      public function mobile_user_login() {
-
+         
+         // 初始化session：使用$this->session
+         //$this->load->library('session');
+         
+         
          $this->load->library('core/Context');
          $context = new Context();
          
@@ -410,18 +481,20 @@ class mobile extends Web_apps_controller{
                   $output['success'] = 'Yes, user exist';
                   $data['user'] = $output;
                   $data['do_login'] = TRUE;
-                  //echo 'check 5: login success?'.$data['user']['success'].'<br>'; //msg 5  
-                           
+                  //echo 'check 5: login success?'.$data['user']['success'].'<br>'; //msg 5 
+                  
+            
                   // 若有原url則跳轉回原url，若無則到Wabpage_list
                   $login_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
                   
                   if ($referer_url !== $login_url){
                       header("Location: ".$referer_url);              
                   }else {
-                      $referer_url = 'http://140.119.61.137/kals/mobile/webpage_list';
+                      $referer_url = 'webpage_list';
+                      //$referer_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
                       header("Location: ".$referer_url);       
                   }
-              
+                
                   
               }
               else {
@@ -433,7 +506,27 @@ class mobile extends Web_apps_controller{
               }
                
           }
-
+                      
+        // set session 
+      //$session_array = array();
+       $session_array = array(
+           'user_id' =>NULL,
+           'user_name' =>NULL,
+           'notify_key' =>NULL,
+           'logged_in' => NULL
+        );    
+          
+       if(isset($user) && $data['do_login'] === TRUE){    
+            $session_array['user_id'] = $user_id;
+            $session_array['user_name'] = $user->get_name();
+            $session_array['logged_in'] = TRUE;
+        }else{
+            $session_array['logged_in'] = FALSE;
+        }
+        $this->session->set_userdata($session_array);
+        context_complete(); //存入db 
+        
+          
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/mobile_login_view', $data);
         $this->load->view('mobile/mobile_views_footer');

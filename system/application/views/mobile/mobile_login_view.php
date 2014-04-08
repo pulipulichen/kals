@@ -35,6 +35,6 @@
         <input type="hidden" name="do_login" id="do_login" value="true" />
       
         <button type="submit" value="true" class="ui-btn ui-btn-a ui-shadow ui-corner-all">Login</button>
-        <a data-rel="http://localhost/kals/mobile/webpage_list" data-transition="flip" class="ui-btn ui-btn-b ui-shadow ui-corner-all">Skip</a>       
+        <a href="<?php echo base_url(); ?>mobile/webpage_list" class="ui-btn ui-btn-b ui-shadow ui-corner-all">Skip</a>       
      </form>
     </div>

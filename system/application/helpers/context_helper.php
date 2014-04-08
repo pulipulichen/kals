@@ -256,8 +256,9 @@ if ( ! function_exists('context_complete'))
 {
     function context_complete()
     {
-        if (isset($GLOBALS['context']) === FALSE)
+        if (isset($GLOBALS['context']) === FALSE) {
             return;
+        }
 
         $GLOBALS['context']->db->trans_complete();
     }
@@ -267,8 +268,9 @@ if ( ! function_exists('context_abort'))
 {
     function context_abort()
     {
-        if (isset($GLOBALS['context']) === FALSE)
+        if (isset($GLOBALS['context']) === FALSE) {
             return;
+        }
 
         $GLOBALS['context']->db->trans_rollback();
     }
