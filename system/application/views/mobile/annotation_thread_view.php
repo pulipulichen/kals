@@ -9,7 +9,7 @@
 
 ?>
     <!--style="display: none"-->
-    <form name="f1" id="f1" action="annotation_thread" method="post" > 
+    <form name="f1" id="f1" action="<?php echo $annotataion_id; ?>" method="post" > 
         <textarea name="note_text"></textarea>
         <input name="annotation_type">
     
@@ -23,6 +23,7 @@
     foreach ($webpage AS $value){
     echo $value.'<br>';}
     echo $css_type.'<br>';
+    echo $annotataion_id;
     if(isset($respond_json)){
         foreach ($respond_json AS $json) {
                 echo "test-msg = [".$json['timestamp']."]";

@@ -44,6 +44,15 @@ class Annotation_setter extends Web_apps_controller {
         $this->annotation_getter = new annotation_getter();
     }
 
+    /**
+     * 用GET取得資料。
+     * 
+     * 但是因為GET有資料長度限制，所以此方法不使用
+     * 改用create_post
+     * @deprecated 20140408 布丁
+     * @param type $json
+     * @param type $callback
+     */
     public function create ($json, $callback) {
 
         $data = $this->_create_process($json);
@@ -304,6 +313,7 @@ class Annotation_setter extends Web_apps_controller {
             //test_msg($annotation->get_note(), $data->note);
 
             //feature location
+            //標註錨點範圍的特徵 
             if (isset ($data->feature_location)
                 && is_array($data->feature_location)
                 && count($data->feature_location) > 0)
@@ -347,11 +357,14 @@ class Annotation_setter extends Web_apps_controller {
                 $annotation->set_respond_to_coll($respond_to_annotations);
             }
 
+        //-----------------------
         //設定policy
+        
         //test_msg('設定policy');
         $policy_type = 1;
-        if (isset($data->policy_type))
+        if (isset($data->policy_type)) {
             $policy_type = $data->policy_type;
+        }
         // 1    public
         // 2    private    private特別是指只有自己能閱讀
         // 3    share
@@ -399,6 +412,8 @@ class Annotation_setter extends Web_apps_controller {
             //清除該$annotation的policy
             $auth->policy_remove_actor($ACTION_ANNOTATION_READ);
         }
+        
+        //-------------------
 
         //回傳標註建立的ID跟timestamp
         $annotation->update();
@@ -422,6 +437,7 @@ class Annotation_setter extends Web_apps_controller {
 
         set_ignore_authorize(false);
 
+        // 寫入資料庫
         context_complete();
 
         return $data;

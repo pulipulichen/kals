@@ -55,25 +55,25 @@ class mobile extends Web_apps_controller{
             $note_massage = $_POST["note_text"];
             $data["note_massage"] = $note_massage;
                      
-        }
-        
+        }       
+             
         // $annotation_id
         $annotation = new Annotation($annotation_id);
-       
-            
+        $annotation_id = $annotation->get_id();           
         $anchor_text = $annotation->get_anchor_text();  
         $user = $annotation->get_user()->get_name();    
         $type = $annotation->get_type()->get_name();
+        $type_id = $annotation->get_type_id();
         $css_type = $annotation->get_type()->get_type_id();
         $note = $annotation->get_note();   
-        $timestamp = $annotation->get_update_timestamp();
-               
-        // type
+        $timestamp = $annotation->get_update_timestamp();       
+
+
+       // type
        if ($type != 'annotation.type.custom'){
             $type_show = $this->lang->line("web_apps.". $type);
             $type_name = $type_show;
-        }
-        
+        }      
         // css-type
         switch ($css_type) {
             case 1:
@@ -159,6 +159,7 @@ class mobile extends Web_apps_controller{
         }//$respond_json[0]['user'];
         
         // send data -annotation topic
+        $data["annotataion_id"] = $annotation_id;
         $data["anchor_text"] = $anchor_text;
         $data["user"] = $user;
         $data["type"] = $type;
@@ -180,19 +181,89 @@ class mobile extends Web_apps_controller{
         $data['webpage_url'] = $url; 
         $data['webpage_id'] = $webpage_id;
         $data['webpage'] = $webpage;
+ 
+                       
+       //--開始--
+       // 新增標註回應
+       
+       //先將權限設成管理者
+       set_ignore_authorize(true);
 
-        // radio 
+       //取得參考網址(全文網址)資料($url)跟現在登入(session)的user
+       $user_now = $this->session->userdata('user_id'); 
+       //建立範圍(使用topic_id取得)
+       $scope_coll = $annotation->get_scopes();
+       //$scope_coll = $annotation->annotation_scope_collection->import_webpage_data($url, $scope_coll_data);
+       //開始建立回應標註     
+       $new_res_annotation = $annotation->create_annotation($user_now, $scope_coll);
+       
+       //設定標註細節
+       echo 'set annotation detail ->';
+       //type
+       if (isset($type_id)){
+          $new_res_annotation->set_type($type_id);                     
+       }else{ echo 'no type_id';}
+       
+       set_ignore_authorize(true);   
+       //note
+       if(isset($note_massage) && $note_massage !== ''){
+           $new_res_annotation->set_note($note_massage);           
+       }else {echo 'no note_msg';}
+       //標註錨點範圍的特徵(feature location)
+       $feature_location = $annotation->get_feature_location();
+       if (isset($feature_location)){
+          $new_res_annotation->set_feature_location($feature_location); 
+       }else { echo 'no feature_location'; }
+       //設定respond_topic_id
+       $topic_id = $annotation_id;     
+       if(isset($topic_id)){
+          $new_res_annotation->set_respond_to_topic($topic_id);           
+       }else {echo 'no topic id'; }     
+       //設定policy
+       echo 'start set policy';
+       $policy_type = 1;
+       /*$this->load->library('policy/Authorize_manager');
+        $ACTION_ANNOTATION_READ = 5;
+        $auth->set_resource($annotation);
+
+        if (is_array($share_user_coll))
+        {
+            foreach ($share_user_coll AS $share_user)
+            {
+                //在這邊為該$annotation設定policy readable
+                $auth->policy_add_actor($ACTION_ANNOTATION_READ, $share_user);
+            }
+        }
+        else
+        {
+            //清除該$annotation的policy
+            $auth->policy_remove_actor($ACTION_ANNOTATION_READ);
+        }  */     
+       
+        //回傳標註
+        $new_res_annotation->update();
+        set_ignore_authorize(false);
+        echo 'type_id ='.$new_res_annotation->get_type_id().'<br>';
+        echo 'note ='.$new_res_annotation->get_note().'<br>';
+        echo 'topic_id ='.$new_res_annotation->get_topic()->get_id().'<br>';
+        // 寫入DB-0409
+        //context_complete();
+       
+       
+       //--end(希望成功)-- 
+        
+       // radio 
         if (isset ($_POST["annotation_type"])){
         $anno_type = $_POST["annotation_type"];       
         $data['pop_type'] = $anno_type;
         } 
-              
+                
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/annotation_thread_view', $data);
         $this->load->view('mobile/mobile_views_footer');
 
-    }
-    
+    }    
+
 
     /**
      * annotation_topics
@@ -412,6 +483,12 @@ class mobile extends Web_apps_controller{
            'ip' => get_client_ip(),
            'browser' => $_SERVER['HTTP_USER_AGENT']
         );
+        
+        // 新增標註用
+ 
+        $this->load->library('scope/Annotation_scope_collection');
+        $this->load->library('scope/Annotation_scope');
+        $this->load->library('kals_resource/Annotation');   
     } 
     
     /**
@@ -555,54 +632,6 @@ class mobile extends Web_apps_controller{
 
         return $output;
     }
-   
- 
-
-   /* public function annotation_thread($annotation_id = 3) {
-        
-        // load library
-        
-        $data = array();
-        
-        if (isset($_POST['note'])) {
-             //call $this->_add_annotation($annotation)
-            $message = $this->_add_annotation();
-            $data['message'] = $message;
-        }
-        
-        // get annotation by id
-        
-            // add to data
-        
-        // from topic to get respond thread
-        
-            // add to data
-        
-        // load view
-        $this->load->view('mobile/mobile_views_header');
-            // respond form
-            $this->load->view('mobile/annotation_thread_view', $data);
-
-        $this->load->view('mobile/mobile_views_footer');
-            
-        
-    }
-    
-    private function _add_annotation() {
-        
-        // use Annotation to create a new annotation
-        $note = $_POST["note"];
-        
-        // $annotation = new Annotation();
-        // $annotation->set_note($note);
-        
-        // $annotation->update();
-        
-        $message = "已經儲存 : " . $note;
-        
-        return $message;
-    }
-    */
     
 
     
