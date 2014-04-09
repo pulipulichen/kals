@@ -11,6 +11,9 @@
  * @link       https://github.com/pulipulichen/kals/
  * @version    1.0 2011/11/19 下午 03:36:17
  * @extends {JSON_dispatcher}
+ * @extends {KALS_modal}
+ * @constructor
+ * @class {KALS_controller}
  */
 function KALS_controller() {
     
@@ -58,6 +61,7 @@ for (var _i in _modal_prototype) {
  * 
  * @type {string}
  * @protected
+ * @class {KALS_controller}
  */
 KALS_controller.prototype._$view = null;
 
@@ -79,6 +83,25 @@ KALS_controller.prototype._$enable_debug = true;
 KALS_controller.prototype._$enable_auth_check = true;
 
 /**
+ * 初始化要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$init_request_action = null;
+
+/**
+ * 開啟要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$open_request_action = null;
+
+/**
+ * 關閉時要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$close_request_action = null;
+
+
+/**
  * 權限檢查
  * @param {boolean} _is_login
  * @param {User_param} _user
@@ -87,6 +110,19 @@ KALS_controller.prototype._$enable_auth_check = true;
 KALS_controller.prototype._$auth_check = function (_is_login, _user) {
     //this.debug('auth check', _is_login);
     return true;
+};
+
+/**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 這個方法只會執行一次
+ * 
+ * 請覆寫這個方法
+ * @return {KALS_controller}
+ */
+KALS_controller.prototype._$initialize_view = function () {
+    return this;
 };
 
 /**
@@ -128,7 +164,7 @@ KALS_controller.prototype.get_request_url = function () {
  */
 KALS_controller.prototype.request = function (_method, _action, _data, _callback) {
     if (this._enable_controller_flag === false) {
-        this.debug('request', 'enable flag is false');
+        //this.debug('request', 'enable flag is false');
         $.trigger_callback(_callback);
         return this;
     }
@@ -136,11 +172,16 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
     var _url = this.get_request_url();
 
     if ($.is_null(_url)) {
-        $.test_msg('temp', 'url is null');
+        //$.test_msg('temp', 'url is null');
         return $.trigger_callback(_callback);
     }
 
-    _url = _url + '/request';
+    if (_method === 'get') {
+        _url = _url + '/request_get';        
+    }
+    else {
+        _url = _url + '/request_post/' + _action;
+    }
 
     if (this._enable_debug_flag === true) {
         _data["_enable_debug"] = true;
@@ -164,7 +205,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         }
     };
 
-    this.debug('request', _callback);
+    //this.debug('request', _callback);
     //return;
     if (_method === 'get') {
         KALS_util.ajax_get(_ajax_config);
@@ -247,24 +288,6 @@ KALS_controller.prototype.open = function (_callback) {
 */
 
 /**
- * 初始化要執行的action
- * @type {String} null表示不做初始化
- */
-KALS_controller.prototype._$init_request_action = null;
-
-/**
- * 開啟要執行的action
- * @type {String} null表示不做初始化
- */
-KALS_controller.prototype._$open_request_action = null;
-
-/**
- * 關閉時要執行的action
- * @type {String} null表示不做初始化
- */
-KALS_controller.prototype._$close_request_action = null;
-
-/**
  * 初始化樣板資料，覆寫KALS_user_interface的作法
  * @param {jQuery} _view
  */
@@ -310,7 +333,7 @@ KALS_controller.prototype.open = function (_callback) {
         return $.trigger_callback(_callback);
     }
     
-    this.debug('open', this._enable_flag);
+    //this.debug('open', this._enable_flag);
     if (this._$model !== null
         && this._$open_request_action !== null) {
         var _this = this;
@@ -557,6 +580,34 @@ KALS_controller.prototype._enable_controller_flag = true;
  */
 KALS_controller.prototype.has_field = function (_field) {
     return (typeof(this._data[_field]) !== 'undefined');
+};
+
+/**
+ * 根據view樣板的語系檔來取得語系
+ * @param {String} _view_line
+ * @returns {KALS_language_param}
+ */
+KALS_controller.prototype.get_view_lang = function (_view_line) {
+    if (KALS_context.lang.has_line(_view_line)) {
+        //KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+        return new KALS_language_param("", _view_line);
+    }
+    
+    // 先取得key
+    var _view_classname = this._$view;
+    _view_classname = _view_classname.replace(/[\W|\_]/g, "_").toLowerCase();
+    _view_classname = 'view.' + _view_classname;
+    _view_classname = _view_classname + "." + _view_line;
+    
+    $.test_msg("_view_classname", _view_classname);
+    
+    if (KALS_context.lang.has_line(_view_classname)) {
+        //KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+        return new KALS_language_param("", _view_classname);
+    }
+    else {
+        return new KALS_language_param(_view_line);
+    }
 };
 
 /* End of file KALS_controller */

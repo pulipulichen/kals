@@ -14,22 +14,32 @@ function Common_navigation() {
     
     Navigation_list.call(this);
     
-	// @20130603 Pudding Chen
-	// Isolation Mode
-	if (KALS_context.policy.allow_show_navigation()) {
-		
-		var _search = new Window_search();
-		var _search_recent = new Window_search();
-		_search_recent.setup_recent();
-		this._$nav_items = [
-	        new Window_filter()
+    // @20130603 Pudding Chen
+    // Isolation Mode
+    if (KALS_context.policy.allow_show_navigation()) {
+
+        var _search = new Window_search();
+        var _search_recent = new Window_search();
+        _search_recent.setup_recent();
+        
+        var _guide_nav = new Navigation_item("導讀");
+        _guide_nav.set_callback(function () {
+            //KALS_text.guide.open_whole_annotations_by_sentence();
+            KALS_text.guide.open();
+        });
+        
+        this._$nav_items = [
+            new Window_filter()
             , new Window_map()
-			, _search_recent
-			, new Dashboard()
-                        , new Annotation_navigation_map()
-			//_search
-	    ];
-	}
+            , _search_recent
+            , new Dashboard()
+            , _guide_nav
+            //, new Reading_guide()
+            //, KALS_text.guide
+            //_search
+			, new Annotation_navigation_map()
+        ];
+    }
 }
 
 Common_navigation.prototype = new Navigation_list();
