@@ -189,6 +189,41 @@ class Annotation_scope_collection extends Generic_association_collection {
         return $len;
     }
 
+    /**
+     * 取得第一個範圍的起始編號
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20140103
+     * @return Int
+     */
+    public function get_first_index()
+    {
+        $this->_check_callback();
+
+        $this->_sort();
+        $from = 0;
+        foreach ($this->members AS $scope)
+        {
+            $from = $scope->get_from_index();
+            break;
+        }
+        return $from;
+    }
+    
+    /**
+     * 取得最後一個範圍的結尾編號
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20140103
+     * @return Int
+     */
+    public function get_last_index() {
+        $this->_check_callback();
+
+        $this->_sort();
+        $index = 0;
+        foreach ($this->members AS $scope) {
+            $index = $scope->get_to_index();
+        }
+        return $index;
+    }
+    
     public function set_annotation($annotation_id)
     {
         $this->_CI_load('library', 'kals_resource/Annotation', 'annotation');

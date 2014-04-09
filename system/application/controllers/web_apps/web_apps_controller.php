@@ -677,8 +677,19 @@ $style = implode("}\n", $parts);
 
     protected $post_session_index_prefix = 'post_';
 
-    protected function _set_post_session($index, $data)
-    {
+    /**
+     * 判斷輸入參數是否是callback
+     * @param String $param
+     * @return boolean
+     */
+    protected function _is_callback ($param = NULL) {
+        if (is_null($param))
+            return FALSE;
+        else
+            return (starts_with($param, 'callback='));
+    }
+    
+    protected function _set_post_session($index, $data) {
         $index = $this->post_session_index_prefix.$index;
         $this->session->set_flashdata($index, $data);
         return $this;
@@ -689,6 +700,42 @@ $style = implode("}\n", $parts);
         $index = $this->post_session_index_prefix.$index;
         $data = $this->session->flashdata($index);
         return $data;
+    }
+    
+    /**
+     * 取得POST的值
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     * 20131225 來自於annotation_setter
+     * @return String
+     */
+    protected function _get_post_json() {
+        if (isset($_POST['json'])) {
+            //return urldecode($_POST['json']);
+            //return $_POST['json'];
+            
+            $json = $_POST["json"];
+            /**
+             * 20121224 Pulipuli Chen
+             * 移除scope中text包含\'的資料
+             */
+            $json = str_replace("\\'", "'", $json);
+            
+            return $json;
+        }
+        else {
+            handle_error ('Cannot get json data.');
+        }
+    }
+    
+    /**
+     * 完成POST
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     */
+    protected function _display_post_complete() {
+        send_js_header($this->output);
+        $this->load->view('web_apps/display_post_complete');
     }
 }
 

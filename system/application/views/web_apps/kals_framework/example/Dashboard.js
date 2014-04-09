@@ -14,9 +14,8 @@
  * @extends {KALS_controller_window}
  */
 function Dashboard() {
+    // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
-    
-    this.init_hotkey();
 }
 
 /**
@@ -44,6 +43,24 @@ Dashboard.prototype = new KALS_controller_window();
  * @type String
  */
 Dashboard.prototype._$view = 'kals_framework/example/view/Dashboard';
+
+/**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 這個方法只會執行一次
+ */
+Dashboard.prototype._$initialize_view = function () {
+    
+    // 設置熱鍵
+    //this.init_hotkey();
+    
+    var _types = this.get_annotation_types();
+    //this.set_field('annotation_type', ['1', '2', '3']);
+    //_types = _types.question;
+    //this.debug('init view', typeof(_types.get_ui));
+    this.set_field('annotation_type', _types);
+};
 
 /**
  * ====================
@@ -170,6 +187,41 @@ Dashboard.prototype._$width = 400;
  */
 Dashboard.prototype._$height = null;
 
+
+/**
+ * 設定視窗的左右位置
+ * 
+ * 可用參數：
+ *  null: 預設center
+ *  left: 置左
+ *  right: 置右
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠左距離10px
+ *  -10px: 靠右距離10px
+ *  10%: 靠左距離視窗寬度的10%
+ *  -10%: 靠右距離視窗寬度的10%
+ * @type String
+ */
+Dashboard.prototype._$position_left = null;
+
+/**
+ * 設定視窗的上下位置
+ * 
+ * 可用參數：
+ *  null: 預設10%
+ *  top: 置頂
+ *  bottom: 置底
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠頂距離10px
+ *  -10px: 靠底距離10px
+ *  10%: 靠頂距離視窗寬度的10%
+ *  -10%: 靠底距離視窗寬度的10%
+ * @type String
+ */
+Dashboard.prototype._$position_top = null;
+
 /**
  * ====================
  * Action設定
@@ -243,7 +295,7 @@ Dashboard.prototype.init_hotkey = function () {
     // 按鍵對應的編號請參考http://unixpapa.com/js/key.html
     var _hotkey = 65;   
     
-    var _this = this;
+    var _this = this;    
     this.set_hotkey(_hotkey, function () {
         _this.open();
     });

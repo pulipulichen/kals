@@ -12,5 +12,6 @@
  * @version		1.0 2010/7/26 下午 18:17:29
  */
 
-if (isset($data))
+if (isset($data)) {
     echo $data;
+}
