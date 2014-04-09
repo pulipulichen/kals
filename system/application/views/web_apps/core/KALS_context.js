@@ -13,8 +13,19 @@
  */
 KALS_context = new JSONP_dispatcher();
 
+/**
+ * 初始化KALS_context
+ */
 KALS_context.initialize = function () {
     
+    //設定基本網址
+    if (typeof(KALS_loader) !== 'undefined') {
+        this.base_url = KALS_loader.get_base_url();
+    }
+    else {
+        // TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
+        this.setup_base_url();
+    }
     
     //設定基本網址
     if (typeof(KALS_loader) != 'undefined') {
@@ -36,8 +47,11 @@ KALS_context.initialize = function () {
     this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
     this.custom_type = new Context_custom_type();
-	this.feedback = new Feedback_manager();
-	this.view_manager = new KALS_view_manager();
+    this.feedback = new Feedback_manager();
+    this.view_manager = new KALS_view_manager();
+    this.progress = new Initialization_progress();
+    this.site_reform = new Site_reform();
+    this.storage = new KALS_storage();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -56,8 +70,8 @@ KALS_context.initialize = function () {
             _this.user = new Context_user();
             _this.policy = new Context_policy();
             
-			//_this.search = new Context_search();
-			_this.search = new Window_search();
+            //_this.search = new Context_search();
+            _this.search = new Window_search();
 			
             _this.overlay = new Overlay_manager();
             
@@ -308,6 +322,21 @@ KALS_context.feedback = null;
 KALS_context.view_manager = null;
 
 /**
+ * @type {Initialization_progress}
+ */
+KALS_context.progress = null;
+
+/**
+ * @type {Site_reform}
+ */
+KALS_context.site_reform = null;
+
+/**
+ * @type {KALS_storage}
+ */
+KALS_context.storage = null;
+
+/**
  * @type {Init_context}
  */
 KALS_context.init_context = null;
@@ -542,6 +571,31 @@ KALS_context.create_type_param_list = function() {
     }
     
     return _list;
+};
+
+/**
+ * 取得根據網址建立的Domain
+ * @returns {String}
+ */
+KALS_context.create_namespace = function () {
+    var _url = location.href;
+    
+    //移除 #之後
+    if (_url.lastIndexOf('#') > -1) {
+        _url = _url.substr(0, _url.lastIndexOf('#'));
+    }
+    
+    // 替換可能出現問題的字串
+    _url = $.str_replace('.', '_', _url);
+    _url = $.str_replace('/', '_', _url);
+    _url = $.str_replace(':', '_', _url);
+    _url = $.str_replace('@', '_', _url);
+    
+    //$.test_msg('KALS_context create_namespace', _url);
+    //_url = 'test';
+    _url = 'test22' + _url;
+    
+    return _url;
 };
 
 // ------------------------------------------------

@@ -16,9 +16,9 @@ function KALS_text(_selector) {
     
     KALS_user_interface.call(this);
     
-	if (typeof(_selector) == "undefined") {
-		_selector = this.get_selector();	
-	}
+    if (typeof(_selector) === "undefined") {
+        _selector = this.get_selector();	
+    }
     //$.test_msg('KALS_text()', _selector);
     
     _selector = this.filter_selector(_selector);
@@ -28,6 +28,7 @@ function KALS_text(_selector) {
     this.child('load_my', new My_annotation_loader());
     this.child('load_navigation', new Navigation_loader());
     this.child('tool', new Annotation_tool(_selector));
+    this.child('guide', new Reading_guide());
     
     var _this = this;
     setTimeout(function() {
@@ -70,6 +71,11 @@ KALS_text.prototype.load_my_custom = null;
  * @type {Recommend_loader}
  */
 KALS_text.prototype.load_recommend = null;
+
+/**
+ * @type {Reading_guide}
+ */
+KALS_text.prototype.guide;
 
 KALS_text.prototype.init_start = function () {
     
@@ -122,16 +128,20 @@ KALS_text.prototype.filter_selector = function (_selector) {
  * 
  * 但是應該寫成獨立物件
  * @20131113 Pulipuli Chen
+ * @deprecated 20131227 寫成了Site_reform，不使用了
  */
+/*
 KALS_text.prototype.style_adapter = function () {
     
     // PDF2HTML EX
     if ($("#sidebar").length == 1 && $("#page-container").length == 1
         && $("#pf1").length > 0) {
+        
         $("body").css("background-color", "#2f3236");
         $("#page-container").css("position", "relative");
     }
 };
+*/
 
 /**
  * 讀取指定的標註
@@ -139,6 +149,25 @@ KALS_text.prototype.style_adapter = function () {
  */
 KALS_text.prototype.load_annotation = function (_annotation_id) {
 	KALS_text.tool.view.load_view(_annotation_id);
+};
+
+/**
+ * 選擇物件
+ * @param {Scope_collection_param} _scope_coll
+ * @param {boolean} _scroll_into_view 是否捲動過去
+ * @returns {KALS_text}
+ * @author Pulipuli Chen 20131230
+ */
+KALS_text.prototype.set_select = function (_scope_coll, _scroll_into_view) {
+    this.selection.select.set_scope_coll(_scope_coll);
+    if (_scroll_into_view !== undefined && _scroll_into_view === true) {
+        this.selection.select.scroll_into_view();
+    }
+    return this;
+};
+
+KALS_text.prototype.get_sentence_structure = function () {
+    return this.selection.text.sentence.get_structure();
 };
 
 /* End of file KALS_text */

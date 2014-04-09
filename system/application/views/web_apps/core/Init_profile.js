@@ -16,8 +16,13 @@ function Init_profile(_onstart, _oncomplete) {
     
     Task_event_dispatcher.call(this, _onstart, _oncomplete);
     
-    this._$schedule_task = ['check_login', 'notification', 'navigation_annotation', 'my_style', 'hash'];
-    
+    this._$schedule_task = [
+        'check_login', 
+        'notification', 
+        'navigation_annotation', 
+        'my_style', 
+        'hash'
+    ];
 }
 
 Init_profile.prototype = new Task_event_dispatcher();
@@ -38,6 +43,7 @@ Init_profile.prototype._$onstart = function () {
     KALS_text.load_navigation.initialize();
     //KALS_context.init_profile.complete('navigation_annotation');
     
+    // 因為My_style尚未實作，所以my_style直接算是完成
     KALS_context.init_profile.complete('my_style');
     
     //check_login是指去確認遠端伺服器上是否已經有登入的資料，如果有的話，則將現在狀況設為登入的狀況
@@ -64,6 +70,10 @@ Init_profile.prototype._$onstart = function () {
     });
 };
 
+/**
+ * 所有工作都讀取完成了
+ * 最後只剩下測試而已了
+ */
 Init_profile.prototype._$oncomplete = function () {
     
     //2010.10.21 在Init_component時已經load了
