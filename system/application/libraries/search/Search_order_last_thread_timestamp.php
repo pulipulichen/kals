@@ -29,8 +29,10 @@ class Search_order_last_thread_timestamp extends Search_order {
          WHEN annotation2topic_respond_count.topic_responded_count =0
            THEN topic_annotation.create_timestamp
        END AS last_timestamp
-FROM annotation AS topic_annotation, annotation2topic_respond_count WHERE 
-topic_annotation.annotation_id = annotation2topic_respond_count.annotation_id) as thread_timestamp_view';
+FROM annotation AS topic_annotation, annotation2topic_respond_count
+WHERE 
+topic_annotation.annotation_id = annotation2topic_respond_count.annotation_id
+AND topic_annotation.topic_id IS NULL) as thread_timestamp_view';
         
         $db->join($last_thread_timestamp_view, 'thread_timestamp_view.annotation_id = annotation.annotation_id');
         $db->select('thread_timestamp_view.last_timestamp AS thread_last_timestamp');

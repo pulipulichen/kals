@@ -7,7 +7,7 @@
  */
 ?>
 <div data-role="header" data-position="fixed">
-    <a data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">回首頁</a>
+    <a href ="<?php echo base_url(); ?>mobile/mobile_user_login" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">回首頁</a>
     <span class="ui-title">Webpage List</span>
     <a href="<?php if($this->session->userdata('logged_in') == TRUE){
                         echo '#';

@@ -9,7 +9,7 @@
 
 ?>
     <!--style="display: none"-->
-    <form name="f1" id="f1" action="<?php echo $annotataion_id; ?>" method="post" > 
+    <form name="f1" id="f1" action="<?php echo $annotataion_id; ?>" method="post" style="display: none" data-ajax="false"> 
         <textarea name="note_text"></textarea>
         <input name="annotation_type">
     
@@ -23,19 +23,20 @@
     foreach ($webpage AS $value){
     echo $value.'<br>';}
     echo $css_type.'<br>';
-    echo $annotataion_id;
+    echo $annotataion_id.'<br>';
     if(isset($respond_json)){
         foreach ($respond_json AS $json) {
-                echo "test-msg = [".$json['timestamp']."]";
+                echo "test-msg = [".$json['timestamp']."] <br>";
         }          
      }
+     
     ?></form>
     <!-- </form> -->
     <!--/test msg-->
     <!--top bar-->
 <div data-role="header" data-position="fixed" data-theme="a" data-ajax="false">
  
-    <a data-rel="back" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-carat-l">上一頁</a>
+    <a href ="<?php echo base_url(); ?>mobile/annotation_topics/<?php echo $webpage_id; ?>" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-ajax="false">上一頁</a>
     <h1><?php 
          if(isset($anchor_text)){
             echo '"'.$anchor_text.'"';
@@ -80,12 +81,13 @@
           echo '<li style = " margin-left: 15% ">'
              .'<span class = "name-container"><b><u>'.$json['user'].'</u></b>   <span>'
              .'<span class = "type-option ' .$json['css_type'].'" annotation_type = "'.$json['css_type'].'">'
-             .$json['type'].'</span>'
-             .'<span style = "font-size: x-large">'.$json['note'].'</span>'
+             .$json['type'].'</span>  '
+             .'<span style = "font-size: large">'.$json['note'].'</span>'
              .'<div style ="color: gray; font-size: 8px; text-align: right"> (' .$json['timestamp']. ') </div>' 
              .'</li>' ;                   
          }   
-    
+        
+        // TEST 
         if(isset($note_massage) && isset($pop_type)){
            echo '<li style = " margin-left: 15% ">' . "demo"."[". $pop_type."]".'<br>'.$note_massage.'<br>'."(".$timestamp.")" ;
         } 
@@ -100,13 +102,13 @@
     
     <!--POP UP href="#popupCloseRight"-->    
     <a href="#popupCloseRight" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow" style="width:100%" >新增標註回應</a>
-    <a href="<?php echo base_url();?>mobile/mobile_user_login" class="ui-btn ui-btn-b ui-corner-all ui-shadow" style="width:100%">請先登入</a>
+    <a href="<?php echo base_url();?>mobile/mobile_user_login" class="ui-btn ui-btn-b ui-corner-all ui-shadow" style="width:100%">登入</a>
     </div>
    
   <!-- 先檢查是否有登入-->
   <div>
   <!--/回應標註 FOOTER-->
-    <div data-role="popup" id="popupCloseRight"  data-overlay-theme="a" class="ui-content" style="max-width:100%">
+    <div data-role="popup" id="popupCloseRight"  data-overlay-theme="a" class="ui-content" style="max-width:100%" >
      <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>  
    
      <!--內部-->
@@ -143,12 +145,12 @@
     <label for="note_text" >請輸入回應</label>
     <textarea name="note_text" <?php if($this->session->userdata('logged_in') == FALSE){
                                      echo 'disabled="disabled"';}?> 
-       id="note_text"><?php if($this->session->userdata('logged_in') == FALSE){
+       id="note_text"><?php if($this->session->userdata('logged_in') === FALSE){
                                      echo '請先登入喔！';}?></textarea>  
 
-    <input type="submit" <?php if($this->session->userdata('logged_in') == FALSE){
+    <input type="submit" <?php if($this->session->userdata('logged_in') === FALSE){
                                   echo 'disabled="disabled"';}?>
-           onclick="trans_to_form1()" value="新增標註回應" /> 
+           onclick="trans_to_form1()" value="新增標註回應"  data-ajax="false" /> 
     <!-- alert($('input[name=annotation_type]:checked').val());-->
         <!--/內部-->
     

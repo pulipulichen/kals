@@ -742,8 +742,9 @@ class Annotation_getter extends Web_apps_controller {
         $action = 12;
         if (isset($data->topic_id)
             && isset($data->target_topic) && $data->target_topic === FALSE
-            && isset($data->limit) == FALSE)
+            && isset($data->limit) == FALSE) {
             $action = 16;
+        }
 
         $do_log = TRUE;
         if (isset($data->limit) && $data->limit == 5)
