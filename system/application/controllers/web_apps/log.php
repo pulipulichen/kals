@@ -44,6 +44,7 @@ include_once 'web_apps_controller.php';
 35=tooltip放在文章上面的顯示標註
 36=查詢Dashboard
 37=KALS_model使用
+38=點選selectable text的超連結，note={url:"http://www.google.com.tw", target="_blank"}
  * 
  *
  * @package		KALS
@@ -71,10 +72,56 @@ class Log extends Web_apps_controller {
         $this->url = get_referer_url(TRUE);
     }
 
-    public function create ($json, $callback) {
-
-        //$this->output->enable_profiler(TRUE);
+    /**
+     * 建立記錄
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     * 20131225 從get改成用post傳遞
+     * @param type $callback
+     */
+    public function create($json = NULL) {
         
+        $index = 'create_post';
+        if ($this->_is_callback($json) == false)
+        {
+            //從POST中取得JSON的資料
+            $json = $this->_get_post_json();
+
+            $data = $this->_create_log($json);
+
+            //然後把data存入session中
+            $this->_set_post_session($index, $data);
+            $this->_display_post_complete();
+        }
+        else
+        {
+            $callback = $json;
+            $data = $this->_get_post_session($index);
+
+            $this->_display_jsonp($data, $callback);
+        }
+        context_complete();
+    }
+    
+    /**
+     * 實際建立log的方法
+     * @param String $json
+     * @return type
+     */
+    private function _create_log($json) {
+        //$this->output->enable_profiler(TRUE);
+        //print_r($_POST);
+        
+        /*
+        if (!isset($_POST["json"])) {
+            $data = false;
+            //$this->_display_jsonp($data, $callback);
+            echo "aaaaaaaaaaaaaaaaaaaaa";
+            return;
+        }
+        
+        $json = $_POST["json"];
+         */
         $data = json_to_object($json);
         
         //取得參考網址資料跟位於session的user
@@ -96,7 +143,8 @@ class Log extends Web_apps_controller {
         set_ignore_authorize(false);
 
         $data = true;
-        $this->_display_jsonp($data, $callback);
+        //$this->_display_jsonp($data, $callback);
+        return $data;
     }
     
     /**

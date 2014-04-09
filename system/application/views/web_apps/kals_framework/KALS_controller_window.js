@@ -14,6 +14,7 @@ function KALS_controller_window(){
     
     KALS_controller.call(this);
     
+    this.child('loading', new Window_loading_component());
 }
 
 /**
@@ -184,7 +185,32 @@ KALS_controller_window.prototype.setup_content = function (_callback) {
     //2010.9.9 觀察loading狀態測試用
     //return;
     
-    KALS_window.loading_complete(_callback);
+    var _this = this;
+    KALS_window.loading_complete(function () {
+        // 調整內部的物件
+        _this.adjust_note();
+        
+        $.trigger_callback(_callback);
+    });
+    return this;
+};
+
+/**
+ * 調整視窗內部的note大小
+ * @returns {KALS_window.prototype}
+ */
+KALS_controller_window.prototype.adjust_note = function () {
+    
+    var _ui = this.get_ui();
+    
+    //$.test_msg("有嗎？", _ui.find(".note-container").length);
+    var _this = this;
+    _ui.find(".note-container").each(function (_index, _value) {
+        var _node_container = $(_value);
+        //_node_container.css("border", "1px solid red");
+        List_note_component.prototype.adjust_note.call(_this, _node_container);
+    });
+    
     return this;
 };
 
@@ -224,34 +250,33 @@ KALS_controller_window.prototype._setup_submit = function (_submit) {
 KALS_controller_window.prototype.get_input_value = function (_name) {
     
     if ($.is_null(_name)) {
-		return _name;
-	}
+        return _name;
+    }
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     
-    if (_ui.length == 1) {
-		return _ui.attr('value');
-	}
-	else {
-		var _type = _ui.eq(0).attr('type').toLowerCase();
-		var _checked = _ui.filter(':checked');
-		if (_type == 'radio') {
-			if (_checked.length == 1) {
-				return _checked.val();
-			}
-			else {
-				return null;
-			}
-		}
-		else 
-			if (_type == 'checkbox') {
-				var _result = [];
-				for (var _i = 0; _i < _checked.length; _i++) {
-					_result.push(_checked.eq(_i).val());
-				}
-				return _result;
-			}
-	}
+    if (_ui.length === 1) {
+            return _ui.attr('value');
+    }
+    else {
+        var _type = _ui.eq(0).attr('type').toLowerCase();
+        var _checked = _ui.filter(':checked');
+        if (_type === 'radio') {
+            if (_checked.length === 1) {
+                return _checked.val();
+            }
+            else {
+                return null;
+            }
+        }
+        else if (_type === 'checkbox') {
+            var _result = [];
+            for (var _i = 0; _i < _checked.length; _i++) {
+                _result.push(_checked.eq(_i).val());
+            }
+            return _result;
+        }
+    }
 };
 
 /**
@@ -261,26 +286,26 @@ KALS_controller_window.prototype.get_input_value = function (_name) {
  */
 KALS_controller_window.prototype.set_input_value = function (_json) {
 	
-	if (typeof(_json) != "object") {
-		return this;
-	}
-	
-	var _ui = this.get_ui();
-	for (var _name in _json) {
-		var _value = _json[_name];
-		
-		var _input = _ui.find("[name='"+_name+"']");
-		
-		if (_input.length == 1) {
-			_input.attr("value", _value);
-		}
-		else if (_input.length > 1) {
-			_input.attr("checked", false);
-			_input.filter("[value='"+_value+"']").attr("checked", true);
-		}
-	}
-	
-	return this;
+    if (typeof(_json) !== "object") {
+        return this;
+    }
+
+    var _ui = this.get_ui();
+    for (var _name in _json) {
+        var _value = _json[_name];
+
+        var _input = _ui.find("[name='"+_name+"']");
+
+        if (_input.length === 1) {
+                _input.attr("value", _value);
+        }
+        else if (_input.length > 1) {
+                _input.attr("checked", false);
+                _input.filter("[value='"+_value+"']").attr("checked", true);
+        }
+    }
+
+    return this;
 };
 
 /**
@@ -293,7 +318,7 @@ KALS_controller_window.prototype.open_kals_window = function (_callback) {
     
     //this.debug('open kals window');
     KALS_window.setup_window(_content, function () {
-            $.trigger_callback(_callback);
+        $.trigger_callback(_callback);
     });
     
     return this;
@@ -306,8 +331,8 @@ KALS_controller_window.prototype.open_kals_window = function (_callback) {
  */
 KALS_controller_window.prototype.get_input = function (_name) {
     if ($.is_null(_name)) {
-		return _name;
-	}
+        return _name;
+    }
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     return _ui;
@@ -356,7 +381,7 @@ KALS_controller_window.prototype.set_config = function (_config) {
 KALS_controller_window.prototype.get_config = function (_index) {
     
     if ($.isset(_index) &&
-	typeof(this._config[_index]) != 'undefined') {
+	typeof(this._config[_index]) !== 'undefined') {
 		return this._config[_index];
 	}
 	else {
@@ -410,7 +435,7 @@ KALS_controller_window.prototype.set_error = function (_message) {
     
     var _error_row = _ui.find('.' + KALS_window.ui.error_row_classname + ':first');
     
-    if (_error_row.length == 1) {
+    if (_error_row.length === 1) {
         _error_row.remove();
     }
     
@@ -463,7 +488,7 @@ KALS_controller_window.prototype._lang_filter = function () {
             if (KALS_context.lang.has_line(_line) === false) {
                 var _view_index = KALS_context.view_manager._get_view_classname(this._$view, '_');
                 _line = 'view.' + _view_index + '.' + _line;
-                this.debug('_lang_filter', _line);
+                //this.debug('_lang_filter', _line);
                 //"view.kals_framework_example_view_dashboard.heading":"資訊版"
                 if (KALS_context.lang.has_line(_line) === true) {
                     this[_attr] = new KALS_language_param(
@@ -497,7 +522,7 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
             + '<th class="dialog-toolbar" valign="middle">'
             + '<table class="dialog-toolbar-table" width="100%" align="center" cellpadding="0" cellspacing="0" border="0"><tbody><tr>'
             //+ '<td class="toolbar-options toolbar-backward"></td>'
-            + '<td class="dialog-heading"></td>'
+            + '<td class="dialog-heading"><span class="heading"></span></td>'
             //+ '<td class="toolbar-options toolbar-forward"></td>'
             //+ '<td class="resize-handler vertical right"></td>'
             + '</tr></tbody></table>'
@@ -505,15 +530,24 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
         + "</tbody></tbable>"
         + '<table align="center" class="dialog-table content" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody>'
         + '<tr class="dialog-content-tr"><td class="dialog-content-td">'
-            + '<div class="dialog-content"></div></td></tr>'
+            + '<div class="dialog-content"></div>'
+            + '</td></tr>'
+        // @20140119 Pulipuli Chen
+        // 加入讀取條的功能
+        + '<tr class="window-loading-tr"><td></td></tr>'
         //+ "<tr><td class='resize-handler horizontal top' colspan='3'></td></tr>"
         + '</tbody></table></div>');
+    
     
     if (this._$width !== null) {
         _ui.css('width', this._$width + 'px');
     }
     if (this._$height !== null) {
         _ui.css('height', this._$height + 'px');
+    }
+    
+    if (this._$max_height !== null) {
+        _ui.find(".dialog-content:first").css('max-height', this._$max_height + 'px');
     }
     
     if ($.browser.msie6) {
@@ -528,9 +562,14 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     
     //$.test_msg('Dialog_modal._$create_ui()', this._$modal_name);
     
-    var _container = _ui.find('.dialog-heading:first');
-    if (_container.length == 1) {
-        KALS_context.lang.add_listener(_container, this.heading);
+    var _container = _ui.find('.dialog-heading:first .heading');
+    if (_container.length === 1) {
+        if (this.heading !== undefined && this.heading !== null) {
+            KALS_context.lang.add_listener(_container, this.heading);
+        }
+        else {
+            KALS_context.lang.add_listener(_container, this._$heading);
+        }
     }
     
     // 設置關閉按鈕
@@ -590,9 +629,24 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
         this.enable_touch_scroll(_ui);
     }
     */
-    
+   
+    // 20140119 Pulipuli Chen
+    // 加上Loading的功能
+    var _loading_tr = _ui.find(".window-loading-tr:first");
+    var _loading_ui = this.loading.get_ui();
+    _loading_tr.find('td:first').append(_loading_ui);
+    if (this._$default_status_loading) {
+        _ui.addClass("loading");
+    }
+        
     return _ui;
 };
+
+/**
+ * 預設狀態是讀取中
+ * @type Boolean
+ */
+KALS_controller_window.prototype._$default_status_loading = false;
 
 /**
  * 視窗寬度
@@ -605,6 +659,12 @@ KALS_controller_window.prototype._$width = null;
  * @type Number|null null表示未設定，單位是px
  */
 KALS_controller_window.prototype._$height = null;
+
+/**
+ * 視窗最大高度
+ * @type Number|null null表示未設定，單位是px
+ */
+KALS_controller_window.prototype._$max_height = null;
 
 
 
@@ -628,7 +688,7 @@ KALS_controller_window.prototype.open_absolute_window = function (_callback) {
  */
 KALS_controller_window.prototype.set_heading = function (_lang_param) {
     var _container = this.get_heading();
-    if (_container.length == 1) {
+    if (_container.length === 1) {
         if ($.is_string(_lang_param)) {
             _container.html(_lang_param);
         }
@@ -645,7 +705,7 @@ KALS_controller_window.prototype.set_heading = function (_lang_param) {
  */
 KALS_controller_window.prototype.get_heading = function () {
     var _ui = this.get_ui();
-    var _container = _ui.find('.dialog-heading:first');
+    var _container = _ui.find('.dialog-heading:first .heading');
     return _container;
 };
 
@@ -657,7 +717,7 @@ KALS_controller_window.prototype.get_heading = function () {
 KALS_controller_window.prototype.set_forward_option = function (_option) {
     var _ui = this.get_ui();
     
-    if (typeof(_option.get_ui) != 'function') {
+    if (typeof(_option.get_ui) !== 'function') {
 		return this;
 	}
     
@@ -750,19 +810,36 @@ KALS_controller_window.prototype._$get_config = function () {
     
     var _config = {
         //top: '10%',
-        left: 'center',
+        left: "center",
         closeOnClick: false,
         load: false,
         onBeforeLoad: function() {
             //跟Modal_controller註冊開啟
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
-				KALS_context.overlay.add_opened(_this);
-			}
+            if (typeof(KALS_context) === 'object' 
+                    && typeof(KALS_context.overlay) === 'object') {
+                KALS_context.overlay.add_opened(_this);
+            }
             
-            var _ui = _this.get_ui();
+            //if (_this._adjust_position_checked === false) {
+                if ($.is_function(_this._adjust_position_top)) {
+                    _this._adjust_position_top();
+                }
+                if ($.is_function(_this._adjust_position_left)) {
+                    _this._adjust_position_left();
+                }
+                var _ui = _this.get_ui();
+                setTimeout(function () {
+                    _ui.css("visibility", "visible");
+                }, 1);
+                
+                //_this._adjust_position_checked = true;
+            //}
+                
+            
             if ($.is_function(_this._$onviewportmove)) {
-				_this._$onviewportmove(_ui);
-			}
+                var _ui = _this.get_ui();
+                _this._$onviewportmove(_ui);
+            }
         },
         onLoad: function () {
             
@@ -778,8 +855,8 @@ KALS_controller_window.prototype._$get_config = function () {
                 complete: function () {
                     setTimeout(function () {
                         if ($.is_function(_this._$onopen)) {
-							_this._$onopen(_ui);
-						}
+                            _this._$onopen(_ui);
+                        }
                         _this.call_temp_callback(_ui);    
                     }, 1000);
                        
@@ -788,16 +865,16 @@ KALS_controller_window.prototype._$get_config = function () {
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
+            if (typeof(KALS_context) === 'object' 
+                    && typeof(KALS_context.overlay) === 'object') {
                 KALS_context.overlay.delete_opened(_this);
             }
         },
         onClose: function () {
-            
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onclose)) {
-				_this._$onclose(_ui);
-			}
+                _this._$onclose(_ui);
+            }
             _this.call_temp_callback(_ui);
             
             
@@ -805,8 +882,186 @@ KALS_controller_window.prototype._$get_config = function () {
             _ui.hide();
         },
         oneInstance: false
-    };   
+    };
+    
     return _config; 
+};
+
+/**
+ * 設定視窗的左右位置
+ * 
+ * 可用參數：
+ *  null: 預設center
+ *  left: 置左
+ *  right: 置右
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠左距離10px
+ *  -10px: 靠右距離10px
+ *  10%: 靠左距離視窗寬度的10%
+ *  -10%: 靠右距離視窗寬度的10%
+ * @type String
+ */
+KALS_controller_window.prototype._$position_left = null;
+
+/**
+ * 設定視窗的上下位置
+ * 
+ * 可用參數：
+ *  null: 預設10%
+ *  top: 置頂
+ *  bottom: 置底
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠頂距離10px
+ *  -10px: 靠底距離10px
+ *  10%: 靠頂距離視窗寬度的10%
+ *  -10%: 靠底距離視窗寬度的10%
+ * @type String
+ */
+KALS_controller_window.prototype._$position_top = null;
+
+KALS_controller_window.prototype._adjust_position_checked = false;
+
+/**
+ * 調整視窗上下位置
+ * 
+ * 要看物件的this._$position_top參數來決定
+ * @author Pulipuli Chen 20140118
+ * @returns {KALS_controller_window}
+ */
+KALS_controller_window.prototype._adjust_position_top = function () {
+    
+    var _ui = this.get_ui();
+    
+    var _top = null;
+    if ( $.isset(this._$position_top) ) {
+        _top = this._$position_top;
+        _top = $.trim(_top);
+        
+        var _window_height = $(window).height();
+        var _ui_height = _ui.height();
+        //var _ui_height = 300;
+        
+        if ($.ends_with(_top, "px")) {
+            //相素類型
+            _top = _top.substr(0, _top.length -2);
+            _top = parseInt(_top, 10);
+            
+            if (_top < 0) {
+                // 如果是負數的情況
+                _top = _window_height - _ui_height + _top;
+            }
+            _top = _top + "px";
+        }
+        else if ($.ends_with(_top, "%") && $.starts_with(_top, "-")) {
+            _top = _top.substr(1, _top.length-1);
+            _top = parseInt(_top, 10);
+            var _bottom_margin = _window_height / 100 * _top;
+            _top = _window_height - _ui_height -_bottom_margin;
+            _top = _top + "px";
+        }
+        else if ($.is_number(_top)) {
+            if (_top < 0) {
+               _top = _window_height - _ui_height + _top; 
+            }
+            _top = _top + "px";
+        }
+        
+        
+        if (_top === "top") {
+            _top = "0px";
+        }
+        else if (_top === "bottom") {
+            _top = _window_height - _ui_height;
+            _top = _top + "px";
+        }
+        else if (_top === "middle" || _top === "center") {
+            _top = (_window_height / 2) - (_ui_height / 2);
+            _top = parseInt(_top, 10);
+            _top = _top + "px";
+        }
+        
+        //$.test_msg("最後算出來的top是：", _top);
+        setTimeout(function () {
+            if ($.isset(_top)) {
+                _ui.css("top", _top);
+            }
+        }, 0);
+    }
+    
+    
+    return this;
+};
+
+/**
+ * 調整視窗上下位置
+ * 
+ * 要看物件的this._$position_left參數來決定
+ * @author Pulipuli Chen 20140118
+ * @returns {KALS_controller_window}
+ */
+KALS_controller_window.prototype._adjust_position_left = function () {
+    
+    var _ui = this.get_ui();
+    
+    var _left = null;
+    if ( $.isset(this._$position_left) ) {
+        _left = this._$position_left;
+        _left = $.trim(_left);
+        
+        var _window_width = $(window).width();
+        var _ui_width = _ui.width();
+        
+        if ($.ends_with(_left, "px")) {
+            //相素類型
+            _left = _left.substr(0, _left.length -2);
+            _left = parseInt(_left, 10);
+            
+            if (_left < 0) {
+                // 如果是負數的情況
+                _left = _window_width - _ui_width + _left;
+            }
+            _left = _left + "px";
+        }
+        else if ($.ends_with(_left, "%") && $.starts_with(_left, "-")) {
+            _left = _left.substr(1, _left.length-1);
+            _left = parseInt(_left, 10);
+            var _bottom_margin = _window_width / 100 * _left;
+            _left = _window_width - _ui_width -_bottom_margin;
+            _left = _left + "px";
+        }
+        else if ($.is_number(_left)) {
+            if (_left < 0) {
+               _left = _window_width - _ui_width + _left; 
+            }
+            _left = _left + "px";
+        }
+        
+        
+        if (_left === "left") {
+            _left = "0px";
+        }
+        else if (_left === "right") {
+            _left = _window_width - _ui_width;
+            _left = _left + "px";
+        }
+        else if (_left === "middle" || _left === "center") {
+            _left = (_window_width / 2) - (_ui_width / 2);
+            _left = parseInt(_left, 10);
+            _left = _left + "px";
+        }
+        
+        //$.test_msg("最後算出來的left是：", _left);
+        setTimeout(function () {
+            if ($.isset(_left)) {
+                _ui.css("left", _left);
+            }
+        }, 0);
+
+    }
+    
+    return this;
 };
 
 KALS_controller_window.prototype._setup_effect_flag = false;
@@ -1022,5 +1277,164 @@ KALS_controller_window.prototype.cover = function (_callback) {
     
     return this;
 };
+
+// ------------------------------------------------------------
+// 讀取狀態 loading
+// ------------------------------------------------------------
+
+/**
+ * 設置是否為loading中
+ * @param {null|boolean} _is_loading 如果是null，則會切換到另一種狀態 
+ * @param {function} _callback
+ */
+KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callback) {
+    
+    var _this = this;
+    
+    if ($.is_function(_is_loading) && $.is_null(_callback)) {
+        _callback = _is_loading;
+        _is_loading = null;
+    }
+    
+    if (_is_loading !== null
+       && this.is_loading() === _is_loading) {
+        $.trigger_callback(_callback);
+        return;
+    }
+    var _ui = this.get_ui();
+    
+    var _loading = _ui.find('.window-loading:first');
+    var _content = _ui.find('.dialog-content:first');
+    var _submit = _ui.find('.window-content-submit:first');
+    
+    var _close_loading = function () {
+        _loading.slideUp(_speed, function () { _loading.hide(); });
+        _content.slideDown(_speed);
+        _ui.removeClass("loading");
+        //_this.toggle_options(true);
+        //_this.toggle_toolbar_option(true);
+    };
+    
+    var _open_loading = function () {
+        _loading.slideDown(_speed);
+        _content.slideUp(_speed, function () { _content.hide(); });
+        //_this.toggle_options(false);
+        //_this.toggle_toolbar_option(false);   
+        _ui.addClass("loading");
+    };
+    
+    //var _speed = 1000;
+    var _speed = 0;    //2010.9.10 取消動畫
+    
+    if (_is_loading === null) {
+        if (this.is_loading()) {
+            _close_loading();
+        }
+        else {
+            _open_loading();
+        }
+    }
+    
+    if (_is_loading === true) {
+        _open_loading();
+    }
+    else {
+        _close_loading();
+    }
+    
+    if ($.is_function(this._$onviewportmove)) {
+        this._$onviewportmove(_ui);
+    }
+    
+    setTimeout(function () {
+        if ($.is_function(_this._$onviewportmove)) {
+            _this._$onviewportmove(_ui);
+            _ui.animate({}, {
+                complete: function () {
+                    setTimeout(function () {
+                        $.trigger_callback(_callback);        
+                    }, 0);
+                }
+            }); 
+        }
+        else {
+            $.trigger_callback(_callback);
+        }
+        _this.focus_input();
+    }, (_speed * 1.2));
+    
+    return this;
+};
+
+/**
+ * 讀取完成，將Loading狀態關閉。
+ * @param {function} _callback
+ */
+KALS_controller_window.prototype.loading_complete = function (_callback) {
+    return this.toggle_loading(false, _callback);
+};
+
+KALS_controller_window.prototype.is_loading = function () {
+    var _ui = this.get_ui();
+    var _loading = _ui.find('.window-loading:first');
+    
+    return (!(_loading.css('display') === 'none'));
+};
+
+/**
+ * 切換顯示工具列的按鈕
+ * @param {boolean} _display
+ * @returns {Dialog_modal}
+ */
+KALS_controller_window.prototype.toggle_toolbar_option = function(_display) {
+    
+    var _toolbar = this.get_ui('.dialog-toolbar:first');
+    
+    var _classname = 'hide-option';
+    if ($.is_null(_display)) {
+        _toolbar.toggleClass(_classname);
+    }
+    else if (_display) {
+        _toolbar.removeClass(_classname);
+    }
+    else {
+        _toolbar.addClass(_classname);
+    }
+        
+    return this;
+};
+
+/**
+ * 當讀取結束之後，跳到content中的第一個可輸入欄位吧
+ * 
+ * @todo 20140119 無法正常運作
+ * @return {KALS_controller_window}
+ */
+KALS_controller_window.prototype.focus_input = function () {
+    var _ui = this.get_ui();
+    
+    var _input = _ui.find(".default-focus:first");
+    
+    if (_input.length === 0) {
+        _input = _ui.find("input:first");
+    }
+    if (_input.length === 0) {
+        _input = _ui.find("button:first");
+    }
+    if (_input.length === 0) {
+        _input = _ui.find("textarea:first");
+    }
+    
+    $.test_msg("focus_input", _input.length);
+    if (_input.length > 0) {
+        _input.css("border", "3px solid red");
+        _input.css("color", "red");
+        _input.focus();
+        //_input.remove();
+    }
+    
+    return this;
+};
+
 /* End of file KALS_controller_window */
 /* Location: ./system/application/views/web_apps/kals_framework/KALS_controller_window.js */

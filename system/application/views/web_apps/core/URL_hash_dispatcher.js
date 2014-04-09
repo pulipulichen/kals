@@ -34,9 +34,9 @@ URL_hash_dispatcher.prototype._hash_data = null;
  */
 URL_hash_dispatcher.prototype._get_location_hash = function () {
     var _hash = '';
-    if (typeof(location.hash) != 'undefined') {
+    if (typeof(location.hash) !== 'undefined') {
         _hash = location.hash;
-        if (_hash.substring(0, 1) == '#') {
+        if (_hash.substring(0, 1) === '#') {
 			_hash = _hash.substring(1, _hash.length);
 		}
     }
@@ -49,11 +49,11 @@ URL_hash_dispatcher.prototype._get_location_hash = function () {
         
         var _start = 0;
         var _end = _url.length;
-        if (_hash_pos == -1) {
+        if (_hash_pos === -1) {
             //情況1：沒有hash
             return '';
         }
-        else if (_query_pos == -1) {
+        else if (_query_pos === -1) {
             //情況2：有hash但沒有query
             _start = _hash_pos + 1;
         }
@@ -86,7 +86,7 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
     
     var _pos = this._save_scroll_position();
     
-    if (typeof(location.hash) != 'undefined') {   
+    if (typeof(location.hash) !== 'undefined') {   
         //$.test_msg('設定location hash', this._set_lcok);
         window.location.hash = _hash;
     }
@@ -96,21 +96,21 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
         
         var _hash_pos = _url.indexOf('#');
         
-        if (_hash_pos != -1) {
+        if (_hash_pos !== -1) {
             var _start = _hash_pos;
             var _end = _url.length;
             
             var _query_pos = _url.indexOf('?');
-            if (_query_pos != -1
+            if (_query_pos !== -1
                 && (_query_pos > _hash_pos)) {
                 _end = _query_pos;
             }
             
             var _head = _url.substring(0, _start);
             var _foot = '';
-            if (_url.length != _end) {
-				_foot = _url.substring(_end, _url.length);
-			}
+            if (_url.length !== _end) {
+                _foot = _url.substring(_end, _url.length);
+            }
             
             _url = _head + _foot;
         }
@@ -138,9 +138,9 @@ URL_hash_dispatcher.prototype._save_scroll_position = function () {
  * @param {Object} _pos
  */
 URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
-    
-	window.scrollTo(_pos.x, _pos.y);
-	
+
+    window.scrollTo(_pos.x, _pos.y);
+
 };
 
 URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
@@ -362,12 +362,12 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
             var _scope_text = this.get_field('select');
             //$.test_msg('has check_hash()', _scope_text);
             
-			KALS_context.init_profile.add_listener(function () {
-		        KALS_text.selection.select.load_select(_scope_text);  
-		    });
-			//setTimeout(function () {
-			//	KALS_text.selection.select.load_select(_scope_text);
-			//}, 3000); 
+            KALS_context.init_profile.add_listener(function () {
+                KALS_text.selection.select.load_select(_scope_text);  
+            });
+            //setTimeout(function () {
+            //	KALS_text.selection.select.load_select(_scope_text);
+            //}, 3000); 
         }  
     }
     

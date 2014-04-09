@@ -1,6 +1,8 @@
 /**
  * Init_context
- *
+ * 
+ * 初始化第一步驟
+ * 
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>

@@ -69,16 +69,17 @@ Window_content_submit.prototype.get_data = function () {
     //$.test_msg('Window_content_submit.get_data()', this._$input_names);
     
     if ($.is_null(this._$input_names)) {
-		return _data;
-	}
-	else {
-		for (var _i in this._$input_names) {
-			var _name = this._$input_names[_i];
-			var _value = this._content.get_input_value(_name);
-			_data[_name] = _value;
-		}
-		return _data;
-	}
+        return _data;
+    }
+    else {
+        for (var _i in this._$input_names) {
+            var _name = this._$input_names[_i];
+            var _value = this._content.get_input_value(_name);
+            _value = $.trim(_value);
+            _data[_name] = _value;
+        }
+        return _data;
+    }
 };
 
 /**
@@ -89,18 +90,23 @@ Window_content_submit.prototype.get_data = function () {
 Window_content_submit.prototype.get_inputs = function () {
     var _inputs = {};
     if ($.is_null(this._$input_names)) {
-		return _inputs;
-	}
-	else {
-		for (var _i in this._$input_names) {
-			//$.test_msg('Window_content_submit.get_inputs()', this._$input_names);
-			
-			var _name = this._$input_names[_i];
-			var _input = this._content.get_input(_name);
-			_inputs[_name] = _input;
-		}
-		return _inputs;
-	}
+        return _inputs;
+    }
+    else {
+        for (var _i in this._$input_names) {
+            //$.test_msg('Window_content_submit.get_inputs()', this._$input_names);
+
+            var _name = this._$input_names[_i];
+            var _input = this._content.get_input(_name);
+            
+            // 20140102 Pulipuli Chen
+            // 先在這邊unlock所有empty
+            KALS_window.ui.check_input(_input, false);
+            
+            _inputs[_name] = _input;
+        }
+        return _inputs;
+    }
 };
 
 /**
@@ -205,7 +211,7 @@ Window_content_submit.prototype._lock_submit = function () {
     var _ui = this.get_ui();
     
     //$.test_msg(typeof(_ui.attr('disabled')), _ui.attr('disabled'));
-    if (typeof(_ui.attr('disabled')) != 'undefined'
+    if (typeof(_ui.attr('disabled')) !== 'undefined'
         && _ui.attr('disabled') === true) {
         //不可以重複執行compelte_handle()！
         return false;

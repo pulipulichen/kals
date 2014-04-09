@@ -1,5 +1,5 @@
 /**
- * Selection_search
+ * Selection_view
  *
  * @package    KALS
  * @category   Webpage Application Libraries
@@ -11,15 +11,15 @@
  * @extends {Selection}
  * @param {Selectable_text} _text
  */
-function Selection_search(_text) {
+function Selection_view(_text) {
     
     Selection.call(this, _text);
     
 }
 
-Selection_search.prototype = new Selection();
+Selection_view.prototype = new Selection();
 
-Selection_search.prototype._$name = 'search';
+Selection_view.prototype._$name = 'view';
 
-/* End of file Selection_search */
-/* Location: ./system/application/views/web_apps/Selection_search.js */
+/* End of file Selection_view */
+/* Location: ./system/application/views/web_apps/Selection_view.js */
