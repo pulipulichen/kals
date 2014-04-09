@@ -48,19 +48,14 @@ Selection_select.prototype._selectable = true;
  * @param {jQuery} _word
  */
 Selection_select.prototype.set_select = function (_word) {
-    // 如果輸入參數是範圍，那就改成用Scope_collection_param吧
-    if ($.is_class(_word, "Scope_collection_param")) {
-        return this.set_scope_coll(_word);
-    }
-    
-    //$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
+	//$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
     if (this._selectable === false) {
 		
-        $.test_msg("delete_field select 3");
-        KALS_context.hash.delete_field('select');
-
-        return this;
-    }
+		$.test_msg("delete_field select 3");
+		KALS_context.hash.delete_field('select');
+		
+		return this;
+	}
     
     var _id = $.get_prefixed_id(_word);
 	
@@ -125,15 +120,16 @@ Selection_select.prototype.set_select = function (_word) {
  * @author Pulipuli Chen 20131115
  */
 Selection_select.prototype.set_scope_coll = function (_scope_coll) {
-    Selection.prototype.set_scope_coll.call(this, _scope_coll);
-
-    var _from = _scope_coll.get_from();
-    var _to = _scope_coll.get_to();
-
-    //$.test_msg("select set_scope_coll", [_from, _to]);
-    KALS_context.hash.set_field('select', _from + ',' + _to);
-
-    return this;
+	
+	Selection.prototype.set_scope_coll.call(this, _scope_coll);
+	
+	var _from = _scope_coll.get_from();
+	var _to = _scope_coll.get_to();
+	
+	//$.test_msg("select set_scope_coll", [_from, _to]);
+	KALS_context.hash.set_field('select', _from + ',' + _to);
+	
+	return this;
 };
 
 Selection_select.prototype.cancel_select = function () {
@@ -164,16 +160,16 @@ Selection_select.prototype.clear = function () {
 Selection_select.prototype.load_select = function (_scope_text) {
     
     if ($.is_null(_scope_text)) {
-        return this;
-    }
+		return this;
+	}
     
     var _scopes = _scope_text.split(',');
     
     var _first_index = _scopes[0];
     var _last_index = _first_index;
     if (_scopes.length > 1) {
-        _last_index = _scopes[1];
-    }
+		_last_index = _scopes[1];
+	}
 
     var _scope_coll = new Scope_collection_param(_first_index, _last_index);
     var _anchor_text = this._text.get_anchor_text(_scope_coll);
@@ -182,7 +178,7 @@ Selection_select.prototype.load_select = function (_scope_text) {
     
     //$.test_msg('Selection_select.load_select()');
     
-    //var _this = this;
+    var _this = this;
     //setTimeout(function () {
     //    _this.scroll_into_view();    
     //}, 500);

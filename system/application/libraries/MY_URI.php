@@ -33,7 +33,6 @@ class MY_URI extends CI_URI {
 			}
                     }
 		}
-                
 
 		// Convert programatic characters to entities
 		$bad	= array('$', 		'(', 		')',	 	'%28', 		'%29');

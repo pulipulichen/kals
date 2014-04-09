@@ -37,8 +37,6 @@ class generic extends Web_apps_controller {
         /**
          * 基本工具類
          * 
-         * 以下檔案不需要壓縮了，已經壓縮完成了
-         * 
          * 20130221 Pulipuli Chen
          * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
          * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
@@ -46,10 +44,6 @@ class generic extends Web_apps_controller {
          * http://refresh-sf.com/yui
          * 
          * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
-         * 
-         * 20140223 Pudding Chen
-         * 我改用NetBeans的Minify JS壓縮，這是NetBeans的plugin
-         * 
          * @var Array 
          */
         "toolkit_list" => array(
@@ -62,8 +56,6 @@ class generic extends Web_apps_controller {
             , 'libraries/min/yui-min'
             , 'libraries/min/jQuery_mousewheel_plugin-min'
             , 'libraries/min/jquery.scrollIntoView-min'
-            , 'libraries/min/jquery.storageapi.min'
-            , 'libraries/min/lz-string-1.3.3-min'
         ),
         
         /**
@@ -72,7 +64,6 @@ class generic extends Web_apps_controller {
          */
         "toolkit_list_package" => array(
             'core/KALS_CONFIG'
-            , 'core/KALS_SITE_REFORM'
             , 'core/KALS_language_param'
             , 'core/feedback/feedback'
             , 'core/feedback/html2canvas'
@@ -114,8 +105,6 @@ class generic extends Web_apps_controller {
             'core/URL_hash_dispatcher',
             'core/Style_manager',
             'core/Overlay_manager',
-            'core/KALS_storage',
-            'core/Site_reform',
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',
@@ -140,7 +129,6 @@ class generic extends Web_apps_controller {
             'kals_window/Window_user_interface',
             'kals_window/Window_change_link',
 
-            'navigation/Navigation_item',
             'navigation/Navigation_list',
 
             'navigation/Anonymous_navigation',
@@ -195,50 +183,41 @@ class generic extends Web_apps_controller {
             'annotation_param/Recommend_param',
 
             'selection/Selection',
-            'selection/select/Selection_view',
-            'selection/select/Selection_select',
+            'selection/Selection_view',
+            'selection/Selection_select',
             //'selection/Selection_search',
-            'selection/recommend/Selection_recommend',
-            'selection/recommend/Selection_recommended',
-            'selection/recommend/Selection_recommend_by',
+            'selection/Selection_recommend',
+            'selection/Selection_recommended',
+            'selection/Selection_recommend_by',
             
-            'selection/my/Selection_my',
-            'selection/my/Selection_my_importance',
-            'selection/my/Selection_my_concept',
-            'selection/my/Selection_my_confusion',
-            'selection/my/Selection_my_question',
-            'selection/my/Selection_my_example',
-            'selection/my/Selection_my_summary',
-            'selection/my/Selection_my_custom',
-            'selection/my/Selection_my_manager',
+            'selection/Selection_my',
+            'selection/Selection_my_importance',
+            'selection/Selection_my_concept',
+            'selection/Selection_my_confusion',
+            'selection/Selection_my_question',
+            'selection/Selection_my_example',
+            'selection/Selection_my_summary',
+            'selection/Selection_my_custom',
+            'selection/Selection_my_manager',
 
-            'selection/my/Selection_my_custom_type',
-            'selection/my/Selection_my_custom_manager',
+            'selection/Selection_my_custom_type',
+            'selection/Selection_my_custom_manager',
             
-            'selection/navigation/Selection_navigation',
-            'selection/navigation/Selection_navigation_bad',
-            'selection/navigation/Selection_navigation_normal',
-            'selection/navigation/Selection_navigation_good',
-            'selection/navigation/Selection_navigation_great',
-            'selection/navigation/Selection_navigation_manager',
+            'selection/Selection_navigation',
+            'selection/Selection_navigation_bad',
+            'selection/Selection_navigation_normal',
+            'selection/Selection_navigation_good',
+            'selection/Selection_navigation_great',
+            'selection/Selection_navigation_manager',
 
-            'selectable_text/Select_tooltip',
-            'selectable_text/Selectable_text_anchor',
-            'selectable_text/Selectable_text_chapter',
-            'selectable_text/Selectable_text_location',
-            'selectable_text/Selectable_text_offset',
-            'selectable_text/Selectable_text_paragraph',
-            'selectable_text/Selectable_text_scope',
-            'selectable_text/Selectable_text_sentence',
-            'selectable_text/Selectable_text_word',
-            'selectable_text/Selectable_text',
+            'selection/Select_tooltip',
+            'selection/Selectable_text',
             'selection/Selection_manager',
 
             
             'annotation_editor/Editor_container',
             'annotation_editor/Annotation_editor',
             'annotation_editor/Type_component',
-            'kals_framework/View_annotation_type',
             'annotation_editor/Type_menu',
             'annotation_editor/Note_editor',
             'annotation_editor/Note_editor_ckeditor',

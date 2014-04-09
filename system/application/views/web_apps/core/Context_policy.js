@@ -11,6 +11,7 @@
  * @extends {Attribute_event_dispatcher}
  */
 function Context_policy(){
+    
     Attribute_event_dispatcher.call(this);
     
     //if ($.object_isset('KALS_context.auth.add_listener()'))

@@ -75,9 +75,6 @@ class Webpage extends KALS_resource {
 
         $this->_CI_load('library', 'fuzzy/Language_variable_collection', 'language_variable_collection');
         $this->langvar_coll = new Language_variable_collection($this);
-        
-        $this->_CI_load('library', 'kals_resource/Resource_feature_collection', 'resource_feature_collection');
-        $this->feature_coll = new Resource_feature_collection($this);
     }
 
     protected function _set_field_filter($cond)
@@ -316,21 +313,7 @@ class Webpage extends KALS_resource {
             return $users->length();
         }
     }
-    
-    public function set_feature($feature_type_id, $value) {
-        $this->feature_coll->set_item_data($feature_type_id, $value);
-        $this->feature_coll->update();
-        return $this;
-    }
-    
-    /**
-     * @param int $feature_type_id
-     * @return Annotation_feature
-     */
-    public function get_feature($feature_type_id)
-    {
-        return $this->feature_coll->get_item($feature_type_id);
-    }
+
 }
     /* End of file Webpage.php */
 /* Location: ./system/application/libraries/kals_resource/Webpage.php */

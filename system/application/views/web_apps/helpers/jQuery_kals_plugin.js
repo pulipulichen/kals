@@ -14,7 +14,7 @@
  */
 
 // Deny defined again.
-if (typeof($jquery_extends) === 'undefined') {
+if (typeof($jquery_extends) == 'undefined') {
 
 /**
  * 顯示測試訊息
@@ -31,7 +31,7 @@ jQuery.test_msg = function (_title, _test) {
     
     var _info_box = this('.KALS.info-box:first');
 	
-    if (_info_box.length === 0) {   
+    if (_info_box.length == 0) {   
         var _toggle = $('<div></div>')
             .css('height', '15px')
             .dblclick(function () {
@@ -213,14 +213,6 @@ jQuery.prepends_with = function(_str, _prefix) {
 	}
 };
 
-/**
- * 取代字串
- * @param {String} _search 要被取代的字串
- * @param {String} _replace 要取而代之的字串
- * @param {String} _subject 進行處理的字串
- * @param {number} _count 最多的處理次數
- * @returns {String}
- */
 jQuery.str_replace = function (_search, _replace, _subject, _count) {
     // http://kevin.vanzonneveld.net
     // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
@@ -275,26 +267,19 @@ jQuery.str_replace = function (_search, _replace, _subject, _count) {
 
 jQuery.json_encode = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
-        return _json;
-    }
-    else if (this.is_string(_json)) {
-        return this.serialize_string(_json);
-    }
-    else if (this.is_array(_json)) {
-        return this.serialize_array(_json);
-    }
-    else {
-        return this.serialize_json(_json);
-    }
-};
-
-/**
- * 將json字串還原成為物件
- * @param {String} _string
- * @returns {Object}
- */
-jQuery.json_decode = function (_string) {
-    return eval(_string);
+		return _json;
+	}
+	else 
+		if (this.is_string(_json)) {
+			return this.serialize_string(_json);
+		}
+		else 
+			if (this.is_array(_json)) {
+				return this.serialize_array(_json);
+			}
+			else {
+				return this.serialize_json(_json);
+			}
 };
 
 /**
@@ -528,22 +513,16 @@ jQuery.is_null = function (_obj) {
 	}
 };
 
-/**
- * 檢查是否是這個類別
- * @param {Object} _obj
- * @param {String} _class_name
- * @returns {Boolean}
- */
 jQuery.is_class = function(_obj, _class_name) {
     if ($.is_null(_class_name)) {
-        return false;
-    }
+		return false;
+	}
     
     try {
-        return (typeof(_obj) === 'object' 
+        return (typeof(_obj) == 'object' 
             && _obj !== null 
             //&& (_obj instanceof _class_name));
-            && $.get_class(_obj) === _class_name);
+            && $.get_class(_obj) == _class_name);
     }
     catch (e) {
         return false;
@@ -575,17 +554,12 @@ jQuery.filter_array = function (_obj) {
 	}
 };
 
-/**
- * 檢查是否是字串
- * @param {Object} _obj
- * @returns {Boolean}
- */
 jQuery.is_string = function (_obj) {
-    return (typeof(_obj) === 'string');
+    return (typeof(_obj) == 'string');
 };
 
 jQuery.is_number = function (_obj) {
-    return (typeof(_obj) === 'number');
+    return (typeof(_obj) == 'number');
 };
 
 /**
@@ -623,22 +597,8 @@ jQuery.is_object = function (_obj) {
     return (typeof(_obj) == 'object' && !(_obj instanceof Array));
 };
 
-/**
- * 檢測變數是否是函式
- * @param {Object} _obj
- * @returns {Boolean}
- */
 jQuery.is_function = function (_obj) {
-    return (typeof(_obj) === 'function');
-};
-
-/**
- * 檢測變數是否是空值
- * @param {Object} _obj
- * @returns {Boolean}
- */
-jQuery.is_undefined = function (_obj) {
-    return (_obj === undefined);
+    return (typeof(_obj) == 'function');
 };
 
 /**
@@ -717,29 +677,15 @@ jQuery.object_isset = function (_object_path) {
 // URL類
 // --------
 
-/**
- * 檢查字串是否是網址
- * @param {String} _url
- * @returns {Boolean}
- */
 jQuery.is_link = function(_url) {
     if (this.starts_with(_url, 'http://') ||
 	this.starts_with(_url, 'https://') ||
 	this.starts_with(_url, 'ftp://')) {
-            return true;
-    }
-    else {
-            return false;
-    }
-};
-
-/**
- * 檢查字串是否是網址
- * @param {String} _url
- * @returns {Boolean}
- */
-jQuery.is_url = function (_url) {
-    return this.is_link(_url);
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
 jQuery.parse_url = function (_str, _component) {
@@ -814,31 +760,25 @@ jQuery.parse_url = function (_str, _component) {
     }
 };
 
-/**
- * 連結是圖片
- * @param {String} _url
- * @returns {Boolean}
- */
 jQuery.is_image = function(_url) {
     if (false == this.is_link(_url)) {
-        return false;
-    }
+		return false;
+	}
     var _param = this.parse_url(_url);
     if (this.is_null(_param) || this.is_null(_param.path)) {
-        return false;
-    }
+		return false;
+	}
     var _path = _param.path;
     var _ext = this.parse_extension_name(_path);
     if (this.is_null(_ext)) {
-        return false;
-    }
-    var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
-    if (this.inArray(_ext, _image_array) != -1) {
-        return true;
-    }
-    else {
-        return false;
-    }
+		return false;
+	}
+    if (this.inArray(_ext, ['jpg', 'jpeg', 'gif', 'png']) != -1) {
+		return true;
+	}
+	else {
+		return false;
+	}
 };
 
 jQuery.parse_extension_name = function (_path) {
@@ -2133,23 +2073,22 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
     //return;
 	
-    if (this.scroll_to_lock === true) {
-        $.trigger_callback(_callback);
-        return;
-    }
-    this.scroll_to_lock = true;
-
-    var _this = this;
-    // 要確認視窗到底讀完了沒有
-    if (KALS_context.completed === false) {
-        //$.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
-        KALS_context.add_listener(function (_dispatcher, _data) {
-            _this.scroll_to_lock = false;
-            _this.scroll_to(_position, _speed, _callback);
-        });
-        $.trigger_callback(_callback);
-        return;
-    }
+	if (this.scroll_to_lock === true) {
+		return;
+	}
+	this.scroll_to_lock = true;
+    
+	// 要確認視窗到底讀完了沒有
+	if (KALS_context.completed === false) {
+		var _this = this;
+		$.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
+		KALS_context.add_listener(function (_dispatcher, _data) {
+			_this.scroll_to_lock = false;
+			_this.scroll_to(_position, _speed, _callback);
+		});
+		return;
+	}
+	
 	
     //宣告基本資料
     var _target_x, _target_y, _interval_x, _interval_y, _interval_time = 10, _repeat_count
@@ -2158,19 +2097,18 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //確定位置資料
     _target_x = $.get_parameter(_position, ['x', 'left', 'pageXOffset'], window.pageXOffset);
     if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-')) {
-        _target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
-    }
+		_target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
+	}
     _target_y = $.get_parameter(_position, ['y', 'top', 'pageYOffset'], window.pageYOffset);
     if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-')) {
-        _target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
-    }
+		_target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
+	}
     
 	//$.test_msg('$.scroll_to target', [_target_x, _target_y]);
 	
-    //if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
-    //    $.trigger_callback(_callback);
-    //    return this;
-    //}
+    if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
+		return this;
+	}
     
     //調整_speed跟_callback
     if ($.is_function(_speed) && $.is_null(_callback)) {
@@ -2179,37 +2117,25 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     }
     
     //取得_speed
-    if (_speed === 'fast') {
-        _speed = 200;
-    }
-    else if (_speed === 'slow') {
-        _speed = 2000;
-    }
-    else if ($.is_number(_speed) === false) {
-        _speed = 1000;
-    }
+    if (_speed == 'fast') {
+		_speed = 200;
+	}
+	else 
+		if (_speed == 'slow') {
+			_speed = 2000;
+		}
+		else 
+			if ($.is_number(_speed) === false) {
+				_speed = 1000;
+			}
     
-    var _config = {};
-    var _config_setted = false;
-    if ($.is_number(_target_y)) {
-        _config["scrollTop"] = _target_y;
-        _config_setted = true;
-    }
-    if ($.is_number(_target_x)) {
-        _config["scrollLeft"] = _target_x;
-        _config_setted = true;
-    }
     
-    //$.test_msg("要準備捲動囉", _config);
-    
-    if (_config_setted) {
-        $('html, body').animate(_config, _speed, function () {
-            _this.scroll_to_lock = false;
-        });
-    }
+    $('html, body').animate({
+        scrollTop: _target_y,
+		scrollLeft: _target_x
+    }, _speed);
 	
-    $.trigger_callback(_callback)
-    return this;
+    return $.trigger_callback(_callback);
      
 	/**
 	 * 以下寫太差了，不使用
@@ -2295,17 +2221,8 @@ jQuery.load_scroll_position = function () {
     window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
 };
 
-/**
- * 產生隨機的ID字串
- * @param {String} _prefix 前置字串
- * @returns {String}
- */
-jQuery.create_id = function (_prefix) {
-    var _id = (new Date()).getTime() + '';
-    if (_prefix !== undefined) {
-        _id = _prefix + _id;
-    }
-    return _id;
+jQuery.create_id = function () {
+    return (new Date()).getTime() + '';
 };
 
 /**
@@ -2501,61 +2418,36 @@ jQuery.find_and_replace_youtube_links = function (_message) {
  */
 jQuery.embad_youtube_script = function(_youtube_id)
 {
-    $.test_msg('embed_youtube_script', _youtube_id);
+	$.test_msg('embed_youtube_script', _youtube_id);
     return '<object height="250" width="300">'
-           //+ '<param name="movie" value="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
-           + '<param name="movie" value="' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
-           + '<param name="allowFullScreen" value="true">'
-           + '<param name="allowscriptaccess" value="always">'
-           //+ '<embed allowfullscreen="true" allowscriptaccess="always" src="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
-           + '<embed allowfullscreen="true" allowscriptaccess="always" src="' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
-           + '</object>';   
+	   //+ '<param name="movie" value="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
+	   + '<param name="movie" value="' + _youtube_id + '?fs=1&amp;hl=zh_TW">'
+	   + '<param name="allowFullScreen" value="true">'
+	   + '<param name="allowscriptaccess" value="always">'
+	   //+ '<embed allowfullscreen="true" allowscriptaccess="always" src="http://www.youtube.com/v/' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
+	   + '<embed allowfullscreen="true" allowscriptaccess="always" src="' + _youtube_id + '?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash">'
+	   + '</object>';   
 };
 
-/**
- * 檢查是否是email
- * @param {String} _email
- * @returns {Boolean}
- * @author Pulipuli Chen 20140102
- */
-jQuery.is_email = function (_email) {
-    var _regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return _regex.test(_email);
-}
-
 $.widget("ui.dialog", $.ui.dialog, {
-    _allowInteraction: function(event) {
-        return !!$(event.target).closest(".cke").length || this._super(event);
-    }
+	_allowInteraction: function(event) {
+		return !!$(event.target).closest(".cke").length || this._super(event);
+	}
 });
-
-/**
- * 將jQuery加上append事件
- * 
- * 參考來源 http://stackoverflow.com/questions/7167085/on-append-do-something
- */
-(function($) {
-    var origAppend = $.fn.append;
-
-    $.fn.append = function () {
-        return origAppend.apply(this, arguments).trigger("append");
-    };
-})(jQuery);
 
 /**
  * 20130222 Pulipuli Chen
  * 不採用
  */
-//if (false) {
+if (false) {
     /**
      * @type {jQuery}
      * @alias $
      * @constructor
-     * @extends {jQuery}
      * @method [$]
      */
-    //$ = jQuery;
-//}
+    $ = jQuery;
+}
 
 // ---------
 // 防止重複讀取

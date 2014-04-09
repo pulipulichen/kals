@@ -121,34 +121,7 @@ Window_content.prototype.setup_content = function (_callback) {
     //2010.9.9 觀察loading狀態測試用
     //return;
     
-    var _this = this;
-    KALS_window.loading_complete(function () {
-        // 調整內部的物件
-        _this.adjust_note();
-        
-        $.trigger_callback(_callback);
-    });
-    return this;
-};
-
-
-
-/**
- * 調整視窗內部的note大小
- * @returns {KALS_window.prototype}
- */
-Window_content.prototype.adjust_note = function () {
-    
-    var _ui = this.get_ui();
-    
-    //$.test_msg("有嗎？", _ui.find(".note-container").length);
-    var _this = this;
-    _ui.find(".note-container").each(function (_index, _value) {
-        var _node_container = $(_value);
-        //_node_container.css("border", "1px solid red");
-        List_note_component.prototype.adjust_note.call(_this, _node_container);
-    });
-    
+    KALS_window.loading_complete(_callback);
     return this;
 };
 
@@ -334,7 +307,7 @@ Window_content.prototype.set_error = function (_message) {
     
     var _error_row = _ui.find('.' + KALS_window.ui.error_row_classname + ':first');
     
-    if (_error_row.length === 1) {
+    if (_error_row.length == 1) {
         _error_row.remove();
     }
     

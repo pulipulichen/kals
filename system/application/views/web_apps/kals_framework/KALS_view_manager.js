@@ -46,10 +46,10 @@ KALS_view_manager.prototype.get_view = function (_index) {
  * @param {String} _replace 要取代的變數
  */
 KALS_view_manager.prototype._get_view_classname = function (_index, _replace) {
-    if (_replace === undefined) {
-        _replace = '-';
-    }
-    return _index.replace(/[\W|\_]/g, _replace).toLowerCase();
+	if (_replace === undefined) {
+		_replace = '-';
+	}
+	return _index.replace(/[\W|\_]/g, _replace).toLowerCase();
 };
 
 /**
@@ -72,17 +72,17 @@ KALS_view_manager.prototype._view_initialize_language = function(_view, _index) 
 	//$.test_msg('parse lang', [_kals_lang.length, _view.html()]);
 	
 	_kals_lang.each(function (_index, _ele) {
-            _ele = $(_ele);
-
-            var _text = _ele.html();
-            var _line = _ele.attr('kals-lang');
-
-            if (KALS_context.lang.has_line(_line)) {
-                KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
-            }
-            else if (KALS_context.lang.has_line(_view_classname + _line)) {
-                KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _view_classname + _line));
-            }
+		_ele = $(_ele);
+		
+		var _text = _ele.html();
+		var _line = _ele.attr('kals-lang');
+		
+		if (KALS_context.lang.has_line(_line)) {
+			KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+		}
+		else if (KALS_context.lang.has_line(_view_classname + _line)) {
+			KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _view_classname + _line));
+		}
 	});
 	
 	return _view;

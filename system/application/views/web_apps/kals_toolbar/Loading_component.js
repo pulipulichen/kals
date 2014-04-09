@@ -17,27 +17,13 @@ function Loading_component() {
 
 Loading_component.prototype = new KALS_user_interface();
 
-/**
- * 建立讀取中的清單
- * @returns {jQuery}
- */
 Loading_component.prototype._$create_ui = function () {
     
     var _ui = $('<div class="loading-component">'
-        + '<span class="progress"></span>'
         + '<span class="message"></span>'
         + '<span class="image"></span>'
         + '</div>');
     
-    //加入計算Percent數量
-    var _progress_ui = _ui.find(".progress");
-    setTimeout(function () {
-        KALS_context.progress.add_listener(function (_progress) {
-            var _percent = _progress.get_percent(true);
-            _progress_ui.html(_percent);
-        });
-    }, 5000);
-        
     
     var _message = _ui.find('.message');
     KALS_context.lang.add_listener(_message, new KALS_language_param('LOADING...',
@@ -45,8 +31,6 @@ Loading_component.prototype._$create_ui = function () {
     
     _ui.find('.image').append(KALS_context.get_image_url('ajax-loader.gif'));
     //$.test_msg('loading component');
-    
-    
     return _ui;
     
 };

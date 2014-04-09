@@ -74,20 +74,16 @@ Window_user_interface.prototype._setup_text_input = function (_input, _default_v
     return _input;
 };
 
-Window_user_interface.prototype.check_input = function (_input, _force_empty) {
+Window_user_interface.prototype.check_input = function (_input) {
     
     //$.test_msg('win ui.check_input()', _input.length);
-    
-    if (_force_empty === undefined || typeof _force_empty !== "boolean") {
-        _force_empty = true;
-    }
     
     _input.change(function () {
         var _input = $(this);
         
         //$.test_msg('window ui.check_input()', _input.val());
         
-        if (_input.val() === '' || _force_empty) {
+        if (_input.val() === '') {
             _input.addClass('empty');
         }
         else {
@@ -386,8 +382,7 @@ Window_user_interface.prototype.tip = function (_lang_param) {
 Window_user_interface.prototype.button = function (_lang_param) {
 	var _btn = $("<button type='button'></button>");
 	KALS_context.lang.add_listener(_btn, _lang_param);
-    _btn.addClass('button')
-        .addClass('dialog-option');
+    _btn.addClass('button');
     return _btn;
 };
 
