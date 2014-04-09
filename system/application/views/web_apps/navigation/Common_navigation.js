@@ -37,7 +37,6 @@ function Common_navigation() {
             //, new Reading_guide()
             //, KALS_text.guide
             //_search
-			, new Annotation_navigation_map()
         ];
     }
 }

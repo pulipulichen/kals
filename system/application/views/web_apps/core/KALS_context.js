@@ -27,17 +27,9 @@ KALS_context.initialize = function () {
         this.setup_base_url();
     }
     
-    //設定基本網址
-    if (typeof(KALS_loader) != 'undefined') {
-		this.base_url = KALS_loader.get_base_url();
-	}
-	else {
-		// TODO 2010.8 KALS_context.setup_base_url: 只能在測試時使用
-		this.setup_base_url();
-	}
     if (this.base_url === null || this.base_url === '') {
-		this.base_url = 'http://192.168.11.2/kals/web_apps/';
-	}
+        this.base_url = 'http://demo-kals.lias.nccu.edu.tw/kals/web_apps/';
+    }
     //$.test_msg('KALS_context() base url', this.base_url);
     
     //基礎元件 Basic Components
@@ -78,7 +70,6 @@ KALS_context.initialize = function () {
             _this.init_context.start();
         });    
     }, 0);
-    
 };
 
 /**
@@ -104,8 +95,8 @@ KALS_context.base_url = null;
  */
 KALS_context.setup_base_url = function () {
     if (this.base_url !== null) {
-		return this;
-	}
+        return this;
+    }
     
     var _scripts = $('script');
     
