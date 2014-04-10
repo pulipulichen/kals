@@ -205,7 +205,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     // ------------------------------------
     
     // 是否啟用快取
-    var _cache_enable = true;
+    var _cache_enable = KALS_CONFIG.selectable_text_cache;
     //_cache_enable = false;
     
     var _task_setup_selectable_element = function (_callback) {

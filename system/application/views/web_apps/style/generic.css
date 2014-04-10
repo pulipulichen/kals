@@ -20,6 +20,7 @@
     color: #383838;
     font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
     font-size: 1.1em;
+    font: 110% arial,helvetica,clean,sans-serif;
     
     -moz-border-radius: 8px !important;
     -webkit-border-radius: 8px;
@@ -77,10 +78,16 @@
 .KALS span, 
 .KALS.kals-model span {
     display: inline;
-	position: static;
+    position: static;
 }
 
 .KALS.info-box {
 	border: 1px solid gray;
 	color: gray;
+}
+
+/* -------- */
+/* font */
+.KALS {
+    font: 100% arial,helvetica,clean,sans-serif;
 }

@@ -269,7 +269,12 @@ DEFAULT_KALS_CONFIG = {
          * @type {RegExp}
          */
         regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
-    }   //view: {
+    },   //view: {
+    /**
+     * 是否啟用選取文字快取
+     * @type Boolean
+     */
+    selectable_text_cache: false
 };
 
 /**

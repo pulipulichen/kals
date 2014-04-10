@@ -44,6 +44,7 @@
 	margin: 0px 0;
 	text-align:right;
 	font-size:100%;
+        font: 100% arial,helvetica,clean,sans-serif;
  }
  
 .KALS.kals-toolbar div {
@@ -214,8 +215,12 @@
     margin: 0 1em;
     margin-left: 1em !important; 
     font-weight: bold;
-	vertical-align:middle !important;
-	
+    vertical-align:middle !important;
+    
+    /**
+     * @version 20140410 Pudding Chen
+     */
+    font-size: 16px;
 }
 
 /* --------- */
@@ -383,6 +388,11 @@
     border-left-style: solid;
     padding: 0 0.5em;
     text-align: center;
+    
+    /**
+     * @version 20140410 Pudding Chen
+     */
+    font-size: 16px;
 }
 
 .KALS .navigation-list .nav td.item a {

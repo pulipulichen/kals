@@ -133,6 +133,7 @@
 
 .KALS .toolbar-options .dialog-option {
     font-size: 0.7em;
+    font: 70% arial,helvetica,clean,sans-serif;
     min-height: 0;
     height: 30px;
     line-height: 30px;
@@ -178,6 +179,7 @@
     /*font-weight: bold;*/
     outline: medium none;
     font-size: 0.7em;
+    font: 70% arial,helvetica,clean,sans-serif;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;
