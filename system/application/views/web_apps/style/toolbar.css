@@ -27,7 +27,7 @@
      z-index: 10;
      margin: 0 0 !important;
      padding: 0 0 !important;
-     height: 30px !important;
+     height: 40px !important;
 	 
  }
 .KALS.kals-toolbar tr td{
@@ -64,8 +64,9 @@
 
 .KALS .toolbar-component, 
 .KALS .toolbar-padding {
-    height: 30px !important;
-	line-height:1 !important;
+    /*height: 30px !important;
+    line-height:1 !important;*/
+    height: 40px;
 }
 
 .KALS .toolbar-padding {
@@ -122,7 +123,7 @@
     padding: 0 1em;
     /*width: 240px;*/
    /* 2010.11.25 因為暫時不做中間的search form 所以空間省了下來 */
-   width: 300px;
+   max-width: 300px;
     text-align: center;
     /*display: none;*/
 }
@@ -357,6 +358,10 @@
 .KALS.kals-toolbar .navigation-list,
 .KALS.kals-toolbar .avatar-component {
     font-size: 16px;
+}
+
+.KALS.kals-toolbar .avatar-component td {
+    padding: 0;
 }
 
 .KALS.kals-toolbar .avatar-component .navigation .navigation-list {

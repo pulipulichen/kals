@@ -139,7 +139,7 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     //最後加上Padding
     var _padding = this.padding.get_ui();
-    _padding.hide();
+    //_padding.hide();
     $('body').prepend(_padding);
     
     _ui.addClass('loading');
@@ -149,13 +149,23 @@ KALS_toolbar.prototype._$create_ui = function () {
         
         _this.toggle_navigation('anonymous-component');
         
+        var _toolbar_height = _this.get_height();
+        //$.test_msg('toolbar_height', _toolbar_height);
+        //_padding.css("height", _toolbar_height + 'px');
+        
+        
         //2010.10.5 測試顯示avatar-component看看？
         //_this.toggle_navigation('avatar-component');
-        
+        /*
         _padding.slideDown(function () {
+            $.test_msg('slideDown');
             $(this).removeAttr('style');
         });
-        
+        */
+        _padding.show();
+        _padding.animate({
+            height: _toolbar_height + "px"
+        }, 1000);
         _this.open();
     }, 0);
     
