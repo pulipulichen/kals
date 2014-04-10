@@ -22,7 +22,7 @@ function Viewportmove_dispatcher() {
     
     var _this = this;
     var _event = function(){
-        if (typeof($viewport_trigger) != 'undefined') {
+        if (typeof($viewport_trigger) !== 'undefined') {
             clearTimeout($viewport_trigger);
         }
         $viewport_trigger = setTimeout(function () {

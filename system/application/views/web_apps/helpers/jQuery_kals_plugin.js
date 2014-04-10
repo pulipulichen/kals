@@ -1814,14 +1814,20 @@ jQuery.mobile_mode = null;
 jQuery.is_mobile_mode = function () {
     if (this.mobile_mode === null) {
         var _this = this;
-		var _yui = YUI();
-		if (typeof(_yui.use) == "function") {
-			_yui.use("", function(Y){
-	            var _mode = (!$.is_null(Y.UA.mobile));
-	            _this.mobile_mode = _mode;
-	        });	
-		}
-        
+        try {
+            var _yui = YUI();
+            if (typeof(_yui.use) === "function") {
+
+                    _yui.use("", function(Y){
+                        var _mode = (!$.is_null(Y.UA.mobile));
+                        _this.mobile_mode = _mode;
+                    });
+
+            }
+        }
+        catch (_e) {
+            _this.mobile_mode = false;
+        }
     }
     return this.mobile_mode;
 };
