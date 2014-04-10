@@ -505,8 +505,12 @@ Select_tooltip.prototype._$create_ui = function () {
         _this._cancel_event(_event);
     };
     */
-    _select_button.click(_this._select_event);
-    _cancel_button.click(_this._cancel_event);
+    _select_button.click(function (_event) {
+        _this._select_event(_event);
+    });
+    _cancel_button.click(function (_event) {
+        _this._cancel_event(_event)
+    });
     
     _select_tooltip.addClass('hide');
     
@@ -537,9 +541,11 @@ Select_tooltip.prototype._select_event = function (_event) {
     var _tooltip_id = this.tooltip_id;
     
     var _tooltip = $('#' + _tooltip_id);
-    //var _word_id = _tooltip.attr('word_id');
+    var _word_id = _tooltip.attr('word_id');
     //var _word = $('#' + _word_id_prefix + _word_id );
-    var _word = _selectable_text.get_word(_word);
+    
+    //$.test_msg("_select_event " + this.tooltip_id + ": ", _word_id);
+    var _word = this._selectable_text.get_word(_word_id);
 
     _word.tooltip().hide();
 
@@ -566,7 +572,7 @@ Select_tooltip.prototype._cancel_event = function (_event) {
     var _tooltip = $('#' + _tooltip_id);
     var _word_id = _tooltip.attr('word_id');
     //var _word = $('#' + _word_id_prefix + _word_id );
-    var _word = _selectable_text.get_word(_word);
+    var _word = this._selectable_text.get_word(_word_id);
     _word.tooltip().hide();
 
     KALS_text.selection.select.cancel_select();
