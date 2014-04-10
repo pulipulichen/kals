@@ -151,33 +151,33 @@ DEFAULT_KALS_CONFIG = {
      */
     help_base_url: 'help/',
 	
-	/**
-	 * 預設標註類型
-	 *
-	 * @copyright 20130603 Pudding Chen
-	 * @type {string} = "importance" 重要，也可以寫上自訂的名字
-	 */
-	default_annotation_type: "importance",
-    
-	/**
-	 * 網頁搜尋
-	 * 
-	 * @copyright 20130603 Pudding Chen
-	 * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
-	 * 
-	 * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
-	 */
-	web_search_url: "http://www.google.com/search?q={query}",
-	//web_search_url: "disable",
-	
-	/**
-	 * 獨立模式
-	 * @type {boolean} isolation_mode: false，預設不開啟
-	 * 
-	 * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
-	 * 但是關閉之後，所有人又能看到別人的標註
-	 */
-	isolation_mode: false,
+    /**
+     * 預設標註類型
+     *
+     * @copyright 20130603 Pudding Chen
+     * @type {string} = "importance" 重要，也可以寫上自訂的名字
+     */
+    default_annotation_type: "importance",
+
+    /**
+     * 網頁搜尋
+     * 
+     * @copyright 20130603 Pudding Chen
+     * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
+     * 
+     * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
+     */
+    web_search_url: "http://www.google.com/search?q={query}",
+    //web_search_url: "disable",
+
+    /**
+     * 獨立模式
+     * @type {boolean} isolation_mode: false，預設不開啟
+     * 
+     * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
+     * 但是關閉之後，所有人又能看到別人的標註
+     */
+    isolation_mode: false,
 	
     //----------------------------
     

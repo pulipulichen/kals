@@ -44,6 +44,10 @@
     margin-bottom: 10px;
 }
 
+.KALS.dialog-modal .dialog-table {
+    margin-bottom: 0;
+} 
+
 .KALS .dialog-toolbar-tr,
 .KALS .dialog-toolbar-table {
     height: 36px;
