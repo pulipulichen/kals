@@ -76,6 +76,10 @@ Select_tooltip.prototype.reset = function () {
     this.enable_select = true;
 };
 
+/**
+ * 設定tooltip
+ * @returns Select_tooltip
+ */
 Select_tooltip.prototype._$get_config = function () {
     
     var _select_tooltip = this;
@@ -84,21 +88,18 @@ Select_tooltip.prototype._$get_config = function () {
     //_config['delay'] = 30;
     //_config['predelay'] = 100;
     
-    if ($.is_mobile_mode())
-    {
+    if ($.is_mobile_mode()) {
         _config['events'] = {
             def: 'mouseenter click,null'
         }; 
     }
-    else
-    {
+    else {
         //_config['events'] = {
         //    def: 'mouseenter click,mouseleave'
         //};    
     }
     
-    if ($.is_touchable())
-    {
+    if ($.is_touchable()) {
        var _touch_event = 'touchstart ';
        _config['events']['def'] = _touch_event + _config['events']['def'];
        
@@ -115,27 +116,28 @@ Select_tooltip.prototype._$get_config = function () {
     
     var _onbeforeshow = _config['onBeforeShow'];
     _config['onBeforeShow'] = function (_event) {
-        //if ($.is_null(_this))
-            _this = this;
+    //if ($.is_null(_this))
+    var _this = this;
         
-        var _tip = _this.getTip();
-        if (_tip.length === 0)
-            return;
+    var _tip = _this.getTip();
+    if (_tip.length === 0) {
+        return;
+    }
             
-        if (_select_tooltip.enable_select === false) {
-            return;
-        }
+    if (_select_tooltip.enable_select === false) {
+        return;
+    }
+
+    var _trigger = _this.getTrigger();
+    var _id = $.get_prefixed_id(_trigger);
+
+    _select_tooltip._event = _event;
+    _select_tooltip._tip = _tip;
+    _select_tooltip._trigger = _trigger;
         
-        var _trigger = _this.getTrigger();
-		var _id = $.get_prefixed_id(_trigger);
-		  
-		_select_tooltip._event = _event;
-        _select_tooltip._tip = _tip;
-        _select_tooltip._trigger = _trigger;
-        
-		var _position_setup = function () {
-	        $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
-	        _trigger.addClass('tooltip-trigger-hover');
+    var _position_setup = function () {
+        $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
+        _trigger.addClass('tooltip-trigger-hover');
 	        
 	        //$.test_msg('Select_tooltip._$get_config()', _tip.length);
 	        
@@ -417,7 +419,7 @@ Select_tooltip.prototype.setup_position_pdf2htmlex = function () {
 Select_tooltip.prototype.tooltip_config = null;
 
 Select_tooltip.prototype.get_tooltip_config = function () {
-    if (this._tooltip_config == null) {
+    if (this._tooltip_config === null) {
         this._tooltip_config = this._$get_config();
     }
     return this._tooltip_config;
@@ -438,8 +440,9 @@ Select_tooltip.prototype.trigger_classname = 'tooltip-trigger';
  * @memberOf {Select_tooltip}
  * @type {jQuery} UI
  */
-Select_tooltip.prototype._$create_ui = function ()
-{
+Select_tooltip.prototype._$create_ui = function () {
+    var _this = this;
+    
     var _tooltip_id = this.tooltip_id;
     var _container_classname = this.container_classname;
     var _button_classname = this.button_classname;
@@ -456,7 +459,7 @@ Select_tooltip.prototype._$create_ui = function ()
     var _item = this._setup_item();
     _item.get_ui().prependTo(_content.find(".tip-content:first"));
 	
-	_content.find('.tip-content:first')
+    _content.find('.tip-content:first')
         .append(_cancel_button)
         .append(_select_button);
     
@@ -484,62 +487,83 @@ Select_tooltip.prototype._$create_ui = function ()
     
     _select_tooltip.addClass(_container_classname);
     
-    var _this = this;
-    
     //var _word_id_prefix = Selection_manager.prototype.word_id_prefix;
     //var _word_id_prefix = Selectable_text_word.prototype.word_id_prefix;
     //var _word_id_prefix = KALS_CONFIG.classname.selectable_text.word_id_prefix;
     var _selectable_text = this._selectable_text;
     
-    var _select_event = function (_event)
-    {
-        //先叫原本的事件不要動
-        _event.preventDefault();
-        
-        //先關掉上一個的word的Tooltip
-        var _tooltip = $('#' + _tooltip_id);
-        var _word_id = _tooltip.attr('word_id');
-        //var _word = $('#' + _word_id_prefix + _word_id );
-        var _word = _selectable_text.get_word(_word);
-        
-        _word.tooltip().hide();
-        
-        //呼叫Selection_manager.listen_select()事件
-        //_this.listen_select(_word);
-        //KALS_text.selection.listen_select(_word);
-        
-        KALS_text.selection.select.set_select(_word);
+    /*
+    var _select_event = function (_event) {
+        _this._select_event(_event);
     };
     
-    var _cancel_event = function (_event)
-    {
-        //先叫原本的事件不要動
-        _event.preventDefault();
-        
-        var _tooltip = $('#' + _tooltip_id);
-        var _word_id = _tooltip.attr('word_id');
-        //var _word = $('#' + _word_id_prefix + _word_id );
-        var _word = _selectable_text.get_word(_word);
-        _word.tooltip().hide();
-        
-        KALS_text.selection.select.cancel_select();
+    var _cancel_event = function (_event) {
+        _this._cancel_event(_event);
     };
-    
-    _select_button.click(_select_event);
-    _cancel_button.click(_cancel_event);
+    */
+    _select_button.click(_this._select_event);
+    _cancel_button.click(_this._cancel_event);
     
     _select_tooltip.addClass('hide');
     
     var _deny_read_classname = 'deny-read';
     KALS_context.policy.add_attr_listener('read', function (_policy) {
         //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
-        if (_policy.readable())
+        if (_policy.readable()) {
             _select_tooltip.removeClass(_deny_read_classname);
-        else
+        }
+        else {
             _select_tooltip.addClass(_deny_read_classname);
+        }
     }, true);
     
     return _select_tooltip;
+};
+
+/**
+ * 選取事件
+ * @param {Object} _event
+ * @returns Select_tooltip
+ */
+Select_tooltip.prototype._select_event = function (_event) {
+    //先叫原本的事件不要動
+    _event.preventDefault();
+
+    //先關掉上一個的word的Tooltip
+    var _tooltip = $('#' + _tooltip_id);
+    //var _word_id = _tooltip.attr('word_id');
+    //var _word = $('#' + _word_id_prefix + _word_id );
+    var _word = _selectable_text.get_word(_word);
+
+    _word.tooltip().hide();
+
+    //呼叫Selection_manager.listen_select()事件
+    //_this.listen_select(_word);
+    //KALS_text.selection.listen_select(_word);
+
+    KALS_text.selection.select.set_select(_word);
+    
+    return this;
+};
+
+/**
+ * 取消事件
+ * @param {Object} _event
+ * @returns Select_tooltip
+ */
+Select_tooltip.prototype._cancel_event = function (_event) {
+    //先叫原本的事件不要動
+    _event.preventDefault();
+
+    var _tooltip = $('#' + _tooltip_id);
+    var _word_id = _tooltip.attr('word_id');
+    //var _word = $('#' + _word_id_prefix + _word_id );
+    var _word = _selectable_text.get_word(_word);
+    _word.tooltip().hide();
+
+    KALS_text.selection.select.cancel_select();
+    
+    return this;
 };
 
 /**
