@@ -274,7 +274,20 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    selectable_text_cache: false
+    selectable_text_cache: false,
+    
+    /**
+     * 偵錯用設定
+     * @type JSON
+     */
+    debug: {
+        /**
+         * 開啟ajax_post設定
+         * 設定檔案為 [VIEW]/helpers/KALS_util.js
+         * @type Boolean
+         */
+        ajax_post: false
+    }
 };
 
 /**

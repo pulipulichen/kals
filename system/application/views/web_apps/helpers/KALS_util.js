@@ -203,7 +203,7 @@ KALS_util.ajax_get = function (_config) {
  */	
 KALS_util.ajax_post = function (_config) {
     //如果要檢查資料，請將_debug設為true
-    var _debug = false;
+    var _debug = KALS_CONFIG.debug.ajax_post;
     //_debug = true;
     
     var _url = $.get_parameter(_config, 'url');

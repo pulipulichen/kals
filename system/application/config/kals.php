@@ -70,6 +70,11 @@ $config['segmentor.default_for_search'] = 'segmentor.disable';    //預設搜尋
 // ※ 參數都是取到小數第三位喔！
 // --------
 
+/**
+ * 是否開啟推薦功能
+ */
+$config['reccommend_enable'] = FALSE;
+
 $config['fuzzy_inference_engine'] = 'closure_addition'; // closure_addition | zadeh
 
 /**
