@@ -416,8 +416,12 @@ Select_tooltip.prototype.setup_position_pdf2htmlex = function () {
  * Tooltip的設定
  * @type {Object}
  */
-Select_tooltip.prototype.tooltip_config = null;
+Select_tooltip.prototype._tooltip_config = null;
 
+/**
+ * 載入初始化tooltip設定
+ * @returns {Select_tooltip.prototype@call;_$get_config}
+ */
 Select_tooltip.prototype.get_tooltip_config = function () {
     if (this._tooltip_config === null) {
         this._tooltip_config = this._$get_config();
@@ -530,6 +534,8 @@ Select_tooltip.prototype._select_event = function (_event) {
     _event.preventDefault();
 
     //先關掉上一個的word的Tooltip
+    var _tooltip_id = this.tooltip_id;
+    
     var _tooltip = $('#' + _tooltip_id);
     //var _word_id = _tooltip.attr('word_id');
     //var _word = $('#' + _word_id_prefix + _word_id );
@@ -554,6 +560,8 @@ Select_tooltip.prototype._select_event = function (_event) {
 Select_tooltip.prototype._cancel_event = function (_event) {
     //先叫原本的事件不要動
     _event.preventDefault();
+
+    var _tooltip_id = this.tooltip_id;
 
     var _tooltip = $('#' + _tooltip_id);
     var _word_id = _tooltip.attr('word_id');
