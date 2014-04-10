@@ -526,7 +526,8 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                 //.insertBefore(_el);
             
             _scroll_container.ready(function () {
-                var _el_offset = _el.offset();
+                //var _el_offset = _el.offset();
+                var _el_offset = $.get_offset(_el);
                 
                 //_scroll_container.css('top', _el_offset.top + 'px');
                 _scroll_container.css('position', 'fixed');

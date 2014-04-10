@@ -346,7 +346,8 @@ Type_menu.prototype.setup_position = function () {
     
 	var _type_ui = this._type_component.get_ui();
 	
-	var _type_offset = _type_ui.offset();
+	//var _type_offset = _type_ui.offset();
+        var _type_offset = $.get_offset(_type_ui);
 	var _type_right = _type_ui.width();
 	//$.test_msg("setup_position", [_type_offset.left, _type_ui.width(), _type_right]);
 	_ui.css("left", _type_right + "px");
@@ -356,23 +357,27 @@ Type_menu.prototype.setup_position = function () {
     var _top, _left;
     
     //上極限
-    if (_ui.offset().top < 0) {
-		_top = 0;
-	}
+    //if (_ui.offset().top < 0) {
+    if ($.get_offset_top(_ui) < 0) {
+        _top = 0;
+    }
     
     //$.test_msg('Type_menu.setup_position()', _ui.offset().top);
     
     if ($.isset(_top)) {
-		_ui.css('top', _top + 'px');
-	}
+        _ui.css('top', _top + 'px');
+    }
     
     //左右
-    var _ui_left = _ui.offset().left;
-    var _ui_right = _ui_left + _ui.width();
+    //var _ui_left = _ui.offset().left;
+    //var _ui_right = _ui_left + _ui.width();
+    var _ui_left = $.get_offset_left(_ui);
+    var _ui_right = $.get_offset_right(_ui);
     
     if (_ui_right > $('body').width()) {
         var _trigger = this.get_trigger();
-        var _trigger_left = _trigger.offset().left;
+        //var _trigger_left = _trigger.offset().left;
+        var _trigger_left = $.get_offset_left(_trigger);
         _left = _trigger_left - _ui.width() - 10;
         
         if (_left < 0) {
@@ -381,8 +386,8 @@ Type_menu.prototype.setup_position = function () {
     }
     
     if ($.isset(_left)) {
-		_ui.css('left', _left + 'px');
-	}
+        _ui.css('left', _left + 'px');
+    }
 };
 
 // --------

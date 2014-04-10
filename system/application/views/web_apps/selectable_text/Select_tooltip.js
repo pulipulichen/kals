@@ -290,7 +290,8 @@ Select_tooltip.prototype.setup_position = function (_callback) {
             of: _trigger
         });
 		
-		var _tip_offset = _tip.offset();
+		//var _tip_offset = _tip.offset();
+                var _tip_offset = $.get_offset(_tip);
 		
 		var _margin_width = 5;
 		
@@ -300,7 +301,9 @@ Select_tooltip.prototype.setup_position = function (_callback) {
 		var _at_x = "center";
 		var _changed = false;
 		
-		if ( _tip_offset.top > _trigger.offset().top || 
+                //var _trigger_top = _trigger.offset().top;
+                var _trigger_top = $.get_offset_top(_trigger);
+		if ( _tip_offset.top > _trigger_top || 
                     (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
 			//_tip.addClass('bottom');
 			_my_y = "top";
@@ -356,10 +359,14 @@ Select_tooltip.prototype.check_bottom = function () {
     var _event = this._event;
 	
 	var _bottom = "bottom";
-	var _tip_offset = _tip.offset();
+	//var _tip_offset = _tip.offset();
+        var _tip_offset = $.get_offset(_tip);
 	var _margin_width = 5; 
 	//var _is_bottom = false;
-	if ( _tip_offset.top > _trigger.offset().top && 
+        
+        //var _trigger_top = _trigger.offset().top;
+        var _trigger_top = $.get_offset_top( _trigger );
+	if ( _tip_offset.top > _trigger_top && 
                     (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
         //_is_bottom = true;
 		_tip.addClass(_bottom);
@@ -402,7 +409,8 @@ Select_tooltip.prototype.setup_position_pdf2htmlex = function () {
     
     if ($(".ff1").length > 0) {
         
-        var _trigger_offset = _trigger.offset();
+        //var _trigger_offset = _trigger.offset();
+        var _trigger_offset = $.get_offset( _trigger );
         _tip_left = (_trigger_offset.left + _trigger.width() / 2 / 2) - (_tip.width() / 2 );
         _tip.css("visibility", "hidden");
         setTimeout(function () {

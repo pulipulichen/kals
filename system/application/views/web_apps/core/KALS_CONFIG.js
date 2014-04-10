@@ -282,6 +282,11 @@ DEFAULT_KALS_CONFIG = {
      */
     debug: {
         /**
+         * 是否顯示ajax_get的連接訊息
+         * @type Boolean
+         */
+        ajax_get_message: false,
+        /**
          * 開啟ajax_post設定
          * 設定檔案為 [VIEW]/helpers/KALS_util.js
          * @type Boolean

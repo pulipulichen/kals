@@ -185,7 +185,6 @@ Selection.prototype.get_offset_top = function () {
 };
 
 Selection.prototype.get_offset_bottom = function () {
-    
     var _scope_coll = this.get_scope_coll();
     var _bottom = this._text.get_offset_bottom(_scope_coll);
     return _bottom;
