@@ -178,35 +178,49 @@ KALS_toolbar.prototype._$create_ui = function () {
         //$.test_msg('KALS_context_auth.add_listener()', _data.login);
         //如果有登入，切換至avatar-nav，否則切換至login-nav        
         if (_data.login === true) {
-			_this.toggle_navigation('avatar-component');
-		}
-		else {
-			_this.toggle_navigation('anonymous-component');
-		}
+            _this.toggle_navigation('avatar-component');
+        }
+        else {
+            _this.toggle_navigation('anonymous-component');
+        }
     });
     
+    // 點兩下關閉工具列
     _ui.dblclick(function () {
         _this.toggle_toolbar(false);
     });
-        
+    
+    
+    
     return _ui;
 };
 
+/**
+ * 當視窗大小改變時，需要因應變更的動作
+ * @param {jQuery} _ui
+ * @returns {KALS_toolbar}
+ */
 KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     
     var _ui_toggle = this.toggle.get_ui();
     var _padding_ui = this.padding.get_ui();
+    
+    
+    
+    $.test_msg('KALS_toolbar onviewportmove', {height: $.is_small_height(), width: $.is_small_width()});
+    
     if ($.is_small_height()) {   
-        if (this.toggle.is_show() === false) {
-            this.toggle_toolbar(false);
-            this.toggle.show();    
-        }
+        // 如果是小高度的話
         
+        if (this.toggle.is_show() === false) {
+            //this.toggle_toolbar(false);
+            this.toggle.show();
+        }
         if (_padding_ui.hasClass('compact-height') === false) {
             _padding_ui.slideUp(function () {
                 _padding_ui.addClass('compact-height');    
             });
-        } 
+        }
     }
     else {
         this.toggle_toolbar(true);
@@ -231,8 +245,8 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     }
     
     if ($.is_mobile_mode()) {
-		_ui.valign('top');
-	}
+        _ui.valign('top');
+    }
     
     if (this.toolbar_visible() === false) {
         _ui.align('center');
