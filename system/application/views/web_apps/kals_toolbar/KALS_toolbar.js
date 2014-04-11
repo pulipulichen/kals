@@ -213,7 +213,7 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
         // 如果是小高度的話
         
         if (this.toggle.is_show() === false) {
-            //this.toggle_toolbar(false);
+            this.toggle_toolbar(false);
             this.toggle.show();
         }
         if (_padding_ui.hasClass('compact-height') === false) {
@@ -256,6 +256,12 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
 };
 
 /**
+ * 即使被隱藏了，也能夠使用viewportmove
+ * @type {function} = function (_ui) {}
+ */
+KALS_toolbar.prototype._$viewportmove_visible_enable = true;
+
+/**
  * 切換Toolbar元件的顯示
  * @param {null|boolean} _display = null：如果是null，則會切換到另一種型態去。
  * @param {function} _callback
@@ -268,13 +274,12 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    
    if ($.is_null(_display)) {
        if (_ui_hidden) {
-		   _display = true;
-	   }
-	   else {
-	       _display = false;
-	   }
+            _display = true;
+        }
+        else {
+            _display = false;
+        }
    }
-   
    
    var _complete = function () {
        $.trigger_callback(_callback);
@@ -282,26 +287,29 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    
    //$.test_msg('display', _display);
    var _height;
-   if (_display === true && _ui_hidden) {
+   if (_display === true && _ui_hidden === true) {
+       // 準備顯示
+       
        //_toolbar_ui.slideDown(_callback);
+       //_ui.show();
        _ui.removeClass('hide');
        _height = _toolbar_ui.height();
        _height = (_height * -1) + 'px';
        _ui.css('left', 0);
        _ui.css('top', _height);
        
-       
        _ui.animate({
            top: 0
        }, {
            queue: false,
            complete: function () {
-               
                _complete();
            }
        });
    }
    else if (_display === false && _ui_hidden === false) {
+       // 準備隱藏
+       
        _height = _toolbar_ui.height();
        _height = (_height * -1) + 'px';
        //$.test_msg(_height);
@@ -314,6 +322,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
                _ui.addClass('hide');
                _ui.valign('top');
                _ui.align('center');
+               //_ui.hide();
                _complete();
            }
        });

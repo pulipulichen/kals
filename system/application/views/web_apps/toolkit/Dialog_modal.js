@@ -60,8 +60,8 @@ Dialog_modal.prototype._$create_ui = function () {
 
 Dialog_modal.prototype._$onviewportmove = function (_ui) {
     if ($.browser.msie6) {
-		return;
-	}
+        return;
+    }
     
     if ($.is_small_width()) {
         _ui.fullscreen_width();

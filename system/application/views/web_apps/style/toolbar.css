@@ -28,8 +28,12 @@
      margin: 0 0 !important;
      padding: 0 0 !important;
      height: 40px !important;
-	 
  }
+ 
+ .KALS.kals-toolbar.hide {
+     display:block;
+ }
+ 
 .KALS.kals-toolbar tr td{
     /*
  	padding: 0 .5em !important;
@@ -95,9 +99,16 @@
 
 .KALS .toolbar-left {
     vertical-align: middle;
-    width: 220px;
-	border: 0px !important;
-	vertical-align:middle !important;
+    
+    /**
+     * @20140411 Pudding Chen
+     * 修改寬度自變項
+     */
+    /*width: 220px;*/
+    max-width: 220px;
+    
+    border: 0px !important;
+    vertical-align:middle !important;
 }
 
 @media screen and (max-width: 800px){

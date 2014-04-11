@@ -91,3 +91,7 @@
 .KALS {
     font: 100% arial,helvetica,clean,sans-serif;
 }
+
+.KALS .hide {
+    display: block;
+}
