@@ -332,22 +332,22 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     //  li appendTo _list
     
     //
-    var _types = this.get_annotation_types();
+    var _types = this.get_annotation_types(); //取得所有標註的種類 
     var _type_numbers = [];
     var _type_display_names = [];
     var _type_classes = [];
     
     for (var _i in _types){
         var _type = _types[_i] ;
-        var _type_id = _type.get_id();
+        var _type_id = _type.get_id(); //取得標註類別id: 1~7
         _type_numbers[_type_id] = _i;
         
         var _type_lang = _type.get_type_name_lang();
-        var _class = _type.get_classname();
-        var _type_id = _type.get_id();
+        var _class = _type.get_classname(); //取得類別class名稱 question, important...
+        //var _type_id = _type.get_id();
         
-        _type_classes [_type_id] = _class;
-        _type_display_names [_type_id] = KALS_context.lang.line(_type_lang);
+        _type_classes [_type_id] = _class; //_type_classes[1~7] = question, important...
+        _type_display_names [_type_id] = KALS_context.lang.line(_type_lang); //類別中文名稱
 
         
     }
@@ -379,33 +379,41 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             var _annotation_type_count = _heading_annotations[_annotation_type_name];
             //var _button = $("<span style='border:1px solid black'>" + _annotation_type_name + ":" + _annotation_type_count + "</span>");
             //var _button = $("<span >" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
-            var _button = $("<span class='" + _type_classes [_annotation_type_name] + " type-navigation type-option' type-id='" + _type_id + "'>" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
+            var _button = $("<span class='" + _type_classes [_annotation_type_name] + " type-navigation type-option' type-id='" + _annotation_type_name + "'>" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
             //var _current_type_plusone = _current_type + 1 ;
             
             _button.click(function () {
                 var _heading_number;    //測試用資料
-                var _type_id;   //測試用資料
+                //var _type_id;   //測試用資料
+                //$(this).hide();
+                var _type_id_selected = $(this).attr("type-id");
                 
                 // Step.1 取得資料
                 // 測試用資料
                 _heading_number = 1;
-                _type_id = 2;
+                //_type_id = 2;
                 
-                $.test_msg("標題編號:" + _heading_number + " / 標註類型:" + _type_id);
+                $.test_msg("標題編號:" + _heading_number + " / 標註類型:" + _type_id_selected);
                 
                 // Step.2 跳到標題編號
                 
                 // 要搭配小地圖的功能(自己想
+                
+                
+                
+                
                 
                 // Step.3 搜尋功能
                 // 更新目標:http://demo-kals.dlll.nccu.edu.tw/kals/help/demo/
                 
                 KALS_context.search.search({
                     search_range: "annotation_type",
-                    keyword:_type_id,
+                    keyword:_type_id_selected,
                     order_by: "update|create"
                 }, false);
                 
+                // 關掉標註地圖
+                _this.close();
             });
             
             if (_annotation_type_name === _current_type ) {
