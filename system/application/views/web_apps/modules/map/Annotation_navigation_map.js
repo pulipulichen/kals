@@ -278,8 +278,21 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     //var _current_type = _ele.find("[kals-field='annotation_type']").attr("type-name");
     var _current_type = _ele.find(".type-navigation").attr("type-id");
     $.test_msg("current-type", _current_type);
-
+    
+    var _chapter = KALS_text.selection.text.chapter;
+    var _structure = _chapter.get_structure();
+    var _heading_list = _chapter.get_heading_list();
+    
+    
+    // [標題1, 標題2, 標題3]
+    $.test_msg("chapter heading", _heading_list);
  
+    // [0, 1063, 5200]
+    // chapter1: 0-1062
+    // chapter2: 1063-5199
+    // chapter3: 5200-
+    $.test_msg("chapter structure", _structure);
+    
     //this.debug(_ele.html());
     
     var _data = {
@@ -300,6 +313,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             2: 3,
             3: 2,
             4: 1,
+            5: 3,
             6: 7,
             7: 3
         },
@@ -600,7 +614,13 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
 };
 
-
+/**
+ * 獨立視窗
+ * 
+ * 如果是false，則會依附在KALS_window底下
+ * 如果是true，則會直接open
+ */
+Annotation_navigation_map.prototype._$absolute = true;
 
 /* End of file Annotation_navigation_map */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_navigation_map.js */

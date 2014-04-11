@@ -80,10 +80,12 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
         var _first_word = _child_obj.find("." + _word_classname + ":first");
         var _first_word_id = _selectable_text_word.get_word_id(_first_word);
         _word_count = _first_word_id - 1;
+        
+        this.heading_list.push(_child_obj.text());
     }
    
     if (_word_count < 1) {
-        return this;
+        return (this.structure.length);
     }
     if (this.structure.length === 0) {
         this.structure.push(_word_count);
@@ -91,7 +93,8 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
     else if (_word_count !== this.structure[this.structure.length-1]) {
         this.structure.push(_word_count);
     }
-    return this;
+    
+    return (this.structure.length - 1);
 };
 
 /**
@@ -108,6 +111,17 @@ Selectable_text_chapter.prototype.count_strucutre = function () {
  */
 Selectable_text_chapter.prototype.get_structure = function () {
     return this.structure;
+};
+
+
+/**
+ * 儲存章節標題
+ * @type Array
+ */
+Selectable_text_chapter.prototype.heading_list = [];
+
+Selectable_text_chapter.prototype.get_heading_list = function () {
+    return this.heading_list;
 };
 
 /* End of file Selectable_text_chapter */

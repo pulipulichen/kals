@@ -480,7 +480,9 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     // 20140103 Pulipuli Chen
                     // 是章節嗎？
                     if ($.inArray(_node_name.toLowerCase(), _chapter_tag_names) !== -1) {
-                        _selectable_text_chapter.add_structure(_child_obj);
+                        var _heading_id = _selectable_text_chapter.add_structure(_child_obj);
+                        $(_child_obj).addClass("kals-heading-" + _heading_id);
+                        //$.test_msg("章節標題", _child_obj.innerText);
                     }
                 }   
                 else if (typeof(_node_name) === 'string'
