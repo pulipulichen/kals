@@ -50,13 +50,18 @@ class Authentication extends Web_apps_controller {
         //$data->embed = TRUE;
 
         $user = NULL;
-        if ($data->embed)
-        {
-            $user = $this->user->create_user($this->url, $data->email);
-        }
-        else
-        {
-            $user = $this->user->find_user($this->url, $data->email, $data->password);
+        if (isset($data->email)) {
+            if ($data->embed ) {
+                //test_msg("login embed", array(
+                //    'url' => $this->url,
+                //    'user' => $data->email
+                //));
+
+                $user = $this->user->create_user($this->url, $data->email);
+            }
+            else {
+                $user = $this->user->find_user($this->url, $data->email, $data->password);
+            }
         }
         
         //$output = NULL;

@@ -210,8 +210,9 @@ class User extends KALS_actor {
                 //test_msg('User.create_user', $data);
                 
                 $user = $this->create($data);
-                if (isset($user))
+                if (isset($user)) {
                     set_cache ($user, $key, $value);
+                }
             }
             
             //test_msg('User.create_user after create', $user->get_id());
@@ -220,12 +221,13 @@ class User extends KALS_actor {
         }
         else
         {
-            //test_msg('User.create_user by array data', $data);
             
             $data = array(
                 'domain_id' => $domain_id,
                 'email' => $email
             );
+            
+            //test_msg('User.create_user by array data', $data);
             return $this->create($data);
         }
     }
