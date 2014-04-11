@@ -33,7 +33,7 @@ function Common_navigation() {
             , new Window_map()
             , _search_recent
             , new Dashboard()
-            , _guide_nav
+            //, _guide_nav
             //, new Reading_guide()
             //, KALS_text.guide
             //_search
