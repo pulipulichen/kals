@@ -294,5 +294,76 @@ if ( ! function_exists('kals_log'))
     }
 }
 
+/**
+ * mobile_log
+ * @param $this->db, $action, array|$data, webpage_id
+*/
+if ( ! function_exists('kals_mobile_log'))
+{
+    function kals_mobile_log($db, $webpage_id, $action, $data = array())
+    {
+        
+       
+       /* 不使用get_context_webpage()->get_id()來取webpage_id 
+        $url = get_referer_url(FALSE);
+        $webpage_id = NULL;
+        if ($url !== FALSE)
+        {
+            
+            //$CI =& get_instance();
+            //if (isset($CI->webpage) == FALSE || is_null($CI->webpage))
+            //    $CI->load->library('kals_resource/Webpage');
+            //$webpage_id = $CI->webpage->filter_webpage_id($url);
+             
+            $webpage_id = get_context_webpage()->get_id();
+        }*/
+        
+        $user_id = NULL;
+        $note = NULL;
+
+        if (is_array($data) && 
+                (isset($data['user_id']) || isset($data['memo']) ) ) {
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
+            }
+            if (isset($data['memo']))
+            {
+                $note = $data['memo'];
+                if (is_array($note) || is_object($note))
+                {
+                    $note = json_encode($note);
+                }
+
+                if ($note == '')
+                    $note = NULL;
+            }
+        }
+        else {
+            if (defined("JSON_UNESCAPED_UNICODE")) {
+                $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            else {
+                $note = kals_json_encode($data);
+            }
+        }
+        
+        if (is_null($user_id)) {
+            $user = get_context_user();
+            if (isset($user)) {
+                $user_id = $user->get_id();
+            }
+        }
+            
+
+        $db->insert('log', array(
+            'webpage_id' => $webpage_id,
+            'user_id' => $user_id,
+            'user_ip' => get_client_ip(),
+            'action'=> $action,
+            'note'=>$note
+        ));
+    }
+}
+
 /* End of file web_apps_helper.php */
 /* Location: ./system/application/helpers/web_apps_helper.php */

@@ -8,7 +8,7 @@
 
 
 ?>
-    <!--style="display: none"-->
+    <!--test msg--style="display: none"-->
     <form name="f1" id="f1" action="<?php echo $annotataion_id; ?>" method="post" style="display: none" data-ajax="false"> 
         <textarea name="note_text"></textarea>
         <input name="annotation_type">
@@ -29,6 +29,7 @@
                 echo "test-msg = [".$json['timestamp']."] <br>";
         }          
      }
+     echo $log_webpage_id.'<br>';
      
     ?></form>
     <!-- </form> -->

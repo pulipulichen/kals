@@ -64,13 +64,15 @@ class mobile extends Web_apps_controller{
         // $annotation_id
         $annotation = new Annotation($annotation_id);
         $annotation_id = $annotation->get_id();           
+        $log_topic_id = $annotation_id;
         $anchor_text = $annotation->get_anchor_text();  
-        $user = $annotation->get_user()->get_name();    
+        $user = $annotation->get_user()->get_name();   
+        $user_id = $annotation->get_user()->get_id();
         $type = $annotation->get_type()->get_name();        
         $css_type = $annotation->get_type()->get_type_id();
         $note = $annotation->get_note();   
         $timestamp = $annotation->get_update_timestamp();       
-        
+        $log_user_id = $this->session->userdata('user_id');    
   
         // 如果有回應值才要做新增的動作
         if(isset($note_massage) && isset($anno_type)){
@@ -136,6 +138,21 @@ class mobile extends Web_apps_controller{
             } 
         }
          
+       //log區-action = 16
+        $action = 16;  
+        // data: topic_id 
+        $log_webpage = $annotation->get_append_to_webpages();
+        $log_webpage_id = $log_webpage[0]->get_id();       
+        $array_data = array(
+            'target_topic' => FALSE,
+            'topic_id' => $log_topic_id,
+            'order_by' => 'create',
+            'show_total_count' => TRUE
+        );
+        kals_mobile_log($this->db, $log_webpage_id, $action, array('memo'=>$array_data, 'user_id' => $log_user_id));    
+        context_complete();
+        $data['log_webpage_id'] = $log_webpage_id;
+        
        // type
        if ($type != 'annotation.type.custom'){
             $type_show = $this->lang->line("web_apps.". $type);
@@ -228,7 +245,18 @@ class mobile extends Web_apps_controller{
             $respond_json[] = $json;
         }//$respond_json[0]['user'];
 
+          // 詳見全文url：Webpage -> get_url()
+        $webpage = $annotation->get_append_to_webpages();            
+        $webpage_id = $webpage[0]->get_id();   
+        //$webpage_id = 1573;
+        $mobile_webpage = new Webpage($webpage_id);
+        $url = $mobile_webpage->get_url();
+       
+        $data['webpage_url'] = $url; 
+        $data['webpage_id'] = $webpage_id;
+        $data['webpage'] = $webpage;      
         
+    
         // send data -annotation topic
         $data["annotataion_id"] = $annotation_id;
         $data["anchor_text"] = $anchor_text;
@@ -241,16 +269,6 @@ class mobile extends Web_apps_controller{
         $data["timestamp"] = $sub_timestamp;        
         $data["respond_json"] = $respond_json;
         
-        // 詳見全文url：Webpage -> get_url()
-        $webpage = $annotation->get_append_to_webpages();            
-        $webpage_id = $webpage[0]->get_id();   
-        //$webpage_id = 1573;
-        $mobile_webpage = new Webpage($webpage_id);
-        $url = $mobile_webpage->get_url();
-       
-        $data['webpage_url'] = $url; 
-        $data['webpage_id'] = $webpage_id;
-        $data['webpage'] = $webpage;
     
                 
         $this->load->view('mobile/mobile_views_header');
@@ -291,28 +309,33 @@ class mobile extends Web_apps_controller{
          $user_id = $this->session->userdata('user_id');
          
          // 查詢未讀過的annotation
-         $unread_annotation = $this->db->query("SELECT webpage2annotation.webpage_id, annotation_id AS topic_self_id, res.res_id, res.res_topic_id, 
-                                                   (CASE WHEN res.update_timestamp IS NULL THEN annotation.update_timestamp
-                                                         ELSE res.update_timestamp
-                                                    END) AS annotation_timestamp
-                                                FROM annotation JOIN webpage2annotation using (annotation_id) 
-                                                   LEFT JOIN ( 
-                                                             SELECT webpage_id, annotation_id AS res_id, annotation.topic_id AS res_topic_id, annotation.update_timestamp
-                                                             FROM annotation JOIN webpage2annotation using (annotation_id) 
-                                                             WHERE topic_id IS NOT NULL AND webpage_id = ".$webpage_id.") AS res ON (annotation.annotation_id = res.res_topic_id)
-                                                   LEFT JOIN log ON log.action = 16 
-                                                                AND log.user_id =".$user_id."  
-                                                                AND log.note like concat('%topic_id:' , annotation.annotation_id , '%')
-                                                WHERE  
-                                                      annotation.topic_id IS NULL AND webpage2annotation.webpage_id =".$webpage_id."  
-                                                  AND (log.user_id = ".$user_id." OR log.user_id IS NULL)
-                                                  AND (log.log_timestamp IS NULL OR log.log_timestamp < annotation.update_timestamp)");
+         $unread_annotation = $this->db->query("SELECT topic_annotation.webpage_id, topic_annotation.is_topic_id, annotation_timestamp, max(log_timestamp) as log_timestamp
+                                                FROM 
+                                                    (SELECT webpage2annotation.webpage_id, annotation_id AS is_topic_id,
+                                                            MAX(CASE WHEN res.update_timestamp IS NULL THEN annotation.update_timestamp
+                                                                     ELSE res.update_timestamp
+                                                                     END)AS annotation_timestamp 
+                                                      FROM annotation JOIN webpage2annotation using (annotation_id) 
+                                                                      LEFT JOIN ( 
+                                                                                 SELECT webpage_id, annotation_id AS res_id, annotation.topic_id AS res_topic_id, annotation.update_timestamp
+                                                                                 FROM annotation JOIN webpage2annotation using (annotation_id) 
+                                                                                 WHERE topic_id IS NOT NULL AND webpage_id = '".$webpage_id."') AS res ON (annotation.annotation_id = res.res_topic_id)
+                                                      WHERE annotation.topic_id IS NULL AND webpage2annotation.webpage_id = '".$webpage_id."'  
+                                                      GROUP BY webpage2annotation.webpage_id, is_topic_id) AS topic_annotation
+                                                LEFT JOIN
+                                                      (SELECT user_id, webpage_id, note, max(log_timestamp) AS log_timestamp
+                                                       FROM log
+                                                       WHERE user_id = '".$user_id."' AND webpage_id = '".$webpage_id."' AND action = '16'
+                                                       GROUP BY user_id, webpage_id, note) AS log_view_thread
+                                                             ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
+                                                GROUP BY topic_annotation.webpage_id, is_topic_id, annotation_timestamp
+                                                HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL");
          $unread_array = array();
         
          // 存放unread topic id(topic and res)
          foreach($unread_annotation->result_array() as $row){
-             $unread_id = $row['topic_self_id']; 
-             $unread_array[$unread_id] = $row['topic_self_id'];                   
+             $unread_id = $row['is_topic_id']; 
+             $unread_array[$unread_id] = $row['is_topic_id'];                   
          }         
 
          
@@ -396,25 +419,43 @@ class mobile extends Web_apps_controller{
         
         
         $user_id = $user->get_id();   
-        $unread_search = $this->db->query("SELECT user2webpage.user_id, user2webpage.webpage_id , count(annotation.annotation_id) AS unread_count
-                                           FROM annotation join webpage2annotation using(annotation_id) join 
-                                               (SELECT (".$user_id.") as user_id, webpage.webpage_id, last_login_timestamp 
-                                                FROM webpage LEFT JOIN 
-                                                  (SELECT log.user_id, log.webpage_id, max(log.log_timestamp) AS last_login_timestamp 
-                                                   FROM log 
-                                                   WHERE (log.action = 16 OR log.action = 3 ) AND log.user_id = ".$user_id." 
-                                                   GROUP BY log.user_id, log.webpage_id) AS user_last_login ON (webpage.webpage_id = user_last_login.webpage_id)) AS user2webpage using(webpage_id) 
-                                           WHERE (user2webpage.last_login_timestamp < annotation.create_timestamp OR user2webpage.last_login_timestamp IS NULL) AND annotation.topic_id IS NULL
-                                           GROUP BY user2webpage.user_id, user2webpage.webpage_id
-                                           ORDER BY user2webpage.webpage_id " );
+        // show unread page
+        $unread_search = $this->db->query("SELECT DISTINCT topic_annotation.webpage_id, count(topic_annotation.is_topic_id) AS unread
+FROM 
+(SELECT webpage2annotation.webpage_id, annotation_id AS is_topic_id,
+      MAX(CASE WHEN res.update_timestamp IS NULL THEN annotation.update_timestamp
+            ELSE res.update_timestamp
+            END)AS annotation_timestamp
+FROM annotation JOIN webpage2annotation using (annotation_id) 
+     LEFT JOIN ( 
+               SELECT webpage_id, annotation_id AS res_id, annotation.topic_id AS res_topic_id, annotation.update_timestamp
+               FROM annotation JOIN webpage2annotation using (annotation_id) 
+               WHERE topic_id IS NOT NULL ) AS res ON (annotation.annotation_id = res.res_topic_id)
+WHERE annotation.topic_id IS NULL  
+GROUP BY webpage2annotation.webpage_id, is_topic_id) AS topic_annotation
+
+LEFT JOIN
+
+(select 
+user_id, webpage_id, note, max(log_timestamp) AS log_timestamp
+ from log
+where
+user_id = '".$user_id."' and
+action = '16' 
+group by user_id, webpage_id, note) AS log_view_thread
+
+ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
+
+GROUP BY topic_annotation.webpage_id, annotation_timestamp, topic_annotation.is_topic_id
+HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" );
         
         $unread_array = array();
         foreach($unread_search->result_array() as $row ){
             $webpage_id = $row['webpage_id'];
-            $unread_count = $row['unread_count'];
+            $unread = $row['unread'];
             // TST MSG
             //echo $webpage_id . " - " . $unread_count . " / <br />";
-            $unread_array[$webpage_id] = $unread_count;
+            $unread_array[$webpage_id] = $unread;
         }
         
         // array：$all_webpages value:array array中為webpage_id
