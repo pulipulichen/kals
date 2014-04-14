@@ -382,8 +382,25 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
         var _list_item = $("<li></li>");
         
         //_list_item.html("<div class='list-header-component'>" + _heading_text + " <span class='current-type'>"+ _current_type+"</span> </div>");
-        _list_item.html("<div class='list-header-component '>" + _heading_text + " <span class='current-type'></span> </div>");
+        
+        // var _heading_ele = $("<div class='list-header-component '>" + _heading_text + " <span class='current-type'></span> </div>");
+        //_list_item.append(_heading_ele);
+        //_list_item.append("<div class='list-header-component other-type'></div>");
+        
+        var _heading_div = $("<div class='list-header-component '></div>");
+        var _heading_btn = $("<span>" + _heading_text + "</span>");
+        var _heading_offset = $(".kals-heading-0").offset().top;
+        
+        _heading_btn.click(function () {
+            $(window).scrollTop(_heading_offset-50);
+        });
+        
+        _heading_div.append(_heading_btn);
+        _heading_div.append("<span class='current-type'></span>");
+        _list_item.append(_heading_div);
+        
         _list_item.append("<div class='list-header-component other-type'></div>");
+        
         
         var _heading_annotations = _data[_heading_number];
         
@@ -397,6 +414,8 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             //var _current_type_plusone = _current_type + 1 ;
             
             _button.click(function () {
+                $(window).scrollTop(_heading_offset-50);
+                
                 var _heading_number;    //測試用資料
                 //var _type_id;   //測試用資料
                 //$(this).hide();
@@ -459,7 +478,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
 Annotation_navigation_map.prototype.get_heading_text = function (_heading_number) {
     
     var _heading_text_data = {
-        1: "標題No.1",
+        1: "數位圖書館概說",
         3: "標題No.3",
         4: "標題No.4",
         5: "標題No.5"

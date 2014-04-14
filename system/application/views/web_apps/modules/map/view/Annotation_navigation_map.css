@@ -28,9 +28,17 @@ dt {
 
 .type-navigation.type-option{
     cursor: pointer !important;
+    line-height: 2em;
+}
+
+.list-header-component{
+    cursor: pointer !important;
+    font-size: small !important;
+    font-weight: bold;
 }
 
 .list-header-component.other-type{
-    line-height: 1.5em;
+    line-height: 2em;
+    opacity: .75;
 
 }
