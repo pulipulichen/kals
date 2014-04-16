@@ -287,7 +287,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     
     
     // [標題1, 標題2, 標題3]
-    $.test_msg("chapter heading", _heading_list);
+    $.test_msg("chapter heading", _heading_list[2].text());
  
     // [0, 1063, 5200]
     // chapter1: 0-1062
@@ -347,7 +347,17 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             5: 2,
             6: 1,
             7: 0
-        }
+        },
+        
+        5: {
+            1: 6,
+            2: 5,
+            3: 4,
+            4: 3,
+            5: 2,
+            6: 1,
+            7: 0
+        }        
         
  
     };
@@ -399,7 +409,8 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     
     for (var _heading_number in _data) {
         
-        var _heading_text = this.get_heading_text(_heading_number);
+        //var _heading_text = this.get_heading_text(_heading_number);
+        
         var _list_item = $("<li></li>");
         
         //_list_item.html("<div class='list-header-component'>" + _heading_text + " <span class='current-type'>"+ _current_type+"</span> </div>");
@@ -409,7 +420,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
         //_list_item.append("<div class='list-header-component other-type'></div>");
         
         var _heading_div = $("<div class='list-header-component'></div>");
-        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
+        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" +  _heading_list[_heading_number].text() + "</span>");
         //var _heading_offset = $(".kals-heading-"+_heading_number ).offset().top;
         
 
@@ -431,6 +442,9 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
         
         var _current_type_container = _list_item.find(".current-type");
         //var _other_type_container = _list_item.find(".other-type");
+        
+        
+        
         for (var _annotation_type_name in _heading_annotations) {
             var _annotation_type_count = _heading_annotations[_annotation_type_name];
             //var _button = $("<span style='border:1px solid black'>" + _annotation_type_name + ":" + _annotation_type_count + "</span>");
@@ -497,6 +511,12 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     
 };
 
+    
+
+
+
+
+
 /**
  * 取得指定編號的標題的內文
  * @param {int} _heading_number
@@ -506,11 +526,11 @@ Annotation_navigation_map.prototype.get_heading_text = function (_heading_number
     
     var _heading_text_data = {
         0: "標題1",
-        1: "標題1-2",
-        2: "標題2",
-        3: "標題2-1",
-        4: "標題2-2",
-        5: "標題No.5"
+        1: "標題1-1",
+        2: "標題1-2",
+        3: "標題2",
+        4: "標題2-1",
+        5: "標題2-2"
     }
     
     return _heading_text_data[_heading_number];

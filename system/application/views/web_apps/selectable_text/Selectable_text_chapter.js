@@ -81,11 +81,11 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
         var _first_word_id = _selectable_text_word.get_word_id(_first_word);
         _word_count = _first_word_id - 1;
         
-        this.heading_list.push(_child_obj.text());
+        this.heading_list.push(_child_obj);
     }
    
     if (_word_count < 1) {
-        return (this.structure.length);
+        //return (this.structure.length);
     }
     if (this.structure.length === 0) {
         this.structure.push(_word_count);
@@ -94,7 +94,11 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
         this.structure.push(_word_count);
     }
     
-    return (this.structure.length - 1);
+    var _structure_count = (this.structure.length - 1);
+    $(_child_obj).addClass("kals-heading-" + _structure_count)
+            .addClass("kals-heading");
+    
+    return _structure_count;
 };
 
 /**
@@ -120,8 +124,40 @@ Selectable_text_chapter.prototype.get_structure = function () {
  */
 Selectable_text_chapter.prototype.heading_list = [];
 
+/**
+ * 取得標題列表
+ * @returns Array|每個heading的jQuery
+ */
 Selectable_text_chapter.prototype.get_heading_list = function () {
     return this.heading_list;
+};
+
+/**
+ * 取得標題列表
+ * @param {Int} heading
+ * @returns heading的jQuery
+ */
+Selectable_text_chapter.prototype.get_heading = function (_heading_id) {
+    if (typeof(this.heading_list[_heading_id]) !== "undefined") {
+        return this.heading_list[_heading_id];
+    }
+    else {
+        return null;
+    }
+};
+
+/**
+ * 取得標題列表
+ * @param {Int} heading
+ * @returns heading的文字
+ */
+Selectable_text_chapter.prototype.get_heading_text = function (_heading_id) {
+    if (typeof(this.heading_list[_heading_id]) !== "undefined") {
+        return this.heading_list[_heading_id].text();
+    }
+    else {
+        return null;
+    }
 };
 
 /* End of file Selectable_text_chapter */
