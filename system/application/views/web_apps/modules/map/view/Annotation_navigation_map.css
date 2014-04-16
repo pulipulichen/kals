@@ -26,9 +26,13 @@ dt {
     font-size: large !important;
 }
 
+.type-navigation.non-selected{
+    background-color: grey;
+    color: white;
+}
+
 .type-navigation.type-option{
     cursor: pointer !important;
-    line-height: 2em;
 }
 
 .list-header-component{

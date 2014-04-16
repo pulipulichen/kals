@@ -272,6 +272,8 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     
     //this.find("button");
     this.find("span.type-navigation.selected").removeClass('selected');
+    this.find("span.type-navigation").addClass('non-selected');
+    _ele.find("span.type-navigation").removeClass('non-selected');
     _ele.find("span.type-navigation").addClass('selected');
     //_ele.css('color', 'black');
     
@@ -296,6 +298,16 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     //this.debug(_ele.html());
     
     var _data = {
+        0: {
+            1: 5,
+            2: 4,
+            3: 3,
+            4: 6,
+            5: 5,
+            6: 7,
+            7: 3
+        },
+        
         
         1: {
             1: 5,
@@ -307,8 +319,18 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             7: 3
         },
         
+        2: {
+            1: 5,
+            2: 4,
+            3: 3,
+            4: 6,
+            5: 5,
+            6: 7,
+            7: 3
+        },
         
-        4: {    // Title No.4
+        
+        3: {    // Title No.4
             1: 4,   // Annotation Important has 4 annotations
             2: 3,
             3: 2,
@@ -317,7 +339,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             6: 7,
             7: 3
         },
-        5: {
+        4: {
             1: 6,
             2: 5,
             3: 4,
@@ -378,7 +400,6 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     for (var _heading_number in _data) {
         
         var _heading_text = this.get_heading_text(_heading_number);
-        
         var _list_item = $("<li></li>");
         
         //_list_item.html("<div class='list-header-component'>" + _heading_text + " <span class='current-type'>"+ _current_type+"</span> </div>");
@@ -387,11 +408,15 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
         //_list_item.append(_heading_ele);
         //_list_item.append("<div class='list-header-component other-type'></div>");
         
-        var _heading_div = $("<div class='list-header-component '></div>");
-        var _heading_btn = $("<span>" + _heading_text + "</span>");
-        var _heading_offset = $(".kals-heading-0").offset().top;
+        var _heading_div = $("<div class='list-header-component'></div>");
+        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
+        //var _heading_offset = $(".kals-heading-"+_heading_number ).offset().top;
+        
+
         
         _heading_btn.click(function () {
+            var _current_heading_number = $(this).attr("heading-id");
+            var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
             $(window).scrollTop(_heading_offset-50);
         });
         
@@ -399,34 +424,36 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
         _heading_div.append("<span class='current-type'></span>");
         _list_item.append(_heading_div);
         
-        _list_item.append("<div class='list-header-component other-type'></div>");
+        //_list_item.append("<div class='list-header-component other-type'></div>");
         
         
         var _heading_annotations = _data[_heading_number];
         
         var _current_type_container = _list_item.find(".current-type");
-        var _other_type_container = _list_item.find(".other-type");
+        //var _other_type_container = _list_item.find(".other-type");
         for (var _annotation_type_name in _heading_annotations) {
             var _annotation_type_count = _heading_annotations[_annotation_type_name];
             //var _button = $("<span style='border:1px solid black'>" + _annotation_type_name + ":" + _annotation_type_count + "</span>");
             //var _button = $("<span >" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
-            var _button = $("<span class='" + _type_classes [_annotation_type_name] + " type-navigation type-option' type-id='" + _annotation_type_name + "'>" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
+            var _button = $("<span class='" + _type_classes [_annotation_type_name] + " type-navigation type-option' type-id='" + _annotation_type_name + "' heading-id='" + _heading_number + "' >" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
             //var _current_type_plusone = _current_type + 1 ;
             
             _button.click(function () {
+                var _current_heading_number = $(this).attr("heading-id");
+                var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
                 $(window).scrollTop(_heading_offset-50);
                 
-                var _heading_number;    //測試用資料
+                //var _heading_number;    //測試用資料
                 //var _type_id;   //測試用資料
                 //$(this).hide();
                 var _type_id_selected = $(this).attr("type-id");
                 
                 // Step.1 取得資料
                 // 測試用資料
-                _heading_number = 1;
+                //_heading_number = 1;
                 //_type_id = 2;
                 
-                $.test_msg("標題編號:" + _heading_number + " / 標註類型:" + _type_id_selected);
+                //$.test_msg("標題編號:" + _heading_number + " / 標註類型:" + _type_id_selected);
                 
                 // Step.2 跳到標題編號
                 
@@ -452,9 +479,9 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
             if (_annotation_type_name === _current_type ) {
                 _button.appendTo(_current_type_container);
             }
-            else {
-                _button.appendTo(_other_type_container);
-            }
+            //else {
+            //    _button.appendTo(_other_type_container);
+            //}
         }
         
         _list_item.appendTo(_list_content);
@@ -478,14 +505,17 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
 Annotation_navigation_map.prototype.get_heading_text = function (_heading_number) {
     
     var _heading_text_data = {
-        1: "數位圖書館概說",
-        3: "標題No.3",
-        4: "標題No.4",
+        0: "標題1",
+        1: "標題1-2",
+        2: "標題2",
+        3: "標題2-1",
+        4: "標題2-2",
         5: "標題No.5"
     }
     
     return _heading_text_data[_heading_number];
 };
+
 
 
 Annotation_navigation_map.prototype.change_tab_btn = function (_ele) {
