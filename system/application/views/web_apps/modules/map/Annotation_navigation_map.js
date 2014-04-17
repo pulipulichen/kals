@@ -280,10 +280,10 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     var _current_type = _ele.find(".type-navigation").attr("type-id");
     $.test_msg("current-type", _current_type);
     
+    
     var _chapter = KALS_text.selection.text.chapter;
     var _structure = _chapter.get_structure();
     var _heading_list = _chapter.get_heading_list(); 
-    
     
     // [標題1, 標題2, 標題3]
     $.test_msg("chapter heading", _heading_list[2].text());
@@ -369,14 +369,8 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     $.test_msg(".list.type-"+_current_type);
     
     
-    var _list = this.find(".list.type-"+_current_type).show();
-    
     var _lists = [];
     
-    var _types = this.get_annotation_types(); //取得所有標註的種類 
-    //var _type_numbers = [];
-    var _type_display_names = this.get_annotation_type_display_name_array();
-    var _type_classes = this.get_annotation_type_class_array();
  
 /**
     for (var _i in _types){
@@ -395,11 +389,37 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     }
  */
  
+ 
+    var _list = this.find(".list.type-"+_current_type).show();
     _list.empty();
-    var _list_content = $('<ul></ul>');
     var _this = this; 
-    var _data = this.get_heading_data();
+    this.get_heading_data(_current_type, function (_data) {
+        _this.change_tab_process_data(_data, _current_type, _list);
+    });
+};
+
+/**
+ * 取得資料之後的後續處理
+ * @param {JSON} _data 來自資料庫的資料
+ * @param {String} _current_type 現在的類型
+ * @param {jQuery} 目前顯示的表單
+ */
+Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _current_type, _list) {
     $.test_msg("get_heading_data", _data);
+    
+    
+    var _types = this.get_annotation_types(); //取得所有標註的種類 
+    //var _type_numbers = [];
+    var _type_display_names = this.get_annotation_type_display_name_array();
+    var _type_classes = this.get_annotation_type_class_array();
+    
+    var _chapter = KALS_text.selection.text.chapter;
+    var _structure = _chapter.get_structure();
+    var _heading_list = _chapter.get_heading_list(); 
+    
+    var _list_content = $('<ul></ul>');
+    
+    var _this = this;
 
     for (var _index in _data) {
         var _heading_number = _data[_index].heading_number;
@@ -440,9 +460,14 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
         //var _other_type_container = _list_item.find(".other-type");
         
         for (var _annotation_type_name in _heading_annotations) {
-            var _annotation_type_count = _heading_annotations[_annotation_type_name];
+            //var _annotation_type_count = _heading_annotations[_annotation_type_name];
+            var _annotation_type_count = _heading_annotations;
             $.test_msg("[_annotation_type_count]"+_annotation_type_count);
-            var _button = $("<span class='" + _type_classes [_annotation_type_name] + " type-navigation type-option' type-id='" + _annotation_type_name + "' heading-id='" + _heading_number + "' >" + _type_display_names [_annotation_type_name] + ":" + _annotation_type_count + "</span>");
+            var _button = $("<span class='" + _type_classes [_annotation_type_name] 
+                    + " type-navigation type-option' type-id='" + _annotation_type_name 
+                    + "' heading-id='" + _heading_number + "' >" 
+                    + _type_display_names [_annotation_type_name] 
+                    + ":" + _annotation_type_count + "</span>");
             
             _button.click(function () {
                 _this.btn_after_heading_click_event(this);
@@ -534,87 +559,60 @@ Annotation_navigation_map.prototype.get_annotation_type_display_name_array = fun
     return _type_display_names;
 };
 
-Annotation_navigation_map.prototype.get_heading_data = function () {
+/**
+ * 從伺服器取得資料
+ * @param {String} _current_type 要查詢的標註類型
+ * @param {Function} _callback
+ */
+Annotation_navigation_map.prototype.get_heading_data = function (_current_type, _callback) {
     
     var _data = [
         {
             heading_number: 4,
-            type_count: {
-                1: 5,
-                2: 4,
-                3: 3,
-                4: 6,
-                5: 5,
-                6: 7,
-                7: 3
-            }
+            type_count: 5
         },
  
         {
             heading_number: 2,
-            type_count: {
-                1: 5,
-                2: 4,
-                3: 3,
-                4: 6,
-                5: 5,
-                6: 7,
-                7: 3
-            }
+            type_count: 1
         },
         
         {
             heading_number: 0,
-            type_count: {
-                1: 5,
-                2: 4,
-                3: 3,
-                4: 6,
-                5: 5,
-                6: 7,
-                7: 3
-            }
+            type_count: 2
         },        
         
         {
             heading_number: 3,
-            type_count: {
-                1: 5,
-                2: 4,
-                3: 3,
-                4: 6,
-                5: 5,
-                6: 7,
-                7: 3
-            }
+            type_count: 3
         },
                
         {
             heading_number: 1,
-            type_count: {
-                1: 5,
-                2: 4,
-                3: 3,
-                4: 6,
-                5: 5,
-                6: 7,
-                7: 3
-            }
+            type_count: 4
         },
         
         {
             heading_number: 5,
-            type_count: {
-                1: 5,
-                2: 4,
-                3: 3,
-                4: 6,
-                5: 5,
-                6: 7,
-                7: 3
-            }
+            type_count: 5
         } 
     ];
+    
+    // --------------------------------
+    
+    var _chapter = KALS_text.selection.text.chapter;
+    var _structure = _chapter.get_structure();
+    
+    var _action = "get_heading_annotation";
+    var _send_data = {
+        structure: _structure,
+        current_type: _current_type
+    };
+    this.request_get(_action, _send_data, function (_data) {
+        if (typeof(_callback) === "function") {
+            _callback(_data);
+        }
+    });
     
     return _data;
 };   

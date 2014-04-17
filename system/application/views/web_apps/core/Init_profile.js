@@ -115,7 +115,9 @@ Init_profile.prototype._test = [
      * 第一個，不使用
      */
     function () {}
-
+    , function () {
+        (new Annotation_navigation_map()).open();
+    }
     /**
      * 測試導讀功能
      * @author Pulipuli Chen 20131230

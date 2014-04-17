@@ -378,7 +378,7 @@ KALS_controller.prototype.close = function (_callback) {
 };
 
 /**
- * 以GET方式
+ * 以GET方式，根伺服器取得資料
  * @param {String} _action
  * @param {JSON} _data
  * @param {function} _callback
