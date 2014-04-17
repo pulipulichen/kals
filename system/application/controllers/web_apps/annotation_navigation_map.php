@@ -56,19 +56,20 @@ class annotation_navigation_map extends KALS_model {
         $search->set_target_webpage($webpage->get_id());
         
         // 1.2. 指定現在要搜尋的標註類型
+        //test_msg("current_type", $current_type);
+        //$current_type = intval($current_type);
         $search->set_target_type($current_type);
-        
         // 2. 取得一個Annotation_collection
         $annotation_collection = $search;
         
+        //echo $search->length();
         // 2.1. 準備一下待會要儲存標題與標註數量的陣列
         $heading_list = array();
-        
         // 3. 迴圈，一一檢查每一個Annotation
-        foreach ($annotation_collection AS $index => $annotation) {
+        foreach ($search AS $index => $annotation) {
             
             // 4. 取出Annotation的位置，找出from_index
-            $scope_coll = $annotation->get_score_coll();
+            $scope_coll = $annotation->get_scopes();
             $from_index = $scope_coll->get_first_index();
 
             // 5. 判斷他是位於哪一個章節
@@ -112,11 +113,12 @@ class annotation_navigation_map extends KALS_model {
                 "heading_number" => $heading_number,
                 "type_count" => $count
             );
-            $return_data[] = $item;
+            //$return_data[] = $item;
+            array_push($return_data, $item);
         }
         
         // 8. 回傳
-        return $data;
+        return $return_data;
         
         /*
         // -----------------------

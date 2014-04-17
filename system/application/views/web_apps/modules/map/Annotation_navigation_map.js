@@ -420,8 +420,12 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
     var _list_content = $('<ul></ul>');
     
     var _this = this;
+    
+    var _data_empty = true;
 
     for (var _index in _data) {
+        _data_empty = false;
+        
         var _heading_number = _data[_index].heading_number;
         var _heading_annotations = _data[_index].type_count;
         
@@ -438,7 +442,8 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         //_list_item.append("<div class='list-header-component other-type'></div>");
         
         var _heading_div = $("<div class='list-header-component'></div>");
-        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" +  _heading_list[_heading_number].text() + "</span>");
+        var _heading_text = _heading_list[_heading_number].text();
+        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
         //var _heading_offset = $(".kals-heading-"+_heading_number ).offset().top;
 
         _heading_btn.click(function () {
@@ -459,30 +464,29 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         var _current_type_container = _list_item.find(".current-type");
         //var _other_type_container = _list_item.find(".other-type");
         
-        for (var _annotation_type_name in _heading_annotations) {
-            //var _annotation_type_count = _heading_annotations[_annotation_type_name];
-            var _annotation_type_count = _heading_annotations;
-            $.test_msg("[_annotation_type_count]"+_annotation_type_count);
-            var _button = $("<span class='" + _type_classes [_annotation_type_name] 
-                    + " type-navigation type-option' type-id='" + _annotation_type_name 
-                    + "' heading-id='" + _heading_number + "' >" 
-                    + _type_display_names [_annotation_type_name] 
-                    + ":" + _annotation_type_count + "</span>");
-            
-            _button.click(function () {
-                _this.btn_after_heading_click_event(this);
-            });
-            
-            if (_annotation_type_name === _current_type ) {
-                _button.appendTo(_current_type_container);
-            }
-            //else {
-            //    _button.appendTo(_other_type_container);
-            //}
+        var _annotation_type_count = _heading_annotations;
+        var _annotation_type_name = _current_type;
+        $.test_msg("[_annotation_type_count]"+_annotation_type_count);
+        var _button = $("<span class='" + _type_classes [_annotation_type_name] 
+                + " type-navigation type-option' type-id='" + _annotation_type_name 
+                + "' heading-id='" + _heading_number + "' >" 
+                + _type_display_names [_annotation_type_name] 
+                + ":" + _annotation_type_count + "</span>");
+
+        _button.click(function () {
+            _this.btn_after_heading_click_event(this);
+        });
+
+        if (_annotation_type_name === _current_type ) {
+            _button.appendTo(_current_type_container);
         }
         
         _list_item.appendTo(_list_content);
         
+    }
+    
+    if (_data_empty === true) {
+        // 提示空資料的訊息，加入到list_content
     }
    
 

@@ -84,8 +84,12 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
         this.heading_list.push(_child_obj);
     }
    
+    var _structure_count;
     if (_word_count < 1) {
-        //return (this.structure.length);
+        _structure_count = (this.structure.length);
+        $(_child_obj).addClass("kals-heading-" + _structure_count)
+                .addClass("kals-heading");
+        return _structure_count;
     }
     if (this.structure.length === 0) {
         this.structure.push(_word_count);
@@ -93,9 +97,8 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
     else if (_word_count !== this.structure[this.structure.length-1]) {
         this.structure.push(_word_count);
     }
-    
-    var _structure_count = (this.structure.length - 1);
-    $(_child_obj).addClass("kals-heading-" + _structure_count)
+    _structure_count = (this.structure.length - 1);
+    $(_child_obj).addClass("kals-heading-" + (_structure_count + 1))
             .addClass("kals-heading");
     
     return _structure_count;

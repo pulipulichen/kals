@@ -163,6 +163,7 @@ class KALS_model extends Web_apps_controller {
      * @return String
      */
     public function request_get ($json = NULL, $callback = NULL) {
+        
         // 取得資料
         $data = $this->_retrieve_get_json($json);
         if (is_null($data)) {
@@ -188,7 +189,6 @@ class KALS_model extends Web_apps_controller {
             $action = $data['_action'];
             if (method_exists($this, $action)) {
                 $data = $this->$action($data);
-                
                 $data = $this->_object_export($data);
             }
         }

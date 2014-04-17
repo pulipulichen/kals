@@ -177,7 +177,9 @@ class Annotation_type_factory extends KALS_object {
      */
     public function filter_type_id($type_id)
     {
-        if (is_string($type_id))
+        $int_type_id = intval($type_id);
+        if (is_string($type_id)
+            && intval($type_id) != $int_type_id)
         {
             $type_id = $this->create($type_id)->get_type_id();
         }
