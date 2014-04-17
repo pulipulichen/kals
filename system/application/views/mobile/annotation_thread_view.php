@@ -43,7 +43,7 @@
             echo '"'.$anchor_text.'"';
          } 
          ?></h1> 
-    <a href="<?php echo $webpage_url; ?>" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-carat-r" data-ajax="false">詳見全文</a>
+    <a href="<?php echo $webpage_url; ?>#view=<?php echo $annotataion_id; ?>" class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-carat-r" data-ajax="false">詳見全文</a>
 
 </div>
 <!--/top bar-->
@@ -63,7 +63,8 @@
       <li style="border-bottom-width: 1px;">
       <?php 
          if(isset($user)&&isset($note)){
-             echo '<span class = "name-container" ><b><u>'.$user.'</u></b>  </span>'
+             echo '<span class = "name-container" id = "annotation_'.$annotataion_id.'"><b><u>'
+                 .$user.'</u></b>  </span>'
                  .'<span class = "type-option '.$css_type.'" annotation_type = "'.$css_type.'">'
                  .$type_name
                  .'</span>'
@@ -80,7 +81,7 @@
     <?php    
         foreach ( $respond_json AS $json ){
           echo '<li style = " margin-left: 15% ">'
-             .'<span class = "name-container"><b><u>'.$json['user'].'</u></b>   <span>'
+             .'<span class = "name-container" id ="annotation_'.$json['annotation_id'].'"><b><u>'.$json['user'].'</u></b>   <span>'
              .'<span class = "type-option ' .$json['css_type'].'" annotation_type = "'.$json['css_type'].'">'
              .$json['type'].'</span>  '
              .'<span style = "font-size: large">'.$json['note'].'</span>'

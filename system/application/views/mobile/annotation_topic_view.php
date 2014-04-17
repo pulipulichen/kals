@@ -33,11 +33,11 @@
          <?php  //列出該page中all topic
                 foreach ($written_annotations AS $array){
                  echo '<li><a href ="'.base_url().'mobile/annotation_thread/'
-                     .$array['annotation_id'].'">'
-                     .$array['anchor_text']
+                     .$array['annotation_id'].'">'                     
                      .'<span style="display: '
                      .$array['is_unread']
-                     .'"><img src="'.base_url().'images/new_icon.gif"></span>'                       
+                     .'"><img src="'.base_url().'images/new_icon.gif">  </span>'                       
+                     .$array['anchor_text']
                      .'<span class="ui-li-count">'
                      .$array['respond_count']                 
                      .'</span>   <span style="font-size: small; font-style:  italic; color: gray">'                           

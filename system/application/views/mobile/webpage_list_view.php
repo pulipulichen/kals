@@ -34,9 +34,9 @@
                  echo '<li><a href="'.base_url().'mobile/annotation_topics/'
                       .$webpage_array['webpage_id']
                       .'">'
-                      .$webpage_array['webpage_title'].'  '
                       .'<span style="display: '.$webpage_array['is_unread']
-                      .'"><img src="'.base_url().'images/new_icon.gif"></span>'     
+                      .'"><img src="'.base_url().'images/new_icon.gif">  </span>'     
+                      .$webpage_array['webpage_title']
                       .'<span class="ui-li-count">'
                       .$webpage_array['annotation_count']                         
                       .'</span></a></li>'   ;                

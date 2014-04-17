@@ -63,11 +63,14 @@ class rss extends Web_apps_controller {
        
         $feed = new Feed();
 
+        $webpage_title = $webpage->get_title();
+        
+        
         $channel = new Channel();
         $channel
-            ->title("Channel Title")
+            ->title($webpage_title)
             ->description("Channel Description")
-            ->url('http://blog.example.com')
+            ->url('http://140.119.61.137/kals/mobile/annotation_topics/'.$webpage_id)
             ->appendTo($feed);
 
         foreach ($search AS $annotation) {
@@ -86,16 +89,25 @@ class rss extends Web_apps_controller {
            // date
            // annotation type
            // note
-           
+            $annotation_id = $annotation->get_id();            
+            if (isset($annotation_id)){
+                $topic_array = $this->db->query("SELECT topic_id
+                                                 FROM annotation
+                                                 WHERE annotation_id ='".$annotation_id."'");     
+            }
+            foreach ($topic_array->result_array() as $row){
+                      $topic_id = $row['topic_id'];
+            } 
+            
+            
             $item
                 ->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
                 ->description("<div>KALS user [" . $annotation->get_user()->get_name() . "] </div>
-                               <div>" . $annotation->get_note() ." </div>
-                        
-                             
+                               <div>" . $annotation->get_note() ." </div>                     
                               ") //user +annotation note
-                ->url('http://localhost/kals/help/config_annotation_scope.html') // webpage_url->view
+                //->url( base_url()."mobile/annotation_topics/".$webpage_id) // webpage_url->view
+                ->url('http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id) // webpage_url->view   
                 ->appendTo($channel);
         }    
 

@@ -254,8 +254,9 @@ class Authentication extends Web_apps_controller {
 
         $user= get_context_user();
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, 7, array('memo'=>$this->client_ip, 'user_id' => $user_id));
 
         clear_context_user();

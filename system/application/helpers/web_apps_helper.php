@@ -329,13 +329,13 @@ if ( ! function_exists('kals_mobile_log'))
             if (isset($data['memo']))
             {
                 $note = $data['memo'];
-                if (is_array($note) || is_object($note))
-                {
+                if (is_array($note) || is_object($note)) {
                     $note = json_encode($note);
                 }
 
-                if ($note == '')
+                if ($note === '') {
                     $note = NULL;
+                }
             }
         }
         else {
@@ -347,13 +347,16 @@ if ( ! function_exists('kals_mobile_log'))
             }
         }
         
-        if (is_null($user_id)) {
+        if (is_null($user_id) || $user_id == '') {
             $user = get_context_user();
             if (isset($user)) {
                 $user_id = $user->get_id();
             }
-        }
             
+            if (is_null($user_id) || $user_id == "") {
+                $user_id = NULL;
+            }
+        }
 
         $db->insert('log', array(
             'webpage_id' => $webpage_id,

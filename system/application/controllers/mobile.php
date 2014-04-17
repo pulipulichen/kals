@@ -39,7 +39,6 @@ class mobile extends Web_apps_controller{
      * @param type  $annotation_id
      */
     public function annotation_thread($annotation_id = NULL) {
-          
         //載入libary
         $this->load->library('kals_resource/Webpage');
         $this->load->library('kals_resource/Annotation');
@@ -60,7 +59,26 @@ class mobile extends Web_apps_controller{
         $anno_type = $_POST["annotation_type"];       
         $data['pop_type'] = $anno_type;
         }
-             
+        
+        
+        $annotation_self_id = $annotation_id;        
+        // check topic id
+        if (isset($annotation_id)){
+           $topic_array = $this->db->query("SELECT topic_id
+                                      FROM annotation
+                                      WHERE annotation_id ='".$annotation_id."'");     
+            }
+        foreach ($topic_array->result_array() as $row){
+                $is_topic_id = $row['topic_id'];
+        }    
+        if($is_topic_id !== NULL){
+            //is respond id
+            $annotation_id = $is_topic_id;
+        }    
+        echo 'annotation_id ='.$annotation_id.'/';
+        echo 'topic_id = '.$is_topic_id.'/';
+        
+
         // $annotation_id
         $annotation = new Annotation($annotation_id);
         $annotation_id = $annotation->get_id();           
@@ -72,8 +90,21 @@ class mobile extends Web_apps_controller{
         $css_type = $annotation->get_type()->get_type_id();
         $note = $annotation->get_note();   
         $timestamp = $annotation->get_update_timestamp();       
-        $log_user_id = $this->session->userdata('user_id');    
-  
+        
+        //$log_user_id = $this->session->userdata('user_id');    
+        //echo $this->session->userdata('user_id').'??';
+        //echo $this->session->userdata('logged_in').'??';
+                
+        $login_user = get_context_user();
+        $log_user_id = NULL;
+        $logged_id = FALSE;
+        if (isset($login_user)) {
+            $log_user_id = $login_user->get_id();
+            $logged_id = TRUE;
+        }
+        
+        
+        
         // 如果有回應值才要做新增的動作
         if(isset($note_massage) && isset($anno_type)){
             
@@ -81,7 +112,9 @@ class mobile extends Web_apps_controller{
            //先將權限設成管理者
            set_ignore_authorize(true);
            //取得參考網址(全文網址)資料($url)跟現在登入(session)的user
-           $user_now = $this->session->userdata('user_id'); 
+           //$user_now = $this->session->userdata('user_id'); 
+           $user_now = get_context_user();
+           
            //建立範圍(使用topic_id取得)
            $scope_coll = $annotation->get_scopes();    
            //開始建立回應標註     
@@ -150,7 +183,9 @@ class mobile extends Web_apps_controller{
             'show_total_count' => TRUE
         );
         kals_mobile_log($this->db, $log_webpage_id, $action, array('memo'=>$array_data, 'user_id' => $log_user_id));    
-        context_complete();
+        context_complete(); //寫入db
+        
+        
         $data['log_webpage_id'] = $log_webpage_id;
         
        // type
@@ -189,12 +224,18 @@ class mobile extends Web_apps_controller{
                 break;
         }    
            
+        
+
         // annotation_respones
         $respond_collection = $annotation->get_topic_respond_coll();
         $respond_json = array(); 
+        
+        
+        
         foreach ($respond_collection AS $respond_annotation) {
             $json = array();
             
+            $json["annotation_id"] = $respond_annotation->get_id();
             $json["user"] = $respond_annotation->get_user()->get_name();
             $css_res_type = $respond_annotation->get_type()->get_type_id();
             $res_type = $respond_annotation->get_type()->get_name();
@@ -259,6 +300,7 @@ class mobile extends Web_apps_controller{
     
         // send data -annotation topic
         $data["annotataion_id"] = $annotation_id;
+        $data["annotation_self_id"] = $annotation_self_id;
         $data["anchor_text"] = $anchor_text;
         $data["user"] = $user;
         $data["type"] = $type;
@@ -268,8 +310,7 @@ class mobile extends Web_apps_controller{
         $sub_timestamp = substr($timestamp, 0, 10);
         $data["timestamp"] = $sub_timestamp;        
         $data["respond_json"] = $respond_json;
-        
-    
+            
                 
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/annotation_thread_view', $data);
@@ -290,9 +331,7 @@ class mobile extends Web_apps_controller{
          
          $data = array();
          $webpage = new Webpage($webpage_id);
-         
        
-         
          // 取得文章標題
          $title = $webpage->get_title();   
          $data['title'] = $title;
@@ -305,11 +344,20 @@ class mobile extends Web_apps_controller{
          $array = array();
          
          
-         // session->user_id
-         $user_id = $this->session->userdata('user_id');
+         // rss->user_id
+        if (isset($user)){
+            $user_id = get_context_user()->get_id();
+        }else {
+            $user_id = 0;       
+        }
          
+         echo 'get_context_user ='.$user_id.'//';
+         echo $this->session->userdata('logged_in').'//';
+         echo 'session_user_id ='.$this->session->userdata('user_id');
+
          // 查詢未讀過的annotation
-         $unread_annotation = $this->db->query("SELECT topic_annotation.webpage_id, topic_annotation.is_topic_id, annotation_timestamp, max(log_timestamp) as log_timestamp
+         if ( $user_id !== 0 ){
+             $unread_annotation = $this->db->query("SELECT topic_annotation.webpage_id, topic_annotation.is_topic_id, annotation_timestamp, max(log_timestamp) as log_timestamp
                                                 FROM 
                                                     (SELECT webpage2annotation.webpage_id, annotation_id AS is_topic_id,
                                                             MAX(CASE WHEN res.update_timestamp IS NULL THEN annotation.update_timestamp
@@ -330,13 +378,14 @@ class mobile extends Web_apps_controller{
                                                              ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
                                                 GROUP BY topic_annotation.webpage_id, is_topic_id, annotation_timestamp
                                                 HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL");
-         $unread_array = array();
+             $unread_array = array();
         
-         // 存放unread topic id(topic and res)
-         foreach($unread_annotation->result_array() as $row){
-             $unread_id = $row['is_topic_id']; 
-             $unread_array[$unread_id] = $row['is_topic_id'];                   
-         }         
+             // 存放unread topic id(topic and res)
+             foreach($unread_annotation->result_array() as $row){
+                 $unread_id = $row['is_topic_id']; 
+                 $unread_array[$unread_id] = $row['is_topic_id'];                   
+             }
+         }
 
          
          foreach ($written_annotations AS $annotation) {
@@ -373,18 +422,23 @@ class mobile extends Web_apps_controller{
              }
              $last_short_timestamp = substr($last_timestamp, 0, 10);
              $array['timestamp'] = $last_short_timestamp;
+            
+            
              
-             // 判斷有無unread annotation
-             if (isset($unread_array[$annotation_id])) {
-                 $array['is_unread'] = 'inline';
-                 //echo $annotation_id;
-                 //echo 'Y <br>';
-             }
-             else {
-                 $array['is_unread'] = 'none';
-                 //echo $annotation_id;
-                 //echo 'N <br>';
-             }
+             //是否為訪客
+            if ( $user_id !== 0 ){
+                 // 判斷有無unread annotation
+                 if (isset($unread_array[$annotation_id])) {
+                     $array['is_unread'] = 'inline';
+                     //echo $annotation_id;
+                     //echo 'Y <br>';
+                 }
+                 else {
+                     $array['is_unread'] = 'none';
+                     //echo $annotation_id;
+                     //echo 'N <br>';
+                 }
+             }else { $array['is_unread'] = 'none'; }
             
              $data['written_annotations'][] = $array;          
          }
@@ -419,7 +473,13 @@ class mobile extends Web_apps_controller{
         
         
         $user_id = $user->get_id();   
-        // show unread page
+         echo 'context_id = '.get_context_user()->get_id();
+         echo '$user->get_id = '.$user_id.'//';
+         echo $this->session->userdata('logged_in');
+         echo 'session_user_id ='.$this->session->userdata('user_id');
+        
+        
+        if ($user_id !== 0){       
         $unread_search = $this->db->query("SELECT DISTINCT topic_annotation.webpage_id, count(topic_annotation.is_topic_id) AS unread
 FROM 
 (SELECT webpage2annotation.webpage_id, annotation_id AS is_topic_id,
@@ -457,7 +517,9 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
             //echo $webpage_id . " - " . $unread_count . " / <br />";
             $unread_array[$webpage_id] = $unread;
         }
-        
+       }
+       
+       
         // array：$all_webpages value:array array中為webpage_id
         foreach ($all_webpages AS $array){
            // get page's title and id
@@ -475,13 +537,14 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
            $webpage_array['annotation_count'] = $annotation_count;
           
            // 判斷有無read
-           if (isset($unread_array[$webpage_id])) {
-               $webpage_array['is_unread'] = 'inline';
-           }
-           else {
-               $webpage_array['is_unread'] = 'none';
-           }
-           
+           if ( $user_id !== 0){
+               if (isset($unread_array[$webpage_id])) {
+                   $webpage_array['is_unread'] = 'inline';
+               }
+               else {
+                   $webpage_array['is_unread'] = 'none';
+               }
+           }else { $webpage_array['is_unread'] = 'none'; }
            $data['all_webpages'][] = $webpage_array;
         }
      
@@ -622,11 +685,9 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
           }
                       
         // set session 
-      //$session_array = array();
        $session_array = array(
            'user_id' =>NULL,
            'user_name' =>NULL,
-           'notify_key' =>NULL,
            'logged_in' => NULL
         );    
           
@@ -634,13 +695,16 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
             $session_array['user_id'] = $user_id;
             $session_array['user_name'] = $user->get_name();
             $session_array['logged_in'] = TRUE;
-        }else{
-            $session_array['logged_in'] = FALSE;
+            set_context_user($user);
         }
-        $this->session->set_userdata($session_array);
+        else {        
+            
+            $session_array['logged_in'] = FALSE;
+            clear_context_user();
+        }
+       $this->session->set_userdata($session_array);
         context_complete(); //存入db 
-        
-          
+
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/mobile_login_view', $data);
         $this->load->view('mobile/mobile_views_footer');
@@ -669,6 +733,9 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
 
         return $output;
     }
+    
+         
+    
     
 
     
