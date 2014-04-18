@@ -35,7 +35,10 @@ class Authentication extends Web_apps_controller {
         );
     }
 
-    /**
+    /**$this->client_ip = array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
      * 
      * @param {Object} $json = {
      *     embed: TRUE //表示是不需要密碼的預設登入

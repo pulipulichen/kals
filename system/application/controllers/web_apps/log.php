@@ -45,6 +45,9 @@ include_once 'web_apps_controller.php';
 36=查詢Dashboard
 37=KALS_model使用
 38=點選selectable text的超連結，note={url:"http://www.google.com.tw", target="_blank"}
+39=從mobile裝置登入(有登入)
+40=使用mobile裝置瀏覽文章的topic_list(有登入)
+41=使用mobile裝置瀏覽討論標註(有登入)
  * 
  *
  * @package		KALS

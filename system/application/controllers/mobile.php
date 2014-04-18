@@ -171,8 +171,8 @@ class mobile extends Web_apps_controller{
             } 
         }
          
-       //log區-action = 16
-        $action = 16;  
+       //log區-mobile瀏覽討論-action = 41
+        $action = 41;  
         // data: topic_id 
         $log_webpage = $annotation->get_append_to_webpages();
         $log_webpage_id = $log_webpage[0]->get_id();       
@@ -345,7 +345,8 @@ class mobile extends Web_apps_controller{
          
          
          // rss->user_id
-        if (isset($user)){
+        $session_user = $this->session->userdata('user_id'); 
+        if (isset($session_user)){
             $user_id = get_context_user()->get_id();
         }else {
             $user_id = 0;       
@@ -373,7 +374,7 @@ class mobile extends Web_apps_controller{
                                                 LEFT JOIN
                                                       (SELECT user_id, webpage_id, note, max(log_timestamp) AS log_timestamp
                                                        FROM log
-                                                       WHERE user_id = '".$user_id."' AND webpage_id = '".$webpage_id."' AND action = '16'
+                                                       WHERE user_id = '".$user_id."' AND webpage_id = '".$webpage_id."' AND action = '16' 
                                                        GROUP BY user_id, webpage_id, note) AS log_view_thread
                                                              ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
                                                 GROUP BY topic_annotation.webpage_id, is_topic_id, annotation_timestamp
@@ -442,7 +443,23 @@ class mobile extends Web_apps_controller{
             
              $data['written_annotations'][] = $array;          
          }
-                 
+         
+        // log區 -使用mobile裝置瀏覽topic list- action = 40
+        $action = 40;
+        // webpage_id, action, user_id, array data
+        $log_webpage_id = $webpage_id;       
+        $log_user_id = $user_id;    
+        $array_data = $this->client_ip;
+        kals_mobile_log($this->db, $log_webpage_id, $action, array('memo'=>$array_data, 'user_id' => $log_user_id));    
+        context_complete(); //寫入db
+        
+        
+
+        
+        
+        //kals_mobile_log($this->db, $log_webpage_id, $action, array('memo'=>$array_data, 'user_id' => $log_user_id)); 
+         
+         
          
         $this->load->view('mobile/mobile_views_header');
         $this->load->view('mobile/annotation_topic_view', $data);
@@ -660,6 +677,14 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
                   $data['do_login'] = TRUE;
                   //echo 'check 5: login success?'.$data['user']['success'].'<br>'; //msg 5 
                   
+                  // log區 -登入成功(有登入才記log)-action = 39
+                  $action = 39;
+                  $log_webpage_id = NULL; 
+                  $log_user_id = $user_id;
+                  $array_data =$this->client_ip;
+                  kals_mobile_log($this->db, $log_webpage_id, $action, array('memo'=>$array_data, 'user_id' => $log_user_id));    
+                  context_complete(); //寫入db
+
             
                   // 若有原url則跳轉回原url，若無則到Wabpage_list
                   $login_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
@@ -683,7 +708,8 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
               }
                
           }
-                      
+        
+                          
         // set session 
        $session_array = array(
            'user_id' =>NULL,
@@ -702,7 +728,7 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
             $session_array['logged_in'] = FALSE;
             clear_context_user();
         }
-       $this->session->set_userdata($session_array);
+        $this->session->set_userdata($session_array);
         context_complete(); //存入db 
 
         $this->load->view('mobile/mobile_views_header');
