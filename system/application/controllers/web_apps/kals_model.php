@@ -189,7 +189,9 @@ class KALS_model extends Web_apps_controller {
             $action = $data['_action'];
             if (method_exists($this, $action)) {
                 $data = $this->$action($data);
+                //test_msg("data 1", $data);
                 $data = $this->_object_export($data);
+                //test_msg("data 2", $data);
             }
         }
         
@@ -207,13 +209,18 @@ class KALS_model extends Web_apps_controller {
             $strip_fields = array(
                 '_action', '_enable_debug', '_enable_cache'
             );
+            
+                //test_msg("data 3", $data);
 
             $output_data = array();
             foreach ($data AS $field => $value) {
-                if (!in_array($field, $strip_fields)) {
+                //test_msg("field", array( $field, in_array($field, $strip_fields, TRUE)  ) );
+                if (!in_array($field, $strip_fields, TRUE)) {
                     $output_data[$field] = $value;
                 }
             }
+            
+                //test_msg("data 4", $output_data);
             
             // 最終回傳資料
             //test_msg($output_data);

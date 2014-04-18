@@ -219,23 +219,38 @@ Annotation_type_param.prototype.get_type_name = function () {
  * @return {KALS_language_param}
  */
 Annotation_type_param.prototype.get_type_name_lang = function () {
-	var _name = this.get_type_name();
-	
-	var _lang;
-	if (this.is_basic()) {
-		_lang = new KALS_language_param(
-			_name,
-			"annotation.type." + _name
-		);
-	}
-	else {
-		//如果是自訂類型的話
-		_lang = new KALS_language_param(
-			_name
-		);
-	}
-	
-	return _lang;
+    var _name = this.get_type_name();
+
+    var _lang;
+    if (this.is_basic()) {
+        _lang = new KALS_language_param(
+                _name,
+                "annotation.type." + _name
+        );
+    }
+    else {
+        //如果是自訂類型的話
+        _lang = new KALS_language_param(
+                _name
+        );
+    }
+
+    return _lang;
+};
+
+/**
+ * 直接顯示標註名字的翻譯字串
+ * 
+ * @return {String}
+ */
+Annotation_type_param.prototype.get_type_name_display = function () {
+    var _lang = this.get_type_name_lang();
+    if (this.is_basic()) {
+        return KALS_context.lang.line(_lang);
+    }
+    else {
+        return this.get_custom_name();
+    }
 };
 
 Annotation_type_param.prototype.get_custom_name = function () {

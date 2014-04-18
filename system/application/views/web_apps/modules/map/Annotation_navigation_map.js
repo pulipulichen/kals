@@ -277,7 +277,12 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     _ele.find("span.type-navigation").addClass('selected');
     
     //var _current_type = _ele.find("[kals-field='annotation_type']").attr("type-name");
-    var _current_type = _ele.find(".type-navigation").attr("type-id");
+    var _navigation = _ele.find(".type-navigation");
+    var _current_type = _navigation.attr("type-id");
+    var _query_type = _current_type;
+    if (_navigation.hasAttr("custom-name")) {
+        _query_type = _navigation.attr("custom-name");
+    }
     $.test_msg("current-type", _current_type);
     
     
@@ -286,13 +291,13 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     var _heading_list = _chapter.get_heading_list(); 
     
     // [標題1, 標題2, 標題3]
-    $.test_msg("chapter heading", _heading_list[2].text());
+    //$.test_msg("chapter heading", _heading_list[2].text());
  
     // [0, 1063, 5200]
     // chapter1: 0-1062
     // chapter2: 1063-5199
     // chapter3: 5200-
-    $.test_msg("chapter structure", _structure);
+    //$.test_msg("chapter structure", _structure);
     
     //this.debug(_ele.html());
 /**    
@@ -393,7 +398,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     var _list = this.find(".list.type-"+_current_type).show();
     _list.empty();
     var _this = this; 
-    this.get_heading_data(_current_type, function (_data) {
+    this.get_heading_data(_query_type, function (_data) {
         _this.change_tab_process_data(_data, _current_type, _list);
     });
 };
@@ -467,6 +472,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         var _annotation_type_count = _heading_annotations;
         var _annotation_type_name = _current_type;
         $.test_msg("[_annotation_type_count]"+_annotation_type_count);
+        
         var _button = $("<span class='" + _type_classes [_annotation_type_name] 
                 + " type-navigation type-option' type-id='" + _annotation_type_name 
                 + "' heading-id='" + _heading_number + "' >" 
@@ -737,18 +743,38 @@ Annotation_navigation_map.prototype.init_tabs = function () {
         // Annotation_type_param
         var _type = _types[_i];
 
-        var _lang = _type.get_type_name_lang();
+        var _display_name = _type.get_type_name_display();
        
         var _class = _type.get_classname();
         var _type_id = _type.get_id();
 
         
-        var _display_name = KALS_context.lang.line(_lang);
-        
+        //var _display_name = KALS_context.lang.line(_lang);
 
         
+        // ---------------------------
+        // 如果是自訂標註的話，現在要幫標註畫上按鈕顏色
+        var _style = "";
+        if (_type.is_basic() === false) {
+            _style = _type.get_option_style();
+            _style = ' style="' + _style + '"';
+        }
+        
+        // ---------------------------
+        
         //var _btn = '<span class='+ _class +'>' + _types[_i].get_name() + '</span>';
-        var _btn = '<span class="'+ _class +' type-navigation type-option non-selected" type-id="' + _type_id + '">' + _display_name + '</span>';
+        
+        var _custom_name_attr = "";
+        if (_type.is_basic() === false) {
+            _custom_name_attr = 'custom-name="' + _display_name + '"';
+        }
+        
+        var _btn = '<span class="'+ _class +' type-navigation type-option non-selected" ' 
+                + _style
+                + _custom_name_attr
+                + 'type-id="' + _type_id + '">' 
+                + _display_name + '</span>';
+        
         _btn_array.push(_btn);
         
         

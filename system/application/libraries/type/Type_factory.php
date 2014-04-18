@@ -106,8 +106,9 @@ class Type_factory extends Generic_object {
      *  也可以是字串，那會查詢並轉換成type_id。
      */
     public function filter_id($type_name) {
-        if (is_int($type_name))
+        if (is_int($type_name)) {
             return $type_name;
+        }
         else if (is_string($type_name))
         {
             $type = $this->create_type($type_name);

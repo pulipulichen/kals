@@ -27,8 +27,8 @@ dt {
 }
 
 .type-navigation.non-selected{
-    background-color: grey;
-    color: white;
+    background-color: grey !important;
+    color: white !important;
 }
 
 .type-navigation.type-option{

@@ -48,6 +48,8 @@ class annotation_navigation_map extends KALS_model {
         
         $current_type = $data["current_type"];
         
+        //test_msg($data);
+        
         // 1. 搜尋指定類型的標註
         $search = new Search_annotation_collection();
         
@@ -62,7 +64,7 @@ class annotation_navigation_map extends KALS_model {
         // 2. 取得一個Annotation_collection
         $annotation_collection = $search;
         
-        //echo $search->length();
+        //test_msg("Data found?", $search->length() );
         // 2.1. 準備一下待會要儲存標題與標註數量的陣列
         $heading_list = array();
         // 3. 迴圈，一一檢查每一個Annotation
@@ -71,11 +73,14 @@ class annotation_navigation_map extends KALS_model {
             // 4. 取出Annotation的位置，找出from_index
             $scope_coll = $annotation->get_scopes();
             $from_index = $scope_coll->get_first_index();
+            
+            //test_msg($from_index);
 
             // 5. 判斷他是位於哪一個章節
             // [14, 56, 70]
             $current_heading_number = 0;
             foreach ($structure AS $heading_number => $last_index) {
+                //test_msg("foreach", array($from_index, $last_index, $heading_number));
                 if ($from_index < $last_index) {
                     $current_heading_number = $heading_number;
                     break;
@@ -88,6 +93,7 @@ class annotation_navigation_map extends KALS_model {
                 $count = $heading_list[$current_heading_number];
                 $count = $count + 1 ;
             }
+            //test_msg("heading_list", array($current_heading_number, $count));
             $heading_list[$current_heading_number] = $count;
         }
         
@@ -113,67 +119,17 @@ class annotation_navigation_map extends KALS_model {
                 "heading_number" => $heading_number,
                 "type_count" => $count
             );
+            
+            //test_msg("item", $item);
             //$return_data[] = $item;
             array_push($return_data, $item);
         }
         
         // 8. 回傳
+        //test_msg($return_data);
         return $return_data;
-        
-        /*
-        // -----------------------
-        // 從現在的網頁來計算標註跟使用者
-        $webpage = $this->get_current_webpage();
-        
-        $data["annotation_count"] = $webpage->get_written_annotations_count();
-        
-        $data["user_count"] = $webpage->get_written_users_count();
-        
-        // ------------------
-        // 取出最近的標註
-        
-        $search = new Search_annotation_collection();
-        $search->set_target_webpage($webpage->get_id());
-        $search->set_check_authorize(FALSE);
-        
-        $limit = 5;
-        $search->set_limit($limit);
-        
-        $order_type_id = 6;
-        $desc = TRUE;
-        $search->add_order($order_type_id, $desc);
-        
-        $data["last_annotation"] = array();
-        foreach ($search AS $index => $annotation) {
-            //$json = $annotation->export_data();
-            $json = $annotation;
-            if ($index == 0) {
-                //$last_annotation = $json;
-                $data["last_annotation_id"] = $annotation->get_id();
-                $data["last_annotation_timestamp"] = $annotation->get_update_timestamp();
-            }
-            
-            // 一一加入標註
-            $data["last_annotation"][] = $json;
-        }
-        
-        // 也可以最後一口氣取出所有標註
-        $data["last_annotation"] = $search;
-        
-        // -------------------
-        // 依照標註數量來判斷熱門程度
-        
-        $activity = "bad";
-        if ($data["annotation_count"] > 20) {
-            $activity = "good";
-        }
-        else if ($data["annotation_count"] > 5) {
-            $activity = "normal";
-        }
-        
-        $data["activity"] = "Good";
-        */
-        return $data;
+        //test_msg($data);
+        //return $heading_list;
     }
 }
 
