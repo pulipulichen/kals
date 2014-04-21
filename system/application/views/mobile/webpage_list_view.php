@@ -45,3 +45,23 @@
 
     </ul>
 </div>   
+<div data-role="header">
+    <?php
+    if ($prev_page !== -1) {
+        ?>
+    <a href="<?php echo base_url(); ?>mobile/webpage_list/<?php echo $prev_page;?>" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l" >上一頁</a>
+        <?php
+    } 
+    ?>
+    
+    <h1>Page <?php echo $page; ?></h1>
+    
+    <?php
+    if ($next_page !== -1) {
+        ?>
+    
+    <a class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-arrow-r" href="<?php echo base_url(); ?>mobile/webpage_list/<?php echo $next_page;?>">下一頁</a>
+    <?php
+    } 
+    ?>
+</div>

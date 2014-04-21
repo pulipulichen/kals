@@ -25,7 +25,7 @@ class Search_order_collection extends Collection {
         8 => 'Search_order_note',
         9 => 'Search_order_anchor_text',
         10 => 'Search_order_last_thread_timestamp'
-        
+              
     );
     protected $class_dir = 'search/';
 

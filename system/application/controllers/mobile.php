@@ -374,7 +374,7 @@ class mobile extends Web_apps_controller{
                                                 LEFT JOIN
                                                       (SELECT user_id, webpage_id, note, max(log_timestamp) AS log_timestamp
                                                        FROM log
-                                                       WHERE user_id = '".$user_id."' AND webpage_id = '".$webpage_id."' AND action = '16' 
+                                                       WHERE user_id = '".$user_id."' AND webpage_id = '".$webpage_id."' AND (action = '16' OR action = '41') 
                                                        GROUP BY user_id, webpage_id, note) AS log_view_thread
                                                              ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
                                                 GROUP BY topic_annotation.webpage_id, is_topic_id, annotation_timestamp
@@ -468,33 +468,51 @@ class mobile extends Web_apps_controller{
      }
     
     
-     /**
+    /**
      * webpage_list
-     * @param type $topic_id
+     * @param Int $page 頁數
      */
-     public function webpage_list() {
+     public function webpage_list($page = 1) {
          
         $this->load->library('kals_resource/Webpage');
         $this->load->library('kals_resource/Domain');
         
         $user = get_context_user();
-
+        $user_id = $user->get_id(); 
+        
         // get domain's all pages
-        $data = array();
-       
+        $data = array();       
         //$webpage_list = Domain::get_all_domain_webpages();
-        $domain = new Domain();
-        $all_webpages = $domain->get_all_domain_webpages(); //array
+        //$domain = new Domain();
+        //$all_webpages = $domain->get_all_domain_webpages(); //array
+        $all_webpages = Webpage::get_all_webpages_order_by_read($user_id, ($page-1) );
+        //test_msg("all_webpage", count($all_webpages));
+        //echo $all_webpages;
         $data['all_webpages'] = array();
         $webpage_array = array();
+       
+        //換頁 
+        $webpage_count = Webpage::get_all_webpages_count();
+        $page_count = ceil($webpage_count/10);
         
+        $next_page = $page + 1;
+        $prev_page = -1;
         
-        $user_id = $user->get_id();   
-         echo 'context_id = '.get_context_user()->get_id();
-         echo '$user->get_id = '.$user_id.'//';
-         echo $this->session->userdata('logged_in');
-         echo 'session_user_id ='.$this->session->userdata('user_id');
-        
+        if ($page > 1 && $page < $page_count){
+            $next_page = $page + 1;
+            $prev_page = $page - 1;
+        }
+        else if ($page == $page_count){
+            $next_page = -1;
+            $prev_page = $page - 1;
+        }
+        $data['page'] = $page;
+        $data['next_page'] = $next_page;
+        $data['prev_page'] = $prev_page;
+        //test_msg( 'context_id = '.get_context_user()->get_id() );
+        //test_msg( '$user->get_id = '.$user_id.'//' );
+        //test_msg(  $this->session->userdata('logged_in') );
+        //test_msg( 'session_user_id ='.$this->session->userdata('user_id') );   
         
         if ($user_id !== 0){       
         $unread_search = $this->db->query("SELECT DISTINCT topic_annotation.webpage_id, count(topic_annotation.is_topic_id) AS unread
@@ -518,7 +536,7 @@ user_id, webpage_id, note, max(log_timestamp) AS log_timestamp
  from log
 where
 user_id = '".$user_id."' and
-action = '16' 
+( action = '16' OR action = '40')  
 group by user_id, webpage_id, note) AS log_view_thread
 
 ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
@@ -538,12 +556,14 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
        
        
         // array：$all_webpages value:array array中為webpage_id
-        foreach ($all_webpages AS $array){
+        foreach ($all_webpages AS $webpage){
            // get page's title and id
-           $webpage_id = $array[0]->get_id();
+           $webpage_id = $webpage->get_id();
            $webpage_array['webpage_id'] = $webpage_id;
+           //test_msg($webpage_id);
+           //continue;
            
-           $webpage = new Webpage($webpage_id);
+           //$webpage = new Webpage($webpage_id);
            $webpage_title = $webpage->get_title();
            //echo 'msg= '.$webpage_title.'<br>'; //msg
 
@@ -551,6 +571,7 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
            
            // get page's annotation count
            $annotation_count = $webpage->get_written_annotations_count();
+           //$annotation_count = 0;
            $webpage_array['annotation_count'] = $annotation_count;
           
            // 判斷有無read
@@ -760,12 +781,33 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
         return $output;
     }
     
-         
+   /* public function page_change($action = 0, $page = 0){
+        $this->load->library('kals_resource/Webpage');
+        $webpage_count = Webpage::get_all_webpages_count();
+        $page_count = ceil($webpage_count/10);
+        //換頁-1：上一頁；2：下一頁
+        if( $action == 1 ){
+            if($page === 0){
+               $now_page = 0; 
+            }elseif($page > 0 && $page <= $page_count){
+               $now_page = $page - 1;
+            }
+        }
+        if( $action == 2 ){
+            if($page === $page_count){
+                $now_page = $page_count;           
+            }elseif ($page < $page_count) {
+                $now_page = $page + 1;
+            }
+        }  
+        return $now_page;
+    }*/
+       
+        
     
+    }        
     
 
-    
-}
 
 
 

@@ -216,8 +216,9 @@ class Webpage extends KALS_resource {
             $webpage = $this->create(array('url' => $url));
             return $webpage;
         }
-        else
+        else {
             return new Webpage($webpage);
+        }
     }
 
     /**
@@ -353,7 +354,7 @@ class Webpage extends KALS_resource {
      * @author Pudding 20131224
      * @return array|Webpage
      */
-        static public function get_all_webpages () {
+    static public function get_all_webpages () {
         $output = array();
         $query = $this->CI->db->select('webpage_id')
                 ->get('webpage');
@@ -366,6 +367,57 @@ class Webpage extends KALS_resource {
         }
         return $output;
     }
+
+    /**
+     * 根據已經讀過的標註數量來排序
+     * 
+     * @author Pudding 20131224
+     * @param Int $user_id 使用者編號
+     * @param Int $page 頁數
+     * @return array|Webpage
+     */
+     static public function get_all_webpages_order_by_read ( $user_id = NULL, $page = 0) {
+        $output = array();
+        
+        $webpage = new Webpage();
+        
+        $limit = 10;
+        $offset = $page * $limit;
+        
+        $query = $webpage->CI->db->query("SELECT webpage.webpage_id, MAX(log_timestamp) AS last_webpage
+FROM webpage LEFT JOIN log ON (webpage.webpage_id = log.webpage_id AND user_id = '".$user_id."' AND (action = '16' OR action = '40'))
+GROUP BY webpage.webpage_id
+ORDER BY last_webpage
+LIMIT " . $limit . "
+OFFSET " . $offset);
+        
+        foreach ($query->result_array() AS $row)
+        {
+            $id = intval($row['webpage_id']);
+            $obj = new Webpage($id);
+            array_push($output, $obj);
+        }
+        return $output;
+    }
+    
+     /**
+     * 計算目前所有的webpage數量
+     * 
+     * @author Pudding 20131224
+     * 
+     * @return int count
+     */
+     static public function get_all_webpages_count () {       
+        $webpage = new Webpage();       
+        $query = $webpage->CI->db->query("SELECT count(webpage_id)
+FROM webpage
+");
+        foreach($query->result_array() as $row ){
+                $count = $row['count'];
+        }
+        return $count;
+    }
+    
     
 }
     /* End of file Webpage.php */
