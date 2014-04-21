@@ -399,7 +399,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     _list.empty();
     var _this = this; 
     this.get_heading_data(_query_type, function (_data) {
-        _this.change_tab_process_data(_data, _current_type, _list);
+        _this.change_tab_process_data(_data, _query_type, _current_type, _list);
     });
 };
 
@@ -409,7 +409,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
  * @param {String} _current_type 現在的類型
  * @param {jQuery} 目前顯示的表單
  */
-Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _current_type, _list) {
+Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _type_id, _type_name, _list) {
     $.test_msg("get_heading_data", _data);
     
     
@@ -417,12 +417,13 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
     //var _type_numbers = [];
     var _type_display_names = this.get_annotation_type_display_name_array();
     var _type_classes = this.get_annotation_type_class_array();
+    var _type_styles = this.get_style_array();
     
     var _chapter = KALS_text.selection.text.chapter;
-    var _structure = _chapter.get_structure();
+    //var _structure = _chapter.get_structure();
     var _heading_list = _chapter.get_heading_list(); 
     
-    var _list_content = $('<ul></ul>');
+    var _list_content = $('<ul class="list-content"></ul>');
     
     var _this = this;
     
@@ -470,11 +471,14 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         //var _other_type_container = _list_item.find(".other-type");
         
         var _annotation_type_count = _heading_annotations;
-        var _annotation_type_name = _current_type;
+        var _annotation_type_name = _type_name;
         $.test_msg("[_annotation_type_count]"+_annotation_type_count);
         
+        
         var _button = $("<span class='" + _type_classes [_annotation_type_name] 
-                + " type-navigation type-option' type-id='" + _annotation_type_name 
+                + " type-navigation type-option heading-button'"
+                + _type_styles[_annotation_type_name]
+                + " type-id='" + _type_id 
                 + "' heading-id='" + _heading_number + "' >" 
                 + _type_display_names [_annotation_type_name] 
                 + ":" + _annotation_type_count + "</span>");
@@ -483,7 +487,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
             _this.btn_after_heading_click_event(this);
         });
 
-        if (_annotation_type_name === _current_type ) {
+        if (_annotation_type_name === _type_name ) {
             _button.appendTo(_current_type_container);
         }
         
@@ -493,6 +497,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
     
     if (_data_empty === true) {
         // 提示空資料的訊息，加入到list_content
+        _list_content = $("<span class='hint'>這個分類目前還沒有標註喔!</span>");
     }
    
 
@@ -550,6 +555,29 @@ Annotation_navigation_map.prototype.get_annotation_type_class_array = function (
     return _type_classes;
 };
 
+Annotation_navigation_map.prototype.get_style_array = function () {
+    
+    var _types = this.get_annotation_types(); //取得所有標註的種類
+    var _type_styles = [];
+    
+        for (var _i in _types){
+        var _type = _types[_i] ;
+        var _type_id = _type.get_id(); //取得標註類別id: 1~7
+        
+        _type_styles[_type_id] = "";
+        var _style = "";
+        
+        if (_type.is_basic() === false) {
+            _style = _type.get_option_style();
+            _style = ' style="' + _style + '"';
+            _type_styles[_type_id] = _style;
+        }
+        
+        //$.test_msg(_type_id + "[_type_styles[_type_id]]"+_type_styles[_type_id]);
+    }
+    
+    return _type_styles;
+};
 
 Annotation_navigation_map.prototype.get_annotation_type_display_name_array = function () {
     
@@ -560,9 +588,10 @@ Annotation_navigation_map.prototype.get_annotation_type_display_name_array = fun
         var _type = _types[_i] ;
         var _type_id = _type.get_id(); //取得標註類別id: 1~7
         
-        var _type_lang = _type.get_type_name_lang();
+        //var _type_lang = _type.get_type_name_lang();
 
-        _type_display_names [_type_id] = KALS_context.lang.line(_type_lang); //類別中文名稱
+        //_type_display_names [_type_id] = KALS_context.lang.line(_type_lang); //類別中文名稱
+        _type_display_names [_type_id] = _type.get_type_name_display();
 
     }
     
@@ -737,7 +766,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     var _count = 0;
     var _type_num_array = [];
     
-    
+    var _first_class = null;
     
     for (var _i in _types) {
         // Annotation_type_param
@@ -748,6 +777,11 @@ Annotation_navigation_map.prototype.init_tabs = function () {
         var _class = _type.get_classname();
         var _type_id = _type.get_id();
 
+        
+        if(_count === 0){
+            _first_class = _class;
+            _count = _count + 1;
+        }
         
         //var _display_name = KALS_context.lang.line(_lang);
 
@@ -796,6 +830,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     
 
     this.find(".list").css("display", "none");
+    
 
     
     // get_annotation_types()
@@ -803,6 +838,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     this.set_field("annotation_type",  _btn_array);
     
     this.set_field("");
+
     
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
 };

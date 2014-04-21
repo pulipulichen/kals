@@ -21,6 +21,9 @@ dt {
     color:red;
 }
 
+.list-content{
+    margin: 0.5em;
+}
 
 .type-navigation.selected{
     font-size: large !important;
@@ -35,6 +38,10 @@ dt {
     cursor: pointer !important;
 }
 
+.type-navigation.type-option.heading-button{
+    margin: 0.5em;
+}
+
 .list-header-component{
     cursor: pointer !important;
     font-size: small !important;
@@ -45,4 +52,9 @@ dt {
     line-height: 2em;
     opacity: .75;
 
+}
+
+.hint{
+    font-size: large !important;
+    font-weight: bold;
 }
