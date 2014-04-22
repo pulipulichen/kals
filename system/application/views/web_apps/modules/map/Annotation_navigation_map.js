@@ -16,7 +16,8 @@
 function Annotation_navigation_map() {
     KALS_controller_window.call(this);
     //12121
-    this.init_tabs();
+    
+    //this.init_tabs();
 }
 
 /**
@@ -44,6 +45,20 @@ Annotation_navigation_map.prototype = new KALS_controller_window();
  * @type String
  */
 Annotation_navigation_map.prototype._$view = 'modules/map/view/Annotation_navigation_map';
+
+
+/**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 這個方法只會執行一次
+ * 
+ * 請覆寫這個方法
+ * @return {KALS_controller}
+ */
+Annotation_navigation_map.prototype._$initialize_view = function () {
+    this.init_tabs();
+};
 
 /**
  * ====================
@@ -831,7 +846,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
 
     this.find(".list").css("display", "none");
     
-
+    
     
     // get_annotation_types()
     
@@ -839,7 +854,10 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     
     this.set_field("");
 
-    
+    //var _this = this;
+    //setTimeout(function () {
+        this.find(".list-header-component .type-navigation.type-option:first").click();
+    //}, 100);
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
 };
 
