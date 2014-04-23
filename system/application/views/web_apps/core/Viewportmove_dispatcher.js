@@ -27,7 +27,7 @@ function Viewportmove_dispatcher() {
         }
         
         $viewport_trigger = setTimeout(function () {
-            $.test_msg('viewportmove event', {height: $.is_small_height(), width: $.is_small_width()});
+            //$.test_msg('viewportmove event', {height: $.is_small_height(), width: $.is_small_width()});
             
             _this.set_changed();
             _this.notify_listeners();

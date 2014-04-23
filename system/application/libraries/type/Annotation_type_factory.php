@@ -175,15 +175,20 @@ class Annotation_type_factory extends KALS_object {
      * @param int|string $type_id
      * @return Annotation_type
      */
-    public function filter_type_id($type_id)
-    {
-        if (is_string($type_id))
-        {
+    public function filter_type_id($type_id) {
+        $int_type_id = intval($type_id);
+        //test_msg("filter_type_id", array(is_string($type_id), intval($type_id), $type_id, $int_type_id,  strval($int_type_id), ($type_id !== strval($int_type_id))  ));
+        if (is_string($type_id)
+            && $type_id !== strval($int_type_id)  ) {
             $type_id = $this->create($type_id)->get_type_id();
         }
-        else if (is_object($type_id))
+        else if (is_object($type_id)) {
         {
             $type_id = $type_id->get_type_id();
+        }
+        else if (is_string($type_id)
+                && $type_id === strval($int_type_id)) {
+            $type_id = $int_type_id;
         }
         //如果是int，則直接回傳吧
 

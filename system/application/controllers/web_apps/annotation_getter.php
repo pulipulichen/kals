@@ -825,7 +825,7 @@ class Annotation_getter extends Web_apps_controller {
                 }
                 break;
            case "annotation_type": //標註類型
-                $search->set_target_type(intval($data->keyword));
+                $search->set_target_type($data->keyword);
                 break;
             case "annotation_anchor":
                 $search->set_search_anchor_text($data->keyword);

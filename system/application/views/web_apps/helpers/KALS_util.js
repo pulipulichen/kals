@@ -38,22 +38,21 @@ KALS_util.ajax_get = function (_config) {
     _url = $.appends_with(_url, '/');
     
     if (_data !== null) {
-		if ($.is_object(_data)) {
-			_data = $.json_encode(_data);
-			_data = encodeURIComponent(_data);
-			_data = escape(_data);
-		}
-		else 
-			if ($.is_string(_data)) {
-				_data = encodeURIComponent(_data);
-				_data = escape(_data);
-			}
+        if ($.is_object(_data)) {
+            _data = $.json_encode(_data);
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);
+        }
+        else if ($.is_string(_data)) {
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);
+        }
 		
-		_url = _url + _data + '/callback=?';
-	}
-	else {
-		_url = _url + 'callback=?';
-	}
+        _url = _url + _data + '/callback=?';
+    }
+    else {
+        _url = _url + 'callback=?';
+    }
     
 	if (_url.indexOf('http') === 0 
                 || _url.indexOf('%22') === 0) {
@@ -444,15 +443,19 @@ KALS_util.show_exception = function (_exception, _uri) {
     //var _request_uri = $.get_parameter(_exception, 'request_uri');
     
     if ($.is_class(_exception, 'KALS_exception') === false) {
-		_exception = new KALS_exception(_exception);
-	}
+        _exception = new KALS_exception(_exception);
+    }
         
     var _heading = _exception.heading;
     var _message = _exception.message;
     var _request_uri = _exception.request_uri;
-	if (_request_uri == null) {
-		_request_uri = _uri;
-	}
+    if (_request_uri === null) {
+        _request_uri = _uri;
+    }
+    if (_request_uri.substr(0,4) !== "http" 
+            && _request_uri.substr(0,1) !== "/") {
+        _request_uri = KALS_context.get_base_url(_request_uri);
+    }
     
     $.test_msg('KALS_util.show_exception()', [_heading, _message, '<a href="'+_request_uri+'" target="_blank">' + _request_uri + '</a>']);
     
