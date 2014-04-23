@@ -48,7 +48,7 @@
 <h2>KALS其他資源</h2>
 <ul>
         <li><a href="../web_apps/help/" target="_blank">KALS操作說明</a></li>
-        <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫</a></li>
+        <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫 phpPgAdmin</a></li>
 	<li><a href="../document/KALS UML.uml" target="_blank">UML規劃圖</a> (以<a href="http://sourceforge.net/projects/whitestaruml/" target="_blank">WhiteStarUML</a>開啟)</li>
 	<li><a href="../document/Webpage Application.ep" target="_blank">網頁應用端草圖構想</a> (以<a href="http://pencil.evolus.vn/" target="_blank">Pencil</a>開啟)</li>
 </ul>

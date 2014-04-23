@@ -111,6 +111,10 @@ if ( ! function_exists('create_json_excpetion'))
 
 if ( ! function_exists('get_client_ip'))
 {
+    /**
+     * 取得使用者的IP資訊
+     * @return String
+     */
     function get_client_ip()
     {
         $myip = NULL;
@@ -121,6 +125,21 @@ if ( ! function_exists('get_client_ip'))
             $myip = $myip[0];
         }
         return $myip;
+    }
+}
+
+if ( ! function_exists('get_client_ip_browser'))
+{
+    /**
+     * 取得使用者的IP資訊與瀏覽器資訊
+     * @return String
+     */
+    function get_client_ip_browser()
+    {
+        return array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
     }
 }
 

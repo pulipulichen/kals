@@ -48,6 +48,7 @@ include_once 'web_apps_controller.php';
 39=從mobile裝置登入(有登入)
 40=使用mobile裝置瀏覽文章的topic_list(有登入)
 41=使用mobile裝置瀏覽討論標註(有登入)
+42=從mobile_apps登出
  * 
  *
  * @package		KALS
