@@ -11,3 +11,4 @@ test/
 /system/cache/
 /system/logs/
 /drupal/*
+/*/Thumbs.db

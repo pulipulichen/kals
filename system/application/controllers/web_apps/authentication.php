@@ -42,7 +42,7 @@ class Authentication extends Web_apps_controller {
      * }
      * @param {Object} $callback
      */
-    function login($json, $callback)
+    function login($json, $callback = NULL)
     {
         $data = json_to_object($json);
 

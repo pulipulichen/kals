@@ -47,11 +47,18 @@ if ( ! function_exists('get_context_user'))
 
 if ( ! function_exists('set_context_user'))
 {
-    function set_context_user(User $user_in)
+    /**
+     * @version 20140423 Pulipuli Chen
+     * 原本是要指定輸入物件類型為User。
+     * 後來想想，也可以輸入user_id之類的，所在此就不做限制了。
+     * @param type $user
+     * @return null
+     */
+    function set_context_user($user)
     {
         if (isset($GLOBALS['context']) === FALSE)
-            return;
-        return $GLOBALS['context']->set_current_user($user_in);
+            return NULL;
+        return $GLOBALS['context']->set_current_user($user);
     }
 }
 
@@ -246,8 +253,9 @@ if ( ! function_exists('context_complete'))
 {
     function context_complete()
     {
-        if (isset($GLOBALS['context']) === FALSE)
+        if (isset($GLOBALS['context']) === FALSE) {
             return;
+        }
 
         $GLOBALS['context']->db->trans_complete();
     }
@@ -257,8 +265,9 @@ if ( ! function_exists('context_abort'))
 {
     function context_abort()
     {
-        if (isset($GLOBALS['context']) === FALSE)
+        if (isset($GLOBALS['context']) === FALSE) {
             return;
+        }
 
         $GLOBALS['context']->db->trans_rollback();
     }

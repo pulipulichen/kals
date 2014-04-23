@@ -132,6 +132,10 @@ class Domain extends KALS_resource {
         return $domain_id;
     }
 
+    /**
+     * 取得該Domain底下所有的webpage陣列
+     * @return array|Webpage
+     */
     public function get_webpages() {
         $id = $this->get_id();
         $output = array();
@@ -149,6 +153,48 @@ class Domain extends KALS_resource {
             $obj = new Webpage($id);
             array_push($output, $obj);
         }
+        return $output;
+    }
+    
+    /**
+     * 取得所有Domain
+     * @return array|Domain
+     */
+    static public function get_all_domains() {
+        $output = array();
+        $domain = new Domain();
+        $query = $domain->CI->db->select('domain_id')
+                ->get('domain');
+        foreach ($query->result_array() AS $row)
+        {
+            $id = intval($row['domain_id']);
+            $obj = new Domain($id);
+            array_push($output, $obj);
+        }
+        return $output;
+    }
+    
+    /**
+     * 取得所有Domain的所有Webpage
+     * @return Array
+     * key domain_id
+     * value Array|Webpage
+     * 
+     * $array = array(
+     *      1 => array(3, 4, 6),
+     *      6 => array(5, 12, 34)
+     * );
+     */
+    static public function get_all_domain_webpages() {
+        
+        //$domains = $this->get_all_domains();
+        $domains = Domain::get_all_domains();
+        $output = array();
+        
+        foreach ($domains AS $domain) {
+            $output[$domain->get_id()] = $domain->get_webpages();
+        }
+        
         return $output;
     }
 }

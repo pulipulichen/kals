@@ -527,10 +527,12 @@ class Search_engine extends Generic_collection {
 
         if (isset($this->target_topic))
         {
-            if ($this->target_topic === TRUE)
+            if ($this->target_topic === TRUE) {
                 $db->where("annotation.topic_id IS NULL");
-            else
+            }
+            else {
                 $db->where("annotation.topic_id IS NOT NULL");
+            }
         }
 
         //------------------------------------------------
@@ -832,6 +834,14 @@ class Search_engine extends Generic_collection {
 
     protected $target_topic;
 
+    /**
+     * 設定是否限定是topic
+     * @param boolean $is_topic
+     *  TRUE 限定只能是topic
+     *  FALSE 限定不能是topic
+     *  NULL 不限定
+     * @return Search_engine
+     */
     public function set_target_topic($is_topic)
     {
         if (is_bool($is_topic))

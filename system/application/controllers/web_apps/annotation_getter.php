@@ -731,28 +731,34 @@ class Annotation_getter extends Web_apps_controller {
 
         //log區
         $array_data = NULL;
-        if (is_string($json))
+        if (is_string($json)){
             $array_data = json_to_array($json);
-        else
+        }
+        else {
             $array_data = (array) $json;
+        }
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
 
         $action = 12;
         if (isset($data->topic_id)
             && isset($data->target_topic) && $data->target_topic === FALSE
-            && isset($data->limit) == FALSE)
+            && isset($data->limit) == FALSE) {
             $action = 16;
+        }
 
         $do_log = TRUE;
-        if (isset($data->limit) && $data->limit == 5)
+        if (isset($data->limit) && $data->limit == 5){
             $do_log = FALSE;
+        }
 
         if (isset($data->target_my))
         {
-            if ($data->target_my == FALSE)
+            if ($data->target_my == FALSE){
                 $do_log = FALSE;
+            }
         }
         else if ($user_id == NULL)
         {
@@ -760,8 +766,9 @@ class Annotation_getter extends Web_apps_controller {
             $action = 17;
             if (isset($data->topic_id)
                 && isset($data->target_topic) && $data->target_topic === FALSE
-                && isset($data->limit) == FALSE)
-                $action = 18;
+                && isset($data->limit) == FALSE){
+                    $action = 18;
+                }
         }
          
         if ($do_log)
@@ -772,7 +779,7 @@ class Annotation_getter extends Web_apps_controller {
         context_complete();
 
         if ($enable_profiler != TRUE)
-            return $this->_display_jsonp($output_data, $callback);
+        {return $this->_display_jsonp($output_data, $callback);}
     }
 
     /**

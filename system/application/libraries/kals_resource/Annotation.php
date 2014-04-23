@@ -208,12 +208,18 @@ class Annotation extends KALS_resource {
             //$value = strip_tags($value);
             $value = trim($value);
         }
-        if (is_null($value) || $value == '')
+        if (is_null($value) || $value == ''){
             return $this->unset_field ('note');
-        else
+        }
+        else{
             return $this->set_field('note', $value);
+        }
     }
-
+    
+    /**
+     * 取得note的HTML字串
+     * @return String
+     */
     public function get_note()
     {
         return $this->get_field('note');
@@ -239,7 +245,10 @@ class Annotation extends KALS_resource {
                 ->select('update_timestamp AS timestamp')
                 ->get();
         $row = $query->row_array();
-        $timestamp = $row['timestamp'];
+        $timestamp = NULL;
+        if (isset($row['timestamp'])) {   
+            $timestamp = $row['timestamp'];
+        }        
         return $timestamp;
     }
 
@@ -286,10 +295,12 @@ class Annotation extends KALS_resource {
     public function get_respond_to_topic()
     {
         $topic_id = $this->get_field('topic_id');
-        if (is_null($topic_id))
+        if (is_null($topic_id)) {
             return NULL;
-        else
+        }
+        else {
             return new Annotation($topic_id);
+        }
     }
 
     //----------------------------------------------
@@ -319,13 +330,79 @@ class Annotation extends KALS_resource {
         return $this->respond_to_coll;
     }
 
+    /**
+     * 這一個標註是topic的時候，裡面包含被responded的Annotation_collection
+     * @var Annotation_collection
+     */
+    
     private $topic_responded_coll;
     /**
-     * Topic Annotation底下的list
+     * Topic Annotation底下的list(only res)
+     * @return Annotation_collection
      */
     public function get_topic_respond_coll()
     {
-        return $this->topic_respond_coll;
+        if (is_null($this->topic_responded_coll) && $this->is_respond() === FALSE) {
+            
+            $coll = new Search_annotation_collection();
+            // 取得topic之外的annotation(res)
+            $coll->set_target_topic_id($this->get_id());
+            $is_topic = FALSE; //限定不是topic
+            $coll->set_target_topic($is_topic);
+            
+            $this->topic_responded_coll = $coll;
+        }
+        return $this->topic_responded_coll;
+    }
+   
+    
+    /**
+     * 取得最新回覆的標註
+     * @return Annotation
+     */
+    public function get_last_respond() {
+        $topic_respond_coll = $this->get_topic_respond_coll();
+       
+        if (is_null($topic_respond_coll)) {
+            return null;        
+        }
+        else{
+            $length = $topic_respond_coll->length();
+
+            $last_index = $length-1;
+            $last_annotation = $topic_respond_coll->get_item($last_index);
+            return $last_annotation;
+        }
+    }
+    
+    /**
+     * 取得最新的response，若無則為自己，若有則為最新的回應
+     * @return Annotation
+     */
+    public function get_last_thread() {
+        $last_respond = $this->get_last_respond();
+        
+        if (is_null($last_respond)) {
+            return $this;
+        }
+        else {
+            return $last_respond;
+        }
+    }
+         
+    /**
+     * 取得回覆的標註數量
+     * @return $length
+     */     
+   public function get_topic_respond_length() {
+        $topic_respond_coll = $this->get_topic_respond_coll();  
+        if (is_null($topic_respond_coll)) {
+            return 0;        
+        }
+        else {
+            $length = $topic_respond_coll->length();
+            return $length;
+        }
     }
 
     /**
@@ -334,10 +411,12 @@ class Annotation extends KALS_resource {
     public function get_topic()
     {
         $topic_id = $this->get_field('topic_id');
-        if (is_null($topic_id))
+        if (is_null($topic_id)) {
             return NULL;
-        else
+        }
+        else {
             return new Annotation($topic_id);
+        }
     }
     
     //------------------------------------------
@@ -351,8 +430,9 @@ class Annotation extends KALS_resource {
         $annotation = new Annotation();
         $annotation->set_scopes($scope_coll);
         $annotation->set_user($user_id);
-        if ($do_update)
+        if ($do_update){
             $annotation->update();
+        }
 
         return $annotation;
     }
@@ -404,7 +484,16 @@ class Annotation extends KALS_resource {
         }
     }
 
+    /**
+     * 標註所在的Webpage陣列
+     * @var Array|Webpage
+     */
     private $appended_webpages;
+    
+    /**
+     * 取得Webpage陣列
+     * @return Array|Webpage
+     */
     public function get_append_to_webpages()
     {
         if (is_null($this->appended_webpages))
@@ -465,8 +554,9 @@ class Annotation extends KALS_resource {
             }
             return $feature_location;
         }
-        else
+        else{
             return array();
+        }
     }
 
     public function set_recommend_scopes(Annotation_scope_collection $scope_coll)
@@ -497,8 +587,9 @@ class Annotation extends KALS_resource {
             $scope_coll = $this->CI->annotation_scope_collection->import_json($serialized_json);
             return $scope_coll;
         }
-        else
+        else{
             return NULL;
+        }
     }
 
     //---------------------------------------------
@@ -770,8 +861,9 @@ class Annotation extends KALS_resource {
         foreach ($featrues_type_id AS $feature_type_id)
         {
             $value = $annotation->get_feature($feature_type_id)->get_value();
-            if (isset($value))
+            if (isset($value)) {
                 $this->set_feature($feature_type_id, $value);
+            }
         }
 
         return $this;
@@ -933,21 +1025,23 @@ class Annotation extends KALS_resource {
         //$data['class'] = get_class($this);
         $data['annotation_id'] = $this->get_id();
         $note = $this->get_note();
-        if (isset($note))
+        if (isset($note)) {
             $data['note'] = $this->get_note();
+        }
         $data['user'] = $this->get_user()->export_simple_data();
         $data['type'] = $this->get_type()->export_data();
         $data['scope'] = $this->get_scopes()->export_webpage_data($url);
 
         $current_user = get_context_user();
         $is_my_annotation = FALSE;
-        if (isset($current_user) && $this->get_user()->equals($current_user))
+        if (isset($current_user) && $this->get_user()->equals($current_user)) {
             $is_my_annotation = TRUE;
-        if ($this->is_respond() === FALSE)
-        {
+        }
+        if ($this->is_respond() === FALSE) {
 
-            if (is_class($current_user, 'User') && $is_my_annotation === FALSE)
+            if (is_class($current_user, 'User') && $is_my_annotation === FALSE) {
                 $data['is_like'] = $this->is_liked($current_user);
+            }
             $data['like_count'] = $this->get_like_count();
         }
 

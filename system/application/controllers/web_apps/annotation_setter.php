@@ -56,9 +56,11 @@ class Annotation_setter extends Web_apps_controller {
     /**
      * 這是用get去建立標註的方法
      * 
-     * 之後已經不使用，因為get無法傳送太多字串
-     * @param String $json
-     * @param String $callback
+     * 但是因為GET有資料長度限制，所以此方法不使用
+     * 改用create_post
+     * @deprecated 20140408 布丁
+     * @param type $json
+     * @param type $callback
      */
     public function create_get ($json, $callback) {
 
@@ -349,6 +351,7 @@ class Annotation_setter extends Web_apps_controller {
             //test_msg($annotation->get_note(), $data->note);
 
             //feature location
+            //標註錨點範圍的特徵 
             if (isset ($data->feature_location)
                 && is_array($data->feature_location)
                 && count($data->feature_location) > 0)
@@ -392,7 +395,9 @@ class Annotation_setter extends Web_apps_controller {
                 $annotation->set_respond_to_coll($respond_to_annotations);
             }
 
+        //-----------------------
         //設定policy
+        
         //test_msg('設定policy');
         $policy_type = 1;
         if (isset($data->policy_type)) {
@@ -445,6 +450,8 @@ class Annotation_setter extends Web_apps_controller {
             //清除該$annotation的policy
             $auth->policy_remove_actor($ACTION_ANNOTATION_READ);
         }
+        
+        //-------------------
 
         //回傳標註建立的ID跟timestamp
         $annotation->update();
@@ -468,6 +475,7 @@ class Annotation_setter extends Web_apps_controller {
 
         set_ignore_authorize(false);
 
+        // 寫入資料庫
         context_complete();
 
         return $data;
