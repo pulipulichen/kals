@@ -183,7 +183,6 @@ class Annotation_type_factory extends KALS_object {
             $type_id = $this->create($type_id)->get_type_id();
         }
         else if (is_object($type_id)) {
-        {
             $type_id = $type_id->get_type_id();
         }
         else if (is_string($type_id)
