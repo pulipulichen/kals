@@ -103,8 +103,9 @@
     <div data-role="footer" data-position="fixed" data-theme="a" data-overlay-theme="a" data-transition="fade">
     
     <!--POP UP href="#popupCloseRight"-->    
-    <a href="#popupCloseRight" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow" style="width:100%" >新增標註回應</a>
-    <a href="<?php echo base_url();?>mobile/mobile_user_login" class="ui-btn ui-btn-b ui-corner-all ui-shadow" style="width:100%">登入</a>
+    <a href="#popupCloseRight" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow" style="width:100%">新增標註回應</a>
+    <a href="<?php echo base_url();?>mobile/mobile_user_login" class="ui-btn ui-btn-b ui-corner-all ui-shadow" data-ajax="false" style="width:100%; display: <?php if($this->session->userdata('logged_in') == TRUE){
+                                  echo 'none';}?>">登入</a>
     </div>
    
   <!-- 先檢查是否有登入-->
@@ -147,7 +148,7 @@
     <label for="note_text" >請輸入回應</label>
     <textarea name="note_text" <?php if($this->session->userdata('logged_in') == FALSE){
                                      echo 'disabled="disabled"';}?> 
-       id="note_text"><?php if($this->session->userdata('logged_in') === FALSE){
+       id="note_text"><?php if($this->session->userdata('logged_in') !== TRUE){
                                      echo '請先登入喔！';}?></textarea>  
 
     <input type="submit" <?php if($this->session->userdata('logged_in') === FALSE){

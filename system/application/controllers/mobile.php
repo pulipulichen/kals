@@ -75,8 +75,10 @@ class mobile extends Web_apps_controller{
             //is respond id
             $annotation_id = $is_topic_id;
         }    
-        echo 'annotation_id ='.$annotation_id.'/';
-        echo 'topic_id = '.$is_topic_id.'/';
+        //echo 'annotation_id ='.$annotation_id.'/';
+        //echo 'topic_id = '.$is_topic_id.'/';
+        // $login_test = $this->session->userdata('logged_in');
+        //echo 'loggin = '.$login_test.'/';
         
 
         // $annotation_id
@@ -657,7 +659,13 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
           require_once 'system/application/helpers/kals_helper.php'; 
           
           //$referer_url = null;
-          $referer_url = get_referer_url();          
+          if (isset($_POST["input_url"])) {
+              $referer_url = $_POST["input_url"];
+          }
+          else {
+              $referer_url = get_referer_url();
+          }
+          
           $data['referer_url'] = $referer_url;
            
             
@@ -708,14 +716,24 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
 
             
                   // 若有原url則跳轉回原url，若無則到Wabpage_list
-                  $login_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
+                  //$login_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
+                  $login_url = 'mobile_user_login';
                   
-                  if ($referer_url !== $login_url){
-                      header("Location: ".$referer_url);              
-                  }else {
+                  //test_msg("referer_url", $referer_url);
+                  //test_msg("login_url", $login_url);
+                  //test_msg("ends_with", ends_with($referer_url, $login_url));
+                  
+                  if (ends_with($referer_url, $login_url) === FALSE) {
+                      //test_msg("1", $referer_url);
+                      header("Location: ".$referer_url);    
+
+                  }
+                  else {
                       $referer_url = 'webpage_list';
-                      //$referer_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
-                      header("Location: ".$referer_url);       
+                      //$referer_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';   
+                      //test_msg("2", $referer_url);
+                      header("Location: ".$referer_url);    
+                      
                   }
                 
                   

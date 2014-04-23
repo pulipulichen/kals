@@ -41,11 +41,7 @@ if ( ! function_exists('get_referer_url'))
                 
                 return $url;
             }
-            else
-            {
-                
-            
-                
+            else {
                 if ($show_exception)
                 {
                     handle_error ('Cannot get referer url.');

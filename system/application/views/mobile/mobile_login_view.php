@@ -25,7 +25,7 @@
             Domain name:</label>        
         <input type="text" name="input_url" id="input_url" 
                style="display: <?php  if (isset($referer_url) && $has_url){echo 'none'; }  ?>"
-               value="<?php echo $referer_url?>"/>    
+               value="<?php echo $referer_url?>" data-ajax="false"/>    
         
         <label for="name">Username(email):</label>
         <input type="text" name="email" id="email" value="" data-clear-btn="true" data-mini="true">
@@ -34,7 +34,7 @@
                     <!-- do_login 是否登入-->
         <input type="hidden" name="do_login" id="do_login" value="true" />
       
-        <button type="submit" value="true" class="ui-btn ui-btn-a ui-shadow ui-corner-all">Login</button>
-        <a href="<?php echo base_url(); ?>mobile/webpage_list" class="ui-btn ui-btn-b ui-shadow ui-corner-all">Skip</a>       
+        <button type="submit" value="true" class="ui-btn ui-btn-a ui-shadow ui-corner-all" data-ajax="false">Login</button>
+        <a href="<?php echo base_url(); ?>mobile/webpage_list" class="ui-btn ui-btn-b ui-shadow ui-corner-all" data-ajax="false">Skip</a>       
      </form>
     </div>
