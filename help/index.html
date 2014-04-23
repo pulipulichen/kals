@@ -157,19 +157,19 @@ KALS_CONFIG = {
     annotation_custom_type: {
         //預先定義標註類型的設定
         //@type {string,JSON} 標註類型的名稱 
-        "蝦子": {
+        "經驗連結": {
             //標註類型的說明 
             //@type {string} HTML語法
-            hint: '這是布丁最討厭的食物。',
+            hint: '試著將文章內容和你以前學過的知識連結起來吧。',
 
             //標註類型的選項樣式 
             option: {
                 //背景顏色
                 //@type {string} CSS顏色表示法
-                background_color: 'blue',
+                background_color: '#bdfc32',
                 //字型顏色
                 //@type {string} CSS顏色表示法
-                font_color: 'white'
+                font_color: 'black'
             },
 
             //標註類型的錨點樣式
@@ -185,7 +185,7 @@ KALS_CONFIG = {
 
                 //錨點樣式的背景顏色
                 //@type {string} CSS顏色表示法
-                color: 'blue',
+                color: '#bdfc32',
 
                 //錨點樣式的字體顏色
                 //@type {string} CSS顏色表示法
@@ -195,16 +195,16 @@ KALS_CONFIG = {
         
         //預先定義標註類型的設定
         //@type {string,JSON} 標註類型的名稱 
-        "螃蟹": {
+        "重點": {
             //標註類型的說明 
             //@type {string} HTML語法
-            hint: '這是布丁最討厭的食物。',
+            hint: '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。',
 
             //標註類型的選項樣式 
             option: {
                 //背景顏色
                 //@type {string} CSS顏色表示法
-                background_color: 'yellow',
+                background_color: '#ffed64',
                 //字型顏色
                 //@type {string} CSS顏色表示法
                 font_color: 'black'
@@ -223,31 +223,29 @@ KALS_CONFIG = {
 
                 //錨點樣式的背景顏色
                 //@type {string} CSS顏色表示法
-                color: 'yellow',
+                color: '#ffed64',
 
                 //錨點樣式的字體顏色
                 //@type {string} CSS顏色表示法
                 font_color: '#A64B00'
             }
         },
-
+        
         //預先定義標註類型的設定
         //@type {string,JSON} 標註類型的名稱 
-        '龍蝦': {
-
-            //標註類型的說明
+        "困惑": {
+            //標註類型的說明 
             //@type {string} HTML語法
-            hint: '這是布丁最討厭的食物。',
+            hint: '標示你對文章內文產生困惑的地方。',
 
-            //標註類型的選項樣式
+            //標註類型的選項樣式 
             option: {
                 //背景顏色
                 //@type {string} CSS顏色表示法
-                background_color: 'red',
-
+                background_color: '#ffed64',
                 //字型顏色
                 //@type {string} CSS顏色表示法
-                font_color: 'white'
+                font_color: 'black'
             },
 
             //標註類型的錨點樣式
@@ -263,13 +261,91 @@ KALS_CONFIG = {
 
                 //錨點樣式的背景顏色
                 //@type {string} CSS顏色表示法
-                color: 'red',
+                color: '#ffed64',
+
+                //錨點樣式的字體顏色
+                //@type {string} CSS顏色表示法
+                font_color: '#A64B00'
+            }
+        },
+
+
+        //預先定義標註類型的設定
+        //@type {string,JSON} 標註類型的名稱 
+        '分享討論': {
+
+            //標註類型的說明
+            //@type {string} HTML語法
+            hint: '和大家一起討論你的看法和疑問吧。',
+
+            //標註類型的選項樣式
+            option: {
+                //背景顏色
+                //@type {string} CSS顏色表示法
+                background_color: '#ffab23',
+
+                //字型顏色
+                //@type {string} CSS顏色表示法
+                font_color: 'black'
+            },
+
+            //標註類型的錨點樣式
+            anchor: {
+                //標註顯示的類型
+                //@type {string} 自訂類型，有以下選項可選
+                //     'underline': 底線(預設)
+                //     'dashedline': 底線虛線
+                //     'dottedline': 底線虛線
+                //     'doubleline': 底線雙線
+                //     'background': 背景顏色
+                style: 'underline',
+
+                //錨點樣式的背景顏色
+                //@type {string} CSS顏色表示法
+                color: '#ffab23',
+
+                //錨點樣式的字體顏色
+                //@type {string} CSS顏色表示法
+                font_color: '#A64B00'
+            }
+        },
+
+        "歸納統整": {
+            //標註類型的說明 
+            //@type {string} HTML語法
+            hint: '試著整理出自己的摘要筆記吧。',
+
+            //標註類型的選項樣式 
+            option: {
+                //背景顏色
+                //@type {string} CSS顏色表示法
+                background_color: '#3d93f6',
+                //字型顏色
+                //@type {string} CSS顏色表示法
+                font_color: 'white'
+            },
+
+            //標註類型的錨點樣式
+            anchor: {
+                //標註顯示的類型
+                //@type {string} 自訂類型，有以下選項可選
+                //     'underline': 底線(預設)
+                //     'dashedline': 底線虛線
+                //     'dottedline': 底線虛線
+                //     'doubleline': 底線雙線
+                //     'background': 背景顏色
+                style: 'dottedline',
+
+                //錨點樣式的背景顏色
+                //@type {string} CSS顏色表示法
+                color: '#3d93f6',
 
                 //錨點樣式的字體顏色
                 //@type {string} CSS顏色表示法
                 font_color: '#A64B00'
             }
         }
+        
     }    
 };    
 </script>

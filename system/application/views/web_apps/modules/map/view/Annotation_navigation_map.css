@@ -57,6 +57,8 @@ dt {
     border-bottom-right-radius:20px;
     border-top-left-radius:5px;
     border-bottom-left-radius:5px;
+    
+    border-bottom: 1.5px solid #555 !important;
 }
 
 .type-navigation.type-option.heading-button{
