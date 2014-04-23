@@ -80,7 +80,7 @@
    <!--<ul data-role="listview" data-inset="true" class="list-header-component"> -->
     <?php    
         foreach ( $respond_json AS $json ){
-          echo '<li style = " margin-left: 15% ">'
+          echo '<li style = " margin-left: 2em ">'
              .'<span class = "name-container" id ="annotation_'.$json['annotation_id'].'"><b><u>'.$json['user'].'</u></b>   <span>'
              .'<span class = "type-option ' .$json['css_type'].'" annotation_type = "'.$json['css_type'].'">'
              .$json['type'].'</span>  '
@@ -90,9 +90,9 @@
          }   
         
         // TEST 
-        if(isset($note_massage) && isset($pop_type)){
+        /*if(isset($note_massage) && isset($pop_type)){
            echo '<li style = " margin-left: 15% ">' . "demo"."[". $pop_type."]".'<br>'.$note_massage.'<br>'."(".$timestamp.")" ;
-        } 
+        } */
          ?> 
    </ul> 
   
