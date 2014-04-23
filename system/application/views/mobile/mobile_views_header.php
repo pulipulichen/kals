@@ -1,5 +1,4 @@
 <?php
-
 /**
  * mobile_views_header
  * 
@@ -13,8 +12,6 @@
  */
 
 ?>
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -23,14 +20,13 @@
       
         
         <!-- load jQuery & css & jQuery mobile -->
-        <script type="text/javascript" src="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>stylesheets/jquery-mobile/index.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery.mobile-1.4.1.min.js"></script>
-        <!--<script type="text/javascript" src="http://140.119.61.137/kals/stylesheets/jquery-mobile/beacon.js"></script>-->
+        <script type="text/javascript" src="<?php echo base_url(); ?>libraries/jquery-mobile/jquery.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>libraries/jquery-mobile/index.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>libraries/jquery-mobile/jquery.mobile-1.4.1.min.js"></script>
         
-        <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery.mobile-1.4.0.min.css" />
-        <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jqm-demos.css" />
-        <link rel="stylesheet" href="<?php echo base_url(); ?>stylesheets/jquery-mobile/jquery-mobile-kals.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>libraries/jquery-mobile/jquery.mobile-1.4.0.min.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>libraries/jquery-mobile/jqm-demos.css" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>libraries/jquery-mobile/jquery-mobile-kals.css" />
         <link type ="text/css" rel="stylesheet" href="<?php echo base_url(); ?>web_apps/generic/style" />
         <script>
 
