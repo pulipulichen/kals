@@ -22,6 +22,10 @@ Topic_list_gesture.prototype._toggle_complete = function (_is_complete) {
     
     return this;
 };
+Topic_list_gesture.prototype._toggle_loading = function (_is_loading, _callback) {
+   
+    return this;
+};
 
 Topic_list_gesture.prototype._$create_ui = function () {
     var _ui = $('<div></div>')

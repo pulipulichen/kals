@@ -254,6 +254,21 @@ Selection.prototype.get_anchor_text = function () {
 };
 
 /**
+ * 抓取選取範圍鄰近的文字
+ * @param {String} _selection_classname 可以指定要擴展的classname，沒有的話就用自己的_$name
+ * @return {String}
+ */
+Selection.prototype.get_extended_anchor_text = function (_selection_classname) {
+	if (_selection_classname === undefined) {
+		_selection_classname = this._$name;
+	}
+	
+    var _scope_coll = this.get_scope_coll();
+    var _anchor_text = this._text.get_extended_anchor_text(_scope_coll, _selection_classname);
+    return _anchor_text; 
+};
+
+/**
  * @type {number} 各數字代表的意思如下：
  * 0 => head : location-head
  * 1 => foot : location-foot

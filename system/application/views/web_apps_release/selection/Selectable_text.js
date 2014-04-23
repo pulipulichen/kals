@@ -940,6 +940,47 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 				});
 			*/
 			
+			//---------------------------------
+			
+			var _evt = function(_word, _callback) {
+            	if (_this.initialized === false) {
+					return this;
+				}
+            
+            	//setTimeout(function () {
+                //	_word.tooltip().hide();
+            	//}, 0);
+            
+            	//_manager.listen_select(_word);
+            	//_select.set_select(_word);
+				
+				_select.set_select(_word, true);
+				//_select.set_select(_word);
+				
+				if ($.is_function(_callback)) {
+					_callback();
+				}
+        	};
+			
+			_words.mouseover(function () {
+				
+				//_evt($(this), _callback);
+				clearTimeout(_select_timer);
+				//if (_select_timer != null) {
+				//	clearTimeout(_select_timer);
+				//}
+				
+				var _word = $(this);
+				if (_word.hasClass("nav_normal") === true) {		
+						_select_timer = setTimeout(function() {
+								_evt(_word, _callback);
+							//_select_timer = null;
+						}, 1000);
+				} 
+			});
+			
+			// -----------------------------------
+			
             this.locks.word_click = true;
         }
     }
@@ -1458,6 +1499,76 @@ Selectable_text.prototype.get_anchor_text = function (_scope_coll) {
         var _from = _scope.get_from();
         var _to = _scope.get_to();
         
+        for (var _j = _from; _j < _to + 1; _j++) {
+            var _index = _j;
+            var _word = this.get_word_by_index(_index);
+            var _text = _word.text();
+			
+            _sentence = _sentence + _text;
+            
+            if (_j < _to
+                && this.is_word_next_span(_word)) {
+                _sentence = _sentence + ' ';
+            }
+        }
+        
+        _sentence = $.trim(_sentence);
+        
+        //不同範圍之間，以空格斷句！
+        if (_i > 0) {
+			_anchor_text = _anchor_text + ' ';
+		}
+           
+        _anchor_text = _anchor_text + _sentence;
+    }
+    
+    _anchor_text = $.trim(_anchor_text);
+    
+	//把' "轉換掉
+	//_anchor_text = $.str_replace("'", " ", _anchor_text);
+	//_text= $.str_replace("'", "&amp;", _text);
+	
+    return _anchor_text;
+};
+
+/**
+ * 取得鄰近範圍的選取文字
+ * @param {Scope_collection_param} _scope_coll
+ * @param {String} 範圍的名稱
+ * @type {String}
+ */
+Selectable_text.prototype.get_extended_anchor_text = function (_scope_coll, _selection_name) {
+    
+    if ($.is_null(_scope_coll)) {
+		return null;
+	}
+    
+    var _anchor_text = '';
+	var _from_classname = _selection_name + "_from";
+	var _to_classname = _selection_name + "_to";
+    
+    for (var _i = 0; _i < _scope_coll.length(); _i++) {
+        var _sentence = '';
+        
+        var _scope = _scope_coll.get(_i);
+        
+		var _from = _scope.get_from();
+		// 擴展_from 
+		var _from_word = this.get_word_by_index(_from);
+		while (_from_word.hasClass(_from_classname) === false) {
+			_from = _from - 1;
+			_from_word = this.get_word_by_index(_from);
+		}
+		
+        var _to = _scope.get_to();
+		
+		// 擴展_to 
+		var _to_word = this.get_word_by_index(_to);
+		while (_to_word.hasClass(_to_classname) === false) {
+			_to = _to + 1;
+			_to_word = this.get_word_by_index(_to);
+		}
+		
         for (var _j = _from; _j < _to + 1; _j++) {
             var _index = _j;
             var _word = this.get_word_by_index(_index);

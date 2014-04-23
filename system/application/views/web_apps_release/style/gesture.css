@@ -1,5 +1,5 @@
 .KALS.annotation-tool.gesture {
-	border: 3px solid red !important;
+	
 }
 
 .KALS.annotation-tool.gesture .annotation-tool-header {
@@ -18,34 +18,30 @@
 }
 
 .KALS.annotation-tool.gesture .close-button.left{
-	
-	display:inline-block;
-	color:#777777;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	font-style:normal;
+    
+	background-image: url('${base_url}images/gesture/blackarrow2.png'); 	
+	background-repeat:no-repeat;
+	background-position-y: center;
+	background-color: transparent;
+	border-width: 0;
 	height:50px;
-	line-height:50px;
 	width:86px;
-	text-decoration:none;
-	text-align:center;	
-	background-color:#dfdfdf;
-	float:left;
+	float:right;
 }
 
 .KALS.annotation-tool.gesture .close-button.right{
-	display:inline-block;
-	color:#777777;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	font-style:normal;
+	background-image: url('${base_url}images/gesture/blackarrow.png'); 	
+	background-repeat:no-repeat;
+	background-position-y: center;
+	background-color: transparent;
+	border-width: 0;
 	height:50px;
-	line-height:50px;
 	width:86px;
-	text-decoration:none;
-	text-align:center;
-	background-color:#dfdfdf;
 	float:right;
+}
+.KALS.annotation-tool.gesture .topic-list{
+	background-color : transparent;
+}
+.KALS.annotation-tool .list-item{
+	background-color : transparent;
 }

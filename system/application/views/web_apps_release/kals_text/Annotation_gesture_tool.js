@@ -41,6 +41,7 @@ Annotation_gesture_tool.prototype._$create_ui = function () {
     
     _ui.overlay(_config);
     
+	
 	var _button_left = $("<button></button>")
 		.addClass("close-button")
 		.addClass("left")
@@ -51,28 +52,76 @@ Annotation_gesture_tool.prototype._$create_ui = function () {
 		.appendTo(_ui);
 	
 	// 設定語系檔
-	var _lang = new KALS_language_param(
-		'CLOSE',
-    	'dialog.option.close'
-	);
-	KALS_context.lang.add_listener(_button_left, _lang);	
-	KALS_context.lang.add_listener(_button_right, _lang);
+	//var _lang = new KALS_language_param(
+	//	'CLOSE',
+    //	'dialog.option.close'
+	//);
+	//KALS_context.lang.add_listener(_button_left, _lang);	
+	//KALS_context.lang.add_listener(_button_right, _lang);
 	
 	var _select_timer = null;
 	var _tool = this;
-	_button_left.click(function () {
-	_tool.close();
-	});
-	_button_right.click(function () {
-		_tool.close();
-	});
+	
+	var _close_left = function () {
+		if (_tool.is_opened() === false) {
+			return;
+		}
+		//$.test_msg("close left");
+		if (_tool._$closable) {
+	        var _ui = _tool.get_ui();
+	        if (_ui !== null) {
+	            _ui.hide('slide',{direction:'left'},100);
+	        }
+	        if ($.is_function(_tool._$onclose)) {
+				_tool._$onclose(_tool._ui);
+			}
+	        //if ($.is_function(_callback)) {
+			//	_callback(_tool._ui);
+			//}
+	            
+	        //跟Modal_controller註冊關閉
+	        if (typeof(KALS_context) == 'object' && typeof(KALS_context.modal) == 'object') {
+				KALS_context.modal.delete_opened(_tool);
+			}
+	    }
+	    return _tool;
+	};
+	
+	_button_left.click(_close_left);
+	
+	var _close_right = function () {
+		if (_tool.is_opened() === false) {
+			return;
+		}
+		
+		//$.test_msg("close left");
+		if (_tool._$closable) {
+	        var _ui = _tool.get_ui();
+	        if (_ui !== null) {
+	            _ui.hide('slide',{direction:'right'},100);
+	        }
+	        if ($.is_function(_tool._$onclose)) {
+				_tool._$onclose(_tool._ui);
+			}
+	        //if ($.is_function(_callback)) {
+			//	_callback(_tool._ui);
+			//}
+	            
+	        //跟Modal_controller註冊關閉
+	        if (typeof(KALS_context) == 'object' && typeof(KALS_context.modal) == 'object') {
+				KALS_context.modal.delete_opened(_tool);
+			}
+	    }
+	    return _tool;
+	};
+	_button_right.click(_close_right);
 	_button_left.mouseover(function () {
 		clearTimeout(_select_timer);
 		
 		_select_timer = setTimeout(function() {
 								_button_left.click();
 							//_select_timer = null;
-								}, 2000);
+								}, 1000);
 	});
 	_button_right.mouseover(function () {
 		clearTimeout(_select_timer);
@@ -80,13 +129,8 @@ Annotation_gesture_tool.prototype._$create_ui = function () {
 		_select_timer = setTimeout(function() {
 								_button_right.click();
 							//_select_timer = null;
-								}, 2000);
+								}, 1000);
 	});
-	
-	
-	
-	
-	
 	
     //建立標註列表
     // TODO Annotation_tool._$create_ui() _list_group
@@ -96,9 +140,32 @@ Annotation_gesture_tool.prototype._$create_ui = function () {
     var _topic_list_ui = _topic_list.get_ui();
     _topic_list_ui.addClass('annotation-tool-list')
         .appendTo(_ui);
+	_ui.find(".annotation-tool-list").css("font-family","微軟正黑體");
     
+	
+	var _anchor_text = $("<div></div>")
+		.addClass("anchor-text")
+		.insertBefore(_topic_list_ui);
+	_ui.find(".anchor-text").css("font-weight","bolder");
+	
+		
+	
     this.setup_view();
     
+	// 熱鍵操作
+	KALS_context.hotkey.register_hotkey(37, _close_left);
+	KALS_context.hotkey.register_hotkey(39, _close_right);
+	
+	_ui.keydown(function (_event) {
+		$.test_msg('keydown');
+		if (_event.which == 37) {
+			_close_left();
+		}
+		else if (_event.which == 39) {
+			_close_right();
+		}
+	});
+	
     return _ui;
 };
 
@@ -111,18 +178,19 @@ Annotation_gesture_tool.prototype.open = function (_callback) {
     
     this.setup_position();
     var _ui = this.get_ui();
+	
 	var pos_align = 0;
 	//體感模式下使用UI左右判斷式
 	if(KALS_CONFIG.reading_mode == "gesture"){
 		pos_align = Selection.prototype.get_select_align();
 		this.maxmize();
 		if(pos_align == 6){
-			_ui.find(".close-button.left").hide();
-			_ui.find(".close-button.right").show();
-		}
-		else if(pos_align == 4){
 			_ui.find(".close-button.left").show();
 			_ui.find(".close-button.right").hide();
+		}
+		else if(pos_align == 4){
+			_ui.find(".close-button.left").hide();
+			_ui.find(".close-button.right").show();
 		}
 	}
 	
@@ -135,9 +203,66 @@ Annotation_gesture_tool.prototype.open = function (_callback) {
         
     });
 	
+	// 先取出被選取的文字範圍
+	var _anchor_text = KALS_text.selection.select.get_extended_anchor_text("nav_normal");
+	_ui.find(".anchor-text:first").text(_anchor_text);
+	//$.test_msg("當標註工具打開時，測試能不能抓到選取範圍的文字", _anchor_text);
 	
-	
-    KALS_modal.prototype.open.call(this, _callback);
+    //KALS_modal.prototype.open.call(this, _callback);
+	if(pos_align == 6){
+		var _ui = this.get_ui();
+	    if (_ui !== null) {
+	        _ui.show('slide',{direction:'left'},100);
+	    }
+	    
+	    if ($.is_function(this._$onviewportmove)) {
+			this._$onviewportmove(this._ui);
+		}
+	    if ($.is_function(this._$onopen)) {
+			this._$onopen(this._ui);
+		}
+	    if ($.is_function(_callback)) {
+			_callback(this._ui);
+		}
+	    
+	    //跟Modal_controller註冊開啟
+	    if (typeof(KALS_context) == 'object' && typeof(KALS_context.modal) == 'object') {
+			KALS_context.modal.add_opened(this);
+		}
+	    
+	    return this;
+	}
+	if(pos_align == 4){
+		var _ui = this.get_ui();
+	    if (_ui !== null) {
+	        _ui.show('slide',{direction:'right'},100);
+	    }
+	    
+	    if ($.is_function(this._$onviewportmove)) {
+			this._$onviewportmove(this._ui);
+		}
+	    if ($.is_function(this._$onopen)) {
+			this._$onopen(this._ui);
+		}
+	    if ($.is_function(_callback)) {
+			_callback(this._ui);
+		}
+	    
+	    //跟Modal_controller註冊開啟
+	    if (typeof(KALS_context) == 'object' && typeof(KALS_context.modal) == 'object') {
+			KALS_context.modal.add_opened(this);
+		}
+		
+		
+		
+		$('body').focus();
+		$('body').click();
+		//$('body').css("background-color", 'blue');
+		_ui.focus();
+		_ui.click();
+	    
+	    return this;
+	}
 };
 
 Annotation_gesture_tool.prototype.setup_list = function () {
@@ -174,7 +299,7 @@ Annotation_tool.prototype.maxmize = function(){
 		_ui.css("width", _w);
 		
 		_ui.find(".close-button.left").css("height", _h);
-		_ui.find(".close-button.right").css("height", _h);
+		_ui.find(".close-button.right").css("height", _h)	;
 		
 
 		

@@ -107,6 +107,7 @@ class generic extends Web_apps_controller {
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',
+            'core/KALS_hotkey_manager',
             'core/KALS_context'	//必須是最後一個！	
             //''
         );

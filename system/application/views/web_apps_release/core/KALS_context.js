@@ -34,6 +34,7 @@ KALS_context.initialize = function () {
     this.auth = new KALS_authentication();
     this.hash = new URL_hash_dispatcher();
     this.style = new Style_manager();
+	this.hotkey = new KALS_hotkey_manager();
     this.custom_type = new Context_custom_type();
     
     //初始化元件 Initialize Component
