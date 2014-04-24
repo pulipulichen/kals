@@ -760,6 +760,37 @@ $style = implode("}\n", $parts);
         send_js_header($this->output);
         $this->load->view('web_apps/display_post_complete');
     }
+    
+    var $_session_key_webpage_list_page = "mobile_apps.webpage_list.page";
+    /**
+     * 儲存現在網頁的頁數
+     * @param Int $page
+     */
+    protected function set_session_webpage_list_page($page) {
+        if ($page === FALSE || is_null($page) || $page === 1) {
+            return;
+        } 
+        
+        $sesseion_key = $this->_session_key_webpage_list_page;
+        $this->session->set_userdata($sesseion_key, $page);
+    }
+    
+    /**
+     * 取得指定Webpage的頁數
+     * @return Int 頁數
+     */
+    protected function get_session_webpage_list_page() {
+        $sesseion_key = $this->_session_key_webpage_list_page;
+        
+        $page = $this->session->userdata($sesseion_key);
+        if ($page === FALSE || is_null($page)) {
+            $page = 1;
+        } 
+        else {
+            $page = intval($page);
+        }
+        return $page;
+    }
 }
 
 /* End of file mobile_apps.php */

@@ -8,8 +8,8 @@
  */
 
 $lang['mobile_apps.title']     = 'KALS';
-
 $lang['mobile_apps.hello_guest']     = '訪客您好';
+
 $lang['mobile_apps.login.title']     = 'KALS登入';
 $lang['mobile_apps.login.domain']    = "請輸入登入網址：";
 $lang['mobile_apps.login.email']     = "請輸入電子信箱：";
@@ -17,12 +17,17 @@ $lang['mobile_apps.login.password']     = "請輸入密碼：";
 $lang['mobile_apps.login.do_login']     = "登入";
 $lang['mobile_apps.login.guest_login']     = "訪客登入";
 
-$lang['mobile_apps.webpage_list.hint']     = "請點選要查看的網頁。";
 $lang['mobile_apps.webpage_list.title']     = "網頁列表";
+$lang['mobile_apps.webpage_list.back']     = "回首頁";
+$lang['mobile_apps.webpage_list.hint']     = "請點選要查看的網頁。";
+
 $lang['mobile_apps.webpage_list.page.1']     = "第";
 $lang['mobile_apps.webpage_list.page.2']     = "頁";
 $lang['mobile_apps.webpage_list.prev_page']     = "上一頁";
 $lang['mobile_apps.webpage_list.next_page']     = "下一頁";
+
+$lang['mobile_apps.annotation_topics.title']     = "標註列表";
+$lang['mobile_apps.annotation_topics.back']     = "回到網頁列表";
 
 /* End of file kals_actor_lang.php */
 /* Location: ./system/language//calendar_lang.php */

@@ -43,7 +43,7 @@ class webpage_list extends Mobile_apps_controller{
      *  列出指定頁數的網頁列表
      * @param Int $page 頁數
      */
-    public function page($page =1) {
+    public function page($page = 1) {
 
         
         //$user = get_context_user();
@@ -65,6 +65,9 @@ class webpage_list extends Mobile_apps_controller{
         $data['page'] = $page_data['page'];
         $data['prev_page'] = $page_data['prev_page'];
         $data['next_page'] = $page_data['next_page'];
+        
+        // 儲存頁數
+        $this->set_session_webpage_list_page($page);
         
         //test_msg( 'context_id = '.get_context_user()->get_id() );
         //test_msg( '$user->get_id = '.$user_id.'//' );
