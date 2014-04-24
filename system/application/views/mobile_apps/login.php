@@ -120,7 +120,12 @@ if (isset($domain) && $domain !== "" && isset($message) === FALSE){
    class="ui-btn ui-btn-b ui-shadow ui-corner-all" data-ajax="false">
     <?php
         //Skip
-        echo $lang->line("mobile_apps.login.guest_login");
+        if (isset($do_redirect) === FALSE) {
+            echo $lang->line("mobile_apps.login.guest_login");
+        }
+        else {
+            echo $lang->line("mobile_apps.login.back_to_redirect");
+        }
     ?>
 </a>
 

@@ -112,6 +112,13 @@ class login extends Mobile_apps_controller{
             $data["referer_url"] = $this->_webpage_path;
         }
         
+        if (isset($_POST["domain"])) {
+            $data["domain"] = $_POST["domain"];
+        }
+        if (isset($_POST["do_redirect"])) {
+            $data["do_redirect"] = TRUE;
+        }
+        
         $data["lang"] = $this->lang;
         
         $this->load->view('mobile_apps/view_header', $data);

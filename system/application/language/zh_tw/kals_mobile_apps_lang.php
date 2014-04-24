@@ -16,6 +16,7 @@ $lang['mobile_apps.login.email']     = "請輸入電子信箱：";
 $lang['mobile_apps.login.password']     = "請輸入密碼：";
 $lang['mobile_apps.login.do_login']     = "登入";
 $lang['mobile_apps.login.guest_login']     = "訪客登入";
+$lang['mobile_apps.login.back_to_redirect']     = "回到上一頁";
 
 $lang['mobile_apps.webpage_list.title']     = "網頁列表";
 $lang['mobile_apps.webpage_list.back']     = "登出";

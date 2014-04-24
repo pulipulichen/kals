@@ -34,7 +34,8 @@ $annotation_thread_uri = site_url("mobile_apps/annotation_thread/topic_id/" . $t
     <?php
     if ($user_login === FALSE) {
         $login_uri = site_url("mobile_apps/login");
-        ?>
+        
+        /*
         <a href="<?php echo $login_uri;?>" 
             class="ui-btn ui-btn-b ui-corner-all ui-shadow" 
             data-ajax="false" 
@@ -44,6 +45,18 @@ $annotation_thread_uri = site_url("mobile_apps/annotation_thread/topic_id/" . $t
             echo $lang->line("mobile_apps.login.do_login");
             ?>
         </a>
+         */
+        ?>
+<form action="<?php echo $login_uri ?>" method="post" data-ajax="false">
+    <input type="hidden" name="domain" value="<?php echo $webpage["url"] ?>" />
+    <button type="submit" name="do_redirect"
+           class="ui-btn ui-btn-b ui-corner-all ui-shadow" 
+            data-ajax="false" 
+            id="redirect_to_login"
+            style="width:100%;">
+        <?php echo $lang->line("mobile_apps.login.do_login"); ?>
+    </button>
+</form>
         <?php
     }
     ?>
@@ -149,10 +162,19 @@ $annotation_thread_uri = site_url("mobile_apps/annotation_thread/topic_id/" . $t
     }
     else {
         $login_lang = $lang->line("mobile_apps.annotation_thread.login_hint");
-        ?>
+        
+        /*
         <a href="<?php echo $login_lang ?>">
             <?php echo $login_lang ?>
         </a>
+        */
+        ?>
+        <input type="button"
+               name="do_respond"
+               value="<?php echo $login_lang; ?>"
+               class="data-source"
+               onclick="$('#redirect_to_loing').click();"
+               data-ajax="false" /> 
         <?php
     }
     ?>

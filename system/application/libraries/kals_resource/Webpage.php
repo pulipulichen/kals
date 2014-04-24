@@ -352,12 +352,16 @@ class Webpage extends KALS_resource {
      * 取得all webpage中的所有物件
      * 
      * @author Pudding 20131224
+     * @param Int $limit 單頁顯示數量
      * @return array|Webpage
      */
-    static public function get_all_webpages () {
+    public function get_all_webpages($limit = NULL) {
         $output = array();
-        $query = $this->CI->db->select('webpage_id')
-                ->get('webpage');
+        $query = $this->CI->db->select('webpage_id');
+        if (isset($limit)) {
+            $this->CI->db->limit($limit);
+        }
+        $query = $this->CI->db->get('webpage');
         $this->_CI_load('library', 'kals_resource/Webpage');
         foreach ($query->result_array() AS $row)
         {
@@ -374,19 +378,19 @@ class Webpage extends KALS_resource {
      * @author Pudding 20131224
      * @param User $user 使用者
      * @param Int $page 頁數，預設0
+     * @param Int $limit 單頁顯示數量
      * @return array|Webpage
      */
-    public function get_all_webpages_order_by_read ( $user = NULL, $page = 0) {
+    public function get_all_webpages_order_by_read ( $user = NULL, $page = 0, $limit = 10) {
         if (isset($user) === FALSE) {
-            return $this->get_all_webpages();
+            //return array();
+            return $this->get_all_webpages($limit);
         }
         $user_id = $user->get_id();
         
         $output = array();
         
         $webpage = new Webpage();
-        
-        $limit = 10;
         $offset = $page * $limit;
         
         $query = $webpage->CI->db->query("
