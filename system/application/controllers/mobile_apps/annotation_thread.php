@@ -151,7 +151,8 @@ class annotation_thread extends Mobile_apps_controller{
         }
         */
         
-        if (isset($_POST["do_respond"])) {
+        if (isset($_POST["annotation_type"])) {
+            //test_msg("有回應！！！");
             $data = $this->_do_response($topic_annotation, $data);
         }
        
@@ -216,6 +217,13 @@ class annotation_thread extends Mobile_apps_controller{
         
         $topic_annotation_array["timestamp"] = $this->_convert_timestamp_to_date($timestamp);
         
+        $login_user_id = get_context_user_id();
+        $topic_annotation_array["is_my"] = FALSE;
+        if (isset($login_user_id) 
+                && $annotation->get_user()->get_id() === $login_user_id) {
+            $topic_annotation_array["is_my"] = TRUE;
+        }
+        
         return $topic_annotation_array;
     }
     
@@ -239,10 +247,10 @@ class annotation_thread extends Mobile_apps_controller{
         //echo 'set annotation detail ->';
         //type
         if (isset($type_id)) {
-          $new_res_annotation->set_type($type_id);                     
+            $new_res_annotation->set_type($type_id);                     
         }
         else { 
-            //echo 'no type_id';
+            //test_msg('no type_id');
             $data["error_message"] = $this->lang->line("mobile_apps.annotation_thread.error");
         }
 
@@ -252,7 +260,7 @@ class annotation_thread extends Mobile_apps_controller{
                 && $note_message !== '') {
             $new_res_annotation->set_note($note_message);
         } else {
-            //echo 'no note_msg';
+            //test_msg('no note_msg');
             $data["error_message"] = $this->lang->line("mobile_apps.annotation_thread.error");
         }
         
@@ -268,7 +276,7 @@ class annotation_thread extends Mobile_apps_controller{
         
         //設定policy
         //echo 'start set policy';
-        $policy_type = 1;
+        //$policy_type = 1;
         /*$this->load->library('policy/Authorize_manager');
           $ACTION_ANNOTATION_READ = 5;
           $auth->set_resource($annotation);
@@ -285,9 +293,10 @@ class annotation_thread extends Mobile_apps_controller{
              $auth->policy_remove_actor($ACTION_ANNOTATION_READ);
           }*/     
 
+        //test_msg("準備儲存？", $data["error_message"]);
          if (isset($data["error_message"]) === FALSE) {
              // 如果沒有錯誤
-             
+             //test_msg("準備儲存？");
              //先將權限設成管理者
             set_ignore_authorize(true);
             //回傳標註
@@ -340,11 +349,22 @@ class annotation_thread extends Mobile_apps_controller{
         $respond_collection = $topic_annotation->get_topic_respond_coll();
         $respond_json = array(); 
         
+        $login_user_id = get_context_user_id();
+        
         foreach ($respond_collection AS $respond_annotation) {
             $json = array();
             
             $json["annotation_id"] = $respond_annotation->get_id();
-            $json["user_name"] = $respond_annotation->get_user()->get_name();
+            $annotation_user = $respond_annotation->get_user();
+            $json["user_name"] = $annotation_user->get_name();
+            
+            $json["is_my"] = FALSE;
+            //test_msg("res", array($annotation_user->get_id(), $login_user_id, $annotation_user->get_id() === $login_user_id));
+            if (isset($login_user_id) 
+                    && $annotation_user->get_id() === $login_user_id) {
+                $json["is_my"] = TRUE;
+            }
+            
             
             //$css_res_type = $respond_annotation->get_type()->get_type_id();
             /*

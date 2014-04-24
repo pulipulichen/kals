@@ -82,10 +82,13 @@ class Annotation_type {
      */
     public function get_classname() {
         if ($this->is_basic()) {
-            return $this->get_name();
+            $name = $this->get_name();
+            $parts = explode(".", $name);
+            $name = $parts[count($parts)-1];
+            return $name;
         }
         else {
-            return 'annotation.type.custom';
+            return 'custom';
         }
     }
 }

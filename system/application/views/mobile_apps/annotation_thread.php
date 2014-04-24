@@ -7,9 +7,7 @@
 
 /*
     <!--test msg--style="display: none"-->
-    <form name="f1" id="f1" action="<?php echo $annotataion_id; ?>" method="post" style="display: none" data-ajax="false"> 
-        <textarea name="note_text"></textarea>
-        <input name="annotation_type">
+    
 
 /*
 if (isset($note_massage) && isset($pop_type)) {
@@ -44,6 +42,9 @@ if (isset($topic_annotation["anchor_text"])) {
 
 $user = get_context_user();
 $user_login = isset($user);
+
+$annotation_thread_uri = site_url("mobile_apps/annotation_thread/topic_id/" . $topic_annotation["topic_id"]);
+
 ?>
 <!--top bar-->
 <div data-role="header" data-position="fixed" data-theme="a" data-ajax="false">
@@ -97,18 +98,20 @@ $user_login = isset($user);
     //if(isset($user_name) && isset($note)){
     if (isset($topic_annotation)) {
         $annotation_id = "annotation_" . $topic_annotation["topic_id"];
+        $style = "";
+        if ($topic_annotation["is_my"]) {
+            $style = 'text-decoration: underline';
+        }
         ?>
         <span class="name-container" 
-              id="<?php echo $annotation_id ?>" 
-              style="font-weight:bold; text-decoration: underline">
-            <?php echo $topic_annotation["user_name"]; ?>
-        </span>
-        <span class="type-option <?php echo $topic_annotation["type_classname"] ?>" >
-            <?php
+              id="<?php echo $annotation_id; ?>" 
+                  style="font-weight:bold;<?php echo $style; ?>"><?php 
+            echo $topic_annotation["user_name"]; 
+        ?></span>
+        <span class="type-option <?php echo $topic_annotation["type_classname"] ?>" ><?php
             echo $topic_annotation["type_name_lang"];
-            ?>
-        </span>
-        <span style = "font-size: x-large">
+        ?></span>
+        <span style=" font-size: x-large">
             <?php 
             echo $topic_annotation["note"];
             ?>
@@ -128,17 +131,22 @@ $user_login = isset($user);
     <?php    
     foreach ( $respond_annotations AS $respond_annotation ){
         $annotation_id = "annotation_".$respond_annotation["annotation_id"];
+        
+        $style = "";
+        if ($respond_annotation["is_my"]) {
+            $style = 'text-decoration: underline';
+        }
         ?>
         <li style="margin-left: 2em">
             <span class="name-container" 
-                  style="font-weight:bold; text-decoration: underline"
-                  id="<?php echo $annotation_id ?>">
-                <?php echo $respond_annotation["user_name"] ?>
-            </span>
-            <span class="type-option <?php echo $respond_annotation["type_classname"] ?>">
-                <?php echo $respond_annotation["type_name_lang"]; ?>
-            </span>
-            <span style="font-size: large">
+                  style="font-weight:bold;<?php echo $style; ?>"
+                  id="<?php echo $annotation_id ?>"><?php 
+                echo $respond_annotation["user_name"];
+             ?></span>
+            <span class="type-option <?php echo $respond_annotation["type_classname"] ?>"><?php 
+                echo $respond_annotation["type_name_lang"]; 
+            ?></span>
+            <span style="font-size: large;margin-left: 0.5em; ">
                 <?php echo $respond_annotation["note"]; ?>
             </span>
             <div style="color: gray; font-size: 8px; text-align: right">
@@ -232,6 +240,7 @@ $user_login = isset($user);
                 </label>
                 <input type="radio" 
                        name="annotation_type" 
+                       class="data-source"
                        id="<?php echo $type->get_classname(); ?>"
                        value="<?php echo $type->get_type_id(); ?>" 
                        <?php echo $checked; ?> />
@@ -273,23 +282,7 @@ $user_login = isset($user);
            ?>
        </fieldset>
         
-<?php
-/*
-<script type="text/javascript">  
-  function trans_to_form1() { 
-      var _form1 = document.getElementById("f1");
-      var _note = $("#note_text").val();
-
-      var _type = $('input[name="annotation_type"]:checked').val();
-
-      $("#f1 textarea[name='note_text']").val(_note); //jQuery
-      $("#f1 input[name='annotation_type']").val(_type); //jQuery
-      _form1.submit();
-
-  }      
-  </script>
-*/
-?>
+  
     <label for="note">
         <?php
         //請輸入回應
@@ -303,6 +296,7 @@ $user_login = isset($user);
     }
     ?>
     <textarea name="note" <?php echo $disabled ?>
+              class="data-source"
         id="note"></textarea>  
 
     <?php
@@ -312,7 +306,27 @@ $user_login = isset($user);
         <input type="submit"
                name="do_respond"
                value="<?php echo $button_value; ?>"
+               class="data-source"
+               onclick="submit_to_target_form()"
                data-ajax="false" /> 
+        
+        
+<script type="text/javascript">  
+  function submit_to_target_form() { 
+      var _note = $("textarea.data-source[name='note']").val();
+      var _type = $('input.data-source[name="annotation_type"]:checked').val();
+
+      $("#target_form textarea[name='note']").val(_note); //jQuery
+      $("#target_form input[name='annotation_type']").val(_type); //jQuery
+      $("#target_form").submit();
+}      
+</script>
+        <form id="target_form" action="<?php echo $annotation_thread_uri; ?>" 
+              method="post" style="display: none" 
+              data-ajax="false"> 
+            <textarea name="note"></textarea>
+            <input name="annotation_type" />
+        </form>
         <?php
     }
     else {
@@ -324,7 +338,6 @@ $user_login = isset($user);
         <?php
     }
     ?>
-    
   <!-- alert($('input[name=annotation_type]:checked').val());-->
       <!--/內部-->
 
