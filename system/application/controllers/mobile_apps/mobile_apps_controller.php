@@ -23,22 +23,45 @@ class Mobile_apps_controller extends Controller {
     //var $dir = 'web_apps/';
     var $dir = 'mobile_apps/';
     var $release_dir = 'mobile_apps/';
-
+    
+    var $_login_path = "mobile_apps/login";
+    var $_webpage_path = "mobile_apps/webpage_list";
+    
+    var $CI;
+    var $session;
+    
+    var $client_ip;
+    
     function  __construct()
     {
         parent::Controller();
+        
+        
+        $this->load->library('kals_actor/User');
+        
         $this->load->helper('url');
         $this->load->helper('web_apps');
         $this->load->config('kals');
 
-        if ($this->controller_enable_cache)
+        if ($this->controller_enable_cache) {
             $this->_enable_cache();
+        }
         create_context();
         
         if ($this->login_require === TRUE)
         {
             login_require(true);
         }
+        
+        
+        $this->lang->load('kals_mobile_apps');
+        $this->lang->load('kals_web_apps');
+        
+         $this->client_ip = array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
+         
     }
     
     function load_js($path, $path2 = NULL)

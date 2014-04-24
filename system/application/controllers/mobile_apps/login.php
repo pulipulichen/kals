@@ -27,9 +27,6 @@ class login extends Mobile_apps_controller{
 
     var $CI;
     var $session;
-    
-    var $_login_path = "mobile_apps/login";
-    var $_webpage_path = "mobile_apps/webpage";
 
     function __construct()
     {
