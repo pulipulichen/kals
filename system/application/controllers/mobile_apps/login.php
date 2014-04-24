@@ -103,14 +103,18 @@ class login extends Mobile_apps_controller{
         $referer_url = get_referer_url();
         
         $is_not_login_path = (ends_with($referer_url, $this->_login_path) === FALSE);
-        $is_from_mobile_apps = (strpos($referer_url, "/mobile_apps/") > -1);
+        $is_from_mobile_apps = (strpos($referer_url, "/mobile_apps/") !== FALSE);
+        $data["referer_url"] = "";
         if ($is_not_login_path && $is_from_mobile_apps) {
             $data["referer_url"] = $referer_url;
+        }
+        if ($data["referer_url"] == "") {
+            $data["referer_url"] = $this->_webpage_path;
         }
         
         $data["lang"] = $this->lang;
         
-        $this->load->view('mobile_apps/view_header');
+        $this->load->view('mobile_apps/view_header', $data);
         $this->load->view('mobile_apps/login', $data);
         $this->load->view('mobile_apps/view_footer');
     }
@@ -183,7 +187,9 @@ class login extends Mobile_apps_controller{
      */
     private function _already_login() {
         $redirect_url = $this->_webpage_path;
-        if (isset($_POST["referer_url"])) {
+        if (isset($_POST["referer_url"])
+                && $_POST["referer_url"] !== ""
+                && strpos($redirect_url, "/mobile_apps/") !== FALSE) {
             $redirect_url = $_POST["referer_url"];
         }
         //header("Location: ".$redirect_url);
@@ -214,7 +220,7 @@ class login extends Mobile_apps_controller{
         //$login_url = 'http://140.119.61.137/kals/mobile/mobile_user_login';
         
         $referer_url = $_POST["referer_url"];
-        $login_url = site_url($this->_login_path);
+        $login_url = $this->_login_path;
 
         //test_msg("referer_url", $referer_url);
         //test_msg("login_url", $login_url);
@@ -225,7 +231,10 @@ class login extends Mobile_apps_controller{
         }
         
         //header("Location: ".$referer_url);
-        redirect($redirect_url);
+        //test_msg("redirect_url", $referer_url);
+        
+        redirect($referer_url);
+        return;
     }
 }        
     

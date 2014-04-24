@@ -477,7 +477,8 @@ class annotation_thread extends Mobile_apps_controller{
         $data["types"] = $this->annotation_type_factory->get_total_types();
         
         $this->load->view('mobile_apps/view_header', $data);
-        $this->load->view('mobile_apps/annotation_thread', $data);
+        $this->load->view('mobile_apps/annotation_thread_list', $data);
+        $this->load->view('mobile_apps/annotation_thread_form', $data);
         $this->load->view('mobile_apps/view_footer');
     }
 }        

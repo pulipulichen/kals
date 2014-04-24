@@ -1,15 +1,10 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-$login_path = site_url('mobile_apps/login');
+$logout_path = site_url('mobile_apps/logout');
 ?>
 <div data-role="header" data-position="fixed">
     
-    <a href ="<?php echo $login_path ?>" 
+    <a href ="<?php echo $logout_path ?>" 
+       data-ajax="false"
        class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">
         <?php
         //回首頁

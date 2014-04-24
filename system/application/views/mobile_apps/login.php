@@ -54,7 +54,7 @@ text-align: center;
 // ----------------------------------------------------------------
 
 $hide_domain = "";
-if (isset($domain) && $domain !== ""){
+if (isset($domain) && $domain !== "" && isset($message) === FALSE){
     $hide_domain = ' style="display:none"'; 
 }
 ?>
@@ -102,7 +102,7 @@ if (isset($domain) && $domain !== ""){
 // ----------------------------------------------------------------
 ?>
 
-<input type="hidden" name="referer_url" value="<?php $referer_url ?>" />
+<input type="hidden" name="referer_url" value="<?php echo $referer_url; ?>" />
 
 <?php
 // ----------------------------------------------------------------
@@ -116,7 +116,7 @@ if (isset($domain) && $domain !== ""){
     ?>
 </button>
 
-<a href="<?php echo site_url("mobile_apps/webpage"); ?>" 
+<a href="<?php echo site_url("mobile_apps/webpage_list"); ?>" 
    class="ui-btn ui-btn-b ui-shadow ui-corner-all" data-ajax="false">
     <?php
         //Skip
@@ -131,4 +131,3 @@ if (isset($domain) && $domain !== ""){
 </div>
 <?php
 // --------------------------------
-?>
