@@ -45,18 +45,8 @@ class webpage_list extends Mobile_apps_controller{
      */
     public function page($page = 1) {
 
-        
-        //$user = get_context_user();
-        //$user_id = $user->get_id(); 
-        
-        // get domain's all pages
         $data = array();       
-        //$webpage_list = Domain::get_all_domain_webpages();
-        //$domain = new Domain();
-        //$all_webpages = $domain->get_all_domain_webpages(); //array
-        
-        //test_msg("all_webpage", count($all_webpages));
-        //echo $all_webpages;
+  
         $webpage_array = array();
        
         // --------------------------------
@@ -68,48 +58,7 @@ class webpage_list extends Mobile_apps_controller{
         
         // 儲存頁數
         $this->set_session_webpage_list_page($page);
-        
-        //test_msg( 'context_id = '.get_context_user()->get_id() );
-        //test_msg( '$user->get_id = '.$user_id.'//' );
-        //test_msg(  $this->session->userdata('logged_in') );
-        //test_msg( 'session_user_id ='.$this->session->userdata('user_id') );   
-        
-       
-        // --------------------------------
-        /*
-        $all_webpages = Webpage::get_all_webpages_order_by_read($user_id, ($page-1) );
-        $data['all_webpages'] = array();
-        // array：$all_webpages value:array array中為webpage_id
-        foreach ($all_webpages AS $webpage){
-           // get page's title and id
-           $webpage_id = $webpage->get_id();
-           $webpage_array['webpage_id'] = $webpage_id;
-           //test_msg($webpage_id);
-           //continue;
-           
-           //$webpage = new Webpage($webpage_id);
-           $webpage_title = $webpage->get_title();
-           //echo 'msg= '.$webpage_title.'<br>'; //msg
-
-           $webpage_array['webpage_title'] = $webpage_title;
-           
-           // get page's annotation count
-           $annotation_count = $webpage->get_written_annotations_count();
-           //$annotation_count = 0;
-           $webpage_array['annotation_count'] = $annotation_count;
-          
-           // 判斷有無read
-           if ( $user_id !== 0){
-               if (isset($unread_array[$webpage_id])) {
-                   $webpage_array['is_unread'] = 'inline';
-               }
-               else {
-                   $webpage_array['is_unread'] = 'none';
-               }
-           }else { $webpage_array['is_unread'] = 'none'; }
-           $data['all_webpages'][] = $webpage_array;
-        }
-         */
+ 
         
 // --------------------------------
         // 取得還沒閱讀的網頁列表
@@ -119,21 +68,8 @@ class webpage_list extends Mobile_apps_controller{
         $all_webpages = $this->webpage->get_all_webpages_order_by_read( $user, ($page-1) );
         $data['all_webpages'] = $this->_filter_webpage_info($all_webpages, $unread_webpages);
         
-        // session test msg
-        /*echo $this->session->userdata('user_id').'/';
-        echo $this->session->userdata('user_name').'/';
-        echo $this->session->userdata('logged_in');*/
-        
-        $data['lang'] = $this->lang;
-        $data['title'] = $this->lang->line("mobile_apps.webpage_list.title")
-                . " "
-                . $this->lang->line("mobile_apps.webpage_list.page.1")
-                . $page
-                . $this->lang->line("mobile_apps.webpage_list.page.2");
-        
-        $this->load->view('mobile_apps/view_header', $data);
-        $this->load->view('mobile_apps/webpage_list', $data);
-        $this->load->view('mobile_apps/view_footer'); 
+        $this->_display_view($data, $page);
+  
     }
     
     /**
@@ -275,7 +211,25 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
         context_complete(); //寫入db
     }
     
-    
+    /**
+     * 顯示最後的網頁
+     * @param Array $data
+     * @param Int $page
+     */
+    private function _display_view($data, $page = 1) {
+        
+        
+        $data['lang'] = $this->lang;
+        $data['title'] = $this->lang->line("mobile_apps.webpage_list.title")
+                . " "
+                . $this->lang->line("mobile_apps.webpage_list.page.1")
+                . $page
+                . $this->lang->line("mobile_apps.webpage_list.page.2");
+        
+        $this->load->view('mobile_apps/view_header', $data);
+        $this->load->view('mobile_apps/webpage_list', $data);
+        $this->load->view('mobile_apps/view_footer'); 
+    }
 }        
     
 

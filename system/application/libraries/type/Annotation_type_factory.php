@@ -158,6 +158,10 @@ class Annotation_type_factory extends KALS_object {
         return $name;
     }
 
+    /**
+     * 取得所有的標註類型
+     * @return Array|Annotation_type
+     */
     public function get_total_types()
     {
         $total = array();

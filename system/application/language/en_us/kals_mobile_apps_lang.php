@@ -18,7 +18,7 @@ $lang['mobile_apps.login.do_login']     = "登入";
 $lang['mobile_apps.login.guest_login']     = "訪客登入";
 
 $lang['mobile_apps.webpage_list.title']     = "網頁列表";
-$lang['mobile_apps.webpage_list.back']     = "登出";
+$lang['mobile_apps.webpage_list.back']     = "回首頁";
 $lang['mobile_apps.webpage_list.hint']     = "請點選要查看的網頁。";
 
 $lang['mobile_apps.webpage_list.page.1']     = "第";
@@ -32,12 +32,6 @@ $lang['mobile_apps.annotation_topics.back']     = "回到網頁列表";
 $lang["mobile_apps.annotation_thread.title"] = "標註討論";
 $lang["mobile_apps.annotation_thread.back"] = "回到標註列表";
 $lang["mobile_apps.annotation_thread.error"] = "新增回應失敗，資料不全";
-$lang["mobile_apps.annotation_thread.fullpage"] = "詳見全文";
-$lang["mobile_apps.annotation_thread.add_respond"] = "新增標註回應";
-$lang["mobile_apps.annotation_thread.close"] = "關閉";
-$lang["mobile_apps.annotation_thread.label.note"] = "請輸入回應";
-$lang["mobile_apps.annotation_thread.login_hint"] = "要回應請先進行登入";
-
 
 /* End of file kals_actor_lang.php */
 /* Location: ./system/language//calendar_lang.php */

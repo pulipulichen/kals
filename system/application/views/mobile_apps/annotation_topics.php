@@ -71,7 +71,7 @@ $login_uri = site_url("mobile_apps/login");
          <?php  //列出該page中all topic
             foreach ($written_annotations AS $annotation){
                 
-                $annotation_thread_uri = site_url("mobile_apps/annotation_thread/annotation_id/" 
+                $annotation_thread_uri = site_url("mobile_apps/annotation_thread/topic_id/" 
                         . $annotation['annotation_id']);
                 
                 $new_icon = "";

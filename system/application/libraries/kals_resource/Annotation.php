@@ -343,7 +343,7 @@ class Annotation extends KALS_resource {
     public function get_topic_respond_coll()
     {
         if (is_null($this->topic_responded_coll) && $this->is_respond() === FALSE) {
-            
+            $this->_CI_load('library', 'search/Search_annotation_collection', 'search_annotation_collection');
             $coll = new Search_annotation_collection();
             // 取得topic之外的annotation(res)
             $coll->set_target_topic_id($this->get_id());

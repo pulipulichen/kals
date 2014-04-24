@@ -18,9 +18,20 @@ class Annotation_type {
     protected $name;
     protected $_is_basic_annotation_type = true;
 
-    public function get_type_id()
-    {
+    /**
+     * 取得標註類型的ID
+     * @return int
+     */
+    public function get_type_id() {
         return $this->annotation_type_id;
+    }
+    
+    /**
+     * 取得標註類型的ID
+     * @return Int
+     */
+    public function get_id() {
+        return $this->get_type_id();
     }
 
     public function get_name()
@@ -55,6 +66,27 @@ class Annotation_type {
     public function is_basic()
     {
         return $this->_is_basic_annotation_type;
+    }
+    
+    /**
+     * 是「其他」這個類型嗎？
+     * @return boolean
+     */
+    public function is_other() {
+        return ($this->get_name() === 'annotation.type.custom');
+    }
+    
+    /**
+     * 取得classname
+     * @return string
+     */
+    public function get_classname() {
+        if ($this->is_basic()) {
+            return $this->get_name();
+        }
+        else {
+            return 'annotation.type.custom';
+        }
     }
 }
 
