@@ -148,10 +148,10 @@
     <label for="note_text" >請輸入回應</label>
     <textarea name="note_text" <?php if($this->session->userdata('logged_in') == FALSE){
                                      echo 'disabled="disabled"';}?> 
-       id="note_text"><?php if($this->session->userdata('logged_in') !== TRUE){
+       id="note_text"><?php if($this->session->userdata('logged_in') != TRUE){
                                      echo '請先登入喔！';}?></textarea>  
 
-    <input type="submit" <?php if($this->session->userdata('logged_in') === FALSE){
+    <input type="submit" <?php if($this->session->userdata('logged_in') == FALSE){
                                   echo 'disabled="disabled"';}?>
            onclick="trans_to_form1()" value="新增標註回應"  data-ajax="false" /> 
     <!-- alert($('input[name=annotation_type]:checked').val());-->

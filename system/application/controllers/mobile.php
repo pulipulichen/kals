@@ -354,9 +354,9 @@ class mobile extends Web_apps_controller{
             $user_id = 0;       
         }
          
-         echo 'get_context_user ='.$user_id.'//';
-         echo $this->session->userdata('logged_in').'//';
-         echo 'session_user_id ='.$this->session->userdata('user_id');
+         //echo 'get_context_user ='.$user_id.'//';
+         //echo $this->session->userdata('logged_in').'//';
+         //echo 'session_user_id ='.$this->session->userdata('user_id');
 
          // 查詢未讀過的annotation
          if ( $user_id !== 0 ){
