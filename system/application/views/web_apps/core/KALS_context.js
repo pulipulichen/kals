@@ -38,7 +38,8 @@ KALS_context.initialize = function () {
     this.hash = new URL_hash_dispatcher();
     this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
-    this.custom_type = new Context_custom_type();
+    this.predefined_type = new Context_predefined_type();
+    this.custom_type = this.predefined_type;
     this.feedback = new Feedback_manager();
     this.view_manager = new KALS_view_manager();
     this.progress = new Initialization_progress();
@@ -105,7 +106,7 @@ KALS_context.setup_base_url = function () {
     var _needle = '/web_apps/';
     for (var _i in _scripts) {
         var _src = _scripts.eq(_i).attr('src');
-        if (typeof(_src) != 'string') {
+        if (typeof(_src) !== 'string') {
 			continue;
 		}
         
@@ -185,7 +186,7 @@ KALS_context.get_image_url = function (_img) {
         
     var _img_url = this.get_base_url();
     var _pos = _img_url.lastIndexOf('/web_apps');
-    if (_pos == -1) {
+    if (_pos === -1) {
 		return _img;
 	}
     
@@ -223,7 +224,7 @@ KALS_context.get_library_url = function (_file) {
         
     var _img_url = this.get_base_url();
     var _pos = _img_url.lastIndexOf('/web_apps');
-    if (_pos == -1) {
+    if (_pos === -1) {
         return _img;
     }
     
@@ -298,7 +299,12 @@ KALS_context.style = null;
 KALS_context.view = null;
 
 /**
- * @type {Context_custom_type}
+ * @type {Context_predefined_type}
+ */
+KALS_context.predefined_type = null;
+
+/**
+ * @type {Context_predefined_type}
  */
 KALS_context.custom_type = null;
 

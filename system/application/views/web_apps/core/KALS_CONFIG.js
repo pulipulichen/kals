@@ -81,6 +81,10 @@ DEFAULT_KALS_CONFIG = {
     /**
      * 使用的標註類型
      * 標註類型的順序會照以下設定排列。
+     * 
+     * 20140425 Pulipuli Chen
+     * 舊名稱「annotation_type_option」，新名稱「annotation_type_basic_enable」
+     * 
      * @type {array[string]} 可用的標註類型如下，如果不想用該類型的標註時，您可以省略它：
      *     importance: 重要
      *     concept: 概念
@@ -90,7 +94,7 @@ DEFAULT_KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_option: [
+    annotation_type_basic_enable: [
         'importance'
         , 'concept'
         , 'confusion'
@@ -112,10 +116,13 @@ DEFAULT_KALS_CONFIG = {
      * 注意，這個設定不會覆蓋annotation_type_option設定的標註類型
      * 而是會加在原本的標註類型下面。
      * 如果你要取消原本的標註類型，請修改annotation_type_option
+     * 
+     * 20140425 Pulipuli Chen
+     * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefine」
      */
     /*
-    annotation_custom_type: {
-        "測試": {
+    annotation_type_predefined: {
+        "預先定義1": {
             //type_id: 15,
             hint: '測試的說明',
             option: {
@@ -127,7 +134,7 @@ DEFAULT_KALS_CONFIG = {
                 color: 'blue'    
             }
         },
-        '在測試': {
+        '預先定義2': {
             //type_id: 16,
             hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
             option: {

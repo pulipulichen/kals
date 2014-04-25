@@ -119,7 +119,7 @@ class generic extends Web_apps_controller {
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',
-            'core/Context_custom_type',
+            'core/Context_predefined_type',
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',

@@ -285,7 +285,13 @@ Type_menu.prototype._type_component = null;
  * 標註選項。注意此選項會影響順序。
  * @type {String[]}
  */
-Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_option;
+if (typeof(KALS_CONFIG.annotation_type_basic_enable) !== "undefined") {
+    Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_basic_enable;
+}
+else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
+    Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_option;
+}
+
 /*
 Type_menu.prototype._type_options = [
     'importance',
@@ -312,7 +318,7 @@ Type_menu.prototype._$get_config = function () {
     _config.events = {def: 'click mouseover, mouseleave' };
     
     var _onbeforeshow;
-    if (typeof(_config.onBeforeShow) == 'function') {
+    if (typeof(_config.onBeforeShow) === 'function') {
 		_onbeforeshow = _config.onBeforeShow;
 	}
         
@@ -381,8 +387,8 @@ Type_menu.prototype.setup_position = function () {
         _left = _trigger_left - _ui.width() - 10;
         
         if (_left < 0) {
-			_left = null;
-		}
+            _left = null;
+        }
     }
     
     if ($.isset(_left)) {
