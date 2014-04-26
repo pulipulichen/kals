@@ -285,8 +285,8 @@ Type_menu.prototype._type_component = null;
  * 標註選項。注意此選項會影響順序。
  * @type {String[]}
  */
-if (typeof(KALS_CONFIG.annotation_type_basic_enable) !== "undefined") {
-    Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_basic_enable;
+if (typeof(KALS_CONFIG.annotation_type_basic) !== "undefined") {
+    Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_basic;
 }
 else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
     Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_option;
