@@ -123,6 +123,11 @@ class Domain extends KALS_resource {
         return $this->get_field('title');
     }
 
+    /**
+     * 輸入網址，過濾出指定的domain
+     * @param Domain|String|Int $domain_id
+     * @return Int Domain ID
+     */
     public function filter_domain_id($domain_id)
     {
         if (is_object($domain_id) && get_class($domain_id) == 'Domain')
@@ -136,6 +141,10 @@ class Domain extends KALS_resource {
             if (starts_with($domain_id, $http_prefix) === FALSE
                     && starts_with($domain_id, $https_prefix) === FALSE) {
                 $domain_id = $http_prefix . $domain_id;
+            }
+            
+            if (ends_with($domain_id, "/")) {
+                $domain_id = $domain_id . "/";
             }
             
             $domain = $this->create($domain_id);

@@ -14,6 +14,17 @@
 //$config['base_url']	= "http://192.168.11.2/CodeIgniter_1.7.2/";
 $config['base_url']	= "/kals/";
 
+/**
+ * 會被視為是localhost的網址名稱
+ * 需包括開頭的「http://」或「https://」與結尾的「/」
+ * 
+ * 例如：「http://pc-pudding-2013.dlll.nccu.edu.tw/」
+ * 在KALS之中，會被視為是「http://localhost/」
+ */
+$config["localhost_domains"] = array(
+    "http://pc-pudding-2013.dlll.nccu.edu.tw/"
+);
+
 /*
 |--------------------------------------------------------------------------
 | Index File
