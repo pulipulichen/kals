@@ -15,6 +15,12 @@ function KALS_controller_window(){
     KALS_controller.call(this);
     
     this.child('loading', new Window_loading_component());
+    
+    var _this = this;
+    setTimeout(function () {
+        // 註冊導覽列
+        KALS_context.navigation.register_item(_this);
+    }, 0);
 }
 
 /**
@@ -91,10 +97,49 @@ KALS_controller_window.prototype._$heading = new KALS_language_param(
     'window.noheading'
 );
 
+/**
+ * 顯示在導覽列的位置
+ * @type KALS_language_param
+ */
 KALS_controller_window.prototype._$nav_heading = new KALS_language_param(
     'Option',
     'window.noheading'
 );
+
+/**
+ * 導覽列相關的設定
+ * @type JSON
+ */
+KALS_controller_window.prototype.nav_config = {
+    /**
+     * 顯示資料
+     * @type Boolean
+     */
+    display: false,
+    
+    /**
+     * 決定顯示導覽列的位置
+     * 
+     * 類型包括：
+     * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+     * - login: 已經登入的使用者就會顯示
+     * - profile: 以手動登入的使用者才會顯示
+     * - embed: 以內嵌登入的使用者才會顯示
+     * - anonymous: 未登入的使用者才會顯示
+     * @type String
+     */
+    nav_type: "common",
+    
+    /**
+     * 排序順序
+     * 
+     * 數字越大，越往左邊靠
+     * 數字最小的是1
+     * @type Number
+     */
+    order: 1
+};
+
 
 /**
  * 寬度

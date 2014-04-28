@@ -28,6 +28,19 @@ Navigation_list.prototype._ui_menu = null;
 Navigation_list.prototype._$classname = null;
 
 /**
+ * 導覽類型
+ * 
+ * 類型包括：
+ * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+ * - profile: 以手動登入的使用者才會顯示
+ * - embed: 以內嵌登入的使用者才會顯示
+ * - anonymous: 未登入的使用者才會顯示
+ * - null: 不列入在目前的導覽列
+ * @type String
+ */
+Navigation_list.prototype._$nav_type = null;
+
+/**
  * 決定是否要顯示說明
  * @type {boolean} 
  */
@@ -242,17 +255,17 @@ Navigation_list.prototype._setup_feedback = function () {
 
 Navigation_list.prototype._get_window_content = function (_index) {
     
-    if (typeof(this._$nav_items[_index]) == 'undefined') {
+    if (typeof(this._$nav_items[_index]) === 'undefined') {
 		return null;
 	}
 	else 
-		if (typeof(this._$nav_items[_index]) == 'string') {
+		if (typeof(this._$nav_items[_index]) === 'string') {
 			var _window_content = this._$nav_items[_index];
 			eval('var _content = new ' + _window_content + '()');
 			return _content;
 		}
 		else 
-			if (typeof(this._$nav_items[_index]) == 'object') {
+			if (typeof(this._$nav_items[_index]) === 'object') {
 				_window_content = this._$nav_items[_index];
 				return _window_content;
 			}
@@ -317,7 +330,28 @@ Navigation_list.prototype._create_menu = function() {
  * @type {Array|KALS_window}
  */
 Navigation_list.prototype.get_nav_items = function () {
-	return this._$nav_items;
+    return this._$nav_items;
+};
+
+/**
+ * 從KALS_config.navigation取得資料，加入_$nav_items中
+ * @returns {Navigation_list}
+ */
+Navigation_list.prototype._init_module_nav_items = function () {
+    var _nav_type = this._$nav_type;
+    
+    if (typeof(_nav_type) !== "string") {
+        return this;
+    }
+    
+    var _list = KALS_context.navigation.get_list(_nav_type);
+    
+    for (var _i in _list) {
+        var _item = _list[_i];
+        this._$nav_items.push(_item);
+    }
+    
+    return this;
 };
 
 /* End of file Navigation_list */

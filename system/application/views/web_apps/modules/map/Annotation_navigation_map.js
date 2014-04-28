@@ -186,6 +186,40 @@ Annotation_navigation_map.prototype._$width = 400;
 Annotation_navigation_map.prototype._$height = null;
 
 /**
+ * 導覽列相關的設定
+ * @type JSON
+ */
+Annotation_navigation_map.prototype.nav_config = {
+    /**
+     * 顯示資料
+     * @type Boolean
+     */
+    display: true,
+    
+    /**
+     * 決定顯示導覽列的位置
+     * 
+     * 類型包括：
+     * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+     * - login: 已經登入的使用者就會顯示
+     * - profile: 以手動登入的使用者才會顯示
+     * - embed: 以內嵌登入的使用者才會顯示
+     * - anonymous: 未登入的使用者才會顯示
+     * @type String
+     */
+    type: "common",
+    
+    /**
+     * 排序順序
+     * 
+     * 數字越大，越往左邊靠
+     * 數字最小的是1
+     * @type Number
+     */
+    order: 1
+};
+
+/**
  * ====================
  * Action設定
  * ====================

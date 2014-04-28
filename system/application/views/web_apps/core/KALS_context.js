@@ -46,6 +46,7 @@ KALS_context.initialize = function () {
     this.site_reform = new Site_reform();
     this.storage = new KALS_storage();
     this.module = new KALS_module_manager();
+    this.navigation = new KALS_navigation();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -68,6 +69,8 @@ KALS_context.initialize = function () {
             _this.search = new Window_search();
 			
             _this.overlay = new Overlay_manager();
+            
+            _this.module.init();
             
             _this.init_context.start();
         });    
@@ -338,6 +341,11 @@ KALS_context.storage = null;
  * @type {KALS_module_manager}
  */
 KALS_context.module = null;
+
+/**
+ * @type {KALS_navigation}
+ */
+KALS_context.navigation = null;
 
 /**
  * @type {Init_context}

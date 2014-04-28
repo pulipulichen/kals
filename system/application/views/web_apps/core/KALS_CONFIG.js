@@ -303,8 +303,7 @@ DEFAULT_KALS_CONFIG = {
     
     modules: {
         Annotation_navigation_map: {
-            "enable": false,
-            "ok": "沒問題"
+            "enable": true,
         }
     }
 };

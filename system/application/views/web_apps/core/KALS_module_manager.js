@@ -28,12 +28,35 @@ KALS_module_manager.prototype = new Multi_event_dispatcher();
 KALS_module_manager.prototype._loaded_modules = {};
 
 /**
+ * 預先載入模組
+ */
+KALS_module_manager.prototype.init = function() {
+    if (typeof(KALS_CONFIG) === "object"
+            && typeof(KALS_CONFIG.modules) === "object") {
+        var _modules = KALS_CONFIG.modules;
+        
+        for (var _name in _modules) {
+            this.load(_name);
+        }
+    }
+};
+
+/**
  * 載入模組
  * @param {String} _name 模組的名稱，注意要用字串
  * @param {Object} _param 搭配模組載入的參數
+ * @param {Function} _callback 回呼函式
  * @returns {Object|Boolean} 回傳載入的模組的物件。如果是False，則表示載入失敗。
  */
-KALS_module_manager.prototype.load = function (_name, _param) {
+KALS_module_manager.prototype.load = function (_name, _param, _callback) {
+    
+    // 參數調整
+    if (typeof(_param) === "function" 
+            && typeof(_callback) === "undefined") {
+        _callback = _param;
+        _param = undefined; 
+    }
+    
     var _module = false;
     
     // 先讀取已經載入的模組
@@ -46,7 +69,8 @@ KALS_module_manager.prototype.load = function (_name, _param) {
         return false;
     }
     else if (typeof _name === "function") {
-        //@TODO
+        // @TODO 尚未確定功能是否可以運作
+        _name = _name.toString();
     }
     
     try {
@@ -57,7 +81,15 @@ KALS_module_manager.prototype.load = function (_name, _param) {
             
             // 讀取KALS_CONFIG
             var _config = this._load_config(_name);
+            if (typeof(_config.enable) === "boolean"
+                    && _config.enable === false) {
+                return false;
+            }
             _module = this._init_module_config(_module, _config);
+            
+            if (typeof(_callback) === "function") {
+                _callback(_module);
+            }
             
             return _module;
         }
