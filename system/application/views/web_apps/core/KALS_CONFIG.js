@@ -9,7 +9,7 @@
  * @copyright       Copyright (c) 2010, Pudding Chen
  * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link            https://github.com/pulipulichen/kals
- * @version		1.0 2010/8/5 下午 07:50:21
+ * @version		1.5 2014/4/28 下午 07:50:21
  */
 
 DEFAULT_KALS_CONFIG = {

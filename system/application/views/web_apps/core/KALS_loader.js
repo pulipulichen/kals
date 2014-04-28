@@ -41,7 +41,8 @@ this.generic_dispatcher = null;
 this.generic_load = function (_conf, _callback) {   
     var _prefix = "generic/";
     
-    if (typeof(_conf) == 'function' && typeof(_callback) == 'undefined') {
+    if (typeof(_conf) === 'function' 
+            && typeof(_callback) === 'undefined') {
         _callback = _conf;
         _conf = null;
     }
@@ -98,7 +99,7 @@ this.generic_load = function (_conf, _callback) {
                 //_this.load_libraries(_component_libraries, function () {
                 _this.load_scripts_orderly(_component_libraries, function () {
                     //console.log('[KALS] callback');
-                    if (typeof(_callback) == "function") {
+                    if (typeof(_callback) === "function") {
                         _callback();
                     }
                 });    
@@ -110,7 +111,7 @@ this.generic_load = function (_conf, _callback) {
 };
 
 this.has_jquery = function () {
-    return (typeof(jQuery) == 'object'
+    return (typeof(jQuery) === 'object'
         && jQuery !== null
         && jQuery instanceof jQuery);
 };
@@ -259,7 +260,8 @@ this.load_scripts = function (_script_list, _callback, _is_libraries) {
 this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     
     var _base_url = this.get_base_url();
-    if (typeof(_is_libraries) == "boolean" && _is_libraries === true) {
+    if (typeof(_is_libraries) === "boolean" 
+            && _is_libraries === true) {
 		_base_url = this.get_libraries_url();
 	}
     
@@ -274,9 +276,9 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
        $.getScript(_script_url, function () {
            
            if (_loaded === false) {
-               if (typeof(_callback) == 'function') {
-			   	_callback();
-			   }
+               if (typeof(_callback) === 'function') {
+                    _callback();
+               }
            }
            
            _loaded = true;
@@ -288,25 +290,25 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
 this.load_styles = function (_style_list, _callback) {
     var _loaded = [];
     var _check_complete = function (_style) {
-        if (typeof(_style) == 'undefined' ||
-		$.inArray(_style, _loaded) > -1) {
-			return;
-		}
+        if (typeof(_style) === 'undefined' ||
+            $.inArray(_style, _loaded) > -1) {
+            return;
+        }
         
         _loaded.push(_style);
         if (_loaded.length >= _style_list.length) {
-            if (typeof(_callback) == 'function') {
-				_callback();
-			}
+            if (typeof(_callback) === 'function') {
+                _callback();
+            }
         }
     };
     
     var _base_url = this.get_base_url();
     //_base_url = _base_url + '/load_css/';
     
-    if (typeof(_style_list) == 'string') {
-		_style_list = [_style_list];
-	}
+    if (typeof(_style_list) === 'string') {
+        _style_list = [_style_list];
+    }
     
     for (var _i in _style_list) {
         var _style_data = _style_list[_i];
@@ -315,70 +317,82 @@ this.load_styles = function (_style_list, _callback) {
         
         var _pos = _style_data.lastIndexOf('|');
         if (_pos > -1) {
-			_style_url = _style_data.substr(0, _pos);
-			_style_title = _style_data.substring(_pos + 1, _style_data.length);
-		}
-		else {
-			_style_url = _style_data;
-		}
+            _style_url = _style_data.substr(0, _pos);
+            _style_title = _style_data.substring(_pos + 1, _style_data.length);
+        }
+        else {
+            _style_url = _style_data;
+        }
         
         var _style = _base_url + _style_url;
             
         //檢查一下是否已有該title
         var _link = null;
         if (_style_title !== null) {
-			_link = $('link[type=text/css][rel=stylesheet][title=' + _style_title + ']');
-			if (_link.length === 0) {
-				_link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
-			}
-			else {
-				_link.attr('href', _style);
-			}
-		}
-		else {
-			_link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
-		}
+            _link = $('link[type=text/css][rel=stylesheet][title=' + _style_title + ']');
+            if (_link.length === 0) {
+                _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
+            }
+            else {
+                _link.attr('href', _style);
+            }
+        }
+        else {
+            _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
+        }
         
         _link.attr('onreadystatechange', function () {
-                if (this.readyState == 'complete') {
-					_check_complete(this.href);
-				}
+                if (this.readyState === 'complete') {
+                    _check_complete(this.href);
+                }
             })
             .attr('onload', function () {
                 _check_complete(this.href);
             });
             
         if (_style_title !== null) {
-			_link.attr('title', _style_title);
-		}
+            _link.attr('title', _style_title);
+        }
     }
     return this;
 };
 
+/**
+ * 讀取指定的資料
+ * @param {JSON} _libraries 舉例：
+ * var _toolkit_libraries = {
+ *     libraries_list: [
+ *         "libraries/ckeditor/adapters/jquery.js"
+ *     ],
+ *     style_list: _prefix+'style|generic'
+ * };
+ * @param {Function} _callback
+ * @returns {KALS_loader_class}
+ */
 this.load_libraries = function (_libraries, _callback) {
     var _loaded = 0;
     var _threshold = 0;
     var _complete = function () {
-        if (_loaded == -1) {
-			return;
-		}
+        if (_loaded === -1) {
+            return;
+        }
         _loaded++;
         
-        if (_loaded >= _threshold && _loaded != -1) {
+        if (_loaded >= _threshold && _loaded !== -1) {
             _loaded = -1;
-            if (typeof(_callback) == 'function') {
-				_callback();
-			}
+            if (typeof(_callback) === 'function') {
+                _callback();
+            }
         }
     };
     
-    if (typeof(_libraries.script_list) != 'undefined') {
+    if (typeof(_libraries.script_list) !== 'undefined') {
         _threshold++;
     }
-    if (typeof(_libraries.style_list) != 'undefined') {
+    if (typeof(_libraries.style_list) !== 'undefined') {
         _threshold++;
     }
-    if (typeof(_libraries.libraries_list) != 'undefined') {
+    if (typeof(_libraries.libraries_list) !== 'undefined') {
         _threshold++;
     }
     // 在此處開始執行
@@ -386,17 +400,17 @@ this.load_libraries = function (_libraries, _callback) {
     var _this = this;
     
     //如果有libraries_list的話，則先讀取libraries_list，再讀其他
-    if (typeof(_libraries.libraries_list) != 'undefined') {
+    if (typeof(_libraries.libraries_list) !== 'undefined') {
         this.insert_scripts(_libraries.libraries_list, function () {
             
             setTimeout(function () {
                 
-                if (typeof(_libraries.script_list) != 'undefined') {
+                if (typeof(_libraries.script_list) !== 'undefined') {
                     _this.load_scripts(_libraries.script_list, function () {
                         _complete();
                     });
                 }
-                if (typeof(_libraries.style_list) != 'undefined') {   
+                if (typeof(_libraries.style_list) !== 'undefined') {   
                     _this.load_styles(_libraries.style_list, function () {
                         _complete();
                     });
@@ -404,18 +418,17 @@ this.load_libraries = function (_libraries, _callback) {
             
             }, 0);    //setTimeout(function () {
             
-            
             _complete();
             
         }, true);
     }
     else {
-        if (typeof(_libraries.script_list) != 'undefined') {
+        if (typeof(_libraries.script_list) !== 'undefined') {
             _this.load_scripts(_libraries.script_list, function () {
                 _complete();
             });
         }
-        if (typeof(_libraries.style_list) != 'undefined') {   
+        if (typeof(_libraries.style_list) !== 'undefined') {   
             _this.load_styles(_libraries.style_list, function () {
                 _complete();
             });

@@ -382,7 +382,7 @@ KALS_context._text_selector = null;
 /**
  * 確保選取位置。
  * 必須要在所有元件加入body之前確保完畢
- * @param {function} 回呼函數
+ * @param {function} _callback 回呼函數
  * @version 20111105 Pudding Chen
  */
 KALS_context.check_text_selector = function (_callback) {
@@ -515,7 +515,7 @@ KALS_context.check_text_selector = function (_callback) {
 
 /**
  * 取得可選取的文字區
- * @param {jQuery} 要選取的範圍
+ * @retrun {jQuery} 要選取的範圍
  * @version 20111105 Pudding Chen
  */
 KALS_context.get_text_selector = function () {
@@ -560,8 +560,21 @@ KALS_context.last_select_annotation_type = null;
  * @type {Array} 包含標註類型的陣列
  */
 KALS_context.create_type_param_list = function() {
-	var _list = {};
-	var _type_options = KALS_CONFIG.annotation_type_option;
+    var _list = {};
+    
+    //var _type_options = KALS_CONFIG.annotation_type_option;
+    /**
+     * 標註選項。注意此選項會影響順序。
+     * @type {String[]}
+     */
+    var _type_options;
+    if (typeof(KALS_CONFIG.annotation_type_basic_enable) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_basic_enable;
+    }
+    else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_option;
+    }
+    
     for (var _i in _type_options) {
         var _type_string = _type_options[_i];
 		var _type_param = new Annotation_type_param(_type_string);
@@ -570,10 +583,10 @@ KALS_context.create_type_param_list = function() {
     
     //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
     
-	/**
-	 * 20130603 Pudding Chen 
-	 * 加入自訂的標註類型
-	 */
+    /**
+     * 20130603 Pudding Chen 
+     * 加入自訂的標註類型
+     */
     var _custom_type_list = KALS_context.custom_type.get_type_list();
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];

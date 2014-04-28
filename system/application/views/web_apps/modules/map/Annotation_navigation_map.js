@@ -56,7 +56,7 @@ Annotation_navigation_map.prototype._$view = 'modules/map/view/Annotation_naviga
  * @return {KALS_controller}
  */
 Annotation_navigation_map.prototype._$initialize_view = function () {
-    $.test_msg("Annotation_navigation_map 初始化");
+    //$.test_msg("Annotation_navigation_map 初始化");
     
     this.init_tabs();
 };
@@ -339,7 +339,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     if (_navigation.hasAttr("custom-name")) {
         _query_type = _navigation.attr("custom-name");
     }
-    $.test_msg("current-type", _current_type);
+    //$.test_msg("current-type", _current_type);
     
     
     var _chapter = KALS_text.selection.text.chapter;
@@ -427,7 +427,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     
     this.find(".list").css("display", "none");
     
-    $.test_msg(".list.type-"+_current_type);
+    //$.test_msg(".list.type-"+_current_type);
     
     
     var _lists = [];
@@ -466,7 +466,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
  * @param {jQuery} 目前顯示的表單
  */
 Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _type_id, _type_name, _list) {
-    $.test_msg("get_heading_data", _data);
+    //$.test_msg("get_heading_data", _data);
     
     
     var _types = this.get_annotation_types(); //取得所有標註的種類 
@@ -495,7 +495,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         
         var _list_item = $("<li></li>");
         
-        $.test_msg("[_heading_count]"+_heading_number);
+        //$.test_msg("[_heading_count]"+_heading_number);
         
         //_list_item.html("<div class='list-header-component'>" + _heading_text + " <span class='current-type'>"+ _current_type+"</span> </div>");
         
@@ -522,13 +522,13 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         //_list_item.append("<div class='list-header-component other-type'></div>");
 
         //var _heading_annotations = _data[_heading_number];
-        $.test_msg("[_heading_annotations]"+_heading_annotations);
+        //$.test_msg("[_heading_annotations]"+_heading_annotations);
         var _current_type_container = _list_item.find(".current-type");
         //var _other_type_container = _list_item.find(".other-type");
         
         var _annotation_type_count = _heading_annotations;
         var _annotation_type_name = _type_name;
-        $.test_msg("[_annotation_type_count]"+_annotation_type_count);
+        //$.test_msg("[_annotation_type_count]"+_annotation_type_count);
         
         
         var _button = $("<span class='" + _type_classes [_annotation_type_name] 
@@ -563,7 +563,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
 Annotation_navigation_map.prototype.heading_click_event = function (_btn) {
     var _current_heading_number = $(_btn).attr("heading-id");
     var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
-    $.test_msg("[_heading_offset]"+_heading_offset);
+    //$.test_msg("[_heading_offset]"+_heading_offset);
     $(window).scrollTop(_heading_offset-50);
 
     // 關掉標註地圖
@@ -816,7 +816,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     var _types = this.get_annotation_types();
     
     //var _ui = this.get_ui().css("border", "3px solid red").appendTo("body");
-    $.test_msg("Annotation_navigation_map.init_tabs()");
+    //$.test_msg("Annotation_navigation_map.init_tabs()");
     //var _types_name = 'web_apps.annotation.type'._types;  
     
     var _btn_array = [];
@@ -890,7 +890,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
 
     this.find(".list").css("display", "none");
     
-    $.test_msg("anno map", this.find(".list").length);
+    //$.test_msg("anno map", this.find(".list").length);
     
     // get_annotation_types()
     
@@ -904,7 +904,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     //}, 100);
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
     
-    $.test_msg("Annotation_navigation_map.init_tabs() end");
+    //$.test_msg("Annotation_navigation_map.init_tabs() end");
 };
 
 /* End of file Annotation_navigation_map */
