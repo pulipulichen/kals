@@ -23,8 +23,27 @@ class rss extends Web_apps_controller {
      * @return type
      */
     public function index($webpage_id = NULL) {
+        
+        if (is_null($webpage_id)) {
+            return $this->_redirect_from_referer();
+        }
+        
         return $this->webpage($webpage_id);
     }
+    
+    /**
+     * 當沒有指定webpage_id時
+     * 從參考來源自動轉向指定的webpage_id
+     */
+    private function _redirect_from_referer() {
+        
+        $webpage = get_context_webpage();
+        $webpage_id = $webpage->get_id();
+        
+        $path = "/web_apps/rss/webpage/" . $webpage_id;
+        redirect($path);
+    }
+
      
     /**
      * 讀取RSS

@@ -54,12 +54,30 @@ class annotation_topics extends Mobile_apps_controller{
      * @param Int $webpage_id
      * @param Int $page 頁數，目前尚未有作用
      */
-    public function index($webpage_id, $page = 0) {
+    public function index($webpage_id = NULL, $page = 0) {
+        
+        if (is_null($webpage_id)) {
+            return $this->_redirect_from_referer();
+        }
+        
         $this->webpage_id($webpage_id, $page);
     }
     // -----------------------------------------------------------------
     
     /**
+     * 當沒有指定webpage_id時
+     * 從參考來源自動轉向指定的webpage_id
+     */
+    private function _redirect_from_referer() {
+        
+        $webpage = get_context_webpage();
+        $webpage_id = $webpage->get_id();
+        
+        $path = "/mobile_apps/annotation_topics/webpage_id/" . $webpage_id;
+        redirect($path);
+    }
+
+        /**
      * 列出指定網頁的標註列表
      * @param type $wepage_id
      * @param type $page

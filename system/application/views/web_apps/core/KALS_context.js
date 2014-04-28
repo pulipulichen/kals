@@ -129,9 +129,15 @@ KALS_context.setup_base_url = function () {
 /**
  * 供其他物件取用基礎網址
  * @param {string|array} _file
+ * @param {Boolean} _from_root = false 是否從根目錄開始(/kals)，而非從/kals/web_apps開始
  * @type {string}
  */
-KALS_context.get_base_url = function (_file) {
+KALS_context.get_base_url = function (_file, _from_root) {
+    
+    if (_from_root === undefined) {
+        _from_root = false;
+    }
+    
     if ($.is_null(_file)) {
         _file = '';
     }
@@ -140,11 +146,11 @@ KALS_context.get_base_url = function (_file) {
         for (var _i in _file) {
             var _f = _file[_i];
             if ($.starts_with(_f, '/')) {
-				_f = _f.substr(1, _f.length);
-			}
+                _f = _f.substr(1, _f.length);
+            }
             if (_i < _file.length - 1) {
-				$.appends_with(_f, '/');
-			}
+                $.appends_with(_f, '/');
+            }
             
             _temp = _temp + _f;
         }
@@ -152,18 +158,26 @@ KALS_context.get_base_url = function (_file) {
     }
     
     if (this.base_url === null) {
-		return _file;
-	}
+        return _file;
+    }
     
     if ($.is_string(_file) && $.starts_with(_file, '/')) {
-		_file = _file.substring(1, _file.length);
-	}
+        _file = _file.substring(1, _file.length);
+    }
     
     if ($.ends_with(this.base_url, '/') === false) {
-		this.base_url = this.base_url + '/';
-	}
+        this.base_url = this.base_url + '/';
+    }
     
     var _url = this.base_url + _file;
+    
+    // 如果是從根目錄開始的話
+    if (_from_root === true) {
+        var _needle = "web_apps/";
+        var _root_path = this.base_url.substr(0, (this.base_url.length - _needle.length));
+        _url = _root_path + _file;
+    }
+    
     //$.test_msg('KALS_context.get_base_url()', [_url, this.base_url, _file]); 
     
     return _url;

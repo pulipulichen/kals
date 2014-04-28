@@ -2,13 +2,15 @@
  * CSS for template Dashboard.html
  */
 dt {
-	font-weight:bold;
+    font-weight:bold;
+    margin-top: 0.7em;
+    margin-bottom: 0.3em;
 }
 
 .activity-good {
-	font-weight: bold;
-	font-size: larger;
-	color:green;
+    font-weight: bold;
+    font-size: larger;
+    color:green;
 }
 .activity-normal {
     font-weight: bold;

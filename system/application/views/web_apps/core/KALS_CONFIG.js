@@ -301,9 +301,28 @@ DEFAULT_KALS_CONFIG = {
         ajax_post: false
     },
     
+    /**
+     * 模組設定
+     * @type {JSON}
+     */
     modules: {
+        /**
+         * 模組名稱: 模組設定內容
+         * @type {JSON}
+         */
         Annotation_navigation_map: {
-            "enable": true,
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true
+        },
+        Dashboard: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true
         }
     }
 };

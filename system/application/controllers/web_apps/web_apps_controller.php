@@ -544,7 +544,7 @@ $style = implode("}\n", $parts);
             //if ($style != '') {
             //    $style = $classname . $style;
             //}
-            test_msg($style);
+            //test_msg($style);
         }
         return $style;
     }
