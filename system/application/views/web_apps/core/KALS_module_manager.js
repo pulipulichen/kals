@@ -49,7 +49,7 @@ KALS_module_manager.prototype.init = function() {
         
         for (var _i in this._loaded_modules) {
             var _item = this._loaded_modules[_i];
-            $.test_msg("prepare register_item", [_i, typeof(_item)]);
+            //$.test_msg("prepare register_item", [_i, typeof(_item)]);
             KALS_context.navigation.register_item(_item);
         }
     }

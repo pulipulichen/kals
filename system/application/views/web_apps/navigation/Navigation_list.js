@@ -348,9 +348,9 @@ Navigation_list.prototype._init_module_nav_items = function () {
     
     var _list = KALS_context.navigation.get_list(_nav_type);
     
-    $.test_msg("_init_module_nav_items", _list.length);
+    //$.test_msg("_init_module_nav_items", _list.length);
     for (var _i in _list) {
-        $.test_msg("_init_module_nav_items", _i);
+        //$.test_msg("_init_module_nav_items", _i);
         var _item = _list[_i];
         this._$nav_items.push(_item);
     }

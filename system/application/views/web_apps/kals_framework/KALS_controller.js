@@ -340,7 +340,7 @@ KALS_controller.prototype.open = function (_callback) {
         //this.debug('open', [this._$open_request_action, this.get_data()]);
         //return;
         this.request('get', this._$open_request_action, {}, function (_data) {
-            _this.debug('VIEW, open data', _data);
+            //_this.debug('VIEW, open data', _data);
             _this.set_data(_data);
             KALS_modal.prototype.open.call(_this, _callback);
         });

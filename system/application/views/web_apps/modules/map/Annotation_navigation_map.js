@@ -15,7 +15,6 @@
  */
 function Annotation_navigation_map() {
     KALS_controller_window.call(this);
-    //12121
     
     //this.init_tabs();
 }
@@ -57,6 +56,8 @@ Annotation_navigation_map.prototype._$view = 'modules/map/view/Annotation_naviga
  * @return {KALS_controller}
  */
 Annotation_navigation_map.prototype._$initialize_view = function () {
+    $.test_msg("Annotation_navigation_map 初始化");
+    
     this.init_tabs();
 };
 
@@ -155,7 +156,7 @@ Annotation_navigation_map.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-Annotation_navigation_map.prototype._$absolute = false;
+Annotation_navigation_map.prototype._$absolute = true;
 
 /**
  * 視窗的Class Name
@@ -806,13 +807,16 @@ Annotation_navigation_map.prototype.change_tab_heading = function (_ele) {
     this.set_field("annotation_map_heading",  _heading_array);
 };
 
-
+/**
+ * 初始化標註類型
+ * @returns {undefined}
+ */
 Annotation_navigation_map.prototype.init_tabs = function () {
 
     var _types = this.get_annotation_types();
     
-   
-
+    //var _ui = this.get_ui().css("border", "3px solid red").appendTo("body");
+    $.test_msg("Annotation_navigation_map.init_tabs()");
     //var _types_name = 'web_apps.annotation.type'._types;  
     
     var _btn_array = [];
@@ -886,7 +890,7 @@ Annotation_navigation_map.prototype.init_tabs = function () {
 
     this.find(".list").css("display", "none");
     
-    
+    $.test_msg("anno map", this.find(".list").length);
     
     // get_annotation_types()
     
@@ -899,15 +903,9 @@ Annotation_navigation_map.prototype.init_tabs = function () {
         this.find(".list-header-component .type-navigation.type-option:first").click();
     //}, 100);
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
+    
+    $.test_msg("Annotation_navigation_map.init_tabs() end");
 };
-
-/**
- * 獨立視窗
- * 
- * 如果是false，則會依附在KALS_window底下
- * 如果是true，則會直接open
- */
-Annotation_navigation_map.prototype._$absolute = true;
 
 /* End of file Annotation_navigation_map */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_navigation_map.js */
