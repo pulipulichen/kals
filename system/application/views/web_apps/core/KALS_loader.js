@@ -221,49 +221,60 @@ this.load_scripts = function (_script_list, _callback, _is_libraries) {
     var _loaded = [];
     
     var _check_complete = function (_script) {
-        if (typeof(_script) == 'undefined'
+        if (typeof(_script) === 'undefined'
             || _script === ''
             || $.inArray(_script, _loaded) > -1) {
             return this;
         }
         
+        //console.log(["load_scripts", _script]);
         _loaded.push(_script);
         
-        if (_loaded.length == _script_list.length) {
-            if (typeof(_callback) == 'function') {
-				_callback();
-			}
+        if (_loaded.length === _script_list.length) {
+            if (typeof(_callback) === 'function') {
+                _callback();
+            }
         }
     };
     
     var _base_url = this.get_base_url();
-    if (typeof(_is_libraries) == "boolean" && _is_libraries === true) {
-		_base_url = this.get_libraries_url();
-	}
+    if (typeof(_is_libraries) === "boolean" 
+            && _is_libraries === true) {
+        _base_url = this.get_libraries_url();
+    }
     
-    if (typeof(_script_list) == 'string') {
-		_script_list = [_script_list];
-	}
+    if (typeof(_script_list) === 'string') {
+        _script_list = [_script_list];
+    }
     
     for (var _i in _script_list) {
         var _script_url = _base_url + _script_list[_i];
         
-        console.log('[KALS] start load: '+_script_url);
+        //console.log('[KALS] start load: '+_script_url);
         $.getScript(_script_url, function () {
-            
             _check_complete(_script_url);
         });           
     }
     return this;
 };
 
+/**
+ * 以插入標籤的方式讀取JavaScript
+ * @param {Array|String} _script_list
+ * @param {Function} _callback
+ * @param {Boolean} _is_libraries
+ * @returns {KALS_loader_class}
+ */
 this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     
     var _base_url = this.get_base_url();
     if (typeof(_is_libraries) === "boolean" 
             && _is_libraries === true) {
-		_base_url = this.get_libraries_url();
-	}
+        _base_url = this.get_libraries_url();
+    }
+    
+    var _thread = _script_list.length;
+    var _loaded_count = 0;
     
     var _loaded = false;
     
@@ -275,18 +286,31 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
        //console.log('[KALS] append script: ' + _script_url);
        $.getScript(_script_url, function () {
            
-           if (_loaded === false) {
+           /**
+            * @author Pulipuli Chen 20140428
+            * 加上了讀取次數的改進
+            */
+           _loaded_count++;
+           //if (_loaded === false) {
+           //console.log(['[KALS] loaded script: ', _script_url, _loaded_count, _thread]);
+           if (_loaded_count >= _thread) {
                if (typeof(_callback) === 'function') {
                     _callback();
                }
            }
            
-           _loaded = true;
+           //_loaded = true;
        });
     }
     return this;
 };
 
+/**
+ * 以插入style標籤的方式讀取CSS
+ * @param {Array} _style_list
+ * @param {Function} _callback
+ * @returns {KALS_loader_class}
+ */
 this.load_styles = function (_style_list, _callback) {
     var _loaded = [];
     var _check_complete = function (_style) {
@@ -373,6 +397,8 @@ this.load_libraries = function (_libraries, _callback) {
     var _loaded = 0;
     var _threshold = 0;
     var _complete = function () {
+        
+        //console.log(["load_lib complete", _loaded, _threshold]);
         if (_loaded === -1) {
             return;
         }
@@ -402,7 +428,6 @@ this.load_libraries = function (_libraries, _callback) {
     //如果有libraries_list的話，則先讀取libraries_list，再讀其他
     if (typeof(_libraries.libraries_list) !== 'undefined') {
         this.insert_scripts(_libraries.libraries_list, function () {
-            
             setTimeout(function () {
                 
                 if (typeof(_libraries.script_list) !== 'undefined') {

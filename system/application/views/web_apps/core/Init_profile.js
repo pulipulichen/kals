@@ -119,10 +119,12 @@ Init_profile.prototype._test = [
      * 測試開啟標註地圖
      * @author Pulipuli Chen 20140428
      */
+    /*
     , function () {
         var _map = KALS_context.module.load("Annotation_navigation_map");
         _map.open();
     }
+    */
     /**
      * 測試KALS_moudle_manager的功能
      * @author Pulipuli Chen 20140428
