@@ -91,6 +91,7 @@ class style extends Web_apps_controller {
         $rule = $selector . '{' . $rule . '}';
         return $rule;
     }
+    
 }
 
 /* End of file style.php */
