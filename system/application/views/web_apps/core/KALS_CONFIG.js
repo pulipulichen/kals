@@ -3,12 +3,12 @@
  * 
  * 只有跨越不同程式而需要同一個參數時，才到此設定
  *
- * @package		KALS
- * @category		Webpage Application Libraries
- * @author		Pudding Chen <puddingchen.35@gmail.com>
- * @copyright		Copyright (c) 2010, Pudding Chen
- * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link		http://sites.google.com/site/puddingkals/
+ * @package         KALS
+ * @category        Webpage Application Libraries
+ * @author          Pudding Chen <puddingchen.35@gmail.com>
+ * @copyright       Copyright (c) 2010, Pudding Chen
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link            https://github.com/pulipulichen/kals
  * @version		1.0 2010/8/5 下午 07:50:21
  */
 
@@ -299,6 +299,13 @@ DEFAULT_KALS_CONFIG = {
          * @type Boolean
          */
         ajax_post: false
+    },
+    
+    modules: {
+        Annotation_navigation_map: {
+            "enable": false,
+            "ok": "沒問題"
+        }
     }
 };
 

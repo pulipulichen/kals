@@ -205,9 +205,7 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     var _ui_toggle = this.toggle.get_ui();
     var _padding_ui = this.padding.get_ui();
     
-    
-    
-    $.test_msg('KALS_toolbar onviewportmove', {height: $.is_small_height(), width: $.is_small_width()});
+    //$.test_msg('KALS_toolbar onviewportmove', {height: $.is_small_height(), width: $.is_small_width()});
     
     if ($.is_small_height()) {   
         // 如果是小高度的話

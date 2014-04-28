@@ -115,7 +115,19 @@ Init_profile.prototype._test = [
      * 第一個，不使用
      */
     function () {}
-
+    
+    /**
+     * 測試KALS_moudle_manager的功能
+     * @author Pulipuli Chen 20140428
+     */
+    /*
+    , function () {
+        var _module_manager = KALS_context.module;
+        var _module = _module_manager.load("Annotation_navigation_map");
+        
+        $.test_msg("module", [typeof(_module), _module.enable, _module.ok]);
+    }
+    */
     /**
      * 測試導讀功能
      * @author Pulipuli Chen 20131230

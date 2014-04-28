@@ -74,12 +74,13 @@ class rss extends Web_apps_controller {
 
         $webpage_title = $webpage->get_title();
         
+        $webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
         
         $channel = new Channel();
         $channel
             ->title($webpage_title)
             ->description("Channel Description")
-            ->url('http://140.119.61.137/kals/mobile/annotation_topics/'.$webpage_id)
+            ->url($webpage_topics_url)
             ->appendTo($feed);
 
         foreach ($search AS $annotation) {
@@ -109,6 +110,9 @@ class rss extends Web_apps_controller {
             } 
             
             
+            //$item_url = 'http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id;
+            $item_url = site_url("mobile_apps/annotation_thread/topic_id/'.$topic_id.'#annotation_'.$annotation_id");
+            
             $item
                 ->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
@@ -116,7 +120,7 @@ class rss extends Web_apps_controller {
                                <div>" . $annotation->get_note() ." </div>                     
                               ") //user +annotation note
                 //->url( base_url()."mobile/annotation_topics/".$webpage_id) // webpage_url->view
-                ->url('http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id) // webpage_url->view   
+                ->url($item_url) // webpage_url->view   
                 ->appendTo($channel);
         }    
 
