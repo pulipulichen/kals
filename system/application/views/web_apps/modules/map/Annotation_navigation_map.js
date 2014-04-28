@@ -67,6 +67,12 @@ Annotation_navigation_map.prototype._$initialize_view = function () {
  */
 
 /**
+ * 指定Model的名稱
+ * @type String
+ */
+Annotation_navigation_map.prototype.name = 'annotation_navigation_map';
+
+/**
  * 指定Model
  * @type String
  */
@@ -207,7 +213,7 @@ Annotation_navigation_map.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    type: "common",
+    nav_type: "common",
     
     /**
      * 排序順序

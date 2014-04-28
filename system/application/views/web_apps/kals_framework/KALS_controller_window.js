@@ -16,11 +16,6 @@ function KALS_controller_window(){
     
     this.child('loading', new Window_loading_component());
     
-    var _this = this;
-    setTimeout(function () {
-        // 註冊導覽列
-        KALS_context.navigation.register_item(_this);
-    }, 0);
 }
 
 /**

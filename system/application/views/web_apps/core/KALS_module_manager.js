@@ -33,10 +33,24 @@ KALS_module_manager.prototype._loaded_modules = {};
 KALS_module_manager.prototype.init = function() {
     if (typeof(KALS_CONFIG) === "object"
             && typeof(KALS_CONFIG.modules) === "object") {
+        
         var _modules = KALS_CONFIG.modules;
         
         for (var _name in _modules) {
+            //$.test_msg("KALS_module 載入", _name);
             this.load(_name);
+            //$.test_msg("KALS_module 載入後", typeof(this._loaded_modules[_name]));
+        }
+        
+        // 載入完之後，登錄到KALS_context當中？
+        //$.test_msg("KALS_module.init()", typeof(KALS_context));
+        
+        //$.test_msg("KALS_module. loaded count", this._loaded_modules.length);
+        
+        for (var _i in this._loaded_modules) {
+            var _item = this._loaded_modules[_i];
+            $.test_msg("prepare register_item", [_i, typeof(_item)]);
+            KALS_context.navigation.register_item(_item);
         }
     }
 };
@@ -76,8 +90,12 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
     try {
         var _command = '_module = new ' + _name + "(_param)";
         eval(_command);
-        if (typeof _module === "object") {
-            this._add_loaded_module(_module);
+
+        //$.test_msg("eval過後", typeof(_module));
+        
+        if (typeof(_module) === "object") {
+            
+            _module = this._add_loaded_module(_name, _module);
             
             // 讀取KALS_CONFIG
             var _config = this._load_config(_name);
@@ -86,6 +104,8 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
                 return false;
             }
             _module = this._init_module_config(_module, _config);
+            
+            //$.test_msg("init config過後", typeof(_module));
             
             if (typeof(_callback) === "function") {
                 _callback(_module);
@@ -112,6 +132,7 @@ KALS_module_manager.prototype.has_module = function (_name) {
     // 讀取已經載入的模組看看
     _exist = this._get_loaded_module(_name);
     if (typeof(_exist) === "object") {
+        //$.test_msg("讀取已經載入的模組看看", typeof(_exist));
         return true;
     }
     
@@ -126,7 +147,8 @@ KALS_module_manager.prototype.has_module = function (_name) {
             var _module = false;
             var _command = '_module = new ' + _name + "(_param)";
             eval(_command);
-            if (typeof _module === "object") {
+            //$.test_msg("eval過後", typeof(_module));
+            if (typeof(_module) === "object") {
                 this._add_loaded_module(_name, _module);
                 return true;
             }
@@ -145,6 +167,7 @@ KALS_module_manager.prototype.has_module = function (_name) {
  */
 KALS_module_manager.prototype._add_loaded_module = function (_name, _module) {
     if (typeof(this._loaded_modules[_name]) === "undefined") {
+        //$.test_msg("加入已經儲存的模組", typeof(_module));
         this._loaded_modules[_name] = _module;
     }
     return _module;

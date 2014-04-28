@@ -34,23 +34,44 @@ KALS_navigation.prototype._list = {};
 KALS_navigation.prototype._sorted_list = {};
 
 /**
+ * 已經註冊的名字
+ * @type Array
+ */
+KALS_navigation.prototype._registered_name = [];
+
+/**
  * 註冊到導覽列
  * @param {KALS_controller_window} _item
  */
 KALS_navigation.prototype.register_item = function (_item) {
     
+    if (_item === undefined) {
+        return this;
+    }
+    
     if (typeof(_item.nav_config) === "object") {
         var _display = _item.nav_config.display;
         
         if (_display === false) {
-            return;
+            return this;
         }
         
         var _nav_type = _item.nav_config.nav_type;
         var _order = _item.nav_config.order;
         
+        // 避免重複註冊
+        var _name = _item.name;
+        if ($.inArray(_name, this._registered_name) !== -1) {
+            // 已經註冊過了
+            return this;
+        }
+        this._registered_name.push(_name);
+        $.test_msg("KALS_navigation.register_item", [_name, _nav_type, _order]);
+        
         this._push_list(_item, _nav_type, _order);
     }
+    
+    return this;
 };
 
 /**
@@ -61,10 +82,12 @@ KALS_navigation.prototype.register_item = function (_item) {
 KALS_navigation.prototype._push_list = function (_item, _nav_type, _order) {
     if (typeof(this._list[_nav_type]) === "undefined") {
         this._list[_nav_type] = {};
+        $.test_msg("缺乏nav_type", _nav_type);
     }
     
     if (typeof(this._list[_nav_type][_order]) === "undefined") {
         this._list[_nav_type][_order] = [];
+        $.test_msg("缺乏order", [_nav_type, _order]);
     }
     
     this._list[_nav_type][_order].push(_item);
@@ -88,16 +111,22 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
     var _list = [];
     var _order, _item, _item_list;
     
+    $.test_msg("get_list nav_type", [_nav_type, typeof(this._list[_nav_type])]);
+    
     if (typeof(this._list[_nav_type]) === "object") {
+        
+        $.test_msg("get_list get!");
+        
         var _disorder_list = this._list[_nav_type];
         
         var _order_key = [];
         for (_order in _disorder_list) {
+            $.test_msg("order", _order);
             _order_key.push(_order);
         }
         
         // 把order的順序由大到小顯示
-        _order_key.sort(function(a,b){return b-a});
+        //_order_key.sort(function(a,b){return b-a});
         
         for (var _i in _order_key) {
             _order = _order_key[_i];
