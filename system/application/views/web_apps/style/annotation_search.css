@@ -89,3 +89,14 @@
     /*background-color: #B2FFB7;*/
     background-color: yellow !important;
 }
+
+.KALS .window-panel.window-search .window-panel.header {
+    background-color: transparent !important;
+    color: inherit;
+    background-image: none;
+}
+
+.KALS .window-panel.window-search .row dt {
+    width: 100px;
+    font-weight: bold;
+}
