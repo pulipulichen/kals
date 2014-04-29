@@ -173,7 +173,7 @@ $annotation_thread_uri = site_url("mobile_apps/annotation_thread/topic_id/" . $t
                name="do_respond"
                value="<?php echo $login_lang; ?>"
                class="data-source"
-               onclick="$('#redirect_to_loing').click();"
+               onclick="$('#redirect_to_login').click();"
                data-ajax="false" /> 
         <?php
     }

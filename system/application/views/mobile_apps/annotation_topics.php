@@ -44,7 +44,18 @@ $login_uri = site_url("mobile_apps/login");
     }
     else {
         ?>
-        <a href="<?php echo $login_uri; ?>" 
+        <form action="<?php echo $login_uri ?>" method="post" data-ajax="false">
+            <input type="hidden" name="domain" value="<?php echo $webpage->get_url() ?>" />
+            <button type="submit" name="do_redirect"
+                   class="ui-btn ui-btn-b ui-corner-all ui-shadow" 
+                    data-ajax="false" 
+                    id="redirect_to_login"
+                    style="width:100%;">
+                <?php echo $lang->line("mobile_apps.login.do_login"); ?>
+            </button>
+        </form>
+        <a href="#" 
+           onclick="$('#redirect_to_login').click()"
            class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right">
             <?php 
             echo $lang->line('mobile_apps.hello_guest');

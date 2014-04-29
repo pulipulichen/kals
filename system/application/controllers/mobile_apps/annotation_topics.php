@@ -89,6 +89,7 @@ class annotation_topics extends Mobile_apps_controller{
          
          $data = array();
          $webpage = new Webpage($webpage_id);
+         $data["webpage"] = $webpage;
        
          // 取得文章標題
          $title = $webpage->get_title();   
