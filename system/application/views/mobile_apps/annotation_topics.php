@@ -47,7 +47,7 @@ $login_uri = site_url("mobile_apps/login");
         <a href="<?php echo $login_uri; ?>" 
            class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right">
             <?php 
-            echo $lang->line('mobile.hello_guest');
+            echo $lang->line('mobile_apps.hello_guest');
             ?>
         </a>
         <?php
