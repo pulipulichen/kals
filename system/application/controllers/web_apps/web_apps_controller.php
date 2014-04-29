@@ -607,7 +607,8 @@ $style = implode("}\n", $parts);
      */
     private function _css_replace_base_url($style) {
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
         $base_url = trim($base_url);
         //$style = str_replace('${base_url} ', $base_url, $style);
         $style = str_replace('${base_url}', $base_url, $style);

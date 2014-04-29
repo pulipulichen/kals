@@ -93,7 +93,9 @@ class rss extends Web_apps_controller {
 
         $webpage_title = $webpage->get_title();
         
-        $webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
+        $webpage_topics_path = '/mobile_apps/annotation_topics/webpade_id/'.$webpage_id;
+        $webpage_topics_url = get_kals_base_url($webpage_topics_path);
+        //$webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
         
         $channel = new Channel();
         $channel
@@ -118,22 +120,34 @@ class rss extends Web_apps_controller {
            // date
            // annotation type
            // note
-            $annotation_id = $annotation->get_id();            
-            if (isset($annotation_id)){
+            $annotation_id = $annotation->get_id();
+            if (isset($annotation_id)) {
                 $topic_array = $this->db->query("SELECT topic_id
                                                  FROM annotation
                                                  WHERE annotation_id ='".$annotation_id."'");     
             }
-            foreach ($topic_array->result_array() as $row){
-                      $topic_id = $row['topic_id'];
-            } 
             
+            foreach ($topic_array->result_array() as $row) {
+                $topic_id = $row['topic_id'];
+            }
+            
+            /**
+             * @author Pulipuli Chen 20140429
+             * 要記得沒有topic的標註啊……
+             */
+            $topic_id = trim($topic_id);
+            if ($topic_id == "") {
+                $topic_id = $annotation_id;
+            }
             
             //$item_url = 'http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id;
-            $item_url = site_url("mobile_apps/annotation_thread/topic_id/'.$topic_id.'#annotation_'.$annotation_id");
+            $annotation_thread_path = "mobile_apps/annotation_thread/topic_id/".$topic_id."#annotation_".$annotation_id;
+            $item_url = site_url($annotation_thread_path);
+            $item_url = get_kals_base_url($annotation_thread_path);
+            //$item_url = $_SERVER["HTTP_HOST"]
+            //test_msg($_SERVER["HTTP_HOST"]);
             
-            $item
-                ->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
+            $item->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
                 ->description("<div>KALS user [" . $annotation->get_user()->get_name() . "] </div>
                                <div>" . $annotation->get_note() ." </div>                     

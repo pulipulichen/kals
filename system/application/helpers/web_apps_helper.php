@@ -201,7 +201,7 @@ if ( !function_exists("get_kals_base_url")) {
     /**
      * 取得KALS伺服器的根網址
      */
-    function get_kals_base_url() {
+    function get_kals_base_url($path = NULL) {
         $s = &$_SERVER;
         $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
         $sp = strtolower($s['SERVER_PROTOCOL']);
@@ -212,6 +212,13 @@ if ( !function_exists("get_kals_base_url")) {
         $uri = $protocol . '://' . $host . $port . base_url();
         $segments = explode('?', $uri, 2);
         $url = $segments[0];
+        
+        if (is_null($path) !== true) {
+            if (starts_with($path, '/')) {
+                $path = substr($path, 1);
+            }
+            $url = $url . $path;
+        }
         return $url;
     }
  }

@@ -92,6 +92,9 @@
     font: 100% arial,helvetica,clean,sans-serif;
 }
 
+/**
+ * 為了配合KALS-moodle的設計
+ */
 .KALS div.hide,
 .KALS p.hide{
     display: block;
@@ -123,4 +126,17 @@
 
 .KALS tr.hide {
     display: table-row;
+}
+
+.KALS .header {
+    color: inherit;
+}
+
+.KALS th, .KALS td {
+    border: inherit;
+    padding: inherit;
+}
+
+.KALS p, .KALS fieldset, .KALS table, .KALS pre {
+    margin-bottom: auto;
 }

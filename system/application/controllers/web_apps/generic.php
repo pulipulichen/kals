@@ -698,7 +698,8 @@ class generic extends Web_apps_controller {
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
         $base_url = trim($base_url);
         $style = str_replace('${base_url}', $base_url, $style);
 

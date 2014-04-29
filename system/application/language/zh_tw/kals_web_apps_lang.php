@@ -266,7 +266,7 @@ $lang['web_apps.note.ckeditor.edit_hint'] = '如果編輯器無法選取，請�
 
 $lang['web_apps.list_collection.loading'] = '讀取中…';
 $lang['web_apps.list_collection.blank'] = '沒有標註';
-$lang['web_apps.list_collection.complete'] = '沒有其他標註了';
+$lang['web_apps.list_collection.complete'] = '這個位置沒有其他標註了';
 
 /**
  * List_menu

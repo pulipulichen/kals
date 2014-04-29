@@ -365,7 +365,8 @@ class Mobile_apps_controller extends Controller {
 
 
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
         $style = str_replace('${base_url}', $base_url, $style);
 
         send_css_header($this->output);
@@ -452,7 +453,8 @@ class Mobile_apps_controller extends Controller {
         }
 
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
         $style = str_replace('${base_url}', $base_url, $style);
 
         //send_css_header($this->output);
@@ -603,7 +605,8 @@ $style = implode("}\n", $parts);
         }
 
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
         $style = str_replace('${base_url}', $base_url, $style);
         
         send_css_header($this->output);
