@@ -418,7 +418,11 @@ Window_search.prototype.create_annotation_type_ui = function (_type) {
 		// _type_param = new Annotation_type_param();
 		var _type_param = _type_param_list[_r];
 		var _value = _type_param.get_id();
-		
+                
+		if (_type_param.is_basic() === false) {
+                    _value = _type_param.get_name();
+                }
+                
 		//預設值
 		if (_default_type === null) {
 			_default_type = _value;
@@ -546,7 +550,7 @@ Window_search.prototype.toggle_input = function (_type) {
 	
 	var _factory = KALS_window.ui;
 	
-	if (_type == "annotation_type") {
+	if (_type === "annotation_type") {
 		var _keyword_value = _keyword_ui.eq(0).val();
 		this._last_keyword_value = _keyword_value;
 		
@@ -579,7 +583,7 @@ Window_search.prototype.toggle_input = function (_type) {
 Window_search.prototype.is_input_keyword = function () {
 	var _keyword_ui = this.get_keyword_ui().eq(0);
 	var _classname = _keyword_ui.attr("className");
-	var _is_keyword = (_classname.indexOf("use-annotation-type") == -1);
+	var _is_keyword = (_classname.indexOf("use-annotation-type") === -1);
 	//$.test_msg("is_input_keyword", _is_keyword);
 	return _is_keyword;
 };

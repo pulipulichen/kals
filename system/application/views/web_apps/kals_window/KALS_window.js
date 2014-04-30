@@ -107,7 +107,7 @@ KALS_window.prototype._$get_config = function () {
     //$.test_msg('KALS_window._$get_config()', [ this._$modal_name , _config.onLoad]);
     
     var _parent_onbeforeload;
-    if (typeof(_config.onBeforeLoad) != 'undefined') {
+    if (typeof(_config.onBeforeLoad) !== 'undefined') {
         _parent_onbeforeload = _config.onBeforeLoad;
     }
     
@@ -198,7 +198,7 @@ KALS_window.prototype._default_onviewportmove = null;
  */
 KALS_window.prototype.setup_window = function (_content, _callback) {
     
-    if (typeof(_content) == 'string') {
+    if (typeof(_content) === 'string') {
         eval('_content = new ' + _content + '();');
     }
     
@@ -506,10 +506,9 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
         _close_loading();
     }
     
-    
     if ($.is_function(this._$onviewportmove)) {
-		this._$onviewportmove(_ui);
-	}
+        this._$onviewportmove(_ui);
+    }
     
     setTimeout(function () {
         
@@ -554,11 +553,13 @@ KALS_window.prototype.is_loading = function () {
     return (!(_loading.css('display') === 'none'));
 };
 
+// ------------------------------------------------------------
+// 聚焦 focus
+// ------------------------------------------------------------
+
 KALS_window.prototype.focus_option = function (_offset) {
-    
     //覆寫原本的動作
     //變成不做任何事情
-    
 };
 
 /**

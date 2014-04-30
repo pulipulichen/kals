@@ -79,7 +79,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         var _trigger = this.getTrigger();
         
         var _tooltip_width = _tooltip.width();
-        var _trigger_left = _trigger.offset().left;
+        //var _trigger_left = _trigger.offset().left;
+        var _trigger_left = $.get_offset_left(_trigger);
         
         var _trigger_width = _trigger.width();
         var _trigger_padding_left = $.strip_unit(_trigger.css('padding-left'));

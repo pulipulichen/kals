@@ -60,6 +60,15 @@ Dashboard.prototype._$initialize_view = function () {
     //_types = _types.question;
     //this.debug('init view', typeof(_types.get_ui));
     this.set_field('annotation_type', _types);
+    
+    // 設定連結
+    var _mobile_topics_link = KALS_context.get_base_url("mobile_apps/annotation_topics", true);
+    this.find("a.mobile-topics-link").attr("href", _mobile_topics_link);
+    
+    var _rss_feed_link = KALS_context.get_base_url("/rss");
+    this.find("a.rss-feed-link").attr("href", _rss_feed_link);
+    
+    
 };
 
 /**
@@ -186,6 +195,82 @@ Dashboard.prototype._$width = 400;
  * @type Number 單位是px，null表示不設定
  */
 Dashboard.prototype._$height = null;
+
+
+/**
+ * 設定視窗的左右位置
+ * 
+ * 可用參數：
+ *  null: 預設center
+ *  left: 置左
+ *  right: 置右
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠左距離10px
+ *  -10px: 靠右距離10px
+ *  10%: 靠左距離視窗寬度的10%
+ *  -10%: 靠右距離視窗寬度的10%
+ * @type String
+ */
+Dashboard.prototype._$position_left = null;
+
+/**
+ * 設定視窗的上下位置
+ * 
+ * 可用參數：
+ *  null: 預設10%
+ *  top: 置頂
+ *  bottom: 置底
+ *  center: 置中
+ *  middle: 置中
+ *  10px: 靠頂距離10px
+ *  -10px: 靠底距離10px
+ *  10%: 靠頂距離視窗寬度的10%
+ *  -10%: 靠底距離視窗寬度的10%
+ * @type String
+ */
+Dashboard.prototype._$position_top = null;
+
+/**
+ * ====================
+ * 導覽列相關的設定
+ * ====================
+ */
+
+/**
+ * 導覽列相關的設定
+ * @type JSON
+ */
+
+Dashboard.prototype.nav_config = {
+    /**
+     * 顯示資料
+     * @type Boolean
+     */
+    display: true,
+    
+    /**
+     * 決定顯示導覽列的位置
+     * 
+     * 類型包括：
+     * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+     * - login: 已經登入的使用者就會顯示
+     * - profile: 以手動登入的使用者才會顯示
+     * - embed: 以內嵌登入的使用者才會顯示
+     * - anonymous: 未登入的使用者才會顯示
+     * @type String
+     */
+    nav_type: "common",
+    
+    /**
+     * 排序順序
+     * 
+     * 數字越大，越往左邊靠
+     * 數字最小的是1
+     * @type Number
+     */
+    order: 1
+};
 
 /**
  * ====================

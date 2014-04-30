@@ -115,11 +115,33 @@ Init_profile.prototype._test = [
      * 第一個，不使用
      */
     function () {}
-
+    /**
+     * 測試開啟標註地圖
+     * @author Pulipuli Chen 20140428
+     */
+    /*
+    , function () {
+        var _map = KALS_context.module.load("Annotation_navigation_map");
+        _map.open();
+    }
+    */
+    /**
+     * 測試KALS_moudle_manager的功能
+     * @author Pulipuli Chen 20140428
+     */
+    /*
+    , function () {
+        var _module_manager = KALS_context.module;
+        var _module = _module_manager.load("Annotation_navigation_map");
+        
+        $.test_msg("module", [typeof(_module), _module.enable, _module.ok]);
+    }
+    */
     /**
      * 測試導讀功能
      * @author Pulipuli Chen 20131230
      */
+    /*
     , function () {
         //$.test_msg("如何？");
         //KALS_context.search.open_recent_annotation(function () {
@@ -127,9 +149,11 @@ Init_profile.prototype._test = [
         //});
         
         //KALS_text.guide.open_whole_annotations();
-        KALS_text.guide.open_whole_annotations_by_sentence();
+        //KALS_text.guide.open_whole_annotations_by_sentence();
         //KALS_text.guide.open_apriori_all();
+        KALS_text.guide.open();
     }
+    */
     /**
      * 測試樣板功能
      * @author Pulipuli Chen 20131117

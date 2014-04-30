@@ -18,6 +18,7 @@ class Search_annotation_collection extends Search_engine {
     public function load_default()
     {
         $db = $this->setup_search();
+
         $db->distinct();
         $db->select('annotation.*');
 

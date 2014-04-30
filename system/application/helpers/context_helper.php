@@ -35,18 +35,47 @@ if ( ! function_exists('create_context'))
 if ( ! function_exists('get_context_user'))
 {
     /**
+     * 取得session中的使用者
      * @return User
      */
     function get_context_user()
     {
-        if (isset($GLOBALS['context']) === FALSE)
+        if (isset($GLOBALS['context']) === FALSE) {
             return NULL;
+        }
         return $GLOBALS['context']->get_current_user();
+    }
+}
+
+if ( ! function_exists('get_context_user_id'))
+{
+    /**
+     * 取得session中的使用者ID
+     * @return Int
+     */
+    function get_context_user_id()
+    {
+        if (isset($GLOBALS['context']) === FALSE) {
+            return NULL;
+        }
+        $user_id = NULL;
+        $user = $GLOBALS['context']->get_current_user();
+        if (isset($user)) {
+            $user_id = $user->get_id();
+        }
+        return $user_id;
     }
 }
 
 if ( ! function_exists('set_context_user'))
 {
+    /**
+     * @version 20140423 Pulipuli Chen
+     * 原本是要指定輸入物件類型為User。
+     * 後來想想，也可以輸入user_id之類的，所在此就不做限制了。
+     * @param type $user
+     * @return null
+     */
     function set_context_user($user)
     {
         if (isset($GLOBALS['context']) === FALSE)

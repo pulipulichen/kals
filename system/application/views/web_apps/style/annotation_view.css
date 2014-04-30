@@ -6,6 +6,7 @@
     text-align: left;
     font-style: italic;
     font-size: 1em;
+    font: 100% arial,helvetica,clean,sans-serif;
     color: black;
     background-color: #CCC;
     margin: 1em !important;

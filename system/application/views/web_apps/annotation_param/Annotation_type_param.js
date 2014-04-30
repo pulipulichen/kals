@@ -238,6 +238,21 @@ Annotation_type_param.prototype.get_type_name_lang = function () {
 	return _lang;
 };
 
+/**
+ * 直接顯示標註名字的翻譯字串
+ * 
+ * @return {String}
+ */
+Annotation_type_param.prototype.get_type_name_display = function () {
+    var _lang = this.get_type_name_lang();
+    if (this.is_basic()) {
+        return KALS_context.lang.line(_lang);
+    }
+    else {
+        return this.get_custom_name();
+    }
+};
+
 Annotation_type_param.prototype.get_custom_name = function () {
     return this.custom_name;
 };

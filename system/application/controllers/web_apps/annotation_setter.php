@@ -45,7 +45,16 @@ class Annotation_setter extends Web_apps_controller {
     }
 
     /**
-     * 用GET取得資料。
+     * create_get的別名
+     * @param String $json
+     * @param String $callback
+     */
+    public function create ($json, $callback) {
+        $this->create_get($json, $callback);
+    }
+    
+    /**
+     * 這是用get去建立標註的方法
      * 
      * 但是因為GET有資料長度限制，所以此方法不使用
      * 改用create_post
@@ -53,16 +62,25 @@ class Annotation_setter extends Web_apps_controller {
      * @param type $json
      * @param type $callback
      */
-    public function create ($json, $callback) {
+    public function create_get ($json, $callback) {
 
         $data = $this->_create_process($json);
 
         $this->_display_jsonp($data, $callback);
     }
 
+    /**
+     * 實際上進行建立檔案的過程
+     * @param Object $json
+     * @return Object
+     */
     private function _create_process($json)
     {
-        //$this->output->enable_profiler(TRUE);
+        // 是否啟用偵錯
+        $debug = FALSE;
+        if ($debug) {
+            $this->output->enable_profiler(TRUE);
+        }
         
         $data = json_to_object($json);
         
@@ -88,11 +106,9 @@ class Annotation_setter extends Web_apps_controller {
         $url = $this->url;
         $user = $this->user;
 
-        //建立範圍
-
-            //取得來自$json的範圍資料
-            $scope_coll_data = $data->scope;
-            $scope_coll = $this->annotation_scope_collection->import_webpage_data($url, $scope_coll_data);
+        //取得來自$json的範圍資料
+        $scope_coll_data = $data->scope;
+        $scope_coll = $this->annotation_scope_collection->import_webpage_data($url, $scope_coll_data);
 
         //建立標註
         $annotation = $this->annotation->create_annotation($user, $scope_coll);
@@ -100,24 +116,32 @@ class Annotation_setter extends Web_apps_controller {
         set_ignore_authorize(true);
         
         $annotation = new Annotation($annotation->get_id());
-        if ($annotation->is_respond() === FALSE)
-        {
+        
+        // 建立推薦標註
+        //test_msg("_create_process", 'before create recommend');
+        
+        if ($annotation->is_respond() === FALSE) {
+            
+            //test_msg("_create_process", 'before _setup_scores_recommend($annotation)');
             $annotation = $this->_setup_scores_recommend($annotation);
 
+            //test_msg("_create_process", 'before get_recommen()');
             $recommend = $annotation->get_recommend();
-            if (isset($recommend))
-            {
+            //test_msg("_create_process", 'after get_recommen()');
+            
+            if (isset($recommend)) {
                 $recommend_data =  $recommend->export_webpage_data($this->url);
                 if (isset($recommend_data)) {
                     $data['recommend'] = $recommend_data;
                 }
             }
         }
+        //test_msg("_create_process", 'after create recommend');
+        
         // 標註共識的分數都重新計算
         $annotation = new Annotation($annotation->get_id());
         $consensus_coll = $annotation->get_consensus_coll();
-        foreach ($consensus_coll AS $consensus)
-        {
+        foreach ($consensus_coll AS $consensus) {
             $this->_setup_scores($consensus);
             $consensus->update();
         }
@@ -134,32 +158,45 @@ class Annotation_setter extends Web_apps_controller {
             $action = 20;
             //如果是回自己，那就改成27
             $topic = $annotation->get_respond_to_topic();
-            if ($topic->get_user()->equals($annotation->get_user()))
-                    $action = 27;
+            if ($topic->get_user()->equals($annotation->get_user())) {
+                $action = 27;
+            }
         }
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
-
-        context_complete();
+        
+        //test_msg("_create_process", 'before context_complete()');
+        
+        //context_complete();
         
         set_ignore_authorize(false);
 
         return $data;
     }
 
+    /**
+     * 建立標註的主要方法
+     * @param String $json
+     */
     public function create_post ($json = NULL) {
         $index = 'create_post';
         if ($this->_is_callback($json) == false)
         {
+            //test_msg("create_post", 1);
             //從POST中取得JSON的資料
             $json = $this->_get_post_json();
 
+            //test_msg("create_post", 2);
             $data = $this->_create_process($json);
 
+            //test_msg("create_post", 3);
             //然後把data存入session中
             $this->_set_post_session($index, $data);
+            
+            //test_msg("create_post", 4);
             $this->_display_post_complete();
         }
         else
@@ -203,28 +240,26 @@ class Annotation_setter extends Web_apps_controller {
                 set_ignore_authorize(true);
                 $annotation = new Annotation($annotation->get_id());
 
-                if ($annotation->is_respond() === FALSE)
-                {
+                if ($annotation->is_respond() === FALSE) {
                     $annotation = $this->_setup_scores($annotation);
                     //$annotation->update();
                 }
                 context_complete();
                 set_ignore_authorize(false);
             }
-            else
-            {
+            else {
                 $data = create_json_excpetion('Edit Annnotation Error', 'You cannot edit annotation whick is not yours.');
             }
-        }
-        else
+        } else
         {
             $data = create_json_excpetion('Edit Annnotation Error', 'Annotation ID is NULL');
         }
 
         //log區
         $array_data = NULL;
-        if (isset($annotation))
+        if (isset($annotation)) {
             $array_data = $annotation->export_webpage_data($this->url);
+        }
 
         $action = 15;
         if ($annotation->is_respond())
@@ -232,8 +267,9 @@ class Annotation_setter extends Web_apps_controller {
             $action = 21;
         }
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
 
         return $data;
@@ -281,10 +317,10 @@ class Annotation_setter extends Web_apps_controller {
                 if (is_string($data->type))
                 {
                     $data->type = trim($data->type);
-                    if ($data->type != '')
+                    if ($data->type != '') {
                         $data->type = urldecode($data->type);
-                    else
-                    {
+                    }
+                    else {
                         //如果是空白的話，則視為自訂
                         $data->type = 7;
                     }
@@ -297,8 +333,9 @@ class Annotation_setter extends Web_apps_controller {
             if (isset($data->note) && $data->note != '')
             {
                 $note = $data->note;
-                if (is_string(($note)))
+                if (is_string(($note))) {
                     $note = urldecode($note);
+                }
 
                 $annotation->set_note($note);
             }
@@ -306,8 +343,9 @@ class Annotation_setter extends Web_apps_controller {
             {
                 $note = $annotation->get_note();
 
-                if (isset($note) && $note != '')
+                if (isset($note) && $note !== '') {
                     $annotation->set_note(NULL);
+                }
             }
 
             //test_msg($annotation->get_note(), $data->note);
@@ -443,13 +481,28 @@ class Annotation_setter extends Web_apps_controller {
         return $data;
     }
 
+    /**
+     * 設定推薦分數
+     * @param Annotation $annotation
+     * @return Annotation
+     */
     private function _setup_scores_recommend($annotation) {
 
+        // 是否啟用偵錯
+        $debug = FALSE;
+        if ($debug) {
+            $this->output->enable_profiler(TRUE);
+        }
+        
+        //test_msg("_setup_scores_recommend", 1);
         $annotation = $this->_setup_scores($annotation);
+        //test_msg("_setup_scores_recommend", 2);
         $annotation = $this->_setup_recommend($annotation);
 
+        //test_msg("_setup_scores_recommend", 3);
         $annotation->update();
-
+        //test_msg("_setup_scores_recommend", 4);
+        
         return $annotation;
     }
 
@@ -467,13 +520,35 @@ class Annotation_setter extends Web_apps_controller {
         return $annotation;
     }
 
+    /**
+     * 設定推薦的標註
+     * @param Annotation $annotation
+     * @return Annotation
+     */
     private function _setup_recommend($annotation) {
-
+        // 是否啟用偵錯
+        $debug = FALSE;
+        if ($debug) {
+            $this->output->enable_profiler(TRUE);
+        }
+        
+        if ($this->config->item("recommend_enable") === FALSE) {
+            /**
+             * 如果不開啟推薦，則不使用
+             */
+            return $annotation;
+        }
+        
         $this->load->library('kals_resource/Webpage');
         //$webpage = $this->webpage->filter_webpage_object($this->url);
+        
+        //test_msg("_setup_recommend", 1);
         $webpage = get_context_webpage();
+        //test_msg("_setup_recommend", 2);
         $tutor = $webpage->get_tutor();
+        //test_msg("_setup_recommend", 3);
         $tutor->setup_recommend($annotation);
+        //test_msg("_setup_recommend", 4);
         return $annotation;
     }
 

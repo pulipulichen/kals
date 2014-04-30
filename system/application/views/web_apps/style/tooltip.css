@@ -16,6 +16,7 @@
 .KALS.tooltip {
     /*display:none;*/
     font-size: 14px;
+    font: 14px arial,helvetica,clean,sans-serif;
     margin: 0;
 }
 
@@ -171,6 +172,7 @@
     /*padding: 14px 5px;*/
     /*min-width: 4em;*/
     font-size: 16px;
+    font: 16px arial,helvetica,clean,sans-serif;
     font-weight:bold;
     z-index: 99;
     

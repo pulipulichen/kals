@@ -77,6 +77,7 @@ Selectable_text.prototype.anchor;
 Selectable_text.prototype.sentence;
 
 /**
+ * 段落
  * @type {Selectable_text_paragraph}
  */
 Selectable_text.prototype.paragraph;
@@ -148,7 +149,7 @@ Selectable_text.prototype.initialize = function (_callback) {
      * @author Pulipuli Chen 20131227 
      */
     var _estimate_words = _element.text();
-    _estimate_words_length = this.word.get_estimate_total_words(_estimate_words);
+    var _estimate_words_length = this.word.get_estimate_total_words(_estimate_words);
     
     KALS_context.progress.set_total(_estimate_words_length);
     
@@ -157,7 +158,69 @@ Selectable_text.prototype.initialize = function (_callback) {
     */
     //$.test_msg("預測字數", _estimate_words_length);
     
-    this.setup_selectable_element(_element, function () {
+    // ----------------------------------------------
+    // 舊式的寫法
+    // 不建議用這麼多層來依序執行任務，讀起來很差
+    
+//    this.setup_selectable_element(_element, function () {
+//        
+//        // 全部處理完了
+//        _this.sentence.add_structure();
+//        _this.paragraph.add_structure();
+//        _this.chapter.add_structure();
+//        
+//        // 全部處理完了
+//        //$.test_msg("paragraph feature", _this.paragraph_feature);
+//        $.test_msg("sentence structure", _this.sentence.get_structure());
+//        $.test_msg("paragraph structure", _this.paragraph.get_structure());
+//        $.test_msg("chapter structure", _this.chapter.get_structure());
+//        
+//        KALS_context.progress.set_finished();
+//        
+//        // ---------
+//        // 開始標示段落位置
+//        // ---------
+//        _this.setup_paragraph_location(function () {
+//            
+//            // --------
+//            // 讓文字變成可選取
+//            // --------
+//            _this.setup_word_selectable(function () {
+//                
+//                KALS_context.init_profile.add_listener(function () {
+//                    _this.initialized = true;    
+//                });
+//                
+//                //2010.11.22 為了計算字數而使用，正式時不用
+//                //_this.count_paragraph_words_avg();
+//                
+//                //$.test_msg('Selectable_text.initialize() complete', _callback);
+//                
+//                $.trigger_callback(_callback);    
+//            });
+//        });        
+//    });    
+    
+    
+    // ------------------------------------
+    
+    // 是否啟用快取
+    var _cache_enable = KALS_CONFIG.selectable_text_cache;
+    //_cache_enable = false;
+    
+    var _task_setup_selectable_element = function (_callback) {
+        return _this.setup_selectable_element(_element, _callback);
+    };
+    
+    var _task_setup_paragraph_location = function (_callback) {
+        
+        // ---------
+        // 開始標示段落位置
+        // ---------
+        _this.setup_paragraph_location(_callback);
+    };
+    
+    var _task_progress = function (_callback) {
         
         // 全部處理完了
         _this.sentence.add_structure();
@@ -166,35 +229,107 @@ Selectable_text.prototype.initialize = function (_callback) {
         
         // 全部處理完了
         //$.test_msg("paragraph feature", _this.paragraph_feature);
-        $.test_msg("sentence structure", _this.sentence.get_structure());
-        $.test_msg("paragraph structure", _this.paragraph.get_structure());
-        $.test_msg("chapter structure", _this.chapter.get_structure());
+        //$.test_msg("sentence structure", _this.sentence.get_structure());
+        //$.test_msg("paragraph structure", _this.paragraph.get_structure());
+        //$.test_msg("chapter structure", _this.chapter.get_structure());
         
         KALS_context.progress.set_finished();
         
-        // ---------
-        // 開始標示段落位置
-        // ---------
-        _this.setup_paragraph_location(function () {
-            
-            // --------
-            // 讓文字變成可選取
-            // --------
-            _this.setup_word_selectable(function () {
-                
-                KALS_context.init_profile.add_listener(function () {
-                    _this.initialized = true;    
-                });
-                
-                //2010.11.22 為了計算字數而使用，正式時不用
-                //_this.count_paragraph_words_avg();
-                
-                //$.test_msg('Selectable_text.initialize() complete', _callback);
-                
-                $.trigger_callback(_callback);    
+        $.trigger_callback(_callback);
+    };
+    
+    var _task_cache_save = function (_callback) {
+        
+        // 20140223 Pulipuli Chen
+        // 儲存快取
+        if (_cache_enable) {
+            _this.cache_save(function () {
+                $.trigger_callback(_callback);
             });
-        });        
-    });    
+        }
+        else {
+            $.trigger_callback(_callback);
+        }
+        return;
+    };
+    
+    var _task_cache_restore = function (_callback) {
+        
+        // 20140223 Pulipuli Chen
+        // 恢復快取
+        if (_cache_enable) {
+            _this.cache_restore(function () {
+                $.trigger_callback(_callback);
+            });
+        }
+        
+        return;
+    };
+    
+    var _task_setup_word_selectable = function (_callback) {
+        
+        return _this.setup_word_selectable(_callback);
+    };
+    
+    var _task_complete = function (_callback) {
+        KALS_context.init_profile.add_listener(function () {
+            _this.initialized = true;    
+        });
+
+        //2010.11.22 為了計算字數而使用，正式時不用
+        //_this.count_paragraph_words_avg();
+
+        //$.test_msg('Selectable_text.initialize() complete', _callback);
+
+        $.trigger_callback(_callback);
+    };
+    
+    // -----------------------------
+    
+    var _taks_list = [
+        _task_setup_selectable_element,
+        _task_setup_paragraph_location,
+        _task_cache_save,
+        _task_progress,
+        _task_setup_word_selectable,
+        _task_complete,
+        _callback
+    ];
+    
+    var _loop = function (_task_list, _i, _callback) {
+        //$.test_msg('loop ' + _i , _task_list.length);
+        if (_i === _task_list.length || _i > _task_list.length) {
+            return $.trigger_callback();
+        }
+        else {
+            _taks_list[_i](function () {
+                _i++;
+                _loop(_taks_list, _i, _callback);
+            });
+        }
+    };
+    
+    if (_cache_enable) {
+        this.has_cache(function (_existed) {
+            if (_existed) {
+                $.test_msg('selectable_text 啟用 cache');
+                _taks_list = [
+                    //_task_setup_selectable_element,
+                    //_task_setup_paragraph_location,
+                    _task_cache_restore,
+                    _task_progress,
+                    _task_setup_word_selectable,
+                    _task_complete,
+                    _callback
+                ];
+            }
+            
+            _loop(_taks_list, 0);
+        });
+    }
+    else {
+        _loop(_taks_list, 0);
+    }
     
     return this; 
 };
@@ -292,7 +427,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
      * 用來儲存任務的變數
      * @type Array
      */
-    var _task_stack = [];
+    //this._task_stack = [];
     
     /**
      * 實際執行的迴圈
@@ -305,25 +440,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         
         // 完成迴圈了，停止迴圈的判定
         if (_i === _child_nodes.length || _i > _child_nodes.length) {
-            //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
-            
-            // 把剩餘的任務執行完
-            //if (_task_stack.length > 00) {
-                //$.test_msg("剩餘的任務？", _task_stack.length);
-                //for (var _t = 0; _t < _task_stack.length; _t++) {
-                for (var _t in _task_stack) {
-                    //if ($.is_function(_task_stack[_t])) {
-                        _task_stack[_t]();
-                    //}
-                }
-                _task_stack = [];
-            //}
-                
-            
-            if ($.is_function(_cb)) {
-                _cb();
-            }
-            return;
+            return _this._setup_selectable_element_loop_complete(_cb);
         }
         
         /**
@@ -335,7 +452,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             _i++;
             _loop(_i, _child_nodes, _cb);
             return;
-        }
+        }   //if (_this.element_has_class(_child_obj, _para_classname)) {
 		
         if (_child_obj.nodeName !== '#text' &&
             _this.element_has_class(_child_obj, _para_classname) === false) {
@@ -391,11 +508,11 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     _loop(_i, _child_nodes, _cb);
                     return;
                 }
-            };
+            };  // var _deeper_parse = function () {
             
             _this.setup_selectable_element($(_child_obj), _deeper_parse);
             return;
-        }
+        }   //if (_child_obj.nodeName !== '#text' &&
         else {
             var _text = _this.get_element_content(_child_obj);
             
@@ -405,116 +522,123 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 return;
             }
 
-            var _next_element = null;
-            
-            _next_element = _this.create_selectable_paragraph(_selectable_text_paragraph.paragraph_count);
-            $(_next_element).hide();
-            
-            /**
-             * @version 20111106 Pudding Chen
-             *     先不貼出去，讓他放在記憶體中處理。
-             *     處理完一個段落在貼到DOM去。
-             */
-            //_child_obj.parentNode.insertBefore(_next_element, _child_obj);
-            
-            for (var _s = 0; _s < _text.length; _s++) {
-                var _t = _text.substr(_s, 1);
-                var _t_prev = '',  _t_next = '';
-                
-                if (_s > 0) {
-                    _t_prev = _text.substr(parseInt(_s,10) - 1, 1);
-                }
-                
-                if (_s < _text.length - 1) {
-                    _t_next = _text.substr(parseInt(_s,10) + 1, 1);
-                }
-                
-                if ($.match_english(_t) === true) {	
-                    while ($.match_english(_t_next) === true) {
-                        _t = _t + _t_next;
-                        _s++;
-                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
-                    }
-                }
-                else if ($.match_number(_t) === true) {
-                    while ($.match_number(_t_next) === true) {
-                        _t = _t + _t_next;
-                        _s++;
-                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
-                    }
-                }
-                
-                var _t_element = null;
-                
-                if ($.match_space(_t) === false) {
-                    
-                    _t_element = _selectable_text_word.create_selectable_word(
-                            _selectable_text_paragraph.paragraph_count, 
-                            _selectable_text_word.word_count, _t
-                    );
-                    
-                    if ($.match_sentence_punctuation(_t)) {
-                        if ($.match_english_sentence_punctuation(_t)) {
-                            if (_t_next === '') {
-                                $(_t_element).addClass(_sentence_punctuation_class_name);
-                                
-                                // 20140102 Pulipuli Chen
-                                // 增加句子的計算數量
-                                _selectable_text_sentence.add_structure();
-                            }
-                            else if ($.match_space(_t_next)) {
-                                if (_s < _text.length - 2) {
-                                    //檢測下下個字是否是大寫英文
-                                    var _t_nnext = _text.substr(parseInt(_s, 10) + 2, 1);
-                                    if ($.match_upper_english(_t_nnext)) {
-                                        $(_t_element).addClass(_sentence_punctuation_class_name);
-                                        
-                                        // 20140102 Pulipuli Chen
-                                        // 增加句子的計算數量
-                                        _selectable_text_sentence.add_structure();
-                                    }   //if ($.match_upper_english(_t_nnext)) {
-                                    else {
-                                        $(_t_element).addClass(_punctuation_classname);
-                                    }
-                                }   //if (_s < _text.length - 2) {
-                                else {
-                                    $(_t_element).addClass(_sentence_punctuation_class_name);
-                                    
-                                    // 20140102 Pulipuli Chen
-                                    // 增加句子的計算數量
-                                    _selectable_text_sentence.add_structure();
-                                }
-                            }   // else if ($.match_space(_t_next)) {
-                            else {
-                                $(_t_element).addClass(_punctuation_classname);
-                            }
-                        }   //if ($.match_sentence_punctuation(_t)) {
-                        else {
-                            $(_t_element).addClass(_sentence_punctuation_class_name);
-                            
-                            // 20140102 Pulipuli Chen
-                            // 增加句子的計算數量
-                            _selectable_text_sentence.add_structure();
-                        }
-                    }   //if ($.match_sentence_punctuation(_t)) {
-                    else if ($.match_punctuation(_t)) {
-                        $(_t_element).addClass(_punctuation_classname);
-                    }   //else if ($.match_punctuation(_t)) {
-                    _selectable_text_word.word_count++;
-                }   //if ($.match_space(_t) === false) {
-                else {
-                    _t_element = _this.create_span_word(_t);
-                }
-                
-                _next_element.appendChild(_t_element);
-            }    //for (var _s = 0; _s < _text.length; _s++)
+            // 20140223 Pulipuli Chen
+            // 將初始化next_element的動作往外移
+            var _next_element = _this._setup_selectable_element_init_next_element(_text);
+//            var _next_element = null;
+//            _next_element = _this.create_selectable_paragraph(_selectable_text_paragraph.paragraph_count);
+//            $(_next_element).hide();
+//            
+//            /**
+//             * @version 20111106 Pudding Chen
+//             *     先不貼出去，讓他放在記憶體中處理。
+//             *     處理完一個段落在貼到DOM去。
+//             */
+//            //_child_obj.parentNode.insertBefore(_next_element, _child_obj);
+//            
+//            for (var _s = 0; _s < _text.length; _s++) {
+//                var _t = _text.substr(_s, 1);
+//                var _t_prev = '',  _t_next = '';
+//                
+//                if (_s > 0) {
+//                    _t_prev = _text.substr(parseInt(_s,10) - 1, 1);
+//                }
+//                
+//                if (_s < _text.length - 1) {
+//                    _t_next = _text.substr(parseInt(_s,10) + 1, 1);
+//                }
+//                
+//                if ($.match_english(_t) === true) {	
+//                    while ($.match_english(_t_next) === true) {
+//                        _t = _t + _t_next;
+//                        _s++;
+//                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
+//                    }
+//                }
+//                else if ($.match_number(_t) === true) {
+//                    while ($.match_number(_t_next) === true) {
+//                        _t = _t + _t_next;
+//                        _s++;
+//                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
+//                    }
+//                }
+//                
+//                var _t_element = null;
+//                
+//                // 如果不是空白的話
+//                if ($.match_space(_t) === false) {
+//                    
+//                    _t_element = _selectable_text_word.create_selectable_word(
+//                            _selectable_text_paragraph.paragraph_count, 
+//                            _selectable_text_word.word_count, _t
+//                    );
+//                    
+//                    if ($.match_sentence_punctuation(_t)) {
+//                        if ($.match_english_sentence_punctuation(_t)) {
+//                            if (_t_next === '') {
+//                                $(_t_element).addClass(_sentence_punctuation_class_name);
+//                                
+//                                // 20140102 Pulipuli Chen
+//                                // 增加句子的計算數量
+//                                _selectable_text_sentence.add_structure();
+//                            }
+//                            else if ($.match_space(_t_next)) {
+//                                if (_s < _text.length - 2) {
+//                                    //檢測下下個字是否是大寫英文
+//                                    var _t_nnext = _text.substr(parseInt(_s, 10) + 2, 1);
+//                                    if ($.match_upper_english(_t_nnext)) {
+//                                        $(_t_element).addClass(_sentence_punctuation_class_name);
+//                                        
+//                                        // 20140102 Pulipuli Chen
+//                                        // 增加句子的計算數量
+//                                        _selectable_text_sentence.add_structure();
+//                                    }   //if ($.match_upper_english(_t_nnext)) {
+//                                    else {
+//                                        $(_t_element).addClass(_punctuation_classname);
+//                                    }
+//                                }   //if (_s < _text.length - 2) {
+//                                else {
+//                                    $(_t_element).addClass(_sentence_punctuation_class_name);
+//                                    
+//                                    // 20140102 Pulipuli Chen
+//                                    // 增加句子的計算數量
+//                                    _selectable_text_sentence.add_structure();
+//                                }
+//                            }   // else if ($.match_space(_t_next)) {
+//                            else {
+//                                $(_t_element).addClass(_punctuation_classname);
+//                            }
+//                        }   //if ($.match_sentence_punctuation(_t)) {
+//                        else {
+//                            $(_t_element).addClass(_sentence_punctuation_class_name);
+//                            
+//                            // 20140102 Pulipuli Chen
+//                            // 增加句子的計算數量
+//                            _selectable_text_sentence.add_structure();
+//                        }
+//                    }   //if ($.match_sentence_punctuation(_t)) {
+//                    else if ($.match_punctuation(_t)) {
+//                        $(_t_element).addClass(_punctuation_classname);
+//                    }   //else if ($.match_punctuation(_t)) {
+//                    _selectable_text_word.word_count++;
+//                }   //if ($.match_space(_t) === false) {
+//                else {
+//                    // 如果是空白的話
+//                    _t_element = _this.create_span_word(_t);
+//                }
+//                
+//                _next_element.appendChild(_t_element);
+//            }    //for (var _s = 0; _s < _text.length; _s++)
     	
-            var _insert_action = function () {
-                _child_obj.parentNode.insertBefore(_next_element, _child_obj);
-                $(_next_element).css("display", "inline");
-                $(_child_obj).remove();
-            };
-            _task_stack.push(_insert_action);
+            // 20140223 Pulipuli Chen
+            // 將腳本分離
+            //var _insert_action = function () {
+            //    _child_obj.parentNode.insertBefore(_next_element, _child_obj);
+            //    $(_next_element).css("display", "inline");
+            //    $(_child_obj).remove();
+            //};
+            //_this._task_stack.push(_insert_action);
+            _this._setup_selectable_element_insert_action(_child_obj, _next_element);
             
             _i++;
             if (_i % _batch_excute === 0) {
@@ -548,6 +672,62 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
     return this;
     
 };    //Selectable_text.prototype.setup_scope
+
+/**
+ * 初始化next_element，只用於setup_selectable_element
+ * @param {String} _text
+ * @returns {HTMLNode}
+ */
+Selectable_text.prototype._setup_selectable_element_init_next_element = function (_text) {
+    return this.paragraph._setup_selectable_element_init_next_element(_text);
+};
+
+/**
+ * 新增任務
+ * @param {HTMLNode} _child_obj
+ * @param {HTMLNode} _next_element
+ */
+Selectable_text.prototype._setup_selectable_element_insert_action = function (_child_obj, _next_element) {
+    var _insert_action = function () {
+        _child_obj.parentNode.insertBefore(_next_element, _child_obj);
+        $(_next_element).css("display", "inline");
+        $(_child_obj).remove();
+    };
+    this._task_stack.push(_insert_action);
+    
+    return this;
+};
+
+/**
+ * setup_selectable_element loop完成之後做的事情
+ * @param {function} _callback
+ */
+Selectable_text.prototype._setup_selectable_element_loop_complete = function (_callback) {
+    //$.test_msg('Selectable_text.setup_selectable_element() cb', _cb);
+
+    // 把剩餘的任務執行完
+    //if (_task_stack.length > 00) {
+        //$.test_msg("剩餘的任務？", _task_stack.length);
+        //for (var _t = 0; _t < _task_stack.length; _t++) {
+        for (var _t in this._task_stack) {
+            //if ($.is_function(_task_stack[_t])) {
+                this._task_stack[_t]();
+            //}
+        }
+        this._task_stack = [];
+    //}
+
+
+    if ($.is_function(_callback)) {
+        _callback();
+    }
+};
+
+/**
+ * 給setup_selectable_element作為儲存任務使用的
+ * @type Array
+ */
+Selectable_text.prototype._task_stack = [];
 
 /**
  * 設定各個字在段落中的位置
@@ -939,6 +1119,71 @@ Selectable_text.prototype.get_offset_first_left = function (_scope_coll) {
  */
 Selectable_text.prototype.get_offset_last_right = function (_scope_coll) {
     return this.offset.get_offset_last_right(_scope_coll);
+};
+
+/**
+ * 快取ID
+ * @type String
+ */
+Selectable_text.prototype._cache_id = 'selectable_text';
+
+/**
+ * 儲存到快取中
+ * @param {funciton} _callback
+ * @returns {Selectable_text}
+ */
+Selectable_text.prototype.cache_save = function (_callback) {
+    
+    var _cache_id = this._cache_id;
+    
+    var _text_html = this._text.html();
+    
+    // 測試看看是不是因為字串太長的原因
+    //_text_html = _text_html.substr(0, 1000);
+    //$.test_msg('cache_save ' + _cache_id, _text_html);
+    
+    var _this = this;
+    KALS_context.storage.set(_cache_id, _text_html, function () {
+        _this.word.cache_save(_cache_id, function () {
+            _this.sentence.cache_save(_cache_id, function () {
+                _this.paragraph.cache_save(_cache_id, _callback);
+            });
+        });
+    });
+    
+    return this;
+};
+
+/**
+ * 從快取中復原
+ * @param {funciton} _callback
+ * @returns {Selectable_text_word}
+ */
+Selectable_text.prototype.cache_restore = function (_callback) {
+    
+    var _cache_id = this._cache_id;
+    var _this = this;
+    KALS_context.storage.get(_cache_id, function (_text_html) {
+        //$.test_msg('cache_restore ' + _cache_id, _text_html);
+        _this._text.html(_text_html);
+
+        _this.word.cache_restore(_cache_id, function () {
+            _this.sentence.cache_restore(_cache_id, function () {
+                _this.paragraph.cache_restore(_cache_id, _callback);
+            });
+        });
+    });
+    
+    return this;
+};
+
+/**
+ * 檢查是否有cache
+ * @param {funciton} _callback
+ * @returns {Boolean}
+ */
+Selectable_text.prototype.has_cache = function (_callback) {
+    return KALS_context.storage.is_set(this._cache_id, _callback);
 };
 
 /* End of file Selectable_text */

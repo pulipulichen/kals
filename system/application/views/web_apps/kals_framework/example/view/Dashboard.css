@@ -2,13 +2,15 @@
  * CSS for template Dashboard.html
  */
 dt {
-	font-weight:bold;
+    font-weight:bold;
+    margin-top: 0.7em;
+    margin-bottom: 0.3em;
 }
 
 .activity-good {
-	font-weight: bold;
-	font-size: larger;
-	color:green;
+    font-weight: bold;
+    font-size: larger;
+    color:green;
 }
 .activity-normal {
     font-weight: bold;
@@ -19,4 +21,20 @@ dt {
     font-weight: bold;
     font-size: larger;
     color:red;
+}
+
+dt.mobile-topics {
+    background-image: url('${base_url}images/mobile.png');
+    background-position:left;
+    background-repeat:no-repeat;
+    height: 16px;
+    padding-left: 20px;
+}
+
+dt.rss-feed {
+    background-image: url('${base_url}images/rss-feed.png');
+    background-position:left;
+    background-repeat:no-repeat;
+    height: 16px;
+    padding-left: 20px;
 }

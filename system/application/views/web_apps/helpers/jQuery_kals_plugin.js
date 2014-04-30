@@ -275,19 +275,26 @@ jQuery.str_replace = function (_search, _replace, _subject, _count) {
 
 jQuery.json_encode = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
-		return _json;
-	}
-	else 
-		if (this.is_string(_json)) {
-			return this.serialize_string(_json);
-		}
-		else 
-			if (this.is_array(_json)) {
-				return this.serialize_array(_json);
-			}
-			else {
-				return this.serialize_json(_json);
-			}
+        return _json;
+    }
+    else if (this.is_string(_json)) {
+        return this.serialize_string(_json);
+    }
+    else if (this.is_array(_json)) {
+        return this.serialize_array(_json);
+    }
+    else {
+        return this.serialize_json(_json);
+    }
+};
+
+/**
+ * 將json字串還原成為物件
+ * @param {String} _string
+ * @returns {Object}
+ */
+jQuery.json_decode = function (_string) {
+    return eval(_string);
 };
 
 /**
@@ -521,16 +528,22 @@ jQuery.is_null = function (_obj) {
 	}
 };
 
+/**
+ * 檢查是否是這個類別
+ * @param {Object} _obj
+ * @param {String} _class_name
+ * @returns {Boolean}
+ */
 jQuery.is_class = function(_obj, _class_name) {
     if ($.is_null(_class_name)) {
-		return false;
-	}
+        return false;
+    }
     
     try {
-        return (typeof(_obj) == 'object' 
+        return (typeof(_obj) === 'object' 
             && _obj !== null 
             //&& (_obj instanceof _class_name));
-            && $.get_class(_obj) == _class_name);
+            && $.get_class(_obj) === _class_name);
     }
     catch (e) {
         return false;
@@ -562,12 +575,17 @@ jQuery.filter_array = function (_obj) {
 	}
 };
 
+/**
+ * 檢查是否是字串
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
 jQuery.is_string = function (_obj) {
-    return (typeof(_obj) == 'string');
+    return (typeof(_obj) === 'string');
 };
 
 jQuery.is_number = function (_obj) {
-    return (typeof(_obj) == 'number');
+    return (typeof(_obj) === 'number');
 };
 
 /**
@@ -605,8 +623,22 @@ jQuery.is_object = function (_obj) {
     return (typeof(_obj) == 'object' && !(_obj instanceof Array));
 };
 
+/**
+ * 檢測變數是否是函式
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
 jQuery.is_function = function (_obj) {
-    return (typeof(_obj) == 'function');
+    return (typeof(_obj) === 'function');
+};
+
+/**
+ * 檢測變數是否是空值
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
+jQuery.is_undefined = function (_obj) {
+    return (_obj === undefined);
 };
 
 /**
@@ -685,15 +717,29 @@ jQuery.object_isset = function (_object_path) {
 // URL類
 // --------
 
+/**
+ * 檢查字串是否是網址
+ * @param {String} _url
+ * @returns {Boolean}
+ */
 jQuery.is_link = function(_url) {
     if (this.starts_with(_url, 'http://') ||
 	this.starts_with(_url, 'https://') ||
 	this.starts_with(_url, 'ftp://')) {
-		return true;
-	}
-	else {
-		return false;
-	}
+            return true;
+    }
+    else {
+            return false;
+    }
+};
+
+/**
+ * 檢查字串是否是網址
+ * @param {String} _url
+ * @returns {Boolean}
+ */
+jQuery.is_url = function (_url) {
+    return this.is_link(_url);
 };
 
 jQuery.parse_url = function (_str, _component) {
@@ -768,25 +814,31 @@ jQuery.parse_url = function (_str, _component) {
     }
 };
 
+/**
+ * 連結是圖片
+ * @param {String} _url
+ * @returns {Boolean}
+ */
 jQuery.is_image = function(_url) {
     if (false == this.is_link(_url)) {
-		return false;
-	}
+        return false;
+    }
     var _param = this.parse_url(_url);
     if (this.is_null(_param) || this.is_null(_param.path)) {
-		return false;
-	}
+        return false;
+    }
     var _path = _param.path;
     var _ext = this.parse_extension_name(_path);
     if (this.is_null(_ext)) {
-		return false;
-	}
-    if (this.inArray(_ext, ['jpg', 'jpeg', 'gif', 'png']) != -1) {
-		return true;
-	}
-	else {
-		return false;
-	}
+        return false;
+    }
+    var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
+    if (this.inArray(_ext, _image_array) != -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 jQuery.parse_extension_name = function (_path) {
@@ -906,7 +958,7 @@ jQuery.fn.extend({
             _max_width = _max_width * _scale;
             
             
-            if (_option == 'left') {
+            if (_option === 'left') {
                 if (_mobile_mode) {
                     _option = window.pageXOffset;
                     _option = _option + _offset;
@@ -915,7 +967,7 @@ jQuery.fn.extend({
                     _option = _offset;
                 }
             }
-            else if (_option == 'right') {
+            else if (_option === 'right') {
                
                _direction = 'right';
                if (_mobile_mode) {
@@ -929,7 +981,7 @@ jQuery.fn.extend({
                    _option = _offset;    
                }
             }
-            else if (_option == 'center') {
+            else if (_option === 'center') {
                 var _width = _this.width();
                 
                 var _padding_left = $.strip_unit(_this.css('padding-left'));
@@ -973,15 +1025,15 @@ jQuery.fn.extend({
             
         }
         else {
-            if (_option == 'left') {
+            if (_option === 'left') {
                 _this.css('margin-left', 0)
                     .css('float', 'none');
             }
-            else if (_option == 'right') {
+            else if (_option === 'right') {
                 _this.css('margin-right', 0)
                     .css('float', 'right');
             }
-            else if (_option == 'center') {
+            else if (_option === 'center') {
                 _this.css('margin-right', 'auto')
                     .css('margin-left', 'auto')
                     .css('float', 'none');
@@ -1003,17 +1055,17 @@ jQuery.fn.extend({
      * - scale: 手機模式用的縮放比例
      */
     valign: function (_options) {
-        if (_options == 'top' || _options == 'middle' || _options == 'bottom') {
-			_options = {
-				option: _options
-			};
-		}
+        if (_options === 'top' || _options === 'middle' || _options === 'bottom') {
+            _options = {
+                    option: _options
+            };
+        }
         
         var _option = $.get_parameter(_options, 'option');
         
         if ($.is_null(_option)) {
-			return this;
-		}
+            return this;
+        }
             
         var _scale = $.get_parameter(_options, 'scale', 1);
         var _offset = $.get_parameter(_options, 'offset', 0);
@@ -1033,11 +1085,11 @@ jQuery.fn.extend({
         //if (_position != 'static')
         if (_this.is_layer()) {
             if (_mobile_mode) {
-				_this.css('position', 'absolute');
-			}
-			else {
-				_this.css('position', 'fixed');
-			}
+                _this.css('position', 'absolute');
+            }
+            else {
+                _this.css('position', 'fixed');
+            }
             
             //探測螢幕高度
             var _max_height = $.get_viewport_height();
@@ -1046,7 +1098,7 @@ jQuery.fn.extend({
             var _direction = 'top';
             
             
-            if (_option == 'top') {
+            if (_option === 'top') {
                 
                 if (_mobile_mode) {
                     _option = window.pageYOffset
@@ -1067,7 +1119,7 @@ jQuery.fn.extend({
                 }
                 
             }
-            else if (_option == 'middle') {
+            else if (_option === 'middle') {
                 var _height = _this.height();
                 
                 var _padding_top = $.strip_unit(_this.css('padding-top'));
@@ -1104,13 +1156,13 @@ jQuery.fn.extend({
             _this.css(_direction, _option + 'px');
         }
         else {
-            if (_option == 'top') {
+            if (_option === 'top') {
                 _this.css('margin-top', 0);
             }
-            else if (_option == 'bottom') {
+            else if (_option === 'bottom') {
                 _this.css('margin-bottom', 0);
             }
-            else if (_option == 'middle') {
+            else if (_option === 'middle') {
                 _this.css('margin-top', 0)
                     .css('margin-bottom', 0);
             }
@@ -1137,7 +1189,7 @@ jQuery.fn.extend({
     is_layer: function () {
         var _this = $(this);
         var _position = _this.css('position');
-        return (_position != 'static');
+        return (_position !== 'static');
     },
     /**
      * 是否顯示
@@ -1244,18 +1296,17 @@ jQuery.fn.extend({
         if ($.is_null(_scale)) {
 			_scale = 1;
 		}
-        if (_option == 'width' || _option == 'x') {
-			_this.fullscreen_width(_scale);
-		}
-		else 
-			if (_option == 'height' || _option == 'y') {
-				_this.fullscreen_height(_scale);
-			}
-			else {
-				_this.fullscreen_width(_scale);
-				_this.fullscreen_height(_scale);
-				
-			}
+        if (_option === 'width' || _option === 'x') {
+            _this.fullscreen_width(_scale);
+        }
+        else if (_option === 'height' || _option === 'y') {
+                _this.fullscreen_height(_scale);
+        }
+        else {
+                _this.fullscreen_width(_scale);
+                _this.fullscreen_height(_scale);
+
+        }
         return this;
     },
     restore: function () {
@@ -1762,14 +1813,20 @@ jQuery.mobile_mode = null;
 jQuery.is_mobile_mode = function () {
     if (this.mobile_mode === null) {
         var _this = this;
-		var _yui = YUI();
-		if (typeof(_yui.use) == "function") {
-			_yui.use("", function(Y){
-	            var _mode = (!$.is_null(Y.UA.mobile));
-	            _this.mobile_mode = _mode;
-	        });	
-		}
-        
+        try {
+            var _yui = YUI();
+            if (typeof(_yui.use) === "function") {
+
+                    _yui.use("", function(Y){
+                        var _mode = (!$.is_null(Y.UA.mobile));
+                        _this.mobile_mode = _mode;
+                    });
+
+            }
+        }
+        catch (_e) {
+            _this.mobile_mode = false;
+        }
     }
     return this.mobile_mode;
 };
@@ -2082,21 +2139,22 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //return;
 	
     if (this.scroll_to_lock === true) {
+        $.trigger_callback(_callback);
         return;
     }
     this.scroll_to_lock = true;
 
+    var _this = this;
     // 要確認視窗到底讀完了沒有
     if (KALS_context.completed === false) {
-        var _this = this;
-        $.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
+        //$.test_msg('$.scroll_to KALS_context not ready', [$.json_encode(_position), _speed, _callback]);
         KALS_context.add_listener(function (_dispatcher, _data) {
             _this.scroll_to_lock = false;
             _this.scroll_to(_position, _speed, _callback);
         });
+        $.trigger_callback(_callback);
         return;
     }
-
 	
     //宣告基本資料
     var _target_x, _target_y, _interval_x, _interval_y, _interval_time = 10, _repeat_count
@@ -2105,18 +2163,19 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //確定位置資料
     _target_x = $.get_parameter(_position, ['x', 'left', 'pageXOffset'], window.pageXOffset);
     if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-')) {
-		_target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
-	}
+        _target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
+    }
     _target_y = $.get_parameter(_position, ['y', 'top', 'pageYOffset'], window.pageYOffset);
     if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-')) {
-		_target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
-	}
+        _target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
+    }
     
 	//$.test_msg('$.scroll_to target', [_target_x, _target_y]);
 	
-    if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
-		return this;
-	}
+    //if ($.is_number(_target_x) === false || $.is_number(_target_y) === false) {
+    //    $.trigger_callback(_callback);
+    //    return this;
+    //}
     
     //調整_speed跟_callback
     if ($.is_function(_speed) && $.is_null(_callback)) {
@@ -2135,13 +2194,27 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         _speed = 1000;
     }
     
+    var _config = {};
+    var _config_setted = false;
+    if ($.is_number(_target_y)) {
+        _config["scrollTop"] = _target_y;
+        _config_setted = true;
+    }
+    if ($.is_number(_target_x)) {
+        _config["scrollLeft"] = _target_x;
+        _config_setted = true;
+    }
     
-    $('html, body').animate({
-        scrollTop: _target_y,
-        scrollLeft: _target_x
-    }, _speed);
+    //$.test_msg("要準備捲動囉", _config);
+    
+    if (_config_setted) {
+        $('html, body').animate(_config, _speed, function () {
+            _this.scroll_to_lock = false;
+        });
+    }
 	
-    return $.trigger_callback(_callback);
+    $.trigger_callback(_callback)
+    return this;
      
 	/**
 	 * 以下寫太差了，不使用
@@ -2227,8 +2300,17 @@ jQuery.load_scroll_position = function () {
     window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
 };
 
-jQuery.create_id = function () {
-    return (new Date()).getTime() + '';
+/**
+ * 產生隨機的ID字串
+ * @param {String} _prefix 前置字串
+ * @returns {String}
+ */
+jQuery.create_id = function (_prefix) {
+    var _id = (new Date()).getTime() + '';
+    if (_prefix !== undefined) {
+        _id = _prefix + _id;
+    }
+    return _id;
 };
 
 /**
@@ -2446,25 +2528,94 @@ jQuery.is_email = function (_email) {
     return _regex.test(_email);
 }
 
+/**
+ * 取得物件的頂部位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_top = function(_ele) {
+    var _offset = _ele.attr("offsetTop");
+    return _offset;
+};
+
+/**
+ * 取得物件的底部位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_bottom = function(_ele) {
+    var _offset = $.get_offset_top(_ele) + _ele.height();
+    return _offset;
+};
+
+/**
+ * 取得物件的左邊位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_left = function(_ele) {
+    var _offset = _ele.attr("offsetLeft");
+    return _offset;
+};
+
+/**
+ * 取得物件的右邊位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_right = function(_ele) {
+    var _offset = $.get_offset_left(_ele) + _ele.width();
+    return _offset;
+};
+
+/**
+ * 取得物件的位置資訊
+ * @param {jQuery} _ele
+ * @returns {json}
+ */
+jQuery.get_offset = function(_ele) {
+    var _top = $.get_offset_top(_ele);
+    var _left = $.get_offset_left(_ele);
+    var _offset = {
+        top: _top,
+        left: _left
+    };
+    return _offset;
+};
+
 $.widget("ui.dialog", $.ui.dialog, {
-	_allowInteraction: function(event) {
-		return !!$(event.target).closest(".cke").length || this._super(event);
-	}
+    _allowInteraction: function(event) {
+        return !!$(event.target).closest(".cke").length || this._super(event);
+    }
 });
+
+/**
+ * 將jQuery加上append事件
+ * 
+ * 參考來源 http://stackoverflow.com/questions/7167085/on-append-do-something
+ */
+(function($) {
+    var origAppend = $.fn.append;
+
+    $.fn.append = function () {
+        return origAppend.apply(this, arguments).trigger("append");
+    };
+})(jQuery);
 
 /**
  * 20130222 Pulipuli Chen
  * 不採用
  */
-if (false) {
+//if (false) {
     /**
      * @type {jQuery}
      * @alias $
      * @constructor
+     * @extends {jQuery}
      * @method [$]
      */
-    $ = jQuery;
-}
+    //$ = jQuery;
+//}
 
 // ---------
 // 防止重複讀取

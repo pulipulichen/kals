@@ -35,10 +35,7 @@ class Authentication extends Web_apps_controller {
         );
     }
 
-    /**$this->client_ip = array(
-           'ip' => get_client_ip(),
-           'browser' => $_SERVER['HTTP_USER_AGENT']
-        );
+    /**
      * 
      * @param {Object} $json = {
      *     embed: TRUE //表示是不需要密碼的預設登入
@@ -53,13 +50,18 @@ class Authentication extends Web_apps_controller {
         //$data->embed = TRUE;
 
         $user = NULL;
-        if ($data->embed)
-        {
-            $user = $this->user->create_user($this->url, $data->email);
-        }
-        else
-        {
-            $user = $this->user->find_user($this->url, $data->email, $data->password);
+        if (isset($data->email)) {
+            if ($data->embed ) {
+                //test_msg("login embed", array(
+                //    'url' => $this->url,
+                //    'user' => $data->email
+                //));
+
+                $user = $this->user->create_user($this->url, $data->email);
+            }
+            else {
+                $user = $this->user->find_user($this->url, $data->email, $data->password);
+            }
         }
         
         //$output = NULL;
@@ -257,9 +259,8 @@ class Authentication extends Web_apps_controller {
 
         $user= get_context_user();
         $user_id = NULL;
-        if (isset($user)) {
+        if (isset($user))
             $user_id = $user->get_id();
-        }
         kals_log($this->db, 7, array('memo'=>$this->client_ip, 'user_id' => $user_id));
 
         clear_context_user();

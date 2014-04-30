@@ -39,9 +39,23 @@ if ( ! function_exists('get_referer_url'))
                     $GLOBALS['context']->set_referer_url($url);
                 }
                 
+                $CI =& get_instance();
+                $localhost_domains = $CI->config->item("localhost_domains");
+                $localhost_domains[] = "http://127.0.0.1/";
+                foreach ($localhost_domains AS $key => $domain) {
+                    if (starts_with($url, $domain)) {
+                        $url = str_replace($domain, "http://localhost/", $url);
+                        break;
+                    }
+                }
+                
                 return $url;
             }
-            else {
+            else
+            {
+                
+            
+                
                 if ($show_exception)
                 {
                     handle_error ('Cannot get referer url.');

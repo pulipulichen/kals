@@ -4,6 +4,7 @@
 
 .KALS.kals-controller-window {
     z-index: 2;
+    visibility: hidden;
 }
 
 .KALS.kals-controller-window .dialog-toolbar tr td {
@@ -116,3 +117,16 @@
 	top: -5px;
 }
 */
+
+.KALS.kals-controller-window .window-loading {
+    display: none;
+}
+
+.KALS.kals-controller-window.loading .window-loading {
+    display: block;
+}
+
+.KALS.kals-controller-window.loading .dialog-content,
+.KALS.kals-controller-window.loading .dialog-heading .dialog-option {
+    display: none;
+}

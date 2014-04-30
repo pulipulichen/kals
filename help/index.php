@@ -20,7 +20,7 @@
 <ul>
   <li><a href="config_annotation_scope.html">設定標註範圍</a></li>
   <li><a href="config_annotation_type.html">設定標註類型</a></li>
-  <li><a href="custom_annotation_type.html">新增預先定義標註類型</a></li>
+  <li><a href="predefined_annotation_type.html">新增預先定義標註類型</a></li>
   <li><a href="enable_custom_annotation_type.html">設定「自訂」標註類型</a></li>
   <li><a href="config_toolbar.html">設定工具列</a></li>
   <li><a href="embed_email.html">指定預設登入帳號</a></li>
@@ -48,7 +48,7 @@
 <h2>KALS其他資源</h2>
 <ul>
         <li><a href="../web_apps/help/" target="_blank">KALS操作說明</a></li>
-        <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫</a></li>
+        <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫 phpPgAdmin</a></li>
 	<li><a href="../document/KALS UML.uml" target="_blank">UML規劃圖</a> (以<a href="http://sourceforge.net/projects/whitestaruml/" target="_blank">WhiteStarUML</a>開啟)</li>
 	<li><a href="../document/Webpage Application.ep" target="_blank">網頁應用端草圖構想</a> (以<a href="http://pencil.evolus.vn/" target="_blank">Pencil</a>開啟)</li>
 </ul>

@@ -139,7 +139,7 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     //最後加上Padding
     var _padding = this.padding.get_ui();
-    _padding.hide();
+    //_padding.hide();
     $('body').prepend(_padding);
     
     _ui.addClass('loading');
@@ -149,13 +149,23 @@ KALS_toolbar.prototype._$create_ui = function () {
         
         _this.toggle_navigation('anonymous-component');
         
+        var _toolbar_height = _this.get_height();
+        //$.test_msg('toolbar_height', _toolbar_height);
+        //_padding.css("height", _toolbar_height + 'px');
+        
+        
         //2010.10.5 測試顯示avatar-component看看？
         //_this.toggle_navigation('avatar-component');
-        
+        /*
         _padding.slideDown(function () {
+            $.test_msg('slideDown');
             $(this).removeAttr('style');
         });
-        
+        */
+        _padding.show();
+        _padding.animate({
+            height: _toolbar_height + "px"
+        }, 1000);
         _this.open();
     }, 0);
     
@@ -168,35 +178,47 @@ KALS_toolbar.prototype._$create_ui = function () {
         //$.test_msg('KALS_context_auth.add_listener()', _data.login);
         //如果有登入，切換至avatar-nav，否則切換至login-nav        
         if (_data.login === true) {
-			_this.toggle_navigation('avatar-component');
-		}
-		else {
-			_this.toggle_navigation('anonymous-component');
-		}
+            _this.toggle_navigation('avatar-component');
+        }
+        else {
+            _this.toggle_navigation('anonymous-component');
+        }
     });
     
+    // 點兩下關閉工具列
     _ui.dblclick(function () {
         _this.toggle_toolbar(false);
     });
-        
+    
+    
+    
     return _ui;
 };
 
+/**
+ * 當視窗大小改變時，需要因應變更的動作
+ * @param {jQuery} _ui
+ * @returns {KALS_toolbar}
+ */
 KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     
     var _ui_toggle = this.toggle.get_ui();
     var _padding_ui = this.padding.get_ui();
+    
+    //$.test_msg('KALS_toolbar onviewportmove', {height: $.is_small_height(), width: $.is_small_width()});
+    
     if ($.is_small_height()) {   
+        // 如果是小高度的話
+        
         if (this.toggle.is_show() === false) {
             this.toggle_toolbar(false);
-            this.toggle.show();    
+            this.toggle.show();
         }
-        
         if (_padding_ui.hasClass('compact-height') === false) {
             _padding_ui.slideUp(function () {
                 _padding_ui.addClass('compact-height');    
             });
-        } 
+        }
     }
     else {
         this.toggle_toolbar(true);
@@ -221,8 +243,8 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     }
     
     if ($.is_mobile_mode()) {
-		_ui.valign('top');
-	}
+        _ui.valign('top');
+    }
     
     if (this.toolbar_visible() === false) {
         _ui.align('center');
@@ -230,6 +252,12 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     
     return this;
 };
+
+/**
+ * 即使被隱藏了，也能夠使用viewportmove
+ * @type {function} = function (_ui) {}
+ */
+KALS_toolbar.prototype._$viewportmove_visible_enable = true;
 
 /**
  * 切換Toolbar元件的顯示
@@ -244,13 +272,12 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    
    if ($.is_null(_display)) {
        if (_ui_hidden) {
-		   _display = true;
-	   }
-	   else {
-	       _display = false;
-	   }
+            _display = true;
+        }
+        else {
+            _display = false;
+        }
    }
-   
    
    var _complete = function () {
        $.trigger_callback(_callback);
@@ -258,26 +285,29 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    
    //$.test_msg('display', _display);
    var _height;
-   if (_display === true && _ui_hidden) {
+   if (_display === true && _ui_hidden === true) {
+       // 準備顯示
+       
        //_toolbar_ui.slideDown(_callback);
+       //_ui.show();
        _ui.removeClass('hide');
        _height = _toolbar_ui.height();
        _height = (_height * -1) + 'px';
        _ui.css('left', 0);
        _ui.css('top', _height);
        
-       
        _ui.animate({
            top: 0
        }, {
            queue: false,
            complete: function () {
-               
                _complete();
            }
        });
    }
    else if (_display === false && _ui_hidden === false) {
+       // 準備隱藏
+       
        _height = _toolbar_ui.height();
        _height = (_height * -1) + 'px';
        //$.test_msg(_height);
@@ -290,6 +320,7 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
                _ui.addClass('hide');
                _ui.valign('top');
                _ui.align('center');
+               //_ui.hide();
                _complete();
            }
        });

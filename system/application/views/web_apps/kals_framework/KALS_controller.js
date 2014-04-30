@@ -83,6 +83,25 @@ KALS_controller.prototype._$enable_debug = true;
 KALS_controller.prototype._$enable_auth_check = true;
 
 /**
+ * 初始化要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$init_request_action = null;
+
+/**
+ * 開啟要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$open_request_action = null;
+
+/**
+ * 關閉時要執行的action
+ * @type {String} null表示不做初始化
+ */
+KALS_controller.prototype._$close_request_action = null;
+
+
+/**
  * 權限檢查
  * @param {boolean} _is_login
  * @param {User_param} _user
@@ -91,6 +110,19 @@ KALS_controller.prototype._$enable_auth_check = true;
 KALS_controller.prototype._$auth_check = function (_is_login, _user) {
     //this.debug('auth check', _is_login);
     return true;
+};
+
+/**
+ * 初始化View
+ * 
+ * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
+ * 這個方法只會執行一次
+ * 
+ * 請覆寫這個方法
+ * @return {KALS_controller}
+ */
+KALS_controller.prototype._$initialize_view = function () {
+    return this;
 };
 
 /**
@@ -256,24 +288,6 @@ KALS_controller.prototype.open = function (_callback) {
 */
 
 /**
- * 初始化要執行的action
- * @type {String} null表示不做初始化
- */
-KALS_controller.prototype._$init_request_action = null;
-
-/**
- * 開啟要執行的action
- * @type {String} null表示不做初始化
- */
-KALS_controller.prototype._$open_request_action = null;
-
-/**
- * 關閉時要執行的action
- * @type {String} null表示不做初始化
- */
-KALS_controller.prototype._$close_request_action = null;
-
-/**
  * 初始化樣板資料，覆寫KALS_user_interface的作法
  * @param {jQuery} _view
  */
@@ -326,7 +340,7 @@ KALS_controller.prototype.open = function (_callback) {
         //this.debug('open', [this._$open_request_action, this.get_data()]);
         //return;
         this.request('get', this._$open_request_action, {}, function (_data) {
-            _this.debug('VIEW, open data', _data);
+            //_this.debug('VIEW, open data', _data);
             _this.set_data(_data);
             KALS_modal.prototype.open.call(_this, _callback);
         });
@@ -364,7 +378,7 @@ KALS_controller.prototype.close = function (_callback) {
 };
 
 /**
- * 以GET方式
+ * 以GET方式，跟伺服器取得資料
  * @param {String} _action
  * @param {JSON} _data
  * @param {function} _callback
@@ -566,6 +580,34 @@ KALS_controller.prototype._enable_controller_flag = true;
  */
 KALS_controller.prototype.has_field = function (_field) {
     return (typeof(this._data[_field]) !== 'undefined');
+};
+
+/**
+ * 根據view樣板的語系檔來取得語系
+ * @param {String} _view_line
+ * @returns {KALS_language_param}
+ */
+KALS_controller.prototype.get_view_lang = function (_view_line) {
+    if (KALS_context.lang.has_line(_view_line)) {
+        //KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+        return new KALS_language_param("", _view_line);
+    }
+    
+    // 先取得key
+    var _view_classname = this._$view;
+    _view_classname = _view_classname.replace(/[\W|\_]/g, "_").toLowerCase();
+    _view_classname = 'view.' + _view_classname;
+    _view_classname = _view_classname + "." + _view_line;
+    
+    $.test_msg("_view_classname", _view_classname);
+    
+    if (KALS_context.lang.has_line(_view_classname)) {
+        //KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+        return new KALS_language_param("", _view_classname);
+    }
+    else {
+        return new KALS_language_param(_view_line);
+    }
 };
 
 /* End of file KALS_controller */

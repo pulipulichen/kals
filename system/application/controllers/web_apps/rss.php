@@ -16,6 +16,34 @@ include_once 'web_apps_controller.php';
  */
 class rss extends Web_apps_controller {
 
+    /**
+     * 重新首頁
+     * @version 20140423 Pulipuli Chen
+     * @param type $webpage_id
+     * @return type
+     */
+    public function index($webpage_id = NULL) {
+        
+        if (is_null($webpage_id)) {
+            return $this->_redirect_from_referer();
+        }
+        
+        return $this->webpage($webpage_id);
+    }
+    
+    /**
+     * 當沒有指定webpage_id時
+     * 從參考來源自動轉向指定的webpage_id
+     */
+    private function _redirect_from_referer() {
+        
+        $webpage = get_context_webpage();
+        $webpage_id = $webpage->get_id();
+        
+        $path = "/web_apps/rss/webpage/" . $webpage_id;
+        redirect($path);
+    }
+
      
     /**
      * 讀取RSS
@@ -65,12 +93,15 @@ class rss extends Web_apps_controller {
 
         $webpage_title = $webpage->get_title();
         
+        $webpage_topics_path = '/mobile_apps/annotation_topics/webpade_id/'.$webpage_id;
+        $webpage_topics_url = get_kals_base_url($webpage_topics_path);
+        //$webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
         
         $channel = new Channel();
         $channel
             ->title($webpage_title)
             ->description("Channel Description")
-            ->url('http://140.119.61.137/kals/mobile/annotation_topics/'.$webpage_id)
+            ->url($webpage_topics_url)
             ->appendTo($feed);
 
         foreach ($search AS $annotation) {
@@ -89,25 +120,40 @@ class rss extends Web_apps_controller {
            // date
            // annotation type
            // note
-            $annotation_id = $annotation->get_id();            
-            if (isset($annotation_id)){
+            $annotation_id = $annotation->get_id();
+            if (isset($annotation_id)) {
                 $topic_array = $this->db->query("SELECT topic_id
                                                  FROM annotation
                                                  WHERE annotation_id ='".$annotation_id."'");     
             }
-            foreach ($topic_array->result_array() as $row){
-                      $topic_id = $row['topic_id'];
-            } 
             
+            foreach ($topic_array->result_array() as $row) {
+                $topic_id = $row['topic_id'];
+            }
             
-            $item
-                ->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
+            /**
+             * @author Pulipuli Chen 20140429
+             * 要記得沒有topic的標註啊……
+             */
+            $topic_id = trim($topic_id);
+            if ($topic_id == "") {
+                $topic_id = $annotation_id;
+            }
+            
+            //$item_url = 'http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id;
+            $annotation_thread_path = "mobile_apps/annotation_thread/topic_id/".$topic_id."#annotation_".$annotation_id;
+            $item_url = site_url($annotation_thread_path);
+            $item_url = get_kals_base_url($annotation_thread_path);
+            //$item_url = $_SERVER["HTTP_HOST"]
+            //test_msg($_SERVER["HTTP_HOST"]);
+            
+            $item->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
                 ->description("<div>KALS user [" . $annotation->get_user()->get_name() . "] </div>
                                <div>" . $annotation->get_note() ." </div>                     
                               ") //user +annotation note
                 //->url( base_url()."mobile/annotation_topics/".$webpage_id) // webpage_url->view
-                ->url('http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id) // webpage_url->view   
+                ->url($item_url) // webpage_url->view   
                 ->appendTo($channel);
         }    
 

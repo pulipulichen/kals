@@ -20,9 +20,9 @@ function KALS_language() {
     
     var _this = this;
     //Context訂閱一下
-    if (typeof(KALS_context) != 'undefined') {
+    if (typeof(KALS_context) !== 'undefined') {
         KALS_context.add_listener(function (_dispatcher, _data) {
-            if (typeof(_data.KALS_language) != 'undefined') {
+            if (typeof(_data.KALS_language) !== 'undefined') {
 				_this.set_lang(_data.KALS_language);
 			}
         });

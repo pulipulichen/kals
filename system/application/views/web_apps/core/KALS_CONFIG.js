@@ -3,13 +3,13 @@
  * 
  * 只有跨越不同程式而需要同一個參數時，才到此設定
  *
- * @package		KALS
- * @category		Webpage Application Libraries
- * @author		Pudding Chen <puddingchen.35@gmail.com>
- * @copyright		Copyright (c) 2010, Pudding Chen
- * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link		http://sites.google.com/site/puddingkals/
- * @version		1.0 2010/8/5 下午 07:50:21
+ * @package         KALS
+ * @category        Webpage Application Libraries
+ * @author          Pudding Chen <puddingchen.35@gmail.com>
+ * @copyright       Copyright (c) 2010, Pudding Chen
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link            https://github.com/pulipulichen/kals
+ * @version		1.5 2014/4/28 下午 07:50:21
  */
 
 DEFAULT_KALS_CONFIG = {
@@ -81,6 +81,10 @@ DEFAULT_KALS_CONFIG = {
     /**
      * 使用的標註類型
      * 標註類型的順序會照以下設定排列。
+     * 
+     * 20140425 Pulipuli Chen
+     * 舊名稱「annotation_type_option」，新名稱「annotation_type_basic_enable」
+     * 
      * @type {array[string]} 可用的標註類型如下，如果不想用該類型的標註時，您可以省略它：
      *     importance: 重要
      *     concept: 概念
@@ -90,7 +94,7 @@ DEFAULT_KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_option: [
+    annotation_type_basic_enable: [
         'importance'
         , 'concept'
         , 'confusion'
@@ -112,10 +116,13 @@ DEFAULT_KALS_CONFIG = {
      * 注意，這個設定不會覆蓋annotation_type_option設定的標註類型
      * 而是會加在原本的標註類型下面。
      * 如果你要取消原本的標註類型，請修改annotation_type_option
+     * 
+     * 20140425 Pulipuli Chen
+     * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefine」
      */
     /*
-    annotation_custom_type: {
-        "測試": {
+    annotation_type_predefined: {
+        "預先定義1": {
             //type_id: 15,
             hint: '測試的說明',
             option: {
@@ -127,7 +134,7 @@ DEFAULT_KALS_CONFIG = {
                 color: 'blue'    
             }
         },
-        '在測試': {
+        '預先定義2': {
             //type_id: 16,
             hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
             option: {
@@ -151,33 +158,33 @@ DEFAULT_KALS_CONFIG = {
      */
     help_base_url: 'help/',
 	
-	/**
-	 * 預設標註類型
-	 *
-	 * @copyright 20130603 Pudding Chen
-	 * @type {string} = "importance" 重要，也可以寫上自訂的名字
-	 */
-	default_annotation_type: "importance",
-    
-	/**
-	 * 網頁搜尋
-	 * 
-	 * @copyright 20130603 Pudding Chen
-	 * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
-	 * 
-	 * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
-	 */
-	web_search_url: "http://www.google.com/search?q={query}",
-	//web_search_url: "disable",
-	
-	/**
-	 * 獨立模式
-	 * @type {boolean} isolation_mode: false，預設不開啟
-	 * 
-	 * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
-	 * 但是關閉之後，所有人又能看到別人的標註
-	 */
-	isolation_mode: false,
+    /**
+     * 預設標註類型
+     *
+     * @copyright 20130603 Pudding Chen
+     * @type {string} = "importance" 重要，也可以寫上自訂的名字
+     */
+    default_annotation_type: "importance",
+
+    /**
+     * 網頁搜尋
+     * 
+     * @copyright 20130603 Pudding Chen
+     * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
+     * 
+     * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
+     */
+    web_search_url: "http://www.google.com/search?q={query}",
+    //web_search_url: "disable",
+
+    /**
+     * 獨立模式
+     * @type {boolean} isolation_mode: false，預設不開啟
+     * 
+     * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
+     * 但是關閉之後，所有人又能看到別人的標註
+     */
+    isolation_mode: false,
 	
     //----------------------------
     
@@ -269,7 +276,55 @@ DEFAULT_KALS_CONFIG = {
          * @type {RegExp}
          */
         regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
-    }   //view: {
+    },   //view: {
+    /**
+     * 是否啟用選取文字快取
+     * @type Boolean
+     */
+    selectable_text_cache: false,
+    
+    /**
+     * 偵錯用設定
+     * @type JSON
+     */
+    debug: {
+        /**
+         * 是否顯示ajax_get的連接訊息
+         * @type Boolean
+         */
+        ajax_get_message: false,
+        /**
+         * 開啟ajax_post設定
+         * 設定檔案為 [VIEW]/helpers/KALS_util.js
+         * @type Boolean
+         */
+        ajax_post: false
+    },
+    
+    /**
+     * 模組設定
+     * @type {JSON}
+     */
+    modules: {
+        /**
+         * 模組名稱: 模組設定內容
+         * @type {JSON}
+         */
+        Annotation_navigation_map: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true
+        },
+        Dashboard: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true
+        }
+    }
 };
 
 /**

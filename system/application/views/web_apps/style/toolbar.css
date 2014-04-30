@@ -27,9 +27,13 @@
      z-index: 10;
      margin: 0 0 !important;
      padding: 0 0 !important;
-     height: 30px !important;
-	 
+     height: 40px !important;
  }
+ 
+ .KALS.kals-toolbar.hide {
+     display:block;
+ }
+ 
 .KALS.kals-toolbar tr td{
     /*
  	padding: 0 .5em !important;
@@ -44,6 +48,7 @@
 	margin: 0px 0;
 	text-align:right;
 	font-size:100%;
+        font: 100% arial,helvetica,clean,sans-serif;
  }
  
 .KALS.kals-toolbar div {
@@ -63,8 +68,9 @@
 
 .KALS .toolbar-component, 
 .KALS .toolbar-padding {
-    height: 30px !important;
-	line-height:1 !important;
+    /*height: 30px !important;
+    line-height:1 !important;*/
+    height: 40px;
 }
 
 .KALS .toolbar-padding {
@@ -93,9 +99,16 @@
 
 .KALS .toolbar-left {
     vertical-align: middle;
-    width: 220px;
-	border: 0px !important;
-	vertical-align:middle !important;
+    
+    /**
+     * @20140411 Pudding Chen
+     * 修改寬度自變項
+     */
+    /*width: 220px;*/
+    max-width: 220px;
+    
+    border: 0px !important;
+    vertical-align:middle !important;
 }
 
 @media screen and (max-width: 800px){
@@ -121,7 +134,7 @@
     padding: 0 1em;
     /*width: 240px;*/
    /* 2010.11.25 因為暫時不做中間的search form 所以空間省了下來 */
-   width: 300px;
+   max-width: 300px;
     text-align: center;
     /*display: none;*/
 }
@@ -214,8 +227,12 @@
     margin: 0 1em;
     margin-left: 1em !important; 
     font-weight: bold;
-	vertical-align:middle !important;
-	
+    vertical-align:middle !important;
+    
+    /**
+     * @version 20140410 Pudding Chen
+     */
+    font-size: 16px;
 }
 
 /* --------- */
@@ -231,6 +248,7 @@
 .KALS.kals-toolbar.loading .loading-component {
     display: inline;
     cursor: wait;
+    font-size: 16px;
 }
 
 .KALS.kals-toolbar.loading .loading-component .progress,
@@ -255,12 +273,13 @@
 
 .KALS .search-component * {
     margin:0;
+    height: 2em;
 }
 
 .KALS .search-component .search-form-input {
-    height: 1.3em;
-	padding-left: 5px;
-	padding-right: 5px;
+    height: 1.5em;
+    padding-left: 5px;
+    padding-right: 5px;
 	
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -348,6 +367,15 @@
 /* -------- */
 /* Navigation_list */
 
+.KALS.kals-toolbar .navigation-list,
+.KALS.kals-toolbar .avatar-component {
+    font-size: 16px;
+}
+
+.KALS.kals-toolbar .avatar-component td {
+    padding: 0;
+}
+
 .KALS.kals-toolbar .avatar-component .navigation .navigation-list {
     margin-left: 0.5em;
 }
@@ -382,10 +410,17 @@
     border-width: 1px;
     border-left-style: solid;
     padding: 0 0.5em;
+    text-align: center;
+    
+    /**
+     * @version 20140410 Pudding Chen
+     */
+    /*font-size: 16px;*/
 }
 
 .KALS .navigation-list .nav td.item a {
     color:white;
+    text-decoration: underline;
 } 
 
 .KALS .navigation-list .nav td.item.last {

@@ -60,8 +60,8 @@ Dialog_modal.prototype._$create_ui = function () {
 
 Dialog_modal.prototype._$onviewportmove = function (_ui) {
     if ($.browser.msie6) {
-		return;
-	}
+        return;
+    }
     
     if ($.is_small_width()) {
         _ui.fullscreen_width();
@@ -250,21 +250,25 @@ Dialog_modal.prototype.set_forward_option = function (_option) {
     return this;
 };
 
+/**
+ * 切換顯示工具列的按鈕
+ * @param {boolean} _display
+ * @returns {Dialog_modal}
+ */
 Dialog_modal.prototype.toggle_toolbar_option = function(_display) {
     
     var _toolbar = this.get_ui('.dialog-toolbar:first');
     
     var _classname = 'hide-option';
     if ($.is_null(_display)) {
-		_toolbar.toggleClass(_classname);
-	}
-	else 
-		if (_display) {
-			_toolbar.removeClass(_classname);
-		}
-		else {
-			_toolbar.addClass(_classname);
-		}
+        _toolbar.toggleClass(_classname);
+    }
+    else if (_display) {
+        _toolbar.removeClass(_classname);
+    }
+    else {
+        _toolbar.addClass(_classname);
+    }
         
     return this;
 };
@@ -522,7 +526,8 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                 //.insertBefore(_el);
             
             _scroll_container.ready(function () {
-                var _el_offset = _el.offset();
+                //var _el_offset = _el.offset();
+                var _el_offset = $.get_offset(_el);
                 
                 //_scroll_container.css('top', _el_offset.top + 'px');
                 _scroll_container.css('position', 'fixed');

@@ -111,6 +111,10 @@ if ( ! function_exists('create_json_excpetion'))
 
 if ( ! function_exists('get_client_ip'))
 {
+    /**
+     * 取得使用者的IP資訊
+     * @return String
+     */
     function get_client_ip()
     {
         $myip = NULL;
@@ -121,6 +125,21 @@ if ( ! function_exists('get_client_ip'))
             $myip = $myip[0];
         }
         return $myip;
+    }
+}
+
+if ( ! function_exists('get_client_ip_browser'))
+{
+    /**
+     * 取得使用者的IP資訊與瀏覽器資訊
+     * @return String
+     */
+    function get_client_ip_browser()
+    {
+        return array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
     }
 }
 
@@ -182,7 +201,7 @@ if ( !function_exists("get_kals_base_url")) {
     /**
      * 取得KALS伺服器的根網址
      */
-    function get_kals_base_url() {
+    function get_kals_base_url($path = NULL) {
         $s = &$_SERVER;
         $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
         $sp = strtolower($s['SERVER_PROTOCOL']);
@@ -193,6 +212,13 @@ if ( !function_exists("get_kals_base_url")) {
         $uri = $protocol . '://' . $host . $port . base_url();
         $segments = explode('?', $uri, 2);
         $url = $segments[0];
+        
+        if (is_null($path) !== true) {
+            if (starts_with($path, '/')) {
+                $path = substr($path, 1);
+            }
+            $url = $url . $path;
+        }
         return $url;
     }
  }
@@ -296,8 +322,9 @@ if ( ! function_exists('kals_log'))
 
 /**
  * mobile_log
+ * 供Mobile使用的Log記錄檔案
  * @param $this->db, $action, array|$data, webpage_id
-*/
+ */
 if ( ! function_exists('kals_mobile_log'))
 {
     function kals_mobile_log($db, $webpage_id, $action, $data = array())

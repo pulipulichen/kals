@@ -28,6 +28,19 @@ Navigation_list.prototype._ui_menu = null;
 Navigation_list.prototype._$classname = null;
 
 /**
+ * 導覽類型
+ * 
+ * 類型包括：
+ * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+ * - profile: 以手動登入的使用者才會顯示
+ * - embed: 以內嵌登入的使用者才會顯示
+ * - anonymous: 未登入的使用者才會顯示
+ * - null: 不列入在目前的導覽列
+ * @type String
+ */
+Navigation_list.prototype._$nav_type = null;
+
+/**
  * 決定是否要顯示說明
  * @type {boolean} 
  */
@@ -64,8 +77,8 @@ Navigation_list.prototype._$create_ui = function () {
         .addClass('navigation-list');
     
     if (this._$classname !== null) {
-		_ui.addClass(this._$classname);
-	}
+        _ui.addClass(this._$classname);
+    }
     
     var _nav = this._create_nav();
     var _menu_button = this._create_menu();
@@ -73,72 +86,123 @@ Navigation_list.prototype._$create_ui = function () {
     _ui.append(_nav)
         .append(_menu_button);
     
+    //$.test_msg("Nav_list._$create_ui", _ui.html());
     return _ui;
 };
 
+/**
+ * 建立導覽列
+ * @returns {jQuery}
+ */
 Navigation_list.prototype._create_nav = function() {
     
     var _ui = $('<table align="right"><tbody><tr></tr></tbody></table>')
         .addClass('nav');
     
     var _tr = _ui.find('tr:first');
-    var _this = this;
+    //var _this = this;
     for (var _i in this._$nav_items) {
-        var _content = this._get_window_content(_i); 
-        
         var _td = $('<td></td>')
             .addClass('item')
             .appendTo(_tr);
         
-        //if (_i === 0)
-        //    _td.addClass('first');
+        var _content = this._get_window_content(_i); 
         
-        var _a = $('<a href="#"></a>')
-            .appendTo(_td)
-            .addClass(_content.name)
-            .attr('content_index', _i);
-
-        if ($.isset(_content.nav_heading)) {
-            KALS_context.lang.add_listener(_a, _content.nav_heading);
+        var _a;
+        
+        //$.test_msg("nav item " + _i + " content ", _content === null);
+        if ($.is_null(_content) === false
+                && _content.nav_item !== undefined 
+                && $.is_boolean(_content.nav_item) 
+                && _content.nav_item === true) {
+            //$.test_msg("nav item " + _i, 1);
+            _a = this._create_nav_item(_content, _i);
+            //$.test_msg("Nav_list._create_nav_item", _a.html());
         }
-        else if ($.isset(_content._$nav_heading)) {
-            _content._lang_filter();
-            KALS_context.lang.add_listener(_a, _content._$nav_heading);
+        else {
+            //$.test_msg("nav item " + _i, 2);
+            _a = this._create_window_nav_item(_content, _i);
         }
         
-        _a.click(function() {
-            
-            var _i = $(this).attr('content_index');
-            //var _content = _this._$nav_items[_i];
-            var _content = _this._get_window_content(_i);
-            
-			if (_content.is_absolute() === false) {
-                //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
-
-                            //KALS_window.setup_window(_content);
-                            _content.open();
-			}
-			else {
-                            //KALS_util.confirm('test', "content");
-                            _content.open();
-			}
-            
-            return false;
-        });
+        _a.appendTo(_td);
     }
     
     if (this._$show_help === true) {
         this._setup_help().appendTo(_tr);
     }
 	
-	// 插入錯誤回報功能
-	if (this._$show_feedback === true) {
+    // 插入錯誤回報功能
+    if (this._$show_feedback === true) {
         this._setup_feedback().appendTo(_tr);
     }
     
-	_ui.find('td:last').addClass('last');
+    _ui.find('td:last').addClass('last');
     
     return _ui;
+};
+
+/**
+ * 建立Windows_content系列的按鈕
+ * @param {type} _i
+ * @returns {jQuery}
+ */
+Navigation_list.prototype._create_window_nav_item = function (_content, _i) {
+        
+    //if (_i === 0)
+    //    _td.addClass('first');
+
+    var _a = $('<a href="#"></a>')
+        .addClass(_content.name)
+        .attr('content_index', _i);
+
+    if ($.isset(_content.nav_heading)) {
+        //$.test_msg("Nav_list._create_window_nav_item() nav_heading", _content.nav_heading);
+        KALS_context.lang.add_listener(_a, _content.nav_heading);
+    }
+    else if ($.isset(_content._$nav_heading)) {
+        //$.test_msg("Nav_list._create_window_nav_item() _$nav_heading", _content._$nav_heading);
+        _content._lang_filter();
+        KALS_context.lang.add_listener(_a, _content._$nav_heading);
+    }
+
+    var _this = this;
+    _a.click(function() {
+
+        var _i = $(this).attr('content_index');
+        //var _content = _this._$nav_items[_i];
+        var _content = _this._get_window_content(_i);
+
+        if (typeof(_content.callback) === "function") {
+            _content.callback();
+        }
+        else if (_content.is_absolute() === false) {
+            //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
+            //KALS_window.setup_window(_content);
+            _content.open();
+        }
+        else {
+            //KALS_util.confirm('test', "content");
+            _content.open();
+        }
+
+        return false;
+    });
+    
+    return _a;
+};
+
+/**
+ * 建立Navigation系列的按鈕
+ * @param {Navigation_item} _content
+ * @param {Number} _i
+ * @returns {jQuery}
+ */
+Navigation_list.prototype._create_nav_item = function  (_content, _i) {
+    var _ui = _content.get_ui();
+    _ui.attr("content_index", _i);
+    //$.test_msg("Nav_list._create_nav_item", _ui.html());
+    return _ui.clone(true);
+    //return _content.get_ui();
 };
 
 /**
@@ -191,17 +255,17 @@ Navigation_list.prototype._setup_feedback = function () {
 
 Navigation_list.prototype._get_window_content = function (_index) {
     
-    if (typeof(this._$nav_items[_index]) == 'undefined') {
+    if (typeof(this._$nav_items[_index]) === 'undefined') {
 		return null;
 	}
 	else 
-		if (typeof(this._$nav_items[_index]) == 'string') {
+		if (typeof(this._$nav_items[_index]) === 'string') {
 			var _window_content = this._$nav_items[_index];
 			eval('var _content = new ' + _window_content + '()');
 			return _content;
 		}
 		else 
-			if (typeof(this._$nav_items[_index]) == 'object') {
+			if (typeof(this._$nav_items[_index]) === 'object') {
 				_window_content = this._$nav_items[_index];
 				return _window_content;
 			}
@@ -266,7 +330,32 @@ Navigation_list.prototype._create_menu = function() {
  * @type {Array|KALS_window}
  */
 Navigation_list.prototype.get_nav_items = function () {
-	return this._$nav_items;
+    return this._$nav_items;
+};
+
+/**
+ * 從KALS_config.navigation取得資料，加入_$nav_items中
+ * @returns {Navigation_list}
+ */
+Navigation_list.prototype._init_module_nav_items = function () {
+    var _nav_type = this._$nav_type;
+    
+    if (typeof(_nav_type) !== "string") {
+        return this;
+    }
+    
+    //return this;
+    
+    var _list = KALS_context.navigation.get_list(_nav_type);
+    
+    //$.test_msg("_init_module_nav_items", _list.length);
+    for (var _i in _list) {
+        //$.test_msg("_init_module_nav_items", _i);
+        var _item = _list[_i];
+        this._$nav_items.push(_item);
+    }
+    
+    return this;
 };
 
 /* End of file Navigation_list */

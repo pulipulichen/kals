@@ -37,6 +37,8 @@ class generic extends Web_apps_controller {
         /**
          * 基本工具類
          * 
+         * 以下檔案不需要壓縮了，已經壓縮完成了
+         * 
          * 20130221 Pulipuli Chen
          * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
          * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
@@ -44,6 +46,10 @@ class generic extends Web_apps_controller {
          * http://refresh-sf.com/yui
          * 
          * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
+         * 
+         * 20140223 Pudding Chen
+         * 我改用NetBeans的Minify JS壓縮，這是NetBeans的plugin
+         * 
          * @var Array 
          */
         "toolkit_list" => array(
@@ -56,6 +62,8 @@ class generic extends Web_apps_controller {
             , 'libraries/min/yui-min'
             , 'libraries/min/jQuery_mousewheel_plugin-min'
             , 'libraries/min/jquery.scrollIntoView-min'
+            , 'libraries/min/jquery.storageapi.min'
+            , 'libraries/min/lz-string-1.3.3-min'
         ),
         
         /**
@@ -64,6 +72,7 @@ class generic extends Web_apps_controller {
          */
         "toolkit_list_package" => array(
             'core/KALS_CONFIG'
+            , 'core/KALS_SITE_REFORM'
             , 'core/KALS_language_param'
             , 'core/feedback/feedback'
             , 'core/feedback/html2canvas'
@@ -105,10 +114,13 @@ class generic extends Web_apps_controller {
             'core/URL_hash_dispatcher',
             'core/Style_manager',
             'core/Overlay_manager',
+            'core/KALS_storage',
+            'core/Site_reform',
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',
-            'core/Context_custom_type',
+            'core/Context_predefined_type',
+            'core/KALS_module_manager',
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',
@@ -129,6 +141,7 @@ class generic extends Web_apps_controller {
             'kals_window/Window_user_interface',
             'kals_window/Window_change_link',
 
+            'navigation/Navigation_item',
             'navigation/Navigation_list',
 
             'navigation/Anonymous_navigation',
@@ -667,12 +680,14 @@ class generic extends Web_apps_controller {
 
     function load_css($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
 
         $file_path = './system/application/views/'.$this->dir.$path;
         //test_msg($file_path, is_file($file_path));
@@ -683,7 +698,9 @@ class generic extends Web_apps_controller {
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
+        $base_url = trim($base_url);
         $style = str_replace('${base_url}', $base_url, $style);
 
         send_css_header($this->output);
@@ -692,24 +709,29 @@ class generic extends Web_apps_controller {
     
     function load_css_release($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
 
         $file_path = './system/application/views/'.$this->dir.$path;
         //test_msg($file_path, is_file($file_path));
-        if (is_file($file_path) == FALSE)
+        if (is_file($file_path) == FALSE) {
             return;
+        }
 
 
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
 
         send_css_header($this->output);
         $this->load->view($this->release_dir.'display', array('data'=>$style));

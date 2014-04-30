@@ -733,12 +733,14 @@ class Annotation_getter extends Web_apps_controller {
         $array_data = NULL;
         if (is_string($json)){
             $array_data = json_to_array($json);
-        }else{
+        }
+        else {
             $array_data = (array) $json;
         }
         $user_id = NULL;
-        if (isset($user)){
-        $user_id = $user->get_id();}
+        if (isset($user)) {
+            $user_id = $user->get_id();
+        }
 
         $action = 12;
         if (isset($data->topic_id)
@@ -830,7 +832,7 @@ class Annotation_getter extends Web_apps_controller {
                 }
                 break;
            case "annotation_type": //標註類型
-                $search->set_target_type(intval($data->keyword));
+                $search->set_target_type($data->keyword);
                 break;
             case "annotation_anchor":
                 $search->set_search_anchor_text($data->keyword);

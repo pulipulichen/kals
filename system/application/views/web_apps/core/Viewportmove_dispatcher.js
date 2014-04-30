@@ -22,10 +22,13 @@ function Viewportmove_dispatcher() {
     
     var _this = this;
     var _event = function(){
-        if (typeof($viewport_trigger) != 'undefined') {
+        if (typeof($viewport_trigger) !== 'undefined') {
             clearTimeout($viewport_trigger);
         }
+        
         $viewport_trigger = setTimeout(function () {
+            //$.test_msg('viewportmove event', {height: $.is_small_height(), width: $.is_small_width()});
+            
             _this.set_changed();
             _this.notify_listeners();
             clearTimeout($viewport_trigger);

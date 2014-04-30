@@ -185,7 +185,6 @@ Selection.prototype.get_offset_top = function () {
 };
 
 Selection.prototype.get_offset_bottom = function () {
-    
     var _scope_coll = this.get_scope_coll();
     var _bottom = this._text.get_offset_bottom(_scope_coll);
     return _bottom;
@@ -264,14 +263,14 @@ Selection.prototype._scroll_lock = false;
  */
 Selection.prototype.scroll_into_view = function (_callback) {
     
-    $.test_msg("Selection.scroll_into_view", this._$name);
-    return;
+    //$.test_msg("Selection.scroll_into_view", this._$name);
+    //return;
     
     if (this._scroll_lock === true) {
-            return;
+        //$.test_msg("!!!!!!!!!Selection.scroll_into_view _scoll_lock === true", this._$name);
+        $.trigger_callback(_callback);
+        return this;
     }
-    
-    this._scroll_lock = true;
     
     //var _x = this.get_offset_left();
     var _y = this.get_offset_top();
@@ -283,6 +282,7 @@ Selection.prototype.scroll_into_view = function (_callback) {
     */
     
     if ($.is_null(_y)) {
+        $.trigger_callback(_callback);
         return this;
     }
     
@@ -295,30 +295,30 @@ Selection.prototype.scroll_into_view = function (_callback) {
     */
     if ($.isset(_y)) {
         _y = _y - KALS_toolbar.get_height() - 100;
-        
         //$.test_msg('Selection.scroll_into_view()', [this._$name, _y, KALS_toolbar.get_height()]);
-        
         _config.y = _y;
     }
     
+    //$.test_msg("要準備捲動囉", _config);
+    
     var _this = this;
+    this._scroll_lock = true;
     $.scroll_to(_config, 200, function () {
-        
         _this._scroll_lock = false;
-        
         $.trigger_callback(_callback);
     });
     
+    return this;
 };
 
 Selection.prototype.equals = function (_scope_coll) {
     
     if (this._scope_coll === null || _scope_coll === null) {
-		return false;
-	}
-	else {
-		return this._scope_coll.equals(_scope_coll);
-	}
+        return false;
+    }
+    else {
+        return this._scope_coll.equals(_scope_coll);
+    }
 };
 
 /* End of file Selection */

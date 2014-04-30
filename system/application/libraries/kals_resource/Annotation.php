@@ -189,14 +189,14 @@ class Annotation extends KALS_resource {
         return $this->type_factory->create($type_id);
     }
 
-    
-  /*  {
+    /*
+    public function get_type_id()
+    {
         $type_id = $this->get_field('annotation_type_id');
         $type_id = intval($type_id);
-        
         return $type_id;
-    }*/
-     
+    }
+     */
 
     public function set_note($value)
     {
@@ -225,11 +225,6 @@ class Annotation extends KALS_resource {
         return $this->get_field('note');
     }
 
-    /**
-     * 
-     * @return $timestamp
-     */
-    
     public function get_create_timestamp()
     {
         //$timestamp = $this->get_field('create_timestamp');
@@ -255,8 +250,6 @@ class Annotation extends KALS_resource {
             $timestamp = $row['timestamp'];
         }        
         return $timestamp;
-        
-    
     }
 
     public function get_update_epoch()
@@ -350,7 +343,7 @@ class Annotation extends KALS_resource {
     public function get_topic_respond_coll()
     {
         if (is_null($this->topic_responded_coll) && $this->is_respond() === FALSE) {
-            
+            $this->_CI_load('library', 'search/Search_annotation_collection', 'search_annotation_collection');
             $coll = new Search_annotation_collection();
             // 取得topic之外的annotation(res)
             $coll->set_target_topic_id($this->get_id());

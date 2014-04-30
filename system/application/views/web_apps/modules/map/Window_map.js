@@ -139,12 +139,13 @@ Window_map.prototype._$create_ui = function () {
                     var _href = _this.attr("href");
                     //$.test_msg("map-heaer", [$(_id).length, _id]);
 					
-                    var _offset = $(_href).offset();
-					if (_offset.top > 60) {
-						setTimeout(function () {
-	                        $(window).scrollTop(_offset.top - 60);
-	                    }, 0);
-					}
+                    //var _offset = $(_href).offset();
+                    var _offset = $.get_offset(_offset);
+                    if (_offset.top > 60) {
+                        setTimeout(function () {
+                            $(window).scrollTop(_offset.top - 60);
+                        }, 0);
+                    }
 	                
 					//記錄資料
 					var _action = "29";	//29=小地圖點選章節標題，note={index:1, title:"標題內文"}
@@ -162,7 +163,8 @@ Window_map.prototype._$create_ui = function () {
 					KALS_util.log(_action, _note);
                 });
 		
-		_header_array[_count] = _header.offset().top;		
+		//_header_array[_count] = _header.offset().top;		
+                _header_array[_count] = $.get_offset_top(_header);
 		
 		
 		//判斷上一個_level是否相同
@@ -170,9 +172,10 @@ Window_map.prototype._$create_ui = function () {
 			_li.addClass("map-header");
 			_li.appendTo(_map_ol);
 			
-			_map_array[_count] = _li.offset().top;
+			//_map_array[_count] = _li.offset().top;
+                        _map_array[_count] = $.get_offset_top(_li);
 		}
-		else if (_level != _last_level && _last_level_number < _level_number) {
+		else if (_level !== _last_level && _last_level_number < _level_number) {
 			_li.addClass("map-header");
 			
 			var _last_li = _map_ol.find("li."+_last_level+":last");
@@ -182,31 +185,32 @@ Window_map.prototype._$create_ui = function () {
 			}
 			_li.appendTo(_last_li_ul);
 			
-			_map_array[_count] = _li.offset().top;
-			
-			
+			//_map_array[_count] = _li.offset().top;
+                        _map_array[_count] = $.get_offset_top(_li);
 		}
-		else if (_level != _last_level && _last_level_number > _level_number) {
+		else if (_level !== _last_level && _last_level_number > _level_number) {
 			_li.addClass("map-header");
 			
 			_last_li = _map_ol.find("li."+_level+":last");
 			_li.insertAfter(_last_li);
 			
-			_map_array[_count] = _li.offset().top;
+			//_map_array[_count] = _li.offset().top;
+                        _map_array[_count] = $.get_offset_top(_li);
 		}
-		else if (_level != "H1" && _level == _last_level) {
+		else if (_level !== "H1" && _level === _last_level) {
 			_last_li = _map_ol.find("li."+_level+":last");
 			_li.addClass("map-header");
 			_li.insertAfter(_last_li);
 			
-			_map_array[_count] = _li.offset().top;
-			
+			//_map_array[_count] = _li.offset().top;
+			_map_array[_count] = $.get_offset_top(_li);
 		}
 		else {
 			_li.addClass("map-header");
 			_li.appendTo(_map_ol);
 			
-			_map_array[_count] = _li.offset().top;
+			//_map_array[_count] = _li.offset().top;
+                        _map_array[_count] = $.get_offset_top(_li);
 		}
 		
 		_last_level_number = _level_number;
@@ -226,16 +230,17 @@ Window_map.prototype._$create_ui = function () {
 		var _offset = $( window ).scrollTop();
 		
 		_count = 0;
-		_first_top = null;
+		var _first_top = null;
 		
 		_map.find('.map-header').each(function (_key, _ele) {
 			
 			if (_count === 0) {
-				_first_top = $(_ele).offset().top;
+                            //_first_top = $(_ele).offset().top;
+                            _first_top = $.get_offset_top($(_ele));
 			}
 			
 			if( _offset >= _header_array[_count]-10 
-				&& ( (_header_array.length == _count+1) || (_offset < _header_array[_count+1]-10) ) ){
+				&& ( (_header_array.length === _count+1) || (_offset < _header_array[_count+1]-10) ) ){
 				
 				$(_ele).addClass("highlight");
 				
@@ -244,7 +249,8 @@ Window_map.prototype._$create_ui = function () {
 				
 				var _div = _map;
 				//.parents(".dialog-content:first");
-				var _top = $(_ele).offset().top;
+				//var _top = $(_ele).offset().top;
+                                var _top = $.get_offset_top($(_ele));
 				_top = _top - _first_top;
 				
 				if (_map.hasClass('focus') === false) {

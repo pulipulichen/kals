@@ -44,6 +44,10 @@
     margin-bottom: 10px;
 }
 
+.KALS.dialog-modal .dialog-table {
+    margin-bottom: 0;
+} 
+
 .KALS .dialog-toolbar-tr,
 .KALS .dialog-toolbar-table {
     height: 36px;
@@ -92,14 +96,12 @@
 }
 
 .KALS.window .dialog-toolbar .button.dialog-option {
-	
-	/**
-	 * @copyright 20130608 Pudding Chen
-	 */
+    /**
+     * @copyright 20130608 Pudding Chen
+     */
     line-height: 30px;
     height: 30px;
-	
-	padding: 0 0.2em;
+    padding: 0 0.2em;
 }
 
 .KALS .dialog-toolbar tr td {
@@ -135,6 +137,7 @@
 
 .KALS .toolbar-options .dialog-option {
     font-size: 0.7em;
+    font: 70% arial,helvetica,clean,sans-serif;
     min-height: 0;
     height: 30px;
     line-height: 30px;
@@ -160,7 +163,9 @@
     margin-right: 3px;
 }
 
-.KALS .button.dialog-option {
+.KALS .button.dialog-option,
+.KALS .kals-view button,
+.KALS .kals-view .button {
     cursor:pointer;
     margin: 0;
     
@@ -178,6 +183,7 @@
     /*font-weight: bold;*/
     outline: medium none;
     font-size: 0.7em;
+    font: 70% arial,helvetica,clean,sans-serif;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;
