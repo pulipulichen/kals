@@ -105,6 +105,7 @@ $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
 $lang['web_apps.toolbar.navigation_list.help'] = '說明';
 $lang['web_apps.toolbar.navigation_list.feedback'] = '回報';
 
+$lang['web_apps.window.content.domain'] = '登入網站';
 $lang['web_apps.window.content.email'] = '電子信箱位址';
 $lang['web_apps.window.content.name'] = '名字';
 $lang['web_apps.window.content.locale'] = '語系';
@@ -265,7 +266,7 @@ $lang['web_apps.note.ckeditor.edit_hint'] = '如果編輯器無法選取，請�
 
 $lang['web_apps.list_collection.loading'] = '讀取中…';
 $lang['web_apps.list_collection.blank'] = '沒有標註';
-$lang['web_apps.list_collection.complete'] = '沒有其他標註了';
+$lang['web_apps.list_collection.complete'] = '這個位置沒有其他標註了';
 
 /**
  * List_menu

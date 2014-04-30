@@ -1335,8 +1335,9 @@ class Generic_object extends KALS_object {
         $obj->update();
 
         //加入快取
-        if ($this->use_cache)
+        if ($this->use_cache) {
             set_cache($obj, $cache_cond);
+        }
         return $obj;
     }
 

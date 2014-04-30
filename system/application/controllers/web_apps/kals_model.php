@@ -163,7 +163,6 @@ class KALS_model extends Web_apps_controller {
      * @return String
      */
     public function request_get ($json = NULL, $callback = NULL) {
-        
         // 取得資料
         $data = $this->_retrieve_get_json($json);
         if (is_null($data)) {
@@ -189,9 +188,8 @@ class KALS_model extends Web_apps_controller {
             $action = $data['_action'];
             if (method_exists($this, $action)) {
                 $data = $this->$action($data);
-                //test_msg("data 1", $data);
+                
                 $data = $this->_object_export($data);
-                //test_msg("data 2", $data);
             }
         }
         
@@ -209,18 +207,14 @@ class KALS_model extends Web_apps_controller {
             $strip_fields = array(
                 '_action', '_enable_debug', '_enable_cache'
             );
-            
-                //test_msg("data 3", $data);
 
             $output_data = array();
             foreach ($data AS $field => $value) {
-                //test_msg("field", array( $field, in_array($field, $strip_fields, TRUE)  ) );
+                // 加上TRUE，表示in_array有比對資料型態
                 if (!in_array($field, $strip_fields, TRUE)) {
                     $output_data[$field] = $value;
                 }
             }
-            
-                //test_msg("data 4", $output_data);
             
             // 最終回傳資料
             //test_msg($output_data);

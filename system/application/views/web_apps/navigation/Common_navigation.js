@@ -32,19 +32,38 @@ function Common_navigation() {
             new Window_filter()
             , new Window_map()
             , _search_recent
-            , new Dashboard()
-            , _guide_nav
+            
+            //, new Dashboard()
+            
+            //, _guide_nav
             //, new Reading_guide()
             //, KALS_text.guide
             //_search
-			, new Annotation_navigation_map()
+            
+            //, new Annotation_navigation_map()
         ];
+        
+        this._init_module_nav_items();
     }
 }
 
 Common_navigation.prototype = new Navigation_list();
 
 Common_navigation.prototype._$classname = 'common-navigation';
+
+/**
+ * 導覽類型
+ * 
+ * 類型包括：
+ * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+ * - login: 已經登入的使用者就會顯示
+ * - profile: 以手動登入的使用者才會顯示
+ * - embed: 以內嵌登入的使用者才會顯示
+ * - anonymous: 未登入的使用者才會顯示
+ * - null: 不列入在目前的導覽列
+ * @type String
+ */
+Common_navigation.prototype._$nav_type = "common";
 
 Common_navigation.prototype._$create_ui = function () {
     

@@ -205,7 +205,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     // ------------------------------------
     
     // 是否啟用快取
-    var _cache_enable = false;
+    var _cache_enable = KALS_CONFIG.selectable_text_cache;
     //_cache_enable = false;
     
     var _task_setup_selectable_element = function (_callback) {
@@ -481,7 +481,6 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     // 是章節嗎？
                     if ($.inArray(_node_name.toLowerCase(), _chapter_tag_names) !== -1) {
                         _selectable_text_chapter.add_structure(_child_obj);
-                        //$.test_msg("章節標題", _child_obj.innerText);
                     }
                 }   
                 else if (typeof(_node_name) === 'string'

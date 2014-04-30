@@ -217,6 +217,7 @@
     font-weight: bold;
     outline: medium none;
     font-size: 0.8em;
+    font: 80% arial,helvetica,clean,sans-serif;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;

@@ -111,6 +111,10 @@ if ( ! function_exists('create_json_excpetion'))
 
 if ( ! function_exists('get_client_ip'))
 {
+    /**
+     * 取得使用者的IP資訊
+     * @return String
+     */
     function get_client_ip()
     {
         $myip = NULL;
@@ -121,6 +125,21 @@ if ( ! function_exists('get_client_ip'))
             $myip = $myip[0];
         }
         return $myip;
+    }
+}
+
+if ( ! function_exists('get_client_ip_browser'))
+{
+    /**
+     * 取得使用者的IP資訊與瀏覽器資訊
+     * @return String
+     */
+    function get_client_ip_browser()
+    {
+        return array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
     }
 }
 
@@ -182,7 +201,7 @@ if ( !function_exists("get_kals_base_url")) {
     /**
      * 取得KALS伺服器的根網址
      */
-    function get_kals_base_url() {
+    function get_kals_base_url($path = NULL) {
         $s = &$_SERVER;
         $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
         $sp = strtolower($s['SERVER_PROTOCOL']);
@@ -193,6 +212,13 @@ if ( !function_exists("get_kals_base_url")) {
         $uri = $protocol . '://' . $host . $port . base_url();
         $segments = explode('?', $uri, 2);
         $url = $segments[0];
+        
+        if (is_null($path) !== true) {
+            if (starts_with($path, '/')) {
+                $path = substr($path, 1);
+            }
+            $url = $url . $path;
+        }
         return $url;
     }
  }
@@ -283,6 +309,81 @@ if ( ! function_exists('kals_log'))
             }
         }
             
+
+        $db->insert('log', array(
+            'webpage_id' => $webpage_id,
+            'user_id' => $user_id,
+            'user_ip' => get_client_ip(),
+            'action'=> $action,
+            'note'=>$note
+        ));
+    }
+}
+
+/**
+ * mobile_log
+ * 供Mobile使用的Log記錄檔案
+ * @param $this->db, $action, array|$data, webpage_id
+ */
+if ( ! function_exists('kals_mobile_log'))
+{
+    function kals_mobile_log($db, $webpage_id, $action, $data = array())
+    {
+        
+       
+       /* 不使用get_context_webpage()->get_id()來取webpage_id 
+        $url = get_referer_url(FALSE);
+        $webpage_id = NULL;
+        if ($url !== FALSE)
+        {
+            
+            //$CI =& get_instance();
+            //if (isset($CI->webpage) == FALSE || is_null($CI->webpage))
+            //    $CI->load->library('kals_resource/Webpage');
+            //$webpage_id = $CI->webpage->filter_webpage_id($url);
+             
+            $webpage_id = get_context_webpage()->get_id();
+        }*/
+        
+        $user_id = NULL;
+        $note = NULL;
+
+        if (is_array($data) && 
+                (isset($data['user_id']) || isset($data['memo']) ) ) {
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
+            }
+            if (isset($data['memo']))
+            {
+                $note = $data['memo'];
+                if (is_array($note) || is_object($note)) {
+                    $note = json_encode($note);
+                }
+
+                if ($note === '') {
+                    $note = NULL;
+                }
+            }
+        }
+        else {
+            if (defined("JSON_UNESCAPED_UNICODE")) {
+                $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            else {
+                $note = kals_json_encode($data);
+            }
+        }
+        
+        if (is_null($user_id) || $user_id == '') {
+            $user = get_context_user();
+            if (isset($user)) {
+                $user_id = $user->get_id();
+            }
+            
+            if (is_null($user_id) || $user_id == "") {
+                $user_id = NULL;
+            }
+        }
 
         $db->insert('log', array(
             'webpage_id' => $webpage_id,

@@ -142,7 +142,7 @@ class Api extends Controller {
         // ---------------
         // 實作開始
         // ---------------
-        
+        $this->webpage->get_all_webpages();
         return $list;
     }
     

@@ -340,7 +340,7 @@ KALS_controller.prototype.open = function (_callback) {
         //this.debug('open', [this._$open_request_action, this.get_data()]);
         //return;
         this.request('get', this._$open_request_action, {}, function (_data) {
-            _this.debug('VIEW, open data', _data);
+            //_this.debug('VIEW, open data', _data);
             _this.set_data(_data);
             KALS_modal.prototype.open.call(_this, _callback);
         });
@@ -378,7 +378,7 @@ KALS_controller.prototype.close = function (_callback) {
 };
 
 /**
- * 以GET方式，根伺服器取得資料
+ * 以GET方式，跟伺服器取得資料
  * @param {String} _action
  * @param {JSON} _data
  * @param {function} _callback

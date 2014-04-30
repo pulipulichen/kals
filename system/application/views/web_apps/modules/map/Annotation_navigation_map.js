@@ -15,7 +15,6 @@
  */
 function Annotation_navigation_map() {
     KALS_controller_window.call(this);
-    //12121
     
     //this.init_tabs();
 }
@@ -57,6 +56,8 @@ Annotation_navigation_map.prototype._$view = 'modules/map/view/Annotation_naviga
  * @return {KALS_controller}
  */
 Annotation_navigation_map.prototype._$initialize_view = function () {
+    //$.test_msg("Annotation_navigation_map 初始化");
+    
     this.init_tabs();
 };
 
@@ -65,6 +66,12 @@ Annotation_navigation_map.prototype._$initialize_view = function () {
  * Model設定
  * ====================
  */
+
+/**
+ * 指定Model的名稱
+ * @type String
+ */
+Annotation_navigation_map.prototype.name = 'annotation_navigation_map';
 
 /**
  * 指定Model
@@ -149,7 +156,7 @@ Annotation_navigation_map.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-Annotation_navigation_map.prototype._$absolute = false;
+Annotation_navigation_map.prototype._$absolute = true;
 
 /**
  * 視窗的Class Name
@@ -184,6 +191,40 @@ Annotation_navigation_map.prototype._$width = 400;
  * @type Number 單位是px，null表示不設定
  */
 Annotation_navigation_map.prototype._$height = null;
+
+/**
+ * 導覽列相關的設定
+ * @type JSON
+ */
+Annotation_navigation_map.prototype.nav_config = {
+    /**
+     * 顯示資料
+     * @type Boolean
+     */
+    display: true,
+    
+    /**
+     * 決定顯示導覽列的位置
+     * 
+     * 類型包括：
+     * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+     * - login: 已經登入的使用者就會顯示
+     * - profile: 以手動登入的使用者才會顯示
+     * - embed: 以內嵌登入的使用者才會顯示
+     * - anonymous: 未登入的使用者才會顯示
+     * @type String
+     */
+    nav_type: "common",
+    
+    /**
+     * 排序順序
+     * 
+     * 數字越大，越往左邊靠
+     * 數字最小的是1
+     * @type Number
+     */
+    order: 1
+};
 
 /**
  * ====================
@@ -298,7 +339,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     if (_navigation.hasAttr("custom-name")) {
         _query_type = _navigation.attr("custom-name");
     }
-    $.test_msg("current-type", _current_type);
+    //$.test_msg("current-type", _current_type);
     
     
     var _chapter = KALS_text.selection.text.chapter;
@@ -386,7 +427,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     
     this.find(".list").css("display", "none");
     
-    $.test_msg(".list.type-"+_current_type);
+    //$.test_msg(".list.type-"+_current_type);
     
     
     var _lists = [];
@@ -425,7 +466,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
  * @param {jQuery} 目前顯示的表單
  */
 Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _type_id, _type_name, _list) {
-    $.test_msg("get_heading_data", _data);
+    //$.test_msg("get_heading_data", _data);
     
     
     var _types = this.get_annotation_types(); //取得所有標註的種類 
@@ -454,7 +495,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         
         var _list_item = $("<li></li>");
         
-        $.test_msg("[_heading_count]"+_heading_number);
+        //$.test_msg("[_heading_count]"+_heading_number);
         
         //_list_item.html("<div class='list-header-component'>" + _heading_text + " <span class='current-type'>"+ _current_type+"</span> </div>");
         
@@ -464,7 +505,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         
         var _heading_div = $("<div class='list-header-component'></div>");
         var _heading_text = _heading_list[_heading_number].text();
-        var _heading_btn = $("<span type-id='" + _type_id + "' heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
+        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
         //var _heading_offset = $(".kals-heading-"+_heading_number ).offset().top;
 
         _heading_btn.click(function () {
@@ -481,13 +522,13 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         //_list_item.append("<div class='list-header-component other-type'></div>");
 
         //var _heading_annotations = _data[_heading_number];
-        $.test_msg("[_heading_annotations]"+_heading_annotations);
+        //$.test_msg("[_heading_annotations]"+_heading_annotations);
         var _current_type_container = _list_item.find(".current-type");
         //var _other_type_container = _list_item.find(".other-type");
         
         var _annotation_type_count = _heading_annotations;
         var _annotation_type_name = _type_name;
-        $.test_msg("[_annotation_type_count]"+_annotation_type_count);
+        //$.test_msg("[_annotation_type_count]"+_annotation_type_count);
         
         
         var _button = $("<span class='" + _type_classes [_annotation_type_name] 
@@ -522,16 +563,8 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
 Annotation_navigation_map.prototype.heading_click_event = function (_btn) {
     var _current_heading_number = $(_btn).attr("heading-id");
     var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
-    $.test_msg("[_heading_offset]"+_heading_offset);
+    //$.test_msg("[_heading_offset]"+_heading_offset);
     $(window).scrollTop(_heading_offset-50);
-
-    var _type_id_selected = $(_btn).attr("type-id");
-
-    KALS_context.search.search({
-        search_range: "annotation_type",
-        keyword:_type_id_selected,
-        order_by: "update|create"
-    }, false);
 
     // 關掉標註地圖
     this.close();
@@ -774,13 +807,16 @@ Annotation_navigation_map.prototype.change_tab_heading = function (_ele) {
     this.set_field("annotation_map_heading",  _heading_array);
 };
 
-
+/**
+ * 初始化標註類型
+ * @returns {undefined}
+ */
 Annotation_navigation_map.prototype.init_tabs = function () {
 
     var _types = this.get_annotation_types();
     
-   
-
+    //var _ui = this.get_ui().css("border", "3px solid red").appendTo("body");
+    //$.test_msg("Annotation_navigation_map.init_tabs()");
     //var _types_name = 'web_apps.annotation.type'._types;  
     
     var _btn_array = [];
@@ -854,33 +890,22 @@ Annotation_navigation_map.prototype.init_tabs = function () {
 
     this.find(".list").css("display", "none");
     
-    
+    //$.test_msg("anno map", this.find(".list").length);
     
     // get_annotation_types()
     
     this.set_field("annotation_type",  _btn_array);
     
     this.set_field("");
-    
-    
-    var _instruction = ("<span class='map-instruction'>這是說明</span>");
-    this.set_field("annotation_map_instruction", _instruction);
-    
-    
+
     //var _this = this;
     //setTimeout(function () {
         this.find(".list-header-component .type-navigation.type-option:first").click();
     //}, 100);
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
+    
+    //$.test_msg("Annotation_navigation_map.init_tabs() end");
 };
-
-/**
- * 獨立視窗
- * 
- * 如果是false，則會依附在KALS_window底下
- * 如果是true，則會直接open
- */
-Annotation_navigation_map.prototype._$absolute = true;
 
 /* End of file Annotation_navigation_map */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_navigation_map.js */

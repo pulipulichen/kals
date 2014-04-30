@@ -54,11 +54,12 @@ KALS_util.ajax_get = function (_config) {
         _url = _url + 'callback=?';
     }
     
-    if (_url.indexOf('http') === 0 || _url.indexOf('%22') === 0) {
-        $.test_msg('ajax get exception', 'KALS_util.ajax_get try to load exception url: ' + _url);
-        //throw ;
-        return this;
-    }
+	if (_url.indexOf('http') === 0 
+                || _url.indexOf('%22') === 0) {
+            $.test_msg('ajax get exception', 'KALS_util.ajax_get try to load exception url: ' + _url);
+            //throw ;
+            return this;
+	}
 	
     if (typeof(KALS_context) !== 'undefined') {
         //while ($.starts_with(_url, '/'))
@@ -96,7 +97,9 @@ KALS_util.ajax_get = function (_config) {
         return this;
     }
     
-    $.test_msg('ajax_get', _url);
+    if (KALS_CONFIG.debug.ajax_get_message) {
+        $.test_msg('ajax_get', _url);
+    }
     
     var _retry_timer;
     //var _retry_exception = function () {
@@ -112,15 +115,13 @@ KALS_util.ajax_get = function (_config) {
         //    return;
         
         $.getJSON(_url, function (_data) {
-			
-			//if (typeof(_data.KALS_language) == "undefined"
-			//	&& (typeof(_data[0]) != "undefined" && typeof(_data[0].KALS_language) != "undefined")) {
+
                 if (KALS_context !== undefined
                     && KALS_context.completed === true) {
-						
-		            $.test_msg('ajax_get from ' + _url + ' \n return data', _data);
+		    if (KALS_CONFIG.debug.ajax_get_message) {			
+                        $.test_msg('ajax_get from ' + _url + ' \n return data', _data);
+                    }
                 }
-			//}
 			
 			
             if (typeof(_retry_timer) === 'undefined' 
@@ -202,7 +203,7 @@ KALS_util.ajax_get = function (_config) {
  */	
 KALS_util.ajax_post = function (_config) {
     //如果要檢查資料，請將_debug設為true
-    var _debug = false;
+    var _debug = KALS_CONFIG.debug.ajax_post;
     //_debug = true;
     
     var _url = $.get_parameter(_config, 'url');
@@ -402,8 +403,8 @@ KALS_util.ajax_upload = function (_config) {
                         'request_uri': _url
                     };
                     
-                    if (typeof(_data) === 'undefined'
-                        || typeof(_data.completed) === 'undefined') {
+                    if (typeof(_data) == 'undefined'
+                        || typeof(_data.completed) == 'undefined') {
 					    $.test_msg("show_exception 1");
                         _this.show_exception(_exception, _url);
                     }

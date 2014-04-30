@@ -70,6 +70,11 @@ $config['segmentor.default_for_search'] = 'segmentor.disable';    //預設搜尋
 // ※ 參數都是取到小數第三位喔！
 // --------
 
+/**
+ * 是否開啟推薦功能
+ */
+$config['reccommend_enable'] = FALSE;
+
 $config['fuzzy_inference_engine'] = 'closure_addition'; // closure_addition | zadeh
 
 /**
@@ -229,6 +234,7 @@ $config['langvar.location.membership_function_variables'] = array(
 );
 
 $config['langvar.location.tip.threshold'] = 3;    //要低於這個數字才給予建議
+
 
 /* End of file kals.php */
 /* Location: ./system/application/config/kals.php */

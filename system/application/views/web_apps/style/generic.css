@@ -20,6 +20,7 @@
     color: #383838;
     font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
     font-size: 1.1em;
+    font: 110% arial,helvetica,clean,sans-serif;
     
     -moz-border-radius: 8px !important;
     -webkit-border-radius: 8px;
@@ -77,10 +78,65 @@
 .KALS span, 
 .KALS.kals-model span {
     display: inline;
-	position: static;
+    position: static;
 }
 
 .KALS.info-box {
 	border: 1px solid gray;
 	color: gray;
+}
+
+/* -------- */
+/* font */
+.KALS {
+    font: 100% arial,helvetica,clean,sans-serif;
+}
+
+/**
+ * 為了配合KALS-moodle的設計
+ */
+.KALS div.hide,
+.KALS p.hide{
+    display: block;
+}
+
+.KALS span.hide {
+    display: inline;
+}
+
+.KALS li.hide {
+    display: list-item;
+}
+
+.KALS table.hide {
+    display: table;
+}
+
+.KALS caption.hide {
+    display: table-caption;
+}
+
+.KALS colgroup.hide {
+    display: table-column-group;
+}
+
+.KALS td.hide {
+    display: table-cell;
+}
+
+.KALS tr.hide {
+    display: table-row;
+}
+
+.KALS .header {
+    color: inherit;
+}
+
+.KALS th, .KALS td {
+    border: inherit;
+    padding: inherit;
+}
+
+.KALS p, .KALS fieldset, .KALS table, .KALS pre {
+    margin-bottom: auto;
 }

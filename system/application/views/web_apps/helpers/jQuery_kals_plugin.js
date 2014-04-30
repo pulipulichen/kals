@@ -958,7 +958,7 @@ jQuery.fn.extend({
             _max_width = _max_width * _scale;
             
             
-            if (_option == 'left') {
+            if (_option === 'left') {
                 if (_mobile_mode) {
                     _option = window.pageXOffset;
                     _option = _option + _offset;
@@ -967,7 +967,7 @@ jQuery.fn.extend({
                     _option = _offset;
                 }
             }
-            else if (_option == 'right') {
+            else if (_option === 'right') {
                
                _direction = 'right';
                if (_mobile_mode) {
@@ -981,7 +981,7 @@ jQuery.fn.extend({
                    _option = _offset;    
                }
             }
-            else if (_option == 'center') {
+            else if (_option === 'center') {
                 var _width = _this.width();
                 
                 var _padding_left = $.strip_unit(_this.css('padding-left'));
@@ -1025,15 +1025,15 @@ jQuery.fn.extend({
             
         }
         else {
-            if (_option == 'left') {
+            if (_option === 'left') {
                 _this.css('margin-left', 0)
                     .css('float', 'none');
             }
-            else if (_option == 'right') {
+            else if (_option === 'right') {
                 _this.css('margin-right', 0)
                     .css('float', 'right');
             }
-            else if (_option == 'center') {
+            else if (_option === 'center') {
                 _this.css('margin-right', 'auto')
                     .css('margin-left', 'auto')
                     .css('float', 'none');
@@ -1055,17 +1055,17 @@ jQuery.fn.extend({
      * - scale: 手機模式用的縮放比例
      */
     valign: function (_options) {
-        if (_options == 'top' || _options == 'middle' || _options == 'bottom') {
-			_options = {
-				option: _options
-			};
-		}
+        if (_options === 'top' || _options === 'middle' || _options === 'bottom') {
+            _options = {
+                    option: _options
+            };
+        }
         
         var _option = $.get_parameter(_options, 'option');
         
         if ($.is_null(_option)) {
-			return this;
-		}
+            return this;
+        }
             
         var _scale = $.get_parameter(_options, 'scale', 1);
         var _offset = $.get_parameter(_options, 'offset', 0);
@@ -1085,11 +1085,11 @@ jQuery.fn.extend({
         //if (_position != 'static')
         if (_this.is_layer()) {
             if (_mobile_mode) {
-				_this.css('position', 'absolute');
-			}
-			else {
-				_this.css('position', 'fixed');
-			}
+                _this.css('position', 'absolute');
+            }
+            else {
+                _this.css('position', 'fixed');
+            }
             
             //探測螢幕高度
             var _max_height = $.get_viewport_height();
@@ -1098,7 +1098,7 @@ jQuery.fn.extend({
             var _direction = 'top';
             
             
-            if (_option == 'top') {
+            if (_option === 'top') {
                 
                 if (_mobile_mode) {
                     _option = window.pageYOffset
@@ -1119,7 +1119,7 @@ jQuery.fn.extend({
                 }
                 
             }
-            else if (_option == 'middle') {
+            else if (_option === 'middle') {
                 var _height = _this.height();
                 
                 var _padding_top = $.strip_unit(_this.css('padding-top'));
@@ -1156,13 +1156,13 @@ jQuery.fn.extend({
             _this.css(_direction, _option + 'px');
         }
         else {
-            if (_option == 'top') {
+            if (_option === 'top') {
                 _this.css('margin-top', 0);
             }
-            else if (_option == 'bottom') {
+            else if (_option === 'bottom') {
                 _this.css('margin-bottom', 0);
             }
-            else if (_option == 'middle') {
+            else if (_option === 'middle') {
                 _this.css('margin-top', 0)
                     .css('margin-bottom', 0);
             }
@@ -1189,7 +1189,7 @@ jQuery.fn.extend({
     is_layer: function () {
         var _this = $(this);
         var _position = _this.css('position');
-        return (_position != 'static');
+        return (_position !== 'static');
     },
     /**
      * 是否顯示
@@ -1296,18 +1296,17 @@ jQuery.fn.extend({
         if ($.is_null(_scale)) {
 			_scale = 1;
 		}
-        if (_option == 'width' || _option == 'x') {
-			_this.fullscreen_width(_scale);
-		}
-		else 
-			if (_option == 'height' || _option == 'y') {
-				_this.fullscreen_height(_scale);
-			}
-			else {
-				_this.fullscreen_width(_scale);
-				_this.fullscreen_height(_scale);
-				
-			}
+        if (_option === 'width' || _option === 'x') {
+            _this.fullscreen_width(_scale);
+        }
+        else if (_option === 'height' || _option === 'y') {
+                _this.fullscreen_height(_scale);
+        }
+        else {
+                _this.fullscreen_width(_scale);
+                _this.fullscreen_height(_scale);
+
+        }
         return this;
     },
     restore: function () {
@@ -1814,14 +1813,20 @@ jQuery.mobile_mode = null;
 jQuery.is_mobile_mode = function () {
     if (this.mobile_mode === null) {
         var _this = this;
-		var _yui = YUI();
-		if (typeof(_yui.use) == "function") {
-			_yui.use("", function(Y){
-	            var _mode = (!$.is_null(Y.UA.mobile));
-	            _this.mobile_mode = _mode;
-	        });	
-		}
-        
+        try {
+            var _yui = YUI();
+            if (typeof(_yui.use) === "function") {
+
+                    _yui.use("", function(Y){
+                        var _mode = (!$.is_null(Y.UA.mobile));
+                        _this.mobile_mode = _mode;
+                    });
+
+            }
+        }
+        catch (_e) {
+            _this.mobile_mode = false;
+        }
     }
     return this.mobile_mode;
 };
@@ -2522,6 +2527,61 @@ jQuery.is_email = function (_email) {
     var _regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return _regex.test(_email);
 }
+
+/**
+ * 取得物件的頂部位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_top = function(_ele) {
+    var _offset = _ele.attr("offsetTop");
+    return _offset;
+};
+
+/**
+ * 取得物件的底部位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_bottom = function(_ele) {
+    var _offset = $.get_offset_top(_ele) + _ele.height();
+    return _offset;
+};
+
+/**
+ * 取得物件的左邊位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_left = function(_ele) {
+    var _offset = _ele.attr("offsetLeft");
+    return _offset;
+};
+
+/**
+ * 取得物件的右邊位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_right = function(_ele) {
+    var _offset = $.get_offset_left(_ele) + _ele.width();
+    return _offset;
+};
+
+/**
+ * 取得物件的位置資訊
+ * @param {jQuery} _ele
+ * @returns {json}
+ */
+jQuery.get_offset = function(_ele) {
+    var _top = $.get_offset_top(_ele);
+    var _left = $.get_offset_left(_ele);
+    var _offset = {
+        top: _top,
+        left: _left
+    };
+    return _offset;
+};
 
 $.widget("ui.dialog", $.ui.dialog, {
     _allowInteraction: function(event) {

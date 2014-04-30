@@ -68,7 +68,8 @@ Selectable_text_offset.prototype.get_offset_top = function (_scope_coll) {
     var _index = _scope_coll.get_first_index();
     if ($.isset(_index)) {
         var _word = this._selectable_text_word.get_word_by_index(_index);
-        _offset = _word.offset().top;
+        //_offset = _word.offset().top;
+        _offset = $.get_offset_top(_word);
     }
     
     return _offset;
@@ -91,8 +92,17 @@ Selectable_text_offset.prototype.get_offset_bottom = function (_scope_coll) {
     var _index = _scope_coll.get_last_index();
     if ($.isset(_index)) {
         var _word = this._selectable_text_word.get_word_by_index(_index);
-        _offset = _word.offset().top + _word.height();
+        
+        /**
+         * @20140110 Pudding Chen
+         * 用jQuery的會有很大的問題
+         * 所以改用其他方法
+         */
+        //_offset = _word.offset().top + _word.height();
+        _offset = $.get_offset_bottom(_word);
     }
+    
+    //$.test_msg('取得選取位置底部', [_offset, _word.offset().top, _word.attr("offsetTop")]);
     
     return _offset;
 };
@@ -112,7 +122,8 @@ Selectable_text_offset.prototype.get_offset_left = function (_scope_coll) {
         for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
             
-            var _o = _word.offset().left;
+            //var _o = _word.offset().left;
+            var _o = $.get_offset_left(_word);
             
             if (_offset === null ||
                     _o < _offset) {
@@ -139,7 +150,8 @@ Selectable_text_offset.prototype.get_offset_right = function (_scope_coll) {
         for (var _j in _words[_i]) {
             var _word = _words[_i][_j];
             
-            var _o = _word.offset().left + _word.width();
+            //var _o = _word.offset().left + _word.width();
+            var _o = $.get_offset_right(_word);
             
             if (_offset === null 
                 || _o > _offset) {
@@ -165,7 +177,8 @@ Selectable_text_offset.prototype.get_offset_first_left = function (_scope_coll) 
     
     if ($.is_number(_index)) {
         var _word = this._selectable_text_word.get_word_by_index(_index);
-        _offset = _word.offset().left;
+        //_offset = _word.offset().left;
+        _offset = $.get_offset_left(_word);
     }
     
     return _offset;
@@ -185,7 +198,8 @@ Selectable_text_offset.prototype.get_offset_last_right = function (_scope_coll) 
     
     if ($.is_number(_index)) {
         var _word = this._selectable_text_word.get_word_by_index(_index);
-        _offset = _word.offset().left + _word.width();
+        //_offset = _word.offset().left + _word.width();
+        _offset = $.get_offset_right(_word);
     }
     
     return _offset;

@@ -219,23 +219,23 @@ Annotation_type_param.prototype.get_type_name = function () {
  * @return {KALS_language_param}
  */
 Annotation_type_param.prototype.get_type_name_lang = function () {
-    var _name = this.get_type_name();
-
-    var _lang;
-    if (this.is_basic()) {
-        _lang = new KALS_language_param(
-                _name,
-                "annotation.type." + _name
-        );
-    }
-    else {
-        //如果是自訂類型的話
-        _lang = new KALS_language_param(
-                _name
-        );
-    }
-
-    return _lang;
+	var _name = this.get_type_name();
+	
+	var _lang;
+	if (this.is_basic()) {
+		_lang = new KALS_language_param(
+			_name,
+			"annotation.type." + _name
+		);
+	}
+	else {
+		//如果是自訂類型的話
+		_lang = new KALS_language_param(
+			_name
+		);
+	}
+	
+	return _lang;
 };
 
 /**

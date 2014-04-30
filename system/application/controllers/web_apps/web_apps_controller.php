@@ -330,25 +330,34 @@ class Web_apps_controller extends Controller {
 
     function load_css($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
 
         //$style = $this->load->view($this->dir.$path, NULL, TRUE);
         $style = $this->_initialize_css($path);
 
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
 
         send_css_header($this->output);
         $this->load->view($this->dir.'display', array('data'=>$style));
     }
     
+    /**
+     * 壓縮CSS
+     * @param type $path
+     * @param type $cache_name
+     */
     function pack_css($path, $cache_name) {
         $this->load->helper('file');
         
@@ -393,20 +402,18 @@ class Web_apps_controller extends Controller {
         //$this->load->view($this->dir.'display', array('data'=>$packed));
     }
 
-    function create_pack_css($path, $path2 = NULL)
-    {
-        if (is_array($path))
-        {
+    function create_pack_css($path, $path2 = NULL) {
+        if (is_array($path)) {
             $style = '';
-            foreach ($path AS $p)
-            {
+            foreach ($path AS $p) {
                 $style = $style . $this->create_pack_css($p);
             }
             return $style;
         }
         
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
         //if (FALSE === starts_with($path, 'style/'))
@@ -429,8 +436,10 @@ class Web_apps_controller extends Controller {
         }
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
 
         //send_css_header($this->output);
         //$style = $this->load->view($this->dir.'display', array('data'=>$style), TRUE);
@@ -463,7 +472,7 @@ class Web_apps_controller extends Controller {
      */
     private function _initialize_css($path) {
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
-        
+        $style = $this->_css_replace_base_url($style);
         
         
         if (strpos($path, 'view/') !== FALSE) {
@@ -544,7 +553,7 @@ $style = implode("}\n", $parts);
             //if ($style != '') {
             //    $style = $classname . $style;
             //}
-            test_msg($style);
+            //test_msg($style);
         }
         return $style;
     }
@@ -561,12 +570,14 @@ $style = implode("}\n", $parts);
      */
     function _20130219_pack_css($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         if ($this->config->item('output.package.enable'))
@@ -580,13 +591,31 @@ $style = implode("}\n", $parts);
         }
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
         
         send_css_header($this->output);
         $this->load->view($this->dir.'display', array('data'=>$style));
     }
     
+    /**
+     * 將CSS中的${base_url}取代成絕對網址
+     * @param String $style 取代前的CSS
+     * @return String 取代後的CSS
+     */
+    private function _css_replace_base_url($style) {
+        //取代網址
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
+        $base_url = trim($base_url);
+        //$style = str_replace('${base_url} ', $base_url, $style);
+        $style = str_replace('${base_url}', $base_url, $style);
+        
+        
+        return $style;
+    }
 
     /**
      * Converts a CSS-file contents into one string

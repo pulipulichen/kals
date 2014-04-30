@@ -137,11 +137,12 @@ Annotation_tool.prototype._$create_ui = function () {
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
         if ($.is_small_height() === false) {
-			_body_top = KALS_toolbar.get_ui().height();
-		}
-        if (_ui.offset().top < _body_top) {
-			_ui.css('top', _body_top + 'px');
-		} 
+            _body_top = KALS_toolbar.get_ui().height();
+        }
+        var _ui_top = $.get_offset_top(_ui);
+        if (_ui_top < _body_top) {
+            _ui.css('top', _body_top + 'px');
+        } 
     });
     
     var _this = this;
@@ -320,7 +321,8 @@ Annotation_tool.prototype.open = function (_callback) {
 };
 
 Annotation_tool.prototype.scroll_into_view = function () {
-	var _offset = this.get_ui().offset();
+    //var _offset = this.get_ui().offset();
+    var _offset = $.get_offset(this.get_ui());
     var _position = {
         y: _offset.top - 60
     };
@@ -366,7 +368,7 @@ Annotation_tool.prototype.setup_position = function () {
         //檢測是否有要更改_mode
         var _selection_bottom = _selection.get_offset_bottom();
         
-        //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
+        $.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
         
         //如果沒有選取，就不會有_selection_bottom，也就不用定位
         if (_selection_bottom === null) {
@@ -392,7 +394,7 @@ Annotation_tool.prototype.setup_position = function () {
         }
         
         var _l, _t, _margin = 10;
-        if (_mode == 'foot') {
+        if (_mode === 'foot') {
             _t = _selection_bottom + _margin;
             
             var _last_right = _selection.get_offset_last_right();
@@ -437,20 +439,25 @@ Annotation_tool.prototype.setup_position = function () {
         }
         
         if (_t < 0) {
-			_t = 0;
-		}
-		else 
-			if ($.is_small_height() === false && _t < KALS_toolbar.get_ui().height()) {
-				_t = KALS_toolbar.get_ui().height();
-			}
+            _t = 0;
+        }
+        else if ($.is_small_height() === false 
+                && _t < KALS_toolbar.get_ui().height()) {
+            _t = KALS_toolbar.get_ui().height();
+        }
         
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
+    
+        $.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
     }
 };
 
+/**
+ * 取得標註工具的寬度
+ * @returns {Int}
+ */
 Annotation_tool.prototype.get_width = function () {
-    
     var _ui = this.get_ui();
     return _ui.width();
     

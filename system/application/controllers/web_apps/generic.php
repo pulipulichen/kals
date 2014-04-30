@@ -119,7 +119,8 @@ class generic extends Web_apps_controller {
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',
-            'core/Context_custom_type',
+            'core/Context_predefined_type',
+            'core/KALS_module_manager',
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',
@@ -679,12 +680,14 @@ class generic extends Web_apps_controller {
 
     function load_css($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
 
         $file_path = './system/application/views/'.$this->dir.$path;
         //test_msg($file_path, is_file($file_path));
@@ -695,7 +698,9 @@ class generic extends Web_apps_controller {
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         //取代網址
-        $base_url = base_url();
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
+        $base_url = trim($base_url);
         $style = str_replace('${base_url}', $base_url, $style);
 
         send_css_header($this->output);
@@ -704,24 +709,29 @@ class generic extends Web_apps_controller {
     
     function load_css_release($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
 
         $file_path = './system/application/views/'.$this->dir.$path;
         //test_msg($file_path, is_file($file_path));
-        if (is_file($file_path) == FALSE)
+        if (is_file($file_path) == FALSE) {
             return;
+        }
 
 
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
 
         send_css_header($this->output);
         $this->load->view($this->release_dir.'display', array('data'=>$style));

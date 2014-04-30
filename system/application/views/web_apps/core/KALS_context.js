@@ -38,12 +38,15 @@ KALS_context.initialize = function () {
     this.hash = new URL_hash_dispatcher();
     this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
-    this.custom_type = new Context_custom_type();
+    this.predefined_type = new Context_predefined_type();
+    this.custom_type = this.predefined_type;
     this.feedback = new Feedback_manager();
     this.view_manager = new KALS_view_manager();
     this.progress = new Initialization_progress();
     this.site_reform = new Site_reform();
     this.storage = new KALS_storage();
+    this.module = new KALS_module_manager();
+    this.navigation = new KALS_navigation();
     
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
@@ -66,6 +69,8 @@ KALS_context.initialize = function () {
             _this.search = new Window_search();
 			
             _this.overlay = new Overlay_manager();
+            
+            _this.module.init();
             
             _this.init_context.start();
         });    
@@ -105,7 +110,7 @@ KALS_context.setup_base_url = function () {
     var _needle = '/web_apps/';
     for (var _i in _scripts) {
         var _src = _scripts.eq(_i).attr('src');
-        if (typeof(_src) != 'string') {
+        if (typeof(_src) !== 'string') {
 			continue;
 		}
         
@@ -124,9 +129,15 @@ KALS_context.setup_base_url = function () {
 /**
  * 供其他物件取用基礎網址
  * @param {string|array} _file
+ * @param {Boolean} _from_root = false 是否從根目錄開始(/kals)，而非從/kals/web_apps開始
  * @type {string}
  */
-KALS_context.get_base_url = function (_file) {
+KALS_context.get_base_url = function (_file, _from_root) {
+    
+    if (_from_root === undefined) {
+        _from_root = false;
+    }
+    
     if ($.is_null(_file)) {
         _file = '';
     }
@@ -135,11 +146,11 @@ KALS_context.get_base_url = function (_file) {
         for (var _i in _file) {
             var _f = _file[_i];
             if ($.starts_with(_f, '/')) {
-				_f = _f.substr(1, _f.length);
-			}
+                _f = _f.substr(1, _f.length);
+            }
             if (_i < _file.length - 1) {
-				$.appends_with(_f, '/');
-			}
+                $.appends_with(_f, '/');
+            }
             
             _temp = _temp + _f;
         }
@@ -147,18 +158,26 @@ KALS_context.get_base_url = function (_file) {
     }
     
     if (this.base_url === null) {
-		return _file;
-	}
+        return _file;
+    }
     
     if ($.is_string(_file) && $.starts_with(_file, '/')) {
-		_file = _file.substring(1, _file.length);
-	}
+        _file = _file.substring(1, _file.length);
+    }
     
     if ($.ends_with(this.base_url, '/') === false) {
-		this.base_url = this.base_url + '/';
-	}
+        this.base_url = this.base_url + '/';
+    }
     
     var _url = this.base_url + _file;
+    
+    // 如果是從根目錄開始的話
+    if (_from_root === true) {
+        var _needle = "web_apps/";
+        var _root_path = this.base_url.substr(0, (this.base_url.length - _needle.length));
+        _url = _root_path + _file;
+    }
+    
     //$.test_msg('KALS_context.get_base_url()', [_url, this.base_url, _file]); 
     
     return _url;
@@ -185,7 +204,7 @@ KALS_context.get_image_url = function (_img) {
         
     var _img_url = this.get_base_url();
     var _pos = _img_url.lastIndexOf('/web_apps');
-    if (_pos == -1) {
+    if (_pos === -1) {
 		return _img;
 	}
     
@@ -223,7 +242,7 @@ KALS_context.get_library_url = function (_file) {
         
     var _img_url = this.get_base_url();
     var _pos = _img_url.lastIndexOf('/web_apps');
-    if (_pos == -1) {
+    if (_pos === -1) {
         return _img;
     }
     
@@ -298,7 +317,12 @@ KALS_context.style = null;
 KALS_context.view = null;
 
 /**
- * @type {Context_custom_type}
+ * @type {Context_predefined_type}
+ */
+KALS_context.predefined_type = null;
+
+/**
+ * @type {Context_predefined_type}
  */
 KALS_context.custom_type = null;
 
@@ -326,6 +350,16 @@ KALS_context.site_reform = null;
  * @type {KALS_storage}
  */
 KALS_context.storage = null;
+
+/**
+ * @type {KALS_module_manager}
+ */
+KALS_context.module = null;
+
+/**
+ * @type {KALS_navigation}
+ */
+KALS_context.navigation = null;
 
 /**
  * @type {Init_context}
@@ -362,7 +396,7 @@ KALS_context._text_selector = null;
 /**
  * 確保選取位置。
  * 必須要在所有元件加入body之前確保完畢
- * @param {function} 回呼函數
+ * @param {function} _callback 回呼函數
  * @version 20111105 Pudding Chen
  */
 KALS_context.check_text_selector = function (_callback) {
@@ -495,7 +529,7 @@ KALS_context.check_text_selector = function (_callback) {
 
 /**
  * 取得可選取的文字區
- * @param {jQuery} 要選取的範圍
+ * @retrun {jQuery} 要選取的範圍
  * @version 20111105 Pudding Chen
  */
 KALS_context.get_text_selector = function () {
@@ -540,8 +574,21 @@ KALS_context.last_select_annotation_type = null;
  * @type {Array} 包含標註類型的陣列
  */
 KALS_context.create_type_param_list = function() {
-	var _list = {};
-	var _type_options = KALS_CONFIG.annotation_type_option;
+    var _list = {};
+    
+    //var _type_options = KALS_CONFIG.annotation_type_option;
+    /**
+     * 標註選項。注意此選項會影響順序。
+     * @type {String[]}
+     */
+    var _type_options;
+    if (typeof(KALS_CONFIG.annotation_type_basic_enable) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_basic_enable;
+    }
+    else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_option;
+    }
+    
     for (var _i in _type_options) {
         var _type_string = _type_options[_i];
 		var _type_param = new Annotation_type_param(_type_string);
@@ -550,10 +597,10 @@ KALS_context.create_type_param_list = function() {
     
     //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
     
-	/**
-	 * 20130603 Pudding Chen 
-	 * 加入自訂的標註類型
-	 */
+    /**
+     * 20130603 Pudding Chen 
+     * 加入自訂的標註類型
+     */
     var _custom_type_list = KALS_context.custom_type.get_type_list();
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];

@@ -425,17 +425,17 @@ Window_search.prototype.create_annotation_type_ui = function (_type) {
                 
 		//預設值
 		if (_default_type === null) {
-                    _default_type = _value;
+			_default_type = _value;
 		}
 		
-		var _lang = _type_param.get_type_name_lang();
+		_lang = _type_param.get_type_name_lang();
 		
 		var _option;
-		if (_type === "radio") {
-                    _option = _factory.radio_option(_lang, _value);
+		if (_type == "radio") {
+			_option = _factory.radio_option(_lang, _value);
 		}
-		else if (_type === "dropdown") {
-                    _option = _factory.dropdown_option(_lang, _value);
+		else if (_type == "dropdown") {
+			_option = _factory.dropdown_option(_lang, _value);
 		}
 		
         _type_options.push(_option);

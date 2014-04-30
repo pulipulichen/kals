@@ -255,11 +255,12 @@ Recommend_tooltip.prototype._$create_ui = function () {
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
         if ($.is_small_height() === false) {
-			_body_top = KALS_toolbar.get_ui().height();
-		}
-        if (_ui.offset().top < _body_top) {
-			_ui.css('top', _body_top + 'px');
-		} 
+            _body_top = KALS_toolbar.get_ui().height();
+        }
+        //if (_ui.offset().top < _body_top) {
+        if ($.get_offset_top(_ui) < _body_top) {
+            _ui.css('top', _body_top + 'px');
+        } 
     });
     
     _this = this;

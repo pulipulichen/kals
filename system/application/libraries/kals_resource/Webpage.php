@@ -175,7 +175,12 @@ class Webpage extends KALS_resource {
 
     public function get_title()
     {
-        return $this->get_field('title');
+        $title = $this->get_field('title');
+        $title = trim($title);
+        if ($title === "") {
+            $title = $this->get_url();
+        }
+        return $title;
     }
 
     /**
@@ -211,17 +216,27 @@ class Webpage extends KALS_resource {
             $webpage = $this->create(array('url' => $url));
             return $webpage;
         }
-        else
+        else {
             return new Webpage($webpage);
+        }
     }
 
-    public function get_appended_annotation()
+    /**
+     * 
+     * @param Search_order $order 排序設定，留空等於預設排序
+     * @return \Search_annotation_collection
+     */
+    public function get_appended_annotation($order = NULL, $desc = NULL)
     {
         $this->_CI_load('library', 'search/Search_annotation_collection', 'search_annotation_collection');
 
         $search = new Search_annotation_collection();
         $search->set_target_webpage($this->get_id());
         $search->set_check_authorize(FALSE);
+        // 設定colllection的排序       
+        if (isset($order)) {
+            $search->add_order($order, $desc);
+        }
         $search->disable_limit();
         $search->disable_offset();
         
@@ -230,10 +245,11 @@ class Webpage extends KALS_resource {
     
     /**
      * 取得該網頁底下撰寫的標註
+     * @param Search_order $order 排序順序
      * @return Annotation_collection
      */
-    public function get_written_annotations() {
-        return $this->get_appended_annotation();
+    public function get_written_annotations($order = NULL, $desc = NULL) {
+        return $this->get_appended_annotation($order, $desc);
     }
 
     /**
@@ -331,6 +347,86 @@ class Webpage extends KALS_resource {
     {
         return $this->feature_coll->get_item($feature_type_id);
     }
+    
+    /**
+     * 取得all webpage中的所有物件
+     * 
+     * @author Pudding 20131224
+     * @param Int $limit 單頁顯示數量
+     * @return array|Webpage
+     */
+    public function get_all_webpages($limit = NULL) {
+        $output = array();
+        $query = $this->CI->db->select('webpage_id');
+        if (isset($limit)) {
+            $this->CI->db->limit($limit);
+        }
+        $query = $this->CI->db->get('webpage');
+        $this->_CI_load('library', 'kals_resource/Webpage');
+        foreach ($query->result_array() AS $row)
+        {
+            $id = intval($row['webpage_id']);
+            $obj = new Webpage($id);
+            array_push($output, $obj);
+        }
+        return $output;
+    }
+
+    /**
+     * 根據已經讀過的標註數量來排序
+     * 
+     * @author Pudding 20131224
+     * @param User $user 使用者
+     * @param Int $page 頁數，預設0
+     * @param Int $limit 單頁顯示數量
+     * @return array|Webpage
+     */
+    public function get_all_webpages_order_by_read ( $user = NULL, $page = 0, $limit = 10) {
+        if (isset($user) === FALSE) {
+            //return array();
+            return $this->get_all_webpages($limit);
+        }
+        $user_id = $user->get_id();
+        
+        $output = array();
+        
+        $webpage = new Webpage();
+        $offset = $page * $limit;
+        
+        $query = $webpage->CI->db->query("
+SELECT webpage.webpage_id, MAX(log_timestamp) AS last_webpage
+FROM webpage LEFT JOIN log ON (webpage.webpage_id = log.webpage_id AND user_id = '".$user_id."' AND (action = '16' OR action = '40'))
+GROUP BY webpage.webpage_id
+ORDER BY last_webpage
+LIMIT " . $limit . "
+OFFSET " . $offset);
+        
+        foreach ($query->result_array() AS $row)
+        {
+            $id = intval($row['webpage_id']);
+            $obj = new Webpage($id);
+            array_push($output, $obj);
+        }
+        return $output;
+    }
+    
+    /**
+     * 計算目前所有的webpage數量
+     * @author Pudding 20131224
+     * @return int count
+     */
+     public function get_all_webpages_count () {       
+        $webpage = new Webpage();       
+        $query = $webpage->CI->db->query("SELECT count(webpage_id)
+FROM webpage
+");
+        foreach($query->result_array() as $row ){
+                $count = $row['count'];
+        }
+        return $count;
+    }
+    
+    
 }
     /* End of file Webpage.php */
 /* Location: ./system/application/libraries/kals_resource/Webpage.php */

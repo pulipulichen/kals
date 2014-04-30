@@ -82,14 +82,12 @@ class Context extends KALS_object {
      * 取得現在的使用者
      * @return User
      */
-    function get_current_user()
-    {
-        if ($this->user == NULL)
-        {
+    function get_current_user() {
+        if ($this->user == NULL) {
             //先讀取session，取得user_id
             $user_id = $this->session->userdata('user_id');
-            if ($user_id !== FALSE)
-            {
+            $user_id = intval($user_id);
+            if ($user_id !== FALSE && $user_id !== 0) {
                 //$this->CI->load->library('kals_actor/User');
                 $this->_CI_load('library', 'kals_actor/User', 'user');
                 $this->user = new User($user_id);
