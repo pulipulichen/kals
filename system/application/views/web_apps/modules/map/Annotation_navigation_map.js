@@ -464,7 +464,7 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         
         var _heading_div = $("<div class='list-header-component'></div>");
         var _heading_text = _heading_list[_heading_number].text();
-        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
+        var _heading_btn = $("<span type-id='" + _type_id + "' heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
         //var _heading_offset = $(".kals-heading-"+_heading_number ).offset().top;
 
         _heading_btn.click(function () {
@@ -524,6 +524,14 @@ Annotation_navigation_map.prototype.heading_click_event = function (_btn) {
     var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
     $.test_msg("[_heading_offset]"+_heading_offset);
     $(window).scrollTop(_heading_offset-50);
+
+    var _type_id_selected = $(_btn).attr("type-id");
+
+    KALS_context.search.search({
+        search_range: "annotation_type",
+        keyword:_type_id_selected,
+        order_by: "update|create"
+    }, false);
 
     // 關掉標註地圖
     this.close();
@@ -853,7 +861,12 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     this.set_field("annotation_type",  _btn_array);
     
     this.set_field("");
-
+    
+    
+    var _instruction = ("<span class='map-instruction'>這是說明</span>");
+    this.set_field("annotation_map_instruction", _instruction);
+    
+    
     //var _this = this;
     //setTimeout(function () {
         this.find(".list-header-component .type-navigation.type-option:first").click();

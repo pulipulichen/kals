@@ -38,9 +38,11 @@ dt {
 .type-navigation.non-selected{
     background-color: grey !important;
     color: white !important;
+    
 }
 
 .type-navigation.type-option{
+    line-height:1.75em;
     margin: 0.1em;
     cursor: pointer !important;
     -moz-border-top-right-radius:20px;
@@ -59,6 +61,7 @@ dt {
     border-bottom-left-radius:5px;
     
     border-bottom: 1.5px solid #555 !important;
+    
 }
 
 .type-navigation.type-option.heading-button{
@@ -73,6 +76,7 @@ dt {
     cursor: pointer !important;
     font-size: small !important;
     font-weight: bold;
+
 }
 
 .list-header-component.other-type{
