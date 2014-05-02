@@ -43,6 +43,7 @@ Context_predefined_type.prototype._type_list = {};
  * 初始化，從KALS_CONFIG載入資料
  */
 Context_predefined_type.prototype.initialize = function () {
+    
     var _prefined_type = null;
     if (typeof(KALS_CONFIG.annotation_type_predefined) !== 'undefined') {
         _prefined_type = KALS_CONFIG.annotation_type_predefined;
@@ -94,6 +95,11 @@ Context_predefined_type.prototype.initialize = function () {
                 if (typeof(_type_data.anchor.font_color) === 'string') {
                     _type_param.set_anchor_font_color(_type_data.anchor.font_color);
                 }
+            }
+            
+            // 設定啟用選項
+            if (typeof(_type_data.enable) !== "undefined") {
+                _type_param.set_enable_config(_type_data.enable);
             }
             
             this._type_list[_type_name] = _type_param;
@@ -153,12 +159,21 @@ Context_predefined_type.prototype.get_type_name_list = function () {
 
 /**
  * 取得自訂標註的資料
+ * @param {String} _enable_type 要啟用的類型
  * @return {Annotation_type_param[]}
  */
-Context_predefined_type.prototype.get_type_list = function () {
+Context_predefined_type.prototype.get_type_list = function (_enable_type) {
     var _type_list = [];
     for (var _type_name in this._type_list) {
-        _type_list.push(this._type_list[_type_name]);
+        var _type_param = this._type_list[_type_name];
+        
+        // 檢查啟用類型
+        if (typeof(_enable_type) === "string"
+            && _type_param.is_enable(_enable_type) === false) {
+            continue;
+        }
+        
+        _type_list.push(_type_param);
     }
     return _type_list;
 };
@@ -319,6 +334,12 @@ Context_predefined_type.prototype.import_json = function (_json) {
  * @return {Annotation_type_param}
  */
 Context_predefined_type.prototype.get_type_option = function (_type_data) {
+    if ($.is_class(_type_data, "Annotation_type_param") === false) {
+        _type_data = new Annotation_type_param(_type_data);
+    }
+    return _type_data.get_option_ui();
+    
+    /*
     var _option = $('<span></span>')
         .addClass('type-option');
     
@@ -365,6 +386,7 @@ Context_predefined_type.prototype.get_type_option = function (_type_data) {
     _option.attr('annotation_type', _type_name);
     
     return _option;
+    */
 };
 
 /* End of file Context_predefined_type */

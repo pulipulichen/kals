@@ -599,6 +599,9 @@ Annotation_navigation_map.prototype._click_map_list_item = function (_btn) {
     this._scroll_to_heading(_btn.attr("heading_id") );
     this._search_annotation(_btn.attr("type_id") );
     
+    // 關掉標註地圖
+    this.close();
+    
     return this;
 };
 
@@ -650,9 +653,6 @@ Annotation_navigation_map.prototype._search_annotation = function (_type_id_sele
         keyword:_type_id_selected,
         order_by: "update|create"
     }, false);
-
-    // 關掉標註地圖
-    this.close();
     
     return this;
 };

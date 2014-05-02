@@ -94,15 +94,50 @@ DEFAULT_KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_basic_enable: [
-        'importance'
-        , 'concept'
-        , 'confusion'
-        , 'question'
-        , 'example'
-        , 'summary'
-        , 'custom'
-    ],
+    annotation_type_config: {
+        'importance' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        },
+        'concept' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        },
+        'confusion' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        },
+        'question' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        },
+        'example' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        },
+        'summary' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        },
+        'custom' : {
+            enable: {
+                topic: true,
+                respond: true
+            }
+        }
+    },
     
     /**
      * 是否讓「自訂」選項可供使用者自由填入資料
@@ -148,6 +183,10 @@ DEFAULT_KALS_CONFIG = {
                 style: 'background',
                 color: '#F53004',
                 font_color: 'white'
+            },
+            enable: {
+                topic: true,
+                respond: true
             }
         }
     },

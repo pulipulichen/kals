@@ -47,7 +47,7 @@ View_annotation_type.prototype._$create_ui = function () {
         
         //_option.tooltip(_config);
         
-        if (_i == 'custom') {
+        if (_i === 'custom') {
             _option = this._create_custom_type_option(_option);
         }
         _option.hide().appendTo(_ui);
@@ -57,33 +57,33 @@ View_annotation_type.prototype._$create_ui = function () {
 	
     //_ui.setup_hover();
     
-	// 20130603 Pudding Chen
-	// 預設選單
-	var _default_type = null;
-	if (typeof(KALS_CONFIG.default_annotation_type) == "string") {
-		var _default_type_name = KALS_CONFIG.default_annotation_type;
-		for (_i in _options) {
-			_option = _options[_i];
-			var _type_name = _i;
-			//$.test_msg("Type_component", [_i, _default_type_name]);
-			if (_default_type_name == _type_name) {
-				this._default_type = KALS_context.custom_type.find_type(_i);
-				_default_type = this._default_type;
-				//$.test_msg("Type_component set default", this._default_type); 
-				break;
-			}
-		}
-	}
-	
-	//如果沒有設定預設選單，則自動選擇第一個選單
-	if (_default_type === null) {
-		for (_i in _options) {
-			_option = _options[_i];
-			_type_name = _i;
-			this._default_type = KALS_context.custom_type.find_type(_i);
-			break;
-		}
-	}
+    // 20130603 Pudding Chen
+    // 預設選單
+    var _default_type = null;
+    if (typeof(KALS_CONFIG.default_annotation_type) === "string") {
+        var _default_type_name = KALS_CONFIG.default_annotation_type;
+        for (_i in _options) {
+            _option = _options[_i];
+            var _type_name = _i;
+            //$.test_msg("Type_component", [_i, _default_type_name]);
+            if (_default_type_name === _type_name) {
+                this._default_type = KALS_context.custom_type.find_type(_i);
+                _default_type = this._default_type;
+                //$.test_msg("Type_component set default", this._default_type); 
+                break;
+            }
+        }
+    }
+
+    //如果沒有設定預設選單，則自動選擇第一個選單
+    if (_default_type === null) {
+        for (_i in _options) {
+            _option = _options[_i];
+            _type_name = _i;
+            this._default_type = KALS_context.custom_type.find_type(_i);
+            break;
+        }
+    }
     //this._listen_editor();
     return _ui;
 };

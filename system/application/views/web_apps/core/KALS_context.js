@@ -38,8 +38,11 @@ KALS_context.initialize = function () {
     this.hash = new URL_hash_dispatcher();
     this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
+    
+    this.basic_type = new Context_basic_type();
     this.predefined_type = new Context_predefined_type();
     this.custom_type = this.predefined_type;
+    
     this.feedback = new Feedback_manager();
     this.view_manager = new KALS_view_manager();
     this.progress = new Initialization_progress();
@@ -317,12 +320,18 @@ KALS_context.style = null;
 KALS_context.view = null;
 
 /**
+ * @type {Context_basic_type}
+ */
+KALS_context.basic_type = null;
+
+/**
  * @type {Context_predefined_type}
  */
 KALS_context.predefined_type = null;
 
 /**
  * @type {Context_predefined_type}
+ * @deprecated Pulipuli Chen 20130502 盡量不要使用
  */
 KALS_context.custom_type = null;
 
@@ -571,9 +580,13 @@ KALS_context.last_select_annotation_type = null;
 
 /**
  * 取得標註類型列表
- * @type {Array} 包含標註類型的陣列
+ * @param {String} _enable_type 啟用的標註類型
+ * topic: 只有主題標註使用
+ * respond: 只有回覆時使用
+ * 預設：全部啟用
+ * @return {Array} 包含標註類型的陣列
  */
-KALS_context.create_type_param_list = function() {
+KALS_context.create_type_param_list = function(_enable_type) {
     var _list = {};
     
     //var _type_options = KALS_CONFIG.annotation_type_option;
@@ -581,18 +594,25 @@ KALS_context.create_type_param_list = function() {
      * 標註選項。注意此選項會影響順序。
      * @type {String[]}
      */
-    var _type_options;
-    if (typeof(KALS_CONFIG.annotation_type_basic_enable) !== "undefined") {
-        _type_options = KALS_CONFIG.annotation_type_basic_enable;
-    }
-    else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
-        _type_options = KALS_CONFIG.annotation_type_option;
-    }
+    //var _type_options = this.get_basic_type_options();
+    var _type_options = this.basic_type.get_type_list(_enable_type);
     
+    /*
     for (var _i in _type_options) {
         var _type_string = _type_options[_i];
 		var _type_param = new Annotation_type_param(_type_string);
         _list[_type_string] = _type_param;
+    }
+    */
+    for (var _type_name in _type_options) {
+        var _type_config = _type_options[_type_name];
+        if (typeof(_enable_type) === "string"
+                && typeof(_type_config[_enable_type]) === "boolean"
+                && _type_config[_enable_type] === false) {
+            continue;
+        }
+        var _type_param = new Annotation_type_param(_type_name);
+        _list[_type_name] = _type_param;
     }
     
     //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
@@ -610,6 +630,23 @@ KALS_context.create_type_param_list = function() {
     
     return _list;
 };
+
+/**
+ * 取得基本的標註類型
+ * @returns 基本的標註類型
+ */
+/*
+KALS_context.get_basic_type_options = function () {
+    var _type_options;
+    if (typeof(KALS_CONFIG.annotation_type_basic_config) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_basic_config;
+    }
+    else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_option;
+    }
+    return _type_options;
+};
+*/
 
 /**
  * 取得根據網址建立的Domain

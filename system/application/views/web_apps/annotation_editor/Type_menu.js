@@ -9,6 +9,7 @@
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/10/18 下午 04:57:05
  * @extends {Tooltip_modal}
+ * @param {jQuery} _type_component 放置標註類型的元件
  */
 function Type_menu(_type_component) {
     
@@ -17,6 +18,7 @@ function Type_menu(_type_component) {
     this._type_component = _type_component;
     
     var _this = this;
+    this._init_type_options();
     
     //setTimeout(function () {
     //    _this.get_ui();
@@ -69,7 +71,8 @@ Type_menu.prototype._$create_ui = function () {
 /**
  * 設置標註類型的按鈕
  * @version 20111105 Pudding Chen
- * @param {string|Annotation_type_param} _type
+ * @param {jQuery} _ui 按鈕元件
+ * @param {string|Annotation_type_param} _type 類型
  */
 Type_menu.prototype._setup_type_ui = function (_ui, _type) {
     var _type_ui = this.create_type_option(_type);
@@ -91,7 +94,7 @@ Type_menu.prototype._option_classname = 'type-option';
 
 /**
  * 建立按鈕吧
- * @param {String|Annotation_type_param}
+ * @param {String|Annotation_type_param} _type 標註類型
  * @return {jQuery}
  */
 Type_menu.prototype.create_type_option = function (_type) {
@@ -163,7 +166,7 @@ Type_menu.prototype.create_type_hint = function (_type) {
         _classname = _type;
         var _hint_lang;
         if (this.enable_custom_name === false
-            && _type == 'custom') {
+                && _type === 'custom') {
             _hint_lang = new KALS_language_param(
                 'Your custom type.',
                 'annotation.type.other.hint'
@@ -258,7 +261,7 @@ Type_menu.prototype.setup_type_option = function (_type_ui) {
         //$.test_msg('Type_menu.setup_option()', _type);
         
         if (_this.enable_custom_name === true
-            && _type == 'custom') {
+                && _type === 'custom') {
             _this.open_custom_name_dialog();
         }
         else {
@@ -285,12 +288,31 @@ Type_menu.prototype._type_component = null;
  * 標註選項。注意此選項會影響順序。
  * @type {String[]}
  */
+Type_menu.prototype._type_options = [];
+
+/**
+ * @author Pulipuli Chen 20140502
+ * 將設定改成到函式中處理
+ * @returns {undefined}
+ */
+/*
 if (typeof(KALS_CONFIG.annotation_type_basic_enable) !== "undefined") {
     Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_basic_enable;
 }
 else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
     Type_menu.prototype._type_options = KALS_CONFIG.annotation_type_option;
 }
+*/
+
+/**
+ * 初始化載入標註的類型
+ * @returns {Type_menu.prototype}
+ */
+Type_menu.prototype._init_type_options = function () {
+    //this._type_options = KALS_context.get_basic_type_options();
+    this._type_options = KALS_context.basic_type.get_type_name_list();
+    return this;
+};
 
 /*
 Type_menu.prototype._type_options = [
@@ -474,12 +496,45 @@ Type_menu.prototype.open_custom_name_dialog = function () {
 Type_menu.prototype.filter_type = function (_type) {
     
     for (var _i in this._type_options) {
-        if (_type == this._type_options[_i]) {
-			return _type;
-		}
+        if (_type === this._type_options[_i]) {
+            return _type;
+        }
     }
     
     return 'custom';
+};
+
+/**
+ * --------------------------------------------------
+ */
+
+/**
+ * 在主題標註時啟用
+ * @type Boolean
+ */
+Type_menu.prototype._enable_topic = true;
+
+/**
+ * 在回應標註時啟用
+ * @type Boolean
+ */
+Type_menu.prototype._enable_respond = true;
+
+Type_menu.prototype.set_enable_type = function (_type) {
+    if (_type === "topic") {
+        this._enable_topic = true;
+        this._enable_respond = false;
+    }
+    else if (_type === "repsond") {
+        this._enable_topic = false;
+        this._enable_respond = true;
+    }
+    else {
+        this._enable_topic = true;
+        this._enable_respond = true;
+    }
+    
+    return this;
 };
 
 /* End of file Type_menu */

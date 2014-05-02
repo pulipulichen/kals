@@ -519,8 +519,8 @@ jQuery.get_class = function (_obj) {
 };
 
 jQuery.is_null = function (_obj) {
-    if (typeof(_obj) == 'undefined' ||
-	(typeof(_obj) == 'string' && _obj == 'null')) {
+    if (typeof(_obj) === 'undefined' ||
+	(typeof(_obj) === 'string' && _obj === 'null')) {
 		return true;
 	}
 	else {
@@ -551,7 +551,7 @@ jQuery.is_class = function(_obj, _class_name) {
 };
 
 jQuery.is_boolean = function(_obj) {
-    return (typeof(_obj) == 'boolean');
+    return (typeof(_obj) === 'boolean');
 };
 
 /**
