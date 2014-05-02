@@ -112,3 +112,6 @@ _target = _type_param1.is_enable(_type);
 _result = false;
 // 4. 驗證測試的結果
 equals( _target, _result, _test_subject);
+
+_type_param2.set_enable_config("respond", false);
+equals( _type_param2.is_enable("respond"), false, _test_subject + ".3");

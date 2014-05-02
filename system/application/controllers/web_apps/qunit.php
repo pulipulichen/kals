@@ -40,11 +40,15 @@ class QUnit extends Controller {
      * @param String $path1
      * @param String $path2
      */
-    function load($path1 = NULL, $path2 = NULL) {
+    function load($path1 = NULL, $path2 = NULL, $path3 = NULL) {
         
         $title = $path1;
         $path = $path1;
-        if (isset($path1) && isset($path2)) {
+        if (isset($path1) && isset($path2) && isset($path3)) {
+            $path = $path1 . "/" . $path2 . "/" . $path3;
+            $title = $path3;
+        }
+        else if (isset($path1) && isset($path2)) {
             $path = $path1 . "/" . $path2;
             $title = $path2;
         }
@@ -76,7 +80,9 @@ class QUnit extends Controller {
         
         //print_r($file);
         $test_files = array();
-        
+        //test_msg("1");
+        $test_files = $this->_get_files_from_dir($test_files, $files);
+        /*
         foreach ($files AS $index => $file) {
             if (is_numeric($index)) {
                 // 這是一個檔案
@@ -96,14 +102,43 @@ class QUnit extends Controller {
                         $dir_file = ends_strip($dir_file, "_test.js");
                         array_push($test_files, $dir_file);
                     }
+                    else {
+                        // 這又是一個目錄
+                        
+                    }
                 }
             }
         }
-        
+        */
         //print_r($test_files);
         return $test_files;
     }
     
+    private function _get_files_from_dir($result_files, $dir_files, $dir_name = "") {
+        //test_msg($dir_name);
+        foreach ($dir_files AS $index => $file) {
+            if (is_numeric($index)) {
+                // 這是一個檔案
+                
+                if (ends_with($file, "_test.js")) {
+                    $file = ends_strip($file, "_test.js");
+
+                    if ($dir_name !== "") {
+                        $file = $dir_name . "/" . $file;
+                    }
+
+                    array_push($result_files, $file);
+                }
+            }
+            else {
+                $deeper_dir_name = $dir_name . "/" .$index;
+                $deeper_dir_files = $file;
+                $result_files = $this->_get_files_from_dir($result_files, $deeper_dir_files, $deeper_dir_name);
+            }
+        }
+        return $result_files;
+    }
+        
     /*
     public function load($path, $path2 = NULL)
     {

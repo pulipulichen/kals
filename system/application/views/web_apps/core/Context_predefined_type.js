@@ -16,10 +16,10 @@ function Context_predefined_type(){
     Attribute_event_dispatcher.call(this);
     
     var _this = this;
-    setTimeout(function () {
+    //setTimeout(function () {
         _this.initialize();  
         _this.setup_css();  
-    }, 0);
+    //}, 0);
 }
 
 Context_predefined_type.prototype = new Attribute_event_dispatcher();
@@ -53,6 +53,7 @@ Context_predefined_type.prototype.initialize = function () {
     }
     
     if (_prefined_type !== null) {
+        var _type_list = {};
         for (var _type_name in _prefined_type) {
             var _type_data = _prefined_type[_type_name];
             
@@ -100,11 +101,14 @@ Context_predefined_type.prototype.initialize = function () {
             // 設定啟用選項
             if (typeof(_type_data.enable) !== "undefined") {
                 _type_param.set_enable_config(_type_data.enable);
+                //$.test_msg("是否啟用", [_type_data.enable, _type_param.is_enable("respond")]);
             }
             
-            this._type_list[_type_name] = _type_param;
-        }
-    }
+            _type_list[_type_name] = _type_param;
+        }   //for (var _type_name in _prefined_type) {
+        
+        this._type_list = _type_list;
+    }   //if (_prefined_type !== null) {
     
     return this;
 };
@@ -166,6 +170,8 @@ Context_predefined_type.prototype.get_type_list = function (_enable_type) {
     var _type_list = [];
     for (var _type_name in this._type_list) {
         var _type_param = this._type_list[_type_name];
+        
+        $.test_msg("Context_predefined_type.get_type_list: " + _type_name, [_enable_type, this._type_list[_type_name].is_enable(_enable_type)]);
         
         // 檢查啟用類型
         if (typeof(_enable_type) === "string"
