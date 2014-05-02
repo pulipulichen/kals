@@ -195,8 +195,8 @@ $lang['web_apps.window.filter.content.option.my'] = '我的標註';
 $lang['web_apps.window.filter.content.option.navigation'] = '推薦的標註';
 
 
-$lang['web_apps.window.map.heading'] = '小地圖';
-$lang['web_apps.window.map.nav_heading'] = '小地圖';
+$lang['web_apps.window.map.heading'] = '章節地圖';
+$lang['web_apps.window.map.nav_heading'] = '章節地圖';
 $lang['web_apps.window.map.content.option.my'] = '我的標註';
 $lang['web_apps.window.map.content.option.navigation'] = '推薦的標註';
 

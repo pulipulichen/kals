@@ -2123,7 +2123,8 @@ jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
  * @param {Object} _position
  * _postion = {
  *     x: 100,    //單位是像素
- *     y: 100
+ *     y: 100,
+ *     selector: ".kals-heading-0"
  * }
  * _postion = {
  *     x: +100'    //任一可省略，表示固定原有捲軸位置
@@ -2161,14 +2162,27 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         , _next_x, _next_y;
     
     //確定位置資料
-    _target_x = $.get_parameter(_position, ['x', 'left', 'pageXOffset'], window.pageXOffset);
-    if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-')) {
-        _target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
+    if (typeof(_position.selector) === "undefined") {
+        _target_x = $.get_parameter(_position, ['x', 'left', 'pageXOffset'], window.pageXOffset);
+        if ($.starts_with(_target_x, '+') || $.starts_with(_target_x, '-')) {
+            _target_x = parseInt(window.pageXOffset, 10) + parseInt(_target_x, 10);
+        }
+        _target_y = $.get_parameter(_position, ['y', 'top', 'pageYOffset'], window.pageYOffset);
+        if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-')) {
+            _target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
+        }
     }
-    _target_y = $.get_parameter(_position, ['y', 'top', 'pageYOffset'], window.pageYOffset);
-    if ($.starts_with(_target_y, '+') || $.starts_with(_target_y, '-')) {
-        _target_y = parseInt(window.pageYOffset, 10) + parseInt(_target_y, 10);
+    else {
+        _target_y = $.get_offset_top(_position.selector);
+        
+        $.test_msg("scroll to selector", [_target_y, _position.selector, KALS_toolbar.get_height()]);
+        
+        if (KALS_text !== undefined) {
+            _target_y = _target_y - KALS_toolbar.get_height();
+        }
     }
+    
+    
     
 	//$.test_msg('$.scroll_to target', [_target_x, _target_y]);
 	
@@ -2534,6 +2548,9 @@ jQuery.is_email = function (_email) {
  * @returns {Int}
  */
 jQuery.get_offset_top = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
     var _offset = _ele.attr("offsetTop");
     return _offset;
 };
@@ -2544,6 +2561,9 @@ jQuery.get_offset_top = function(_ele) {
  * @returns {Int}
  */
 jQuery.get_offset_bottom = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
     var _offset = $.get_offset_top(_ele) + _ele.height();
     return _offset;
 };
@@ -2554,6 +2574,9 @@ jQuery.get_offset_bottom = function(_ele) {
  * @returns {Int}
  */
 jQuery.get_offset_left = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
     var _offset = _ele.attr("offsetLeft");
     return _offset;
 };
@@ -2564,6 +2587,9 @@ jQuery.get_offset_left = function(_ele) {
  * @returns {Int}
  */
 jQuery.get_offset_right = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
     var _offset = $.get_offset_left(_ele) + _ele.width();
     return _offset;
 };

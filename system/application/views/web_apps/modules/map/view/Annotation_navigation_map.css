@@ -28,11 +28,17 @@ dt {
 
 .list-content{
     margin: 0.5em;
+    margin-left: 2em;
     padding: 0;
 }
 
+
 .type-navigation.selected{
-    font-size: large !important;
+    /**
+     * @author Pulipuli Chen 20140502
+     * 不放大顯示
+     */
+    /*font-size: large !important;*/
 }
 
 .type-navigation.non-selected{
@@ -67,19 +73,49 @@ dt {
     -moz-border-radius: 5px;
 }
 
-.list-header-component{
+.list-header-component {
     cursor: pointer !important;
     font-size: small !important;
     font-weight: bold;
+    
+    /**
+     * @author Pulipuli Chen 20140502
+     * 避免按鈕之間重疊
+     */
+    line-height: 22px;
 }
 
-.list-header-component.other-type{
+/**
+ * @author Pulipuli Chen 20140502
+ * 調整按鈕位置
+ */
+.list-header-component span.header-button {
+    float: left;
+}
+
+div.list-component {
+    clear: both;
+}
+
+.list-header-component.other-type {
     line-height: 2em;
     opacity: .75;
 
 }
 
-.hint{
+.hint {
     font-size: large !important;
+    font-weight: bold;
+}
+
+.not-found-hint {
+    display: none;
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+}
+
+.list-header-hint {
+    font-size: small;
     font-weight: bold;
 }

@@ -342,9 +342,9 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     //$.test_msg("current-type", _current_type);
     
     
-    var _chapter = KALS_text.selection.text.chapter;
-    var _structure = _chapter.get_structure();
-    var _heading_list = _chapter.get_heading_list(); 
+    //var _chapter = KALS_text.selection.text.chapter;
+    //var _structure = _chapter.get_structure();
+    //var _heading_list = _chapter.get_heading_list(); 
     
     // [標題1, 標題2, 標題3]
     //$.test_msg("chapter heading", _heading_list[2].text());
@@ -430,7 +430,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     //$.test_msg(".list.type-"+_current_type);
     
     
-    var _lists = [];
+    //var _lists = [];
     
  
 /**
@@ -505,14 +505,15 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         
         var _heading_div = $("<div class='list-header-component'></div>");
         var _heading_text = _heading_list[_heading_number].text();
-        var _heading_btn = $("<span  heading-id='" + _heading_number +"' >" + _heading_text + "</span>");
+        var _heading_btn = $("<span "  
+                 + " type_id='" + _type_id + "' "
+                 + "heading_id='" + _heading_number +"' >" 
+                    + _heading_text 
+                 + "</span>");
         //var _heading_offset = $(".kals-heading-"+_heading_number ).offset().top;
 
         _heading_btn.click(function () {
-            _this.heading_click_event(this);
-            //var _current_heading_number = $(this).attr("heading-id");
-            //var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
-            //$(window).scrollTop(_heading_offset-50);
+            _this._click_map_list_item(this);
         });
         
         _heading_div.append(_heading_btn);
@@ -534,13 +535,13 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         var _button = $("<span class='" + _type_classes [_annotation_type_name] 
                 + " type-navigation type-option heading-button'"
                 + _type_styles[_annotation_type_name]
-                + " type-id='" + _type_id 
-                + "' heading-id='" + _heading_number + "' >" 
+                + " type_id='" + _type_id 
+                + "' heading_id='" + _heading_number + "' >" 
                 + _type_display_names [_annotation_type_name] 
                 + ":" + _annotation_type_count + "</span>");
-
+        
         _button.click(function () {
-            _this.btn_after_heading_click_event(this);
+            _this._click_map_list_item(this);
         });
 
         if (_annotation_type_name === _type_name ) {
@@ -551,32 +552,99 @@ Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _
         
     }
     
+    /**
+     * @author Pulipuli Chen 20140502
+     * 不要在程式中直接寫中文，要改成用語系檔顯示
+     */
     if (_data_empty === true) {
         // 提示空資料的訊息，加入到list_content
-        _list_content = $("<span class='hint'>這個分類目前還沒有標註喔!</span>");
+        //_list_content = $("<span class='hint'>這個分類目前還沒有標註喔!</span>");
+        this._not_found_hint_show();
+    }
+    else {
+        this._not_found_hint_hide();
     }
    
 
     _list_content.appendTo(_list);   
 };
 
-Annotation_navigation_map.prototype.heading_click_event = function (_btn) {
-    var _current_heading_number = $(_btn).attr("heading-id");
-    var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
-    //$.test_msg("[_heading_offset]"+_heading_offset);
-    $(window).scrollTop(_heading_offset-50);
-
-    // 關掉標註地圖
-    this.close();
+/**
+ * 顯示沒有找到訊息的提示
+ * @author 20140502 Pulipuli Chen
+ * @returns {Annotation_navigation_map.prototype}
+ */
+Annotation_navigation_map.prototype._not_found_hint_show = function () {
+    this.find(".not-found-hint").show();
+    return this;
 };
 
-Annotation_navigation_map.prototype.btn_after_heading_click_event = function (_btn) {
-    var _current_heading_number = $(_btn).attr("heading-id");
+/**
+ * 隱藏沒有找到訊息的提示
+ * @author 20140502 Pulipuli Chen
+ * @returns {Annotation_navigation_map.prototype}
+ */
+Annotation_navigation_map.prototype._not_found_hint_hide = function () {
+    this.find(".not-found-hint").hide();
+    return this;
+};
+
+/**
+ * 點下按鈕之後的事件
+ * @param {jQuery} _btn
+ * @returns {Annotation_navigation_map.prototype}
+ */
+Annotation_navigation_map.prototype._click_map_list_item = function (_btn) {
+    var _btn = $(_btn);
+    this._scroll_to_heading(_btn.attr("heading_id") );
+    this._search_annotation(_btn.attr("type_id") );
+    
+    return this;
+};
+
+/**
+ * 跳到指定的標題位置
+ * @param {type} _current_heading_number
+ * @returns {undefined}
+ */
+Annotation_navigation_map.prototype._scroll_to_heading = function (_current_heading_number) {
+    /*
+    var _heading = $(".kals-heading-"+_current_heading_number );
+    
+    $.test_msg("_jump_to_heading", ".kals-heading-"+_current_heading_number );
+    
+    if (_heading.length > 0) {
+        //var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
+        var _heading_offset = $.get_offset_top(_heading);
+        //$.test_msg("[_heading_offset]"+_heading_offset);
+        $(window).scrollTop(_heading_offset-50);
+    
+        // 關掉標註地圖
+        this.close();
+    }
+    else {
+        KALS_util.show_exception("Heading not found");
+    }
+    */
+    KALS_text.selection.text.chapter.scroll_to(_current_heading_number);
+    //KALS_text.selection.text.word.scroll_to(55);
+    return this;
+    
+    
+};
+
+/**
+ * 進行搜尋
+ * @param {String} _type_id_selected
+ * @returns {Annotation_navigation_map.prototype}
+ */
+Annotation_navigation_map.prototype._search_annotation = function (_type_id_selected) {
+    /*var _current_heading_number = $(_btn).attr("heading_id");
     var _heading_offset = $(".kals-heading-"+_current_heading_number ).offset().top;
     $(window).scrollTop(_heading_offset-50);
 
     var _type_id_selected = $(_btn).attr("type-id");
-
+    */
     KALS_context.search.search({
         search_range: "annotation_type",
         keyword:_type_id_selected,
@@ -585,6 +653,8 @@ Annotation_navigation_map.prototype.btn_after_heading_click_event = function (_b
 
     // 關掉標註地圖
     this.close();
+    
+    return this;
 };
 Annotation_navigation_map.prototype.get_annotation_type_class_array = function () {
     
@@ -661,6 +731,11 @@ Annotation_navigation_map.prototype.get_annotation_type_display_name_array = fun
  */
 Annotation_navigation_map.prototype.get_heading_data = function (_current_type, _callback) {
     
+    /**
+     * @author Pulipuli Chen 20140502
+     * 假資料，用不到了
+     */
+    /*
     var _data = [
         {
             heading_number: 4,
@@ -692,7 +767,7 @@ Annotation_navigation_map.prototype.get_heading_data = function (_current_type, 
             type_count: 5
         } 
     ];
-    
+    */
     // --------------------------------
     
     var _chapter = KALS_text.selection.text.chapter;
@@ -715,7 +790,9 @@ Annotation_navigation_map.prototype.get_heading_data = function (_current_type, 
  * 取得指定編號的標題的內文
  * @param {int} _heading_number
  * @returns {String}
+ * @deprecated 20140502 Pulipuli Chen
  */
+/*
 Annotation_navigation_map.prototype.get_heading_text = function (_heading_number) {
     
     var _heading_text_data = {
@@ -729,11 +806,11 @@ Annotation_navigation_map.prototype.get_heading_text = function (_heading_number
     
     return _heading_text_data[_heading_number];
 };
+*/
 
 Annotation_navigation_map.prototype.change_tab_btn = function (_ele) {
     //將類別按鈕加在被排序的標題後
     //var _current_type = _ele.find("[kals-field='annotation_type']").attr("kals-field-repeat-index");
-    
     
     var _types = this.get_annotation_types();
     var _btn_array = [];
@@ -778,8 +855,14 @@ Annotation_navigation_map.prototype.change_tab_btn = function (_ele) {
     this.set_field("annotation_type_sub",  _btn_array);
     
     this.set_field("types", _types);
+    return this;
 };
 
+/**
+ * 依照所選類別切換列出該類別之標題排名
+ * @param {jQuery} _ele
+ * @returns {Annotation_navigation_map}
+ */
 Annotation_navigation_map.prototype.change_tab_heading = function (_ele) {
     
     //依照所選類別切換列出該類別之標題排名
@@ -790,7 +873,6 @@ Annotation_navigation_map.prototype.change_tab_heading = function (_ele) {
     for (var _i in _types) {
         // Annotation_type_param
 
-        
         var _type = _types[_i];
         
         var _lang = _type.get_type_name_lang();
@@ -805,6 +887,8 @@ Annotation_navigation_map.prototype.change_tab_heading = function (_ele) {
     }
  
     this.set_field("annotation_map_heading",  _heading_array);
+    
+    return this;
 };
 
 /**
@@ -875,10 +959,12 @@ Annotation_navigation_map.prototype.init_tabs = function () {
         //var _type_num = _count;
         
         
-        //var _list = '<ul class="list type-' + _type_num +  '"><li>' + _type_num + '</li></ul>';
-        var _list = '<ul class="list type-' + _type_id +  '"><li>' + _type_id + '</li></ul>';
-                
-
+        /**
+         * @author Pulipuli Chen 20140502 ul多餘了，刪掉
+         * //var _list = '<ul class="list type-' + _type_num +  '"><li>' + _type_num + '</li></ul>';
+         * //var _list = '<ul class="list type-' + _type_id +  '"><li>' + _type_id + '</li></ul>';
+         */
+        var _list = '<div class="list type-' + _type_id +  '">' + _type_id + '</div>';
         
         _type_num_array.push(_list);
         //_type_num_array[_type_num] = "test";

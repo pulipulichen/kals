@@ -6,7 +6,5 @@
  */
 
 $lang["heading"] = "標註地圖";
-$lang["annotation_count"] = '標註數量';
-$lang["user_count"] = '撰寫標註人數';
-$lang["last_annotation"] = '最新一篇的標註';
-$lang["activity"] = '頁面活躍程度';
+$lang["header-hint"] = '請選擇要顯示的標註類型：';
+$lang["not_found_hint"] = '此類型沒有標註。';

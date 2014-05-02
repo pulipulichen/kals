@@ -62,6 +62,11 @@ Selectable_text_chapter.prototype.chapter_tag_names = ["h1", "h2", "h3", "h4", "
 // 方法
 // -----------------------------------
 
+/**
+ * 類別名稱
+ * @type String
+ */
+Selectable_text_chapter.prototype.classname = "kals-heading";
 
 /**
  * 增加句子的結構
@@ -87,8 +92,8 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
     var _structure_count;
     if (_word_count < 1) {
         _structure_count = (this.structure.length);
-        $(_child_obj).addClass("kals-heading-" + _structure_count)
-                .addClass("kals-heading");
+        $(_child_obj).addClass(this.classname + "-" + _structure_count)
+                .addClass(this.classname);
         return _structure_count;
     }
     if (this.structure.length === 0) {
@@ -98,8 +103,8 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
         this.structure.push(_word_count);
     }
     _structure_count = (this.structure.length - 1);
-    $(_child_obj).addClass("kals-heading-" + (_structure_count + 1))
-            .addClass("kals-heading");
+    $(_child_obj).addClass(this.classname + "-" + (_structure_count + 1))
+            .addClass(this.classname);
     
     return _structure_count;
 };
@@ -161,6 +166,29 @@ Selectable_text_chapter.prototype.get_heading_text = function (_heading_id) {
     else {
         return null;
     }
+};
+
+/**
+ * 捲動到指定標題
+ * @param {Int} _heading_id
+ * @param {Function} _callback
+ * @returns {Selectable_text_chapter.prototype}
+ */
+Selectable_text_chapter.prototype.scroll_to = function (_heading_id, _callback) {
+    
+    if (_heading_id === undefined) {
+        return this;
+    }
+    
+    var _position = {
+        selector: "." + this.classname + "-" + _heading_id + ":first"
+    };
+    
+    var _speed = 500;
+    $.test_msg("chapter scroll_to", _position);
+    $.scroll_to(_position, _speed, _callback);
+    
+    return this;
 };
 
 /* End of file Selectable_text_chapter */

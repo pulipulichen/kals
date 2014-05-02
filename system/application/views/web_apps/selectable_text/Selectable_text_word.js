@@ -556,5 +556,28 @@ Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
     return this;
 };
 
+/**
+ * 捲動到指定文字
+ * @param {Int} _heading_id
+ * @param {Function} _callback
+ * @returns {Selectable_text_chapter.prototype}
+ */
+Selectable_text_word.prototype.scroll_to = function (_target_id, _callback) {
+    
+    if (_target_id === undefined) {
+        return this;
+    }
+    
+    var _position = {
+        selector: "#" + this.word_id_prefix + _target_id
+    };
+    
+    var _speed = 500;
+    //$.test_msg("chapter scroll_to", _position);
+    $.scroll_to(_position, _speed, _callback);
+    
+    return this;
+};
+
 /* End of file Selectable_text_word */
 /* Location: ./system/application/views/web_apps/Selectable_text_word.js */

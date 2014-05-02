@@ -184,7 +184,7 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" 
            //if ( $user_id !== 0){
            if ($has_user) {
                if (isset($unread_webpage[$webpage_id])) {
-                   $webpage_array['is_unread'] = FALSE;
+                   $webpage_array['is_unread'] = TRUE;
                }
                else {
                    $webpage_array['is_unread'] = FALSE;

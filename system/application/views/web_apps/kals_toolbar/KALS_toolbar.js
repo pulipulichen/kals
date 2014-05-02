@@ -379,8 +379,20 @@ KALS_toolbar.prototype.disable = function () {
     this.padding.get_ui().hide();
 };
 
+/**
+ * 取得工具列的高度
+ * @returns {Int}
+ */
 KALS_toolbar.prototype.get_height = function () {
-    return this.get_ui().height();
+    return this.height();
+};
+
+/**
+ * 取得工具列的高度
+ * @returns {Int}
+ */
+KALS_toolbar.prototype.height = function () {
+    return this.get_ui().find("table.toolbar-component:first").height();
 };
 
 /* End of file KALS_toolbar */

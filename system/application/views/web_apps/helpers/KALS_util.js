@@ -449,10 +449,11 @@ KALS_util.show_exception = function (_exception, _uri) {
     var _heading = _exception.heading;
     var _message = _exception.message;
     var _request_uri = _exception.request_uri;
-    if (_request_uri === null) {
+    if (_request_uri === null || _request_uri === undefined) {
         _request_uri = _uri;
     }
-    if (_request_uri.substr(0,4) !== "http" 
+    if (_request_uri !== undefined
+            && _request_uri.substr(0,4) !== "http" 
             && _request_uri.substr(0,1) !== "/") {
         _request_uri = KALS_context.get_base_url(_request_uri);
     }

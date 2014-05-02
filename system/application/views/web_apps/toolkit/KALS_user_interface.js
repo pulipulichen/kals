@@ -471,8 +471,21 @@ KALS_user_interface.prototype.insertBefore = function(_element) {
 	return this;
 };
 
+/**
+ * 等同於jQuery的find
+ * @param {JSON} _param
+ * @returns {jQuery}
+ */
 KALS_user_interface.prototype.find = function(_param) {
     return this.get_ui().find(_param);
+};
+
+/**
+ * 等同於jQuery的height()
+ * @returns {Int}
+ */
+KALS_user_interface.prototype.height = function () {
+    return this.get_ui().height();
 };
 
 KALS_user_interface.prototype.html = function(_param) {

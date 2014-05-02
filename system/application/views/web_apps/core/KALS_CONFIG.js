@@ -106,6 +106,9 @@ DEFAULT_KALS_CONFIG = {
     
     /**
      * 是否讓「自訂」選項可供使用者自由填入資料
+     * 
+     * 如果是true，就會顯示「自訂」
+     * 如果是false，就會顯示「其他」
      * @type {boolean} = false
      */
     enable_custom_name: true,
