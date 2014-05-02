@@ -52,7 +52,7 @@ $loader_uri = base_url() . "web_apps/generic/loader/";
 
         QUNIT = function () {
         test("<?= $title ?>", function() {
-
+            $.test_msg("==============================");
         // ----------------------------------------------------
 
 <?php

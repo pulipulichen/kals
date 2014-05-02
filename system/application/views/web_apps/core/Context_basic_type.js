@@ -16,9 +16,9 @@ function Context_basic_type(){
     Attribute_event_dispatcher.call(this);
     
     var _this = this;
-    setTimeout(function () {
+    //setTimeout(function () {
         _this.initialize();  
-    }, 0);
+    //}, 0);
 }
 
 Context_basic_type.prototype = new Attribute_event_dispatcher();
@@ -52,14 +52,24 @@ Context_basic_type.prototype.initialize = function () {
     }
     
     if (_basic_type !== null) {
+        var _type_list = {};
+        
         for (var _type_name in _basic_type) {
             var _type_config = _basic_type[_type_name];
             
             var _type_param = this._initialize_type(_type_name, _type_config);
             
-            this._type_list[_type_name] = _type_param;
+            //$.test_msg("Context_basic_type._initialize_type 3: " + _type_name, _type_param.is_enable("topic"));
+            _type_list[_type_name] = _type_param;
+            
+            //$.test_msg("Context_basic_type._initialize_type 4: " + _type_name, _type_list[_type_name].is_enable("topic"));
+            //$.test_msg("Context_basic_type._initialize_type 4.4: ", _type_list["importance"]._enable_config);
         }
+        //$.test_msg("Context_basic_type._initialize_type 4.4: ", _type_list["importance"]);
+        // $.test_msg("Context_basic_type._initialize_type 4.5: ", _type_list["importance"].is_enable("topic"));
+        this._type_list = _type_list;
     }
+    //this.get_type_list("topic");
     
     return this;
 };
@@ -75,7 +85,12 @@ Context_basic_type.prototype._initialize_type = function (_type_name, _type_conf
     var _type_param = new Annotation_type_param(_type_name);
 
     var _enable_config = _type_config["enable"];
+    
+    //$.test_msg("Context_basic_type._initialize_type: " + _type_name, _enable_config);
+    
     _type_param.set_enable_config(_enable_config);
+    
+    //$.test_msg("Context_basic_type._initialize_type 2: " + _type_name, _type_param.is_enable("topic"));
     
     return _type_param;
 };
@@ -108,9 +123,15 @@ Context_basic_type.prototype.get_type_name_list = function (_enable_type) {
  * @return {Annotation_type_param[]}
  */
 Context_basic_type.prototype.get_type_list = function (_enable_type) {
+    
+    var _type_name = "importance";
+    //$.test_msg("Context_basic_type._initialize_type 5: " + _type_name, this._type_list[_type_name].is_enable("topic"));
+    
     var _type_list = [];
     for (var _type_name in this._type_list) {
         var _type_param = this._type_list[_type_name];
+        
+        //$.test_msg("Context_basic_type.get_type_list: " + _type_name, [_enable_type, this._type_list[_type_name].is_enable(_enable_type)]);
         
         // 檢查啟用類型
         if (typeof(_enable_type) === "string"

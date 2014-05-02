@@ -11,6 +11,12 @@
  * @param {Annotation_type_param|JSON|String} _param 預先匯入的資料
  */
 function Annotation_type_param(_param) {
+    
+    this._enable_config = {
+        topic: true,
+        respond: true
+    };
+    
     if ($.isset(_param)) {
         return this.set(_param);
     }
@@ -571,10 +577,7 @@ Annotation_type_param.prototype._option_ui;
  * 啟用標註類型的功能
  * @type type
  */
-Annotation_type_param.prototype._enable_config = {
-    topic: true,
-    respond: true
-};
+Annotation_type_param.prototype._enable_config = null;
 
 /**
  * 設定自己的適用類型
@@ -593,6 +596,7 @@ Annotation_type_param.prototype.set_enable_config = function (_type, _option) {
         return this;
     }
     
+    //$.test_msg("set_enable_config", [_type, _option]);
     this._enable_config[_type] = _option;
     
     return this;
