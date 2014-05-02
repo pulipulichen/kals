@@ -171,7 +171,7 @@ Context_predefined_type.prototype.get_type_list = function (_enable_type) {
     for (var _type_name in this._type_list) {
         var _type_param = this._type_list[_type_name];
         
-        $.test_msg("Context_predefined_type.get_type_list: " + _type_name, [_enable_type, this._type_list[_type_name].is_enable(_enable_type)]);
+        //$.test_msg("Context_predefined_type.get_type_list: " + _type_name, [_enable_type, this._type_list[_type_name].is_enable(_enable_type)]);
         
         // 檢查啟用類型
         if (typeof(_enable_type) === "string"

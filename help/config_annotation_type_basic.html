@@ -88,15 +88,30 @@ KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_basic: [
-        'importance'
+    annotation_type_basic: {
+        'importance': {
+            enable: {
+                topic: true,
+                respond: false
+            }
+        },
         //, 'concept'    //不使用「概念」標註類型
         //, 'confusion'    //不使用「困惑」標註類型
-        , 'question'
+        'question': {
+            enable: {
+                topic: true,
+                respond: false
+            }
+        },
         //, 'example'    //不使用「舉例」標註類型
-        , 'summary'
+        'summary': {
+            enable: {
+                topic: false,
+                respond: true
+            }
+        }
         //, 'custom'    //不使用「自訂」標註類型
-    ]
+    }
 };    
 </script>
 <!-- [/KALS] -->

@@ -19,7 +19,7 @@
 
 <ul>
   <li><a href="config_annotation_scope.html">設定標註範圍</a></li>
-  <li><a href="config_annotation_type.html">設定標註類型</a></li>
+  <li><a href="config_annotation_type_basic.html">設定基本標註類型</a></li>
   <li><a href="predefined_annotation_type.html">新增預先定義標註類型</a></li>
   <li><a href="enable_custom_annotation_type.html">設定「自訂」標註類型</a></li>
   <li><a href="config_toolbar.html">設定工具列</a></li>

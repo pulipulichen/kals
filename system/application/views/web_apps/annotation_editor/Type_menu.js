@@ -10,19 +10,22 @@
  * @version    1.0 2010/10/18 下午 04:57:05
  * @extends {Tooltip_modal}
  * @param {jQuery} _type_component 放置標註類型的元件
+ * @param {String} _enable_type 啟用的標註類型
  */
-function Type_menu(_type_component) {
+function Type_menu(_type_component, _enable_type) {
     
     Tooltip_modal.call(this);
     
     this._type_component = _type_component;
     
-    var _this = this;
+    //var _this = this;
     this._init_type_options();
     
     //setTimeout(function () {
     //    _this.get_ui();
     //}, 0);
+    
+    this._enable_type = _enable_type;
 }
 
 Type_menu.prototype = new Tooltip_modal();
@@ -34,6 +37,12 @@ Type_menu.prototype._$modal_name = 'Type_menu';
  * @type {String}
  */
 Type_menu.prototype._menu_id = 'editor_type_menu';
+
+/**
+ * 啟用標註類型的形態
+ * @type String|undefined
+ */
+Type_menu.prototype.enable_type;
 
 /**
  * Create UI
@@ -49,14 +58,14 @@ Type_menu.prototype._$create_ui = function () {
         classname: 'type-menu KALS'
     });
     
-    var _options = this._type_options;
+    var _options = KALS_context.basic_type.get_type_list(this.enable_type);
     
     for (var _i in _options) {
         var _type = _options[_i];
         this._setup_type_ui(_ui, _type);
     }
     
-    var _custom_type_list = KALS_context.predefined_type.get_type_list();
+    var _custom_type_list = KALS_context.predefined_type.get_type_list(this.enable_type);
     //$.test_msg('Type_menu._$create_ui custom_type_lis', _custom_type_list);
     for (var _j in _custom_type_list) {
         //$.test_msg('Type_menu._$create_ui custom_type_lis', _j);
@@ -310,7 +319,7 @@ else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
  */
 Type_menu.prototype._init_type_options = function () {
     //this._type_options = KALS_context.get_basic_type_options();
-    this._type_options = KALS_context.basic_type.get_type_name_list();
+    this._type_options = KALS_context.basic_type.get_type_name_list(this._enable_type);
     return this;
 };
 

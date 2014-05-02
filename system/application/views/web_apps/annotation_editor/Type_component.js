@@ -17,6 +17,7 @@ function Type_component(_editor) {
     if ($.isset(_editor)) {
         this._editor = _editor;
         this._default_type = new Annotation_type_param();
+        this._is_respond = _editor.is_respond();
         //this._type = new Annotation_type_param();
         //$.test_msg('Type_component() _type', this._type.export_json());
     }
@@ -50,6 +51,12 @@ Type_component.prototype.menu = null;
 Type_component.prototype._type = null;
 
 /**
+ * 現在編輯時是否是回應狀態
+ * @type {Boolean}
+ */
+Type_component.prototype._is_respond;
+
+/**
  * Create UI
  * @memberOf {Type_component}
  * @type {jQuery} UI
@@ -77,7 +84,7 @@ Type_component.prototype._$create_ui = function () {
         
         //_option.tooltip(_config);
         
-        if (_i == 'custom') {
+        if (_i === 'custom') {
             _option = this._create_custom_type_option(_option);
         }
         _option.hide().appendTo(_ui);
@@ -163,17 +170,18 @@ Type_component.prototype.set_type = function (_type, _is_manual) {
 	 * 20130603 Pudding Chen
 	 * 如果是人為選擇的，則記錄起來
 	 */
-	if (typeof(_is_manual) == "boolean" && _is_manual === true) {
-		KALS_context.last_select_annotation_type = _type;
+	if (typeof(_is_manual) === "boolean" 
+                && _is_manual === true) {
+            KALS_context.last_select_annotation_type = _type;
 	}
 	
     //$.test_msg('Type_component.set_type()', [$.isset(this._type), _type.equals(this._type)]);
     
-    if ($.isset(this._type) &&
-		_type.equals(this._type) &&
-		_is_custom_type === false) {
-		return this;
-	}
+    if ($.isset(this._type) 
+            && _type.equals(this._type) 
+            && _is_custom_type === false) {
+        return this;
+    }
     
     //$.test_msg('Type_component.set_type() pass', [_type.export_json(), _type.export_json()
     //    , _type.get_id(), _type.get_type_name()
@@ -232,11 +240,11 @@ Type_component.prototype.get_type = function () {
     }
     else {
         if (this._custom_name === null) {
-			return this._type;
-		}
-		else {
-			return this._custom_name;
-		}
+            return this._type;
+        }
+        else {
+            return this._custom_name;
+        }
     }    
 };
 
@@ -245,8 +253,8 @@ Type_component.prototype.get_type = function () {
  * @type {string}
  */
 Type_component.prototype.get_hint = function () {
-	var _type = this.get_type();
-	return _type.get_hint();
+    var _type = this.get_type();
+    return _type.get_hint();
 };
 
 /**
@@ -269,8 +277,9 @@ Type_component.prototype.reset_type = function () {
 	//return this.set_type(this._default_type);
 	var _last_select_annotation_type = KALS_context.last_select_annotation_type;
 	
-	if (_last_select_annotation_type === null && typeof(KALS_CONFIG.default_annotation_type) == "string") {
-		
+	if (_last_select_annotation_type === null 
+                && typeof(KALS_CONFIG.default_annotation_type) === "string") {
+	    // 不做任何事情？
 	}
 	
     return this.set_type(_last_select_annotation_type);
@@ -278,7 +287,13 @@ Type_component.prototype.reset_type = function () {
 
 Type_component.prototype._setup_menu = function () {
     
-    var _menu = new Type_menu(this);
+    var _enable_type = "topic";
+    if (this._is_respond 
+            && this._is_respond === true) {
+        _enable_type = "respond";
+    }
+    
+    var _menu = new Type_menu(this, _enable_type);
     this.menu = _menu;
     return _menu;
     
@@ -312,9 +327,9 @@ Type_component.prototype._listen_editor = function () {
         //    _annotation_param.set_type(_type);
         //}
 		
-		// @20130609 Pudding Chen
-		// 因為現在預設值都可以做修改，所以不管怎樣都要回傳預設值
-		_annotation_param.set_type(_type);
+        // @20130609 Pudding Chen
+        // 因為現在預設值都可以做修改，所以不管怎樣都要回傳預設值
+        _annotation_param.set_type(_type);
     });
     
     return this;
@@ -327,7 +342,7 @@ Type_component.prototype._listen_editor = function () {
 Type_component.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.type) != 'undefined') {
+        && typeof(_param.type) !== 'undefined') {
         this.set_type(_param.type);
     }
     return this;
@@ -380,20 +395,20 @@ Type_component.prototype.set_custom_name = function (_name) {
     //$.test_msg('Type_component.set_custom_name 1', _name);
     
     if ($.is_string(_name)) {
-		_name = $.trim(_name);
+            _name = $.trim(_name);
 	}
-	else {
-		if ($.is_class(_name, 'Annotation_type_param')) {
-			_name = _name.get_type_name();
-		}
-	}
+    else {
+        if ($.is_class(_name, 'Annotation_type_param')) {
+            _name = _name.get_type_name();
+        }
+    }
     if (_name === '') {
-		_name = null;
-	}
+        _name = null;
+    }
     
     if (this._custom_type_option === null) {
-		return this;
-	}
+        return this;
+    }
     
     var _classname = '.' + this._custom_type_option_classname + ':first';
         
@@ -427,8 +442,8 @@ Type_component.prototype.set_custom_name = function (_name) {
 Type_component.prototype.reset_custom_name = function () {
     
     if (this._custom_type_option === null) {
-		return this;
-	}
+        return this;
+    }
     
     return this.set_custom_name();
 };

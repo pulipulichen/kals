@@ -18,19 +18,19 @@ function Annotation_editor(_editor_container, _list_coll, _disable_option) {
     Multi_event_dispatcher.call(this);
     
     if ($.isset(_editor_container)) {
-		this._editor_container = _editor_container;
-	}
+        this._editor_container = _editor_container;
+    }
     
     if ($.isset(_list_coll)) {
-		this.set_list_coll(_list_coll);
-	}
+        this.set_list_coll(_list_coll);
+    }
     
     //this.listen_reset();
     //this.setup_note_editor_factory();
     
     if ($.isset(_disable_option)) {
-		this._disable_option = _disable_option;
-	}
+        this._disable_option = _disable_option;
+    }
 }
 
 Annotation_editor.prototype = new Multi_event_dispatcher();
@@ -162,6 +162,14 @@ Annotation_editor.prototype.set_editing_item = function (_item) {
  */
 Annotation_editor.prototype.is_editing = function () {
     return $.isset(this._editing_param);
+};
+
+/**
+ * 是否是回應模式
+ * @type {boolean}
+ */
+Annotation_editor.prototype.is_respond = function () {
+    return $.isset(this._topic);
 };
 
 /**
@@ -815,6 +823,7 @@ Annotation_editor.prototype._setup_note_editor = function () {
 // --------
 
 /**
+ * 被回應的標註資料
  * @type {Annotation_param}
  */
 Annotation_editor.prototype._topic = null;
