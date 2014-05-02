@@ -335,12 +335,20 @@ DEFAULT_KALS_CONFIG = {
          * @type Boolean
          */
         ajax_get_message: false,
+        
         /**
          * 開啟ajax_post設定
          * 設定檔案為 [VIEW]/helpers/KALS_util.js
          * @type Boolean
          */
-        ajax_post: false
+        ajax_post: false, 
+        
+        /**
+         * 取消載入KALS_context的後續動作
+         * 等於不初始化其他元件
+         * @type Boolean
+         */
+        kals_context_disable: false
     },
     
     /**

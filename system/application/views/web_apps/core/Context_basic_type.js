@@ -44,8 +44,8 @@ Context_basic_type.prototype._type_list = {};
 Context_basic_type.prototype.initialize = function () {
     
     var _basic_type = null;
-    if (typeof(KALS_CONFIG.annotation_type_basic_config) !== "undefined") {
-        _basic_type = KALS_CONFIG.annotation_type_basic_config;
+    if (typeof(KALS_CONFIG.annotation_type_config) !== "undefined") {
+        _basic_type = KALS_CONFIG.annotation_type_config;
     }
     else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
         _basic_type = KALS_CONFIG.annotation_type_option;
@@ -74,7 +74,7 @@ Context_basic_type.prototype._initialize_type = function (_type_name, _type_conf
     
     var _type_param = new Annotation_type_param(_type_name);
 
-    var _enable_config = _type_data["enable"];
+    var _enable_config = _type_config["enable"];
     _type_param.set_enable_config(_enable_config);
     
     return _type_param;
@@ -223,15 +223,9 @@ Context_basic_type.prototype.import_json = function (_json) {
  * 取得type選項的按鈕
  * @param {Annotation_type_param|string|number} _type_data
  * @return {Annotation_type_param}
- * @deprecated Pulipuli Chen 20140502 請使用Annotation_type_param.get_option_ui()
  */
 Context_basic_type.prototype.get_type_option = function (_type_data) {
-    if ($.is_class(_type_data, "Annotation_type_param") === false) {
-        _type_data = new Annotation_type_param(_type_data);
-    }
-    return _type_data.get_option_ui();
     
-    /*
     var _option = $('<span></span>')
         .addClass('type-option');
     
@@ -278,7 +272,6 @@ Context_basic_type.prototype.get_type_option = function (_type_data) {
     _option.attr('annotation_type', _type_name);
     
     return _option;
-    */
 };
 
 /* End of file Context_basic_type */

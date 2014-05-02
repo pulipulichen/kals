@@ -368,7 +368,7 @@ Annotation_tool.prototype.setup_position = function () {
         //檢測是否有要更改_mode
         var _selection_bottom = _selection.get_offset_bottom();
         
-        $.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
+        //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
         
         //如果沒有選取，就不會有_selection_bottom，也就不用定位
         if (_selection_bottom === null) {
@@ -449,7 +449,7 @@ Annotation_tool.prototype.setup_position = function () {
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
     
-        $.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
+        //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
     }
 };
 

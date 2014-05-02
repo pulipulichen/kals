@@ -75,6 +75,13 @@ KALS_context.initialize = function () {
             
             _this.module.init();
             
+            // 阻止啟用
+            if (typeof(KALS_context.debug) === "object"
+                && typeof(KALS_context.debug.kals_context_disable) === "boolean"
+                && KALS_context.debug.kals_context_disable === true) {
+                return;
+            }
+            
             _this.init_context.start();
         });    
     }, 0);
