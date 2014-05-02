@@ -48,7 +48,12 @@ $loader_uri = base_url() . "web_apps/generic/loader/";
         QUNIT_TITLE = "<?= $title ?>";
         var _test_subject;
         
+        // ----------------------------------------------------
+
         QUNIT = function () {
-            test("<?= $title ?>", function() {
+        test("<?= $title ?>", function() {
+
+        // ----------------------------------------------------
+
 <?php
         // 以下開始是Qunit的正文

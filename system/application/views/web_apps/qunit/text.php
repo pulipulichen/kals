@@ -11,11 +11,10 @@
  * @version     1.0 2014/5/2 上午 12:17:29
  */
 ?>
+
     });
 }; // end of QUNIT = function () {
 </script>
     <?php
         // 以上是Qunit的內容
     ?>
-</body>
-</html>
