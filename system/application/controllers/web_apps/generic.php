@@ -119,6 +119,7 @@ class generic extends Web_apps_controller {
             'core/Context_user',
             'core/Context_policy',
             'core/Context_search',
+            'core/Context_basic_type',
             'core/Context_predefined_type',
             'core/KALS_module_manager',
             'core/Init_context',
@@ -395,6 +396,8 @@ class generic extends Web_apps_controller {
         // 取得其他的JavaScript
         $exception_list = $this->_get_javascript_exception_list();
         $other_list_package = $this->_dir_get_list(".js", $exception_list);
+        
+        
         $list_package = array_merge($list_package, $other_list_package);
         
         if (is_null($return_list))
@@ -406,8 +409,9 @@ class generic extends Web_apps_controller {
         else
         {
             $full_list = $list;
-            foreach ($files AS $path)
+            foreach ($files AS $path) {
                 $full_list[] = $path;
+            }
             return $full_list;
         }
     }
@@ -426,20 +430,20 @@ class generic extends Web_apps_controller {
     	
     	$this->load->helper('directory');
     	for ($i = 0; $i < count($dirs); $i++) {
-    		 $f = directory_map($this->dirmap_path . $dirs[$i], TRUE);
-    		 //print_r($f);
-	    	for ($j = 0; $j < count($f); $j++) {
-	        	$f[$j] = $dirs[$i]."/".$f[$j];
-	        }
-                $file_name = $f;
-    		$files = array_merge($files, $file_name);
+            $f = directory_map($this->dirmap_path . $dirs[$i], TRUE);
+            //print_r($f);
+            for ($j = 0; $j < count($f); $j++) {
+                $f[$j] = $dirs[$i]."/".$f[$j];
+            }
+            $file_name = $f;
+            $files = array_merge($files, $file_name);
     	}
         
         for ($i = 0; $i < count($files); $i++) {
-        	$name = $files[$i];
-                $name = substr($name, 0 , strrpos($name, "."));
-                
-        	$files[$i] = $name;
+            $name = $files[$i];
+            $name = substr($name, 0 , strrpos($name, "."));
+
+            $files[$i] = $name;
         }
         
         //print_r($files);
@@ -519,7 +523,8 @@ class generic extends Web_apps_controller {
                $path = $dir . $file;
                
                if (FALSE === in_array($path, $exception_list)
-                    && $this->_filter_file($path)) {
+                    && $this->_filter_file($path)
+                    && ends_with($path, "_test") === FALSE) {
                    $files[] = $path;
                }
            }

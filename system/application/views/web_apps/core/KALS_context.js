@@ -76,9 +76,14 @@ KALS_context.initialize = function () {
             _this.module.init();
             
             // 阻止啟用
-            if (typeof(KALS_context.debug) === "object"
-                && typeof(KALS_context.debug.kals_context_disable) === "boolean"
-                && KALS_context.debug.kals_context_disable === true) {
+            if (typeof(KALS_CONFIG.debug) === "object"
+                && typeof(KALS_CONFIG.debug.kals_context_disable) === "boolean"
+                && KALS_CONFIG.debug.kals_context_disable === true) {
+            
+                if (typeof(QUNIT) === "function") {
+                    $.test_msg("QUNIT");
+                    QUNIT();
+                }
                 return;
             }
             
