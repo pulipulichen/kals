@@ -335,7 +335,7 @@ List_header_component.prototype.set_type = function (_type) {
     }
     */
    
-    var _option = KALS_context.custom_type.get_type_option(_type);
+    var _option = KALS_context.predefined_type.get_type_option(_type);
     _option.appendTo(this._type_container);
     
     return this;

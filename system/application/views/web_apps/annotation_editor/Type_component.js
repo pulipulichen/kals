@@ -90,14 +90,14 @@ Type_component.prototype._$create_ui = function () {
 	// 20130603 Pudding Chen
 	// 預設選單
 	var _default_type = null;
-	if (typeof(KALS_CONFIG.default_annotation_type) == "string") {
+	if (typeof(KALS_CONFIG.default_annotation_type) === "string") {
 		var _default_type_name = KALS_CONFIG.default_annotation_type;
 		for (_i in _options) {
 			_option = _options[_i];
 			var _type_name = _i;
 			//$.test_msg("Type_component", [_i, _default_type_name]);
-			if (_default_type_name == _type_name) {
-				this._default_type = KALS_context.custom_type.find_type(_i);
+			if (_default_type_name === _type_name) {
+				this._default_type = KALS_context.predefined_type.find_type(_i);
 				_default_type = this._default_type;
 				//$.test_msg("Type_component set default", this._default_type); 
 				break;
@@ -110,7 +110,7 @@ Type_component.prototype._$create_ui = function () {
 		for (_i in _options) {
 			_option = _options[_i];
 			_type_name = _i;
-			this._default_type = KALS_context.custom_type.find_type(_i);
+			this._default_type = KALS_context.predefined_type.find_type(_i);
 			break;
 		}
 	}
@@ -141,24 +141,23 @@ Type_component.prototype.set_type = function (_type, _is_manual) {
 	 */
     var _is_custom_type = false;
     if ($.is_null(_type)) {
-		_type = this.get_type();
-	}
-	else 
-		if (_type === '') {
-			_type = new Annotation_type_param(7);
-		}
-		else {
-			_custom_type = KALS_context.custom_type.find_type(_type);
-			
-			if (_custom_type !== null) {
-				_type = _custom_type;
-			}
-			else {
-				//$.test_msg('Type_component.set_type() [add_custom_type]', _type);
-				_type = KALS_context.custom_type.add_custom_type(_type);
-				_is_custom_type = true;
-			}
-		}
+        _type = this.get_type();
+    }
+    else if (_type === '') {
+        _type = new Annotation_type_param(7);
+    }
+    else {
+        _custom_type = KALS_context.predefined_type.find_type(_type);
+
+        if (_custom_type !== null) {
+            _type = _custom_type;
+        }
+        else {
+            //$.test_msg('Type_component.set_type() [add_custom_type]', _type);
+            _type = KALS_context.predefined_type.add_custom_type(_type);
+            _is_custom_type = true;
+        }
+    }
     
 	/**
 	 * 20130603 Pudding Chen

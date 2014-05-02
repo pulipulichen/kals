@@ -56,7 +56,7 @@ Type_menu.prototype._$create_ui = function () {
         this._setup_type_ui(_ui, _type);
     }
     
-    var _custom_type_list = KALS_context.custom_type.get_type_list();
+    var _custom_type_list = KALS_context.predefined_type.get_type_list();
     //$.test_msg('Type_menu._$create_ui custom_type_lis', _custom_type_list);
     for (var _j in _custom_type_list) {
         //$.test_msg('Type_menu._$create_ui custom_type_lis', _j);
@@ -142,7 +142,7 @@ Type_menu.prototype.create_type_option = function (_type) {
     //var _type_value = $('<input type="hidden" class="type-value" value="'+_type+'" />')
     //    .appendTo(_type_ui);
     
-    var _option_ui = KALS_context.custom_type.get_type_option(_type);
+    var _option_ui = KALS_context.predefined_type.get_type_option(_type);
     
     return _option_ui;
 };
@@ -216,7 +216,7 @@ Type_menu.prototype.create_type_option_list = function () {
 	 * 20130603 Pudding Chen 
 	 * 加入自訂的標註類型
 	 */
-    var _custom_type_list = KALS_context.custom_type.get_type_list();
+    var _custom_type_list = KALS_context.predefined_type.get_type_list();
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];
         var _type_name = _type.get_name();

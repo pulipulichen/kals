@@ -305,26 +305,25 @@ Annotation_param.prototype.import_json = function (_json) {
     var _plain_types = this._plain_types;
     for (var _i in _plain_types) {
         var _attr = _plain_types[_i];
-        if (typeof(_json[_attr]) != 'undefined') {
+        if (typeof(_json[_attr]) !== 'undefined') {
             var _value = _json[_attr];
-            if (_attr == 'note') {
-				//$.test_msg("Annotation_param.import_json Note 1", _value);
-				_value = $.decodeURIComponent(_value);
-				//$.test_msg("Annotation_param.import_json Note 2", _value);
-				_value = unescape(_value);
-				//$.test_msg("Annotation_param.import_json Note 3", _value);
-			}
-			else 
-				if (_attr == 'policy_type' && $.is_number(_value)) {
-					_value = _value + '';
-					for (var _p in this._policy_types) {
-						var _policy_type = this._policy_types[_p];
-						if (_p == _value) {
-							_value = _policy_type;
-							break;
-						}
-					}
-				}
+            if (_attr === 'note') {
+                //$.test_msg("Annotation_param.import_json Note 1", _value);
+                _value = $.decodeURIComponent(_value);
+                //$.test_msg("Annotation_param.import_json Note 2", _value);
+                _value = unescape(_value);
+                //$.test_msg("Annotation_param.import_json Note 3", _value);
+            }
+            else  if (_attr === 'policy_type' && $.is_number(_value)) {
+                _value = _value + '';
+                for (var _p in this._policy_types) {
+                    var _policy_type = this._policy_types[_p];
+                    if (_p === _value) {
+                        _value = _policy_type;
+                        break;
+                    }
+                }
+            }
             
             this[_attr] = _value;
         }
@@ -334,39 +333,34 @@ Annotation_param.prototype.import_json = function (_json) {
     var _param_types = this._param_types;
     for (_i in _param_types) {
         _attr = _param_types[_i];
-        if (typeof(_json[_attr]) != 'undefined') {
+        if (typeof(_json[_attr]) !== 'undefined') {
             _value = _json[_attr];
-            if (_attr == 'respond_to_coll') {
-				//$.test_msg('respond_to_coll', _value);
-				this[_attr] = new Annotation_collection_param(_value);
-			}
-			else if (_attr == 'scope') {
-				//$.test_msg("Annotation_param.import_json", _value);
-				this[_attr] = new Scope_collection_param(_value);
-			}
-			else 
-				if (_attr == 'share_list') {
-					this[_attr] = new User_collection_param(_value);
-				}
-				else 
-					if (_attr == 'user') {
-						this[_attr] = new User_param(_value);
-					}
-					else 
-						if (_attr == 'topic') {
-							this[_attr] = new Annotation_param(_value);
-						}
-						else 
-							if (_attr == 'type') {
-								_value = decodeURIComponent(_value);
-								//this[_attr] = new Annotation_type_param(_value);
-								this[_attr] = KALS_context.custom_type.import_json(_value);
-							}
-							else 
-								if (_attr == 'recommend') {
-									this[_attr] = new Recommend_param(_value);
-								}
-						
+            if (_attr === 'respond_to_coll') {
+                //$.test_msg('respond_to_coll', _value);
+                this[_attr] = new Annotation_collection_param(_value);
+            }
+            else if (_attr === 'scope') {
+                //$.test_msg("Annotation_param.import_json", _value);
+                this[_attr] = new Scope_collection_param(_value);
+            }
+            else if (_attr === 'share_list') {
+                this[_attr] = new User_collection_param(_value);
+            }
+            else if (_attr === 'user') {
+                this[_attr] = new User_param(_value);
+            }
+            else if (_attr === 'topic') {
+                this[_attr] = new Annotation_param(_value);
+            }
+            else if (_attr === 'type') {
+                _value = decodeURIComponent(_value);
+                //this[_attr] = new Annotation_type_param(_value);
+                this[_attr] = KALS_context.predefined_type.import_json(_value);
+            }
+            else if (_attr === 'recommend') {
+                this[_attr] = new Recommend_param(_value);
+            }
+
         }   //if (typeof(_json[_attr]) != 'undefined') {
     }   //for (_i in _param_types) {
     
@@ -385,11 +379,11 @@ Annotation_param.prototype.set_type = function (_type) {
 Annotation_param.prototype.get_interval_time = function () {
     var _timestamp = this.timestamp;
     if ($.is_null(_timestamp)) {
-		return null;
-	}
-	else {
-		return $.get_interval_time(_timestamp);
-	}
+        return null;
+    }
+    else {
+        return $.get_interval_time(_timestamp);
+    }
 };
 
 /**

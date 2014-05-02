@@ -51,6 +51,8 @@
         <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫 phpPgAdmin</a></li>
 	<li><a href="../document/KALS UML.uml" target="_blank">UML規劃圖</a> (以<a href="http://sourceforge.net/projects/whitestaruml/" target="_blank">WhiteStarUML</a>開啟)</li>
 	<li><a href="../document/Webpage Application.ep" target="_blank">網頁應用端草圖構想</a> (以<a href="http://pencil.evolus.vn/" target="_blank">Pencil</a>開啟)</li>
+        <li><a href="../unit_test" target="_blank">KALS controller的單元測試</a></li>
+        <li><a href="../web_apps/qunit/" target="_blank">KALS view web_apps的單元測試</a></li>
 </ul>
 <hr />
 <!-- <p class="text-align:center;">KALS! - <a href="mailto:pulipuli.chen@gmail.com">Pudding Chen</a> </p> -->

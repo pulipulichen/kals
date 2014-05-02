@@ -28,7 +28,11 @@ class QUnit extends Controller {
         //$this->js_files[] = 'xxs_getter.js';
         //$this->load->view('web_apps/qunit/index.php');
         
-        $this->load();
+        //$this->load();
+        $data = array(
+            "path_list" => $this->_get_path_list()
+        );
+        $this->load->view('web_apps/qunit/path_list', $data);
     }
     
     /**
@@ -61,10 +65,43 @@ class QUnit extends Controller {
         $this->load->view('web_apps/qunit/footer.php');
     }
     
-    function get_path_list() {
-        $root_dir = "web_apps";
+    private function _get_path_list() {
+        $root_dir = "./system/application/views/web_apps/";
         
+        $this->load->helper('directory');
         
+        // 列出該目錄底下的所有檔案
+        $files = directory_map($root_dir, false);
+        $dir = "";
+        
+        //print_r($file);
+        $test_files = array();
+        
+        foreach ($files AS $index => $file) {
+            if (is_numeric($index)) {
+                // 這是一個檔案
+                if (ends_with($file, "_test.js")) {
+                    $file = ends_strip($file, "_test.js");
+                    array_push($test_files, $file);
+                }
+            }
+            else {
+                // 這是一個目錄
+                $dir_name = $index . "/";
+                $dir_array = $file;
+                foreach ($dir_array AS $dir_index => $dir_file) {
+                    if (is_numeric($dir_index) 
+                            && ends_with($dir_file, "_test.js")) {
+                        $dir_file = $dir_name . $dir_file;
+                        $dir_file = ends_strip($dir_file, "_test.js");
+                        array_push($test_files, $dir_file);
+                    }
+                }
+            }
+        }
+        
+        //print_r($test_files);
+        return $test_files;
     }
     
     /*

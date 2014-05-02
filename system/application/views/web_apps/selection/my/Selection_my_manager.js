@@ -98,7 +98,7 @@ Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _i
     //}
     
     //加入基本標註類型檢查
-    var _type_param = KALS_context.custom_type.find_type(_type);
+    var _type_param = KALS_context.predefined_type.find_type(_type);
     if (_type_param.is_basic() === true) {
         _type = _type_param.get_type_name();
     }
@@ -112,7 +112,7 @@ Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _i
         
         //$.test_msg('Selection_my_manager.set_scope_coll()', [_type, _type_name, _i]);
         
-        if (_type_name == _type) {
+        if (_type_name === _type) {
             //如果是現在這個類型，則設置
             this[_type].set_scope_coll(_scope_coll);
             //$.test_msg('Selection_my_manager.set_scope_coll()',[ _scope_coll.length(), typeof(this[_type].set_scope_coll), _type]);

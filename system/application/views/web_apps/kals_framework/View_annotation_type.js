@@ -67,7 +67,7 @@ View_annotation_type.prototype._$create_ui = function () {
             var _type_name = _i;
             //$.test_msg("Type_component", [_i, _default_type_name]);
             if (_default_type_name === _type_name) {
-                this._default_type = KALS_context.custom_type.find_type(_i);
+                this._default_type = KALS_context.predefined_type.find_type(_i);
                 _default_type = this._default_type;
                 //$.test_msg("Type_component set default", this._default_type); 
                 break;
@@ -80,7 +80,7 @@ View_annotation_type.prototype._$create_ui = function () {
         for (_i in _options) {
             _option = _options[_i];
             _type_name = _i;
-            this._default_type = KALS_context.custom_type.find_type(_i);
+            this._default_type = KALS_context.predefined_type.find_type(_i);
             break;
         }
     }

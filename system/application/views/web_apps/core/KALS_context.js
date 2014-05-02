@@ -633,7 +633,7 @@ KALS_context.create_type_param_list = function(_enable_type) {
      * 20130603 Pudding Chen 
      * 加入自訂的標註類型
      */
-    var _custom_type_list = KALS_context.custom_type.get_type_list();
+    var _custom_type_list = KALS_context.predefined_type.get_type_list();
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];
         var _type_name = _type.get_name();
