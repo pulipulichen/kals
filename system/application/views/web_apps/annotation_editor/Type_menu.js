@@ -152,7 +152,11 @@ Type_menu.prototype.create_type_option = function (_type) {
     //var _type_value = $('<input type="hidden" class="type-value" value="'+_type+'" />')
     //    .appendTo(_type_ui);
     
-    var _option_ui = KALS_context.predefined_type.get_type_option(_type);
+    //var _option_ui = KALS_context.predefined_type.get_type_option(_type);
+    if ($.is_class(_type, "Annotation_type_param") === false) {
+        _type = new Annotation_type_param(_type);
+    }
+    var _option_ui = _type.get_option_ui();
     
     return _option_ui;
 };

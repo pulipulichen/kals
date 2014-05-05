@@ -340,7 +340,8 @@ Context_predefined_type.prototype.import_json = function (_json) {
  * @return {Annotation_type_param}
  */
 Context_predefined_type.prototype.get_type_option = function (_type_data) {
-    
+    return _type_data.get_option_ui();
+    /*
     var _option = $('<span></span>')
         .addClass('type-option');
     
@@ -387,6 +388,7 @@ Context_predefined_type.prototype.get_type_option = function (_type_data) {
     _option.attr('annotation_type', _type_name);
     
     return _option;
+    */
 };
 
 /* End of file Context_predefined_type */

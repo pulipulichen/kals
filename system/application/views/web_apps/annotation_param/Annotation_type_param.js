@@ -559,7 +559,7 @@ Annotation_type_param.prototype.get_ui = function () {
  */
 Annotation_type_param.prototype.get_option_ui = function () {
     if (this._option_ui === undefined) {
-        var _view = new View_annotation_type(this);
+        var _view = new View_annotation_type_option(this);
         _view = _view.get_ui();
         this._option_ui = _view;
     }
