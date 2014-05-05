@@ -600,6 +600,36 @@ KALS_context.last_select_annotation_type = null;
  */
 KALS_context.create_type_param_list = function(_enable_type) {
     var _list = {};
+    var _order_list = {};
+    
+    var _add_order = function (_order, _type_param) {
+        if (typeof(_order_list[_order]) !== "object") {
+            _order_list[_order] = [];
+        }
+        _order_list[_order].push(_type_param);
+    };
+    
+    var _get_ordered_list = function () {
+        
+        // 先取得order_index
+        var _order_index_array = [];
+        for (var _order in _order_list) {
+            _order_index_array.push(_order);
+        }
+        _order_index_array.sort(function(_a, _b){return _b-_a});
+        
+        var _list = {};
+        for (var _order_index in _order_index_array) {
+            var _order = _order_index_array[_order_index];
+            var _ordered_array = _order_list[_order];
+            for (var _index in _ordered_array) {
+                var _type_param = _ordered_array[_index];
+                var _type_name = _type_param.get_name();
+                _list[_type_name] = _type_param;
+            }
+        }
+        return _list;
+    };
     
     //var _type_options = KALS_CONFIG.annotation_type_option;
     /**
@@ -609,13 +639,16 @@ KALS_context.create_type_param_list = function(_enable_type) {
     //var _type_options = this.get_basic_type_options();
     var _type_options = this.basic_type.get_type_list(_enable_type);
     
-    /*
+    
+    
     for (var _i in _type_options) {
-        var _type_string = _type_options[_i];
-		var _type_param = new Annotation_type_param(_type_string);
-        _list[_type_string] = _type_param;
+        //var _type_string = _type_options[_i];
+        //var _type_param = new Annotation_type_param(_type_string);
+        var _type_param = _type_options[_i];
+        var _order = _type_param.get_order();
+        _add_order(_order, _type_param);
     }
-    */
+    /*
     for (var _type_name in _type_options) {
         var _type_config = _type_options[_type_name];
         if (typeof(_enable_type) === "string"
@@ -624,9 +657,9 @@ KALS_context.create_type_param_list = function(_enable_type) {
             continue;
         }
         var _type_param = new Annotation_type_param(_type_name);
-        _list[_type_name] = _type_param;
+        //_list[_type_name] = _type_param;
     }
-    
+    */
     //$.test_msg('Type_menu.create_type_option_list _list.length', _length);
     
     /**
@@ -635,10 +668,14 @@ KALS_context.create_type_param_list = function(_enable_type) {
      */
     var _custom_type_list = KALS_context.predefined_type.get_type_list();
     for (var _j in _custom_type_list) {
-        _type = _custom_type_list[_j];
-        var _type_name = _type.get_name();
-        _list[_type_name] = _type;
+        var _type_param = _custom_type_list[_j];
+        var _order = _type_param.get_order();
+        //var _type_name = _type.get_name();
+        //_list[_type_name] = _type;
+        _add_order(_order, _type_param);
     }
+    
+    _list = _get_ordered_list();
     
     return _list;
 };

@@ -84,14 +84,18 @@ Context_basic_type.prototype._initialize_type = function (_type_name, _type_conf
     
     var _type_param = new Annotation_type_param(_type_name);
 
-    var _enable_config = _type_config["enable"];
+    if (typeof(_type_config["enable"]) === 'object') {
+        //$.test_msg("Context_basic_type._initialize_type: " + _type_name, _enable_config);
+        var _enable_config = _type_config["enable"];
+        
+        //$.test_msg("Context_basic_type._initialize_type 2: " + _type_name, _type_param.is_enable("topic"));
+        _type_param.set_enable_config(_enable_config);
+    }
     
-    //$.test_msg("Context_basic_type._initialize_type: " + _type_name, _enable_config);
-    
-    _type_param.set_enable_config(_enable_config);
-    
-    //$.test_msg("Context_basic_type._initialize_type 2: " + _type_name, _type_param.is_enable("topic"));
-    
+    if (typeof(_type_config["order"]) === "number") {
+        var _order = _type_config["order"];
+        _type_param.set_order(_order);
+    }
     return _type_param;
 };
 
@@ -124,7 +128,7 @@ Context_basic_type.prototype.get_type_name_list = function (_enable_type) {
  */
 Context_basic_type.prototype.get_type_list = function (_enable_type) {
     
-    var _type_name = "importance";
+    //var _type_name = "importance";
     //$.test_msg("Context_basic_type._initialize_type 5: " + _type_name, this._type_list[_type_name].is_enable("topic"));
     
     var _type_list = [];

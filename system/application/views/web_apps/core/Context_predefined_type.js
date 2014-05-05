@@ -55,54 +55,9 @@ Context_predefined_type.prototype.initialize = function () {
     if (_prefined_type !== null) {
         var _type_list = {};
         for (var _type_name in _prefined_type) {
-            var _type_data = _prefined_type[_type_name];
+            var _type_config = _prefined_type[_type_name];
             
-            var _type_param = new Annotation_type_param(_type_name);
-            _type_param.set_custom();
-            
-            //檢查是否有id
-            //if (typeof(_type_data.type_id) == 'number')
-            //    _type_param.set_id(_type_data.type_id);
-            
-            //檢查是否有hint
-            if (typeof(_type_data.hint) === 'string') {
-                _type_param.set_hint(_type_data.hint);
-            }
-            
-            if (typeof(_type_data.option) !== 'undefined') {
-                //檢查是否有background_color
-                if (typeof(_type_data.option.background_color) === 'string') {
-                    _type_param.set_option_background_color(_type_data.option.background_color);
-                }
-                
-                //檢查是否有font_color
-                if (typeof(_type_data.option.font_color) === 'string') {
-                    _type_param.set_option_font_color(_type_data.option.font_color);
-                }
-            }
-            
-            if (typeof(_type_data.anchor) !== 'undefined') {
-                //檢查是否有style
-                if (typeof(_type_data.anchor.style) === 'string') {
-                    _type_param.set_anchor_style(_type_data.anchor.style);
-                }
-                
-                //檢查是否有color
-                if (typeof(_type_data.anchor.color) === 'string') {
-                    _type_param.set_anchor_color(_type_data.anchor.color);
-                }
-                    
-                //檢查是否有font_color
-                if (typeof(_type_data.anchor.font_color) === 'string') {
-                    _type_param.set_anchor_font_color(_type_data.anchor.font_color);
-                }
-            }
-            
-            // 設定啟用選項
-            if (typeof(_type_data.enable) !== "undefined") {
-                _type_param.set_enable_config(_type_data.enable);
-                //$.test_msg("是否啟用", [_type_data.enable, _type_param.is_enable("respond")]);
-            }
+            var _type_param = this._initialize_type(_type_name, _type_config);
             
             _type_list[_type_name] = _type_param;
         }   //for (var _type_name in _prefined_type) {
@@ -111,6 +66,69 @@ Context_predefined_type.prototype.initialize = function () {
     }   //if (_prefined_type !== null) {
     
     return this;
+};
+
+/**
+ * 初始化個別的標註
+ * @param {String} _type_name
+ * @param {JSON} _type_config
+ * @returns {Annotation_type_param}
+ */
+Context_predefined_type.prototype._initialize_type = function (_type_name, _type_config) {
+    
+    var _type_param = new Annotation_type_param(_type_name);
+    _type_param.set_custom();
+
+    //檢查是否有id
+    //if (typeof(_type_data.type_id) == 'number')
+    //    _type_param.set_id(_type_data.type_id);
+
+    //檢查是否有hint
+    if (typeof(_type_config.hint) === 'string') {
+        _type_param.set_hint(_type_config.hint);
+    }
+
+    if (typeof(_type_config.option) !== 'undefined') {
+        //檢查是否有background_color
+        if (typeof(_type_config.option.background_color) === 'string') {
+            _type_param.set_option_background_color(_type_config.option.background_color);
+        }
+
+        //檢查是否有font_color
+        if (typeof(_type_config.option.font_color) === 'string') {
+            _type_param.set_option_font_color(_type_config.option.font_color);
+        }
+    }
+
+    if (typeof(_type_config.anchor) !== 'undefined') {
+        //檢查是否有style
+        if (typeof(_type_config.anchor.style) === 'string') {
+            _type_param.set_anchor_style(_type_config.anchor.style);
+        }
+
+        //檢查是否有color
+        if (typeof(_type_config.anchor.color) === 'string') {
+            _type_param.set_anchor_color(_type_config.anchor.color);
+        }
+
+        //檢查是否有font_color
+        if (typeof(_type_config.anchor.font_color) === 'string') {
+            _type_param.set_anchor_font_color(_type_config.anchor.font_color);
+        }
+    }
+
+    // 設定啟用選項
+    if (typeof(_type_config.enable) !== "undefined") {
+        _type_param.set_enable_config(_type_config.enable);
+        //$.test_msg("是否啟用", [_type_data.enable, _type_param.is_enable("respond")]);
+    }
+    
+    if (typeof(_type_config["order"]) === "number") {
+        var _order = _type_config["order"];
+        _type_param.set_order(_order);
+    }
+            
+    return _type_param;
 };
 
 /**

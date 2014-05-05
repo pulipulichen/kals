@@ -628,5 +628,36 @@ Annotation_type_param.prototype.is_enable = function (_type) {
     return _option;
 };
 
+// --------------------------------------------------
+
+/**
+ * 排序參數
+ * 
+ * 數字越大，越往上排
+ * 數字越小，越往下排
+ * 預設是1
+ * @type Number
+ */
+Annotation_type_param.prototype._order = 1;
+
+/**
+ * 設定排序
+ * @param {Number} _order
+ * @returns {Annotation_type_param}
+ */
+Annotation_type_param.prototype.set_order = function (_order) {
+    if (typeof(_order) === 'number') {
+        this._order = _order;
+    }
+    return this;
+}
+
+/**
+ * 取得排序
+ * @returns {Number} _order
+ */
+Annotation_type_param.prototype.get_order = function () {
+    return this._order;
+}
 /* End of file Annotation_type_param */
 /* Location: ./system/application/views/web_apps/Annotation_type_param.js */

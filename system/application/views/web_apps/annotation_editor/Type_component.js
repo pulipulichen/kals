@@ -270,17 +270,20 @@ Type_component.prototype.get_default_type = function () {
  */
 Type_component.prototype.reset_type = function () {
     this.reset_custom_name();
-	/**
-	 * 20130603 Pudding Chen
-	 * 改成記錄最後一次選擇的標註類型
-	 */
-	//return this.set_type(this._default_type);
-	var _last_select_annotation_type = KALS_context.last_select_annotation_type;
-	
-	if (_last_select_annotation_type === null 
-                && typeof(KALS_CONFIG.default_annotation_type) === "string") {
-	    // 不做任何事情？
-	}
+    
+    /**
+     * 20130603 Pudding Chen
+     * 改成記錄最後一次選擇的標註類型
+     */
+    //return this.set_type(this._default_type);
+    var _last_select_annotation_type = KALS_context.last_select_annotation_type;
+
+    if (_last_select_annotation_type === null 
+            && typeof(KALS_CONFIG.default_annotation_type) === "string") {
+        // 不做任何事情？
+    }
+    
+    // 確認一下是否是type_menu中的第一個類型
 	
     return this.set_type(_last_select_annotation_type);
 };
