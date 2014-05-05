@@ -10,8 +10,5 @@
  * @link        https://github.com/pulipulichen/kals
  * @version     1.0 2014/5/2 上午 12:17:29
  */
-
-// 此處應該擺放文字
-if (isset($text)) {
-    echo "<div>".$text."</div>";
-}
+?>
+</body></html>

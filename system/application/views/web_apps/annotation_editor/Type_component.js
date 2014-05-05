@@ -98,28 +98,28 @@ Type_component.prototype._$create_ui = function () {
 	// 預設選單
 	var _default_type = null;
 	if (typeof(KALS_CONFIG.default_annotation_type) === "string") {
-		var _default_type_name = KALS_CONFIG.default_annotation_type;
-		for (_i in _options) {
-			_option = _options[_i];
-			var _type_name = _i;
-			//$.test_msg("Type_component", [_i, _default_type_name]);
-			if (_default_type_name === _type_name) {
-				this._default_type = KALS_context.predefined_type.find_type(_i);
-				_default_type = this._default_type;
-				//$.test_msg("Type_component set default", this._default_type); 
-				break;
-			}
-		}
+            var _default_type_name = KALS_CONFIG.default_annotation_type;
+            for (_i in _options) {
+                _option = _options[_i];
+                var _type_name = _i;
+                //$.test_msg("Type_component", [_i, _default_type_name]);
+                if (_default_type_name === _type_name) {
+                    this._default_type = KALS_context.predefined_type.find_type(_i);
+                    _default_type = this._default_type;
+                    //$.test_msg("Type_component set default", this._default_type); 
+                    break;
+                }
+            }
 	}
 	
 	//如果沒有設定預設選單，則自動選擇第一個選單
 	if (_default_type === null) {
-		for (_i in _options) {
-			_option = _options[_i];
-			_type_name = _i;
-			this._default_type = KALS_context.predefined_type.find_type(_i);
-			break;
-		}
+            for (_i in _options) {
+                _option = _options[_i];
+                _type_name = _i;
+                this._default_type = KALS_context.predefined_type.find_type(_i);
+                break;
+            }
 	}
     this._listen_editor();
     
@@ -166,14 +166,14 @@ Type_component.prototype.set_type = function (_type, _is_manual) {
         }
     }
     
-	/**
-	 * 20130603 Pudding Chen
-	 * 如果是人為選擇的，則記錄起來
-	 */
-	if (typeof(_is_manual) === "boolean" 
-                && _is_manual === true) {
-            KALS_context.last_select_annotation_type = _type;
-	}
+    /**
+     * 20130603 Pudding Chen
+     * 如果是人為選擇的，則記錄起來
+     */
+    if (typeof(_is_manual) === "boolean" 
+            && _is_manual === true) {
+        KALS_context.last_select_annotation_type = _type;
+    }
 	
     //$.test_msg('Type_component.set_type()', [$.isset(this._type), _type.equals(this._type)]);
     
@@ -285,6 +285,10 @@ Type_component.prototype.reset_type = function () {
     return this.set_type(_last_select_annotation_type);
 };
 
+/**
+ * 設定好標註選單
+ * @returns {Type_menu}
+ */
 Type_component.prototype._setup_menu = function () {
     
     var _enable_type = "topic";
@@ -292,6 +296,8 @@ Type_component.prototype._setup_menu = function () {
             && this._is_respond === true) {
         _enable_type = "respond";
     }
+    
+    $.test_msg("_setup_menu", _enable_type);
     
     var _menu = new Type_menu(this, _enable_type);
     this.menu = _menu;

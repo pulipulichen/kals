@@ -42,7 +42,7 @@ Type_menu.prototype._menu_id = 'editor_type_menu';
  * 啟用標註類型的形態
  * @type String|undefined
  */
-Type_menu.prototype.enable_type;
+Type_menu.prototype._enable_type = "topic";
 
 /**
  * Create UI
@@ -58,21 +58,22 @@ Type_menu.prototype._$create_ui = function () {
         classname: 'type-menu KALS'
     });
     
-    var _options = KALS_context.basic_type.get_type_list(this.enable_type);
-    
+    // 基本類型
+    var _options = KALS_context.basic_type.get_type_list();
     for (var _i in _options) {
         var _type = _options[_i];
         this._setup_type_ui(_ui, _type);
     }
     
-    var _custom_type_list = KALS_context.predefined_type.get_type_list(this.enable_type);
+    // 預定類型
+    var _custom_type_list = KALS_context.predefined_type.get_type_list();
     //$.test_msg('Type_menu._$create_ui custom_type_lis', _custom_type_list);
     for (var _j in _custom_type_list) {
         //$.test_msg('Type_menu._$create_ui custom_type_lis', _j);
         _type = _custom_type_list[_j];
         this._setup_type_ui(_ui, _type);
     }
-	//_ui.appendTo($("body"));
+    //_ui.appendTo($("body"));
     
     return _ui;
 };
@@ -225,7 +226,7 @@ Type_menu.prototype.create_type_option_list = function () {
 	 * 20130603 Pudding Chen 
 	 * 加入自訂的標註類型
 	 */
-    var _custom_type_list = KALS_context.predefined_type.get_type_list();
+    var _custom_type_list = KALS_context.predefined_type.get_type_list(this._enable_type);
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];
         var _type_name = _type.get_name();

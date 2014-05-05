@@ -19,7 +19,7 @@
 </head>
 
 <body>
-
+    <h1>Web Apps QUnit Path List</h1>
     <ul>
         <?php
         foreach ($path_list AS $index => $path) {
