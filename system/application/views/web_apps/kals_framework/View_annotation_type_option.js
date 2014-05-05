@@ -45,8 +45,12 @@ View_annotation_type_option.prototype._$create_ui = function () {
         .addClass('type-option')
         .addClass('view-annotation-type');
     
-    //取得參數    
+    //取得參數   
+    /**
+     * @type {Annotation_type_param}
+     */
     var _type_param = this._type;
+    
     
     //設置外觀
     _option.addClass(_type_param.get_classname());
@@ -71,6 +75,16 @@ View_annotation_type_option.prototype._$create_ui = function () {
     //額外的參數
     _type_name = _type_param.get_type_name();
     _option.attr('annotation_type', _type_name);
+    
+    var _enable_config = _type_param.get_enable_config();
+    for (var _enable_type in _enable_config) {
+        var _enable_option = _enable_config[_enable_type];
+        if (_enable_option !== false) {
+            _option.addClass("enable-type-" + _enable_type);
+            $.test_msg("View_annotation_type_option.prototype._$create_ui", _enable_type);
+        }
+    }
+    //_option.attr("enable_type", );
     
     return _option;
 };

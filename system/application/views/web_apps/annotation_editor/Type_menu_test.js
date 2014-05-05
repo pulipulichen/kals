@@ -73,11 +73,11 @@ KALS_CONFIG = {
 };  
 KALS_context.basic_type = new Context_basic_type();
 
-var _type_menu = new Type_menu({}, "topic");
-
+var _type_menu = new Type_menu({});
+_type_menu.change_enable_type("topic");
 var _ui = _type_menu.get_ui();
-//_ui.appendTo($("body"));
-equals( _ui.find(".type-option").length
+_ui.appendTo($("body"));
+equals( _ui.find(".type-option:visible").length
     , 2
     , _test_subject);
 
@@ -89,11 +89,12 @@ equals( _option.length, 2, _test_subject);
 // 1. 設定測試的標題
 _test_subject = "20140505 Type_menu._$create_ui for respond";
 
-var _type_menu = new Type_menu({}, "respond");
+var _type_menu = new Type_menu({});
 
+_type_menu.change_enable_type("respond");
 var _ui = _type_menu.get_ui();
-//_ui.appendTo($("body"));
-equals( _ui.find(".type-option").length
+_ui.appendTo($("body"));
+equals( _ui.find(".type-option:visible").length
     , 1
     , _test_subject);
 

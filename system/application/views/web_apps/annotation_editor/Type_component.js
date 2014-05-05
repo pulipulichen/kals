@@ -17,7 +17,7 @@ function Type_component(_editor) {
     if ($.isset(_editor)) {
         this._editor = _editor;
         this._default_type = new Annotation_type_param();
-        this._is_respond = _editor.is_respond();
+        //this._is_respond = _editor.is_respond();
         //this._type = new Annotation_type_param();
         //$.test_msg('Type_component() _type', this._type.export_json());
     }
@@ -291,6 +291,11 @@ Type_component.prototype.reset_type = function () {
  */
 Type_component.prototype._setup_menu = function () {
     
+    /**
+     * @author 20140505 Pulipuli Chen
+     * 不在此處寫死類型
+     */
+    /*
     var _enable_type = "topic";
     if (this._is_respond 
             && this._is_respond === true) {
@@ -298,8 +303,10 @@ Type_component.prototype._setup_menu = function () {
     }
     
     $.test_msg("_setup_menu", _enable_type);
+    */
+    //var _menu = new Type_menu(this, _enable_type);
     
-    var _menu = new Type_menu(this, _enable_type);
+    var _menu = new Type_menu(this);
     this.menu = _menu;
     return _menu;
     
@@ -452,6 +459,20 @@ Type_component.prototype.reset_custom_name = function () {
     }
     
     return this.set_custom_name();
+};
+
+/**
+ * 確認是否是回應的狀態
+ * 
+ * 直接介接到Annotation_editor.is_respond()
+ * @returns {Boolean}
+ */
+Type_component.prototype.is_respond = function () {
+    var _is_respond = false;
+    if (this._editor !== null) {
+        _is_respond = this._editor.is_respond();
+    }
+    return _is_respond;
 };
 
 /* End of file Type_component */

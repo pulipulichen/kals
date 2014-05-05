@@ -604,18 +604,10 @@ Annotation_type_param.prototype.set_enable_config = function (_type, _option) {
 
 /**
  * 取得標註類型的啟用設定
- * @param {String} _type
- * @returns {Boolean}
+ * @returns {JSON}
  */
-Annotation_type_param.prototype.get_enable_config = function(_type) {
-    var _option = true;
-    
-    if (typeof(this._enable_config[_type]) === "boolean"
-            && this._enable_config[_type] === false) {
-        _option = false;
-    }
-    
-    return _option;
+Annotation_type_param.prototype.get_enable_config = function() {
+    return this._enable_config;
 };
 
 /**
@@ -626,7 +618,14 @@ Annotation_type_param.prototype.get_enable_config = function(_type) {
  * @returns {Boolean}
  */
 Annotation_type_param.prototype.is_enable = function (_type) {
-    return this.get_enable_config(_type);
+    var _option = true;
+    
+    if (typeof(this._enable_config[_type]) === "boolean"
+            && this._enable_config[_type] === false) {
+        _option = false;
+    }
+    
+    return _option;
 };
 
 /* End of file Annotation_type_param */

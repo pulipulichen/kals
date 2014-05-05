@@ -10,9 +10,8 @@
  * @version    1.0 2010/10/18 下午 04:57:05
  * @extends {Tooltip_modal}
  * @param {jQuery} _type_component 放置標註類型的元件
- * @param {String} _enable_type 啟用的標註類型
  */
-function Type_menu(_type_component, _enable_type) {
+function Type_menu(_type_component) {
     
     Tooltip_modal.call(this);
     
@@ -25,7 +24,7 @@ function Type_menu(_type_component, _enable_type) {
     //    _this.get_ui();
     //}, 0);
     
-    this._enable_type = _enable_type;
+    //this._enable_type = _enable_type;
 }
 
 Type_menu.prototype = new Tooltip_modal();
@@ -41,8 +40,10 @@ Type_menu.prototype._menu_id = 'editor_type_menu';
 /**
  * 啟用標註類型的形態
  * @type String|undefined
+ * @deprecated 20140505 Pulipuli Chen
+ * 不寫死，動態調整
  */
-Type_menu.prototype._enable_type = "topic";
+//Type_menu.prototype._enable_type = "topic";
 
 /**
  * Create UI
@@ -156,7 +157,7 @@ Type_menu.prototype.create_type_option = function (_type) {
     if ($.is_class(_type, "Annotation_type_param") === false) {
         _type = new Annotation_type_param(_type);
     }
-    var _option_ui = _type.get_option_ui();
+    var _option_ui = _type.get_option_ui().clone(true);
     
     return _option_ui;
 };
@@ -230,7 +231,7 @@ Type_menu.prototype.create_type_option_list = function () {
 	 * 20130603 Pudding Chen 
 	 * 加入自訂的標註類型
 	 */
-    var _custom_type_list = KALS_context.predefined_type.get_type_list(this._enable_type);
+    var _custom_type_list = KALS_context.predefined_type.get_type_list();
     for (var _j in _custom_type_list) {
         _type = _custom_type_list[_j];
         var _type_name = _type.get_name();
@@ -324,7 +325,7 @@ else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
  */
 Type_menu.prototype._init_type_options = function () {
     //this._type_options = KALS_context.get_basic_type_options();
-    this._type_options = KALS_context.basic_type.get_type_name_list(this._enable_type);
+    this._type_options = KALS_context.basic_type.get_type_name_list();
     return this;
 };
 
@@ -355,28 +356,45 @@ Type_menu.prototype._$get_config = function () {
     
     var _onbeforeshow;
     if (typeof(_config.onBeforeShow) === 'function') {
-		_onbeforeshow = _config.onBeforeShow;
-	}
+        _onbeforeshow = _config.onBeforeShow;
+    }
         
     var _this = this;
     _config.onBeforeShow = function () {
-        
-		_this.get_ui().css("visibility", "hidden");
-        setTimeout(function () {
-			
-            _this.setup_position();    
-			_this.get_ui().css("visibility", "visible");
-        }, 0);
-        
-        if ($.is_function(_onbeforeshow)) {
-			_onbeforeshow.call(this);
-		}
+        _this._on_before_show(this, _onbeforeshow);
     };
     
     _config.relative = true;
     
     return _config;
     
+};
+
+/**
+ * 顯示之前的調整
+ * @param {Function} _onbeforeshow
+ * @returns {Type_menu}
+ */
+Type_menu.prototype._on_before_show = function (_tooltip, _onbeforeshow) {
+    var _this = this;
+    this.get_ui().css("visibility", "hidden");
+    setTimeout(function () {		
+        _this.setup_position();    
+        _this.get_ui().css("visibility", "visible");
+    }, 0);
+
+    if ($.is_function(_onbeforeshow)) {
+        _onbeforeshow.call(_tooltip);
+    }
+    
+    // 開啟時改變型態
+    var _enable_type = "topic";
+    if (this._type_component.is_respond()) {
+        _enable_type = "respond";
+    }
+    this.change_enable_type(_enable_type);
+    
+    return this;
 };
 
 /**
@@ -430,6 +448,8 @@ Type_menu.prototype.setup_position = function () {
     if ($.isset(_left)) {
         _ui.css('left', _left + 'px');
     }
+    
+    return this;
 };
 
 // --------
@@ -526,14 +546,14 @@ Type_menu.prototype.filter_type = function (_type) {
  * 在主題標註時啟用
  * @type Boolean
  */
-Type_menu.prototype._enable_topic = true;
+//Type_menu.prototype._enable_topic = true;
 
 /**
  * 在回應標註時啟用
  * @type Boolean
  */
-Type_menu.prototype._enable_respond = true;
-
+//Type_menu.prototype._enable_respond = true;
+/*
 Type_menu.prototype.set_enable_type = function (_type) {
     if (_type === "topic") {
         this._enable_topic = true;
@@ -547,6 +567,37 @@ Type_menu.prototype.set_enable_type = function (_type) {
         this._enable_topic = true;
         this._enable_respond = true;
     }
+    
+    return this;
+};
+*/
+/**
+ * 確認是否是回應的狀態
+ * 
+ * 直接介接到Type_component.is_respond()
+ * @returns {Boolean}
+ */
+Type_menu.prototype.is_respond = function () {
+    var _is_respond = false;
+    if (this._type_component !== null) {
+        _is_respond = this._type_component.is_respond();
+    }
+    return _is_respond;
+};
+
+/**
+ * 切換要顯示的標註類型
+ * @param {String} _enable_type
+ * @returns {Type_menu.prototype}
+ */
+Type_menu.prototype.change_enable_type = function (_enable_type) {
+    
+    //$.test_msg("type-menu, _enable_type", _enable_type);
+    
+    this.find(".type-option")
+            .hide()
+            .filter(".enable-type-" + _enable_type)
+            .show();
     
     return this;
 };
