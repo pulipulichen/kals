@@ -84,8 +84,10 @@ DEFAULT_KALS_CONFIG = {
      * 
      * 20140425 Pulipuli Chen
      * 舊名稱「annotation_type_option」，新名稱「annotation_type_basic_enable」
+     * 20140505 Pulipuli Chen
+     * 舊名稱「annotation_type_basic_enable」，新名稱「annotation_type_basic」
      * 
-     * @type {array[string]} 可用的標註類型如下，如果不想用該類型的標註時，您可以省略它：
+     * 基本的標註類型如下：
      *     importance: 重要
      *     concept: 概念
      *     confusion: 困惑
@@ -93,49 +95,58 @@ DEFAULT_KALS_CONFIG = {
      *     example: 舉例
      *     summary: 摘要
      *     custon: 自訂
+     *     
+     *  請自行調整各標註類型的啟用範圍與順序
      */
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         'concept' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         'confusion' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         'question' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         'example' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         'summary' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         'custom' : {
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         }
     },
     
@@ -156,7 +167,7 @@ DEFAULT_KALS_CONFIG = {
      * 如果你要取消原本的標註類型，請修改annotation_type_option
      * 
      * 20140425 Pulipuli Chen
-     * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefine」
+     * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefined」
      */
     /*
     annotation_type_predefined: {
@@ -170,7 +181,12 @@ DEFAULT_KALS_CONFIG = {
             anchor: {
                 style: 'dottedline',
                 color: 'blue'    
-            }
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         },
         '預先定義2': {
             //type_id: 16,
@@ -184,10 +200,11 @@ DEFAULT_KALS_CONFIG = {
                 color: '#F53004',
                 font_color: 'white'
             },
-            enable: {
-                topic: true,
-                respond: true
-            }
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            order: 1    // 數字越大，排序越上面
         }
     },
      */

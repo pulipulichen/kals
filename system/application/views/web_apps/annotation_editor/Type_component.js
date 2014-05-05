@@ -283,7 +283,29 @@ Type_component.prototype.reset_type = function () {
         // 不做任何事情？
     }
     
-    // 確認一下是否是type_menu中的第一個類型
+    // 確認一下是否是可以選擇的類型
+    var _enable_type = "topic";
+    if (this.is_respond()) {
+        _enable_type = "respond";
+    }
+    var _type_list = KALS_context.create_type_param_list(_enable_type);
+    var _last_select_annotation_type_name = "";
+    if ($.is_class(_last_select_annotation_type, "Annotation_type_param")) {
+        _last_select_annotation_type_name = _last_select_annotation_type.get_name();
+    }
+    else if ($.is_string(_last_select_annotation_type)) {
+        _last_select_annotation_type_name = _last_select_annotation_type;
+    }
+        
+    if (typeof(_type_list[_last_select_annotation_type_name]) === "undefined") {
+        var _first_type_param;
+        for (var _type_name in _type_list) {
+            _first_type_param = _type_list[_type_name];
+            break;
+        }
+        _last_select_annotation_type = _first_type_param;
+    }
+    
 	
     return this.set_type(_last_select_annotation_type);
 };

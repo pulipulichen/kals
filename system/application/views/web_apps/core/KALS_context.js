@@ -687,8 +687,8 @@ KALS_context.create_type_param_list = function(_enable_type) {
 /*
 KALS_context.get_basic_type_options = function () {
     var _type_options;
-    if (typeof(KALS_CONFIG.annotation_type_basic_config) !== "undefined") {
-        _type_options = KALS_CONFIG.annotation_type_basic_config;
+    if (typeof(KALS_CONFIG.annotation_type_basic) !== "undefined") {
+        _type_options = KALS_CONFIG.annotation_type_basic;
     }
     else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
         _type_options = KALS_CONFIG.annotation_type_option;

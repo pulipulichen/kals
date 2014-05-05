@@ -48,7 +48,7 @@ _test_subject = "20140505 create_type_param_list custom";
 
 // Mock
 KALS_CONFIG = {
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance' : {
             enable: {
                 topic: false,

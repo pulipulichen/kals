@@ -46,7 +46,7 @@ KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance': {
             enable: {
                 topic: true,
@@ -99,3 +99,47 @@ equals( _ui.find(".type-option:visible").length
     , _test_subject);
 
 
+//----------------------------------
+// 1. 設定測試的標題
+_test_subject = "20140505 Type_menu._$create_ui order";
+
+
+// 2. 執行測試的內容
+KALS_CONFIG = {
+    annotation_type_basic: {
+        'importance': {
+            enable: {
+                topic: true,
+                respond: false
+            },
+            order: 1
+        },
+        //, 'concept'    //不使用「概念」標註類型
+        //, 'confusion'    //不使用「困惑」標註類型
+        'question': {
+            enable: {
+                topic: true,
+                respond: false
+            },
+            order: 3
+        },
+        //, 'example'    //不使用「舉例」標註類型
+        'summary': {
+            enable: {
+                topic: false,
+                respond: true
+            },
+            order: 5
+        }
+        //, 'custom'    //不使用「自訂」標註類型
+    }
+};  
+KALS_context.basic_type = new Context_basic_type();
+
+var _type_menu = new Type_menu({});
+_type_menu.change_enable_type("topic");
+var _ui = _type_menu.get_ui();
+_ui.appendTo($("body"));
+equals( _ui.find(".type-option:visible:eq(1)").hasClass("importance")
+    , true
+    , _test_subject);

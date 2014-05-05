@@ -58,7 +58,7 @@ Type_menu.prototype._$create_ui = function () {
         id: _id,
         classname: 'type-menu KALS'
     });
-    
+    /*
     // 基本類型
     var _options = KALS_context.basic_type.get_type_list();
     for (var _i in _options) {
@@ -75,7 +75,12 @@ Type_menu.prototype._$create_ui = function () {
         this._setup_type_ui(_ui, _type);
     }
     //_ui.appendTo($("body"));
-    
+    */
+    var _type_list = KALS_context.create_type_param_list();
+    for (var _type_name in _type_list) {
+        var _type_param = _type_list[_type_name];
+        this._setup_type_ui(_ui, _type_param);
+    }
     return _ui;
 };
 

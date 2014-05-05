@@ -44,7 +44,10 @@
     
     <div  style="color:#333;padding: 1em; border: 1px solid #333;">
   <code>
-      <pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: &#39;Courier New&#39;, courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">&lt;!-- [KALS] --&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span> src=<span style="color: #006080">&quot;<span id="setup_location6">http://public-kals-2010.dlll.nccu.edu.tw</span>/kals/web_apps/generic/loader/release&quot;</span>&gt;&lt;/script&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span>&gt;<br />KALS_CONFIG = {<br />    <span style="color: #008000">/**</span><br /><span style="color: #008000">     * 使用的標註類型</span><br /><span style="color: #008000">     * 標註類型的順序會照以下設定排列。</span><br /><span style="color: #008000">     * @type {array[string]} 可用的標註類型如下，如果不想用該類型的標註時，您可以省略它：</span><br /><span style="color: #008000">     *     importance: 重要</span><br /><span style="color: #008000">     *     concept: 概念</span><br /><span style="color: #008000">     *     confusion: 困惑</span><br /><span style="color: #008000">     *     question: 疑問</span><br /><span style="color: #008000">     *     example: 舉例</span><br /><span style="color: #008000">     *     summary: 摘要</span><br /><span style="color: #008000">     *     custon: 自訂</span><br /><span style="color: #008000">     */</span><br />    annotation_type_baisc: [<br />        <span style="color: #006080">'importance'</span><br />        <span style="color: #008000">//, 'concept'    //不使用「概念」標註類型</span><br />        <span style="color: #008000">//, 'confusion'    //不使用「困惑」標註類型</span><br />        , <span style="color: #006080">'question'</span><br />        <span style="color: #008000">//, 'example'    //不使用「舉例」標註類型</span><br />        , <span style="color: #006080">'summary'</span><br />        <span style="color: #008000">//, 'custom'    //不使用「自訂」標註類型</span><br />    ]<br />};    <br />&lt;/script&gt;<br />&lt;!-- [/KALS] --&gt;</pre>
+      <pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: &#39;Courier New&#39;, courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">&lt;!-- [KALS] --&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span> src=<span style="color: #006080">&quot;<span id="setup_location6">http://public-kals-2010.dlll.nccu.edu.tw</span>/kals/web_apps/generic/loader/release&quot;</span>&gt;&lt;/script&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span>&gt;
+<br />
+KALS_CONFIG = {<br />    annotation_scope_selector: <span style="color: #006080">&quot;#scope&quot;</span>,<br />    login_hint: <span style="color: #006080">'You can use demo account: 電子信箱位址：&lt;strong&gt;demo@dlll.nccu.edu.tw&lt;/strong&gt; / 密碼：&lt;strong&gt;demo&lt;/strong&gt;'</span>,<br />    <br />    <span style="color: #008000">/**</span><br /><span style="color: #008000">     * 使用的標註類型</span><br /><span style="color: #008000">     * 標註類型的順序會照以下設定排列。</span><br /><span style="color: #008000">     * </span><br /><span style="color: #008000">     * 基本的標註類型如下：</span><br /><span style="color: #008000">     *     importance: 重要</span><br /><span style="color: #008000">     *     concept: 概念</span><br /><span style="color: #008000">     *     confusion: 困惑</span><br /><span style="color: #008000">     *     question: 疑問</span><br /><span style="color: #008000">     *     example: 舉例</span><br /><span style="color: #008000">     *     summary: 摘要</span><br /><span style="color: #008000">     *     custon: 自訂</span><br /><span style="color: #008000">     *     </span><br /><span style="color: #008000">     *  請自行調整各標註類型的啟用範圍與順序</span><br /><span style="color: #008000">     */</span><br />    annotation_type_config: {<br />        <span style="color: #006080">'importance'</span>: {<br />            <span style="color: #008000">// 啟用範圍</span><br />            enable: {<br />                <span style="color: #008000">// 新標註</span><br />                topic: <span style="color: #0000ff">true</span>,<br />                <span style="color: #008000">// 回應標註</span><br />                respond: <span style="color: #0000ff">false</span><br />            },<br />            <span style="color: #008000">// 數字越大，排序越上面</span><br />            order: 1<br />        },<br />        <span style="color: #008000">//, 'concept'    //不使用「概念」標註類型</span><br />        <span style="color: #008000">//, 'confusion'    //不使用「困惑」標註類型</span><br />        <span style="color: #006080">'question'</span>: {<br />            <span style="color: #008000">// 啟用範圍</span><br />            enable: {<br />                <span style="color: #008000">// 新標註</span><br />                topic: <span style="color: #0000ff">true</span>,<br />                <span style="color: #008000">// 回應標註</span><br />                respond: <span style="color: #0000ff">false</span><br />            },<br />            <span style="color: #008000">// 數字越大，排序越上面</span><br />            order: 5<br />        },<br />        <span style="color: #008000">//, 'example'    //不使用「舉例」標註類型</span><br />        <span style="color: #006080">'summary'</span>: {<br />            <span style="color: #008000">// 啟用範圍</span><br />            enable: {<br />                <span style="color: #008000">// 回應標註</span><br />                topic: <span style="color: #0000ff">false</span>,<br />                <span style="color: #008000">// 回應標註</span><br />                respond: <span style="color: #0000ff">true</span><br />            },<br />            <span style="color: #008000">// 數字越大，排序越上面</span><br />            order: 3<br />        }<br />        <span style="color: #008000">//, 'custom'    //不使用「自訂」標註類型</span><br />    }<br />};    <br />&lt;/script&gt;
+<br />&lt;!-- [/KALS] --&gt;</pre>
 </code></div>
 
 <!--
@@ -59,7 +62,7 @@
 
 var _id_header = "setup_location";
 var _url = "http://" + location.host;
-if (_url.substr(_url.length -1 , _url.length) == "/")
+if (_url.substr(_url.length -1 , _url.length) === "/")
     _url = _url.substring(0, _url.length-1);
     
 for (var _i = 6; _i < 7; _i++)
@@ -79,7 +82,8 @@ KALS_CONFIG = {
     /**
      * 使用的標註類型
      * 標註類型的順序會照以下設定排列。
-     * @type {array[string]} 可用的標註類型如下，如果不想用該類型的標註時，您可以省略它：
+     * 
+     * 基本的標註類型如下：
      *     importance: 重要
      *     concept: 概念
      *     confusion: 困惑
@@ -87,28 +91,45 @@ KALS_CONFIG = {
      *     example: 舉例
      *     summary: 摘要
      *     custon: 自訂
+     *     
+     *  請自行調整各標註類型的啟用範圍與順序
      */
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance': {
+            // 啟用範圍
             enable: {
+                // 新標註
                 topic: true,
+                // 回應標註
                 respond: false
-            }
+            },
+            // 數字越大，排序越上面
+            order: 1
         },
         //, 'concept'    //不使用「概念」標註類型
         //, 'confusion'    //不使用「困惑」標註類型
         'question': {
+            // 啟用範圍
             enable: {
+                // 新標註
                 topic: true,
+                // 回應標註
                 respond: false
-            }
+            },
+            // 數字越大，排序越上面
+            order: 5
         },
         //, 'example'    //不使用「舉例」標註類型
         'summary': {
+            // 啟用範圍
             enable: {
+                // 回應標註
                 topic: false,
+                // 回應標註
                 respond: true
-            }
+            },
+            // 數字越大，排序越上面
+            order: 3
         }
         //, 'custom'    //不使用「自訂」標註類型
     }

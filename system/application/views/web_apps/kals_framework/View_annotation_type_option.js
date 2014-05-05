@@ -81,7 +81,7 @@ View_annotation_type_option.prototype._$create_ui = function () {
         var _enable_option = _enable_config[_enable_type];
         if (_enable_option !== false) {
             _option.addClass("enable-type-" + _enable_type);
-            $.test_msg("View_annotation_type_option.prototype._$create_ui", _enable_type);
+            //$.test_msg("View_annotation_type_option.prototype._$create_ui", _enable_type);
         }
     }
     //_option.attr("enable_type", );

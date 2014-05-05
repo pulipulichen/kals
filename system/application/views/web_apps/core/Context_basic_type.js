@@ -44,8 +44,8 @@ Context_basic_type.prototype._type_list = {};
 Context_basic_type.prototype.initialize = function () {
     
     var _basic_type = null;
-    if (typeof(KALS_CONFIG.annotation_type_config) !== "undefined") {
-        _basic_type = KALS_CONFIG.annotation_type_config;
+    if (typeof(KALS_CONFIG.annotation_type_basic) !== "undefined") {
+        _basic_type = KALS_CONFIG.annotation_type_basic;
     }
     else if (typeof(KALS_CONFIG.annotation_type_option) !== "undefined") {
         _basic_type = KALS_CONFIG.annotation_type_option;

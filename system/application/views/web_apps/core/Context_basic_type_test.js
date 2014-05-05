@@ -73,7 +73,7 @@ _test_subject = "20140503 get_type_list with enable_type";
 // 2. 執行測試的內容
 
 KALS_CONFIG = {
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance' : {
             enable: {
                 topic: false,
@@ -156,7 +156,7 @@ _test_subject = "20140503 get_type_list with enable_type respond & topic";
 // 2. 執行測試的內容
 
 KALS_CONFIG = {
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance' : {
             enable: {
                 topic: false,
@@ -230,7 +230,7 @@ KALS_CONFIG = {
      *     summary: 摘要
      *     custon: 自訂
      */
-    annotation_type_config: {
+    annotation_type_basic: {
         'importance': {
             enable: {
                 topic: true,
