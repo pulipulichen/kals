@@ -392,7 +392,12 @@ KALS_toolbar.prototype.get_height = function () {
  * @returns {Int}
  */
 KALS_toolbar.prototype.height = function () {
-    return this.get_ui().find("table.toolbar-component:first").height();
+    var _ui = this.get_ui();
+    var _height = _ui.find("table.toolbar-component:first").height();
+    if (_height === 0) {
+        _height = _ui.height();
+    }
+    return _height;
 };
 
 /* End of file KALS_toolbar */
