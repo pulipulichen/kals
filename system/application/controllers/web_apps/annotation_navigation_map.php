@@ -104,7 +104,9 @@ class annotation_navigation_map extends KALS_model {
         // )
         
         // 7. 排序
-        arsort($heading_list);
+        if (isset($data["order_by_article"]) && $data["order_by_article"] !== TRUE) {
+            arsort($heading_list);
+        }
         
         // array(
         //      5 => 9,
@@ -112,7 +114,7 @@ class annotation_navigation_map extends KALS_model {
         //      12 => 1
         // )
         
-        // 7.1. 排序之後，輸出成JavaScript要得data形式
+        // 7.1. 排序之後，輸出成JavaScript要的data形式
         $return_data = array();
         foreach ($heading_list AS $heading_number => $count ) {
             $item = array(

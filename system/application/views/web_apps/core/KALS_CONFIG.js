@@ -377,19 +377,32 @@ DEFAULT_KALS_CONFIG = {
          * 模組名稱: 模組設定內容
          * @type {JSON}
          */
-        Annotation_navigation_map: {
-            /**
-             * 是否啟用模組
-             * @type Boolean
-             */
-            "enable": true
-        },
+        /**
+         * 資訊區
+         * @type {Object}
+         */
         Dashboard: {
             /**
              * 是否啟用模組
              * @type Boolean
              */
             "enable": true
+        },
+        /**
+         * 標註小地圖
+         * @type {Object}
+         */
+        Annotation_navigation_map: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true,
+            /**
+             * 安照原本的章節順序排序
+             * @type boolean
+             */
+            order_by_article: true
         }
     }
 };

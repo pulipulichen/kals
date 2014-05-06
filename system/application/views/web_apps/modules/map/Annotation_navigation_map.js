@@ -454,8 +454,8 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
     var _list = this.find(".list.type-"+_current_type).show();
     _list.empty();
     var _this = this; 
-    this.get_heading_data(_query_type, function (_data) {
-        _this.change_tab_process_data(_data, _query_type, _current_type, _list);
+    this._request_heading_data(_query_type, function (_data) {
+        _this._change_tab_process_data(_data, _query_type, _current_type, _list);
     });
 };
 
@@ -465,7 +465,7 @@ Annotation_navigation_map.prototype.change_tab = function (_ele) {
  * @param {String} _current_type 現在的類型
  * @param {jQuery} 目前顯示的表單
  */
-Annotation_navigation_map.prototype.change_tab_process_data = function (_data, _type_id, _type_name, _list) {
+Annotation_navigation_map.prototype._change_tab_process_data = function (_data, _type_id, _type_name, _list) {
     //$.test_msg("get_heading_data", _data);
     
     
@@ -729,7 +729,7 @@ Annotation_navigation_map.prototype.get_annotation_type_display_name_array = fun
  * @param {String} _current_type 要查詢的標註類型
  * @param {Function} _callback
  */
-Annotation_navigation_map.prototype.get_heading_data = function (_current_type, _callback) {
+Annotation_navigation_map.prototype._request_heading_data = function (_current_type, _callback) {
     
     /**
      * @author Pulipuli Chen 20140502
@@ -773,10 +773,13 @@ Annotation_navigation_map.prototype.get_heading_data = function (_current_type, 
     var _chapter = KALS_text.selection.text.chapter;
     var _structure = _chapter.get_structure();
     
+    var _order_by_article = KALS_CONFIG.modules.Annotation_navigation_map.order_by_article;
+    
     var _action = "get_heading_annotation";
     var _send_data = {
         structure: _structure,
-        current_type: _current_type
+        current_type: _current_type,
+        order_by_article: _order_by_article
     };
     this.request_get(_action, _send_data, function (_data) {
         if (typeof(_callback) === "function") {
@@ -786,6 +789,7 @@ Annotation_navigation_map.prototype.get_heading_data = function (_current_type, 
     
     return _data;
 };   
+
 /**
  * 取得指定編號的標題的內文
  * @param {int} _heading_number
@@ -808,6 +812,11 @@ Annotation_navigation_map.prototype.get_heading_text = function (_heading_number
 };
 */
 
+/**
+ * 變更按鈕的類型
+ * @param {jQuery} _ele
+ * @returns {Annotation_navigation_map}
+ */
 Annotation_navigation_map.prototype.change_tab_btn = function (_ele) {
     //將類別按鈕加在被排序的標題後
     //var _current_type = _ele.find("[kals-field='annotation_type']").attr("kals-field-repeat-index");
