@@ -8,7 +8,12 @@ $logout_path = site_url('mobile_apps/logout');
        class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-arrow-l">
         <?php
         //回首頁
-        echo $lang->line("mobile_apps.webpage_list.back");
+        $user = get_context_user();
+        if (isset($user)) {
+           echo $lang->line("mobile_apps.webpage_list.back");
+        }else{
+           echo $lang->line("mobile_apps.webpage_list.do_login");
+        }
         ?>
         
     </a>
@@ -30,7 +35,13 @@ $logout_path = site_url('mobile_apps/logout');
             $text = $user->get_name();
         }
     ?>
-    <a href="<?php echo $href; ?>" 
+    <a href="<?php 
+     if (isset($user)) {
+        echo '#';
+     }else{
+        echo $href;
+     }
+    ?>" 
        class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right">
             <?php
                 echo $text

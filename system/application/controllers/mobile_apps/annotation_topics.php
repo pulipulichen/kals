@@ -235,7 +235,7 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL
             //是否為訪客
            //if ( $user_id !== 0 ){
            if (isset($user)
-                   && isset($unread_topcis[$annotation_id])) {
+                   && isset($unread_topics[$annotation_id])) {
                 $array['is_unread'] = TRUE;
            }
            else {

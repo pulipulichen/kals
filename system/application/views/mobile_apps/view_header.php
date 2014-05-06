@@ -26,8 +26,8 @@
             }
             ?>
         </title> 
-      
-        
+		<link rel="shortcut icon" href="/kals/images/kals_icon.png">
+              
         <!-- load jQuery & css & jQuery mobile -->
         <script type="text/javascript" src="<?php echo base_url(); ?>libraries/jquery-mobile/jquery.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>libraries/jquery-mobile/index.js"></script>

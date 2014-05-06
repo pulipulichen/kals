@@ -54,9 +54,9 @@ text-align: center;
 // ----------------------------------------------------------------
 
 $hide_domain = "";
-if (isset($domain) && $domain !== "" && isset($message) === FALSE){
-    $hide_domain = ' style="display:none"'; 
-}
+//if (isset($domain) && $domain !== "" && isset($message) === FALSE){
+//    $hide_domain = ' style="display:none"'; 
+//}
 ?>
 
 <div <?php echo $hide_domain  ?>>

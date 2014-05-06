@@ -44,7 +44,8 @@ $login_uri = site_url("mobile_apps/login");
     }
     else {
         ?>
-        <form action="<?php echo $login_uri ?>" method="post" data-ajax="false">
+        <form action="<?php echo $login_uri ?>" method="post" data-ajax="false"
+                    style="width:100%; display: none">
             <input type="hidden" name="domain" value="<?php echo $webpage->get_url() ?>" />
             <button type="submit" name="do_redirect"
                    class="ui-btn ui-btn-b ui-corner-all ui-shadow" 
