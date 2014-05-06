@@ -22,6 +22,30 @@ function KALS_navigation(){
 KALS_navigation.prototype = new Multi_event_dispatcher(); 
 
 /**
+ * 預先載入模組
+ */
+KALS_navigation.prototype.init = function(_loaded_modules) {
+    
+    for (var _item_name in _loaded_modules) {
+        var _item = _loaded_modules[_item_name];
+        //var _item = this._load(_item_name);
+        $.test_msg("KALS_navigaition. prepare register_item", [_item_name, typeof(_item)]);
+        this.register_item(_item);
+    }
+    
+    return this;
+};
+
+/**
+ * 載入模組
+ * @param {String} _name 模組的名稱，注意要用字串
+ * @param {Object} _param 搭配模組載入的參數
+ * @param {Function} _callback 回呼函式
+ * @returns {Object|Boolean} 回傳載入的模組的物件。如果是False，則表示載入失敗。
+ */
+//KALS_navigation.prototype._load = KALS_module_manager.prototype.load;
+
+/**
  * list的原始資料
  * @type JSON
  */
@@ -118,15 +142,15 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
         //$.test_msg("get_list get!");
         
         var _disorder_list = this._list[_nav_type];
-        
+        //$.test_msg("_disorder_list", _disorder_list);
         var _order_key = [];
         for (_order in _disorder_list) {
-            //$.test_msg("order", _order);
+            $.test_msg("order", [_order, _nav_type]);
             _order_key.push(_order);
         }
         
         // 把order的順序由大到小顯示
-        //_order_key.sort(function(a,b){return b-a});
+        _order_key.sort(function(a,b){return b-a});
         
         for (var _i in _order_key) {
             _order = _order_key[_i];

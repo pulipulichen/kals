@@ -122,6 +122,7 @@ class generic extends Web_apps_controller {
             'core/Context_basic_type',
             'core/Context_predefined_type',
             'core/KALS_module_manager',
+            'core/KALS_navigation',
             'core/Init_context',
             'core/Init_component',
             'core/Init_profile',

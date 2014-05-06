@@ -403,6 +403,13 @@ DEFAULT_KALS_CONFIG = {
              * @type boolean
              */
             order_by_article: true
+        },
+        Frag_reading: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": false
         }
     }
 };

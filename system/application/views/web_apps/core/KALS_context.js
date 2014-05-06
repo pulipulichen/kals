@@ -73,7 +73,8 @@ KALS_context.initialize = function () {
 			
             _this.overlay = new Overlay_manager();
             
-            _this.module.init();
+            var _loaded_modules = _this.module.init();
+            _this.navigation.init(_loaded_modules);
             
             // 阻止啟用
             if (typeof(KALS_CONFIG.debug) === "object"

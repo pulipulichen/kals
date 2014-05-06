@@ -33,6 +33,14 @@ function Dashboard() {
 Dashboard.prototype = new KALS_controller_window();
 
 /**
+ * 指定Module的名稱
+ * 
+ * 也是顯示在Hash的名稱。如果是null，則會顯示KALS_modal._$modal_name
+ * @type String
+ */
+Dashboard.prototype.name = 'dashboard';
+
+/**
  * ====================
  * View設定
  * ====================

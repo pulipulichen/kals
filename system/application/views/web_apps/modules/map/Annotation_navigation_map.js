@@ -34,6 +34,14 @@ function Annotation_navigation_map() {
 Annotation_navigation_map.prototype = new KALS_controller_window();
 
 /**
+ * 指定Module的名稱
+ * 
+ * 也是顯示在Hash的名稱。如果是null，則會顯示KALS_modal._$modal_name
+ * @type String
+ */
+Annotation_navigation_map.prototype.name = 'annotation_navigation_map';
+
+/**
  * ====================
  * View設定
  * ====================
@@ -66,12 +74,6 @@ Annotation_navigation_map.prototype._$initialize_view = function () {
  * Model設定
  * ====================
  */
-
-/**
- * 指定Model的名稱
- * @type String
- */
-Annotation_navigation_map.prototype.name = 'annotation_navigation_map';
 
 /**
  * 指定Model

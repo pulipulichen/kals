@@ -31,6 +31,14 @@ function Frag_reading() {
 Frag_reading.prototype = new KALS_controller_window();
 
 /**
+ * 指定Module的名稱
+ * 
+ * 也是顯示在Hash的名稱。如果是null，則會顯示KALS_modal._$modal_name
+ * @type String
+ */
+//Frag_reading.prototype.prototype.name = 'frag_reading';
+
+/**
  * ====================
  * View設定
  * ====================
@@ -91,7 +99,7 @@ Frag_reading.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-Frag_reading.prototype._$open_request_action = 'open';
+Frag_reading.prototype._$open_request_action = null;
 
 /**
  * close()時執行的Action
@@ -142,11 +150,9 @@ Frag_reading.prototype._$enable_auth_check = true;
  * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
  * @returns {boolean} true=通過;false=未通過
  */
-Frag_reading.prototype._$auth_check = function (_is_login, _user) {
-    //this.debug('auth check: has login', _is_login);
-    //return _is_login;
-    return true;
-};
+//Frag_reading.prototype._$auth_check = function (_is_login, _user) {
+//    return true;
+//};
 
 /**
  * ====================
@@ -158,7 +164,7 @@ Frag_reading.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-Frag_reading.prototype._$absolute = false;
+Frag_reading.prototype._$absolute = true;
 
 /**
  * 視窗的Class Name
@@ -268,7 +274,7 @@ Frag_reading.prototype.nav_config = {
      * 數字最小的是1
      * @type Number
      */
-    order: 2
+    order: 1
 };
 
 /**
@@ -309,26 +315,6 @@ Frag_reading.prototype.open_recent_annotation = function() {
     }
         
     return this;
-};
-
-/**
- * 這是一個action
- * 
- * function的細節
- * 
- * @param {JSON} _param 傳入的參數
- * @returns {Boolean} true=成功;false=失敗
- * @author Pulipuli Chen 20131122
- */
-Frag_reading.prototype.action = function (_param) {
-    
-    /**
-     * @type {boolean} 這個變數的名字
-     */
-    var _param2 = true;
-    
-    
-    return false;
 };
 
 /**

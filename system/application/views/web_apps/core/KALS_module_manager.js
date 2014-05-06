@@ -47,12 +47,16 @@ KALS_module_manager.prototype.init = function() {
         
         //$.test_msg("KALS_module. loaded count", this._loaded_modules.length);
         
+        /*
         for (var _i in this._loaded_modules) {
             var _item = this._loaded_modules[_i];
             //$.test_msg("prepare register_item", [_i, typeof(_item)]);
             KALS_context.navigation.register_item(_item);
         }
+        */
     }
+    
+    return this._loaded_modules;
 };
 
 /**
@@ -223,6 +227,16 @@ KALS_module_manager.prototype._init_module_config = function (_module, _config) 
     }
     
     return _module;
+};
+
+/**
+ * 取得已經讀取的模組
+ * @returns {Object} = {
+ *  "Dashboard": [Object]
+ * }
+ */
+KALS_module_manager.prototype.get_loaded_modules = function () {
+    return this._loaded_modules;
 };
 
 /* End of file KALS_module_manager */
