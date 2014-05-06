@@ -110,7 +110,7 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
             
             _module = this._init_module_config(_module, _config);
             
-            $.test_msg("init config過後", [_name, typeof(_module)]);
+            //$.test_msg("init config過後", [_name, typeof(_module)]);
             
             if (typeof(_callback) === "function") {
                 _callback(_module);
@@ -227,8 +227,7 @@ KALS_module_manager.prototype._init_module_config = function (_module, _config) 
         _module[_key] = _config[_key];
     }
     
-    $.test_msg("init module ", [_module.name, _module.nav_config.display]);
-        
+    //$.test_msg("init module ", [_module.name, _module.nav_config.display]);
     
     return _module;
 };

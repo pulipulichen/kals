@@ -29,7 +29,7 @@ KALS_navigation.prototype.init = function(_loaded_modules) {
     for (var _item_name in _loaded_modules) {
         var _item = _loaded_modules[_item_name];
         //var _item = this._load(_item_name);
-        $.test_msg("KALS_navigaition. prepare register_item", [_item_name, typeof(_item), _item.nav_config.display]);
+        //$.test_msg("KALS_navigaition. prepare register_item", [_item_name, typeof(_item), _item.nav_config.display]);
         this.register_item(_item);
     }
     
@@ -145,7 +145,7 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
         //$.test_msg("_disorder_list", _disorder_list);
         var _order_key = [];
         for (_order in _disorder_list) {
-            $.test_msg("order", [_order, _nav_type]);
+            //$.test_msg("order", [_order, _nav_type]);
             _order_key.push(_order);
         }
         
