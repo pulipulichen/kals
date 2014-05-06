@@ -317,6 +317,13 @@ DEFAULT_KALS_CONFIG = {
              */
             "enable": true
         },
+        Frag_reading: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true
+        },
         Dashboard: {
             /**
              * 是否啟用模組

@@ -35,7 +35,7 @@ function KALS_authentication(){
    //2010.10.26 請KALS_context給予資料吧
    var _this = this;
    KALS_context.add_once_listener(function (_context, _data) {
-       if (typeof(_data.auth) != 'undefined') {
+       if (typeof(_data.auth) !== 'undefined') {
            _this._default_reset_data = _data.auth;
        }
    });
