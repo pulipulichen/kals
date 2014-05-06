@@ -12,7 +12,7 @@
  */
 ?>
 
-    });
+    }); // test("<?= $title ?>", function() {
 }; // end of QUNIT = function () {
 </script>
     <?php

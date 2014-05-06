@@ -34,5 +34,10 @@
         }
         ?>
     </ul>
+    <hr />
+    <h1>QUnit教學資源</h1>
+    <ul>
+        <li><a href="http://qunitjs.com/" target="_blank">QUnit: jQuery Unit Test 單元測試框架</a></li>
+    </ul>
 </body>
 </html>

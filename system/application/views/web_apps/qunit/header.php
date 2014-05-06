@@ -33,9 +33,10 @@ $loader_uri = base_url() . "web_apps/generic/loader/";
     <script type="text/javascript" src="<?= base_url() ?>/libraries/qunit/qunit.js"></script>
     <script type="text/javascript" src="<?= base_url() ?>/libraries/qunit/qunit-helper.js"></script>
     <script type="text/javascript" src="<?= base_url() ?>/libraries/qunit/unit.js"></script>
+    <!-- script type="text/javascript" src="<?= base_url() ?>/libraries/qunit/blanket.min.js"></script -->
     <link type='text/css' rel='stylesheet' href='<?= base_url() ?>/libraries/qunit/qunit.css' />
     <script type="text/javascript" src="<?php echo $loader_uri ?>"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" data-cover>
         //基本設定
         KALS_CONFIG = {
             debug: {
