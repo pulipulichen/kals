@@ -99,17 +99,18 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
         
         if (typeof(_module) === "object") {
             
-            _module = this._add_loaded_module(_name, _module);
-            
             // 讀取KALS_CONFIG
             var _config = this._load_config(_name);
             if (typeof(_config.enable) === "boolean"
                     && _config.enable === false) {
                 return false;
             }
+            
+            _module = this._add_loaded_module(_name, _module);
+            
             _module = this._init_module_config(_module, _config);
             
-            //$.test_msg("init config過後", typeof(_module));
+            $.test_msg("init config過後", [_name, typeof(_module)]);
             
             if (typeof(_callback) === "function") {
                 _callback(_module);
@@ -210,7 +211,7 @@ KALS_module_manager.prototype._load_config = function (_name) {
 
 /**
  * 將讀取的設定初始化到模組中
- * @param {Object} _module
+ * @param {KALS_controller_window} _module 各種載入的模組
  * @param {JSON} _config
  * @returns {Ojbect}
  */
@@ -225,6 +226,9 @@ KALS_module_manager.prototype._init_module_config = function (_module, _config) 
         //$.test_msg("init module config key", [_key, _config[_key]]);
         _module[_key] = _config[_key];
     }
+    
+    $.test_msg("init module ", [_module.name, _module.nav_config.display]);
+        
     
     return _module;
 };

@@ -386,7 +386,36 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": true
+            "enable": true,
+            "nav_config": {
+                /**
+                 * 顯示資料
+                 * @type Boolean
+                 */
+                display: true,
+
+                /**
+                 * 決定顯示導覽列的位置
+                 * 
+                 * 類型包括：
+                 * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+                 * - login: 已經登入的使用者就會顯示
+                 * - profile: 以手動登入的使用者才會顯示
+                 * - embed: 以內嵌登入的使用者才會顯示
+                 * - anonymous: 未登入的使用者才會顯示
+                 * @type String
+                 */
+                nav_type: "common",
+
+                /**
+                 * 排序順序
+                 * 
+                 * 數字越大，越往左邊靠
+                 * 數字最小的是1
+                 * @type Number
+                 */
+                order: 1
+            }
         },
         /**
          * 標註小地圖
@@ -398,6 +427,11 @@ DEFAULT_KALS_CONFIG = {
              * @type Boolean
              */
             "enable": true,
+            "nav_config": {
+                display: true,
+                nav_type: "common",
+                order: 1
+            },
             /**
              * 安照原本的章節順序排序
              * @type boolean
@@ -409,7 +443,12 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": false
+            "enable": true,
+            "nav_config": {
+                display: true,
+                nav_type: "common",
+                order: 1
+            }
         }
     }
 };

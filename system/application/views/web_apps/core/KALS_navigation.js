@@ -29,7 +29,7 @@ KALS_navigation.prototype.init = function(_loaded_modules) {
     for (var _item_name in _loaded_modules) {
         var _item = _loaded_modules[_item_name];
         //var _item = this._load(_item_name);
-        $.test_msg("KALS_navigaition. prepare register_item", [_item_name, typeof(_item)]);
+        $.test_msg("KALS_navigaition. prepare register_item", [_item_name, typeof(_item), _item.nav_config.display]);
         this.register_item(_item);
     }
     
