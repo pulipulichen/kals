@@ -1,11 +1,10 @@
 <?php
 include_once 'kals_model.php';
 /**
- * Dashboard
+ * frag_reading
  *
- * KALS Framework範例：Model的設定
- * 輸出網頁標註資訊的位置
- * 
+ * 以word id記錄閱讀進度
+ *  
  * @package		KALS
  * @category		Controllers
  * @author		Pudding Chen <pulipuli.chen@gmail.com>
