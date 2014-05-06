@@ -41,6 +41,7 @@ dt {
 }
 
 .type-navigation.type-option{
+    line-height: 1.75em;
     margin: 0.1em;
     cursor: pointer !important;
     -moz-border-top-right-radius:20px;
@@ -57,7 +58,11 @@ dt {
     border-bottom-right-radius:20px;
     border-top-left-radius:5px;
     border-bottom-left-radius:5px;
+    
+
+
 }
+
 
 .type-navigation.type-option.heading-button{
     margin: 0.5em;
@@ -82,4 +87,9 @@ dt {
 .hint{
     font-size: large !important;
     font-weight: bold;
+}
+
+.map-instruction{
+    font-size: large !important;
+    font-weight: bold;    
 }
