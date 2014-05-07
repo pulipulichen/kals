@@ -555,6 +555,13 @@ Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
     //$.test_msg('word restore: ' + _cache_id, this.word_count);
     return this;
 };
+/**
+ * 取得現在捲軸的位置的first word id
+ * 
+ */
+
+Selectable_text_word.prototype.get_current_progress_word = function () {
+};
 
 /* End of file Selectable_text_word */
 /* Location: ./system/application/views/web_apps/Selectable_text_word.js */

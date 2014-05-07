@@ -322,7 +322,12 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": true
+            "enable": true,
+            /**
+             * 設定自動save_reading)_progress的時間頻率
+             * @type Number
+             */
+            "interval_span": 10
         },
         Dashboard: {
             /**

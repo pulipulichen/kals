@@ -2042,28 +2042,26 @@ jQuery.unlock_viewport = function () {
 
 jQuery.get_prefixed_id = function (_prefixed_id) {
     if ($.is_null(_prefixed_id)) {
-		return null;
-	}
+        return null;
+    }
     
     if ($.is_number(_prefixed_id)) {
-		return _prefixed_id;
-	}
+        return _prefixed_id;
+    }
     if ($.is_object(_prefixed_id)) {
         if ($.is_jquery(_prefixed_id)) {
-			_prefixed_id = _prefixed_id.attr('id');
-		}
-		else 
-			if ($.is_null(_prefixed_id)) {
-				return null;
-			}
-			else 
-				if (typeof(_prefixed_id) != 'undefined' &&
-				typeof(_prefixed_id.id) != 'undefined') {
-					_prefixed_id = _prefixed_id.id;
-				}
-				else {
-					return null;
-				}
+            _prefixed_id = _prefixed_id.attr('id');
+        }
+        else if ($.is_null(_prefixed_id)) {
+            return null;
+        }
+        else if (typeof(_prefixed_id) !== 'undefined' &&
+                typeof(_prefixed_id.id) !== 'undefined') {
+            _prefixed_id = _prefixed_id.id;
+        }
+        else {
+            return null;
+        }
     }
     
     if ($.is_null(_prefixed_id) || $.trim(_prefixed_id) === '') {
@@ -2075,11 +2073,11 @@ jQuery.get_prefixed_id = function (_prefixed_id) {
     var _id = _parts[ (_parts.length-1) ];
     _id = parseInt(_id,10);
     if (isNaN(_id)) {
-		return null;
-	}
-	else {
-		return _id;
-	}
+        return null;
+    }
+    else {
+        return _id;
+    }
 };
 
 jQuery.get_class_prefixed_id = function (_classname, _prefixed) {

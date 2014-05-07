@@ -1,6 +1,6 @@
 /**
  * Frag_reading
- * 零碎時間
+ * 閱讀進度
  *
  * @package    KALS
  * @category   Webpage Application Libraries
@@ -11,9 +11,23 @@
  * @version    1.0 2013/11/19 下午 03:36:17
  * @extends {KALS_controller_window}
  */
+
 function Frag_reading() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
+    
+    // 初始化要做的動作
+    var _this = this;
+    if (typeof(KALS_context) === "object") {
+        // 讀取完KALS_context後
+        KALS_context.add_listener(function () {
+            _this.initialize_save_reading_progress();
+            
+            // 暫時使用
+            _this.save_reading_progress();
+        });
+    }
+        
 }
 
 /**
@@ -50,22 +64,20 @@ Frag_reading.prototype._$view = 'modules/frag_reading/view/Frag_reading';
  */
 Frag_reading.prototype._$initialize_view = function () {
     
-    // 設置熱鍵
-    //this.init_hotkey();
+    // 打開ui後要做的事情
+    var _word_id = 18;
+    var _test_msg = 'test';
+    var _position = $(window).scrollTop();
+    var _doc_height = $(document).height();
     
-    var _types = this.get_annotation_types();
-    //this.set_field('annotation_type', ['1', '2', '3']);
-    //_types = _types.question;
-    //this.debug('init view', typeof(_types.get_ui));
-    this.set_field('annotation_type', _types);
+    this.set_field("position",  _position);
+    this.set_field("doc_height",  _doc_height);
     
-    // 設定連結
-    var _mobile_topics_link = KALS_context.get_base_url("mobile_apps/annotation_topics", true);
-    this.find("a.mobile-topics-link").attr("href", _mobile_topics_link);
     
-    var _rss_feed_link = KALS_context.get_base_url("/rss");
-    this.find("a.rss-feed-link").attr("href", _rss_feed_link);
+    this.set_field('word_id', _word_id);
+    this.set_field('test_msg', _test_msg);
     
+  
     
 };
 
@@ -91,7 +103,7 @@ Frag_reading.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-Frag_reading.prototype._$open_request_action = 'open';
+Frag_reading.prototype._$open_request_action = null;
 
 /**
  * close()時執行的Action
@@ -268,7 +280,7 @@ Frag_reading.prototype.nav_config = {
      * 數字最小的是1
      * @type Number
      */
-    order: 2
+    order: 1
 };
 
 /**
@@ -365,6 +377,100 @@ Frag_reading.prototype.select = function (_ele) {
     var _annotation_id = this.get_field('last_annotation_id');
     this.select_annotation(_annotation_id);
     return this;
+};
+
+/*
+Frag_reading.prototype._$onopen = function () {
+    $.test_msg("onopen");
+};
+*/
+
+/**
+ * initialize_save_reading_progress()
+ * 初始化載入完KALS_context後要做的事情
+ * 
+ */
+Frag_reading.prototype.initialize_save_reading_progress = function(){
+    var _this = this;
+    var _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
+    setInterval(function(){
+        _this.save_reading_progress();},
+        _interval_span
+    );
+    
+    $(window).unload(function (){
+        _this.save_reading_progress();}
+    );
+  
+};
+
+/**
+ * save_reading_progress
+ */
+Frag_reading.prototype.save_reading_progress = function(){
+    // 1.先比對kals_paragraph_i
+    // 2.再比對該層內的word_id 直到比現在捲軸位置還大(y)的 記錄id
+    var _scroll_top = $(window).scrollTop();
+    _scroll_top = _scroll_top + KALS_toolbar.get_height();
+    //_scroll_top = _scroll_top + $(".kals-word:first").height();
+    //var _paragraph_height = parseInt($('.kals_paragraph_0').offset().top, 10); //第一個paragraph的高度   
+    //var _first_paragraph = _paragraph_height;
+    // 取得kals_paragraph的個數
+    var _paragraph_collection = $('.kals-paragraph');
+    
+    //$.test_msg('save_reading_progress, para length', _paragraph_len);
+    //if( _position > _first_paragraph) { //起始位置已經到第一個paragraph\
+        var _target_paragraph;
+    
+        for (var _index = 0; _index < _paragraph_collection.length; _index++ ) {
+            var _paragraph = _paragraph_collection.eq(_index);
+            //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
+            var _paragraph_height = $.get_offset_top(_paragraph.find(".kals-word:first"));
+            $.test_msg('save_reading_progress', [_paragraph_height, _scroll_top, _index]);
+            
+            if (_paragraph_height > _scroll_top) {
+                _target_paragraph = _paragraph_collection.eq(_index-1);
+                break;
+            }
+            //$.test_msg('i', _i);
+        }
+        
+        var _target_word;
+        if (_target_paragraph !== undefined) {
+            var _words = _target_paragraph.find(".kals-word");
+            
+            for (var _w = 0; _w < _words.length; _w++) {
+                _target_word = _words.eq(_w);
+                var _word_height = $.get_offset_top(_target_word);
+                
+                if (_word_height > _scroll_top) {
+                    break;
+                }
+                if (_w === _words.length - 1) {
+                    var _word_id = $.get_prefixed_id(_target_word.attr("id"));
+                    _target_word = $("#kals_word_" + (_word_id+1));
+                    break;
+                }
+            };
+        }
+        else {
+            _target_word = $(".kals-word:last");
+        }
+        
+        var _word_id;
+        if (_target_word !== undefined) {
+            _word_id = _target_word.attr("id");
+            _word_id = $.get_prefixed_id(_word_id);
+        }
+        
+        $.test_msg("save_reading_progress word_id", [_word_id, _target_paragraph.attr("className")]);
+    //}
+  
+    // 比較paragraph與現在捲軸位置(y)
+
+    //this.set_field("current_position", _position);
+  
+    
 };
 
 /* End of file Dashboard */
