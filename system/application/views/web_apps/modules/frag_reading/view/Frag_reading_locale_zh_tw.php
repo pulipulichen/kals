@@ -6,10 +6,6 @@
  */
 
 $lang["heading"] = "閱讀進度";
-$lang["word_id"] = '閱讀進度(word id)';
-$lang["test_msg"] = '測試訊息';
-$lang["doc_height"] = '文件高度';
-$lang["position"] = '初始位置';
-$lang["first_word_id"] = '第一個字';
+$lang["word_id"] = '之前閱讀進度(word id)';
+$lang["position"] = '捲軸位置';
 
-$lang["current_position"] = '現在位置';

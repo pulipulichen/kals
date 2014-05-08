@@ -172,7 +172,7 @@ jQuery.starts_with = function(_str, _prefix) {
     _str = _str + '';
     var _len = _prefix.length;
     var _start = 0;
-    if (_str.substr(_start, _len) == _prefix) {
+    if (_str.substr(_start, _len) === _prefix) {
 		return true;
 	}
 	else {
@@ -335,12 +335,12 @@ jQuery.serialize_json = function (_json) {
 				}
 				else 
 					if (this.is_object(_value)) {
-						if (typeof(_value.to_string) == 'function') {
+						if (typeof(_value.to_string) === 'function') {
 							_attr += _value.to_string();
 						}
 						else {
 							var _class_name = $.get_class(_value);
-							if (_class_name == 'Object') {
+							if (_class_name === 'Object') {
 								_attr += this.serialize_json(_value);
 							}
 							else {
@@ -478,9 +478,9 @@ jQuery.get_class = function (_obj) {
         && !(_obj instanceof Array)
         && !(_obj instanceof Function)
         && _obj.constructor
-        && _obj != this.window) {
+        && _obj !== this.window) {
         var _arr = _obj.constructor.toString().match(/function\s*(\w+)/);
-        if (_arr && _arr.length == 2) {
+        if (_arr && _arr.length === 2) {
             return _arr[1];
         }
         else {
@@ -519,8 +519,8 @@ jQuery.get_class = function (_obj) {
 };
 
 jQuery.is_null = function (_obj) {
-    if (typeof(_obj) == 'undefined' ||
-	(typeof(_obj) == 'string' && _obj == 'null')) {
+    if (typeof(_obj) === 'undefined' ||
+	(typeof(_obj) === 'string' && _obj == 'null')) {
 		return true;
 	}
 	else {
@@ -551,7 +551,7 @@ jQuery.is_class = function(_obj, _class_name) {
 };
 
 jQuery.is_boolean = function(_obj) {
-    return (typeof(_obj) == 'boolean');
+    return (typeof(_obj) === 'boolean');
 };
 
 /**
@@ -562,12 +562,12 @@ jQuery.is_boolean = function(_obj) {
  * @type boolean
  */
 jQuery.is_array = function(_obj) {
-    return (typeof(_obj) == 'object' && (_obj instanceof Array));
+    return (typeof(_obj) === 'object' && (_obj instanceof Array));
 };
 
 jQuery.filter_array = function (_obj) {
-    var _is_array = (typeof(_obj) == 'object' && (_obj instanceof Array));
-    if (false == _is_array) {
+    var _is_array = (typeof(_obj) === 'object' && (_obj instanceof Array));
+    if (false === _is_array) {
 		return [_obj];
 	}
 	else {
@@ -620,7 +620,7 @@ jQuery.is_ascii = function (_text) {
 };
 
 jQuery.is_object = function (_obj) {
-    return (typeof(_obj) == 'object' && !(_obj instanceof Array));
+    return (typeof(_obj) === 'object' && !(_obj instanceof Array));
 };
 
 /**
@@ -646,7 +646,7 @@ jQuery.is_undefined = function (_obj) {
  * @param {Object} _obj
  */
 jQuery.is_jquery = function (_obj) {
-    return (typeof(_obj) == 'object' && (_obj instanceof jQuery));
+    return (typeof(_obj) === 'object' && (_obj instanceof jQuery));
 };
 
 /**
@@ -675,7 +675,7 @@ jQuery.is_html_element = function (_element) {
  * @param {Object} _obj
  */
 jQuery.isset = function (_obj) {
-    if (typeof(_obj) == "undefined" ||
+    if (typeof(_obj) === "undefined" ||
 	this.is_null(_obj) === true) {
 		return false;
 	}
@@ -706,7 +706,7 @@ jQuery.object_isset = function (_object_path) {
 		}
         
         var _result = eval('typeof('+_test_path+')');     
-        if (_result == 'undefined') {
+        if (_result === 'undefined') {
 			return false;
 		}
     }
@@ -820,7 +820,7 @@ jQuery.parse_url = function (_str, _component) {
  * @returns {Boolean}
  */
 jQuery.is_image = function(_url) {
-    if (false == this.is_link(_url)) {
+    if (false === this.is_link(_url)) {
         return false;
     }
     var _param = this.parse_url(_url);
@@ -833,7 +833,7 @@ jQuery.is_image = function(_url) {
         return false;
     }
     var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
-    if (this.inArray(_ext, _image_array) != -1) {
+    if (this.inArray(_ext, _image_array) !== -1) {
         return true;
     }
     else {
@@ -844,7 +844,7 @@ jQuery.is_image = function(_url) {
 jQuery.parse_extension_name = function (_path) {
     var _dot = _path.lastIndexOf('.');
     var _slash = _path.lastIndexOf('/');
-    if (_dot == -1 ||
+    if (_dot === -1 ||
 	_dot < _slash) {
 		return null;
 	}
@@ -892,7 +892,7 @@ jQuery.extend({
      * @param {function} _callback 要初始化的動作
      */
     init: function (_callback) {
-        if (false == $(this).hasClass('inited')) {
+        if (false === $(this).hasClass('inited')) {
             if (this.is_function(_callback)) {
 				_callback(this);
 			}
@@ -914,7 +914,7 @@ jQuery.fn.extend({
      * - scale: 手機模式用的縮放比例
      */
     align: function (_options) {
-        if (_options == 'left' || _options == 'center' || _options == 'right') {
+        if (_options === 'left' || _options === 'center' || _options === 'right') {
 			_options = {
 				option: _options
 			};

@@ -557,10 +557,72 @@ Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
 };
 /**
  * 取得現在捲軸的位置的first word id
- * 
+ * @return {int} word_id
  */
 
 Selectable_text_word.prototype.get_current_progress_word = function () {
+
+    // 1.先比對kals_paragraph_i
+    // 2.再比對該層內的word_id 直到比現在捲軸位置還大(y)的 記錄id
+    var _scroll_top = $(window).scrollTop();
+    _scroll_top = _scroll_top + KALS_toolbar.get_height();
+
+    // 取得所有的kals_paragraph(array)
+    var _paragraph_collection = $('.kals-paragraph');
+    
+    //$.test_msg('save_reading_progress, para length', _paragraph_len);
+
+    var _target_paragraph;
+    
+    for (var _index = 0; _index < _paragraph_collection.length; _index++ ) {
+        var _paragraph = _paragraph_collection.eq(_index);
+        //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
+        //取得每個paragraph的第一個word的top
+        var _paragraph_height = $.get_offset_top(_paragraph.find(".kals-word:first")); 
+        //$.test_msg('save_reading_progress', [_paragraph_height, _scroll_top, _index]);
+            
+        if (_paragraph_height > _scroll_top) {
+            //找前一段
+            _target_paragraph = _paragraph_collection.eq(_index-1);
+            break;
+        }
+            //$.test_msg('i', _i);
+    }
+        
+    var _target_word;
+    //已經找到該段落
+    if (_target_paragraph !== undefined) {
+        //段落中所有的word
+        var _words = _target_paragraph.find(".kals-word");
+            
+        for (var _w = 0; _w < _words.length; _w++) {
+            _target_word = _words.eq(_w);
+            //比較每個字與現在捲軸位置的高度
+            var _word_height = $.get_offset_top(_target_word);
+            if (_word_height > _scroll_top) {
+                break;
+            }
+            // 如果在這一段裡面都沒有找到位置比捲軸還低的word，表示實際上是下一個paragraph
+            if (_w === _words.length - 1) {
+                // get_prefixed_id 只取ID的值
+                var _word_id = $.get_prefixed_id(_target_word.attr("id"));
+                // id裡的值為"kals-word_id"
+                _target_word = $("#kals_word_" + (_word_id+1));
+                break;
+            }
+        };
+    }
+    else {
+        _target_word = $(".kals-word:last");
+    }
+        
+    var _word_id;
+    if (_target_word !== undefined) {
+        _word_id = _target_word.attr("id");
+        _word_id = $.get_prefixed_id(_word_id);
+    }
+    //$.test_msg("get_current_progress_word", [_word_id, _target_paragraph.attr("className")]);
+    return _word_id;
 };
 
 /* End of file Selectable_text_word */

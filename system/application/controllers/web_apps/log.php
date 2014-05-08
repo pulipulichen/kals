@@ -49,6 +49,8 @@ include_once 'web_apps_controller.php';
 40=使用mobile裝置瀏覽文章的topic_list(有登入)
 41=使用mobile裝置瀏覽討論標註(有登入)
 42=從mobile_apps登出
+43=閱讀進度(正在網頁閱讀中)：目前閱讀的word_id
+44=閱讀進度(離開頁面)：目前閱讀的word_id
  * 
  *
  * @package		KALS

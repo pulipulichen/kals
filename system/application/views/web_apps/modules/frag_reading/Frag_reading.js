@@ -65,20 +65,11 @@ Frag_reading.prototype._$view = 'modules/frag_reading/view/Frag_reading';
 Frag_reading.prototype._$initialize_view = function () {
     
     // 打開ui後要做的事情
-    var _word_id = 18;
-    var _test_msg = 'test';
+    var _word_id = KALS_text.selection.text.word.get_current_progress_word();
     var _position = $(window).scrollTop();
-    var _doc_height = $(document).height();
     
     this.set_field("position",  _position);
-    this.set_field("doc_height",  _doc_height);
-    
-    
-    this.set_field('word_id', _word_id);
-    this.set_field('test_msg', _test_msg);
-    
-  
-    
+    this.set_field('word_id', _word_id);  
 };
 
 /**
@@ -393,10 +384,31 @@ Frag_reading.prototype._$onopen = function () {
 Frag_reading.prototype.initialize_save_reading_progress = function(){
     var _this = this;
     var _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
-    setInterval(function(){
-        _this.save_reading_progress();},
-        _interval_span
-    );
+    var _check_interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *500;
+    var _current_word = null;
+    var _before_word = null;
+    
+    var _basic_timer = setInterval(function (){
+        //現在的word_id不等於之前的word_id
+        if( _current_word !== _before_word || _current_word === null){
+            _basic_timer = setTimeout(function(){
+                _current_word = KALS_text.selection.text.word.get_current_progress_word();
+                _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
+                _this.save_reading_progress();
+                $.test_msg('before, current, interval', [ _before_word, _current_word, _interval_span]);
+                _before_word = _current_word;                 
+            }
+            , _interval_span);  //_basic_timer = setTimeout(function(){
+        }else{
+            _interval_span = _interval_span + 1000;
+            _basic_timer = setTimeout(function(){
+                _this.save_reading_progress();
+                $.test_msg('interval', _interval_span);
+            }
+            , _interval_span);  //_basic_timer = setTimeout(function(){
+        }               
+    }
+    , _check_interval_span);    
     
     $(window).unload(function (){
         _this.save_reading_progress();}
@@ -408,68 +420,16 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
  * save_reading_progress
  */
 Frag_reading.prototype.save_reading_progress = function(){
-    // 1.先比對kals_paragraph_i
-    // 2.再比對該層內的word_id 直到比現在捲軸位置還大(y)的 記錄id
-    var _scroll_top = $(window).scrollTop();
-    _scroll_top = _scroll_top + KALS_toolbar.get_height();
-    //_scroll_top = _scroll_top + $(".kals-word:first").height();
-    //var _paragraph_height = parseInt($('.kals_paragraph_0').offset().top, 10); //第一個paragraph的高度   
-    //var _first_paragraph = _paragraph_height;
-    // 取得kals_paragraph的個數
-    var _paragraph_collection = $('.kals-paragraph');
     
-    //$.test_msg('save_reading_progress, para length', _paragraph_len);
-    //if( _position > _first_paragraph) { //起始位置已經到第一個paragraph\
-        var _target_paragraph;
+    // 取得現在頁面上的第一個字的word_id
+    var _word_id = KALS_text.selection.text.word.get_current_progress_word();    
+    $.test_msg("save_reading_progress word_id", _word_id);
     
-        for (var _index = 0; _index < _paragraph_collection.length; _index++ ) {
-            var _paragraph = _paragraph_collection.eq(_index);
-            //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
-            var _paragraph_height = $.get_offset_top(_paragraph.find(".kals-word:first"));
-            $.test_msg('save_reading_progress', [_paragraph_height, _scroll_top, _index]);
-            
-            if (_paragraph_height > _scroll_top) {
-                _target_paragraph = _paragraph_collection.eq(_index-1);
-                break;
-            }
-            //$.test_msg('i', _i);
-        }
-        
-        var _target_word;
-        if (_target_paragraph !== undefined) {
-            var _words = _target_paragraph.find(".kals-word");
-            
-            for (var _w = 0; _w < _words.length; _w++) {
-                _target_word = _words.eq(_w);
-                var _word_height = $.get_offset_top(_target_word);
-                
-                if (_word_height > _scroll_top) {
-                    break;
-                }
-                if (_w === _words.length - 1) {
-                    var _word_id = $.get_prefixed_id(_target_word.attr("id"));
-                    _target_word = $("#kals_word_" + (_word_id+1));
-                    break;
-                }
-            };
-        }
-        else {
-            _target_word = $(".kals-word:last");
-        }
-        
-        var _word_id;
-        if (_target_word !== undefined) {
-            _word_id = _target_word.attr("id");
-            _word_id = $.get_prefixed_id(_word_id);
-        }
-        
-        $.test_msg("save_reading_progress word_id", [_word_id, _target_paragraph.attr("className")]);
-    //}
-  
-    // 比較paragraph與現在捲軸位置(y)
-
-    //this.set_field("current_position", _position);
-  
+    var _action = 43; //"Frag_reading.save"
+    var _message = null;
+    //KALS_util.log(_action, _message);
+    //$.test_msg('current_scroll', _current_scroll);
+    //context_complete();    
     
 };
 
