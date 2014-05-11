@@ -68,7 +68,8 @@ class Authentication extends Web_apps_controller {
         //$output['login'] = FALSE;
         $output = $this->_create_default_data();
 
-        $action = 3;
+        //$action = 3;
+        $action = "login.manual.success";
         $user_id = NULL;
         if (isset($user))
         {
@@ -77,7 +78,8 @@ class Authentication extends Web_apps_controller {
         }
         else    //if (isset($user)) else
         {
-            $action = 4;
+            //$action = 4;
+            $action = "login.manual.failed";
             $output['error'] = 'user_not_found';
             //handle_error('user_not_found');
         }
@@ -119,8 +121,9 @@ class Authentication extends Web_apps_controller {
      */
     private function _get_login_policy_output($output = NULL) {
 
-        if (is_null($output))
+        if (is_null($output)) {
             $output = array();
+        }
 
         //Policy這邊還沒處理好QQ
         $output['policy'] = array(
@@ -184,13 +187,15 @@ class Authentication extends Web_apps_controller {
         //$output['login'] = FALSE;
         $output = $this->_create_default_data();
 
-        $action = 8;
+        //$action = 8;
+        $action = "register.success";
         $user_id = NULL;
         if (isset($user) )
         {
             //handle_error('user_already_exist');
             $output['error'] = 'user_already_existed';
-            $action = 9;
+            //$action = 9;
+            $action = "register.fail";
         }
         else    //if (isset($user)) else
         {
@@ -281,8 +286,9 @@ class Authentication extends Web_apps_controller {
     {
         $user = get_context_user();
         $id = null;
-        if (isset($user))
+        if (isset($user)) {
             $id = $user->get_id();
+        }
 
         $data = array(
             'user' => array(
@@ -297,7 +303,8 @@ class Authentication extends Web_apps_controller {
     {
         $output = FALSE;
 
-        $action = 1;
+        //$action = 1;
+        $action = "login.check.success";
         $user_id = NULL;
         if (login_require(FALSE))   //表示有登入喔！
         {
@@ -310,7 +317,8 @@ class Authentication extends Web_apps_controller {
         else
         {
             $output = $this->_create_default_data();
-            $action = 2;
+            //$action = 2;
+            $action = "login.check.failed";
         }
         
         $memo = $this->client_ip;

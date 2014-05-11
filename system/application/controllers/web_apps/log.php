@@ -7,20 +7,20 @@ include_once 'web_apps_controller.php';
  * action是一個ID，各action跟對應動作表示如下
  * 
  * 
-1=檢查登入成功	//記得要取得瀏覽器資料
-2=檢查登入失敗
-3=輸入登入成功
-4=輸入登入失敗
-5=內嵌登入成功
-6=內嵌登入失敗
-7=登出
-8=註冊成功
-9=註冊失敗
-10=變更帳戶
-11=變更密碼
-12=瀏覽標註: 範圍
-13=新增標註沒有建議:type;note
-14=新增標註具有建議:type;note;recommend_id
+1=login.check.success=檢查登入成功	//記得要取得瀏覽器資料
+2=login.check.failed=檢查登入失敗
+3=login.manual.success=輸入登入成功
+4=login.manual.failed=輸入登入失敗
+5=login.embed.failed=內嵌登入成功
+6=login.embed.failed=內嵌登入失敗
+7=logout=登出
+8=register.success=註冊成功
+9=register.fail=註冊失敗
+10=user.edit_info=變更帳戶
+11=user.edit_password=變更密碼
+12=select.scope=瀏覽標註: 範圍
+13=annotation.add.no_recommand=新增標註沒有建議:type;note
+14=annotation.add.has_recommand=新增標註具有建議:type;note;recommend_id
 15=修改標註:type:note
 16=瀏覽討論
 17=未登入者瀏覽
@@ -49,6 +49,7 @@ include_once 'web_apps_controller.php';
 40=使用mobile裝置瀏覽文章的topic_list(有登入)
 41=使用mobile裝置瀏覽討論標註(有登入)
 42=從mobile_apps登出
+(以後依然要記錄log的項目，但不需要依照編號，例如「login.check.success=檢查登入成功」)
  * 
  *
  * @package		KALS

@@ -257,6 +257,18 @@ if ( !function_exists("get_kals_root_path")) {
 
 if ( ! function_exists('kals_log'))
 {
+    /**
+     * 以資料庫記錄Log
+     * 
+     * 20140511 注意，資料庫中的log資料表欄位需要新增「action_key」
+     * 
+     * log資料表的建置SQL如下：
+     * 
+     * 
+     * @param type $db
+     * @param type $action
+     * @param type $data
+     */
     function kals_log($db, $action, $data = array())
     {
         $url = get_referer_url(FALSE);
@@ -284,13 +296,13 @@ if ( ! function_exists('kals_log'))
             if (isset($data['memo']))
             {
                 $note = $data['memo'];
-                if (is_array($note) || is_object($note))
-                {
+                if (is_array($note) || is_object($note)) {
                     $note = json_encode($note);
                 }
 
-                if ($note == '')
+                if ($note === '') {
                     $note = NULL;
+                }
             }
         }
         else {
@@ -309,12 +321,17 @@ if ( ! function_exists('kals_log'))
             }
         }
             
+        // 根據action的類型，修改action資料
+        $action_field = "action_key";
+        if (is_int($action) || strval(intval($action)) === $action ) {
+            $action_field = "action";
+        }
 
         $db->insert('log', array(
             'webpage_id' => $webpage_id,
             'user_id' => $user_id,
             'user_ip' => get_client_ip(),
-            'action'=> $action,
+            $action_field=> $action,
             'note'=>$note
         ));
     }
