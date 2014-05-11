@@ -650,44 +650,32 @@ CREATE TABLE log (
     webpage_id integer,
     action integer,
     note text,
-    user_ip text
+    user_ip text,
+    action_key text
 );
 
 
 ALTER TABLE public.log OWNER TO kals;
-
 --
 -- Name: TABLE log; Type: COMMENT; Schema: public; Owner: kals
 --
 
-COMMENT ON TABLE log IS '1=檢查登入成功	//記得要取得瀏覽器資料
-2=檢查登入失敗
-3=輸入登入成功
-4=輸入登入失敗
-5=內嵌登入成功
-6=內嵌登入失敗
-7=登出
-8=註冊成功
-9=註冊失敗
-10=變更帳戶
-11=變更密碼
-12=瀏覽標註: 範圍
-13=新增標註沒有建議:type;note
-14=新增標註具有建議:type;note;recommend_id
-15=修改標註:type:note
-16=瀏覽討論
-17=未登入者瀏覽
-18=未登入者瀏覽討論
-19=刪除標註:annotation_id
-20=新增回應標註:type;topic_id;respond_id_list;note
-21=修改回應標註:type;topic_id;respond_id_list;note
-22=加入喜愛清單:被喜愛的annotation_id
-23=移除喜愛清單:被移除的annotation_id
-24=接受建議，沒有推薦:recommend_id
-25=接受建議，有推薦:recommend_id
-26=拒絕建議:recommend_id
-27=發生錯誤:錯誤內容
-28=查看說明';
+COMMENT ON TABLE log IS 'action id的代號，請參考[controllers]/web_apps/log.php
+';
+
+
+--
+-- Name: COLUMN log.action; Type: COMMENT; Schema: public; Owner: kals
+--
+
+COMMENT ON COLUMN log.action IS '未來將放棄不使用。action id的代號，請參考[controllers]/web_apps/log.php';
+
+
+--
+-- Name: COLUMN log.action_key; Type: COMMENT; Schema: public; Owner: kals
+--
+
+COMMENT ON COLUMN log.action_key IS 'action id的代號，請參考[controllers]/web_apps/log.php。以字串代替數字的action，讓說明更有利。範例為「login.check.success=檢查登入成功」';
 
 
 --
