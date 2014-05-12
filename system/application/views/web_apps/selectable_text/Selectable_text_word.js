@@ -616,7 +616,7 @@ Selectable_text_word.prototype.get_current_progress_word = function () {
         _target_word = $(".kals-word:last");
     }
         
-    var _word_id;
+    var _word_id = 1;
     if (_target_word !== undefined) {
         _word_id = _target_word.attr("id");
         _word_id = $.get_prefixed_id(_word_id);

@@ -324,10 +324,15 @@ DEFAULT_KALS_CONFIG = {
              */
             "enable": true,
             /**
-             * 設定自動save_reading)_progress的時間頻率
+             * 設定自動save_reading_progress的時間頻率
              * @type Number
              */
-            "interval_span": 10
+            "interval_span": 10,
+            /**
+             * 頁面停止時延遲的增加時間
+             * @type Number
+             */
+            "increase_interval_span": 10,
         },
         Dashboard: {
             /**

@@ -16,5 +16,6 @@ if (isset($callback_hash) && isset($json))
 {
     echo $callback_hash.'('.$json.')';
 }
-else
+else {
     echo $json;
+}

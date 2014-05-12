@@ -384,31 +384,59 @@ Frag_reading.prototype._$onopen = function () {
 Frag_reading.prototype.initialize_save_reading_progress = function(){
     var _this = this;
     var _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
-    var _check_interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *500;
+    var _check_interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *2000;
     var _current_word = null;
     var _before_word = null;
     
-    var _basic_timer = setInterval(function (){
+    var _check_progress = function (){
         //現在的word_id不等於之前的word_id
-        if( _current_word !== _before_word || _current_word === null){
-            _basic_timer = setTimeout(function(){
-                _current_word = KALS_text.selection.text.word.get_current_progress_word();
+        //alert('start');
+        _current_word = KALS_text.selection.text.word.get_current_progress_word();
+        //進入if之前的值
+        //$.test_msg('before IF, before_word, current word', [_before_word, _current_word]); 
+        
+        //var _check_timer;
+        if ( _current_word !== _before_word || _before_word === null) {
+            _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
+            /*
+            _check_timer = setTimeout(function(){
+                alert('1!');
                 _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
-                _this.save_reading_progress();
-                $.test_msg('before, current, interval', [ _before_word, _current_word, _interval_span]);
-                _before_word = _current_word;                 
+                //_this.save_reading_progress();
+                alert('this.save_reading_progress!');
+                $.test_msg('before, current, interval', [ _before_word, _current_word, _interval_span]);  
             }
             , _interval_span);  //_basic_timer = setTimeout(function(){
-        }else{
-            _interval_span = _interval_span + 1000;
-            _basic_timer = setTimeout(function(){
-                _this.save_reading_progress();
-                $.test_msg('interval', _interval_span);
+            */
+           
+           //$.test_msg('save_reading_progress before, current, interval', [ _before_word, _current_word, _interval_span]);  
+           _this.save_reading_progress(_current_word);
+        }
+        else {
+            //alert('else');
+            _interval_span = _interval_span + KALS_CONFIG.modules.Frag_reading.increase_interval_span *1000;
+            /*
+            _check_timer = setTimeout(function(){
+                //_this.save_reading_progress();
+                $.test_msg('add interval', [_interval_span, _current_word, _before_word]);
             }
             , _interval_span);  //_basic_timer = setTimeout(function(){
-        }               
-    }
-    , _check_interval_span);    
+            */
+           //$.test_msg('else before, current, interval', [ _before_word, _current_word, _interval_span]);  
+        }  
+        _before_word = _current_word; 
+        //alert('back');
+        
+        //var _interval_span = _check_progress();
+        setTimeout(function () {
+           _check_progress(); 
+        }, _interval_span);
+    };
+    
+    
+    var _check_timer = setTimeout(function () {
+        _check_progress();
+    }, _check_interval_span);
     
     $(window).unload(function (){
         _this.save_reading_progress();}
@@ -419,15 +447,17 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
 /**
  * save_reading_progress
  */
-Frag_reading.prototype.save_reading_progress = function(){
+Frag_reading.prototype.save_reading_progress = function(_current_word){
     
     // 取得現在頁面上的第一個字的word_id
     var _word_id = KALS_text.selection.text.word.get_current_progress_word();    
     $.test_msg("save_reading_progress word_id", _word_id);
     
     var _action = 43; //"Frag_reading.save"
-    var _message = null;
-    //KALS_util.log(_action, _message);
+    var _message = {
+        current_word: _current_word
+    };
+    KALS_util.log(_action, _message);
     //$.test_msg('current_scroll', _current_scroll);
     //context_complete();    
     

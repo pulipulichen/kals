@@ -103,7 +103,7 @@ class Log extends Web_apps_controller {
         {
             $callback = $json;
             $data = $this->_get_post_session($index);
-
+            send_js_header($this->output);
             $this->_display_jsonp($data, $callback);
         }
         context_complete();
