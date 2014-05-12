@@ -443,12 +443,24 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": false,
-            "nav_config": {
-                display: true,
-                nav_type: "common",
-                order: 1
-            }
+            "enable": true,
+            /**
+             * 設定自動save_reading_progress的時間頻率
+             * @type Number
+             */
+            "interval_span": 10,
+            /**
+             * 頁面停止時延遲的增加時間
+             * @type Number
+             */
+            "increase_interval_span": 10,
+        },
+        Dashboard: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true
         }
     }
 };
