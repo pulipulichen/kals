@@ -413,15 +413,17 @@ class User extends KALS_actor {
     {
         $unread_coll = $this->notification_coll->get_unread($limit, $offset);
 
-        if (TRUE === $do_load)
+        if (TRUE === $do_load) {
             $unread_coll->load_default();
+        }
         return $unread_coll;
     }
 
     public function get_unread_notification_count($do_load = FALSE)
     {
-        if (TRUE === $do_load)
+        if (TRUE === $do_load) {
             $this->notification_coll->force_loaded();
+        }
         return $this->notification_coll->get_unread_count();
     }
 
@@ -442,8 +444,9 @@ class User extends KALS_actor {
      */
     public function get_friends($reload = FALSE)
     {
-        if ($reload)
+        if ($reload) {
             $this->friend_coll->load_default();
+        }
         return $this->friend_coll;
     }
 
@@ -478,13 +481,124 @@ class User extends KALS_actor {
         return $json;
     }
 
-    public function  export_simple_data()
+    public function export_simple_data()
     {
         $data = array(
             'id' => $this->get_id(),
             'name' => $this->get_name()
         );
         return $data;
+    }
+    
+    /**
+     * 取得指定標註類型的所有標註數量
+     * 
+     * @param Webpage $webpage
+     * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     */
+    public function get_annotation_count($webpage, $annotation_type = NULL) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得指定標註類型的主題標註數量
+     * 
+     * @param Webpage $webpage
+     * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     */
+    public function get_topic_count($webpage, $annotation_type = NULL) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得被指定標註類型回應的回應數量
+     * 
+     * @param Webpage $webpage
+     * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     */
+    public function get_responded_count($webpage, $annotation_type = NULL) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得被指定對象回應的回應數量
+     * 
+     * @param Webpage $webpage
+     * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     */
+    public function get_responded_by_user_count($webpage, $annotation_type = NULL) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得指定標註類型回應標註的數量
+     * 
+     * @param Webpage $webpage
+     * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     */
+    public function get_respond_to_count($webpage, $annotation_type = NULL) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得指定對象與標註類型回應標註的數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     */
+    public function get_respond_to_user_count($webpage, $user, $annotation_type = NULL) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得喜愛的數量
+     * 
+     * @param Webpage $webpage
+     */
+    public function get_like_to_count($webpage) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得喜愛指定對象的數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_like_to_user_count($webpage, $user) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    
+    /**
+     * 取得被喜愛的數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_liked_count($webpage) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
+    }
+    
+    /**
+     * 取得被指定對象喜愛的數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_liked_by_user_count($webpage, $user) {
+        // @TODO 20140512 Pulipuli Chen
+        return 0;
     }
 }
 

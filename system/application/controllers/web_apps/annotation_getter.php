@@ -880,8 +880,9 @@ class Annotation_getter extends Web_apps_controller {
 
         //輸出
         $totally_loaded = TRUE;
-        if (isset ($search_id))
+        if (isset ($search_id)) {
             $totally_loaded = FALSE;
+        }
         
         //不作limit的情況下讀完，表示完全讀取
         if (isset($search_id)
@@ -924,12 +925,15 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->show_total_count)
             && $data->show_total_count === TRUE)
         {
-            if (count($annotation_collection) === 0)
+            if (count($annotation_collection) === 0) {
                 $output_data['total_count'] = 0;
-            else if (isset($search_id))
+            }
+            else if (isset($search_id)) {
                 $output_data['total_count'] = $search_id->length();
-            else
+            }
+            else {
                 $output_data['total_count'] = count($annotation_collection);
+            }
         }   
 
         //log區

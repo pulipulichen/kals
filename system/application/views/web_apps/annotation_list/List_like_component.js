@@ -38,7 +38,7 @@ List_like_component.prototype._set_list_item = function (_item) {
         this._item.add_listener('set', function (_item) {
             _this.set_param();
         });
-		//$.test_msg("設進去了嗎？set item了嗎？", $.isset(this._item._annotation_param.annotation_id));
+        //$.test_msg("設進去了嗎？set item了嗎？", $.isset(this._item._annotation_param.annotation_id));
     }
     return this;
 };
@@ -96,6 +96,17 @@ List_like_component.prototype._$create_ui = function () {
         _this.set_is_like();
     });
     
+    KALS_context.policy.add_attr_listener('able_like_topic', function (_policy) {
+        //$.test_msg("Editor_container toggle_deny", _policy.writable());
+        /*
+        if (_policy.able_like_topic()) {
+            _this.toggle_deny(false);
+        }
+        else {
+            _this.toggle_deny(true);
+        }
+        */
+    }, true);
     
     return _ui;
 };

@@ -537,13 +537,13 @@ Editor_container.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-		//$.test_msg("Editor_container toggle_deny", _policy.writable());
-		if (_policy.writable()) {
-			_this.toggle_deny(false);
-		}
-		else {
-			_this.toggle_deny(true);
-		}
+        //$.test_msg("Editor_container toggle_deny", _policy.writable());
+        if (_policy.writable()) {
+            _this.toggle_deny(false);
+        }
+        else {
+            _this.toggle_deny(true);
+        }
     }, true);
 };
 
