@@ -345,10 +345,10 @@ class User extends KALS_actor {
     {
         $photo = $this->get_field('photo');
         if ($photo == 'TRUE' || $photo === TRUE
-            || $photo == 't')
-            return TRUE;
-        else
-            return FALSE;
+            || $photo == 't'){
+            return TRUE;}
+        else{
+        return FALSE;}
     }
 
     public function set_locale($value)
@@ -399,8 +399,9 @@ class User extends KALS_actor {
      */
     public function get_notification_coll($do_load = FALSE)
     {
-        if (TRUE === $do_load)
+        if (TRUE === $do_load){
             $this->notification_coll->force_loaded();
+        }
         return $this->notification_coll;
     }
 
@@ -495,14 +496,33 @@ class User extends KALS_actor {
      * 
      * @param Webpage $webpage
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
+     * @return Int $count
      */
     public function get_annotation_count($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
-        return 0;
+        $webpage_id = $webpage->get_id(); 
+        //$type_id = $annotation_type->get_type_id();
+        $type_id = $annotation_type->get_type_id();
+
+        /*$query = $this->db->query("SELECT count(annotation.annotation_id)
+FROM annotation JOIN webpage2annotation ON (annotation.annotation_id = webpage2annotation.annotation_id) 
+WHERE webpage_id = '".$webpage_id."' AND annotation_type_id = '".$type_id."'");
+        foreach ($query->result() as $row){
+                $count = $row->count;
+        } */
+        //改用Acticve Recordz方式
+        $this->db->select('annotation.annotation_id');
+        $this->db->from('annotation');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('annotation_type_id', $type_id);
+        $query = $this->db->get();
+        $count = $query->num_rows();
+        return $count;
     }
     
     /**
-     * 取得指定標註類型的主題標註數量
+     * 取得指定標註類型的主題(topic)標註數量
      * 
      * @param Webpage $webpage
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
@@ -559,11 +579,12 @@ class User extends KALS_actor {
     
     /**
      * 取得喜愛的數量
-     * 
+     * @TODO 20140512 Pulipuli Chen
      * @param Webpage $webpage
+     * @return Int $count
      */
     public function get_like_to_count($webpage) {
-        // @TODO 20140512 Pulipuli Chen
+        
         return 0;
     }
     

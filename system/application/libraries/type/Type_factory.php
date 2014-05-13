@@ -138,7 +138,6 @@ class Type_factory extends Generic_object {
         }
     }
 
-
     /**
      * 取得type的name
      * @version 20111105 Pudding Chen

@@ -273,18 +273,40 @@ class Ut_user extends Controller {
     {
         // 1. 載入library
         // 2. Mock 
-        
-        // Test.1 Url -> Webpage
-        // Webpage->filter_webpage_object
-        
-        // Test.2 Type(Int String) -> Annotation_type
-        // new Annotation_type($type)
+        $this->load->library('type/Annotation_type');
+        //$this->load->library('type/Type_factory', "type_factory");
+        $this->load->library('type/Annotation_type_factory');
+        $this->load->library('kals_resource/Webpage');
+        $this->load->library('kals_resource/Webpage');
         
         $user1 = $this->user->create_user($this->url, $this->user_email);
         //檢查user1的name
         $this->unit->run($user1->get_name(),
                 'puddingchen.35',
                 '檢查user1的name');
+        // Test.1 Url -> Webpage
+        // Webpage->filter_webpage_object      
+        // Test.2 Type(Int String) -> Annotation_type
+        // new Annotation_type($type)
+
+        //取得指定標註類型的所有標註數量 get_annotation_count
+        //$url = $this->url;
+        $url = 'http://140.119.61.137/kals/help/config_annotation_scope.html';
+        
+        $name = 'importance';
+        //$type = $this->type_factory->create_type($name);    
+        $type = $this->annotation_type_factory->filter_object($name);
+        $this->unit->run( $type->get_id(),
+                          1,
+                          'importance可以用filter_object轉換為物件嗎?');              
+        $webpage = $this->webpage->filter_webpage_object($url);
+        //$annotation_type = new Annotation_type($type);
+        
+        $annotation_count = $this->user->get_annotation_count($webpage, $type);
+        $this->unit->run( $annotation_count,
+                          '7',
+                          '檢查計算指定類型的標註數量,importance cout對嗎？');
+        
         
         
         // ----------------------------------------------
