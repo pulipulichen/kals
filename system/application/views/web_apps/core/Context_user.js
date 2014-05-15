@@ -122,15 +122,15 @@ Context_user.prototype.has_login = function () {
  */
 Context_user.prototype.get_data = function () {
     if (KALS_context.auth.is_login() === false) {
-		return null;
-	}
+        return null;
+    }
     
     var _id = this.get_id();
     var _name = this.get_name();
     
     if (_id === null) {
-		return null;
-	}
+        return null;
+    }
     
     var _param = new User_param(_id, _name);
     return _param;
@@ -165,7 +165,7 @@ Context_user.prototype._annotation_count = {
      *    question: 2
      * }
      */
-    "topic": {},
+    "topic_annotation_count": {},
     /**
      * 回應到自己的標註
      * @type {JSON} = {
@@ -173,7 +173,7 @@ Context_user.prototype._annotation_count = {
      *    question: 2
      * }
      */
-    "respond_to_my": {},
+    "respond_to_my_annotation_count": {},
     /**
      * 回應到別人的標註
      * @type {JSON} = {
@@ -181,7 +181,7 @@ Context_user.prototype._annotation_count = {
      *    question: 2
      * }
      */
-    "respond_to_other": {}
+    "respond_to_other_annotation_count": {}
 };
 
 /**
@@ -198,7 +198,7 @@ Context_user.prototype.set_annotation_count = function (_write_type, _annotation
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count() parameters error: " 
                 + [($.is_string(_write_type) === false), ($.is_class(_annotation_type, "Annotation_type_param") === false), ($.is_number(_count) === false)]);
-        return;
+        return this;
     }
     
     if (_count < 0) {
@@ -208,7 +208,9 @@ Context_user.prototype.set_annotation_count = function (_write_type, _annotation
     var _type_name = _annotation_type.get_name();
     this._annotation_count[_write_type][_type_name] = _count;
     
-    //$.test_msg("Context_user.set_annotation_count", [_write_type, _type_name, _count]);
+    var _write_type_count = this.get_annotation_count(_write_type);
+    this.set_attr(_write_type, _write_type_count);
+    //$.test_msg("Context_user.set_annotation_count", [_write_type, _type_name, _count, _write_type_count]);
     
     return this;
 };
@@ -227,7 +229,7 @@ Context_user.prototype.set_annotation_count_modify = function (_write_type, _ann
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count_modify() parameters error: " 
                 + [($.is_string(_write_type) === false), _write_type, ($.is_class(_annotation_type, "Annotation_type_param") === false), ($.is_number(_count) === false), _count]);
-        return;
+        return this;
     }
     
     var _original_count = this.get_annotation_count(_write_type, _annotation_type);
@@ -360,7 +362,7 @@ Context_user.prototype.set_annotation_count_by_param = function (_annotation_par
     if ($.is_class(_annotation_param, "Annotation_param") === false 
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count() parameters error");
-        return;
+        return this;
     }
     
     if (_count < 0) {
@@ -388,7 +390,7 @@ Context_user.prototype.parse_anntation_param_write_type = function (_annotation_
     var _write_type;
     if (_is_respond === false) {
         //$.test_msg("create callback", _annotation_type_param);
-        _write_type = "topic";
+        _write_type = "topic_annotation_count";
     } 
     else {
         var _topic_annotation_param = _annotation_param.topic;
@@ -396,11 +398,11 @@ Context_user.prototype.parse_anntation_param_write_type = function (_annotation_
         
         if (_is_my_topic) {
             //KALS_context.user.set_respond_to_my_annotation_count_add(_annotation_type_param);
-            _write_type = "respond_to_my";
+            _write_type = "respond_to_my_annotation_count";
         }
         else {
             //KALS_context.user.set_respond_to_other_annotation_count_add(_annotation_type_param);
-            _write_type = "respond_to_my";
+            _write_type = "respond_to_other_annotation_count";
         }
     }
     
@@ -417,7 +419,7 @@ Context_user.prototype.parse_anntation_param_write_type = function (_annotation_
 Context_user.prototype.get_annotation_count_by_param = function (_annotation_param) {
     if ($.is_class(_annotation_param, "Annotation_param") === false) {
         KALS_util.show_exception("Context_user.get_annotation_count() parameters error");
-        return;
+        return this;
     }
     
     var _annotation_type_param = _annotation_param.type;
@@ -437,7 +439,7 @@ Context_user.prototype.set_annotation_count_modify_by_param = function (_annotat
     if ($.is_class(_annotation_param, "Annotation_param") === false 
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count() parameters error");
-        return;
+        return this;
     }
     
     var _annotation_type_param = _annotation_param.type;
@@ -505,7 +507,7 @@ Context_user.prototype.set_annotation_count_change_by_param = function (_origina
  * @returns {Context_user}
  */
 Context_user.prototype.set_topic_annotation_count = function (_annotation_type, _count) {
-    return this.set_annotation_count("topic", _annotation_type, _count);
+    return this.set_annotation_count("topic_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -516,7 +518,7 @@ Context_user.prototype.set_topic_annotation_count = function (_annotation_type, 
  * @returns {Context_user}
  */
 Context_user.prototype.set_topic_annotation_count_add = function (_annotation_type, _count) {
-    return this.set_annotation_count_add("topic", _annotation_type, _count);
+    return this.set_annotation_count_add("topic_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -527,7 +529,7 @@ Context_user.prototype.set_topic_annotation_count_add = function (_annotation_ty
  * @returns {Context_user}
  */
 Context_user.prototype.set_topic_annotation_count_reduce = function (_annotation_type, _count) {
-    return this.set_annotation_count_reduce("topic", _annotation_type, _count);
+    return this.set_annotation_count_reduce("topic_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -539,7 +541,7 @@ Context_user.prototype.set_topic_annotation_count_reduce = function (_annotation
  */
 Context_user.prototype.set_topic_annotation_count_change = function (_original_type, _annotation_type) {
     //$.test_msg("set_topic_annotation_count_change", [_original_type.get_name(), _annotation_type.get_name()]);
-    return this.set_annotation_count_change("topic", _original_type, _annotation_type);
+    return this.set_annotation_count_change("topic_annotation_count", _original_type, _annotation_type);
 };
 
 /**
@@ -549,7 +551,7 @@ Context_user.prototype.set_topic_annotation_count_change = function (_original_t
  * @returns {Int}
  */
 Context_user.prototype.get_topic_annotation_count = function (_annotation_type) {
-    return this.get_annotation_count("topic", _annotation_type);
+    return this.get_annotation_count("topic_annotation_count", _annotation_type);
 };
 
 // ------------------------------
@@ -563,7 +565,7 @@ Context_user.prototype.get_topic_annotation_count = function (_annotation_type) 
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_my_annotation_count = function (_annotation_type, _count) {
-    return this.set_annotation_count("respond_to_my", _annotation_type, _count);
+    return this.set_annotation_count("respond_to_my_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -574,7 +576,7 @@ Context_user.prototype.set_respond_to_my_annotation_count = function (_annotatio
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_my_annotation_count_add = function (_annotation_type, _count) {
-    return this.set_annotation_count_add("respond_to_my", _annotation_type, _count);
+    return this.set_annotation_count_add("respond_to_my_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -585,7 +587,7 @@ Context_user.prototype.set_respond_to_my_annotation_count_add = function (_annot
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_my_annotation_count_reduce = function (_annotation_type, _count) {
-    return this.set_annotation_count_reduce("respond_to_my", _annotation_type, _count);
+    return this.set_annotation_count_reduce("respond_to_my_annotation_count", _annotation_type, _count);
 };
 
 
@@ -597,7 +599,7 @@ Context_user.prototype.set_respond_to_my_annotation_count_reduce = function (_an
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_my_annotation_count_change = function (_original_type, _annotation_type) {
-    return this.set_annotation_count_change("respond_to_my", _original_type, _annotation_type);
+    return this.set_annotation_count_change("respond_to_my_annotation_count", _original_type, _annotation_type);
 };
 
 /**
@@ -607,7 +609,7 @@ Context_user.prototype.set_respond_to_my_annotation_count_change = function (_or
  * @returns {Int}
  */
 Context_user.prototype.get_respond_to_my_annotation_count = function (_annotation_type) {
-    return this.get_annotation_count("respond_to_my", _annotation_type);
+    return this.get_annotation_count("respond_to_my_annotation_count", _annotation_type);
 };
 
 // ------------------------------
@@ -621,7 +623,7 @@ Context_user.prototype.get_respond_to_my_annotation_count = function (_annotatio
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_other_annotation_count = function (_annotation_type, _count) {
-    return this.set_annotation_count("respond_to_other", _annotation_type, _count);
+    return this.set_annotation_count("respond_to_other_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -632,7 +634,7 @@ Context_user.prototype.set_respond_to_other_annotation_count = function (_annota
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_other_annotation_count_add = function (_annotation_type, _count) {
-    return this.set_annotation_count_add("respond_to_other", _annotation_type, _count);
+    return this.set_annotation_count_add("respond_to_other_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -643,7 +645,7 @@ Context_user.prototype.set_respond_to_other_annotation_count_add = function (_an
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_other_annotation_count_reduce = function (_annotation_type, _count) {
-    return this.set_annotation_count_reduce("respond_to_other", _annotation_type, _count);
+    return this.set_annotation_count_reduce("respond_to_other_annotation_count", _annotation_type, _count);
 };
 
 /**
@@ -654,7 +656,7 @@ Context_user.prototype.set_respond_to_other_annotation_count_reduce = function (
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_other_annotation_count_change = function (_original_type, _annotation_type) {
-    return this.set_annotation_count_change("respond_to_other", _original_type, _annotation_type);
+    return this.set_annotation_count_change("respond_to_other_annotation_count", _original_type, _annotation_type);
 };
 
 /**
@@ -664,7 +666,7 @@ Context_user.prototype.set_respond_to_other_annotation_count_change = function (
  * @returns {Int}
  */
 Context_user.prototype.get_respond_to_other_annotation_count = function (_annotation_type) {
-    return this.get_annotation_count("respond_to_other", _annotation_type);
+    return this.get_annotation_count("respond_to_other_annotation_count", _annotation_type);
 };
 
 // ------------------------------
@@ -758,6 +760,63 @@ Context_user.prototype.set_liked_count = function (_count) {
  */
 Context_user.prototype.get_liked_count = function () {
     return this.get_attr("liked_count", 0);
+};
+
+// ---------------------------------
+
+/**
+ * 接收來自他人的資料
+ * 
+ * 通常其他人利用JSONP_dispatcher.add_listener來訂閱資料
+ * @param {JSONP_dispatcher} _dispatcher
+ * @param {Object} _data 從伺服器回傳的JSON資料
+ */
+Context_user.prototype.update = function (_dispatcher, _data) {
+    
+    var _data_key = this._$data_key;
+    if (_data_key === null) {
+        return this;
+    }
+    
+    if (typeof(_data[_data_key]) !== 'undefined') {
+        for (var _key in _data[_data_key]) {
+            this._pre_update(_key, _data[_data_key][_key]);
+            this.set_attr(_key, _data[_data_key][_key]);
+        }
+    }
+    else {
+        this.reset();
+    }
+    
+    //$.test_msg('attr name' , this.get_attr('name', 'NULL'));
+    return this;
+};
+
+/**
+ * 檢查資料並更新
+ * @param {String} _key
+ * @param {Object} _value
+ * @returns {Context_user}
+ */
+Context_user.prototype._pre_update = function (_key, _value) {
+    
+    var _type_name, _count, _write_type, _type_param;
+    if (_key === "topic_annotation_count" 
+            || _key === "respond_to_my_annotation_count"
+            || _key === "respond_to_other_annotation_count") {
+        
+        _write_type =  _key;
+        
+        var _count_collection = _value;
+        
+        for (_type_name in _count_collection) {
+            _count = _count_collection[_type_name];
+            _type_param = new Annotation_type_param(_type_name);
+            this.set_annotation_count(_write_type, _type_param, _count);
+        }
+    }
+    
+    return this;
 };
 
 /* End of file Context_user */

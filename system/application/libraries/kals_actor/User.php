@@ -498,6 +498,7 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return Int $count
      */
+    /*
     public function get_annotation_count($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -522,6 +523,8 @@ class User extends KALS_actor {
         $count = $query->num_rows();
         return $count;
     }
+     * 
+     */
     
     /**
      * 取得自己寫的指定標註類型的主題(topic)標註數量
@@ -529,6 +532,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      */
+    /*
     public function get_topic_count($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -553,6 +557,8 @@ class User extends KALS_actor {
         $count = $query->num_rows();
         return $count;
     }
+     * 
+     */
     
     /**
      * 取得被指定標註類型回應的回應數量(被別人回應的特定類型的回應數量)
@@ -560,6 +566,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型(ALL)
      */
+    /*
     public function get_responded_count($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -586,6 +593,8 @@ class User extends KALS_actor {
         $count = $query->num_rows();
         return $count;
     }
+     * 
+     */
     
     /**
      * 取得被指定對象回應的回應數量(被特定對象回應的回應數量)
@@ -595,6 +604,7 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return array | user_id
      */
+    /*
     public function get_responded_by_user_count($webpage, $responded_user, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -621,6 +631,8 @@ class User extends KALS_actor {
         $count = $query->num_rows();
         return $count;
     }
+     * 
+     */
 
     /**
      * 取得被指定類型回應的對象(哪些人用什麼類型回應)
@@ -630,6 +642,7 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return array| user_id
      */
+    /*
     public function get_respond_users($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -659,6 +672,8 @@ class User extends KALS_actor {
         return $respond_user;
         
     }
+     * 
+     */
  
      /**
      * 取得被指定類型回應的對象的數量(哪些人用什麼類型回應的數量)
@@ -668,12 +683,15 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return Int $count
      */
+    /*
     public function get_respond_users_count($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $respond_user = $this->get_respond_users($webpage, $annotation_type);
         $count = count($respond_user);
         return $count;
     }
+     * 
+     */
 
     /**
      * 取得指定標註類型回應標註的數量(自己寫的回應標註)
@@ -681,6 +699,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      */
+    /*
     public function get_respond_to_count($webpage, $annotation_type = NULL) {
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
@@ -704,6 +723,8 @@ class User extends KALS_actor {
         $count = $query->num_rows();
         return $count;
     }
+     * 
+     */
      /**
      * 取得指定對象與標註類型回應標註的數量(自己用哪些類型標註回應誰)
      * 
@@ -712,6 +733,7 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return Int  $count
      */
+    /*
     public function get_respond_to_count_by_user($webpage, $respond_to_user, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -738,6 +760,8 @@ class User extends KALS_actor {
         $count = $query->num_rows();
         return  $count;
     }
+     * 
+     */
     
     
     /**
@@ -748,6 +772,7 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return array | user_id
      */
+    /*
     public function get_respond_to_users($webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -777,6 +802,9 @@ class User extends KALS_actor {
         }
         return $respond_user;
     }
+     * 
+     */
+    
      /**
      * 取得指定對象與標註類型回應標註的數量(自己用哪些類型標註回應誰)
      * 
@@ -785,12 +813,14 @@ class User extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return Int $count
      */
+    /*
     public function get_respond_to_users_count(Webpage $webpage, Annotation_type $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $respond_user = $this->get_respond_to_users($webpage, $annotation_type);
         $count = count($respond_user);
         return $count;
     }
+     */
     
      /**
      * 取得自己喜愛的標註list
@@ -798,6 +828,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @return Annotation_collection
      */
+    /*
     public function get_like_to_annotation(Webpage $webpage) {
         $this->CI->load->library("annotation/annotation_collection");
         $this->CI->load->library("kals_resource/annotation");
@@ -822,20 +853,19 @@ class User extends KALS_actor {
        return $like_to;   
        //return $count;
     }
+     */
+    
     /**
      * 取得自己喜愛的數量
-     * @TODO 20140512 Pulipuli Chen
      * @param Webpage $webpage
      * @return Int $count
      */
+    /*
     public function get_like_to_annotation_count($webpage) {
-        // @TODO 20140512 Pulipuli Chen
-        $this->CI->load->library("annotation/annotation_collection");
-        $this->CI->load->library("kals_resource/annotation");
         $like_to_count = $this->get_like_to_annotation($webpage)->length();
         return $like_to_count;
     }
-
+    */
     
     /**
      * 取得喜愛指定對象的數量
@@ -843,6 +873,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @param User $user 
      */
+    /*
     public function get_like_to_user_count($webpage, $like_to_user) {
      // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -861,6 +892,7 @@ class User extends KALS_actor {
         $count = $query->num_rows(); 
         return $count;
     }
+     */
     
     /**
      * 取得被喜愛的標註數量
@@ -868,6 +900,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @param User $user 
      */
+    /*
     public function get_liked_count($webpage) {
      // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -886,6 +919,8 @@ class User extends KALS_actor {
         $count = $query->num_rows(); 
         return $count;
     }
+     * 
+     */
      
     /**
      * 取得被指定對象喜愛的數量
@@ -893,6 +928,7 @@ class User extends KALS_actor {
      * @param Webpage $webpage
      * @param User $user 
      */
+    /*
     public function get_liked_by_user_count($webpage, $liked_user) {
      // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
@@ -911,6 +947,8 @@ class User extends KALS_actor {
         $count = $query->num_rows(); 
         return $count;
     }
+     * 
+     */
     
     /**
      * 取得被誰喜愛的名單
@@ -919,10 +957,13 @@ class User extends KALS_actor {
      * @param User $user 
      * @todo 之後再完成
      */
+    /*
     public function get_liked_user($webpage) {
         
         return 0;
     }
+     * 
+     */
         /**
      * 取得被多少人喜愛的數量
      * 
@@ -930,10 +971,13 @@ class User extends KALS_actor {
      * @param User $user 
      * @todo 之後再完成
      */
+    /*
     public function get_liked_user_count($webpage) {
         
         return 0;
     }
+     * 
+     */
 }
 
 

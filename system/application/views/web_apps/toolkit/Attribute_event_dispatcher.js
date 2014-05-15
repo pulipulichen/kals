@@ -204,8 +204,8 @@ Attribute_event_dispatcher.prototype.update = function (_dispatcher, _data) {
     
     var _data_key = this._$data_key;
     if (_data_key === null) {
-		return this;
-	}
+        return this;
+    }
     
     //$.test_msg('Attribute_event_dispatcher.update()', _data);
     //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);

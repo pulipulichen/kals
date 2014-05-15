@@ -1,43 +1,17 @@
 <?php
 include_once 'KALS_actor.php';
 /**
- * User
+ * User_statistic
  *
- * 使用者
+ * 使用者統計
  *
  * @package		KALS
- * @category		Library
- * @author		Pudding Chen <puddingchen.35@gmail.com>
- * @copyright		Copyright (c) 2010, Pudding Chen
+ * @category		Controllers
+ * @author		Wyfan <wyfan@nccu.edu.tw>
+ * @copyright		Copyright (c) 2014, Wyfan
  * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link		http://sites.google.com/site/puddingkals/
- * @version		1.0 2010/6/27 下午 08:15:20
- * @property Notification_collection $notification_coll
- * @example
- * 資料表建立：<code>
-
--- Table: "user"
-
--- DROP TABLE "user";
-
-CREATE TABLE "user"
-(
-  user_id serial NOT NULL,
-  "name" text NOT NULL,
-  email text,
-  sex integer NOT NULL DEFAULT 0,
-  photo boolean NOT NULL DEFAULT false,
-  locale character varying(20),
-  style text,
-  "password" text,
-  deleted boolean NOT NULL DEFAULT false,
-  domain_id integer NOT NULL,
-  CONSTRAINT user_pkey PRIMARY KEY (user_id)
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "user" OWNER TO postgres;
-
- * </code>
+ * @link                https://github.com/pulipulichen/kals/
+ * @version		1.0 2014/5/15 下午 03:51:22
  */
 class User_statistic extends KALS_actor {
 
@@ -52,7 +26,7 @@ class User_statistic extends KALS_actor {
     protected $fake_delete = 'deleted';
     
     private $notification_coll;*/
-    protected function  _post_construct($table_name = NULL, $id = NULL) {
+    protected function  _post_construct() {
         $this->CI->load->library("annotation/annotation_collection");
         $this->CI->load->library("kals_resource/annotation");
         $this->CI->load->library('kals_actor/User');
@@ -85,6 +59,10 @@ class User_statistic extends KALS_actor {
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('user_id', $user_id);
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where('annotation.deleted', 'false');
+        
         if ($annotation_type !== NULL){
             $this->db->where('annotation_type_id', $type_id);
         }
@@ -116,7 +94,11 @@ class User_statistic extends KALS_actor {
         $this->db->from('annotation');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
         $this->db->where('webpage_id', $webpage_id);
-        $this->db->where('user_id', $user_id);
+        $this->db->where('user_id', $user_id);        
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where('annotation.deleted', 'false');
+        
         if ($annotation_type !== NULL){
             $this->db->where('annotation_type_id', $type_id);
         }
@@ -153,6 +135,11 @@ class User_statistic extends KALS_actor {
         $this->db->where('topic.user_id', $user_id);
         $this->db->where('respond.topic_id IS NOT NULL');
         $this->db->where('respond.user_id <>', $user_id);
+                
+        // 要加入未刪除的限制啊！
+        $this->db->where('topic.deleted', 'false');
+        $this->db->where('respond.deleted', 'false');
+        
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
@@ -189,6 +176,12 @@ class User_statistic extends KALS_actor {
         $this->db->where('topic.user_id', $user_id);
         $this->db->where('respond.topic_id IS NOT NULL');
         $this->db->where('respond.user_id', $responded_user->get_id());
+                
+        // 要加入未刪除的限制啊！
+        $this->db->where('topic.deleted', 'false');
+        $this->db->where('respond.deleted', 'false');
+        
+        
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
@@ -222,6 +215,11 @@ class User_statistic extends KALS_actor {
         $this->db->where('topic.user_id', $user_id);
         $this->db->where('respond.user_id <>', $user_id);
         $this->db->where('respond.topic_id IS NOT NULL');
+                
+        // 要加入未刪除的限制啊！
+        $this->db->where('topic.deleted', 'false');
+        $this->db->where('respond.deleted', 'false');
+        
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
@@ -264,6 +262,10 @@ class User_statistic extends KALS_actor {
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('user_id', $user_id);
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where('annotation.deleted', 'false');
+        
         if ($annotation_type !== NULL){
             $this->db->where('annotation_type_id', $type_id);
         }
@@ -297,6 +299,11 @@ class User_statistic extends KALS_actor {
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('respond_to.user_id', $user_id);
         $this->db->where('respond_to.topic_id IS NOT NULL');
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where('topic.deleted', 'false');
+        $this->db->where('respond_to.deleted', 'false');
+        
         $this->db->where('topic.user_id', $topic_user->get_id());
         if ($annotation_type !== NULL){
             $this->db->where('respond_to.annotation_type_id', $type_id);
@@ -332,13 +339,18 @@ class User_statistic extends KALS_actor {
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('my_res.user_id', $user_id);
         $this->db->where('my_res.topic_id IS NOT NULL');
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where('my_res.deleted', 'false');
+        $this->db->where('respond_to.deleted', 'false');
+        
         $this->db->where('respond_to.user_id <>', $user_id);
-        if ($annotation_type !== NULL){
+        if ($annotation_type !== NULL) {
             $this->db->where('my_res.annotation_type_id', $type_id);
         }
         $query = $this->db->get();
         $respond_user = array();
-        foreach ($query->result() as $row){
+        foreach ($query->result() as $row) {
             $respond_user[] = $row->user_id;
         }
         return $respond_user;
@@ -376,6 +388,10 @@ class User_statistic extends KALS_actor {
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation2like.annotation_id');
         $this->db->where('user_id', $user_id);
         $this->db->where('webpage_id', $webpage_id);
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where("canceled", "false");
+        
         $query = $this->db->get();
         //$count = $query->num_rows();
         $like_to = new Annotation_collection();
@@ -388,12 +404,10 @@ class User_statistic extends KALS_actor {
     }
     /**
      * 取得自己喜愛的數量
-     * @TODO 20140512 Pulipuli Chen
      * @param Webpage $webpage
      * @return Int $count
      */
     public function get_like_to_annotation_count($user, $webpage) {
-        // @TODO 20140512 Pulipuli Chen
         $like_to_count = $this->get_like_to_annotation($user, $webpage)->length();
         return $like_to_count;
     }
@@ -417,6 +431,10 @@ class User_statistic extends KALS_actor {
         $this->db->where('annotation2like.user_id', $user_id);
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('annotation.user_id', $like_to_user->get_id());
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where("canceled", "false");
+        
         $query = $this->db->get();
         $count = $query->num_rows(); 
         return $count;
@@ -440,6 +458,10 @@ class User_statistic extends KALS_actor {
         $this->db->where('annotation2like.user_id <>', $user_id);
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('annotation.user_id', $user_id);
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where("canceled", "false");
+        
         $query = $this->db->get();
         $count = $query->num_rows(); 
         return $count;
@@ -463,6 +485,10 @@ class User_statistic extends KALS_actor {
         $this->db->where('annotation2like.user_id', $liked_user->get_id());
         $this->db->where('webpage_id', $webpage_id);
         $this->db->where('annotation.user_id', $user_id);
+        
+        // 要加入未刪除的限制啊！
+        $this->db->where("canceled", "false");
+        
         $query = $this->db->get();
         $count = $query->num_rows(); 
         return $count;
