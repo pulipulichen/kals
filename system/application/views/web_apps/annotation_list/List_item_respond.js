@@ -76,7 +76,10 @@ List_item_respond.prototype.focus_respond = function (_respond_to_id) {
 };
 
 
-List_item_respond.prototype._disable_option = ['like', 'policy'];
+List_item_respond.prototype._disable_option = [
+    //'like', 
+    'policy'
+];
 
 /**
  * 從回覆列表中，回應指定標註

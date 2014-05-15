@@ -28,20 +28,76 @@ Attribute_event_dispatcher.prototype._attributes = {};
  * 設定屬性
  * @param {string} _type 屬性類型
  * @param {Object} _value 值
+ * @returns {Attribute_event_dispatcher}
  */
 Attribute_event_dispatcher.prototype.set_attr = function (_type, _value) {
     
-	if ($.is_string(_type)) {
-		this._attributes[_type] = _value;
-	    //$.test_msg('Attr .set_attr', _type, _value);
-	    return this.notify_listeners(_type, _value);
-	}
-	else if ($.is_object(_type) && _value === undefined) {
-		for (var _t in _type) {
-			this.set_attr(_t, _type[_t]);
-		}
-		return this;
-	}
+    if ($.is_string(_type)) {
+        this._attributes[_type] = _value;
+        //$.test_msg('Attr .set_attr', _type, _value);
+        return this.notify_listeners(_type, _value);
+    }
+    else if ($.is_object(_type) && _value === undefined) {
+        for (var _t in _type) {
+            this.set_attr(_t, _type[_t]);
+        }
+        return this;
+    }
+};
+
+/**
+ * 設定屬性，調整值
+ * 
+ * 只有屬性是數值的時候才有用處
+ * @param {string} _type 屬性類型
+ * @param {Object} _value 值
+ * @returns {Attribute_event_dispatcher}
+ */
+Attribute_event_dispatcher.prototype.set_attr_adjust = function (_type, _value) {
+    var _attr_value = this.get_attr(_type, 0);
+    //$.test_msg("attr.set_attr_adjust 1", [$.is_number(_attr_value), $.is_number(_value)]);
+    if ($.is_number(_attr_value) 
+            && $.is_number(_value)) {
+        //$.test_msg("attr.set_attr_adjust", [_type, _value, _attr_value, (_attr_value + _value)]);
+        _attr_value = _attr_value + _value;
+        return this.set_attr(_type, _attr_value);
+    }
+    
+    return this;
+};
+
+/**
+ * 設定屬性，增加值
+ * 
+ * 只有屬性是數值的時候才有用處
+ * @param {string} _type 屬性類型
+ * @param {Object} _value 值
+ * @returns {Attribute_event_dispatcher}
+ */
+Attribute_event_dispatcher.prototype.set_attr_add = function (_type, _value) {
+    if (_value === undefined) {
+        _value = 1;
+    }
+    return this.set_attr_adjust(_type, _value);
+};
+
+/**
+ * 設定屬性，減少值
+ * 
+ * 只有屬性是數值的時候才有用處
+ * @param {string} _type 屬性類型
+ * @param {Object} _value 值
+ * @return {Attribute_event_dispatcher}
+ */
+Attribute_event_dispatcher.prototype.set_attr_reduce = function (_type, _value) {
+    if (_value === undefined) {
+        _value = 1;
+    }
+    if ($.is_number(_value)) {
+        // 轉換成負值
+        _value = -1 * _value;
+    }
+    return this.set_attr_adjust(_type, _value);
 };
 
 /**
@@ -68,13 +124,13 @@ Attribute_event_dispatcher.prototype.reset = function () {
  */
 Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _length) {
     if ($.is_null(_type)
-        || typeof(this._attributes[_type]) == 'undefined') {
+        || typeof(this._attributes[_type]) === 'undefined') {
         if ($.is_null(_default)) {
-			return null;
-		}
-		else {
-			return _default;
-		}
+            return null;
+        }
+        else {
+            return _default;
+        }
     }   
     else {
         var _value = this._attributes[_type];
@@ -107,16 +163,14 @@ Attribute_event_dispatcher.prototype.add_attr_listener = function (_type, _attr_
         var _attr = _dispatcher.get_attr(_type);
         
         if ($.is_function(_attr_function)) {
-			_attr_function(_dispatcher, _attr);
-		}
-		else 
-			if (typeof(_attr_function.innerHTML)) {
-				_attr_function.innerHTML = _attr;
-			}
-			else 
-				if ($.is_function(_attr_function.html)) {
-					_attr_function.html(_attr);
-				}
+            _attr_function(_dispatcher, _attr);
+        }
+        else if (typeof(_attr_function.innerHTML)) {
+            _attr_function.innerHTML = _attr;
+        }
+        else if ($.is_function(_attr_function.html)) {
+            _attr_function.html(_attr);
+        }
     };
     
     return this.add_listener(_type, _function, _trigger);
@@ -156,7 +210,7 @@ Attribute_event_dispatcher.prototype.update = function (_dispatcher, _data) {
     //$.test_msg('Attribute_event_dispatcher.update()', _data);
     //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);
     
-    if (typeof(_data[_data_key]) != 'undefined') {
+    if (typeof(_data[_data_key]) !== 'undefined') {
         //$.test_msg('Attribute_event_dispatcher.update()', _data);
         //$.test_msg('Attribute_event_dispatcher.update()', [_data_key, typeof(_data[_data_key])]);
     

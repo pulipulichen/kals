@@ -166,13 +166,13 @@ Annotation_param.prototype.is_respond = function () {
 Annotation_param.prototype.is_my_annotation = function () {
     
     if (this.user === null) {
-		return false;
-	}
+        return false;
+    }
     
     var _user_id = KALS_context.user.get_id();
     var _author_id = this.user.get_id();
     
-    return (_user_id == _author_id);
+    return (_user_id === _author_id);
 };
 
 /**
@@ -226,19 +226,20 @@ Annotation_param.prototype.export_json = function () {
         var _attr = _plain_types[_i];
         if ($.isset(this[_attr])) {
             var _value = this[_attr];
-            if (_attr == 'note') {
+            if (_attr === 'note') {
                 _value = encodeURIComponent(_value);
             }
-            else if (_attr == 'policy_type' && $.is_string(_value)) {
+            else if (_attr === 'policy_type' 
+                    && $.is_string(_value)) {
                 for (var _p in this._policy_types) {
                     var _policy_type = this._policy_types[_p];
-                    if (_policy_type == _value) {
+                    if (_policy_type === _value) {
                         _value = parseInt(_p,10);
                         break;
                     }
                 }
             }
-            else if (_attr == 'respond_list') {
+            else if (_attr === 'respond_list') {
                 continue;
             }
             
@@ -253,24 +254,22 @@ Annotation_param.prototype.export_json = function () {
         //$.test_msg('Annotation_param.export_json', [_attr, ($.isset(this[_attr]))]);
         
         if ($.isset(this[_attr])) {
-            if (_attr == 'respond_to_coll') {
-				var _data = this[_attr].export_respond_json();
-				if ($.is_array(_data) && _data.length > 0) {
-					_json[_attr] = _data;
-				}
-			}
-			else 
-				if (_attr == 'topic') {
-					_json[_attr] = this[_attr].export_respond_json();
-				}
-				else 
-					if ($.inArray(_attr, this._only_for_import) > -1) {
-						// 不做輸出！
-						continue;
-					}
-					else {
-						_json[_attr] = this[_attr].export_json();
-					}
+            if (_attr === 'respond_to_coll') {
+                var _data = this[_attr].export_respond_json();
+                if ($.is_array(_data) && _data.length > 0) {
+                    _json[_attr] = _data;
+                }
+            }
+            else if (_attr === 'topic') {
+                _json[_attr] = this[_attr].export_respond_json();
+            }
+            else if ($.inArray(_attr, this._only_for_import) > -1) {
+                // 不做輸出！
+                continue;
+            }
+            else {
+                _json[_attr] = this[_attr].export_json();
+            }
         }
     }
     
@@ -281,26 +280,26 @@ Annotation_param.prototype.export_respond_json = function () {
     var _data = {};
     
     if ($.isset(this.annotation_id)) {
-		_data.annotation_id = this.annotation_id;
-	}
+        _data.annotation_id = this.annotation_id;
+    }
         
     return _data;
 };
 
 Annotation_param.prototype.import_json = function (_json) {
-	/*
-	if ($.is_class(_json, 'Annotation_param')) {
-		//for (var _i in this._plain_types) {
-		//	var _attr = this._plain_types[_i];
-		//	this[_attr] = _json[_attr];
-		//}
-		//for (var _i in this._param_types) {
-		//	var _attr = this._param_types[_i];
-        //    this[_attr] = _json[_attr];
-        //}
-		return this;
-	}
-	*/
+    /*
+    if ($.is_class(_json, 'Annotation_param')) {
+            //for (var _i in this._plain_types) {
+            //	var _attr = this._plain_types[_i];
+            //	this[_attr] = _json[_attr];
+            //}
+            //for (var _i in this._param_types) {
+            //	var _attr = this._param_types[_i];
+    //    this[_attr] = _json[_attr];
+    //}
+            return this;
+    }
+    */
     //取得Annotation的note時，也記得要先做urlencode()跟JavaScript端的decodeURIComponent()
     var _plain_types = this._plain_types;
     for (var _i in _plain_types) {

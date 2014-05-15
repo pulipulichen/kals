@@ -506,8 +506,9 @@ class Annotation_getter extends Web_apps_controller {
         $search = new Search_annotation_collection();
 
         $search_id = null;
-        if (isset($data->limit))
+        if (isset($data->limit)) {
             $search_id = new Search_annotation_collection();
+        }
 
         // 1 [ topic id ]
         if (isset($data->topic_id)
@@ -527,8 +528,9 @@ class Annotation_getter extends Web_apps_controller {
             && isset($data->target_topic) && $data->target_topic === FALSE)
         {
             $search->set_target_topic_id($data->topic_id);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_target_topic_id($data->topic_id);
+            }
         }
 
         // 2 [ scope ]
@@ -549,8 +551,9 @@ class Annotation_getter extends Web_apps_controller {
 
 
             $search->set_overlap_scope($scope_coll);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_overlap_scope($scope_coll);
+            }
 
             //test_msg('2 [ scope ] 3', is_null($data->scope));
         }
@@ -560,7 +563,7 @@ class Annotation_getter extends Web_apps_controller {
         // 4 [ target my ]
         //test_msg('3 [ target like ] 4 [ target my ]');
 
-        if ((isset($data->target_lik) OR isset($data->target_my) )
+        if ((isset($data->target_like) OR isset($data->target_my) )
             && is_null($user))
         {
             return $this->_create_null_list($callback);
@@ -569,8 +572,9 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->target_like))
         {
             $search->set_target_like($data->target_like, $user);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_target_like($data->target_like, $user);
+            }
         }
 
         if (isset($data->target_my))
@@ -578,14 +582,16 @@ class Annotation_getter extends Web_apps_controller {
             if ($data->target_my === TRUE)
             {
                 $search->set_target_user($user);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->set_target_user($user);
+                }
             }
             else
             {
                 $search->set_exclude_user($user);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->set_exclude_user($user);
+                }
             }
         }
         
@@ -593,8 +599,9 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->target_topic))
         {
             $search->set_target_topic($data->target_topic);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_target_topic($data->target_topic);
+            }
         }
 
         // 6 [ order by ]
@@ -645,8 +652,9 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->offset))
         {
             $search->set_offset($data->offset);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_offset($data->offset);
+            }
         }
 
         // 8 [ limit ]
@@ -662,8 +670,9 @@ class Annotation_getter extends Web_apps_controller {
 
         //輸出
         $totally_loaded = TRUE;
-        if (isset ($search_id))
+        if (isset ($search_id)) {
             $totally_loaded = FALSE;
+        }
         
         //不作limit的情況下讀完，表示完全讀取
         if (isset($search_id)
@@ -703,8 +712,7 @@ class Annotation_getter extends Web_apps_controller {
                 
                 //test_msg($search_result);
 
-                if (count($search_result['annotation_collection']) > 0)
-                {
+                if (count($search_result['annotation_collection']) > 0) {
                     $annotation_data['respond_list'] = $search_result;
                 }
             }
@@ -721,12 +729,15 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->show_total_count)
             && $data->show_total_count === TRUE)
         {
-            if (count($annotation_collection) === 0)
+            if (count($annotation_collection) === 0) {
                 $output_data['total_count'] = 0;
-            else if (isset($search_id))
+            }
+            else if (isset($search_id)) {
                 $output_data['total_count'] = $search_id->length();
-            else
+            }
+            else {
                 $output_data['total_count'] = count($annotation_collection);
+            }
         }
 
         //log區

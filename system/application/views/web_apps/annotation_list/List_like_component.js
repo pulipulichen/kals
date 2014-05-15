@@ -26,7 +26,8 @@ List_like_component.prototype = new JSONP_dispatcher();
 // --------
 
 /**
- * @type {List_item}
+ * List_item
+ * @type List_item
  */
 List_like_component.prototype._item = null;
 
@@ -43,9 +44,11 @@ List_like_component.prototype._set_list_item = function (_item) {
     return this;
 };
 
-
+/**
+ * 設定參數
+ * @returns {List_like_component}
+ */
 List_like_component.prototype.set_param = function () {
-    
     var _param = this._item.get_data();
     var _is_like = _param.is_like;
     this._toggle_like(_is_like);
@@ -96,17 +99,9 @@ List_like_component.prototype._$create_ui = function () {
         _this.set_is_like();
     });
     
-    KALS_context.policy.add_attr_listener('able_like_topic', function (_policy) {
-        //$.test_msg("Editor_container toggle_deny", _policy.writable());
-        /*
-        if (_policy.able_like_topic()) {
-            _this.toggle_deny(false);
-        }
-        else {
-            _this.toggle_deny(true);
-        }
-        */
-    }, true);
+    setTimeout(function () {
+        _this._init_policy_listener();
+    }, 0);
     
     return _ui;
 };
@@ -133,16 +128,21 @@ List_like_component.prototype._create_icon_component = function () {
 
 /**
  * @param {boolean} _is_like
+ * @returns {List_like_component} description
  */
 List_like_component.prototype.set_is_like = function (_is_like) {
     
     if (this._lock === true) {
-		return;
-	}
+        return this;
+    }
+    
+    if (this._enable === false) {
+        return this;
+    }
 	
     if ($.is_null(_is_like)) {
-		_is_like = !(this.is_liked());
-	}
+        _is_like = !(this.is_liked());
+    }
     
     //$.test_msg("set_is_like", [_is_like, this.is_liked()]);
                 
@@ -158,9 +158,9 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     this.load(_data, function (_this, _data) {
         
         if (_this._lock === false) {
-			return;
-		}
-            
+            return;
+        }
+
         _this._lock = false;
         
         //_this._toggle_like(_is_like);
@@ -168,20 +168,27 @@ List_like_component.prototype.set_is_like = function (_is_like) {
         //var _param = _this._item.get_data();
         var _lang;
         if (_is_like === true) {
-			_lang = _this._lang.set_like;
-		}
-		else {
-			_lang = _this._lang.set_not_like;
-		}
+            _lang = _this._lang.set_like;
+        }
+        else {
+            _lang = _this._lang.set_not_like;
+        }
             
         KALS_util.notify(_lang);
+        
+        /**
+         * @type {Context_user} _context_user
+         */
+        var _context_user = KALS_context.user;
         
         //調整次數
         if (_is_like === true) {
             _this.add_like_count();
+            _context_user.set_like_to_count_add();
         }
         else {
             _this.reduce_like_count();
+            _context_user.set_like_to_count_reduce();
         }
     });
     return this;
@@ -212,15 +219,15 @@ List_like_component.prototype._toggle_like = function (_is_like) {
     //$.test_msg('List_like_component.toggle_like 1', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
     
     if ($.is_null(_is_like)) {
-		_is_like = (!(this.is_liked()));
-	}
+        _is_like = (!(this.is_liked()));
+    }
 	
     if (_is_like === true) {
-		_ui.addClass(this.like_classname);
-	}
-	else {
-		_ui.removeClass(this.like_classname);
-	}
+        _ui.addClass(this.like_classname);
+    }
+    else {
+        _ui.removeClass(this.like_classname);
+    }
         
     //$.test_msg('List_like_component.toggle_like 2', [_is_like, _ui.hasClass(this.like_classname), this.is_liked()]);
     
@@ -249,19 +256,22 @@ List_like_component.prototype._set_like_count = function (_count) {
         this._count_component.html(_msg);
         this._like_count = _count;
 		
-		//要修改item的param參數
-		//var _param = this._item.get_annotation_param();
-		//_param.like_count = _count;
-		//this._item.editor_set_data(_param);
+        //要修改item的param參數
+        //var _param = this._item.get_annotation_param();
+        //_param.like_count = _count;
+        //this._item.editor_set_data(_param);
     }
     return this;
 };
 
+/**
+ * 增加喜愛的計數
+ * @returns {List_like_component}
+ */
 List_like_component.prototype.add_like_count = function () {
-    
     this._like_count++;
     this._toggle_like(true);
-	this._set_list_item_count();
+    this._set_list_item_count();
     return this._set_like_count(this._like_count);
 }; 
 
@@ -271,8 +281,8 @@ List_like_component.prototype.reset_like_count = function () {
 
 List_like_component.prototype.reduce_like_count = function () {
     this._like_count--;
-	this._toggle_like(false);
-	this._set_list_item_count();
+    this._toggle_like(false);
+    this._set_list_item_count();
     return this._set_like_count(this._like_count);
 };
 
@@ -281,17 +291,88 @@ List_like_component.prototype.reduce_like_count = function () {
  * @param {number} _count
  */
 List_like_component.prototype._set_list_item_count = function () {
-	if ($.is_null(this._item)) {
-		return this;
-	}
-	var _count = this._like_count;
-	var _param = this._item.get_annotation_param();
+    if ($.is_null(this._item)) {
+        return this;
+    }
+    var _count = this._like_count;
+    var _param = this._item.get_annotation_param();
     _param.like_count = _count;
-	_param.is_like = this.is_liked();
+    _param.is_like = this.is_liked();
     this._item.editor_set_data(_param);
 	
-	return this;
+    return this;
 };
+
+// --------------------------------------
+// 權限設定
+
+/**
+ * 偵測是否是respond
+ * 
+ * @todo 20140512
+ * @returns {Boolean}
+ */
+List_like_component.prototype._is_respond = function () {
+    return this._item.is_respond();
+};
+
+/**
+ * 初始化權限監聽器
+ * @returns {List_like_component}
+ */
+List_like_component.prototype._init_policy_listener = function () {
+    
+    var _this = this;
+    if (this._is_respond()) {
+        KALS_context.policy.add_attr_listener('able_like_respond', function (_policy) {
+            var _enable = _policy.able_like_respond();
+            _this.toggle_enable(_enable);
+        });
+    }
+    else {
+        KALS_context.policy.add_attr_listener('able_like_topic', function (_policy) {
+            var _enable = _policy.able_like_topic();
+            _this.toggle_enable(_enable);
+        });
+    }    
+    
+    return this;
+};
+
+/**
+ * 設定是否啟用
+ * @param {Boolean} _enable
+ * @returns {List_like_component}
+ */
+List_like_component.prototype.toggle_enable = function (_enable) {
+    
+    var _ui = this.get_ui();
+    
+    var _disable_classname = "disable-like";
+    
+    var _title = KALS_context.lang.line(new KALS_language_param(
+                "Your like function is disabled.",
+                "list_like_component.disable_like"
+            ));
+    
+    if (_enable === true) {
+        _ui.removeClass(_disable_classname);
+        _ui.removeAttr("title");
+    }
+    else {
+        _ui.addClass(_disable_classname);
+        _ui.attr("title", _title);
+    }
+    this._enable = _enable;
+    
+    return this;
+};
+
+/**
+ * 是否啟用
+ * @type Boolean
+ */
+List_like_component.prototype._enable = true;
 
 /* End of file List_like_component */
 /* Location: ./system/application/views/web_apps/List_like_component.js */

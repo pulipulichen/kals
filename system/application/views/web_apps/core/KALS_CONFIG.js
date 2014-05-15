@@ -438,12 +438,21 @@ DEFAULT_KALS_CONFIG = {
              */
             order_by_article: true
         },
+        /**
+         * 零碎時間
+         * @type type
+         */
         Frag_reading: {
             /**
              * 是否啟用模組
              * @type Boolean
              */
             "enable": true,
+            "nav_config": {
+                display: true,
+                nav_type: "common",
+                order: 1
+            },
             /**
              * 設定自動save_reading_progress的時間頻率
              * @type Number
@@ -453,14 +462,45 @@ DEFAULT_KALS_CONFIG = {
              * 頁面停止時延遲的增加時間
              * @type Number
              */
-            "increase_interval_span": 10,
+            "increase_interval_span": 10
         },
-        Dashboard: {
-            /**
-             * 是否啟用模組
-             * @type Boolean
-             */
+        /**
+         * 搜尋功能
+         */
+        Window_search: {
+            "enable": false
+        },
+        /**
+         * 章節地圖
+         */
+        Window_map: {
+            "enable": false
+        },
+        /**
+         * 標註顯示
+         */
+        Window_filter: {
             "enable": true
+        },
+        /**
+         * 導讀功能
+         */
+        Reading_guide: {
+            "enable": true
+        },
+        /**
+         * 回報功能
+         */
+        Feedback_manager: {
+            "enable": true
+            /**
+             * 回報接收者的電子郵件信箱
+             * 
+             * 可以設定很多位，用陣列組成
+             * @type String|Array<String>
+             */
+            //,"receiver_email": "pudding@nccu.edu.tw"
+            //,"receiver_email": ["puddingchen.35@gmail.com", "pudding@nccu.edu.tw", "pulipuli.chen@gmail.com"]
         }
     }
 };

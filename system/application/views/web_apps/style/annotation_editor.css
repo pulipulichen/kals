@@ -26,21 +26,11 @@
  * @section Editor_container
  */
 .KALS.kals-modal .editor-container .toggle {
-    text-align: center !important;
-    /*background-color: yellow;*/
-    font-size: small;
-    /*color: white;*/
-    font-weight: bold;
-    
     border:1px solid #4A4531;
     border-top-style: none;
     
     margin: 0 auto;
     height: 20px;
-    cursor:pointer;
-    font-weight:bolder;
-    font-family: 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, Helvetica, sans-serif;
-    
     /*
     background: -moz-linear-gradient(#D6964A 0%, #D6964A 50% 
         ,  #D09042 71%, #CB842E 100%);
@@ -59,15 +49,47 @@
    
     background-color:#FEEEBD;
     */
-    color: #A08E67;
-    
-    text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
     -webkit-user-select: none;
     -moz-user-select: none;
     /*
     border-radius: 0 0 8px 8px;
     -moz-border-radius: 0 0 8px 8px;
     */
+}
+
+.KALS.kals-modal .editor-container .toggle .handler {
+    text-align: center !important;
+    /*background-color: yellow;*/
+    font-size: small;
+    /*color: white;*/
+    font-weight: bold;
+    
+    color: #A08E67;
+    text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
+    font-weight:bolder;
+    font-family: 'Helvetica Neue', HelveticaNeue, Helvetica-Neue, Helvetica, sans-serif;
+    cursor:pointer;
+    
+}
+
+.KALS.kals-modal .editor-container.deny .toggle .handler,
+.KALS.kals-modal .editor-container.not-login .toggle .handler{
+    display: none;
+}
+
+.KALS.kals-modal .editor-container .toggle .deny-message,
+.KALS.kals-modal .editor-container.not-login .toggle .deny-message,
+.KALS.kals-modal .editor-container.deny.not-login .toggle .deny-message{
+    display: none;
+}
+
+.KALS.kals-modal .editor-container.deny .toggle .deny-message,
+.KALS.kals-modal .editor-container.not-login .toggle .not-login{
+    display: block;
+    font-size: small;
+    position: relative;
+    top: 5px;
+    cursor: default;
 }
 
 .KALS.kals-modal .editor-container .toggle td {
@@ -85,6 +107,11 @@
 	background-repeat:no-repeat;
 	height: 30px;
 }
+
+.KALS.kals-modal .editor-container.deny .toggle.hide td {
+    background: none;
+}
+
 .KALS.kals-modal .editor-container .toggle.hide td .handler {
 	visibility:hidden;
 }
@@ -147,7 +174,6 @@
 }
 
 .KALS.kals-modal .editor-container .editor-deny .not-login {
-    
     color: blue;
     text-decoration:underline;
     cursor: pointer;

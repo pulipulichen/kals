@@ -73,6 +73,12 @@ KALS_text.prototype.load_my_custom = null;
 KALS_text.prototype.load_recommend = null;
 
 /**
+ * 導讀精靈
+ * @type {Reading_guide}
+ */
+KALS_text.prototype.guide = null;
+
+/**
  * @type {Reading_guide}
  */
 KALS_text.prototype.guide;

@@ -171,7 +171,7 @@ LEFT JOIN
        FROM log
        WHERE user_id = '".$user_id."' AND webpage_id = '".$webpage_id."' AND (action = '16' OR action = '41') 
        GROUP BY user_id, webpage_id, note) AS log_view_thread
-             ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
+             ON log_view_thread.note like '%\"topic_id\":' || topic_annotation.is_topic_id || '%'
 GROUP BY topic_annotation.webpage_id, is_topic_id, annotation_timestamp
 HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL
                                                 ");

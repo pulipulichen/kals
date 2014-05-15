@@ -98,13 +98,13 @@ Window_filter.prototype._$create_ui = function () {
                 if (_state === null) {
                     _state = _checked;
                 }
-                else if (_state != _checked) {
+                else if (_state !== _checked) {
                     _state = 'half';
                     break;
                 }
             }
             
-            if (_state != 'half') {
+            if (_state !== 'half') {
                 _my_checkbox.attr('checked', _state);
             }
             else {
@@ -124,7 +124,7 @@ Window_filter.prototype._$create_ui = function () {
         _type_input = _type_inputs[_i];
         _type_input.appendTo(_tr);
         
-        if (_i == _type_inputs && _i % 2 === 0) {
+        if (_i === _type_inputs && _i % 2 === 0) {
             _type_input.attr('colspan', 2);
         }
     }
@@ -194,6 +194,41 @@ Window_filter.prototype._$create_ui = function () {
     });
     
     return _ui;
+};
+
+
+/**
+ * 導覽列相關的設定
+ * @type JSON
+ */
+Window_filter.prototype.nav_config = {
+    /**
+     * 顯示資料 
+     * @type Boolean
+     */
+    display: true,
+    
+    /**
+     * 決定顯示導覽列的位置
+     * 
+     * 類型包括：
+     * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+     * - login: 已經登入的使用者就會顯示
+     * - profile: 以手動登入的使用者才會顯示
+     * - embed: 以內嵌登入的使用者才會顯示
+     * - anonymous: 未登入的使用者才會顯示
+     * @type String
+     */
+    nav_type: "common",
+    
+    /**
+     * 排序順序
+     * 
+     * 數字越大，越往左邊靠
+     * 數字最小的是1
+     * @type Number
+     */
+    order: 1
 };
 
 /* End of file Window_filter */

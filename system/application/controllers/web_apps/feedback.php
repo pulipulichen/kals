@@ -42,6 +42,9 @@ class feedback extends Web_apps_controller {
         $browser = NULL;
         $imageData = NULL;
         
+        //$receiver_email = "pudding@nccu.edu.tw";
+        $receiver_email = $this->config->item("feedback.receiver_email");
+        
         if (FALSE === isset($_POST) 
             || FALSE === isset($_POST["data"])) {
             //return;
@@ -51,15 +54,19 @@ class feedback extends Web_apps_controller {
             $feedback_data = json_decode($_POST["data"]);
             $issue = $feedback_data[0]->Issue;
             $browser = $feedback_data[0]->browser;
+            if ($feedback_data[0]->receiver_email !== NULL) {
+                $receiver_email = $feedback_data[0]->receiver_email;
+            }
             $imageData = $feedback_data[1];
+        }
+        
+        if (is_array($receiver_email)) {
+            $receiver_email = implode(",", $receiver_email);
         }
         
         /**
          * 設定寄送訊息
          */
-        
-        //$receiver_email = "pudding@nccu.edu.tw";
-        $receiver_email = $this->config->item("feedback.receiver_email");
         $this->email->to($receiver_email);
         
         /**

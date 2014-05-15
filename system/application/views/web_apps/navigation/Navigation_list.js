@@ -132,9 +132,10 @@ Navigation_list.prototype._create_nav = function() {
     }
 	
     // 插入錯誤回報功能
-    if (this._$show_feedback === true) {
-        this._setup_feedback().appendTo(_tr);
-    }
+    //if (this._$show_feedback === true) {
+    //    if (KALS_CONFIG.)
+    //    this._setup_feedback().appendTo(_tr);
+    //}
     
     _ui.find('td:last').addClass('last');
     

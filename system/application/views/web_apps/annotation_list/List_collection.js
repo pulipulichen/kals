@@ -845,5 +845,19 @@ List_collection.prototype.notify_ready = function () {
 };
 */
 
+/**
+ * 編輯中的標註
+ * @type {Annotation_param}
+ */
+List_collection.prototype._editing_param = null;
+
+/**
+ * 設為編輯對象
+ * @param {Object} _editing_param
+ */
+List_collection.prototype.set_editing_param = function (_editing_param) {
+    this._editing_param = _editing_param;
+};
+
 /* End of file List_collection */
 /* Location: ./system/application/views/web_apps/List_collection.js */

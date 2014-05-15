@@ -1467,7 +1467,7 @@ KALS_controller_window.prototype.focus_input = function () {
         _input = _ui.find("textarea:first");
     }
     
-    $.test_msg("focus_input", _input.length);
+    //$.test_msg("focus_input", _input.length);
     if (_input.length > 0) {
         _input.css("border", "3px solid red");
         _input.css("color", "red");

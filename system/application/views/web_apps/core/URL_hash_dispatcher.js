@@ -37,8 +37,8 @@ URL_hash_dispatcher.prototype._get_location_hash = function () {
     if (typeof(location.hash) !== 'undefined') {
         _hash = location.hash;
         if (_hash.substring(0, 1) === '#') {
-			_hash = _hash.substring(1, _hash.length);
-		}
+            _hash = _hash.substring(1, _hash.length);
+        }
     }
     else {
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
@@ -365,6 +365,16 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
             KALS_context.init_profile.add_listener(function () {
                 KALS_text.selection.select.load_select(_scope_text);  
             });
+            /*
+            KALS_context.init_profile.add_listener(function () {
+                //KALS_context.auth.add_once_listener(function () {
+                    //setTimeout(function () {
+                        $.test_msg("gogo select");
+                        KALS_text.selection.select.load_select(_scope_text);  
+                    ///}, 5000);
+                //});
+            });
+            */
             //setTimeout(function () {
             //	KALS_text.selection.select.load_select(_scope_text);
             //}, 3000); 

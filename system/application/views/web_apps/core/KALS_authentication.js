@@ -35,7 +35,7 @@ function KALS_authentication(){
    //2010.10.26 請KALS_context給予資料吧
    var _this = this;
    KALS_context.add_once_listener(function (_context, _data) {
-       if (typeof(_data.auth) != 'undefined') {
+       if (typeof(_data.auth) !== 'undefined') {
            _this._default_reset_data = _data.auth;
        }
    });
@@ -495,12 +495,15 @@ KALS_authentication.prototype.check_login = function (_callback) {
             
 			//$.test_msg("check_login", _data);
 			
-            if (typeof(_data.login) == 'boolean' && _data.login === true) {
+            if (typeof(_data.login) === 'boolean' 
+                    && _data.login === true) {
                 _this._is_login = true;
             }
             else {
                 _this._is_login = false;
             }
+            
+            _this._login_checked = true;
             
             //$.test_msg('auth check_login()', _data);
             
@@ -510,12 +513,26 @@ KALS_authentication.prototype.check_login = function (_callback) {
         });    //this.load(function (_this, _data) {
     }
     else {
+        this._login_checked = true;
         this.login(false, _callback);
     }
     
     return this;
 };
 
+/**
+ * 已經確認過是否登入
+ * @type Boolean
+ */
+KALS_authentication.prototype._login_checked = false;
+
+/**
+ * 確認是否已經check過
+ * @returns {Boolean}
+ */
+KALS_authentication.prototype.is_login_checked = function () {
+    return this._login_checked;
+}
 
 /* End of file KALS_authentication */
 /* Location: ./system/application/views/web_apps/KALS_authentication.js */

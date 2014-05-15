@@ -292,7 +292,7 @@ KALS_context.reset = function (_callback) {
 KALS_context.lang = null;
 
 /** 
- * @memberOf {KALS_context}
+ * 使用者資訊
  * @type {Context_user} user
  */
 KALS_context.user = null;

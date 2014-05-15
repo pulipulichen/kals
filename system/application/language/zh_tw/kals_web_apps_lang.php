@@ -215,6 +215,9 @@ $lang['web_apps.annotation_tool.load_annotation_param.annotation_not_found'] = '
  * annotation_editor
  */
 $lang['web_apps.editor_container.deny'] = '如果您要撰寫標註，請先點此登入';
+$lang['web_apps.editor_container.deny.topic_wrtiable'] = '您沒有權限寫入標註';
+$lang['web_apps.editor_container.deny.respond_my_topic_wrtiable'] = '您沒有權限回應您的標註';
+$lang['web_apps.editor_container.deny.respond_my_topic_wrtiable'] = '您沒有權限回應別人的標註';
 $lang['web_apps.editor_container.deny_write'] = '您目前沒有權限可以撰寫標註';
 
 $lang['web_apps.annotation_editor.note_deny_empty'] = '請填寫回應資料才能送出。';
@@ -285,19 +288,19 @@ $lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
  */
 $lang['web_apps.list_note_component.to'] = 'To:';
 $lang['web_apps.list_note_component.view_thread'] = '(詳細內容共{0}字)';
+$lang['web_apps.list_note_component.deny_readable'] = '(您無法閱讀這篇註解)';
 
 /**
  * List_like_component
  */
-
 $lang['web_apps.list_like_component.like_count'] = '{0}人喜愛';
 $lang['web_apps.list_like_component.set_like'] = '加入喜愛清單';
 $lang['web_apps.list_like_component.set_not_like'] = '移出喜愛清單';
+$lang['web_apps.list_like_component.disable_like'] = '無法使用喜愛功能';
 
 /**
  * Respond_list_component
  */
-
 $lang['web_apps.respond_list_collection.view_thread.1'] = '檢視全部';
 $lang['web_apps.respond_list_collection.view_thread.2'] = '個回應';
 $lang['web_apps.respond_list_collection.skip_message.1'] = '略過舊的';
@@ -325,7 +328,6 @@ $lang['web_apps.recommend_tooltip.loading'] = '讀取中…';
 /**
  * Init_component
  */
-
 $lang['web_apps.init_component.excute_confirm.heading'] = '瀏覽器訊息';
 $lang['web_apps.init_component.excute_confirm.browser_detect.1'] = '您的瀏覽器是';
 $lang['web_apps.init_component.excute_confirm.browser_detect.2'] = '。';
@@ -352,6 +354,7 @@ $lang['web_apps.feedback.ui.issueLabel'] = "請敘述您遇到的問題，並在
 $lang['web_apps.feedback.ui.blackout'] = "遮黑";   // "Blackout"
 $lang['web_apps.feedback.ui.highlight'] = "標亮";   // "Highlight"
 $lang['web_apps.feedback.ui.screenshot_hint'] = "請利用標亮標示錯誤的區域，用遮黑掩蓋不想要透漏的區域。";   // "Highlight or blackout important information"
+$lang['web_apps.feedback.ui.client_browser'] = "瀏覽器資訊";   // "Client Browser"
 
 $lang['web_apps.window.dashboard.heading'] = "資訊版";
 $lang['web_apps.window.dashboard.nav_heading'] = "資訊版";

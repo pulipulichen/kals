@@ -71,46 +71,68 @@ KALS_language.prototype.set_lang = function(_lang_data){
 KALS_language.prototype.line = function(_lang_param){
     var _line, _arg;
     if ($.is_object(_lang_param)) {
-		_line = $.get_parameter(_lang_param, 'line');
-		_arg = $.get_parameter(_lang_param, 'arg');
-	}
-	else 
-		if ($.is_string(_lang_param)) {
-			_line = _lang_param;
-		}
-    
+        _line = $.get_parameter(_lang_param, 'line');
+        _arg = $.get_parameter(_lang_param, 'arg');
+    }
+    else if ($.is_string(_lang_param)) {
+        _line = _lang_param;
+    }
+
     if ($.is_null(_line)) {
-		return null;
-	}
+        return null;
+    }
     
     if ($.isset(this._lang) &&
 	$.isset(this._lang[_line])) {
-		var _lang = this._lang[_line];
-		_lang = this._lang_set_arg(_lang, _arg);
-		return _lang;
-	}
-	else {
-		return _lang_param;
-	}
+        var _lang = this._lang[_line];
+        _lang = this._lang_set_arg(_lang, _arg);
+        return _lang;
+    }
+    else {
+        return _lang_param;
+    }
 };
+
+
+/**
+ * 依據語系索引取得語系檔
+ * 
+ * @param {KALS_language_param|string} _lang_param 如果是字串，則會將_lang_param直接作為語系索引
+ * @type {String} 輸出的語系結果
+ */
+/*
+KALS_language.prototype.get_line_string = function(_lang_param){
+    if (_lang_param === null || _lang_param === undefined) {
+        return;
+    }
+    $.test_msg("lang.get_line_string()", _lang_param);
+    var _jquery = this.line(_lang_param);
+    if ($.is_string(_jquery)) {
+        return _jquery;
+    }
+    else {
+        return _jquery.text();
+    }
+};
+*/
 
 /**
  * 是否有該語系檔
  * @param {KALS_language_param|String} _lang_param
  */
 KALS_language.prototype.has_line = function (_lang_param) {
-	//var _line, _arg;
-	if ($.is_object(_lang_param)) {
-		_lang_param = $.get_parameter(_lang_param, 'line');
-	}
-	
-	if ($.isset(this._lang) &&
-	$.isset(this._lang[_lang_param])) {
-		return true;
-	}
-	else {
-		return false;
-	}
+    //var _line, _arg;
+    if ($.is_object(_lang_param)) {
+        _lang_param = $.get_parameter(_lang_param, 'line');
+    }
+
+    if ($.isset(this._lang) &&
+    $.isset(this._lang[_lang_param])) {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 /**
@@ -135,15 +157,15 @@ KALS_language.prototype._lang_set_arg = function (_lang, _arg) {
         
         for (_i in _arg) {
             var _a = _arg[_i];
-			if ($.is_object(_a) && typeof(_a.msg) == "string") {
-				_lang.find('span.lang-arg-' + _i).html(_a);
-			}
+            if ($.is_object(_a) && typeof(_a.msg) === "string") {
+                _lang.find('span.lang-arg-' + _i).html(_a);
+            }
             else if ($.is_object(_a)) {
-				_lang.find('span.lang-arg-' + _i).append(_a);
-			}
-			else {
-				_lang.find('span.lang-arg-' + _i).html(_a);
-			}
+                _lang.find('span.lang-arg-' + _i).append(_a);
+            }
+            else {
+                _lang.find('span.lang-arg-' + _i).html(_a);
+            }
         }
     }
     return _lang;
@@ -222,8 +244,9 @@ KALS_language.prototype.notify_listeners = function () {
 };
 
 /**
- * 建立監聽者
+ * 建立監聽者，以<span>標籤組合而成
  * @param {string|KALS_language_param} _lang_param 語系參數
+ * @returns jQuery 以SPAN組成
  */
 KALS_language.prototype.create_listener = function (_lang_param) {
     if ($.is_string(_lang_param)) {
@@ -483,10 +506,9 @@ KALS_language.prototype.get_fulldate = function (_time) {
  */
 KALS_language.prototype._setup_obj = function (_obj, _lang) {
     var _tag_name = _obj.attr('tagName').toLowerCase();
-    if (_tag_name == 'input'
-        || _tag_name == 'textarea') {   
+    if (_tag_name === 'input'
+        || _tag_name === 'textarea') {   
         _obj.attr('placeholder', _lang).val('').blur();    //.change();
-        
     }
     else {
         _obj.html(_lang);

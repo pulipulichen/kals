@@ -573,6 +573,10 @@ Topic_list.prototype.count_list_item = function () {
     return _count;
 };
 
+/**
+ * 編輯中的標註
+ * @type {Annotation_param}
+ */
 Topic_list.prototype._editing_param = null;
 
 /**

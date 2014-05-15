@@ -276,6 +276,11 @@ Annotation_type_param.prototype.has_custom_name= function () {
     return (this.custom_name !== null);
 };
 
+/**
+ * 相等
+ * @param {Annotation_type_param} _type
+ * @returns {Boolean}
+ */
 Annotation_type_param.prototype.equals = function (_type) {
     if ($.is_null(_type)) {
         return false;

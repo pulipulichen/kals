@@ -599,7 +599,7 @@ KALS_controller.prototype.get_view_lang = function (_view_line) {
     _view_classname = 'view.' + _view_classname;
     _view_classname = _view_classname + "." + _view_line;
     
-    $.test_msg("_view_classname", _view_classname);
+    //$.test_msg("_view_classname", _view_classname);
     
     if (KALS_context.lang.has_line(_view_classname)) {
         //KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));

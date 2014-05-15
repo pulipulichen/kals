@@ -20,6 +20,7 @@ function KALS_toolbar() {
     
     this.child('logo', new Logo_component());
     this.child('loading', new Loading_component());
+    
     this.child('search', new Search_form_component());
     
     this._common_windows = (new Common_navigation()).get_nav_items();
@@ -37,6 +38,7 @@ function KALS_toolbar() {
         _this.toggle_loading(true);
         KALS_context.init_component.complete('KALS_toolbar');    
     }, 0);
+    
 }
 
 KALS_toolbar.prototype = new Overlay_modal();
@@ -116,10 +118,13 @@ KALS_toolbar.prototype._$create_ui = function () {
     this.toolbar.setup_left(_logo_ui);
     
     var _loading_ui = this.loading.get_ui();
-    var _search_ui = this.search.get_ui();
-    this.toolbar.setup_center([
-        _search_ui
-    ]);
+    
+    if (KALS_CONFIG.modules.Window_search.enable === true) {
+        var _search_ui = this.search.get_ui();
+        this.toolbar.setup_center([
+            _search_ui
+        ]);
+    }
     
     var _anonymous_ui = this.anonymous_nav.get_ui();
         _anonymous_ui.addClass('anonymous-component');
