@@ -20,13 +20,16 @@ class Ut_user extends Controller {
     var $url = 'http://www.plurk.com/p/5xra8r#response-1657897612';
     var $host = 'http://www.plurk.com/';
     var $user_name = 'puddingchen.35';
+    var $user_name3 = 'demo';
     var $user_email = 'puddingchen.35@gmail.com';
+    var $user_email3 = 'demo@dlll.nccu.edu.tw';
     var $user_email2 = 'siroma@gmail.com';
     var $keyword = 'dd';
     var $not_keyword = '嘿嘿我用錯"誤的資料去\'搜尋看看';
     var $password = 'kals_2010';
     var $crypt_password = 'kap45wPTVht6g';
 
+    
     function Ut_user()
     {
         parent::Controller();
@@ -34,6 +37,7 @@ class Ut_user extends Controller {
         $this->load->helper('unit_test');
 
         $this->load->library('kals_actor/User');
+        $this->load->library('kals_actor/User_statistic');
         $this->load->database();
         
         create_context(TRUE);
@@ -277,19 +281,17 @@ class Ut_user extends Controller {
         //$this->load->library('type/Type_factory', "type_factory");
         $this->load->library('type/Annotation_type_factory');
         $this->load->library('kals_resource/Webpage');
-        $this->load->library('kals_resource/Webpage');
-        
-        $user1 = $this->user->create_user($this->url, $this->user_email);
-        //檢查user1的name
-        $this->unit->run($user1->get_name(),
-                'puddingchen.35',
-                '檢查user1的name');
+        $this->load->library('kals_actor/User');
+        $this->load->library('kals_actor/User_statistic');
+       
+        $me = new User(2002);
+
+        //-----------------------------------------------------
         // Test.1 Url -> Webpage
         // Webpage->filter_webpage_object      
         // Test.2 Type(Int String) -> Annotation_type
         // new Annotation_type($type)
 
-        //取得指定標註類型的所有標註數量 get_annotation_count
         //$url = $this->url;
         $url = 'http://140.119.61.137/kals/help/config_annotation_scope.html';
         
@@ -298,15 +300,90 @@ class Ut_user extends Controller {
         $type = $this->annotation_type_factory->filter_object($name);
         $this->unit->run( $type->get_id(),
                           1,
-                          'importance可以用filter_object轉換為物件嗎?');              
+                          '1.importance可以用filter_object轉換為物件嗎?');              
         $webpage = $this->webpage->filter_webpage_object($url);
         //$annotation_type = new Annotation_type($type);
-        
-        $annotation_count = $this->user->get_annotation_count($webpage, $type);
+        //----------------------------
+        //取得指定標註類型的所有標註數量 get_annotation_count
+        $annotation_count = $this->user_statistic->get_annotation_count($me, $webpage, $type);
         $this->unit->run( $annotation_count,
-                          '7',
-                          '檢查計算指定類型的標註數量,importance cout對嗎？');
+                          8,
+                          '2.檢查計算指定類型的標註數量,importance count對嗎？');
         
+        // ---------------------------
+        // 檢查計算指定類型的標註為topic的數量
+        $topic_count = $this->user_statistic->get_topic_count($me, $webpage, $type);
+        $this->unit->run( $topic_count,
+                          5,
+                          '3.檢查計算指定類型的標註為topic的數量,importance topic count對嗎？');
+        
+        // ---------------------------
+        // 檢查計算被指定類型的回應標註的數量
+        $response_count = $this->user_statistic->get_respond_to_count($me, $webpage, $type);
+        $this->unit->run( $response_count,
+                          3,
+                          '4.取得指定標註類型回應標註的數量(自己寫的回應標註), count對嗎？'); 
+        
+        // ---------------------------
+        // 檢查計算被指定標註類型回應的回應數量(被別人回應的特定類型的回應數量)
+        $responsed_count = $this->user_statistic->get_responded_count($me, $webpage, $type);
+        $this->unit->run( $responsed_count,
+                          2,
+                          '5.取得被指定標註類型回應的回應數量(被別人回應的特定類型的回應數量), count對嗎？');
+        // ---------------------------
+        // 檢查計算被指定對象回應的回應數量(被特定對象回應的回應數量)
+        $responded_user = new User(2003);
+        $respond_to_user = new User(2003);
+        
+        $responsed_count = $this->user_statistic->get_responded_by_user_count($me, $webpage, $responded_user, $type);
+        $this->unit->run( $responsed_count,
+                          2,
+                          '6.取得被指定對象回應的回應數量(被特定對象回應的回應數量), count對嗎？');
+        // ---------------------------
+        // 檢查取得被指定類型回應的對象的數量(哪些人用什麼類型回應的數量)       
+        $responsed_count = $this->user_statistic->get_respond_users_count($me, $webpage, $type);
+        $this->unit->run( $responsed_count,
+                          2,
+                          '7.取得取得被指定類型回應的對象的數量(哪些人用什麼類型回應的數量), count對嗎？'); 
+        // ---------------------------
+        // 檢查指定對象與標註類型回應標註的數量(自己用哪些類型標註回應誰)    
+        $responsed_count = $this->user_statistic->get_respond_to_count_by_user($me, $webpage, $respond_to_user, $type);
+        $this->unit->run( $responsed_count,
+                          1,
+                          '8.取得指定對象與標註類型回應標註的對象數量(自己用哪些類型標註回應誰), count對嗎？'); 
+        // ---------------------------
+        // 檢查指定對象與標註類型回應標註的數量(自己用哪些類型標註回應誰)    
+        $response_count = $this->user_statistic->get_respond_to_count_by_user($me, $webpage, $respond_to_user, $type);
+        $this->unit->run( $response_count,
+                          1,
+                          '9.取得指定對象與標註類型回應標註的數量(自己用哪些類型標註回應誰), count對嗎？'); 
+       
+        // ---------------------------
+        // 檢查取得自己喜愛的數量   
+        $like_count = $this->user_statistic->get_like_to_annotation_count($me, $webpage);
+        $this->unit->run( $like_count,
+                          2,
+                          '10.取得自己喜愛的數量, count對嗎？');
+        
+         // ---------------------------
+        // 檢查取得喜愛指定對象的數量 
+        $like_to_user = new User(2003);
+        $like_count = $this->user_statistic->get_like_to_user_count($me, $webpage, $like_to_user);
+        $this->unit->run( $like_count,
+                          2,
+                          '11.取得喜愛指定對象的數量, count對嗎？');
+        // ---------------------------
+        // 檢查取得被喜愛的數量 
+        $like_count = $this->user_statistic->get_liked_count($me, $webpage);
+        $this->unit->run( $like_count,
+                          4,
+                          '12.取得被喜愛的數量, count對嗎？');
+        // ---------------------------
+        // 檢查取得被指定對象喜愛的數量 
+        $like_count = $this->user_statistic->get_liked_by_user_count($me, $webpage, $like_to_user);
+        $this->unit->run( $like_count,
+                          4,
+                          '13.取得被指定對象喜愛的數量, count對嗎？');
         
         
         // ----------------------------------------------
