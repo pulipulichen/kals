@@ -269,7 +269,7 @@ Frag_reading.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    nav_type: "common",
+    nav_type: "login",
     
     /**
      * 排序順序
@@ -452,9 +452,16 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
 };
 
 /**
- * save_reading_progress
+ * 儲存現在的閱讀進度
+ * 
+ * @param {Int} _current_word 現在進度的word_id
  */
 Frag_reading.prototype.save_reading_progress = function(_current_word){
+    
+    // 未登入時不使用
+    if (KALS_context.auth.is_login() === false) {
+        return this;
+    }
     
     if (typeof(KALS_text) !== "object" 
             || typeof(KALS_text.selection) !== "object"

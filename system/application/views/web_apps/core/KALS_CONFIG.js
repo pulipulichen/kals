@@ -501,6 +501,12 @@ DEFAULT_KALS_CONFIG = {
              */
             //,"receiver_email": "pudding@nccu.edu.tw"
             //,"receiver_email": ["puddingchen.35@gmail.com", "pudding@nccu.edu.tw", "pulipuli.chen@gmail.com"]
+        },
+        /**
+         * 獎章功能
+         */
+        KALS_stamp: {
+            "enable": true
         }
     }
 };
