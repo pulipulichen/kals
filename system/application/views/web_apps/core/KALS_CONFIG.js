@@ -449,8 +449,8 @@ DEFAULT_KALS_CONFIG = {
              */
             "enable": true,
             "nav_config": {
-                display: true,
-                nav_type: "common",
+                display: false,
+                nav_type: "login",
                 order: 1
             },
             /**
@@ -486,7 +486,7 @@ DEFAULT_KALS_CONFIG = {
          * 導讀功能
          */
         Reading_guide: {
-            "enable": true
+            "enable": false
         },
         /**
          * 回報功能

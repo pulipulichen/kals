@@ -234,7 +234,7 @@
     overflow: auto;
     overflow-y: hidden;
     padding: 0.5em 1em /*!important*/;
-    padding-bottom: 0;
+    /*padding-bottom: 0;*/
     color: #383838;
     cursor: auto;    
     /*max-height: 400px;*/

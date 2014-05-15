@@ -123,25 +123,60 @@ KALS_navigation.prototype._push_list = function (_item, _nav_type, _order) {
  * 取得列表
  * 
  * 依照order排序來取出，由大到小(顯示時是從左到右)
- * @param {String} _nav_type
+ * @param {String|Array<String>} _nav_type
  * @returns {Array}
  */
 KALS_navigation.prototype.get_list = function (_nav_type) {
     
-    if (typeof(this._sorted_list[_nav_type]) === "object") {
-        return this._sorted_list[_nav_type];
+    var _cache_key = _nav_type;
+    if ($.is_array(_nav_type)) {
+        _cache_key = _nav_type.join(",");
     }
     
-    var _list = [];
-    var _order, _item, _item_list;
+    $.test_msg("nav get_list", _cache_key);
+    
+    // 取得快取
+    if (typeof(this._sorted_list[_cache_key]) === "object") {
+        return this._sorted_list[_cache_key];
+    }
+    
+    var _list = [], _order, _item, _item_list, _disorder_list = {};
     
     //$.test_msg("get_list nav_type", [_nav_type, typeof(this._list[_nav_type])]);
     
-    if (typeof(this._list[_nav_type]) === "object") {
+    if ($.is_string(_nav_type)) {
+        _nav_type = [_nav_type];
+    }
+    
+    for (var _index in _nav_type) {
+        var _nav_type_name = _nav_type[_index];
+        
+        if (typeof(this._list[_nav_type_name]) === "object") {
+            var _disorder_list_part = this._list[_nav_type_name];
+            for (var _order in _disorder_list_part) {
+                var _order_array = _disorder_list_part[_order];
+                //_disorder_list.push(_part_item);
+                $.test_msg("nav " + _order, [$.is_array(_order_array), typeof(_disorder_list[_order])]);
+                if (typeof(_disorder_list[_order]) === "undefined") {
+                    _disorder_list[_order] = _order_array;
+                }
+                else {
+                    for (var _part_index in _order_array) {
+                        var _part_item = _order_array[_part_index];
+                        _disorder_list[_order].push(_part_item);
+                        
+                        $.test_msg("nav " + _part_index, [_order, _disorder_list[_order].length]);
+                    }
+                }
+            }
+        }
+    }
+    
+    //if (_disorder_list.length > 0) {
         
         //$.test_msg("get_list get!");
         
-        var _disorder_list = this._list[_nav_type];
+        //_disorder_list = this._list[_nav_type];
         //$.test_msg("_disorder_list", _disorder_list);
         var _order_key = [];
         for (_order in _disorder_list) {
@@ -155,16 +190,18 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
         for (var _i in _order_key) {
             _order = _order_key[_i];
             _item_list = _disorder_list[_order];
+            
             for (var _j in _item_list) {
                 _item = _item_list[_j];
                 
                 _list.push(_item);
             }
         }
-    }
+    //}
     
+    // 儲存快取
     if (_list.length > 0) {
-        this._sorted_list[_nav_type] = _list;
+        this._sorted_list[_cache_key] = _list;
     }
     
     return _list;
