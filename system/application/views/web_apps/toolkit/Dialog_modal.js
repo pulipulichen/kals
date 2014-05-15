@@ -813,6 +813,5 @@ Dialog_modal.prototype.expose = function (_callback) {
     //return this.base(_expose_callback);
     return Overlay_modal.prototype.expose.call(this, _expose_callback);
 };
-
 /* End of file Dialog_modal */
 /* Location: ./system/application/views/web_apps/Dialog_modal.js */

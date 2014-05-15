@@ -87,7 +87,7 @@ KALS_stamp.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-KALS_stamp.prototype._$open_request_action = "onopen_setup_view";
+KALS_stamp.prototype._$open_request_action = null;
 
 /**
  * close()時執行的Action
@@ -157,7 +157,7 @@ KALS_stamp.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-KALS_stamp.prototype._$absolute = true;
+KALS_stamp.prototype._$absolute = false;
 
 /**
  * 視窗的Class Name
@@ -282,9 +282,11 @@ KALS_stamp.prototype.nav_config = {
  * 
  * @returns {KALS_stamp.prototype}
  */
-KALS_stamp.prototype.onopen_setup_view = function () {
+KALS_stamp.prototype.onopen = function () {
     
+    $.test_msg("onopen?");
     this.set_stamp_qualified();
+    this.set_stamp_qualification();
     
     return this;
 };
@@ -303,7 +305,7 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
         "獎章2": "您已經獲得了獎章2，可以開啟某某功能。您做得很棒喔！"
     };
     
-    var _qualified_container = this.find(".stamp-profile")
+    var _qualified_container = this.find(".stamp-qualified")
             .empty();
     
     for (var _stamp_title in _qualified_config) {

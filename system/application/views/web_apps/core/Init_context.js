@@ -31,6 +31,10 @@ Init_context.prototype._$onstart = function () {
     
     //準備基本資料
     KALS_context.load_info(function () {
+        
+        var _loaded_modules = KALS_context.module.init();
+        KALS_context.navigation.init(_loaded_modules);
+        
         KALS_context.init_context.complete('load');
     });
     

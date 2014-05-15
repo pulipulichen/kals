@@ -126,3 +126,10 @@
 .KALS.window .dialog-options .dialog-option {
 	height: 33px;
 }
+
+
+.KALS.window .dialog-content h1 {
+    font-size: 1.2em;
+    font-weight: bold;
+    
+}

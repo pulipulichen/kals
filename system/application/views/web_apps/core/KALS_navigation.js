@@ -133,7 +133,7 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
         _cache_key = _nav_type.join(",");
     }
     
-    $.test_msg("nav get_list", _cache_key);
+    //$.test_msg("nav get_list", _cache_key);
     
     // 取得快取
     if (typeof(this._sorted_list[_cache_key]) === "object") {
@@ -156,7 +156,7 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
             for (var _order in _disorder_list_part) {
                 var _order_array = _disorder_list_part[_order];
                 //_disorder_list.push(_part_item);
-                $.test_msg("nav " + _order, [$.is_array(_order_array), typeof(_disorder_list[_order])]);
+                //$.test_msg("nav " + _order, [$.is_array(_order_array), typeof(_disorder_list[_order])]);
                 if (typeof(_disorder_list[_order]) === "undefined") {
                     _disorder_list[_order] = _order_array;
                 }
@@ -165,7 +165,7 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
                         var _part_item = _order_array[_part_index];
                         _disorder_list[_order].push(_part_item);
                         
-                        $.test_msg("nav " + _part_index, [_order, _disorder_list[_order].length]);
+                        //$.test_msg("nav " + _part_index, [_order, _disorder_list[_order].length]);
                     }
                 }
             }

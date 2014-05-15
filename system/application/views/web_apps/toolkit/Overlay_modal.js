@@ -139,7 +139,7 @@ Overlay_modal.prototype.open = function (_callback) {
         //$.test_msg('Overlay_modal.open() check _ui', [(_ui != null), (typeof(_ui.overlay) == 'function'), _callback]);
         
         if (_ui !== null) {
-            if (typeof(_ui.overlay) == 'function') {
+            if (typeof(_ui.overlay) === 'function') {
                 //$.test_msg('Overlay_modal.open() 設置this._$temp_callback', _callback);
                 this._$temp_callback = _callback;
                 //$.test_msg('Overlay_modal.open() 設置了this._$temp_callback', this._$temp_callback);
@@ -200,7 +200,7 @@ Overlay_modal.prototype.close = function (_callback) {
         var _this = this;
         
         if (_ui !== null) {
-            if (typeof(_ui.overlay) == 'function') {
+            if (typeof(_ui.overlay) === 'function') {
                 //$.test_msg('close set temp callback', [this.get_modal_name(), typeof(_callback)]);
                 //$.test_msg('close set temp callback', _ui.overlay().close);
                 this._$temp_callback = _callback;

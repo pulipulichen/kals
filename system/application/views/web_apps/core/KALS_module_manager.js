@@ -97,11 +97,16 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
     if (typeof(_module) !== "object") {
         try {
             var _command = '_module = new ' + _name + "(_param)";
+            
+            //$.test_msg("準備eval", _command);
+            
             eval(_command);
 
-            //$.test_msg("eval過後", typeof(_module));
+            //$.test_msg("eval過後", [_name, typeof(_module)]);
         }
         catch (_e) {
+            
+            //$.test_msg("eval失敗", [_e.name, _e.message]);
             // do nothing
         }    
     }
@@ -113,6 +118,7 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
         var _config = this._load_config(_name);
         if (typeof(_config.enable) === "boolean"
                 && _config.enable === false) {
+            //$.test_msg("enable false", _name);
             return false;
         }
         
