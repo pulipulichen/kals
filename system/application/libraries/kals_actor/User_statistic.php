@@ -516,6 +516,67 @@ class User_statistic extends KALS_actor {
         
         return 0;
     }
+    
+    // --------------------------------------
+    
+    
+    /**
+     * 取得主題標註所有類型個別統計次數的陣列
+     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
+     * @param User $user
+     * @param Webpage $webpage
+     * @return int
+     */
+    public function get_topic_types_count(User $user, Webpage $webpage) {
+        $type_count_collection = array();
+        
+        // 以下是假資料，請想辦法取代
+        $type_count_collection = array(
+            // 標註類型名稱 => 次數
+            'importance' => 1,
+        );
+        
+        return $type_count_collection;
+    }
+    
+    /**
+     * 取得回應給自己的標註所有類型個別統計次數的陣列
+     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
+     * @param User $user
+     * @param Webpage $webpage
+     * @return int
+     */
+    public function get_respond_to_my_types_count(User $user, Webpage $webpage) {
+        $type_count_collection = array();
+        
+        // 以下是假資料，請想辦法取代
+        $type_count_collection = array(
+            // 標註類型名稱 => 次數
+            'importance' => 1,
+        );
+        
+        return $type_count_collection;
+    }
+    
+    
+    /**
+     * 取得回應給別人的標註所有類型個別統計次數的陣列
+     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
+     * @param User $user
+     * @param Webpage $webpage
+     * @return int
+     */
+    public function get_respond_to_other_types_count(User $user, Webpage $webpage) {
+        $type_count_collection = array();
+        
+        // 以下是假資料，請想辦法取代
+        $type_count_collection = array(
+            // 標註類型名稱 => 次數
+            'importance' => 1,
+        );
+        
+        return $type_count_collection;
+    }
 }
 
 
