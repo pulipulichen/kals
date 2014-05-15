@@ -456,9 +456,15 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
  */
 Frag_reading.prototype.save_reading_progress = function(_current_word){
     
+    if (typeof(KALS_text) !== "object" 
+            || typeof(KALS_text.selection) !== "object"
+            || typeof(KALS_text.selection.text) !== "object") {
+        return this;
+    }
+    
     // 取得現在頁面上的第一個字的word_id
     var _word_id = KALS_text.selection.text.word.get_current_progress_word();    
-    $.test_msg("save_reading_progress word_id", _word_id);
+    //$.test_msg("save_reading_progress word_id", _word_id);
     
     var _action = 43; //"Frag_reading.save"
     var _message = {
@@ -467,7 +473,7 @@ Frag_reading.prototype.save_reading_progress = function(_current_word){
     KALS_util.log(_action, _message);
     //$.test_msg('current_scroll', _current_scroll);
     //context_complete();    
-    
+    return this;
 };
 
 /* End of file Dashboard */
