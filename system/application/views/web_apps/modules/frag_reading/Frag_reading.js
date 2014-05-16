@@ -433,7 +433,8 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
         }
         else {
             //alert('else');
-            _interval_span = _interval_span + this.increase_interval_span *1000;
+            _interval_span = _interval_span 
+                    + this.increase_interval_span *1000;
             /*
             _check_timer = setTimeout(function(){
                 //_this.save_reading_progress();
