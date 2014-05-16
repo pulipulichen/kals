@@ -16,6 +16,12 @@
 function KALS_stamp() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
+    
+    var _this = this;
+    
+    KALS_context.add_listener(function () {
+        _this._init_listener();
+    });
 }
 
 /**
@@ -157,7 +163,7 @@ KALS_stamp.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-KALS_stamp.prototype._$absolute = false;
+KALS_stamp.prototype._$absolute = true;
 
 /**
  * 視窗的Class Name
@@ -282,12 +288,43 @@ KALS_stamp.prototype.nav_config = {
  * 
  * @returns {KALS_stamp.prototype}
  */
-KALS_stamp.prototype.onopen = function () {
+KALS_stamp.prototype._$onopen = function () {
     
-    $.test_msg("onopen?");
+    this.set_stamp_statistic();
     this.set_stamp_qualified();
     this.set_stamp_qualification();
     
+    return this;
+};
+
+/**
+ * 設定目前閱讀的進度
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype.set_stamp_statistic = function() {
+    
+    // @TODO 20140516 Pulipuli Chen
+    // 這邊設定的是假資料，請把它改成真的資料
+    
+    var _statistic_config = {
+        "statistic_topic_annotation_count": KALS_context.user.get_topic_annotation_count()
+    };
+    
+    var _container_selector = ".stamp-statistic";
+    var _container = this.find(_container_selector)
+            .empty();
+    
+    for (var _statistic_title in _statistic_config) {
+        var _li = $("<li></li>").appendTo(_container);
+        var _title_lang = this.get_view_lang_line(_statistic_title);
+        
+        var _title = $("<strong></strong>").html(_title_lang + ": ")
+                .appendTo(_li);
+        var _qualified_message = _statistic_config[_statistic_title];
+        var _message = $("<span></span>").html(_qualified_message)
+                .appendTo(_li);
+    }
+        
     return this;
 };
 
@@ -347,6 +384,72 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
     return this;
 };
 
+/**
+ * ====================
+ * 獎章資格設定
+ * ====================
+ */
+
+/**
+ * 取得設定
+ * 
+ * 請從KALS_CONFIG中取得獎章模組的資格設定
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype._init_config = function() {
+    
+    // @TODO 20140516 Pulipuli Chen
+    
+    return this;
+};
+
+/**
+ * 初始化Context_user的監聽功能
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype._init_listener = function() {
+    
+    // @TODO 20140516 Pulipuli Chen
+    // 這邊只有監聽部分屬性，請把它擴增其他監聽的事件
+    
+    var _this = this;
+    KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
+        _this.check_qualification(_user);
+    });
+    
+    return this;
+};
+
+/**
+ * 檢查是否獲得獎章資格
+ * 
+ * 要考慮已經獲得的資格，以及從無到有獲得資格的時候
+ * @param {Context_user} _user 可以從Context_user取得統計資料
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype.check_qualification = function(_user) {
+    
+    // @TODO 20140516 Pulipuli Chen
+    // 這邊只有檢查部分資格
+    var _total_annotation_count = _user.get_topic_annotation_count();
+    KALS_util.notify("您已經撰寫了" + _total_annotation_count + "並獲得了獎章1！");
+    this.open();
+    
+    return this;
+};
+
+/**
+ * 獲得資格後的動作
+ * 
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype.qualify = function() {
+    
+    // @TODO 20140516 Pulipuli Chen
+    // 這邊只有檢查部分資格
+    
+    return this;
+};
 
 /* End of file KALS_stamp */
 /* Location: ./system/application/views/web_apps/extension/KALS_stamp/KALS_stamp.js */

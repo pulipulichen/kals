@@ -50,7 +50,7 @@ Dashboard.prototype.name = 'dashboard';
  * 指定View
  * @type String
  */
-Dashboard.prototype._$view = 'kals_framework/example/view/Dashboard';
+Dashboard.prototype._$view = 'modules/example/view/Dashboard';
 
 /**
  * 初始化View
@@ -287,13 +287,20 @@ Dashboard.prototype.nav_config = {
  */
 
 /**
+ * 開啟視窗時的載入動作
+ * 
+ * @returns {Dashboard}
+ */
+Dashboard.prototype._$onopen = null;
+
+/**
  * 開啟最新的標註
  * 
  * 這是kals-event-field-set的範例
  * 
  * @param {jQuery} _ele
  * 由於是kals-event-field-set事件，所以固定會回傳觸發事件的jQuery物件
- * @returns {Dashboard.prototype}
+ * @returns {Dashboard}
  */
 Dashboard.prototype.setup_activity = function (_ele) {
     if (this.has_field("activity")) {
@@ -305,7 +312,7 @@ Dashboard.prototype.setup_activity = function (_ele) {
 
 /**
  * 開啟最近的標註
- * @returns {Dashboard.prototype}
+ * @returns {Dashboard}
  */
 Dashboard.prototype.open_recent_annotation = function() {
     if (this.is_opened()) {
@@ -346,7 +353,7 @@ Dashboard.prototype.action = function (_param) {
  * 
  * 這是this.set_hotkey()的範例
  * 
- * @returns {Dashboard.prototype}
+ * @returns {Dashboard}
  */
 Dashboard.prototype.init_hotkey = function () {
     // 65表示A
@@ -367,7 +374,7 @@ Dashboard.prototype.init_hotkey = function () {
  * 這是this.select_annotation()的範例
  * 
  * @param {jQuery} _ele
- * @returns {Dashboard.prototype}
+ * @returns {Dashboard}
  */
 Dashboard.prototype.select = function (_ele) {
     this.debug('select', this._data);

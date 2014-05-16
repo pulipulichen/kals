@@ -895,17 +895,24 @@ KALS_controller_window.prototype._$get_config = function () {
             //if ($.is_function(_this._$onviewportmove))
             //    _this._$onviewportmove(_ui);
             
+            /**
+             * @version 20140516 Pulipuli Chen
+             * 不知道為什麼還是有辦法執行_$onopen，所以這個功能暫時不使用
+             */
+            _ui.animate({});
+            /*
             _ui.animate({}, {
+                //$.test_msg("KALS_controller_window onLoad", []);
                 complete: function () {
                     setTimeout(function () {
                         if ($.is_function(_this._$onopen)) {
                             _this._$onopen(_ui);
                         }
                         _this.call_temp_callback(_ui);    
-                    }, 1000);
-                       
+                    }, 0);
                 }
             });
+            */
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉

@@ -506,7 +506,48 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         KALS_stamp: {
-            "enable": true
+            "enable": true,
+            /**
+             * 獎章資格設定
+             */
+            "stamps": [
+                {
+                    /**
+                     * 獎章稱號
+                     * @types {String}
+                     */
+                    "title": "獎章1",
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                    "qualification_message": "如何獲得這個獎章",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                    "quailfy_message": "通知您獲得了獎章",
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                    "qualified_message": "您已經獲得了這個獎章",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                    "qualifier": {
+                        
+                    },
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                    "policy": {
+                        
+                    }
+                },
+            ]
         }
     }
 };
