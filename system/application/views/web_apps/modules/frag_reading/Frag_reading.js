@@ -384,14 +384,26 @@ Frag_reading.prototype._$onopen = function () {
 */
 
 /**
+ * 設定自動save_reading_progress的時間頻率
+ * @type Number
+ */
+Frag_reading.prototype.interval_span = 10;
+
+/**
+ * 頁面停止時延遲的增加時間
+ * @type Number
+ */
+Frag_reading.prototype.increase_interval_span = 10;
+
+/**
  * initialize_save_reading_progress()
  * 初始化載入完KALS_context後要做的事情
  * 
  */
 Frag_reading.prototype.initialize_save_reading_progress = function(){
     var _this = this;
-    var _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
-    var _check_interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *2000;
+    var _interval_span = this.interval_span *1000;
+    var _check_interval_span = this.interval_span *2000;
     var _current_word = null;
     var _before_word = null;
     
@@ -404,7 +416,7 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
         
         //var _check_timer;
         if ( _current_word !== _before_word || _before_word === null) {
-            _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
+            _interval_span = this.interval_span *1000;
             /*
             _check_timer = setTimeout(function(){
                 alert('1!');
@@ -421,7 +433,7 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
         }
         else {
             //alert('else');
-            _interval_span = _interval_span + KALS_CONFIG.modules.Frag_reading.increase_interval_span *1000;
+            _interval_span = _interval_span + this.increase_interval_span *1000;
             /*
             _check_timer = setTimeout(function(){
                 //_this.save_reading_progress();
