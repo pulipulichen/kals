@@ -2,14 +2,14 @@
 <div class="list-header-component">
     <span class="header-button" kals-event-click="change_tab()">{{annotation_type}}</span>
 </div>
+<div class="not-found-hint">
+    {{kals-lang:not_found_hint}}
+</div>
 
 <div class="list-component">
     {{annotation_type_num}}
 </div>
 
-<div class="not-found-hint">
-    {{kals-lang:not_found_hint}}
-</div>
 
 <!--<button type="button" class="button type-0" field-type="0" kals-event-click="change_tab()"> 全部 </button>
 	<button type="button" class="button type-1" field-type="1"> 重要 </button>

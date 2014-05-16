@@ -778,6 +778,8 @@ KALS_util.decodeURIComponent = function (_str) {
  * @author Pulipuli Chen <pulipuli.chen@gmail.com>
  * 20131225 將傳遞資料改成用Post傳遞
  * @param number _action 動作的ID。關於動作的編號，請查看[KALS]/applications/controllers/web_apps/log.php
+ * @param JSON _note 任意要儲存的資料
+ * @param function _callback 回呼函數 
  */
 KALS_util.log = function (_action, _note) {
     

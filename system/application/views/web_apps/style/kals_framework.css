@@ -15,10 +15,15 @@
     cursor: default;
 }
 
-.KALS.window .dialog-content {
+.KALS.window.kals-controller-window .dialog-content {
     max-height: 400px;
+    overflow-y: hidden;
+}
+
+.KALS.window.kals-controller-window.absolute .dialog-content {
     overflow-y: auto;
 }
+
 
 .KALS.kals-controller-window.absolute {
     position: fixed;

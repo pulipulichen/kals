@@ -73,8 +73,8 @@ KALS_context.initialize = function () {
 			
             _this.overlay = new Overlay_manager();
             
-            var _loaded_modules = _this.module.init();
-            _this.navigation.init(_loaded_modules);
+            //var _loaded_modules = _this.module.init();
+            //_this.navigation.init(_loaded_modules);
             
             // 阻止啟用
             if (typeof(KALS_CONFIG.debug) === "object"
@@ -292,7 +292,7 @@ KALS_context.reset = function (_callback) {
 KALS_context.lang = null;
 
 /** 
- * @memberOf {KALS_context}
+ * 使用者資訊
  * @type {Context_user} user
  */
 KALS_context.user = null;

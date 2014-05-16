@@ -154,23 +154,23 @@ Annotation_tool.prototype._$create_ui = function () {
     
     var _not_login = 'not-login';
     
-    /*
     KALS_context.auth.add_listener(function (_auth) {
-        if (_auth.is_login())
-            _ui.removeClass(_not_login);
-        else
-            _ui.addClass(_not_login);
-            
-        _topic_list.reload();
-    }, true);
-    */
+        //if (_auth.is_login_checked()) {
+        //if (this._first_open === false) {
+        //$.test_msg("gogo close");
+        _this.reopen();
+        //}
+        //}
+    });
+        
+    
     KALS_context.policy.add_attr_listener('write', function (_policy) {
         if (_policy.writable()) {
-			_ui.removeClass(_not_login);
-		}
-		else {
-			_ui.addClass(_not_login);
-		}
+            _ui.removeClass(_not_login);
+        }
+        else {
+            _ui.addClass(_not_login);
+        }
             
         _topic_list.reload();
     }, true);
@@ -193,16 +193,16 @@ Annotation_tool.prototype.setup_list = function () {
     var _component = new Topic_list();
     this.child('list', _component);
 	
-	var _tool = this;
-	//註冊一下
-	_component.add_listener(function () {
-		//$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
-		if (_component.is_totally_loaded() && _component.has_list_item() === false) {
-			_tool.editor_container.toggle_container(true);
-		}
-		//else {
-		//	_tool.editor_container.toggle_container(false);
-		//}
+    var _tool = this;
+    //註冊一下
+    _component.add_listener(function () {
+        //$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
+        if (_component.is_totally_loaded() && _component.has_list_item() === false) {
+                _tool.editor_container.toggle_container(true);
+        }
+        //else {
+        //	_tool.editor_container.toggle_container(false);
+        //}
     });
     return _component;
 };
@@ -295,6 +295,19 @@ Annotation_tool.prototype.onselectcancel = function () {
     return this.close();    
 };
 
+/**
+ * 是否是第一次開啟
+ * @type Boolean
+ */
+//Annotation_tool.prototype._first_open = true;
+
+/**
+ * 開啟動作
+ * 
+ * 覆寫了KALS_modal的open，比較複雜
+ * @param {Function} _callback
+ * @returns {Annotation_tool}
+ */
 Annotation_tool.prototype.open = function (_callback) {
     
     this.setup_position();
@@ -307,17 +320,34 @@ Annotation_tool.prototype.open = function (_callback) {
         _this.check_editing();
     });
 	
-	/**
-	 * 20121224 Pulipuli Chen
-	 * 開啟時自動關閉Editor_contrainer
-	 */
-	this.editor_container.toggle_container(false);
+    /**
+     * 20121224 Pulipuli Chen
+     * 開啟時自動關閉Editor_contrainer
+     */
+    this.editor_container.toggle_container(false);
 	
     KALS_modal.prototype.open.call(this, function () {
-		_this.scroll_into_view();
-		
-		$.trigger_callback(_callback);
-	});
+        _this.scroll_into_view();
+        //_this._first_open = false;
+        $.trigger_callback(_callback);
+    });
+    
+    return this;
+};
+
+/**
+ * 重新開啟
+ * @param {Function} _callback
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.reopen = function (_callback) {
+    if (this.is_opened()) {
+        //$.test_msg("Annotation_tool.reopen");
+        var _scope_coll = KALS_text.selection.select.get_scope_coll();
+        this.close();
+        KALS_text.selection.select.set_scope_coll(_scope_coll);
+    }
+    return this;
 };
 
 Annotation_tool.prototype.scroll_into_view = function () {

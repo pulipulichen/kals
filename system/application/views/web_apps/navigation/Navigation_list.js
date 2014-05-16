@@ -132,9 +132,10 @@ Navigation_list.prototype._create_nav = function() {
     }
 	
     // 插入錯誤回報功能
-    if (this._$show_feedback === true) {
-        this._setup_feedback().appendTo(_tr);
-    }
+    //if (this._$show_feedback === true) {
+    //    if (KALS_CONFIG.)
+    //    this._setup_feedback().appendTo(_tr);
+    //}
     
     _ui.find('td:last').addClass('last');
     
@@ -340,14 +341,15 @@ Navigation_list.prototype.get_nav_items = function () {
 Navigation_list.prototype._init_module_nav_items = function () {
     var _nav_type = this._$nav_type;
     
-    if (typeof(_nav_type) !== "string") {
+    if (typeof(_nav_type) !== "string" 
+            && $.is_array(_nav_type) === false) {
         return this;
     }
     
     //return this;
     
     var _list = KALS_context.navigation.get_list(_nav_type);
-    
+
     //$.test_msg("_init_module_nav_items", [_nav_type, _list.length]);
     for (var _i in _list) {
         //$.test_msg("_init_module_nav_items", _i);

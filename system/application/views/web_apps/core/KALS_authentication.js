@@ -35,7 +35,7 @@ function KALS_authentication(){
    //2010.10.26 請KALS_context給予資料吧
    var _this = this;
    KALS_context.add_once_listener(function (_context, _data) {
-       if (typeof(_data.auth) != 'undefined') {
+       if (typeof(_data.auth) !== 'undefined') {
            _this._default_reset_data = _data.auth;
        }
    });
@@ -118,7 +118,7 @@ KALS_authentication.prototype.reset_auth_data = function () {
     };
     
     //如果有KALS_CONFIG設定的話
-    if (typeof(KALS_CONFIG.user_email) == 'string') {
+    if (typeof(KALS_CONFIG.user_email) === 'string') {
         this._auth_data.email = KALS_CONFIG.user_email;
         this._auth_data.embed = true;
     }
@@ -127,7 +127,7 @@ KALS_authentication.prototype.reset_auth_data = function () {
 };
 
 KALS_authentication.prototype.config_is_embed = function () {
-    return (typeof(KALS_CONFIG.user_email) == 'string');
+    return (typeof(KALS_CONFIG.user_email) === 'string');
 };
 
 /**
@@ -172,7 +172,8 @@ KALS_authentication.prototype._get_error_message = function () {
  */
 KALS_authentication.prototype.login = function (_return_error, _callback) {
     
-    if ($.is_function(_return_error) && $.is_null(_callback)) {
+    if ($.is_function(_return_error) 
+            && $.is_null(_callback)) {
         _callback = _return_error;
         _return_error = false;
     }
@@ -182,7 +183,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
     var _heading, _message;
         
     if (_data.email === null
-        || (_data.embed === false && _data.password === null)) {   
+            || (_data.embed === false && _data.password === null)) {   
         _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
         _message = this._get_error_message();
         
@@ -200,7 +201,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         this.load(_data, function (_this, _data) {
             //$.test_msg('login load', _data);
             
-            if (typeof(_data.error) != 'undefined') {
+            if (typeof(_data.error) !== 'undefined') {
                 //顯示錯誤
                 
                 _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
@@ -222,14 +223,14 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
             else {
                 _this._is_login = true;
                 
-				if (KALS_CONFIG.isolation_mode) {
-					KALS_context.policy.set_attr("read", true);
-				}
+                if (KALS_CONFIG.isolation_mode) {
+                        KALS_context.policy.set_attr("read", true);
+                }
 				
                 setTimeout(function () {
                     if ($.is_function(_callback)) {
-						_callback(_this, _data);
-					} 
+                        _callback(_this, _data);
+                    } 
                 }, 100);
                 
                 //else
@@ -302,7 +303,7 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
             //$.test_msg('auth.register()', [_data, _return_error]);
             
 			//先檢查登入是否有錯誤
-            if (typeof(_data.error) != 'undefined') {
+            if (typeof(_data.error) !== 'undefined') {
                 _heading = new KALS_language_param('REGISTER ERROR', 'authentication.register_error.heading');
                 _message = new KALS_language_param('The e-mail is not correct or had been registered.'
                     , 'authentication.register_error.' + _data.error);
@@ -326,8 +327,8 @@ KALS_authentication.prototype.register = function (_return_error, _callback) {
                
                 setTimeout(function () {
                     if ($.is_function(_callback)) {
-						_callback(_this, _data);
-					} 
+                        _callback(_this, _data);
+                    } 
                 }, 100);
                 //else
                 //    this.register_callback(_this, _data);
@@ -374,7 +375,7 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
         
         //$.test_msg('auth logout', _data);
         
-        if (typeof(_data.error) != 'undefined') {
+        if (typeof(_data.error) !== 'undefined') {
             
             
             //顯示錯誤
@@ -405,9 +406,9 @@ KALS_authentication.prototype.logout = function (_return_error, _callback) {
             
             _this._is_login = false;
 			
-			if (KALS_CONFIG.isolation_mode) {
-				KALS_context.policy.set_attr("read", false);
-			}
+            if (KALS_CONFIG.isolation_mode) {
+                KALS_context.policy.set_attr("read", false);
+            }
             
             setTimeout(function () {
                 if ($.is_function(_callback)) {
@@ -437,7 +438,7 @@ KALS_authentication.prototype.deregister = function (_callback) {
         
         //$.test_msg('auth.deregister() loaded', _data);
         
-        if (typeof(_data.error) != 'undefined') {            
+        if (typeof(_data.error) !== 'undefined') {            
             //顯示錯誤
             _heading = new KALS_language_param('ERROR', 'authentication.deregister_error.heading');
             _message = new KALS_language_param('Logout failed.', 'authentication.deregister_error.message');
@@ -493,14 +494,17 @@ KALS_authentication.prototype.check_login = function (_callback) {
         
         this.load(function (_this, _data) {
             
-			//$.test_msg("check_login", _data);
+            //$.test_msg("check_login", _data);
 			
-            if (typeof(_data.login) == 'boolean' && _data.login === true) {
+            if (typeof(_data.login) === 'boolean' 
+                    && _data.login === true) {
                 _this._is_login = true;
             }
             else {
                 _this._is_login = false;
             }
+            
+            _this._login_checked = true;
             
             //$.test_msg('auth check_login()', _data);
             
@@ -510,12 +514,26 @@ KALS_authentication.prototype.check_login = function (_callback) {
         });    //this.load(function (_this, _data) {
     }
     else {
+        this._login_checked = true;
         this.login(false, _callback);
     }
     
     return this;
 };
 
+/**
+ * 已經確認過是否登入
+ * @type Boolean
+ */
+KALS_authentication.prototype._login_checked = false;
+
+/**
+ * 確認是否已經check過
+ * @returns {Boolean}
+ */
+KALS_authentication.prototype.is_login_checked = function () {
+    return this._login_checked;
+}
 
 /* End of file KALS_authentication */
 /* Location: ./system/application/views/web_apps/KALS_authentication.js */

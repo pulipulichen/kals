@@ -74,8 +74,8 @@ class generic extends Web_apps_controller {
             'core/KALS_CONFIG'
             , 'core/KALS_SITE_REFORM'
             , 'core/KALS_language_param'
-            , 'core/feedback/feedback'
-            , 'core/feedback/html2canvas'
+            , 'modules/feedback/feedback'
+            , 'modules/feedback/html2canvas'
             , 'helpers/jQuery_kals_plugin'
             , 'toolkit/KALS_user_interface' //Qunit
             , 'toolkit/KALS_modal'
@@ -109,7 +109,7 @@ class generic extends Web_apps_controller {
             'core/KALS_language',
             'kals_framework/KALS_view_manager',
             'core/Viewportmove_dispatcher',
-            'core/feedback/Feedback_manager',
+            'modules/feedback/Feedback_manager',
             'core/KALS_authentication',
             'core/URL_hash_dispatcher',
             'core/Style_manager',

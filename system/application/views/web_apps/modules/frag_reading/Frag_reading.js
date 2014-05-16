@@ -1,6 +1,6 @@
 /**
  * Frag_reading
- * 零碎時間
+ * 閱讀進度
  *
  * @package    KALS
  * @category   Webpage Application Libraries
@@ -14,6 +14,19 @@
 function Frag_reading() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
+    
+    // 初始化要做的動作
+    var _this = this;
+    if (typeof(KALS_context) === "object") {
+        // 讀取完KALS_context後
+        KALS_context.add_listener(function () {
+            _this.initialize_save_reading_progress();
+            
+            // 暫時使用
+            _this.save_reading_progress();
+        });
+    }
+        
 }
 
 /**
@@ -58,23 +71,12 @@ Frag_reading.prototype._$view = 'modules/frag_reading/view/Frag_reading';
  */
 Frag_reading.prototype._$initialize_view = function () {
     
-    // 設置熱鍵
-    //this.init_hotkey();
+    // 打開ui後要做的事情
+    var _word_id = KALS_text.selection.text.word.get_current_progress_word();
+    var _position = $(window).scrollTop();
     
-    var _types = this.get_annotation_types();
-    //this.set_field('annotation_type', ['1', '2', '3']);
-    //_types = _types.question;
-    //this.debug('init view', typeof(_types.get_ui));
-    this.set_field('annotation_type', _types);
-    
-    // 設定連結
-    var _mobile_topics_link = KALS_context.get_base_url("mobile_apps/annotation_topics", true);
-    this.find("a.mobile-topics-link").attr("href", _mobile_topics_link);
-    
-    var _rss_feed_link = KALS_context.get_base_url("/rss");
-    this.find("a.rss-feed-link").attr("href", _rss_feed_link);
-    
-    
+    this.set_field("position",  _position);
+    this.set_field('word_id', _word_id);  
 };
 
 /**
@@ -150,9 +152,11 @@ Frag_reading.prototype._$enable_auth_check = true;
  * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
  * @returns {boolean} true=通過;false=未通過
  */
-//Frag_reading.prototype._$auth_check = function (_is_login, _user) {
-//    return true;
-//};
+Frag_reading.prototype._$auth_check = function (_is_login, _user) {
+    //this.debug('auth check: has login', _is_login);
+    //return _is_login;
+    return true;
+};
 
 /**
  * ====================
@@ -164,7 +168,7 @@ Frag_reading.prototype._$enable_auth_check = true;
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-Frag_reading.prototype._$absolute = true;
+Frag_reading.prototype._$absolute = false;
 
 /**
  * 視窗的Class Name
@@ -265,7 +269,7 @@ Frag_reading.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    nav_type: "common",
+    nav_type: "login",
     
     /**
      * 排序順序
@@ -318,6 +322,26 @@ Frag_reading.prototype.open_recent_annotation = function() {
 };
 
 /**
+ * 這是一個action
+ * 
+ * function的細節
+ * 
+ * @param {JSON} _param 傳入的參數
+ * @returns {Boolean} true=成功;false=失敗
+ * @author Pulipuli Chen 20131122
+ */
+Frag_reading.prototype.action = function (_param) {
+    
+    /**
+     * @type {boolean} 這個變數的名字
+     */
+    var _param2 = true;
+    
+    
+    return false;
+};
+
+/**
  * 使用Hotkey的範例
  * http://unixpapa.com/js/key.html
  * 
@@ -350,6 +374,125 @@ Frag_reading.prototype.select = function (_ele) {
     this.debug('select', this._data);
     var _annotation_id = this.get_field('last_annotation_id');
     this.select_annotation(_annotation_id);
+    return this;
+};
+
+/*
+Frag_reading.prototype._$onopen = function () {
+    $.test_msg("onopen");
+};
+*/
+
+/**
+ * 設定自動save_reading_progress的時間頻率
+ * @type Number
+ */
+Frag_reading.prototype.interval_span = 10;
+
+/**
+ * 頁面停止時延遲的增加時間
+ * @type Number
+ */
+Frag_reading.prototype.increase_interval_span = 10;
+
+/**
+ * initialize_save_reading_progress()
+ * 初始化載入完KALS_context後要做的事情
+ * 
+ */
+Frag_reading.prototype.initialize_save_reading_progress = function(){
+    var _this = this;
+    var _interval_span = this.interval_span *1000;
+    var _check_interval_span = this.interval_span *2000;
+    var _current_word = null;
+    var _before_word = null;
+    
+    var _check_progress = function (){
+        //現在的word_id不等於之前的word_id
+        //alert('start');
+        _current_word = KALS_text.selection.text.word.get_current_progress_word();
+        //進入if之前的值
+        //$.test_msg('before IF, before_word, current word', [_before_word, _current_word]); 
+        
+        //var _check_timer;
+        if ( _current_word !== _before_word || _before_word === null) {
+            _interval_span = this.interval_span *1000;
+            /*
+            _check_timer = setTimeout(function(){
+                alert('1!');
+                _interval_span = KALS_CONFIG.modules.Frag_reading.interval_span *1000;
+                //_this.save_reading_progress();
+                alert('this.save_reading_progress!');
+                $.test_msg('before, current, interval', [ _before_word, _current_word, _interval_span]);  
+            }
+            , _interval_span);  //_basic_timer = setTimeout(function(){
+            */
+           
+           //$.test_msg('save_reading_progress before, current, interval', [ _before_word, _current_word, _interval_span]);  
+           _this.save_reading_progress(_current_word);
+        }
+        else {
+            //alert('else');
+            _interval_span = _interval_span 
+                    + this.increase_interval_span *1000;
+            /*
+            _check_timer = setTimeout(function(){
+                //_this.save_reading_progress();
+                $.test_msg('add interval', [_interval_span, _current_word, _before_word]);
+            }
+            , _interval_span);  //_basic_timer = setTimeout(function(){
+            */
+           //$.test_msg('else before, current, interval', [ _before_word, _current_word, _interval_span]);  
+        }  
+        _before_word = _current_word; 
+        //alert('back');
+        
+        //var _interval_span = _check_progress();
+        setTimeout(function () {
+           _check_progress(); 
+        }, _interval_span);
+    };
+    
+    
+    var _check_timer = setTimeout(function () {
+        _check_progress();
+    }, _check_interval_span);
+    
+    $(window).unload(function (){
+        _this.save_reading_progress();}
+    );
+  
+};
+
+/**
+ * 儲存現在的閱讀進度
+ * 
+ * @param {Int} _current_word 現在進度的word_id
+ */
+Frag_reading.prototype.save_reading_progress = function(_current_word){
+    
+    // 未登入時不使用
+    if (KALS_context.auth.is_login() === false) {
+        return this;
+    }
+    
+    if (typeof(KALS_text) !== "object" 
+            || typeof(KALS_text.selection) !== "object"
+            || typeof(KALS_text.selection.text) !== "object") {
+        return this;
+    }
+    
+    // 取得現在頁面上的第一個字的word_id
+    var _word_id = KALS_text.selection.text.word.get_current_progress_word();    
+    //$.test_msg("save_reading_progress word_id", _word_id);
+    
+    var _action = 43; //"Frag_reading.save"
+    var _message = {
+        current_word: _current_word
+    };
+    KALS_util.log(_action, _message);
+    //$.test_msg('current_scroll', _current_scroll);
+    //context_complete();    
     return this;
 };
 

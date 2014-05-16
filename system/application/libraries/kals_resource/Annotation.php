@@ -942,8 +942,9 @@ class Annotation extends KALS_resource {
         //$data['class'] = get_class($this);
         $data['annotation_id'] = $this->get_id();
         $note = $this->get_note();
-        if (isset($note))
+        if (isset($note)) {
             $data['note'] = $this->get_note();
+        }
         $data['user'] = $this->get_user()->export_simple_data();
         $data['type'] = $this->get_type()->export_data();
         $data['scope'] = $this->get_scopes()->export_webpage_data($url);
@@ -963,16 +964,18 @@ class Annotation extends KALS_resource {
 
         $current_user = get_context_user();
         $is_my_annotation = FALSE;
-        if (isset($current_user) && $this->get_user()->equals($current_user))
+        if (isset($current_user) && $this->get_user()->equals($current_user)) {
             $is_my_annotation = TRUE;
-
-        if ($this->is_respond() === FALSE)
-        {
-            
-            if (is_class($current_user, 'User') && $is_my_annotation === FALSE)
-                $data['is_like'] = $this->is_liked($current_user);
-            $data['like_count'] = $this->get_like_count();
         }
+
+        //if ($this->is_respond() === FALSE)
+        //{
+            
+            if (is_class($current_user, 'User') && $is_my_annotation === FALSE) {
+                $data['is_like'] = $this->is_liked($current_user);
+            }
+            $data['like_count'] = $this->get_like_count();
+        //}
 
         if ($is_my_annotation === TRUE)
         {

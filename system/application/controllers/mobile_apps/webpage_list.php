@@ -139,7 +139,7 @@ user_id = '".$user_id."' and
 ( action = '16' OR action = '40')  
 group by user_id, webpage_id, note) AS log_view_thread
 
-ON log_view_thread.note like concat('%\"topic_id\":' , topic_annotation.is_topic_id , '%')
+ON log_view_thread.note like '%\"topic_id\":' || topic_annotation.is_topic_id || '%'
 
 GROUP BY topic_annotation.webpage_id, annotation_timestamp, topic_annotation.is_topic_id
 HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL" );

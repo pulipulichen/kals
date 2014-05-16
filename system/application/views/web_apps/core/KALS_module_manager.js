@@ -91,36 +91,50 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
         _name = _name.toString();
     }
     
-    try {
-        var _command = '_module = new ' + _name + "(_param)";
-        eval(_command);
+    // 有一些整合在核心功能中，非獨立運作的模組，透過這個方式來變成模組化
+    _module = this._get_core_module(_name);
+    
+    if (typeof(_module) !== "object") {
+        try {
+            var _command = '_module = new ' + _name + "(_param)";
+            
+            //$.test_msg("準備eval", _command);
+            
+            eval(_command);
 
-        //$.test_msg("eval過後", typeof(_module));
-        
-        if (typeof(_module) === "object") {
-            
-            // 讀取KALS_CONFIG
-            var _config = this._load_config(_name);
-            if (typeof(_config.enable) === "boolean"
-                    && _config.enable === false) {
-                return false;
-            }
-            
-            _module = this._add_loaded_module(_name, _module);
-            
-            _module = this._init_module_config(_module, _config);
-            
-            //$.test_msg("init config過後", [_name, typeof(_module)]);
-            
-            if (typeof(_callback) === "function") {
-                _callback(_module);
-            }
-            
-            return _module;
+            //$.test_msg("eval過後", [_name, typeof(_module)]);
         }
+        catch (_e) {
+            
+            //$.test_msg("eval失敗", [_e.name, _e.message]);
+            // do nothing
+        }    
     }
-    catch (_e) {
-        // do nothing
+    
+    // 如果eval有成功讀取的話
+    if (typeof(_module) === "object") {
+
+        // 讀取KALS_CONFIG
+        var _config = this._load_config(_name);
+        if (typeof(_config.enable) === "boolean"
+                && _config.enable === false) {
+            //$.test_msg("enable false", _name);
+            return false;
+        }
+        
+        this._loaded_modules_config[_name] = _config;
+
+        _module = this._add_loaded_module(_name, _module);
+
+        _module = this._init_module_config(_module, _config);
+
+        //$.test_msg("init config過後", [_name, typeof(_module)]);
+
+        if (typeof(_callback) === "function") {
+            _callback(_module);
+        }
+
+        return _module;
     }
     
     return false;
@@ -233,6 +247,65 @@ KALS_module_manager.prototype._init_module_config = function (_module, _config) 
 };
 
 /**
+ * 模組的設定檔，來自於KALS_CONFIG
+ * @type JSON = {
+ *  module_name: {
+ *      config1: true,
+ *      config2: false
+ *  }
+ * }
+ */
+KALS_module_manager.prototype._loaded_modules_config = {};
+
+/**
+ * 取得模組設定
+ * 
+ * @param {String} _name 模組名稱
+ * @param {String} _key 設定名稱
+ * @returns {JSON|undefined}
+ */
+KALS_module_manager.prototype.get_module_config = function (_name, _key) {
+    if ($.is_string(_name) 
+            && typeof(this._loaded_modules_config[_name]) !== "undefined") {
+        var _config = this._loaded_modules_config[_name];
+        if ($.is_string(_key) 
+                && typeof(_config[_key]) !== "undefined") {
+            return _config[_key];
+        }
+        else {
+            return _config[_key];
+        }
+    }
+    else {
+        return;
+    }
+};
+
+/**
+ * 取得模組設定是否啟用的設定
+ * 
+ * @param {String} _name 模組名稱
+ * @returns {boolean}
+ */
+KALS_module_manager.prototype.get_module_enable = function (_name) {
+    if ($.is_string(_name) 
+            && typeof(this._loaded_modules_config[_name]) !== "undefined") {
+        var _config = this._loaded_modules_config[_name];
+        var _key = "enable";
+        if ($.is_string(_key) 
+                && typeof(_config[_key]) !== "undefined") {
+            return _config[_key];
+        }
+        else {
+            return _config[_key];
+        }
+    }
+    else {
+        return false;
+    }
+};
+
+/**
  * 取得已經讀取的模組
  * @returns {Object} = {
  *  "Dashboard": [Object]
@@ -240,6 +313,31 @@ KALS_module_manager.prototype._init_module_config = function (_module, _config) 
  */
 KALS_module_manager.prototype.get_loaded_modules = function () {
     return this._loaded_modules;
+};
+
+/**
+ * 取得核心模組
+ * 
+ * 核心模組通常會依附在KALS_context底下
+ * 
+ * 如果找不到的話，就回傳false
+ * @param {String} _name
+ * @returns {KALS_user_interface|Boolean}
+ */
+KALS_module_manager.prototype._get_core_module = function (_name) {
+    var _module = false;
+    
+    if (_name === "Window_search") {
+        return KALS_context.search;
+    }
+    else if (_name === "Reading_guide") {
+        return KALS_text.guide;
+    }
+    else if (_name === "Feedback_manager") {
+        return KALS_context.feedback;
+    }
+    
+    return _module;
 };
 
 /* End of file KALS_module_manager */

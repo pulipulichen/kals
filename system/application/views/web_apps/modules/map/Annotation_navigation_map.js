@@ -43,6 +43,20 @@ Annotation_navigation_map.prototype.name = 'annotation_navigation_map';
 
 /**
  * ====================
+ * 來自KALS_CONFIG設定
+ * ====================
+ */
+
+/**
+ * 搜尋結果是否依照章節順序排序
+ * 
+ * 這個設定會受到KALS_CONFIG的影響
+ * @type Boolean
+ */
+Annotation_navigation_map.prototype.order_by_article = false;
+
+/**
+ * ====================
  * View設定
  * ====================
  */
@@ -480,18 +494,25 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
     var _chapter = KALS_text.selection.text.chapter;
     //var _structure = _chapter.get_structure();
     var _heading_list = _chapter.get_heading_list(); 
-    
-    var _list_content = $('<ul class="list-content"></ul>');
+   
+    var _list_content;
+    if (this.order_by_article === true) {
+        _list_content= $('<ol></ol>');
+    }
+    else {
+        _list_content= $('<ul></ul>');
+    }
+    _list_content.addClass("list-content");
     
     var _this = this;
     
     var _data_empty = true;
 
-    for (var _index in _data) {
+    for (var _index in _data.heading_data) {
         _data_empty = false;
         
-        var _heading_number = _data[_index].heading_number;
-        var _heading_annotations = _data[_index].type_count;
+        var _heading_number = _data.heading_data[_index].heading_number;
+        var _heading_annotations = _data.heading_data[_index].type_count;
         
         //var _heading_text = this.get_heading_text(_heading_number);
         
@@ -546,7 +567,8 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
             _this._click_map_list_item(this);
         });
 
-        if (_annotation_type_name === _type_name ) {
+        if (_annotation_type_name === _type_name 
+                && _annotation_type_count !== 0) {
             _button.appendTo(_current_type_container);
         }
         
@@ -558,7 +580,8 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
      * @author Pulipuli Chen 20140502
      * 不要在程式中直接寫中文，要改成用語系檔顯示
      */
-    if (_data_empty === true) {
+    //if (_data_empty === true) {
+    if (_data.total_count === 0) {
         // 提示空資料的訊息，加入到list_content
         //_list_content = $("<span class='hint'>這個分類目前還沒有標註喔!</span>");
         this._not_found_hint_show();
@@ -775,7 +798,8 @@ Annotation_navigation_map.prototype._request_heading_data = function (_current_t
     var _chapter = KALS_text.selection.text.chapter;
     var _structure = _chapter.get_structure();
     
-    var _order_by_article = KALS_CONFIG.modules.Annotation_navigation_map.order_by_article;
+    //var _order_by_article = KALS_CONFIG.modules.Annotation_navigation_map.order_by_article;
+    var _order_by_article = this.order_by_article;
     
     var _action = "get_heading_annotation";
     var _send_data = {

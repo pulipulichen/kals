@@ -588,6 +588,5 @@ KALS_window.prototype.focus_input = function () {
 	
 	return this;
 };
-
 /* End of file KALS_window */
 /* Location: ./system/application/views/web_apps/KALS_window.js */

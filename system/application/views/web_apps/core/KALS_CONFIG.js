@@ -438,17 +438,116 @@ DEFAULT_KALS_CONFIG = {
              */
             order_by_article: true
         },
+        /**
+         * 零碎時間
+         * @type type
+         */
         Frag_reading: {
             /**
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": false,
+            "enable": true,
             "nav_config": {
-                display: true,
-                nav_type: "common",
+                display: false,
+                nav_type: "login",
                 order: 1
-            }
+            },
+            /**
+             * 設定自動save_reading_progress的時間頻率
+             * @type Number
+             */
+            "interval_span": 10,
+            /**
+             * 頁面停止時延遲的增加時間
+             * @type Number
+             */
+            "increase_interval_span": 10
+        },
+        /**
+         * 搜尋功能
+         */
+        Window_search: {
+            "enable": false
+        },
+        /**
+         * 章節地圖
+         */
+        Window_map: {
+            "enable": false
+        },
+        /**
+         * 標註顯示
+         */
+        Window_filter: {
+            "enable": true
+        },
+        /**
+         * 導讀功能
+         */
+        Reading_guide: {
+            "enable": false
+        },
+        /**
+         * 回報功能
+         */
+        Feedback_manager: {
+            "enable": true
+            /**
+             * 回報接收者的電子郵件信箱
+             * 
+             * 可以設定很多位，用陣列組成
+             * @type String|Array<String>
+             */
+            //,"receiver_email": "pudding@nccu.edu.tw"
+            //,"receiver_email": ["puddingchen.35@gmail.com", "pudding@nccu.edu.tw", "pulipuli.chen@gmail.com"]
+        },
+        /**
+         * 獎章功能
+         */
+        KALS_stamp: {
+            "enable": true,
+            /**
+             * 獎章資格設定
+             */
+            "stamps": [
+                {
+                    /**
+                     * 獎章稱號
+                     * @types {String}
+                     */
+                    "title": "獎章1",
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                    "qualification_message": "如何獲得這個獎章",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                    "quailfy_message": "通知您獲得了獎章",
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                    "qualified_message": "您已經獲得了這個獎章",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                    "qualifier": {
+                        
+                    },
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                    "policy": {
+                        
+                    }
+                },
+            ]
         }
     }
 };

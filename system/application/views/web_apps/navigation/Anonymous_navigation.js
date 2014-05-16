@@ -34,11 +34,11 @@ function Anonymous_navigation(_common_windows) {
     this._init_module_nav_items();
     
     // 載入Common_navigation
-    if ($.isset(_common_windows)) {
-        for (var _i in _common_windows) {
-            this._$nav_items.push(_common_windows[_i]);
-        }
-    }
+    //if ($.isset(_common_windows)) {
+    //   for (var _i in _common_windows) {
+    //        this._$nav_items.push(_common_windows[_i]);
+    //    }
+    //}
 }
 
 Anonymous_navigation.prototype = new Navigation_list();
@@ -66,7 +66,7 @@ Anonymous_navigation.prototype.register = null;
  * - null: 不列入在目前的導覽列
  * @type String
  */
-Anonymous_navigation.prototype._$nav_type = "anonymous";
+Anonymous_navigation.prototype._$nav_type = ["anonymous", "common"];
 
 /* End of file Anonymous_navigation */
 /* Location: ./system/application/views/web_apps/Anonymous_navigation.js */

@@ -116,6 +116,14 @@ Init_profile.prototype._test = [
      */
     function () {}
     /**
+     * 測試開啟獎章功能
+     * @author Pulipuli Chen 20140516
+     */
+    , function () {
+        var _module = KALS_context.module.load("KALS_stamp");
+        _module.open();
+    }
+    /**
      * 測試開啟標註地圖
      * @author Pulipuli Chen 20140428
      */

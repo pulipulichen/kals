@@ -31,14 +31,17 @@ Init_context.prototype._$onstart = function () {
     
     //準備基本資料
     KALS_context.load_info(function () {
-
+        
+        var _loaded_modules = KALS_context.module.init();
+        KALS_context.navigation.init(_loaded_modules);
+        
         KALS_context.init_context.complete('load');
     });
     
-	var _this = this;
-	$(function () {
-	   _this._check_css_setup();	
-	});
+    var _this = this;
+    $(function () {
+       _this._check_css_setup();	
+    });
 };
 
 Init_context.prototype._$oncomplete = function () {
@@ -79,7 +82,7 @@ Init_context.prototype._check_css_loaded = function () {
     var _ui = $(".KALS.check-css");
     var _color = _ui.css("color");
     var _normal_color = "rgb(128, 128, 128)";
-    var _assert = (_color == _normal_color);
+    var _assert = (_color === _normal_color);
 	
 	//$.test_msg("check css load", [_color, _normal_color, _assert]);
 	

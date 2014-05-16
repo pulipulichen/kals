@@ -92,7 +92,7 @@
 .KALS .list-header-component .respond-indicator {
     font-weight: bold;
     margin-right: 5px;
-	display: none;
+    display: none;
 }
 
 .KALS .list-item-respond .list-header-component .respond-indicator {
@@ -137,6 +137,7 @@
 .KALS .list-header-component.is-my .list-like-component .icon-component {
     display: none;
 }
+
 /*
 .KALS .list-header-component.has-recommend {
     background-image: url(${base_url}images/has-recommend.gif);
@@ -197,7 +198,8 @@
 }
 
 .KALS.annotation-tool.not-login .list-like-component .icon-component,
-.KALS .window-view-content.not-login .list-like-component .icon-component {
+.KALS .window-view-content.not-login .list-like-component .icon-component,
+.KALS .window-view-content.not-login .list-like-component.disable-like .icon-component {
     display: none;
 }
 
@@ -211,6 +213,11 @@
 
 .KALS .list-like-component.liked.hover .icon-component {
     background-image:url(${base_url}images/set-is-not-liked.png);
+}
+
+.KALS .list-like-component.disable-like .icon-component {
+    background-image:url(${base_url}images/like_disable.png) !important;
+    cursor: default;
 }
 
 /**
@@ -307,6 +314,20 @@
     display: table-cell;
 }
 
+.KALS .list-menu.deny-respond-writable .list-menu-option.respond {
+    /*
+    cursor: default;
+    color: #CCC;
+    */
+    display: none;
+}
+/*
+.KALS .list-menu.deny-respond-writable .list-menu-option.respond.hover,
+.KALS .list-menu.deny-respond-writable .list-menu-option.view.hover{
+    background-color: inherit;
+    color: #CCC;
+}
+*/
 /**
  * 開放自己可以回應自己的標註
  * @author Pulipuli Chen 20131116
@@ -389,6 +410,20 @@
 .KALS .list-note-component .note-container {
     max-width: 450px;
     overflow-x: hidden;
+}
+
+.KALS .list-note-component .deny-readable-component {
+    font-style: italic;
+    color: gray;
+    display: none;
+}
+
+.KALS .list-note-component.deny-readable .deny-readable-component {
+    display: block;
+}
+
+.KALS .list-note-component.deny-readable .note-container {
+    display: none;
 }
 
 /**

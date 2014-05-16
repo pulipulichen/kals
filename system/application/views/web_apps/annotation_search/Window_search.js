@@ -14,9 +14,9 @@ function Window_search() {
     
     Window_content.call(this);
     
-	this._setup_submit(new Window_search_submit()); // send keyword and search_range
-	
-	this.child("list", new List_collection_search());
+    this._setup_submit(new Window_search_submit()); // send keyword and search_range
+
+    this.child("list", new List_collection_search());
 }
 
 Window_search.prototype = new Window_content();
@@ -56,18 +56,18 @@ Window_search.prototype._search_default_option = {
  * 搜尋功能選項
  */
 Window_search.prototype._search_param = {
-	/**
-	 * 搜尋欄位
-	 */
-	range: [ "note","author","annotation_type","annotation_anchor" ],
-	
-	/**
-	 * 排序順序
-	 * 
-	 * 由於內文順序的排序尚未完成，所以先關閉
-	 */
-	//order_by: ["update","create","scope"]
-	order_by: ["update","create"]	
+    /**
+     * 搜尋欄位
+     */
+    range: [ "note","author","annotation_type","annotation_anchor" ],
+
+    /**
+     * 排序順序
+     * 
+     * 由於內文順序的排序尚未完成，所以先關閉
+     */
+    //order_by: ["update","create","scope"]
+    order_by: ["update","create"]	
 };
 
 /**
@@ -97,21 +97,21 @@ Window_search.prototype._$create_ui = function (){  //建立UI
          _search_range_radio	
        ).appendTo(_subpanel);
 	
-	 _search_range_row.find("dt:first").css("margin-bottom", "1em");
-	
-	
-	// --------------------------
-	
-	// 標註類型radio選單
-	
-	var _type_radio = this.create_annotation_type_ui("radio");
-	
-	//_search_range_list.after(_type_radio); //_type_radio緊接在_search_range_list
-	var _type_radio_row = _factory.row(
-    	new KALS_language_param('type_radio', 'window.content.type_radio'),
-		 _type_radio)
-		 .addClass("annotation-type-row")
-		 .appendTo(_ui); 
+    _search_range_row.find("dt:first").css("margin-bottom", "1em");
+
+
+    // --------------------------
+
+    // 標註類型radio選單
+
+    var _type_radio = this.create_annotation_type_ui("radio");
+
+    //_search_range_list.after(_type_radio); //_type_radio緊接在_search_range_list
+    var _type_radio_row = _factory.row(
+    new KALS_language_param('type_radio', 'window.content.type_radio'),
+            _type_radio)
+            .addClass("annotation-type-row")
+            .appendTo(_ui); 
 
     // 隱藏標註類型選單 
     _type_radio_row.hide(); // 平常時候把_type_radio隱藏起來

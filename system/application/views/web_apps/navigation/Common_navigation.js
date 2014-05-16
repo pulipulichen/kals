@@ -18,16 +18,36 @@ function Common_navigation() {
     // Isolation Mode
     if (KALS_context.policy.allow_show_navigation()) {
 
-        var _search = new Window_search();
-        var _search_recent = new Window_search();
-        _search_recent.setup_recent();
+        this._$nav_items = [];
         
-        var _guide_nav = new Navigation_item("導讀");
-        _guide_nav.set_callback(function () {
-            //KALS_text.guide.open_whole_annotations_by_sentence();
-            KALS_text.guide.open();
-        });
+        //if (KALS_CONFIG.modules.Window_filter.enable === true) {
+        //    this._$nav_items.push(new Window_filter());
+        //}
         
+        //if (KALS_CONFIG.modules.Window_map.enable === true) {
+        //    this._$nav_items.push(new Window_map());
+        //}
+        
+        //var _search = new Window_search();
+        
+        if (KALS_CONFIG.modules.Window_search.enable === true) {
+            var _search_recent = new Window_search();
+            _search_recent.setup_recent();
+            this._$nav_items.push(_search_recent);
+        }
+        
+        /*
+        if (KALS_CONFIG.modules.Reading_guide.enable === true) {
+            var _guide_nav = new Navigation_item("導讀");
+            _guide_nav.set_callback(function () {
+                //KALS_text.guide.open_whole_annotations_by_sentence();
+                KALS_text.guide.open();
+            });
+            this._$nav_items.push(_guide_nav);
+        }
+        */
+       
+        /*
         this._$nav_items = [
             new Window_filter()
             , new Window_map()
@@ -42,7 +62,7 @@ function Common_navigation() {
             
             //, new Annotation_navigation_map()
         ];
-        
+        */
         this._init_module_nav_items();
     }
 }

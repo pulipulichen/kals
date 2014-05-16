@@ -19,7 +19,6 @@ function View_editor_container(_topic_prarm, _list_coll) {
     if ($.isset(_topic_prarm)) {
         this.set_topic_param(_topic_param);
     }
-	
 }
 
 View_editor_container.prototype = new Editor_container();
@@ -45,6 +44,8 @@ View_editor_container.prototype.set_topic = function (_topic_param) {
         
         //設定policy
         _editor.policy.set_data(_topic_param);
+        
+        this.check_policy();
     }
     return this;
 };

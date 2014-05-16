@@ -649,17 +649,25 @@ class Annotation_setter extends Web_apps_controller {
         if (is_null($annotation_id) || is_null($is_like)
             || is_null($user)
             || $annotation->get_user()->equals($user)
-            || $annotation->is_respond())
+            //|| $annotation->is_respond()
+                )
         {
             $data = show_error('Permission deny.');
             return $this->_display_jsonp($data, $callback);
         }
+        
+        //test_msg("before like", $annotation->get_like_count());
 
         set_ignore_authorize(true);
-        if ($is_like === TRUE)
+        
+        if ($is_like === TRUE) {
             $annotation->add_like($user);
-        else
+        }
+        else {
             $annotation->remove_like($user);
+        }
+        
+        //test_msg("after like", $annotation->get_like_count());
 
         //計算分數吧
         $this->_setup_scores($annotation);
@@ -668,11 +676,13 @@ class Annotation_setter extends Web_apps_controller {
         $array_data = $annotation_id;
 
         $action = 22;
-        if ($is_like == FALSE)
+        if ($is_like == FALSE) {
             $action = 23;
+        }
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
 
         //$annotation->update();
@@ -690,7 +700,6 @@ class Annotation_setter extends Web_apps_controller {
         $annotation_id = $json;
         $annotation = new Annotation($annotation_id);
 
-
         $user = $this->user;
         $annotation_user = $annotation->get_user();
         if ($annotation_user->equals($user) == false)
@@ -706,11 +715,13 @@ class Annotation_setter extends Web_apps_controller {
         $array_data = $recommend->get_id();
 
         $action = 24;
-        if ($recommend->has_recommend_by())
+        if ($recommend->has_recommend_by()) {
             $action = 25;
+        }
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
 
         set_ignore_authorize(true);

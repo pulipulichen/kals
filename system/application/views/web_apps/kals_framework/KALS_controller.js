@@ -599,7 +599,7 @@ KALS_controller.prototype.get_view_lang = function (_view_line) {
     _view_classname = 'view.' + _view_classname;
     _view_classname = _view_classname + "." + _view_line;
     
-    $.test_msg("_view_classname", _view_classname);
+    //$.test_msg("_view_classname", _view_classname);
     
     if (KALS_context.lang.has_line(_view_classname)) {
         //KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
@@ -609,6 +609,16 @@ KALS_controller.prototype.get_view_lang = function (_view_line) {
         return new KALS_language_param(_view_line);
     }
 };
+
+/**
+ * 根據view樣板的語系檔來取得語系，直接輸出結果
+ * @param {String} _view_line
+ * @returns {String}
+ */
+KALS_controller.prototype.get_view_lang_line = function (_view_line) {
+    var _lang = this.get_view_lang(_view_line);
+    return KALS_context.lang.line(_lang);
+}
 
 /* End of file KALS_controller */
 /* Location: ./system/application/views/web_apps/toolkit/KALS_controller.js */

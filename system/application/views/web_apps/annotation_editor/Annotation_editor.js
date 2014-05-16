@@ -84,6 +84,7 @@ Annotation_editor.prototype._create_url = 'annotation_setter/create_post';
 Annotation_editor.prototype._edit_url = 'annotation_setter/edit_post';
 
 /**
+ * 編輯的標註參數
  * @type {Annotation_param}
  */
 Annotation_editor.prototype._editing_param = null;
@@ -173,11 +174,20 @@ Annotation_editor.prototype.is_respond = function () {
 };
 
 /**
+ * 是否是回應到我的標註
+ * @type {boolean}
+ */
+Annotation_editor.prototype.is_respond_to_my_annotation = function () {
+    return ($.isset(this._topic) && this._topic.is_my_annotation());
+};
+
+/**
  * 從各元件取得資料。各元件要跟Annotation_editor註冊，利用傳址的方式，分開各處完成_annotation_param，作法如下：
  * _editor.add_listener('get', function (_editor, _annotation_param) {
  *     //將要增加的資料新增入_annotation_param
  *     //注意，不可以直接覆寫_annotation_param本身。
  * });
+ * @returns {Annotation_param} description
  */
 Annotation_editor.prototype.get_data = function () {
     
@@ -215,14 +225,14 @@ Annotation_editor.prototype.submit = function () {
     
     //讀取中就不設定
     if (this.is_loading() === true) {
-		return this;
-	}
+        return this;
+    }
     
     var _annotation_param = this.get_data();
     
     if (this._check_note(_annotation_param) === false) {
-		return this;
-	}
+        return this;
+    }
     
     var _annotation_json = _annotation_param.export_json();
     
@@ -244,8 +254,8 @@ Annotation_editor.prototype.submit = function () {
         
         //如果已經取消了loading動作，那就不作任何反應。
         if (_this.is_loading() === false) {
-			return this;
-		}
+            return this;
+        }
         
         //補完參數
         _annotation_param.user = KALS_context.user.get_data();
@@ -256,28 +266,28 @@ Annotation_editor.prototype.submit = function () {
                 && typeof(_data.timestamp) !== 'undefined') {
                 _annotation_param.timestamp = _data.timestamp;
             }
-			var _scope_coll = KALS_text.selection.select.get_scope_coll();
-			_annotation_param.scope = _scope_coll;
+            var _scope_coll = KALS_text.selection.select.get_scope_coll();
+            _annotation_param.scope = _scope_coll;
 			
             _this._edit_callback(_annotation_param);
             
-            _annotation_param.scope = _this._editing_param.scope;
+            //_annotation_param.scope = _this._editing_param.scope;
         }
         else    //新增模式
         {
             if ($.isset(_data)) {
                 if (typeof(_data.annotation_id) !== 'undefined') {
-					_annotation_param.annotation_id = _data.annotation_id;
-				}
+                    _annotation_param.annotation_id = _data.annotation_id;
+                }
                 
                 if (typeof(_data.timestamp) !== 'undefined') {
-					_annotation_param.timestamp = _data.timestamp;
-				}
+                    _annotation_param.timestamp = _data.timestamp;
+                }
                     
                 if (typeof(_data.recommend) !== 'undefined' 
-					&& KALS_CONFIG.enable_annotation_recommend === true) {
-					_annotation_param.recommend = new Recommend_param(_data.recommend);
-				}
+                        && KALS_CONFIG.enable_annotation_recommend === true) {
+                    _annotation_param.recommend = new Recommend_param(_data.recommend);
+                }
                 if (typeof(_data.nav) !== 'undefined') {
                     //$.test_msg('_data.nav', _data.nav);
                     _annotation_param.navigation_level = _data.nav;
@@ -289,11 +299,11 @@ Annotation_editor.prototype.submit = function () {
         
         if (_annotation_param.is_respond() === false) {
             //設置selection
-			//$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
+            //$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
             
             //$.test_msg('_data.nav setup', [KALS_context.user.get_anchor_navigation_type(), _annotation_param.get_navigation_level()]);
-            if (KALS_context.user.get_anchor_navigation_type() == 'all') {
+            if (KALS_context.user.get_anchor_navigation_type() === 'all') {
                 //設置指引selection
                 KALS_text.selection.navigation.set_scope_coll(_annotation_param.get_navigation_level(), _annotation_param.scope);
             }   
@@ -325,23 +335,23 @@ Annotation_editor.prototype._check_note = function (_annotation_param) {
 		return true;
 	}
     
-    if (typeof(_annotation_param.note) == 'undefined' ||
-	_annotation_param.note === null) {
-		//顯示錯誤
-		var _heading = new KALS_language_param('ERROR', 'alert.heading.error');
-		
-		var _content = new KALS_language_param('You have to write something in note.', 'annotation_editor.note_deny_empty');
-		
-		var _this = this;
-		KALS_util.alert(_heading, _content, function(){
-		//_this.note.focus();
-		});
-		
-		return false;
-	}
-	else {
-		return true;
-	}
+    if (typeof(_annotation_param.note) === 'undefined' 
+            || _annotation_param.note === null) {
+        //顯示錯誤
+        var _heading = new KALS_language_param('ERROR', 'alert.heading.error');
+
+        var _content = new KALS_language_param('You have to write something in note.', 'annotation_editor.note_deny_empty');
+
+        var _this = this;
+        KALS_util.alert(_heading, _content, function(){
+        //_this.note.focus();
+        });
+
+        return false;
+    }
+    else {
+        return true;
+    }
 };
 
 /**
@@ -371,11 +381,11 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
             'annotation_editor.submit.create_complete'
         );
 		
-		// @20131115 Pulipuli Chen
-		// 不使用編輯模式，改用新增模式
-		//this.set_editing(_annotation_param);
-		
-		this.reset();
+        // @20131115 Pulipuli Chen
+        // 不使用編輯模式，改用新增模式
+        //this.set_editing(_annotation_param);
+
+        this.reset();
     }
     else {
         _notify_lang = new KALS_language_param(
@@ -387,12 +397,35 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
     
     KALS_util.notify(_notify_lang);
     
+    // ------------------------
+    // 加入Context_user的計數
+    /*
+    var _is_respond = _annotation_param.is_respond();
+    var _annotation_type_param = _annotation_param.type;
+    if (_is_respond === false) {
+        //$.test_msg("create callback", _annotation_type_param);
+        KALS_context.user.set_topic_annotation_count_add(_annotation_type_param);
+    } 
+    else {
+        var _topic_annotation_param = _annotation_param.topic;
+        var _is_my_topic = _topic_annotation_param.is_my_annotation();
+        
+        if (_is_my_topic) {
+            KALS_context.user.set_respond_to_my_annotation_count_add(_annotation_type_param);
+        }
+        else {
+            KALS_context.user.set_respond_to_other_annotation_count_add(_annotation_type_param);
+        }
+    }
+    */
+    KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
+    
     return this;
 };
 
 /**
  * 更新之後的回呼函數。只要更新_list_coll裡面的資料即可。
- * @param {Annotation_param} _annotation_param
+ * @param {Annotation_param} _annotation_param 修改過後的標註參數
  */
 Annotation_editor.prototype._edit_callback = function (_annotation_param) {
     
@@ -404,12 +437,7 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param) {
 		$.test_msg('Annotation_editor._edit_callback()', _annotation_param);
         this._editing_item.editor_set_data(_annotation_param);
     }
-	
-    /**
-     * 編輯完成之後，還原狀態
-     */
-    this.reset();
-	    
+    
     //完成時，要設置notify
     var _notify_lang = new KALS_language_param(
         'Annotation had been updated.',
@@ -418,6 +446,42 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param) {
     
     KALS_util.notify(_notify_lang);
     this.toggle_loading(false);
+    
+    // ------------------------
+    // 加入Context_user的計數
+    /*
+    var _is_respond = _annotation_param.is_respond();
+    var _original_type_param = this._editing_param.type;
+    var _annotation_type_param = _annotation_param.type;
+    if (_original_type_param.equals(_annotation_type_param) === false) {
+        if (_is_respond === false) {
+            //$.test_msg("create callback", _annotation_type_param);
+            KALS_context.user.set_topic_annotation_count_change(_original_type_param, _annotation_type_param);
+        } 
+        else {
+            var _topic_annotation_param = _annotation_param.topic;
+            var _is_my_topic = _topic_annotation_param.is_my_annotation();
+
+            if (_is_my_topic) {
+                //KALS_context.user.set_respond_to_my_annotation_count_add(_annotation_type_param);
+                KALS_context.user.set_respond_to_my_annotation_count_change(_original_type_param, _annotation_type_param);
+            }
+            else {
+                //KALS_context.user.set_respond_to_other_annotation_count_add(_annotation_type_param);
+                KALS_context.user.set_respond_to_other_annotation_count_change(_original_type_param, _annotation_type_param);
+            }
+        }
+    }   //if (_original_type_param.equals(_annotation_type_param) === false) {
+    */
+   
+    KALS_context.user.set_annotation_count_change_by_param(this._editing_param, _annotation_param);
+    
+    /**
+     * 編輯完成之後，還原狀態
+     */
+    this.reset();
+    
+    return this;
 };
 
 
@@ -453,7 +517,7 @@ Annotation_editor.prototype.reset = function () {
 		 * 改為新增完成之後關閉
 		 */
         //this._editor_container.toggle_container(true);
-		this._editor_container.toggle_container(this._editor_container._$default_toggle);
+        this._editor_container.toggle_container(this._editor_container._$default_toggle);
         
         return this.notify_listeners('reset');    
     }
@@ -520,14 +584,14 @@ Annotation_editor.prototype._$create_ui = function () {
 	
     var _policy = this._setup_policy();
     _policy.get_ui().appendTo(_container.find('th.right:first'));
-    
-	// --------
-	// 第二列
-	
-	this._setup_type_hint();
-	
-	// --------
-	// 第三列
+
+    // --------
+    // 第二列
+
+    this._setup_type_hint();
+
+    // --------
+    // 第三列
 	
     var _respond_container = this._create_respond_container()
         .appendTo(_container.find('td.respond:first'));
@@ -559,11 +623,11 @@ Annotation_editor.prototype._$create_ui = function () {
 
 Annotation_editor.prototype.is_enable = function (_option_name) {
     if (_option_name === null || this._disable_option === null) {
-		return true;
-	}
-	else {
-		return ($.inArray(_option_name, this._disable_option) == -1);
-	}
+        return true;
+    }
+    else {
+        return ($.inArray(_option_name, this._disable_option) === -1);
+    }
 };
 
 Annotation_editor.prototype._container = null; 
@@ -733,7 +797,7 @@ Annotation_editor.prototype.toggle_loading = function (_is_loading, _callback) {
     }
     
     
-    if (_is_loading == this.is_loading()) {
+    if (_is_loading === this.is_loading()) {
         $.trigger_callback(_callback);
         return this;
     }
@@ -832,8 +896,8 @@ Annotation_editor.prototype._topic = null;
  * @type {Annotation_param} _param
  */
 Annotation_editor.prototype.set_topic = function (_param) {
-	this._topic = _param;
-	return this;
+    this._topic = _param;
+    return this;
 };
 
 /**

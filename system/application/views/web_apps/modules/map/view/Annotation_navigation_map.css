@@ -26,10 +26,14 @@ dt {
     padding: 0;
 }
 
-.list-content{
+.list-content {
     margin: 0.5em;
     margin-left: 2em;
     padding: 0;
+}
+
+ol.list-content li {
+    font-size: small;
 }
 
 
@@ -113,6 +117,10 @@ div.list-component {
     font-size: small;
     font-weight: bold;
     text-align: center;
+    clear: both;
+    position: relative;
+    top: 10px;
+    border: 1px solid gray;
 }
 
 .list-header-hint {

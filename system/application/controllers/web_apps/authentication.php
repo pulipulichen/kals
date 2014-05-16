@@ -17,6 +17,11 @@ include_once 'web_apps_controller.php';
 class Authentication extends Web_apps_controller {
 
     var $url;
+    
+    /**
+     * 來源網址的資料
+     * @var Webpage 
+     */
     var $webpage;
     var $client_ip;
 
@@ -33,6 +38,8 @@ class Authentication extends Web_apps_controller {
            'ip' => get_client_ip(),
            'browser' => $_SERVER['HTTP_USER_AGENT']
         );
+        
+        $this->load->library("kals_actor/User_statistic");
     }
 
     /**
@@ -89,7 +96,17 @@ class Authentication extends Web_apps_controller {
         $this->_display_jsonp($output, $callback);
     }
 
+    /**
+     * 將使用者資訊轉換成JSON
+     * @param User $user
+     * @param Boolean $embed_login
+     * @return Array
+     */
     private function _parse_user_output($user, $embed_login) {
+        
+        
+        $webpage = get_context_webpage();
+        
         $output = array();
         $output['login'] = TRUE;
         $output['embed_login'] = $embed_login;
@@ -99,7 +116,25 @@ class Authentication extends Web_apps_controller {
             'id' => $user->get_id(),
             'has_photo' => $user->has_photo(),
             'locale' => $user->get_locale(),
-            'sex' => $user->get_sex()
+            'sex' => $user->get_sex(),
+            
+            // @TODO 請wyfan把這些假資料轉換成$this->user_statistic可以取得的資料
+            //'topic_annotation_count' => array (
+            //    'importance' => 1
+            //),
+            //'respond_to_my_annotation_count' => array (
+            //    'importance' => 1
+            //),
+            //'respond_to_other_annotation_count' => array (
+            //    'importance' => 1
+            //),
+            'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
+            'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
+            'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+            
+            'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
+            'like_to_count' => $this->user_statistic->get_like_to_annotation_count($user, $webpage),
+            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage)
         );
         
         //將使用者寫入Context當中
@@ -264,8 +299,9 @@ class Authentication extends Web_apps_controller {
 
         $user= get_context_user();
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, 7, array('memo'=>$this->client_ip, 'user_id' => $user_id));
 
         clear_context_user();
@@ -306,16 +342,16 @@ class Authentication extends Web_apps_controller {
         //$action = 1;
         $action = "login.check.success";
         $user_id = NULL;
-        if (login_require(FALSE))   //表示有登入喔！
-        {
+        if (login_require(FALSE)) {  
+            //表示有登入喔！
+        
             $user = get_context_user();
             set_context_user($user);
             $output = $this->_parse_user_output($user, FALSE);
 
             $user_id = $user->get_id();
         }
-        else
-        {
+        else {
             $output = $this->_create_default_data();
             //$action = 2;
             $action = "login.check.failed";

@@ -94,6 +94,9 @@ List_note_component.prototype._$create_ui = function () {
     var _note = this._create_note_container();
     _note.appendTo(_ui);
     
+    var _deny_readable = this._create_deny_readable_component();
+    _deny_readable.appendTo(_ui);
+    
     /*
     var _this = this;
     setTimeout(function () {
@@ -510,7 +513,7 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
             //else {
                 //_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
             //}
-			_ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
+            _ele.css('width', _final_width + 'px').css('height', _final_height + 'px');
         }
     });
     
@@ -532,7 +535,7 @@ List_note_component.prototype._create_view_thread = function (_word_count) {
     var _lang = new KALS_language_param(
         '(FULL DETAIL {0} WORDS)',
         'list_note_component.view_thread',
-		[_word_count]
+        [_word_count]
     );
     
     var _msg = KALS_context.lang.line(_lang);
@@ -549,9 +552,56 @@ List_note_component.prototype._create_view_thread = function (_word_count) {
 
 List_note_component.prototype.view_thread = function (_callback) {
     if ($.isset(this._item)) {
-		this._item.view_thread(_callback);
-	}
+        this._item.view_thread(_callback);
+    }
     return this;
+};
+
+/**
+ * 禁止閱讀的參數
+ * @type String
+ */
+List_note_component.prototype._deny_readable_classname = "deny-readable";
+
+/**
+ * 設定是否可以閱讀
+ * @version 20140512 Pulipuli Chen
+ * @param {Boolean} _readable
+ * @returns {List_note_component}
+ */
+List_note_component.prototype.set_readable = function (_readable) {
+    var _ui = this.get_ui();
+    
+    if (_readable === true) {
+        _ui.removeClass(this._deny_readable_classname);
+    }
+    else {
+        _ui.addClass(this._deny_readable_classname);
+    }
+    
+    return this;
+};
+
+/**
+ * 禁止閱讀元件的classname
+ * @type String
+ */
+List_note_component.prototype._deny_readable_component_classname = "deny-readable-component";
+
+/**
+ * 建立禁止閱讀元件
+ * @returns {jQuery}
+ */
+List_note_component.prototype._create_deny_readable_component = function () {
+    var _lang = new KALS_language_param(
+        "You cannot read this note",
+        "list_note_component.deny_readable"
+    );
+    
+    var _ui = KALS_context.lang.create_listener(_lang);
+    _ui.addClass(this._deny_readable_component_classname);
+    
+    return _ui;
 };
 
 /* End of file List_note_component */

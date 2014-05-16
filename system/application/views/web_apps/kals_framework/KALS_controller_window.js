@@ -198,7 +198,9 @@ KALS_controller_window.prototype.close = function (_callback) {
  */
 KALS_controller_window.prototype.disable_controller = function (_callback) {
     
-    if (KALS_window.is_opened()) {
+    if (typeof(KALS_window) === "object" 
+            && typeof(KALS_window.is_opened) === "function"
+            && KALS_window.is_opened()) {
         KALS_window.close(_callback);
     }
         
@@ -798,7 +800,7 @@ KALS_controller_window.prototype.set_forward_option = function (_option) {
 KALS_controller_window.prototype.set_content = function (_lang) {
     var _container = this.get_content();
     
-    if (_container.length == 1) {
+    if (_container.length === 1) {
         this.toggle_content(true);
         this.get_ui().addClass('with-content');
         if ($.is_null(_lang)) {
@@ -811,7 +813,7 @@ KALS_controller_window.prototype.set_content = function (_lang) {
             _container.html(_lang);
         }
         else if ($.is_class(_lang, 'KALS_language_param')) {
-            if (typeof(KALS_context) != 'undefined') {
+            if (typeof(KALS_context) !== 'undefined') {
                 KALS_context.lang.add_listener(_container, _lang);
             }
         }
@@ -893,17 +895,24 @@ KALS_controller_window.prototype._$get_config = function () {
             //if ($.is_function(_this._$onviewportmove))
             //    _this._$onviewportmove(_ui);
             
+            /**
+             * @version 20140516 Pulipuli Chen
+             * 不知道為什麼還是有辦法執行_$onopen，所以這個功能暫時不使用
+             */
+            _ui.animate({});
+            /*
             _ui.animate({}, {
+                //$.test_msg("KALS_controller_window onLoad", []);
                 complete: function () {
                     setTimeout(function () {
                         if ($.is_function(_this._$onopen)) {
                             _this._$onopen(_ui);
                         }
                         _this.call_temp_callback(_ui);    
-                    }, 1000);
-                       
+                    }, 0);
                 }
             });
+            */
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉
@@ -1164,7 +1173,7 @@ KALS_controller_window.prototype.overlay_open = function (_callback) {
         //$.test_msg('Overlay_modal.open() check _ui', [(_ui != null), (typeof(_ui.overlay) == 'function'), _callback]);
         
         if (_ui !== null) {
-            if (typeof(_ui.overlay) == 'function') {
+            if (typeof(_ui.overlay) === 'function') {
                 //$.test_msg('Overlay_modal.open() 設置this._$temp_callback', _callback);
                 this._$temp_callback = _callback;
                 //$.test_msg('Overlay_modal.open() 設置了this._$temp_callback', this._$temp_callback);
@@ -1175,24 +1184,24 @@ KALS_controller_window.prototype.overlay_open = function (_callback) {
 				
                 if ($.isset(_api)) {
                     _api.setOpened(false);
-					try {
-						_api.load();
-					}
-					catch (_e) {
-						_this._setup_effect();
-						try {
-							//再試著讀取一次
-							_api.load();
-						}
-						catch (_final_e) {
-							$.test_msg('open Overlay failed: ' , _final_e);
-						}
-					}
+                    try {
+                            _api.load();
+                    }
+                    catch (_e) {
+                        _this._setup_effect();
+                        try {
+                                //再試著讀取一次
+                                _api.load();
+                        }
+                        catch (_final_e) {
+                                $.test_msg('open Overlay failed: ' , _final_e);
+                        }
+                    }
                       
                 }
                 _ui.show();
                 
-                if (this.is_exposable() && typeof(this.expose) == "function") {
+                if (this.is_exposable() && typeof(this.expose) === "function") {
                     this.expose();
                 }
             }
@@ -1202,8 +1211,8 @@ KALS_controller_window.prototype.overlay_open = function (_callback) {
                 //$.test_msg('Overlay_modal.open() after show');
                 
                 if ($.is_function(_callback)) {
-					_callback(_ui);
-				}
+                    _callback(_ui);
+                }
             }
         }
     }
@@ -1226,7 +1235,7 @@ KALS_controller_window.prototype.overlay_close = function (_callback) {
         var _this = this;
         
         if (_ui !== null) {
-            if (typeof(_ui.overlay) == 'function') {
+            if (typeof(_ui.overlay) === 'function') {
                 //$.test_msg('close set temp callback', [this.get_modal_name(), typeof(_callback)]);
                 //$.test_msg('close set temp callback', _ui.overlay().close);
                 this._$temp_callback = _callback;
@@ -1467,7 +1476,7 @@ KALS_controller_window.prototype.focus_input = function () {
         _input = _ui.find("textarea:first");
     }
     
-    $.test_msg("focus_input", _input.length);
+    //$.test_msg("focus_input", _input.length);
     if (_input.length > 0) {
         _input.css("border", "3px solid red");
         _input.css("color", "red");

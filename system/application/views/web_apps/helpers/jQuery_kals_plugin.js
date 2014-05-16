@@ -153,7 +153,7 @@ jQuery.ends_with = function(_str, _suffix) {
     _str = _str + '';
     var _len = _suffix.length;
     var _start = 0 - _len;
-    if (this.substr(_str, _start, _len) == _suffix) {
+    if (this.substr(_str, _start, _len) === _suffix) {
 		return true;
 	}
 	else {
