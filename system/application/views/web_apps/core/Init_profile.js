@@ -116,6 +116,46 @@ Init_profile.prototype._test = [
      */
     function () {}
     /**
+     * 測試網頁暫存功能
+     * @author Pulipuli Chen 20140517
+     */
+    , function () {
+        var _save = function () {
+            var _webpage_cache_save_url = "webpage_cache/save";
+            var _cache_json = "<div>測試看看能不能正常儲存2</div>";
+            var _callback = function () {
+                $.test_msg("儲存完成，接著開始讀取");
+                
+                _load();
+            };
+
+            var _post_config = {
+                url: _webpage_cache_save_url,
+                data: _cache_json,
+                callback: _callback
+            };
+
+            KALS_util.ajax_post(_post_config);
+        };
+        
+        var _load = function () {
+            var _webpage_cache_save_url = "webpage_cache/load";
+            var _callback = function (_data) {
+                $.test_msg("讀取完成，資料：" + _data);
+            };
+
+            var _config = {
+                url: _webpage_cache_save_url,
+                callback: _callback
+            };
+            
+            KALS_util.ajax_get(_config);
+        };
+        
+        //_save();
+        _load();
+    }
+    /**
      * 測試開啟獎章功能
      * @author Pulipuli Chen 20140516
      */
