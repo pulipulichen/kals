@@ -119,7 +119,31 @@ Init_profile.prototype._test = [
      * 測試網頁暫存功能
      * @author Pulipuli Chen 20140517
      */
+    /*s
     , function () {
+        var _cache = KALS_context.module.load("Webpage_cache");
+        
+        var _select_text = "測試看看資料有沒有存進去";
+        
+        _cache.load(function (_data) {
+            if (_data !== false) {
+                $.test_msg("取得了資料：" + _data);
+            }
+            else {
+                _cache.save(_select_text, function () {
+                    $.test_msg("儲存完畢");
+                });
+            }
+        });
+    }
+    */
+    /**
+     * 測試網頁暫存功能草稿
+     * @author Pulipuli Chen 20140517
+     */
+    /*
+    , function () {
+        
         var _save = function () {
             var _webpage_cache_save_url = "webpage_cache/save";
             var _cache_json = "<div>測試看看能不能正常儲存2</div>";
@@ -139,22 +163,25 @@ Init_profile.prototype._test = [
         };
         
         var _load = function () {
-            var _webpage_cache_save_url = "webpage_cache/load";
+            var _webpage_cache_save_url = "webpage_cache/load/" + KALS_context.get_webpage_id();
+            _webpage_cache_save_url = KALS_context.get_base_url(_webpage_cache_save_url);
             var _callback = function (_data) {
+                _data = _remove_cache_prefix(_data);
                 $.test_msg("讀取完成，資料：" + _data);
             };
-
-            var _config = {
-                url: _webpage_cache_save_url,
-                callback: _callback
-            };
-            
-            KALS_util.ajax_get(_config);
+            $.get(_webpage_cache_save_url, _callback);
         };
+        
+        var _remove_cache_prefix = function (_data) {
+            // /*Content-type: text/html
+            _data = $.substr(_data, 27);
+            return _data;
+        }
         
         //_save();
         _load();
     }
+    */
     /**
      * 測試開啟獎章功能
      * @author Pulipuli Chen 20140516

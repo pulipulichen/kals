@@ -548,6 +548,12 @@ DEFAULT_KALS_CONFIG = {
                     }
                 },
             ]
+        },
+        /**
+         * 網頁快取
+         */
+        Webpage_cache: {
+            enable: true
         }
     }
 };

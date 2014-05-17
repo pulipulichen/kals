@@ -108,6 +108,7 @@ class Authentication extends Web_apps_controller {
         $webpage = get_context_webpage();
         
         $output = array();
+        $output["webpage_id"] = get_context_webpage()->get_id();
         $output['login'] = TRUE;
         $output['embed_login'] = $embed_login;
         $output['user'] = array(
@@ -179,6 +180,7 @@ class Authentication extends Web_apps_controller {
         $annotation_getter = new annotation_getter();
 
         $output = array(
+            "webpage_id" => get_context_webpage()->get_id(),
             'login' => FALSE,
             'embed_login' => FALSE,
             'user' => array(

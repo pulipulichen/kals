@@ -81,8 +81,9 @@ class Webpage_cache extends Web_apps_controller {
         //$cache = $cache["selectable_text"];
         $cache = substr($cache, 1, strlen($cache) - 2);
         
-        if (is_string($cache)
-                && is_file($cache_path) === FALSE) {
+        //if (is_string($cache)
+        //        && is_file($cache_path) === FALSE) {
+        if (is_string($cache)) {
             write_file($cache_path, $cache);
         }
         
@@ -98,32 +99,48 @@ class Webpage_cache extends Web_apps_controller {
      * @param String $callback AJAX使用的callback
      * @param Int $webpage_id 如果未輸入webpage_id，則會被自動帶入現在所在的webpage的ID
      */
-    public function load($callback, $webpage_id = NULL) {
+    public function load($webpage_id) {
         
-        if (is_null($webpage_id)) {
-            $webpage_id = $this->webpage->get_id();
-            redirect("web_apps/webpage_cache/load/" . $callback . "/" . $webpage_id);
-            return;
-        }
+        //if (is_null($webpage_id)) {
+        //    $webpage_id = $this->webpage->get_id();
+        //    redirect("web_apps/webpage_cache/load/" . $callback . "/" . $webpage_id);
+        //    return;
+        //}
         
         $cache_path = $this->_get_cache_path();
         
         $data = "";
         if (is_file($cache_path)) {
             $data = read_file($cache_path);
-            unlink($cache_path);
+            //test_msg("有資料:" . $data);
+            //echo "";
+            //unlink($cache_path);
+            
+            //$this->_display_get($data);
+            
+            // 快取時間
+            $cache_mins = 1;
+            $this->output->cache($cache_mins);
+            
+            //return $this;
         }
         
-        // 快取時間
-        $cache_mins = 1;
-        $this->output->cache($cache_mins);
         
-        $this->_display_jsonp($data, $callback);
+        $this->_display_get($data);
     }
 
     // ---------------------------
     // 共通會用到的函式
     // ---------------------------
+    
+    /**
+     * 快取儲存路徑到本機端快取區
+     * 
+     * true: 儲存到快取區
+     * false: 儲存到 ./system/cache
+     * @var Boolean 
+     */
+    var $_save_cache_to_sys_temp_dir = false;
     
     /**
      * 取得快取路徑
@@ -133,7 +150,14 @@ class Webpage_cache extends Web_apps_controller {
         
         $webpage_id = $this->webpage->get_id();
         
-        $path = "./system/cache/webpage_cache_" . $webpage_id . ".html";
+        $dir = "./system/cache/";
+        if ($this->_save_cache_to_sys_temp_dir) {
+            $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+        }
+        
+        $path = $dir . "KALS_webpage_cache_" . $webpage_id . ".html";
+        
+        //test_msg($path);
         
         return $path;
     }

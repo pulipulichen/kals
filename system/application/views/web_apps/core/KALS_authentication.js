@@ -224,7 +224,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
                 _this._is_login = true;
                 
                 if (KALS_CONFIG.isolation_mode) {
-                        KALS_context.policy.set_attr("read", true);
+                    KALS_context.policy.set_attr("read", true);
                 }
 				
                 setTimeout(function () {
@@ -505,6 +505,10 @@ KALS_authentication.prototype.check_login = function (_callback) {
             }
             
             _this._login_checked = true;
+            
+            if (typeof(_data.webpage_id) === "number") {
+                KALS_context.webpage_id = _data.webpage_id;
+            }
             
             //$.test_msg('auth check_login()', _data);
             

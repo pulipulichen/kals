@@ -712,10 +712,12 @@ $style = implode("}\n", $parts);
      * @return boolean
      */
     protected function _is_callback ($param = NULL) {
-        if (is_null($param))
+        if (is_null($param)) {
             return FALSE;
-        else
+        }
+        else {
             return (starts_with($param, 'callback='));
+        }
     }
     
     protected function _set_post_session($index, $data) {
@@ -765,6 +767,17 @@ $style = implode("}\n", $parts);
     protected function _display_post_complete() {
         send_js_header($this->output);
         $this->load->view('web_apps/display_post_complete');
+    }
+    
+    /**
+     * 顯示給GET資料使用
+     * 
+     * @version 20140517
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     */
+    protected function _display_get($data) {
+        //send_js_header($this->output);
+        $this->load->view('web_apps/display', array("data" => $data) );
     }
 }
 

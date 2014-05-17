@@ -723,6 +723,20 @@ KALS_context.create_namespace = function () {
     return _url;
 };
 
+// ----------------
+// Webpage_id
+// ----------------
+
+/**
+ * Webpage ID
+ * @type Number
+ */
+KALS_context.webpage_id = null;
+
+KALS_context.get_webpage_id = function () {
+    return this.webpage_id;
+};
+
 // ------------------------------------------------
 
 /**
