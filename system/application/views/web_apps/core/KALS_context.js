@@ -207,32 +207,32 @@ KALS_context.get_base_url = function (_file, _from_root) {
 KALS_context.get_image_url = function (_img) {
     
     if ($.is_null(_img)) {
-		_img = '';
-	}
+        _img = '';
+    }
     
     if ($.is_string(_img) && $.starts_with(_img, '/')) {
-		_img = _img.substring(1, _img.length);
-	}
+        _img = _img.substring(1, _img.length);
+    }
     
     if (this.base_url === null) {
-		return _img;
-	}
+        return _img;
+    }
         
     var _img_url = this.get_base_url();
     var _pos = _img_url.lastIndexOf('/web_apps');
     if (_pos === -1) {
-		return _img;
-	}
+        return _img;
+    }
     
     _img_url = _img_url.substring(0, _pos + 1);
     _img_url = _img_url + 'images/' + _img;
     
     if (_img === '') {
-		return _img_url;
-	}
-	else {
-		return $('<img src="' + _img_url + '" border="0" />');
-	}
+        return _img_url;
+    }
+    else {
+        return $('<img src="' + _img_url + '" border="0" />');
+    }
 };
 
 
@@ -243,7 +243,7 @@ KALS_context.get_image_url = function (_img) {
  */
 KALS_context.get_library_url = function (_file) {
     
-	var _img = _file;
+    var _img = _file;
     if ($.is_null(_img)) {
         _img = '';
     }
@@ -567,6 +567,43 @@ KALS_context.set_text_selector = function (_selector) {
     return this;
 };
 
+/**
+ * 讀取模組設定資料的位置
+ * @type {string}
+ */
+KALS_context._modules_config_url = 'generic/modules_config';
+
+/**
+ * 讀取模組會用到的資料
+ * @param {Function} _callback
+ * @returns {KALS_context}
+ */
+KALS_context.load_modules_config = function (_callback) {
+    
+    var _this = this;
+    var _loaded_callback = function (_data) {
+        
+        if (typeof(_data.KALS_view_manager) !== 'undefined') {
+            _this.view_manager.set_data(_data.KALS_view_manager);
+        }
+        
+        if (typeof(_data.webpage_id) !== 'undefined') {
+            _this.webpage_id = _data.webpage_id;
+        }
+        
+        $.trigger_callback(_callback);
+    };
+    
+    var _config = {
+        "url": this._modules_config_url,
+        "callback": _loaded_callback
+    };
+    
+    KALS_util.ajax_get(_config);
+    
+    return this;
+};
+
 KALS_context.load_info = function (_callback) {
     
     //2009 不準備資料的版本
@@ -582,7 +619,6 @@ KALS_context.load_info = function (_callback) {
     _data.anchor_navigation_type = KALS_CONFIG.anchor_navigation_type;
     
     this.load(_data, _callback);
-    
 };
 
 /**

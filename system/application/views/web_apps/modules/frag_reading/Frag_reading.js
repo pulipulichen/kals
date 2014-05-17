@@ -490,7 +490,9 @@ Frag_reading.prototype.save_reading_progress = function(_current_word){
     var _message = {
         current_word: _current_word
     };
-    KALS_util.log(_action, _message);
+    KALS_util.log(_action, _message, function () {
+        $.test_msg("儲存完成");
+    });
     //$.test_msg('current_scroll', _current_scroll);
     //context_complete();    
     return this;

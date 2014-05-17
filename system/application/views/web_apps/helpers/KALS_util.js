@@ -781,7 +781,7 @@ KALS_util.decodeURIComponent = function (_str) {
  * @param JSON _note 任意要儲存的資料
  * @param function _callback 回呼函數 
  */
-KALS_util.log = function (_action, _note) {
+KALS_util.log = function (_action, _note, _callback) {
     
     //_note = null;
     var _data = {
@@ -793,7 +793,11 @@ KALS_util.log = function (_action, _note) {
 
     var _config = {
         "url": "log/create",
-        "data": _data
+        "data": _data,
+        "callback": _callback,
+        "exception_handle": function () {
+            // 不做任何事情
+        }
     };
     //KALS_util.ajax_get(_config);
     KALS_util.ajax_post(_config);

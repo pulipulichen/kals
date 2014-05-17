@@ -17,7 +17,13 @@ function KALS_view_manager(){
 
 KALS_view_manager.prototype = new JSONP_dispatcher();
 
-KALS_view_manager.prototype._$context_register = 'KALS_view_manager';
+/**
+ * 跟KALS_context訂閱的key
+ * @version 20140517 Pulipuli Chen
+ *  不採用這個訂閱了
+ * @type String
+ */
+//KALS_view_manager.prototype._$context_register = 'KALS_view_manager';
 
 /**
  * 取得樣板
@@ -26,18 +32,18 @@ KALS_view_manager.prototype._$context_register = 'KALS_view_manager';
  */
 KALS_view_manager.prototype.get_view = function (_index) {
     //$.test_msg('KALS_view_manager', this._data);
-	//return JSONP_dispatcher.prototype.get_field.call(this, _index);
-	var _view = JSONP_dispatcher.prototype.get_field.call(this, _index);
-        if (_view === undefined) {
-            _view = "{{kals-lang:kals_framework.view_config_error}}";
-        }
-	var _classname = this._get_view_classname(_index);
-	_view = $("<span>" + _view + "<span>")
-	   .addClass('KALS')
-	   .addClass("kals-view")
-	   .addClass(_classname);
-	_view = this._view_initialize(_view, _index);
-	return _view;
+    //return JSONP_dispatcher.prototype.get_field.call(this, _index);
+    var _view = JSONP_dispatcher.prototype.get_field.call(this, _index);
+    if (_view === undefined) {
+        _view = "{{kals-lang:kals_framework.view_config_error}}";
+    }
+    var _classname = this._get_view_classname(_index);
+    _view = $("<span>" + _view + "<span>")
+       .addClass('KALS')
+       .addClass("kals-view")
+       .addClass(_classname);
+    _view = this._view_initialize(_view, _index);
+    return _view;
 };
 
 /**
@@ -64,28 +70,28 @@ KALS_view_manager.prototype._kals_events = KALS_CONFIG.view.kals_events;
  * @type {jQuery}
  */
 KALS_view_manager.prototype._view_initialize_language = function(_view, _index) {
-	
-	//var _container = $("<div></div>").append(_view);
-	var _kals_lang = _view.find('*[kals-lang]');
-	var _view_classname = this._get_view_classname(_index, '_');
-	_view_classname = 'view.' + _view_classname + '.';
-	//$.test_msg('parse lang', [_kals_lang.length, _view.html()]);
-	
-	_kals_lang.each(function (_index, _ele) {
-            _ele = $(_ele);
 
-            var _text = _ele.html();
-            var _line = _ele.attr('kals-lang');
+    //var _container = $("<div></div>").append(_view);
+    var _kals_lang = _view.find('*[kals-lang]');
+    var _view_classname = this._get_view_classname(_index, '_');
+    _view_classname = 'view.' + _view_classname + '.';
+    //$.test_msg('parse lang', [_kals_lang.length, _view.html()]);
 
-            if (KALS_context.lang.has_line(_line)) {
-                KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
-            }
-            else if (KALS_context.lang.has_line(_view_classname + _line)) {
-                KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _view_classname + _line));
-            }
-	});
-	
-	return _view;
+    _kals_lang.each(function (_index, _ele) {
+        _ele = $(_ele);
+
+        var _text = _ele.html();
+        var _line = _ele.attr('kals-lang');
+
+        if (KALS_context.lang.has_line(_line)) {
+            KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _line));
+        }
+        else if (KALS_context.lang.has_line(_view_classname + _line)) {
+            KALS_context.lang.add_listener(_ele, new KALS_language_param(_text, _view_classname + _line));
+        }
+    });
+
+    return _view;
 };
 
 /**
@@ -95,18 +101,18 @@ KALS_view_manager.prototype._view_initialize_language = function(_view, _index) 
  */
 KALS_view_manager.prototype._view_initialize = function (_view, _index) {
 	
-	_view = this._view_initialize_text(_view);
-	
-	var _init_attrs = this._init_attrs;
-	//$.test_msg('init template', _init_attrs);
-	for (var _i in _init_attrs) {
-		//$.test_msg('init template', _init_attrs[_i]);
-		_view = this._view_initialize_attr(_view, _init_attrs[_i]);
-	}
+    _view = this._view_initialize_text(_view);
+
+    var _init_attrs = this._init_attrs;
+    //$.test_msg('init template', _init_attrs);
+    for (var _i in _init_attrs) {
+        //$.test_msg('init template', _init_attrs[_i]);
+        _view = this._view_initialize_attr(_view, _init_attrs[_i]);
+    }
 	
     _view = this._view_initialize_language(_view, _index);
-	
-	return _view;
+
+    return _view;
 };
 
 /**
@@ -118,7 +124,7 @@ KALS_view_manager.prototype._init_attrs = KALS_CONFIG.view.init_attrs;
  * 取得使用的屬性名稱
  */
 KALS_view_manager.prototype.get_attr_names = function () {
-	return this._init_attrs();
+    return this._init_attrs();
 };
 
 /**
@@ -132,7 +138,7 @@ KALS_view_manager.prototype._kals_attrs = KALS_CONFIG.view.kals_attrs;
  * @type {jQuery}
  */
 KALS_view_manager.prototype.get_kals_atts = function () {
-	return this._kals_attrs;
+    return this._kals_attrs;
 };
 
 /**
@@ -144,7 +150,7 @@ KALS_view_manager.prototype._event_names = KALS_CONFIG.view.event_names;
  * 取得需要初始化的事件名稱
  */
 KALS_view_manager.prototype.get_event_names = function () {
-	return this._event_names;
+    return this._event_names;
 };
 
 /**
@@ -184,19 +190,19 @@ KALS_view_manager.prototype._view_initialize_text = function (_view) {
             
             _text = _text.replace(_this._view_regular_expression, function (_match) {
                 var _field_name = _match.substr(2, _match.length-4);
-				/*
-				var _needle = 'kals-lang:';
-				return '<span kals-field="' + _field_name + '" kals-field-origin-value="'+_match+'">' + _match + "</span>";
-				*/
-				if ($.starts_with(_field_name, _lang_prefix)) {
-					var _line_index = _field_name.substr(_lang_prefix.length, _field_name.length - _lang_prefix.length);
-					var _line = KALS_context.lang.line(_line_index);
-					
-					return '<span kals-lang="' + _line_index + '">' + _line + "</span>";
-				}
-				else {
-					return '<span kals-field="' + _field_name + '">' + _match + "</span>";
-				}
+                /*
+                var _needle = 'kals-lang:';
+                return '<span kals-field="' + _field_name + '" kals-field-origin-value="'+_match+'">' + _match + "</span>";
+                */
+                if ($.starts_with(_field_name, _lang_prefix)) {
+                    var _line_index = _field_name.substr(_lang_prefix.length, _field_name.length - _lang_prefix.length);
+                    var _line = KALS_context.lang.line(_line_index);
+
+                    return '<span kals-lang="' + _line_index + '">' + _line + "</span>";
+                }
+                else {
+                        return '<span kals-field="' + _field_name + '">' + _match + "</span>";
+                }
             });
             
             //_text = "???";
@@ -216,6 +222,7 @@ KALS_view_manager.prototype._view_initialize_text = function (_view) {
 /**
  * 初始化class的部份
  * @param {Object} _view
+ * @param {String} _attr_name 
  */
 KALS_view_manager.prototype._view_initialize_attr = function (_view, _attr_name) {
 	

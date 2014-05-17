@@ -22,7 +22,8 @@ function Init_component (_onstart, _oncomplete) {
         'KALS_toolbar', 
         'KALS_text', 
         'KALS_window', 
-        'site_reform'
+        'site_reform',
+        'modules_config'
     ];
 }
 
@@ -46,9 +47,11 @@ Init_component.prototype._$onstart = function () {
         return this.deny_ie6();
     }
     
+    var _this = this;
+    
     // 執行Site_reform
     KALS_context.site_reform.reform(function () {
-        KALS_context.init_component.complete('site_reform');
+        _this.complete('site_reform');
     });
         
     //初始化時大概是這項這樣子的
@@ -59,12 +62,19 @@ Init_component.prototype._$onstart = function () {
     KALS_toolbar = new KALS_toolbar();    
     //KALS_context.init_component.complete('KALS_toolbar');
         
-    KALS_text = new KALS_text();
+    //KALS_text = new KALS_text();
+    
     //$.test_msg('Init_component.$onstart()');
     if ($.browser.msie) {
         //this.excute_confirm();
     }
-	
+    
+    KALS_context.load_modules_config(function () {
+        _this.complete("modules_config");
+        
+        KALS_text = new KALS_text();
+    });
+    
     $(function() {
         KALS_context.feedback.init();
     });

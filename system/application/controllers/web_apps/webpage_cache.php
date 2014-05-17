@@ -79,10 +79,9 @@ class Webpage_cache extends Web_apps_controller {
         $cache_path = $this->_get_cache_path();
         
         //$cache = $cache["selectable_text"];
-        $cache = substr($cache, 1, strlen($cache) - 2);
-        //$cache = str_replace("\\'", "'", $cache);
-        //$cache = str_replace('\\"', '"', $cache);
-        $cache = stripslashes($cache);
+        //$cache = substr($cache, 1, strlen($cache) - 2);
+        //$cache = substr($cache, 1, strlen($cache) - 1);
+        //$cache = stripslashes($cache);
         
         //if (is_string($cache)
         //        && is_file($cache_path) === FALSE) {

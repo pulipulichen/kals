@@ -765,6 +765,11 @@ class generic extends Web_apps_controller {
         $this->pack_js($path, 'loader');
     }
 
+    /**
+     * context所需資訊
+     * @param String $json
+     * @param String $callback
+     */
     function info($json, $callback = NULL)
     {
         if (is_null($callback))
@@ -796,6 +801,32 @@ class generic extends Web_apps_controller {
         $authentication = new authentication();
 
         $data['KALS_authentication'] = $authentication->default_data();
+
+        //$data['KALS_view_manager'] = $this->_load_viewes();
+        
+        // 20140517 Pulipuli Chen
+        //$data['webpage_id'] = get_context_webpage()->get_id();
+        
+        $this->_display_jsonp($data, $callback);
+    }
+    
+    
+    /**
+     * 模組所需資訊
+     * 
+     * @version 20140517 Pulipuli Chen
+     * @param String $json
+     * @param String $callback
+     */
+    function modules_config($json, $callback = NULL)
+    {
+        if (is_null($callback))
+        {
+            $callback = $json;
+            $json = NULL;
+        }
+        
+        $data = array();
 
         $data['KALS_view_manager'] = $this->_load_viewes();
         

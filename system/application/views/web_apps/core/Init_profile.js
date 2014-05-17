@@ -120,6 +120,7 @@ Init_profile.prototype._test = [
      * 測試網頁暫存功能
      * @author Pulipuli Chen 20140517
      */
+    /*
     , function () {
         //var _cache = KALS_context.module.load("Webpage_cache");
         var _cache = new Webpage_cache();
@@ -128,15 +129,20 @@ Init_profile.prototype._test = [
         
         _cache.load(function (_data) {
             if (_data !== false) {
-                $.test_msg("取得了資料：" + _data);
+                $.test_msg("取得了資料：[" + _data + "]");
             }
             else {
                 _cache.save(_select_text, function () {
                     $.test_msg("儲存完畢");
+                    
+                    setTimeout(function () {
+                        location.reload();
+                    }, 100);
                 });
             }
         });
     }
+    */
     /**
      * 測試網頁暫存功能草稿
      * @author Pulipuli Chen 20140517
