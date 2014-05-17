@@ -89,33 +89,31 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     var _selectable_text_word = this._selectable_text.word;
     
     //如果已經作過這樣的分析的話
-    if (this._text.find('.'+this.sententce_index_classname).length > 0)
-    {
-            var _sentences = this._text.find('.'+this.sententce_index_classname);
-            var _sentence_index = [];
-            for (var _i = 0; _i < _sentences.length; _i++)
-            {
-                    var _sentence = _sentences.eq(_i);
-                    var _word_id = _sentence.attr('id');
-                    _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
-                    _word_id = parseInt(_word_id,10);
-                    _sentence_index.push(_word_id);
-            }
+    if (this._text.find('.'+this.sententce_index_classname).length > 0) {
+        var _sentences = this._text.find('.'+this.sententce_index_classname);
+        var _sentence_index = [];
+        for (var _i = 0; _i < _sentences.length; _i++) {
+            var _sentence = _sentences.eq(_i);
+            var _word_id = _sentence.attr('id');
+            _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
+            _word_id = parseInt(_word_id,10);
+            _sentence_index.push(_word_id);
+        }
 
-            return _sentence_index;
+        return _sentence_index;
     }
 
     //先來看被視為分句的標點符號位置
-    _sentence_index = [0];
+    var _sentence_index = [0];
     var _sentence_punctuation =  $('.'+this.sententce_punctuation_classname);
 
-    for (var _s = 0; _s < _sentence_punctuation.length; _s++)
-    {
-            var _id = _sentence_punctuation.eq(_s).attr('id');
-            //kals_word_953
-            //_id = _id.substring(10, _id.length);
-            _id = $.get_prefixed_id(_id);
-            _sentence_index.push(parseInt(_id,10));	
+    
+    for (var _s = 0; _s < _sentence_punctuation.length; _s++) {
+        var _id = _sentence_punctuation.eq(_s).attr('id');
+        //kals_word_953
+        //_id = _id.substring(10, _id.length);
+        _id = $.get_prefixed_id(_id);
+        _sentence_index.push(parseInt(_id,10));	
     }
 
     //再來看段落的最後一個字
@@ -131,8 +129,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     for (_i = 0; _i < _last_pid+1; _i++) {
         var _paragraph = $('.' + this.paragraph_id_prefix + _i + ":last");
 
-        if (_paragraph.length === 1) 
-        {
+        if (_paragraph.length === 1) {
             _last_word = _paragraph.find('.'
                     + _selectable_text_word.word_classname 
                     + '.tooltip-trigger:last:not(.' 

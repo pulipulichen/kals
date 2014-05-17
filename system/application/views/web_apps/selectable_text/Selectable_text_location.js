@@ -185,7 +185,7 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     var _first_paragraph_id = _selectable_text_paragraph.get_paragraph_id(_first_paragraph);
     var _last_paragraph_id = _selectable_text_paragraph.get_paragraph_id(_last_paragraph);
     
-    //$.test_msg('selectable.setup_paragraph_location()', [ _first_paragraph_id , _last_paragraph_id]);
+    $.test_msg('selectable.setup_paragraph_location()', [ _first_paragraph_id , _last_paragraph_id]);
     
     var _batch_excute = _selectable_text.excute_interval.batch_excute;
     var _wait = _selectable_text.excute_interval.wait;
@@ -196,6 +196,12 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     var _continue = function (_i, _callback) {
         
         _i++;
+        
+        /**
+         * 加入統計目前字串次數的功能
+         * @author Pulipuli Chen  20140518
+         */
+        KALS_context.progress.add_count();
         
         if (_i % _batch_excute === 0) {
             _excute_timer = setTimeout(function () {

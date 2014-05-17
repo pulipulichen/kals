@@ -44,6 +44,12 @@ Selectable_text.prototype = new KALS_user_interface();
 Selectable_text.prototype._text = null;
 
 /**
+ * 暫存的可選取的範圍
+ * @type {jQuery};
+ */
+Selectable_text.prototype._cache_text = null;
+
+/**
  * @type {Select_tooltip}
  */
 Selectable_text.prototype.tooltip = null;
@@ -145,6 +151,9 @@ Selectable_text.prototype.initialized = false;
 Selectable_text.prototype.initialize = function (_callback) {
     
     var _element = this._text;
+    //this._cache_text = this._text.clone();
+    //var _element = this._cache_text;
+    
     
     // ---------
     // 開始作初始化
@@ -155,11 +164,8 @@ Selectable_text.prototype.initialize = function (_callback) {
      * 加入預測進度的功能
      * @author Pulipuli Chen 20131227 
      */
-    var _estimate_words = _element.text();
-    var _estimate_words_length = this.word.get_estimate_total_words(_estimate_words);
-    
-    KALS_context.progress.set_total(_estimate_words_length);
-    
+    this._predict_progress_total(_element);
+            
     /*
     this._estimate_words_length = _estimate_words_length;
     */
@@ -215,11 +221,48 @@ Selectable_text.prototype.initialize = function (_callback) {
     var _cache_enable = KALS_CONFIG.selectable_text_cache;
     //_cache_enable = false;
     
+    var _task_cache_text_backup = function (_callback) {
+        $.test_msg("Selectacble_text _task_cache_text_backup");
+        
+        //_this._text.empty()
+        //        .append(_this._cache_text.contents());
+        
+        _this._fake_text = _this._text.clone();
+        _this._text.after(_this._fake_text);
+        _this._cache_text = $("<div></div>").append(_this._text);
+        /*
+        _this._text.after(_this._cache_text);
+        _this._text.remove();
+        _this._text = _this._cache_text;
+        */
+        $.trigger_callback(_callback);
+    };
+    
     var _task_setup_selectable_element = function (_callback) {
+        $.test_msg("Selectacble_text _task_setup_selectable_element");
         return _this.setup_selectable_element(_element, _callback);
     };
     
+    var _task_cache_text_restore = function (_callback) {
+        $.test_msg("Selectacble_text _task_cache_text_restore");
+        
+        //_this._text.empty()
+        //        .append(_this._cache_text.contents());
+        /*
+        _this._text.after(_this._cache_text);
+        _this._text.remove();
+        _this._text = _this._cache_text;
+        */
+       
+        _this._fake_text.after(_this._text);
+        _this._fake_text.remove();
+        _this._cache_text.remove();
+        
+        $.trigger_callback(_callback);
+    };
+    
     var _task_setup_paragraph_location = function (_callback) {
+        $.test_msg("Selectacble_text _task_location");
         
         // ---------
         // 開始標示段落位置
@@ -228,6 +271,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_progress = function (_callback) {
+        $.test_msg("Selectacble_text _task_progress");
         
         // 全部處理完了
         _this.sentence.add_structure();
@@ -246,6 +290,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_cache_save = function (_callback) {
+        $.test_msg("Selectacble_text _task_cache_save");
         
         // 20140223 Pulipuli Chen
         // 儲存快取
@@ -261,6 +306,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_cache_restore = function (_callback) {
+        $.test_msg("Selectacble_text _task_cache_restore");
         
         // 20140223 Pulipuli Chen
         // 恢復快取
@@ -274,11 +320,12 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_setup_word_selectable = function (_callback) {
-        
+        $.test_msg("Selectacble_text _task_setup_word_selectable");
         return _this.setup_word_selectable(_callback);
     };
     
     var _task_complete = function (_callback) {
+        $.test_msg("Selectacble_text _task_complete");
         KALS_context.init_profile.add_listener(function () {
             _this.initialized = true;    
         });
@@ -294,11 +341,13 @@ Selectable_text.prototype.initialize = function (_callback) {
     // -----------------------------
     
     var _taks_list = [
+        _task_cache_text_backup,
         _task_setup_selectable_element,
         _task_setup_paragraph_location,
+        _task_setup_word_selectable,
+        _task_cache_text_restore,
         _task_cache_save,
         _task_progress,
-        _task_setup_word_selectable,
         _task_complete,
         _callback
     ];
@@ -1147,6 +1196,7 @@ Selectable_text.prototype.cache_save = function (_callback) {
     
     var _cache_id = this._cache_id;
     
+    //var _text_html = this._text.html();
     var _text_html = this._text.html();
     
     // 測試看看是不是因為字串太長的原因
@@ -1231,6 +1281,29 @@ Selectable_text.prototype.has_cache = function (_callback) {
     };
     
     this.cache.load(_loaded_callback);
+};
+
+/**
+ * 加入預測進度的功能
+ * @author Pulipuli Chen 20131227 
+ * @param {jQuery} _element
+ */
+Selectable_text.prototype._predict_progress_total = function (_element) {
+    var _total;
+    var _estimate_words = _element.text();
+    var _estimate_words_length = this.word.get_estimate_total_words(_estimate_words);
+    _total = _estimate_words_length;
+    
+    var _para_tags = this.paragraph.paragraph_tag_names;
+    //a=$('[myc="blue"],[myid="1"],[myid="3"]');
+    var _para_selector = _para_tags.join(",");
+    var _para_length = _element.find(_para_selector).length;
+    _para_length = _para_length * 2;
+    _total = _total + _para_length;
+    
+    $.test_msg("預測長度", [_total, _estimate_words_length, _para_length]);
+    
+    KALS_context.progress.set_total(_total);
 };
 
 /* End of file Selectable_text */

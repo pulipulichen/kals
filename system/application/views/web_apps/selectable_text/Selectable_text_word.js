@@ -238,6 +238,7 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
      * @author Pulipuli Chen  20131227
      */
     KALS_context.progress.add_count();
+    
     /*
     var _progress = _point_id;
     //每10統計一次
