@@ -546,14 +546,8 @@ DEFAULT_KALS_CONFIG = {
                     "policy": {
                         
                     }
-                },
+                }
             ]
-        },
-        /**
-         * 網頁快取
-         */
-        Webpage_cache: {
-            enable: true
         }
     }
 };

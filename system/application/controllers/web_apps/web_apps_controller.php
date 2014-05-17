@@ -750,7 +750,8 @@ $style = implode("}\n", $parts);
              * 20121224 Pulipuli Chen
              * 移除scope中text包含\'的資料
              */
-            $json = str_replace("\\'", "'", $json);
+            //$json = str_replace("\\'", "'", $json);
+            $json = stripslashes($json);
             
             return $json;
         }

@@ -87,6 +87,8 @@ Webpage_cache.prototype.save = function (_data, _callback) {
 
     KALS_util.ajax_post(_post_config);
     
+    $.test_msg("Webpage_cache 儲存了資料");
+    
     return this;
 };
 
@@ -100,14 +102,23 @@ Webpage_cache.prototype._load_url_prefix = "webpage_cache/load/";
  * @returns {Webpage_cache}
  */
 Webpage_cache.prototype.load = function (_callback) {
-    var _url = this._load_url_prefix + KALS_context.get_webpage_id();
+    
+    if (this._cache_data !== undefined) {
+        if ($.is_function(_callback)) {
+            _callback(this._cache_data);
+        }
+        return this;
+    }
+    
+    var _url = this._load_url_prefix;
+    _url = _url + KALS_context.get_webpage_id();
     _url = KALS_context.get_base_url(_url);
     
     var _this = this;
     var _load_callback = function (_data) {
         _data = _this._remove_cache_prefix(_data);
         
-        //$.test_msg("取得了資料 (" + _data.length + ")", _data);
+        $.test_msg("Webpage_cache 取得了資料 (" + _data.length + ")", _data);
         
         if (_data.length === 0) {
             _data = false;
@@ -116,6 +127,8 @@ Webpage_cache.prototype.load = function (_callback) {
         if ($.is_function(_callback)) {
             _callback(_data);
         }
+        
+        _this._cache_data = _data;
     };
     
     $.get(_url, _load_callback);
@@ -133,6 +146,30 @@ Webpage_cache.prototype._remove_cache_prefix = function (_data) {
     _data = $.substr(_data, 27);
     //_data = $.trim(_data);
     return _data;
+};
+
+/**
+ * 儲存快取資料
+ * @type String
+ */
+Webpage_cache.prototype._cache_data;
+
+/**
+ * 設定快取資料
+ * @param {String} _data
+ * @returns {Webpage_cache}
+ */
+Webpage_cache.prototype.set_cache_data = function (_data) {
+    this._cache_data = _data;
+    return this;
+};
+
+/**
+ * 取得快取資料
+ * @returns {String}
+ */
+Webpage_cache.prototype.get_cache_data = function () {
+    return this._cache_data;
 };
 
 /* End of file Webpage_cache */

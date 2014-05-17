@@ -71,6 +71,7 @@ Init_profile.prototype._$onstart = function () {
         }, 50);
             
     });
+    
 };
 
 /**
@@ -119,9 +120,9 @@ Init_profile.prototype._test = [
      * 測試網頁暫存功能
      * @author Pulipuli Chen 20140517
      */
-    /*s
     , function () {
-        var _cache = KALS_context.module.load("Webpage_cache");
+        //var _cache = KALS_context.module.load("Webpage_cache");
+        var _cache = new Webpage_cache();
         
         var _select_text = "測試看看資料有沒有存進去";
         
@@ -136,7 +137,6 @@ Init_profile.prototype._test = [
             }
         });
     }
-    */
     /**
      * 測試網頁暫存功能草稿
      * @author Pulipuli Chen 20140517

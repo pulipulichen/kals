@@ -578,8 +578,8 @@ KALS_context.load_info = function (_callback) {
     //先準備資料
     var _data = {};
         
-        //指引預設
-        _data.anchor_navigation_type = KALS_CONFIG.anchor_navigation_type;
+    //指引預設
+    _data.anchor_navigation_type = KALS_CONFIG.anchor_navigation_type;
     
     this.load(_data, _callback);
     

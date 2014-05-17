@@ -18,7 +18,7 @@ function Init_context() {
     
     Task_event_dispatcher.call(this);
     
-    this._$schedule_task = ['selector', 'load', "check_css_loaded"];
+    this._$schedule_task = ['selector', 'load', "modules", "check_css_loaded"];
     
 }
 
@@ -32,8 +32,10 @@ Init_context.prototype._$onstart = function () {
     //準備基本資料
     KALS_context.load_info(function () {
         
+        // 讀取模組，載入導覽列
         var _loaded_modules = KALS_context.module.init();
         KALS_context.navigation.init(_loaded_modules);
+        KALS_context.init_context.complete('modules');
         
         KALS_context.init_context.complete('load');
     });

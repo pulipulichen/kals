@@ -80,6 +80,9 @@ class Webpage_cache extends Web_apps_controller {
         
         //$cache = $cache["selectable_text"];
         $cache = substr($cache, 1, strlen($cache) - 2);
+        //$cache = str_replace("\\'", "'", $cache);
+        //$cache = str_replace('\\"', '"', $cache);
+        $cache = stripslashes($cache);
         
         //if (is_string($cache)
         //        && is_file($cache_path) === FALSE) {
@@ -91,7 +94,7 @@ class Webpage_cache extends Web_apps_controller {
     }
     
     // ---------------------------
-    // 儲存函式
+    // 讀取函式
     // ---------------------------
     
     /**

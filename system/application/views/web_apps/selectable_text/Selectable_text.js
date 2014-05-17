@@ -31,6 +31,7 @@ function Selectable_text(_selector) {
     this.child('paragraph', new Selectable_text_paragraph(this));
     this.child('location', new Selectable_text_location(this));
     this.child('chapter', new Selectable_text_chapter(this));
+    this.child('cache', new Webpage_cache());
 }
 
 // Extend from KALS_user_interface
@@ -91,6 +92,12 @@ Selectable_text.prototype.location;
  * @type {Selectable_text_chapter}
  */
 Selectable_text.prototype.chapter;
+
+/**
+ * 快取機制
+ * @type Webpage_cache
+ */
+Selectable_text.prototype.cache;
 
 // -------------------------
 // End of Selectable_text_component
@@ -1129,6 +1136,10 @@ Selectable_text.prototype._cache_id = 'selectable_text';
 
 /**
  * 儲存到快取中
+ * 
+ * @version 20140517 Pulipuli Chen
+ *  取代了原本使用storage來儲存的作法
+ *  改用Webpage_cache的方式從伺服器儲存快取
  * @param {funciton} _callback
  * @returns {Selectable_text}
  */
@@ -1143,27 +1154,40 @@ Selectable_text.prototype.cache_save = function (_callback) {
     //$.test_msg('cache_save ' + _cache_id, _text_html);
     
     var _this = this;
-    KALS_context.storage.set(_cache_id, _text_html, function () {
-        _this.word.cache_save(_cache_id, function () {
-            _this.sentence.cache_save(_cache_id, function () {
-                _this.paragraph.cache_save(_cache_id, _callback);
-            });
+//    KALS_context.storage.set(_cache_id, _text_html, function () {
+//        _this.word.cache_save(_cache_id, function () {
+//            _this.sentence.cache_save(_cache_id, function () {
+//                _this.paragraph.cache_save(_cache_id, _callback);
+//            });
+//        });
+//    });
+    
+    this.word.cache_save(_cache_id, function () {
+        _this.sentence.cache_save(_cache_id, function () {
+            _this.paragraph.cache_save(_cache_id, _callback);
         });
     });
+    
+    this.cache.save(_text_html);
     
     return this;
 };
 
 /**
  * 從快取中復原
+ * 
+ * @version 20140517 Pulipuli Chen
+ *  取代了原本使用storage來儲存的作法
+ *  改用Webpage_cache的方式從伺服器取得快取
  * @param {funciton} _callback
  * @returns {Selectable_text_word}
  */
 Selectable_text.prototype.cache_restore = function (_callback) {
     
+    
     var _cache_id = this._cache_id;
     var _this = this;
-    KALS_context.storage.get(_cache_id, function (_text_html) {
+    var _loaded_callback = function (_text_html) {
         //$.test_msg('cache_restore ' + _cache_id, _text_html);
         _this._text.html(_text_html);
 
@@ -1172,18 +1196,41 @@ Selectable_text.prototype.cache_restore = function (_callback) {
                 _this.paragraph.cache_restore(_cache_id, _callback);
             });
         });
-    });
+    };
     
+    /*
+    KALS_context.storage.get(_cache_id, _loaded_callback);
+    */
+   
+    this.cache.load(_loaded_callback);
     return this;
 };
 
 /**
  * 檢查是否有cache
+ * 
+ * @version 20140517 Pulipuli Chen
+ *  取代了原本使用storage來儲存的作法
+ *  改用Webpage_cache的方式從伺服器取得快取
  * @param {funciton} _callback
  * @returns {Boolean}
  */
 Selectable_text.prototype.has_cache = function (_callback) {
-    return KALS_context.storage.is_set(this._cache_id, _callback);
+    
+    //return KALS_context.storage.is_set(this._cache_id, _callback);
+    
+    var _loaded_callback = function (_data) {
+        var _existed = false;
+        if (_data !== false) {
+            _existed = true;
+        }
+        
+        if ($.is_function(_callback)) {
+            _callback(_existed);
+        }
+    };
+    
+    this.cache.load(_loaded_callback);
 };
 
 /* End of file Selectable_text */

@@ -234,6 +234,7 @@ class generic extends Web_apps_controller {
             'selectable_text/Selectable_text_scope',
             'selectable_text/Selectable_text_sentence',
             'selectable_text/Selectable_text_word',
+            'selectable_text/Webpage_cache',    // 20140517 Pulipuli Chen
             'selectable_text/Selectable_text',
             'selection/Selection_manager',
 
@@ -797,6 +798,9 @@ class generic extends Web_apps_controller {
         $data['KALS_authentication'] = $authentication->default_data();
 
         $data['KALS_view_manager'] = $this->_load_viewes();
+        
+        // 20140517 Pulipuli Chen
+        $data['webpage_id'] = get_context_webpage()->get_id();
         
         $this->_display_jsonp($data, $callback);
     }
