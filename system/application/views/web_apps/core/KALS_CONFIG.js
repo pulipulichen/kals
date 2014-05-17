@@ -506,7 +506,7 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         KALS_stamp: {
-            "enable": true,
+            "enable": false,
             /**
              * 獎章資格設定
              */
