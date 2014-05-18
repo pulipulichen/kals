@@ -114,6 +114,10 @@ class Log extends Web_apps_controller {
      * @return type
      */
     private function _create_log($json) {
+        if ($json === FALSE) {
+            return FALSE;
+        }
+        
         //$this->output->enable_profiler(TRUE);
         //print_r($_POST);
         

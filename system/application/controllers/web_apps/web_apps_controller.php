@@ -756,7 +756,9 @@ $style = implode("}\n", $parts);
             return $json;
         }
         else {
-            handle_error ('Cannot get json data.');
+            //handle_error ('Cannot get json data.');
+            //return "{}";
+            return FALSE;
         }
     }
     

@@ -149,11 +149,13 @@ KALS_storage.prototype.get = function (_key, _callback) {
  * @returns {KALS_storage.prototype}
  */
 KALS_storage.prototype.set = function (_key, _value, _callback) {
-    if (this._is_enable() === false) {
+    if (this._is_enable() === false
+            || _value === undefined) {
         $.trigger_callback(_callback);
         return this;
     }
     else {
+        
         if ($.is_object(_value)) {
             _value = $.json_encode(_value);
         }
@@ -162,12 +164,17 @@ KALS_storage.prototype.set = function (_key, _value, _callback) {
         
         var _orig_size = _value.length;
         
+        if (_orig_size === undefined) {
+            $.trigger_callback(_callback);
+            return this;
+        }
+        
         _value = LZString.compress(_value);
         var _compressed_size = _value.length;
         
         var _percent = parseInt(((_orig_size - _compressed_size) / _orig_size)*100 , 10);
         
-        $.test_msg('stroage set', _orig_size + ' > ' + _compressed_size 
+        $.test_msg('stroage set (' + _key +  ')', _orig_size + ' > ' + _compressed_size 
                 + ' (壓縮率: ' + _percent  + '%) ');
         
         if (_compressed_size < this._quota_pre_item) {

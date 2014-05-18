@@ -251,148 +251,140 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
     return _word;
 };
 
+Selectable_text_word.prototype.KALS_SELECT_MOUSEDOWN_LOCK;
+Selectable_text_word.prototype.KALS_SELECT_LOCK;
+
 /**
- * 讓所有文字都保持在可選取的狀態
- * 
- * 2254 轉接完畢，檢查完畢
- * @param {function} _callback
+ * 設定文字的滑鼠事件
+ * @param {jQuery} _words
+ * @param {Function} _callback
+ * @returns {Selectable_text_word}
  */
-Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
-    
+Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callback) {
+    	
     var _select = KALS_text.selection.select;
     
-	// 如果是一般模式
-    if ($.is_mobile_mode() === false) {
-        if (typeof(this.locks.word_click) === 'undefined') {
-            var _this = this;
-			
-            var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
-            
-            // 20140223 Pudding Chen
-            // 轉移到這邊做tooltip
-            _this.setup_word_tooltip(_words);
-			
-            // @20130612 Pudding Chen
-            // 加入了拖曳選取時也能用的選取範圍功能
-            if (typeof(KALS_SELECT_MOUSEDOWN_LOCK) === "undefined") {
-                    KALS_SELECT_MOUSEDOWN_LOCK = null;
-                    KALS_SELECT_LOCK = false;
+    // @20130612 Pudding Chen
+    // 加入了拖曳選取時也能用的選取範圍功能
+    if (typeof(this.KALS_SELECT_MOUSEDOWN_LOCK) === "undefined") {
+        this.KALS_SELECT_MOUSEDOWN_LOCK = null;
+        this.KALS_SELECT_LOCK = false;
+    }
+
+    var _this = this;
+    _words.mouseout(function () {
+        _this.KALS_SELECT_LOCK = false;
+    });
+
+    _words.mousedown(function (_event) {
+
+        // 限制只能用左鍵選取
+        if (_event.which !== 1) {
+            return;
+        }
+
+        /**
+         * 先做超連結偵測
+         * @author Pulipuli Chen <pulipuli.chen@gmail.com> 
+         */
+        var _md_this = this;
+        var _word = $(_md_this);
+        var _is_link = false;
+
+        var _link_tag = _word.parents("a[href]:first");
+        if (_link_tag.length === 1) {
+            // 如果是超連結的話
+            _is_link = true;
+
+            var _link_url = _link_tag.attr("href");
+
+            //alert(_link_tag.attr("target"));
+            /*
+            var _target = "_blank";
+            if (_link_url.substr(0,1) != "#"
+                    && (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") ) {
+                _link_tag.attr("target", "_blank");
+            }
+            else {
+                _target = _link_tag.attr("target");
+            }
+            */
+            var _target = "_self";
+            if (_link_tag.hasAttr("target") === false 
+                    || _link_tag.attr("target") === "") {
+                _target = _link_tag.attr("target");
+            }
+            //_link_url = "//";
+
+            var _log_data = {
+                "url": _link_url,
+                "target": _target
+            };
+
+            //$.test_msg("送出超連結", _log_data);
+            var _action = 39;
+            KALS_util.log(_action, _log_data);
+
+            return;
+        }
+
+        _this.KALS_SELECT_LOCK = true;
+        _this.KALS_SELECT_MOUSEDOWN_LOCK = 1;
+
+        setTimeout(function () {
+            if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 1) {
+                _word = $(_md_this);
+
+                _select.cancel_select();
+                _select.set_select(_word);	
+
+                _this.KALS_SELECT_MOUSEDOWN_LOCK = 2;
+            }
+        }, 300);
+
+        setTimeout(function () {
+            if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 2 
+                    && _this.KALS_SELECT_LOCK === true) {
+                _word = $(_md_this);
+                _select.set_select(_word);	
+                _this.KALS_SELECT_MOUSEDOWN_LOCK = null;
+            }
+        }, 1000);
+    });
+
+    _words.mouseup(function () {
+        var _mu_this = this;
+        setTimeout(function () {
+            if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 2) {
+                var _word = $(_mu_this);
+                _select.set_select(_word);	
             }
 
-            _words.mouseout(function () {
-                KALS_SELECT_LOCK = false;
-            });
+            _this.KALS_SELECT_MOUSEDOWN_LOCK = null;
+        }, 100);
 
-            _words.mousedown(function (_event) {
-                
-                // 限制只能用左鍵選取
-                if (_event.which !== 1) {
-                    return;
-                }
-                
-                /**
-                 * 先做超連結偵測
-                 * @author Pulipuli Chen <pulipuli.chen@gmail.com> 
-                 */
-                var _md_this = this;
-                var _word = $(_md_this);
-                var _is_link = false;
+        if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 1) {
 
-                var _link_tag = _word.parents("a[href]:first");
-                if (_link_tag.length === 1) {
-                    // 如果是超連結的話
-                    _is_link = true;
+            //表示這是一個Click事件
+            _this.KALS_SELECT_MOUSEDOWN_LOCK = null;
 
-                    var _link_url = _link_tag.attr("href");
+            if (_this.initialized === false) {
+                return this;
+            }
 
-                    //alert(_link_tag.attr("target"));
-                    /*
-                    var _target = "_blank";
-                    if (_link_url.substr(0,1) != "#"
-                            && (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") ) {
-                        _link_tag.attr("target", "_blank");
-                    }
-                    else {
-                        _target = _link_tag.attr("target");
-                    }
-                    */
-                    var _target = "_self";
-                    if (_link_tag.hasAttr("target") === false 
-                            || _link_tag.attr("target") === "") {
-                        _target = _link_tag.attr("target");
-                    }
-                    //_link_url = "//";
+            var _word = $(this);
+            setTimeout(function () {
+                _word.tooltip().hide();
+            }, 100);
 
-                    var _log_data = {
-                        "url": _link_url,
-                        "target": _target
-                    };
+            //_manager.listen_select(_word);
+            _select.set_select(_word);
 
-                    //$.test_msg("送出超連結", _log_data);
-                    var _action = 39;
-                    KALS_util.log(_action, _log_data);
-
-                    return;
-                }
-
-                KALS_SELECT_LOCK = true;
-                KALS_SELECT_MOUSEDOWN_LOCK = 1;
-
-
-                setTimeout(function () {
-                    if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
-                        _word = $(_md_this);
-
-                        _select.cancel_select();
-                        _select.set_select(_word);	
-
-                        KALS_SELECT_MOUSEDOWN_LOCK = 2;
-                    }
-                }, 300);
-
-                setTimeout(function () {
-                    if (KALS_SELECT_MOUSEDOWN_LOCK === 2
-                        && KALS_SELECT_LOCK === true) {
-                            _word = $(_md_this);
-                            _select.set_select(_word);	
-                            KALS_SELECT_MOUSEDOWN_LOCK = null;
-                    }
-                }, 1000);
-            });
-
-            _words.mouseup(function () {
-                var _mu_this = this;
-                setTimeout(function () {
-                    if (KALS_SELECT_MOUSEDOWN_LOCK === 2) {
-                        var _word = $(_mu_this);
-                        _select.set_select(_word);	
-                    }
-
-                    KALS_SELECT_MOUSEDOWN_LOCK = null;
-                }, 100);
-
-                if (KALS_SELECT_MOUSEDOWN_LOCK === 1) {
-
-                    //表示這是一個Click事件
-                    KALS_SELECT_MOUSEDOWN_LOCK = null;
-
-                    if (_this.initialized === false) {
-                            return this;
-                    }
-
-                    var _word = $(this);
-                    setTimeout(function () {
-                        _word.tooltip().hide();
-                    }, 100);
-
-                    //_manager.listen_select(_word);
-                    _select.set_select(_word);
-
-                    if ($.is_function(_callback)) {
-                            _callback();
-                    }
-                }
-            });
+            if ($.is_function(_callback)) {
+                _callback();
+            }
+        }
+    });
 
             /*
             _words.mousemove(function () {
@@ -450,6 +442,36 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
                             _HOVER_TIMER = null;
                     });
             */
+    if ($.is_function(_callback)) {
+        _callback();
+    }
+    return this;
+};
+
+/**
+ * 讓所有文字都保持在可選取的狀態
+ * 
+ * 2254 轉接完畢，檢查完畢
+ * @param {function} _callback
+ */
+Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
+    
+    var _select = KALS_text.selection.select;
+    
+	// 如果是一般模式
+    if ($.is_mobile_mode() === false) {
+        if (typeof(this.locks.word_click) === 'undefined') {
+            var _this = this;
+			
+            var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
+            
+            // 20140223 Pudding Chen
+            // 轉移到這邊做tooltip
+            _this.setup_word_tooltip(_words);
+            
+            // 20140518 Pulipuli Chen
+            // 分開來做選取事件
+            _this.setup_word_mouse_event(_words);
 			
             this.locks.word_click = true;
         }

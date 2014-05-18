@@ -40,7 +40,7 @@ class Webpage_cache extends Web_apps_controller {
      * 儲存webpage快取
      * @return Boolean
      */
-    public function save($json = NULL) {
+    public function save($part, $json = NULL) {
         
         $index = "selectable_text";
         if ($this->_is_callback($json) == false)
@@ -50,7 +50,7 @@ class Webpage_cache extends Web_apps_controller {
             $json = $this->_get_post_json();
 
             //test_msg("create_post", 2);
-            $data = $this->_save_webpage_cache($json);
+            $data = $this->_save_webpage_cache($part, $json);
 
             //test_msg("create_post", 3);
             //然後把data存入session中
@@ -74,9 +74,9 @@ class Webpage_cache extends Web_apps_controller {
      * @param String $cache
      * @return boolean
      */
-    private function _save_webpage_cache($cache) {
+    private function _save_webpage_cache($part, $cache) {
         
-        $cache_path = $this->_get_cache_path();
+        $cache_path = $this->_get_cache_path($part);
         
         //$cache = $cache["selectable_text"];
         $cache = substr($cache, 1, strlen($cache) - 2);
@@ -98,17 +98,67 @@ class Webpage_cache extends Web_apps_controller {
         return TRUE;
     }
     
+    /**
+     * 清除暫存檔案
+     */
+    public function clean_save() {
+        
+        $i = 0;
+        $cache_path = $this->_get_cache_path($i);
+        while (is_file($cache_path)) {
+            unlink($cache_path);
+            $i++;
+            $cache_path = $this->_get_cache_path($i);
+        }
+    }
+    
     // ---------------------------
     // 讀取函式
     // ---------------------------
     
     /**
+     * 是否啟用快取
+     * @var Boolean
+     */
+    var $enable_cache = true;
+    
+    /**
+     * 讀取時，一次合併的檔案數量
+     * @var Int 
+     */
+    var $merge_parts = 10;
+    
+    public function load($webpage_id) {
+        
+        $parts_count = 0; 
+        
+        // 先計算數量
+        $i = 0;
+        
+        $cache_path = $this->_get_cache_path($i);
+        while (is_file($cache_path)) {
+            $i++;
+            $cache_path = $this->_get_cache_path($i);
+        }
+        
+        if ($i > 0) {
+            $parts_count = ceil( $i / $this->merge_parts );
+            
+            $cache_mins = $this->config->item("webpage_cache.expiration");
+            if ($this->enable_cache) {
+                $this->output->cache($cache_mins);
+            }
+        }
+        
+        $this->_display_get($parts_count);
+    }
+    
+    /**
      * 讀取
      * 
      * @param Int $webpage_id 如果未輸入webpage_id，則會被自動帶入現在所在的webpage的ID]
-     * @param Int $part 分部分
      */
-    public function load($webpage_id, $part = NULL) {
+    public function load_parts($webpage_id, $start_index) {
         
         //if (is_null($webpage_id)) {
         //    $webpage_id = $this->webpage->get_id();
@@ -116,11 +166,32 @@ class Webpage_cache extends Web_apps_controller {
         //    return;
         //}
         
-        $cache_path = $this->_get_cache_path($part);
+        //$cache_path = $this->_get_cache_path($part);
         
         $data = "";
+        
+        $i = ($start_index * $this->merge_parts );
+        $end_index = $i + $this->merge_parts;
+        $cache_path = $this->_get_cache_path($i);
+        while (is_file($cache_path)) {
+            $data = $data . read_file($cache_path);
+            
+            $i++;
+            if ($i === $end_index) {
+                break;
+            }
+            
+            $cache_path = $this->_get_cache_path($i);
+        }
+        //test_msg($i, $end_index);
+        
+        //for ($i = 0; $i < 3; $i++) {
+        //    $data = $data . $data;
+        //}
+        
+        /*
         if (is_file($cache_path)) {
-            $data = read_file($cache_path);
+            //$data = read_file($cache_path);
             //test_msg("有資料:" . $data);
             //echo "";
             //unlink($cache_path);
@@ -128,12 +199,19 @@ class Webpage_cache extends Web_apps_controller {
             //$this->_display_get($data);
             
             // 快取時間
-            $cache_mins = $this->config->item("webpage_cache.expiration");
-            $this->output->cache($cache_mins);
+            
+            
             
             //return $this;
         }
+        */
         
+        if ($data !== "") {
+            $cache_mins = $this->config->item("webpage_cache.expiration");
+            if ($this->enable_cache) {
+                $this->output->cache($cache_mins);
+            }
+        }
         
         $this->_display_get($data);
     }

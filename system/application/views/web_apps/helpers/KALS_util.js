@@ -204,7 +204,7 @@ KALS_util.ajax_get = function (_config) {
 KALS_util.ajax_post = function (_config) {
     //如果要檢查資料，請將_debug設為true
     var _debug = KALS_CONFIG.debug.ajax_post;
-    _debug = true;
+    //_debug = true;
     
     var _url = $.get_parameter(_config, 'url');
     var _data = $.get_parameter(_config, 'data');
@@ -800,7 +800,8 @@ KALS_util.log = function (_action, _note, _callback) {
         }
     };
     //KALS_util.ajax_get(_config);
-    KALS_util.ajax_post(_config);
+    
+    //KALS_util.ajax_post(_config);
 };
 
 /* End of file KALS_unit */

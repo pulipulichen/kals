@@ -340,7 +340,7 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    selectable_text_cache: false,
+    selectable_text_cache: true,
     
     /**
      * 偵錯用設定
