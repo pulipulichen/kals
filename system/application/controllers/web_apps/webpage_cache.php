@@ -85,8 +85,14 @@ class Webpage_cache extends Web_apps_controller {
         
         //if (is_string($cache)
         //        && is_file($cache_path) === FALSE) {
+        
         if (is_string($cache)) {
+            
+            //test_msg("儲存前", strlen($cache));
             write_file($cache_path, $cache);
+            
+            //$data = read_file($cache_path);
+            //test_msg("儲存後", strlen($data));
         }
         
         return TRUE;
@@ -98,10 +104,11 @@ class Webpage_cache extends Web_apps_controller {
     
     /**
      * 讀取
-     * @param String $callback AJAX使用的callback
-     * @param Int $webpage_id 如果未輸入webpage_id，則會被自動帶入現在所在的webpage的ID
+     * 
+     * @param Int $webpage_id 如果未輸入webpage_id，則會被自動帶入現在所在的webpage的ID]
+     * @param Int $part 分部分
      */
-    public function load($webpage_id) {
+    public function load($webpage_id, $part = NULL) {
         
         //if (is_null($webpage_id)) {
         //    $webpage_id = $this->webpage->get_id();
@@ -109,7 +116,7 @@ class Webpage_cache extends Web_apps_controller {
         //    return;
         //}
         
-        $cache_path = $this->_get_cache_path();
+        $cache_path = $this->_get_cache_path($part);
         
         $data = "";
         if (is_file($cache_path)) {
@@ -146,9 +153,11 @@ class Webpage_cache extends Web_apps_controller {
     
     /**
      * 取得快取路徑
+     * 
+     * @param Int $part 部分
      * @return string
      */
-    private function _get_cache_path() {
+    private function _get_cache_path($part = NULL) {
         
         $webpage_id = $this->webpage->get_id();
         
@@ -157,7 +166,12 @@ class Webpage_cache extends Web_apps_controller {
             $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
         }
         
-        $path = $dir . "KALS_webpage_cache_" . $webpage_id . ".html";
+        $filename = $webpage_id;
+        if ($part !== NULL) {
+            $filename = $filename . "-" . $part;
+        }
+        
+        $path = $dir . "KALS_webpage_cache_" . $filename . ".html";
         
         //test_msg($path);
         

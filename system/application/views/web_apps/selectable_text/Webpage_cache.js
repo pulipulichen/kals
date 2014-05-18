@@ -199,7 +199,7 @@ Webpage_cache.prototype.get_cache_data = function () {
  */
 Webpage_cache.prototype.compress_data = function (_data) {
     //_data = " " + _data + " ";
-    //$.test_msg("cache 壓縮前：" + _data.length);
+    $.test_msg("cache 壓縮前：" + _data.length);
     //_data = LZString.compress(_data);
     //_data = LZString.compressToBase64(_data);
     //$.test_msg("cache 壓縮後：" + _data.length);
@@ -218,7 +218,7 @@ Webpage_cache.prototype.decompress_data = function (_data) {
     
     //$.test_msg("cache 解壓縮前：" + _data.length);
     //_data = LZString.decompressFromBase64(_data);
-    //$.test_msg("cache 解壓縮後：" + _data.length);
+    $.test_msg("cache 解壓縮後：" + _data.length);
     //_data = $.trim(_data);
     return _data;
 };
