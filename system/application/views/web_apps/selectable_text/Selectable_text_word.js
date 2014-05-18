@@ -465,18 +465,51 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
 			
             var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
             
-            // 20140223 Pudding Chen
-            // 轉移到這邊做tooltip
-            _this.setup_word_tooltip(_words);
+            var _i = 0;
+            var _wait_i = 100;
+            var _loop = function () {
+                
+                var _word = _words.eq(_i);
+                
+                // 20140223 Pudding Chen
+                // 轉移到這邊做tooltip
+                _this.setup_word_tooltip(_word);
+
+                // 20140518 Pulipuli Chen
+                // 分開來做選取事件
+                _this.setup_word_mouse_event(_word);
+                
+                KALS_context.progress.add_count();
+                
+                _continue();
+            };
             
-            // 20140518 Pulipuli Chen
-            // 分開來做選取事件
-            _this.setup_word_mouse_event(_words);
+            var _continue = function () {
+                _i++;
+                if (_i < _words.length) {
+                    
+                    if (_i % _wait_i === 0) {
+                        setTimeout(function () {
+                            _loop();
+                        }, 10);
+                    }
+                    else {
+                        _loop();
+                    }
+                }
+                else {
+                    _complete();
+                }
+            };
+            
+            var _complete = function () {
+                _this.locks.word_click = true;
+                $.trigger_callback(_callback);
+            };
 			
-            this.locks.word_click = true;
+            _loop();
         }
     }
-    $.trigger_callback(_callback);
     
     return this;
 };

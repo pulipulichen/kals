@@ -15,6 +15,12 @@
 DEFAULT_KALS_CONFIG = {
     
     /**
+     * 是否啟用KALS
+     * @type Boolean
+     */
+    enable_kals: true,
+    
+    /**
      * 標註範圍指定區塊
      * @type {string,null} jQuery的指定語法(selector)
      *     請盡量以ID為指定區塊。
@@ -340,7 +346,7 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    selectable_text_cache: true,
+    //selectable_text_cache: true,
     
     /**
      * 偵錯用設定

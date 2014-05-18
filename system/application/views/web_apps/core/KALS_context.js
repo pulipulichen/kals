@@ -18,6 +18,10 @@ KALS_context = new JSONP_dispatcher();
  */
 KALS_context.initialize = function () {
     
+    if (KALS_CONFIG.enable_kals === false) {
+        return this;
+    }
+    
     //設定基本網址
     if (typeof(KALS_loader) !== 'undefined') {
         this.base_url = KALS_loader.get_base_url();

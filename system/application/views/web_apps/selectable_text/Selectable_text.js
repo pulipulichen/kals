@@ -218,11 +218,12 @@ Selectable_text.prototype.initialize = function (_callback) {
     // ------------------------------------
     
     // 是否啟用快取
-    var _cache_enable = KALS_CONFIG.selectable_text_cache;
+    //var _cache_enable = KALS_CONFIG.selectable_text_cache;
+    var _cache_enable = this.cache.enable_cache;
     //_cache_enable = false;
     
     var _task_cache_text_backup = function (_callback) {
-        $.test_msg("Selectacble_text _task_cache_text_backup");
+        //$.test_msg("Selectacble_text _task_cache_text_backup");
         
         //_this._text.empty()
         //        .append(_this._cache_text.contents());
@@ -239,12 +240,12 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_setup_selectable_element = function (_callback) {
-        $.test_msg("Selectacble_text _task_setup_selectable_element");
+        //$.test_msg("Selectacble_text _task_setup_selectable_element");
         return _this.setup_selectable_element(_element, _callback);
     };
     
     var _task_cache_text_restore = function (_callback) {
-        $.test_msg("Selectacble_text _task_cache_text_restore");
+        //$.test_msg("Selectacble_text _task_cache_text_restore");
         
         //_this._text.empty()
         //        .append(_this._cache_text.contents());
@@ -262,7 +263,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_setup_paragraph_location = function (_callback) {
-        $.test_msg("Selectacble_text _task_location");
+        //$.test_msg("Selectacble_text _task_location");
         
         // ---------
         // 開始標示段落位置
@@ -271,7 +272,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_progress = function (_callback) {
-        $.test_msg("Selectacble_text _task_progress");
+        //$.test_msg("Selectacble_text _task_progress");
         
         // 全部處理完了
         _this.sentence.add_structure();
@@ -290,7 +291,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_cache_save = function (_callback) {
-        $.test_msg("Selectacble_text _task_cache_save");
+        //$.test_msg("Selectacble_text _task_cache_save");
         
         // 20140223 Pulipuli Chen
         // 儲存快取
@@ -306,7 +307,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_cache_restore = function (_callback) {
-        $.test_msg("Selectacble_text _task_cache_restore");
+        //$.test_msg("Selectacble_text _task_cache_restore");
         
         // 20140223 Pulipuli Chen
         // 恢復快取
@@ -320,12 +321,12 @@ Selectable_text.prototype.initialize = function (_callback) {
     };
     
     var _task_setup_word_selectable = function (_callback) {
-        $.test_msg("Selectacble_text _task_setup_word_selectable");
+        //$.test_msg("Selectacble_text _task_setup_word_selectable");
         return _this.setup_word_selectable(_callback);
     };
     
     var _task_complete = function (_callback) {
-        $.test_msg("Selectacble_text _task_complete");
+        //$.test_msg("Selectacble_text _task_complete");
         KALS_context.init_profile.add_listener(function () {
             _this.initialized = true;    
         });
@@ -368,13 +369,13 @@ Selectable_text.prototype.initialize = function (_callback) {
     if (_cache_enable) {
         this.has_cache(function (_existed) {
             if (_existed) {
-                $.test_msg('selectable_text 啟用 cache');
+                //$.test_msg('selectable_text 啟用 cache');
                 _taks_list = [
                     //_task_setup_selectable_element,
                     //_task_setup_paragraph_location,
                     _task_cache_restore,
-                    _task_progress,
                     _task_setup_word_selectable,
+                    _task_progress,
                     _task_complete,
                     _callback
                 ];
@@ -1381,12 +1382,17 @@ Selectable_text.prototype._predict_progress_total = function (_element) {
     var _estimate_words_length = this.word.get_estimate_total_words(_estimate_words);
     _total = _estimate_words_length;
     
+    // 段落
     var _para_tags = this.paragraph.paragraph_tag_names;
     //a=$('[myc="blue"],[myid="1"],[myid="3"]');
     var _para_selector = _para_tags.join(",");
     var _para_length = _element.find(_para_selector).length;
     _para_length = _para_length * 2;
     _total = _total + _para_length;
+    
+    // 文字
+    var _span = _element.find("span");
+    _total = _total + _span.length;
     
     //$.test_msg("預測長度", [_total, _estimate_words_length, _para_length]);
     

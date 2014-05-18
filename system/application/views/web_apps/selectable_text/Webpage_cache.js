@@ -16,6 +16,10 @@
 function Webpage_cache() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
+    
+    if (typeof(KALS_context.selectable_text_cache) === "boolean") {
+        this.enable_cache = KALS_context.selectable_text_cache;
+    }
 }
 
 /**
@@ -63,6 +67,12 @@ Webpage_cache.prototype._$enable_debug = true;
  */
 
 /**
+ * 是否啟用快取
+ * @type String
+ */
+Webpage_cache.prototype.enable_cache = true;
+
+/**
  * 儲存資料的網址
  * @type String
  */
@@ -80,7 +90,7 @@ Webpage_cache.prototype.save = function (_data, _callback) {
     _data = this.compress_data(_data);
     var _data_parts = this.split_data(_data);
     
-    $.test_msg("總共分割成份數", _data_parts.length);
+    //$.test_msg("總共分割成份數", _data_parts.length);
     var _i = 0
     
     var _clean_save_url = KALS_context.get_base_url("/webpage_cache/clean_save");
@@ -112,7 +122,7 @@ Webpage_cache.prototype.save = function (_data, _callback) {
     };
     
     var _complete = function () {
-        $.test_msg("Webpage_cache 儲存了資料");
+        //$.test_msg("Webpage_cache 儲存了資料");
         if (_callback !== undefined) {
             $.trigger(_callback);
         }
@@ -142,14 +152,14 @@ Webpage_cache.prototype._load_parts_url_prefix = "webpage_cache/load_parts/";
 Webpage_cache.prototype.load = function (_callback) {
     
     if (this.get_cache_data() !== undefined) {
-        $.test_msg("直接取用快取");
+        //$.test_msg("直接取用快取");
         if ($.is_function(_callback)) {
             _callback(this.get_cache_data());
         }
         return this;
     }
     
-    $.test_msg("Webpage_cache.load 開始讀取", (this._cache_data !== undefined));
+    //$.test_msg("Webpage_cache.load 開始讀取", (this._cache_data !== undefined));
     
     var _url = this._load_url_prefix;
     _url = _url + KALS_context.get_webpage_id();
@@ -158,7 +168,7 @@ Webpage_cache.prototype.load = function (_callback) {
     var _this = this;
     $.get(_url, function (_parts_count) {
         _parts_count = _this._remove_cache_prefix(_parts_count);
-        $.test_msg("份數", _parts_count);
+        //$.test_msg("份數", _parts_count);
         _parts_count = parseInt(_parts_count);
         
         if (_parts_count === 0) {
@@ -258,7 +268,7 @@ Webpage_cache.prototype._load_part = function (_part, _callback) {
             
         //_data = _this.decompress_data(_data);
         
-        $.test_msg("Webpage_cache 取得了資料 3 (" + _data.length + ")");
+        //$.test_msg("Webpage_cache 取得了資料 3 (" + _data.length + ")");
         
         _this.append_cache_data(_data);
         
@@ -299,7 +309,7 @@ Webpage_cache.prototype._need_clean_save = true;
  * 取要清理儲存
  * @type Boolean
  */
-Webpage_cache.prototype._enable_clean_save = false;
+Webpage_cache.prototype._enable_clean_save = true;
 
 
 // ----------------------------------
@@ -365,10 +375,10 @@ Webpage_cache.prototype.compress_data = function (_data) {
     
     // 極限長度：450000
     
-    $.test_msg("cache 壓縮前：" + _data.length);
+    //$.test_msg("cache 壓縮前：" + _data.length);
     //_data = LZString.compress(_data);
     _data = LZString.compressToBase64(_data);
-    $.test_msg("cache 壓縮後：" + _data.length);
+    //$.test_msg("cache 壓縮後：" + _data.length);
     return _data;
 };
 
@@ -415,9 +425,9 @@ Webpage_cache.prototype._split_limit = 450000;
  */
 Webpage_cache.prototype.decompress_data = function (_data) {
     
-    $.test_msg("cache 解壓縮前：" + _data.length);
+    //$.test_msg("cache 解壓縮前：" + _data.length);
     _data = LZString.decompressFromBase64(_data);
-    $.test_msg("cache 解壓縮後：" + _data.length);
+    //$.test_msg("cache 解壓縮後：" + _data.length);
     //_data = $.trim(_data);
     return _data;
 };

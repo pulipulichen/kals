@@ -2561,7 +2561,7 @@ jQuery.get_offset_top = function(_ele) {
         _ele = $(_ele);
     }
     
-    var _offset = _ele.attr("offsetTop");
+    var _offset;
     
     //$.test_msg("get_offset_top", [_ele.css("position"), _ele.offset().top, _offset, _ele.text()]);
     if (_ele.css("position") === "relative") {
@@ -2570,6 +2570,9 @@ jQuery.get_offset_top = function(_ele) {
         _offset = _ele.offset().top;
         _offset = parseInt(_offset);
         _ele.css("position", "relative");
+    }
+    else {
+        _offset = _ele.attr("offsetTop")
     }
     
     return _offset;
