@@ -155,6 +155,35 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     
     this._lock = true;
     
+        
+    /**
+     * @type {Context_user} _context_user
+     */
+    var _context_user = KALS_context.user;
+
+    //調整次數
+    if (_is_like === true) {
+        this.add_like_count();
+        _context_user.set_like_to_count_add();
+    }
+    else {
+        this.reduce_like_count();
+        _context_user.set_like_to_count_reduce();
+    }
+
+    //_this._toggle_like(_is_like);
+
+    //var _param = _this._item.get_data();
+    var _lang;
+    if (_is_like === true) {
+        _lang = this._lang.set_like;
+    }
+    else {
+        _lang = this._lang.set_not_like;
+    }
+
+    KALS_util.notify(_lang);
+        
     this.load(_data, function (_this, _data) {
         
         if (_this._lock === false) {
@@ -162,34 +191,6 @@ List_like_component.prototype.set_is_like = function (_is_like) {
         }
 
         _this._lock = false;
-        
-        //_this._toggle_like(_is_like);
-        
-        //var _param = _this._item.get_data();
-        var _lang;
-        if (_is_like === true) {
-            _lang = _this._lang.set_like;
-        }
-        else {
-            _lang = _this._lang.set_not_like;
-        }
-            
-        KALS_util.notify(_lang);
-        
-        /**
-         * @type {Context_user} _context_user
-         */
-        var _context_user = KALS_context.user;
-        
-        //調整次數
-        if (_is_like === true) {
-            _this.add_like_count();
-            _context_user.set_like_to_count_add();
-        }
-        else {
-            _this.reduce_like_count();
-            _context_user.set_like_to_count_reduce();
-        }
     });
     return this;
 };
