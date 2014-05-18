@@ -101,9 +101,21 @@ Selectable_text_paragraph.prototype.paragraph_structure = [];
 Selectable_text_paragraph.prototype.create_selectable_paragraph = function (_id) {
     var _ele = document.createElement('span');
     
-	_ele.className = this.paragraph_classname 
-        + ' ' + this.paragraph_id_prefix + _id;
+    _ele.className = this.paragraph_classname 
+        + ' '
+        + this.paragraph_id_prefix + _id;
         
+    return _ele;
+};
+
+/**
+ * 建立一個空容器
+ * 
+ * @type {HTMLElementSpan}
+ */
+Selectable_text_paragraph.prototype.create_span = function () {
+    var _ele = document.createElement('span');
+    
     return _ele;
 };
 
@@ -291,9 +303,10 @@ Selectable_text_paragraph.prototype._cache_id = null;
 /**
  * 初始化next_element，只用於setup_selectable_element
  * @param {String} _text
+ * @param {jQuery} _child_obj
  * @returns {HTMLNode}
  */
-Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element = function (_text) {
+Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element = function (_text, _child_obj) {
     // 變數簡化
     var _selectable_text_paragraph = this;
     var _selectable_text_word = this._selectable_text.word;
@@ -333,7 +346,14 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     // ----------------------
     // 以下是正式的初始化
     
-    _next_element = this.create_selectable_paragraph(_selectable_text_word.word_count);
+    if (this.is_paragraph_node(_child_obj)) {
+        _next_element = this.create_selectable_paragraph(_selectable_text_word.word_count);
+    }
+    else {
+        _next_element = this.create_span();
+    }
+    
+    
     $(_next_element).hide();
             
     /**
@@ -461,6 +481,97 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     // 回傳
     
     return _next_element;
+};
+
+/**
+ * 檢查是否是段落節點
+ * @param {String|HTMLElement|jQuery} _node
+ * @returns {Boolean}
+ */
+Selectable_text_paragraph.prototype.is_paragraph_node = function (_node) {
+    var _tags = this.paragraph_tag_names;
+    
+    var _node_name;
+    if (typeof(_node.nodeName) === "string") {
+        _node_name = _node.nodeName;
+    }
+    else if (typeof(_node.attr) === "function") {
+        _node_name = _node.attr("nodeName");
+    }
+    else {
+        _node_name = _node;
+    }
+    
+    _node_name = _node_name.toLocaleLowerCase();
+    
+    if (_node === "#text") {
+        return false;
+    }
+    
+    var _result = ($.inArray(_node_name, _tags) !== -1);
+    //$.test_msg("is_paragraph_node的結果", [_result, _node_name]);
+    if (_result === false) {
+        return _result;
+    }
+    
+    // --------------------
+    // 條件2，他底下有text_node 之外的東西
+    
+    var _has_child_element = false;
+    var _contents = $(_node).contents();
+    //var _contents = _node.length;
+    
+    //$.test_msg("底下的content", [_node_name, _contents.length]);
+    //return false;
+    for (var _i = 0; _i < _contents.length; _i++) {
+        var _ele = _contents[_i];
+        var _node_name = _ele.nodeName.toLowerCase();
+        
+        //$.test_msg("底下的content", _node_name);
+        
+        if (_node_name !== "#text"
+                && $.inArray(_node_name, _tags) !== -1) {
+            //$.test_msg("底下的content", _node_name);
+            _has_child_element = true;
+            break;
+        }
+    }
+    
+    if (_has_child_element === true) {
+        return false;
+    }
+    else {
+        return true;
+    }
+    
+    
+    //if (_result === false) {
+    //    $.test_msg("is_para node", _node);
+    //}
+};
+
+/**
+ * 設定為章節段落
+ * @param {HTMLElement} _node
+ * @returns {Boolean}
+ */
+Selectable_text_paragraph.prototype.setup_paragraph_node = function (_node) {
+    
+    if (typeof(_node.className) === "string"
+            && _node.className.indexOf(this.paragraph_classname) === -1
+            && this.is_paragraph_node(_node)) {
+        // $.test_msg("setup_para node", _node.className);
+        
+        this.paragraph_count++;
+        
+        _node.className = _node.className 
+                + " " + this.paragraph_classname
+                + " " + this.paragraph_id_prefix + this.paragraph_count;
+        
+        this.add_structure();
+    }
+    
+    //return _node;    
 };
 
 /* End of file Selectable_text_paragraph */

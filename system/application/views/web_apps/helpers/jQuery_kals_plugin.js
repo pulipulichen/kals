@@ -1966,16 +1966,25 @@ jQuery._match_config = {
     }
 }; 
 
+/**
+ * 檢查是否該文字是英文字
+ * @param {String} _text
+ * @returns {Boolean}
+ */
 jQuery.match_english = function(_text) {
 	//var _reg = /^([a-z]|[A-Z])$/;
 	//return _reg.test(_text);
-    return (typeof(jQuery._match_config.english[_text]) == 'number');
+    if (_text.length > 1) {
+        _text = _text.substr(_text.length-2, 1);
+    }
+    
+    return (typeof(jQuery._match_config.english[_text]) === 'number');
 };
 
 jQuery.match_upper_english = function(_text) {
 	//var _reg = /^([A-Z])$/;
 	//return _reg.test(_text);
-    return (typeof(jQuery._match_config.upper_english[_text]) == 'number');
+    return (typeof(jQuery._match_config.upper_english[_text]) === 'number');
 };
 jQuery.match_number = function(_text) {
 	var _reg = /^\d$/;

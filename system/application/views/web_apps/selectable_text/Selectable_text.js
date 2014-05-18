@@ -441,6 +441,59 @@ Selectable_text.prototype.stop_initialize = function () {
 // -----------------------------------------------
 
 /**
+ * 移除節點
+ * @param {jQuery} _element
+ * @returns {Selectable_text.prototype}
+ */
+Selectable_text.prototype._filter_empty_node = function (_element) {
+    
+    var _empty_span = _element.find("span._");
+    
+    if (_empty_span.length === 0) {
+        return this;
+    }
+    
+    _empty_span = _empty_span.filter(function () {
+        return ($(this).text() === "");
+    });
+    
+    //$.test_msg("找到的空標籤", _empty_span.length);
+    
+    _empty_span.remove();
+    
+    return this;
+};
+
+/**
+ * 結合文字節點
+ * @param {jQuery} _element
+ * @returns {Selectable_text.prototype}
+ */
+Selectable_text.prototype._merge_child_text_node = function (_element) {
+    
+    var _contents = _element.contents()
+    
+    //$.test_msg("節點數量：", _contents.length);
+    for (var _i = 0; _i < _contents.length; _i++) {
+        var _node = _contents[_i];
+        
+        if (_node.nodeName === "#text"
+              && _i < _contents.length-1) {
+            //var _next_node = _contents[(_i+1)];
+            while (_i < _contents.length-1 
+                    && _contents[(_i+1)].nodeName === "#text") {
+                var _next_node = _contents[(_i+1)];
+                var _next_text = _next_node.nodeValue;
+                _node.nodeValue = _node.nodeValue + _next_text;
+                $(_next_node).remove();
+                _i++;
+            }
+        }
+    }
+    return this;
+};
+
+/**
  * 將選取範圍設定為可以選取的型態
  * 
  * 這是最重要的一個函式，KALS如何認識文本就靠這隻函式
@@ -448,6 +501,10 @@ Selectable_text.prototype.stop_initialize = function () {
  * @param {function} _callback
  */
 Selectable_text.prototype.setup_selectable_element = function (_element, _callback) {
+    
+    this._filter_empty_node(_element);
+    this._merge_child_text_node(_element);
+    
     /**
      * @type {Array}
      */
@@ -504,14 +561,15 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
          * @type {jQuery}
          */
         var _child_obj = _child_nodes.item(_i);
-        if (_this.element_has_class(_child_obj, _para_classname)) {
+        
+        if (_this.is_element_has_class(_child_obj, _para_classname)) {
             _i++;
             _loop(_i, _child_nodes, _cb);
             return;
         }   //if (_this.element_has_class(_child_obj, _para_classname)) {
 		
         if (_child_obj.nodeName !== '#text' &&
-            _this.element_has_class(_child_obj, _para_classname) === false) {
+            _this.is_element_has_class(_child_obj, _para_classname) === false) {
         
             var _check_word_count = _selectable_text_word.word_count;
             
@@ -520,14 +578,17 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 if (_check_word_count < _selectable_text_word.word_count
                     && typeof(_node_name) === 'string' 
                     && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
+                    
+                    //$.test_msg("是章節", _node_name);
+                    _selectable_text_paragraph.setup_paragraph_node(_child_obj);
                 
                     // 20131231 連續加兩次是刻意的
-                    _selectable_text_paragraph.paragraph_count++;
-                    _selectable_text_paragraph.paragraph_count++;
+                    //_selectable_text_paragraph.paragraph_count++;
+                    //_selectable_text_paragraph.paragraph_count++;
                     
                     //$.test_msg("deeper parse 1", _selectable_text_word.word_count);
                     //_selectable_text_paragraph.paragraph_structure.push(_selectable_text_word.word_count);
-                    _selectable_text_paragraph.add_structure();
+                    //_selectable_text_paragraph.add_structure();
                     
                     // 20140102 Pulipuli Chen
                     // 增加句子的計算數量
@@ -572,15 +633,38 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         else {
             var _text = _this.get_element_content(_child_obj);
             
+            // 20140518 Pulipuli Chen
+            // 連接下一個text
+            /*
+            $.test_msg("開始找尋下一個", _i);
+            var _next_child_obj = _child_nodes.item(_i + 1);
+            while (_next_child_obj !== null 
+                    && _next_child_obj.nodeName === "#text") {
+                var _next_text = _this.get_element_content(_next_child_obj);
+                if ($.trim(_next_text) === "") {
+                    $.test_msg("空格", _next_text);
+                    //break;
+                }
+                else {
+                    $.test_msg("下一個text", _next_text);
+                }
+                _text = _text + _next_text;
+                _i++;
+                
+                $(_next_child_obj).remove();
+                _next_child_obj = _child_nodes.item(_i + 1);
+            }   //
+            
             if (_text === "") {
                 _i++;
                 _loop(_i, _child_nodes, _cb);
                 return;
             }
+            */
 
             // 20140223 Pulipuli Chen
             // 將初始化next_element的動作往外移
-            var _next_element = _this._setup_selectable_element_init_next_element(_text);
+            var _next_element = _this._setup_selectable_element_init_next_element(_text, _child_obj);
 //            var _next_element = null;
 //            _next_element = _this.create_selectable_paragraph(_selectable_text_paragraph.paragraph_count);
 //            $(_next_element).hide();
@@ -732,10 +816,11 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
 /**
  * 初始化next_element，只用於setup_selectable_element
  * @param {String} _text
+ * @param {jQuery} _child_obj
  * @returns {HTMLNode}
  */
-Selectable_text.prototype._setup_selectable_element_init_next_element = function (_text) {
-    return this.paragraph._setup_selectable_element_init_next_element(_text);
+Selectable_text.prototype._setup_selectable_element_init_next_element = function (_text, _child_obj) {
+    return this.paragraph._setup_selectable_element_init_next_element(_text, _child_obj);
 };
 
 /**
@@ -813,7 +898,7 @@ Selectable_text.prototype.setup_paragraph_location = function(_callback) {
  * @param {String} _class_name
  * @type {boolean}
  */
-Selectable_text.prototype.element_has_class = function (_element, _class_name) {
+Selectable_text.prototype.is_element_has_class = function (_element, _class_name) {
     if ($.is_object(_element) === false
         || typeof(_element.className) === 'undefined') {
         return false;
@@ -829,9 +914,10 @@ Selectable_text.prototype.element_has_class = function (_element, _class_name) {
  * @param {Object} _element
  */
 Selectable_text.prototype.get_element_content = function (_element) {
-    if ($.is_object(_element) === false) {
+    if (_element === undefined 
+            || $.is_object(_element) === false) {
         return '';
-	}
+    }
     else if (typeof(_element.nodeValue) !== 'undefined' &&
             $.trim(_element.nodeValue) !== '') {
         //2010.10.15 還是保留空格好了
@@ -1287,6 +1373,7 @@ Selectable_text.prototype.has_cache = function (_callback) {
  * 加入預測進度的功能
  * @author Pulipuli Chen 20131227 
  * @param {jQuery} _element
+ * @returns {Selectable_text} description
  */
 Selectable_text.prototype._predict_progress_total = function (_element) {
     var _total;
@@ -1301,9 +1388,11 @@ Selectable_text.prototype._predict_progress_total = function (_element) {
     _para_length = _para_length * 2;
     _total = _total + _para_length;
     
-    $.test_msg("預測長度", [_total, _estimate_words_length, _para_length]);
+    //$.test_msg("預測長度", [_total, _estimate_words_length, _para_length]);
     
     KALS_context.progress.set_total(_total);
+    
+    return this;
 };
 
 /* End of file Selectable_text */
