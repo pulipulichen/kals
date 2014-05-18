@@ -914,16 +914,16 @@ jQuery.fn.extend({
      * - scale: 手機模式用的縮放比例
      */
     align: function (_options) {
-        if (_options == 'left' || _options == 'center' || _options == 'right') {
-			_options = {
-				option: _options
-			};
-		}
-                    
+        if (_options === 'left' || _options === 'center' || _options === 'right') {
+            _options = {
+                option: _options
+            };
+        }
+
         var _option = $.get_parameter(_options, 'option');
         if ($.is_null(_option)) {
-			return this;
-		}
+            return this;
+        }
         var _scale = $.get_parameter(_options, 'scale', 1);
         _scale = 1;
         var _offset = $.get_parameter(_options, 'offset', 0);
@@ -939,11 +939,11 @@ jQuery.fn.extend({
         
         if (_this.is_layer()) {
             if (_mobile_mode) {
-				_this.css('position', 'absolute');
-			}
-			else {
-				_this.css('position', 'fixed');
-			}
+                _this.css('position', 'absolute');
+            }
+            else {
+                _this.css('position', 'fixed');
+            }
             
             var _direction = 'left';
             
@@ -1108,7 +1108,7 @@ jQuery.fn.extend({
                     _option = _offset;    
                 }
             }
-            else if (_option == 'bottom') {
+            else if (_option === 'bottom') {
                 _direction = 'bottom';
                 _option = _offset;
                 if (_mobile_mode) {
@@ -2560,7 +2560,18 @@ jQuery.get_offset_top = function(_ele) {
     if ($.is_string(_ele)) {
         _ele = $(_ele);
     }
+    
     var _offset = _ele.attr("offsetTop");
+    
+    //$.test_msg("get_offset_top", [_ele.css("position"), _ele.offset().top, _offset, _ele.text()]);
+    if (_ele.css("position") === "relative") {
+        _ele.css("position", "absolute");
+        //_offset = _ele.attr("offsetTop");
+        _offset = _ele.offset().top;
+        _offset = parseInt(_offset);
+        _ele.css("position", "relative");
+    }
+    
     return _offset;
 };
 
@@ -2578,6 +2589,19 @@ jQuery.get_offset_bottom = function(_ele) {
 };
 
 /**
+ * 取得物件的垂直中間位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_vertical_middle = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
+    var _offset = $.get_offset_top(_ele) + (_ele.height() / 2);
+    return _offset;
+};
+
+/**
  * 取得物件的左邊位置
  * @param {jQuery} _ele
  * @returns {Int}
@@ -2587,6 +2611,15 @@ jQuery.get_offset_left = function(_ele) {
         _ele = $(_ele);
     }
     var _offset = _ele.attr("offsetLeft");
+    
+    if (_ele.css("position") === "relative") {
+        _ele.css("position", "absolute");
+        //_offset = _ele.attr("offsetTop");
+        _offset = _ele.offset().left;
+        _offset = parseInt(_offset);
+        _ele.css("position", "relative");
+    }
+    
     return _offset;
 };
 
@@ -2604,6 +2637,21 @@ jQuery.get_offset_right = function(_ele) {
 };
 
 /**
+ * 取得物件的水平中間位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_horizontal_center = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
+    
+    var _offset = $.get_offset_left(_ele) + (_ele.width() / 2);
+    return _offset;
+};
+
+
+/**
  * 取得物件的位置資訊
  * @param {jQuery} _ele
  * @returns {json}
@@ -2616,6 +2664,135 @@ jQuery.get_offset = function(_ele) {
         left: _left
     };
     return _offset;
+};
+
+/**
+ * 手動版本調整位置
+ * @param {jQuery} _ele 要移動的元素
+ * @param {jQuery} _anchor 參考位置的元素
+ * @param {type} _config = {
+ *   my: "center top",
+ *   at: "center bottom"
+ * }
+ * @returns {jQuery}
+ */
+jQuery.set_position = function (_ele, _anchor, _config) {
+    
+    var _my_config = _config.my.split(" ");
+    var _my_h = _my_config[0];
+    var _my_v = _my_config[1];
+    
+    var _at_config = _config.at.split(" ");
+    var _at_h = _at_config[0];
+    var _at_v = _at_config[1];
+    
+    var _anchor_left, _anchor_top, _ele_left, _ele_top;
+    
+    // -----------
+    
+    var _anchor_left = this.get_offset_left(_anchor);
+    var _anchor_width = this.get_width_without_transform(_anchor);
+    if (_at_h === "center") {
+        //_anchor_left = this.get_offset_horizontal_center(_anchor);
+        _anchor_left = _anchor_left + (_anchor_width/2);
+    }
+    //else if (_at_h === "left") {
+    //    _anchor_left = this.get_offset_left(_anchor);
+    //}
+    else if (_at_h === "right") {
+        //_anchor_left = this.get_offset_right(_anchor);
+        _anchor_left = _anchor_left + _anchor_width;
+    }
+    
+    if (_my_h === "center") {
+        _ele_left = _anchor_left - (_ele.width() / 2);
+    }
+    else if (_my_h === "left") {
+        _ele_left = _anchor_left;
+    }
+    else if (_my_h === "right") {
+        _ele_left = _anchor_left - _ele.width();
+    }
+    
+    
+    // -----------
+    
+    var _anchor_height = this.get_height_without_transform(_anchor);
+    _anchor_top = this.get_offset_top(_anchor);
+    if (_at_v === "center") {
+        //_anchor_top = this.get_offset_vertical_middle(_anchor);
+        _anchor_top = _anchor_top + (_anchor_height/2);
+    }
+    //else if (_at_v === "top") {
+    //    _anchor_top = this.get_offset_top(_anchor);
+    //}
+    else if (_at_v === "bottom") {
+        //_anchor_top = this.get_offset_bottom(_anchor);
+        _anchor_top = _anchor_top + _anchor_height;
+    }
+    
+    if (_my_v === "center") {
+        _ele_top = _anchor_top - (_ele.height() / 2);
+    }
+    else if (_my_v === "top") {
+        _ele_top = _anchor_top;
+    }
+    else if (_my_v === "bottom") {
+        _ele_top = _anchor_top - _ele.height();
+    }
+    
+    //$.test_msg("對齊結果", [_anchor_left, _anchor_top, _anchor.width()
+    //    , this.get_width_without_transform(_anchor)
+    //    , _ele_left, _ele_top, _ele.width()]);
+    
+    _ele.css("position", "absolute")
+            .css("top", _ele_top)
+            .css("left", _ele_left);
+    
+    return this;
+};
+
+/**
+ * 取得元素的寬度，不受tranform的影響
+ * @param {jQuery} _ele
+ * @returns {Number}
+ */
+jQuery.get_width_without_transform = function (_ele) {
+    
+    var _fake = _ele.clone().appendTo("body");
+    //_fake.css("transform", "matrix(1,0,0,1,0,0)");
+        
+    var _width = _fake.width();
+
+    //$.test_msg("get_width", [_ele.css("width")
+    //    , _ele.width()
+    //    , _ele.attr("offsetWidth")
+    //    , _ele.innerWidth()
+    //    , _ele.outerWidth()
+    //    , _ele.css("transform")
+    //    ]);
+
+    _fake.remove();
+    
+    return _width;
+};
+
+
+/**
+ * 取得元素的高度，不受tranform的影響
+ * @param {jQuery} _ele
+ * @returns {Number}
+ */
+jQuery.get_height_without_transform = function (_ele) {
+    
+    var _fake = _ele.clone().appendTo("body");
+    //_fake.css("transform", "matrix(1,0,0,1,0,0)");
+        
+    var _width = _fake.height();
+
+    _fake.remove();
+    
+    return _width;
 };
 
 $.widget("ui.dialog", $.ui.dialog, {

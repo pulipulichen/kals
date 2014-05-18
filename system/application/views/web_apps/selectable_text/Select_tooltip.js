@@ -120,6 +120,12 @@ Select_tooltip.prototype._$get_config = function () {
         var _this = this;
 
         var _tip = _this.getTip();
+        //setTimeout(function () {
+            _tip.addClass("loading");
+        //}, 0);
+        
+        //$.test_msg("onBeforeShow", _tip.css("visibility"));
+        
         if (_tip.length === 0) {
             return;
         }
@@ -141,11 +147,11 @@ Select_tooltip.prototype._$get_config = function () {
 
             //$.test_msg('Select_tooltip._$get_config()', _tip.length);
 
-            _select_tooltip.setup_position(_event);
+            _select_tooltip.setup_position(_after_setup_position);
 
-
-            // --------
-
+        };    //var _position_setup = function () {
+        
+        var _after_setup_position = function () {
             _tip.attr('word_id', _id);
 
             //在顯示之前，決定是否要調整
@@ -160,13 +166,32 @@ Select_tooltip.prototype._$get_config = function () {
             if ($.is_function(_onbeforeshow)) {
                 _onbeforeshow.call(_this);
             }
-        };    //var _position_setup = function () {
+
+            //_tip.removeClass("loading");
+
+            if ($.is_function(_event)) {
+                _event();
+            }
+        };
 
             // 讀取標註
         _select_tooltip.load_tooltip_annotation(_id, function () {
             _position_setup();
         });
     };    //onBeforeShow: function () {
+    
+    /*
+    _config['onShow'] = function () {
+        var _this = this;
+        //setTimeout(function () {
+           
+            var _tip = _this.getTip();
+            //_tip.removeClass("loading");
+            //_tip.hide();
+        //},0);
+    };
+    */
+    //_config["predelay"] = 500;
     
     var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
     _config['onBeforeHide'] = function (_this) {
@@ -181,14 +206,17 @@ Select_tooltip.prototype._$get_config = function () {
         //}
         
         if (typeof(_this.getTrigger) !== 'function'
-            && typeof(this.getTrigger) === 'function')
+            && typeof(this.getTrigger) === 'function') {
             _this.getTrigger = this.getTrigger;
+        }
         var _trigger = _this.getTrigger();
         _trigger.removeClass('tooltip-trigger-hover');
         
         if ($.is_function(_onbeforehide)) {
             _onbeforehide.call(this);
         }
+        
+        //_this.getTip().addClass("loading");
         
     };    //onBeforeHide: function () {
     
@@ -209,11 +237,12 @@ Select_tooltip.prototype._$get_config = function () {
  */
 Select_tooltip.prototype.setup_position = function (_callback) {
 	
-	this.setup_position_pdf2htmlex();
-	
-	var _tip = this._tip;
-	var _trigger = this._trigger; 
-	var _event = this._event;
+    //this.setup_position_pdf2htmlex();
+
+    var _tip = this._tip;
+    var _trigger = this._trigger; 
+    var _event = this._event;
+    //_tip.addClass("loading");
 	
 	//$.test_msg("tooltip setup_position", [typeof _tip, typeof _trigger]);
 	
@@ -276,78 +305,117 @@ Select_tooltip.prototype.setup_position = function (_callback) {
             }
         }   //if (Math.abs( _tip_left - _trigger_offset.left) > 50 ) {
         */
-		
-		_tip
-                  //.removeClass('bottom')
-		  .removeClass('left')
-		  .removeClass('right');
-		
-		var _is_bottom = false;
-		
-        _tip.position({
-            my: 'center bottom',
-            at: 'center top',
-            of: _trigger
-        });
-		
-		//var _tip_offset = _tip.offset();
-                var _tip_offset = $.get_offset(_tip);
-		
-		var _margin_width = 5;
-		
-		var _my_y = "bottom";
-		var _at_y = "top";
-		var _my_x = "center";
-		var _at_x = "center";
-		var _changed = false;
-		
-                //var _trigger_top = _trigger.offset().top;
-                var _trigger_top = $.get_offset_top(_trigger);
-		if ( _tip_offset.top > _trigger_top || 
-                    (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
-			//_tip.addClass('bottom');
-			_my_y = "top";
-			_at_y = "bottom";
-			_is_bottom = true;
-			_changed = true;
-		}
-		
-		//$.test_msg('tooltip is bottom [1]', [_tip_offset.top, _trigger.offset().top]);
-        //$.test_msg('tooltip is bottom [2]', [_tip_offset.top, [window.pageYOffset, _margin_width, KALS_toolbar.get_height()], _is_bottom]);
-		this.toggle_bottom(_is_bottom);
-		//this.toggle_bottom(true);
-		
-		if (_tip_offset.left < window.pageXOffset + _margin_width) {
-			_my_x = "left";
-			_at_x = "left";	
-			_tip.addClass('left');
-			_changed = true;
-		}
-		
-		if (_tip_offset.left + _tip.width() > window.pageXOffset + $("body").width() + _margin_width) {
-			//$.test_msg("tip right", [[_tip_offset.left, _tip.width(), _tip_offset.left + _tip.width()], [window.pageXOffset, $("body").width(), _margin_width]]);
-			
-            _my_x = "right";
-            _at_x = "right"; 
-            _tip.addClass('right');
-			_changed = true;
-        }
-		
-		if (_changed) {
-			_tip.position({
-                my: _my_x + ' ' + _my_y,
-                at: _at_x + ' ' + _at_y,
-                of: _trigger
-            });
-		}
-			
-		
-        //$.test_msg("position");
-		
+
+        //_trigger.css("color", "red");
+
+    _tip
+      //.removeClass('bottom')
+      .removeClass('left')
+      .removeClass('right');
+
+    var _is_bottom = false;
+
+    // 總之先做起始的對齊
+    //_tip.position({
+    //    my: 'center bottom',
+    //    at: 'left top',
+    //    of: _trigger
+    //});
+    
+    $.set_position(_tip, _trigger, {
+        my: 'center bottom',
+        at: 'center top'
+    });
+    this.toggle_bottom(_is_bottom);
+    
+    //_trigger.css("border", "1px solid red");
+
+    //var _tip_offset = _tip.offset();
+    
+    //$.test_msg("初始對齊之後的結果 1：", [ $.get_offset_bottom(_tip), $.get_offset_top(_trigger)]);
+    //$.test_msg("初始對齊之後的結果 left：", [ $.get_offset_left(_tip), _tip.width(),  $.get_offset_left(_trigger), _trigger.width()]);
+    //$.test_msg("初始對齊之後的結果 水平：", [ $.get_offset_horizontal_center(_tip), $.get_offset_horizontal_center(_trigger)]);
+    //$.test_msg("初始對齊之後的結果 2：", [_trigger_offset]);
+
+    //$.test_msg("position");
+
+    this.setup_position_check(_callback);
         
-		$.trigger_callback(_callback);
+    //$.trigger_callback(_callback);
     return this;
     //}, 0);    //setTimeout(function () {
+};
+
+/**
+ * 再確認
+ * @param {Function} _callback
+ * @returns {Select_tooltip.prototype}
+ */
+Select_tooltip.prototype.setup_position_check = function (_callback) {
+    
+    var _tip = this._tip;
+    var _trigger = this._trigger; 
+    var _event = this._event;
+    
+    var _tip_offset = $.get_offset(_tip);
+    
+    var _margin_width = 5;
+
+    var _my_y = "bottom";
+    var _at_y = "top";
+    var _my_x = "center";
+    var _at_x = "center";
+    var _changed = false;
+    
+    var _is_bottom = false;
+
+    //var _trigger_top = _trigger.offset().top;
+    var _trigger_top = $.get_offset_top(_trigger);
+    if ( _tip_offset.top > _trigger_top 
+            || (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
+            //_tip.addClass('bottom');
+        _my_y = "top";
+        _at_y = "bottom";
+        _is_bottom = true;
+        _changed = true;
+    }
+
+    //$.test_msg('tooltip is bottom [1]', [_tip_offset.top, _trigger.offset().top]);
+    //$.test_msg('tooltip is bottom [2]', [_tip_offset.top, [window.pageYOffset, _margin_width, KALS_toolbar.get_height()], _is_bottom]);
+    
+    
+    //this.toggle_bottom(true);
+    if (_tip_offset.left < window.pageXOffset + _margin_width) {
+        _my_x = "left";
+        _at_x = "left";	
+        _tip.addClass('left');
+        _changed = true;
+    }
+		
+    if (_tip_offset.left + _tip.width() > window.pageXOffset + $("body").width() + _margin_width) {
+                    //$.test_msg("tip right", [[_tip_offset.left, _tip.width(), _tip_offset.left + _tip.width()], [window.pageXOffset, $("body").width(), _margin_width]]);
+        _my_x = "right";
+        _at_x = "right"; 
+        _tip.addClass('right');
+        _changed = true;
+    }
+    
+    if (_changed === true) {
+        //_tip.position({
+        //    my: _my_x + ' ' + _my_y,
+        //    at: _at_x + ' ' + _at_y,
+        //    of: _trigger
+        //});
+        this.toggle_bottom(_is_bottom);
+        $.set_position(_tip, _trigger, {
+            my: _my_x + ' ' + _my_y,
+            at: _at_x + ' ' + _at_y
+        });
+    }
+    
+    _tip.removeClass("loading");
+    $.trigger_callback(_callback);
+    return this;
 };
 
 /**
@@ -383,19 +451,19 @@ Select_tooltip.prototype.check_bottom = function () {
 Select_tooltip.prototype.toggle_bottom = function (_is_bottom) {
 	//$.test_msg('Tooltip toggle_bottom', _is_bottom);
 	
-	var _content = this.get_ui().find(".tip-content:first");
-	var _item_ui = this._item.get_ui();
-	
-        var _tip = _content.parent();
-        
-	if (_is_bottom) {
-		_item_ui.appendTo(_content);
-                _tip.addClass('bottom');
-	}
-	else {
-		_item_ui.prependTo(_content);
-                _tip.removeClass('bottom');
-	}
+    var _content = this.get_ui().find(".tip-content:first");
+    var _item_ui = this._item.get_ui();
+
+    var _tip = _content.parent();
+
+    if (_is_bottom) {
+        _item_ui.appendTo(_content);
+        _tip.addClass('bottom');
+    }
+    else {
+        _item_ui.prependTo(_content);
+        _tip.removeClass('bottom');
+    }
 };
 
 /**
@@ -404,14 +472,14 @@ Select_tooltip.prototype.toggle_bottom = function (_is_bottom) {
  */
 Select_tooltip.prototype.setup_position_pdf2htmlex = function () {
 	
-	var _tip = this._tip;
-	var _trigger = this._trigger;
+    var _tip = this._tip;
+    var _trigger = this._trigger;
     
     if ($(".ff1").length > 0) {
         
         //var _trigger_offset = _trigger.offset();
         var _trigger_offset = $.get_offset( _trigger );
-        _tip_left = (_trigger_offset.left + _trigger.width() / 2 / 2) - (_tip.width() / 2 );
+        var _tip_left = (_trigger_offset.left + _trigger.width() / 2 / 2) - (_tip.width() / 2 );
         _tip.css("visibility", "hidden");
         setTimeout(function () {
             _tip.css("left", _tip_left + "px");
@@ -620,45 +688,55 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 	var _data = _index;
 	
 	var _ui = this.get_ui();
-	_ui.addClass("loading");
+	//_ui.addClass("loading");
 	
 	var _this = this;
 	var _ajax_callback = function (_data) {
 		//$.test_msg("load_tooltip_annotation", _data);
 		
 		if (_data.count > 0) {
-			var _annotation_json = _data.annotation;
-			var _param = new Annotation_param(_annotation_json);
-                        _this._item.set_data(_param);
-			
-			var _count = _data.count;
-			_this._item.set_count(_count);
-			
-			//_item_ui.show();
-			_this.set_has_annotation();
+                    var _annotation_json = _data.annotation;
+                    var _param = new Annotation_param(_annotation_json);
+                    _this._item.set_data(_param);
+
+                    var _count = _data.count;
+                    _this._item.set_count(_count);
+
+                    //_item_ui.show();
+                    _this.set_has_annotation();
 		}
+                else {
+                    //_ui.removeClass("loading");
+                    $.trigger_callback(_callback);
+                    return;
+                }
 		//_ui.css("visibility", "visible");
 		
-         _this._item.adjust_note();
+                _this._item.adjust_note();
 		setTimeout(function () {
-             
-			 // @author Pulipuli Chen 20131117 17:16 
-			 // 這是可以用的版本
-			 
-			 
-			 _this.setup_position(function () {
-			 	_this._item.adjust_note(function () {
-					
-					// 調整過note之後，位置會有所改變，所以需要再調整
-					
-					setTimeout(function () {
-						//$.test_msg('第二次 setup_position');
-						_ui.removeClass("loading");
-						_this.setup_position();
-					}, 0);
-				});
-			 });
-			 $.trigger_callback(_callback);
+
+                    // @author Pulipuli Chen 20131117 17:16 
+                    // 這是可以用的版本
+                    _this._item.adjust_note();
+                    //_ui.removeClass("loading");
+                    /*
+                    _this.setup_position(function () {
+                        //_ui.removeClass("loading");
+                        return;
+
+                        _this._item.adjust_note(function () {
+
+                            // 調整過note之後，位置會有所改變，所以需要再調整
+
+                            setTimeout(function () {
+                                //$.test_msg('第二次 setup_position');
+                                //_ui.removeClass("loading");
+                                _this.setup_position();
+                            }, 0);
+                        });
+                    });
+                    */
+                    $.trigger_callback(_callback);
 			 
 			 //_this.setup_position(function () {
 			 	//setTimeout(function () {
@@ -682,9 +760,9 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 	};
 	
 	KALS_util.ajax_get({
-		url: _url,
-		data: _data,
-		callback: _ajax_callback
+            url: _url,
+            data: _data,
+            callback: _ajax_callback
 	});
 	
 	
@@ -697,8 +775,8 @@ Select_tooltip.prototype._has_annotation_classname = "has-annotation";
  * 重設tooltip的樣式
  */
 Select_tooltip.prototype.reset_style = function () {
-	var _ui = this.get_ui();
-	_ui.removeClass(this._has_annotation_classname);
+    var _ui = this.get_ui();
+    _ui.removeClass(this._has_annotation_classname);
 };
 
 /**
