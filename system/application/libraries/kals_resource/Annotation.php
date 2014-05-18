@@ -280,6 +280,12 @@ class Annotation extends KALS_resource {
     public function set_respond_to_topic($topic_id)
     {
         $topic_id = $this->filter_id($topic_id);
+        
+        if ($this->get_id() === $topic_id) {
+            handle_error("topic ID equals annotation ID!");
+            return $this;
+        }
+        
         return $this->set_field('topic_id', $topic_id);
     }
 
