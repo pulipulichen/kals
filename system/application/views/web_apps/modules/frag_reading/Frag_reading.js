@@ -472,7 +472,10 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
 Frag_reading.prototype.save_reading_progress = function(_current_word){
     
     // 未登入時不使用
-    if (KALS_context.auth.is_login() === false) {
+    if (KALS_context.auth.is_login() === false
+            || _current_word === undefined
+            || _current_word === false
+            || _current_word === null) {
         return this;
     }
     

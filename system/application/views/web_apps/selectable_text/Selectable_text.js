@@ -344,9 +344,9 @@ Selectable_text.prototype.initialize = function (_callback) {
         _task_cache_text_backup,
         _task_setup_selectable_element,
         _task_setup_paragraph_location,
-        _task_setup_word_selectable,
         _task_cache_text_restore,
         _task_cache_save,
+        _task_setup_word_selectable,
         _task_progress,
         _task_complete,
         _callback

@@ -79,7 +79,7 @@ class Webpage_cache extends Web_apps_controller {
         $cache_path = $this->_get_cache_path();
         
         //$cache = $cache["selectable_text"];
-        //$cache = substr($cache, 1, strlen($cache) - 2);
+        $cache = substr($cache, 1, strlen($cache) - 2);
         //$cache = substr($cache, 1, strlen($cache) - 1);
         //$cache = stripslashes($cache);
         
@@ -121,7 +121,7 @@ class Webpage_cache extends Web_apps_controller {
             //$this->_display_get($data);
             
             // 快取時間
-            $cache_mins = 1;
+            $cache_mins = $this->config->item("webpage_cache.expiration");
             $this->output->cache($cache_mins);
             
             //return $this;

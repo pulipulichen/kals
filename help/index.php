@@ -12,7 +12,11 @@
 <h2>展示頁面</h2>    
 <ul>
     <li><a href="demo/index.html">範例pdf2htmlEX網頁</a></li>
-  <li>Chen, C.-M., Chen, Y.-T., Hong, C.-M., Liao, C.-W., &amp; Huang, C.-M. (2012). <a href="demo/Developing_a_Taiwan_library_history_digital_library_with_reader_knowledge_archiving_and_sharing_mechanisms_based_on_the_DSpace_platform.html">Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
+  <li>Chen, C.-M., Chen, Y.-T., Hong, C.-M., Liao, C.-W., &amp; Huang, C.-M. (2012). 
+      <a href="demo/Developing_a_Taiwan_library_history_digital_library_with_reader_knowledge_archiving_and_sharing_mechanisms_based_on_the_DSpace_platform.html"
+         target="_blank">
+          Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> 
+      <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
 </ul>
 <hr />
 <h2>設定說明 (兼簡單的展示頁面)</h2>

@@ -20,6 +20,7 @@ function Selectable_text_sentence(_selectable_text) {
     
     this._selectable_text = _selectable_text;
     this._text = _selectable_text._text;
+    this.sentence_structure = [];
     return this;
 }
 
@@ -97,7 +98,10 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
             var _word_id = _sentence.attr('id');
             _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
             _word_id = parseInt(_word_id,10);
-            _sentence_index.push(_word_id);
+            
+            if (_word_id !== null) {
+                _sentence_index.push(_word_id);
+            }
         }
 
         return _sentence_index;
@@ -249,7 +253,10 @@ Selectable_text_sentence.prototype.cache_restore = function (_cache_id, _callbac
     
     var _this = this;
     KALS_context.storage.get(_cache_id, function (_value) {
-        _this.sentence_structure = $.json_decode(_value);
+        var _cache = $.json_decode(_value);
+        if (_cache !== null) {
+            _this.sentence_structure = $.json_decode(_value);
+        }
         $.trigger_callback(_callback);
     });
     return this;

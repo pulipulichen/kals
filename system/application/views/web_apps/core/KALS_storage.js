@@ -27,9 +27,11 @@ function KALS_storage() {
     Event_dispatcher.call(this);
     
     var _this = this;
-    $(function () {
+    //$(function () {
+    //KALS_context.add_listener(function () {
         _this._init();
-    });
+    //});
+    //});
     
     //$.localStorage.removeAll(true);
 }
@@ -70,6 +72,12 @@ KALS_storage.prototype._init = function () {
         this._storage = $.localStorage;
         
         
+    }
+    else if ($.sessionStorage !== undefined) {
+        this._storage = $.sessionStorage;
+    }
+    else {
+        this._storage = $.cookieStorage;
     }
     return this;
 };
@@ -358,7 +366,7 @@ KALS_storage.prototype._merge_get = function (_key, _callback) {
     
     var _this = this;
     var _loop = function (_index) {
-        if (this._storage.isSet(_part_key)) {
+        if (_this._storage.isSet(_part_key)) {
             _this._storage.get(_part_key, function (_part_value) {
                 _value = _value + _part_value;
                 _index++;

@@ -116,56 +116,56 @@ Select_tooltip.prototype._$get_config = function () {
     
     var _onbeforeshow = _config['onBeforeShow'];
     _config['onBeforeShow'] = function (_event) {
-    //if ($.is_null(_this))
-    var _this = this;
-        
-    var _tip = _this.getTip();
-    if (_tip.length === 0) {
-        return;
-    }
-            
-    if (_select_tooltip.enable_select === false) {
-        return;
-    }
+        //if ($.is_null(_this))
+        var _this = this;
 
-    var _trigger = _this.getTrigger();
-    var _id = $.get_prefixed_id(_trigger);
+        var _tip = _this.getTip();
+        if (_tip.length === 0) {
+            return;
+        }
 
-    _select_tooltip._event = _event;
-    _select_tooltip._tip = _tip;
-    _select_tooltip._trigger = _trigger;
-        
-    var _position_setup = function () {
-        $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
-        _trigger.addClass('tooltip-trigger-hover');
-	        
-	        //$.test_msg('Select_tooltip._$get_config()', _tip.length);
-	        
-			//_select_tooltip.setup_position(_event);
-	        
-	        
-	        // --------
-	        	        
-	        _tip.attr('word_id', _id);
-	        
-	        //在顯示之前，決定是否要調整
-	        var _selected_classname = 'selected';
-	        if (KALS_text.selection.select._select_from !== null) {
-	            _tip.addClass(_selected_classname);
-	        }
-	        else {
-	            _tip.removeClass(_selected_classname);
-	        }
-	        
-	        if ($.is_function(_onbeforeshow)) {
-	            _onbeforeshow.call(_this);
-	        }
-		};    //var _position_setup = function () {
-		
-		// 讀取標註
+        if (_select_tooltip.enable_select === false) {
+            return;
+        }
+
+        var _trigger = _this.getTrigger();
+        var _id = $.get_prefixed_id(_trigger);
+
+        _select_tooltip._event = _event;
+        _select_tooltip._tip = _tip;
+        _select_tooltip._trigger = _trigger;
+
+        var _position_setup = function () {
+            $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
+            _trigger.addClass('tooltip-trigger-hover');
+
+            //$.test_msg('Select_tooltip._$get_config()', _tip.length);
+
+            _select_tooltip.setup_position(_event);
+
+
+            // --------
+
+            _tip.attr('word_id', _id);
+
+            //在顯示之前，決定是否要調整
+            var _selected_classname = 'selected';
+            if (KALS_text.selection.select._select_from !== null) {
+                _tip.addClass(_selected_classname);
+            }
+            else {
+                _tip.removeClass(_selected_classname);
+            }
+
+            if ($.is_function(_onbeforeshow)) {
+                _onbeforeshow.call(_this);
+            }
+        };    //var _position_setup = function () {
+
+            // 讀取標註
         _select_tooltip.load_tooltip_annotation(_id, function () {
-			_position_setup();
-		});
+            _position_setup();
+        });
     };    //onBeforeShow: function () {
     
     var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );

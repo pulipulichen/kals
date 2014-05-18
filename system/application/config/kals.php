@@ -36,6 +36,8 @@ $config['CACHEABLE_TYPES_CLOSE'] = array();
 $config["TIMEZONE"] = "Asia/Taipei";
 date_default_timezone_set($config["TIMEZONE"]);
 
+$config['webpage_cache.expiration'] = 60 * 24 * 7; //快取的單位是「分鐘」，預設是1週
+
 /**
  * 意見回饋設定
  */
