@@ -2153,10 +2153,12 @@ jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
  */
 jQuery.scroll_to = function (_position, _speed, _callback) {
     
-    //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
+    $.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
     //return;
 	
+    //this.scroll_to_lock = true;
     if (this.scroll_to_lock === true) {
+        //$.test_msg("偷看一下callback是啥", _callback);
         $.trigger_callback(_callback);
         return;
     }
@@ -2236,12 +2238,40 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         _config_setted = true;
     }
     
-    //$.test_msg("要準備捲動囉", _config);
+    //if (_config.scrollLeft === 0) {
+    //    delete(_config.scrollLeft);
+    //}
+    
+    
+    //_config.scrollTop = ($(window).position().top + _config.scrollTop);
+    
+    //$.test_msg("要準備捲動囉 [" + $("html,body").scrollTop() + "]", _config);
     
     if (_config_setted) {
-        $('html, body').animate(_config, _speed, function () {
-            _this.scroll_to_lock = false;
+        //var _now_config = this.get_current_scroll_position();
+        //$.test_msg("now_config", _now_config);
+        
+        //$(window).animate(_now_config, 0, function () {
+        /*
+        $("html,body").stop.animate(_config, _speed, "swing", function () {
+            //$("html,body").delay(0).animate(_config, _speed, function () {
+            //$.animate(_config, _speed, function () {
+                _this.scroll_to_lock = false;
+            //});
         });
+        */
+        /*
+        $("html,body").stop()
+                .animate(_now_config, 0, "swing")
+                .animate(_config, _speed, "swing", function () {
+                    _this.scroll_to_lock = false;
+            });
+            */
+        $("html,body").stop()
+                //.animate(_now_config, 0, "swing")
+                .animate(_config, _speed, "swing", function () {
+                    _this.scroll_to_lock = false;
+            });
     }
 	
     $.trigger_callback(_callback)
@@ -2304,6 +2334,24 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     */
 };
 
+/**
+ * 取得現在捲軸的位置
+ * @returns {JSON}
+ */
+jQuery.get_current_scroll_position = function () {
+    var _doc = document.documentElement, _body = document.body;
+    
+    var _left = (_doc && _doc.scrollLeft || _body && _body.scrollLeft || 0);
+    var _top = (_doc && _doc.scrollTop  || _body && _body.scrollTop  || 0);
+    
+    $.test_msg("get_current_scroll_position", [_doc.scrollTop, _body.scrollTop]);
+    
+    return {
+        scrollLeft: _left,
+        scrollTop: _top
+    };
+};
+
 jQuery.scroll_to_lock = false;
 
 jQuery.save_scroll_position = function () {
@@ -2318,11 +2366,11 @@ jQuery.save_scroll_position = function () {
  */
 jQuery.load_scroll_position = function () {
     
-    if (window.pageXOffset != this._scroll_position[0]) {
+    if (window.pageXOffset !== this._scroll_position[0]) {
         //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
     }
     
-    if (window.pageYOffset != this._scroll_position[1]) {
+    if (window.pageYOffset !== this._scroll_position[1]) {
         //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }

@@ -88,9 +88,22 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
     
     if (typeof(location.hash) !== 'undefined') {   
         //$.test_msg('設定location hash', this._set_lcok);
+        //window.location.hash = _hash;
+        $.test_msg("set hast: " + "location.hash", _hash);
+        location.hash = _hash;
+    }
+    else if (typeof(document.location.hash) !== 'undefined') {   
+        $.test_msg("set hast: " + "docuemnt.location.hash", _hash);
+        document.location.hash = _hash;
+    }
+    else if (typeof(window.location.hash) !== 'undefined') {   
+        $.test_msg("set hast: " + "window.location.hash", _hash);
         window.location.hash = _hash;
     }
     else {
+        $.test_msg("set hast:" + "window.location.href", _hash);
+        
+        
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
         var _url = location.href;
         
@@ -116,6 +129,7 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
         }
         
         window.location.href = _url + _hash;
+        //document.location.hash = _url + _hash;
     }
     
     this._restore_scroll_position(_pos);
@@ -125,10 +139,14 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
 
 URL_hash_dispatcher.prototype._save_scroll_position = function () {
     
+    /*
     var _pos = {
         x: window.scrollX,
         y: window.scrollY
     };
+    */
+    var _pos = $.get_current_scroll_position();
+    $.test_msg("儲存了現在的捲軸位置", _pos);    
     return _pos;
 };
 
@@ -139,8 +157,14 @@ URL_hash_dispatcher.prototype._save_scroll_position = function () {
  */
 URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
 
-    window.scrollTo(_pos.x, _pos.y);
-
+    //$.scroll_to(_pos, 0);
+    $.test_msg("設定了現在的捲軸位置", _pos);    
+    setTimeout(function () {
+        window.scrollTo(_pos.scrollLeft, _pos.scrollTop);
+    }, 0);
+    
+    
+    return this;
 };
 
 URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
@@ -245,9 +269,12 @@ URL_hash_dispatcher.prototype.delete_field = function (_key) {
     var _hash_data = this._setup_hash_data();
     _hash_data.delete_field(_key);
     this._hash_data = _hash_data;
+    
     var _hash = _hash_data.serialize();
     
-    this._set_location_hash(_hash);
+    // 20140520 造成捲軸跳動的兇手
+    //this._set_location_hash(_hash);
+        
     this._set_document_title(_hash);
     
     return this;     
