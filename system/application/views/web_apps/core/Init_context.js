@@ -18,7 +18,8 @@ function Init_context() {
     
     Task_event_dispatcher.call(this);
     
-    this._$schedule_task = ['selector', 'load', "modules", "check_css_loaded"];
+    //this._$schedule_task = ['selector', 'load', "modules", "check_css_loaded"];
+    this._$schedule_task = ['load', "modules", "check_css_loaded"];
     
 }
 

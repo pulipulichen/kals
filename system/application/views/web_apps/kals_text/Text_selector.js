@@ -96,7 +96,7 @@ Text_selector.prototype.check_text_selector = function (_callback) {
             }
             else {
                 var _scope_selector = KALS_CONFIG.annotation_scope_selector;
-                _scope_content = $(_scope_selector);
+                var _scope_content = $(_scope_selector);
                 
                 if (_scope_content.length === 0) {
                     _text_container = _default_scope();

@@ -17,10 +17,11 @@ function KALS_text(_selector) {
     KALS_user_interface.call(this);
     
     this.child('text_selector', new Text_selector());
-    if (typeof(_selector) === "undefined") {
+    if (_selector === undefined) {
+        this.text_selector.check_text_selector();
         _selector = this.get_selector();	
     }
-    //$.test_msg('KALS_text()', _selector);
+    $.test_msg('KALS_text()', _selector.length);
     
     _selector = this.filter_selector(_selector);
     
@@ -33,10 +34,7 @@ function KALS_text(_selector) {
     
     var _this = this;
     setTimeout(function() {
-        
-        _this.text_selector.check_text_selector(function () {
-            _this.init_start();
-        });
+        _this.init_start();
         
         //_this.load_my.initialize();
     }, 0);
@@ -94,8 +92,12 @@ KALS_text.prototype.init_start = function () {
     return this;
 };
 
-KALS_text.prototype.get_selector = function () {
-    return this.text_selector.get_text_selector();
+/**
+ * 
+ * @param {type} _callback
+ */
+KALS_text.prototype.get_selector = function (_callback) {
+    return this.text_selector.get_text_selector(_callback);
 };
 
 /**
@@ -124,13 +126,13 @@ KALS_text.prototype.filter_selector = function (_selector) {
     
     if (_selector.length > 0) {
             return _selector;
-	}
-	else {
-            //找不到_selector，丟出錯誤
-            _exception = new KALS_exception('kals_text.exception.selector_not_exist');
-            KALS_util.show_exception(_exception);
-            return null;
-	}
+    }
+    else {
+        //找不到_selector，丟出錯誤
+        _exception = new KALS_exception('kals_text.exception.selector_not_exist');
+        KALS_util.show_exception(_exception);
+        return null;
+    }
 };
 
 /**
