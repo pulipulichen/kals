@@ -105,8 +105,8 @@
 }
 
 .KALS.annotation-tool .editor-tool {
-    background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
-        , #FEEEBD 70px, #FEEEBD 100%);
+    /*background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
+        , #FEEEBD 70px, #FEEEBD 100%);*/
     background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FEF8E4)
         , color-stop(0.00, #FEF8E4), color-stop(0.25, #FEF8E4)
         , color-stop(0.35, #FEEEBD), to(#FEEEBD));    

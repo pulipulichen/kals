@@ -352,9 +352,14 @@ Annotation_tool.prototype.reopen = function (_callback) {
 
 Annotation_tool.prototype.scroll_into_view = function () {
     //var _offset = this.get_ui().offset();
-    var _offset = $.get_offset(this.get_ui());
+    
+    var _y;
+    //var _offset = $.get_offset(this.get_ui());
+    //_y = _offset.top - 60;
+    _y = KALS_text.selection.select.get_offset_top() - 60;
+    
     var _position = {
-        y: _offset.top - 60
+        y: _y
     };
 	//$.test_msg("Annotation_tool.scroll_into_view", _position);
     $.scroll_to(_position);

@@ -2153,7 +2153,7 @@ jQuery.get_class_prefixed_id = function (_classname, _prefixed) {
  */
 jQuery.scroll_to = function (_position, _speed, _callback) {
     
-    $.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
+    //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
     //return;
 	
     //this.scroll_to_lock = true;
@@ -2344,7 +2344,7 @@ jQuery.get_current_scroll_position = function () {
     var _left = (_doc && _doc.scrollLeft || _body && _body.scrollLeft || 0);
     var _top = (_doc && _doc.scrollTop  || _body && _body.scrollTop  || 0);
     
-    $.test_msg("get_current_scroll_position", [_doc.scrollTop, _body.scrollTop]);
+    //$.test_msg("get_current_scroll_position", [_doc.scrollTop, _body.scrollTop]);
     
     return {
         scrollLeft: _left,

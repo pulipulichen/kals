@@ -402,7 +402,7 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
         _ui.ckeditorGet().setData(_text, function () {
             //$.test_msg("Note_editor_ckeditor.set_text() ok", _text);
             setTimeout(function () {
-                //$.load_scroll_position();    
+                $.load_scroll_position();    
             }, 0);
 
         });
