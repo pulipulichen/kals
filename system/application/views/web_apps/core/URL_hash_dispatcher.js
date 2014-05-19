@@ -340,44 +340,19 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 	
     //優先度：view recommend = select
     if (this.has_field('view') === true) {
-		//$.test_msg('URL_hash_dispatcher', 'pass2');
-		
-        var _id = this.get_field('view');
-        KALS_context.init_profile.add_listener(function () {
-            KALS_text.tool.view.load_view(_id);
-        });
         
+    }
+    else if (this.has_field("mobile") === true) {
+        this._action_mobile();
     }
     else {
 		//$.test_msg('URL_hash_dispatcher', 'pass3');
 		
         if (this.has_field('recommend') === true) {
-			//$.test_msg('URL_hash_dispatcher', 'pass4');
-            _id = this.get_field('recommend');
-            //$.test_msg('has check_hash() recommend', _id);
-            KALS_text.tool.recommend.load_recommend(_id);
+            this._action_recommend()
         }
         if (this.has_field('select') === true) {
-            //$.test_msg('URL_hash_dispatcher', 'pass5');
-            var _scope_text = this.get_field('select');
-            //$.test_msg('has check_hash()', _scope_text);
-            
-            KALS_context.init_profile.add_listener(function () {
-                KALS_text.selection.select.load_select(_scope_text);  
-            });
-            /*
-            KALS_context.init_profile.add_listener(function () {
-                //KALS_context.auth.add_once_listener(function () {
-                    //setTimeout(function () {
-                        $.test_msg("gogo select");
-                        KALS_text.selection.select.load_select(_scope_text);  
-                    ///}, 5000);
-                //});
-            });
-            */
-            //setTimeout(function () {
-            //	KALS_text.selection.select.load_select(_scope_text);
-            //}, 3000); 
+            this._action_select();
         }  
     }
     
@@ -389,6 +364,94 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 	//$.test_msg('URL_hash_dispatcher', 'pass');
     
     $.trigger_callback(_callback);
+    return this;
+};
+
+/**
+ * 啟動view的動作
+ * @returns {URL_hash_dispatcher.prototype}
+ */
+URL_hash_dispatcher.prototype._action_view = function () {
+    
+    if ($.is_mobile_mode()) {
+        return this;
+    }
+    
+    //$.test_msg('URL_hash_dispatcher', 'pass2');
+		
+    var _id = this.get_field('view');
+    KALS_context.init_profile.add_listener(function () {
+        KALS_text.tool.view.load_view(_id);
+    });
+    
+    return this;
+};
+
+/**
+ * 啟動mobile相關的動作
+ * @returns {URL_hash_dispatcher}
+ */
+URL_hash_dispatcher.prototype._mobile_action = function () {
+    
+    if (this.has_field("topic_id") === false) {
+        KALS_context.redirect("mobile_apps/annotation_topics", true);
+    }
+    else {
+        KALS_context.redirect("mobile_apps/annotation_thread/topic_id/" + this.get_field("topic_id") + "#annotation_" + this.get_field("annotation_id"), true);
+    }
+    
+    return this;
+};
+
+/**
+ * 啟動recommend的動作
+ * @returns {URL_hash_dispatcher.prototype}
+ */
+URL_hash_dispatcher.prototype._action_recommend = function () {
+    
+    if ($.is_mobile_mode()) {
+        return this;
+    }
+    
+    //$.test_msg('URL_hash_dispatcher', 'pass4');
+    var _id = this.get_field('recommend');
+    //$.test_msg('has check_hash() recommend', _id);
+    KALS_text.tool.recommend.load_recommend(_id);
+    
+    return this;
+};
+
+/**
+ * 啟動select的動作
+ * @returns {URL_hash_dispatcher.prototype}
+ */
+URL_hash_dispatcher.prototype._action_select = function () {
+    
+    if ($.is_mobile_mode()) {
+        return this;
+    }
+    
+    //$.test_msg('URL_hash_dispatcher', 'pass5');
+    var _scope_text = this.get_field('select');
+    //$.test_msg('has check_hash()', _scope_text);
+
+    KALS_context.init_profile.add_listener(function () {
+        KALS_text.selection.select.load_select(_scope_text);  
+    });
+    /*
+    KALS_context.init_profile.add_listener(function () {
+        //KALS_context.auth.add_once_listener(function () {
+            //setTimeout(function () {
+                $.test_msg("gogo select");
+                KALS_text.selection.select.load_select(_scope_text);  
+            ///}, 5000);
+        //});
+    });
+    */
+    //setTimeout(function () {
+    //	KALS_text.selection.select.load_select(_scope_text);
+    //}, 3000); 
+    
     return this;
 };
 

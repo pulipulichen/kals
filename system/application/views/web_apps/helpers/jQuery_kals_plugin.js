@@ -1886,7 +1886,7 @@ jQuery.is_touchable = function () {
         try {            
             var _el = document.createElement('div');
             _el.setAttribute('ontouchstart', 'return;');
-           if (typeof(_el.ontouchstart) == "function") {
+           if (typeof(_el.ontouchstart) =＝= "function") {
 		   	_touchable = true;
 		   }
        } catch (_e) { }
@@ -2318,11 +2318,11 @@ jQuery.save_scroll_position = function () {
  */
 jQuery.load_scroll_position = function () {
     
-    if (window.pageXOffset != this._scroll_position[0]) {
+    if (window.pageXOffset !== this._scroll_position[0]) {
         //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
     }
     
-    if (window.pageYOffset != this._scroll_position[1]) {
+    if (window.pageYOffset !== this._scroll_position[1]) {
         //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }
@@ -2342,6 +2342,31 @@ jQuery.create_id = function (_prefix) {
         _id = _prefix + _id;
     }
     return _id;
+};
+
+/**
+ * 取得根據網址建立的Domain
+ * @returns {String}
+ */
+jQuery.create_namespace = function () {
+    var _url = location.href;
+    
+    //移除 #之後
+    if (_url.lastIndexOf('#') > -1) {
+        _url = _url.substr(0, _url.lastIndexOf('#'));
+    }
+    
+    // 替換可能出現問題的字串
+    _url = $.str_replace('.', '_', _url);
+    _url = $.str_replace('/', '_', _url);
+    _url = $.str_replace(':', '_', _url);
+    _url = $.str_replace('@', '_', _url);
+    
+    //$.test_msg('KALS_context create_namespace', _url);
+    //_url = 'test';
+    //_url = 'test22' + _url;
+    
+    return _url;
 };
 
 /**

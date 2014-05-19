@@ -16,6 +16,7 @@ function KALS_text(_selector) {
     
     KALS_user_interface.call(this);
     
+    this.child('text_selector', new Text_selector());
     if (typeof(_selector) === "undefined") {
         _selector = this.get_selector();	
     }
@@ -32,7 +33,10 @@ function KALS_text(_selector) {
     
     var _this = this;
     setTimeout(function() {
-        _this.init_start();
+        
+        _this.text_selector.check_text_selector(function () {
+            _this.init_start();
+        });
         
         //_this.load_my.initialize();
     }, 0);
@@ -79,9 +83,9 @@ KALS_text.prototype.load_recommend = null;
 KALS_text.prototype.guide = null;
 
 /**
- * @type {Reading_guide}
+ * @type {Text_selector}
  */
-KALS_text.prototype.guide;
+KALS_text.prototype.text_selector = null;
 
 KALS_text.prototype.init_start = function () {
     
@@ -91,7 +95,7 @@ KALS_text.prototype.init_start = function () {
 };
 
 KALS_text.prototype.get_selector = function () {
-    return KALS_context.get_text_selector();
+    return this.text_selector.get_text_selector();
 };
 
 /**

@@ -117,6 +117,8 @@ class annotation_topics extends Mobile_apps_controller{
 
          $data['written_annotations'] = $this->_filter_written_annotations($written_annotations, $unread_topics);
          
+         $data["webpage_url"] = $webpage->get_url();
+         
         // log區 -使用mobile裝置瀏覽topic list- action = 40
         $this->_log($webpage);
         

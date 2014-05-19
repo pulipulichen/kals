@@ -112,6 +112,7 @@ class generic extends Web_apps_controller {
             'modules/feedback/Feedback_manager',
             'core/KALS_authentication',
             'core/URL_hash_dispatcher',
+            'core/URL_dispatcher',  //20140519 Pulipuli Chen
             'core/Style_manager',
             'core/Overlay_manager',
             'core/KALS_storage',
@@ -303,6 +304,7 @@ class generic extends Web_apps_controller {
             'kals_text/My_basic_annotation_loader',
             'kals_text/My_custom_annotation_loader',
             'kals_text/Navigation_loader',
+            //'kals_text/Text_selector',  //20140519 Pulipuli Chen
 
             'kals_text/Init_text',
             'kals_text/KALS_text',

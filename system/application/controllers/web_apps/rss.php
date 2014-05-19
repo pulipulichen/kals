@@ -93,9 +93,12 @@ class rss extends Web_apps_controller {
 
         $webpage_title = $webpage->get_title();
         
-        $webpage_topics_path = '/mobile_apps/annotation_topics/webpade_id/'.$webpage_id;
-        $webpage_topics_url = get_kals_base_url($webpage_topics_path);
+        //$webpage_topics_path = '/mobile_apps/annotation_topics/webpade_id/'.$webpage_id;
+        //$webpage_topics_url = get_kals_base_url($webpage_topics_path);
+        
         //$webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
+        
+        $webpage_topics_url = $webpage->get_url() . "#mobile=true";
         
         $channel = new Channel();
         $channel
@@ -141,9 +144,12 @@ class rss extends Web_apps_controller {
             }
             
             //$item_url = 'http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id;
-            $annotation_thread_path = "mobile_apps/annotation_thread/topic_id/".$topic_id."#annotation_".$annotation_id;
-            $item_url = site_url($annotation_thread_path);
-            $item_url = get_kals_base_url($annotation_thread_path);
+            //$annotation_thread_path = "mobile_apps/annotation_thread/topic_id/".$topic_id."#annotation_".$annotation_id;
+            //$item_url = site_url($annotation_thread_path);
+            //$item_url = get_kals_base_url($annotation_thread_path);
+            
+            $item_url = $webpage->get_url() . "#mobile=true&topic_id=" . $topic_id . "&annotation_id=" . $annotation_id;
+            
             //$item_url = $_SERVER["HTTP_HOST"]
             //test_msg($_SERVER["HTTP_HOST"]);
             
