@@ -107,7 +107,7 @@ Open_mobile_apps.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    nav_type: "common",
+    nav_type: "mobile",
     
     /**
      * 排序順序

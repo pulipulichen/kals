@@ -26,6 +26,8 @@ function KALS_toolbar() {
     this._common_windows = (new Common_navigation()).get_nav_items();
     this.child('anonymous_nav', new Anonymous_navigation(this._common_windows));
     this.child('avatar', new Avatar_component(this._common_windows));
+    
+    this.child('mobile_nav', new Mobile_navigation(this._common_windows));
     //this.child('common_nav', new Common_navigation());
         
     var _this = this;
@@ -92,6 +94,11 @@ KALS_toolbar.prototype.avatar = null;
  */
 //KALS_toolbar.prototype.common_nav = null;
 
+/**
+ * @type {Mobile_navigation}
+ */
+KALS_toolbar.prototype.mobile_nav = null;
+
 KALS_toolbar.prototype._common_windows = null;
 
 // ---------
@@ -129,11 +136,13 @@ KALS_toolbar.prototype._$create_ui = function () {
     var _anonymous_ui = this.anonymous_nav.get_ui();
         _anonymous_ui.addClass('anonymous-component');
     var _avatar_ui = this.avatar.get_ui();
+    var _mobile_nav = this.mobile_nav.get_ui();
     //var _common_ui = this.common_nav.get_ui();
     
     var _navigation_container = $('<div></div>').addClass('navigation-container')
         .append(_anonymous_ui)
-        .append(_avatar_ui);
+        .append(_avatar_ui)
+        .append(_mobile_nav);
     
     this.toolbar.setup_right([
         _loading_ui,
@@ -152,7 +161,12 @@ KALS_toolbar.prototype._$create_ui = function () {
     var _this = this;
     setTimeout(function () {
         
-        _this.toggle_navigation('anonymous-component');
+        if ($.is_mobile_mode() === false) {
+            _this.toggle_navigation('anonymous-component');
+        }
+        else {
+            _this.toggle_navigation('mobile-component');
+        }
         
         var _toolbar_height = _this.get_height();
         //$.test_msg('toolbar_height', _toolbar_height);

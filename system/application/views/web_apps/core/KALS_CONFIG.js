@@ -560,7 +560,7 @@ DEFAULT_KALS_CONFIG = {
          * @type type
          */
         Open_mobile_apps: {
-            enable: false
+            enable: true
         }
     }
 };

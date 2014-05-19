@@ -538,6 +538,9 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
             _loop();
         }
     }
+    else {
+        $.trigger_callback(_callback);
+    }
     
     return this;
 };
