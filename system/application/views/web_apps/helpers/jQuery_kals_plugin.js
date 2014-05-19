@@ -1886,7 +1886,7 @@ jQuery.is_touchable = function () {
         try {            
             var _el = document.createElement('div');
             _el.setAttribute('ontouchstart', 'return;');
-           if (typeof(_el.ontouchstart) =＝= "function") {
+           if (typeof(_el.ontouchstart) === "function") {
 		   	_touchable = true;
 		   }
        } catch (_e) { }
@@ -2318,11 +2318,11 @@ jQuery.save_scroll_position = function () {
  */
 jQuery.load_scroll_position = function () {
     
-    if (window.pageXOffset !== this._scroll_position[0]) {
+    if (window.pageXOffset != this._scroll_position[0]) {
         //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
     }
     
-    if (window.pageYOffset !== this._scroll_position[1]) {
+    if (window.pageYOffset != this._scroll_position[1]) {
         //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
         //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
     }
