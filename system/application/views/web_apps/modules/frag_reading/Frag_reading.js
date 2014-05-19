@@ -417,10 +417,12 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
                 || typeof(KALS_text.selection.text) !== "object" 
                 || typeof(KALS_text.selection.text.word) !== "object"
                 || typeof(KALS_text.selection.text.word.get_current_progress_word) !== "function") {
-            return this;
+            //return this;
+        }
+        else {
+            _current_word = KALS_text.selection.text.word.get_current_progress_word();
         }
         
-        _current_word = KALS_text.selection.text.word.get_current_progress_word();
         //進入if之前的值
         //$.test_msg('before IF, before_word, current word', [_before_word, _current_word]); 
         

@@ -136,6 +136,8 @@ Select_tooltip.prototype._$get_config = function () {
 
         var _trigger = _this.getTrigger();
         var _id = $.get_prefixed_id(_trigger);
+        
+        //$.test_msg("被呼叫了", _id);
 
         _select_tooltip._event = _event;
         _select_tooltip._tip = _tip;
@@ -204,7 +206,9 @@ Select_tooltip.prototype._$get_config = function () {
         //},0);
     };
     */
-    //_config["predelay"] = 500;
+    
+    // 晚一點再顯示，拜託，不要這麼急著計算
+    _config["predelay"] = 300;
     
     var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
     _config['onBeforeHide'] = function (_this) {

@@ -462,9 +462,12 @@ DEFAULT_KALS_CONFIG = {
             },
             /**
              * 設定自動save_reading_progress的時間頻率
+             * 單位：秒
+             * 
+             * 預設30秒
              * @type Number
              */
-            "interval_span": 10,
+            "interval_span": 5,
             /**
              * 頁面停止時延遲的增加時間
              * @type Number

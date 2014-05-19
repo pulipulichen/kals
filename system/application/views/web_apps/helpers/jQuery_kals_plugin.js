@@ -2597,7 +2597,9 @@ jQuery.get_offset_top = function(_ele) {
     var _offset;
     
     //$.test_msg("get_offset_top", [_ele.css("position"), _ele.offset().top, _offset, _ele.text()]);
-    if (_ele.css("position") === "relative") {
+    var _position = _ele.css("position");
+    if (_position === "relative" 
+            || _position === "static") {
         
         //var _fake = _ele.clone()
         //        .attr("className", "KALS fake absolute")
@@ -2612,7 +2614,7 @@ jQuery.get_offset_top = function(_ele) {
         //_fake.remove();
     }
     else {
-        _offset = _ele.attr("offsetTop")
+        _offset = _ele.attr("offsetTop");
     }
     
     return _offset;
@@ -2725,6 +2727,10 @@ jQuery.get_offset = function(_ele) {
  * @returns {jQuery}
  */
 jQuery.set_position = function (_ele, _anchor, _config) {
+    
+    //_config.at = _anchor;
+    //_ele.position(_config);
+    //return;
     
     var _my_config = _config.my.split(" ");
     var _my_h = _my_config[0];

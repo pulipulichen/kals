@@ -340,7 +340,7 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 	
     //優先度：view recommend = select
     if (this.has_field('view') === true) {
-        
+        this._action_view();
     }
     else if (this.has_field("mobile") === true) {
         this._action_mobile();
