@@ -227,7 +227,7 @@ class Authentication extends Web_apps_controller {
         //$action = 8;
         $action = "register.success";
         $user_id = NULL;
-        if (isset($user) )
+        if (isset($user) && $user->has_password() === FALSE)
         {
             //handle_error('user_already_exist');
             $output['error'] = 'user_already_existed';

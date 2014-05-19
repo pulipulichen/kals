@@ -186,7 +186,7 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     var _first_paragraph_id = _selectable_text_paragraph.get_paragraph_id(_first_paragraph);
     var _last_paragraph_id = _selectable_text_paragraph.get_paragraph_id(_last_paragraph);
     
-    $.test_msg('selectable.setup_paragraph_location()', [ _text.find('.' + _paragraph_class_name).length, _first_paragraph_id , _last_paragraph_id]);
+    //$.test_msg('selectable.setup_paragraph_location()', [ _text.find('.' + _paragraph_class_name).length, _first_paragraph_id , _last_paragraph_id]);
     
     var _batch_excute = _selectable_text.excute_interval.batch_excute;
     var _wait = _selectable_text.excute_interval.wait;

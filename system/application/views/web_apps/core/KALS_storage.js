@@ -174,8 +174,8 @@ KALS_storage.prototype.set = function (_key, _value, _callback) {
         
         var _percent = parseInt(((_orig_size - _compressed_size) / _orig_size)*100 , 10);
         
-        $.test_msg('stroage set (' + _key +  ')', _orig_size + ' > ' + _compressed_size 
-                + ' (壓縮率: ' + _percent  + '%) ');
+        //$.test_msg('stroage set (' + _key +  ')', _orig_size + ' > ' + _compressed_size 
+        //        + ' (壓縮率: ' + _percent  + '%) ');
         
         if (_compressed_size < this._quota_pre_item) {
             this._storage.set(_key, _value);
