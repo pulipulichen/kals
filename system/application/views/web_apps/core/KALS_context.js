@@ -591,6 +591,37 @@ KALS_context.load_modules_config = function (_callback) {
             _this.view_manager.set_data(_data.KALS_view_manager);
         }
         
+        $.trigger_callback(_callback);
+    };
+    
+    var _config = {
+        "url": this._modules_config_url,
+        "callback": _loaded_callback,
+        "fixed_callback": true
+    };
+    
+    KALS_util.ajax_get(_config);
+    
+    return this;
+};
+
+/**
+ * 讀取網頁設定資料的位置
+ * @type {string}
+ */
+KALS_context._webpage_info_url = 'generic/webpage_info';
+
+
+/**
+ * 讀取網頁設定資料
+ * @param {Function} _callback
+ * @returns {KALS_context}
+ */
+KALS_context.load_webpage_info = function (_callback) {
+    
+    var _this = this;
+    var _loaded_callback = function (_data) {
+        
         if (typeof(_data.webpage_id) !== 'undefined') {
             _this.webpage_id = _data.webpage_id;
         }
@@ -599,7 +630,7 @@ KALS_context.load_modules_config = function (_callback) {
     };
     
     var _config = {
-        "url": this._modules_config_url,
+        "url": this._webpage_info_url,
         "callback": _loaded_callback
     };
     

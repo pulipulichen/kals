@@ -23,7 +23,8 @@ function Init_component (_onstart, _oncomplete) {
         'KALS_text', 
         'KALS_window', 
         'site_reform',
-        'modules_config'
+        'modules_config',
+        "webpage_info"
     ];
 }
 
@@ -71,7 +72,13 @@ Init_component.prototype._$onstart = function () {
     
     KALS_context.load_modules_config(function () {
         _this.complete("modules_config");
-        
+    });
+    
+    /**
+     * @version 20140519 Pulipuli Chen
+     */ 
+    KALS_context.load_webpage_info(function () {
+        _this.complete("webpage_info");
         KALS_text = new KALS_text();
     });
     

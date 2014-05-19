@@ -317,6 +317,8 @@ class generic extends Web_apps_controller {
      */
     public function toolkit($return_list = NULL)
     {
+        $this->_enable_cache();
+        
         $list = $this->javascript_import_list["toolkit_list"];
 
         $list_package = $this->javascript_import_list["toolkit_list_package"];
@@ -338,6 +340,8 @@ class generic extends Web_apps_controller {
 
     function core($return_list = NULL)
     {
+        $this->_enable_cache();
+        
         $list = array(
             //'',
             ""
@@ -374,6 +378,8 @@ class generic extends Web_apps_controller {
      */
     function component($return_list = NULL)
     {
+        $this->_enable_cache();
+        
         $list = array(            
             ''
         );
@@ -573,10 +579,12 @@ class generic extends Web_apps_controller {
 
         
         $full_list = $list_toolkit;
-        foreach ($list_core AS $path)
+        foreach ($list_core AS $path) {
             $full_list[] = $path;
-        foreach ($list_component AS $path)
+        }
+        foreach ($list_component AS $path) {
             $full_list[] = $path;
+        }
 
         //$this->load_js($full_list);
         $this->pack_js($full_list, 'package');
@@ -829,6 +837,28 @@ class generic extends Web_apps_controller {
         $data = array();
 
         $data['KALS_view_manager'] = $this->_load_viewes();
+        
+        $this->_enable_cache();
+        
+        $this->_display_jsonp($data, $callback);
+    }
+    
+    /**
+     * 網頁所需資訊
+     * 
+     * @version 20140519 Pulipuli Chen
+     * @param String $json
+     * @param String $callback
+     */
+    function webpage_info($json, $callback = NULL)
+    {
+        if (is_null($callback))
+        {
+            $callback = $json;
+            $json = NULL;
+        }
+        
+        $data = array();
         
         // 20140517 Pulipuli Chen
         $data['webpage_id'] = get_context_webpage()->get_id();

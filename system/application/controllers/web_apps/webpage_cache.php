@@ -16,7 +16,7 @@ include_once 'kals_model.php';
 
 class Webpage_cache extends KALS_model {
 
-    protected $controller_enable_cache = TRUE;
+    protected $controller_enable_cache = FALSE;
     protected $login_require = FALSE;
 
     var $url = NULL;
