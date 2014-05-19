@@ -407,12 +407,23 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
     var _current_word = null;
     var _before_word = null;
     
+    
     var _check_progress = function (){
         //現在的word_id不等於之前的word_id
         //alert('start');
+        
+        if (typeof(KALS_text) !== "object" 
+                || typeof(KALS_text.selection) !== "object" 
+                || typeof(KALS_text.selection.text) !== "object" 
+                || typeof(KALS_text.selection.text.word) !== "object"
+                || typeof(KALS_text.selection.text.word.get_current_progress_word) !== "function") {
+            return this;
+        }
+        
         _current_word = KALS_text.selection.text.word.get_current_progress_word();
         //進入if之前的值
         //$.test_msg('before IF, before_word, current word', [_before_word, _current_word]); 
+        
         
         //var _check_timer;
         if ( _current_word !== _before_word || _before_word === null) {

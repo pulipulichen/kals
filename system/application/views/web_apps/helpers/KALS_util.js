@@ -174,7 +174,10 @@ KALS_util.ajax_get = function (_config) {
         _get_json();
         
         if (_retry !== null && _retry > 0) {
-            //$.test_msg("開始計時", _retry_wait);
+            
+            if (_callback_parameter !== "?") {
+                $.test_msg("開始計時", _retry_wait);
+            }
             _retry_timer = setInterval(function () {
                 //$.test_msg("時間到了");
                 if (_retry_counter === _retry || _retry_counter > _retry

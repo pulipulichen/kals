@@ -21,7 +21,7 @@ function KALS_text(_selector) {
         this.text_selector.check_text_selector();
         _selector = this.get_selector();	
     }
-    $.test_msg('KALS_text()', _selector.length);
+    //$.test_msg('KALS_text()', _selector.length);
     
     _selector = this.filter_selector(_selector);
     
