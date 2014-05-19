@@ -467,12 +467,12 @@ DEFAULT_KALS_CONFIG = {
              * 預設30秒
              * @type Number
              */
-            "interval_span": 5,
+            //"interval_span": 5,
             /**
              * 頁面停止時延遲的增加時間
              * @type Number
              */
-            "increase_interval_span": 10
+            //"increase_interval_span": 10
         },
         /**
          * 搜尋功能

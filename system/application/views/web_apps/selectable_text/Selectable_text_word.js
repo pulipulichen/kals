@@ -667,10 +667,12 @@ Selectable_text_word.prototype.scroll_to = function (_target_id, _callback) {
 };
 /**
  * 取得現在捲軸的位置的first word id
+ * 
+ * @param {Function} _callback
  * @return {int} word_id
  */
 
-Selectable_text_word.prototype.get_current_progress_word = function () {
+Selectable_text_word.prototype.get_current_progress_word = function (_callback) {
 
     // 1.先比對kals_paragraph_i
     // 2.再比對該層內的word_id 直到比現在捲軸位置還大(y)的 記錄id
@@ -682,8 +684,66 @@ Selectable_text_word.prototype.get_current_progress_word = function () {
     
     //$.test_msg('save_reading_progress, para length', _paragraph_len);
 
-    var _target_paragraph;
+    var _target_paragraph, _target_word, _words;
     
+    var _word_id = 1;
+    var _para_index = 0;
+    var _wait_index = 100;
+    
+    var _para_loop = function () {
+        var _paragraph = _paragraph_collection.eq(_para_index);
+        //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
+        //取得每個paragraph的第一個word的top
+        var _paragraph_height = $.get_offset_top(_paragraph.find(".kals-word:first")); 
+        //$.test_msg('save_reading_progress', [_paragraph_height, _scroll_top, _index]);
+            
+        if (_paragraph_height > _scroll_top) {
+            //找前一段
+            _target_paragraph = _paragraph_collection.eq(_para_index-1);
+            _para_complete();
+            return;
+        }
+        
+        _para_continue();
+        return;
+    };
+    
+    var _para_continue = function () {
+        _para_index++;
+        
+        if (_para_index < _paragraph_collection.length) {
+            
+            if (_para_index % _wait_index === 0) {
+                setTimeout(function () {
+                    _para_loop();
+                }, 1);
+            }
+            else {
+                _para_loop();
+            }
+            return;
+        }
+        else {
+            _para_complete();
+            return;
+        }
+    };
+    
+    var _para_complete = function () {
+        if (_target_paragraph !== undefined) {
+            //段落中所有的word
+            _words = _target_paragraph.find(".kals-word");
+            _word_loop();
+            return;
+        }
+        else {
+            _target_word = $(".kals-word:last");
+            _word_complete();
+            return;
+        }
+    };
+    
+    /*
     for (var _index = 0; _index < _paragraph_collection.length; _index++ ) {
         var _paragraph = _paragraph_collection.eq(_index);
         //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
@@ -698,9 +758,69 @@ Selectable_text_word.prototype.get_current_progress_word = function () {
         }
             //$.test_msg('i', _i);
     }
+    */
         
-    var _target_word;
+    var _word_index = 0;
+    var _word_loop = function () {
+        
+        _target_word = _words.eq(_word_index);
+        if (_target_word === undefined) {
+            $.test_msg("word_loop", [_words.length, _word_index, typeof(_target_word)]);
+        }   
+        
+        //比較每個字與現在捲軸位置的高度
+        var _word_height = $.get_offset_top(_target_word);
+        if (_word_height > _scroll_top) {
+            _word_complete();
+            return;
+        }
+        // 如果在這一段裡面都沒有找到位置比捲軸還低的word，表示實際上是下一個paragraph
+        if (_word_index === _words.length - 1) {
+            // get_prefixed_id 只取ID的值
+            var _word_id = $.get_prefixed_id(_target_word.attr("id"));
+            // id裡的值為"kals-word_id"
+            _target_word = $("#kals_word_" + (_word_id+1));
+            _word_complete();
+            return;
+        }
+        
+        _word_continue();
+    };
+    
+    var _word_continue = function () {
+        _word_index++;
+        if (_word_index < _words.length) {
+            
+            if (_word_index % _wait_index === 0) {
+                setTimeout(function () {
+                    _word_loop();
+                }, 1);
+            }
+            else {
+                _word_loop();
+            }
+            return;
+        }
+        else {
+            _word_complete();
+            return;
+        }
+    };
+    
+    var _word_complete = function () {
+        if (_target_word !== undefined && _target_word.length !== 0) {
+            _word_id = _target_word.attr("id");
+            _word_id = $.get_prefixed_id(_word_id);
+            //$.test_msg("get_current_progress_word", [_word_id, _target_paragraph.attr("className")]);
+        }
+
+        if ($.is_function(_callback)) {
+            _callback(_word_id);
+        }
+    };
+    
     //已經找到該段落
+    /*
     if (_target_paragraph !== undefined) {
         //段落中所有的word
         var _words = _target_paragraph.find(".kals-word");
@@ -725,14 +845,26 @@ Selectable_text_word.prototype.get_current_progress_word = function () {
     else {
         _target_word = $(".kals-word:last");
     }
-        
+    */
+      
+    /*
     var _word_id = 1;
     if (_target_word !== undefined) {
         _word_id = _target_word.attr("id");
         _word_id = $.get_prefixed_id(_word_id);
     }
     //$.test_msg("get_current_progress_word", [_word_id, _target_paragraph.attr("className")]);
-    return _word_id;
+    
+    if ($.is_function(_callback)) {
+        _callback(_word_id);
+    }
+    */
+    //return _word_id;
+    
+    // 開始執行迴圈
+    _para_loop();
+    
+    return this;
 };
 
 /* End of file Selectable_text_word */
