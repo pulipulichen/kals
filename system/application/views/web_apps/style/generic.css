@@ -140,3 +140,11 @@
 .KALS p, .KALS fieldset, .KALS table, .KALS pre {
     margin-bottom: auto;
 }
+
+/* ------------------------ */
+.KALS.fake {
+    /*display: none;*/
+}
+.KALS.absolute {
+    /*position: absolute;*/
+}

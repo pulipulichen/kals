@@ -449,6 +449,36 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
 };
 
 /**
+ * 初始化這個文字的事件
+ * @param {jQuery} _word
+ * @returns {Selectable_text_word}
+ */
+Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
+    
+    _word = $(_word);
+    
+    //$.test_msg("_init_word_selectable_event", 1);
+    
+    // 20140223 Pudding Chen
+    // 轉移到這邊做tooltip
+    this.setup_word_tooltip(_word);
+
+    //$.test_msg("_init_word_selectable_event", 2);
+
+    // 20140518 Pulipuli Chen
+    // 分開來做選取事件
+    this.setup_word_mouse_event(_word);
+    
+    //$.test_msg("_init_word_selectable_event", 3);
+    
+    _word.trigger("mouseover");
+    
+    //$.test_msg("_init_word_selectable_event", 4);
+    
+    return this;
+};
+
+/**
  * 讓所有文字都保持在可選取的狀態
  * 
  * 2254 轉接完畢，檢查完畢
@@ -466,20 +496,18 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
             var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
             
             var _i = 0;
-            var _wait_i = 100;
+            var _wait_i = 1000;
             var _loop = function () {
                 
                 var _word = _words.eq(_i);
                 
-                // 20140223 Pudding Chen
-                // 轉移到這邊做tooltip
-                _this.setup_word_tooltip(_word);
-
-                // 20140518 Pulipuli Chen
-                // 分開來做選取事件
-                _this.setup_word_mouse_event(_word);
                 
-                KALS_context.progress.add_count();
+                _word.one("mouseover", function () {
+                    //$.test_msg("初始化", this.id);
+                    _this._init_word_selectable_event(this);
+                });
+                
+                KALS_context.progress.add_count(2);
                 
                 _continue();
             };

@@ -1698,7 +1698,7 @@ jQuery.create_once = function (_html, _append_to) {
     else {
         var _selector = _tag_name+_class_name+_id;
         var _obj = this(_selector);
-        if (false == _obj.exists()) {
+        if (false === _obj.exists()) {
             _temp_obj.appendTo(_append_to);
             _obj = _temp_obj;
         }
@@ -2565,11 +2565,18 @@ jQuery.get_offset_top = function(_ele) {
     
     //$.test_msg("get_offset_top", [_ele.css("position"), _ele.offset().top, _offset, _ele.text()]);
     if (_ele.css("position") === "relative") {
-        _ele.css("position", "absolute");
+        
+        //var _fake = _ele.clone()
+        //        .attr("className", "KALS fake absolute")
+        //        .insertBefore(_ele);
+        
+        //_ele.css("position", "absolute");
         //_offset = _ele.attr("offsetTop");
         _offset = _ele.offset().top;
         _offset = parseInt(_offset);
-        _ele.css("position", "relative");
+        //_ele.css("position", "relative");
+        
+        //_fake.remove();
     }
     else {
         _offset = _ele.attr("offsetTop")
@@ -2616,11 +2623,16 @@ jQuery.get_offset_left = function(_ele) {
     var _offset = _ele.attr("offsetLeft");
     
     if (_ele.css("position") === "relative") {
-        _ele.css("position", "absolute");
+        
+        //var _fake = _ele.clone()
+        //        .attr("className", "KALS fake absolute")
+        //        .insertBefore(_ele);
+        //_ele.css("position", "absolute");
         //_offset = _ele.attr("offsetTop");
         _offset = _ele.offset().left;
         _offset = parseInt(_offset);
-        _ele.css("position", "relative");
+        //_ele.css("position", "relative");
+        //_fake.remove();
     }
     
     return _offset;
@@ -2762,7 +2774,14 @@ jQuery.set_position = function (_ele, _anchor, _config) {
  */
 jQuery.get_width_without_transform = function (_ele) {
     
-    var _fake = _ele.clone().appendTo("body");
+    //var _fake = _ele.clone().appendTo("body");
+    //var _temp = $(document.createDocumentFragment());
+    //var _temp = $("<div></div>");
+    var _temp = $('body');
+    var _fake = _ele.clone()
+            //.appendTo(document.createDocumentFragment());
+            .hide()
+            .appendTo(_temp);
     //_fake.css("transform", "matrix(1,0,0,1,0,0)");
         
     var _width = _fake.width();
@@ -2774,8 +2793,14 @@ jQuery.get_width_without_transform = function (_ele) {
     //    , _ele.outerWidth()
     //    , _ele.css("transform")
     //    ]);
+    
+    $.test_msg("get_width_without_transform", _width);
 
-    _fake.remove();
+    //_fake.remove();
+    
+    setTimeout(function () {
+        _fake.remove();
+    }, 100);
     
     return _width;
 };
@@ -2788,14 +2813,20 @@ jQuery.get_width_without_transform = function (_ele) {
  */
 jQuery.get_height_without_transform = function (_ele) {
     
-    var _fake = _ele.clone().appendTo("body");
+    var _temp = $('body');
+    var _fake = _ele.clone()
+            .hide()
+            .appendTo(_temp);
     //_fake.css("transform", "matrix(1,0,0,1,0,0)");
         
-    var _width = _fake.height();
+    var _height = _fake.height();
 
-    _fake.remove();
+    setTimeout(function () {
+        _fake.remove();
+    }, 100);
     
-    return _width;
+    
+    return _height;
 };
 
 $.widget("ui.dialog", $.ui.dialog, {

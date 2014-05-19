@@ -121,7 +121,7 @@ Select_tooltip.prototype._$get_config = function () {
 
         var _tip = _this.getTip();
         //setTimeout(function () {
-            _tip.addClass("loading");
+        _tip.addClass("loading");
         //}, 0);
         
         //$.test_msg("onBeforeShow", _tip.css("visibility"));
@@ -140,6 +140,8 @@ Select_tooltip.prototype._$get_config = function () {
         _select_tooltip._event = _event;
         _select_tooltip._tip = _tip;
         _select_tooltip._trigger = _trigger;
+
+        
 
         var _position_setup = function () {
             $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
@@ -174,10 +176,21 @@ Select_tooltip.prototype._$get_config = function () {
             }
         };
 
+        var _load_tooltip = function () {
             // 讀取標註
-        _select_tooltip.load_tooltip_annotation(_id, function () {
-            _position_setup();
-        });
+            _select_tooltip.load_tooltip_annotation(_id, function () {
+                _position_setup();
+            });
+        };
+        
+        //var _preload_position = function () {
+        //    _select_tooltip.setup_position(_load_tooltip);
+        //};
+        
+        //_preload_position();
+        
+        _load_tooltip();
+        
     };    //onBeforeShow: function () {
     
     /*
