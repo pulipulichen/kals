@@ -2794,7 +2794,7 @@ jQuery.get_width_without_transform = function (_ele) {
     //    , _ele.css("transform")
     //    ]);
     
-    $.test_msg("get_width_without_transform", _width);
+    //$.test_msg("get_width_without_transform", _width);
 
     //_fake.remove();
     

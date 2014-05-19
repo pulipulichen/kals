@@ -1,5 +1,5 @@
 <?php
-include_once 'web_apps_controller.php';
+include_once 'kals_model.php';
 /**
  * Webpage_cache
  *
@@ -14,7 +14,7 @@ include_once 'web_apps_controller.php';
  * @version		1.0 2010/10/23 下午 03:51:22
  */
 
-class Webpage_cache extends Web_apps_controller {
+class Webpage_cache extends KALS_model {
 
     protected $controller_enable_cache = TRUE;
     protected $login_require = FALSE;
@@ -101,7 +101,7 @@ class Webpage_cache extends Web_apps_controller {
     /**
      * 清除暫存檔案
      */
-    public function clean_save() {
+    public function clean_save($data = NULL) {
         
         $i = 0;
         $cache_path = $this->_get_cache_path($i);
@@ -110,6 +110,8 @@ class Webpage_cache extends Web_apps_controller {
             $i++;
             $cache_path = $this->_get_cache_path($i);
         }
+        
+        return TRUE;
     }
     
     // ---------------------------
@@ -128,9 +130,18 @@ class Webpage_cache extends Web_apps_controller {
      */
     var $merge_parts = 10;
     
-    public function load($webpage_id) {
+    public function load($data) {
+        
+        $webpage_id = $data["webpage_id"];
         
         $parts_count = 0; 
+        
+        if ($this->_check_cache_expire()) {
+            $this->clean_save();
+            
+            $data = array('parts_count' => 0);
+            return $data;
+        }
         
         // 先計算數量
         $i = 0;
@@ -144,13 +155,39 @@ class Webpage_cache extends Web_apps_controller {
         if ($i > 0) {
             $parts_count = ceil( $i / $this->merge_parts );
             
-            $cache_mins = $this->config->item("webpage_cache.expiration");
-            if ($this->enable_cache) {
-                $this->output->cache($cache_mins);
+            //$cache_mins = $this->config->item("webpage_cache.expiration");
+            //if ($this->enable_cache) {
+            //    $this->output->cache($cache_mins);
+            //}
+        }
+        
+        //$this->_display_get($parts_count);
+        $data = array(
+            'parts_count' => $parts_count
+        );
+        
+        return $data;
+    }
+    
+    /**
+     * 確認檔案是否過期
+     * @return boolean
+     */
+    private function _check_cache_expire() {
+        $cache_path = $this->_get_cache_path(0);
+        
+        if (is_file($cache_path)) {
+            $created_time = time() - filectime($cache_path);
+            $cache_mins = $this->config->item("webpage_cache.expiration") * 60;
+            if ($created_time < $cache_mins) {
+                return FALSE;
+            }
+            else {
+                return TRUE;
             }
         }
         
-        $this->_display_get($parts_count);
+        return TRUE;
     }
     
     /**
@@ -158,7 +195,7 @@ class Webpage_cache extends Web_apps_controller {
      * 
      * @param Int $webpage_id 如果未輸入webpage_id，則會被自動帶入現在所在的webpage的ID]
      */
-    public function load_parts($webpage_id, $start_index) {
+    public function load_parts($data) {
         
         //if (is_null($webpage_id)) {
         //    $webpage_id = $this->webpage->get_id();
@@ -167,6 +204,9 @@ class Webpage_cache extends Web_apps_controller {
         //}
         
         //$cache_path = $this->_get_cache_path($part);
+        
+        $webpage_id = $data["webpage_id"];
+        $start_index = $data["start_index"];
         
         $data = "";
         
@@ -213,7 +253,12 @@ class Webpage_cache extends Web_apps_controller {
             }
         }
         
-        $this->_display_get($data);
+        //$this->_display_get($data);
+        
+        $data = array(
+            "cache" => $data
+        );
+        return $data;
     }
 
     // ---------------------------

@@ -163,6 +163,13 @@ KALS_controller.prototype.get_request_url = function () {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype.request = function (_method, _action, _data, _callback) {
+    
+    if (typeof(_data) === "function" 
+            && _callback === undefined) {
+        _callback = _data;
+        _data = {};
+    }
+    
     if (this._enable_controller_flag === false) {
         //this.debug('request', 'enable flag is false');
         $.trigger_callback(_callback);
@@ -214,6 +221,67 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         KALS_util.ajax_post(_ajax_config);
     }
 
+    return this;
+};
+
+/**
+ * 送出請求GET請求，快取起來
+ * 
+ * @param {string} _action
+ * @param {JSON} _data
+ * @param {function} _callback
+ * @returns {KALS_controller.prototype}
+ */
+KALS_controller.prototype.request_get_cache = function (_action, _data, _callback) {
+    
+    var _method = "get";
+    
+    if (typeof(_data) === "function" 
+            && _callback === undefined) {
+        _callback = _data;
+        _data = {};
+    }
+    
+    if (this._enable_controller_flag === false) {
+        //this.debug('request', 'enable flag is false');
+        $.trigger_callback(_callback);
+        return this;
+    }
+    
+    var _url = this.get_request_url();
+
+    if ($.is_null(_url)) {
+        //$.test_msg('temp', 'url is null');
+        return $.trigger_callback(_callback);
+    }
+
+    _url = _url + '/request_get';
+
+    if (this._enable_debug_flag === true) {
+        _data["_enable_debug"] = true;
+        this._enable_debug_flag = false;
+    }
+    if (this._enable_cache_flag === true) {
+        _data["_enable_cache"] = true;
+        this._enable_cache_flag = false;
+    }
+    
+    _data["_action"] = _action;
+
+    var _this = this;
+    var _ajax_config = {
+        url: _url,
+        data: _data,
+        callback: function (_data) {
+            if (typeof(_callback) === 'function') {
+                _callback(_data);
+            }
+        },
+        fixed_callback: true
+    };
+    
+    KALS_util.ajax_get(_ajax_config);
+    
     return this;
 };
 

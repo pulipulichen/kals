@@ -46,7 +46,7 @@ Webpage_cache.prototype = new KALS_controller();
  * 指定Model
  * @type String
  */
-Webpage_cache.prototype._$model = 'Webpage_cache';
+Webpage_cache.prototype._$model = 'webpage_cache';
 
 /**
  * ====================
@@ -91,11 +91,16 @@ Webpage_cache.prototype.save = function (_data, _callback) {
     var _data_parts = this.split_data(_data);
     
     //$.test_msg("總共分割成份數", _data_parts.length);
-    var _i = 0
+    var _i = 0;
     
-    var _clean_save_url = KALS_context.get_base_url("/webpage_cache/clean_save");
+    //var _clean_save_url = KALS_context.get_base_url("/webpage_cache/clean_save");
     
-    $.get(_clean_save_url, function () {
+    //$.get(_clean_save_url, function () {
+    //    _loop();
+    //});
+    
+    var _clean_save_action = "clean_save";
+    this.request_get(_clean_save_action, function () {
         _loop();
     });
     
@@ -161,6 +166,7 @@ Webpage_cache.prototype.load = function (_callback) {
     
     //$.test_msg("Webpage_cache.load 開始讀取", (this._cache_data !== undefined));
     
+    /*
     var _url = this._load_url_prefix;
     _url = _url + KALS_context.get_webpage_id();
     _url = KALS_context.get_base_url(_url);
@@ -168,6 +174,28 @@ Webpage_cache.prototype.load = function (_callback) {
     var _this = this;
     $.get(_url, function (_parts_count) {
         _parts_count = _this._remove_cache_prefix(_parts_count);
+        //$.test_msg("份數", _parts_count);
+        _parts_count = parseInt(_parts_count);
+        
+        if (_parts_count === 0) {
+            if ($.is_function(_callback)) {
+                _callback(false);
+            }
+            return;
+        }
+        
+        _this._load_parts(_parts_count, _callback);
+    });
+    */
+    
+    var _action = "load";
+    var _data = {
+        webpage_id: KALS_context.get_webpage_id()
+    };
+    var _this = this;
+    this.request_get(_action, _data, function (_data) {
+        var _parts_count = _data.parts_count;
+        //_parts_count = _this._remove_cache_prefix(_parts_count);
         //$.test_msg("份數", _parts_count);
         _parts_count = parseInt(_parts_count);
         
@@ -205,13 +233,13 @@ Webpage_cache.prototype._load_parts = function (_parts_count, _callback) {
             _loop();
         }
         else if (_this._need_clean_save && _this._enable_clean_save) {
-            _clean_save();
+            _this._clean_save();
         }
         else {
             _complete();
         }
     };
-    
+    /*
     var _clean_save = function () {
         
         var _clean_save_url = KALS_context.get_base_url("/webpage_cache/clean_save");
@@ -220,7 +248,7 @@ Webpage_cache.prototype._load_parts = function (_parts_count, _callback) {
             _complete();
         });
     };
-    
+    */
     var _complete = function () {
         var _data = _this.get_cache_data();
         _data = _this.decompress_data(_data);
@@ -237,6 +265,22 @@ Webpage_cache.prototype._load_parts = function (_parts_count, _callback) {
 };
 
 /**
+ * 清理儲存
+ * @param {Function} _callback
+ */
+Webpage_cache.prototype._clean_save = function (_callback) {
+    var _clean_save_action = "clean_save";
+    this.request_get(_clean_save_action, function () {
+        //$.test_msg("清理了資料");
+        if ($.is_function(_callback)) {
+            _callback();
+        }
+    });
+    
+    return this;
+};
+
+/**
  * 讀取部分資料
  * 
  * @param {Function} _callback 回呼函數，以callback回傳資料
@@ -245,16 +289,17 @@ Webpage_cache.prototype._load_parts = function (_parts_count, _callback) {
  */
 Webpage_cache.prototype._load_part = function (_part, _callback) {
     
-    var _url = this._load_parts_url_prefix;
-    _url = _url + KALS_context.get_webpage_id() + "/" + _part;
-    _url = KALS_context.get_base_url(_url);
+    //var _url = this._load_parts_url_prefix;
+    //_url = _url + KALS_context.get_webpage_id() + "/" + _part;
+    //_url = KALS_context.get_base_url(_url);
     
     var _this = this;
     var _load_callback = function (_data) {
         
         //$.test_msg("Webpage_cache 取得了資料 1 (" + _data.length + ")");
         
-        _data = _this._remove_cache_prefix(_data);
+        //_data = _this._remove_cache_prefix(_data);
+        _data = _data.cache;
         
         //$.test_msg("Webpage_cache 取得了資料 2 (" + _data.length + ")");
         
@@ -278,7 +323,14 @@ Webpage_cache.prototype._load_part = function (_part, _callback) {
         return;
     };
     
-    $.get(_url, _load_callback);
+    //$.get(_url, _load_callback);
+    var _action = "load_parts";
+    var _data = {
+        webpage_id: KALS_context.get_webpage_id(),
+        start_index: _part
+    };
+    this.request_get_cache(_action, _data, _load_callback);
+    
     return this;
 };
 
@@ -309,7 +361,7 @@ Webpage_cache.prototype._need_clean_save = true;
  * 取要清理儲存
  * @type Boolean
  */
-Webpage_cache.prototype._enable_clean_save = true;
+Webpage_cache.prototype._enable_clean_save = false;
 
 
 // ----------------------------------
