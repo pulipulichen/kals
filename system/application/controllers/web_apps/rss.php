@@ -98,7 +98,9 @@ class rss extends Web_apps_controller {
         
         //$webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
         
-        $webpage_topics_url = $webpage->get_url() . "#mobile=true";
+        //$webpage_topics_url = $webpage->get_url() . "#mobile=true";
+        
+        $webpage_topics_url = get_kals_base_url("mobile_apps/redirect/load/".$webpage_id);
         
         $channel = new Channel();
         $channel
@@ -148,7 +150,9 @@ class rss extends Web_apps_controller {
             //$item_url = site_url($annotation_thread_path);
             //$item_url = get_kals_base_url($annotation_thread_path);
             
-            $item_url = $webpage->get_url() . "#mobile=true&topic_id=" . $topic_id . "&annotation_id=" . $annotation_id;
+            //$item_url = $webpage->get_url() . "#mobile=true&topic_id=" . $topic_id . "&annotation_id=" . $annotation_id;
+            
+            $item_url = get_kals_base_url("mobile_apps/redirect/load/".$webpage_id."/".$topic_id."/".$annotation_id);
             
             //$item_url = $_SERVER["HTTP_HOST"]
             //test_msg($_SERVER["HTTP_HOST"]);
