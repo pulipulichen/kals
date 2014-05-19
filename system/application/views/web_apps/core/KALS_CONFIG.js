@@ -554,6 +554,13 @@ DEFAULT_KALS_CONFIG = {
                     }
                 }
             ]
+        },
+        /**
+         * 開啟行動版網頁
+         * @type type
+         */
+        Open_mobile_apps: {
+            enable: false
         }
     }
 };

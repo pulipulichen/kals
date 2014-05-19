@@ -189,13 +189,16 @@ KALS_context.get_base_url = function (_file, _from_root) {
         this.base_url = this.base_url + '/';
     }
     
-    var _url = this.base_url + _file;
+    var _url;
     
     // 如果是從根目錄開始的話
     if (_from_root === true) {
         var _needle = "web_apps/";
         var _root_path = this.base_url.substr(0, (this.base_url.length - _needle.length));
         _url = _root_path + _file;
+    }
+    else {
+        _url = this.base_url + _file;
     }
     
     //$.test_msg('KALS_context.get_base_url()', [_url, this.base_url, _file]); 
@@ -789,9 +792,21 @@ KALS_context.create_namespace = function () {
     
     //$.test_msg('KALS_context create_namespace', _url);
     //_url = 'test';
-    _url = 'test22' + _url;
+    //_url = 'test22' + _url;
     
     return _url;
+};
+
+/**
+ * 重新引導網頁到其他地方
+ * @param {String} _url
+ * @param {Boolean} _from_root
+ * @returns {KALS_context}
+ */
+KALS_context.redirect = function (_url, _from_root) {
+    _url = this.get_base_url(_url, _from_root);
+    
+    location.href = _url;
 };
 
 // ----------------

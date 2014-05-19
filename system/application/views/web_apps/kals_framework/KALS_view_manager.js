@@ -52,6 +52,11 @@ KALS_view_manager.prototype.get_view = function (_index) {
  * @param {String} _replace 要取代的變數
  */
 KALS_view_manager.prototype._get_view_classname = function (_index, _replace) {
+    
+    if (_index === undefined || _index === null) {
+        return;
+    }
+    
     if (_replace === undefined) {
         _replace = '-';
     }
