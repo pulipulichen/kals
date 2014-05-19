@@ -147,6 +147,7 @@ class generic extends Web_apps_controller {
             'navigation/Navigation_list',
 
             'navigation/Anonymous_navigation',
+            'navigation/Mobile_navigation',
 
             'navigation/Window_login',
             'navigation/Window_login_submit',

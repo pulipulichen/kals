@@ -1811,7 +1811,9 @@ jQuery.mobile_mode = null;
  * @method [is_mobile_mode]
  */
 jQuery.is_mobile_mode = function () {
-    //return true;
+    
+    return true;
+    
     if (this.mobile_mode === null) {
         var _this = this;
         try {

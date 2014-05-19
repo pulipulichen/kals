@@ -72,5 +72,11 @@ Mobile_navigation.prototype.register = null;
  */
 Mobile_navigation.prototype._$nav_type = ["mobile"];
 
+/**
+ * 決定是否要顯示說明
+ * @type {boolean} 
+ */
+Mobile_navigation.prototype._$show_help = false;
+
 /* End of file Mobile_navigation */
 /* Location: ./system/application/views/web_apps/Mobile_navigation.js */

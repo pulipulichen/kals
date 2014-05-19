@@ -165,7 +165,7 @@ KALS_toolbar.prototype._$create_ui = function () {
             _this.toggle_navigation('anonymous-component');
         }
         else {
-            _this.toggle_navigation('mobile-component');
+            _this.toggle_navigation('mobile-navigation');
         }
         
         var _toolbar_height = _this.get_height();
@@ -189,10 +189,32 @@ KALS_toolbar.prototype._$create_ui = function () {
     }, 0);
     
     
+    if ($.is_mobile_mode() === false) {
+        _this._listen_auth();
+    }
+    else {
+        //_this.toggle_navigation('anonymous-component');
+    }
+    
+    // 點兩下關閉工具列
+    _ui.dblclick(function () {
+        _this.toggle_toolbar(false);
+    });
+    
+    return _ui;
+};
+
+/**
+ * 監聽帳號功能
+ * @returns {KALS_toolbar}
+ */
+KALS_toolbar.prototype._listen_auth = function () {
+    
+    var _this = this;
     KALS_context.auth.add_listener(function (_auth, _data) {
         if (_data === null) {
-			return;
-		}
+            return;
+        }
         
         //$.test_msg('KALS_context_auth.add_listener()', _data.login);
         //如果有登入，切換至avatar-nav，否則切換至login-nav        
@@ -203,15 +225,7 @@ KALS_toolbar.prototype._$create_ui = function () {
             _this.toggle_navigation('anonymous-component');
         }
     });
-    
-    // 點兩下關閉工具列
-    _ui.dblclick(function () {
-        _this.toggle_toolbar(false);
-    });
-    
-    
-    
-    return _ui;
+    return this;
 };
 
 /**

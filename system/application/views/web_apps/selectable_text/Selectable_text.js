@@ -366,7 +366,15 @@ Selectable_text.prototype.initialize = function (_callback) {
         }
     };
     
-    if (_cache_enable) {
+    if ($.is_mobile_mode()) {
+        _taks_list = [
+            _task_progress,
+            _task_complete,
+            _callback
+        ];
+        _loop(_taks_list, 0);
+    }
+    else if (_cache_enable) {
         this.has_cache(function (_existed) {
             if (_existed) {
                 //$.test_msg('selectable_text 啟用 cache');
