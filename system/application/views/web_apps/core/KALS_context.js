@@ -505,14 +505,8 @@ KALS_context.redirect = function (_url, _from_root) {
 // Webpage_id
 // ----------------
 
-/**
- * Webpage ID
- * @type Number
- */
-KALS_context.webpage_id = null;
-
 KALS_context.get_webpage_id = function () {
-    return this.webpage_id;
+    return this.loader.webpage_id;
 };
 
 // ------------------------------------------------

@@ -62,6 +62,12 @@ Context_loader.prototype.load_modules_config = function (_callback) {
 Context_loader.prototype._webpage_info_url = 'generic/webpage_info';
 
 /**
+ * Webpage ID
+ * @type Number
+ */
+Context_loader.prototype.webpage_id = null;
+
+/**
  * 讀取網頁設定資料
  * @param {Function} _callback
  * @returns {KALS_context}
@@ -72,7 +78,7 @@ Context_loader.prototype.load_webpage_info = function (_callback) {
     var _loaded_callback = function (_data) {
         
         if (typeof(_data.webpage_id) !== 'undefined') {
-            KALS_context.webpage_id = _data.webpage_id;
+            _this.webpage_id = _data.webpage_id;
         }
         
         $.trigger_callback(_callback);
