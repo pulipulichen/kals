@@ -2678,8 +2678,26 @@ jQuery.get_offset_bottom = function(_ele) {
         _ele = $(_ele);
     }
     var _offset = $.get_offset_top(_ele) + _ele.height();
+    
+    $.test_msg("get_offset_bottom", [_offset, $.get_offset_top(_ele), _ele.height()]);
     return _offset;
 };
+
+/**
+ * 取得物件的底部位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_bottom_without_transform = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
+    var _offset = $.get_offset_top(_ele) + this.get_height_without_transform(_ele);
+    
+    //$.test_msg("get_offset_bottom", [_offset, $.get_offset_top(_ele), _ele.height()]);
+    return _offset;
+};
+
 
 /**
  * 取得物件的垂直中間位置
@@ -2892,6 +2910,44 @@ jQuery.get_width_without_transform = function (_ele) {
     return _width;
 };
 
+
+/**
+ * 取得元素的寬度，不受tranform的影響
+ * @param {jQuery} _ele
+ * @returns {Number}
+ */
+jQuery.get_height_without_transform = function (_ele) {
+    
+    //var _fake = _ele.clone().appendTo("body");
+    //var _temp = $(document.createDocumentFragment());
+    //var _temp = $("<div></div>");
+    var _temp = $('body');
+    var _fake = _ele.clone()
+            //.appendTo(document.createDocumentFragment());
+            .hide()
+            .appendTo(_temp);
+    //_fake.css("transform", "matrix(1,0,0,1,0,0)");
+        
+    var _height = _fake.height();
+
+    //$.test_msg("get_width", [_ele.css("width")
+    //    , _ele.width()
+    //    , _ele.attr("offsetWidth")
+    //    , _ele.innerWidth()
+    //    , _ele.outerWidth()
+    //    , _ele.css("transform")
+    //    ]);
+    
+    //$.test_msg("get_width_without_transform", _width);
+
+    //_fake.remove();
+    
+    setTimeout(function () {
+        _fake.remove();
+    }, 100);
+    
+    return _height;
+};
 
 /**
  * 取得元素的高度，不受tranform的影響

@@ -222,7 +222,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
  * @returns {KALS_authentication}
  */
 KALS_authentication.prototype._after_login = function (_return_error, _data, _callback) {
-    $.test_msg('login load', _data);
+    //$.test_msg('login load', _data);
         
     //$.test_msg("mobile_redirect", typeof(_data.mobile_redirect));
     if (typeof(_data.mobile_redirect) === "string") {

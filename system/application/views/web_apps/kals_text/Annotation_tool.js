@@ -79,9 +79,10 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('annotation-tool')
         .addClass('draggable-tool')
         .addClass('kals-modal')
-		.addClass("KALS")
+        .addClass("KALS")
         .hide()
-        .insertBefore($('.selectable-text:first'));
+        //.insertBefore($('.selectable-text:first'));
+        .appendTo("body");
         
     var _config = this._$get_config();
     
@@ -484,7 +485,7 @@ Annotation_tool.prototype.setup_position = function () {
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
     
-        //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
+        $.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
     }
 };
 

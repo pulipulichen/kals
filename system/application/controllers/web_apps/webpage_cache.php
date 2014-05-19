@@ -122,7 +122,7 @@ class Webpage_cache extends KALS_model {
      * 是否啟用快取
      * @var Boolean
      */
-    var $enable_cache = false;
+    var $enable_cache = true;
     
     /**
      * 讀取時，一次合併的檔案數量
