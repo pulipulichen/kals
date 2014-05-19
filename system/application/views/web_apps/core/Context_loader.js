@@ -72,7 +72,7 @@ Context_loader.prototype.load_webpage_info = function (_callback) {
     var _loaded_callback = function (_data) {
         
         if (typeof(_data.webpage_id) !== 'undefined') {
-            _this.webpage_id = _data.webpage_id;
+            KALS_context.webpage_id = _data.webpage_id;
         }
         
         $.trigger_callback(_callback);
