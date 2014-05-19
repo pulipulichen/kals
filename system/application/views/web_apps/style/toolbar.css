@@ -213,6 +213,7 @@
     text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
     -webkit-user-select: none;
     -moz-user-select: none;
+    -khtml-user-select: none;
     
 } 
 

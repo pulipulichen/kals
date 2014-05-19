@@ -16,8 +16,11 @@
     -webkit-border-radius: 8px;
     border-radius: 8px;
     -khtml-border-radius: 8px;
+    
     -moz-box-shadow: 0 0 20px #666666;
     -webkit-box-shadow: 0 0 20px #666666;
+    -khtml-box-shadow: 0 0 20px #666666;
+    box-shadow: 0 0 20px #666666;
 	
 	max-height: 3em;
 	overflow-y: auto;
@@ -31,6 +34,8 @@
 .KALS .window-view-content .editor-container .toggle td {
     -moz-box-shadow: 0 0 0;
     -webkit-box-shadow: 0 0 0;
+    -html-box-shadow: 0 0 0;
+    box-shadow: 0 0 0;
 }
 
 .KALS .window-view-content .list-item.focus {
