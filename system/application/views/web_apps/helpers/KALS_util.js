@@ -22,7 +22,7 @@ KALS_util = {};
  *   callback: function (_data),
  *   exception_handle: function (_data), //可省略，省略則自動使用KALS_util.show_exception來處理
  *   retry: 3, //可省略，預設嘗試次數
- *   retry_wait: 3000, //預設嘗試等待時間，單位是毫秒
+ *   retry_wait: 60 * 1000, //預設嘗試等待時間，單位是毫秒
  *   fixed_callback: "fixed_callback"   //預設省略，固定callback的參數
  * };
  */
@@ -165,6 +165,7 @@ KALS_util.ajax_get = function (_config) {
             $.getJSON(_url, _get_callback); 
         }
         else {
+            //$.getJSON(_url);
             $.getScript(_url);
         }
     };
@@ -172,10 +173,10 @@ KALS_util.ajax_get = function (_config) {
     try {
         _get_json();
         
-        
         if (_retry !== null && _retry > 0) {
+            //$.test_msg("開始計時", _retry_wait);
             _retry_timer = setInterval(function () {
-                
+                //$.test_msg("時間到了");
                 if (_retry_counter === _retry || _retry_counter > _retry
                     || typeof(_retry_timer) === 'undefined') {
                     if (typeof(_retry_timer) !== 'undefined') {

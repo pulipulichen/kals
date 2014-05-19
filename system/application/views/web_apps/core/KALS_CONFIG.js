@@ -40,6 +40,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * 預設登入的帳號
      * @type {string} = null E-mail郵件地址
+     *     也可以使用網址，該網址應該要回傳使用者的email，例如 "http://localhost/user.txt"
      *     不使用預設登入時則是null 
      */
     user_email: null,

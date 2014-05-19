@@ -820,7 +820,7 @@ jQuery.parse_url = function (_str, _component) {
  * @returns {Boolean}
  */
 jQuery.is_image = function(_url) {
-    if (false == this.is_link(_url)) {
+    if (false === this.is_link(_url)) {
         return false;
     }
     var _param = this.parse_url(_url);
@@ -833,7 +833,7 @@ jQuery.is_image = function(_url) {
         return false;
     }
     var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
-    if (this.inArray(_ext, _image_array) != -1) {
+    if (this.inArray(_ext, _image_array) !== -1) {
         return true;
     }
     else {
@@ -844,14 +844,13 @@ jQuery.is_image = function(_url) {
 jQuery.parse_extension_name = function (_path) {
     var _dot = _path.lastIndexOf('.');
     var _slash = _path.lastIndexOf('/');
-    if (_dot == -1 ||
-	_dot < _slash) {
-		return null;
-	}
-	else {
-		var _ext = _path.substr(_dot + 1);
-		return _ext;
-	}
+    if (_dot === -1 || _dot < _slash) {
+        return null;
+    }
+    else {
+        var _ext = _path.substr(_dot + 1);
+        return _ext;
+    }
 };
 
 /**

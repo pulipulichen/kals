@@ -80,6 +80,11 @@ KALS_authentication.prototype.set_password = function (_value) {
     return this;
 };
 
+/**
+ * 設定是否是嵌入登入
+ * @param {Boolean} _value
+ * @returns {KALS_authentication}
+ */
 KALS_authentication.prototype.set_embed = function (_value) {
     this._auth_data.embed = _value;
     return this;
@@ -198,52 +203,113 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         //$.test_msg('login', this._$load_url);
         //$.test_msg('login data', _data);
         
-        this.load(_data, function (_this, _data) {
-            //$.test_msg('login load', _data);
-            
-            if (typeof(_data.error) !== 'undefined') {
-                //顯示錯誤
-                
-                _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
-                _message = new KALS_language_param('E-mail or password is not correct.', 'authentication.login_error.' + _data.error);
-                //$.test_msg('auth.login()', _return_error);
-                if (_return_error) {
-                    if ($.is_function(_callback)) {
-                        _callback(_this, _message);
-                    }
-                }
-                else {
-                    KALS_util.alert(_heading, _message, function () {
-                        //_this.show_login_form();
-                        var _content = new Window_login();
-                        KALS_window.setup_window(_content);   
-                    });   
-                }
-            }
-            else {
-                _this._is_login = true;
-                
-                if (KALS_CONFIG.isolation_mode) {
-                    KALS_context.policy.set_attr("read", true);
-                }
-				
-                setTimeout(function () {
-                    if ($.is_function(_callback)) {
-                        _callback(_this, _data);
-                    } 
-                }, 100);
-                
-                //else
-                //    _this.login_callback(_this, _data);
-                
-                
-                
-                
-                //$.test_msg('load complete', [_this._is_login, _this.is_login()]);
-            }
-        });    
+        this.request_embed_email(function () {
+            _this.load(_data, function (_this, _data) {
+                _this._after_login(_return_error, _data, _callback);
+            });
+        });
     }
     return this;
+};
+
+/**
+ * 登入之後的動作
+ * 
+ * @version 20140519 Pulipuli Chen
+ * @param {boolean} _return_error = false 是否要回傳錯誤訊息？
+ * @param {JSON} _data
+ * @param {Function} _callback
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype._after_login = function (_return_error, _data, _callback) {
+    //$.test_msg('login load', _data);
+
+    var _this = this;
+    if (typeof(_data.error) !== 'undefined') {
+        //顯示錯誤
+
+        var _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
+        var _message = new KALS_language_param('E-mail or password is not correct.', 'authentication.login_error.' + _data.error);
+        //$.test_msg('auth.login()', _return_error);
+        if (_return_error) {
+            if ($.is_function(_callback)) {
+                _callback(_this, _message);
+            }
+        }
+        else {
+            KALS_util.alert(_heading, _message, function () {
+                //_this.show_login_form();
+                var _content = new Window_login();
+                KALS_window.setup_window(_content);   
+            });   
+        }
+    }
+    else {
+        _this._is_login = true;
+
+        if (KALS_CONFIG.isolation_mode) {
+            KALS_context.policy.set_attr("read", true);
+        }
+
+        setTimeout(function () {
+            if ($.is_function(_callback)) {
+                _callback(_this, _data);
+            } 
+        }, 100);
+
+        //else
+        //    _this.login_callback(_this, _data);
+
+
+
+
+        //$.test_msg('load complete', [_this._is_login, _this.is_login()]);
+    }
+    
+    return this;
+};
+
+/**
+ * 內嵌登入的檢查方法
+ * @param {Function} _callback
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype.request_embed_email = function (_callback) {
+    
+    if (this._auth_data.embed === true) {
+        
+        var _url = this._auth_data.email;
+        
+        var _this = this;
+        if ($.is_url(_url) || $.starts_with(_url, "/")) {
+            $.test_msg("內嵌登入，是網址", _url);
+            
+            if (_url.indexOf("?") === -1) {
+                _url = _url + "?" + $.create_id("auth");
+            }
+            else {
+                _url = _url + "&" + $.create_id("auth");
+            }
+            
+            $.get(_url, function (_data) {
+                if ($.is_email(_data)) {
+                    _this.set_email(_data);
+                }
+                else {
+                    _this.set_embed(false);
+                }
+                $.trigger_callback(_callback);
+            });
+        }
+        else {
+            $.trigger_callback(_callback);
+            return this;
+        }
+    }
+    else {
+        $.trigger_callback(_callback);
+        return this;
+    }
 };
 
 /**
