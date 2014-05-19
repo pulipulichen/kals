@@ -122,7 +122,7 @@ class Webpage_cache extends KALS_model {
      * 是否啟用快取
      * @var Boolean
      */
-    var $enable_cache = true;
+    var $enable_cache = false;
     
     /**
      * 讀取時，一次合併的檔案數量
@@ -133,6 +133,11 @@ class Webpage_cache extends KALS_model {
     public function load($data) {
         
         $webpage_id = $data["webpage_id"];
+        
+        if (is_null($webpage_id)) {
+            handle_error("Cannot get webpage_id");
+            return;
+        }
         
         $parts_count = 0; 
         
@@ -206,6 +211,11 @@ class Webpage_cache extends KALS_model {
         //$cache_path = $this->_get_cache_path($part);
         
         $webpage_id = $data["webpage_id"];
+        if (is_null($webpage_id)) {
+            handle_error("Cannot get webpage_id");
+            return;
+        }
+        
         $start_index = $data["start_index"];
         
         $data = "";

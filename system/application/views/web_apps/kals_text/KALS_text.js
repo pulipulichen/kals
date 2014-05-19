@@ -50,7 +50,7 @@ KALS_text.prototype._init_component = function (_selector) {
     this.child('tool', new Annotation_tool(_selector));
     this.child('guide', new Reading_guide());
     
-    var _this = this;
+    //var _this = this;
     //setTimeout(function() {
     //    _this.init_start();
         //_this.load_my.initialize();

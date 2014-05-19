@@ -40,8 +40,6 @@ function Selection_manager(_selector) {
     //this.selected_scope = [];
     //this.selected_start = null;
     
-    
-    
     return this;
 }
 

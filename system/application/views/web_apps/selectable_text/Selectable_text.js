@@ -32,6 +32,7 @@ function Selectable_text(_selector) {
     this.child('location', new Selectable_text_location(this));
     this.child('chapter', new Selectable_text_chapter(this));
     this.child('cache', new Webpage_cache());
+    
 }
 
 // Extend from KALS_user_interface

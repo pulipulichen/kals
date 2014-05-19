@@ -95,9 +95,9 @@ Text_selector.prototype.check_text_selector = function (_callback) {
     
     //this.init_context.complete('selector');
     
-    setTimeout(function () {
-        $.trigger_callback(_callback);
-    }, 0);
+    //setTimeout(function () {
+    $.trigger_callback(_callback);
+    //}, 0);
     
     return this;
 };
