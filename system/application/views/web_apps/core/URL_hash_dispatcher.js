@@ -391,14 +391,23 @@ URL_hash_dispatcher.prototype._action_view = function () {
  * 啟動mobile相關的動作
  * @returns {URL_hash_dispatcher}
  */
-URL_hash_dispatcher.prototype._mobile_action = function () {
+URL_hash_dispatcher.prototype._action_mobile = function () {
+    
+    var _url; 
     
     if (this.has_field("topic_id") === false) {
-        KALS_context.redirect("mobile_apps/annotation_topics", true);
+        //KALS_context.redirect("mobile_apps/annotation_topics", true);
+        _url = "mobile_apps/annotation_topics";
     }
     else {
-        KALS_context.redirect("mobile_apps/annotation_thread/topic_id/" + this.get_field("topic_id") + "#annotation_" + this.get_field("annotation_id"), true);
+        //KALS_context.redirect("mobile_apps/annotation_thread/topic_id/" + this.get_field("topic_id") + "#annotation_" + this.get_field("annotation_id"), true);
+        _url = "mobile_apps/annotation_thread/topic_id/" 
+                + this.get_field("topic_id")
+                + "#annotation_" 
+                + this.get_field("annotation_id");
     }
+    
+    KALS_context.redirect(_url, true);
     
     return this;
 };
