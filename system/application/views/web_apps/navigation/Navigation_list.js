@@ -176,6 +176,9 @@ Navigation_list.prototype._create_window_nav_item = function (_content, _i) {
         if (typeof(_content.callback) === "function") {
             _content.callback();
         }
+        else if (typeof(_content._$nav_click_callback) === "function") {
+            _content._$nav_click_callback();
+        }
         else if (_content.is_absolute() === false) {
             //$.test_msg('Navigation_list._create_nav call content', [$.get_class(_content), _content.nav_heading.msg]);
             //KALS_window.setup_window(_content);
@@ -257,22 +260,20 @@ Navigation_list.prototype._setup_feedback = function () {
 Navigation_list.prototype._get_window_content = function (_index) {
     
     if (typeof(this._$nav_items[_index]) === 'undefined') {
-		return null;
-	}
-	else 
-		if (typeof(this._$nav_items[_index]) === 'string') {
-			var _window_content = this._$nav_items[_index];
-			eval('var _content = new ' + _window_content + '()');
-			return _content;
-		}
-		else 
-			if (typeof(this._$nav_items[_index]) === 'object') {
-				_window_content = this._$nav_items[_index];
-				return _window_content;
-			}
-			else {
-				return null;
-			}
+        return null;
+    }
+    else if (typeof(this._$nav_items[_index]) === 'string') {
+        var _window_content = this._$nav_items[_index];
+        eval('var _content = new ' + _window_content + '()');
+        return _content;
+    }
+    else if (typeof(this._$nav_items[_index]) === 'object') {
+        _window_content = this._$nav_items[_index];
+        return _window_content;
+    }
+    else {
+        return null;
+    }
 }; 
 
 Navigation_list.prototype._create_menu = function() {

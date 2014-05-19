@@ -1812,7 +1812,7 @@ jQuery.mobile_mode = null;
  */
 jQuery.is_mobile_mode = function () {
     
-    return true;
+    //return true;
     
     if (this.mobile_mode === null) {
         var _this = this;

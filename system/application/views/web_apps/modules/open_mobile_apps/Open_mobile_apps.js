@@ -59,6 +59,12 @@ Open_mobile_apps.prototype._$enable_debug = true;
 Open_mobile_apps.prototype._$view = 'modules/open_mobile_apps/view/Open_mobile_apps';
 
 /**
+ * 獨立視窗功能
+ * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
+ */
+Open_mobile_apps.prototype._$absolute = true;
+
+/**
  * ====================
  * KALS_controller_window設定
  * ====================
@@ -130,7 +136,7 @@ Open_mobile_apps.prototype.nav_config = {
  * 
  * @returns {Open_mobile_apps}
  */
-Open_mobile_apps.prototype._$onopen = function () {
+Open_mobile_apps.prototype._$nav_click_callback = function () {
     KALS_context.redirect("/mobile_apps/annotation_topics", true);
 };
 
