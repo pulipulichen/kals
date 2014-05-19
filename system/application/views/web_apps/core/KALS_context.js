@@ -31,6 +31,7 @@ KALS_context.initialize = function () {
     this.hotkey = new KALS_hotkey_manager();
     this.style = new Style_manager();
     this.url = new URL_dispatcher();
+    this.loader = new Context_loader();
     
     this.basic_type = new Context_basic_type();
     this.predefined_type = new Context_predefined_type();
@@ -286,42 +287,42 @@ KALS_context.completed = false;
  * 讀取模組設定資料的位置
  * @type {string}
  */
-KALS_context._modules_config_url = 'generic/modules_config';
+//KALS_context._modules_config_url = 'generic/modules_config';
 
 /**
  * 讀取模組會用到的資料
  * @param {Function} _callback
  * @returns {KALS_context}
  */
-KALS_context.load_modules_config = function (_callback) {
-    
-    var _this = this;
-    var _loaded_callback = function (_data) {
-        
-        if (typeof(_data.KALS_view_manager) !== 'undefined') {
-            _this.view_manager.set_data(_data.KALS_view_manager);
-        }
-        
-        $.trigger_callback(_callback);
-    };
-    
-    var _config = {
-        "url": this._modules_config_url,
-        "callback": _loaded_callback,
-        "fixed_callback": true,
-        "retry_wait": 3 * 1000
-    };
-    
-    KALS_util.ajax_get(_config);
-    
-    return this;
-};
+//KALS_context.load_modules_config = function (_callback) {
+//    
+//    var _this = this;
+//    var _loaded_callback = function (_data) {
+//        
+//        if (typeof(_data.KALS_view_manager) !== 'undefined') {
+//            _this.view_manager.set_data(_data.KALS_view_manager);
+//        }
+//        
+//        $.trigger_callback(_callback);
+//    };
+//    
+//    var _config = {
+//        "url": this._modules_config_url,
+//        "callback": _loaded_callback,
+//        "fixed_callback": true,
+//        "retry_wait": 3 * 1000
+//    };
+//    
+//    KALS_util.ajax_get(_config);
+//    
+//    return this;
+//};
 
 /**
  * 讀取網頁設定資料的位置
  * @type {string}
  */
-KALS_context._webpage_info_url = 'generic/webpage_info';
+//KALS_context._webpage_info_url = 'generic/webpage_info';
 
 
 /**
@@ -329,27 +330,27 @@ KALS_context._webpage_info_url = 'generic/webpage_info';
  * @param {Function} _callback
  * @returns {KALS_context}
  */
-KALS_context.load_webpage_info = function (_callback) {
-    
-    var _this = this;
-    var _loaded_callback = function (_data) {
-        
-        if (typeof(_data.webpage_id) !== 'undefined') {
-            _this.webpage_id = _data.webpage_id;
-        }
-        
-        $.trigger_callback(_callback);
-    };
-    
-    var _config = {
-        "url": this._webpage_info_url,
-        "callback": _loaded_callback
-    };
-    
-    KALS_util.ajax_get(_config);
-    
-    return this;
-};
+//KALS_context.load_webpage_info = function (_callback) {
+//    
+//    var _this = this;
+//    var _loaded_callback = function (_data) {
+//        
+//        if (typeof(_data.webpage_id) !== 'undefined') {
+//            _this.webpage_id = _data.webpage_id;
+//        }
+//        
+//        $.trigger_callback(_callback);
+//    };
+//    
+//    var _config = {
+//        "url": this._webpage_info_url,
+//        "callback": _loaded_callback
+//    };
+//    
+//    KALS_util.ajax_get(_config);
+//    
+//    return this;
+//};
 
 KALS_context.load_info = function (_callback) {
     

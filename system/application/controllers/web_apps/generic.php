@@ -113,6 +113,7 @@ class generic extends Web_apps_controller {
             'core/KALS_authentication',
             'core/URL_hash_dispatcher',
             'core/URL_dispatcher',  //20140519 Pulipuli Chen
+            'core/Context_loader',  //20140519 Pulipuli Chen
             'core/Style_manager',
             'core/Overlay_manager',
             'core/KALS_storage',

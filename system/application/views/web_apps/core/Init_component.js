@@ -70,14 +70,14 @@ Init_component.prototype._$onstart = function () {
         //this.excute_confirm();
     }
     
-    KALS_context.load_modules_config(function () {
+    KALS_context.loader.load_modules_config(function () {
         _this.complete("modules_config");
     });
     
     /**
      * @version 20140519 Pulipuli Chen
      */ 
-    KALS_context.load_webpage_info(function () {
+    KALS_context.loader.load_webpage_info(function () {
         _this.complete("webpage_info");
         KALS_text = new KALS_text();
     });
