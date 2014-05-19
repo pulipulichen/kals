@@ -79,70 +79,11 @@ Text_selector.prototype.check_text_selector = function (_callback) {
             
             var _text_container;
             
-            var _default_scope = function () {
-                var _text_container = $('<div></div>')
-                    .addClass('selectable-text');
-        
-                var _content = $('body').children(":not(.selectable-text):not(script)");
-                _content.find('script').remove();
-                _content.appendTo(_text_container);
-                
-                _text_container.appendTo($('body'));
-                return _text_container;
-            };
-            
             if (KALS_CONFIG.annotation_scope_selector === null) {
-                _text_container = _default_scope();
+                _text_container = this._init_default_scope();
             }
             else {
-                var _scope_selector = KALS_CONFIG.annotation_scope_selector;
-                var _scope_content = $(_scope_selector);
-                
-                if (_scope_content.length === 0) {
-                    _text_container = _default_scope();
-                }
-                else if (_scope_content.length > 1) {
-                    _scope_content = _scope_content.filter(':first');
-                }
-                
-                var _children_content = _scope_content.children();
-                
-                _text_container = $('<div></div>')
-                    .addClass('selectable-text');
-                
-                _children_content.find('script').remove();
-                
-                //_text_container.insertBefore(_scope_content);
-                //_scope_content.appendTo(_text_container);
-                
-                _text_container.prependTo(_scope_content);
-                _children_content.appendTo(_text_container);
-                
-                /*
-                else if (_scope_content.length == 1) {
-                    _text_container = $('<div></div>')
-                        .addClass('selectable-text');
-                    
-                    _scope_content.find('script').remove();
-                    
-                    _text_container.insertBefore(_scope_content);
-                    _scope_content.appendTo(_text_container);
-                }
-                else {
-                    for (var _i = 0; _i < _scope_content.length; _i++) {
-                        var _content = _scope_content.eq(_i);
-                        
-                        var _container = $('<div></div>')
-                            .addClass('selectable-text');
-                        
-                        _content.find('script').remove();
-                        _container.insertBefore(_content);
-                        _content.appendTo(_container);
-                    }
-                    
-                    _text_container = $('.selectable-text');
-                }
-                */
+                _text_container = this._init_selectable_text();
             }
             
             this._text_selector = _text_container;
@@ -154,10 +95,87 @@ Text_selector.prototype.check_text_selector = function (_callback) {
     
     //this.init_context.complete('selector');
     
-    $.trigger_callback(_callback);
+    setTimeout(function () {
+        $.trigger_callback(_callback);
+    }, 0);
+    
     return this;
 };
 
+/**
+ * 初始化可選擇區域
+ * @returns {jQuery|Multi_event_dispatcher._create_selectable_text._text_container|Text_selector.prototype._create_selectable_text._text_container}
+ */
+Text_selector.prototype._init_default_scope = function () {
+    var _text_container = $('<div></div>')
+        .addClass('selectable-text');
+
+    var _content = $('body').children(":not(.selectable-text):not(script):not(.KALS)");
+    _content.find('script').remove();
+    _content.appendTo(_text_container);
+
+    _text_container.appendTo($('body'));
+    return _text_container;
+};
+
+/**
+ * 初始化可選擇區域
+ * @returns {jQuery|Multi_event_dispatcher._create_selectable_text._text_container|Text_selector.prototype._create_selectable_text._text_container}
+ */
+Text_selector.prototype._init_selectable_text = function () {
+    
+    var _text_container;
+    
+    var _scope_selector = KALS_CONFIG.annotation_scope_selector;
+    var _scope_content = $(_scope_selector);
+
+    if (_scope_content.length === 0) {
+        _text_container = _default_scope();
+    }
+    else if (_scope_content.length > 1) {
+        _scope_content = _scope_content.filter(':first');
+    }
+
+    var _children_content = _scope_content.children();
+
+    _text_container = $('<div></div>')
+        .addClass('selectable-text');
+
+    _children_content.find('script').remove();
+
+    //_text_container.insertBefore(_scope_content);
+    //_scope_content.appendTo(_text_container);
+
+    _text_container.prependTo(_scope_content);
+    _children_content.appendTo(_text_container);
+
+    /*
+    else if (_scope_content.length == 1) {
+        _text_container = $('<div></div>')
+            .addClass('selectable-text');
+
+        _scope_content.find('script').remove();
+
+        _text_container.insertBefore(_scope_content);
+        _scope_content.appendTo(_text_container);
+    }
+    else {
+        for (var _i = 0; _i < _scope_content.length; _i++) {
+            var _content = _scope_content.eq(_i);
+
+            var _container = $('<div></div>')
+                .addClass('selectable-text');
+
+            _content.find('script').remove();
+            _container.insertBefore(_content);
+            _content.appendTo(_container);
+        }
+
+        _text_container = $('.selectable-text');
+    }
+    */
+    return _text_container;
+};
 
 /**
  * 取得可選取的文字區

@@ -43,6 +43,11 @@ KALS_util.ajax_get = function (_config) {
         _callback_parameter = "_";
     }
     
+    var _full_callback_parameter = _callback_parameter;
+    if ($.is_string(_callback_parameter) && _callback_parameter !== "?") {
+        _full_callback_parameter = "KALS_util.c." + _callback_parameter;
+    }
+    
     if (_data !== null) {
         if ($.is_object(_data)) {
             _data = $.json_encode(_data);
@@ -54,10 +59,10 @@ KALS_util.ajax_get = function (_config) {
             _data = escape(_data);
         }
 		
-        _url = _url + _data + '/callback=' + _callback_parameter;
+        _url = _url + _data + '/callback=' + _full_callback_parameter;
     }
     else {
-        _url = _url + 'callback=' + _callback_parameter;
+        _url = _url + 'callback=' + _full_callback_parameter;
     }
     
 	if (_url.indexOf('http') === 0 
@@ -126,7 +131,6 @@ KALS_util.ajax_get = function (_config) {
             }
         }
 
-
         if (typeof(_retry_timer) === 'undefined' 
                 || _retry_timer === null) {
             return this;
@@ -151,7 +155,8 @@ KALS_util.ajax_get = function (_config) {
     };
     
     if (_callback_parameter !== "?") {
-        window[_callback_parameter] = function (_data) {
+        this.c[_callback_parameter] = function (_data) {
+        //window[_callback_parameter] = function (_data) {
             _get_callback(_data);
         };
     }
@@ -176,7 +181,7 @@ KALS_util.ajax_get = function (_config) {
         if (_retry !== null && _retry > 0) {
             
             if (_callback_parameter !== "?") {
-                //$.test_msg("開始計時", _retry_wait);
+                $.test_msg("開始計時", _retry_wait);
             }
             _retry_timer = setInterval(function () {
                 //$.test_msg("時間到了");
@@ -364,7 +369,7 @@ KALS_util.ajax_upload = function (_config) {
     _url = $.appends_with(_url, '/');
     
     var _action = _url;
-    if (typeof(KALS_context) != 'undefined') {
+    if (typeof(KALS_context) !== 'undefined') {
         _action = KALS_context.get_base_url(_action);
     }
     
@@ -428,16 +433,16 @@ KALS_util.ajax_upload = function (_config) {
                         'request_uri': _url
                     };
                     
-                    if (typeof(_data) == 'undefined'
-                        || typeof(_data.completed) == 'undefined') {
-					    $.test_msg("show_exception 1");
+                    if (typeof(_data) === 'undefined'
+                            || typeof(_data.completed) === 'undefined') {
+                        $.test_msg("show_exception 1");
                         _this.show_exception(_exception, _url);
                     }
                     else if (_data.completed === false) {
                         if (_data.data !== false) {
-							_exception.message = _data.data;
-						}
-						$.test_msg("show_exception 2");
+                            _exception.message = _data.data;
+                        }
+                        $.test_msg("show_exception 2");
                         _this.show_exception(_exception, _url);
                     }
                     
@@ -619,15 +624,15 @@ KALS_util._get_confirm_modal = function () {
         var _no_lang = new KALS_language_param('NO', 'dialog.option.no');
         
         var _yes_option = new Dialog_close_option(_yes_lang, function () {
-            if (typeof(_modal.confirm_callback) == 'function') {
-				_modal.confirm_callback(true);
-			}
+            if (typeof(_modal.confirm_callback) === 'function') {
+                _modal.confirm_callback(true);
+            }
         });
         
         var _no_option = new Dialog_close_option(_no_lang, function () {
-            if (typeof(_modal.confirm_callback) == 'function') {
-				_modal.confirm_callback(true);
-			}
+            if (typeof(_modal.confirm_callback) === 'function') {
+                _modal.confirm_callback(true);
+            }
         });
         
         _modal.set_options([_yes_option, _no_option]);
@@ -753,18 +758,18 @@ KALS_util.select_menu = function (_config) {
 KALS_util.help = function (_url) {
     
     if ($.is_null(_url)) {
-		_url = '';
-	}
+        _url = '';
+    }
     
-    if (_url.substr(0, 1) == '/') {
-		_url = _url.substr(1, _url.length);
-	}
+    if (_url.substr(0, 1) === '/') {
+        _url = _url.substr(1, _url.length);
+    }
     
     var _base_url = KALS_CONFIG.help_base_url;
     var _needle = 'http';
     var _help_url = KALS_context.get_base_url([KALS_CONFIG.help_base_url, _url]);
-    if (_base_url.substr(0, _needle.length) == _needle) {
-        if (_base_url.substr(_base_url.length - 1, _base_url.length) != '/') {
+    if (_base_url.substr(0, _needle.length) === _needle) {
+        if (_base_url.substr(_base_url.length - 1, _base_url.length) !== '/') {
 			_base_url = _base_url + '/';
 		}
         _help_url = _base_url + _url;
@@ -828,6 +833,8 @@ KALS_util.log = function (_action, _note, _callback) {
     
     //KALS_util.ajax_post(_config);
 };
+
+KALS_util.c = {};
 
 /* End of file KALS_unit */
 /* Location: ./libraries/helpers/kals_unit.js */

@@ -414,7 +414,9 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
         
         if (typeof(KALS_text) !== "object" 
                 || typeof(KALS_text.selection) !== "object" 
+                || KALS_text.selection === null 
                 || typeof(KALS_text.selection.text) !== "object" 
+                || KALS_text.selection.text === null
                 || typeof(KALS_text.selection.text.word) !== "object"
                 || typeof(KALS_text.selection.text.word.get_current_progress_word) !== "function") {
             //return this;

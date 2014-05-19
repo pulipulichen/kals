@@ -18,9 +18,27 @@ function KALS_text(_selector) {
     
     this.child('text_selector', new Text_selector());
     if (_selector === undefined) {
-        this.text_selector.check_text_selector();
-        _selector = this.get_selector();	
+        var _this = this;
+        this.text_selector.check_text_selector(function () {
+            _this._init_component();
+        });
     }
+    else {
+        this._init_component(_selector);
+    }
+}
+
+// Extend from KALS_user_interface
+KALS_text.prototype = new KALS_user_interface();
+
+/**
+ * 初始化後面的步驟
+ * @param {jQuery} _selector
+ * @returns {undefined}
+ */
+KALS_text.prototype._init_component = function (_selector) {
+    
+    _selector = this.get_selector();	
     //$.test_msg('KALS_text()', _selector.length);
     
     _selector = this.filter_selector(_selector);
@@ -33,15 +51,13 @@ function KALS_text(_selector) {
     this.child('guide', new Reading_guide());
     
     var _this = this;
-    setTimeout(function() {
-        _this.init_start();
-        
+    //setTimeout(function() {
+    //    _this.init_start();
         //_this.load_my.initialize();
-    }, 0);
-}
-
-// Extend from KALS_user_interface
-KALS_text.prototype = new KALS_user_interface();
+    //}, 0);
+    
+    return this;
+};
 
 /**
  * @type {Selection_manager}

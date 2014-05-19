@@ -46,7 +46,7 @@ Context_loader.prototype.load_modules_config = function (_callback) {
     var _config = {
         "url": this._modules_config_url,
         "callback": _loaded_callback,
-        "fixed_callback": true,
+        "fixed_callback": "modules_config",
         "retry_wait": 3 * 1000
     };
     

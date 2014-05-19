@@ -277,7 +277,7 @@ KALS_controller.prototype.request_get_cache = function (_action, _data, _callbac
                 _callback(_data);
             }
         },
-        fixed_callback: true,
+        fixed_callback: _action,
         retry_wait: 3000
     };
     

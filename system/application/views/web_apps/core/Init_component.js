@@ -50,6 +50,8 @@ Init_component.prototype._$onstart = function () {
     
     var _this = this;
     
+    KALS_text = new KALS_text();
+    
     // 執行Site_reform
     KALS_context.site_reform.reform(function () {
         _this.complete('site_reform');
@@ -79,7 +81,7 @@ Init_component.prototype._$onstart = function () {
      */ 
     KALS_context.loader.load_webpage_info(function () {
         _this.complete("webpage_info");
-        KALS_text = new KALS_text();
+        KALS_text.init_start();
     });
     
     $(function() {
