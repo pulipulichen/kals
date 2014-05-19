@@ -1820,11 +1820,17 @@ jQuery.is_mobile_mode = function () {
             var _yui = YUI();
             if (typeof(_yui.use) === "function") {
 
-                    _yui.use("", function(Y){
-                        var _mode = (!$.is_null(Y.UA.mobile));
-                        _this.mobile_mode = _mode;
-                    });
-
+                _yui.use("", function(Y){
+                    var _mode = (!$.is_null(Y.UA.mobile));
+                    _this.mobile_mode = _mode;
+                    //$.test_msg("行動版", _mode);
+                    //alert("行動版:" + _mode);
+                });
+                
+                if (_this.mobile_mode === false) {
+                    $.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+                    _this.mobile_mode = $.browser.device;
+                }
             }
         }
         catch (_e) {
