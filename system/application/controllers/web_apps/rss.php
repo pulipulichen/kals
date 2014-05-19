@@ -157,7 +157,7 @@ class rss extends Web_apps_controller {
             //$item_url = $_SERVER["HTTP_HOST"]
             //test_msg($_SERVER["HTTP_HOST"]);
             
-            $item->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
+            $item->title("[" . $type_show . "]" . $annotation->get_anchor_text() .""
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
                 ->description("<div>KALS user [" . $annotation->get_user()->get_name() . "] </div>
                                <div>" . $annotation->get_note() ." </div>                     

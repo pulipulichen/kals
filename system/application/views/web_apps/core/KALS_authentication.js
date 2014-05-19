@@ -222,7 +222,14 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
  * @returns {KALS_authentication}
  */
 KALS_authentication.prototype._after_login = function (_return_error, _data, _callback) {
-    //$.test_msg('login load', _data);
+    $.test_msg('login load', _data);
+        
+    //$.test_msg("mobile_redirect", typeof(_data.mobile_redirect));
+    if (typeof(_data.mobile_redirect) === "string") {
+        //$.test_msg("mobile_redirect ready go", _data.mobile_redirect);
+        location.href = _data.mobile_redirect;
+        return this;
+    }
 
     var _this = this;
     if (typeof(_data.error) !== 'undefined') {
@@ -559,28 +566,7 @@ KALS_authentication.prototype.check_login = function (_callback) {
         //this.load(_check_data ,function (_this, _data) {
         
         this.load(function (_this, _data) {
-            
-            //$.test_msg("check_login", _data);
-			
-            if (typeof(_data.login) === 'boolean' 
-                    && _data.login === true) {
-                _this._is_login = true;
-            }
-            else {
-                _this._is_login = false;
-            }
-            
-            _this._login_checked = true;
-            
-            if (typeof(_data.webpage_id) === "number") {
-                KALS_context.webpage_id = _data.webpage_id;
-            }
-            
-            //$.test_msg('auth check_login()', _data);
-            
-            if ($.is_function(_callback)) {
-                _callback(_this, _data);
-            }
+            _this._after_check_login(_data, _callback);
         });    //this.load(function (_this, _data) {
     }
     else {
@@ -590,6 +576,43 @@ KALS_authentication.prototype.check_login = function (_callback) {
     
     return this;
 };
+
+/**
+ * 在確認登入之後
+ * @param {JSON} _data 從check_login傳來的資料
+ * @param {Function} _callback
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype._after_check_login = function (_data, _callback) {
+    
+    //$.test_msg("check_login", _data);
+
+    if (typeof(_data.login) === 'boolean' 
+            && _data.login === true) {
+        this._is_login = true;
+    }
+    else {
+        this._is_login = false;
+    }
+
+    this._login_checked = true;
+
+    if (typeof(_data.webpage_id) === "number") {
+        KALS_context.webpage_id = _data.webpage_id;
+    }
+
+    if (typeof(_data.mobile_redirect) === "string") {
+        location.href = _data.mobile_redirect;
+    }
+
+    //$.test_msg('auth check_login()', _data);
+
+    if ($.is_function(_callback)) {
+        _callback(this, _data);
+    }
+    
+    return this;
+}
 
 /**
  * 已經確認過是否登入

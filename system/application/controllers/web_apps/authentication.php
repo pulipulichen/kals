@@ -97,7 +97,7 @@ class Authentication extends Web_apps_controller {
     }
 
     /**
-     * 將使用者資訊轉換成JSON
+     * 如果已經成功登入的話，將使用者資訊轉換成JSON
      * @param User $user
      * @param Boolean $embed_login
      * @return Array
@@ -148,6 +148,16 @@ class Authentication extends Web_apps_controller {
         $my_annotation = $annotation_getter->my();
         $output['policy']['my_basic'] = $my_annotation['basic'];
         $output['policy']['my_custom'] = $my_annotation['custom'];
+        
+        //$mobile_redirect = $this->session->flashdata("mobile_redirect");
+        $mobile_redirect = $this->session->userdata("mobile_redirect");
+        //$mobile_redirect = "http://localhost/kals/mobile_apps/annotation_thread/topic_id/15651#annotation_15661";
+        //test_msg("mobile_redirect", $mobile_redirect);
+        if ($mobile_redirect !== FALSE) {
+            $output['mobile_redirect'] = $mobile_redirect;
+            $this->session->unset_userdata("mobile_redirect");
+            //context_complete();
+        }
 
         return $output;
     }
