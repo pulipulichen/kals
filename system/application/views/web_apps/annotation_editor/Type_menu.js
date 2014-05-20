@@ -382,10 +382,14 @@ Type_menu.prototype._$get_config = function () {
  */
 Type_menu.prototype._on_before_show = function (_tooltip, _onbeforeshow) {
     var _this = this;
-    this.get_ui().css("visibility", "hidden");
+    //this.get_ui().css("visibility", "hidden");
+    
+    var _loading_classname = "loading";
+    this.get_ui().addClass(_loading_classname);
     setTimeout(function () {		
         _this.setup_position();    
-        _this.get_ui().css("visibility", "visible");
+        //_this.get_ui().css("visibility", "visible");
+        _this.get_ui().removeClass(_loading_classname);
     }, 0);
 
     if ($.is_function(_onbeforeshow)) {
@@ -599,10 +603,12 @@ Type_menu.prototype.change_enable_type = function (_enable_type) {
     
     //$.test_msg("type-menu, _enable_type", _enable_type);
     
-    this.find(".type-option")
-            .hide()
-            .filter(".enable-type-" + _enable_type)
-            .show();
+    var _type_options = this.find(".type-option")
+                            .hide()
+                            .filter(".enable-type-" + _enable_type);
+    if (_type_options.length > 1) {
+        _type_options.show();
+    }
     
     return this;
 };

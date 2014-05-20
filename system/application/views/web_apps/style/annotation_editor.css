@@ -345,6 +345,10 @@
     z-index: 4;
 }
 
+.KALS.kals-modal .type-component .type-menu.loading {
+    visibility: hidden;
+}
+
 .KALS.kals-modal .type-component .type-menu .type-option {
     border-style: none;
     display:block;
