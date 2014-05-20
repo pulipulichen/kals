@@ -2861,9 +2861,21 @@ jQuery.set_position = function (_ele, _anchor, _config) {
         _ele_top = _anchor_top - _ele.height();
     }
     
-    //$.test_msg("對齊結果", [_anchor_left, _anchor_top, _anchor.width()
-    //    , this.get_width_without_transform(_anchor)
-    //    , _ele_left, _ele_top, _ele.width()]);
+    $.test_msg("對齊結果", [_anchor_left, _anchor_top
+        //, _anchor.width()
+        , _anchor.width()
+        , this.get_width_without_transform(_anchor)
+        , (_anchor_left + (_anchor_width/2))
+        , (_anchor_left + (_anchor.width()/2))
+        , _ele_left, _ele_top
+        , _ele.width()
+        , (_ele_left + (_ele.width() / 2) )
+        , _config.at
+        , _config.my
+        
+        //, this.get_width_without_transform(_ele)
+        //, _ele.width()
+    ]);
     
     _ele.css("position", "absolute")
             .css("top", _ele_top)
@@ -2878,6 +2890,12 @@ jQuery.set_position = function (_ele, _anchor, _config) {
  * @returns {Number}
  */
 jQuery.get_width_without_transform = function (_ele) {
+    
+    var _path = this.get_node_path_serialize(_ele);
+    _path = _path + "_width";
+    if (this._cache.has(_path)) {
+        return this._cache.get(_path);
+    }
     
     //var _fake = _ele.clone().appendTo("body");
     //var _temp = $(document.createDocumentFragment());
@@ -2907,6 +2925,8 @@ jQuery.get_width_without_transform = function (_ele) {
         _fake.remove();
     }, 100);
     
+    this._cache.set(_path, _width);
+    
     return _width;
 };
 
@@ -2917,6 +2937,12 @@ jQuery.get_width_without_transform = function (_ele) {
  * @returns {Number}
  */
 jQuery.get_height_without_transform = function (_ele) {
+    
+    var _path = this.get_node_path_serialize(_ele);
+    _path = _path + "_height";
+    if (this._cache.has(_path)) {
+        return this._cache.get(_path);
+    }
     
     //var _fake = _ele.clone().appendTo("body");
     //var _temp = $(document.createDocumentFragment());
@@ -2946,30 +2972,107 @@ jQuery.get_height_without_transform = function (_ele) {
         _fake.remove();
     }, 100);
     
+    this._cache.set(_path, _height);
+    
     return _height;
 };
 
 /**
- * 取得元素的高度，不受tranform的影響
+ * 取得節點的系列化路徑資訊
  * @param {jQuery} _ele
- * @returns {Number}
+ * @returns {String}
  */
-jQuery.get_height_without_transform = function (_ele) {
+jQuery.get_node_path_serialize = function (_ele) {
+    var _path = "", _node_name, _this = this, _classname;
     
-    var _temp = $('body');
-    var _fake = _ele.clone()
-            .hide()
-            .appendTo(_temp);
-    //_fake.css("transform", "matrix(1,0,0,1,0,0)");
-        
-    var _height = _fake.height();
+    //取得parents
+    var _first_parent = true;
+    _ele.parents().each(function (_index, _parent) {
+        _node_name = _parent.nodeName;
+        if (_first_parent === true) {
+            _classname = _this.get_classname_serialize(_parent);
+            _path = _node_name + _classname + ">" + _path;
+            _first_parent = false;
+        }
+        else {
+            _path = _node_name + ">" + _path;
+        }
+    });
+    
+    _node_name = _ele.attr("nodeName");
+    _classname = _this.get_classname_serialize(_ele);
+    _path = _path + _node_name + _classname;
+    
+    return _path;
+};
 
-    setTimeout(function () {
-        _fake.remove();
-    }, 100);
-    
-    
-    return _height;
+/**
+ * 取出classname並變成CSS選取字串
+ * @param {jQuery} _ele
+ * @returns {String}
+ */
+jQuery.get_classname_serialize = function (_ele) {
+    var _classname;;
+    if (typeof(_ele.className) === "string") {
+        _classname = _ele.className;
+    }
+    else {
+        _classname = _ele.attr("className");
+    }
+    _classname = "." + _classname.split(" ").join(".");
+    if (_classname === ".") {
+        return "";
+    }
+    else {
+        return _classname;
+    }
+};
+
+/**
+ * 快取功能
+ */
+jQuery._cache = {
+    /**
+     * 快取保存值
+     * @type JSON
+     */
+    _data: {},
+    /**
+     * 設定快取
+     * @param {String} _key
+     * @param {Object} _value
+     * @returns {jQuery._cache}
+     */
+    set: function (_key, _value) {
+        this._data[_key] = _value;
+        return this;
+    },
+    /**
+     * 檢查快取
+     * @param {String} _key
+     * @returns {Boolean}
+     */
+    has: function (_key) {
+        return (typeof(this._data[_key]) !== "undefined");
+    },
+    /**
+     * 取得快取
+     * @param {String} _key
+     * @returns {jQuery._cache._data}
+     */
+    get: function (_key) {
+        $.test_msg("from cache", [_key, this._data[_key]]);
+        return this._data[_key];
+    },
+    /**
+     * 移除快取
+     * @param {String} _key
+     * @returns {jQuery._cache}
+     */
+    remove: function (_key) {
+        delete this._data[_key];
+        return this;
+    }
 };
 
 $.widget("ui.dialog", $.ui.dialog, {
