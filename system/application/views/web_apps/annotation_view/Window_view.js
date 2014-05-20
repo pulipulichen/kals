@@ -164,7 +164,7 @@ Window_view.prototype.load_view = function (_annotation_id, _callback) {
     return this;
 };
 
-Window_view.prototype.set_topic_param = function (_topic_param, _callback) {
+Window_view.prototype.set_topic_param = function (_topic_param) {
     
     this._topic_param = _topic_param;
     
@@ -173,24 +173,24 @@ Window_view.prototype.set_topic_param = function (_topic_param, _callback) {
     this.editor_container.set_topic(_topic_param);
     
     //this.set_selection();
-    KALS_context.hash.set_field('view', _topic_param.annotation_id, _callback);
+    KALS_context.hash.set_field('view', _topic_param.annotation_id);
     
     return this;
 };
 
-Window_view.prototype.set_selection = function (_callback) {
+Window_view.prototype.set_selection = function () {
     
     if ($.isset(this._topic_param)) {
         var _this = this;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope, _callback);
+            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
         }, 1000);
     }
     
     return this;
 };
 
-Window_view.prototype.reset = function (_callback) {
+Window_view.prototype.reset = function () {
     
     var _topic_param = this._topic_param; 
     this._topic_param = null;
@@ -217,7 +217,7 @@ Window_view.prototype.reset = function (_callback) {
         KALS_text.tool.list.focus(_topic_param, true);
     }
     
-    KALS_context.hash.delete_field('view', _callback);
+    KALS_context.hash.delete_field('view');
     
     return this;
 };
@@ -351,7 +351,6 @@ Window_view.prototype.onload = function () {
     //$.test_msg('Window_view.onload()');
     
     var _focus_anchor = true;
-    var _hash_focus_id;
     if ($.isset(this._focus_id)) {
         var _result = this.list.focus(this._focus_id, true);
         //var _result = this.list.focus(this._focus_id);
@@ -363,8 +362,7 @@ Window_view.prototype.onload = function () {
         
         if ($.isset(_result)) {
             _focus_anchor = false;
-            //KALS_context.hash.set_field('view', this._focus_id);
-            _hash_focus_id = this._focus_id;
+            KALS_context.hash.set_field('view', this._focus_id);
         }
         
         this._focus_id = null;
@@ -418,11 +416,7 @@ Window_view.prototype.onload = function () {
         KALS_text.selection.select.set_scope_coll(this._topic_param.scope);
         //KALS_text.selection.select.scroll_into_view();
     }
-    
-    if (_hash_focus_id !== undefined) {
-        KALS_context.hash.set_field('view', this._focus_id);
-    }
-    
+	
     return this;
 };
 

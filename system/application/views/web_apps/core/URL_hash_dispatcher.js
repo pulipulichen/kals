@@ -76,9 +76,8 @@ URL_hash_dispatcher.prototype._get_location_hash = function () {
 /**
  * 設定hash
  * @param {String} _hash 
- * @param {function} _callback
  */
-URL_hash_dispatcher.prototype._set_location_hash = function(_hash, _callback) {
+URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
     
     this._set_lock = true;
     
@@ -133,7 +132,7 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash, _callback) {
         //document.location.hash = _url + _hash;
     }
     
-    this._restore_scroll_position(_pos, _callback);
+    this._restore_scroll_position(_pos);
     
     return this;
 };
@@ -170,22 +169,20 @@ URL_hash_dispatcher.prototype._save_scroll_position = function () {
  * 讓網頁開始捲動
  * 
  * @param {Object} _pos
- * @param {function} _callback
  */
-URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos, _callback) {
+URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
 
     //$.scroll_to(_pos, 0);
     //$.test_msg("設定了現在的捲軸位置", _pos);    
     var _this = this;
     if (_this._last_pos !== null) {
         setTimeout(function () {
-            window.scrollTo(_pos.scrollLeft, _pos.scrollTop);
+            if ($("body").scrollTop() === 0
+                    && _this._last_pos !== null) {
+                window.scrollTo(_pos.scrollLeft, _pos.scrollTop);
+            }
             _this._last_pos = null;
-            $.trigger_callback(_callback);
         }, 0);
-    }
-    else {
-        $.trigger_callback(_callback);
     }
     return this;
 };
@@ -263,7 +260,7 @@ URL_hash_dispatcher.prototype.get_hash_data = function () {
  * @param {string} _key
  * @param {Object} _value
  */
-URL_hash_dispatcher.prototype.set_field = function (_key, _value, _callback) {
+URL_hash_dispatcher.prototype.set_field = function (_key, _value) {
     
     try {
         //嘗試將值化為字串，因為hash只能存入字串而已
@@ -276,10 +273,8 @@ URL_hash_dispatcher.prototype.set_field = function (_key, _value, _callback) {
     this._hash_data = _hash_data;
     var _hash = _hash_data.serialize();
     
-    var _this = this;
-    this._set_location_hash(_hash, function () {
-        _this._set_document_title(_hash);
-    });
+    this._set_location_hash(_hash);
+    this._set_document_title(_hash);
     
     return this;        
 };
@@ -288,7 +283,7 @@ URL_hash_dispatcher.prototype.set_field = function (_key, _value, _callback) {
  * 刪除指定的欄位，並設定到hash中
  * @param {string} _key
  */
-URL_hash_dispatcher.prototype.delete_field = function (_key, _callback) {
+URL_hash_dispatcher.prototype.delete_field = function (_key) {
     
 	
     var _hash_data = this._setup_hash_data();
@@ -298,12 +293,9 @@ URL_hash_dispatcher.prototype.delete_field = function (_key, _callback) {
     var _hash = _hash_data.serialize();
     
     // 20140520 造成捲軸跳動的兇手
-    //$.test_msg("delete_field", [_hash, _callback]);
-    var _this = this;
-    this._set_location_hash(_hash, function () {
-        _this._set_document_title(_hash);
-        $.trigger_callback(_callback);
-    });
+    this._set_location_hash(_hash);
+        
+    this._set_document_title(_hash);
     
     return this;     
 };

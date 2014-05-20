@@ -85,15 +85,12 @@ Overlay_manager.prototype.close_all = function (_except_name) {
     
     _loopy(function () {
         //跟URL_hash_dispatcher註冊
-        if (typeof(KALS_context) === 'object'
-            && typeof(KALS_context.hash) === 'object') {
-            KALS_context.hash.delete_field('modal', function () {
-                _this.check_mask(true);
-            });
-        }
-        else {
-            _this.check_mask(true);
-        }
+        if (typeof(KALS_context) == 'object'
+            && typeof(KALS_context.hash) == 'object') {
+            KALS_context.hash.delete_field('modal');
+        }  
+        
+        _this.check_mask(true);    
     });
     
     return this;
@@ -195,7 +192,7 @@ Overlay_manager.prototype.unlock_mask = function () {
  * 註冊說已經開啟
  * @param {KALS_modal} _modal
  */
-Overlay_manager.prototype.add_opened = function (_modal, _callback) {
+Overlay_manager.prototype.add_opened = function (_modal) {
     
     if (_modal._$exposable === false) {
 		return this;
@@ -226,13 +223,10 @@ Overlay_manager.prototype.add_opened = function (_modal, _callback) {
         }
         
         //跟URL_hash_dispatcher註冊
-        if (typeof(KALS_context) === 'object'
-            && typeof(KALS_context.hash) === 'object') {
-            KALS_context.hash.set_field('modal', _modal.get_modal_name(), _callback);
-        }
-        else {
-            $.trigger_callback(_callback);
-        }
+        if (typeof(KALS_context) == 'object'
+            && typeof(KALS_context.hash) == 'object') {
+            KALS_context.hash.set_field('modal', _modal.get_modal_name());
+        }   
     }   
     return this;
 };
@@ -319,10 +313,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
             //跟URL_hash_dispatcher註冊
             if (typeof(KALS_context) === 'object'
                 && typeof(KALS_context.hash) === 'object') {
-                KALS_context.hash.delete_field('modal', function () {
-                    //$.test_msg('deleted_opended length', this._opened_modals.length);
-                    _this.check_mask(true);
-                });
+                KALS_context.hash.delete_field('modal');
             }
             else {
                 //$.test_msg('deleted_opended length', this._opened_modals.length);
@@ -338,6 +329,9 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         this.check_mask(true);
     }
         
+    
+    //$.test_msg('deleted_opended length', this._opened_modals.length);
+    this.check_mask(true);
     
 	//$.test_msg("Overlay_manager delete_opended", "check point 5");
 	

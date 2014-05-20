@@ -367,20 +367,15 @@ List_item.prototype.clear_selection = function () {
 
 /**
  * 擺放標註位置
- * 
- * @param {Function} _callback 回呼函數
  */
-List_item.prototype.select = function (_callback) {
+List_item.prototype.select = function () {
     var _scope = this.get_scope_coll();
     
-    var _this = this;
-    KALS_text.tool.close(function () {
-        //$.test_msg('List_item.select', this.get_annotation_param());
-        KALS_text.tool.list.set_focus(_this.get_annotation_param(), true);
-
-        KALS_text.selection.select.set_scope_coll(_scope, _callback);
-    });
-    
+    KALS_text.tool.close();
+    //$.test_msg('List_item.select', this.get_annotation_param());
+    KALS_text.tool.list.set_focus(this.get_annotation_param(), true);
+	
+    KALS_text.selection.select.set_scope_coll(_scope);
     
     return this;
 };

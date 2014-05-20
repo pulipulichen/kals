@@ -373,17 +373,14 @@ Annotation_tool.prototype.scroll_into_view = function () {
  */
 Annotation_tool.prototype.close = function (_callback) {
     
-    var _this = this;
-    this.list.reset(function () {
-        //KALS_modal.prototype.close.call(this, _callback);
-
-        var _ui = _this.get_ui();
-        _ui.css('top', '-1000px');
-        _ui.css('left', '-1000px');
-
-        $.trigger_callback(_callback);
-    });
-    return this;
+    this.list.reset();
+    //KALS_modal.prototype.close.call(this, _callback);
+    
+    var _ui = this.get_ui();
+    _ui.css('top', '-1000px');
+    _ui.css('left', '-1000px');
+    
+    $.trigger_callback(_callback);
 };
 
 /**

@@ -340,11 +340,11 @@ Topic_list.prototype.set_scope_coll = function (_scope_coll) {
     return this;
 };
 
-Topic_list.prototype.reset = function (_callback) {
-    //$.test_msg('Topic_list_reset()', window.location.hash);
+Topic_list.prototype.reset = function () {
+	//$.test_msg('Topic_list_reset()', window.location.hash);
 	
-    //KALS_text.selection.select.clear();
-    //KALS_text.selection.view.clear();
+    KALS_text.selection.select.clear();
+    KALS_text.selection.view.clear();
     
     this._first_load = true;
     this._toggle_blank(false);
@@ -359,12 +359,6 @@ Topic_list.prototype.reset = function (_callback) {
         var _list_coll = this._list_colls[_i];
         _list_coll.reset();
     }
-    
-    KALS_text.selection.select.clear(function () {
-        KALS_text.selection.view.clear();
-        $.trigger_callback(_callback);
-    });
-    
     return this;
 };
 

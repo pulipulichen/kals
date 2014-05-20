@@ -47,7 +47,7 @@ Selection_select.prototype._selectable = true;
  * 設定選取
  * @param {jQuery} _word
  */
-Selection_select.prototype.set_select = function (_word, _callback) {
+Selection_select.prototype.set_select = function (_word) {
     // 如果輸入參數是範圍，那就改成用Scope_collection_param吧
     if ($.is_class(_word, "Scope_collection_param")) {
         return this.set_scope_coll(_word);
@@ -56,8 +56,9 @@ Selection_select.prototype.set_select = function (_word, _callback) {
     //$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
     if (this._selectable === false) {
 		
-        //$.test_msg("delete_field select 3");
-        KALS_context.hash.delete_field('select', _callback);
+        $.test_msg("delete_field select 3");
+        KALS_context.hash.delete_field('select');
+
         return this;
     }
     
@@ -123,19 +124,19 @@ Selection_select.prototype.set_select = function (_word, _callback) {
  * 選取物件時加上hash，這是覆蓋Selection的功能
  * @author Pulipuli Chen 20131115
  */
-Selection_select.prototype.set_scope_coll = function (_scope_coll, _callback) {
+Selection_select.prototype.set_scope_coll = function (_scope_coll) {
     Selection.prototype.set_scope_coll.call(this, _scope_coll);
 
     var _from = _scope_coll.get_from();
     var _to = _scope_coll.get_to();
 
     //$.test_msg("select set_scope_coll", [_from, _to]);
-    KALS_context.hash.set_field('select', _from + ',' + _to, _callback);
+    KALS_context.hash.set_field('select', _from + ',' + _to);
 
     return this;
 };
 
-Selection_select.prototype.cancel_select = function (_callback) {
+Selection_select.prototype.cancel_select = function () {
     
     if ($.isset(this._select_from_word)) {
         this._select_from_word.removeClass(this.get_classname());
@@ -146,27 +147,21 @@ Selection_select.prototype.cancel_select = function (_callback) {
     this._setted_hash = false;
 	
     //$.test_msg("delete_field select 1");
-    KALS_context.hash.delete_field('select', _callback);
+    KALS_context.hash.delete_field('select');
     
     return this;
 };
 
-Selection_select.prototype.clear = function (_callback) {
+Selection_select.prototype.clear = function () {
     if (this._setted_hash === true) {
-        //$.test_msg("delete_field select 2");
-        var _this = this;
-        Selection.prototype.clear.call(_this);
-        KALS_context.hash.delete_field('select', _callback);
-        return this;
-    }
-    else {
-        Selection.prototype.clear.call(this);
-        $.trigger_callback(_callback);
-        return this;
-    }
+		//$.test_msg("delete_field select 2");
+		KALS_context.hash.delete_field('select');
+	}
+    
+    return Selection.prototype.clear.call(this);
 };
 
-Selection_select.prototype.load_select = function (_scope_text, _callback) {
+Selection_select.prototype.load_select = function (_scope_text) {
     
     if ($.is_null(_scope_text)) {
         return this;
@@ -192,7 +187,7 @@ Selection_select.prototype.load_select = function (_scope_text, _callback) {
     //    _this.scroll_into_view();    
     //}, 500);
     
-    KALS_context.hash.set_field('select', _first_index + ',' + _last_index, _callback);
+    KALS_context.hash.set_field('select', _first_index + ',' + _last_index);
     
     return this;
 };

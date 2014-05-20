@@ -29,21 +29,22 @@ List_item_tooltip.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass(this._classname)
         .addClass('list-item')
-		.addClass('list-item-tooltip');
+        .addClass('list-item-tooltip');
     
     var _header = this._setup_header();
     _header.get_ui().appendTo(_ui);
-	
-	var _count = this._setup_count();
-	_count.prependTo(_header.get_ui());
-	
-	var _note = this._setup_note();
+
+    var _count = this._setup_count();
+    _count.prependTo(_header.get_ui());
+
+    var _note = this._setup_note();
     _note.get_ui().appendTo(_ui);
 	
-	_ui.click(function () {
-		$.test_msg("List_item_tooltip click", _this.get_scope_coll());
-		_this.select();
-	});
+    _ui.click(function () {
+        $.test_msg("List_item_tooltip click", _this.get_scope_coll());
+        //KALS_text.selection.select.clear();
+        _this.select();
+    });
 
     return _ui;
 };
