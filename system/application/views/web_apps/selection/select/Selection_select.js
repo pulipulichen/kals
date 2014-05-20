@@ -154,9 +154,9 @@ Selection_select.prototype.cancel_select = function () {
 
 Selection_select.prototype.clear = function () {
     if (this._setted_hash === true) {
-		//$.test_msg("delete_field select 2");
-		KALS_context.hash.delete_field('select');
-	}
+        //$.test_msg("delete_field select 2");
+        KALS_context.hash.delete_field('select');
+    }
     
     return Selection.prototype.clear.call(this);
 };

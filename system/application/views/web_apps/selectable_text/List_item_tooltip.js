@@ -41,7 +41,7 @@ List_item_tooltip.prototype._$create_ui = function () {
     _note.get_ui().appendTo(_ui);
 	
     _ui.click(function () {
-        $.test_msg("List_item_tooltip click", _this.get_scope_coll());
+        //$.test_msg("List_item_tooltip click", _this.get_scope_coll());
         //KALS_text.selection.select.clear();
         _this.select();
     });

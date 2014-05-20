@@ -179,7 +179,7 @@ URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
         setTimeout(function () {
             if ($("body").scrollTop() === 0
                     && _this._last_pos !== null) {
-                window.scrollTo(_pos.scrollLeft, _pos.scrollTop);
+                window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
             }
             _this._last_pos = null;
         }, 0);

@@ -374,7 +374,8 @@ List_item.prototype.select = function () {
     KALS_text.tool.close();
     //$.test_msg('List_item.select', this.get_annotation_param());
     KALS_text.tool.list.set_focus(this.get_annotation_param(), true);
-	
+
+    KALS_text.selection.select.cancel_select();
     KALS_text.selection.select.set_scope_coll(_scope);
     
     return this;
