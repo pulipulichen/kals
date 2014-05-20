@@ -99,9 +99,10 @@ Annotation_editor.prototype._editing_lock = false;
 Annotation_editor.prototype._editing_classname = 'editing';
 
 /**
+ * 設定編輯動作
  * @param {Annotation_param} _param
  */
-Annotation_editor.prototype.set_editing = function (_param ) {
+Annotation_editor.prototype.set_editing = function (_param, _callback ) {
     //if ($.is_null(_param) || _param.annotation_id === null)
     //    return this;
     
@@ -117,13 +118,14 @@ Annotation_editor.prototype.set_editing = function (_param ) {
         _ui.addClass(this._editing_classname);
         
         this._editor_container.toggle_container(true);
-            
+        $.trigger_callback(_callback);
+        
         return this.set_data(_param);
     }
     else {
         this._editing_param = _param;
         this.list_coll.set_editing_param(_param);
-        KALS_text.selection.select.set_scope_coll(_scope_coll);
+        KALS_text.selection.select.set_scope_coll(_scope_coll, _callback);
         return this;
     }
     

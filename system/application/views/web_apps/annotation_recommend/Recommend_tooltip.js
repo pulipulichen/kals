@@ -570,6 +570,42 @@ Recommend_tooltip.prototype.accept = function () {
 	}
     
     var _this = this;
+    
+    var _notify = function (_lang) {
+        KALS_util.notify(_lang);
+        _this.close();
+    };
+    
+    var _reload_my_callback = function (_data) {
+        var _lang;
+        if (typeof(_data.annotation_id) !== 'undefined') {
+            //將新增的標註作為修改對象
+            var _annotation_id = _data.annotation_id;
+            KALS_text.tool.list.set_editing_param(_annotation_id, function () {
+                
+                //先改變選取位置
+                var _recommend_by = _this.get_recommend_by();
+                var _recommend_by_scope = _recommend_by.scope;
+                KALS_text.selection.select.set_scope_coll(_recommend_by_scope, function () {
+                    _lang = new KALS_language_param(
+                        'Your annotation has been moved to recommend annotation\'s scope. You can edit it!',
+                        'recommend_tooltip.submit.accept_recommend.notify'
+                    );
+                    _notify(_lang);
+                });
+            });
+
+        }
+        else {
+            _lang = new KALS_language_param(
+                'Your annotation has been deleted. Try to write another better!',
+                'recommend_tooltip.submit.accept_delete.notify'
+            );
+    
+            _notify(_lang);
+        }
+    };
+    
     //注意的是，accept_recommend回傳的資料是更新過後的資料喔！
     var _callback = function (_data) {
         
@@ -577,46 +613,19 @@ Recommend_tooltip.prototype.accept = function () {
         
         if (_data !== false)    //如果是錯誤的狀況，才會回傳false
         {
-            var _reload_my_callback = function () {
-                
-                var _lang;
-                if (typeof(_data.annotation_id) != 'undefined') {
-                    //將新增的標註作為修改對象
-                    var _annotation_id = _data.annotation_id;
-                    KALS_text.tool.list.set_editing_param(_annotation_id);
-                    
-                    //先改變選取位置
-                    var _recommend_by = _this.get_recommend_by();
-                    var _recommend_by_scope = _recommend_by.scope;
-                    KALS_text.selection.select.set_scope_coll(_recommend_by_scope);
-                    
-                    _lang = new KALS_language_param(
-                        'Your annotation has been moved to recommend annotation\'s scope. You can edit it!',
-                        'recommend_tooltip.submit.accept_recommend.notify'
-                    );    
-                }
-                else {
-                    _lang = new KALS_language_param(
-                        'Your annotation has been deleted. Try to write another better!',
-                        'recommend_tooltip.submit.accept_delete.notify'
-                    );
-                }
-                KALS_util.notify(_lang);
-                
-                _this.close();
-            };
-            
             //因為範圍改變了，所以需要重新讀取
-            if (typeof(_data.my) != 'undefined') {
-				KALS_text.load_my.reload(_data.my, _reload_my_callback);
-				
-				if (typeof(_data.nav) != 'undefined') {
-					KALS_text.load_navigation.reload(_data.nav);
-				}
-			}
-			else {
-				_reload_my_callback();
-			}
+            if (typeof(_data.my) !== 'undefined') {
+                KALS_text.load_my.reload(_data.my, function () {
+                    _reload_my_callback(_data);
+                });
+
+                if (typeof(_data.nav) !== 'undefined') {
+                    KALS_text.load_navigation.reload(_data.nav);
+                }
+            }
+            else {
+                _reload_my_callback(_data);
+            }
         }
     };
     

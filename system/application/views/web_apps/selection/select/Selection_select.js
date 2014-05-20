@@ -151,17 +151,18 @@ Selection_select.prototype.cancel_select = function (_callback) {
     return this;
 };
 
-Selection_select.prototype.clear = function () {
+Selection_select.prototype.clear = function (_callback) {
     if (this._setted_hash === true) {
         //$.test_msg("delete_field select 2");
         var _this = this;
-        KALS_context.hash.delete_field('select', function () {
-            Selection.prototype.clear.call(_this);
-        });
+        Selection.prototype.clear.call(_this);
+        KALS_context.hash.delete_field('select', _callback);
         return this;
     }
     else {
-        return Selection.prototype.clear.call(this);
+        Selection.prototype.clear.call(this);
+        $.trigger_callback(_callback);
+        return this;
     }
 };
 

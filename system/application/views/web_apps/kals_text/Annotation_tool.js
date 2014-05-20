@@ -366,16 +366,24 @@ Annotation_tool.prototype.scroll_into_view = function () {
     $.scroll_to(_position);
 };
 
+/**
+ * 關閉標註工具
+ * @param {Function} _callback
+ * @returns {Annotation_tool.prototype}
+ */
 Annotation_tool.prototype.close = function (_callback) {
     
-    this.list.reset();
-    //KALS_modal.prototype.close.call(this, _callback);
-    
-    var _ui = this.get_ui();
-    _ui.css('top', '-1000px');
-    _ui.css('left', '-1000px');
-    
-    $.trigger_callback(_callback);
+    var _this = this;
+    this.list.reset(function () {
+        //KALS_modal.prototype.close.call(this, _callback);
+
+        var _ui = _this.get_ui();
+        _ui.css('top', '-1000px');
+        _ui.css('left', '-1000px');
+
+        $.trigger_callback(_callback);
+    });
+    return this;
 };
 
 /**
@@ -485,7 +493,7 @@ Annotation_tool.prototype.setup_position = function () {
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
     
-        $.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
+        //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
     }
 };
 

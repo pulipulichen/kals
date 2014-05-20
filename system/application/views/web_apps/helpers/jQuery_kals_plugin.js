@@ -2861,21 +2861,21 @@ jQuery.set_position = function (_ele, _anchor, _config) {
         _ele_top = _anchor_top - _ele.height();
     }
     
-    $.test_msg("對齊結果", [_anchor_left, _anchor_top
-        //, _anchor.width()
-        , _anchor.width()
-        , this.get_width_without_transform(_anchor)
-        , (_anchor_left + (_anchor_width/2))
-        , (_anchor_left + (_anchor.width()/2))
-        , _ele_left, _ele_top
-        , _ele.width()
-        , (_ele_left + (_ele.width() / 2) )
-        , _config.at
-        , _config.my
+    //$.test_msg("對齊結果", [_anchor_left, _anchor_top
+    //    //, _anchor.width()
+    //    , _anchor.width()
+    //    , this.get_width_without_transform(_anchor)
+    //   , (_anchor_left + (_anchor_width/2))
+    //    , (_anchor_left + (_anchor.width()/2))
+    //    , _ele_left, _ele_top
+    //    , _ele.width()
+    //    , (_ele_left + (_ele.width() / 2) )
+    //    , _config.at
+    //    , _config.my
         
         //, this.get_width_without_transform(_ele)
         //, _ele.width()
-    ]);
+    //]);
     
     _ele.css("position", "absolute")
             .css("top", _ele_top)
@@ -3061,7 +3061,7 @@ jQuery._cache = {
      * @returns {jQuery._cache._data}
      */
     get: function (_key) {
-        $.test_msg("from cache", [_key, this._data[_key]]);
+        //$.test_msg("from cache", [_key, this._data[_key]]);
         return this._data[_key];
     },
     /**

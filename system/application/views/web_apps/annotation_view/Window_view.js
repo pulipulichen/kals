@@ -178,12 +178,12 @@ Window_view.prototype.set_topic_param = function (_topic_param, _callback) {
     return this;
 };
 
-Window_view.prototype.set_selection = function () {
+Window_view.prototype.set_selection = function (_callback) {
     
     if ($.isset(this._topic_param)) {
         var _this = this;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
+            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope, _callback);
         }, 1000);
     }
     

@@ -138,6 +138,16 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash, _callback) {
     return this;
 };
 
+URL_hash_dispatcher.prototype._last_pos = null;
+
+/**
+ * 保存捲軸位置
+ * 
+ * @returns {JSON} = {
+ *       x: window.scrollX,
+ *       y: window.scrollY
+ *   };
+ */
 URL_hash_dispatcher.prototype._save_scroll_position = function () {
     
     /*
@@ -146,7 +156,12 @@ URL_hash_dispatcher.prototype._save_scroll_position = function () {
         y: window.scrollY
     };
     */
+    if (this._last_pos !== null) {
+        return this._last_pos;
+    }
+   
     var _pos = $.get_current_scroll_position();
+    this._last_pos = _pos;
     //$.test_msg("儲存了現在的捲軸位置", _pos);    
     return _pos;
 };
@@ -161,12 +176,17 @@ URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos, _callba
 
     //$.scroll_to(_pos, 0);
     //$.test_msg("設定了現在的捲軸位置", _pos);    
-    setTimeout(function () {
-        window.scrollTo(_pos.scrollLeft, _pos.scrollTop);
+    var _this = this;
+    if (_this._last_pos !== null) {
+        setTimeout(function () {
+            window.scrollTo(_pos.scrollLeft, _pos.scrollTop);
+            _this._last_pos = null;
+            $.trigger_callback(_callback);
+        }, 0);
+    }
+    else {
         $.trigger_callback(_callback);
-    }, 0);
-    
-    
+    }
     return this;
 };
 
@@ -197,8 +217,8 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
  */
 URL_hash_dispatcher.prototype._setup_hash_data = function (_force) {
     if ($.is_null(_force)) {
-		_force = false;
-	}
+        _force = false;
+    }
     
     if (this._hash_data === null || _force) {
         var _hash = this._get_location_hash();
@@ -278,7 +298,7 @@ URL_hash_dispatcher.prototype.delete_field = function (_key, _callback) {
     var _hash = _hash_data.serialize();
     
     // 20140520 造成捲軸跳動的兇手
-    $.test_msg("delete_field", _hash);
+    //$.test_msg("delete_field", [_hash, _callback]);
     var _this = this;
     this._set_location_hash(_hash, function () {
         _this._set_document_title(_hash);
