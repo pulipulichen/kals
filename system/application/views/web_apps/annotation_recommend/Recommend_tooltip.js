@@ -68,13 +68,13 @@ Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to)
 			//KALS_text.selection.recommended.scroll_into_view();
 		}
         
-        KALS_context.hash.set_field('recommend', this._recommended.annotation_id);
-        
-        this.setup_position();
         var _this = this;
-        this.open();
-        this.setup_position();
-        
+        KALS_context.hash.set_field('recommend', this._recommended.annotation_id, function () {
+            _this.setup_position();
+
+            _this.open();
+            _this.setup_position();
+        });
     }
     return this;
 };
@@ -680,9 +680,13 @@ Recommend_tooltip.prototype.reject = function () {
 Recommend_tooltip.prototype.close = function (_callback) {
     KALS_text.selection.recommend_by.clear();
     KALS_text.selection.recommended.clear();
-    KALS_context.hash.delete_field('recommend');
     
-    Overlay_modal.prototype.close.call(this, _callback);
+    var _this = this;
+    KALS_context.hash.delete_field('recommend', function () {
+        Overlay_modal.prototype.close.call(_this, _callback);
+    });
+    
+    
 };
 Recommend_tooltip.prototype._$onviewportmove = null;
 

@@ -90,6 +90,10 @@ KALS_context._is_kals_context_disable = function () {
 
         if (typeof(QUNIT) === "function") {
             $.test_msg("QUNIT");
+            test("KALS! QUnit Test", function() {
+                equals( 1+1, 2, "KALS 初始化完成" );
+            });
+            
             QUNIT();
         }
         return true;
