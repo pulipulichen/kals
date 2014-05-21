@@ -1,5 +1,5 @@
 <?php
-include_once 'web_apps_controller.php';
+include_once 'mobile_apps_controller.php';
 /**
  * rss
  *
@@ -62,7 +62,6 @@ class rss extends Web_apps_controller {
         $this->load->library('kals_resource/Annotation');
         $this->load->library('search/Search_annotation_collection');
         $this->lang->load('kals_web_apps'); //語系
-        $this->lang->load('kals_mobile_apps'); //語系
         //echo $webpage_id;
         $webpage = new Webpage($webpage_id);
         
@@ -135,7 +134,7 @@ class rss extends Web_apps_controller {
                 $topic_array = $this->db->select("topic_id")
                         ->from("annotation")
                         ->where("annotation_id", $annotation_id)
-                        //->where("deleted", "false")
+                        ->where("deleted", "false")
                         ->get();
             }
             
@@ -164,26 +163,10 @@ class rss extends Web_apps_controller {
             //$item_url = $_SERVER["HTTP_HOST"]
             //test_msg($_SERVER["HTTP_HOST"]);
             
-            $date = $annotation->get_update_timestamp();
-            $date = substr($date, 0, 10);
-            
-            $note = $annotation->get_note();
-            $note = strip_tags($note);
-            $note = trim($note);
-            $note_limit = 15;
-            if (mb_strlen($note) > $note_limit) {
-                $note = mb_substr($note, 0, $note_limit);
-                $note = $note . "...";
-            }
-            
-            $user_name = $annotation->get_user()->get_name();
-            
-            $item->title( $user_name . ": " . "[" . $type_show . "] " . $note
+            $item->title("[" . $type_show . "] " . '"' . $annotation->get_anchor_text() . '"'
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
-                ->description("<div> "  . $this->lang->line("mobile_apps.rss.anchor_text") . ": " . '"'. $annotation->get_anchor_text() . '"'. " </div>"
-                              . "<div> " . $this->lang->line("mobile_apps.rss.author") . ": " . $annotation->get_user()->get_name() . " </div>"
-                              . "<div> " . $this->lang->line("mobile_apps.rss.date") . ": " . $date. " </div>"
-                              
+                ->description("<div> " . $this->lang->line("web_apps.window.content.search.field.author") . ": " . $annotation->get_user()->get_name() . " </div>"
+                              . "<div> " . $this->lang->line("web_apps.window.content.search.field.author") . ": " . $annotation->get_user()->get_name() . " </div>"
                               . "<div>" . $annotation->get_note() ." </div>                     
                               ") //user +annotation note
                 //->url( base_url()."mobile/annotation_topics/".$webpage_id) // webpage_url->view

@@ -364,6 +364,6 @@ $lang['web_apps.window.dashboard.last_annotation'] = "最近的標註";
 $lang['web_apps.window.dashboard.activity'] = "活躍度";
 
 $lang['web_apps.kals_framework.view_config_error'] = "VIEW設定錯誤";
-        
+
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */
