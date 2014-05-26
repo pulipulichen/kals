@@ -537,7 +537,13 @@ DEFAULT_KALS_CONFIG = {
                      * @types {JSON}
                      */
                     "qualifier": {
-                        
+                        // 表示topic必須重要1個
+                        //topic_annotation_count: {
+                        //    importance: {
+                        //      count:1,
+                        //      condition: ">"
+                        //    }
+                        //}
                     },
                     /**
                      * 權限設定

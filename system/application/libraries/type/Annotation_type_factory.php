@@ -88,18 +88,18 @@ class Annotation_type_factory extends KALS_object {
         
         if (is_int($type_id))
         {
-            if (isset($this->types[$type_id]))
-            {
+            if (isset($this->types[$type_id])) {
                 $name = $this->types[$type_id];
             }
-            else
-            {
+            else {
                 return $this->get_custom_type($type_id);
             }
+            test_msg($name);
         }
         else if (is_string($type_id))   //如果$type_id是字串
         {
             $name = $this->get_type_name($type_id);
+            
 
             if (in_array($name, $this->types) == false)
             {
@@ -111,8 +111,9 @@ class Annotation_type_factory extends KALS_object {
             return NULL;
         }
 
-        if (isset($this->CI->annotation_type_object))
+        if (isset($this->CI->annotation_type_object)) {
             unset($this->CI->annotation_type_object);
+        }
         $this->CI->load->library('type/Annotation_type_'.$name, NULL, 'annotation_type_object');
 
         /*
@@ -147,14 +148,17 @@ class Annotation_type_factory extends KALS_object {
 
     private function get_type_name($type_name)
     {
-        if (!is_string($type_name))
+        if (!is_string($type_name)) {
             return NULL;
+        }
 
         $index = strrpos($type_name, '.');
-        if (FALSE === $index)
+        if (FALSE === $index) {
             $name = $type_name;
-        else
+        }
+        else {
             $name = substr($type_name, $index + 1);
+        }
         return $name;
     }
 
@@ -212,8 +216,9 @@ class Annotation_type_factory extends KALS_object {
         {
             $type = $this->type_factory->find('type_id', $type_id);
 
-            if ($type == NULL)
+            if ($type == NULL) {
                 return NULL;
+            }
         }
         else    //字串或其他
         {
@@ -239,10 +244,10 @@ class Annotation_type_factory extends KALS_object {
      *  也可以是字串，那會查詢並轉換成type_id。
      */
     public function filter_object($type_name) {
-        if (is_int($type_name)) {
-            return new Annotation_type($type_name);
-        }
-        else if (is_string($type_name)){
+        //if (is_int($type_name)) {
+        //    return new Annotation_type($type_name);
+        //}
+        if (is_string($type_name) || is_int($type_name)){
             $type = $this->create($type_name);
             return $type;
         }

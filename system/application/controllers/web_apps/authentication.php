@@ -119,9 +119,7 @@ class Authentication extends Web_apps_controller {
             'sex' => $user->get_sex(),
             
             // @TODO 請wyfan把這些假資料轉換成$this->user_statistic可以取得的資料
-            //'topic_annotation_count' => array (
-            //    'importance' => 1
-            //),
+            'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
             //'respond_to_my_annotation_count' => array (
             //    'importance' => 1
             //),

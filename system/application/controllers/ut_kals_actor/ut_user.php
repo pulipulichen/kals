@@ -273,10 +273,12 @@ class Ut_user extends Controller {
     {
         // 1. 載入library
         // 2. Mock 
-        
+        $this->load->library('kals_actor/User_statistic');
+        $this->load->library('kals_resource/Webpage');
         // Test.1 Url -> Webpage
         // Webpage->filter_webpage_object
-        
+        $user = new User(2002);
+        $webpage = new Webpage(1575);
         // Test.2 Type(Int String) -> Annotation_type
         // new Annotation_type($type)
         
@@ -285,6 +287,11 @@ class Ut_user extends Controller {
         $this->unit->run($user1->get_name(),
                 'puddingchen.35',
                 '檢查user1的name');
+        //----------------------------------------------
+        //檢查get_topic_types_count
+        $this->unit->run($this->user_statistic->get_topic_types_count($user, $webpage),
+                5,
+                '檢查importance get_topic_types_count');
         
         
         // ----------------------------------------------

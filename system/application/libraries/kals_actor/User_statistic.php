@@ -30,6 +30,9 @@ class User_statistic extends KALS_actor {
         $this->CI->load->library("annotation/annotation_collection");
         $this->CI->load->library("kals_resource/annotation");
         $this->CI->load->library('kals_actor/User');
+
+
+
         //$this->_CI_load('library', 'kals_actor/Notification_collection', 'notification_collection');
         //$this->notification_coll = new Notification_collection($this);
     }
@@ -518,6 +521,32 @@ class User_statistic extends KALS_actor {
     }
     
     // --------------------------------------
+     /**
+     * 取得所有有用過的標註類型(自己寫的)
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Array $annotation_type
+     */
+    public function get_topic_types(User $user, Webpage $webpage) {
+        $type_array = array();
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('annotation.annotation_type_id');
+        $this->db->from('annotation');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
+        $this->db->where('annotation.user_id', $user_id);
+        $this->db->where('webpage_id', $webpage_id);      
+        $this->db->where('deleted', 'false');
+        $this->db->group_by('annotation.annotation_type_id');
+        $this->db->order_by('annotation_type_id', 'asc');
+        
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $type_array[] = $row->annotation_type_id;
+        }
+        return $type_array;
+    } 
     
     
     /**
@@ -525,17 +554,34 @@ class User_statistic extends KALS_actor {
      * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
-     * @return int
+     * @return Array $type_count_collection
      */
     public function get_topic_types_count(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+           
         $type_count_collection = array();
+        // 取得所有有使用到的type_id->array
+        $type_id_array = $this->get_topic_types($user, $webpage);
+        $annotation_type_factory = new Annotation_type_factory();
+        // 因為Annotation_type沒有繼承 $key =自General Object，所以不能直接用，改用Annotation_type_factory()
+        foreach ($type_id_array as $value) {       
+            $value = intval($value, 10);
+            $type = $annotation_type_factory->filter_object($value);  
+            $type_name = $type->get_name();  
+            $type_name = substr($type_name, 16); 
+            //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            $type_count_collection[$type_name] = $this->get_topic_count($user, $webpage, $type);          
+           //test_msg('value', $value);
+           //test_msg('name', $type_name);
+            }
+        //$type_test = $type_count_collection['importance']; // annotation.type.importance
         
-        // 以下是假資料，請想辦法取代
-        $type_count_collection = array(
+        /*$type_count_collection = array(
             // 標註類型名稱 => 次數
-            'importance' => 1,
-        );
-        
+            'importance' => $this->get_topic_count($user, $webpage, $annotation_type),
+        );*/    
         return $type_count_collection;
     }
     
@@ -577,6 +623,11 @@ class User_statistic extends KALS_actor {
         
         return $type_count_collection;
     }
+    
+
+    
+    
+    
 }
 
 
