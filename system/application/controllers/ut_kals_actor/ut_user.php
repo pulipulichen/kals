@@ -289,9 +289,9 @@ class Ut_user extends Controller {
                 '檢查user1的name');
         //----------------------------------------------
         //檢查get_topic_types_count
-        $this->unit->run($this->user_statistic->get_topic_types_count($user, $webpage),
-                5,
-                '檢查importance get_topic_types_count');
+        $this->unit->run($this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+                2,
+                '檢查自己使用importance回應別人的標註數量');
         
         
         // ----------------------------------------------

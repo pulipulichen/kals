@@ -94,7 +94,7 @@ class Annotation_type_factory extends KALS_object {
             else {
                 return $this->get_custom_type($type_id);
             }
-            test_msg($name);
+            //test_msg($name);
         }
         else if (is_string($type_id))   //如果$type_id是字串
         {

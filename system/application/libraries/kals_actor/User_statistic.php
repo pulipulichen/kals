@@ -585,47 +585,123 @@ class User_statistic extends KALS_actor {
         return $type_count_collection;
     }
     
+     /**
+     * 取得所有別人回應自己的標註中有用過的標註類型的陣列
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Array $annotation_type
+     */
+    public function get_respond_to_my_types(User $user, Webpage $webpage) {
+        $type_array = array();
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('respond.annotation_type_id');
+        $this->db->from('annotation respond');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = respond.annotation_id');
+        $this->db->join('annotation topic', 'respond.topic_id = topic.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('topic.user_id', $user_id);
+        $this->db->where('respond.topic_id IS NOT NULL');
+        $this->db->where('respond.user_id <>', $user_id);
+        $this->db->where('topic.deleted', 'false');
+        $this->db->where('respond.deleted', 'false');
+        $this->db->group_by('respond.annotation_type_id');
+        $this->db->order_by('respond.annotation_type_id', 'asc');     
+               
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $type_array[] = $row->annotation_type_id;
+        }
+        return $type_array;
+    } 
+    
     /**
-     * 取得回應給自己的標註所有類型個別統計次數的陣列
+     * 取得別人回應自己的標註所有類型個別統計次數的陣列
      * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
-     * @return int
+     * @return Array $type_count_collection
      */
     public function get_respond_to_my_types_count(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+     
         $type_count_collection = array();
+        //取得別人回應自己所有有用到的type_id->array
+        $type_id_array = $this->get_respond_to_my_types($user, $webpage);
         
-        // 以下是假資料，請想辦法取代
-        $type_count_collection = array(
-            // 標註類型名稱 => 次數
-            'importance' => 1,
-        );
-        
+        $annotation_type_factory = new Annotation_type_factory();
+        foreach ($type_id_array as $value) {       
+            $value = intval($value, 10);
+            $type = $annotation_type_factory->filter_object($value);  
+            $type_name = $type->get_name();  
+            $type_name = substr($type_name, 16); 
+            //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            $type_count_collection[$type_name] = $this->get_responded_count($user, $webpage, $type);          
+            }
+        //$type_test = $type_count_collection['importance']; // annotation.type.importance
+
         return $type_count_collection;
     }
     
+     /**
+     * 取得回應給別人的標註所有類型陣列(自己回應給別人的標註有使用過的標註類型陣列)
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Array $annotation_type
+     */
+    public function get_respond_to_other_types(User $user, Webpage $webpage) {
+        $type_array = array();
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('annotation.annotation_type_id');
+        $this->db->from('annotation');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('annotation.user_id', $user_id);
+        $this->db->where('annotation.topic_id IS NOT NULL');
+        $this->db->where('annotation.deleted', 'false');
+        $this->db->group_by('annotation.annotation_type_id');
+        $this->db->order_by('annotation.annotation_type_id', 'asc');     
+               
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $type_array[] = $row->annotation_type_id;
+        }
+        return $type_array;
+    }    
     
     /**
-     * 取得回應給別人的標註所有類型個別統計次數的陣列
+     * 取得回應給別人的標註所有類型個別統計次數的陣列(自己回應給別人的標註)
      * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
      * @return int
      */
     public function get_respond_to_other_types_count(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+     
         $type_count_collection = array();
+        //自己回應給別人所有有使用過的type_id->array
+        $type_id_array = $this->get_respond_to_other_types($user, $webpage);
         
-        // 以下是假資料，請想辦法取代
-        $type_count_collection = array(
-            // 標註類型名稱 => 次數
-            'importance' => 1,
-        );
-        
-        return $type_count_collection;
+        $annotation_type_factory = new Annotation_type_factory();
+        foreach ($type_id_array as $value) {       
+            $value = intval($value, 10);
+            $type = $annotation_type_factory->filter_object($value);  
+            $type_name = $type->get_name();  
+            $type_name = substr($type_name, 16); 
+            //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            $type_count_collection[$type_name] = $this->get_respond_to_count($user, $webpage, $type);   
+            }
+        //$type_test = $type_count_collection['importance']; // annotation.type.importance
+        return $type_count_collection;       
     }
-    
-
-    
     
     
 }
