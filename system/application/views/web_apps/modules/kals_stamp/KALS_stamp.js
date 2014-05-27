@@ -411,7 +411,7 @@ KALS_stamp.prototype._init_listener = function() {
     
     // @TODO 20140516 Pulipuli Chen
     // 這邊只有監聽部分屬性，請把它擴增其他監聽的事件
-    
+    // 監聽其他需要的變數是否有變動，若是有變動則檢查獎章條件
     var _this = this;
     KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
         _this.check_qualification(_user);

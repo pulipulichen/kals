@@ -118,14 +118,10 @@ class Authentication extends Web_apps_controller {
             'locale' => $user->get_locale(),
             'sex' => $user->get_sex(),
             
-            // @TODO 請wyfan把這些假資料轉換成$this->user_statistic可以取得的資料
+            // 從$this->user_statistic可以取得的資料
             'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
-            //'respond_to_my_annotation_count' => array (
-            //    'importance' => 1
-            //),
-            //'respond_to_other_annotation_count' => array (
-            //    'importance' => 1
-            //),
+            'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
+            'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
             'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
             'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
             'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
