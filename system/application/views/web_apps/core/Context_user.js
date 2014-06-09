@@ -688,6 +688,7 @@ Context_user.prototype.set_responded_annotation_count = function (_count) {
  * @returns {Int}
  */
 Context_user.prototype.get_responded_annotation_count = function () {
+    // 取用user_statistic的方法？
     return this.get_attr("responded_annotation_count", 0);
 };
 

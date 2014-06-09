@@ -551,7 +551,7 @@ class User_statistic extends KALS_actor {
     
     /**
      * 取得主題標註所有類型個別統計次數的陣列
-     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
+     * @todo 20140516 Pulipuli Chen 
      * @param User $user
      * @param Webpage $webpage
      * @return Array $type_count_collection

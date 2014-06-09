@@ -447,7 +447,7 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": true,
+            "enable": false,
             "nav_config": {
                 display: false,
                 nav_type: "login",
@@ -511,27 +511,29 @@ DEFAULT_KALS_CONFIG = {
              * 獎章資格設定
              */
             "stamps": [
-                {
-                    /**
-                     * 獎章稱號
-                     * @types {String}
-                     */
-                    "title": "獎章1",
+                
+                /**
+                 * 獎章稱號
+                 * @types {String}
+                 */
+                 {
+                    "name": "騎士",
+                    "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "如何獲得這個獎章",
+                    "qualification_message": "想要達到騎士的話請先試著自己標註3個以上的標註吧",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "通知您獲得了獎章",
+                    "quailfy_message": "恭喜你晉升為騎士！",
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經獲得了這個獎章",
+                    "qualified_message": "您已經晉升為騎士了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
@@ -544,16 +546,70 @@ DEFAULT_KALS_CONFIG = {
                         //      condition: ">"
                         //    }
                         //}
+                        topic_annotation_count: {
+                            "_total": {
+                                count:3,
+                                coudition: ">",
+                            }
+                        }
+                        
                     },
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
                     "policy": {
+                        // 可以看其他人標註topic
+                        other_topic_readable: true                   
+                    }
+                },
+                {
+                    "name": "子爵",
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                    "qualification_message": "想要達到子爵的話請標註重要、概念與疑問三種類型的標註各三篇吧",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                    "quailfy_message": "恭喜你晉升為子爵！",
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                    "qualified_message": "您已經晉升為子爵了！",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                    "qualifier": {
+                        topic_annotation_count: {
+                            //count:3,
+                            "importance": {
+                              count:1,
+                            },
+                             "concept": {
+                              count:1,
+                            },
+                            "example": {
+                              count:0,
+                            },
+                        }                   
+                    },
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                    "policy": {
+                        // 可以回應他人標註
+                        respond_to: true
+                        
                         
                     }
                 },
-            ]
+            ],
         }
     }
 };

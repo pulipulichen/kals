@@ -298,16 +298,25 @@ KALS_stamp.prototype._$onopen = function () {
 };
 
 /**
- * 設定目前閱讀的進度
+ * 設定目前獎章的進度
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.set_stamp_statistic = function() {
     
     // @TODO 20140516 Pulipuli Chen
     // 這邊設定的是假資料，請把它改成真的資料
+    var _type_name = 'importance';
+    var _annotation_type = new Annotation_type_param(_type_name);
     
     var _statistic_config = {
-        "statistic_topic_annotation_count": KALS_context.user.get_topic_annotation_count()
+        
+        //topic數量       
+        "statistic_topic_annotation_count": KALS_context.user.get_topic_annotation_count(),
+        "statistic_topic_annotation_importance_count": KALS_context.user.get_topic_annotation_count(_annotation_type),
+        //被回應的數量
+        "statistic_responded_annotation_count":KALS_context.user.get_respond_to_my_annotation_count(),
+        //回應別人的數量
+        "statistic_respond_to_annotation_count":KALS_context.user.get_respond_to_other_annotation_count()
     };
     
     var _container_selector = ".stamp-statistic";
@@ -336,16 +345,17 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
     
     // @TODO 20140516 Pulipuli Chen
     // 這邊設定的是假資料，請把它改成真的資料
-    
+     
     var _qualified_config = {
-        "獎章1": "您已經獲得了獎章1，歡迎來到KALS標註系統，希望您在這裡能夠愉快地閱讀。",
-        "獎章2": "您已經獲得了獎章2，可以開啟某某功能。您做得很棒喔！"
+         "騎士": "再試著升級看看吧"
+
     };
     
     var _qualified_container = this.find(".stamp-qualified")
             .empty();
     
     for (var _stamp_title in _qualified_config) {
+        
         var _title = $("<dt></dt>").html(_stamp_title)
                 .appendTo(_qualified_container);
         var _qualified_message = _qualified_config[_stamp_title];
@@ -390,6 +400,8 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
  * ====================
  */
 
+KALS_stamp.prototype._stamps_config;
+
 /**
  * 取得設定
  * 
@@ -397,10 +409,9 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype._init_config = function() {
-    
     // @TODO 20140516 Pulipuli Chen
-    
-    return this;
+    this._stamps_config = KALS_CONFIG.modules.KALS_stamp.stamps;
+    return this._stamps_config;
 };
 
 /**
@@ -412,10 +423,45 @@ KALS_stamp.prototype._init_listener = function() {
     // @TODO 20140516 Pulipuli Chen
     // 這邊只有監聽部分屬性，請把它擴增其他監聽的事件
     // 監聽其他需要的變數是否有變動，若是有變動則檢查獎章條件
+    
     var _this = this;
     KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
-        _this.check_qualification(_user);
+        _this._delay_check_qualification(_user);
     });
+    KALS_context.user.add_attr_listener("responded_annotation_count", function (_user) {
+        _this._delay_check_qualification(_user);
+    });
+    
+    return this;
+};
+
+KALS_stamp.prototype._delay_timer = null;
+KALS_stamp.prototype._delay_interval = 1000;
+
+/**
+ * 延遲呼叫check_qualification
+ * @param {Context_user} _user
+ */
+KALS_stamp.prototype._delay_check_qualification = function (_user) {
+    
+    var _this = this;
+    
+    // 如果現在有計時器的話
+    if (this._delay_timer !== null) {
+        // 清空之前的計時器
+        clearTimeout(this._delay_timer);
+    }
+    
+    // 設定目前要做的計時器
+    this._delay_timer = setTimeout(function () {
+        
+        _this.check_qualification(_user);
+        
+        // 執行完畢，計時器清空
+        _this._delay_timer = null;
+    
+        // 要延遲的時間
+    }, this._delay_interval);
     
     return this;
 };
@@ -428,18 +474,119 @@ KALS_stamp.prototype._init_listener = function() {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.check_qualification = function(_user) {
+   
     
-    // @TODO 20140516 Pulipuli Chen
-    // 這邊只有檢查部分資格
-    var _total_annotation_count = _user.get_topic_annotation_count();
-    KALS_util.notify("您已經撰寫了" + _total_annotation_count + "並獲得了獎章1！");
+    //-----要check的資料------
+    //var _topic_impotrance_count = _user.get_topic_annotation_count();
+    //-----------------------
+    // var _stamps_data = this._stamps_config;會怪怪的
+    var _stamps_data = this._init_config();
+    // 全部的資格
+    for ( var _i=0; _i< _stamps_data.length; _i++ ){
+        // 用來判斷是否有通過資格
+        var _stamp_qualified = true;
+        var _qualifier = _stamps_data[_i].qualifier;
+        // 檢查qualifier中的所有條件
+        for (var _key in _qualifier) {
+            var _config = _qualifier[_key];
+            //KALS_util.notify("_KEY =" + _key); KEY有哪些
+            //------第一項---------------------------------
+            if (_key === "topic_annotation_count") {
+                
+                for (var _type in _config) {
+                    var _type_config = _config[_type];
+                    
+                    if (_type === "_total") {
+                        var _total_annotation_count = _user.get_topic_annotation_count();
+                        if ( _total_annotation_count < _type_config.count ){
+                            // 不合格
+                            _stamp_qualified = false;    
+                            break;
+                        }
+                        else{ // 合格
+                            _stamp_qualified = true;
+                            
+                            //KALS_util.notify("第一項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
+                            //this.qualify();
+                        }
+                    }
+                    else {
+                        // 取出指定type的數量
+                        var _annotation_type = new Annotation_type_param(_type);
+                        var _total_annotation_count = _user.get_topic_annotation_count(_annotation_type);
+                        
+                        $.test_msg(_i + "現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _total_annotation_count < _type_config.count )]);
+                        if ( _total_annotation_count < _type_config.count ){
+                            // 不合格
+                            _stamp_qualified = false;    
+                            break;
+                        }
+                        else{ // 合格
+                            _stamp_qualified = true;
+                            //KALS_util.notify("第一項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
+                            //this.qualify();
+                        }
+                    }
+                }   //for (var _type in _config) {
+                
+                // 判斷的動作
+                /*
+                if ( _total_annotation_count < _config.count ){
+                    // 不合格
+                    _stamp_qualified = false;    
+                    break;
+                }
+                else{ // 合格
+                    this._stamps_config[_i].is_qualified = true;
+                    //KALS_util.notify("第一項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
+                    //this.qualify();
+                }
+                */
+               
+               
+            }   //if (_key === "topic_annotation_count") {
+            //-------第二項----------------------------------    
+            /*
+            var _topic_type = _stamps_data[_i].qualifier.topic_annotation_count;
+            for ( var _key in _topic_type){
+                var _config = _topic_type[_key];
+                if (_key === "importance"){
+                    var _annotation_type = new Annotation_type_param(_key);
+                    var _topic_impotrance_count = _user.get_topic_annotation_count(_annotation_type);
+                    // 不合格
+                    if ( _topic_impotrance_count < _config.count ){
+                       _stamp_qualified = false;    
+                       break;
+                    }
+                    else{ // 合格
+                       this._stamps_config[_i].is_qualified = true;
+                       //KALS_util.notify("第二項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
+                       //this.qualify(); 
+                    }
+                }
+            }
+            */
+            
+            this._stamps_config[_i].is_qualified = _stamp_qualified;
+            if (_stamp_qualified === false) {
+                break;
+            }
+        }   //for (var _key in _qualifier) {
+        
+        // 獲得獎章的設定
+        this._stamps_config[_i].is_qualified = _stamp_qualified;
+        //KALS_util.notify("現在到底有什麼~"+ this._stamps_config[_i].name + this._stamps_config[_i].is_qualified);
+        //---------------     
+    }   //for (var _key in _qualifier) {
+    
+    this.qualify();
     this.open();
     
     return this;
 };
 
 /**
- * 獲得資格後的動作
+ * 獲得資格後的動作->開放權限？
  * 
  * @returns {KALS_stamp.prototype}
  */
@@ -447,7 +594,13 @@ KALS_stamp.prototype.qualify = function() {
     
     // @TODO 20140516 Pulipuli Chen
     // 這邊只有檢查部分資格
-    
+    for( var _i in this._stamps_config){
+        if(this._stamps_config[_i].is_qualified === true){
+           
+            KALS_util.notify("現在到底有什麼~"+ this._stamps_config[_i].name + "+" + this._stamps_config[_i].is_qualified + "+i" + _i);
+          }
+    // KALS_context.policy.set_readable(true);
+    }
     return this;
 };
 
