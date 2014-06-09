@@ -17,8 +17,8 @@ function Webpage_cache() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
     
-    if (typeof(KALS_context.selectable_text_cache) === "boolean") {
-        this.enable_cache = KALS_context.selectable_text_cache;
+    if (typeof(KALS_CONFIG.selectable_text_cache) === "boolean") {
+        this.enable_cache = KALS_CONFIG.selectable_text_cache;
     }
 }
 
