@@ -30,8 +30,9 @@ function Common_navigation() {
         
         //var _search = new Window_search();
         
-        if (KALS_CONFIG.modules.Window_search.enable === true) {
+        if (KALS_CONFIG.enable_search_toolbar === true) {
             var _search_recent = new Window_search();
+            //var _search_recent = KALS_context.search;
             _search_recent.setup_recent();
             this._$nav_items.push(_search_recent);
         }

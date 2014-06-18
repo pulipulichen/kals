@@ -251,6 +251,18 @@ DEFAULT_KALS_CONFIG = {
      * 但是關閉之後，所有人又能看到別人的標註
      */
     isolation_mode: false,
+    
+    /**
+     * 是否啟用選取文字快取
+     * @type Boolean
+     */
+    //selectable_text_cache: true,
+    
+    /**
+     * 是否啟用搜尋工具列
+     * @type Boolean
+     */
+    enable_search_toolbar: false,
 	
     //----------------------------
     
@@ -343,11 +355,6 @@ DEFAULT_KALS_CONFIG = {
          */
         regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
     },   //view: {
-    /**
-     * 是否啟用選取文字快取
-     * @type Boolean
-     */
-    //selectable_text_cache: true,
     
     /**
      * 偵錯用設定
@@ -475,16 +482,10 @@ DEFAULT_KALS_CONFIG = {
             //"increase_interval_span": 10
         },
         /**
-         * 搜尋功能
-         */
-        Window_search: {
-            "enable": false
-        },
-        /**
          * 章節地圖
          */
         Window_map: {
-            "enable": false
+            "enable": true
         },
         /**
          * 標註顯示
@@ -569,16 +570,33 @@ DEFAULT_KALS_CONFIG = {
     }
 };
 
-/**
- * 偵測是否有參數，否則直接覆蓋
- */
-if (typeof(KALS_CONFIG) !== 'undefined') {
-    for (var _i in KALS_CONFIG) {
-        DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
+(function () {
+    /**
+     * 偵測是否有參數，否則直接覆蓋
+     */
+    if (typeof(KALS_CONFIG) !== 'undefined') {
+        for (var _i in KALS_CONFIG) {
+            /**
+             * @version 20140618 Pulipuli Chen
+             * 對應到Modules的 deeper copy
+             */
+            if (_i === "modules") {
+                for (var _j in KALS_CONFIG[_i]) {
+                    //console.log(_j);
+                    DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];
+                }
+            }
+            else {
+                DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
+            }
+        }
     }
-}
 
-KALS_CONFIG = DEFAULT_KALS_CONFIG;
+    KALS_CONFIG = DEFAULT_KALS_CONFIG;
+    
+})();
+
+
 
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */

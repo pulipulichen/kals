@@ -132,9 +132,9 @@ this.get_base_url = function () {
         var _needle = '/kals/web_apps/generic/loader';
         for (var _i in _script_tags) {
             var _s = _script_tags[_i];
-            if (typeof(_s.src) == 'undefined') {
-				continue;
-			}
+            if (typeof(_s.src) === 'undefined') {
+                continue;
+            }
             
             var _url = _s.src;
             if (_url.length >= _needle.length
@@ -143,8 +143,8 @@ this.get_base_url = function () {
                 var _pos = _url.lastIndexOf(_needle);
                 
                 if (_pos > -1) {
-					_base_url = _url.substring(0, _pos + _needle.length);
-				}
+                    _base_url = _url.substring(0, _pos + _needle.length);
+                }
                 
             }
             
@@ -154,12 +154,12 @@ this.get_base_url = function () {
         }
         
         if (_base_url !== null) {
-			//$.test_msg('KALS_loader.setup_base_url()', _base_url);
-			this.base_url = _base_url;
-		}
-		else {
-			window.alert('Detect base url error!');
-		}
+            //$.test_msg('KALS_loader.setup_base_url()', _base_url);
+            this.base_url = _base_url;
+        }
+        else {
+            window.alert('Detect base url error!');
+        }
     }
     return this.base_url;
 };
@@ -189,15 +189,15 @@ this.load_jquery = function (_callback) {
             _script.type= 'text/javascript';
             _script.src= _jquery_url;
             _script.onreadystatechange = function () {
-                if (typeof(this.readyState) != 'undefined'
-                    && this.readyState == 'complete') {                     
-                    if (typeof(_callback) == 'function') {
+                if (typeof(this.readyState) !== 'undefined'
+                    && this.readyState === 'complete') {                     
+                    if (typeof(_callback) === 'function') {
 						_callback();
 					}
                 }
             };
             _script.onload = function () {              
-                if (typeof(_callback) == 'function') {
+                if (typeof(_callback) === 'function') {
                     setTimeout(function () {
                         _callback();    
                     }, 0);

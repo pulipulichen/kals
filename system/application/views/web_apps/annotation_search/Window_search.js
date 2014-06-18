@@ -17,6 +17,8 @@ function Window_search() {
     this._setup_submit(new Window_search_submit()); // send keyword and search_range
 
     this.child("list", new List_collection_search());
+    
+    var _this = this;
 }
 
 Window_search.prototype = new Window_content();
@@ -47,9 +49,9 @@ Window_search.prototype.list = null;
  * 搜尋的預設值
  */
 Window_search.prototype._search_default_option = {
-	range: "note",
-	type: null,
-	order_by: null
+    range: "note",
+    type: null,
+    order_by: null
 };
 
 /**
@@ -70,6 +72,36 @@ Window_search.prototype._search_param = {
     order_by: ["update","create"]	
 };
 
+Window_search.prototype.nav_config = {
+    /**
+     * 顯示資料
+     * @type Boolean
+     */
+    display: true,
+    
+    /**
+     * 決定顯示導覽列的位置
+     * 
+     * 類型包括：
+     * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
+     * - login: 已經登入的使用者就會顯示
+     * - profile: 以手動登入的使用者才會顯示
+     * - embed: 以內嵌登入的使用者才會顯示
+     * - anonymous: 未登入的使用者才會顯示
+     * @type String
+     */
+    nav_type: "common",
+    
+    /**
+     * 排序順序
+     * 
+     * 數字越大，越往左邊靠
+     * 數字最小的是1
+     * @type Number
+     */
+    order: 1
+};
+
 /**
  * Create UI
  * @memberOf {Window_search}
@@ -81,9 +113,9 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
     var _factory = KALS_window.ui;
       
-	// 新增一層subplan來畫SEARCH表單	
-	var _subpanel = _factory.subpanel('range').appendTo(_ui);
-	var _this = this;
+    // 新增一層subplan來畫SEARCH表單	
+    var _subpanel = _factory.subpanel('range').appendTo(_ui);
+    var _this = this;
     
    	// search_range為radio選單
    
@@ -320,10 +352,10 @@ Window_search.prototype.create_range_ui = function (_type) {
 	var _search_range_default_value = this._search_default_option.range;
 	
 	var _search_range;
-	if (_type == "radio") {
+	if (_type === "radio") {
 		_search_range = _factory.radio_list('search_range', _search_range_options , _search_range_default_value);	
 	}
-	else if (_type == "dropdown") {
+	else if (_type === "dropdown") {
 		_search_range = _factory.dropdown('search_range', _search_range_options , _search_range_default_value);
 	}
 	
@@ -336,12 +368,12 @@ Window_search.prototype.create_range_ui = function (_type) {
 		
 	};
 	
-	if (_type == "radio") {
+	if (_type === "radio") {
 		_search_range.find("input").click(function() {
 			_this.change_range(this.value);
 		});
 	}
-	else if (_type == "dropdown") {
+	else if (_type === "dropdown") {
 		_search_range.change(function () {
 			_this.change_range(this.value);
 		});	
@@ -431,10 +463,10 @@ Window_search.prototype.create_annotation_type_ui = function (_type) {
 		_lang = _type_param.get_type_name_lang();
 		
 		var _option;
-		if (_type == "radio") {
+		if (_type === "radio") {
 			_option = _factory.radio_option(_lang, _value);
 		}
-		else if (_type == "dropdown") {
+		else if (_type === "dropdown") {
 			_option = _factory.dropdown_option(_lang, _value);
 		}
 		
@@ -444,14 +476,14 @@ Window_search.prototype.create_annotation_type_ui = function (_type) {
 	var _type_ui;
 	
 	var _this = this;
-	if (_type == "radio") {
+	if (_type === "radio") {
 		_type_ui = _factory.radio_list('type', _type_options, _default_type);
 		
 		_type_ui.find("input:radio").click(function () {
 			_this.change_annotation_type(this.value);
 		});	
 	}
-	else if (_type == "dropdown") {
+	else if (_type === "dropdown") {
 		_type_ui = _factory.dropdown('type', _type_options, _default_type);
 		
 		_type_ui.change(function () {
@@ -665,25 +697,25 @@ Window_search.prototype.setup_recent = function(){
 	var _this = this;
 	this.onopen = function () {
 		
-		var _save_input_value = {
-			search_range: _this.get_input_value("search_range"),
-            keyword: _this.get_input_value("keyword"),
-            order_by: _this.get_input_value("order_by")
-		};
-		
-		//$.test_msg("setup_recent", _save_input_value);
-		
-		//$.test_msg("setup_recent", "keyword *");
-		_this.set_input_value({
-			search_range: "note",
-			keyword: "*",
-			order_by: "update"
-		});
-		
-		_this.submit.submit(function () {
-			_this.set_input_value(_save_input_value);
-		});
-	};
+            var _save_input_value = {
+                search_range: _this.get_input_value("search_range"),
+                keyword: _this.get_input_value("keyword"),
+                order_by: _this.get_input_value("order_by")
+            };
+
+            //$.test_msg("setup_recent", _save_input_value);
+
+            //$.test_msg("setup_recent", "keyword *");
+            _this.set_input_value({
+                    search_range: "note",
+                    keyword: "*",
+                    order_by: "update"
+            });
+
+            _this.submit.submit(function () {
+                    _this.set_input_value(_save_input_value);
+            });
+        };
 };
 
 /**
@@ -691,11 +723,12 @@ Window_search.prototype.setup_recent = function(){
  * @param {JSON} _data
  */
 Window_search.prototype.set_input_value = function(_data){
-	if (typeof _data.search_range == 'string') {
-		this.toggle_input(_data.search_range);
-	}
-	
-	return Window_content.prototype.set_input_value.call(this, _data);
+    
+    if (typeof _data.search_range === 'string') {
+        this.toggle_input(_data.search_range);
+    }
+
+    return Window_content.prototype.set_input_value.call(this, _data);
 };
 
 /**
@@ -716,7 +749,7 @@ Window_search.prototype.default_focus_input = '.dialog-content:first input:radio
  */
 Window_search.prototype.search = function (_search_option, _open_window) {
     if (typeof(_search_option) === "object") {
-            this.set_input_value(_search_option);
+        this.set_input_value(_search_option);
     }
 
     this.submit.submit();

@@ -126,12 +126,13 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     var _loading_ui = this.loading.get_ui();
     
-    if (KALS_CONFIG.modules.Window_search.enable === true) {
-        var _search_ui = this.search.get_ui();
-        this.toolbar.setup_center([
-            _search_ui
-        ]);
+    var _search_ui = this.search.get_ui();
+    if (KALS_CONFIG.enable_search_toolbar === false) {
+        _search_ui.hide();
     }
+    this.toolbar.setup_center([
+        _search_ui
+    ]);
     
     var _anonymous_ui = this.anonymous_nav.get_ui();
         _anonymous_ui.addClass('anonymous-component');
