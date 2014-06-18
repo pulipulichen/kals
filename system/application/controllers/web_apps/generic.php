@@ -146,6 +146,7 @@ class generic extends Web_apps_controller {
             'kals_window/Window_change_link',
 
             'navigation/Navigation_item',
+            'navigation/Navigation_item_link',
             'navigation/Navigation_list',
 
             'navigation/Anonymous_navigation',

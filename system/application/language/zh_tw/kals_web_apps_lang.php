@@ -101,6 +101,7 @@ $lang['web_apps.toolbar.search.advanced_search'] = '進階搜尋';
 $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
 $lang['web_apps.toolbar.search.search_result'] = '搜尋結果: ';
 
+$lang['web_apps.toolbar.navigation_list.link'] = '連結';
 $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
 $lang['web_apps.toolbar.navigation_list.help'] = '說明';
 $lang['web_apps.toolbar.navigation_list.feedback'] = '回報';

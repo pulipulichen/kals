@@ -24,6 +24,7 @@ function Window_search() {
 Window_search.prototype = new Window_content();
 
 Window_search.prototype.name = 'search';
+Window_search.prototype._$name = 'search';
 
 Window_search.prototype.heading = new KALS_language_param (
     'Search',
@@ -31,6 +32,11 @@ Window_search.prototype.heading = new KALS_language_param (
 );
 
 Window_search.prototype.nav_heading = new KALS_language_param (
+    'Search',
+    'window.search.nav_heading'
+);
+
+Window_search.prototype._$nav_heading = new KALS_language_param (
     'Search',
     'window.search.nav_heading'
 );
@@ -690,32 +696,39 @@ Window_search.prototype.open_recent_annotation = function (_callback) {
  */
 Window_search.prototype.setup_recent = function(){
 	
-	this.nav_heading = new KALS_language_param (
-	    'Recent',
-	    'window.search_recent.nav_heading'
-	);
-	var _this = this;
-	this.onopen = function () {
-		
-            var _save_input_value = {
-                search_range: _this.get_input_value("search_range"),
-                keyword: _this.get_input_value("keyword"),
-                order_by: _this.get_input_value("order_by")
-            };
+    this.nav_heading = new KALS_language_param (
+        'Recent',
+        'window.search_recent.nav_heading'
+    );
+    
+    //this._$nav_heading = this.nav_heading;
+    
+    this.name = "search_recent";
+    //this._$name = this.name;
 
-            //$.test_msg("setup_recent", _save_input_value);
+    //$.test_msg("setup_recent", this.name);
+    var _this = this;
+    this.onopen = function () {
 
-            //$.test_msg("setup_recent", "keyword *");
-            _this.set_input_value({
-                    search_range: "note",
-                    keyword: "*",
-                    order_by: "update"
-            });
-
-            _this.submit.submit(function () {
-                    _this.set_input_value(_save_input_value);
-            });
+        var _save_input_value = {
+            search_range: _this.get_input_value("search_range"),
+            keyword: _this.get_input_value("keyword"),
+            order_by: _this.get_input_value("order_by")
         };
+
+        //$.test_msg("setup_recent", _save_input_value);
+
+        //$.test_msg("setup_recent", "keyword *");
+        _this.set_input_value({
+                search_range: "note",
+                keyword: "*",
+                order_by: "update"
+        });
+
+        _this.submit.submit(function () {
+                _this.set_input_value(_save_input_value);
+        });
+    };
 };
 
 /**

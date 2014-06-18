@@ -1,6 +1,8 @@
 /**
  * Common_navigation
- *
+ * 
+ * @deprecated 20140618 此類型廢棄！
+ * 
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>
@@ -14,11 +16,12 @@ function Common_navigation() {
     
     Navigation_list.call(this);
     
+    this._$nav_items = [];
+    
     // @20130603 Pudding Chen
     // Isolation Mode
     if (KALS_context.policy.allow_show_navigation()) {
 
-        this._$nav_items = [];
         
         //if (KALS_CONFIG.modules.Window_filter.enable === true) {
         //    this._$nav_items.push(new Window_filter());
@@ -66,8 +69,11 @@ function Common_navigation() {
             //, new Annotation_navigation_map()
         ];
         */
-        this._init_module_nav_items();
     }
+    
+    this._init_module_nav_items();
+    
+    //$.test_msg("Common navigation $nav_items_count", [this._$nav_type, this._$nav_items.length]);
 }
 
 Common_navigation.prototype = new Navigation_list();

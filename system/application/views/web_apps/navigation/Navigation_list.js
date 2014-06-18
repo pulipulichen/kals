@@ -101,6 +101,7 @@ Navigation_list.prototype._create_nav = function() {
     
     var _tr = _ui.find('tr:first');
     //var _this = this;
+    //$.test_msg("$nav_items_count", [this._$nav_type, this._$nav_items.length]);
     for (var _i in this._$nav_items) {
         var _td = $('<td></td>')
             .addClass('item')
@@ -110,7 +111,7 @@ Navigation_list.prototype._create_nav = function() {
         
         var _a;
         
-        //$.test_msg("nav item " + _i + " content ", _content === null);
+        //$.test_msg("nav item " + _i + " content ", [this._$nav_type, _i, _content === null, _content.name, _content._$name]);
         if ($.is_null(_content) === false
                 && _content.nav_item !== undefined 
                 && $.is_boolean(_content.nav_item) 
@@ -355,7 +356,7 @@ Navigation_list.prototype._init_module_nav_items = function () {
     for (var _i in _list) {
         //$.test_msg("_init_module_nav_items", _i);
         var _item = _list[_i];
-        //$.test_msg("$nav_items.length", [_nav_type, this._$nav_items.length]);
+        //$.test_msg("init $nav_items.length", [_nav_type, this._$nav_items.length, _item.name]);
         this._$nav_items.push(_item);
     }
     

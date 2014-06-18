@@ -494,10 +494,16 @@ DEFAULT_KALS_CONFIG = {
             "enable": true
         },
         /**
+         * 標註顯示
+         */
+        //Window_search: {
+        //    "enable": true
+        //},
+        /**
          * 導讀功能
          */
         Reading_guide: {
-            "enable": false
+            "enable": true
         },
         /**
          * 回報功能
@@ -566,6 +572,12 @@ DEFAULT_KALS_CONFIG = {
          */
         Open_mobile_apps: {
             enable: true
+        },
+        /**
+         * 最新標註
+         */
+        Window_search_recent: {
+            "enable": true
         }
     }
 };
