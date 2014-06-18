@@ -37,6 +37,8 @@ function Common_navigation() {
             this._$nav_items.push(_search_recent);
         }
         
+        //$.test_msg("nav_item.length", this._$nav_items.length);
+        
         /*
         if (KALS_CONFIG.modules.Reading_guide.enable === true) {
             var _guide_nav = new Navigation_item("導讀");

@@ -262,7 +262,7 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用搜尋工具列
      * @type Boolean
      */
-    enable_search_toolbar: false,
+    enable_search_toolbar: true,
 	
     //----------------------------
     

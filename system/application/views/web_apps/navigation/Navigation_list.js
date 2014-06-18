@@ -355,6 +355,7 @@ Navigation_list.prototype._init_module_nav_items = function () {
     for (var _i in _list) {
         //$.test_msg("_init_module_nav_items", _i);
         var _item = _list[_i];
+        //$.test_msg("$nav_items.length", [_nav_type, this._$nav_items.length]);
         this._$nav_items.push(_item);
     }
     

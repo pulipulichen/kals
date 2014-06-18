@@ -111,8 +111,9 @@ class Annotation_type_factory extends KALS_object {
             return NULL;
         }
 
-        if (isset($this->CI->annotation_type_object))
+        if (isset($this->CI->annotation_type_object)) {
             unset($this->CI->annotation_type_object);
+        }
         $this->CI->load->library('type/Annotation_type_'.$name, NULL, 'annotation_type_object');
 
         /*
