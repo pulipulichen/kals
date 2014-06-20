@@ -111,11 +111,16 @@ class Annotation_type_factory extends KALS_object {
             return NULL;
         }
 
+        //echo $name . "|";
         if (isset($this->CI->annotation_type_object)) {
             unset($this->CI->annotation_type_object);
         }
+        
         $this->CI->load->library('type/Annotation_type_'.$name, NULL, 'annotation_type_object');
-
+        
+        $type_name = "Annotation_type_" . $name;
+        $this->CI->annotation_type_object = new $type_name();
+        
         /*
         if (isset($this->CI->annotation_type_object) === FALSE)
         {
@@ -143,6 +148,8 @@ class Annotation_type_factory extends KALS_object {
             }
         }
          */
+        
+        //echo $this->CI->annotation_type_object->get_id(). ",";
         return $this->CI->annotation_type_object;
     }
 

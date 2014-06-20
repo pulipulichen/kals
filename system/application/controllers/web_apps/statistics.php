@@ -40,6 +40,35 @@ class statistics extends Web_apps_controller {
         $this->view('admin_apps/domain_select', array('all_domains', $all_domains) );
         $this->view('admin_apps/footer');
     }
+    
+    /**
+     * 統整所有要丟給Context_user的資料
+     * 
+     * @param User $user
+     * @param Webpage $webpage
+     * @return JSON
+     */
+    public function user_params( $callback = NULL ) {
+        $user = get_context_user();
+        $webpage = get_context_webpage();
+        
+        $this->load->library("kals_actor/User_statistic", "user_statistic");
+        $this->user_statistic = new User_statistic();
+        
+        $data =  array(
+            "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
+            //"responded_count" => 5,
+            "responded_user_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
+            "respond_to_user_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
+        );
+        
+        $output = array(
+            "user" => $data
+        );
+        
+        //打包成json丟回去 
+        return $this->_display_jsonp($output, $callback);       
+    }
 }
 
 /* End of file statistics.php */

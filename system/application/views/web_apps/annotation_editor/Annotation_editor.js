@@ -418,7 +418,10 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
         }
     }
     */
-    KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
+    
+    
+    //KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
+    KALS_context.user.load_user_params();
     
     return this;
 };

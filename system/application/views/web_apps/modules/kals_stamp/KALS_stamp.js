@@ -293,7 +293,7 @@ KALS_stamp.prototype._$onopen = function () {
     this.set_stamp_statistic();
     this.set_stamp_qualified();
     this.set_stamp_qualification();
-    
+    KALS_context.user.load_user_params();
     return this;
 };
 
@@ -305,6 +305,7 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
     
     // @TODO 20140516 Pulipuli Chen
     // 這邊設定的是假資料，請把它改成真的資料
+    //想一下該怎麼做出全部的TYPE
     var _type_name = 'importance';
     var _annotation_type = new Annotation_type_param(_type_name);
     
@@ -475,7 +476,6 @@ KALS_stamp.prototype._delay_check_qualification = function (_user) {
  */
 KALS_stamp.prototype.check_qualification = function(_user) {
    
-    
     //-----要check的資料------
     //var _topic_impotrance_count = _user.get_topic_annotation_count();
     //-----------------------
@@ -489,7 +489,7 @@ KALS_stamp.prototype.check_qualification = function(_user) {
         // 檢查qualifier中的所有條件
         for (var _key in _qualifier) {
             var _config = _qualifier[_key];
-            //KALS_util.notify("_KEY =" + _key); KEY有哪些
+            //ALS_util.notify("_KEY =" + _key); //KEY有哪些
             //------第一項---------------------------------
             if (_key === "topic_annotation_count") {
                 
@@ -527,46 +527,13 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                             //this.qualify();
                         }
                     }
-                }   //for (var _type in _config) {
-                
-                // 判斷的動作
-                /*
-                if ( _total_annotation_count < _config.count ){
-                    // 不合格
-                    _stamp_qualified = false;    
-                    break;
-                }
-                else{ // 合格
-                    this._stamps_config[_i].is_qualified = true;
-                    //KALS_util.notify("第一項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
-                    //this.qualify();
-                }
-                */
-               
+                }   //for (var _type in _config) {              
                
             }   //if (_key === "topic_annotation_count") {
             //-------第二項----------------------------------    
-            /*
-            var _topic_type = _stamps_data[_i].qualifier.topic_annotation_count;
-            for ( var _key in _topic_type){
-                var _config = _topic_type[_key];
-                if (_key === "importance"){
-                    var _annotation_type = new Annotation_type_param(_key);
-                    var _topic_impotrance_count = _user.get_topic_annotation_count(_annotation_type);
-                    // 不合格
-                    if ( _topic_impotrance_count < _config.count ){
-                       _stamp_qualified = false;    
-                       break;
-                    }
-                    else{ // 合格
-                       this._stamps_config[_i].is_qualified = true;
-                       //KALS_util.notify("第二項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
-                       //this.qualify(); 
-                    }
-                }
+            if ( _key === "topic_types_count"){
+                var _topic_types_count  ;
             }
-            */
-            
             this._stamps_config[_i].is_qualified = _stamp_qualified;
             if (_stamp_qualified === false) {
                 break;
@@ -597,7 +564,7 @@ KALS_stamp.prototype.qualify = function() {
     for( var _i in this._stamps_config){
         if(this._stamps_config[_i].is_qualified === true){
            
-            KALS_util.notify("現在到底有什麼~"+ this._stamps_config[_i].name + "+" + this._stamps_config[_i].is_qualified + "+i" + _i);
+            KALS_util.notify("這是qualify"+ this._stamps_config[_i].name + "+" + this._stamps_config[_i].is_qualified + "+i" + _i);
           }
     // KALS_context.policy.set_readable(true);
     }

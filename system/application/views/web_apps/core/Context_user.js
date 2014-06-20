@@ -775,10 +775,11 @@ Context_user.prototype.get_liked_count = function () {
 Context_user.prototype.update = function (_dispatcher, _data) {
     
     var _data_key = this._$data_key;
-    if (_data_key === null) {
+    if (_data_key === null || _data === undefined) {
         return this;
     }
     
+    //$.test_msg("user.update", [typeof(_data[_data_key]), _data_key ]);
     if (typeof(_data[_data_key]) !== 'undefined') {
         for (var _key in _data[_data_key]) {
             this._pre_update(_key, _data[_data_key][_key]);
@@ -817,6 +818,45 @@ Context_user.prototype._pre_update = function (_key, _value) {
         }
     }
     
+    return this;
+};
+
+
+// ---------------------------------
+
+/**
+ * 從server端獲取user相關資料
+ *
+ */
+Context_user.prototype._load_params_uri = "statistics/user_params";
+
+/**
+ * 
+ * @returns {undefined}
+ */
+Context_user.prototype.load_user_params = function ( _callback){
+    
+    var _this = this;
+    var _get_callback = function (_data){
+        _this.update(_this, _data);
+        $.trigger_callback( _callback);
+        //$.test_msg("test_responded_count", _data);
+    };       
+        
+    var _config = {
+        url: _this._load_params_uri,
+        callback: _get_callback
+    };
+    
+    KALS_util.ajax_get(_config);
+    
+    /*$.ajax_get(_this._load_params_uri, function (_data){
+        _this.update(_this, _data);
+        $.trigger_callback( _callback);
+        
+        
+        $.test_msg("test_responded_count", _data);
+    });*/
     return this;
 };
 

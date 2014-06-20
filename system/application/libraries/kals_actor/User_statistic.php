@@ -1,9 +1,10 @@
 <?php
 include_once 'KALS_actor.php';
+//include_once 'KALS_actor.php';
 /**
  * User_statistic
  *
- * 使用者統計
+ * 使用者統計資料
  *
  * @package		KALS
  * @category		Controllers
@@ -14,24 +15,11 @@ include_once 'KALS_actor.php';
  * @version		1.0 2014/5/15 下午 03:51:22
  */
 class User_statistic extends KALS_actor {
-
-   /* public $actor_type_id = 1;
-
-    protected $table_name = 'user';
-    protected $table_fields = array('user_id', 'name', 'email', 'sex', 'photo', 'locale', 'style', 'password', 'deleted', 'domain_id');
-    protected $primary_key = 'user_id';
-    protected $not_null_field = array('email', 'domain_id');
-    protected $unique_restriction = array('email', 'domain_id');
-    protected $default_field = 'email';
-    protected $fake_delete = 'deleted';
     
-    private $notification_coll;*/
     protected function  _post_construct() {
         $this->CI->load->library("annotation/annotation_collection");
         $this->CI->load->library("kals_resource/annotation");
         $this->CI->load->library('kals_actor/User');
-
-
 
         //$this->_CI_load('library', 'kals_actor/Notification_collection', 'notification_collection');
         //$this->notification_coll = new Notification_collection($this);
@@ -158,7 +146,7 @@ class User_statistic extends KALS_actor {
      * @param User $responded_user
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @param User $user 
-     * @return array | user_id
+     * @return Int | count
      */
     public function get_responded_by_user_count($user, $webpage, $responded_user, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
@@ -201,7 +189,7 @@ class User_statistic extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return Int $count
      */
-    public function get_respond_users_count($user, $webpage, $annotation_type = NULL) {
+    public function get_responded_users_count($user, $webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
@@ -585,6 +573,23 @@ class User_statistic extends KALS_actor {
         return $type_count_collection;
     }
     
+ /**
+     * 取得主題標註所有類型個別統計次數的陣列長度(使用了多少種類型)
+     * @todo 20140516 Pulipuli Chen 
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Int $type_used_count
+     */
+    public function get_topic_types_used_count_(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+           
+        $type_count_collection = $this->get_topic_types_count($user, $webpage);
+        $type_used_count = $type_count_collection.length();
+        return $type_used_count;
+    }   
+    
      /**
      * 取得所有別人回應自己的標註中有用過的標註類型的陣列
      * @param User $user
@@ -702,6 +707,41 @@ class User_statistic extends KALS_actor {
         //$type_test = $type_count_collection['importance']; // annotation.type.importance
         return $type_count_collection;       
     }
+    
+// ---------------------------------------------------------------------
+    /**
+     * 統整所有要丟給Context_user的資料
+     * 
+     * @deprecated since version 20140620 改到statistics/user_params去
+     * @param User $user
+     * @param Webpage $webpage
+     * @return JSON
+     */
+    public function user_params( $callback = NULL ) {
+        $user = get_context_user();
+        $webpage = get_context_webpage();
+        
+        $data =  array(
+            //"responded_count" => $this->get_responded_count($user, $webpage),
+            "responded_count" => 5,
+            "responded_user_count" =>$this->get_responded_users_count($user, $webpage),
+            "respond_to_user_count" =>$this->get_respond_to_users_count($user, $webpage)
+        );
+
+        
+        $output = array(
+            "user" => $data
+        );
+        
+        //打包成json丟回去 
+        return $this->_display_jsonp($output, $callback);       
+    }
+    
+    
+
+    
+    
+    
     
     
 }

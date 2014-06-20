@@ -38,8 +38,6 @@ class Authentication extends Web_apps_controller {
            'ip' => get_client_ip(),
            'browser' => $_SERVER['HTTP_USER_AGENT']
         );
-        
-        $this->load->library("kals_actor/User_statistic");
     }
 
     /**
@@ -106,6 +104,9 @@ class Authentication extends Web_apps_controller {
         
         
         $webpage = get_context_webpage();
+                
+        $this->load->library("kals_actor/User_statistic", "user_statistic");
+        $this->user_statistic = new User_statistic();
         
         $output = array();
         $output['login'] = TRUE;
