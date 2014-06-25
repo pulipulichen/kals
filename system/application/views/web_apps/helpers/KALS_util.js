@@ -378,12 +378,15 @@ KALS_util.ajax_local_get = function (_config) {
             e = "Page not found!";
         }
         
+        _get_callback();
+        
         if ($.is_function(_exception_handle)) {
             _exception_handle(e, _url);
         }
         else {
             _this.show_exception(e, _url);
         }
+        
     };
     
     var _get_json = function() {

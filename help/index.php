@@ -17,7 +17,7 @@
          target="_blank">
           Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> 
       <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
-    <li><a href="debug/pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
+    <li><a href="debug/20140625-pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
 </ul>
 <hr />
 <h2>設定說明 (兼簡單的展示頁面)</h2>
