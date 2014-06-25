@@ -211,11 +211,239 @@ KALS_util.ajax_get = function (_config) {
         }
         
         if ($.is_function(_exception_handle)) {
-            _exception_handle(e);
+            _exception_handle(e, _url);
         }
         else {
-            _this.show_exception(e);
+            _this.show_exception(e, _url);
         }
+    }
+    
+    return this;
+};
+
+/**
+ *  改寫jQuery的$.getJSON方法
+ *
+ * @param _config = {
+ *   url: String (without base_url),
+ *   data: JSON,
+ *   callback: function (_data),
+ *   exception_handle: function (_data), //可省略，省略則自動使用KALS_util.show_exception來處理
+ *   retry: 3, //可省略，預設嘗試次數
+ *   retry_wait: 60 * 1000, //預設嘗試等待時間，單位是毫秒
+ *   fixed_callback: "fixed_callback"   //預設省略，固定callback的參數
+ * };
+ */
+KALS_util.ajax_local_get = function (_config) {
+    var _url = $.get_parameter(_config, 'url');
+    var _data = $.get_parameter(_config, 'data');
+    var _callback = $.get_parameter(_config, 'callback', function() {});
+    var _exception_handle = $.get_parameter(_config, 'exception_handle');
+    
+    var _retry = $.get_parameter(_config, 'retry', 3);
+    var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
+    var _retry_counter = 0;
+    
+    //_url = $.appends_with(_url, '/');
+    
+    var _callback_parameter = $.get_parameter(_config, "fixed_callback", "?");
+    if (_callback_parameter === true) {
+        _callback_parameter = "_";
+    }
+    
+    var _full_callback_parameter = _callback_parameter;
+    if ($.is_string(_callback_parameter) && _callback_parameter !== "?") {
+        _full_callback_parameter = "KALS_util.c." + _callback_parameter;
+    }
+    
+    //$.test_msg("ajax_local_get", _url);
+    
+    if (_data !== null) {
+        if ($.is_object(_data)) {
+            _data = $.json_encode(_data);
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);
+        }
+        else if ($.is_string(_data)) {
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);
+        }
+		
+        //_url = _url + _data + '/callback=' + _full_callback_parameter;
+    }
+    else {
+        //_url = _url + 'callback=' + _full_callback_parameter;
+    }
+    
+	if (_url.indexOf('http') === 0 
+                || _url.indexOf('%22') === 0) {
+            $.test_msg('ajax_local_get exception', 'KALS_util.ajax_get try to load exception url: ' + _url);
+            //throw ;
+            return this;
+	}
+
+    var _this = this;
+    
+    //檢查網址是否超過最大長度
+    if (_url.length > 2000) {
+        if ($.is_function(_exception_handle)) {
+            _exception_handle();
+        }
+        else {
+			
+            $.test_msg('KALS_util.ajax_local_get()'+'超過最大長度囉', _url.length);
+			
+            this.show_exception({
+                heading: KALS_context.lang.line(new KALS_language_param(
+                    'Data error.',
+                    'exception.url_too_large.heading'
+                )),
+                message: KALS_context.lang.line(new KALS_language_param(
+                    'Request-URL too large.',
+                    'exception.url_too_large.message'
+                )),
+                request_uri: _url
+            });
+        }
+        return this;
+    }
+    
+    if (KALS_CONFIG.debug.ajax_get_message) {
+        $.test_msg('ajax_local_get', _url);
+    }
+    
+    var _retry_timer;
+    //var _retry_exception = function () {
+    //    $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
+    //    var _exception = new KALS_exception('exception.retry_exception');
+    //    _this.show_exception(_exception, _url);
+    //};
+    //var _retry_exception = this.re
+    
+    
+    var _get_callback = function (_data) {
+        //$.getJSON(_url, function (_data) {
+        
+        if (typeof(_data.response) !== "undefined") {
+            _data = _data.response;
+        }
+        
+        $.test_msg("ajax_local_get get_callback", _data);
+        
+        if (KALS_context !== undefined
+                && KALS_context.completed === true) {
+            if (KALS_CONFIG.debug.ajax_get_message) {			
+                $.test_msg('ajax_local_get from ' + _url + ' \n return data', _data);
+            }
+        }
+
+        if (typeof(_retry_timer) === 'undefined' 
+                || _retry_timer === null) {
+            return this;
+        }
+        else if ($.isset(_retry_timer)) {
+            clearInterval(_retry_timer);
+            _retry_timer = null;
+            delete _retry_timer;
+        }
+
+        if (typeof(_data.exception) !== 'undefined') {            
+            if ($.is_function(_exception_handle)) {
+                _exception_handle(_data.exception, _url);
+            }
+            else {
+                _this.show_exception(_data.exception, _url);
+            }
+        }
+        else {
+            if ($.is_function(_callback)) {
+                _callback(_data);
+            }
+        }
+    };
+    
+    if (_callback_parameter !== "?") {
+        this.c[_callback_parameter] = function (_data) {
+        //window[_callback_parameter] = function (_data) {
+            _get_callback(_data);
+        };
+    }
+    
+    var _error_callback = function (e) {
+        
+        if (e === undefined) {
+            e = "undefined_error";
+        }
+        else if (typeof(e.status) !== "undefined") {
+            e = "Page not found!";
+        }
+        
+        if ($.is_function(_exception_handle)) {
+            _exception_handle(e, _url);
+        }
+        else {
+            _this.show_exception(e, _url);
+        }
+    };
+    
+    var _get_json = function() {
+        
+        //if (_retry_counter == 999)
+        //    return;
+        /*
+        if (_callback_parameter === "?") {
+            $.getJSON(_url, _get_callback); 
+        }
+        else {
+            //$.getJSON(_url);
+            $.getScript(_url);
+        }
+        */
+        //$.get(_url, _get_callback);
+        $.ajax({
+            url: _url,
+            //dataType: 'json',
+            complete: _get_callback,
+            error: _error_callback
+        });
+    };
+    
+    try {
+        _get_json();
+        
+        if (_retry !== null && _retry > 0) {
+            
+            if (_callback_parameter !== "?") {
+                //$.test_msg("開始計時", _retry_wait);
+            }
+            _retry_timer = setInterval(function () {
+                //$.test_msg("時間到了");
+                if (_retry_counter === _retry || _retry_counter > _retry
+                    || typeof(_retry_timer) === 'undefined') {
+                    if (typeof(_retry_timer) !== 'undefined') {
+                        clearInterval(_retry_timer);
+                        _retry_timer = null;
+                        delete _retry_timer;
+                    }
+                    _this._retry_exception(_url);
+                    return this;
+                }
+                
+                _get_json();
+                
+                _retry_counter++;
+                
+            }, _retry_wait);    
+        }
+    }
+    catch (e) {
+        if ($.isset(_retry_timer)) {
+            clearInterval(_retry_timer);
+            _retry_timer = null;
+            delete _retry_timer;
+        }
+        
+        _error_callback(e);
     }
     
     return this;

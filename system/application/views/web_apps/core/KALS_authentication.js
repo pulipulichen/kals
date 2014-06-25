@@ -69,10 +69,37 @@ KALS_authentication.prototype.get_auth_data = function () {
     return this._auth_data;
 };
 
+/**
+ * 設定電子信箱
+ * @param {String} _value 電子信箱
+ * @returns {KALS_authentication}
+ */
 KALS_authentication.prototype.set_email = function (_value) {
     _value = $.trim(_value);
-    this._auth_data.email = _value;
+    if (this.is_embed() && $.is_email(_value)) {
+        this._auth_data.email = _value;
+    }
+    else {
+        this._auth_data.email = _value;
+    }
     return this;
+};
+
+/**
+ * 清空電子信箱
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype.clear_email = function () {
+    this._auth_data.email = null;
+    return this;
+};
+
+/**
+ * 取得電子信箱
+ * @returns String
+ */
+KALS_authentication.prototype.get_email = function () {
+    return this._auth_data.email;
 };
 
 KALS_authentication.prototype.set_password = function (_value) {
@@ -100,6 +127,10 @@ KALS_authentication.prototype.set_embed = function (_value) {
 //    return this;
 //};
 
+/**
+ * 是否是嵌入登入的狀態
+ * @returns {Boolean}
+ */
 KALS_authentication.prototype.is_embed = function () {
     return this._auth_data.embed;
 };
@@ -204,9 +235,23 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         //$.test_msg('login data', _data);
         
         this.request_embed_email(function () {
-            _this.load(_data, function (_this, _data) {
-                _this._after_login(_return_error, _data, _callback);
-            });
+            _data.email = _this.get_email();
+            _data.embed = _this.is_embed();
+            $.test_msg("embed_login 預備 load", _data);
+            
+            //if (_data.email === null && _data.embed === false) {
+            //    _this.show_login_form();
+            //}
+            //else {
+            if (_data.email !== null && _data.embed !== false) {
+                _this.load(_data, function (_this, _data) {
+                    //$.test_msg("embed_login 預備 after_login", _data);
+                    _this._after_login(_return_error, _data, _callback);
+                });
+            }
+            else {
+                $.trigger_callback(_callback);
+            }
         });
     }
     return this;
@@ -298,14 +343,24 @@ KALS_authentication.prototype.request_embed_email = function (_callback) {
                 _url = _url + "&" + $.create_id("auth");
             }
             
-            $.get(_url, function (_data) {
+            var _get_callback = function (_data) {
                 if ($.is_email(_data)) {
                     _this.set_email(_data);
                 }
                 else {
+                    _this.clear_email();
                     _this.set_embed(false);
                 }
-                $.trigger_callback(_callback);
+                //$.trigger_callback(_callback);
+                
+                if ($.is_function(_callback)) {
+                    _callback(_data);
+                }
+            };
+            
+            KALS_util.ajax_local_get({
+                url: _url,
+                callback: _get_callback
             });
         }
         else {

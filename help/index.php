@@ -17,6 +17,7 @@
          target="_blank">
           Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> 
       <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
+    <li><a href="debug/pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
 </ul>
 <hr />
 <h2>設定說明 (兼簡單的展示頁面)</h2>
@@ -28,6 +29,7 @@
   <li><a href="enable_custom_annotation_type.html">設定「自訂」標註類型</a></li>
   <li><a href="config_toolbar.html">設定工具列</a></li>
   <li><a href="embed_email.html">指定預設登入帳號</a></li>
+  <li><a href="embed_email_url.html">指定預設登入帳號的網址</a></li>
   <li><a href="config_policy.html">設定標註閱讀權限</a></li>
   <li><a href="config_login.html">設定註冊與登入訊息</a></li>
   <li><a href="config_navigation.html">設定標註指引</a></li>
