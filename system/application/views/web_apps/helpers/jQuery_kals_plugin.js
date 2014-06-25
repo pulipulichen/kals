@@ -2269,11 +2269,19 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
                     _this.scroll_to_lock = false;
             });
             */
+        var _scroll_to = function () {
         $("html,body").stop()
                 //.animate(_now_config, 0, "swing")
                 .animate(_config, _speed, "swing", function () {
                     _this.scroll_to_lock = false;
             });
+        };
+        if ($("body").scrollTop() === 0) {
+            setTimeout(_scroll_to, 10);
+        }
+        else {
+            _scroll_to();
+        }
     }
 	
     $.trigger_callback(_callback)
@@ -2350,36 +2358,100 @@ jQuery.get_current_scroll_position = function () {
     
     return {
         scrollLeft: _left,
-        scrollTop: _top
+        scrollTop: _top,
+        x: _left,
+        y: _top
     };
 };
 
 jQuery.scroll_to_lock = false;
 
+// -------------------------------------------
+
+/**
+ * 儲存現在捲軸的位置
+ * @returns {jQuery}
+ */
 jQuery.save_scroll_position = function () {
     
-    this._scroll_position = [window.pageXOffset, window.pageYOffset];
+    if (typeof(LOCK_SCROLL_LOCK) === "undefined") {
+        LOCK_SCROLL_LOCK = "free";
+    }
     
+//    this._scroll_position = [window.pageXOffset, window.pageYOffset];
+    var _pos = $.get_current_scroll_position();
+    if (_pos.y !== 0 
+            && LOCK_SCROLL_LOCK === "free") {
+        //$.test_msg("儲存:現在的捲軸位置 (" + (new Date().getSeconds()) +  ")", _pos);    
+        this._last_pos = _pos;
+        LOCK_SCROLL_LOCK = "saved";
+    }
+    //$.test_msg("儲存:現在的捲軸位置", _pos);    
+    //alert(["儲存:現在的捲軸位置", _pos]);
+    
+    
+    return this;
 };
 
 /**
  * 讀取捲動位置
- * @deprecated 20131115 Pudding Chen
+ * @returns {jQuery}
  */
 jQuery.load_scroll_position = function () {
     
-    if (window.pageXOffset !== this._scroll_position[0]) {
-        //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
-    }
-    
-    if (window.pageYOffset !== this._scroll_position[1]) {
-        //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
-        //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
-    }
+//    if (window.pageXOffset !== this._scroll_position[0]) {
+//        //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
+//    }
+//    
+//    if (window.pageYOffset !== this._scroll_position[1]) {
+//        //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
+//        //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
+//    }
     
     //$.test_msg("$.load_scroll_position");
-    window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
+    //window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
+    
+    if (typeof(LOCK_SCROLL_LOCK) === "undefined") {
+        LOCK_SCROLL_LOCK = "free";
+    }
+    
+    var _scroll_to = function () {
+        if ($("body").scrollTop() !== 0
+                && $("body").scrollTop() !== _this._last_pos.y) {
+            //alert("是誰？");
+        }
+        if ($("body").scrollTop() === 0
+                && _this._last_pos !== undefined
+                && _this._last_pos !== null) {
+            //alert("準備回滾");
+            window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+        }
+    };
+    
+    var _this = this;
+    if (LOCK_SCROLL_LOCK === "saved") {
+        LOCK_SCROLL_LOCK = "loading";
+
+        _scroll_to();
+        setTimeout(function () {
+            _scroll_to();
+            
+            setTimeout(function () {
+                _scroll_to();
+                //setTimeout(function () {
+                    LOCK_SCROLL_LOCK = "free";
+                    //$.test_msg("讀取完畢:現在的捲軸位置 (" + (new Date().getSeconds()) +  ")", _this._load_scroll_lock);
+                //},1);
+            }, 0);
+            //_this._last_pos = null;
+        }, 0);
+    }
+        
+    
+    return this;
 };
+
+// -------------------------------------------
 
 /**
  * 產生隨機的ID字串

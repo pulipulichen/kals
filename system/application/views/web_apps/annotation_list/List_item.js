@@ -441,8 +441,8 @@ List_item._blur_timer = null;
 List_item.prototype.blur = function () {
     
     if (List_item._blur_timer !== null) {
-		clearTimeout(List_item._blur_timer);
-	}
+        clearTimeout(List_item._blur_timer);
+    }
     
     var _this = this;
     List_item._blur_timer = setTimeout(function () {

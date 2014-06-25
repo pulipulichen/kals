@@ -761,13 +761,13 @@ List_collection.prototype.focus = function(_param, _scrollto) {
             
             return _list_item;
         }
-        else if (typeof(_list_item.respond_list) != 'undefined'
+        else if (typeof(_list_item.respond_list) !== 'undefined'
             && _list_item.respond_list !== null) {
             //$.test_msg('List_collection.focus() has respond list', _list_item.get_annotation_id());
             var _result = _list_item.respond_list.focus(_param, _scrollto);
             if (_result !== null) {
-				return _result;
-			}
+                return _result;
+            }
         }
 		
     }

@@ -84,13 +84,16 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
     _hash = $.trim(_hash);
     _hash = '#' + _hash;
     
-    var _pos = this._save_scroll_position();
+    //var _pos = this._save_scroll_position();
+    $.save_scroll_position();
     
     if (typeof(location.hash) !== 'undefined') {   
         //$.test_msg('設定location hash', this._set_lcok);
         //window.location.hash = _hash;
         //$.test_msg("set hast: " + "location.hash", _hash);
+        //alert("要上囉", _hash);
         location.hash = _hash;
+        //alert("完成", _hash);
     }
     else if (typeof(document.location.hash) !== 'undefined') {   
         //$.test_msg("set hast: " + "docuemnt.location.hash", _hash);
@@ -132,61 +135,112 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
         //document.location.hash = _url + _hash;
     }
     
-    this._restore_scroll_position(_pos);
+    //this._restore_scroll_position(_pos);
+    $.load_scroll_position();
     
     return this;
 };
 
-URL_hash_dispatcher.prototype._last_pos = null;
-
-/**
- * 保存捲軸位置
- * 
- * @returns {JSON} = {
- *       x: window.scrollX,
- *       y: window.scrollY
- *   };
- */
-URL_hash_dispatcher.prototype._save_scroll_position = function () {
-    
-    /*
-    var _pos = {
-        x: window.scrollX,
-        y: window.scrollY
-    };
-    */
-    if (this._last_pos !== null) {
-        return this._last_pos;
-    }
-   
-    var _pos = $.get_current_scroll_position();
-    this._last_pos = _pos;
-    //$.test_msg("儲存了現在的捲軸位置", _pos);    
-    return _pos;
-};
+//URL_hash_dispatcher.prototype._last_pos = null;
+//
+///**
+// * 保存捲軸位置
+// * 
+// * @returns {JSON} = {
+// *       x: window.scrollX,
+// *       y: window.scrollY
+// *   };
+// * @deprecated 20140626 交給$.save_scroll_position去處理吧
+// */
+//URL_hash_dispatcher.prototype._save_scroll_position = function () {
+//    
+//    /*
+//    var _pos = {
+//        x: window.scrollX,
+//        y: window.scrollY
+//    };
+//    */
+//    //if (this._last_pos !== null) {
+//    //    return this._last_pos;
+//    //}
+//   
+//    var _pos = $.get_current_scroll_position();
+//    if (_pos.y !== 0) {
+//        this._last_pos = _pos;
+//    }
+//    //$.test_msg("儲存:現在的捲軸位置", _pos);    
+//    //alert(["儲存:現在的捲軸位置", _pos]);
+//    return _pos;
+//};
 
 /**
  * 讓網頁開始捲動
  * 
+ * @deprecated 20140626 交給$.load_scroll_position去處理吧
  * @param {Object} _pos
  */
-URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
+//URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
+//
+//    //$.scroll_to(_pos, 0);
+//    var _this = this;
+//    
+//    if ($("body").scrollTop() === 0
+//            && _this._last_pos !== null) {
+//        //alert("準備回滾");
+//        window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+//    }
+//    
+//    if (this._last_pos !== null && this._restore_pos_lock === false) {
+//        this._restore_pos_lock = true;
+//        //$.test_msg("準備恢復：設定了現在的捲軸位置", _pos);
+//        //alert(["準備恢復：設定了現在的捲軸位置", _pos]);
+//        //$.test_msg("最後的捲軸位置", this._last_pos);
+//        //alert(["最後的捲軸位置", this._last_pos]);
+//        //$.scroll_to(this._last_pos, 0);
+//        
+//        if ($("body").scrollTop() === 0
+//                    && _this._last_pos !== null) {
+//            //window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+//            //$.scroll_to(_this._last_pos, 0);
+//        }
+//        
+//        setTimeout(function () {
+////            //$.scroll_to(_this._last_pos);
+////            $.test_msg("現在的body", [$("body").scrollTop(), _this._last_pos.scrollTop]);
+//            if ($("body").scrollTop() === 0
+//                    && _this._last_pos !== null) {
+//                alert("怎麼會這樣？");
+//                window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+////                //$.scroll_to(_this._last_pos, 0);
+////                //window.scrollTo()
+//            }
+////            else if (_this._last_pos !== null) {
+////                //$.scroll_to(_this._last_pos, 0);
+////                //window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+////            }
+////            $.test_msg("恢復：設定了現在的捲軸位置", _this._last_pos);
+////            _this._last_pos = null;
+////            _this._restore_pos_lock = false;
+//            //_this._last_pos = null;
+//            _this._restore_pos_lock = false;
+//            
+//            setTimeout(function () {
+//                //alert("100秒之後的狀態");
+//            }, 100);
+//            
+//        }, 0);
+//    }
+//    
+//    return this;
+//};
+//
+//URL_hash_dispatcher.prototype._restore_pos_lock = false;
 
-    //$.scroll_to(_pos, 0);
-    //$.test_msg("設定了現在的捲軸位置", _pos);    
-    var _this = this;
-    if (_this._last_pos !== null) {
-        setTimeout(function () {
-            if ($("body").scrollTop() === 0
-                    && _this._last_pos !== null) {
-                window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
-            }
-            _this._last_pos = null;
-        }, 0);
-    }
-    return this;
-};
-
+/**
+ * 設定標題
+ * @param {String} _hash
+ * @returns {URL_hash_dispatcher}
+ */
 URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
     
     this._set_lock = true;
@@ -292,7 +346,6 @@ URL_hash_dispatcher.prototype.delete_field = function (_key) {
     
     var _hash = _hash_data.serialize();
     
-    // 20140520 造成捲軸跳動的兇手
     this._set_location_hash(_hash);
         
     this._set_document_title(_hash);
