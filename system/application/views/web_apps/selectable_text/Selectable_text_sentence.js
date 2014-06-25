@@ -235,7 +235,7 @@ Selectable_text_sentence.prototype.cache_save = function (_cache_id, _callback) 
     //var _json = $.json_encode(this.sentence_structure);
     //$.test_msg('sentence save: ' + _cache_id, _json);
     //$.localStorage.set(_cache_id, _json);
-    KALS_context.storage.set(_cache_id, _json, _callback)
+    KALS_context.storage.set(_cache_id, this.sentence_structure, _callback)
     return this;
 };
 
