@@ -849,14 +849,7 @@ Context_user.prototype.load_user_params = function ( _callback){
     };
     
     KALS_util.ajax_get(_config);
-    
-    /*$.ajax_get(_this._load_params_uri, function (_data){
-        _this.update(_this, _data);
-        $.trigger_callback( _callback);
-        
-        
-        $.test_msg("test_responded_count", _data);
-    });*/
+
     return this;
 };
 

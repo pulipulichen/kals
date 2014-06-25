@@ -78,7 +78,7 @@ KALS_SITE_REFORM_CONFIG = [
             after_init: function () {
                 $("body").css("background-color", "#2f3236");
                 $("#page-container").css("position", "relative");
-                
+                $(".pc").css("display", "block");
                 //$.test_msg("完成？222");
             }
         }
