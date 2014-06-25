@@ -21,16 +21,17 @@ function Window_map() {
 	//	$.test_msg("Open MAP!!");
 	//}, 1000);
     //this._setup_submit(new Window_filter_submit());
-    var _this = this;
-    if (typeof(KALS_context) !== "undefined") {
-        KALS_context.init_profile.add_listener(function () {
-            //if (KALS_context.completed) {
-                var _heading = KALS_text.selection.text.chapter.get_heading_text(0);
-                $.test_msg("完成了 Window_map", _heading);
-                _this.disable_menu();
-            //}
-        });
-    }
+    
+//    var _this = this;
+//    if (typeof(KALS_context) !== "undefined") {
+//        KALS_context.init_profile.add_listener(function () {
+//            //if (KALS_context.completed) {
+//                var _heading = KALS_text.selection.text.chapter.get_heading_text(0);
+//                $.test_msg("完成了 Window_map", _heading);
+//                _this.disable_menu();
+//            //}
+//        });
+//    }
         
 }
 
@@ -309,8 +310,6 @@ Window_map.prototype._$create_ui = function () {
     return _ui;
 };
 
-
-
 /**
  * 開啟視窗
  * 
@@ -318,7 +317,19 @@ Window_map.prototype._$create_ui = function () {
  * @param {function} _callback
  */
 Window_map.prototype.open = function (_callback) {
-
+    
+    var _has_heading = KALS_text.selection.text.chapter.has_heading();
+    //_has_heading = false;
+    if (_has_heading === false) {
+        var _msg = new KALS_language_param(
+                "No heading found.",
+                "window.map.no_heading_found"
+        );
+        //_msg = "找不到資料";
+        KALS_util.show_exception(_msg);
+        return this;
+    }
+    
     // 加入open()之前需要的設定
     // 參考KALS_util.confirm()
 

@@ -697,6 +697,7 @@ KALS_util.ajax_upload = function (_config) {
  * @param {KALS_exception} _exception 這個是來自於伺服器回傳_data中的exception屬性。
  * 在ajax_get()的時候發生錯誤時，會自動將_data.exception送到此方法。
  * 這是處理例外的預設方法，您可以在ajax_get()當中設定exception_handle
+ * @param {String} _uri 網址
  */
 KALS_util.show_exception = function (_exception, _uri) {
     //var _heading = $.get_parameter(_exception, 'heading');

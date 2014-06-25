@@ -200,7 +200,7 @@ $lang['web_apps.window.map.heading'] = '章節地圖';
 $lang['web_apps.window.map.nav_heading'] = '章節地圖';
 $lang['web_apps.window.map.content.option.my'] = '我的標註';
 $lang['web_apps.window.map.content.option.navigation'] = '推薦的標註';
-
+$lang['web_apps.window.map.no_heading_found'] = '無法分析文章的章節結構';
 
 
 

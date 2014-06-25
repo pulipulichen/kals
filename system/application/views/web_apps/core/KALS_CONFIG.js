@@ -507,9 +507,11 @@ DEFAULT_KALS_CONFIG = {
         //},
         /**
          * 導讀功能
+         * 
+         * @version 20140625 因為不穩定，所以沒事不開啟
          */
         Reading_guide: {
-            "enable": true
+            "enable": false
         },
         /**
          * 回報功能

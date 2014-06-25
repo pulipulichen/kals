@@ -1028,5 +1028,24 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     //$.test_msg("Annotation_navigation_map.init_tabs() end");
 };
 
+/**
+ * 開啟前的檢查
+ * @returns {Annotation_navigation_map}
+ */
+Annotation_navigation_map.prototype._$onopen = function (_callback) {
+    var _has_heading = KALS_text.selection.text.chapter.has_heading();
+    //_has_heading = false;
+    if (_has_heading === false) {
+        var _msg = new KALS_language_param(
+                "No heading found.",
+                "window.map.no_heading_found"
+        );
+        //_msg = "找不到資料";
+        KALS_util.show_exception(_msg);
+        return this;
+    }
+    return this;
+};
+
 /* End of file Annotation_navigation_map */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_navigation_map.js */

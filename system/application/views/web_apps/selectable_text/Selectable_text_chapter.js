@@ -163,6 +163,8 @@ Selectable_text_chapter.prototype.get_heading_list = function () {
  * @returns Array|每個heading的jQuery
  */
 Selectable_text_chapter.prototype.has_heading = function () {
+    //$.test_msg("chapter has_heading", this.heading_list.length);
+    //return false;
     return (this.heading_list.length > 0);
 };
 

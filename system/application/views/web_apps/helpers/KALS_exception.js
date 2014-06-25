@@ -30,6 +30,10 @@ function KALS_exception(_class, _message) {
             this.request_uri = _server_error.request_uri;
         }
     }
+    else if ($.is_class(_class, "KALS_language_param")) {
+        var _lang = _class;
+        this.message = KALS_context.lang.line(_lang);
+    }
     else {
         if ($.is_null(_message) && $.is_string(_class)) {
             _message = _class;
