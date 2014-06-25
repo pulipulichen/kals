@@ -17,7 +17,6 @@
          target="_blank">
           Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> 
       <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
-    <li><a href="debug/20140625-pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
 </ul>
 <hr />
 <h2>設定說明 (兼簡單的展示頁面)</h2>
@@ -66,6 +65,14 @@
 	<li><a href="../document/KALS UML.uml" target="_blank">UML規劃圖</a> (以<a href="http://sourceforge.net/projects/whitestaruml/" target="_blank">WhiteStarUML</a>開啟)</li>
 	<li><a href="../document/Webpage Application.ep" target="_blank">網頁應用端草圖構想</a> (以<a href="http://pencil.evolus.vn/" target="_blank">Pencil</a>開啟)</li>
 </ul>
+
+<hr />
+
+<h2>偵錯使用資料</h2>
+<ul>
+    <li><a href="debug/20140625-pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
+</ul>
+
 <hr />
 <!-- <p class="text-align:center;">KALS! - <a href="mailto:pulipuli.chen@gmail.com">Pudding Chen</a> </p> -->
 <?php 

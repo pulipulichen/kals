@@ -342,17 +342,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     
     // -----------------------------
     
-    var _taks_list = [
-        _task_cache_text_backup,
-        _task_setup_selectable_element,
-        _task_setup_paragraph_location,
-        _task_cache_text_restore,
-        _task_cache_save,
-        _task_setup_word_selectable,
-        _task_progress,
-        _task_complete,
-        _callback
-    ];
+    var _taks_list;
     
     var _loop = function (_task_list, _i, _callback) {
         //$.test_msg('loop ' + _i , _task_list.length);
@@ -367,6 +357,8 @@ Selectable_text.prototype.initialize = function (_callback) {
         }
     };
     
+    //_cache_enable = false;
+    
     if ($.is_mobile_mode()) {
         _taks_list = [
             _task_progress,
@@ -377,8 +369,9 @@ Selectable_text.prototype.initialize = function (_callback) {
     }
     else if (_cache_enable) {
         this.has_cache(function (_existed) {
+            //_existed = false;
             if (_existed) {
-                //$.test_msg('selectable_text 啟用 cache');
+                $.test_msg('selectable_text 啟用 cache');
                 _taks_list = [
                     //_task_setup_selectable_element,
                     //_task_setup_paragraph_location,
@@ -389,11 +382,38 @@ Selectable_text.prototype.initialize = function (_callback) {
                     _callback
                 ];
             }
+            else {
+                _taks_list = [
+                    _task_cache_text_backup,
+                    _task_setup_selectable_element,
+                    _task_setup_paragraph_location,
+                    _task_cache_text_restore,
+                    _task_cache_save,
+                    _task_setup_word_selectable,
+                    _task_progress,
+                    _task_complete,
+                    _callback
+                ];
+            }
             
+            // 開始執行動作
             _loop(_taks_list, 0);
         });
     }
     else {
+        _taks_list = [
+            _task_cache_text_backup,
+            _task_setup_selectable_element,
+            _task_setup_paragraph_location,
+            _task_cache_text_restore,
+            _task_cache_save,
+            _task_setup_word_selectable,
+            _task_progress,
+            _task_complete,
+            _callback
+        ];
+        
+        // 以原本的列表來執行動作
         _loop(_taks_list, 0);
     }
     
