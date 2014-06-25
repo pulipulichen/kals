@@ -121,7 +121,9 @@ KALS_storage.prototype.get = function (_key, _callback) {
         if (this._storage.isSet(_key)) {
             var _value = this._storage.get(_key);
             
-            _value = LZString.decompress(_value);
+            if (_value !== undefined && _value !== null) {
+                _value = LZString.decompress(_value);
+            }
 
             if ($.is_function(_callback)) {
                 _callback(_value);
@@ -130,7 +132,9 @@ KALS_storage.prototype.get = function (_key, _callback) {
         }
         else {
             this._merge_get(_key, function (_value) {
-                _value = LZString.decompress(_value);
+                if (_value !== undefined && _value !== null) {
+                    _value = LZString.decompress(_value);
+                }
 
                 if ($.is_function(_callback)) {
                     _callback(_value);
@@ -156,9 +160,15 @@ KALS_storage.prototype.set = function (_key, _value, _callback) {
     }
     else {
         
-        if ($.is_object(_value)) {
+        var _original_value = _value;
+        
+//        $.test_msg("stroage set object type", [typeof(_value), _value]);
+        if ($.is_object(_value) || $.is_array(_value)) {
             _value = $.json_encode(_value);
+            //_value = $.serialize_array(_value);
+            //$.test_msg("如何？");
         }
+//        $.test_msg("stroage set object type after", [typeof(_value), _value]);
         
         _key = this._append_namespace(_key);
         
@@ -169,13 +179,28 @@ KALS_storage.prototype.set = function (_key, _value, _callback) {
             return this;
         }
         
-        _value = LZString.compress(_value);
+        if (_value !== undefined && _value !== null) {
+            try {
+                if ($.is_number(_value)) {
+                    //_value = "" + _value;
+                }
+                _value = LZString.compress(_value);
+            }
+            catch (e) {
+//                $.test_msg("LZString發生錯誤", _value);
+                KALS_util.show_exception("LZString發生錯誤：" + e + "<br />\n發生錯誤的資料：" + _value + "<br />\n發生錯誤的資料型態：" + typeof(_value));
+                _value = "";
+            }
+        }
+        
         var _compressed_size = _value.length;
         
         var _percent = parseInt(((_orig_size - _compressed_size) / _orig_size)*100 , 10);
         
         //$.test_msg('stroage set (' + _key +  ')', _orig_size + ' > ' + _compressed_size 
         //        + ' (壓縮率: ' + _percent  + '%) ');
+        
+//        $.test_msg("storage set 比較兩個數據", [_original_value, _value]);
         
         if (_compressed_size < this._quota_pre_item) {
             this._storage.set(_key, _value);
@@ -208,13 +233,13 @@ KALS_storage.prototype.set = function (_key, _value, _callback) {
 };
 
 /**
- * 取得JSON
+ * 取得資料，以JSON格式輸出成JavaScript可讀的物件
  * @param {String} _key
  * @param {Function} _callback
  * @returns {JSON}
  */
 KALS_storage.prototype.get_json = function (_key, _callback) {
-    _key = this._append_namespace(_key);
+    //_key = this._append_namespace(_key);
     /*var _value = this.get(_key);
     if (_value !== undefined) {
         _value = $.json_decode(_value);
@@ -240,7 +265,7 @@ KALS_storage.prototype.get_json = function (_key, _callback) {
  * @returns {KALS_storage}
  */
 KALS_storage.prototype.set_json = function (_key, _value, _callback) {
-    _key = this._append_namespace(_key);
+    //_key = this._append_namespace(_key);
     return this.set(_key, _value, _callback);
 };
 

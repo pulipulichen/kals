@@ -68,10 +68,10 @@ Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _tri
     }
     
     if ($.is_null(_trigger)) {
-		_trigger = false;
-	}
+        _trigger = false;
+    }
     
-    if ($.inArray(_type, this._types) == -1) {
+    if ($.inArray(_type, this._types) === -1) {
         this._types.push(_type);
         this._type_listeners[_type] = [];
         
@@ -79,13 +79,13 @@ Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _tri
         //    $.test_msg('Multi_event_dispatcher.add_listener() create new type', this._type_listeners[_type].length);
     } 
     
-    if ($.inArray(_function, this._type_listeners[_type]) == -1) {
+    if ($.inArray(_function, this._type_listeners[_type]) === -1) {
         
         this._type_listeners[_type].push(_function);
         
         if (_trigger === true) {
-			_function(this);
-		}
+            _function(this);
+        }
     }
     return this;
 };

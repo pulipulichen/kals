@@ -294,7 +294,14 @@ jQuery.json_encode = function (_json) {
  * @returns {Object}
  */
 jQuery.json_decode = function (_string) {
-    return eval(_string);
+    _string = this.trim(_string);
+    try {
+        return eval(_string);
+    }
+    catch (e) {
+        KALS_util.show_exception(e);
+        return "";
+    }
 };
 
 /**
@@ -306,16 +313,14 @@ jQuery.json_decode = function (_string) {
  */
 jQuery.serialize_json = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
-		return _json;
-	}
-	else 
-		if (this.is_string(_json)) {
-			return this.serialize_string(_json);
-		}
-		else 
-			if (this.is_array(_json)) {
-				return this.serialize_array(_json);
-			}
+        return _json;
+    }
+    else if (this.is_string(_json)) {
+        return this.serialize_string(_json);
+    }
+    else if (this.is_array(_json)) {
+        return this.serialize_array(_json);
+    }
 
     var _output = '';
 
@@ -323,31 +328,28 @@ jQuery.serialize_json = function (_json) {
         var _attr = '"'+_key+'":';
         var _value = _json[_key];
         if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value)) {
-			_attr += _value;
-		}
-		else 
-			if (this.is_string(_value)) {
-				_attr += this.serialize_string(_value);
-			}
-			else 
-				if (this.is_array(_value)) {
-					_attr += this.serialize_array(_value);
-				}
-				else 
-					if (this.is_object(_value)) {
-						if (typeof(_value.to_string) == 'function') {
-							_attr += _value.to_string();
-						}
-						else {
-							var _class_name = $.get_class(_value);
-							if (_class_name == 'Object') {
-								_attr += this.serialize_json(_value);
-							}
-							else {
-								_attr += '[Object: ' + _class_name + ']';
-							}
-						}
-					}
+            _attr += _value;
+        }
+        else if (this.is_string(_value)) {
+            _attr += this.serialize_string(_value);
+        }
+        else if (this.is_array(_value)) {
+            _attr += this.serialize_array(_value);
+        }
+        else if (this.is_object(_value)) {
+            if (typeof(_value.to_string) === 'function') {
+                _attr += _value.to_string();
+            }
+            else {
+                var _class_name = $.get_class(_value);
+                if (_class_name === 'Object') {
+                    _attr += this.serialize_json(_value);
+                }
+                else {
+                    _attr += '[Object: ' + _class_name + ']';
+                }
+            }
+        }
 
         _output = this.combine_comma(_output);
         _output += _attr;

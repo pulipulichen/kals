@@ -1328,12 +1328,38 @@ Selectable_text.prototype.cache_save = function (_callback) {
 //        });
 //    });
     
+    var _ele = [this.word
+        , this.sentence
+        , this.paragraph
+        , this.chapter
+    ];
+    
+    var _loop = function (_i) {
+        if (_i === undefined) {
+            _i = 0;
+        }
+//        $.test_msg('cache_save', _i);
+        if (_i < _ele.length) {
+            _ele[_i].cache_save(_cache_id, function () {
+                _i++;
+                _loop(_i);
+            });
+        }
+        else {
+            $.trigger_callback(_callback);
+        }
+    };
+    _loop();
+    
+    /*
     this.word.cache_save(_cache_id, function () {
         _this.sentence.cache_save(_cache_id, function () {
-            _this.paragraph.cache_save(_cache_id, _callback);
+            _this.paragraph.cache_save(_cache_id, function () {
+                _this.chapter.cache_save(_cache_id, _callback);
+            });
         });
     });
-    
+    */
     this.cache.save(_text_html);
     
     return this;
@@ -1357,11 +1383,34 @@ Selectable_text.prototype.cache_restore = function (_callback) {
         //$.test_msg('cache_restore ' + _cache_id, _text_html);
         _this._text.html(_text_html);
 
-        _this.word.cache_restore(_cache_id, function () {
-            _this.sentence.cache_restore(_cache_id, function () {
-                _this.paragraph.cache_restore(_cache_id, _callback);
-            });
-        });
+        var _ele = [_this.word
+            , _this.sentence
+            , _this.paragraph
+            , _this.chapter
+        ];
+
+        var _loop = function (_i) {
+            if (_i === undefined) {
+                _i = 0;
+            }
+//            $.test_msg('cache_restore', _i);
+            if (_i < _ele.length) {
+                _ele[_i].cache_restore(_cache_id, function () {
+                    _i++;
+                    _loop(_i);
+                });
+            }
+            else {
+                $.trigger_callback(_callback);
+            }
+        };
+        _loop();
+
+        //_this.word.cache_restore(_cache_id, function () {
+        //    _this.sentence.cache_restore(_cache_id, function () {
+        //        _this.paragraph.cache_restore(_cache_id, _callback);
+        //    });
+        //});
     };
     
     /*

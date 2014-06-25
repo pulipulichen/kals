@@ -112,7 +112,13 @@ Webpage_cache.prototype.save = function (_data, _callback) {
             callback: _loop_callback
         };
         
-        KALS_util.ajax_post(_post_config);
+        if (typeof(KALS_CONFIG.debug.webpage_cache_save_enable) === "boolean"
+                && KALS_CONFIG.debug.webpage_cache_save_enable === false) {
+            _loop_callback();
+        }
+        else {
+            KALS_util.ajax_post(_post_config);
+        }
     };
     
     var _loop_callback = function () {

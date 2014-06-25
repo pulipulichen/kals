@@ -87,6 +87,7 @@ Init_profile.prototype._$oncomplete = function () {
     //});
     
     KALS_context.completed = true;
+    //KALS_context.set_completed();
 
     // 以下啟動測試區
     var _this = this;

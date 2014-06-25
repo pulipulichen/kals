@@ -177,6 +177,16 @@ KALS_controller_window.prototype.open = function (_callback) {
 };
 
 /**
+ * 是否可開啟
+ * @param {function} _callback
+ * @returns {false}
+ */
+KALS_controller_window.prototype.disable_menu = function () {
+    KALS_toolbar.toolbar.get_ui().find(".navigation-list ." + this.name).parent().hide();
+    return this;
+};
+
+/**
  * 關閉視窗
  * @param {function} _callback
  * @returns {KALS_controller_window}

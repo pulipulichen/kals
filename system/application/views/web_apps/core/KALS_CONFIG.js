@@ -379,7 +379,13 @@ DEFAULT_KALS_CONFIG = {
          * 等於不初始化其他元件
          * @type Boolean
          */
-        kals_context_disable: false
+        kals_context_disable: false,
+        
+        /**
+         * 上傳快取資料
+         * @type Boolean
+         */
+        //webpage_cache_save_enable: false
     },
     
     /**

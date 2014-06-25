@@ -237,7 +237,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         this.request_embed_email(function () {
             _data.email = _this.get_email();
             _data.embed = _this.is_embed();
-            $.test_msg("embed_login 預備 load", _data);
+            //$.test_msg("embed_login 預備 load", _data);
             
             //if (_data.email === null && _data.embed === false) {
             //    _this.show_login_form();

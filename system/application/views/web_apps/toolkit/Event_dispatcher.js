@@ -239,8 +239,8 @@ Event_dispatcher.prototype.notify_listeners = function (_arg) {
         }
         
         if (this._$enable_changed_lock === true) {
-			this._changed = false;
-		}
+            this._changed = false;
+        }
     }
     return this;
 };

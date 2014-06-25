@@ -168,6 +168,16 @@ KALS_context.reset = function (_callback) {
 };
 
 /**
+ * 確認完成
+ * @returns {KALS_context}
+ */
+KALS_context.set_completed = function () {
+    this.completed = true;
+    this.notify_listeners(this);
+    return this;
+};
+
+/**
  * 語系檔
  * @type {KALS_language}
  */

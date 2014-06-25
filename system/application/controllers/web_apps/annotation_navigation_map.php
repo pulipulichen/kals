@@ -67,8 +67,9 @@ class annotation_navigation_map extends KALS_model {
         //test_msg("Data found?", $search->length() );
         // 2.1. 準備一下待會要儲存標題與標註數量的陣列
         
+        $heading_list = array();
         if (isset($data["order_by_article"]) && $data["order_by_article"] !== TRUE) {
-            $heading_list = array();
+            
         }
         else {
             for ($i = 0; $i < count($structure); $i++) {
@@ -129,15 +130,17 @@ class annotation_navigation_map extends KALS_model {
         
         // 7.1. 排序之後，輸出成JavaScript要的data形式
         $heading_data = array();
-        foreach ($heading_list AS $heading_number => $count ) {
-            $item = array(
-                "heading_number" => $heading_number,
-                "type_count" => $count
-            );
-            
-            //test_msg("item", $item);
-            //$return_data[] = $item;
-            array_push($heading_data, $item);
+        if (is_array($heading_list)) {
+            foreach ($heading_list AS $heading_number => $count ) {
+                $item = array(
+                    "heading_number" => $heading_number,
+                    "type_count" => $count
+                );
+
+                //test_msg("item", $item);
+                //$return_data[] = $item;
+                array_push($heading_data, $item);
+            }
         }
         
         $return_data = array(

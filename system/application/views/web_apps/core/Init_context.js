@@ -60,7 +60,7 @@ Init_context.prototype._$oncomplete = function () {
  * 沒用的話就可以關閉
  */
 Init_context.prototype._test_exception = function () {
-	$.test_msg("初始化完成");
+    //$.test_msg("初始化完成");
     KALS_util.ajax_get({
         url: "log/error",
         data: {},
@@ -70,9 +70,9 @@ Init_context.prototype._test_exception = function () {
 };
 
 Init_context.prototype._check_css_setup = function () {
-	$("<span class='KALS check-css'>KALS check css indicator<span>")
-	   .hide()
-	   .appendTo($("body"));
+    $("<span class='KALS check-css'>KALS check css indicator<span>")
+       .hide()
+       .appendTo($("body"));
    
    this._check_css_loaded();
 };
