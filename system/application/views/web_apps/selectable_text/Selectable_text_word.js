@@ -612,37 +612,57 @@ Selectable_text_word.prototype.get_estimate_total_words = function (_text) {
     return _total;
 };
 
+///**
+// * 儲存到快取中
+// * @param {String} _cache_id
+// * @param {funciton} _callback
+// * @returns {Selectable_text_word}
+// */
+//Selectable_text_word.prototype.cache_save = function (_cache_id, _callback) {
+//    _cache_id = _cache_id + '_word';
+//    //$.test_msg('word save: ' + _cache_id, this.word_count);
+//    KALS_context.storage.set(_cache_id, this.word_count, _callback);
+//    return this;
+//};
+//
+///**
+// * 從快取中復原
+// * @param {String} _cache_id
+// * @param {funciton} _callback
+// * @returns {Selectable_text_word}
+// */
+//Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
+//    _cache_id = _cache_id + '_word';
+//    var _this = this;
+//    KALS_context.storage.get(_cache_id, function (_value) {
+//        if (_value !== undefined) {
+//            _this.word_count = _value;
+//        }
+//        
+//        $.trigger_callback(_callback);
+//    });
+//    //this.word_count = $.localStorage.get(_cache_id);
+//    //$.test_msg('word restore: ' + _cache_id, this.word_count);
+//    return this;
+//};
+
 /**
- * 儲存到快取中
- * @param {String} _cache_id
- * @param {funciton} _callback
- * @returns {Selectable_text_word}
+ * 取得要快取的資料
+ * @returns {Number}
  */
-Selectable_text_word.prototype.cache_save = function (_cache_id, _callback) {
-    _cache_id = _cache_id + '_word';
-    //$.test_msg('word save: ' + _cache_id, this.word_count);
-    KALS_context.storage.set(_cache_id, this.word_count, _callback);
-    return this;
+Selectable_text_word.prototype.get_data = function () {
+    return this.word_count;
 };
 
 /**
- * 從快取中復原
- * @param {String} _cache_id
- * @param {funciton} _callback
+ * 設定被快取的資料
+ * @param {Int} _data 從快取中取回的資料
  * @returns {Selectable_text_word}
  */
-Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
-    _cache_id = _cache_id + '_word';
-    var _this = this;
-    KALS_context.storage.get(_cache_id, function (_value) {
-        if (_value !== undefined) {
-            _this.word_count = _value;
-        }
-        
-        $.trigger_callback(_callback);
-    });
-    //this.word_count = $.localStorage.get(_cache_id);
-    //$.test_msg('word restore: ' + _cache_id, this.word_count);
+Selectable_text_word.prototype.set_data = function (_data) {
+    if ($.is_number(_data)) {
+        this.word_count = _data;
+    }
     return this;
 };
 

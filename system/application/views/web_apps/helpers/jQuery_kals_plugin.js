@@ -296,7 +296,8 @@ jQuery.json_encode = function (_json) {
 jQuery.json_decode = function (_string) {
     _string = this.trim(_string);
     try {
-        return eval(_string);
+        //return eval(_string);
+        return $.parseJSON(_string);
     }
     catch (e) {
         KALS_util.show_exception(e);
@@ -361,16 +362,14 @@ jQuery.serialize_json = function (_json) {
 
 jQuery.serialize_array = function (_array) {
     if (this.is_number(_array) || this.is_boolean(_array) || this.is_null(_array)) {
-		return _array;
-	}
-	else 
-		if (this.is_string(_array)) {
-			return this.serialize_string(_array);
-		}
-		else 
-			if (this.is_object(_array)) {
-				return this.serialize_json(_array);
-			}
+        return _array;
+    }
+    else if (this.is_string(_array)) {
+        return this.serialize_string(_array);
+    }
+    else if (this.is_object(_array)) {
+        return this.serialize_json(_array);
+    }
 
     var _output = '';
 
@@ -378,20 +377,17 @@ jQuery.serialize_array = function (_array) {
         var _attr = "";
         var _value = _array[_key];
         if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value)) {
-			_attr += _value;
-		}
-		else 
-			if (this.is_string(_value)) {
-				_attr += this.serialize_string(_value);
-			}
-			else 
-				if (this.is_array(_value)) {
-					_attr += this.serialize_array(_value);
-				}
-				else 
-					if (this.is_object(_value)) {
-						_attr += this.serialize_json(_value);
-					}
+            _attr += _value;
+        }
+        else if (this.is_string(_value)) {
+            _attr += this.serialize_string(_value);
+        }
+        else if (this.is_array(_value)) {
+            _attr += this.serialize_array(_value);
+        }
+        else if (this.is_object(_value)) {
+            _attr += this.serialize_json(_value);
+        }
 
         _output = this.combine_comma(_output);
         _output += _attr;
@@ -403,21 +399,19 @@ jQuery.serialize_array = function (_array) {
 
 jQuery.serialize_string = function (_str) {
     if (this.is_number(_str) || this.is_boolean(_str) || this.is_null(_str)) {
-		try {
-			return _str;
-		}
-		catch (_e) {
-			return 'exception: ' + _e;
-		}
-	}
-	else 
-		if (this.is_array(_str)) {
-			return this.serialize_array(_str);
-		}
-		else 
-			if (this.is_object(_str)) {
-				return this.serialize_json(_str);
-			}
+        try {
+            return _str;
+        }
+        catch (_e) {
+            return 'exception: ' + _e;
+        }
+    }
+    else if (this.is_array(_str)) {
+        return this.serialize_array(_str);
+    }
+    else if (this.is_object(_str)) {
+        return this.serialize_json(_str);
+    }
 
     _str = this.addslashes(_str);
     return '"'+_str+'"';
@@ -436,13 +430,15 @@ jQuery.addslashes = function (_str) {
     // *     example 1: addslashes("kevin's birthday");
     // *     returns 1: 'kevin\'s birthday'
 
-    return (_str+'').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+    _str = (_str+'').replace(/[\\"']/g, '\\$&')
+            .replace(/\u0000/g, '\\0');
+    return _str;
 };
 
 jQuery.combine_comma = function (_str) {
     if (_str !== '') {
-		_str += ',';
-	}
+        _str += ',';
+    }
     return _str;
 };
 

@@ -220,77 +220,106 @@ Selectable_text_chapter.prototype.scroll_to = function (_heading_id, _callback) 
     return this;
 };
 
+///**
+// * 儲存到快取中
+// * @param {String} _cache_id
+// * @param {funciton} _callback
+// * @returns {Selectable_text_word}
+// */
+//Selectable_text_chapter.prototype.cache_save = function (_cache_id, _callback) {
+//    _cache_id = _cache_id + '_chapter';
+////    
+////    this.structure = [1,2,4];
+////    $.test_msg("========================\nchapter cache_save structure", this.structure);
+////    
+////    var _stroage = KALS_context.storage;
+//    
+//    var _this = this;
+//    KALS_context.storage.set_json(_cache_id + "_structure"
+//        , this.structure
+//        , function () {
+////            _stroage.get_json(_cache_id + "_structure", function  (_value) {
+////                $.test_msg("structure", [_value, typeof(_value)]);
+////                //_value = $.json_decode(_value);
+////                //$.test_msg("structure 2", [_value, typeof(_value)]);
+////                $.test_msg("==================================");
+////            });
+//            
+//            
+////            $.test_msg("chapter cache_save heading_selector", _this.heading_selector);
+//            
+//            KALS_context.storage.set_json(_cache_id + "_heading_selector"
+//                , _this.heading_selector
+//                , _callback);
+//    });
+//    return this;
+//};
+//
+//
+///**
+// * 從快取中復原
+// * @param {String} _cache_id
+// * @param {funciton} _callback
+// * @returns {Selectable_text_word}
+// */
+//Selectable_text_chapter.prototype.cache_restore = function (_cache_id, _callback) {
+//    _cache_id = _cache_id + '_chapter';
+//    var _this = this;
+//    KALS_context.storage.get_json(_cache_id + "_structure", function (_structure) {
+//        KALS_context.storage.get_json(_cache_id + "_heading_selector", function (_heading_selector) {
+////            $.test_msg("chapter cache_restore _structure", _structure);
+////            $.test_msg("chapter cache_restore _structure type", typeof(_structure));
+//            
+//            //var _heading_selector = $.json_decode(_heading_selector);
+////            $.test_msg("chapter cache_restore _heading_selector", _heading_selector);
+////            $.test_msg("chapter cache_restore _heading_selector type", typeof(_heading_selector));
+////            
+//            //_value = $.json_decode(_value);
+//            //_value = {"structure":[437],"heading_selector":["kals-heading-0","kals-heading-1"]};
+//            //$.test_msg("chapter cache_restore _value 2", [_value, typeof(_value), _value.structure]);
+//            if (typeof(_structure) === "object") {
+//                _this.structure = _structure;
+//            }
+//            if (typeof(_heading_selector) === "object") {
+//                _this.heading_selector = _heading_selector;
+//            }
+//            for (var _s in _this.heading_selector) {
+//                //$.test_msg("chapter cache_restore", _this.heading_selector[_s]);
+//                _this.heading_list.push($("." + _this.heading_selector[_s]));
+//            }
+//            $.trigger_callback(_callback);
+//        });
+//        
+//    });
+//    return this;
+//};
+
+
 /**
- * 儲存到快取中
- * @param {String} _cache_id
- * @param {funciton} _callback
- * @returns {Selectable_text_word}
+ * 取得要快取的資料
+ * @returns {Number}
  */
-Selectable_text_chapter.prototype.cache_save = function (_cache_id, _callback) {
-    _cache_id = _cache_id + '_chapter';
-//    
-//    this.structure = [1,2,4];
-//    $.test_msg("========================\nchapter cache_save structure", this.structure);
-//    
-//    var _stroage = KALS_context.storage;
-    
-    var _this = this;
-    KALS_context.storage.set_json(_cache_id + "_structure"
-        , this.structure
-        , function () {
-//            _stroage.get_json(_cache_id + "_structure", function  (_value) {
-//                $.test_msg("structure", [_value, typeof(_value)]);
-//                //_value = $.json_decode(_value);
-//                //$.test_msg("structure 2", [_value, typeof(_value)]);
-//                $.test_msg("==================================");
-//            });
-            
-            
-//            $.test_msg("chapter cache_save heading_selector", _this.heading_selector);
-            
-            KALS_context.storage.set_json(_cache_id + "_heading_selector"
-                , _this.heading_selector
-                , _callback);
-    });
-    return this;
+Selectable_text_chapter.prototype.get_data = function () {
+    return {
+        structure: this.structure,
+        heading_selector: this.heading_selector
+    };
 };
 
-
 /**
- * 從快取中復原
- * @param {String} _cache_id
- * @param {funciton} _callback
- * @returns {Selectable_text_word}
+ * 設定被快取的資料
+ * @param {Int} _data 從快取中取回的資料
+ * @returns {Selectable_text_paragraph}
  */
-Selectable_text_chapter.prototype.cache_restore = function (_cache_id, _callback) {
-    _cache_id = _cache_id + '_chapter';
-    var _this = this;
-    KALS_context.storage.get_json(_cache_id + "_structure", function (_structure) {
-        KALS_context.storage.get_json(_cache_id + "_heading_selector", function (_heading_selector) {
-//            $.test_msg("chapter cache_restore _structure", _structure);
-//            $.test_msg("chapter cache_restore _structure type", typeof(_structure));
-            
-            //var _heading_selector = $.json_decode(_heading_selector);
-//            $.test_msg("chapter cache_restore _heading_selector", _heading_selector);
-//            $.test_msg("chapter cache_restore _heading_selector type", typeof(_heading_selector));
-//            
-            //_value = $.json_decode(_value);
-            //_value = {"structure":[437],"heading_selector":["kals-heading-0","kals-heading-1"]};
-            //$.test_msg("chapter cache_restore _value 2", [_value, typeof(_value), _value.structure]);
-            if (typeof(_structure) === "object") {
-                _this.structure = _structure;
-            }
-            if (typeof(_heading_selector) === "object") {
-                _this.heading_selector = _heading_selector;
-            }
-            for (var _s in _this.heading_selector) {
-                //$.test_msg("chapter cache_restore", _this.heading_selector[_s]);
-                _this.heading_list.push($("." + _this.heading_selector[_s]));
-            }
-            $.trigger_callback(_callback);
-        });
-        
-    });
+Selectable_text_chapter.prototype.set_data = function (_data) {
+    if ($.is_object(_data)) {
+        this.structure = _data.structure;
+        this.heading_selector = _data.heading_selector;
+        for (var _s in this.heading_selector) {
+            //$.test_msg("chapter cache_restore", _this.heading_selector[_s]);
+            this.heading_list.push($("." + this.heading_selector[_s]));
+        }
+    }
     return this;
 };
 

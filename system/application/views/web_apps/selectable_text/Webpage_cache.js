@@ -87,6 +87,8 @@ Webpage_cache.prototype._save_url = "webpage_cache/save";
  */
 Webpage_cache.prototype.save = function (_data, _callback) {
     
+    _data = $.json_encode(_data);
+    
     _data = this.compress_data(_data);
     var _data_parts = this.split_data(_data);
     
@@ -135,11 +137,22 @@ Webpage_cache.prototype.save = function (_data, _callback) {
     var _complete = function () {
         //$.test_msg("Webpage_cache 儲存了資料");
         if (_callback !== undefined) {
-            $.trigger(_callback);
+            $.trigger_callback(_callback);
         }
     };
     
     return this;
+};
+
+/**
+ * 儲存快取資料到伺服器，物件版本
+ * 
+ * @param {JSON} _data 要儲存的資料
+ * @param {Function} _callback 回呼函數
+ * @returns {Webpage_cache}
+ */
+Webpage_cache.prototype.save_json = function (_data, _callback) {
+    return this.save(_data, _callback);
 };
 
 /**
@@ -215,6 +228,23 @@ Webpage_cache.prototype.load = function (_callback) {
         _this._load_parts(_parts_count, _callback);
     });
     
+    return this;
+};
+
+
+/**
+ * 讀取網頁快取的資料，取得JSON資料
+ * @param {Function} _callback
+ * @returns {Webpage_cache}
+ */
+Webpage_cache.prototype.load_json = function (_callback) {
+    this.load(function (_data) {
+        //$.test_msg("webpage_cache.load_json", _data);
+        _data = $.json_decode(_data);
+        if ($.is_function(_callback)) {
+            _callback(_data);
+        }
+    });
     return this;
 };
 

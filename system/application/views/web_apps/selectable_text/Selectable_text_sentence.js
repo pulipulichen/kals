@@ -224,20 +224,21 @@ Selectable_text_sentence.prototype.get_structure = function () {
 
 // -------------------
 
-/**
- * 儲存到快取中
- * @param {String} _cache_id
- * @param {funciton} _callback
- * @returns {Selectable_text_sentence}
- */
-Selectable_text_sentence.prototype.cache_save = function (_cache_id, _callback) {
-    _cache_id = _cache_id + '_sentence';
-    //var _json = $.json_encode(this.sentence_structure);
-    //$.test_msg('sentence save: ' + _cache_id, _json);
-    //$.localStorage.set(_cache_id, _json);
-    KALS_context.storage.set(_cache_id, this.sentence_structure, _callback)
-    return this;
-};
+///**
+// * 儲存到快取中
+// * @deprecated 20140626 不使用
+// * @param {String} _cache_id
+// * @param {funciton} _callback
+// * @returns {Selectable_text_sentence}
+// */
+//Selectable_text_sentence.prototype.cache_save = function (_cache_id, _callback) {
+//    _cache_id = _cache_id + '_sentence';
+//    //var _json = $.json_encode(this.sentence_structure);
+//    //$.test_msg('sentence save: ' + _cache_id, _json);
+//    //$.localStorage.set(_cache_id, _json);
+//    KALS_context.storage.set(_cache_id, this.sentence_structure, _callback)
+//    return this;
+//};
 
 /**
  * 從快取中復原
@@ -262,6 +263,26 @@ Selectable_text_sentence.prototype.cache_restore = function (_cache_id, _callbac
         }
         $.trigger_callback(_callback);
     });
+    return this;
+};
+
+/**
+ * 取得要快取的資料
+ * @returns {Selectable_text_sentence}
+ */
+Selectable_text_sentence.prototype.get_data = function () {
+    return this.sentence_structure;
+};
+
+/**
+ * 從快取的資料設定
+ * @returns {Selectable_text_sentence}
+ */
+Selectable_text_sentence.prototype.set_data = function (_data) {
+    if (_data !== undefined
+            && $.is_array(_data)) {
+        this.sentence_structure = _data;
+    }
     return this;
 };
 

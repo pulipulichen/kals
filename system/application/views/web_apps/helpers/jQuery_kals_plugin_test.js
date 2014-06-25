@@ -25,4 +25,13 @@ test("<?= $title ?>", function() {
         
     equals(typeof($.substr)
         , "function");
+        
+    var _data = {
+        "test": "test:data"
+    }
+    
+    var _data_string = $.json_encode(_data);
+    _data = $.json_decode(_data_string);
+    equals(_data_string,
+            '{"test":"test:data"}');
 });

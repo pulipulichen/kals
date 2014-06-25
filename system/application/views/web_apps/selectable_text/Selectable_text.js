@@ -1328,39 +1328,50 @@ Selectable_text.prototype.cache_save = function (_callback) {
 //        });
 //    });
     
-    var _ele = [this.word
-        , this.sentence
-        , this.paragraph
-        , this.chapter
-    ];
     
-    var _loop = function (_i) {
-        if (_i === undefined) {
-            _i = 0;
-        }
-//        $.test_msg('cache_save', _i);
-        if (_i < _ele.length) {
-            _ele[_i].cache_save(_cache_id, function () {
-                _i++;
-                _loop(_i);
-            });
-        }
-        else {
-            $.trigger_callback(_callback);
-        }
-    };
-    _loop();
+//    var _ele = [this.word
+//        , this.sentence
+//        , this.paragraph
+//        , this.chapter
+//    ];
+//    
+//    var _loop = function (_i) {
+//        if (_i === undefined) {
+//            _i = 0;
+//        }
+////        $.test_msg('cache_save', _i);
+//        if (_i < _ele.length) {
+//            _ele[_i].cache_save(_cache_id, function () {
+//                _i++;
+//                _loop(_i);
+//            });
+//        }
+//        else {
+//            $.trigger_callback(_callback);
+//        }
+//    };
+//    _loop();
     
-    /*
-    this.word.cache_save(_cache_id, function () {
-        _this.sentence.cache_save(_cache_id, function () {
-            _this.paragraph.cache_save(_cache_id, function () {
-                _this.chapter.cache_save(_cache_id, _callback);
-            });
-        });
-    });
-    */
-    this.cache.save(_text_html);
+    
+//    this.word.cache_save(_cache_id, function () {
+//        _this.sentence.cache_save(_cache_id, function () {
+//            _this.paragraph.cache_save(_cache_id, function () {
+//                _this.chapter.cache_save(_cache_id, _callback);
+//            });
+//        });
+//    });
+    
+    //this.cache.save(_text_html);
+    
+    var _cache_data = {
+        "html": _text_html,
+        "word": this.word.get_data(),
+        "sentence": this.sentence.get_data(),
+        "paragraph": this.paragraph.get_data(),
+        "chapter": this.chapter.get_data()
+    }
+    
+    this.cache.save_json(_cache_data, _callback);
     
     return this;
 };
@@ -1379,45 +1390,57 @@ Selectable_text.prototype.cache_restore = function (_callback) {
     
     var _cache_id = this._cache_id;
     var _this = this;
-    var _loaded_callback = function (_text_html) {
+//    var _loaded_callback = function (_text_html) {
+//        //$.test_msg('cache_restore ' + _cache_id, _text_html);
+//        _this._text.html(_text_html);
+//
+//        var _ele = [_this.word
+//            , _this.sentence
+//            , _this.paragraph
+//            , _this.chapter
+//        ];
+//
+//        var _loop = function (_i) {
+//            if (_i === undefined) {
+//                _i = 0;
+//            }
+////            $.test_msg('cache_restore', _i);
+//            if (_i < _ele.length) {
+//                _ele[_i].cache_restore(_cache_id, function () {
+//                    _i++;
+//                    _loop(_i);
+//                });
+//            }
+//            else {
+//                $.trigger_callback(_callback);
+//            }
+//        };
+//        _loop();
+//
+//        //_this.word.cache_restore(_cache_id, function () {
+//        //    _this.sentence.cache_restore(_cache_id, function () {
+//        //        _this.paragraph.cache_restore(_cache_id, _callback);
+//        //    });
+//        //});
+//    };
+
+    var _loaded_callback = function (_cache_data) {
         //$.test_msg('cache_restore ' + _cache_id, _text_html);
+        var _text_html = _cache_data.html;
         _this._text.html(_text_html);
-
-        var _ele = [_this.word
-            , _this.sentence
-            , _this.paragraph
-            , _this.chapter
-        ];
-
-        var _loop = function (_i) {
-            if (_i === undefined) {
-                _i = 0;
-            }
-//            $.test_msg('cache_restore', _i);
-            if (_i < _ele.length) {
-                _ele[_i].cache_restore(_cache_id, function () {
-                    _i++;
-                    _loop(_i);
-                });
-            }
-            else {
-                $.trigger_callback(_callback);
-            }
-        };
-        _loop();
-
-        //_this.word.cache_restore(_cache_id, function () {
-        //    _this.sentence.cache_restore(_cache_id, function () {
-        //        _this.paragraph.cache_restore(_cache_id, _callback);
-        //    });
-        //});
+        _this.word.set_data(_cache_data.word);
+        _this.sentence.set_data(_cache_data.sentence);
+        _this.paragraph.set_data(_cache_data.paragraph);
+        _this.chapter.set_data(_cache_data.chapter);
+        
+        $.trigger_callback(_callback);
     };
     
     /*
     KALS_context.storage.get(_cache_id, _loaded_callback);
     */
    
-    this.cache.load(_loaded_callback);
+    this.cache.load_json(_loaded_callback);
     return this;
 };
 
