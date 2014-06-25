@@ -181,6 +181,7 @@ KALS_util.ajax_get = function (_config) {
         if (_retry !== null && _retry > 0) {
             
             if (_callback_parameter !== "?") {
+                $.test_msg("$.ajax_get start to load", _url);
                 //$.test_msg("開始計時", _retry_wait);
             }
             _retry_timer = setInterval(function () {

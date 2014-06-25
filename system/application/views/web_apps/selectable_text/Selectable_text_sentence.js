@@ -232,7 +232,7 @@ Selectable_text_sentence.prototype.get_structure = function () {
  */
 Selectable_text_sentence.prototype.cache_save = function (_cache_id, _callback) {
     _cache_id = _cache_id + '_sentence';
-    var _json = $.json_encode(this.sentence_structure);
+    //var _json = $.json_encode(this.sentence_structure);
     //$.test_msg('sentence save: ' + _cache_id, _json);
     //$.localStorage.set(_cache_id, _json);
     KALS_context.storage.set(_cache_id, _json, _callback)
@@ -252,10 +252,13 @@ Selectable_text_sentence.prototype.cache_restore = function (_cache_id, _callbac
     //this.sentence_structure = $.json_decode(_json);
     
     var _this = this;
-    KALS_context.storage.get(_cache_id, function (_value) {
-        var _cache = $.json_decode(_value);
-        if (_cache !== null) {
-            _this.sentence_structure = $.json_decode(_value);
+    KALS_context.storage.get_json(_cache_id, function (_value) {
+        //var _cache = $.json_decode(_value);
+        //if (_value !== null) {
+        //    _this.sentence_structure = $.json_decode(_value);
+        //}
+        if ($.is_array(_value)) {
+            _this.sentence_structure = _value;
         }
         $.trigger_callback(_callback);
     });

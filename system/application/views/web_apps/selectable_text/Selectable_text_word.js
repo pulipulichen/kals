@@ -635,7 +635,10 @@ Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
     _cache_id = _cache_id + '_word';
     var _this = this;
     KALS_context.storage.get(_cache_id, function (_value) {
-        _this.word_count = _value;
+        if (_value !== undefined) {
+            _this.word_count = _value;
+        }
+        
         $.trigger_callback(_callback);
     });
     //this.word_count = $.localStorage.get(_cache_id);

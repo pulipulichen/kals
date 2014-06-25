@@ -285,7 +285,9 @@ Selectable_text_paragraph.prototype.cache_restore = function (_cache_id, _callba
     //this.paragraph_count = $.localStorage.get(_cache_id);
     var _this = this;
     KALS_context.storage.get(_cache_id, function (_value) {
-        _this.paragraph_count = _value;
+        if (_value !== undefined) {
+            _this.paragraph_count = _value;
+        }
         $.trigger_callback(_callback);
     });
     //$.test_msg('paragraph restore: ' + _cache_id, this.paragraph_count);
