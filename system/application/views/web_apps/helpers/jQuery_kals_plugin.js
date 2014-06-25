@@ -2430,10 +2430,10 @@ jQuery.load_scroll_position = function () {
     
     var _this = this;
     if (LOCK_SCROLL_LOCK === "saved") {
-        LOCK_SCROLL_LOCK = "loading";
-
         _scroll_to();
+        
         setTimeout(function () {
+            LOCK_SCROLL_LOCK = "loading";
             _scroll_to();
             
             setTimeout(function () {
