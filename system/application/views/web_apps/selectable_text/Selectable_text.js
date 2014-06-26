@@ -278,7 +278,7 @@ Selectable_text.prototype.initialize = function (_callback) {
         // 全部處理完了
         _this.sentence.add_structure();
         _this.paragraph.add_structure();
-        _this.chapter.add_structure();
+        _this.chapter.add_ending_structure();
         
         // 全部處理完了
         //$.test_msg("paragraph feature", _this.paragraph_feature);

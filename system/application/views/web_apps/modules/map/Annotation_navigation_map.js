@@ -494,6 +494,9 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
     var _chapter = KALS_text.selection.text.chapter;
     //var _structure = _chapter.get_structure();
     var _heading_list = _chapter.get_heading_list(); 
+    
+    _chapter.get_data();
+    $.test_msg("Annotation_navigation_map._change_tab_process_data()", _heading_list);
    
     var _list_content;
     if (this.order_by_article === true) {
@@ -527,7 +530,10 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
         //_list_item.append("<div class='list-header-component other-type'></div>");
         
         var _heading_div = $("<div class='list-header-component'></div>");
-        var _heading_text = _heading_list[_heading_number].text();
+        var _heading_text = "";
+        if (typeof(_heading_list[_heading_number]) === "object") {
+            _heading_text = _heading_list[_heading_number].text();
+        }
         var _heading_btn = $("<span "  
                  + " type_id='" + _type_id + "' "
                  + "heading_id='" + _heading_number +"' >" 

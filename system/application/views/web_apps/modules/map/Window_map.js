@@ -144,32 +144,7 @@ Window_map.prototype._$create_ui = function () {
         _li.html("<a href='#map-header"+ _count +"-anchor' class='map-catalog'>"+ _header_text + "</a><ul></ul>");
 
         _li.find("a.map-catalog:first").click(function () {
-            var _this = $(this);
-            var _href = _this.attr("href");
-            //$.test_msg("map-heaer", [$(_id).length, _id]);
-
-            //var _offset = $(_href).offset();
-            var _offset = $.get_offset(_offset);
-            if (_offset.top > 60) {
-                setTimeout(function () {
-                    $(window).scrollTop(_offset.top - 60);
-                }, 0);
-            }
-
-            //記錄資料
-            var _action = "29";	//29=小地圖點選章節標題，note={index:1, title:"標題內文"}
-
-            var _title = _this.text();
-            var _id = $.str_replace("#map-header", "", _href);
-            _id = $.str_replace("-anchor", "", _id);
-            _id = parseInt(_id, 10);
-
-            var _note = {
-                "index": _id,
-                "title": _title 
-            };
-
-            KALS_util.log(_action, _note);
+            _this.click_map_item(this);
         });
 
         //_header_array[_count] = _header.offset().top;		
@@ -420,6 +395,35 @@ Window_map.prototype.nav_config = {
 Window_map.prototype.disable_menu = function () {
     KALS_toolbar.toolbar.get_ui().find(".navigation-list ." + this.name).parent().hide();
     return this;
+};
+
+Window_map.prototype.click_map_item = function (_item) {
+    var _this = $(_item);
+    var _href = _this.attr("href");
+    //$.test_msg("map-heaer", [$(_id).length, _id]);
+
+    //var _offset = $(_href).offset();
+    var _offset = $.get_offset(_offset);
+    if (_offset.top > 60) {
+        setTimeout(function () {
+            $(window).scrollTop(_offset.top - 60);
+        }, 0);
+    }
+
+    //記錄資料
+    var _action = "29";	//29=小地圖點選章節標題，note={index:1, title:"標題內文"}
+
+    var _title = _this.text();
+    var _id = $.str_replace("#map-header", "", _href);
+    _id = $.str_replace("-anchor", "", _id);
+    _id = parseInt(_id, 10);
+
+    var _note = {
+        "index": _id,
+        "title": _title 
+    };
+
+    KALS_util.log(_action, _note);
 };
 
 /* End of file Window_filter */

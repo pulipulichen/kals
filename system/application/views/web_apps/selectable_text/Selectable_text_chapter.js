@@ -76,9 +76,17 @@ Selectable_text_chapter.prototype.classname = "kals-heading";
  * @returns {Selectable_text_chapter}
  */
 Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
+    
     var _word_count = this._selectable_text.word.word_count;
-   
-    if (_child_obj !== undefined) {
+    
+    var _temp_heading = false;
+    if (_child_obj === undefined) {
+        _temp_heading = true;
+        _child_obj = this.get_temp_top_heading(_word_count);
+    }
+    
+    if (_child_obj !== undefined
+            && _temp_heading === false) {
         var _selectable_text_word = this._selectable_text.word;
         _child_obj = $(_child_obj);
         var _word_classname = _selectable_text_word.word_classname;
@@ -100,7 +108,7 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
     if (_word_count < 1) {
         if (typeof(this.structure) === "undefined"
                 || this.structure === null) {
-            KALS_util.show_exception("找不到Selectable_text_cahpter.structure");
+            KALS_util.show_exception("Cannot Found Selectable_text_cahpter.structure");
         }
         _structure_count = this.structure.length;
         //$(_child_obj).addClass(this.classname + "-" + _structure_count)
@@ -108,18 +116,74 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
         _add_class(_child_obj, _structure_count);
         return _structure_count;
     }
-    if (this.structure.length === 0) {
-        this.structure.push(_word_count);
+    else {
+        if (this.structure.length === 0) {
+            this.structure.push(_word_count);
+        }
+        else if (_word_count !== this.structure[this.structure.length-1]) {
+            this.structure.push(_word_count);
+        }
+        _structure_count = (this.structure.length - 1);
+        //$(_child_obj).addClass(this.classname + "-" + (_structure_count + 1))
+        //        .addClass(this.classname);
+        _add_class(_child_obj, (_structure_count+1));
+
+        return _structure_count;
     }
-    else if (_word_count !== this.structure[this.structure.length-1]) {
-        this.structure.push(_word_count);
+};
+
+/**
+ * 增加句子的結構
+ * 
+ * 要取得句子的第一部分
+ * @param {jQuery} _child_obj 子節點
+ * @returns {Selectable_text_chapter}
+ */
+Selectable_text_chapter.prototype.add_ending_structure = function () {
+    
+    var _word_count = this._selectable_text.word.word_count;
+    
+    var _temp_heading = false;
+    
+    var _structure_count;
+    if (_word_count < 1) {
+        if (typeof(this.structure) === "undefined"
+                || this.structure === null) {
+            KALS_util.show_exception("Cannot Found Selectable_text_cahpter.structure");
+        }
     }
-    _structure_count = (this.structure.length - 1);
-    //$(_child_obj).addClass(this.classname + "-" + (_structure_count + 1))
-    //        .addClass(this.classname);
-    _add_class(_child_obj, (_structure_count+1));
+    else {
+        if (this.structure.length === 0) {
+            this.structure.push(_word_count);
+        }
+        else if (_word_count !== this.structure[this.structure.length-1]) {
+            this.structure.push(_word_count);
+        }
+    }
+    _structure_count = this.structure.length;
+    
+    if (_structure_count > this.heading_list.length) {
+        var _heading = this.get_temp_top_heading();
+        var _heading_selector = this.classname + "-top-heading";
+        this.heading_list.unshift(_heading);
+        this.heading_selector.unshift(_heading_selector);
+    }
     
     return _structure_count;
+};
+
+/**
+ * 建立暫存的標題
+ * @param {int} _word_count
+ * @returns {jQuery}
+ */
+Selectable_text_chapter.prototype.get_temp_top_heading = function (_word_count) {
+    var _text = document.title;
+    var _heading = $("<span></span>")
+            .html(_text)
+            .addClass(this.classname + "-top-heading");
+    
+    return _heading;
 };
 
 /**
@@ -300,10 +364,13 @@ Selectable_text_chapter.prototype.scroll_to = function (_heading_id, _callback) 
  * @returns {Number}
  */
 Selectable_text_chapter.prototype.get_data = function () {
-    return {
+    var _data = {
         structure: this.structure,
-        heading_selector: this.heading_selector
+        heading_selector: this.heading_selector,
+        heading_list: this.heading_list.length
     };
+    $.test_msg("chapter.get_data()", _data);
+    return _data;
 };
 
 /**
@@ -317,7 +384,16 @@ Selectable_text_chapter.prototype.set_data = function (_data) {
         this.heading_selector = _data.heading_selector;
         for (var _s in this.heading_selector) {
             //$.test_msg("chapter cache_restore", _this.heading_selector[_s]);
-            this.heading_list.push($("." + this.heading_selector[_s]));
+            
+            var _selector = this.heading_selector[_s];
+            var _heading;
+            if (_selector === this.classname + "-top-heading") {
+                _heading = this.get_temp_top_heading();
+            }
+            else {
+                _heading = $("." + _selector);
+            }
+            this.heading_list.push(_heading);
         }
     }
     return this;

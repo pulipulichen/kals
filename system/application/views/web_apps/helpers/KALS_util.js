@@ -325,11 +325,12 @@ KALS_util.ajax_local_get = function (_config) {
     var _get_callback = function (_data) {
         //$.getJSON(_url, function (_data) {
         
-        if (typeof(_data.response) !== "undefined") {
+        if (typeof(_data) !== "undefined" 
+                && typeof(_data.response) !== "undefined") {
             _data = _data.response;
         }
         
-        $.test_msg("ajax_local_get get_callback", _data);
+        //$.test_msg("ajax_local_get get_callback", _data);
         
         if (KALS_context !== undefined
                 && KALS_context.completed === true) {
@@ -348,7 +349,8 @@ KALS_util.ajax_local_get = function (_config) {
             delete _retry_timer;
         }
 
-        if (typeof(_data.exception) !== 'undefined') {            
+        if (typeof(_data) !== 'undefined'
+                && typeof(_data.exception) !== 'undefined') {
             if ($.is_function(_exception_handle)) {
                 _exception_handle(_data.exception, _url);
             }
