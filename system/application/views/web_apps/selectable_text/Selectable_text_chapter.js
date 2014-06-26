@@ -180,6 +180,10 @@ Selectable_text_chapter.prototype.add_ending_structure = function () {
 Selectable_text_chapter.prototype.get_temp_top_heading = function (_word_count) {
     var _text = document.title;
     //$.test_msg("chapter.get_temp_top_heading()", [_text, typeof(_text), _text === ""]);
+    if (_text.lastIndexOf("#") > -1) {
+        _text = _text.substr(0, _text.lastIndexOf("#"));
+    }
+    
     if (_text === undefined 
             || _text === null 
             || _text === "") {
