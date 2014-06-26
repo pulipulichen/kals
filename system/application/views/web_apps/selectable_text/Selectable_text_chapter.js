@@ -179,6 +179,18 @@ Selectable_text_chapter.prototype.add_ending_structure = function () {
  */
 Selectable_text_chapter.prototype.get_temp_top_heading = function (_word_count) {
     var _text = document.title;
+    //$.test_msg("chapter.get_temp_top_heading()", [_text, typeof(_text), _text === ""]);
+    if (_text === undefined 
+            || _text === null 
+            || _text === "") {
+        
+        var _lang = new KALS_language_param(
+                    "(TOP)",
+                    "kals_text.selectable_text_chapter.top_heading"
+                );
+        
+        _text = KALS_context.lang.line(_lang);
+    }
     var _heading = $("<span></span>")
             .html(_text)
             .addClass(this.classname + "-top-heading");
