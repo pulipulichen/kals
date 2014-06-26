@@ -378,10 +378,10 @@ Selectable_text_chapter.prototype.scroll_to = function (_heading_id, _callback) 
 Selectable_text_chapter.prototype.get_data = function () {
     var _data = {
         structure: this.structure,
-        heading_selector: this.heading_selector,
-        heading_list: this.heading_list.length
+        heading_selector: this.heading_selector
+        //heading_list: this.heading_list.length
     };
-    $.test_msg("chapter.get_data()", _data);
+    //$.test_msg("chapter.get_data()", _data);
     return _data;
 };
 

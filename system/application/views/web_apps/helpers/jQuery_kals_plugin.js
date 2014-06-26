@@ -2192,7 +2192,7 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     else {
         _target_y = $.get_offset_top(_position.selector);
         
-        $.test_msg("scroll to selector", [_target_y, _position.selector, KALS_toolbar.get_height()]);
+        //$.test_msg("scroll to selector", [_target_y, _position.selector, KALS_toolbar.get_height()]);
         
         if (KALS_text !== undefined) {
             _target_y = _target_y - KALS_toolbar.get_height();

@@ -496,7 +496,7 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
     var _heading_list = _chapter.get_heading_list(); 
     
     _chapter.get_data();
-    $.test_msg("Annotation_navigation_map._change_tab_process_data()", _heading_list);
+    //$.test_msg("Annotation_navigation_map._change_tab_process_data()", _heading_list);
    
     var _list_content;
     if (this.order_by_article === true) {

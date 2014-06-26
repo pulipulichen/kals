@@ -334,7 +334,7 @@ KALS_authentication.prototype.request_embed_email = function (_callback) {
         
         var _this = this;
         if ($.is_url(_url) || $.starts_with(_url, "/")) {
-            $.test_msg("內嵌登入，是網址", _url);
+            //$.test_msg("內嵌登入，是網址", _url);
             
             if (_url.indexOf("?") === -1) {
                 _url = _url + "?" + $.create_id("auth");
