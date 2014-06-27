@@ -28,7 +28,7 @@
 }
 
 .KALS.dialog-modal.window dd.message {
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: auto;
 }
 

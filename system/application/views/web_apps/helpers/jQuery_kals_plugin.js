@@ -131,8 +131,8 @@ jQuery.test_msg = function (_title, _test) {
 jQuery.substr = function(_str, _start, _length) {
     _str = _str + '';
     if (_start < 0) {
-		_start = _str.length + _start;
-	}
+        _start = _str.length + _start;
+    }
     if (this.isset(_length) === false) {
         return _str.substr(_start);
     }
@@ -172,12 +172,12 @@ jQuery.starts_with = function(_str, _prefix) {
     _str = _str + '';
     var _len = _prefix.length;
     var _start = 0;
-    if (_str.substr(_start, _len) == _prefix) {
-		return true;
-	}
-	else {
-		return false;
-	}
+    if (_str.substr(_start, _len) === _prefix) {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 /**
@@ -430,7 +430,7 @@ jQuery.addslashes = function (_str) {
     // *     example 1: addslashes("kevin's birthday");
     // *     returns 1: 'kevin\'s birthday'
 
-    _str = (_str+'').replace(/[\\"']/g, '\\$&')
+    _str = (_str+'').replace(/[\\"'\:]/g, '\\$&')
             .replace(/\u0000/g, '\\0');
     return _str;
 };

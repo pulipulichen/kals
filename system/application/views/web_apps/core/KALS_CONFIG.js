@@ -256,7 +256,15 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    //selectable_text_cache: true,
+    selectable_text_cache: true,
+    
+    /**
+     * 是否覆寫選取文字快取
+     * 當文字修改之後要重新建立快取時，可以啟用這個選項
+     * 如果該選項一直維持true，則會強制一直覆寫快取，而不會讀取快取
+     * @type Boolean
+     */
+    selectable_text_clean_overwrite: false,
     
     /**
      * 是否啟用搜尋工具列
