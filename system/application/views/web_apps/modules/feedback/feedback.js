@@ -281,7 +281,7 @@ window.Feedback = function( options ) {
     options = options || {};
 
     button = element( "button", options.label );
-    button.className = "feedback-btn feedback-bottom-right";
+    button.className = "feedback-btn feedback-bottom-right KALS";
 
     button.setAttribute(H2C_IGNORE, true);
 

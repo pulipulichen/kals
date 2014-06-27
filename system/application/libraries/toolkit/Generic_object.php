@@ -925,8 +925,8 @@ class Generic_object extends KALS_object {
                     && (FALSE === self::_check_unique($this)
                         OR FALSE === self::_check_not_null($data, $this->not_null_field)) )
                 {
-                    test_msg('約束沒過 ['.get_class($this).'] (_check_unique='.self::_check_unique($this).'; _check_not_null='.self::_check_not_null($data, $this->not_null_field).')'
-                        , $data);
+                    //test_msg('約束沒過 ['.get_class($this).'] (_check_unique='.self::_check_unique($this).'; _check_not_null='.self::_check_not_null($data, $this->not_null_field).')'
+                    //    , $data);
                     return $this;
                 }
 

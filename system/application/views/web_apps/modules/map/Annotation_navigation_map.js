@@ -494,6 +494,9 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
     var _chapter = KALS_text.selection.text.chapter;
     //var _structure = _chapter.get_structure();
     var _heading_list = _chapter.get_heading_list(); 
+    
+    _chapter.get_data();
+    //$.test_msg("Annotation_navigation_map._change_tab_process_data()", _heading_list);
    
     var _list_content;
     if (this.order_by_article === true) {
@@ -527,7 +530,10 @@ Annotation_navigation_map.prototype._change_tab_process_data = function (_data, 
         //_list_item.append("<div class='list-header-component other-type'></div>");
         
         var _heading_div = $("<div class='list-header-component'></div>");
-        var _heading_text = _heading_list[_heading_number].text();
+        var _heading_text = "";
+        if (typeof(_heading_list[_heading_number]) === "object") {
+            _heading_text = _heading_list[_heading_number].text();
+        }
         var _heading_btn = $("<span "  
                  + " type_id='" + _type_id + "' "
                  + "heading_id='" + _heading_number +"' >" 
@@ -1026,6 +1032,25 @@ Annotation_navigation_map.prototype.init_tabs = function () {
     //this.set_field("annotation_type", ["全部", "重要", "困惑", "質疑", "舉例"]);
     
     //$.test_msg("Annotation_navigation_map.init_tabs() end");
+};
+
+/**
+ * 開啟前的檢查
+ * @returns {Annotation_navigation_map}
+ */
+Annotation_navigation_map.prototype._$onopen = function (_callback) {
+    var _has_heading = KALS_text.selection.text.chapter.has_heading();
+    //_has_heading = false;
+    if (_has_heading === false) {
+        var _msg = new KALS_language_param(
+                "No heading found.",
+                "window.map.no_heading_found"
+        );
+        //_msg = "找不到資料";
+        KALS_util.show_exception(_msg);
+        return this;
+    }
+    return this;
 };
 
 /* End of file Annotation_navigation_map */

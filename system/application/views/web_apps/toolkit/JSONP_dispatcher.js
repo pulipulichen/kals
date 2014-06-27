@@ -20,10 +20,10 @@ function JSONP_dispatcher(_url) {
     
     //this._data = null;
     if ($.isset(_url)) {
-		this.set_load_url(_url);
-	}
-    
-	this._register_context();
+        this.set_load_url(_url);
+    }
+
+    this._register_context();
 }
 
 JSONP_dispatcher.prototype = new Event_dispatcher();

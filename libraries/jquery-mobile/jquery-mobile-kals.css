@@ -11,3 +11,6 @@ and open the template in the editor.
 .KALS span.ui-li-count {
     position: absolute;
 }
+.ui-listview {
+    border: 1px solid #DDD;
+}

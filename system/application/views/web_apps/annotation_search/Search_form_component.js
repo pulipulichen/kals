@@ -26,26 +26,26 @@ Search_form_component.prototype._$create_ui = function () {
     var _ui = $('<table class="search-form"><tbody><tr></tr></tbody></table>')
 		.addClass("search-component");
     
-	if ($.is_null(this._window_search)) {
-		this._window_search = new Window_search();
-	}
-	
-	var _tr = _ui.find("tr:first");
-	
-	//var _range_td = $("<td></td>")
-	//	.addClass("range")
-	//	.appendTo(_tr); 
-	
-	var _input_td = $("<td></td>")
-		.addClass("input")
-		.appendTo(_tr);
-	
-	var _range = this._create_range_ui()
-		.appendTo(_input_td);
-	
-	var _type = this._create_type_ui()
-		.hide()
-		.appendTo(_input_td);
+    if ($.is_null(this._window_search)) {
+        this._window_search = KALS_context.search;
+    }
+
+    var _tr = _ui.find("tr:first");
+
+    //var _range_td = $("<td></td>")
+    //	.addClass("range")
+    //	.appendTo(_tr); 
+
+    var _input_td = $("<td></td>")
+            .addClass("input")
+            .appendTo(_tr);
+
+    var _range = this._create_range_ui()
+            .appendTo(_input_td);
+
+    var _type = this._create_type_ui()
+            .hide()
+            .appendTo(_input_td);
 		
     var _input = this._create_input()
 		.appendTo(_input_td);

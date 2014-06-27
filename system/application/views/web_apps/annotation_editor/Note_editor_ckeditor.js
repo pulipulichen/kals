@@ -374,9 +374,13 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
  */
 Note_editor_ckeditor.prototype.set_text = function (_text) {
     var _setted_text = this.get_text();
+    _setted_text = $.trim(_setted_text);
     
     if ($.is_null(_text)) {
-        _text = '12212';
+        _text = '';
+    }
+    else {
+        _text = $.trim(_text);
     }
     
 	/*
@@ -388,24 +392,29 @@ Note_editor_ckeditor.prototype.set_text = function (_text) {
 	//$.test_msg("Note_editor_ckeditor.set_text()", _text);
 	
     var _ui = this.get_ui('.note-editor-textarea:first');
-    $.save_scroll_position();
-	
-	
+    
+    
     //為了避免CKeditor還沒初始化前就設定，我們必須等它一下。
+    var _this = this;
     var _set_data = function () {
         if (typeof(_ui.ckeditorGet) !== "function") {
                 $.test_msg("check _ui.ckeditorGet() failed", typeof(_ui.ckeditorGet));
             throw "CKeditor_not_ready"; 
             return;
         }
-
-        _ui.ckeditorGet().setData(_text, function () {
+        
+        //$.test_msg("CHeditor", [_setted_text, _text]);
+        if (_setted_text === _text) {
+            //$.test_msg("CHeditor 沒問題");
+            return this;
+        }
+        
+        $.save_scroll_position();
+        //_ui.ckeditorGet().setData(_text, function () {
             //$.test_msg("Note_editor_ckeditor.set_text() ok", _text);
-            setTimeout(function () {
-                $.load_scroll_position();    
-            }, 0);
-
-        });
+        //});
+        _ui.ckeditorGet().setData(_text);
+        $.load_scroll_position();
     };
 
     var _loop_count = 0;

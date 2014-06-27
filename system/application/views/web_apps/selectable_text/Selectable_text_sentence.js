@@ -20,6 +20,7 @@ function Selectable_text_sentence(_selectable_text) {
     
     this._selectable_text = _selectable_text;
     this._text = _selectable_text._text;
+    this.sentence_structure = [];
     return this;
 }
 
@@ -89,33 +90,34 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     var _selectable_text_word = this._selectable_text.word;
     
     //如果已經作過這樣的分析的話
-    if (this._text.find('.'+this.sententce_index_classname).length > 0)
-    {
-            var _sentences = this._text.find('.'+this.sententce_index_classname);
-            var _sentence_index = [];
-            for (var _i = 0; _i < _sentences.length; _i++)
-            {
-                    var _sentence = _sentences.eq(_i);
-                    var _word_id = _sentence.attr('id');
-                    _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
-                    _word_id = parseInt(_word_id,10);
-                    _sentence_index.push(_word_id);
+    if (this._text.find('.'+this.sententce_index_classname).length > 0) {
+        var _sentences = this._text.find('.'+this.sententce_index_classname);
+        var _sentence_index = [];
+        for (var _i = 0; _i < _sentences.length; _i++) {
+            var _sentence = _sentences.eq(_i);
+            var _word_id = _sentence.attr('id');
+            _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
+            _word_id = parseInt(_word_id,10);
+            
+            if (_word_id !== null) {
+                _sentence_index.push(_word_id);
             }
+        }
 
-            return _sentence_index;
+        return _sentence_index;
     }
 
     //先來看被視為分句的標點符號位置
-    _sentence_index = [0];
+    var _sentence_index = [0];
     var _sentence_punctuation =  $('.'+this.sententce_punctuation_classname);
 
-    for (var _s = 0; _s < _sentence_punctuation.length; _s++)
-    {
-            var _id = _sentence_punctuation.eq(_s).attr('id');
-            //kals_word_953
-            //_id = _id.substring(10, _id.length);
-            _id = $.get_prefixed_id(_id);
-            _sentence_index.push(parseInt(_id,10));	
+    
+    for (var _s = 0; _s < _sentence_punctuation.length; _s++) {
+        var _id = _sentence_punctuation.eq(_s).attr('id');
+        //kals_word_953
+        //_id = _id.substring(10, _id.length);
+        _id = $.get_prefixed_id(_id);
+        _sentence_index.push(parseInt(_id,10));	
     }
 
     //再來看段落的最後一個字
@@ -131,8 +133,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     for (_i = 0; _i < _last_pid+1; _i++) {
         var _paragraph = $('.' + this.paragraph_id_prefix + _i + ":last");
 
-        if (_paragraph.length === 1) 
-        {
+        if (_paragraph.length === 1) {
             _last_word = _paragraph.find('.'
                     + _selectable_text_word.word_classname 
                     + '.tooltip-trigger:last:not(.' 
@@ -223,20 +224,21 @@ Selectable_text_sentence.prototype.get_structure = function () {
 
 // -------------------
 
-/**
- * 儲存到快取中
- * @param {String} _cache_id
- * @param {funciton} _callback
- * @returns {Selectable_text_sentence}
- */
-Selectable_text_sentence.prototype.cache_save = function (_cache_id, _callback) {
-    _cache_id = _cache_id + '_sentence';
-    var _json = $.json_encode(this.sentence_structure);
-    //$.test_msg('sentence save: ' + _cache_id, _json);
-    //$.localStorage.set(_cache_id, _json);
-    KALS_context.storage.set(_cache_id, _json, _callback)
-    return this;
-};
+///**
+// * 儲存到快取中
+// * @deprecated 20140626 不使用
+// * @param {String} _cache_id
+// * @param {funciton} _callback
+// * @returns {Selectable_text_sentence}
+// */
+//Selectable_text_sentence.prototype.cache_save = function (_cache_id, _callback) {
+//    _cache_id = _cache_id + '_sentence';
+//    //var _json = $.json_encode(this.sentence_structure);
+//    //$.test_msg('sentence save: ' + _cache_id, _json);
+//    //$.localStorage.set(_cache_id, _json);
+//    KALS_context.storage.set(_cache_id, this.sentence_structure, _callback)
+//    return this;
+//};
 
 /**
  * 從快取中復原
@@ -251,10 +253,36 @@ Selectable_text_sentence.prototype.cache_restore = function (_cache_id, _callbac
     //this.sentence_structure = $.json_decode(_json);
     
     var _this = this;
-    KALS_context.storage.get(_cache_id, function (_value) {
-        _this.sentence_structure = $.json_decode(_value);
+    KALS_context.storage.get_json(_cache_id, function (_value) {
+        //var _cache = $.json_decode(_value);
+        //if (_value !== null) {
+        //    _this.sentence_structure = $.json_decode(_value);
+        //}
+        if ($.is_array(_value)) {
+            _this.sentence_structure = _value;
+        }
         $.trigger_callback(_callback);
     });
+    return this;
+};
+
+/**
+ * 取得要快取的資料
+ * @returns {Selectable_text_sentence}
+ */
+Selectable_text_sentence.prototype.get_data = function () {
+    return this.sentence_structure;
+};
+
+/**
+ * 從快取的資料設定
+ * @returns {Selectable_text_sentence}
+ */
+Selectable_text_sentence.prototype.set_data = function (_data) {
+    if (_data !== undefined
+            && $.is_array(_data)) {
+        this.sentence_structure = _data;
+    }
     return this;
 };
 

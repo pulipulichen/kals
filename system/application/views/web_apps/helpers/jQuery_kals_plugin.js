@@ -294,7 +294,15 @@ jQuery.json_encode = function (_json) {
  * @returns {Object}
  */
 jQuery.json_decode = function (_string) {
-    return eval(_string);
+    _string = this.trim(_string);
+    try {
+        //return eval(_string);
+        return $.parseJSON(_string);
+    }
+    catch (e) {
+        KALS_util.show_exception(e);
+        return "";
+    }
 };
 
 /**
@@ -306,16 +314,14 @@ jQuery.json_decode = function (_string) {
  */
 jQuery.serialize_json = function (_json) {
     if (this.is_number(_json) || this.is_boolean(_json) || this.is_null(_json)) {
-		return _json;
-	}
-	else 
-		if (this.is_string(_json)) {
-			return this.serialize_string(_json);
-		}
-		else 
-			if (this.is_array(_json)) {
-				return this.serialize_array(_json);
-			}
+        return _json;
+    }
+    else if (this.is_string(_json)) {
+        return this.serialize_string(_json);
+    }
+    else if (this.is_array(_json)) {
+        return this.serialize_array(_json);
+    }
 
     var _output = '';
 
@@ -323,31 +329,28 @@ jQuery.serialize_json = function (_json) {
         var _attr = '"'+_key+'":';
         var _value = _json[_key];
         if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value)) {
-			_attr += _value;
-		}
-		else 
-			if (this.is_string(_value)) {
-				_attr += this.serialize_string(_value);
-			}
-			else 
-				if (this.is_array(_value)) {
-					_attr += this.serialize_array(_value);
-				}
-				else 
-					if (this.is_object(_value)) {
-						if (typeof(_value.to_string) == 'function') {
-							_attr += _value.to_string();
-						}
-						else {
-							var _class_name = $.get_class(_value);
-							if (_class_name == 'Object') {
-								_attr += this.serialize_json(_value);
-							}
-							else {
-								_attr += '[Object: ' + _class_name + ']';
-							}
-						}
-					}
+            _attr += _value;
+        }
+        else if (this.is_string(_value)) {
+            _attr += this.serialize_string(_value);
+        }
+        else if (this.is_array(_value)) {
+            _attr += this.serialize_array(_value);
+        }
+        else if (this.is_object(_value)) {
+            if (typeof(_value.to_string) === 'function') {
+                _attr += _value.to_string();
+            }
+            else {
+                var _class_name = $.get_class(_value);
+                if (_class_name === 'Object') {
+                    _attr += this.serialize_json(_value);
+                }
+                else {
+                    _attr += '[Object: ' + _class_name + ']';
+                }
+            }
+        }
 
         _output = this.combine_comma(_output);
         _output += _attr;
@@ -359,16 +362,14 @@ jQuery.serialize_json = function (_json) {
 
 jQuery.serialize_array = function (_array) {
     if (this.is_number(_array) || this.is_boolean(_array) || this.is_null(_array)) {
-		return _array;
-	}
-	else 
-		if (this.is_string(_array)) {
-			return this.serialize_string(_array);
-		}
-		else 
-			if (this.is_object(_array)) {
-				return this.serialize_json(_array);
-			}
+        return _array;
+    }
+    else if (this.is_string(_array)) {
+        return this.serialize_string(_array);
+    }
+    else if (this.is_object(_array)) {
+        return this.serialize_json(_array);
+    }
 
     var _output = '';
 
@@ -376,20 +377,17 @@ jQuery.serialize_array = function (_array) {
         var _attr = "";
         var _value = _array[_key];
         if (this.is_number(_value) || this.is_boolean(_value) || this.is_null(_value)) {
-			_attr += _value;
-		}
-		else 
-			if (this.is_string(_value)) {
-				_attr += this.serialize_string(_value);
-			}
-			else 
-				if (this.is_array(_value)) {
-					_attr += this.serialize_array(_value);
-				}
-				else 
-					if (this.is_object(_value)) {
-						_attr += this.serialize_json(_value);
-					}
+            _attr += _value;
+        }
+        else if (this.is_string(_value)) {
+            _attr += this.serialize_string(_value);
+        }
+        else if (this.is_array(_value)) {
+            _attr += this.serialize_array(_value);
+        }
+        else if (this.is_object(_value)) {
+            _attr += this.serialize_json(_value);
+        }
 
         _output = this.combine_comma(_output);
         _output += _attr;
@@ -401,21 +399,19 @@ jQuery.serialize_array = function (_array) {
 
 jQuery.serialize_string = function (_str) {
     if (this.is_number(_str) || this.is_boolean(_str) || this.is_null(_str)) {
-		try {
-			return _str;
-		}
-		catch (_e) {
-			return 'exception: ' + _e;
-		}
-	}
-	else 
-		if (this.is_array(_str)) {
-			return this.serialize_array(_str);
-		}
-		else 
-			if (this.is_object(_str)) {
-				return this.serialize_json(_str);
-			}
+        try {
+            return _str;
+        }
+        catch (_e) {
+            return 'exception: ' + _e;
+        }
+    }
+    else if (this.is_array(_str)) {
+        return this.serialize_array(_str);
+    }
+    else if (this.is_object(_str)) {
+        return this.serialize_json(_str);
+    }
 
     _str = this.addslashes(_str);
     return '"'+_str+'"';
@@ -434,13 +430,15 @@ jQuery.addslashes = function (_str) {
     // *     example 1: addslashes("kevin's birthday");
     // *     returns 1: 'kevin\'s birthday'
 
-    return (_str+'').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+    _str = (_str+'').replace(/[\\"']/g, '\\$&')
+            .replace(/\u0000/g, '\\0');
+    return _str;
 };
 
 jQuery.combine_comma = function (_str) {
     if (_str !== '') {
-		_str += ',';
-	}
+        _str += ',';
+    }
     return _str;
 };
 
@@ -820,7 +818,7 @@ jQuery.parse_url = function (_str, _component) {
  * @returns {Boolean}
  */
 jQuery.is_image = function(_url) {
-    if (false == this.is_link(_url)) {
+    if (false === this.is_link(_url)) {
         return false;
     }
     var _param = this.parse_url(_url);
@@ -833,7 +831,7 @@ jQuery.is_image = function(_url) {
         return false;
     }
     var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
-    if (this.inArray(_ext, _image_array) != -1) {
+    if (this.inArray(_ext, _image_array) !== -1) {
         return true;
     }
     else {
@@ -844,14 +842,13 @@ jQuery.is_image = function(_url) {
 jQuery.parse_extension_name = function (_path) {
     var _dot = _path.lastIndexOf('.');
     var _slash = _path.lastIndexOf('/');
-    if (_dot == -1 ||
-	_dot < _slash) {
-		return null;
-	}
-	else {
-		var _ext = _path.substr(_dot + 1);
-		return _ext;
-	}
+    if (_dot === -1 || _dot < _slash) {
+        return null;
+    }
+    else {
+        var _ext = _path.substr(_dot + 1);
+        return _ext;
+    }
 };
 
 /**
@@ -914,16 +911,16 @@ jQuery.fn.extend({
      * - scale: 手機模式用的縮放比例
      */
     align: function (_options) {
-        if (_options == 'left' || _options == 'center' || _options == 'right') {
-			_options = {
-				option: _options
-			};
-		}
-                    
+        if (_options === 'left' || _options === 'center' || _options === 'right') {
+            _options = {
+                option: _options
+            };
+        }
+
         var _option = $.get_parameter(_options, 'option');
         if ($.is_null(_option)) {
-			return this;
-		}
+            return this;
+        }
         var _scale = $.get_parameter(_options, 'scale', 1);
         _scale = 1;
         var _offset = $.get_parameter(_options, 'offset', 0);
@@ -939,11 +936,11 @@ jQuery.fn.extend({
         
         if (_this.is_layer()) {
             if (_mobile_mode) {
-				_this.css('position', 'absolute');
-			}
-			else {
-				_this.css('position', 'fixed');
-			}
+                _this.css('position', 'absolute');
+            }
+            else {
+                _this.css('position', 'fixed');
+            }
             
             var _direction = 'left';
             
@@ -1108,7 +1105,7 @@ jQuery.fn.extend({
                     _option = _offset;    
                 }
             }
-            else if (_option == 'bottom') {
+            else if (_option === 'bottom') {
                 _direction = 'bottom';
                 _option = _offset;
                 if (_mobile_mode) {
@@ -1698,7 +1695,7 @@ jQuery.create_once = function (_html, _append_to) {
     else {
         var _selector = _tag_name+_class_name+_id;
         var _obj = this(_selector);
-        if (false == _obj.exists()) {
+        if (false === _obj.exists()) {
             _temp_obj.appendTo(_append_to);
             _obj = _temp_obj;
         }
@@ -1811,17 +1808,26 @@ jQuery.mobile_mode = null;
  * @method [is_mobile_mode]
  */
 jQuery.is_mobile_mode = function () {
+    
+    //return true;
+    
     if (this.mobile_mode === null) {
         var _this = this;
         try {
             var _yui = YUI();
             if (typeof(_yui.use) === "function") {
 
-                    _yui.use("", function(Y){
-                        var _mode = (!$.is_null(Y.UA.mobile));
-                        _this.mobile_mode = _mode;
-                    });
-
+                _yui.use("", function(Y){
+                    var _mode = (!$.is_null(Y.UA.mobile));
+                    _this.mobile_mode = _mode;
+                    //$.test_msg("行動版", _mode);
+                    //alert("行動版:" + _mode);
+                });
+                
+                if (_this.mobile_mode === false) {
+                    $.browser.device = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+                    _this.mobile_mode = $.browser.device;
+                }
             }
         }
         catch (_e) {
@@ -1878,7 +1884,7 @@ jQuery.is_touchable = function () {
         try {            
             var _el = document.createElement('div');
             _el.setAttribute('ontouchstart', 'return;');
-           if (typeof(_el.ontouchstart) == "function") {
+           if (typeof(_el.ontouchstart) === "function") {
 		   	_touchable = true;
 		   }
        } catch (_e) { }
@@ -1966,16 +1972,25 @@ jQuery._match_config = {
     }
 }; 
 
+/**
+ * 檢查是否該文字是英文字
+ * @param {String} _text
+ * @returns {Boolean}
+ */
 jQuery.match_english = function(_text) {
 	//var _reg = /^([a-z]|[A-Z])$/;
 	//return _reg.test(_text);
-    return (typeof(jQuery._match_config.english[_text]) == 'number');
+    if (_text.length > 1) {
+        _text = _text.substr(_text.length-2, 1);
+    }
+    
+    return (typeof(jQuery._match_config.english[_text]) === 'number');
 };
 
 jQuery.match_upper_english = function(_text) {
 	//var _reg = /^([A-Z])$/;
 	//return _reg.test(_text);
-    return (typeof(jQuery._match_config.upper_english[_text]) == 'number');
+    return (typeof(jQuery._match_config.upper_english[_text]) === 'number');
 };
 jQuery.match_number = function(_text) {
 	var _reg = /^\d$/;
@@ -2139,7 +2154,9 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     //$.test_msg('$.scroll_to', [$.json_encode(_position), _speed, _callback]);
     //return;
 	
+    //this.scroll_to_lock = true;
     if (this.scroll_to_lock === true) {
+        //$.test_msg("偷看一下callback是啥", _callback);
         $.trigger_callback(_callback);
         return;
     }
@@ -2175,7 +2192,7 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     else {
         _target_y = $.get_offset_top(_position.selector);
         
-        $.test_msg("scroll to selector", [_target_y, _position.selector, KALS_toolbar.get_height()]);
+        //$.test_msg("scroll to selector", [_target_y, _position.selector, KALS_toolbar.get_height()]);
         
         if (KALS_text !== undefined) {
             _target_y = _target_y - KALS_toolbar.get_height();
@@ -2219,12 +2236,48 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
         _config_setted = true;
     }
     
-    //$.test_msg("要準備捲動囉", _config);
+    //if (_config.scrollLeft === 0) {
+    //    delete(_config.scrollLeft);
+    //}
+    
+    
+    //_config.scrollTop = ($(window).position().top + _config.scrollTop);
+    
+    //$.test_msg("要準備捲動囉 [" + $("html,body").scrollTop() + "]", _config);
     
     if (_config_setted) {
-        $('html, body').animate(_config, _speed, function () {
-            _this.scroll_to_lock = false;
+        //var _now_config = this.get_current_scroll_position();
+        //$.test_msg("now_config", _now_config);
+        
+        //$(window).animate(_now_config, 0, function () {
+        /*
+        $("html,body").stop.animate(_config, _speed, "swing", function () {
+            //$("html,body").delay(0).animate(_config, _speed, function () {
+            //$.animate(_config, _speed, function () {
+                _this.scroll_to_lock = false;
+            //});
         });
+        */
+        /*
+        $("html,body").stop()
+                .animate(_now_config, 0, "swing")
+                .animate(_config, _speed, "swing", function () {
+                    _this.scroll_to_lock = false;
+            });
+            */
+        var _scroll_to = function () {
+        $("html,body").stop()
+                //.animate(_now_config, 0, "swing")
+                .animate(_config, _speed, "swing", function () {
+                    _this.scroll_to_lock = false;
+            });
+        };
+        if ($("body").scrollTop() === 0) {
+            setTimeout(_scroll_to, 10);
+        }
+        else {
+            _scroll_to();
+        }
     }
 	
     $.trigger_callback(_callback)
@@ -2287,32 +2340,114 @@ jQuery.scroll_to = function (_position, _speed, _callback) {
     */
 };
 
+/**
+ * 取得現在捲軸的位置
+ * @returns {JSON}
+ */
+jQuery.get_current_scroll_position = function () {
+    var _doc = document.documentElement, _body = document.body;
+    
+    var _left = (_doc && _doc.scrollLeft || _body && _body.scrollLeft || 0);
+    var _top = (_doc && _doc.scrollTop  || _body && _body.scrollTop  || 0);
+    
+    //$.test_msg("get_current_scroll_position", [_doc.scrollTop, _body.scrollTop]);
+    
+    return {
+        scrollLeft: _left,
+        scrollTop: _top,
+        x: _left,
+        y: _top
+    };
+};
+
 jQuery.scroll_to_lock = false;
 
+// -------------------------------------------
+
+/**
+ * 儲存現在捲軸的位置
+ * @returns {jQuery}
+ */
 jQuery.save_scroll_position = function () {
     
-    this._scroll_position = [window.pageXOffset, window.pageYOffset];
+    if (typeof(LOCK_SCROLL_LOCK) === "undefined") {
+        LOCK_SCROLL_LOCK = "free";
+    }
     
+//    this._scroll_position = [window.pageXOffset, window.pageYOffset];
+    var _pos = $.get_current_scroll_position();
+    if (_pos.y !== 0 
+            && LOCK_SCROLL_LOCK === "free") {
+        //$.test_msg("儲存:現在的捲軸位置 (" + (new Date().getSeconds()) +  ")", _pos);    
+        this._last_pos = _pos;
+        LOCK_SCROLL_LOCK = "saved";
+    }
+    //$.test_msg("儲存:現在的捲軸位置", _pos);    
+    //alert(["儲存:現在的捲軸位置", _pos]);
+    
+    
+    return this;
 };
 
 /**
  * 讀取捲動位置
- * @deprecated 20131115 Pudding Chen
+ * @returns {jQuery}
  */
 jQuery.load_scroll_position = function () {
     
-    if (window.pageXOffset != this._scroll_position[0]) {
-        //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
-    }
-    
-    if (window.pageYOffset != this._scroll_position[1]) {
-        //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
-        //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
-    }
+//    if (window.pageXOffset !== this._scroll_position[0]) {
+//        //$.test_msg('X被移動了', [this._scroll_position[0], '->', window.pageXOffset]);
+//    }
+//    
+//    if (window.pageYOffset !== this._scroll_position[1]) {
+//        //$.test_msg('Y被移動了', [this._scroll_position[1], '->', window.pageYOffset]);
+//        //alert(['Y被移動了', this._scroll_position[1], '->', window.pageYOffset]);
+//    }
     
     //$.test_msg("$.load_scroll_position");
-    window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
+    //window.scrollTo(this._scroll_position[0], this._scroll_position[1]);
+    
+    if (typeof(LOCK_SCROLL_LOCK) === "undefined") {
+        LOCK_SCROLL_LOCK = "free";
+    }
+    
+    var _scroll_to = function () {
+        if ($("body").scrollTop() !== 0
+                && $("body").scrollTop() !== _this._last_pos.y) {
+            //alert("是誰？");
+        }
+        if ($("body").scrollTop() === 0
+                && _this._last_pos !== undefined
+                && _this._last_pos !== null) {
+            //alert("準備回滾");
+            window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+        }
+    };
+    
+    var _this = this;
+    if (LOCK_SCROLL_LOCK === "saved") {
+        _scroll_to();
+        
+        setTimeout(function () {
+            LOCK_SCROLL_LOCK = "loading";
+            _scroll_to();
+            
+            setTimeout(function () {
+                _scroll_to();
+                //setTimeout(function () {
+                    LOCK_SCROLL_LOCK = "free";
+                    //$.test_msg("讀取完畢:現在的捲軸位置 (" + (new Date().getSeconds()) +  ")", _this._load_scroll_lock);
+                //},1);
+            }, 0);
+            //_this._last_pos = null;
+        }, 0);
+    }
+        
+    
+    return this;
 };
+
+// -------------------------------------------
 
 /**
  * 產生隨機的ID字串
@@ -2325,6 +2460,31 @@ jQuery.create_id = function (_prefix) {
         _id = _prefix + _id;
     }
     return _id;
+};
+
+/**
+ * 取得根據網址建立的Domain
+ * @returns {String}
+ */
+jQuery.create_namespace = function () {
+    var _url = location.href;
+    
+    //移除 #之後
+    if (_url.lastIndexOf('#') > -1) {
+        _url = _url.substr(0, _url.lastIndexOf('#'));
+    }
+    
+    // 替換可能出現問題的字串
+    _url = $.str_replace('.', '_', _url);
+    _url = $.str_replace('/', '_', _url);
+    _url = $.str_replace(':', '_', _url);
+    _url = $.str_replace('@', '_', _url);
+    
+    //$.test_msg('KALS_context create_namespace', _url);
+    //_url = 'test';
+    //_url = 'test22' + _url;
+    
+    return _url;
 };
 
 /**
@@ -2551,7 +2711,30 @@ jQuery.get_offset_top = function(_ele) {
     if ($.is_string(_ele)) {
         _ele = $(_ele);
     }
-    var _offset = _ele.attr("offsetTop");
+    
+    var _offset;
+    
+    //$.test_msg("get_offset_top", [_ele.css("position"), _ele.offset().top, _offset, _ele.text()]);
+    var _position = _ele.css("position");
+    if (_position === "relative" 
+            || _position === "static") {
+        
+        //var _fake = _ele.clone()
+        //        .attr("className", "KALS fake absolute")
+        //        .insertBefore(_ele);
+        
+        //_ele.css("position", "absolute");
+        //_offset = _ele.attr("offsetTop");
+        _offset = _ele.offset().top;
+        _offset = parseInt(_offset);
+        //_ele.css("position", "relative");
+        
+        //_fake.remove();
+    }
+    else {
+        _offset = _ele.attr("offsetTop");
+    }
+    
     return _offset;
 };
 
@@ -2565,6 +2748,37 @@ jQuery.get_offset_bottom = function(_ele) {
         _ele = $(_ele);
     }
     var _offset = $.get_offset_top(_ele) + _ele.height();
+    
+    $.test_msg("get_offset_bottom", [_offset, $.get_offset_top(_ele), _ele.height()]);
+    return _offset;
+};
+
+/**
+ * 取得物件的底部位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_bottom_without_transform = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
+    var _offset = $.get_offset_top(_ele) + this.get_height_without_transform(_ele);
+    
+    //$.test_msg("get_offset_bottom", [_offset, $.get_offset_top(_ele), _ele.height()]);
+    return _offset;
+};
+
+
+/**
+ * 取得物件的垂直中間位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_vertical_middle = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
+    var _offset = $.get_offset_top(_ele) + (_ele.height() / 2);
     return _offset;
 };
 
@@ -2578,6 +2792,20 @@ jQuery.get_offset_left = function(_ele) {
         _ele = $(_ele);
     }
     var _offset = _ele.attr("offsetLeft");
+    
+    if (_ele.css("position") === "relative") {
+        
+        //var _fake = _ele.clone()
+        //        .attr("className", "KALS fake absolute")
+        //        .insertBefore(_ele);
+        //_ele.css("position", "absolute");
+        //_offset = _ele.attr("offsetTop");
+        _offset = _ele.offset().left;
+        _offset = parseInt(_offset);
+        //_ele.css("position", "relative");
+        //_fake.remove();
+    }
+    
     return _offset;
 };
 
@@ -2595,6 +2823,21 @@ jQuery.get_offset_right = function(_ele) {
 };
 
 /**
+ * 取得物件的水平中間位置
+ * @param {jQuery} _ele
+ * @returns {Int}
+ */
+jQuery.get_offset_horizontal_center = function(_ele) {
+    if ($.is_string(_ele)) {
+        _ele = $(_ele);
+    }
+    
+    var _offset = $.get_offset_left(_ele) + (_ele.width() / 2);
+    return _offset;
+};
+
+
+/**
  * 取得物件的位置資訊
  * @param {jQuery} _ele
  * @returns {json}
@@ -2607,6 +2850,299 @@ jQuery.get_offset = function(_ele) {
         left: _left
     };
     return _offset;
+};
+
+/**
+ * 手動版本調整位置
+ * @param {jQuery} _ele 要移動的元素
+ * @param {jQuery} _anchor 參考位置的元素
+ * @param {type} _config = {
+ *   my: "center top",
+ *   at: "center bottom"
+ * }
+ * @returns {jQuery}
+ */
+jQuery.set_position = function (_ele, _anchor, _config) {
+    
+    //_config.at = _anchor;
+    //_ele.position(_config);
+    //return;
+    
+    var _my_config = _config.my.split(" ");
+    var _my_h = _my_config[0];
+    var _my_v = _my_config[1];
+    
+    var _at_config = _config.at.split(" ");
+    var _at_h = _at_config[0];
+    var _at_v = _at_config[1];
+    
+    var _anchor_left, _anchor_top, _ele_left, _ele_top;
+    
+    // -----------
+    
+    var _anchor_left = this.get_offset_left(_anchor);
+    var _anchor_width = this.get_width_without_transform(_anchor);
+    if (_at_h === "center") {
+        //_anchor_left = this.get_offset_horizontal_center(_anchor);
+        _anchor_left = _anchor_left + (_anchor_width/2);
+    }
+    //else if (_at_h === "left") {
+    //    _anchor_left = this.get_offset_left(_anchor);
+    //}
+    else if (_at_h === "right") {
+        //_anchor_left = this.get_offset_right(_anchor);
+        _anchor_left = _anchor_left + _anchor_width;
+    }
+    
+    if (_my_h === "center") {
+        _ele_left = _anchor_left - (_ele.width() / 2);
+    }
+    else if (_my_h === "left") {
+        _ele_left = _anchor_left;
+    }
+    else if (_my_h === "right") {
+        _ele_left = _anchor_left - _ele.width();
+    }
+    
+    
+    // -----------
+    
+    var _anchor_height = this.get_height_without_transform(_anchor);
+    _anchor_top = this.get_offset_top(_anchor);
+    if (_at_v === "center") {
+        //_anchor_top = this.get_offset_vertical_middle(_anchor);
+        _anchor_top = _anchor_top + (_anchor_height/2);
+    }
+    //else if (_at_v === "top") {
+    //    _anchor_top = this.get_offset_top(_anchor);
+    //}
+    else if (_at_v === "bottom") {
+        //_anchor_top = this.get_offset_bottom(_anchor);
+        _anchor_top = _anchor_top + _anchor_height;
+    }
+    
+    if (_my_v === "center") {
+        _ele_top = _anchor_top - (_ele.height() / 2);
+    }
+    else if (_my_v === "top") {
+        _ele_top = _anchor_top;
+    }
+    else if (_my_v === "bottom") {
+        _ele_top = _anchor_top - _ele.height();
+    }
+    
+    //$.test_msg("對齊結果", [_anchor_left, _anchor_top
+    //    //, _anchor.width()
+    //    , _anchor.width()
+    //    , this.get_width_without_transform(_anchor)
+    //   , (_anchor_left + (_anchor_width/2))
+    //    , (_anchor_left + (_anchor.width()/2))
+    //    , _ele_left, _ele_top
+    //    , _ele.width()
+    //    , (_ele_left + (_ele.width() / 2) )
+    //    , _config.at
+    //    , _config.my
+        
+        //, this.get_width_without_transform(_ele)
+        //, _ele.width()
+    //]);
+    
+    _ele.css("position", "absolute")
+            .css("top", _ele_top)
+            .css("left", _ele_left);
+    
+    return this;
+};
+
+/**
+ * 取得元素的寬度，不受tranform的影響
+ * @param {jQuery} _ele
+ * @returns {Number}
+ */
+jQuery.get_width_without_transform = function (_ele) {
+    
+    var _path = this.get_node_path_serialize(_ele);
+    _path = _path + "_width";
+    if (this._cache.has(_path)) {
+        return this._cache.get(_path);
+    }
+    
+    //var _fake = _ele.clone().appendTo("body");
+    //var _temp = $(document.createDocumentFragment());
+    //var _temp = $("<div></div>");
+    var _temp = $('body');
+    var _fake = _ele.clone()
+            //.appendTo(document.createDocumentFragment());
+            .hide()
+            .appendTo(_temp);
+    //_fake.css("transform", "matrix(1,0,0,1,0,0)");
+        
+    var _width = _fake.width();
+
+    //$.test_msg("get_width", [_ele.css("width")
+    //    , _ele.width()
+    //    , _ele.attr("offsetWidth")
+    //    , _ele.innerWidth()
+    //    , _ele.outerWidth()
+    //    , _ele.css("transform")
+    //    ]);
+    
+    //$.test_msg("get_width_without_transform", _width);
+
+    //_fake.remove();
+    
+    setTimeout(function () {
+        _fake.remove();
+    }, 100);
+    
+    this._cache.set(_path, _width);
+    
+    return _width;
+};
+
+
+/**
+ * 取得元素的寬度，不受tranform的影響
+ * @param {jQuery} _ele
+ * @returns {Number}
+ */
+jQuery.get_height_without_transform = function (_ele) {
+    
+    var _path = this.get_node_path_serialize(_ele);
+    _path = _path + "_height";
+    if (this._cache.has(_path)) {
+        return this._cache.get(_path);
+    }
+    
+    //var _fake = _ele.clone().appendTo("body");
+    //var _temp = $(document.createDocumentFragment());
+    //var _temp = $("<div></div>");
+    var _temp = $('body');
+    var _fake = _ele.clone()
+            //.appendTo(document.createDocumentFragment());
+            .hide()
+            .appendTo(_temp);
+    //_fake.css("transform", "matrix(1,0,0,1,0,0)");
+        
+    var _height = _fake.height();
+
+    //$.test_msg("get_width", [_ele.css("width")
+    //    , _ele.width()
+    //    , _ele.attr("offsetWidth")
+    //    , _ele.innerWidth()
+    //    , _ele.outerWidth()
+    //    , _ele.css("transform")
+    //    ]);
+    
+    //$.test_msg("get_width_without_transform", _width);
+
+    //_fake.remove();
+    
+    setTimeout(function () {
+        _fake.remove();
+    }, 100);
+    
+    this._cache.set(_path, _height);
+    
+    return _height;
+};
+
+/**
+ * 取得節點的系列化路徑資訊
+ * @param {jQuery} _ele
+ * @returns {String}
+ */
+jQuery.get_node_path_serialize = function (_ele) {
+    var _path = "", _node_name, _this = this, _classname;
+    
+    //取得parents
+    var _first_parent = true;
+    _ele.parents().each(function (_index, _parent) {
+        _node_name = _parent.nodeName;
+        if (_first_parent === true) {
+            _classname = _this.get_classname_serialize(_parent);
+            _path = _node_name + _classname + ">" + _path;
+            _first_parent = false;
+        }
+        else {
+            _path = _node_name + ">" + _path;
+        }
+    });
+    
+    _node_name = _ele.attr("nodeName");
+    _classname = _this.get_classname_serialize(_ele);
+    _path = _path + _node_name + _classname;
+    
+    return _path;
+};
+
+/**
+ * 取出classname並變成CSS選取字串
+ * @param {jQuery} _ele
+ * @returns {String}
+ */
+jQuery.get_classname_serialize = function (_ele) {
+    var _classname;;
+    if (typeof(_ele.className) === "string") {
+        _classname = _ele.className;
+    }
+    else {
+        _classname = _ele.attr("className");
+    }
+    _classname = "." + _classname.split(" ").join(".");
+    if (_classname === ".") {
+        return "";
+    }
+    else {
+        return _classname;
+    }
+};
+
+/**
+ * 快取功能
+ */
+jQuery._cache = {
+    /**
+     * 快取保存值
+     * @type JSON
+     */
+    _data: {},
+    /**
+     * 設定快取
+     * @param {String} _key
+     * @param {Object} _value
+     * @returns {jQuery._cache}
+     */
+    set: function (_key, _value) {
+        this._data[_key] = _value;
+        return this;
+    },
+    /**
+     * 檢查快取
+     * @param {String} _key
+     * @returns {Boolean}
+     */
+    has: function (_key) {
+        return (typeof(this._data[_key]) !== "undefined");
+    },
+    /**
+     * 取得快取
+     * @param {String} _key
+     * @returns {jQuery._cache._data}
+     */
+    get: function (_key) {
+        //$.test_msg("from cache", [_key, this._data[_key]]);
+        return this._data[_key];
+    },
+    /**
+     * 移除快取
+     * @param {String} _key
+     * @returns {jQuery._cache}
+     */
+    remove: function (_key) {
+        delete this._data[_key];
+        return this;
+    }
 };
 
 $.widget("ui.dialog", $.ui.dialog, {

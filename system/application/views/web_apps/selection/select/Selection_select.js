@@ -15,7 +15,7 @@ function Selection_select(_text) {
     
     Selection.call(this, _text);
 	if (KALS_context.hash.has_field('select')) {
-		this._setted_hash = true;
+            this._setted_hash = true;
 	}
 	
 	var _this = this;
@@ -146,17 +146,17 @@ Selection_select.prototype.cancel_select = function () {
     this._select_from_word = null;
     this._setted_hash = false;
 	
-	//$.test_msg("delete_field select 1");
-	KALS_context.hash.delete_field('select');
+    //$.test_msg("delete_field select 1");
+    KALS_context.hash.delete_field('select');
     
     return this;
 };
 
 Selection_select.prototype.clear = function () {
     if (this._setted_hash === true) {
-		//$.test_msg("delete_field select 2");
-		KALS_context.hash.delete_field('select');
-	}
+        //$.test_msg("delete_field select 2");
+        KALS_context.hash.delete_field('select');
+    }
     
     return Selection.prototype.clear.call(this);
 };

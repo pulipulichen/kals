@@ -112,8 +112,9 @@ class Mobile_apps_controller extends Controller {
                 //write_file($cache_path, $packed);
                 
                 foreach ($path AS $p) {
-                    if ($p == '')
+                    if ($p === '') {
                         continue;
+                    }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
                     $this->load->view($this->dir.'display', array('data'=>$packed));

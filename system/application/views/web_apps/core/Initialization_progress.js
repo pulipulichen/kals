@@ -87,10 +87,16 @@ Initialization_progress.prototype.set_total = function (_total) {
 
 /**
  * 增加記數
+ * @param {Int} _count 額外增加的次數，預設是加1次
  * @returns {Initialization_progress.prototype}
  */
-Initialization_progress.prototype.add_count = function () {
-    this._progress_count++;
+Initialization_progress.prototype.add_count = function (_count) {
+    
+    if (_count === undefined 
+            || $.is_number(_count) === false) {
+        _count = 1;
+    }
+    this._progress_count = this._progress_count + _count;
     
     var _percent = this.get_percent();
     

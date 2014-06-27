@@ -99,6 +99,7 @@ Annotation_editor.prototype._editing_lock = false;
 Annotation_editor.prototype._editing_classname = 'editing';
 
 /**
+ * 設定編輯動作
  * @param {Annotation_param} _param
  */
 Annotation_editor.prototype.set_editing = function (_param ) {
@@ -418,10 +419,7 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
         }
     }
     */
-    
-    
-    //KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
-    KALS_context.user.load_user_params();
+    KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
     
     return this;
 };

@@ -62,6 +62,7 @@ class rss extends Web_apps_controller {
         $this->load->library('kals_resource/Annotation');
         $this->load->library('search/Search_annotation_collection');
         $this->lang->load('kals_web_apps'); //語系
+        $this->lang->load('kals_mobile_apps'); //語系
         //echo $webpage_id;
         $webpage = new Webpage($webpage_id);
         
@@ -93,9 +94,14 @@ class rss extends Web_apps_controller {
 
         $webpage_title = $webpage->get_title();
         
-        $webpage_topics_path = '/mobile_apps/annotation_topics/webpade_id/'.$webpage_id;
-        $webpage_topics_url = get_kals_base_url($webpage_topics_path);
+        //$webpage_topics_path = '/mobile_apps/annotation_topics/webpade_id/'.$webpage_id;
+        //$webpage_topics_url = get_kals_base_url($webpage_topics_path);
+        
         //$webpage_topics_url = site_url('/mobile_apps/annotation_topics/webpade_id/'.$webpage_id);
+        
+        //$webpage_topics_url = $webpage->get_url() . "#mobile=true";
+        
+        $webpage_topics_url = get_kals_base_url("mobile_apps/redirect/load/".$webpage_id);
         
         $channel = new Channel();
         $channel
@@ -106,14 +112,15 @@ class rss extends Web_apps_controller {
 
         foreach ($search AS $annotation) {
             $item = new Item();
-            $type_name = $annotation->get_type()->get_name();
+            $type = $annotation->get_type();
+            $type_name = $type->get_name();
             $type_show ; 
-           if ($type_name != 'annotation.type.custom'){  //自定標註顯示
-               $type_show = $this->lang->line("web_apps.". $type_name);
-           }
-           else  {
-               $type_show = $annotation->get_type()->get_name();
-           }
+            if ($type_name != 'annotation.type.custom'){  //自定標註顯示
+                $type_show = $this->lang->line("web_apps.". $type_name);
+            }
+            else  {
+                $type_show = $type->get_custom_name();
+            }
             
            // anchor text
            // user name
@@ -122,9 +129,14 @@ class rss extends Web_apps_controller {
            // note
             $annotation_id = $annotation->get_id();
             if (isset($annotation_id)) {
-                $topic_array = $this->db->query("SELECT topic_id
-                                                 FROM annotation
-                                                 WHERE annotation_id ='".$annotation_id."'");     
+                //$topic_array = $this->db->query("SELECT topic_id
+                //                                 FROM annotation
+                //                                 WHERE annotation_id ='".$annotation_id."'");     
+                $topic_array = $this->db->select("topic_id")
+                        ->from("annotation")
+                        ->where("annotation_id", $annotation_id)
+                        //->where("deleted", "false")
+                        ->get();
             }
             
             foreach ($topic_array->result_array() as $row) {
@@ -141,16 +153,38 @@ class rss extends Web_apps_controller {
             }
             
             //$item_url = 'http://140.119.61.137/kals/mobile/annotation_thread/'.$topic_id.'#annotation_'.$annotation_id;
-            $annotation_thread_path = "mobile_apps/annotation_thread/topic_id/".$topic_id."#annotation_".$annotation_id;
-            $item_url = site_url($annotation_thread_path);
-            $item_url = get_kals_base_url($annotation_thread_path);
+            //$annotation_thread_path = "mobile_apps/annotation_thread/topic_id/".$topic_id."#annotation_".$annotation_id;
+            //$item_url = site_url($annotation_thread_path);
+            //$item_url = get_kals_base_url($annotation_thread_path);
+            
+            //$item_url = $webpage->get_url() . "#mobile=true&topic_id=" . $topic_id . "&annotation_id=" . $annotation_id;
+            
+            $item_url = get_kals_base_url("mobile_apps/redirect/load/".$webpage_id."/".$topic_id."/".$annotation_id);
+            
             //$item_url = $_SERVER["HTTP_HOST"]
             //test_msg($_SERVER["HTTP_HOST"]);
             
-            $item->title("<div><span>[" . $type_show . "]</span> " . $annotation->get_anchor_text() ." </div>"
+            $date = $annotation->get_update_timestamp();
+            $date = substr($date, 0, 10);
+            
+            $note = $annotation->get_note();
+            $note = strip_tags($note);
+            $note = trim($note);
+            $note_limit = 15;
+            if (mb_strlen($note) > $note_limit) {
+                $note = mb_substr($note, 0, $note_limit);
+                $note = $note . "...";
+            }
+            
+            $user_name = $annotation->get_user()->get_name();
+            
+            $item->title( $user_name . ": " . "[" . $type_show . "] " . $note
                         ) //title標題 ->[type] annotation anchor text  // $annotation->get_type()->get_name()
-                ->description("<div>KALS user [" . $annotation->get_user()->get_name() . "] </div>
-                               <div>" . $annotation->get_note() ." </div>                     
+                ->description("<div> "  . $this->lang->line("mobile_apps.rss.anchor_text") . ": " . '"'. $annotation->get_anchor_text() . '"'. " </div>"
+                              . "<div> " . $this->lang->line("mobile_apps.rss.author") . ": " . $annotation->get_user()->get_name() . " </div>"
+                              . "<div> " . $this->lang->line("mobile_apps.rss.date") . ": " . $date. " </div>"
+                              
+                              . "<div>" . $annotation->get_note() ." </div>                     
                               ") //user +annotation note
                 //->url( base_url()."mobile/annotation_topics/".$webpage_id) // webpage_url->view
                 ->url($item_url) // webpage_url->view   

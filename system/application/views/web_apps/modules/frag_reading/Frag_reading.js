@@ -385,15 +385,25 @@ Frag_reading.prototype._$onopen = function () {
 
 /**
  * 設定自動save_reading_progress的時間頻率
+ * 
+ * 預設10秒
  * @type Number
  */
 Frag_reading.prototype.interval_span = 10;
 
 /**
  * 頁面停止時延遲的增加時間
+ * 
+ * 預設30秒
  * @type Number
  */
-Frag_reading.prototype.increase_interval_span = 10;
+Frag_reading.prototype.increase_interval_span = 30;
+
+/**
+ * 計時器
+ * @type type
+ */
+Frag_reading.prototype._check_timer = null;
 
 /**
  * initialize_save_reading_progress()
@@ -410,13 +420,31 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
     var _check_progress = function (){
         //現在的word_id不等於之前的word_id
         //alert('start');
-        _current_word = KALS_text.selection.text.word.get_current_progress_word();
+        
+        if (typeof(KALS_text) !== "object" 
+                || typeof(KALS_text.selection) !== "object" 
+                || KALS_text.selection === null 
+                || typeof(KALS_text.selection.text) !== "object" 
+                || KALS_text.selection.text === null
+                || typeof(KALS_text.selection.text.word) !== "object"
+                || typeof(KALS_text.selection.text.word.get_current_progress_word) !== "function") {
+            //return this;
+        }
+        else {
+            KALS_text.selection.text.word.get_current_progress_word(_save_process);
+        }
+        
+    };
+    
+    var _save_process = function (_current_word) {
+        
         //進入if之前的值
         //$.test_msg('before IF, before_word, current word', [_before_word, _current_word]); 
         
+        
         //var _check_timer;
         if ( _current_word !== _before_word || _before_word === null) {
-            _interval_span = this.interval_span *1000;
+            _interval_span = _this.interval_span *1000;
             /*
             _check_timer = setTimeout(function(){
                 alert('1!');
@@ -434,7 +462,7 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
         else {
             //alert('else');
             _interval_span = _interval_span 
-                    + this.increase_interval_span *1000;
+                    + _this.increase_interval_span *1000;
             /*
             _check_timer = setTimeout(function(){
                 //_this.save_reading_progress();
@@ -447,16 +475,37 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
         _before_word = _current_word; 
         //alert('back');
         
+        //$.test_msg("next", [_current_word, _interval_span]);
+        
         //var _interval_span = _check_progress();
-        setTimeout(function () {
-           _check_progress(); 
-        }, _interval_span);
+        if ($.is_number(_interval_span) && isNaN(_interval_span) === false) {
+            _this._check_timer = setTimeout(function () {
+                _check_progress(); 
+            }, _interval_span);
+        }
+        else {
+            $.test_msg("interval_span錯誤", [_interval_span, this.increase_interval_span, this.interval_span]);
+        }
+        
     };
     
+    var _start_timer = function () {
+        _this._check_timer = setTimeout(function () {
+            _check_progress();
+        }, _check_interval_span);
+    };
     
-    var _check_timer = setTimeout(function () {
-        _check_progress();
-    }, _check_interval_span);
+    _start_timer();
+    
+    $(window).blur(function () {
+        //$.test_msg("離開視窗了");
+        clearTimeout(_this._check_timer);
+    });
+    
+    $(window).focus(function () {
+        //$.test_msg("回到視窗了");
+        _start_timer();
+    });
     
     $(window).unload(function (){
         _this.save_reading_progress();}
@@ -472,7 +521,10 @@ Frag_reading.prototype.initialize_save_reading_progress = function(){
 Frag_reading.prototype.save_reading_progress = function(_current_word){
     
     // 未登入時不使用
-    if (KALS_context.auth.is_login() === false) {
+    if (KALS_context.auth.is_login() === false
+            || _current_word === undefined
+            || _current_word === false
+            || _current_word === null) {
         return this;
     }
     
@@ -490,7 +542,9 @@ Frag_reading.prototype.save_reading_progress = function(_current_word){
     var _message = {
         current_word: _current_word
     };
-    KALS_util.log(_action, _message);
+    KALS_util.log(_action, _message, function () {
+        $.test_msg("儲存完成");
+    });
     //$.test_msg('current_scroll', _current_scroll);
     //context_complete();    
     return this;

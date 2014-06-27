@@ -18,7 +18,8 @@ function Init_context() {
     
     Task_event_dispatcher.call(this);
     
-    this._$schedule_task = ['selector', 'load', "check_css_loaded"];
+    //this._$schedule_task = ['selector', 'load', "modules", "check_css_loaded"];
+    this._$schedule_task = ['load', "modules", "check_css_loaded"];
     
 }
 
@@ -32,8 +33,10 @@ Init_context.prototype._$onstart = function () {
     //準備基本資料
     KALS_context.load_info(function () {
         
+        // 讀取模組，載入導覽列
         var _loaded_modules = KALS_context.module.init();
         KALS_context.navigation.init(_loaded_modules);
+        KALS_context.init_context.complete('modules');
         
         KALS_context.init_context.complete('load');
     });
@@ -57,7 +60,7 @@ Init_context.prototype._$oncomplete = function () {
  * 沒用的話就可以關閉
  */
 Init_context.prototype._test_exception = function () {
-	$.test_msg("初始化完成");
+    //$.test_msg("初始化完成");
     KALS_util.ajax_get({
         url: "log/error",
         data: {},
@@ -67,9 +70,9 @@ Init_context.prototype._test_exception = function () {
 };
 
 Init_context.prototype._check_css_setup = function () {
-	$("<span class='KALS check-css'>KALS check css indicator<span>")
-	   .hide()
-	   .appendTo($("body"));
+    $("<span class='KALS check-css'>KALS check css indicator<span>")
+       .hide()
+       .appendTo($("body"));
    
    this._check_css_loaded();
 };

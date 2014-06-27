@@ -83,6 +83,14 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
         return _module;
     }
     
+    // 讀取KALS_CONFIG
+    var _config = this._load_config(_name);
+    if (typeof(_config.enable) === "boolean"
+            && _config.enable === false) {
+        //$.test_msg("enable false", _name);
+        return false;
+    }
+    
     if (_name === undefined) {
         return false;
     }
@@ -113,14 +121,6 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
     
     // 如果eval有成功讀取的話
     if (typeof(_module) === "object") {
-
-        // 讀取KALS_CONFIG
-        var _config = this._load_config(_name);
-        if (typeof(_config.enable) === "boolean"
-                && _config.enable === false) {
-            //$.test_msg("enable false", _name);
-            return false;
-        }
         
         this._loaded_modules_config[_name] = _config;
 

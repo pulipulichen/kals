@@ -99,7 +99,8 @@ Selectable_text_offset.prototype.get_offset_bottom = function (_scope_coll) {
          * 所以改用其他方法
          */
         //_offset = _word.offset().top + _word.height();
-        _offset = $.get_offset_bottom(_word);
+        //_offset = $.get_offset_bottom(_word);
+        _offset = $.get_offset_bottom_without_transform(_word);
     }
     
     //$.test_msg('取得選取位置底部', [_offset, _word.offset().top, _word.attr("offsetTop")]);

@@ -156,10 +156,11 @@ KALS_controller_window.prototype.height = null;
  * @returns {KALS_controller_window}
  */
 KALS_controller_window.prototype.open = function (_callback) {
+     
     if (this._enable_controller_flag === false) {
         //this.debug('open', 'controller disabled');
         //return $.trigger_callback(_callback);
-        return;
+        return this;
     }
     
     var _this = this;
@@ -173,6 +174,16 @@ KALS_controller_window.prototype.open = function (_callback) {
             _this.open_absolute_window(_callback);
         }
     });
+};
+
+/**
+ * 是否可開啟
+ * @param {function} _callback
+ * @returns {false}
+ */
+KALS_controller_window.prototype.disable_menu = function () {
+    KALS_toolbar.toolbar.get_ui().find(".navigation-list ." + this.name).parent().hide();
+    return this;
 };
 
 /**
@@ -1486,6 +1497,12 @@ KALS_controller_window.prototype.focus_input = function () {
     
     return this;
 };
+
+/**
+ * 導覽列點一下去的動作
+ * @type {Function}
+ */
+KALS_controller_window.prototype._$nav_click_callback = null;
 
 /* End of file KALS_controller_window */
 /* Location: ./system/application/views/web_apps/kals_framework/KALS_controller_window.js */

@@ -11,6 +11,7 @@ $user = get_context_user();
 $webpage_list_uri = site_url('mobile_apps/webpage_list/page/' . $webpage_list_page);
 $login_uri = site_url("mobile_apps/login");
 
+$forward_href = $webpage_url;
 ?>
 
 <div data-role="header" data-position="fixed">
@@ -34,6 +35,7 @@ $login_uri = site_url("mobile_apps/login");
     // --------------------------
     // 決定是否顯示註冊按鈕
     // --------------------------
+    /*
     if (isset($user) && is_object($user)) {
         ?>
         <a class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right"
@@ -64,8 +66,17 @@ $login_uri = site_url("mobile_apps/login");
         </a>
         <?php
     }
-    
+    */
     ?>
+     
+    <a href="<?php echo $forward_href; ?>" 
+       class="ui-btn-right ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-carat-r" 
+       data-ajax="false">
+        <?php
+        //詳見全文
+        echo $lang->line("mobile_apps.annotation_thread.fullpage");
+        ?>
+    </a>
 </div>
 
 <?php

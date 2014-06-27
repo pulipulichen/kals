@@ -255,7 +255,7 @@ Overlay_modal.prototype.expose = function (_callback) {
     
     var _ui = this.get_ui();
     
-    if ($.isset(_ui) && typeof(_ui.expose) == "function") {
+    if ($.isset(_ui) && typeof(_ui.expose) === "function") {
         _ui.expose({
             color: '#333333',
             loadSpeed: 200,
@@ -279,8 +279,8 @@ Overlay_modal.prototype.expose = function (_callback) {
  */
 Overlay_modal.prototype.cover = function (_callback) {
     if (this._$exposable === false) {
-		return this;
-	}
+        return this;
+    }
     
     var _ui = this.get_ui();
     

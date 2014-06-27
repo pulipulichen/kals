@@ -115,8 +115,11 @@
 }
 .KALS .dialog-heading {
     margin: 0.1em 16px 0.2em 0;
+    
     -moz-user-select: none;
     -webkit-user-select: none;
+    -khtml-user-select: none;
+    
     cursor:default;
     padding: 0;
     text-align:center;

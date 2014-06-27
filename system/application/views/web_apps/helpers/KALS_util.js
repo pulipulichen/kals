@@ -22,7 +22,8 @@ KALS_util = {};
  *   callback: function (_data),
  *   exception_handle: function (_data), //可省略，省略則自動使用KALS_util.show_exception來處理
  *   retry: 3, //可省略，預設嘗試次數
- *   retry_wait: 3000 //預設嘗試等待時間，單位是毫秒
+ *   retry_wait: 60 * 1000, //預設嘗試等待時間，單位是毫秒
+ *   fixed_callback: "fixed_callback"   //預設省略，固定callback的參數
  * };
  */
 KALS_util.ajax_get = function (_config) {
@@ -37,6 +38,16 @@ KALS_util.ajax_get = function (_config) {
     
     _url = $.appends_with(_url, '/');
     
+    var _callback_parameter = $.get_parameter(_config, "fixed_callback", "?");
+    if (_callback_parameter === true) {
+        _callback_parameter = "_";
+    }
+    
+    var _full_callback_parameter = _callback_parameter;
+    if ($.is_string(_callback_parameter) && _callback_parameter !== "?") {
+        _full_callback_parameter = "KALS_util.c." + _callback_parameter;
+    }
+    
     if (_data !== null) {
         if ($.is_object(_data)) {
             _data = $.json_encode(_data);
@@ -48,10 +59,10 @@ KALS_util.ajax_get = function (_config) {
             _data = escape(_data);
         }
 		
-        _url = _url + _data + '/callback=?';
+        _url = _url + _data + '/callback=' + _full_callback_parameter;
     }
     else {
-        _url = _url + 'callback=?';
+        _url = _url + 'callback=' + _full_callback_parameter;
     }
     
 	if (_url.indexOf('http') === 0 
@@ -109,52 +120,72 @@ KALS_util.ajax_get = function (_config) {
     //};
     //var _retry_exception = this.re
     
+    
+    var _get_callback = function (_data) {
+    //$.getJSON(_url, function (_data) {
+
+        if (KALS_context !== undefined
+                && KALS_context.completed === true) {
+            if (KALS_CONFIG.debug.ajax_get_message) {			
+                $.test_msg('ajax_get from ' + _url + ' \n return data', _data);
+            }
+        }
+
+        if (typeof(_retry_timer) === 'undefined' 
+                || _retry_timer === null) {
+            return this;
+        }
+        else if ($.isset(_retry_timer)) {
+            clearInterval(_retry_timer);
+            _retry_timer = null;
+            delete _retry_timer;
+        }
+
+        if (typeof(_data.exception) !== 'undefined') {            
+            if ($.is_function(_exception_handle)) {
+                _exception_handle(_data.exception);
+            }
+            else {
+                _this.show_exception(_data.exception);
+            }
+        }
+        else {
+            _callback(_data);
+        }
+    };
+    
+    if (_callback_parameter !== "?") {
+        this.c[_callback_parameter] = function (_data) {
+        //window[_callback_parameter] = function (_data) {
+            _get_callback(_data);
+        };
+    }
+    
     var _get_json = function() {
         
         //if (_retry_counter == 999)
         //    return;
         
-        $.getJSON(_url, function (_data) {
-
-                if (KALS_context !== undefined
-                    && KALS_context.completed === true) {
-		    if (KALS_CONFIG.debug.ajax_get_message) {			
-                        $.test_msg('ajax_get from ' + _url + ' \n return data', _data);
-                    }
-                }
-			
-			
-            if (typeof(_retry_timer) === 'undefined' 
-                    || _retry_timer === null) {
-                return this;
-            }
-            else if ($.isset(_retry_timer)) {
-                clearInterval(_retry_timer);
-                _retry_timer = null;
-                delete _retry_timer;
-            }
-            
-            if (typeof(_data.exception) !== 'undefined') {            
-                if ($.is_function(_exception_handle)) {
-                    _exception_handle(_data.exception);
-                }
-                else {
-                    _this.show_exception(_data.exception);
-                }
-            }
-            else {
-                _callback(_data);
-            }
-        }); 
+        if (_callback_parameter === "?") {
+            $.getJSON(_url, _get_callback); 
+        }
+        else {
+            //$.getJSON(_url);
+            $.getScript(_url);
+        }
     };
     
     try {
         _get_json();
         
-        
         if (_retry !== null && _retry > 0) {
+            
+            if (_callback_parameter !== "?") {
+                $.test_msg("$.ajax_get start to load", _url);
+                //$.test_msg("開始計時", _retry_wait);
+            }
             _retry_timer = setInterval(function () {
-                
+                //$.test_msg("時間到了");
                 if (_retry_counter === _retry || _retry_counter > _retry
                     || typeof(_retry_timer) === 'undefined') {
                     if (typeof(_retry_timer) !== 'undefined') {
@@ -181,11 +212,244 @@ KALS_util.ajax_get = function (_config) {
         }
         
         if ($.is_function(_exception_handle)) {
-            _exception_handle(e);
+            _exception_handle(e, _url);
         }
         else {
-            _this.show_exception(e);
+            _this.show_exception(e, _url);
         }
+    }
+    
+    return this;
+};
+
+/**
+ *  改寫jQuery的$.getJSON方法
+ *
+ * @param _config = {
+ *   url: String (without base_url),
+ *   data: JSON,
+ *   callback: function (_data),
+ *   exception_handle: function (_data), //可省略，省略則自動使用KALS_util.show_exception來處理
+ *   retry: 3, //可省略，預設嘗試次數
+ *   retry_wait: 60 * 1000, //預設嘗試等待時間，單位是毫秒
+ *   fixed_callback: "fixed_callback"   //預設省略，固定callback的參數
+ * };
+ */
+KALS_util.ajax_local_get = function (_config) {
+    var _url = $.get_parameter(_config, 'url');
+    var _data = $.get_parameter(_config, 'data');
+    var _callback = $.get_parameter(_config, 'callback', function() {});
+    var _exception_handle = $.get_parameter(_config, 'exception_handle');
+    
+    var _retry = $.get_parameter(_config, 'retry', 3);
+    var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
+    var _retry_counter = 0;
+    
+    //_url = $.appends_with(_url, '/');
+    
+    var _callback_parameter = $.get_parameter(_config, "fixed_callback", "?");
+    if (_callback_parameter === true) {
+        _callback_parameter = "_";
+    }
+    
+    var _full_callback_parameter = _callback_parameter;
+    if ($.is_string(_callback_parameter) && _callback_parameter !== "?") {
+        _full_callback_parameter = "KALS_util.c." + _callback_parameter;
+    }
+    
+    //$.test_msg("ajax_local_get", _url);
+    
+    if (_data !== null) {
+        if ($.is_object(_data)) {
+            _data = $.json_encode(_data);
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);
+        }
+        else if ($.is_string(_data)) {
+            _data = encodeURIComponent(_data);
+            _data = escape(_data);
+        }
+		
+        //_url = _url + _data + '/callback=' + _full_callback_parameter;
+    }
+    else {
+        //_url = _url + 'callback=' + _full_callback_parameter;
+    }
+    
+	if (_url.indexOf('http') === 0 
+                || _url.indexOf('%22') === 0) {
+            $.test_msg('ajax_local_get exception', 'KALS_util.ajax_get try to load exception url: ' + _url);
+            //throw ;
+            return this;
+	}
+
+    var _this = this;
+    
+    //檢查網址是否超過最大長度
+    if (_url.length > 2000) {
+        if ($.is_function(_exception_handle)) {
+            _exception_handle();
+        }
+        else {
+			
+            $.test_msg('KALS_util.ajax_local_get()'+'超過最大長度囉', _url.length);
+			
+            this.show_exception({
+                heading: KALS_context.lang.line(new KALS_language_param(
+                    'Data error.',
+                    'exception.url_too_large.heading'
+                )),
+                message: KALS_context.lang.line(new KALS_language_param(
+                    'Request-URL too large.',
+                    'exception.url_too_large.message'
+                )),
+                request_uri: _url
+            });
+        }
+        return this;
+    }
+    
+    if (KALS_CONFIG.debug.ajax_get_message) {
+        $.test_msg('ajax_local_get', _url);
+    }
+    
+    var _retry_timer;
+    //var _retry_exception = function () {
+    //    $.test_msg('retry exception', [_url, KALS_context.get_base_url()]);
+    //    var _exception = new KALS_exception('exception.retry_exception');
+    //    _this.show_exception(_exception, _url);
+    //};
+    //var _retry_exception = this.re
+    
+    
+    var _get_callback = function (_data) {
+        //$.getJSON(_url, function (_data) {
+        
+        if (typeof(_data) !== "undefined" 
+                && typeof(_data.response) !== "undefined") {
+            _data = _data.response;
+        }
+        
+        //$.test_msg("ajax_local_get get_callback", _data);
+        
+        if (KALS_context !== undefined
+                && KALS_context.completed === true) {
+            if (KALS_CONFIG.debug.ajax_get_message) {			
+                $.test_msg('ajax_local_get from ' + _url + ' \n return data', _data);
+            }
+        }
+
+        if (typeof(_retry_timer) === 'undefined' 
+                || _retry_timer === null) {
+            return this;
+        }
+        else if ($.isset(_retry_timer)) {
+            clearInterval(_retry_timer);
+            _retry_timer = null;
+            delete _retry_timer;
+        }
+
+        if (typeof(_data) !== 'undefined'
+                && typeof(_data.exception) !== 'undefined') {
+            if ($.is_function(_exception_handle)) {
+                _exception_handle(_data.exception, _url);
+            }
+            else {
+                _this.show_exception(_data.exception, _url);
+            }
+        }
+        else {
+            if ($.is_function(_callback)) {
+                _callback(_data);
+            }
+        }
+    };
+    
+    if (_callback_parameter !== "?") {
+        this.c[_callback_parameter] = function (_data) {
+        //window[_callback_parameter] = function (_data) {
+            _get_callback(_data);
+        };
+    }
+    
+    var _error_callback = function (e) {
+        
+        if (e === undefined) {
+            e = "undefined_error";
+        }
+        else if (typeof(e.status) !== "undefined") {
+            e = "Page not found!";
+        }
+        
+        _get_callback();
+        
+        if ($.is_function(_exception_handle)) {
+            _exception_handle(e, _url);
+        }
+        else {
+            _this.show_exception(e, _url);
+        }
+        
+    };
+    
+    var _get_json = function() {
+        
+        //if (_retry_counter == 999)
+        //    return;
+        /*
+        if (_callback_parameter === "?") {
+            $.getJSON(_url, _get_callback); 
+        }
+        else {
+            //$.getJSON(_url);
+            $.getScript(_url);
+        }
+        */
+        //$.get(_url, _get_callback);
+        $.ajax({
+            url: _url,
+            //dataType: 'json',
+            complete: _get_callback,
+            error: _error_callback
+        });
+    };
+    
+    try {
+        _get_json();
+        
+        if (_retry !== null && _retry > 0) {
+            
+            if (_callback_parameter !== "?") {
+                //$.test_msg("開始計時", _retry_wait);
+            }
+            _retry_timer = setInterval(function () {
+                //$.test_msg("時間到了");
+                if (_retry_counter === _retry || _retry_counter > _retry
+                    || typeof(_retry_timer) === 'undefined') {
+                    if (typeof(_retry_timer) !== 'undefined') {
+                        clearInterval(_retry_timer);
+                        _retry_timer = null;
+                        delete _retry_timer;
+                    }
+                    _this._retry_exception(_url);
+                    return this;
+                }
+                
+                _get_json();
+                
+                _retry_counter++;
+                
+            }, _retry_wait);    
+        }
+    }
+    catch (e) {
+        if ($.isset(_retry_timer)) {
+            clearInterval(_retry_timer);
+            _retry_timer = null;
+            delete _retry_timer;
+        }
+        
+        _error_callback(e);
     }
     
     return this;
@@ -339,7 +603,7 @@ KALS_util.ajax_upload = function (_config) {
     _url = $.appends_with(_url, '/');
     
     var _action = _url;
-    if (typeof(KALS_context) != 'undefined') {
+    if (typeof(KALS_context) !== 'undefined') {
         _action = KALS_context.get_base_url(_action);
     }
     
@@ -403,16 +667,16 @@ KALS_util.ajax_upload = function (_config) {
                         'request_uri': _url
                     };
                     
-                    if (typeof(_data) == 'undefined'
-                        || typeof(_data.completed) == 'undefined') {
-					    $.test_msg("show_exception 1");
+                    if (typeof(_data) === 'undefined'
+                            || typeof(_data.completed) === 'undefined') {
+                        $.test_msg("show_exception 1");
                         _this.show_exception(_exception, _url);
                     }
                     else if (_data.completed === false) {
                         if (_data.data !== false) {
-							_exception.message = _data.data;
-						}
-						$.test_msg("show_exception 2");
+                            _exception.message = _data.data;
+                        }
+                        $.test_msg("show_exception 2");
                         _this.show_exception(_exception, _url);
                     }
                     
@@ -436,6 +700,7 @@ KALS_util.ajax_upload = function (_config) {
  * @param {KALS_exception} _exception 這個是來自於伺服器回傳_data中的exception屬性。
  * 在ajax_get()的時候發生錯誤時，會自動將_data.exception送到此方法。
  * 這是處理例外的預設方法，您可以在ajax_get()當中設定exception_handle
+ * @param {String} _uri 網址
  */
 KALS_util.show_exception = function (_exception, _uri) {
     //var _heading = $.get_parameter(_exception, 'heading');
@@ -594,15 +859,15 @@ KALS_util._get_confirm_modal = function () {
         var _no_lang = new KALS_language_param('NO', 'dialog.option.no');
         
         var _yes_option = new Dialog_close_option(_yes_lang, function () {
-            if (typeof(_modal.confirm_callback) == 'function') {
-				_modal.confirm_callback(true);
-			}
+            if (typeof(_modal.confirm_callback) === 'function') {
+                _modal.confirm_callback(true);
+            }
         });
         
         var _no_option = new Dialog_close_option(_no_lang, function () {
-            if (typeof(_modal.confirm_callback) == 'function') {
-				_modal.confirm_callback(true);
-			}
+            if (typeof(_modal.confirm_callback) === 'function') {
+                _modal.confirm_callback(true);
+            }
         });
         
         _modal.set_options([_yes_option, _no_option]);
@@ -728,18 +993,18 @@ KALS_util.select_menu = function (_config) {
 KALS_util.help = function (_url) {
     
     if ($.is_null(_url)) {
-		_url = '';
-	}
+        _url = '';
+    }
     
-    if (_url.substr(0, 1) == '/') {
-		_url = _url.substr(1, _url.length);
-	}
+    if (_url.substr(0, 1) === '/') {
+        _url = _url.substr(1, _url.length);
+    }
     
     var _base_url = KALS_CONFIG.help_base_url;
     var _needle = 'http';
     var _help_url = KALS_context.get_base_url([KALS_CONFIG.help_base_url, _url]);
-    if (_base_url.substr(0, _needle.length) == _needle) {
-        if (_base_url.substr(_base_url.length - 1, _base_url.length) != '/') {
+    if (_base_url.substr(0, _needle.length) === _needle) {
+        if (_base_url.substr(_base_url.length - 1, _base_url.length) !== '/') {
 			_base_url = _base_url + '/';
 		}
         _help_url = _base_url + _url;
@@ -781,7 +1046,7 @@ KALS_util.decodeURIComponent = function (_str) {
  * @param JSON _note 任意要儲存的資料
  * @param function _callback 回呼函數 
  */
-KALS_util.log = function (_action, _note) {
+KALS_util.log = function (_action, _note, _callback) {
     
     //_note = null;
     var _data = {
@@ -789,15 +1054,22 @@ KALS_util.log = function (_action, _note) {
         "note": _note
     };
 
-    $.test_msg("KALS_util.log", _data);
+    //$.test_msg("KALS_util.log", _data);
 
     var _config = {
         "url": "log/create",
-        "data": _data
+        "data": _data,
+        "callback": _callback,
+        "exception_handle": function () {
+            // 不做任何事情
+        }
     };
     //KALS_util.ajax_get(_config);
-    KALS_util.ajax_post(_config);
+    
+    //KALS_util.ajax_post(_config);
 };
+
+KALS_util.c = {};
 
 /* End of file KALS_unit */
 /* Location: ./libraries/helpers/kals_unit.js */

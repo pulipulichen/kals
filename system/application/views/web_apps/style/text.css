@@ -22,6 +22,12 @@
  */
 /*
 .kals-paragraph .kals-word {
-    color: green !important;
+    color: green;
+}
+.kals-paragraph .kals-word.location-head {
+    border: 1px solid blue;
+}
+.kals-paragraph {
+    border: 1px solid #06246F;
 }
 */

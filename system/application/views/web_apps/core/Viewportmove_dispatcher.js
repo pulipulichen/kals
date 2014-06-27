@@ -320,30 +320,30 @@ Viewportmove_dispatcher.prototype.lock_viewport = function () {
 };
 */
 
-/*
-Viewportmove_dispatcher.prototype.unlock_viewport = function(){
-    if (this._viewport_locked === false)
-        return;
-    
-    var _new_viewport = $('head meta#kals_viewport_lock');
-    var _origin_viewport = $('head meta[name=origin_viewport]');
-    
-    if (_new_viewport.length > 0)
-        _new_viewport.remove();
-    if (_origin_viewport.length > 0) {
-        _origin_viewport.attr('name', 'viewport');
-        alert(_origin_viewport.attr('content'));
-        var _x_offset = _origin_viewport.attr('x_offset');
-        var _y_offset = _origin_viewport.attr('y_offset');
-        if (typeof(_x_offset) != 'undefined'
-            && typeof(_y_offset) != 'undefined')
-            window.scrollTo(_x_offset, _y_offset);
-    }
-    
-    this._viewport_locked = false;
-    return this;
-};
-*/
+
+//Viewportmove_dispatcher.prototype.unlock_viewport = function(){
+//    if (this._viewport_locked === false)
+//        return;
+//    
+//    var _new_viewport = $('head meta#kals_viewport_lock');
+//    var _origin_viewport = $('head meta[name=origin_viewport]');
+//    
+//    if (_new_viewport.length > 0)
+//        _new_viewport.remove();
+//    if (_origin_viewport.length > 0) {
+//        _origin_viewport.attr('name', 'viewport');
+//        alert(_origin_viewport.attr('content'));
+//        var _x_offset = _origin_viewport.attr('x_offset');
+//        var _y_offset = _origin_viewport.attr('y_offset');
+//        if (typeof(_x_offset) != 'undefined'
+//            && typeof(_y_offset) != 'undefined')
+//            window.scrollTo(_x_offset, _y_offset);
+//    }
+//    
+//    this._viewport_locked = false;
+//    return this;
+//};
+
 
 /* End of file Viewportmove_dispatcher */
 /* Location: ./system/application/views/web_apps/toolkit/Viewportmove_dispatcher.js */

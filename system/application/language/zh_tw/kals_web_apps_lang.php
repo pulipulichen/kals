@@ -101,6 +101,7 @@ $lang['web_apps.toolbar.search.advanced_search'] = '進階搜尋';
 $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
 $lang['web_apps.toolbar.search.search_result'] = '搜尋結果: ';
 
+$lang['web_apps.toolbar.navigation_list.link'] = '連結';
 $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
 $lang['web_apps.toolbar.navigation_list.help'] = '說明';
 $lang['web_apps.toolbar.navigation_list.feedback'] = '回報';
@@ -199,7 +200,7 @@ $lang['web_apps.window.map.heading'] = '章節地圖';
 $lang['web_apps.window.map.nav_heading'] = '章節地圖';
 $lang['web_apps.window.map.content.option.my'] = '我的標註';
 $lang['web_apps.window.map.content.option.navigation'] = '推薦的標註';
-
+$lang['web_apps.window.map.no_heading_found'] = '無法分析文章的章節結構';
 
 
 
@@ -211,6 +212,7 @@ $lang['web_apps.kals_text.exception.selector_not_exist'] = '找不到可選取�
 
 $lang['web_apps.annotation_tool.load_annotation_param.annotation_not_found'] = '找不到編號為{0}的標註，它可能不存在或是已經被刪除。';
 
+$lang['web_apps.kals_text.selectable_text_chapter.top_heading'] = '(回到頁首)';
 /**
  * annotation_editor
  */
@@ -364,6 +366,6 @@ $lang['web_apps.window.dashboard.last_annotation'] = "最近的標註";
 $lang['web_apps.window.dashboard.activity'] = "活躍度";
 
 $lang['web_apps.kals_framework.view_config_error'] = "VIEW設定錯誤";
-        
+
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */

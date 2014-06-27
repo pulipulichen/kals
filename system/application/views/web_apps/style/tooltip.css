@@ -27,7 +27,7 @@
 .KALS.tooltip .tip-content {
     margin: 0;
     padding: 0;
-	clear:both;
+    clear:both;
 }
 
 .KALS.tooltip .tip-needle {
@@ -132,18 +132,17 @@
 
 .KALS.tooltip.has-annotation .list-like-component,
 .KALS.tooltip.has-annotation .respond-indicator {
-	display:none;
-	
+    display:none;
 }
 
 .KALS.tooltip.loading .tip-needle,
 .KALS.tooltip.loading .tip-content {
     /*display:none !important;*/
-	visibility:hidden;
+    visibility:hidden;
 }
 
 .KALS.tooltip.selected.bottom.has-annotation .tip-content {
-	padding-bottom:0;
+    padding-bottom:0;
 }
 
 .KALS.tooltip.selected.has-annotation .tip-content {
@@ -242,7 +241,6 @@
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none;
 }
 
 

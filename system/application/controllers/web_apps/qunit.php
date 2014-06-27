@@ -131,7 +131,7 @@ class QUnit extends Controller {
                 }
             }
             else {
-                $deeper_dir_name = $dir_name . "/" .$index;
+                $deeper_dir_name = $dir_name .$index;
                 $deeper_dir_files = $file;
                 $result_files = $this->_get_files_from_dir($result_files, $deeper_dir_files, $deeper_dir_name);
             }

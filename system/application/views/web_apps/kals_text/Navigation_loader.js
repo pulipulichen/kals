@@ -53,10 +53,10 @@ Navigation_loader.prototype.load_annotation = function (_data, _callback) {
         var _type_id = _i;
         var _scope_coll_json = _data[_i];
         
-        if (_scope_coll_json === null ||
-		_scope_coll_json.length === 0) {
-			continue;
-		}
+        if (_scope_coll_json === null 
+                || _scope_coll_json.length === 0) {
+            continue;
+        }
         
         //$.test_msg('Navigation_loader.load_annotation()', [$.is_array(_scope_coll_json[0]), _i]);
         
@@ -81,14 +81,14 @@ Navigation_loader.prototype.initialize = function () {
     
     //$.test_msg('Navigation_loader.initialize()', typeof(KALS_text));
     
-    if (typeof(KALS_text) == 'object') {
+    if (typeof(KALS_text) === 'object') {
         this._selection = KALS_text.selection.navigation;
         
         var _this = this;
 		
-		var _setup = setTimeout(function () {
+        var _setup = setTimeout(function () {
             
-			var _policy = KALS_context.policy;
+            var _policy = KALS_context.policy;
             //$.test_msg('Navigation_loader.initialize()', [_policy.allow_show_navigation(), _policy.get_navigation_data()]);
             if (_policy.allow_show_navigation() === false) {
                 _this.reset();
@@ -98,7 +98,7 @@ Navigation_loader.prototype.initialize = function () {
                 var _navigation_data = _policy.get_navigation_data();
                 if ($.isset(_navigation_data)) {       
 				
-					//$.test_msg('Navigation_loader.initialize()', "start load");         
+                    //$.test_msg('Navigation_loader.initialize()', "start load");         
                     //var _navigation_data = _data.Navigation_loader;
                     _this.setup_loader( _navigation_data , function () {
                         //KALS_context.init_profile.complete('navigation_annotation');
@@ -106,18 +106,18 @@ Navigation_loader.prototype.initialize = function () {
                     });
                 }
                 else {
-					//$.test_msg('Navigation_loader.initialize()', "nothing");
-					_this.setup_loader( );
+                    //$.test_msg('Navigation_loader.initialize()', "nothing");
+                    _this.setup_loader();
                 }    
             }
         }, 0);
 		
-		KALS_context.add_listener(function () {
-			KALS_context.policy.add_attr_listener('show_navigation', function () {
-            	_setup();
-	        }, true);
-			_setup();
-		});
+        KALS_context.add_listener(function () {
+            KALS_context.policy.add_attr_listener('show_navigation', function () {
+                _setup();
+            }, true);
+            _setup();
+        });
     }
     
     KALS_context.init_profile.complete('navigation_annotation');

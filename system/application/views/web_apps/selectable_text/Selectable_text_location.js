@@ -179,13 +179,14 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     
     var _text = _selectable_text._text;
     
+    var _paragraphs = _text.find('.' + _paragraph_class_name);
     var _first_paragraph = _text.find('.' + _paragraph_class_name + ':first');
     var _last_paragraph = _text.find('.' + _paragraph_class_name + ':last');
     
     var _first_paragraph_id = _selectable_text_paragraph.get_paragraph_id(_first_paragraph);
     var _last_paragraph_id = _selectable_text_paragraph.get_paragraph_id(_last_paragraph);
     
-    //$.test_msg('selectable.setup_paragraph_location()', [ _first_paragraph_id , _last_paragraph_id]);
+    //$.test_msg('selectable.setup_paragraph_location()', [ _text.find('.' + _paragraph_class_name).length, _first_paragraph_id , _last_paragraph_id]);
     
     var _batch_excute = _selectable_text.excute_interval.batch_excute;
     var _wait = _selectable_text.excute_interval.wait;
@@ -196,6 +197,12 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     var _continue = function (_i, _callback) {
         
         _i++;
+        
+        /**
+         * 加入統計目前字串次數的功能
+         * @author Pulipuli Chen  20140518
+         */
+        KALS_context.progress.add_count(2);
         
         if (_i % _batch_excute === 0) {
             _excute_timer = setTimeout(function () {
@@ -215,26 +222,39 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     };
     
     var _loop = function (_i) {
-        _first_paragraph = _text.find('.' + _paragraph_id_prefix + _i + ':first');
-        _last_paragraph = _text.find('.' + _paragraph_id_prefix + _i + ':last');
+        //_first_paragraph = _text.find('.' + _paragraph_id_prefix + _i + ':first');
+        //_last_paragraph = _text.find('.' + _paragraph_id_prefix + _i + ':last');
         
         //沒有段落了，結束了，所以呼叫完結的函數
         //$.test_msg('selectable.setup_paragraph_location()', [_i, _last_paragraph_id]);
-        if (_i === _last_paragraph_id + 1 || _i > _last_paragraph_id + 1) {
+        //if (_i === _last_paragraph_id + 1 || _i > _last_paragraph_id + 1) {
+        //    _complete();
+        //    return;
+        //}
+        if (_i === _paragraphs.length) {
             _complete();
             return;
         }
         
         //如果找不到下一個段落，則結束迴圈
-        if (false === _first_paragraph.exists()) {
+        //if (false === _first_paragraph.exists()) {
             //$.test_msg('_text.setup_paragraph_location()',' Cannot found ' + _i);
-           _continue(_i);
-           return;
-        }
+        //   _continue(_i);
+        //   return;
+        //}
         
         //取得段落頭尾的編號
-        var _first_word = _first_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):first');
-        var _last_word = _last_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):last');
+        //var _first_word = _first_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):first');
+        //var _last_word = _last_paragraph.find('.' + _word_class_name + ':not(.' + _span_classname +'):last');
+        var _paragraph = _paragraphs.eq(_i);
+        var _words_selector = '.' + _word_class_name + ':not(.' + _span_classname +')';
+        var _paragraph_words = _paragraph.find(_words_selector);
+        var _first_word = _paragraph_words.filter(':first');
+        var _last_word = _paragraph_words.filter(':last');
+        
+        //_first_word.css("color", "blue");
+        //_last_word.css("color", "red");
+        //$.test_msg("location", [_first_word.text(), _last_word.text(), _words_selector]);
         
         if (false === _first_word.exists()
             || false === _last_word.exists()) {
@@ -245,19 +265,31 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
         var _first_id = $.get_prefixed_id(_first_word.attr('id'));
         var _last_id = $.get_prefixed_id(_last_word.attr('id'));
         
+        //$.test_msg("location word_id", [_first_id, _last_id]);
+        
         //標示段落開頭的部份
         var _location = 0;
-        for (var _w = _first_id; _w < _last_id + 1; _w++) {
-            var _word = $('#' + _word_id_prefix + _w + ':first');
+        //for (var _w = _first_id; _w < _last_id + 1; _w++) {
+        if (_paragraph_words.filter("." + _sentence_punctuation_class_name).length === 0) {
+            var _word = _paragraph_words.eq(0);
             _word.addClass(_location_class_names[_location]);
-            
-            if (_word.hasClass(_sentence_punctuation_class_name)) {
-                if (_location === 0) {
-                    _location = 3;
-                }
-                else {
-                    //迴圈結束
-                    break;
+        }
+        else {
+            for (var _w = 0; _w < _paragraph_words.length; _w++) {
+                //var _word = $('#' + _word_id_prefix + _w + ':first');
+                var _word = _paragraph_words.eq(_w);
+
+                //$.test_msg('location 1', [_w, _word.length, '#' + _word_id_prefix + _w + ':first']);
+                _word.addClass(_location_class_names[_location]);
+
+                if (_word.hasClass(_sentence_punctuation_class_name)) {
+                    if (_location === 0) {
+                        _location = 3;
+                    }
+                    else {
+                        //迴圈結束
+                        break;
+                    }
                 }
             }
         }
@@ -266,27 +298,36 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
             
             //標示段落結尾的部份
             _location = 1;
-            for (var _w = _last_id; _w > _first_id - 1; _w--) {
-                var _word = $('#' + _word_id_prefix + _w + ':first');
-                
-                if (_w < _last_id - 3
-                    && _word.hasClass(_sentence_punctuation_class_name)) {
-                    if (_location === 1) {
-                        _location = 4;
-                    }
-                    else {
-                        //迴圈結束
-                        break;
-                    }
-                }
-                
+            
+            if (_paragraph_words.filter("." + _sentence_punctuation_class_name).length === 0) {
+                var _word = _paragraph_words.eq(_paragraph_words.length -1);
                 _word.addClass(_location_class_names[_location]);
+            }
+            else {
+                //for (var _w = _last_id; _w > _first_id - 1; _w--) {
+                for (var _w = _paragraph_words.length -1; _w === 0; _w--) {
+                    //var _word = $('#' + _word_id_prefix + _w + ':first');
+                    var _word = _paragraph_words.eq(_w);
+
+                    if (_w < _last_id - 3
+                        && _word.hasClass(_sentence_punctuation_class_name)) {
+                        if (_location === 1) {
+                            _location = 4;
+                        }
+                        else {
+                            //迴圈結束
+                            break;
+                        }
+                    }
+
+                    _word.addClass(_location_class_names[_location]);
+                }
             }
                 
             //處理完畢，進行下一個迴圈
             _continue(_i);
             return;
-        }, 0);
+        }, 0);  //_excute_timer = setTimeout(function () {
     };
     
     _loop(0);

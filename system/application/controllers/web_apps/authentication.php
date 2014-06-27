@@ -38,6 +38,8 @@ class Authentication extends Web_apps_controller {
            'ip' => get_client_ip(),
            'browser' => $_SERVER['HTTP_USER_AGENT']
         );
+        
+        $this->load->library("kals_actor/User_statistic");
     }
 
     /**
@@ -109,6 +111,7 @@ class Authentication extends Web_apps_controller {
         $this->user_statistic = new User_statistic();
         
         $output = array();
+        //$output["webpage_id"] = get_context_webpage()->get_id();
         $output['login'] = TRUE;
         $output['embed_login'] = $embed_login;
         $output['user'] = array(
@@ -141,6 +144,16 @@ class Authentication extends Web_apps_controller {
         $my_annotation = $annotation_getter->my();
         $output['policy']['my_basic'] = $my_annotation['basic'];
         $output['policy']['my_custom'] = $my_annotation['custom'];
+        
+        //$mobile_redirect = $this->session->flashdata("mobile_redirect");
+        $mobile_redirect = $this->session->userdata("mobile_redirect");
+        //$mobile_redirect = "http://localhost/kals/mobile_apps/annotation_thread/topic_id/15651#annotation_15661";
+        //test_msg("mobile_redirect", $mobile_redirect);
+        if ($mobile_redirect !== FALSE) {
+            $output['mobile_redirect'] = $mobile_redirect;
+            $this->session->unset_userdata("mobile_redirect");
+            //context_complete();
+        }
 
         return $output;
     }
@@ -173,6 +186,7 @@ class Authentication extends Web_apps_controller {
         $annotation_getter = new annotation_getter();
 
         $output = array(
+            //"webpage_id" => get_context_webpage()->get_id(),
             'login' => FALSE,
             'embed_login' => FALSE,
             'user' => array(
@@ -219,7 +233,7 @@ class Authentication extends Web_apps_controller {
         //$action = 8;
         $action = "register.success";
         $user_id = NULL;
-        if (isset($user) )
+        if (isset($user) && $user->has_password() === FALSE)
         {
             //handle_error('user_already_exist');
             $output['error'] = 'user_already_existed';

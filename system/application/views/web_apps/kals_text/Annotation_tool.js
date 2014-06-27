@@ -79,9 +79,10 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('annotation-tool')
         .addClass('draggable-tool')
         .addClass('kals-modal')
-		.addClass("KALS")
+        .addClass("KALS")
         .hide()
-        .insertBefore($('.selectable-text:first'));
+        //.insertBefore($('.selectable-text:first'));
+        .appendTo("body");
         
     var _config = this._$get_config();
     
@@ -352,14 +353,24 @@ Annotation_tool.prototype.reopen = function (_callback) {
 
 Annotation_tool.prototype.scroll_into_view = function () {
     //var _offset = this.get_ui().offset();
-    var _offset = $.get_offset(this.get_ui());
+    
+    var _y;
+    //var _offset = $.get_offset(this.get_ui());
+    //_y = _offset.top - 60;
+    _y = KALS_text.selection.select.get_offset_top() - 60;
+    
     var _position = {
-        y: _offset.top - 60
+        y: _y
     };
 	//$.test_msg("Annotation_tool.scroll_into_view", _position);
     $.scroll_to(_position);
 };
 
+/**
+ * 關閉標註工具
+ * @param {Function} _callback
+ * @returns {Annotation_tool.prototype}
+ */
 Annotation_tool.prototype.close = function (_callback) {
     
     this.list.reset();

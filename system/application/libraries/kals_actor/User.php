@@ -122,10 +122,9 @@ class User extends KALS_actor {
     }
 
     protected function  _get_field_filter($field) {
-        if ($field == 'password')
-        {
-            handle_error($this->lang->line('user.get_field.get_password_deny.exception'));
-        }
+        //if ($field == 'password') {
+        //    handle_error($this->lang->line('user.get_field.get_password_deny.exception'));
+        //}
         return $field;
     }
 
@@ -261,8 +260,9 @@ class User extends KALS_actor {
                     'name' => $keyword
                 );
             }
-            if (NULL != $password)
+            if (NULL != $password) {
                 $cond['password'] = $password;
+            }
             return $this->find($cond);
         }
         else
@@ -297,6 +297,12 @@ class User extends KALS_actor {
     public function set_password($value)
     {
         return $this->set_field('password', $value);
+    }
+    
+    public function has_password()
+    {
+        //return $this->set_field('password', $value);
+        return ($this->get_field('password') === NULL);
     }
 
     public function set_email($value)

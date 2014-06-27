@@ -1,16 +1,19 @@
 .KALS.kals-modal .editor-tool {
     -webkit-box-shadow: 0px 5px 5px #AF9067;
+    -moz-box-shadow: 0px 5px 5px #AF9067;
+    -khtml-box-shadow: 0px 5px 5px #AF9067;
+    box-shadow: 0px 5px 5px #AF9067;
+    
     position:relative;
     z-index: 1;
 }
 .KALS.kals-modal .editor-tool tr td{
-	padding: 0 0 !important;
-	border:0px !important;
-	width:330px !important;
-	
+    padding: 0 0 !important;
+    border:0px !important;
+    width:330px !important;
 }
 .KALS.kals-modal .editor-tool table{
-	border-collapse:inherit !important;
+    border-collapse:inherit !important;
 }
 
 .KALS.kals-modal .editor-container {
@@ -51,6 +54,7 @@
     */
     -webkit-user-select: none;
     -moz-user-select: none;
+    -khtml-user-select: none;
     /*
     border-radius: 0 0 8px 8px;
     -moz-border-radius: 0 0 8px 8px;
@@ -144,6 +148,8 @@
 .KALS.kals-modal .editor-container .toggle.top td {
     -moz-box-shadow: 0px -5px 5px #AF9067;
     -webkit-box-shadow: 0px -5px 5px #AF9067;
+    -khtml-box-shadow: 0px -5px 5px #AF9067;
+    box-shadow: 0px -5px 5px #AF9067;
 }
 
 
@@ -339,6 +345,10 @@
     z-index: 4;
 }
 
+.KALS.kals-modal .type-component .type-menu.loading {
+    visibility: hidden;
+}
+
 .KALS.kals-modal .type-component .type-menu .type-option {
     border-style: none;
     display:block;
@@ -353,8 +363,10 @@
    /*border-left: 10px solid black;
    padding-left: 0px;*/
    position:relative;
+   -khtml-box-shadow: #FFFFFF 0px 0px 20px;
    -moz-box-shadow: #FFFFFF 0px 0px 20px;
    -webkit-box-shadow: #FFFFFF 0px 0px 20px;
+   box-shadow: #FFFFFF 0px 0px 20px;
 }
 
 .KALS.kals-modal .type-component .type-option

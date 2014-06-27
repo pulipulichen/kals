@@ -117,6 +117,8 @@ class annotation_topics extends Mobile_apps_controller{
 
          $data['written_annotations'] = $this->_filter_written_annotations($written_annotations, $unread_topics);
          
+         $data["webpage_url"] = $webpage->get_url();
+         
         // log區 -使用mobile裝置瀏覽topic list- action = 40
         $this->_log($webpage);
         
@@ -211,10 +213,13 @@ HAVING max(log_timestamp) < annotation_timestamp OR max(log_timestamp) IS NULL
             $anchor_length = $annotation->get_scope_length();
             if ( $anchor_length > 10) {
                 $array['anchor_text'] = mb_substr($anchor_text, 0, 8, "utf-8");
+                $array['anchor_text'] = $array['anchor_text'] . "...";
             }
             else { 
                 $array['anchor_text'] = $anchor_text;             
             }
+            
+            $array['anchor_text'] = '"'. $array['anchor_text'] . '"';
 
             $respond_collection = $annotation->get_topic_respond_length(); //response  
             $array['respond_count'] = $respond_collection; //取得長度(only res)

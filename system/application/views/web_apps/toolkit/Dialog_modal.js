@@ -579,26 +579,26 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             //_el.css('color', 'red');    //偵測用功能
             _event.preventDefault();
             var _pageY = _get_event_pageY(_event);
-			_scrollStartPos = _el.attr('scrollTop') + _pageY;
+            _scrollStartPos = _el.attr('scrollTop') + _pageY;
             
             var _listen_object=  window;
             if ($.browser.msie || $.is_mobile_mode()) {
-				_listen_object = document;
-			}
+                _listen_object = document;
+            }
             
-			$(_listen_object).bind("touchmove", _move_event);
+            $(_listen_object).bind("touchmove", _move_event);
             $(_listen_object).bind("mousemove", _move_event);
             
             $(_listen_object).bind("touchend", _end_event);
             $(_listen_object).bind("mouseup", _end_event);
             $(_listen_object).bind("mouseout", _end_event);
-		};
+        };
         
         var END_TIMER;
         var _move_event = function(_event) {
             if (_scrollStartPos === null) {
-				return;
-			}
+                return;
+            }
             
             //_el.css('color', 'blue');    //偵測用功能
             _event.preventDefault();
@@ -610,7 +610,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             var _max_height = _el.attr('scrollHeight');
             
             if (_scroll !== null
-                && _el.attr('scrollTop') == _origin_scroll_top) {
+                && _el.attr('scrollTop') === _origin_scroll_top) {
                 
                 if (_origin_scroll_top > 0) {
                 

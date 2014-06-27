@@ -14,6 +14,10 @@ function Feedback_manager() {
 	
 }
 
+Feedback_manager.prototype = new Navigation_item_link();
+
+Feedback_manager.prototype.name = "Feedback_manager";
+
 /**
  * @type Feedback
  */
@@ -96,7 +100,7 @@ Feedback_manager.prototype.nav_config = {
  */
 Feedback_manager.prototype.is_absolute = function () {
     return false;
-}
+};
 
 /* End of file Feedback_manager */
 /* Location: ./system/application/views/web_apps/Feedback_manager.js */

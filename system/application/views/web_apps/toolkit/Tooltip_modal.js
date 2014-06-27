@@ -57,8 +57,8 @@ Tooltip_modal.prototype._$get_config = function (_selector) {
             //    _this._$onviewportmove(_ui);
             
             if ($.is_function(_this._$onopen)) {
-				_this._$onopen(_ui);
-			}
+                _this._$onopen(_ui);
+            }
                 
             _this.call_temp_callback(_ui);
         },

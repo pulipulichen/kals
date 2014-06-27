@@ -15,6 +15,12 @@
 DEFAULT_KALS_CONFIG = {
     
     /**
+     * 是否啟用KALS
+     * @type Boolean
+     */
+    enable_kals: true,
+    
+    /**
      * 標註範圍指定區塊
      * @type {string,null} jQuery的指定語法(selector)
      *     請盡量以ID為指定區塊。
@@ -34,6 +40,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * 預設登入的帳號
      * @type {string} = null E-mail郵件地址
+     *     也可以使用網址，該網址應該要回傳使用者的email，例如 "http://localhost/user.txt"
      *     不使用預設登入時則是null 
      */
     user_email: null,
@@ -244,6 +251,18 @@ DEFAULT_KALS_CONFIG = {
      * 但是關閉之後，所有人又能看到別人的標註
      */
     isolation_mode: false,
+    
+    /**
+     * 是否啟用選取文字快取
+     * @type Boolean
+     */
+    //selectable_text_cache: true,
+    
+    /**
+     * 是否啟用搜尋工具列
+     * @type Boolean
+     */
+    enable_search_toolbar: true,
 	
     //----------------------------
     
@@ -340,7 +359,7 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    selectable_text_cache: false,
+    //selectable_text_cache: false,
     
     /**
      * 偵錯用設定
@@ -351,7 +370,7 @@ DEFAULT_KALS_CONFIG = {
          * 是否顯示ajax_get的連接訊息
          * @type Boolean
          */
-        ajax_get_message: true,
+        ajax_get_message: false,
         
         /**
          * 開啟ajax_post設定
@@ -365,7 +384,13 @@ DEFAULT_KALS_CONFIG = {
          * 等於不初始化其他元件
          * @type Boolean
          */
-        kals_context_disable: false
+        kals_context_disable: false,
+        
+        /**
+         * 上傳快取資料
+         * @type Boolean
+         */
+        //webpage_cache_save_enable: false
     },
     
     /**
@@ -455,14 +480,17 @@ DEFAULT_KALS_CONFIG = {
             },
             /**
              * 設定自動save_reading_progress的時間頻率
+             * 單位：秒
+             * 
+             * 預設30秒
              * @type Number
              */
-            "interval_span": 10,
+            //"interval_span": 5,
             /**
              * 頁面停止時延遲的增加時間
              * @type Number
              */
-            "increase_interval_span": 10
+            //"increase_interval_span": 10
         },
         /**
          * 搜尋功能
@@ -474,7 +502,7 @@ DEFAULT_KALS_CONFIG = {
          * 章節地圖
          */
         Window_map: {
-            "enable": false
+            "enable": true
         },
         /**
          * 標註顯示
@@ -483,7 +511,15 @@ DEFAULT_KALS_CONFIG = {
             "enable": true
         },
         /**
+         * 標註顯示
+         */
+        //Window_search: {
+        //    "enable": true
+        //},
+        /**
          * 導讀功能
+         * 
+         * @version 20140625 因為不穩定，所以沒事不開啟
          */
         Reading_guide: {
             "enable": false
@@ -776,21 +812,51 @@ DEFAULT_KALS_CONFIG = {
                              
                     }
                 }
-            ],
+            ]
+        },
+        /**
+         * 開啟行動版網頁
+         * @type type
+         */
+        Open_mobile_apps: {
+            enable: true
+        },
+        /**
+         * 最新標註
+         */
+        Window_search_recent: {
+            "enable": true
         }
     }
 };
 
-/**
- * 偵測是否有參數，否則直接覆蓋
- */
-if (typeof(KALS_CONFIG) !== 'undefined') {
-    for (var _i in KALS_CONFIG) {
-        DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
+(function () {
+    /**
+     * 偵測是否有參數，否則直接覆蓋
+     */
+    if (typeof(KALS_CONFIG) !== 'undefined') {
+        for (var _i in KALS_CONFIG) {
+            /**
+             * @version 20140618 Pulipuli Chen
+             * 對應到Modules的 deeper copy
+             */
+            if (_i === "modules") {
+                for (var _j in KALS_CONFIG[_i]) {
+                    //console.log(_j);
+                    DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];
+                }
+            }
+            else {
+                DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
+            }
+        }
     }
-}
 
-KALS_CONFIG = DEFAULT_KALS_CONFIG;
+    KALS_CONFIG = DEFAULT_KALS_CONFIG;
+    
+})();
+
+
 
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */

@@ -110,8 +110,9 @@ class Annotation_getter extends Web_apps_controller {
 
             if ($is_basic == true)
             {
-                if (isset($type_scope_colls[$annotation_type_id]) == false)
+                if (isset($type_scope_colls[$annotation_type_id]) === false) {
                     $type_scope_colls[$annotation_type_id] = new Annotation_scope_collection();
+                }
 
                 //test_msg('標註', array($annotation_type_id, $annotation));
 
@@ -121,7 +122,7 @@ class Annotation_getter extends Web_apps_controller {
 
                 foreach ($type_scope_colls AS $type_id => $scope_coll)
                 {
-                    if ($annotation_type_id == $type_id)
+                    if ($annotation_type_id === $type_id)
                     {
                         foreach ($annotation_scope_coll AS $scope)
                         {
@@ -139,12 +140,13 @@ class Annotation_getter extends Web_apps_controller {
             }   //if ($is_basic)
             else
             {
-                if (isset($custom_type_scope_colls[$annotation_type_name]) == false)
+                if (isset($custom_type_scope_colls[$annotation_type_name]) === false) {
                     $custom_type_scope_colls[$annotation_type_name] = new Annotation_scope_collection();
+                }
 
                 foreach ($custom_type_scope_colls AS $type_name => $scope_coll)
                 {
-                    if ($annotation_type_name == $type_name)
+                    if ($annotation_type_name === $type_name)
                     {
                         foreach ($annotation_scope_coll AS $scope)
                         {
@@ -217,10 +219,12 @@ class Annotation_getter extends Web_apps_controller {
         $output_data = array();
 
         $my_annotation = $this->my();
-        if (isset($my_annotation['custom']))
+        if (isset($my_annotation['custom'])) {
             $output_data = $my_annotation['custom'];
-        else if (is_array($my_annotation))
+        }
+        else if (is_array($my_annotation)) {
             $output_data = $my_annotation;
+        }
 
         return $this->_display_jsonp($output_data, $callback);
     }
@@ -234,12 +238,15 @@ class Annotation_getter extends Web_apps_controller {
     {
         $type = $GLOBALS['context']->get_anchor_navigation_type();
 
-        if ($type == 'recommend')
+        if ($type == 'recommend') {
             return $this->navigation_recommend($json, $callback);
-        else if ($type == 'none')
+        }
+        else if ($type == 'none') {
             return $this->navigation_none($json, $callback);
-        else
+        }
+        else {
             return $this->navigation_all($json, $callback);
+        }
     }
 
     /**
@@ -476,14 +483,18 @@ class Annotation_getter extends Web_apps_controller {
     public function parse_navigation_level($score)
     {
         $score_type = 1;
-        if ($score < 1.5)
+        if ($score < 1.5) {
             $score_type = 1;
-        else if ($score >= 1.5 && $score < 2)
+        }
+        else if ($score >= 1.5 && $score < 2) {
             $score_type = 2;
-        else if ($score >= 2 && $score < 2.5)
+        }
+        else if ($score >= 2 && $score < 2.5) {
             $score_type = 3;
-        else
+        }
+        else {
             $score_type = 4;
+        }
         return $score_type;
     }
 
@@ -491,8 +502,9 @@ class Annotation_getter extends Web_apps_controller {
     {
         $enable_profiler = FALSE;
 
-        if ($enable_profiler == TRUE)
+        if ($enable_profiler === TRUE) {
             $this->output->enable_profiler(TRUE);
+        }
 
         if (is_string($json)) {
             $data = json_to_object($json);
@@ -862,26 +874,30 @@ class Annotation_getter extends Web_apps_controller {
             }
             else if ($data->order_by == 'create') {
                 $search->add_order (7);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->add_order (7);
+                }
             }
             else {
                 $search->add_order (2, TRUE);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->add_order (2, TRUE);
+                }
             }
         }
         else {
             $search->add_order (2, TRUE);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->add_order (2, TRUE);
+            }
         }
 
         if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
         {
             $search->add_order (6, TRUE);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->add_order (6, TRUE);
+            }
         }
 
         /**

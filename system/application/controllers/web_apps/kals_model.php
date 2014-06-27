@@ -209,10 +209,14 @@ class KALS_model extends Web_apps_controller {
             );
 
             $output_data = array();
-            foreach ($data AS $field => $value) {
-                // 加上TRUE，表示in_array有比對資料型態
-                if (!in_array($field, $strip_fields, TRUE)) {
-                    $output_data[$field] = $value;
+            //test_msg("data", $data);
+            
+            if (is_array($data)) {
+                foreach ($data AS $field => $value) {
+                    // 加上TRUE，表示in_array有比對資料型態
+                    if (!in_array($field, $strip_fields, TRUE)) {
+                        $output_data[$field] = $value;
+                    }
                 }
             }
             

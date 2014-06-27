@@ -434,8 +434,9 @@ class annotation_thread extends Mobile_apps_controller{
             $type_name_lang = $this->lang->line("web_apps.".$type_name_lang);
         }
         else if ($type_name_lang === "annotation.type.custom") {
-            $type_name_lang = "annotation.type.other";
-            $type_name_lang = $this->lang->line("web_apps.".$type_name_lang);
+            //$type_name_lang = "annotation.type.other";
+            //$type_name_lang = $this->lang->line("web_apps.".$type_name_lang);
+            $type_name_lang = $type->get_custom_name();
         }
         return $type_name_lang;
     }

@@ -112,6 +112,8 @@ class generic extends Web_apps_controller {
             'modules/feedback/Feedback_manager',
             'core/KALS_authentication',
             'core/URL_hash_dispatcher',
+            'core/URL_dispatcher',  //20140519 Pulipuli Chen
+            'core/Context_loader',  //20140519 Pulipuli Chen
             'core/Style_manager',
             'core/Overlay_manager',
             'core/KALS_storage',
@@ -144,9 +146,11 @@ class generic extends Web_apps_controller {
             'kals_window/Window_change_link',
 
             'navigation/Navigation_item',
+            'navigation/Navigation_item_link',
             'navigation/Navigation_list',
 
             'navigation/Anonymous_navigation',
+            'navigation/Mobile_navigation',
 
             'navigation/Window_login',
             'navigation/Window_login_submit',
@@ -234,6 +238,7 @@ class generic extends Web_apps_controller {
             'selectable_text/Selectable_text_scope',
             'selectable_text/Selectable_text_sentence',
             'selectable_text/Selectable_text_word',
+            'selectable_text/Webpage_cache',    // 20140517 Pulipuli Chen
             'selectable_text/Selectable_text',
             'selection/Selection_manager',
 
@@ -301,6 +306,7 @@ class generic extends Web_apps_controller {
             'kals_text/My_basic_annotation_loader',
             'kals_text/My_custom_annotation_loader',
             'kals_text/Navigation_loader',
+            //'kals_text/Text_selector',  //20140519 Pulipuli Chen
 
             'kals_text/Init_text',
             'kals_text/KALS_text',
@@ -316,6 +322,8 @@ class generic extends Web_apps_controller {
      */
     public function toolkit($return_list = NULL)
     {
+        $this->_enable_cache();
+        
         $list = $this->javascript_import_list["toolkit_list"];
 
         $list_package = $this->javascript_import_list["toolkit_list_package"];
@@ -337,6 +345,8 @@ class generic extends Web_apps_controller {
 
     function core($return_list = NULL)
     {
+        $this->_enable_cache();
+        
         $list = array(
             //'',
             ""
@@ -373,6 +383,8 @@ class generic extends Web_apps_controller {
      */
     function component($return_list = NULL)
     {
+        $this->_enable_cache();
+        
         $list = array(            
             ''
         );
@@ -572,10 +584,12 @@ class generic extends Web_apps_controller {
 
         
         $full_list = $list_toolkit;
-        foreach ($list_core AS $path)
+        foreach ($list_core AS $path) {
             $full_list[] = $path;
-        foreach ($list_component AS $path)
+        }
+        foreach ($list_component AS $path) {
             $full_list[] = $path;
+        }
 
         //$this->load_js($full_list);
         $this->pack_js($full_list, 'package');
@@ -764,6 +778,11 @@ class generic extends Web_apps_controller {
         $this->pack_js($path, 'loader');
     }
 
+    /**
+     * context所需資訊
+     * @param String $json
+     * @param String $callback
+     */
     function info($json, $callback = NULL)
     {
         if (is_null($callback))
@@ -796,7 +815,58 @@ class generic extends Web_apps_controller {
 
         $data['KALS_authentication'] = $authentication->default_data();
 
+        //$data['KALS_view_manager'] = $this->_load_viewes();
+        
+        // 20140517 Pulipuli Chen
+        //$data['webpage_id'] = get_context_webpage()->get_id();
+        
+        $this->_display_jsonp($data, $callback);
+    }
+    
+    
+    /**
+     * 模組所需資訊
+     * 
+     * @version 20140517 Pulipuli Chen
+     * @param String $json
+     * @param String $callback
+     */
+    function modules_config($json, $callback = NULL)
+    {
+        if (is_null($callback))
+        {
+            $callback = $json;
+            $json = NULL;
+        }
+        
+        $data = array();
+
         $data['KALS_view_manager'] = $this->_load_viewes();
+        
+        $this->_enable_cache();
+        
+        $this->_display_jsonp($data, $callback);
+    }
+    
+    /**
+     * 網頁所需資訊
+     * 
+     * @version 20140519 Pulipuli Chen
+     * @param String $json
+     * @param String $callback
+     */
+    function webpage_info($json, $callback = NULL)
+    {
+        if (is_null($callback))
+        {
+            $callback = $json;
+            $json = NULL;
+        }
+        
+        $data = array();
+        
+        // 20140517 Pulipuli Chen
+        $data['webpage_id'] = get_context_webpage()->get_id();
         
         $this->_display_jsonp($data, $callback);
     }

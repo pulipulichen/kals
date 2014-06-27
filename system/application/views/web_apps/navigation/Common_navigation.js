@@ -1,6 +1,8 @@
 /**
  * Common_navigation
- *
+ * 
+ * @deprecated 20140618 此類型廢棄！
+ * 
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>
@@ -14,11 +16,12 @@ function Common_navigation() {
     
     Navigation_list.call(this);
     
+    this._$nav_items = [];
+    
     // @20130603 Pudding Chen
     // Isolation Mode
     if (KALS_context.policy.allow_show_navigation()) {
 
-        this._$nav_items = [];
         
         //if (KALS_CONFIG.modules.Window_filter.enable === true) {
         //    this._$nav_items.push(new Window_filter());
@@ -30,11 +33,14 @@ function Common_navigation() {
         
         //var _search = new Window_search();
         
-        if (KALS_CONFIG.modules.Window_search.enable === true) {
+        if (KALS_CONFIG.enable_search_toolbar === true) {
             var _search_recent = new Window_search();
+            //var _search_recent = KALS_context.search;
             _search_recent.setup_recent();
             this._$nav_items.push(_search_recent);
         }
+        
+        //$.test_msg("nav_item.length", this._$nav_items.length);
         
         /*
         if (KALS_CONFIG.modules.Reading_guide.enable === true) {
@@ -63,8 +69,11 @@ function Common_navigation() {
             //, new Annotation_navigation_map()
         ];
         */
-        this._init_module_nav_items();
     }
+    
+    this._init_module_nav_items();
+    
+    //$.test_msg("Common navigation $nav_items_count", [this._$nav_type, this._$nav_items.length]);
 }
 
 Common_navigation.prototype = new Navigation_list();

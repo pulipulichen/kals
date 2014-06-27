@@ -69,10 +69,37 @@ KALS_authentication.prototype.get_auth_data = function () {
     return this._auth_data;
 };
 
+/**
+ * 設定電子信箱
+ * @param {String} _value 電子信箱
+ * @returns {KALS_authentication}
+ */
 KALS_authentication.prototype.set_email = function (_value) {
     _value = $.trim(_value);
-    this._auth_data.email = _value;
+    if (this.is_embed() && $.is_email(_value)) {
+        this._auth_data.email = _value;
+    }
+    else {
+        this._auth_data.email = _value;
+    }
     return this;
+};
+
+/**
+ * 清空電子信箱
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype.clear_email = function () {
+    this._auth_data.email = null;
+    return this;
+};
+
+/**
+ * 取得電子信箱
+ * @returns String
+ */
+KALS_authentication.prototype.get_email = function () {
+    return this._auth_data.email;
 };
 
 KALS_authentication.prototype.set_password = function (_value) {
@@ -80,6 +107,11 @@ KALS_authentication.prototype.set_password = function (_value) {
     return this;
 };
 
+/**
+ * 設定是否是嵌入登入
+ * @param {Boolean} _value
+ * @returns {KALS_authentication}
+ */
 KALS_authentication.prototype.set_embed = function (_value) {
     this._auth_data.embed = _value;
     return this;
@@ -95,6 +127,10 @@ KALS_authentication.prototype.set_embed = function (_value) {
 //    return this;
 //};
 
+/**
+ * 是否是嵌入登入的狀態
+ * @returns {Boolean}
+ */
 KALS_authentication.prototype.is_embed = function () {
     return this._auth_data.embed;
 };
@@ -198,52 +234,144 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         //$.test_msg('login', this._$load_url);
         //$.test_msg('login data', _data);
         
-        this.load(_data, function (_this, _data) {
-            //$.test_msg('login load', _data);
+        this.request_embed_email(function () {
+            _data.email = _this.get_email();
+            _data.embed = _this.is_embed();
+            //$.test_msg("embed_login 預備 load", _data);
             
-            if (typeof(_data.error) !== 'undefined') {
-                //顯示錯誤
-                
-                _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
-                _message = new KALS_language_param('E-mail or password is not correct.', 'authentication.login_error.' + _data.error);
-                //$.test_msg('auth.login()', _return_error);
-                if (_return_error) {
-                    if ($.is_function(_callback)) {
-                        _callback(_this, _message);
-                    }
-                }
-                else {
-                    KALS_util.alert(_heading, _message, function () {
-                        //_this.show_login_form();
-                        var _content = new Window_login();
-                        KALS_window.setup_window(_content);   
-                    });   
-                }
+            //if (_data.email === null && _data.embed === false) {
+            //    _this.show_login_form();
+            //}
+            //else {
+            if (_data.email !== null && _data.embed !== false) {
+                _this.load(_data, function (_this, _data) {
+                    //$.test_msg("embed_login 預備 after_login", _data);
+                    _this._after_login(_return_error, _data, _callback);
+                });
             }
             else {
-                _this._is_login = true;
-                
-                if (KALS_CONFIG.isolation_mode) {
-                        KALS_context.policy.set_attr("read", true);
-                }
-				
-                setTimeout(function () {
-                    if ($.is_function(_callback)) {
-                        _callback(_this, _data);
-                    } 
-                }, 100);
-                
-                //else
-                //    _this.login_callback(_this, _data);
-                
-                
-                
-                
-                //$.test_msg('load complete', [_this._is_login, _this.is_login()]);
+                $.trigger_callback(_callback);
             }
-        });    
+        });
     }
     return this;
+};
+
+/**
+ * 登入之後的動作
+ * 
+ * @version 20140519 Pulipuli Chen
+ * @param {boolean} _return_error = false 是否要回傳錯誤訊息？
+ * @param {JSON} _data
+ * @param {Function} _callback
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype._after_login = function (_return_error, _data, _callback) {
+    //$.test_msg('login load', _data);
+        
+    //$.test_msg("mobile_redirect", typeof(_data.mobile_redirect));
+    if (typeof(_data.mobile_redirect) === "string") {
+        //$.test_msg("mobile_redirect ready go", _data.mobile_redirect);
+        location.href = _data.mobile_redirect;
+        return this;
+    }
+
+    var _this = this;
+    if (typeof(_data.error) !== 'undefined') {
+        //顯示錯誤
+
+        var _heading = new KALS_language_param('ERROR', 'authentication.login_error.heading');
+        var _message = new KALS_language_param('E-mail or password is not correct.', 'authentication.login_error.' + _data.error);
+        //$.test_msg('auth.login()', _return_error);
+        if (_return_error) {
+            if ($.is_function(_callback)) {
+                _callback(_this, _message);
+            }
+        }
+        else {
+            KALS_util.alert(_heading, _message, function () {
+                //_this.show_login_form();
+                var _content = new Window_login();
+                KALS_window.setup_window(_content);   
+            });   
+        }
+    }
+    else {
+        _this._is_login = true;
+
+        if (KALS_CONFIG.isolation_mode) {
+            KALS_context.policy.set_attr("read", true);
+        }
+
+        setTimeout(function () {
+            if ($.is_function(_callback)) {
+                _callback(_this, _data);
+            } 
+        }, 100);
+
+        //else
+        //    _this.login_callback(_this, _data);
+
+
+
+
+        //$.test_msg('load complete', [_this._is_login, _this.is_login()]);
+    }
+    
+    return this;
+};
+
+/**
+ * 內嵌登入的檢查方法
+ * @param {Function} _callback
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype.request_embed_email = function (_callback) {
+    
+    if (this._auth_data.embed === true) {
+        
+        var _url = this._auth_data.email;
+        
+        var _this = this;
+        if ($.is_url(_url) || $.starts_with(_url, "/")) {
+            //$.test_msg("內嵌登入，是網址", _url);
+            
+            if (_url.indexOf("?") === -1) {
+                _url = _url + "?" + $.create_id("auth");
+            }
+            else {
+                _url = _url + "&" + $.create_id("auth");
+            }
+            
+            var _get_callback = function (_data) {
+                if ($.is_email(_data)) {
+                    _this.set_email(_data);
+                }
+                else {
+                    _this.clear_email();
+                    _this.set_embed(false);
+                }
+                //$.trigger_callback(_callback);
+                
+                if ($.is_function(_callback)) {
+                    _callback(_data);
+                }
+            };
+            
+            KALS_util.ajax_local_get({
+                url: _url,
+                callback: _get_callback
+            });
+        }
+        else {
+            $.trigger_callback(_callback);
+            return this;
+        }
+    }
+    else {
+        $.trigger_callback(_callback);
+        return this;
+    }
 };
 
 /**
@@ -493,24 +621,7 @@ KALS_authentication.prototype.check_login = function (_callback) {
         //this.load(_check_data ,function (_this, _data) {
         
         this.load(function (_this, _data) {
-            
-            //$.test_msg("check_login", _data);
-			
-            if (typeof(_data.login) === 'boolean' 
-                    && _data.login === true) {
-                _this._is_login = true;
-            }
-            else {
-                _this._is_login = false;
-            }
-            
-            _this._login_checked = true;
-            
-            //$.test_msg('auth check_login()', _data);
-            
-            if ($.is_function(_callback)) {
-                _callback(_this, _data);
-            }
+            _this._after_check_login(_data, _callback);
         });    //this.load(function (_this, _data) {
     }
     else {
@@ -520,6 +631,43 @@ KALS_authentication.prototype.check_login = function (_callback) {
     
     return this;
 };
+
+/**
+ * 在確認登入之後
+ * @param {JSON} _data 從check_login傳來的資料
+ * @param {Function} _callback
+ * @returns {KALS_authentication}
+ */
+KALS_authentication.prototype._after_check_login = function (_data, _callback) {
+    
+    //$.test_msg("check_login", _data);
+
+    if (typeof(_data.login) === 'boolean' 
+            && _data.login === true) {
+        this._is_login = true;
+    }
+    else {
+        this._is_login = false;
+    }
+
+    this._login_checked = true;
+
+    if (typeof(_data.webpage_id) === "number") {
+        KALS_context.webpage_id = _data.webpage_id;
+    }
+
+    if (typeof(_data.mobile_redirect) === "string") {
+        location.href = _data.mobile_redirect;
+    }
+
+    //$.test_msg('auth check_login()', _data);
+
+    if ($.is_function(_callback)) {
+        _callback(this, _data);
+    }
+    
+    return this;
+}
 
 /**
  * 已經確認過是否登入

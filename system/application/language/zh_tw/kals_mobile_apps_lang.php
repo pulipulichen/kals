@@ -39,6 +39,9 @@ $lang["mobile_apps.annotation_thread.close"] = "關閉";
 $lang["mobile_apps.annotation_thread.label.note"] = "請輸入回應";
 $lang["mobile_apps.annotation_thread.login_hint"] = "要回應請先進行登入";
 
+$lang["mobile_apps.rss.author"] = "作者";
+$lang["mobile_apps.rss.date"] = "日期";
+$lang["mobile_apps.rss.anchor_text"] = "標註範圍內文";
 
 /* End of file kals_actor_lang.php */
 /* Location: ./system/language//calendar_lang.php */
