@@ -27,6 +27,11 @@
     margin:0;
 }
 
+.KALS.dialog-modal.window dd.message {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
 .KALS .window-loading {
     padding: 30px 1em !important;
     text-align:center;

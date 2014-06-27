@@ -730,38 +730,46 @@ KALS_util.show_exception = function (_exception, _uri) {
     
     //先加入關閉視窗提示吧
     var _dt = $('<dt>Hint: </dt>')
+        .addClass("hint")
         .appendTo(_exception_content);
     KALS_context.lang.add_listener(_dt, new KALS_language_param('Hint: ', 'exception.hint.heading'));
     
     var _dd = $('<dd></dd>')
-            .appendTo(_exception_content);
+        .addClass("hint")
+        .appendTo(_exception_content);
     KALS_context.lang.add_listener(_dd, new KALS_language_param('You can press "ESC" key to close message.', 'exception.hint.message'));
         
     
     if ($.isset(_heading)) {
         _dt = $('<dt>HEADING: </dt>')    //.html(_lang.create_listener('exception.message_heading.heading'))
+            .addClass("heading")
             .appendTo(_exception_content);
         KALS_context.lang.add_listener(_dt, new KALS_language_param('HEADING: ', 'exception.message_heading.heading'));
         
         _dd = $('<dd></dd>')
+            .addClass("heading")
             .appendTo(_exception_content)
             .html(_heading);
     }
     
     if ($.isset(_message)) {
         _dt = $('<dt>MESSAGE: </dt>')    //.html(_lang.create_listener('exception.message_heading.message'))
+            .addClass("message")
             .appendTo(_exception_content);
         KALS_context.lang.add_listener(_dt, new KALS_language_param('MESSAGE: ', 'exception.message_heading.message'));
         _dd = $('<dd></dd>')
+            .addClass("message")
             .html(_message)
             .appendTo(_exception_content);
     }
     
     if ($.isset(_request_uri)) {
         _dt = $('<dt>REQUEST URI: </dt>')    //.html(_lang.create_listener('exception.message_heading.request_uri'))
+            .addClass("uri")
             .appendTo(_exception_content);
         KALS_context.lang.add_listener(_dt, new KALS_language_param('REQUEST URI: ', 'exception.message_heading.request_uri'));
         _dd = $('<dd></dd>')
+            .addClass("uri")
             .appendTo(_exception_content)
             .html('<a href="' + _request_uri + '" target="_blank">' + _request_uri + '</a>');
     }
@@ -773,7 +781,7 @@ KALS_util.show_exception = function (_exception, _uri) {
         _alert.get_ui().addClass('exception');    
     }, 1000);
 	
-	throw _message;
+    throw _message;
     //$.test_msg('KALS_util.show_exception() end');
     
     //return _alert;

@@ -71,6 +71,7 @@
 <h2>偵錯使用資料</h2>
 <ul>
     <li><a href="debug/20140625-pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
+	<li><a href="debug/20140627-moodle_ctes_03/index.html">數位時代公共圖書館虛擬參考服務之發展</a></li>
 </ul>
 
 <hr />
