@@ -371,6 +371,8 @@ Annotation_tool.prototype.scroll_into_view = function () {
     return this;
 };
 
+Annotation_tool.prototype._close_lock = false;
+
 /**
  * 關閉標註工具
  * @param {Function} _callback
@@ -384,7 +386,14 @@ Annotation_tool.prototype.close = function (_callback) {
     
     var _this = this;
     
-    var _close_action = function (_close_callback) {
+    if (_this._close_lock === true) {
+        $.trigger_callback(_callback);
+        return this;
+    }
+    
+    _this._close_lock = true;
+    
+    var _close_action = function (_overlay_close_action) {
         _this.list.reset();
         //KALS_modal.prototype.close.call(this, _callback);
 
@@ -392,33 +401,39 @@ Annotation_tool.prototype.close = function (_callback) {
         _ui.css('top', '-1000px');
         _ui.css('left', '-1000px');
 
-        $.trigger_callback(_close_callback);
+        $.test_msg("annotation tool close action");
         $.trigger_callback(_callback);
+        $.trigger_callback(_overlay_close_action);
+        _this._close_lock = false;
     };
     
     if (_note === null) {
         _close_action();
     }
     else {
-        var _heading_lang = new KALS_language_param(
-                "Your annotation is not saved.",
-                "annotation_tool.close_confirm.annotation_not_save.heading"
-                );
-        var _body_lang = new KALS_language_param(
-                "You have not save this annotation. Do you want to save it?",
-                "annotation_tool.close_confirm.annotation_not_save.body"
-                );
-        
-        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _close_callback) {
-            if (_result === true) {
-                //$.test_msg("儲存資料");
-                _this.submit_annotation(function () {
-                    _close_action(_close_callback);
-                });
-            }
-            else {
-                _close_action(_close_callback);
-            }
+//        var _heading_lang = new KALS_language_param(
+//                "Your annotation is not saved.",
+//                "annotation_tool.close_confirm.annotation_not_save.heading"
+//                );
+//        var _body_lang = new KALS_language_param(
+//                "You have not save this annotation. Do you want to save it?",
+//                "annotation_tool.close_confirm.annotation_not_save.body"
+//                );
+//        
+//        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _overlay_close_action) {
+//            //return;
+//            if (_result === true) {
+//                $.test_msg("儲存資料", _this._close_lock);
+//                //_this.submit_annotation(function () {
+//                    _close_action(_overlay_close_action);
+//                //});
+//            }
+//            else {
+//                _close_action(_overlay_close_action);
+//            }
+//        });
+        _this.submit_annotation(function () {
+            _close_action();
         });
     }
 };

@@ -900,7 +900,7 @@ KALS_util._get_confirm_modal = function () {
  * KALS專案使用的confirm用法
  * @param {KALS_language_param|string} _heading
  * @param {KALS_language_param|string|jQuery} _content
- * @param {function} _callback
+ * @param {function} _callback = function (_boolean_value, _overlay_close_action)
  * @memberOf {KALS_util}
  * @method [confirm]
  */

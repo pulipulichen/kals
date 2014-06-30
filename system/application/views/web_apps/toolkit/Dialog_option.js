@@ -24,11 +24,11 @@ function Dialog_option(_lang, _callback, _arg) {
     }
     
     if ($.is_class(_lang, 'KALS_language_param')) {
-		this.lang = _lang;
-	}
+        this.lang = _lang;
+    }
     if ($.is_function(_callback)) {
-		this.callback = _callback;
-	}
+        this.callback = _callback;
+    }
     this.arg = _arg;
 }
 
@@ -77,8 +77,8 @@ Dialog_option.prototype._$create_ui = function () {
     }, function () {
         
         if ($(this).hasClass('focus') === false) {
-			$(this).removeClass('hover');
-		}
+            $(this).removeClass('hover');
+        }
     });
     
     _button.focus(function () {

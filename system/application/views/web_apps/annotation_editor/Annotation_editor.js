@@ -260,6 +260,7 @@ Annotation_editor.prototype.submit = function (_callback) {
         
         //如果已經取消了loading動作，那就不作任何反應。
         if (_this.is_loading() === false) {
+            $.trigger_callback(_callback);
             return this;
         }
         
@@ -316,7 +317,7 @@ Annotation_editor.prototype.submit = function (_callback) {
             }   
         }
         
-        $.trigger_callback(_callback);
+        //$.trigger_callback(_callback);
     };
     
     var _get_config = {
