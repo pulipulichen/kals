@@ -57,14 +57,15 @@ Overlay_modal.prototype._$get_config = function () {
         load: false,
         onBeforeLoad: function() {
             //跟Modal_controller註冊開啟
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
-				KALS_context.overlay.add_opened(_this);
-			}
+            if (typeof(KALS_context) === 'object' 
+                    && typeof(KALS_context.overlay) === 'object') {
+                KALS_context.overlay.add_opened(_this);
+            }
             
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onviewportmove)) {
-				_this._$onviewportmove(_ui);
-			}
+                _this._$onviewportmove(_ui);
+            }
         },
         onLoad: function () {
             
@@ -80,27 +81,26 @@ Overlay_modal.prototype._$get_config = function () {
                 complete: function () {
                     setTimeout(function () {
                         if ($.is_function(_this._$onopen)) {
-							_this._$onopen(_ui);
-						}
+                            _this._$onopen(_ui);
+                        }
                         _this.call_temp_callback(_ui);    
                     }, 1000);
-                       
                 }
             });
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉
-            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
-				KALS_context.overlay.delete_opened(_this);
-			}
+            if (typeof(KALS_context) === 'object' 
+                    && typeof(KALS_context.overlay) === 'object') {
+                KALS_context.overlay.delete_opened(_this);
+            }
             
         },
         onClose: function () {
-            
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onclose)) {
-				_this._$onclose(_ui);
-			}
+                _this._$onclose(_ui);
+            }
             _this.call_temp_callback(_ui);
             
             

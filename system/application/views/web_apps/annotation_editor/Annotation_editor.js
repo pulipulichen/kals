@@ -31,6 +31,7 @@ function Annotation_editor(_editor_container, _list_coll, _disable_option) {
     if ($.isset(_disable_option)) {
         this._disable_option = _disable_option;
     }
+    
 }
 
 Annotation_editor.prototype = new Multi_event_dispatcher();
@@ -202,11 +203,13 @@ Annotation_editor.prototype.get_data = function () {
     }
     else {
         //在create模式底下，要加入標註範圍的資料
-        var _select = KALS_text.selection.select;
-        _annotation_param.scope = _select.get_scope_coll();
+        //var _select = KALS_text.selection.select;
+        //_annotation_param.scope = _select.get_scope_coll();
+        var _select_scope_data = this.get_select_scope_data();
+        _annotation_param.scope = _select_scope_data.scope;
         
-        _annotation_param.feature_location = _select.get_location_feature();
-        _annotation_param.feature_recommend_scope = _select.get_recommend_scope_coll();
+        _annotation_param.feature_location = _select_scope_data.feature_location;
+        _annotation_param.feature_recommend_scope = _select_scope_data.feature_recommend_scope;
         //_annotation_param.anchor_text = _select.get_anchor_text();        
     }
     
@@ -220,18 +223,20 @@ Annotation_editor.prototype.get_data = function () {
 
 /**
  * 送出標註
- * 
+ * @param {Function} _callback 回呼函數
  */
-Annotation_editor.prototype.submit = function () {
+Annotation_editor.prototype.submit = function (_callback) {
     
     //讀取中就不設定
     if (this.is_loading() === true) {
+        $.trigger_callback(_callback);
         return this;
     }
     
     var _annotation_param = this.get_data();
     
     if (this._check_note(_annotation_param) === false) {
+        $.trigger_callback(_callback);
         return this;
     }
     
@@ -251,7 +256,7 @@ Annotation_editor.prototype.submit = function () {
     
     var _this = this;
     
-    var _callback = function (_data) {
+    var _submit_callback = function (_data) {
         
         //如果已經取消了loading動作，那就不作任何反應。
         if (_this.is_loading() === false) {
@@ -267,8 +272,9 @@ Annotation_editor.prototype.submit = function () {
                 && typeof(_data.timestamp) !== 'undefined') {
                 _annotation_param.timestamp = _data.timestamp;
             }
-            var _scope_coll = KALS_text.selection.select.get_scope_coll();
-            _annotation_param.scope = _scope_coll;
+            //var _scope_coll = KALS_text.selection.select.get_scope_coll();
+            //_annotation_param.scope = _scope_coll;
+            _annotation_param.scope = _this.get_select_scope_coll().scope;
 			
             _this._edit_callback(_annotation_param);
             
@@ -309,12 +315,14 @@ Annotation_editor.prototype.submit = function () {
                 KALS_text.selection.navigation.set_scope_coll(_annotation_param.get_navigation_level(), _annotation_param.scope);
             }   
         }
+        
+        $.trigger_callback(_callback);
     };
     
     var _get_config = {
         url: _load_url,
         data: _annotation_json,
-        callback: _callback,
+        callback: _submit_callback,
         retry_wait: 60 * 1000
     };
     
@@ -498,6 +506,7 @@ Annotation_editor.prototype._$enable_types = ['reset', 'set'];
 
 /**
  * 重設目前的編輯器
+ * @return {Annotation_param} 標註參數
  */
 Annotation_editor.prototype.reset = function () {
     
@@ -513,10 +522,10 @@ Annotation_editor.prototype.reset = function () {
         var _ui = this.get_ui();
         _ui.removeClass(this._editing_classname);
         
-		/**
-		 * @20131115 Pulipuli Chen
-		 * 改為新增完成之後關閉
-		 */
+        /**
+         * @20131115 Pulipuli Chen
+         * 改為新增完成之後關閉
+         */
         //this._editor_container.toggle_container(true);
         this._editor_container.toggle_container(this._editor_container._$default_toggle);
         
@@ -617,6 +626,7 @@ Annotation_editor.prototype._$create_ui = function () {
     var _this = this;
     setTimeout(function () {
         _this._setup_respond();
+        _this._init_listeners();
     }, 0);
     
     return _ui;
@@ -988,7 +998,7 @@ Annotation_editor.prototype._setup_type_hint = function () {
 		
 		var _hint = _type.get_hint();
 		if ($.is_null(_hint)
-			|| typeof(_hint) == "undefined"
+			|| typeof(_hint) === "undefined"
 			|| _hint === "") {
 			_type_hint.hide();
 		}
@@ -999,6 +1009,33 @@ Annotation_editor.prototype._setup_type_hint = function () {
 	});
 	
 	return this;
+};
+
+/**
+ * 目前選取的標註範圍
+ * @type {JSON}
+ */
+Annotation_editor.prototype._select_scope_data = null;
+
+/**
+ * 取得目前選取的標註範圍
+ * @type {JSON}
+ */
+Annotation_editor.prototype.get_select_scope_data = function () {
+    return this._select_scope_data;
+};
+
+Annotation_editor.prototype._init_listeners = function () {
+    var _this = this;
+    KALS_text.selection.select.add_listener('select', function () {
+        //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
+        var _select = KALS_text.selection.select;
+        _this._select_scope_data = {
+            scope: _select.get_scope_coll(),
+            feature_location: _select.get_location_feature(),
+            feature_recommend_scope: _select.get_recommend_scope_coll()
+        };
+    });
 };
 
 /* End of file Annotation_editor */

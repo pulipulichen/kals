@@ -26,8 +26,7 @@ function Annotation_tool(_selector) {
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
             KALS_text.selection.select.add_listener('select', function () {
                 //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-                
-				_this.onselect();
+                _this.onselect();
             });
             
             KALS_text.selection.select.add_listener('clear', function () {
@@ -351,6 +350,10 @@ Annotation_tool.prototype.reopen = function (_callback) {
     return this;
 };
 
+/**
+ * 捲到可顯示的位置
+ * @returns {Annotation_tool}
+ */
 Annotation_tool.prototype.scroll_into_view = function () {
     //var _offset = this.get_ui().offset();
     
@@ -364,6 +367,8 @@ Annotation_tool.prototype.scroll_into_view = function () {
     };
 	//$.test_msg("Annotation_tool.scroll_into_view", _position);
     $.scroll_to(_position);
+    
+    return this;
 };
 
 /**
@@ -373,14 +378,67 @@ Annotation_tool.prototype.scroll_into_view = function () {
  */
 Annotation_tool.prototype.close = function (_callback) {
     
-    this.list.reset();
-    //KALS_modal.prototype.close.call(this, _callback);
+    var _param = this.get_annotation_param();
+    var _note = _param.note;
+    //$.test_msg("Annotation_tool close", [_param.note, (_note === ""), (_note === null)]);
     
-    var _ui = this.get_ui();
-    _ui.css('top', '-1000px');
-    _ui.css('left', '-1000px');
+    var _this = this;
     
-    $.trigger_callback(_callback);
+    var _close_action = function (_close_callback) {
+        _this.list.reset();
+        //KALS_modal.prototype.close.call(this, _callback);
+
+        var _ui = _this.get_ui();
+        _ui.css('top', '-1000px');
+        _ui.css('left', '-1000px');
+
+        $.trigger_callback(_close_callback);
+        $.trigger_callback(_callback);
+    };
+    
+    if (_note === null) {
+        _close_action();
+    }
+    else {
+        var _heading_lang = new KALS_language_param(
+                "Your annotation is not saved.",
+                "annotation_tool.close_confirm.annotation_not_save.heading"
+                );
+        var _body_lang = new KALS_language_param(
+                "You have not save this annotation. Do you want to save it?",
+                "annotation_tool.close_confirm.annotation_not_save.body"
+                );
+        
+        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _close_callback) {
+            if (_result === true) {
+                //$.test_msg("儲存資料");
+                _this.submit_annotation(function () {
+                    _close_action(_close_callback);
+                });
+            }
+            else {
+                _close_action(_close_callback);
+            }
+        });
+    }
+};
+
+/**
+ * 取得正在編輯的標註資料
+ * @returns {Annotation_param}
+ */
+Annotation_tool.prototype.get_annotation_param = function () {
+    return this.editor_container.get_annotation_param();
+};
+
+/**
+ * 儲存標註資料
+ * @param {function} _callback
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.submit_annotation = function (_callback) {
+    this.editor_container.submit_annotation(_callback);
+    return this;
 };
 
 /**

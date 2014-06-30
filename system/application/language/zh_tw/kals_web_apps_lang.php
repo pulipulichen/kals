@@ -211,6 +211,8 @@ $lang['web_apps.kals_text.exception.selector_illegal'] = '選取語法錯誤';
 $lang['web_apps.kals_text.exception.selector_not_exist'] = '找不到可選取的範圍';
 
 $lang['web_apps.annotation_tool.load_annotation_param.annotation_not_found'] = '找不到編號為{0}的標註，它可能不存在或是已經被刪除。';
+$lang['web_apps.annotation_tool.close_confirm.annotation_not_save.heading'] = '您的標註尚未儲存';
+$lang['web_apps.annotation_tool.close_confirm.annotation_not_save.body'] = '您有撰寫了標註但是尚未儲存，確定要儲存嗎？';
 
 $lang['web_apps.kals_text.selectable_text_chapter.top_heading'] = '(回到頁首)';
 /**

@@ -237,6 +237,25 @@ Editor_container.prototype.get_parent_container = function () {
     return this.get_ui().parents('.annotation-tool:first');
 };
 
+
+/**
+ * 取得正在編輯的標註資料
+ * @returns {Annotation_param}
+ */
+Editor_container.prototype.get_annotation_param = function () {
+    return this.editor.get_data();
+};
+
+/**
+ * 儲存標註資料
+ * @param {function} _callback
+ * @returns {Annotation_tool}
+ */
+Editor_container.prototype.submit_annotation = function (_callback) {
+    this.editor.submit(_callback);
+    return this;
+};
+
 /**
  * 開關編輯器
  * @param {boolean} _display

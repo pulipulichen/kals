@@ -82,6 +82,7 @@ class generic extends Web_apps_controller {
             , 'toolkit/Overlay_modal'
             , 'toolkit/Tooltip_modal'
             , 'toolkit/Dialog_modal'
+            , 'toolkit/Confirm_dialog_modal'
             , 'toolkit/Dialog_option'
             , 'toolkit/Dialog_link'
             , 'toolkit/Dialog_close_option'

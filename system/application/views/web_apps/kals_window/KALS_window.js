@@ -61,7 +61,8 @@ KALS_window.prototype.ui = null;
  * @type {KALS_language_param}
  */
 KALS_window.prototype._default_heading = new KALS_language_param(
-    'INFORMATION', 'web_apps.window.noheading'
+    'INFORMATION',
+    'window.noheading'
 );
 
 /**
@@ -145,8 +146,8 @@ KALS_window.prototype._$get_config = function () {
         _ui.css('height', _this._height);
         
         if ($.is_function(_parent_onbeforeload)) {
-			_parent_onbeforeload();
-		}
+            _parent_onbeforeload();
+        }
     };
     
     return _config;
@@ -171,7 +172,7 @@ KALS_window.prototype._$create_ui = function () {
     var _ui = this.base.prototype._$create_ui.call(this);
     
     _ui.addClass('window')
-		.addClass("KALS");
+        .addClass("KALS");
     
     var _content_tr = _ui.find('.dialog-content-tr:first');
     var _loading_tr = $('<tr class="window-loading-tr"><td></td></tr>')

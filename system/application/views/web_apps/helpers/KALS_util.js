@@ -856,31 +856,36 @@ KALS_util.alert = function (_heading, _content, _callback) {
  */
 KALS_util._get_confirm_modal = function () {
     if ($.is_null(this._confirm_modal)) {
-        var _modal = new Dialog_modal();
-        /**
-         * 用來擺放回呼函數使用
-         * @type {function}
-         */
-        _modal.confirm_callback = null;
         
-        var _yes_lang = new KALS_language_param('YES', 'dialog.option.yes');
-        var _no_lang = new KALS_language_param('NO', 'dialog.option.no');
+        var _modal = new Confirm_dialog_modal();
         
-        var _yes_option = new Dialog_close_option(_yes_lang, function () {
-            if (typeof(_modal.confirm_callback) === 'function') {
-                _modal.confirm_callback(true);
-            }
-        });
-        
-        var _no_option = new Dialog_close_option(_no_lang, function () {
-            if (typeof(_modal.confirm_callback) === 'function') {
-                _modal.confirm_callback(true);
-            }
-        });
-        
-        _modal.set_options([_yes_option, _no_option]);
-        _modal.get_ui().addClass('confirm');
-        
+//        // 加入遮罩
+//        _modal._$exposable = true;
+//        
+//        /**
+//         * 用來擺放回呼函數使用
+//         * @type {function}
+//         */
+//        _modal.confirm_callback = null;
+//        
+//        var _yes_lang = new KALS_language_param('YES', 'dialog.option.yes');
+//        var _no_lang = new KALS_language_param('NO', 'dialog.option.no');
+//        
+//        var _yes_option = new Dialog_close_option(_yes_lang, function () {
+//            if (typeof(_modal.confirm_callback) === 'function') {
+//                _modal.confirm_callback(true);
+//            }
+//        });
+//        
+//        var _no_option = new Dialog_close_option(_no_lang, function () {
+//            if (typeof(_modal.confirm_callback) === 'function') {
+//                _modal.confirm_callback(true);
+//            }
+//        });
+//        
+//        _modal.set_options([_yes_option, _no_option]);
+//        _modal.get_ui().addClass('confirm');
+//        
         this._confirm_modal = _modal;
     }
     
@@ -905,11 +910,11 @@ KALS_util.confirm = function (_heading, _content, _callback) {
     _modal.set_content(_content);
     
     if ($.is_function(_callback)) {
-		_modal.confirm_callback = _callback;
-	}
-	else {
-		_modal.confirm_callback = null;
-	}
+        _modal.confirm_callback = _callback;
+    }
+    else {
+        _modal.confirm_callback = null;
+    }
         
     _modal.open();
     
