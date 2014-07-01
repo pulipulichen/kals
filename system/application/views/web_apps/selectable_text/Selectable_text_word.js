@@ -272,10 +272,17 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
     }
 
     var _this = this;
+    
+    // -----------------------------
+    
     _words.mouseout(function () {
+        // 單點按壓選擇
         _this.KALS_SELECT_LOCK = false;
     });
 
+    
+    // -----------------------------
+    
     _words.mousedown(function (_event) {
 
         // 限制只能用左鍵選取
@@ -342,16 +349,32 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
             }
         }, 300);
 
+        // 單點按壓選擇
         setTimeout(function () {
             if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 2 
                     && _this.KALS_SELECT_LOCK === true) {
+                //$.test_msg("單點按壓選擇");
+                
+                // 相同位置選擇
                 _word = $(_md_this);
-                _select.set_select(_word);	
+                
+                //_select.set_select(_word);
+                
+                var _sentence_start_word = _this.get_setence_start_word(_word);
+                var _sentence_end_word = _this.get_setence_end_word(_word);
+                
+                _select.cancel_select();
+                
+                _select.set_select(_sentence_start_word);
+                _select.set_select(_sentence_end_word);
+                
                 _this.KALS_SELECT_MOUSEDOWN_LOCK = null;
             }
         }, 1000);
     });
 
+    // -----------------------------
+    
     _words.mouseup(function () {
         var _mu_this = this;
         setTimeout(function () {
@@ -833,6 +856,69 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
     
     return this;
 };
+
+// ----------------------------------------
+
+/**
+ * 取得開頭的文字
+ * @param {jQuery} _index_word
+ * @returns {jQuery} 目標文字
+ */
+Selectable_text_word.prototype.get_setence_start_word = function (_index_word) {
+    return this.get_setence_position_word(_index_word, true);
+};
+
+/**
+ * 取得結尾的文字
+ * @param {jQuery} _index_word
+ * @returns {jQuery} 目標文字
+ */
+Selectable_text_word.prototype.get_setence_end_word = function (_index_word) {
+    return this.get_setence_position_word(_index_word, false);
+};
+
+/**
+ * 找尋句子中的文字
+ * @param {jQuery} _index_word
+ * @param {Boolean} _target_start
+ * @returns {jQuery} 目標文字
+ */
+Selectable_text_word.prototype.get_setence_position_word = function (_index_word, _target_start) {
+    var _target_word = _index_word;
+    var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
+    var _sentence_punctuation_classname = this._selectable_text.sentence.sententce_punctuation_classname;
+    
+    // 如果自己就是斷句位置
+    if (_index_word.hasClass(_punctuation_classname)) {
+        return _index_word;
+    }
+    
+    var _next_word;
+    var _get_next_word = function (_next_word) {
+        if (_target_start === true) {
+            _next_word = _next_word.prev();
+        }
+        else {
+            _next_word = _next_word.next();
+        }
+        return _next_word;
+    };
+    
+    var _is_stop_word = function (_next_word) {
+        return (_next_word.hasClass(_punctuation_classname)
+            || _next_word.hasClass(_sentence_punctuation_classname));
+    };
+    
+    _next_word = _get_next_word(_index_word);
+    while (_next_word.length === 1 
+            && _is_stop_word(_next_word) === false) {
+        _target_word = _next_word;
+        _next_word = _get_next_word(_next_word);
+    }
+    
+    return _target_word;
+};
+
 
 /* End of file Selectable_text_word */
 /* Location: ./system/application/views/web_apps/Selectable_text_word.js */

@@ -175,12 +175,18 @@ Text_selector.prototype._init_selectable_text = function () {
     }
     */
    
+    // ----------------------------------------
+    // 加入事件監聽
+    // ----------------------------------------
+   
     this._init_listener();
     
     var _this = this;
     _text_container.mousedown(function (_e) {
         _this._close_tool(_e);
     });
+    
+    // -----------------------------------------
     
     return _text_container;
 };
