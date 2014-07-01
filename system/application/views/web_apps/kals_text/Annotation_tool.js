@@ -163,17 +163,17 @@ Annotation_tool.prototype._$create_ui = function () {
         }, true);  
     });
     
-    setTimeout(function () {
+    KALS_context.module_ready("KALS_text.selection.select", function(_select) {
         //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-        KALS_text.selection.select.add_listener('select', function () {
+        _select.add_listener('select', function () {
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
             _this.onselect();
         });
 
-        KALS_text.selection.select.add_listener('clear', function () {
+        _select.add_listener('clear', function () {
             _this.onselectcancel();
         });  
-    }, 0);
+    });
     
     this.setup_view();
     

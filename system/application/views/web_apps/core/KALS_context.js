@@ -188,11 +188,46 @@ KALS_context.ready = function (_callback) {
         this.add_once_listener(_callback);
     }
     else if ($.is_function(_callback)) {
-        var _this = this;
         setTimeout(function () {
             _callback(_this);
         }, 0);
     }
+    return this;
+};
+
+/**
+ * 模組準備好的時候呼叫
+ * @param {String} _load_module
+ * @param {Function} _callback
+ * @returns {KALS_context}
+ */
+KALS_context.module_ready = function (_load_module, _callback) {
+    if ($.is_string(_load_module) === false
+            && $.is_function(_callback) === false) {
+        return this;
+    }
+    
+    var _module_stacks = _load_module.split(".");
+    var _base_obj = window;
+    var _module_loaded = true;
+
+    for (var _m in _module_stacks) {
+        var _module_name = _module_stacks[_m];
+        if (typeof(_base_obj[_module_name]) !== "undefined") {
+            _base_obj = _base_obj[_module_name];
+        }
+        else {
+            _module_loaded = false;
+            break;
+        }
+    }
+
+    if (_module_loaded === true) {
+        setTimeout(function () {
+            _callback(_base_obj);
+        }, 0);
+    }
+        
     return this;
 };
 
