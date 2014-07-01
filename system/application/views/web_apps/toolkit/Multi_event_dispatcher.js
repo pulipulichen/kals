@@ -60,6 +60,15 @@ Multi_event_dispatcher.prototype._default_type = 'trigger';
  * @param {boolean} _trigger 是否立刻啟動
  */
 Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _trigger) {
+    
+    if ($.is_array(_type)) {
+        var _types = _type;
+        for (var _t in _types) {
+            this.add_listener(_types[_t], _function, _trigger);
+        }
+        return this;
+    }
+    
     if ($.is_function(_type) 
         && ($.is_null(_function) || $.is_boolean(_function))) {
         _trigger = _function;

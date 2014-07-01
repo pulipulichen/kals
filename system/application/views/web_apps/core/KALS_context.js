@@ -45,9 +45,6 @@ KALS_context.initialize = function () {
     this.module = new KALS_module_manager();
     this.navigation = new KALS_navigation();
     
-    // 核心運作元件
-    this.event_hub = new Multi_event_dispatcher();
-    
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
     this.init_component = new Init_component();
@@ -181,6 +178,21 @@ KALS_context.set_completed = function () {
 };
 
 /**
+ * 準備好的時候呼叫
+ * @param {Function} _callback
+ * @returns {KALS_context}
+ */
+KALS_context.ready = function (_callback) {
+    if (this.completed === false) {
+        this.add_once_listener(_callback);
+    }
+    else if ($.is_function(_callback)) {
+        _callback(this);
+    }
+    return this;
+};
+
+/**
  * 語系檔
  * @type {KALS_language}
  */
@@ -292,12 +304,6 @@ KALS_context.init_component = null;
  * @type {Init_profile}
  */
 KALS_context.init_profile = null;
-
-/**
- * 事件導向架構的中心
- * @type {Multi_event_dispacher}
- */
-KALS_context.event_hub = null;
 
 // ------------------------
 

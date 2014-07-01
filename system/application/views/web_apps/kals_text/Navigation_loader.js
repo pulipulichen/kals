@@ -14,7 +14,7 @@ function Navigation_loader() {
     
     Annotation_scope_loader.call(this);
     
-	if (KALS_CONFIG.anchor_navigation_type == "disable") {
+	if (KALS_CONFIG.anchor_navigation_type === "disable") {
 		KALS_CONFIG.anchor_navigation_type = "none";
 	}
 	this._$load_url = this._$load_url + KALS_CONFIG.anchor_navigation_type;
@@ -86,7 +86,7 @@ Navigation_loader.prototype.initialize = function () {
         
         var _this = this;
 		
-        var _setup = setTimeout(function () {
+        var _setup = function () {
             
             var _policy = KALS_context.policy;
             //$.test_msg('Navigation_loader.initialize()', [_policy.allow_show_navigation(), _policy.get_navigation_data()]);
@@ -110,7 +110,7 @@ Navigation_loader.prototype.initialize = function () {
                     _this.setup_loader();
                 }    
             }
-        }, 0);
+        };
 		
         KALS_context.add_listener(function () {
             KALS_context.policy.add_attr_listener('show_navigation', function () {

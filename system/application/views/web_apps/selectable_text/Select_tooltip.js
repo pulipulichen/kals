@@ -644,15 +644,23 @@ Select_tooltip.prototype._$create_ui = function () {
     
     _select_tooltip.addClass('hide');
     
-    KALS_context.policy.add_attr_listener('read', function (_policy) {
-        //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
-        if (_policy.readable()) {
-            _select_tooltip._enable_tooltip();
-        }
-        else {
-            _select_tooltip._disable_tooltip();
-        }
-    }, true);
+    setTimeout(function () {
+        KALS_context.policy.add_attr_listener('read', function (_policy) {
+            //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
+            if (_policy.readable()) {
+                _this._set_readable(_select_tooltip, true);
+            }
+            else {
+                _this._set_readable(_select_tooltip, false);
+            }
+        }, true);
+
+        KALS_text.tool.add_listener(["open", "close"], function (_tool) {
+            //$.test_msg("tool open", (_tool.is_opened() === false));
+            _this._set_enable(_select_tooltip, (_tool.is_opened() === false));
+        });        
+    }, 0);
+    
     
     return _select_tooltip;
 };
@@ -660,26 +668,36 @@ Select_tooltip.prototype._$create_ui = function () {
 // ---------------------------------------
 
 /**
- * 啟用/禁用Tooltip的功能
- * @type String
- */
-Select_tooltip.prototype._deny_read_classname = 'deny-read';
-
-/**
- * 禁止使用Tooltip
+ * 設定是否可讀
+ * @param {jQuery} _select_tooltip 選擇物件
+ * @param {Boolean} _enable true表示啟用
  * @returns {Select_tooltip}
  */
-Select_tooltip.prototype._disable_tooltip = function () {
-    this.addClass(this._deny_read_classname);
+Select_tooltip.prototype._set_readable = function (_select_tooltip, _enable) {
+    var _deny_read_classname = 'deny-read';
+    if (_enable === false) {
+        _select_tooltip.addClass(_deny_read_classname);
+    }
+    else {
+        _select_tooltip.removeClass(_deny_read_classname);
+    }
     return this;
 };
 
 /**
- * 啟用Tooltip
+ * 設定是否可用
+ * @param {jQuery} _select_tooltip 選擇物件
+ * @param {Boolean} _enable true表示啟用
  * @returns {Select_tooltip}
  */
-Select_tooltip.prototype._enable_tooltip = function () {
-    this.addClass(this._deny_read_classname);
+Select_tooltip.prototype._set_enable = function (_select_tooltip, _enable) {
+    var _classname = 'disable-tooltip';
+    if (_enable === false) {
+        _select_tooltip.addClass(_classname);
+    }
+    else {
+        _select_tooltip.removeClass(_classname);
+    }
     return this;
 };
 

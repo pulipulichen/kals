@@ -183,7 +183,9 @@
 }
 
 .KALS.tooltip.deny-read .tip-content,
-.KALS.tooltip.deny-read .tip-needle {
+.KALS.tooltip.deny-read .tip-needle,
+.KALS.tooltip.disable-tooltip .tip-content,
+.KALS.tooltip.disable-tooltip .tip-needle {
     display:none;
 }
 

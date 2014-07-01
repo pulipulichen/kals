@@ -174,7 +174,55 @@ Text_selector.prototype._init_selectable_text = function () {
         _text_container = $('.selectable-text');
     }
     */
+   
+    this._init_listener();
+    
+    var _this = this;
+    _text_container.click(function (_e) {
+        _this._click_event(_e);
+    });
+    
     return _text_container;
+};
+
+// ------------------------------------
+// 初始化監聽事件
+// ------------------------------------
+
+/**
+ * 初始化間聽器
+ * @returns {Text_selector.prototype}
+ */
+Text_selector.prototype._init_listener = function () {
+    
+    var _this = this;
+    KALS_context.ready(function () {
+        KALS_text.tool.add_listener(["open", "close"], function (_tool) {
+            //$.test_msg("tool open", (_tool.is_opened() === false));
+            _this._enable_click_close_annotation_tool = _tool.is_opened();
+        });
+    });
+    
+    return this;
+};
+
+/**
+ * 是否啟用點選關閉標註工具的功能
+ * @type Boolean
+ */
+Text_selector.prototype._enable_click_close_annotation_tool = false;
+
+/**
+ * 
+ * @param {Event} _e
+ * @returns {Text_selector}
+ */
+Text_selector.prototype._click_event = function (_e) {
+    if (this._enable_click_close_annotation_tool) {
+        KALS_text.tool.close();
+    }
+    
+    return this;
 };
 
 /**

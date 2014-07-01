@@ -306,6 +306,8 @@ Annotation_tool.prototype.onselectcancel = function () {
  */
 Annotation_tool.prototype.open = function (_callback) {
     
+    this.get_ui().show();
+    
     this.setup_position();
     
     var _scope_coll = KALS_text.selection.select.get_scope_coll();
@@ -326,6 +328,8 @@ Annotation_tool.prototype.open = function (_callback) {
         _this.scroll_into_view();
         //_this._first_open = false;
         $.trigger_callback(_callback);
+        
+        _this.notify_listeners("open");
     });
     
     return this;
@@ -387,10 +391,14 @@ Annotation_tool.prototype.close = function (_callback) {
         var _ui = _this.get_ui();
         _ui.css('top', '-1000px');
         _ui.css('left', '-1000px');
+        _ui.hide();
 
         //$.test_msg("annotation tool close action");
+        
         $.trigger_callback(_callback);
         $.trigger_callback(_overlay_close_action);
+        
+        _this.notify_listeners("close");
     };
     
     if (_note === null) {
@@ -421,6 +429,8 @@ Annotation_tool.prototype.close = function (_callback) {
         _close_action();
         _this.submit_annotation();
     }
+    
+    return this;
 };
 
 /**

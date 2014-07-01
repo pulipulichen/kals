@@ -23,6 +23,14 @@ function Selection_select(_text) {
         //$.test_msg('Selection_select()', _policy.readable());
         _this._selectable = _policy.readable();
     }, true);
+    
+    var _this = this;
+    KALS_context.add_listener(function () {
+        //$.test_msg("準備 ok");
+        KALS_text.tool.add_listener(["open", "close"], function (_tool) {
+            _this._tool_open = _tool.is_opened();
+        });
+    });
 }
 
 Selection_select.prototype = new Selection();
@@ -43,11 +51,19 @@ Selection_select.prototype.auto_cancel_wait = 10000;
 
 Selection_select.prototype._selectable = true;
 
+Selection_select.prototype._tool_open = false;
+
 /**
  * 設定選取
  * @param {jQuery} _word
  */
 Selection_select.prototype.set_select = function (_word) {
+    // 如果標註工具是開啟的狀態下，不啟用此功能
+    if (this._tool_open === true) {
+        return this;
+    }
+    
+    
     // 如果輸入參數是範圍，那就改成用Scope_collection_param吧
     if ($.is_class(_word, "Scope_collection_param")) {
         return this.set_scope_coll(_word);
@@ -55,10 +71,8 @@ Selection_select.prototype.set_select = function (_word) {
     
     //$.test_msg("Selection_select.set_select()", KALS_context.policy.readable());
     if (this._selectable === false) {
-		
-        $.test_msg("delete_field select 3");
+        //$.test_msg("delete_field select 3");
         KALS_context.hash.delete_field('select');
-
         return this;
     }
     
