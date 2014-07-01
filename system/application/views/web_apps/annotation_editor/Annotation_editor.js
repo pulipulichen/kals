@@ -271,56 +271,79 @@ Annotation_editor.prototype.submit = function (_callback) {
     
     var _submit_callback = function (_data) {
         
+        $.test_msg("submit_callback", _data);
+        
         //如果已經取消了loading動作，那就不作任何反應。
 //        if (_this.is_loading() === false) {
 //            $.trigger_callback(_callback);
 //            return this;
 //        }
         
+        _prepare_callback(_data);
+        
+        if (_is_editing_mode === false)    //新增模式
+        {
+            _prepare_create_callback(_data);
+        }
+        else    //編輯模式
+        {
+            _prepare_edit_callback(_data);
+        }
+    };
+    
+    // -----------------------------------------
+    
+    /**
+     * 開始前先準備好參數
+     * @param {JSON} _data
+     * @returns {Annotation_param}
+     */
+    var _prepare_callback = function (_data) {
         //補完參數
-        $.test_msg("submit_callback", _data);
         _annotation_param.user = KALS_context.user.get_data();
         //$.test_msg("submit_callback", [_last_scope]);
         _annotation_param.scope = _last_scope;
         //_annotation_param.type = _last_type;
-        
-        if (_is_editing_mode)    //編輯模式
-        {
-            if ($.isset(_data)
-                && typeof(_data.timestamp) !== 'undefined') {
+        return _annotation_param;
+    };
+    
+    var _prepare_create_callback = function (_data) {
+        if ($.isset(_data)) {
+            if (typeof(_data.annotation_id) !== 'undefined') {
+                _annotation_param.annotation_id = _data.annotation_id;
+            }
+
+            if (typeof(_data.timestamp) !== 'undefined') {
                 _annotation_param.timestamp = _data.timestamp;
             }
-            //var _scope_coll = KALS_text.selection.select.get_scope_coll();
-            //_annotation_param.scope = _scope_coll;
-			
-            _this._edit_callback(_annotation_param, _original_param);
-            
-            //_annotation_param.scope = _this._editing_param.scope;
-        }
-        else    //新增模式
-        {
-            if ($.isset(_data)) {
-                if (typeof(_data.annotation_id) !== 'undefined') {
-                    _annotation_param.annotation_id = _data.annotation_id;
-                }
-                
-                if (typeof(_data.timestamp) !== 'undefined') {
-                    _annotation_param.timestamp = _data.timestamp;
-                }
-                    
-                if (typeof(_data.recommend) !== 'undefined' 
-                        && KALS_CONFIG.enable_annotation_recommend === true) {
-                    _annotation_param.recommend = new Recommend_param(_data.recommend);
-                }
-                if (typeof(_data.nav) !== 'undefined') {
-                    //$.test_msg('_data.nav', _data.nav);
-                    _annotation_param.navigation_level = _data.nav;
-                }
+
+            if (typeof(_data.recommend) !== 'undefined' 
+                    && KALS_CONFIG.enable_annotation_recommend === true) {
+                _annotation_param.recommend = new Recommend_param(_data.recommend);
             }
-			
-            _this._create_callback(_annotation_param);
+            if (typeof(_data.nav) !== 'undefined') {
+                //$.test_msg('_data.nav', _data.nav);
+                _annotation_param.navigation_level = _data.nav;
+            }
         }
-        
+
+        _this._create_callback(_annotation_param, _submit_final_callback);
+    };
+    
+    var _prepare_edit_callback = function (_data) {
+        if ($.isset(_data)
+            && typeof(_data.timestamp) !== 'undefined') {
+            _annotation_param.timestamp = _data.timestamp;
+        }
+        //var _scope_coll = KALS_text.selection.select.get_scope_coll();
+        //_annotation_param.scope = _scope_coll;
+
+        _this._edit_callback(_annotation_param, _original_param, _submit_final_callback);
+
+        //_annotation_param.scope = _this._editing_param.scope;
+    };
+    
+    var _submit_final_callback = function () {
         if (_annotation_param.is_respond() === false) {
             //設置selection
             //$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
@@ -333,7 +356,7 @@ Annotation_editor.prototype.submit = function (_callback) {
             }   
         }
         
-        //$.trigger_callback(_callback);
+        $.trigger_callback(_callback);
     };
     
     var _get_config = {
@@ -349,10 +372,8 @@ Annotation_editor.prototype.submit = function (_callback) {
         //_submit_callback(_annotation_param);
         
         //return;
-        
+        $.test_msg("------------------------- 預備submit annotation ---------------------");
         KALS_util.ajax_post(_get_config);
-        
-        _this.reset();
     });
     
     return this;
@@ -388,8 +409,9 @@ Annotation_editor.prototype._check_note = function (_annotation_param) {
  * 1. 將現在的標註資料加入_list_coll
  * 2. 將該標註的範圍加入KALS_text.selection.my
  * @param {Annotation_param} _annotation_param
+ * @param {Function} _callback
  */
-Annotation_editor.prototype._create_callback = function (_annotation_param) {
+Annotation_editor.prototype._create_callback = function (_annotation_param, _callback) {
     
     //$.test_msg('Annotation_editor._create_callback()', [_annotation_param.annotation_id, _annotation_param.timestamp, $.is_null(_annotation_param.recommend)]);
     
@@ -471,6 +493,8 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
     
     //$.test_msg("完成create annotation");
     
+    $.trigger_callback(_callback);
+    
     return this;
 };
 
@@ -478,8 +502,9 @@ Annotation_editor.prototype._create_callback = function (_annotation_param) {
  * 更新之後的回呼函數。只要更新_list_coll裡面的資料即可。
  * @param {Annotation_param} _annotation_param 修改過後的標註參數
  * @param {Annotation_param} _original_param 原本的標註參數
+ * @param {Function} _callback
  */
-Annotation_editor.prototype._edit_callback = function (_annotation_param, _original_param) {
+Annotation_editor.prototype._edit_callback = function (_annotation_param, _original_param, _callback) {
     
     //$.test_msg('Annotation_editor._edit_callback()', [_annotation_param.timestamp]);
     
@@ -546,6 +571,7 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param, _origi
      * 編輯完成之後，還原狀態
      */
     //this.reset();
+    $.trigger_callback(_callback);
     
     return this;
 };

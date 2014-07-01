@@ -223,7 +223,9 @@ KALS_util.ajax_get = function (_config) {
 };
 
 /**
- *  改寫jQuery的$.getJSON方法
+ * 改寫jQuery的$.get方法
+ * 用於存取與伺服器本地端的資料
+ * 目前主要是用於內嵌登入時可以指定網址用
  *
  * @param _config = {
  *   url: String (without base_url),
@@ -475,7 +477,7 @@ KALS_util.ajax_post = function (_config) {
     var _callback = $.get_parameter(_config, 'callback', function() {});
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
     
-    _action = $.appends_with(_url, '/');
+    var _action = $.appends_with(_url, '/');
     
     if (typeof(KALS_context) !== 'undefined') {   
         _action = KALS_context.get_base_url(_action);
@@ -518,58 +520,71 @@ KALS_util.ajax_post = function (_config) {
         
     //擺放檔案input並指定成_file_path，
     //建立一個json的input
+    var _input;
     if ($.isset(_data)) {
         _data = $.json_encode(_data);
         //_data = encodeURIComponent(_data);
         //_data = escape(_data);
         
-        var _input = $('<input type="text" name="json" />')
+        _input = $('<input type="text" name="json" />')
             .attr('value', _data)
             .appendTo(_form);
     }
-    
     
     var _this = this;
     var _post_retry_count = 0;
     var _post_retry_max = 3;
     
-    var _iframe_load_callback = function () {
-        //以同樣路徑，用ajax_get去取得資料，並回傳給callback
-        _this.ajax_get({
-            url: _url, 
-            callback: function (_data) {
-                
-                // 如果回傳了false，表示要重新讀取一次
-                if (_data === false) {
-                    _post_retry_count++;
-                    if (_post_retry_count > _post_retry_max) {
-                        _this._retry_exception(_url);
-                    }
-                    else {
-                        _form.submit();
-                    }
-                    return;
-                }
-
-                if (_debug === false) {
-                    _layer.remove();
-                }
-
-                if ($.is_function(_callback)) {
-                    _callback(_data);
-                }
-            },
-            exception_handle: _exception_handle 
-        });
-    };
-    
     _iframe.load(function () {
+        $.test_msg("KALS_uitl.ajax_post 2", "_iframe.load");
         setTimeout(function () {
+            $.test_msg("KALS_uitl.ajax_post 2.5", "_iframe.load setTimeout");
             _iframe_load_callback();
         }, 500);
     });    //_iframe.load(function () {
     
+    var _iframe_load_callback = function () {
+        $.test_msg("KALS_uitl.ajax_post 3", "_iframe_load_callback");
+        //以同樣路徑，用ajax_get去取得資料，並回傳給callback
+        _this.ajax_get({
+            url: _url, 
+            callback: _ajax_get_callback,
+            exception_handle: _exception_handle 
+        });
+    };
+    
+    var _ajax_get_callback = function (_data) {
+        $.test_msg("KALS_uitl.ajax_post 4", "_ajax_get_callback");
+        // 如果回傳了false，表示要重新讀取一次
+        if (_data === false) {
+            _post_retry_count++;
+            if (_post_retry_count > _post_retry_max) {
+                _this._retry_exception(_url);
+            }
+            else {
+                if (_post_retry_count === 1) {
+                    _iframe_load_callback();
+                }
+                else {
+                    _form.submit();
+                }
+            }
+            throw "KALS_util.ajax_post() 發生錯誤 [" + _post_retry_count + "]:" + $.json_encode(_config);
+            return;
+        }
+
+        if (_debug === false) {
+            _layer.remove();
+        }
+
+        $.test_msg("KALS_uitl.ajax_post 5", "預備final callback: " +  $.json_encode(_data));
+        if ($.is_function(_callback)) {
+            _callback(_data);
+        }
+    };
+    
     //準備完畢，遞交
+    $.test_msg("KALS_uitl.ajax_post 1", "準備要遞交了");
     _form.submit();
     
     return this;
@@ -642,9 +657,10 @@ KALS_util.ajax_upload = function (_config) {
     var _check = $('<input name="fileupload" value="true" type="hidden" />')
         .appendTo(_form);
     
+    var _input;
     if ($.isset(_userdata)) {
         _userdata = $.json_encode(_userdata);
-        var _input = $('<input type="text" name="userdata" />')
+        _input = $('<input type="text" name="userdata" />')
             .attr('value', _userdata)
             .appendTo(_form);
     }
