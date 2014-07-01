@@ -15,15 +15,15 @@
 function Dialog_close_option(_lang, _callback, _arg) {
     
     if ($.is_function(_callback)) {
-        var _this = this;
-        
         this._close_callback = _callback;
-        var _close_callback = function () {
-            //$.test_msg("Dialog_close_option click");
-            var _ui = this;
-            _this.close_handle(_ui);
-        };
     }
+    
+    var _this = this;
+    var _close_callback = function () {
+        //$.test_msg("Dialog_close_option click");
+        var _ui = _this.get_ui();
+        _this.close_handle(_ui);
+    };
     
     Dialog_option.call(this, _lang, _close_callback, _arg);
     
@@ -97,15 +97,16 @@ Dialog_close_option.prototype.close_handle = function (_ui) {
         var _overlay = $(_ui).parents('.dialog-modal:first').overlay();
         if (typeof(_overlay.close) === 'function') {
             setTimeout(function () {
-                //$.test_msg("Dialog_close_option 準備關閉overlay");
+                $.test_msg("Dialog_close_option 準備關閉overlay");
                 _overlay.close();
-            }, 300);
+            }, 0);
         }
     };
     
     setTimeout(function () {
         //$.test_msg("Dialog_close_option close_handle", [_enable_close_callback, $.is_function(_callback)]);
         if (_enable_close_callback === false) {
+            $.test_msg("Dialog_close_option 要準備關閉囉");
             _overlay_close_action();
             $.trigger_callback(_callback);
         } 
@@ -118,7 +119,7 @@ Dialog_close_option.prototype.close_handle = function (_ui) {
                 _callback(_overlay_close_action);
             }
         }
-    }, 300);
+    }, 0);
     return this;
 };
     
