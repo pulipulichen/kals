@@ -184,10 +184,14 @@ KALS_context.set_completed = function () {
  */
 KALS_context.ready = function (_callback) {
     if (this.completed === false) {
+        $.test_msg("KALS_context, 尚未準備好");
         this.add_once_listener(_callback);
     }
     else if ($.is_function(_callback)) {
-        _callback(this);
+        var _this = this;
+        setTimeout(function () {
+            _callback(_this);
+        }, 0);
     }
     return this;
 };

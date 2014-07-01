@@ -476,26 +476,26 @@ Select_tooltip.prototype.setup_position_check = function (_callback) {
  * 確認是否是bottom模式
  */
 Select_tooltip.prototype.check_bottom = function () {
-	var _tip = this._tip;
+    var _tip = this._tip;
     var _trigger = this._trigger; 
     var _event = this._event;
 	
-	var _bottom = "bottom";
-	//var _tip_offset = _tip.offset();
-        var _tip_offset = $.get_offset(_tip);
-	var _margin_width = 5; 
-	//var _is_bottom = false;
-        
-        //var _trigger_top = _trigger.offset().top;
-        var _trigger_top = $.get_offset_top( _trigger );
-	if ( _tip_offset.top > _trigger_top && 
-                    (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
-        //_is_bottom = true;
-		_tip.addClass(_bottom);
+    var _bottom = "bottom";
+    //var _tip_offset = _tip.offset();
+    var _tip_offset = $.get_offset(_tip);
+    var _margin_width = 5; 
+    //var _is_bottom = false;
+
+    //var _trigger_top = _trigger.offset().top;
+    var _trigger_top = $.get_offset_top( _trigger );
+    if ( _tip_offset.top > _trigger_top && 
+            (_tip_offset.top < window.pageYOffset + _margin_width + KALS_toolbar.get_height()) ) {
+    //_is_bottom = true;
+        _tip.addClass(_bottom);
     }
-	else {
-		_tip.removeClass(_bottom);
-	}
+    else {
+        _tip.removeClass(_bottom);
+    }
 };
 
 /**
@@ -620,6 +620,7 @@ Select_tooltip.prototype._$create_ui = function () {
     );
     
     _select_tooltip.addClass(_container_classname);
+    this._tip = _select_tooltip;
     
     //var _word_id_prefix = Selection_manager.prototype.word_id_prefix;
     //var _word_id_prefix = Selectable_text_word.prototype.word_id_prefix;
@@ -644,23 +645,18 @@ Select_tooltip.prototype._$create_ui = function () {
     
     _select_tooltip.addClass('hide');
     
-    setTimeout(function () {
+    KALS_context.ready(function () {
+        //$.test_msg('Select_tooltip 準備註冊');
         KALS_context.policy.add_attr_listener('read', function (_policy) {
             //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
-            if (_policy.readable()) {
-                _this._set_readable(_select_tooltip, true);
-            }
-            else {
-                _this._set_readable(_select_tooltip, false);
-            }
+            _this._set_readable(_policy.readable());
         }, true);
 
         KALS_text.tool.add_listener(["open", "close"], function (_tool) {
             //$.test_msg("tool open", (_tool.is_opened() === false));
-            _this._set_enable(_select_tooltip, (_tool.is_opened() === false));
+            _this._set_enable((_tool.is_opened() === false));
         });        
-    }, 0);
-    
+    });
     
     return _select_tooltip;
 };
@@ -669,11 +665,11 @@ Select_tooltip.prototype._$create_ui = function () {
 
 /**
  * 設定是否可讀
- * @param {jQuery} _select_tooltip 選擇物件
  * @param {Boolean} _enable true表示啟用
  * @returns {Select_tooltip}
  */
-Select_tooltip.prototype._set_readable = function (_select_tooltip, _enable) {
+Select_tooltip.prototype._set_readable = function (_enable) {
+    var _select_tooltip = this._tip;
     var _deny_read_classname = 'deny-read';
     if (_enable === false) {
         _select_tooltip.addClass(_deny_read_classname);
@@ -686,11 +682,11 @@ Select_tooltip.prototype._set_readable = function (_select_tooltip, _enable) {
 
 /**
  * 設定是否可用
- * @param {jQuery} _select_tooltip 選擇物件
  * @param {Boolean} _enable true表示啟用
  * @returns {Select_tooltip}
  */
-Select_tooltip.prototype._set_enable = function (_select_tooltip, _enable) {
+Select_tooltip.prototype._set_enable = function (_enable) {
+    var _select_tooltip = this._tip;
     var _classname = 'disable-tooltip';
     if (_enable === false) {
         _select_tooltip.addClass(_classname);
@@ -700,6 +696,16 @@ Select_tooltip.prototype._set_enable = function (_select_tooltip, _enable) {
     }
     return this;
 };
+
+/**
+ * 檢查是否可用
+ * @returns {Boolean} _enable true表示啟用
+ */
+Select_tooltip.prototype.is_enable = function () {
+    var _classname = 'disable-tooltip';
+    return this._tip.hasClass(_classname);
+};
+
 
 // ---------------------------------------
 
@@ -782,92 +788,53 @@ Select_tooltip.prototype._setup_item = function () {
  * @param function _callback
  */
 Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) {
-    if (KALS_CONFIG.isolation_mode === true) {
+    if (KALS_CONFIG.isolation_mode === true
+            || this.is_enable() === false) {
         $.trigger_callback(_callback);
         return this;
     }
-
+    
     //var _item_ui = this._item.get_ui();
     //_item_ui.hide();
     this.reset_style();
     var _url = 'annotation_getter/tooltip';
     var _data = _index;
 
-    var _ui = this.get_ui();
+    //var _ui = this.get_ui();
     //_ui.addClass("loading");
 
     var _this = this;
     var _ajax_callback = function (_data) {
-            //$.test_msg("load_tooltip_annotation", _data);
+        //$.test_msg("load_tooltip_annotation", _data);
 
-            if (KALS_CONFIG.isolation_mode === true) {
-                $.trigger_callback(_callback);
-                return;
-            }
+        if (KALS_CONFIG.isolation_mode === true) {
+            $.trigger_callback(_callback);
+            return;
+        }
 
-            if (_data.count > 0) {
-                var _annotation_json = _data.annotation;
-                var _param = new Annotation_param(_annotation_json);
-                _this._item.set_data(_param);
+        if (_data.count > 0) {
+            var _annotation_json = _data.annotation;
+            var _param = new Annotation_param(_annotation_json);
+            _this._item.set_data(_param);
 
-                var _count = _data.count;
-                _this._item.set_count(_count);
+            var _count = _data.count;
+            _this._item.set_count(_count);
 
-                //_item_ui.show();
-                _this.set_has_annotation();
-            }
-            else {
-                //_ui.removeClass("loading");
-                $.trigger_callback(_callback);
-                return;
-            }
-            //_ui.css("visibility", "visible");
+            //_item_ui.show();
+            _this.set_has_annotation();
+        }
+        else {
+            //_ui.removeClass("loading");
+            $.trigger_callback(_callback);
+            return;
+        }
+        //_ui.css("visibility", "visible");
 
+        _this._item.adjust_note();
+        setTimeout(function () {
             _this._item.adjust_note();
-            setTimeout(function () {
-
-                // @author Pulipuli Chen 20131117 17:16 
-                // 這是可以用的版本
-                _this._item.adjust_note();
-                //_ui.removeClass("loading");
-                /*
-                _this.setup_position(function () {
-                    //_ui.removeClass("loading");
-                    return;
-
-                    _this._item.adjust_note(function () {
-
-                        // 調整過note之後，位置會有所改變，所以需要再調整
-
-                        setTimeout(function () {
-                            //$.test_msg('第二次 setup_position');
-                            //_ui.removeClass("loading");
-                            _this.setup_position();
-                        }, 0);
-                    });
-                });
-                */
-                $.trigger_callback(_callback);
-
-                     //_this.setup_position(function () {
-                            //setTimeout(function () {
-                            //	_this.check_bottom();
-                            //}, 1000);	
-                     //});
-
-
-
-                     //_ui.appendTo($('body'));
-
-                     //setTimeout(function () {
-                     //	_this._item.adjust_note(function () {
-                     //		_ui.addClass("loading");
-         //       _this.setup_position(function () {
-                     //			_ui.removeClass("loading");
-                     //		});
-         //    });
-                     //}, 0);     
-    }, 0);
+            $.trigger_callback(_callback);
+        }, 0);
     };
 
     KALS_util.ajax_get({
@@ -875,7 +842,6 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
         data: _data,
         callback: _ajax_callback
     });
-
 
     return this;
 };

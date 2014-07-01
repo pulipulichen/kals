@@ -71,10 +71,10 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger) {
     }
     
     if ($.is_null(_trigger)) {
-		_trigger = false;
-	}
+        _trigger = false;
+    }
     
-    if ($.inArray(_obj, this._listeners) == -1) {
+    if ($.inArray(_obj, this._listeners) === -1) {
         if ($.isset(_function)) {
             _obj[this._$event_name] = _function;
         }
@@ -116,17 +116,22 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
         _function = null;
     }
     
+    //$.test_msg("增加了一次事件", _obj);
+    
     if ($.is_null(_trigger)) {
-		_trigger = false;
-	}
+        _trigger = false;
+    }
     
     //接下來開始進行事件觸發
-    if ($.inArray(_obj, this._once_listeners) == -1) {
+    if ($.inArray(_obj, this._once_listeners) === -1) {
         if ($.isset(_function)) {
             _obj[this._$event_name] = _function;
         }
         
+        //$.test_msg("註冊", _obj);
         this._once_listeners.push(_obj);
+        
+        $.test_msg("註冊once_listeners", [this._once_listeners.length, _obj]);
         
         if (_trigger === true) {
             this._notify_once_listener(_obj);
@@ -138,7 +143,7 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
 Event_dispatcher.prototype._notify_once_listener = function(_obj, _complate) {
     var _complete = this._notify_listener(_obj);
             
-    if (!(typeof(_complete) == 'boolean'
+    if (!(typeof(_complete) === 'boolean'
         && _complete === false)) {
         //除非回傳false，否則一律刪除
         this.delete_once_listener(_obj);
@@ -199,15 +204,15 @@ Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj) {
             _obj = _listeners[_key];
             
             if ($.is_object(_obj)) {
-                if (typeof(_obj[this._$event_name] == 'function')
-                    && _obj[this._$event_name] == _func) {
+                if (typeof(_obj[this._$event_name] === 'function')
+                    && _obj[this._$event_name] === _func) {
                     //delete _listeners[_key];
                     _listeners = $.array_remove(_listeners, _key);
                 }
                     
             }
             else if ($.is_function(_obj)) {
-                if (_obj == _func) {
+                if (_obj === _func) {
                     //delete _listeners[_key];
                     _listeners = $.array_remove(_listeners, _key);
                 }
@@ -224,17 +229,25 @@ Event_dispatcher.prototype._delete_listener_data = function (_listeners, _obj) {
 Event_dispatcher.prototype.notify_listeners = function (_arg) {
     if (this._$enable_changed_lock === false 
         || (this._$enable_changed_lock === true && this._changed)) {
-        var _event_name = this._$event_name;
+        //var _event_name = this._$event_name;
         
         //$.test_msg('Event_dispatcher.notify_listeners()', this._listeners.length);
         
+        var _listener;
         for (var _i in this._listeners) {
-            var _listener = this._listeners[_i];
+            _listener = this._listeners[_i];
             this._notify_listener(_listener, _arg);
         }
         
-        for (_i in this._once_listeners) {
-            _listener = this._once_listeners[_i];
+        //if (this._$load_url === 'generic/info') {
+        //    $.test_msg("預備通知once_listeners [" + $.get_class(this) + "]", this._once_listeners.length);
+        //}
+        //for (_i in this._once_listeners) {
+        while (this._once_listeners.length > 0) {
+            _listener = this._once_listeners.pop();
+            //if (this._$load_url === 'generic/info') {
+            //    $.test_msg("預備通知once_listeners", _listener);
+            //}
             this._notify_once_listener(_listener, _arg);
         }
         
