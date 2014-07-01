@@ -1731,21 +1731,21 @@ jQuery.strip_html_tag = function(_html, _except_tags) {
     //var _reTag = /<(?:.|\s)*?/g;
     var _reTag = /<[^>].*?>/g;
     
-    if (typeof(_except_tags) == "string") {
+    if (typeof(_except_tags) === "string") {
         _except_tags = [_except_tags];
     }
-    if (typeof(_except_tags) != "undefined" 
-		&& typeof(_except_tags[0]) == "string") {
-		_reTag = "<[^(";
-		for (var _i = 0; _i < _except_tags.length; _i++) {
-			if (_i > 0) {
-				_reTag = _reTag + "|";
-			}
-			_reTag = _reTag + _except_tags[_i];
-		}
-		_reTag = _reTag + ")>].*?>";
-		_reTag = new RegExp(_reTag, "g");
-	}
+    if (typeof(_except_tags) !== "undefined" 
+            && typeof(_except_tags[0]) === "string") {
+        _reTag = "<[^(";
+        for (var _i = 0; _i < _except_tags.length; _i++) {
+            if (_i > 0) {
+                _reTag = _reTag + "|";
+            }
+            _reTag = _reTag + _except_tags[_i];
+        }
+        _reTag = _reTag + ")>].*?>";
+        _reTag = new RegExp(_reTag, "g");
+    }
     
     return _html.replace(_reTag,"");
 };

@@ -371,8 +371,6 @@ Annotation_tool.prototype.scroll_into_view = function () {
     return this;
 };
 
-Annotation_tool.prototype._close_lock = false;
-
 /**
  * 關閉標註工具
  * @param {Function} _callback
@@ -386,13 +384,6 @@ Annotation_tool.prototype.close = function (_callback) {
     
     var _this = this;
     
-    if (_this._close_lock === true) {
-        $.trigger_callback(_callback);
-        return this;
-    }
-    
-    _this._close_lock = true;
-    
     var _close_action = function (_overlay_close_action) {
         _this.list.reset();
         //KALS_modal.prototype.close.call(this, _callback);
@@ -401,10 +392,9 @@ Annotation_tool.prototype.close = function (_callback) {
         _ui.css('top', '-1000px');
         _ui.css('left', '-1000px');
 
-        $.test_msg("annotation tool close action");
+        //$.test_msg("annotation tool close action");
         $.trigger_callback(_callback);
         $.trigger_callback(_overlay_close_action);
-        _this._close_lock = false;
     };
     
     if (_note === null) {
@@ -432,9 +422,8 @@ Annotation_tool.prototype.close = function (_callback) {
 //                _close_action(_overlay_close_action);
 //            }
 //        });
-        _this.submit_annotation(function () {
-            _close_action();
-        });
+        _close_action();
+        _this.submit_annotation();
     }
 };
 
