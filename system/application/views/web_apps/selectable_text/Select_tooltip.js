@@ -70,10 +70,19 @@ Select_tooltip.prototype.tooltip_id = 'kals_select_tooltip';
  * 重置成為初始狀態
  */
 Select_tooltip.prototype.reset = function () {
-	var _ui = this.get_ui();
+    var _ui = this.get_ui();
     _ui.removeClass('hide');
     _ui.hide();
     this.enable_select = true;
+};
+
+/**
+ * 取得來自Tooltip_modal的config
+ * @returns {Tooltip_modal._get_tooltip_modal_config._config}
+ */
+Select_tooltip.prototype._get_tooltip_modal_config = function () {
+    var _config = Tooltip_modal.prototype._$get_config.call(this, '#' + this.tooltip_id + ':first');
+    return _config;
 };
 
 /**
@@ -84,7 +93,7 @@ Select_tooltip.prototype._$get_config = function () {
     
     var _select_tooltip = this;
     
-    var _config = Tooltip_modal.prototype._$get_config.call(this, '#' + this.tooltip_id + ':first');
+    var _config = this._get_tooltip_modal_config();
     //_config['delay'] = 30;
     //_config['predelay'] = 100;
     
@@ -114,85 +123,10 @@ Select_tooltip.prototype._$get_config = function () {
        }
     }
     
-    var _onbeforeshow = _config['onBeforeShow'];
+    
     _config['onBeforeShow'] = function (_event) {
-        //if ($.is_null(_this))
-        var _this = this;
-
-        var _tip = _this.getTip();
-        //setTimeout(function () {
-        _tip.addClass("loading");
-        //}, 0);
-        
-        //$.test_msg("onBeforeShow", _tip.css("visibility"));
-        
-        if (_tip.length === 0) {
-            return;
-        }
-
-        if (_select_tooltip.enable_select === false) {
-            return;
-        }
-
-        var _trigger = _this.getTrigger();
-        var _id = $.get_prefixed_id(_trigger);
-        
-        //$.test_msg("被呼叫了", _id);
-
-        _select_tooltip._event = _event;
-        _select_tooltip._tip = _tip;
-        _select_tooltip._trigger = _trigger;
-
-        
-
-        var _position_setup = function () {
-            $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
-            _trigger.addClass('tooltip-trigger-hover');
-
-            //$.test_msg('Select_tooltip._$get_config()', _tip.length);
-
-            _select_tooltip.setup_position(_after_setup_position);
-
-        };    //var _position_setup = function () {
-        
-        var _after_setup_position = function () {
-            _tip.attr('word_id', _id);
-
-            //在顯示之前，決定是否要調整
-            var _selected_classname = 'selected';
-            if (KALS_text.selection.select._select_from !== null) {
-                _tip.addClass(_selected_classname);
-            }
-            else {
-                _tip.removeClass(_selected_classname);
-            }
-
-            if ($.is_function(_onbeforeshow)) {
-                _onbeforeshow.call(_this);
-            }
-
-            //_tip.removeClass("loading");
-
-            if ($.is_function(_event)) {
-                _event();
-            }
-        };
-
-        var _load_tooltip = function () {
-            // 讀取標註
-            _select_tooltip.load_tooltip_annotation(_id, function () {
-                _position_setup();
-            });
-        };
-        
-        //var _preload_position = function () {
-        //    _select_tooltip.setup_position(_load_tooltip);
-        //};
-        
-        //_preload_position();
-        
-        _load_tooltip();
-        
+        var _jquery_tool = this;
+        _select_tooltip._config_onbeforeshow(_event, _jquery_tool);
     };    //onBeforeShow: function () {
     
     /*
@@ -210,31 +144,9 @@ Select_tooltip.prototype._$get_config = function () {
     // 晚一點再顯示，拜託，不要這麼急著計算
     _config["predelay"] = 300;
     
-    var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
-    _config['onBeforeHide'] = function (_this) {
-        
-        if (_select_tooltip.enable_select === false) {
-            return;
-        }
-        
-        //if ($.is_null(_this))
-        //{
-            _this = this;
-        //}
-        
-        if (typeof(_this.getTrigger) !== 'function'
-            && typeof(this.getTrigger) === 'function') {
-            _this.getTrigger = this.getTrigger;
-        }
-        var _trigger = _this.getTrigger();
-        _trigger.removeClass('tooltip-trigger-hover');
-        
-        if ($.is_function(_onbeforehide)) {
-            _onbeforehide.call(this);
-        }
-        
-        //_this.getTip().addClass("loading");
-        
+    _config['onBeforeHide'] = function (_event) {
+        var _jquery_tool = this;
+        _select_tooltip._config_onbeforehide(_event, _jquery_tool);
     };    //onBeforeHide: function () {
     
     if ($.is_mobile_mode()) {
@@ -244,6 +156,131 @@ Select_tooltip.prototype._$get_config = function () {
     //    _config['effect'] = 'fade';
     
     return _config;
+};
+
+/**
+ * 顯示前的事件
+ * 
+ * @param {Function} _event
+ * @param {jQUery} _jquery_tool
+ * @returns {Select_tooltip}
+ */
+Select_tooltip.prototype._config_onbeforeshow = function (_event, _jquery_tool) {
+    var _config = this._get_tooltip_modal_config();
+    var _onbeforeshow = _config['onBeforeShow'];
+    
+    //if ($.is_null(_this))
+    //var _this = this;
+    var _select_tooltip = this;
+
+    var _tip = _jquery_tool.getTip();
+    //setTimeout(function () {
+    _tip.addClass("loading");
+    //}, 0);
+
+    //$.test_msg("onBeforeShow", _tip.css("visibility"));
+
+    if (_tip.length === 0) {
+        return this;
+    }
+
+    if (_select_tooltip.enable_select === false) {
+        return this;
+    }
+
+    var _trigger = _jquery_tool.getTrigger();
+    var _id = $.get_prefixed_id(_trigger);
+
+    //$.test_msg("被呼叫了", _id);
+
+    _select_tooltip._event = _event;
+    _select_tooltip._tip = _tip;
+    _select_tooltip._trigger = _trigger;
+
+    var _position_setup = function () {
+        $('.tooltip-trigger-hover').removeClass('tooltip-trigger-hover');
+        _trigger.addClass('tooltip-trigger-hover');
+
+        //$.test_msg('Select_tooltip._$get_config()', _tip.length);
+
+        _select_tooltip.setup_position(_after_setup_position);
+
+    };    //var _position_setup = function () {
+
+    var _after_setup_position = function () {
+        _tip.attr('word_id', _id);
+
+        //在顯示之前，決定是否要調整
+        var _selected_classname = 'selected';
+        if (KALS_text.selection.select._select_from !== null) {
+            _tip.addClass(_selected_classname);
+        }
+        else {
+            _tip.removeClass(_selected_classname);
+        }
+
+        if ($.is_function(_onbeforeshow)) {
+            _onbeforeshow.call(_jquery_tool);
+        }
+
+        //_tip.removeClass("loading");
+
+        if ($.is_function(_event)) {
+            _event();
+        }
+    };
+
+    var _load_tooltip = function () {
+        // 讀取標註
+        _select_tooltip.load_tooltip_annotation(_id, function () {
+            _position_setup();
+        });
+    };
+
+    //var _preload_position = function () {
+    //    _select_tooltip.setup_position(_load_tooltip);
+    //};
+
+    //_preload_position();
+
+    _load_tooltip();
+    return this;
+};
+
+/**
+ * 設定Tooltip的onBeforeHide事件
+ * @param {Function} _event
+ * @param {jQuery} _jquery_tool 啟動onBeforeHide的UI本身
+ * @returns {Select_tooltip}
+ */
+Select_tooltip.prototype._config_onbeforehide = function (_event, _jquery_tool) {
+    var _config = this._get_tooltip_modal_config();
+    var _onbeforehide = $.get_parameter( _config, 'onBeforeHide' );
+    
+    var _select_tooltip = this;
+    
+    if (_select_tooltip.enable_select === false) {
+        return this;
+    }
+
+    //if ($.is_null(_this))
+    //{
+        //_this = this;
+    //}
+
+    //if (typeof(_jquery_tool.getTrigger) !== 'function'
+    //    && typeof(_jquery_tool.getTrigger) === 'function') {
+    //    _jquery_tool.getTrigger = _jquery_tool.getTrigger;
+    //}
+    var _trigger = _jquery_tool.getTrigger();
+    _trigger.removeClass('tooltip-trigger-hover');
+
+    if ($.is_function(_onbeforehide)) {
+        _onbeforehide.call(_jquery_tool);
+    }
+
+    //_this.getTip().addClass("loading");
+    return this;
 };
 
 /**
@@ -607,19 +644,46 @@ Select_tooltip.prototype._$create_ui = function () {
     
     _select_tooltip.addClass('hide');
     
-    var _deny_read_classname = 'deny-read';
     KALS_context.policy.add_attr_listener('read', function (_policy) {
         //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
         if (_policy.readable()) {
-            _select_tooltip.removeClass(_deny_read_classname);
+            _select_tooltip._enable_tooltip();
         }
         else {
-            _select_tooltip.addClass(_deny_read_classname);
+            _select_tooltip._disable_tooltip();
         }
     }, true);
     
     return _select_tooltip;
 };
+
+// ---------------------------------------
+
+/**
+ * 啟用/禁用Tooltip的功能
+ * @type String
+ */
+Select_tooltip.prototype._deny_read_classname = 'deny-read';
+
+/**
+ * 禁止使用Tooltip
+ * @returns {Select_tooltip}
+ */
+Select_tooltip.prototype._disable_tooltip = function () {
+    this.addClass(this._deny_read_classname);
+    return this;
+};
+
+/**
+ * 啟用Tooltip
+ * @returns {Select_tooltip}
+ */
+Select_tooltip.prototype._enable_tooltip = function () {
+    this.addClass(this._deny_read_classname);
+    return this;
+};
+
+// ---------------------------------------
 
 /**
  * 選取事件
@@ -647,6 +711,9 @@ Select_tooltip.prototype._select_event = function (_event) {
     //KALS_text.selection.listen_select(_word);
 
     KALS_text.selection.select.set_select(_word);
+    
+    // 延後取消選取
+    
     
     return this;
 };

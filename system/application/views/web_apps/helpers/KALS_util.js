@@ -536,15 +536,15 @@ KALS_util.ajax_post = function (_config) {
     var _post_retry_max = 3;
     
     _iframe.load(function () {
-        $.test_msg("KALS_uitl.ajax_post 2", "_iframe.load");
+        //$.test_msg("KALS_uitl.ajax_post 2", "_iframe.load");
         setTimeout(function () {
-            $.test_msg("KALS_uitl.ajax_post 2.5", "_iframe.load setTimeout");
+            //$.test_msg("KALS_uitl.ajax_post 2.5", "_iframe.load setTimeout");
             _iframe_load_callback();
         }, 500);
     });    //_iframe.load(function () {
     
     var _iframe_load_callback = function () {
-        $.test_msg("KALS_uitl.ajax_post 3", "_iframe_load_callback");
+        //$.test_msg("KALS_uitl.ajax_post 3", "_iframe_load_callback");
         //以同樣路徑，用ajax_get去取得資料，並回傳給callback
         _this.ajax_get({
             url: _url, 
@@ -554,7 +554,7 @@ KALS_util.ajax_post = function (_config) {
     };
     
     var _ajax_get_callback = function (_data) {
-        $.test_msg("KALS_uitl.ajax_post 4", "_ajax_get_callback");
+        //$.test_msg("KALS_uitl.ajax_post 4", "_ajax_get_callback");
         // 如果回傳了false，表示要重新讀取一次
         if (_data === false) {
             _post_retry_count++;
@@ -569,7 +569,8 @@ KALS_util.ajax_post = function (_config) {
                     _form.submit();
                 }
             }
-            throw "KALS_util.ajax_post() 發生錯誤 [" + _post_retry_count + "]:" + $.json_encode(_config);
+            //throw "KALS_util.ajax_post() 發生錯誤 [" + _post_retry_count + "]:" + $.json_encode(_config);
+            KALS_util.throw_exception("KALS_util.ajax_post() 發生錯誤", [_post_retry_count, _config]);
             return;
         }
 
@@ -577,14 +578,14 @@ KALS_util.ajax_post = function (_config) {
             _layer.remove();
         }
 
-        $.test_msg("KALS_uitl.ajax_post 5", "預備final callback: " +  $.json_encode(_data));
+        //$.test_msg("KALS_uitl.ajax_post 5", "預備final callback: " +  $.json_encode(_data));
         if ($.is_function(_callback)) {
             _callback(_data);
         }
     };
     
     //準備完畢，遞交
-    $.test_msg("KALS_uitl.ajax_post 1", "準備要遞交了");
+    //$.test_msg("KALS_uitl.ajax_post 1", "準備要遞交了");
     _form.submit();
     
     return this;
@@ -801,6 +802,37 @@ KALS_util.show_exception = function (_exception, _uri) {
     //$.test_msg('KALS_util.show_exception() end');
     
     //return _alert;
+};
+
+/**
+ * 記錄偵錯用的參數
+ * 
+ * @param {KALS_exception|String} _exception 這個是來自於伺服器回傳_data中的exception屬性。
+ * 在ajax_get()的時候發生錯誤時，會自動將_data.exception送到此方法。
+ * 這是處理例外的預設方法，您可以在ajax_get()當中設定exception_handle
+ * @return {KALS_util}
+ */
+KALS_util.throw_exception = function (_exception, _data) {
+    //var _heading = $.get_parameter(_exception, 'heading');
+    //var _message = $.get_parameter(_exception, 'message');
+    //var _request_uri = $.get_parameter(_exception, 'request_uri');
+    
+    if ($.is_class(_exception, 'KALS_exception') === false) {
+        _exception = new KALS_exception(_exception);
+    }
+    
+    var _message = _exception.message;
+    
+    if (_data !== undefined) {
+        var _data_string = $.json_encode(_data);
+        _message = "[" + _message + "] " + _data_string;
+    }
+    
+    $.test_msg('KALS_util.throw_exception()', _message);
+	
+    throw _message;
+    
+    return this;
 };
 
 /**

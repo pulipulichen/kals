@@ -464,21 +464,20 @@ jQuery.get_class = function (_obj) {
     // *     returns 6: false
     
     if ($.is_jquery(_obj)) {
-		return 'jQuery';
-	}
-	else 
-		if ($.is_array(_obj)) {
-			return 'Array';
-		}
+        return 'jQuery';
+    }
+    else if ($.is_array(_obj)) {
+        return 'Array';
+    }
     
     var _class_name;
     if (_obj instanceof Object
-        && !(_obj instanceof Array)
-        && !(_obj instanceof Function)
-        && _obj.constructor
-        && _obj != this.window) {
+            && !(_obj instanceof Array)
+            && !(_obj instanceof Function)
+            && _obj.constructor
+            && _obj !== this.window) {
         var _arr = _obj.constructor.toString().match(/function\s*(\w+)/);
-        if (_arr && _arr.length == 2) {
+        if (_arr && _arr.length === 2) {
             return _arr[1];
         }
         else {
@@ -487,15 +486,15 @@ jQuery.get_class = function (_obj) {
             //$.test_msg('$.get_class()', _class_name);
     
             if (this.starts_with(_class_name, '[object ')) {
-				_class_name = _class_name.substring(8, _class_name.length);
-			}
-			else {
-				return false;
-			}
+                _class_name = _class_name.substring(8, _class_name.length);
+            }
+            else {
+                return false;
+            }
             
             if (this.ends_with(_class_name, ']')) {
-				_class_name = _class_name.substring(0, _class_name.length - 1);
-			}
+                _class_name = _class_name.substring(0, _class_name.length - 1);
+            }
             return _class_name;
         }
     }
@@ -511,7 +510,6 @@ jQuery.get_class = function (_obj) {
         }
     }
     catch (e) {}
-    
 
     return false;
 };

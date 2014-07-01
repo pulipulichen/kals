@@ -113,14 +113,14 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
         _type = this._default_type;
     }
     
-    if (false == this.has_type(_type)) {
-		return this;
-	}
+    if (false === this.has_type(_type)) {
+        return this;
+    }
     
     var _key = $.inArray(_function, this._type_listeners[_type]);
     if (_key > -1) {
-		delete this._type_listeners[_type][_key];
-	}
+        delete this._type_listeners[_type][_key];
+    }
     return this;
 };
 
@@ -129,9 +129,9 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
  * @param {function} _type
  */
 Multi_event_dispatcher.prototype.notify_listeners = function (_type, _arg) {
-    if (false == this.has_type(_type)) {
-		return this;
-	}
+    if (false === this.has_type(_type)) {
+        return this;
+    }
     
     var _this = this;
     

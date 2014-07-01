@@ -21,8 +21,6 @@ function Annotation_tool(_selector) {
         
         var _this = this;
         setTimeout(function () {
-            
-            
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
             KALS_text.selection.select.add_listener('select', function () {
                 //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
@@ -34,7 +32,6 @@ function Annotation_tool(_selector) {
             });
             
             _this.get_ui();
-            
         }, 0);    
     }
 }
@@ -162,7 +159,6 @@ Annotation_tool.prototype._$create_ui = function () {
         //}
         //}
     });
-        
     
     KALS_context.policy.add_attr_listener('write', function (_policy) {
         if (_policy.writable()) {

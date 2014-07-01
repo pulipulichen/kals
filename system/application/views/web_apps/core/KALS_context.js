@@ -45,6 +45,9 @@ KALS_context.initialize = function () {
     this.module = new KALS_module_manager();
     this.navigation = new KALS_navigation();
     
+    // 核心運作元件
+    this.event_hub = new Multi_event_dispatcher();
+    
     //初始化元件 Initialize Component
     this.init_context = new Init_context();
     this.init_component = new Init_component();
@@ -289,6 +292,14 @@ KALS_context.init_component = null;
  * @type {Init_profile}
  */
 KALS_context.init_profile = null;
+
+/**
+ * 事件導向架構的中心
+ * @type {Multi_event_dispacher}
+ */
+KALS_context.event_hub = null;
+
+// ------------------------
 
 /**
  * 確認所有任務是否完成。此屬性會在Init_component跟Init_profile完成時變成true。
