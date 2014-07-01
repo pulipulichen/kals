@@ -603,12 +603,16 @@ List_collection.prototype.set_topic_id = function(_id) {
 List_collection.prototype._$default_add_item_from_head = false;
 
 /**
- * 
+ * 加入資料
  * @param {Annotation_param} _param
  * @param {Boolean} _from_head = false; 是否從頭加入，或是從尾加入
  */
 List_collection.prototype.add_list_item = function(_param, _from_head) {
     var _list_item = this.create_list_item(_param);
+    
+    if (_from_head === undefined) {
+        _from_head = this._$default_add_item_from_head;
+    }
     
     if (_list_item !== null) {
         this._list_items.push(_list_item);
@@ -619,8 +623,8 @@ List_collection.prototype.add_list_item = function(_param, _from_head) {
 		
         var _ui = this.get_ui();
 		//$.test_msg('add_list_item', _ui.html());
-		if (this._$default_add_item_from_head === false) {
-			this._list_container.append(_list_item_ui);
+        if (_from_head === false) {
+            this._list_container.append(_list_item_ui);
         }
         else {
             this._list_container.prepend(_list_item_ui);
