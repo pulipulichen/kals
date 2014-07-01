@@ -327,7 +327,7 @@ Annotation_editor.prototype.submit = function (_callback) {
             }
         }
 
-        _this._create_callback(_annotation_param, _submit_final_callback);
+        _this._create_callback(_annotation_param);
     };
     
     var _prepare_edit_callback = function (_data) {
@@ -338,7 +338,7 @@ Annotation_editor.prototype.submit = function (_callback) {
         //var _scope_coll = KALS_text.selection.select.get_scope_coll();
         //_annotation_param.scope = _scope_coll;
 
-        _this._edit_callback(_annotation_param, _original_param, _submit_final_callback);
+        _this._edit_callback(_annotation_param, _original_param);
 
         //_annotation_param.scope = _this._editing_param.scope;
     };
@@ -372,9 +372,11 @@ Annotation_editor.prototype.submit = function (_callback) {
         //_submit_callback(_annotation_param);
         
         //return;
-        $.test_msg("------------------------- 預備submit annotation ---------------------");
+        //$.test_msg("------------------------- 預備submit annotation ---------------------");
         KALS_util.ajax_post(_get_config);
     });
+    
+    _submit_final_callback();
     
     return this;
 };
@@ -403,6 +405,8 @@ Annotation_editor.prototype._check_note = function (_annotation_param) {
         return true;
     }
 };
+
+// ------------------------------------------
 
 /**
  * 建立標註之後，要做的事情包括：

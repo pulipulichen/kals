@@ -178,8 +178,8 @@ Text_selector.prototype._init_selectable_text = function () {
     this._init_listener();
     
     var _this = this;
-    _text_container.click(function (_e) {
-        _this._click_event(_e);
+    _text_container.mousedown(function (_e) {
+        _this._close_tool(_e);
     });
     
     return _text_container;
@@ -217,7 +217,7 @@ Text_selector.prototype._enable_click_close_annotation_tool = false;
  * @param {Event} _e
  * @returns {Text_selector}
  */
-Text_selector.prototype._click_event = function (_e) {
+Text_selector.prototype._close_tool = function (_e) {
     if (this._enable_click_close_annotation_tool) {
         KALS_text.tool.close();
     }
