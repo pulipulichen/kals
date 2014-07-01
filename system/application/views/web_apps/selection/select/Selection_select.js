@@ -25,7 +25,7 @@ function Selection_select(_text) {
     }, true);
     
     var _this = this;
-    KALS_context.add_listener(function () {
+    KALS_context.ready(function () {
         //$.test_msg("準備 ok");
         KALS_text.tool.add_listener(["open", "close"], function (_tool) {
             _this._tool_open = _tool.is_opened();
@@ -59,10 +59,10 @@ Selection_select.prototype._tool_open = false;
  */
 Selection_select.prototype.set_select = function (_word) {
     // 如果標註工具是開啟的狀態下，不啟用此功能
+    //$.test_msg("set_select 標註工具有開啟嗎？", this._tool_open);
     if (this._tool_open === true) {
         return this;
     }
-    
     
     // 如果輸入參數是範圍，那就改成用Scope_collection_param吧
     if ($.is_class(_word, "Scope_collection_param")) {

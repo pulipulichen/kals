@@ -21,18 +21,8 @@ function Annotation_tool(_selector) {
         
         var _this = this;
         setTimeout(function () {
-            //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-            KALS_text.selection.select.add_listener('select', function () {
-                //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-                _this.onselect();
-            });
-            
-            KALS_text.selection.select.add_listener('clear', function () {
-                _this.onselectcancel();
-            });
-            
             _this.get_ui();
-        }, 0);    
+        }, 0);
     }
 }
 
@@ -151,25 +141,37 @@ Annotation_tool.prototype._$create_ui = function () {
     
     var _not_login = 'not-login';
     
-    KALS_context.auth.add_listener(function (_auth) {
-        //if (_auth.is_login_checked()) {
-        //if (this._first_open === false) {
-        //$.test_msg("gogo close");
-        _this.reopen();
-        //}
-        //}
+    KALS_context.ready(function () {
+        KALS_context.auth.add_listener(function (_auth) {
+            //if (_auth.is_login_checked()) {
+            //if (this._first_open === false) {
+            //$.test_msg("gogo close");
+            _this.reopen();
+            //}
+            //}
+        });
+
+        KALS_context.policy.add_attr_listener('write', function (_policy) {
+            if (_policy.writable()) {
+                _ui.removeClass(_not_login);
+            }
+            else {
+                _ui.addClass(_not_login);
+            }
+
+            _topic_list.reload();
+        }, true);
+        
+        //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
+        KALS_text.selection.select.add_listener('select', function () {
+            //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
+            _this.onselect();
+        });
+
+        KALS_text.selection.select.add_listener('clear', function () {
+            _this.onselectcancel();
+        });    
     });
-    
-    KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable()) {
-            _ui.removeClass(_not_login);
-        }
-        else {
-            _ui.addClass(_not_login);
-        }
-            
-        _topic_list.reload();
-    }, true);
     
     this.setup_view();
     
@@ -398,7 +400,9 @@ Annotation_tool.prototype.close = function (_callback) {
         $.trigger_callback(_callback);
         $.trigger_callback(_overlay_close_action);
         
-        _this.notify_listeners("close");
+        setTimeout(function () {
+            _this.notify_listeners("close");
+        }, 300);
     };
     
     if (_note === null) {

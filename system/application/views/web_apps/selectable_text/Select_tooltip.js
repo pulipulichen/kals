@@ -603,21 +603,23 @@ Select_tooltip.prototype._$create_ui = function () {
         content: _content
     });
     
-    KALS_context.lang.add_listener(
-        _select_button, 
-        new KALS_language_param(
-            'SELECT',
-            'selection_manager.select_tooltip'    
-        ) 
-    );
-    
-    KALS_context.lang.add_listener(
-        _cancel_button, 
-        new KALS_language_param(
-            'CANCEL',
-            'selection_manager.select_tooltip.cancel'    
-        ) 
-    );
+    KALS_context.ready(function () {
+        KALS_context.lang.add_listener(
+            _select_button, 
+            new KALS_language_param(
+                'SELECT',
+                'selection_manager.select_tooltip'    
+            ) 
+        );
+
+        KALS_context.lang.add_listener(
+            _cancel_button, 
+            new KALS_language_param(
+                'CANCEL',
+                'selection_manager.select_tooltip.cancel'    
+            ) 
+        );
+    });
     
     _select_tooltip.addClass(_container_classname);
     this._tip = _select_tooltip;
@@ -703,7 +705,7 @@ Select_tooltip.prototype._set_enable = function (_enable) {
  */
 Select_tooltip.prototype.is_enable = function () {
     var _classname = 'disable-tooltip';
-    return this._tip.hasClass(_classname);
+    return (this._tip.hasClass(_classname) === false);
 };
 
 
@@ -788,11 +790,13 @@ Select_tooltip.prototype._setup_item = function () {
  * @param function _callback
  */
 Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) {
+    //$.test_msg("啟用嗎？", [this.is_enable(), this.is_enable() === false]);
     if (KALS_CONFIG.isolation_mode === true
             || this.is_enable() === false) {
         $.trigger_callback(_callback);
         return this;
     }
+    
     
     //var _item_ui = this._item.get_ui();
     //_item_ui.hide();
