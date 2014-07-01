@@ -74,6 +74,7 @@ Type_component.prototype._$create_ui = function () {
     var _menu = this._setup_menu();
     _menu.get_ui().appendTo(_ui);
     var _config = _menu._$get_config();
+    _ui.tooltip(_config);
     
     //$.test_msg('Type_component._$create_ui()', _config);
     
@@ -90,7 +91,7 @@ Type_component.prototype._$create_ui = function () {
         _option.hide().appendTo(_ui);
     }
     
-    _ui.tooltip(_config);
+    
 	
     //_ui.setup_hover();
     

@@ -89,6 +89,25 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger) {
 };
 
 /**
+ * 新增立即啟動的觀察者
+ * 
+ * 輸入參數可以為：
+ * add_listener(_obj, _function, _trigger)
+ * add_listener(_obj, _function)
+ * add_listener(_obj)
+ * add_listener(_obj, _trigger)
+ * add_listener(_function, _trigger)
+ * add_listener(_function)
+ * 
+ * @param {Object} _obj
+ * @param {Object} _function
+ * @param {Object} _trigger
+ */
+Event_dispatcher.prototype.add_instant_listener = function (_obj, _function) {
+    return this.add_listener(_obj, _function, true);
+};
+
+/**
  * 新增一次觀察者
  * 
  * 輸入參數可以為：

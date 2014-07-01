@@ -280,7 +280,7 @@
     background-position:right center;
     background-repeat:no-repeat;
 	
-	position:relative;
+    position:relative;
 }
 
 .KALS .type-option {
@@ -340,7 +340,7 @@
     border-left: 1px solid #AAA;
     border-right: 1px solid #555;
     border-top: 1px solid #AAA;
-    cursor: default;
+    cursor: pointer;
     width: 75px;
     z-index: 4;
 }
@@ -379,7 +379,7 @@
     height:18px;
 }
 
-.KALS.kals-modal .type-component .type-option.custom  .type-option {
+.KALS.kals-modal .type-component .type-option.custom .type-option {
     border-radius: 0px;
     -moz-border-radius: 0px;
     -webkit-border-radius: 0px;
@@ -642,36 +642,90 @@ table.cke_editor.inline-table {
  * @section Web_search_component
  */
 .KALS.kals-modal .annotation-editor .web-search.button.dialog-option {
-	min-height: 0;
-	background-image: url('${base_url}images/web_search.png');
-	padding-right: 18px !important;
-	background-repeat:no-repeat;
-	background-position: right center;
-	
-	-moz-border-radius: 5px;
+    min-height: 0;
+    background-image: url('${base_url}images/web_search.png');
+    padding-right: 18px !important;
+    background-repeat:no-repeat;
+    background-position: right center;
+
+    -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
     -khtml-border-radius: 5px;
-	
-	height: 17px;
-	font-size: small;
-	margin:0;
-	padding: 1px;
-	top: 2px;
-	/*
-	font-size: smaller;
-	
-	background-color:white;
-	border: 1px solid #494437;
-	padding: 2px;
-	padding-right: 20px;
-	
-	
-	cursor: pointer;
+
+    height: 17px;
+    font-size: small;
+    margin:0;
+    padding: 1px;
+    top: 2px;
+    /*
+    font-size: smaller;
+
+    background-color:white;
+    border: 1px solid #494437;
+    padding: 2px;
+    padding-right: 20px;
+
+
+    cursor: pointer;
 	
     border-radius: 2px;
     -moz-border-radius: 2px;
     */
+}
+
+.KALS.kals-modal .web-search-container .web-search.menu {
+    background-color: #EEE;
+    border-bottom: 1px solid #555;
+    border-left: 1px solid #AAA;
+    border-right: 1px solid #555;
+    border-top: 1px solid #AAA;
+    cursor: pointer;
+    /*width: 75px;*/
+    z-index: 4;
+    padding: 0;
+}
+
+.KALS.kals-modal .web-search-container .web-search.menu .option {
+    border-style: none;
+    display:block;
+    width: 100%;
+    border-radius: 0px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -khtml-border-radius: 0px;
+    padding: 0px;
+    list-style-type: none;
+    border-bottom: 1px solid #555;
+}
+
+.KALS.kals-modal .web-search-container .web-search.menu .option .label {
+    margin: 5px;
+}
+
+.KALS.kals-modal .web-search-container .web-search.menu .option.last {
+    border-bottom-width: 0px;
+}
+
+.KALS.kals-modal .web-search-container .web-search.menu .option.hover {
+   /*border-left: 10px solid black;
+   padding-left: 0px;*/
+   position:relative;
+   -khtml-box-shadow: #FFFFFF 0px 0px 20px;
+   -moz-box-shadow: #FFFFFF 0px 0px 20px;
+   -webkit-box-shadow: #FFFFFF 0px 0px 20px;
+   box-shadow: #FFFFFF 0px 0px 20px;
+}
+
+
+/**
+ * @section Web_search_component
+ */
+.KALS.kals-modal .annotation-editor .web-search-container {
+    padding-right: 18px;
+    background-image: url('${base_url}images/dropdown.png');
+    background-position:right center;
+    background-repeat:no-repeat;
 }
 
 /**

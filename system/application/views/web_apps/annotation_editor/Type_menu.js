@@ -372,7 +372,6 @@ Type_menu.prototype._$get_config = function () {
     _config.relative = true;
     
     return _config;
-    
 };
 
 /**
