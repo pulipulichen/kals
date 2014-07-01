@@ -160,8 +160,10 @@ Annotation_tool.prototype._$create_ui = function () {
             }
 
             _topic_list.reload();
-        }, true);
-        
+        }, true);  
+    });
+    
+    setTimeout(function () {
         //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
         KALS_text.selection.select.add_listener('select', function () {
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
@@ -170,8 +172,8 @@ Annotation_tool.prototype._$create_ui = function () {
 
         KALS_text.selection.select.add_listener('clear', function () {
             _this.onselectcancel();
-        });    
-    });
+        });  
+    }, 0);
     
     this.setup_view();
     

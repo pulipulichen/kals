@@ -446,8 +446,8 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
         this._action_mobile();
     }
     else {
-		//$.test_msg('URL_hash_dispatcher', 'pass3');
-		
+        //$.test_msg('URL_hash_dispatcher', 'pass3');
+
         if (this.has_field('recommend') === true) {
             this._action_recommend()
         }
@@ -480,7 +480,7 @@ URL_hash_dispatcher.prototype._action_view = function () {
     //$.test_msg('URL_hash_dispatcher', 'pass2');
 		
     var _id = this.get_field('view');
-    KALS_context.init_profile.add_listener(function () {
+    KALS_context.ready(function () {
         KALS_text.tool.view.load_view(_id);
     });
     
@@ -544,7 +544,8 @@ URL_hash_dispatcher.prototype._action_select = function () {
     var _scope_text = this.get_field('select');
     //$.test_msg('has check_hash()', _scope_text);
 
-    KALS_context.init_profile.add_listener(function () {
+    //KALS_context.init_profile.add_listener(function () {
+    KALS_context.ready(function() {
         KALS_text.selection.select.load_select(_scope_text);  
     });
     /*

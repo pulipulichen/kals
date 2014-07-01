@@ -61,6 +61,7 @@ Selection_select.prototype.set_select = function (_word) {
     // 如果標註工具是開啟的狀態下，不啟用此功能
     //$.test_msg("set_select 標註工具有開啟嗎？", this._tool_open);
     if (this._tool_open === true) {
+        //$.test_msg("set_select 標註工具沒有開啟", this._tool_open);
         return this;
     }
     
@@ -175,6 +176,11 @@ Selection_select.prototype.clear = function () {
     return Selection.prototype.clear.call(this);
 };
 
+/**
+ * 載入指定位置
+ * @param {String} _scope_text = "638,641"
+ * @returns {Selection_select}
+ */
 Selection_select.prototype.load_select = function (_scope_text) {
     
     if ($.is_null(_scope_text)) {
