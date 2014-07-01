@@ -386,62 +386,6 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
         }
     });
 
-            /*
-            _words.mousemove(function () {
-                    if (KALS_SELECT_MOUSEDOWN_LOCK !== 2) {
-                            KALS_SELECT_MOUSEDOWN_LOCK = null;	
-                    }
-            });
-            */			
-            /**
-             * 滑鼠放在文字上的自動選取功能
-             * 
-             * @author Pudding Chen 20121228
-             * @param {function} _callback
-             * @deprecated 不佳，太麻煩了，不使用
-             */
-            /*
-            var _hover_evt = function (_callback) {
-                    _select.set_hover();
-            };
-
-            var _last_word = null;
-            var _HOVER_TIMER = null;
-
-            _words.mouseover(function () {
-                    var _word = $(this);
-                            _HOVER_TIMER = setTimeout(function () {
-                                    setTimeout(function () {
-                        _word.tooltip().hide();
-                    }, 100);
-                                    _select.set_select(_word);
-                            }, 1500);
-                    })
-                    .mouseout(function () {
-                            clearTimeout(_HOVER_TIMER);
-                    });
-            */
-            /*
-            var _HOVER_TIMER = null;
-            _words.mouseover(function () {
-                    if (_HOVER_TIMER != null)
-                            clearTimeout(_HOVER_TIMER);
-
-                    var _word = $(this);
-                    _HOVER_TIMER = setTimeout(function () {
-                            _word.click();
-                            setTimeout(function () {}, 200);
-                                    _word.click();
-                                    clearTimeout(_HOVER_TIMER);
-                                    _HOVER_TIMER = null;
-                    }, 800);
-
-            })
-                    .mouseout(function () {
-                            clearTimeout(_HOVER_TIMER);
-                            _HOVER_TIMER = null;
-                    });
-            */
     if ($.is_function(_callback)) {
         _callback();
     }

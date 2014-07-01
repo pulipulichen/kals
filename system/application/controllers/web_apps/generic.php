@@ -90,6 +90,7 @@ class generic extends Web_apps_controller {
             , 'toolkit/Notify_modal'
             , 'toolkit/Event_dispatcher'
             , 'toolkit/Multi_event_dispatcher'
+            , 'toolkit/Injection_event_dispatcher'
             , 'toolkit/Attribute_event_dispatcher'
             , 'toolkit/JSONP_dispatcher'
             , 'toolkit/Task_event_dispatcher'
@@ -307,7 +308,7 @@ class generic extends Web_apps_controller {
             'kals_text/My_basic_annotation_loader',
             'kals_text/My_custom_annotation_loader',
             'kals_text/Navigation_loader',
-            //'kals_text/Text_selector',  //20140519 Pulipuli Chen
+            'selectable_text/Text_selector',  //20140519 Pulipuli Chen
 
             'kals_text/Init_text',
             'kals_text/KALS_text',
