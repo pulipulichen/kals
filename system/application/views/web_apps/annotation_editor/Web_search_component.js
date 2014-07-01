@@ -124,6 +124,10 @@ Web_search_component.prototype._init_listener = function () {
         _this._set_button_from_menu();
     });
     
+    this.menu.add_listener("click", function (_menu) {
+        _this._search_action();
+    });
+    
     return this;
 };
 

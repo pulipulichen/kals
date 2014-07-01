@@ -77,6 +77,7 @@ Web_search_menu.prototype._create_option = function (_label, _url) {
     var _this = this;
     _li.click(function () {
         _this._set_select_option($(this));
+        _this.notify_listeners("click");
     });
     
     _li.hover(function() {
