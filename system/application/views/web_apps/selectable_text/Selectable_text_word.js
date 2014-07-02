@@ -984,6 +984,5 @@ Selectable_text_word.prototype.get_setence_position_word = function (_index_word
     return _target_word;
 };
 
-
 /* End of file Selectable_text_word */
 /* Location: ./system/application/views/web_apps/Selectable_text_word.js */

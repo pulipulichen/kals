@@ -24,15 +24,15 @@ function Select_tooltip(_selectable_text) {
         _this.reset();
     });
 	
-    setTimeout(function () {
+    KALS_context.ready(function () {
         KALS_text.selection.select.add_listener("select", function() {
-                _this.reset();
+            _this.reset();
         });
 
         KALS_text.selection.select.add_listener("clear", function() {
             _this.reset();
         });
-    }, 0);
+    });
     
     this._selectable_text = _selectable_text;
 }
@@ -74,6 +74,7 @@ Select_tooltip.prototype.reset = function () {
     _ui.removeClass('hide');
     _ui.hide();
     this.enable_select = true;
+    return this;
 };
 
 /**
@@ -244,6 +245,7 @@ Select_tooltip.prototype._config_onbeforeshow = function (_event, _jquery_tool) 
     //_preload_position();
 
     _load_tooltip();
+    
     return this;
 };
 
@@ -785,22 +787,46 @@ Select_tooltip.prototype._setup_item = function () {
 //Select_tooltip.prototype._load_id = null;
 
 /**
+ * 該位置是否有標註？
+ * @returns {Boolean}
+ */
+Select_tooltip.prototype.is_trigger_has_annotation = function () {
+    var _trigger = this._trigger;
+    if ($.is_null(_trigger)) {
+        return false;
+    }
+    else {
+        return KALS_text.selection.has_annotation(_trigger);
+    }
+};
+
+/**
  * 讀取單一標註
  * @param int _index 標註的位置
  * @param function _callback
  */
 Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) {
+    
+    this.reset_style();
+    
+    var _this = this;
+    var _open_tooltip = function () {
+        if (_this.is_enable() === false) {
+            return;
+        }
+        $.trigger_callback(_callback);
+    };
+    
     //$.test_msg("啟用嗎？", [this.is_enable(), this.is_enable() === false]);
     if (KALS_CONFIG.isolation_mode === true
-            || this.is_enable() === false) {
-        $.trigger_callback(_callback);
-        return this;
+            || this.is_trigger_has_annotation() === false) {
+        _open_tooltip();
+        return;
     }
     
     
     //var _item_ui = this._item.get_ui();
     //_item_ui.hide();
-    this.reset_style();
     var _url = 'annotation_getter/tooltip';
     var _data = _index;
 
@@ -829,7 +855,9 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
         }
         else {
             //_ui.removeClass("loading");
-            $.trigger_callback(_callback);
+            
+            // 如果沒讀到標註，又不啟動的狀態下，不開啟標註指標
+            _open_tooltip();
             return;
         }
         //_ui.css("visibility", "visible");
