@@ -223,7 +223,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     var _cache_enable = this.cache.enable_cache;
     //_cache_enable = false;
     
-    var _task_cache_text_backup = function (_callback) {
+    var _task_clone_text = function (_callback) {
         //$.test_msg("Selectacble_text _task_cache_text_backup");
         
         //_this._text.empty()
@@ -245,7 +245,7 @@ Selectable_text.prototype.initialize = function (_callback) {
         return _this.setup_selectable_element(_element, _callback);
     };
     
-    var _task_cache_text_restore = function (_callback) {
+    var _task_restore_clone_text = function (_callback) {
         //$.test_msg("Selectacble_text _task_cache_text_restore");
         
         //_this._text.empty()
@@ -366,18 +366,20 @@ Selectable_text.prototype.initialize = function (_callback) {
 
     _task_list = [];
 
-    if (_cache_enable) {
+    if (_cache_enable === true) {
+        //$.test_msg('啟用快取功能');
         this.has_cache(function (_existed) {
             //_existed = false;
             if (_existed) {
-                $.test_msg('selectable_text 啟用 cache');
+                $.test_msg('取得快取，開始還原文件');
                 _task_list.push(_task_cache_restore);
             }
             else {
-                _task_list.push(_task_cache_text_backup);
+                //$.test_msg('製作快取，開始初始化文件');
+                _task_list.push(_task_clone_text);
                 _task_list.push(_task_setup_selectable_element);
                 _task_list.push(_task_setup_paragraph_location);
-                _task_list.push(_task_cache_text_restore);
+                _task_list.push(_task_restore_clone_text);
                 _task_list.push(_task_cache_save);
             }
             
@@ -390,9 +392,11 @@ Selectable_text.prototype.initialize = function (_callback) {
         });
     }
     else {
-        _task_list.push(_task_cache_text_backup);
+        //$.test_msg('開始初始化文件');
+        _task_list.push(_task_clone_text);
         _task_list.push(_task_setup_selectable_element);
         _task_list.push(_task_setup_paragraph_location);
+        _task_list.push(_task_restore_clone_text);
         
         _task_list.push(_task_setup_word_selectable);
         _task_list.push(_task_progress);
