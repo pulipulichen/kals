@@ -49,7 +49,7 @@ Editor_container.prototype._toggle_position = 'bottom';
  * 預設的開啟狀態
  * @tyep boolean true=開啟; false=關閉
  */
-Editor_container.prototype._$default_toggle = false;
+Editor_container.prototype._$default_toggle = true;
 
 /**
  * 編輯器。
@@ -104,9 +104,8 @@ Editor_container.prototype._$create_ui = function () {
     var _loading = this._create_loading();
     _loading.appendTo(_container.find('td:first'));
 
-    if (this._$default_toggle === true
-       || this._$default_toggle === false) {
-            //$.test_msg("編輯器設定預設狀態", this._$default_toggle);
+    if ($.is_boolean(this._$default_toggle)) {
+        $.test_msg("編輯器設定預設狀態", this._$default_toggle);
         this.toggle_container(this._$default_toggle);
     }
     
@@ -419,24 +418,26 @@ Editor_container.prototype._not_login_classname = "not-login";
  */
 Editor_container.prototype._loading = null;
 
-
+/**
+ * 建立「讀取中」的顯示訊息元件
+ * @returns {jQuery}
+ */
 Editor_container.prototype._create_loading = function () {
     
     var _loading = $('<div></div>')
-        .addClass('editor-loading')
-        .addClass('editor-message');
+            .addClass('editor-loading')
+            .addClass('editor-message');
         
     var _lang = new KALS_language_param(
         'Loading...',
         'annotation_editor.loading'
     );
     
-    KALS_context.lang.add_listener(_loading, _lang);
-    
     this._loading = _loading;
     
-    return _loading;
+    KALS_context.lang.add_listener(_loading, _lang);
     
+    return _loading;
 };
 
 /**
@@ -597,6 +598,10 @@ Editor_container.prototype.toggle_loading = function (_is_loading) {
     return this;
 };
 
+/**
+ * 設定監聽器
+ * @returns {Editor_container}
+ */
 Editor_container.prototype._listen_auth = function () {
     
     var _this = this;
@@ -653,6 +658,8 @@ Editor_container.prototype._listen_auth = function () {
             _check_policy();
         }, true);
     });        
+    
+    return this;
 };
 
 /**
@@ -677,7 +684,7 @@ Editor_container.prototype.reset = function (_callback, _reset_container) {
     //$.test_msg('Editor_contaienr.reset()', _reset_container);
     if (_reset_container === true) {
 		
-        //$.test_msg("toggle editor_container 3", this._$default_toggle);
+        $.test_msg("toggle editor_container 3", this._$default_toggle);
         this.toggle_container(this._$default_toggle, function () {
             $.trigger_callback(_callback);
         });

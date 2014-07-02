@@ -215,9 +215,15 @@ Annotation_tool.prototype.setup_list = function () {
     //註冊一下
     _component.add_listener(function () {
         //$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
-        if (_component.is_totally_loaded() && _component.has_list_item() === false) {
-                _tool.editor_container.toggle_container(true);
+        
+        
+//        // 如果讀取已經完成，而且沒有標註的話，則開啟標註
+        if (_tool._close_editor_onopen 
+                && _component.is_totally_loaded() 
+                && _component.has_list_item() === false) {
+            _tool.editor_container.toggle_container(true);
         }
+        
         //else {
         //	_tool.editor_container.toggle_container(false);
         //}
@@ -320,6 +326,12 @@ Annotation_tool.prototype.onselectcancel = function () {
 //Annotation_tool.prototype._first_open = true;
 
 /**
+ * 是否要在開啟時關閉編輯器
+ * @type Boolean
+ */
+Annotation_tool.prototype._close_editor_onopen = false;
+
+/**
  * 開啟動作
  * 
  * 覆寫了KALS_modal的open，比較複雜
@@ -344,7 +356,9 @@ Annotation_tool.prototype.open = function (_callback) {
      * 20121224 Pulipuli Chen
      * 開啟時自動關閉Editor_contrainer
      */
-    this.editor_container.toggle_container(false);
+    if (this._close_editor_onopen) {
+        this.editor_container.toggle_container(false);
+    }
 	
     KALS_modal.prototype.open.call(this, function () {
         
