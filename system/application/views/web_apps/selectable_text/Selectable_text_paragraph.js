@@ -389,11 +389,11 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     for (var _s = 0; _s < _text.length; _s++) {
         var _t = _text.substr(_s, 1);
         var _t_prev = '',  _t_next = '';
-
+        
         if (_s > 0) {
             _t_prev = _text.substr(parseInt(_s,10) - 1, 1);
         }
-
+        
         if (_s < _text.length - 1) {
             _t_next = _text.substr(parseInt(_s,10) + 1, 1);
         }
@@ -474,6 +474,11 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
             _selectable_text_word.word_count++;
             
         }   //if ($.match_space(_t) === false) {
+        else if ($.match_space(_t) && $.match_space(_t_prev)) {
+            // @version 20140702 Pulipuli Chen
+            // 如果前一個字也是空白的話，那就略過這個字吧
+            continue;
+        }
         else {
             // 如果是空白的話
             _t_element = this._selectable_text.create_span_word(_t);
