@@ -132,12 +132,31 @@ Annotation_tool.prototype._$create_ui = function () {
         } 
     });
     
-    var _this = this;
     _ui.mouseover(function () {
         $('.draggable-tool.hover').removeClass('hover');
         $(this).addClass('hover');
         //_this.recommend.get_ui().removeClass('tool-hover');
     });
+    
+    this.setup_view();
+    
+    this._init_listener(_ui, _topic_list);
+    
+    this._setup_recommend();
+    this._setup_recommend_hint();
+    
+    return _ui;
+};
+
+/**
+ * 初始化要監聽的事件
+ * @param {jQuery} _ui 主要物件
+ * @param {Topic_list} _topic_list 標題列表
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype._init_listener = function (_ui, _topic_list) {
+    
+    var _this = this;
     
     var _not_login = 'not-login';
     
@@ -160,7 +179,17 @@ Annotation_tool.prototype._$create_ui = function () {
             }
 
             _topic_list.reload();
-        }, true);  
+        }, true);
+        
+        /**
+         * @version 20140702 Pulipuli Chen
+         * 如果是pdf2htmlEx，則不啟動自動捲動功能
+         */
+        KALS_context.site_reform.add_instant_listener(function (_site_reform) {
+            var _is_pdf2htmlex = _site_reform.is_site("pdf2htmlEx");
+            //$.test_msg("是pdf2htmlEx嗎？", _is_pdf2htmlex);
+            _this._scroll_into_enable = (_is_pdf2htmlex === false);
+        });
     });
     
     KALS_context.module_ready("KALS_text.selection.select", function(_select) {
@@ -175,18 +204,7 @@ Annotation_tool.prototype._$create_ui = function () {
         });  
     });
     
-    this.setup_view();
-    
-    this._setup_recommend();
-    this._setup_recommend_hint();
-    
-    /**
-     * @20131113 Pulipuli Chen
-     * 修正他的功能
-     */
-    
-    
-    return _ui;
+    return this;
 };
 
 Annotation_tool.prototype.setup_list = function () {
@@ -329,7 +347,9 @@ Annotation_tool.prototype.open = function (_callback) {
     this.editor_container.toggle_container(false);
 	
     KALS_modal.prototype.open.call(this, function () {
+        
         _this.scroll_into_view();
+        
         //_this._first_open = false;
         $.trigger_callback(_callback);
         
@@ -361,6 +381,10 @@ Annotation_tool.prototype.reopen = function (_callback) {
 Annotation_tool.prototype.scroll_into_view = function () {
     //var _offset = this.get_ui().offset();
     
+    if (this._scroll_into_enable === false) {
+        return this;
+    }
+    
     var _y;
     //var _offset = $.get_offset(this.get_ui());
     //_y = _offset.top - 60;
@@ -374,6 +398,12 @@ Annotation_tool.prototype.scroll_into_view = function () {
     
     return this;
 };
+
+/**
+ * 是否啟用捲動捲軸的功能
+ * @type Boolean
+ */
+Annotation_tool.prototype._scroll_into_enable = true;
 
 /**
  * 關閉標註工具

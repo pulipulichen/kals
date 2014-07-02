@@ -117,7 +117,7 @@ Site_reform.prototype.reform = function (_callback) {
  * @returns {Site_reform.prototype}
  */
 Site_reform.prototype._reform_complete = function (_callback) {
-    $.test_msg("重整完成");
+    //$.test_msg("重整完成");
     this.notify_listeners();
     $.trigger_callback(_callback);
     return this;
