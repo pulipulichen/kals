@@ -77,8 +77,8 @@ Dialog_option.prototype._$create_ui = function () {
     }, function () {
         
         if ($(this).hasClass('focus') === false) {
-            $(this).removeClass('hover');
-        }
+			$(this).removeClass('hover');
+		}
     });
     
     _button.focus(function () {

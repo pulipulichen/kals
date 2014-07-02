@@ -152,6 +152,7 @@ $lang['web_apps.window.login.content.error_email'] = '電子信箱位址錯誤�
 $lang['web_apps.window.login.content.error_password'] = '密碼錯誤。';
 $lang['web_apps.window.login.content.register_link'] = '需要註冊者請點此連結';
 $lang['web_apps.window.login.submit.complete'] = '歡迎登入，{0}！';
+$lang['web_apps.window.login.submit.error'] = '登入功能異常，請聯絡系統管理者';
 
 $lang['web_apps.window.register.heading'] = '註冊';
 $lang['web_apps.window.register.nav_heading'] = '註冊';

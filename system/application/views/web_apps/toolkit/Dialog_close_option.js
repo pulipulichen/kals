@@ -97,7 +97,7 @@ Dialog_close_option.prototype.close_handle = function (_ui) {
         var _overlay = $(_ui).parents('.dialog-modal:first').overlay();
         if (typeof(_overlay.close) === 'function') {
             setTimeout(function () {
-                $.test_msg("Dialog_close_option 準備關閉overlay");
+                //$.test_msg("Dialog_close_option 準備關閉overlay");
                 _overlay.close();
             }, 0);
         }
@@ -106,7 +106,7 @@ Dialog_close_option.prototype.close_handle = function (_ui) {
     setTimeout(function () {
         //$.test_msg("Dialog_close_option close_handle", [_enable_close_callback, $.is_function(_callback)]);
         if (_enable_close_callback === false) {
-            $.test_msg("Dialog_close_option 要準備關閉囉");
+            //$.test_msg("Dialog_close_option 要準備關閉囉");
             _overlay_close_action();
             $.trigger_callback(_callback);
         } 
