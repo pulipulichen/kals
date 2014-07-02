@@ -104,7 +104,12 @@ Event_dispatcher.prototype.add_listener = function (_obj, _function, _trigger) {
  * @param {Object} _trigger
  */
 Event_dispatcher.prototype.add_instant_listener = function (_obj, _function) {
-    return this.add_listener(_obj, _function, true);
+    if ($.is_function(_obj) && _function === undefined) {
+        return this.add_listener(_obj, true);
+    }
+    else {
+        return this.add_listener(_obj, _function, true);
+    }
 };
 
 /**

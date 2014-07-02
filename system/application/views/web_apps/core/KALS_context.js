@@ -189,7 +189,7 @@ KALS_context.ready = function (_callback) {
     }
     else if ($.is_function(_callback)) {
         setTimeout(function () {
-            _callback(_this);
+            _callback(this);
         }, 0);
     }
     return this;
