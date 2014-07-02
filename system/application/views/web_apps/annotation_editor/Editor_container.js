@@ -684,7 +684,7 @@ Editor_container.prototype.reset = function (_callback, _reset_container) {
     //$.test_msg('Editor_contaienr.reset()', _reset_container);
     if (_reset_container === true) {
 		
-        $.test_msg("toggle editor_container 3", this._$default_toggle);
+        //$.test_msg("toggle editor_container 3", this._$default_toggle);
         this.toggle_container(this._$default_toggle, function () {
             $.trigger_callback(_callback);
         });
