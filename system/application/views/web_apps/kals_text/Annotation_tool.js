@@ -293,11 +293,22 @@ Annotation_tool.prototype._$onviewportmove = function (_ui) {
 };
 */
 
+/**
+ * 選取後的觸發事件
+ * @returns {Annotation_tool}
+ */
 Annotation_tool.prototype.onselect = function () {
     var _this = this;
     //$.test_msg('Annotation_tool.onselect() before reset');
         
     //$.save_scroll_position();
+    
+    /**
+     * @version 20140703 Pulipuli Chen
+     * 改成強制重置容器
+     */
+    //var _reset_container = false;
+    var _reset_container = true;
     
     this.editor_container.reset(function () {
         //$.test_msg('Annotation_tool.onselect() open');
@@ -307,7 +318,7 @@ Annotation_tool.prototype.onselect = function () {
         
         _this.open();
         
-    }, false);
+    }, _reset_container);
     
     return this;
 };
