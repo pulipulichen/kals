@@ -887,6 +887,7 @@ Selectable_text_word.prototype.get_setence_position_word = function (_index_word
     var _target_word = _index_word;
     var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
     var _sentence_punctuation_classname = this._selectable_text.sentence.sententce_punctuation_classname;
+    var _span_classname = this._span_classname;
     
     // 如果自己就是斷句位置
     if (_index_word.hasClass(_punctuation_classname)) {
@@ -906,7 +907,8 @@ Selectable_text_word.prototype.get_setence_position_word = function (_index_word
     
     var _is_stop_word = function (_next_word) {
         return (_next_word.hasClass(_punctuation_classname)
-            || _next_word.hasClass(_sentence_punctuation_classname));
+            || _next_word.hasClass(_sentence_punctuation_classname)
+            || _next_word.hasClass(_span_classname));
     };
     
     _next_word = _get_next_word(_index_word);
