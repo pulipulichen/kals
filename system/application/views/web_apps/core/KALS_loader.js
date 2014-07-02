@@ -53,6 +53,11 @@ this.generic_load = function (_conf, _callback) {
         libraries_list: [
             "libraries/ckeditor/ckeditor.js",
             "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js"
+        ],
+        // @version 20140703 Pudding Chen
+        // 解決CKeditor圖示無法顯示的問題
+        images_list: [
+            "libraries/ckeditor/skins/kama/icons.png"
         ]
     };
     
@@ -164,10 +169,14 @@ this.get_base_url = function () {
     return this.base_url;
 };
 
+/**
+ * 
+ * @returns {String}
+ */
 this.get_libraries_url = function () {
     var _libraries_url = this.get_base_url();
     var _needle = "web_apps/";
-    if (_libraries_url.substr(_libraries_url.length - _needle.length, _needle.length) == _needle) {
+    if (_libraries_url.substr(_libraries_url.length - _needle.length, _needle.length) === _needle) {
         _libraries_url = _libraries_url.substr(0, _libraries_url.length - _needle.length);
     }
     return _libraries_url;
@@ -176,9 +185,9 @@ this.get_libraries_url = function () {
 
 this.load_jquery = function (_callback) {
     if (this.has_jquery()) {
-        if (typeof(_callback) == 'function') {
-			_callback();
-		}
+        if (typeof(_callback) === 'function') {
+            _callback();
+        }
     }
     else {   
         var _base_url = this.get_base_url();
@@ -253,6 +262,52 @@ this.load_scripts = function (_script_list, _callback, _is_libraries) {
         //console.log('[KALS] start load: '+_script_url);
         $.getScript(_script_url, function () {
             _check_complete(_script_url);
+        });           
+    }
+    return this;
+};
+
+/**
+ * 同時讀取指定的所有images，並在完全完成之後呼叫callback。
+ * @param {Array} _images_list
+ * @param {Function} _callback
+ */
+this.load_images = function (_images_list, _callback, _is_libraries) {
+    var _loaded = [];
+    
+    var _check_complete = function (_script) {
+        if (typeof(_script) === 'undefined'
+            || _script === ''
+            || $.inArray(_script, _loaded) > -1) {
+            return this;
+        }
+        
+        //console.log(["load_scripts", _script]);
+        _loaded.push(_script);
+        
+        if (_loaded.length === _images_list.length) {
+            if (typeof(_callback) === 'function') {
+                _callback();
+            }
+        }
+    };
+    
+    var _base_url = this.get_base_url();
+    if (typeof(_is_libraries) === "boolean" 
+            && _is_libraries === true) {
+        _base_url = this.get_libraries_url();
+    }
+    
+    if (typeof(_images_list) === 'string') {
+        _images_list = [_images_list];
+    }
+    
+    for (var _i in _images_list) {
+        var _url = _base_url + _images_list[_i];
+        
+        //console.log('[KALS] start load image: '+_url);
+        $.get(_url, function () {
+            _check_complete(_url);
         });           
     }
     return this;
@@ -421,6 +476,10 @@ this.load_libraries = function (_libraries, _callback) {
     if (typeof(_libraries.libraries_list) !== 'undefined') {
         _threshold++;
     }
+    //console.log("[KALS] 有image嗎？" + typeof(_libraries.images_list));
+    if (typeof(_libraries.images_list) !== 'undefined') {
+        _threshold++;
+    }
     // 在此處開始執行
     
     var _this = this;
@@ -440,6 +499,11 @@ this.load_libraries = function (_libraries, _callback) {
                         _complete();
                     });
                 }
+                if (typeof(_libraries.images_list) !== 'undefined') {
+                    _this.load_images(_libraries.images_list, function () {
+                        _complete();
+                    }, true);
+                }
             
             }, 0);    //setTimeout(function () {
             
@@ -452,6 +516,11 @@ this.load_libraries = function (_libraries, _callback) {
             _this.load_scripts(_libraries.script_list, function () {
                 _complete();
             });
+        }
+        if (typeof(_libraries.images_list) !== 'undefined') {
+            _this.load_images(_libraries.images_list, function () {
+                _complete();
+            }, true);
         }
         if (typeof(_libraries.style_list) !== 'undefined') {   
             _this.load_styles(_libraries.style_list, function () {
