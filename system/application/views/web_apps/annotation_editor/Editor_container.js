@@ -370,7 +370,7 @@ Editor_container.prototype._create_deny_conpoment = function () {
     var _not_login = $('<span></span>')
         .addClass('not-login')
         .appendTo(_deny);
-        
+
     var _not_login_lang = new KALS_language_param(
         'If you want to write annotation, please click here to login.',
         'editor_container.deny'
@@ -388,7 +388,9 @@ Editor_container.prototype._create_deny_conpoment = function () {
         .addClass("deny-message")
         .hide()
         .appendTo(_deny);
-       
+    
+    
+    
     /* 
     var _deny_write_lang = new KALS_language_param(
         'You can not write annotation.',
@@ -398,22 +400,6 @@ Editor_container.prototype._create_deny_conpoment = function () {
     KALS_context.lang.add_listener(_deny_write, _deny_write_lang);
     */
     // --------
-    
-    var _this = this;
-    KALS_context.auth.add_listener(function(_auth) {
-        //$.test_msg("Editor_container", "登入了嗎？: " + _auth.is_login());
-        var _ui = _this.get_ui();
-        if (_auth.is_login()) {
-            _deny_write.show();
-            _not_login.hide();
-            _ui.removeClass(_this._not_login_classname);
-        }
-        else {
-            _deny_write.hide();
-            _not_login.show();
-            _ui.addClass(_this._not_login_classname);
-        }
-    });
     
     this._deny = _deny;
     
@@ -625,17 +611,56 @@ Editor_container.prototype._listen_auth = function () {
             _this.toggle_deny(true);
     }, true);
     */
-    KALS_context.policy.add_attr_listener('write', function (_policy) {
-        //$.test_msg("Editor_container toggle_deny", _policy.writable());
-        if (_policy.writable()) {
-            _this.toggle_deny(false);
+    
+    //var _this = this;
+    
+    var _check_policy = function () {
+        var _auth = KALS_context.auth;
+        var _policy = KALS_context.policy;
+        
+        var _ui = _this.get_ui();
+        
+        var _deny_write = _this._deny.find(".deny-message");
+        var _not_login = _this._deny.find(".not-login");
+        
+        if (_auth.is_login()) {
+            _deny_write.show();
+            _not_login.hide();
+            _ui.removeClass(_this._not_login_classname);
+            
+            if (_policy.writable()) {
+                _this.toggle_deny(false);
+            }
+            else {
+                _this.toggle_deny(true);
+            }
         }
         else {
-            _this.toggle_deny(true);
+            _deny_write.hide();
+            _not_login.show();
+            _ui.addClass(_this._not_login_classname);
         }
-    }, true);
+        
+        
+    };
+    
+    KALS_context.ready(function () {
+        KALS_context.auth.add_listener(function(_auth) {
+            _check_policy();
+        });
+
+        KALS_context.policy.add_attr_listener('write', function (_policy) {
+            _check_policy();
+        }, true);
+    });        
 };
 
+/**
+ * 重置編輯容器
+ * @param {Function} _callback
+ * @param {Boolean} _reset_container 預設 true
+ * @returns {Editor_container}
+ */
 Editor_container.prototype.reset = function (_callback, _reset_container) {
     
     if ($.is_null(_reset_container)) {
