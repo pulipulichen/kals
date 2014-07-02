@@ -194,7 +194,7 @@ Annotation_tool.prototype._init_listener = function (_ui, _topic_list) {
     
     KALS_context.module_ready("KALS_text.selection.select", function(_select) {
         //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-        _select.add_listener('select', function () {
+        _select.add_listener('select', function (_select) {
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
             _this.onselect();
         });
@@ -332,6 +332,21 @@ Annotation_tool.prototype.onselectcancel = function () {
 Annotation_tool.prototype._close_editor_onopen = false;
 
 /**
+ * 下次開啟時是否要關閉編輯器
+ * @type Boolean
+ */
+Annotation_tool.prototype._once_close_editor = false;
+
+/**
+ * 設定下次開啟時關閉編輯器
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.set_once_close_editor = function () {
+    this._once_close_editor = true;
+    return this;
+};
+
+/**
  * 開啟動作
  * 
  * 覆寫了KALS_modal的open，比較複雜
@@ -356,8 +371,11 @@ Annotation_tool.prototype.open = function (_callback) {
      * 20121224 Pulipuli Chen
      * 開啟時自動關閉Editor_contrainer
      */
-    if (this._close_editor_onopen) {
+    if (this._close_editor_onopen === true
+            || this._once_close_editor === true) {
+        //$.test_msg("暫時關閉編輯器", [this._close_editor_onopen, this._once_close_editor]);
         this.editor_container.toggle_container(false);
+        this._once_close_editor = false;
     }
 	
     KALS_modal.prototype.open.call(this, function () {
@@ -610,6 +628,7 @@ Annotation_tool.prototype.setup_position = function () {
     
         //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
     }
+    return this;
 };
 
 /**
@@ -619,7 +638,6 @@ Annotation_tool.prototype.setup_position = function () {
 Annotation_tool.prototype.get_width = function () {
     var _ui = this.get_ui();
     return _ui.width();
-    
 };
 
 // --------

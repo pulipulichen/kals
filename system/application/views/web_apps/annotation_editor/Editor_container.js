@@ -105,7 +105,7 @@ Editor_container.prototype._$create_ui = function () {
     _loading.appendTo(_container.find('td:first'));
 
     if ($.is_boolean(this._$default_toggle)) {
-        $.test_msg("編輯器設定預設狀態", this._$default_toggle);
+        //$.test_msg("編輯器設定預設狀態", this._$default_toggle);
         this.toggle_container(this._$default_toggle);
     }
     
