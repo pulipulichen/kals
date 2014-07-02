@@ -53,7 +53,7 @@ Text_selector.prototype.check_text_selector = function (_callback) {
             //    .appendTo(_text_container);
             */
             this._text_selector = $('#articleContent').addClass('selectable-text');
-        }
+        }   // if ($('#articleContent').length !== 0) {
         else if ($('.selectable-text').length === 0) {
             /*
             var _text_container = $('<div></div>')
@@ -84,14 +84,22 @@ Text_selector.prototype.check_text_selector = function (_callback) {
             }
             else {
                 _text_container = this._init_selectable_text();
-            }
-            
+            }     
             this._text_selector = _text_container;
-        }
+        }   // else if ($('.selectable-text').length === 0) {
         else {
             this._text_selector = $('.selectable-text:last');
         }
-    }
+            
+        // ----------------------------------------
+        // 加入事件監聽
+        // ----------------------------------------
+
+        this._init_listener();
+
+        // -----------------------------------------
+
+    }   //if (this._text_selector === null) {
     
     //this.init_context.complete('selector');
     
@@ -174,19 +182,6 @@ Text_selector.prototype._init_selectable_text = function () {
         _text_container = $('.selectable-text');
     }
     */
-   
-    // ----------------------------------------
-    // 加入事件監聽
-    // ----------------------------------------
-   
-    this._init_listener();
-    
-    var _this = this;
-    _text_container.mousedown(function (_e) {
-        _this._close_tool(_e);
-    });
-    
-    // -----------------------------------------
     
     return _text_container;
 };
@@ -206,6 +201,11 @@ Text_selector.prototype._init_listener = function () {
         KALS_text.tool.add_listener(["open", "close"], function (_tool) {
             //$.test_msg("tool open", (_tool.is_opened() === false));
             _this._enable_click_close_annotation_tool = _tool.is_opened();
+        });
+        
+        _this._text_selector.mousedown(function (_e) {
+            //$.test_msg("text container啟動 mousedown");
+            _this._close_tool(_e);
         });
     });
     
