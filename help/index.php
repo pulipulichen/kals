@@ -34,6 +34,8 @@
   <li><a href="config_navigation.html">設定標註指引</a></li>
   <li><a href="config_recommend.html">設定標註建議</a></li>
   <li><a href="config_web_search.html">設定網頁搜尋</a></li> 
+  <li><a href="config_annotation_navigation_map.html">設定標註地圖</a></li> 
+  <li><a href="config_windows_map.html">設定章節地圖</a></li> 
 </ul>
 
 <hr />
