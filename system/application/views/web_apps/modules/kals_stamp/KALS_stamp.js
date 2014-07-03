@@ -59,19 +59,6 @@ KALS_stamp.prototype.name = 'KALS_stamp';
 KALS_stamp.prototype._$view = 'modules/kals_stamp/view/KALS_stamp';
 
 /**
- * 初始化View
- * 
- * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
- * 這個方法只會執行一次
- */
-KALS_stamp.prototype._$initialize_view = function () {
-    
-    // @TODO 20140516 Pulipuli Chen
-    // 載入KALS_stamp.html的初始化訊息
-    
-};
-
-/**
  * ====================
  * Model設定
  * ====================
@@ -144,6 +131,7 @@ KALS_stamp.prototype._$enable_auth_check = true;
  * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
  * @returns {boolean} true=通過;false=未通過
  */
+
 KALS_stamp.prototype._$auth_check = function (_is_login, _user) {
     if (_is_login === false) {
         return false;
@@ -427,10 +415,16 @@ KALS_stamp.prototype._init_listener = function() {
     
     var _this = this;
     KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
-        _this._delay_check_qualification(_user);
+        //$.test_msg("KALS_stamp _init_listener", KALS_context.completed);
+        if (KALS_context.completed === true) {
+            _this._delay_check_qualification(_user);
+        }
     });
     KALS_context.user.add_attr_listener("responded_annotation_count", function (_user) {
-        _this._delay_check_qualification(_user);
+        //$.test_msg("KALS_stamp _init_listener", KALS_context.completed);
+        if (KALS_context.completed === true) {
+            _this._delay_check_qualification(_user);
+        }
     });
     
     return this;
@@ -547,6 +541,7 @@ KALS_stamp.prototype.check_qualification = function(_user) {
     }   //for (var _key in _qualifier) {
     
     this.qualify();
+    
     this.open();
     
     return this;

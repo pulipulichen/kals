@@ -162,12 +162,12 @@ JSONP_dispatcher.prototype.reset_data = function () {
  * @type {Object}
  */
 JSONP_dispatcher.prototype.get_field = function (_field) {
-	if (this._data !== null && typeof(this._data[_field]) !== 'undefind') {
-		return this._data[_field];
-	}
-	else {
-		return;
-	}
+    if (this._data !== null && typeof(this._data[_field]) !== 'undefind') {
+        return this._data[_field];
+    }
+    else {
+        return;
+    }
 };
 
 /**

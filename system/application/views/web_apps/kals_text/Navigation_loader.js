@@ -86,7 +86,8 @@ Navigation_loader.prototype.initialize = function () {
         
         var _this = this;
 		
-        var _setup = setTimeout(function () {
+        var _setup = function () {
+            setTimeout(function () {
             
             var _policy = KALS_context.policy;
             //$.test_msg('Navigation_loader.initialize()', [_policy.allow_show_navigation(), _policy.get_navigation_data()]);
@@ -111,6 +112,7 @@ Navigation_loader.prototype.initialize = function () {
                 }    
             }
         }, 0);
+        };
 		
         KALS_context.add_listener(function () {
             KALS_context.policy.add_attr_listener('show_navigation', function () {

@@ -113,9 +113,9 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
         _type = this._default_type;
     }
     
-    if (false == this.has_type(_type)) {
-		return this;
-	}
+    if (false === this.has_type(_type)) {
+        return this;
+    }
     
     var _key = $.inArray(_function, this._type_listeners[_type]);
     if (_key > -1) {
@@ -125,13 +125,27 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
 };
 
 /**
+ * @TODO 應該要做KALS_context.completed判斷，但是怎麼做好呢?
+ * @version 20140630 Pulipuli Chen
+ * @type Boolean
+ */
+//Multi_event_dispatcher.prototype.depend_kals_context = true;
+
+/**
  * 通知監聽者
  * @param {function} _type
  */
 Multi_event_dispatcher.prototype.notify_listeners = function (_type, _arg) {
-    if (false == this.has_type(_type)) {
-		return this;
-	}
+    if (false === this.has_type(_type)) {
+        return this;
+    }
+    
+    // @TODO 應該要做判斷，但是怎麼做好呢?
+    // 20140630 Pulipuli Chen
+//    if (this.depend_kals_context === true
+//            && KALS_context.completed === false) {
+//        return this;
+//    }
     
     var _this = this;
     
