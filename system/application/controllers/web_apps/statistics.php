@@ -52,7 +52,7 @@ class Statistics extends Web_apps_controller {
     public function user_params( $callback = NULL ) {
         //echo "!!!!";
         if (isset($GLOBALS['context']) === TRUE) {
-            test_msg("globals context = true", is_null($GLOBALS['context']));
+            //test_msg("globals context = true", is_null($GLOBALS['context']));
         }
         $user = get_context_user();
         if (is_null($user) === TRUE) {

@@ -390,8 +390,11 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
     var _i = 0;
     
     for (var _stamp_title in _qualification_config) {
-        if( this._stamps_config[_i].is_qualified === false){
-        
+        if( this._stamps_config[_i].is_qualified !== false){
+            _i++;
+        }
+        else{
+            //KALS_util.notify("現在是幾呢？"+ _i);
             var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
             var _title = $("<dt></dt>").html(_stamp_title_lang)
                     .appendTo(_qualification_container);
