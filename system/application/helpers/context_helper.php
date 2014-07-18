@@ -19,6 +19,7 @@ if ( ! function_exists('create_context'))
     function create_context($test = FALSE)
     {
         if (isset($GLOBALS['context']) === TRUE) {
+            
             return;
         }
         $CI =& get_instance();
@@ -26,9 +27,11 @@ if ( ! function_exists('create_context'))
         $GLOBALS['context'] = $CI->context;
 
         $GLOBALS['context']->db->trans_start($test);
-        if ($test === TRUE)
-            $GLOBALS['context']->set_ignore_authorize(TRUE);
-        //echo '建立起全域的$context'.get_class($GLOBALS['context']);
+        if ($test === TRUE){
+            $GLOBALS['context']->set_ignore_authorize(TRUE);      
+            //echo '建立起全域的$context ='.get_class($GLOBALS['context']);
+        }
+        //echo '建立起全域的$context ='.get_class($GLOBALS['context']);
     }
 }
 
@@ -41,9 +44,12 @@ if ( ! function_exists('get_context_user'))
     function get_context_user()
     {
         if (isset($GLOBALS['context']) === FALSE) {
+            //echo "找不到";
             return NULL;
         }
+        //echo "有找到";
         return $GLOBALS['context']->get_current_user();
+        
     }
 }
 

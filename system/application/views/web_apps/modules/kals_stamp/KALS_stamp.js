@@ -290,18 +290,25 @@ KALS_stamp.prototype._$onopen = function () {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.set_stamp_statistic = function() {
-    
-    // @TODO 20140516 Pulipuli Chen
-    // 這邊設定的是假資料，請把它改成真的資料
-    //想一下該怎麼做出全部的TYPE
-    var _type_name = 'importance';
-    var _annotation_type = new Annotation_type_param(_type_name);
+
+    //todo想一下該怎麼做出全部的TYPE
+    var _type_importance = 'importance';
+    var _annotation_type_importance = new Annotation_type_param(_type_importance);
+    var _type_confusion = 'confusion';
+    var _annotation_type_confusion = new Annotation_type_param(_type_confusion); 
+    var _type_summary = 'summary';
+    var _annotation_type_summary = new Annotation_type_param(_type_summary);    
     
     var _statistic_config = {
         
-        //topic數量       
+        //topic總數量       
         "statistic_topic_annotation_count": KALS_context.user.get_topic_annotation_count(),
-        "statistic_topic_annotation_importance_count": KALS_context.user.get_topic_annotation_count(_annotation_type),
+        // topic重要數量
+        "statistic_topic_annotation_importance_count": KALS_context.user.get_topic_annotation_count(_annotation_type_importance),
+        // topic困惑數量
+        "statistic_topic_annotation_confusion_count": KALS_context.user.get_topic_annotation_count(_annotation_type_confusion),
+        // topic摘要數量
+        "statistic_topic_annotation_summary_count": KALS_context.user.get_topic_annotation_count(_annotation_type_summary),
         //被回應的數量
         "statistic_responded_annotation_count":KALS_context.user.get_respond_to_my_annotation_count(),
         //回應別人的數量
@@ -331,25 +338,35 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.set_stamp_qualified = function() {
-    
-    // @TODO 20140516 Pulipuli Chen
-    // 這邊設定的是假資料，請把它改成真的資料
-     
+ 
+    // 記得要修改成用迴圈跑喔！
     var _qualified_config = {
-         "騎士": "再試著升級看看吧"
 
+         "stamps_level_0": this._stamps_config[0].name,
+         "stamps_level_1": this._stamps_config[1].name,
+         "stamps_level_2": this._stamps_config[2].name,
+         "stamps_level_3": this._stamps_config[3].name,
+         "stamps_level_4": this._stamps_config[4].name
     };
     
     var _qualified_container = this.find(".stamp-qualified")
             .empty();
-    
-    for (var _stamp_title in _qualified_config) {
-        
-        var _title = $("<dt></dt>").html(_stamp_title)
-                .appendTo(_qualified_container);
-        var _qualified_message = _qualified_config[_stamp_title];
-        var _message = $("<dd></dd>").html(_qualified_message)
-                .appendTo(_qualified_container);
+    var _i = 0;
+    for (var _stamp_title in _qualified_config) {   
+        // 取得is_qualified的值來讓後面的迴圈判斷要不要顯示圖片(取得獎章) 
+        if( this._stamps_config[_i].is_qualified === true){
+           //KALS_util.notify("現在是幾呢？"+ _i);
+            var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+            var _title = $("<dt></dt>").html(_stamp_title_lang)
+                    .appendTo(_qualified_container);
+            var _qualified_message = _qualified_config[_stamp_title];
+            //var _message = $("<dd></dd>").html(_qualified_message)
+            //        .appendTo(_qualified_container);
+            //var _stamp_picture = $();來加入圖片吧！
+            var _stamp_picture = $("<img src=/kals/images/stamp_"+ _i +".png></>").html(_qualified_message)
+                    .appendTo(_qualified_container);
+            _i++;
+        }
     }
         
     return this;
@@ -359,25 +376,32 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
  * 設定尚未獲得的獎章
  * @returns {KALS_stamp.prototype}
  */
-KALS_stamp.prototype.set_stamp_qualification = function() {
-    
-    // @TODO 20140516 Pulipuli Chen
-    // 這邊設定的是假資料，請把它改成真的資料
+KALS_stamp.prototype.set_stamp_qualification = function() {   
     
     var _qualification_config = {
-        "獎章3": "您必須與其他朋友多多互動。多多回應朋友或按下其他人的喜愛按鈕吧！",
-        "獎章4": "您必須讓其他朋友與您互動，如果您被回應的篇數及喜愛的篇數夠多，您就能獲得這個獎章！"
-    };
-    
+         "stamps_level_0": this._stamps_config[0].qualification_message,
+         "stamps_level_1": this._stamps_config[1].qualification_message,
+         "stamps_level_2": this._stamps_config[2].qualification_message,
+         "stamps_level_3": this._stamps_config[3].qualification_message,
+         "stamps_level_4": this._stamps_config[4].qualification_message
+        };
     var _qualification_container = this.find(".stamp-qualification")
             .empty();
+    var _i = 0;
     
     for (var _stamp_title in _qualification_config) {
-        var _title = $("<dt></dt>").html(_stamp_title)
-                .appendTo(_qualification_container);
-        var _qualification_message = _qualification_config[_stamp_title];
-        var _message = $("<dd></dd>").html(_qualification_message)
-                .appendTo(_qualification_container);
+        if( this._stamps_config[_i].is_qualified === false){
+        
+            var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+            var _title = $("<dt></dt>").html(_stamp_title_lang)
+                    .appendTo(_qualification_container);
+            var _qualification_message = _qualification_config[_stamp_title];
+            var _message = $("<dd></dd>").html(_qualification_message)
+                    .appendTo(_qualification_container);
+            var _stamp_picture = $("<img src=/kals/images/stamp_"+ _i +".png></>").html(_qualification_message)
+                        .appendTo(_qualification_container);
+            _i++;
+        }
     }
         
     return this;
@@ -524,10 +548,34 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                 }   //for (var _type in _config) {              
                
             }   //if (_key === "topic_annotation_count") {
-            //-------第二項----------------------------------    
-            if ( _key === "topic_types_count"){
-                var _topic_types_count  ;
-            }
+            //-------第二項respond----------------------------------    
+            if (_key === "respond_annotation_count") {
+                 var _respond_annotation_count = _user.get_respond_to_other_annotation_count();
+                 if ( _respond_annotation_count < _config[_key] ){
+                            // 不合格
+                            _stamp_qualified = false;
+                            KALS_util.notify("第二項respond count未達成"+ _config[_key] + _stamp_qualified);
+                            break;
+                        }
+                        else{ // 合格
+                            _stamp_qualified = true;
+                        }
+             
+            }//if (_key === "respond_annotation_count") {       
+            //--------第三項like--------------------------------------
+            if (_key === "liked_count") {
+                 var _liked_count = _user.get_liked_count();
+                 if ( _liked_count < _config[liked_count].count ){
+                            // 不合格
+                            _stamp_qualified = false;
+                            KALS_util.notify("第三項like count未達成"+ _config[liked_count].count + _stamp_qualified);
+                            break;
+                        }
+                        else{ // 合格
+                            _stamp_qualified = true;
+                        }
+             }  //if (_key === "respond_annotation_count") { 
+             //-------------------------------------------------------
             this._stamps_config[_i].is_qualified = _stamp_qualified;
             if (_stamp_qualified === false) {
                 break;
@@ -553,13 +601,11 @@ KALS_stamp.prototype.check_qualification = function(_user) {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.qualify = function() {
-    
-    // @TODO 20140516 Pulipuli Chen
-    // 這邊只有檢查部分資格
+    // 設定開啟功能
     for( var _i in this._stamps_config){
         if(this._stamps_config[_i].is_qualified === true){
            
-            KALS_util.notify("這是qualify"+ this._stamps_config[_i].name + "+" + this._stamps_config[_i].is_qualified + "+i" + _i);
+            KALS_util.notify("通過"+ this._stamps_config[_i].name + "條件！  _i="+ _i);
           }
     // KALS_context.policy.set_readable(true);
     }

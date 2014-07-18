@@ -14,13 +14,14 @@ include_once 'web_apps_controller.php';
  * @version		1.0 2010/12/9 下午 03:28:15
  */
 
-class statistics extends Web_apps_controller {
+class Statistics extends Web_apps_controller {
 
     protected $controller_enable_cache = FALSE;
     protected $login_require = FALSE;
 
     function __construct() {
         parent::__construct();
+        //parent::Controller();
         $this->load->helper('url');
     }
 
@@ -49,18 +50,31 @@ class statistics extends Web_apps_controller {
      * @return JSON
      */
     public function user_params( $callback = NULL ) {
+        //echo "!!!!";
+        if (isset($GLOBALS['context']) === TRUE) {
+            test_msg("globals context = true", is_null($GLOBALS['context']));
+        }
         $user = get_context_user();
+        if (is_null($user) === TRUE) {
+            test_msg("user is null");
+        }
+        
         $webpage = get_context_webpage();
         
         $this->load->library("kals_actor/User_statistic", "user_statistic");
         $this->user_statistic = new User_statistic();
         
-        $data =  array(
-            "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
-            //"responded_count" => 5,
-            "responded_user_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
-            "respond_to_user_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
-        );
+        if(is_null($user)){
+            test_msg("user is null", $user);
+        }
+        else{
+            $data =  array(
+                "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
+                //"responded_count" => 5,
+                "responded_user_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
+                "respond_to_user_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
+            );
+        }
         // 將資料再放進user屬性中
         $output = array(
             "user" => $data

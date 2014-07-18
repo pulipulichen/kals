@@ -117,7 +117,7 @@ class User_statistic extends KALS_actor {
         // use to test 
         //$user_id = 2002;
         $user_id = $user->get_id();
-        
+
         $this->db->select('respond.annotation_id');
         $this->db->from('annotation respond');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = respond.annotation_id');

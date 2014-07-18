@@ -1373,8 +1373,8 @@ KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callba
         _loading.slideUp(_speed, function () { _loading.hide(); });
         _content.slideDown(_speed);
         _ui.removeClass("loading");
-        //_this.toggle_options(true);
-        //_this.toggle_toolbar_option(true);
+        //this.toggle_options(true);
+        //this.toggle_toolbar_option(true);
     };
     
     var _open_loading = function () {

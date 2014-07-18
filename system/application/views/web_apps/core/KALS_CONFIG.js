@@ -370,7 +370,7 @@ DEFAULT_KALS_CONFIG = {
          * 是否顯示ajax_get的連接訊息
          * @type Boolean
          */
-        ajax_get_message: false,
+        ajax_get_message: true,
         
         /**
          * 開啟ajax_post設定
@@ -542,24 +542,23 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         KALS_stamp: {
-            "enable": true,
+            "enable": false,
             /**
              * 獎章資格設定
              */
             "stamps": [
-                
-                /**
+                 /**
                  * 獎章稱號
                  * @types {String}
                  */
-                 {  // 第一階
+                 {  // 第0階
                     "name": "騎士",
-                    "is_qualified": false,
+                    "is_qualified": true,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到騎士的話請先試著自己標註5個以上的標註吧",
+                    "qualification_message": "你已經是騎士了",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -574,38 +573,29 @@ DEFAULT_KALS_CONFIG = {
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {
-                        // 表示topic必須重要1個
-                        //topic_annotation_count: {
-                        //    importance: {
-                        //      count:1,
-                        //      condition: ">"
-                        //    }
-                        //}
-                        topic_annotation_count: {
-                            "_total": {
-                                count:5,
-                                coudition: ">",
-                            }
-                        }                      
+                    "qualifier": {                
                     }, //qualifier
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
                     "policy": {
-                        // 可以看其他人標註topic
-                        other_topic_readable: false                   
+                        // 可以寫自己的topic
+                        topic_writable: true,
                     }
-                }, // 第一階OVER
-                {  // 第二階
+                },//第0階over                
+                /**
+                 * 獎章稱號
+                 * @types {String}
+                 */
+                 {  // 第一階
                     "name": "子爵",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到子爵的話請撰寫10篇標註，並使用3種不同的標註類型吧",
+                    "qualification_message": "想要晉升子爵的話請試著標註10篇重要標註喔！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -621,44 +611,41 @@ DEFAULT_KALS_CONFIG = {
                      * @types {JSON}
                      */
                     "qualifier": {
+                        // 表示topic必須重要1個
+                        //topic_annotation_count: {
+                        //    importance: {
+                        //      count:1,
+                        //      condition: ">"
+                        //    }
+                        //}
                         topic_annotation_count: {
-                            //count:3,
-                            "_total":{
-                              count:10  
-                            },
-                            /*"importance": {
-                              count:1,
-                            },
-                             "concept": {
-                              count:1,
-                            },
-                            "example": {
-                              count:0,
-                            },*/                      
-                        },
-                        topic_types_count:{
-                            count:3
-                        }
-                    },
+                            //"_total": {
+                            //    count:5
+                            //},
+                            "importance": {
+                              count:10
+                            }
+                        }                      
+                    }, //qualifier
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
                     "policy": {
-                        // 可以回應他人標註
-                        respond_to: true,
-                        // 可以閱讀他人標註(topic)
-                        other_topic_readable: true                      
+                        // 可以看其他人標註topic
+                        other_topic_readable: false,
+                        // 可以回應他人topic
+                        other_topic_respondable: false
                     }
-                }, // 第二階OVER
-                {  // 第三階
+                }, // 第一階OVER
+                {  // 第二階
                     "name": "伯爵",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到伯爵的話請撰寫15篇標註、使用4種不同的標註類型且回應1個人喔",
+                    "qualification_message": "想要達到伯爵的話請撰寫3篇困惑標註、5篇摘要標註，並試著回應別人至少2篇回應標註吧",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -676,25 +663,83 @@ DEFAULT_KALS_CONFIG = {
                     "qualifier": {
                         topic_annotation_count: {
                             //count:3,
-                            "_total":{
+                            //"_total":{
+                            //  count:10  
+                            //},
+                            "confusion": {
+                              count:3
+                            },
+                             "summary": {
+                              count:3
+                            }
+                            /*"example": {
+                              count:0,
+                            }, */                     
+                        },
+                       respond_annotation_count: {
+                            //"_respond_total":{
+                              count:3 
+                            //}
+                            /*"confusion": {
+                              count:3
+                            } */ 
+                        }
+                    },
+                   
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                    "policy": {
+                        // 可以閱讀他人回應自己的標註(topic)
+                        other_respond_readable: true                      
+                    }
+                }, // 第二階OVER
+                {  // 第三階
+                    "name": "公爵",
+                    "is_qualified": false,
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                    "qualification_message": "想要晉升伯爵的話請撰寫3篇摘要標註、5篇舉例標註，並試著回應別人5篇以上吧！",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                    "quailfy_message": "恭喜你晉升為伯爵！",
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                    "qualified_message": "您已經晉升為伯爵了！",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                    "qualifier": {
+                        topic_annotation_count: {
+                            /*"_total":{
                               count:15  
-                            },
-                            /*"importance": {
-                              count:1,
-                            },
-                             "concept": {
-                              count:1,
+                            },*/
+                            "summary": {
+                              count:6
                             },
                             "example": {
-                              count:0,
-                            },*/                      
+                              count:5
+                            }                      
                         },
-                        topic_types_count: {
-                            count:4
-                        },
-                        respond_to_users_count: {
-                            count:1
+                        respond_annotation_count: {
+                            //"_respond_total":{
+                              count:5  
+                            //}
+                            /*"confusion": {
+                              count:3
+                            } */ 
                         }
+                        /*respond_to_users_count: {
+                            count:1
+                        }*/                 
                     },
                     /**
                      * 權限設定
@@ -702,71 +747,17 @@ DEFAULT_KALS_CONFIG = {
                      */
                     "policy": {
                         // 可以讀取他人回應標註
-                        other_respond_readable: true          
+                        like: true          
                     }
                 }, //第三階over
                 {  // 第四階
-                    "name": "公爵",
-                    "is_qualified": false,
-                    /**
-                     * 如何獲得獎章的訊息
-                     * @types {String}
-                     */
-                    "qualification_message": "想要達到公爵的話請撰寫20篇標註、使用5種不同的標註類型且回應2個人喔",
-                    /**
-                     * 獲得獎章時候的通知 
-                     * @types {String}
-                     */
-                    "quailfy_message": "恭喜你晉升為公爵！",
-                    /**
-                     * 已經獲得獎章的訊息 
-                     * @types {String}
-                     */
-                    "qualified_message": "您已經晉升為公爵了！",
-                    /**
-                     * 獎章資格
-                     * @types {JSON}
-                     */
-                    "qualifier": {
-                        topic_annotation_count: {
-                            //count:3,
-                            "_total":{
-                              count:20  
-                            },
-                            /*"importance": {
-                              count:1,
-                            },
-                             "concept": {
-                              count:1,
-                            },
-                            "example": {
-                              count:0,
-                            },*/                      
-                        },
-                        topic_types_count: {
-                            count:5
-                        },
-                        respond_to_users_count: {
-                            count:2
-                        }
-                    },
-                    /**
-                     * 權限設定
-                     * @types {JSON}
-                     */
-                    "policy": {
-                        // 可以喜愛他人標註
-                        like: true          
-                    }
-                }, //第四階over
-                {  // 第五階
                     "name": "國王",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到國王的話請撰寫25篇標註、被喜愛5次以上且喜愛人數為2",
+                    "qualification_message": "想要成為國王的話請自己嘗試看看喔！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -784,34 +775,32 @@ DEFAULT_KALS_CONFIG = {
                     "qualifier": {
                         topic_annotation_count: {
                             //count:3,
-                            "_total":{
-                              count:25  
-                            },
-                            /*"importance": {
-                              count:1,
-                            },
+                           // "_total":{
+                           //   count:20  
+                           //},
                              "concept": {
-                              count:1,
+                              count:5
                             },
                             "example": {
-                              count:0,
-                            },*/                      
+                              count:8
+                            }                     
                         },
-                        liked_count : {
-                            count:5
+                        respond_annotation_count: {
+                            //"_respond_total":{
+                              count:10  
+                            //}
                         },
-                        liked_user_count: {
-                            count:2
+                        liked_count:{
+                            count:3
                         }
                     },
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {
-                             
+                    "policy": {      
                     }
-                }
+                } //第四階over
             ]
         },
         /**

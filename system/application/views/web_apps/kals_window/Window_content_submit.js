@@ -193,7 +193,7 @@ Window_content_submit.prototype.submit = function () {
     _config.callback = function (_data) {
         _this.complete_handle(_data);    
     }; 
-    //$.test_msg('Window_content_submit.submit()', _config['callback']);
+    $.test_msg('Window_content_submit.submit()', _config['callback']);
     
     if (this.exception_handle !== null) {
         _config.exception_handle = this.exception_handle;
