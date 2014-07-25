@@ -234,25 +234,33 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         //$.test_msg('login', this._$load_url);
         //$.test_msg('login data', _data);
         
-        this.request_embed_email(function () {
-            _data.email = _this.get_email();
-            _data.embed = _this.is_embed();
-            //$.test_msg("embed_login 預備 load", _data);
-            
-            //if (_data.email === null && _data.embed === false) {
-            //    _this.show_login_form();
-            //}
-            //else {
-            if (_data.email !== null && _data.embed !== false) {
-                _this.load(_data, function (_this, _data) {
-                    //$.test_msg("embed_login 預備 after_login", _data);
-                    _this._after_login(_return_error, _data, _callback);
-                });
-            }
-            else {
-                $.trigger_callback(_callback);
-            }
-        });
+        if (this.is_embed()) {
+            this.request_embed_email(function () {
+                _data.email = _this.get_email();
+                _data.embed = _this.is_embed();
+                //$.test_msg("embed_login 預備 load", _data);
+
+                //if (_data.email === null && _data.embed === false) {
+                //    _this.show_login_form();
+                //}
+                //else {
+                if (_data.email !== null && _data.embed !== false) {
+                    _this.load(_data, function (_this, _data) {
+                        //$.test_msg("embed_login 預備 after_login", _data);
+                        _this._after_login(_return_error, _data, _callback);
+                    });
+                }
+                else {
+                    $.trigger_callback(_callback);
+                }
+            });
+        }
+        else {
+            this.load(_data, function (_this, _data) {
+                //$.test_msg("embed_login 預備 after_login", _data);
+                _this._after_login(_return_error, _data, _callback);
+            });
+        }
     }
     return this;
 };

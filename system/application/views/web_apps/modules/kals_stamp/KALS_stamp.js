@@ -627,7 +627,7 @@ KALS_stamp.prototype.qualify = function() {
                         break;
                     case "other_respond_readable":
                         KALS_context.policy.set_other_respond_readable(_policy[_k]);
-                        KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                        //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
                         break;  
                     case "like":
                         KALS_context.policy.set_able_like_topic(_policy[_k]);
@@ -639,7 +639,7 @@ KALS_stamp.prototype.qualify = function() {
                 }
 
             }
-          KALS_util.notify("現在階段為"+ _stamps_data[_i].name + ", _i = "+ _i); 
+          KALS_util.notify("現在階段為"+ _stamps_data[_i].name); 
 
        }
     // KALS_context.policy.set_readable(true);
