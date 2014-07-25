@@ -605,13 +605,45 @@ KALS_stamp.prototype.check_qualification = function(_user) {
  */
 KALS_stamp.prototype.qualify = function() {
     // 設定開啟功能
-    for( var _i in this._stamps_config){
+    var _stamps_data = this._init_config();
+    for( var _i in _stamps_data){
         if(this._stamps_config[_i].is_qualified === true){
-           
-            KALS_util.notify("通過"+ this._stamps_config[_i].name + "條件！  _i="+ _i);
-          }
+            var _policy = _stamps_data[_i].policy;
+            // 用迴圈檢視設定policy中的權限設定
+            for( var _k in _policy ){
+                // _ k = topic_writable
+                switch (_k){
+                    case "topic_writable":
+                        KALS_context.policy.set_topic_writable(_policy[_k]);
+                       //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                        break;
+                    case "other_topic_readable":
+                        KALS_context.policy.set_other_topic_readable(_policy[_k]);
+                        //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                        break;
+                    case "other_topic_respondable":
+                        KALS_context.policy.set_respond_other_topic_wrtiable(_policy[_k]);
+                        //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                        break;
+                    case "other_respond_readable":
+                        KALS_context.policy.set_other_respond_readable(_policy[_k]);
+                        KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                        break;  
+                    case "like":
+                        KALS_context.policy.set_able_like_topic(_policy[_k]);
+                        KALS_context.policy.set_able_like_respond(_policy[_k]);
+                       //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                        break; 
+                    default :
+                        KALS_util.notify("no = "+ _policy[_k]);
+                }
+
+            }
+          KALS_util.notify("現在階段為"+ _stamps_data[_i].name + ", _i = "+ _i); 
+
+       }
     // KALS_context.policy.set_readable(true);
-    }
+    }//for( var _i in _stamps_data){
     return this;
 };
 

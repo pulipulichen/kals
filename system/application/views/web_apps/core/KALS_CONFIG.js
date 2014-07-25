@@ -579,9 +579,17 @@ DEFAULT_KALS_CONFIG = {
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {
-                        // 可以寫自己的topic
-                        topic_writable: true,
+                    "policy": {// 要寫出所有的設定條件
+                        // 可以寫topic
+                        "topic_writable": true,
+                        // 可以看他人的topic
+                        "other_topic_readable": false,
+                        // 可以回應他人的topic
+                        "other_topic_respondable": false,
+                        // 可以看別人回自己topic的內容
+                        "other_respond_readable": false,
+                        // 可以使用喜愛功能
+                        "like": false
                     }
                 },//第0階over                
                 /**
@@ -632,10 +640,12 @@ DEFAULT_KALS_CONFIG = {
                      * @types {JSON}
                      */
                     "policy": {
-                        // 可以看其他人標註topic
-                        other_topic_readable: false,
-                        // 可以回應他人topic
-                        other_topic_respondable: false
+                        // 要寫出所有的設定條件
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": false,
+                        "like": false
                     }
                 }, // 第一階OVER
                 {  // 第二階
@@ -691,8 +701,12 @@ DEFAULT_KALS_CONFIG = {
                      * @types {JSON}
                      */
                     "policy": {
-                        // 可以閱讀他人回應自己的標註(topic)
-                        other_respond_readable: true                      
+                        // 要寫出所有的設定條件
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": false,
+                        "like": false                  
                     }
                 }, // 第二階OVER
                 {  // 第三階
@@ -746,8 +760,12 @@ DEFAULT_KALS_CONFIG = {
                      * @types {JSON}
                      */
                     "policy": {
-                        // 可以讀取他人回應標註
-                        like: true          
+                        // 要寫出所有的設定條件
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": true,
+                        "like": true           
                     }
                 }, //第三階over
                 {  // 第四階
@@ -798,7 +816,12 @@ DEFAULT_KALS_CONFIG = {
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {      
+                    "policy": {   
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": true,
+                        "like": true   
                     }
                 } //第四階over
             ]
