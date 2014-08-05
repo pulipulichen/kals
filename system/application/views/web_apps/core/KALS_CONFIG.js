@@ -552,23 +552,23 @@ DEFAULT_KALS_CONFIG = {
                  * @types {String}
                  */
                  {  // 第0階
-                    "name": "騎士",
+                    "name": "士兵",
                     "is_qualified": true,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "你已經是騎士了",
+                    "qualification_message": "你已經是士兵了",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為騎士！",
+                    "quailfy_message": "恭喜你晉升為士兵！",
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為騎士了！",
+                    "qualified_message": "您已經晉升為士兵了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
@@ -597,23 +597,23 @@ DEFAULT_KALS_CONFIG = {
                  * @types {String}
                  */
                  {  // 第一階
-                    "name": "子爵",
+                    "name": "騎士",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升子爵的話請試著標註10篇重要標註喔！",
+                    "qualification_message": "想要晉升騎士的話請試著標註10篇重要標註喔！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為子爵！",
+                    "quailfy_message": "恭喜你晉升為騎士！",
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為子爵了！",
+                    "qualified_message": "您已經晉升為騎士了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
@@ -649,23 +649,23 @@ DEFAULT_KALS_CONFIG = {
                     }
                 }, // 第一階OVER
                 {  // 第二階
-                    "name": "伯爵",
+                    "name": "主教",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到伯爵的話請撰寫3篇困惑標註、5篇摘要標註，並試著回應別人至少2篇回應標註吧",
+                    "qualification_message": "想要達到主教的話請撰寫3篇困惑標註、5篇摘要標註，並試著回應別人至少2篇回應標註吧",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為伯爵！",
+                    "quailfy_message": "恭喜你晉升為主教！",
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為伯爵了！",
+                    "qualified_message": "您已經晉升為主教了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
@@ -705,28 +705,28 @@ DEFAULT_KALS_CONFIG = {
                         "topic_writable": true,
                         "other_topic_readable": true,
                         "other_topic_respondable": true,
-                        "other_respond_readable": false,
+                        "other_respond_readable": true,
                         "like": false                  
                     }
                 }, // 第二階OVER
                 {  // 第三階
-                    "name": "公爵",
+                    "name": "皇后",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升伯爵的話請撰寫3篇摘要標註、5篇舉例標註，並試著回應別人5篇以上吧！",
+                    "qualification_message": "想要晉升皇后的話請撰寫3篇摘要標註、5篇舉例標註，並試著回應別人5篇以上吧！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為伯爵！",
+                    "quailfy_message": "恭喜你晉升為皇后！",
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為伯爵了！",
+                    "qualified_message": "您已經晉升為皇后了！",
                     /**
                      * 獎章資格
                      * @types {JSON}

@@ -1,18 +1,52 @@
+<div class="tab-area">
+    
+    
+
+<div class="list-header-component">
+   <button type="button" class="tab-button list-button-counts btn-annotation-count" kals-event-click="change_tab(this)" tab_name="btn-annotation-count" >{{kals-lang:annotation_counts}}</button>    
+   <button type="button" class="tab-button list-button-qualified btn-qualified" kals-event-click="change_tab(this)" tab_name="btn-qualified">{{kals-lang:stamp_geted}}</button> 
+   <button type="button" class="tab-button list-button-qualification btn-qualification" kals-event-click="change_tab(this)" tab_name="btn-qualification">{{kals-lang:stamp_not_get}}</button> 
+   <button type="button" class="tab-button list-button-king btn-king-list" kals-event-click="change_tab(this)" tab_name=btn-king-list">{{kals-lang:king_list}}</button> 
+    <!--<span class="header-button" kals-event-click="change_tab()">{{annotation_type}}</span>-->
+</div>
+
+<!--標註數量-->
+<div class="btn-annotation-count tab-content" >
 <p>{{kals-lang:statistic_heading}}</p>
 <ul class="stamp-statistic">
     
 </ul>
-<hr />
+</div>
 
+<!--已獲得獎章-->
+<div class="stamp_qualified btn-qualified tab-content" >
 <h1>{{kals-lang:qualified_heading}}</h1>
 <dl class="stamp-qualified">
     
 </dl>
-<hr />
+</div>
 
+<!--未獲得獎章-->
+
+<div class="stamp_qualification btn-qualification tab-content" >
 <h2>{{kals-lang:qualification_heading}}</h2>
 <p>{{kals-lang:qualification_subheading}}</p>
 
 <dl class="stamp-qualification">
     
 </dl>
+</div>
+
+<!--國王名單-->
+
+<div class="king-list btn-king-list tab-content" >
+<h2>{{kals-lang:king_list_heading}}</h2>
+
+
+<dl class="king-list">
+    
+</dl>
+</div>
+
+
+</div>

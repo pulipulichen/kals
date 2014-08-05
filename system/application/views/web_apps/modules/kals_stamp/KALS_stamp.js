@@ -286,12 +286,56 @@ KALS_stamp.prototype._$onopen = function () {
 };
 
 /**
+ * 切換顯示分頁
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype.change_tab = function (_btn){
+    
+ 
+    this.find(".tab-button").removeAttr("style");
+
+   //KALS_util.notify("test",this.find("list-button-counts"));
+    $.test_msg("change_tab", [typeof(_btn.attr), _btn.parent().length]);
+   //取出btn-name屬性的值   
+    var _tab_name = _btn.attr("tab_name");
+
+    
+    _btn.css("background", "red");   
+    _btn.css("color", "white");
+    $.test_msg("tab name", _tab_name);
+    //KALS_util.notify("_btn_name="+ _tab_name);
+    
+    var _tab_contents = $(_btn).parents(".tab-area:first").find(".tab-content");
+   // _btn.css("background", "red");
+   
+    //先隱藏所有的div
+    _tab_contents.hide();
+    //再依tab-name來顯示要看的div
+    _tab_contents.filter("." + _tab_name).show();
+    
+    //var _tab = this.find("list-button-counts");
+    
+    
+}
+
+/**
+ * 顯示分頁標題
+ * @returns {KALS_controller_window}
+ */
+KALS_stamp.prototype._change_tab_data = function (){
+    var _heafing_btn
+    
+}
+
+
+/**
  * 設定目前獎章的進度
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.set_stamp_statistic = function() {
 
-    //todo想一下該怎麼做出全部的TYPE
+    //這邊要改成去搜尋自訂的TYPE_ID
+    
     var _type_importance = 'importance';
     var _annotation_type_importance = new Annotation_type_param(_type_importance);
     var _type_confusion = 'confusion';
@@ -363,7 +407,7 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
             //var _message = $("<dd></dd>").html(_qualified_message)
             //        .appendTo(_qualified_container);
             //var _stamp_picture = $();來加入圖片吧！
-            var _stamp_picture = $("<img src=/kals/images/stamp_"+ _i +".png></>").html(_qualified_message)
+            var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png></>").html(_qualified_message)
                     .appendTo(_qualified_container);
             _i++;
         }
@@ -401,7 +445,7 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
             var _qualification_message = _qualification_config[_stamp_title];
             var _message = $("<dd></dd>").html(_qualification_message)
                     .appendTo(_qualification_container);
-            var _stamp_picture = $("<img src=/kals/images/stamp_"+ _i +".png></>").html(_qualification_message)
+            var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png></>").html(_qualification_message)
                         .appendTo(_qualification_container);
             _i++;
         }
