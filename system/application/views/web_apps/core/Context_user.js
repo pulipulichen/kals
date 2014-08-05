@@ -308,6 +308,7 @@ Context_user.prototype.get_annotation_count = function (_write_type, _annotation
     if ($.is_string(_write_type)) {
         if ($.is_class(_annotation_type, "Annotation_type_param")) {
             // 限定類型
+            //$.test_msg("this._annotation_count[_write_type]" , this._annotation_count[_write_type]);
             _type_name = _annotation_type.get_name();
             if (typeof(this._annotation_count[_write_type][_type_name]) !== "undefined") {
                 _count = this._annotation_count[_write_type][_type_name];

@@ -290,8 +290,14 @@ KALS_stamp.prototype._$onopen = function () {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.change_tab = function (_btn){
-    
- 
+    //-------------
+    var _types = this.get_annotation_types();
+    for(var _i in _types){
+        var _type = _types[_i];
+        var _type_id = _type.get_id();
+        $.test_msg("type_id=", _type_id);      
+    }
+   //----------
     this.find(".tab-button").removeAttr("style");
 
    //KALS_util.notify("test",this.find("list-button-counts"));
@@ -318,33 +324,40 @@ KALS_stamp.prototype.change_tab = function (_btn){
     
 }
 
-/**
- * 顯示分頁標題
- * @returns {KALS_controller_window}
- */
-KALS_stamp.prototype._change_tab_data = function (){
-    var _heafing_btn
-    
-}
-
 
 /**
  * 設定目前獎章的進度
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.set_stamp_statistic = function() {
+    
+    //抓取目前所有的types_id(含basic與自訂義)
+    var _types = this.get_annotation_types();
+    for(var _i in _types){
+        var _type = _types[_i];
+        var _type_id = _type.get_id();
+        //$.test_msg("type_id=", _type_id);      
+    }
 
     //這邊要改成去搜尋自訂的TYPE_ID
-    
-    var _type_importance = 'importance';
+    //basic - 可用id
+    var _type_importance = 1;
     var _annotation_type_importance = new Annotation_type_param(_type_importance);
     var _type_confusion = 'confusion';
     var _annotation_type_confusion = new Annotation_type_param(_type_confusion); 
     var _type_summary = 'summary';
     var _annotation_type_summary = new Annotation_type_param(_type_summary);    
     
+    //自訂義
+    var _type_predefined = "補充資料";//這個是name
+    //用id建立annotation_type_param再代入
+    var _annotation_type_predefined = new Annotation_type_param(_type_predefined); 
+    KALS_util.notify("importance = "+ _annotation_type_importance.get_name());    
+    //KALS_util.notify("predefined = "+ _annotation_type_predefined.get_name());
+    
     var _statistic_config = {
-        
+        // topic 補充資料數量
+        "statistic_topic_predefined_count":KALS_context.user.get_topic_annotation_count(_annotation_type_predefined), 
         //topic總數量       
         "statistic_topic_annotation_count": KALS_context.user.get_topic_annotation_count(),
         // topic重要數量
@@ -357,6 +370,7 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
         "statistic_responded_annotation_count":KALS_context.user.get_respond_to_my_annotation_count(),
         //回應別人的數量
         "statistic_respond_to_annotation_count":KALS_context.user.get_respond_to_other_annotation_count()
+
     };
     
     var _container_selector = ".stamp-statistic";

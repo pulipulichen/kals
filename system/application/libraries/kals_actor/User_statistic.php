@@ -552,14 +552,27 @@ class User_statistic extends KALS_actor {
         $type_count_collection = array();
         // 取得所有有使用到的type_id->array
         $type_id_array = $this->get_topic_types($user, $webpage);
+        //test_msg("type_id_array", $type_id_array);
         $annotation_type_factory = new Annotation_type_factory();
         // 因為Annotation_type沒有繼承 $key =自General Object，所以不能直接用，改用Annotation_type_factory()
         foreach ($type_id_array as $value) {       
-            $value = intval($value, 10);
+            $value = intval($value, 10);            
             $type = $annotation_type_factory->filter_object($value);  
-            $type_name = $type->get_name();  
-            $type_name = substr($type_name, 16); 
+            // 直接用$type->get_name()是basic才能用
+            
+            if ($type->is_basic()) {
+                $type_name = $type->get_name();  
+                //test_msg("BASIC_type=", $type->get_name());
+                $type_name = substr($type_name, 16); //SUBSTR是因為這邊抓到的是annotation.type.question，只留後面
+            }
+            else {
+                $type_name = $type->get_custom_name();
+                //test_msg("CUSTOM_type=", $type->get_custom_name());
+            }
+            //test_msg("type_id", $type->get_id());
+            
             //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            //test_msg("type_count_collection", array($type_name, $type->get_id(), $this->get_topic_count($user, $webpage, $type)));
             $type_count_collection[$type_name] = $this->get_topic_count($user, $webpage, $type);          
            //test_msg('value', $value);
            //test_msg('name', $type_name);
@@ -569,7 +582,7 @@ class User_statistic extends KALS_actor {
         /*$type_count_collection = array(
             // 標註類型名稱 => 次數
             'importance' => $this->get_topic_count($user, $webpage, $annotation_type),
-        );*/    
+        );*/  
         return $type_count_collection;
     }
     

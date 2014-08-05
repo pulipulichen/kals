@@ -125,6 +125,7 @@ Annotation_type_param.prototype.set = function (_param) {
         this.id = 7;
         this.custom_name = null;
     }
+
     else {
         //如果是字串的話，那表示是自訂類型囉
         //this.id = 7;

@@ -22,6 +22,7 @@ $lang["stamps_level_4_message"] = "你是國王！太棒了！";
 
 $lang["statistic_heading"] = "您的閱讀進度";
 $lang["statistic_topic_annotation_count"] = "主題標註";
+$lang["statistic_topic_predefined_count"] = "補充資料標註";
 $lang["statistic_topic_annotation_importance_count"] = "主題重要標註";
 $lang["statistic_topic_annotation_confusion_count"] = "主題困惑標註";
 $lang["statistic_topic_annotation_summary_count"] = "主題摘要標註";

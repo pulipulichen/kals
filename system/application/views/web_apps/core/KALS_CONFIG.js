@@ -176,13 +176,13 @@ DEFAULT_KALS_CONFIG = {
      * 20140425 Pulipuli Chen
      * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefined」
      */
-    /*
+   
     annotation_type_predefined: {
-        "預先定義1": {
+        "補充資料": {
             //type_id: 15,
-            hint: '測試的說明',
+            hint: '額外增加說明的資料',
             option: {
-                background_color: 'blue',
+                background_color: 'gray',
                 font_color: 'white'
             },
             anchor: {
@@ -193,8 +193,9 @@ DEFAULT_KALS_CONFIG = {
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
-        },
+            //order: 1    // 數字越大，排序越上面
+        }
+        /*
         '預先定義2': {
             //type_id: 16,
             hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
@@ -212,9 +213,9 @@ DEFAULT_KALS_CONFIG = {
                 respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
-        }
+        }*/
     },
-     */
+     
    
     /**
      * KALS操作說明的網址
