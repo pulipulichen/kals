@@ -397,8 +397,7 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
  */
 KALS_stamp.prototype.set_stamp_qualified = function() {
  
-    // 記得要修改成用迴圈跑喔！
-    var _qualified_config = {
+	var _qualified_config = {
 
          "stamps_level_0": this._stamps_config[0].name,
          "stamps_level_1": this._stamps_config[1].name,
@@ -407,24 +406,43 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
          "stamps_level_4": this._stamps_config[4].name
     };
     
-    var _qualified_container = this.find(".stamp-qualified")
-            .empty();
+    //var _qualified_container = this.find(".stamp-qualified")
+    //        .empty();
+
+	//TABLE
+	var _qualified_name = this.find(".qualified-name");
+	var _qualified_img = this.find(".qualified-img");
+	
     var _i = 0;
+	var _k = 0;
     for (var _stamp_title in _qualified_config) {   
         // 取得is_qualified的值來讓後面的迴圈判斷要不要顯示圖片(取得獎章) 
         if( this._stamps_config[_i].is_qualified === true){
            //KALS_util.notify("現在是幾呢？"+ _i);
             var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
-            var _title = $("<dt></dt>").html(_stamp_title_lang)
-                    .appendTo(_qualified_container);
-            var _qualified_message = _qualified_config[_stamp_title];
-            //var _message = $("<dd></dd>").html(_qualified_message)
+            // 來試著改用TABLE吧
+			//var _title = $("<dt></dt>").html(_stamp_title_lang)
+            //        .appendTo(_qualified_container);
+			var _title = $("<td width=60px align=center></td>").html(_stamp_title_lang)
+                    .appendTo(_qualified_name);					
+
+			//var _message = $("<dd></dd>").html(_qualified_message)
             //        .appendTo(_qualified_container);
             //var _stamp_picture = $();來加入圖片吧！
-            var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png></>").html(_qualified_message)
-                    .appendTo(_qualified_container);
+            //var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png></>").html(_qualified_message)
+            //        .appendTo(_qualified_container);
             _i++;
         }
+		if( this._stamps_config[_k].is_qualified === true ){
+			//var _stamp_picture = $();來加入圖片吧！
+           //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
+           var _qualified_image = "<img src=/kals/images/stamp_imgs/stamp_"+ _k +".png></>";
+		   var _stamp_picture = $("<td width=60px align=center></td>").html(_qualified_image)
+		   .appendTo(_qualified_img);
+			
+			_k++;
+		}
+		
     }
         
     return this;
