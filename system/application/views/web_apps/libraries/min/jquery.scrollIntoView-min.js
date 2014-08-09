@@ -1,1 +1,0 @@
-jQuery.fn.scrollIntoView=function(){var a=window.pageYOffset;var b=window.pageXOffset;var c=this.get(0);if(c.scrollIntoView){c.scrollIntoView()}window.scrollTo(b,a);var d=KALS_toolbar.get_ui().height()+window.pageYOffset;if($(c).offset().top<d){window.scrollTo(b,d)}return this};
