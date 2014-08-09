@@ -399,22 +399,9 @@ window.Feedback.Form.prototype.review = function( dom ) {
         
         if (item.element.value.length > 0) {
             dom.appendChild( element("label", item.name + ":") );
-            dom.appendChild( document.createTextNode( item.element.value ) );
-            //dom.appendChild( document.createElement( "hr" ) );
-			dom.appendChild( document.createElement( "br" ) );
+            dom.appendChild( document.createTextNode( item.element.value.length ) );
+            dom.appendChild( document.createElement( "hr" ) );
         }
-		
-        //dom.appendChild( element("label", "Browser" + ":") );
-        //dom.appendChild( document.createTextNode( $.browser.version ) );
-        //dom.appendChild( document.createElement( "hr" ) );
-		
-        dom.appendChild( element("label", "Client Browser" + ":") );
-        dom.appendChild( element("div", navigator.appVersion) );
-        //dom.appendChild( document.createTextNode( navigator.appVersion ) );
-        //dom.appendChild( document.createTextNode( navigator.appVersion ) );
-        
-        dom.appendChild( document.createElement( "br" ) );
-        //dom.appendChild( document.createElement( "hr" ) );
         
     }
     
@@ -858,9 +845,7 @@ window.Feedback.Screenshot.prototype.review = function( dom ) {
         var img = new Image();
         img.src = data;
         img.style.width = "300px";
-        
-        dom.insertBefore(img,dom.childNodes[0]);
-        //dom.appendChild( img );
+        dom.appendChild( img );
     }
     
 };
@@ -878,26 +863,10 @@ window.Feedback.XHR.prototype.send = function( data, callback ) {
     var xhr = this.xhr;
     
     xhr.onreadystatechange = function() {
-        if( xhr.readyState === 4 ){
+        if( xhr.readyState == 4 ){
             callback( (xhr.status === 200) );
         }
     };
-	
-    //data[0].browser = $.browser;
-    data[0].browser = navigator.appVersion;
-    /**
-     * @version 20140515 Pulipuli Chen
-     * 加上接收者email的設定，只能設定一位
-     */
-    if (typeof(KALS_CONFIG) === "object" 
-            && typeof(KALS_CONFIG.modules) === "object" 
-            && typeof(KALS_CONFIG.modules.Feedback_manager) === "object" 
-            && typeof(KALS_CONFIG.modules.Feedback_manager.receiver_email) !== "undefined" ) {
-        data[0].receiver_email = KALS_CONFIG.modules.Feedback_manager.receiver_email;
-    }
-    
-    
-    //console.log(window.JSON.stringify( data ));
     
     xhr.open( "POST", this.url, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

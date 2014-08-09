@@ -76,12 +76,13 @@ Note_editor.prototype.get_text = function () {
     var _ui = this.get_ui('.note-editor-textarea:first');
     var _text = _ui.val();
     
+    
     if ($.trim(_text) === '') {
-        return null;
-    }
-    else {
-        return _text;
-    }
+		return null;
+	}
+	else {
+		return _text;
+	}
 };
 
 /**

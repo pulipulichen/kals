@@ -20,8 +20,6 @@ List_collection_anonymous.prototype = new List_collection();
 
 List_collection_anonymous.prototype._$name = 'anonymous';
 
-List_collection_anonymous.prototype._$enable_check_login = true;
-
 List_collection_anonymous.prototype._$need_login = false;
 
 /* End of file List_collection_anonymous */

@@ -37,8 +37,6 @@ class Context extends KALS_object {
     var $webpage;
     var $domain;
     var $user;
-    
-    var $referer_url = FALSE;
 
     var $ignore_auth = FALSE;
 //    static private $CACHEABLE_TYPES = array('Domain', 'Webpage', 'Annotation', 'User', 'Group', 'Annotation_scope', 'Scope_anchor_text', 'Annotation_like'
@@ -82,12 +80,14 @@ class Context extends KALS_object {
      * 取得現在的使用者
      * @return User
      */
-    function get_current_user() {
-        if ($this->user == NULL) {
+    function get_current_user()
+    {
+        if ($this->user == NULL)
+        {
             //先讀取session，取得user_id
             $user_id = $this->session->userdata('user_id');
-            $user_id = intval($user_id);
-            if ($user_id !== FALSE && $user_id !== 0) {
+            if ($user_id !== FALSE)
+            {
                 //$this->CI->load->library('kals_actor/User');
                 $this->_CI_load('library', 'kals_actor/User', 'user');
                 $this->user = new User($user_id);
@@ -357,24 +357,6 @@ class Context extends KALS_object {
             $output = $output . $wepage->get_id();
         }
         return $output;
-    }
-    
-    public function set_referer_url($url) {
-        $this->referer_url = $url;
-        $this->session->set_userdata(array(
-            "referer_url" => $url
-        ));
-        return $this;
-    }
-    
-    public function get_referer_url() {
-        if ($this->referer_url === FALSE) {
-            $url = $this->session->userdata("referer_url");
-            if ($url !== FALSE) {
-                $this->set_referer_url($url);
-            }
-        }
-        return $this->referer_url;
     }
 }
 

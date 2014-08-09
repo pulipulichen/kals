@@ -1,9 +1,6 @@
 KALS!
 ======================
 
-閱讀知識合作標註學習系統
-Reading Knowledge Collaborative Annotation Learning System
-
 - 專案網站：[https://github.com/pulipulichen/kals](https://github.com/pulipulichen/kals)
 - 專案展示網站：[http://demo-kals.dlll.nccu.edu.tw](http://demo-kals.dlll.nccu.edu.tw)
 - 專案聯絡人：[布丁布丁吃布丁](http://pulipuli.blogspot.tw)

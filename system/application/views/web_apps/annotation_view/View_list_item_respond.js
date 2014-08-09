@@ -9,8 +9,6 @@
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/11/8 下午 11:42:54
  * @extends {List_item_respond}
- * @param {JSON} _param
- * @param {List_item} _topic_item
  */
 function View_list_item_respond(_param, _topic_item) {
     
@@ -24,10 +22,7 @@ View_list_item_respond.prototype._menu_style_default = 'block';
 
 View_list_item_respond.prototype._note_show_fulltext = true;
 
-View_list_item_respond.prototype._disable_option = [
-    'view'
-    //, 'like'
-];
+View_list_item_respond.prototype._disable_option = ['view', 'like'];
 
 /*
 View_list_item_respond.prototype.editor_set_data = function (_param) {
@@ -53,6 +48,7 @@ View_list_item_respond.prototype.respond_annotation = function () {
     KALS_text.tool.view.editor_container.toggle_container(true);
     
     return List_item.prototype.respond_annotation.call(this);
+    
 };
 
 /**

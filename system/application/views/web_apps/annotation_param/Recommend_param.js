@@ -44,12 +44,7 @@ Recommend_param.prototype.import_json = function (_json) {
         
         if (typeof(_json.recommend_by) == 'object'
             && $.isset(_json.recommend_by)) {
-		    
-            var _param = _json.recommend_by;
-			if ($.is_class(_param, 'Annotation_param') === false) {
-				_param = new Annotation_param(_param);
-			}
-			
+            var _param = new Annotation_param(_json.recommend_by);
             this.recommend_by = _param;
         }
     }

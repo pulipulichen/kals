@@ -149,11 +149,7 @@ class Annotation_scope_collection extends Generic_association_collection {
 
     public function add_scope_collection(Annotation_scope_collection $scope_collection)
     {
-        //return $this->add_collection($scope_collection);
-        foreach ($scope_collection AS $scope) {
-            $this->add_scope($scope);
-        }
-        return $this;
+        return $this->add_collection($scope_collection);
     }
 
     public function exclude_scope(Annotation_scope $scope)
@@ -189,41 +185,6 @@ class Annotation_scope_collection extends Generic_association_collection {
         return $len;
     }
 
-    /**
-     * 取得第一個範圍的起始編號
-     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20140103
-     * @return Int
-     */
-    public function get_first_index()
-    {
-        $this->_check_callback();
-
-        $this->_sort();
-        $from = 0;
-        foreach ($this->members AS $scope)
-        {
-            $from = $scope->get_from_index();
-            break;
-        }
-        return $from;
-    }
-    
-    /**
-     * 取得最後一個範圍的結尾編號
-     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20140103
-     * @return Int
-     */
-    public function get_last_index() {
-        $this->_check_callback();
-
-        $this->_sort();
-        $index = 0;
-        foreach ($this->members AS $scope) {
-            $index = $scope->get_to_index();
-        }
-        return $index;
-    }
-    
     public function set_annotation($annotation_id)
     {
         $this->_CI_load('library', 'kals_resource/Annotation', 'annotation');
@@ -612,15 +573,6 @@ class Annotation_scope_collection extends Generic_association_collection {
 
         $json = json_encode($webpage_scope);
         return $json;
-    }
-    
-    /**
-     * 範圍位置輸出成為陣列
-     * @param boolean $export_anchor
-     * @return Array
-     */
-    public function export_to_array($export_anchor = FALSE) {
-        return $this->export_data($export_anchor);
     }
 
     public function export_data($export_anchor = FALSE)

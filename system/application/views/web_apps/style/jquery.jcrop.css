@@ -4,7 +4,6 @@
 .jcrop-vline, .jcrop-hline
 {
 	font-size: 0;
-        font: 0% arial,helvetica,clean,sans-serif;
 	position: absolute;
 	background: white url('${base_url}images/jcrop.gif') top left repeat !important;
 }
@@ -12,7 +11,6 @@
 .jcrop-hline { width: 100%; height: 1px !important; }
 .jcrop-handle {
 	font-size: 1px;
-        font: 1px arial,helvetica,clean,sans-serif;
 	width: 7px !important;
 	height: 7px !important;
 	border: 1px #eee solid;

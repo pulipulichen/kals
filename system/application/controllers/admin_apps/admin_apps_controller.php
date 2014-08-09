@@ -88,8 +88,7 @@ class Admin_apps_controller extends Controller {
         $style = $this->load->view('web_apps/'.$path, NULL, TRUE);
 
         //取代網址
-        //$base_url = base_url();
-        $base_url = get_kals_base_url();
+        $base_url = base_url();
         $style = str_replace('${base_url}', $base_url, $style);
 
         send_css_header($this->output);
@@ -108,8 +107,7 @@ class Admin_apps_controller extends Controller {
         $style = $this->_compress_css($style);
 
         //取代網址
-        //$base_url = base_url();
-        $base_url = get_kals_base_url();
+        $base_url = base_url();
         $style = str_replace('${base_url}', $base_url, $style);
 
         send_css_header($this->output);

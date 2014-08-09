@@ -17,21 +17,42 @@ function KALS_modal() {
 }
 
 KALS_modal.prototype = new KALS_user_interface();
+        
+/**
+ * 建立Modal的原形物件
+ * @memberOf {KALS_modal}
+ * @param {string|jQuery|null} _element = div 可以指定原形物件的標籤名稱
+ * @type {jQuery}
+ */
+KALS_modal.prototype._$create_ui_prototype = function (_element) {
+    
+    var _ui;
+    if ($.is_null(_element)) {
+		_element = 'div';
+	}
+    
+    if ($.is_string(_element)) {
+        _ui = $('<' + _element + '></' + _element + '>');
+    }
+    else {
+        _ui =  $(_element);
+    }
+    
+    _ui.addClass(this.class_name)
+        .hide()
+        .appendTo($('body'));
+    
+    return _ui;
+};
 
 /**
  * 建立Modal的UI
  * @type {jQuery}
  */
-/*
 KALS_modal.prototype._$create_ui = function () {
-	var _ui = this._load_template();
-	$.test_msg('KALS_modal', _ui);
-	if (_ui === null) {
-		_ui = this._$create_ui_prototype(); 
-	}
-    return _ui;
+    return this._$create_ui_prototype();
 };
-*/
+
 /**
  * 可否關閉
  * @type {boolean}
@@ -68,15 +89,12 @@ KALS_modal.prototype._setup_ui = function () {
     this._ui = this._$create_ui();
     
     if (this._$onviewportmove !== null
-        && typeof(KALS_context) !== 'undefined'
-        && typeof(KALS_context.view) !== 'undefined') {
-    
+        && typeof(KALS_context) != 'undefined'
+        && typeof(KALS_context.view) != 'undefined') {
         var _this = this;
         
-        // 設定改變視點時的調整
         KALS_context.view.add_listener(function () {
-            var _visible_enable = _this._$viewportmove_visible_enable;
-            if (_this.has_setup_ui() && _visible_enable) {
+            if (_this.has_setup_ui() && _this._ui.visible()) {
                 _this._$onviewportmove(_this._ui);
             }
         });
@@ -104,33 +122,33 @@ KALS_modal.prototype.setup_modal = function (_config) {
     
     var _modal_name = _get_parameter('modal_name');
     if ($.is_string(_modal_name)) {
-        this.set_modal_name(_modal_name);
-    }
+		this.set_modal_name(_modal_name);
+	}
     
     var _closable = _get_parameter('closable');
     if ($.is_boolean(_closable)) {
-        this.set_closable(_closable);
-    }
+		this.set_closable(_closable);
+	}
     
     var _onopen = _get_parameter('onopen');
     if ($.isset(_onopen)) {
-        this.set_onopen(_onopen);
-    }
+		this.set_onopen(_onopen);
+	}
     
     var _onclose = _get_parameter('onclose');
     if ($.isset(_onclose)) {
-        this.set_onclose(_onclose);
-    }
+		this.set_onclose(_onclose);
+	}
     
     var _onviewportmove = _get_parameter('onviewportmove');
     if ($.isset(_onviewportmove)) {
-        this.set_onviewportmove(_onviewportmove);
-    }
+		this.set_onviewportmove(_onviewportmove);
+	}
     
     var _open = _get_parameter('open', true);
     if (_open) {
-        this.open();
-    }
+		this.open();
+	}
     
     return this;
 };
@@ -141,8 +159,8 @@ KALS_modal.prototype.setup_modal = function (_config) {
  */
 KALS_modal.prototype.set_modal_name = function (_modal_name) {
     if ($.is_string(_modal_name)) {
-        this._$modal_name = _modal_name;
-    }
+		this._$modal_name = _modal_name;
+	}
     return this;
 };
 
@@ -152,11 +170,11 @@ KALS_modal.prototype.set_modal_name = function (_modal_name) {
  */
 KALS_modal.prototype.set_closable = function (_closable) {
     if ($.is_boolean(_closable)) {
-        this._$closable = _closable;
-    }
-    else {
-        this._$closable = false;
-    }
+		this._$closable = _closable;
+	}
+	else {
+		this._$closable = false;
+	}
     return this;
 };
 
@@ -166,11 +184,12 @@ KALS_modal.prototype.set_closable = function (_closable) {
  */
 KALS_modal.prototype.set_onopen = function (_callback) {
     if ($.is_function(_callback)) {
-        this._$onopen = _callback;
-    }
-    else if (_callback === false || _callback === null) {
-        this._$onopen = null;
-    }
+		this._$onopen = _callback;
+	}
+	else 
+		if (_callback === false || _callback === null) {
+			this._$onopen = null;
+		}
     return this;
 };
 
@@ -196,11 +215,12 @@ KALS_modal.prototype.set_onclose = function (_callback) {
  */
 KALS_modal.prototype.set_onviewportmove = function (_callback) {
     if ($.is_function(_callback)) {
-        this._$onviewportmove = _callback;
-    }
-    else if (_callback === false || _callback === null) {
-        this._$onviewportmove = null;
-    }
+		this._$onviewportmove = _callback;
+	}
+	else 
+		if (_callback === false || _callback === null) {
+			this._$onviewportmove = null;
+		}
     return this;
 };
 
@@ -220,11 +240,11 @@ KALS_modal.prototype.toggle_modal = function (_display, _callback) {
     }
     
     if (_display === true) {
-        this.open(_callback);
-    }
-    else {
-        this.close(_callback);
-    }
+		this.open(_callback);
+	}
+	else {
+		this.close(_callback);
+	}
     return this;
 };
 
@@ -253,20 +273,19 @@ KALS_modal.prototype.open = function (_callback) {
     }
     
     if ($.is_function(this._$onviewportmove)) {
-        this._$onviewportmove(this._ui);
-    }
+		this._$onviewportmove(this._ui);
+	}
     if ($.is_function(this._$onopen)) {
-        this._$onopen(this._ui);
-    }
+		this._$onopen(this._ui);
+	}
     if ($.is_function(_callback)) {
-        _callback(this._ui);
-    }
+		_callback(this._ui);
+	}
     
     //跟Modal_controller註冊開啟
-    if (typeof(KALS_context) === 'object' 
-            && typeof(KALS_context.modal) === 'object') {
-        KALS_context.modal.add_opened(this);
-    }
+    if (typeof(KALS_context) == 'object' && typeof(KALS_context.modal) == 'object') {
+		KALS_context.modal.add_opened(this);
+	}
     
     return this;
 };
@@ -290,17 +309,16 @@ KALS_modal.prototype.close = function (_callback) {
             _ui.hide();
         }
         if ($.is_function(this._$onclose)) {
-            this._$onclose(this._ui);
-        }
+			this._$onclose(this._ui);
+		}
         if ($.is_function(_callback)) {
-            _callback(this._ui);
-        }
+			_callback(this._ui);
+		}
             
         //跟Modal_controller註冊關閉
-        if (typeof(KALS_context) === 'object' 
-                && typeof(KALS_context.modal) === 'object') {
-            KALS_context.modal.delete_opened(this);
-        }
+        if (typeof(KALS_context) == 'object' && typeof(KALS_context.modal) == 'object') {
+			KALS_context.modal.delete_opened(this);
+		}
     }
     return this;
 };
@@ -320,13 +338,6 @@ KALS_modal.prototype._$onclose = null;
  * @type {function} = function (_ui) {}
  */
 KALS_modal.prototype._$onviewportmove = null;
-
-/**
- * 即使被隱藏了，也能夠使用viewportmove
- * @type {function} = function (_ui) {}
- */
-KALS_modal.prototype._$viewportmove_visible_enable = false;
-
 
 /**
  * 暫存用的回呼函數

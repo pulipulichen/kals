@@ -39,11 +39,7 @@ class feedback extends Web_apps_controller {
     function index()
     {
         $issue = NULL;
-        $browser = NULL;
         $imageData = NULL;
-        
-        //$receiver_email = "pudding@nccu.edu.tw";
-        $receiver_email = $this->config->item("feedback.receiver_email");
         
         if (FALSE === isset($_POST) 
             || FALSE === isset($_POST["data"])) {
@@ -53,20 +49,15 @@ class feedback extends Web_apps_controller {
             // 接收資料
             $feedback_data = json_decode($_POST["data"]);
             $issue = $feedback_data[0]->Issue;
-            $browser = $feedback_data[0]->browser;
-            if ($feedback_data[0]->receiver_email !== NULL) {
-                $receiver_email = $feedback_data[0]->receiver_email;
-            }
             $imageData = $feedback_data[1];
-        }
-        
-        if (is_array($receiver_email)) {
-            $receiver_email = implode(",", $receiver_email);
         }
         
         /**
          * 設定寄送訊息
          */
+        
+        //$receiver_email = "pudding@nccu.edu.tw";
+        $receiver_email = $this->config->item("feedback.receiver_email");
         $this->email->to($receiver_email);
         
         /**
@@ -101,8 +92,6 @@ class feedback extends Web_apps_controller {
         // URL
         //$message_list[] = "Referer URL: " . $this->url;
         $message_list[] = $this->lang->line("feedback.referer_url"). ": " . $this->url;
-        
-        $message_list[] = $this->lang->line("feedback.browser"). ": " . $browser;
         
         // Domain
         $domain_id = NULL;
@@ -197,7 +186,6 @@ class feedback extends Web_apps_controller {
          */
         
         if (TRUE) {
-        //if (FALSE) {
             $this->email->send();
             echo $this->email->print_debugger();
 

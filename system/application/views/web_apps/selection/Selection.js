@@ -61,17 +61,13 @@ Selection.prototype._$select_once = true;
 Selection.prototype._classname = null;
 
 /**
- * 設定選擇的範圍
+ * 
  * @param {Scope_collection_param} _scope
  */
 Selection.prototype.set_scope_coll = function (_scope_coll) {
     
     //$.test_msg('Selection.set_scope_coll()', [$.is_class(_scope_coll, 'Scope_collection_param'), $.get_class(_scope_coll), _scope_coll.length()]);
     
-	if ($.is_array(_scope_coll)) {
-		_scope_coll = new Scope_collection_param(_scope_coll);
-	}
-	
     if ($.is_class(_scope_coll, 'Scope_collection_param') === false
         || _scope_coll.length() === 0) {
         //$.test_msg('Selection.set_scope_coll()', [($.is_class(_scope_coll, 'Scope_collection_param') === false), $.get_class(_scope_coll), _scope_coll.length()]);
@@ -185,6 +181,7 @@ Selection.prototype.get_offset_top = function () {
 };
 
 Selection.prototype.get_offset_bottom = function () {
+    
     var _scope_coll = this.get_scope_coll();
     var _bottom = this._text.get_offset_bottom(_scope_coll);
     return _bottom;
@@ -258,19 +255,13 @@ Selection.prototype.has_selected = function () {
 
 Selection.prototype._scroll_lock = false;
 
-/**
- * 讓捲軸捲到選取範圍位置
- */
 Selection.prototype.scroll_into_view = function (_callback) {
     
-    //$.test_msg("Selection.scroll_into_view", this._$name);
-    //return;
-    
     if (this._scroll_lock === true) {
-        //$.test_msg("!!!!!!!!!Selection.scroll_into_view _scoll_lock === true", this._$name);
-        $.trigger_callback(_callback);
-        return this;
-    }
+		return;
+	}
+    
+    this._scroll_lock = true;
     
     //var _x = this.get_offset_left();
     var _y = this.get_offset_top();
@@ -282,7 +273,6 @@ Selection.prototype.scroll_into_view = function (_callback) {
     */
     
     if ($.is_null(_y)) {
-        $.trigger_callback(_callback);
         return this;
     }
     
@@ -295,30 +285,30 @@ Selection.prototype.scroll_into_view = function (_callback) {
     */
     if ($.isset(_y)) {
         _y = _y - KALS_toolbar.get_height() - 100;
+        
         //$.test_msg('Selection.scroll_into_view()', [this._$name, _y, KALS_toolbar.get_height()]);
+        
         _config.y = _y;
     }
     
-    //$.test_msg("要準備捲動囉", _config);
-    
     var _this = this;
-    this._scroll_lock = true;
     $.scroll_to(_config, 200, function () {
+        
         _this._scroll_lock = false;
+        
         $.trigger_callback(_callback);
     });
     
-    return this;
 };
 
 Selection.prototype.equals = function (_scope_coll) {
     
     if (this._scope_coll === null || _scope_coll === null) {
-        return false;
-    }
-    else {
-        return this._scope_coll.equals(_scope_coll);
-    }
+		return false;
+	}
+	else {
+		return this._scope_coll.equals(_scope_coll);
+	}
 };
 
 /* End of file Selection */

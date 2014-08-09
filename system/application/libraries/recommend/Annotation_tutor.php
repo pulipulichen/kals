@@ -35,24 +35,13 @@ class Annotation_tutor extends KALS_object {
         return $this;
     }
 
-    /**
-     * 設定推薦
-     * @param Annotation $annotation
-     * @return \Annotation_tutor
-     */
     public function setup_recommend(Annotation $annotation)
     {
-        
-        //test_msg('Annotation_tutor->setup_recommend()', 1);
-        
         $threshold = $this->_get_recommended_threshold();
         $score = $this->_get_integrated_score($annotation);
 
-        //test_msg('Annotation_tutor->setup_recommend()', 2);
         if ($score < $threshold)
         {
-            //test_msg('Annotation_tutor->setup_recommend()', 3);
-            
             //如果分數到達門檻，才進行推薦，否則不作推薦
             $recommend_annotation = $this->_find_recommend_annotation($annotation);
 
@@ -63,8 +52,6 @@ class Annotation_tutor extends KALS_object {
             );
             $recommend = $this->CI->annotation_recommend->find($cond);
             
-            //test_msg('Annotation_tutor->setup_recommend()', 4);
-            
             if (is_null($recommend))
             {
                 $recommend = new Annotation_recommend();
@@ -72,23 +59,17 @@ class Annotation_tutor extends KALS_object {
                 $recommend->set_webpage($this->webpage);
                 $recommend->set_recommended($annotation);
             }
-            
-            //test_msg('Annotation_tutor->setup_recommend()', 5);
 
             if (isset($recommend_annotation)) {
                 $recommend->set_recommend_by($recommend_annotation);
             }
             
-            //test_msg('Annotation_tutor->setup_recommend() 6', 6);
-            
-            // @TODO 20140410 這個步驟會出錯
             $recommend->update();
 
             //加入通知
             $trigger_resource = $annotation;
             $association_user = $annotation->get_user();
 
-            //test_msg('Annotation_tutor->setup_recommend()', 7);
             
             $this->_CI_load('library', 'kals_actor/Notification_recommended', 'ntification_recommended');
             $notification = $this->CI->ntification_recommended
@@ -97,12 +78,7 @@ class Annotation_tutor extends KALS_object {
             {
                 handle_error($this->lang->line('notification.recommend.create_notification.exception'));
             }
-            
-            //test_msg('Annotation_tutor->setup_recommend()', 8);
-            
             $annotation->set_recommend($recommend);
-            
-            //test_msg('Annotation_tutor->setup_recommend()', 9);
         }
         return $this;
     }

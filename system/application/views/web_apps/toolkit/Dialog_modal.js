@@ -60,8 +60,8 @@ Dialog_modal.prototype._$create_ui = function () {
 
 Dialog_modal.prototype._$onviewportmove = function (_ui) {
     if ($.browser.msie6) {
-        return;
-    }
+		return;
+	}
     
     if ($.is_small_width()) {
         _ui.fullscreen_width();
@@ -250,25 +250,21 @@ Dialog_modal.prototype.set_forward_option = function (_option) {
     return this;
 };
 
-/**
- * 切換顯示工具列的按鈕
- * @param {boolean} _display
- * @returns {Dialog_modal}
- */
 Dialog_modal.prototype.toggle_toolbar_option = function(_display) {
     
     var _toolbar = this.get_ui('.dialog-toolbar:first');
     
     var _classname = 'hide-option';
     if ($.is_null(_display)) {
-        _toolbar.toggleClass(_classname);
-    }
-    else if (_display) {
-        _toolbar.removeClass(_classname);
-    }
-    else {
-        _toolbar.addClass(_classname);
-    }
+		_toolbar.toggleClass(_classname);
+	}
+	else 
+		if (_display) {
+			_toolbar.removeClass(_classname);
+		}
+		else {
+			_toolbar.addClass(_classname);
+		}
         
     return this;
 };
@@ -526,8 +522,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                 //.insertBefore(_el);
             
             _scroll_container.ready(function () {
-                //var _el_offset = _el.offset();
-                var _el_offset = $.get_offset(_el);
+                var _el_offset = _el.offset();
                 
                 //_scroll_container.css('top', _el_offset.top + 'px');
                 _scroll_container.css('position', 'fixed');
@@ -579,26 +574,26 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             //_el.css('color', 'red');    //偵測用功能
             _event.preventDefault();
             var _pageY = _get_event_pageY(_event);
-            _scrollStartPos = _el.attr('scrollTop') + _pageY;
+			_scrollStartPos = _el.attr('scrollTop') + _pageY;
             
             var _listen_object=  window;
             if ($.browser.msie || $.is_mobile_mode()) {
-                _listen_object = document;
-            }
+				_listen_object = document;
+			}
             
-            $(_listen_object).bind("touchmove", _move_event);
+			$(_listen_object).bind("touchmove", _move_event);
             $(_listen_object).bind("mousemove", _move_event);
             
             $(_listen_object).bind("touchend", _end_event);
             $(_listen_object).bind("mouseup", _end_event);
             $(_listen_object).bind("mouseout", _end_event);
-        };
+		};
         
         var END_TIMER;
         var _move_event = function(_event) {
             if (_scrollStartPos === null) {
-                return;
-            }
+				return;
+			}
             
             //_el.css('color', 'blue');    //偵測用功能
             _event.preventDefault();
@@ -610,7 +605,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             var _max_height = _el.attr('scrollHeight');
             
             if (_scroll !== null
-                && _el.attr('scrollTop') === _origin_scroll_top) {
+                && _el.attr('scrollTop') == _origin_scroll_top) {
                 
                 if (_origin_scroll_top > 0) {
                 
@@ -699,7 +694,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
             
             setTimeout(function () {
                 var _top_padding = _el.find('.top-padding:first');
-                if (_top_padding.length === 1) {
+                if (_top_padding.length == 1) {
                     var _option = {};
                     _option.height = 0;
                     _top_padding.animate(_option, {
@@ -813,5 +808,6 @@ Dialog_modal.prototype.expose = function (_callback) {
     //return this.base(_expose_callback);
     return Overlay_modal.prototype.expose.call(this, _expose_callback);
 };
+
 /* End of file Dialog_modal */
 /* Location: ./system/application/views/web_apps/Dialog_modal.js */

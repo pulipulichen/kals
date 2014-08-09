@@ -60,24 +60,18 @@ class Domain extends KALS_resource {
 
     protected function _set_field_filter($cond)
     {
-        if (is_array($cond) && array_key_exists('url', $cond)) {
+        if (is_array($cond) && array_key_exists('url', $cond))
             $cond['host'] = parse_host($cond['url']);
-        }
-        else if (is_string($cond) && $cond == 'url') {
+        else if (is_string($cond) && $cond == 'url')
             $cond = 'host';
-        }
-        //else if (is_string($cond) && starts_with($cond, "http://") === FALSE) {
-        //    $cond = "http://" . $cond;
-        //}
 
         return $cond;
     }
     protected function _get_field_filter($cond)
     {
-        if (is_string($cond) && $cond == 'url') {
+        if (is_string($cond) && $cond == 'url')
             $cond = 'host';
-        }
-        
+
         return $cond;
     }
 
@@ -123,11 +117,6 @@ class Domain extends KALS_resource {
         return $this->get_field('title');
     }
 
-    /**
-     * 輸入網址，過濾出指定的domain
-     * @param Domain|String|Int $domain_id
-     * @return Int Domain ID
-     */
     public function filter_domain_id($domain_id)
     {
         if (is_object($domain_id) && get_class($domain_id) == 'Domain')
@@ -135,28 +124,14 @@ class Domain extends KALS_resource {
             $domain = $domain_id;
             $domain_id = $domain->get_id();
         }
-        if (is_string($domain_id)) {
-            $http_prefix = "http://";
-            $https_prefix = "https://";
-            if (starts_with($domain_id, $http_prefix) === FALSE
-                    && starts_with($domain_id, $https_prefix) === FALSE) {
-                $domain_id = $http_prefix . $domain_id;
-            }
-            
-            if (ends_with($domain_id, "/")) {
-                $domain_id = $domain_id . "/";
-            }
-            
+        if (is_string($domain_id))
+        {
             $domain = $this->create($domain_id);
             $domain_id = $domain->get_id();
         }
         return $domain_id;
     }
 
-    /**
-     * 取得該Domain底下所有的webpage陣列
-     * @return array|Webpage
-     */
     public function get_webpages() {
         $id = $this->get_id();
         $output = array();
@@ -174,48 +149,6 @@ class Domain extends KALS_resource {
             $obj = new Webpage($id);
             array_push($output, $obj);
         }
-        return $output;
-    }
-    
-    /**
-     * 取得所有Domain
-     * @return array|Domain
-     */
-    static public function get_all_domains() {
-        $output = array();
-        $domain = new Domain();
-        $query = $domain->CI->db->select('domain_id')
-                ->get('domain');
-        foreach ($query->result_array() AS $row)
-        {
-            $id = intval($row['domain_id']);
-            $obj = new Domain($id);
-            array_push($output, $obj);
-        }
-        return $output;
-    }
-    
-    /**
-     * 取得所有Domain的所有Webpage
-     * @return Array
-     * key domain_id
-     * value Array|Webpage
-     * 
-     * $array = array(
-     *      1 => array(3, 4, 6),
-     *      6 => array(5, 12, 34)
-     * );
-     */
-    static public function get_all_domain_webpages() {
-        
-        //$domains = $this->get_all_domains();
-        $domains = Domain::get_all_domains();
-        $output = array();
-        
-        foreach ($domains AS $domain) {
-            $output[$domain->get_id()] = $domain->get_webpages();
-        }
-        
         return $output;
     }
 }

@@ -89,7 +89,6 @@ $lang['feedback.additional_information'] = "其他資料"; //ADDTIONAL INFORMATI
 $lang['feedback.report_timestamp'] = "回報時間"; //REPORT TIMESTAMP
 $lang['feedback.kals_server_url'] = "KALS伺服器網址"; //KALS SERVER URL
 $lang['feedback.referer_url'] = "問題網址"; //REFERER URL
-$lang['feedback.browser'] = "瀏覽器資訊"; //BROWSER
 $lang['feedback.domain_id'] = "網域編號(DOMIAN ID)"; //DOMIAN ID
 $lang['feedback.webpage_id'] = "網頁編號(WEBPAGE ID)"; //WEBPAGE ID
 $lang['feedback.user_id'] = "使用者編號(USER ID)"; //USER ID

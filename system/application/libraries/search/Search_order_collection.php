@@ -23,19 +23,10 @@ class Search_order_collection extends Collection {
         6 => 'Search_order_update',
         7 => 'Search_order_create',
         8 => 'Search_order_note',
-        9 => 'Search_order_anchor_text',
-        10 => 'Search_order_last_thread_timestamp'
-              
+        9 => 'Search_order_anchor_text'
     );
     protected $class_dir = 'search/';
 
-    /**
-     * 設定排序順序
-     * @param type $type_id
-     * @param type $desc
-     * @return \Search_order_collection\
-     */
-    
     public function add_order($type_id, $desc = NULL)
     {
         if (FALSE === is_object($type_id))

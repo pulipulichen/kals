@@ -22,7 +22,7 @@ Toolbar_component.prototype._$create_ui = function () {
     
     var _ui = $('<table width="100%" cellspacing="0" cellpadding="0" class="toolbar-component">'
         + '<tbody><tr>'
-        + '<td class="toolbar-left" valign="middle">'+'&nbsp;'+'</td>'
+        + '<td class="toolbar-left" valign="middle" width="120">'+'&nbsp;'+'</td>'
         + '<td class="toolbar-center" valign="middle">'+'&nbsp;'+'</td>'
         + '<td class="toolbar-right" valign="middle">'+'&nbsp;'+'</td>'
         + '</tr></tbody></table>');

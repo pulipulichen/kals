@@ -34,11 +34,11 @@ URL_hash_dispatcher.prototype._hash_data = null;
  */
 URL_hash_dispatcher.prototype._get_location_hash = function () {
     var _hash = '';
-    if (typeof(location.hash) !== 'undefined') {
+    if (typeof(location.hash) != 'undefined') {
         _hash = location.hash;
-        if (_hash.substring(0, 1) === '#') {
-            _hash = _hash.substring(1, _hash.length);
-        }
+        if (_hash.substring(0, 1) == '#') {
+			_hash = _hash.substring(1, _hash.length);
+		}
     }
     else {
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
@@ -49,11 +49,11 @@ URL_hash_dispatcher.prototype._get_location_hash = function () {
         
         var _start = 0;
         var _end = _url.length;
-        if (_hash_pos === -1) {
+        if (_hash_pos == -1) {
             //情況1：沒有hash
             return '';
         }
-        else if (_query_pos === -1) {
+        else if (_query_pos == -1) {
             //情況2：有hash但沒有query
             _start = _hash_pos + 1;
         }
@@ -84,163 +84,58 @@ URL_hash_dispatcher.prototype._set_location_hash = function(_hash) {
     _hash = $.trim(_hash);
     _hash = '#' + _hash;
     
-    //var _pos = this._save_scroll_position();
-    $.save_scroll_position();
+    var _pos = this._save_scroll_position();
     
-    if (typeof(location.hash) !== 'undefined') {   
+    if (typeof(location.hash) != 'undefined') {   
         //$.test_msg('設定location hash', this._set_lcok);
-        //window.location.hash = _hash;
-        //$.test_msg("set hast: " + "location.hash", _hash);
-        //alert("要上囉", _hash);
-        location.hash = _hash;
-        //alert("完成", _hash);
-    }
-    else if (typeof(document.location.hash) !== 'undefined') {   
-        //$.test_msg("set hast: " + "docuemnt.location.hash", _hash);
-        document.location.hash = _hash;
-    }
-    else if (typeof(window.location.hash) !== 'undefined') {   
-        //$.test_msg("set hast: " + "window.location.hash", _hash);
         window.location.hash = _hash;
     }
     else {
-        //$.test_msg("set hast:" + "window.location.href", _hash);
-        
-        
         //2010.8 因為大部分瀏覽器都支援location.hash，所以下面這種情況應該是不會發生
         var _url = location.href;
         
         var _hash_pos = _url.indexOf('#');
         
-        if (_hash_pos !== -1) {
+        if (_hash_pos != -1) {
             var _start = _hash_pos;
             var _end = _url.length;
             
             var _query_pos = _url.indexOf('?');
-            if (_query_pos !== -1
+            if (_query_pos != -1
                 && (_query_pos > _hash_pos)) {
                 _end = _query_pos;
             }
             
             var _head = _url.substring(0, _start);
             var _foot = '';
-            if (_url.length !== _end) {
-                _foot = _url.substring(_end, _url.length);
-            }
+            if (_url.length != _end) {
+				_foot = _url.substring(_end, _url.length);
+			}
             
             _url = _head + _foot;
         }
         
         window.location.href = _url + _hash;
-        //document.location.hash = _url + _hash;
     }
     
-    //this._restore_scroll_position(_pos);
-    $.load_scroll_position();
+    this._restore_scroll_position(_pos);
     
     return this;
 };
 
-//URL_hash_dispatcher.prototype._last_pos = null;
-//
-///**
-// * 保存捲軸位置
-// * 
-// * @returns {JSON} = {
-// *       x: window.scrollX,
-// *       y: window.scrollY
-// *   };
-// * @deprecated 20140626 交給$.save_scroll_position去處理吧
-// */
-//URL_hash_dispatcher.prototype._save_scroll_position = function () {
-//    
-//    /*
-//    var _pos = {
-//        x: window.scrollX,
-//        y: window.scrollY
-//    };
-//    */
-//    //if (this._last_pos !== null) {
-//    //    return this._last_pos;
-//    //}
-//   
-//    var _pos = $.get_current_scroll_position();
-//    if (_pos.y !== 0) {
-//        this._last_pos = _pos;
-//    }
-//    //$.test_msg("儲存:現在的捲軸位置", _pos);    
-//    //alert(["儲存:現在的捲軸位置", _pos]);
-//    return _pos;
-//};
+URL_hash_dispatcher.prototype._save_scroll_position = function () {
+    
+    var _pos = {
+        x: window.scrollX,
+        y: window.scrollY
+    };
+    return _pos;
+};
 
-/**
- * 讓網頁開始捲動
- * 
- * @deprecated 20140626 交給$.load_scroll_position去處理吧
- * @param {Object} _pos
- */
-//URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
-//
-//    //$.scroll_to(_pos, 0);
-//    var _this = this;
-//    
-//    if ($("body").scrollTop() === 0
-//            && _this._last_pos !== null) {
-//        //alert("準備回滾");
-//        window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
-//    }
-//    
-//    if (this._last_pos !== null && this._restore_pos_lock === false) {
-//        this._restore_pos_lock = true;
-//        //$.test_msg("準備恢復：設定了現在的捲軸位置", _pos);
-//        //alert(["準備恢復：設定了現在的捲軸位置", _pos]);
-//        //$.test_msg("最後的捲軸位置", this._last_pos);
-//        //alert(["最後的捲軸位置", this._last_pos]);
-//        //$.scroll_to(this._last_pos, 0);
-//        
-//        if ($("body").scrollTop() === 0
-//                    && _this._last_pos !== null) {
-//            //window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
-//            //$.scroll_to(_this._last_pos, 0);
-//        }
-//        
-//        setTimeout(function () {
-////            //$.scroll_to(_this._last_pos);
-////            $.test_msg("現在的body", [$("body").scrollTop(), _this._last_pos.scrollTop]);
-//            if ($("body").scrollTop() === 0
-//                    && _this._last_pos !== null) {
-//                alert("怎麼會這樣？");
-//                window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
-////                //$.scroll_to(_this._last_pos, 0);
-////                //window.scrollTo()
-//            }
-////            else if (_this._last_pos !== null) {
-////                //$.scroll_to(_this._last_pos, 0);
-////                //window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
-////            }
-////            $.test_msg("恢復：設定了現在的捲軸位置", _this._last_pos);
-////            _this._last_pos = null;
-////            _this._restore_pos_lock = false;
-//            //_this._last_pos = null;
-//            _this._restore_pos_lock = false;
-//            
-//            setTimeout(function () {
-//                //alert("100秒之後的狀態");
-//            }, 100);
-//            
-//        }, 0);
-//    }
-//    
-//    return this;
-//};
-//
-//URL_hash_dispatcher.prototype._restore_pos_lock = false;
+URL_hash_dispatcher.prototype._restore_scroll_position = function (_pos) {
+    window.scrollTo(_pos.x, _pos.y);
+};
 
-/**
- * 設定標題
- * @param {String} _hash
- * @returns {URL_hash_dispatcher}
- */
 URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
     
     this._set_lock = true;
@@ -268,8 +163,8 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
  */
 URL_hash_dispatcher.prototype._setup_hash_data = function (_force) {
     if ($.is_null(_force)) {
-        _force = false;
-    }
+		_force = false;
+	}
     
     if (this._hash_data === null || _force) {
         var _hash = this._get_location_hash();
@@ -339,15 +234,12 @@ URL_hash_dispatcher.prototype.set_field = function (_key, _value) {
  */
 URL_hash_dispatcher.prototype.delete_field = function (_key) {
     
-	
     var _hash_data = this._setup_hash_data();
     _hash_data.delete_field(_key);
     this._hash_data = _hash_data;
-    
     var _hash = _hash_data.serialize();
     
     this._set_location_hash(_hash);
-        
     this._set_document_title(_hash);
     
     return this;     
@@ -426,10 +318,6 @@ URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
     return this;
 };
 
-/**
- * 開啟之前檢查網頁的hash
- * @param {function} _callback
- */
 URL_hash_dispatcher.prototype.check_hash = function (_callback) {
     
     //$.test_msg('URL_hash_dispatcher.check_hash()', [window.location.hash]);
@@ -440,20 +328,36 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 	
     //優先度：view recommend = select
     if (this.has_field('view') === true) {
-        this._action_view();
-    }
-    else if (this.has_field("mobile") === true) {
-        this._action_mobile();
+		//$.test_msg('URL_hash_dispatcher', 'pass2');
+		
+        var _id = this.get_field('view');
+		KALS_context.init_profile.add_listener(function () {
+	        KALS_text.tool.view.load_view(_id);
+	    });
+        
     }
     else {
-        //$.test_msg('URL_hash_dispatcher', 'pass3');
-
+		//$.test_msg('URL_hash_dispatcher', 'pass3');
+		
         if (this.has_field('recommend') === true) {
-            this._action_recommend()
+			//$.test_msg('URL_hash_dispatcher', 'pass4');
+            _id = this.get_field('recommend');
+            //$.test_msg('has check_hash() recommend', _id);
+            KALS_text.tool.recommend.load_recommend(_id);
         }
+        
         if (this.has_field('select') === true) {
-            this._action_select();
-        }  
+            //$.test_msg('URL_hash_dispatcher', 'pass5');
+            var _scope_text = this.get_field('select');
+            //$.test_msg('has check_hash()', _scope_text);
+            
+			KALS_context.init_profile.add_listener(function () {
+		        KALS_text.selection.select.load_select(_scope_text);  
+		    });
+			//setTimeout(function () {
+			//	KALS_text.selection.select.load_select(_scope_text);
+			//}, 3000); 
+        }    
     }
     
     //$.test_msg('has check_hash() end', this.has_field('recommend'));
@@ -464,104 +368,6 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
 	//$.test_msg('URL_hash_dispatcher', 'pass');
     
     $.trigger_callback(_callback);
-    return this;
-};
-
-/**
- * 啟動view的動作
- * @returns {URL_hash_dispatcher.prototype}
- */
-URL_hash_dispatcher.prototype._action_view = function () {
-    
-    if ($.is_mobile_mode()) {
-        return this;
-    }
-    
-    //$.test_msg('URL_hash_dispatcher', 'pass2');
-		
-    var _id = this.get_field('view');
-    KALS_context.ready(function () {
-        KALS_text.tool.view.load_view(_id);
-    });
-    
-    return this;
-};
-
-/**
- * 啟動mobile相關的動作
- * @returns {URL_hash_dispatcher}
- */
-URL_hash_dispatcher.prototype._action_mobile = function () {
-    
-    var _url; 
-    
-    if (this.has_field("topic_id") === false) {
-        //KALS_context.redirect("mobile_apps/annotation_topics", true);
-        _url = "mobile_apps/annotation_topics";
-    }
-    else {
-        //KALS_context.redirect("mobile_apps/annotation_thread/topic_id/" + this.get_field("topic_id") + "#annotation_" + this.get_field("annotation_id"), true);
-        _url = "mobile_apps/annotation_thread/topic_id/" 
-                + this.get_field("topic_id")
-                + "#annotation_" 
-                + this.get_field("annotation_id");
-    }
-    
-    KALS_context.redirect(_url, true);
-    
-    return this;
-};
-
-/**
- * 啟動recommend的動作
- * @returns {URL_hash_dispatcher.prototype}
- */
-URL_hash_dispatcher.prototype._action_recommend = function () {
-    
-    if ($.is_mobile_mode()) {
-        return this;
-    }
-    
-    //$.test_msg('URL_hash_dispatcher', 'pass4');
-    var _id = this.get_field('recommend');
-    //$.test_msg('has check_hash() recommend', _id);
-    KALS_text.tool.recommend.load_recommend(_id);
-    
-    return this;
-};
-
-/**
- * 啟動select的動作
- * @returns {URL_hash_dispatcher.prototype}
- */
-URL_hash_dispatcher.prototype._action_select = function () {
-    
-    if ($.is_mobile_mode()) {
-        return this;
-    }
-    
-    //$.test_msg('URL_hash_dispatcher', 'pass5');
-    var _scope_text = this.get_field('select');
-    //$.test_msg('has check_hash()', _scope_text);
-
-    //KALS_context.init_profile.add_listener(function () {
-    KALS_context.ready(function() {
-        KALS_text.selection.select.load_select(_scope_text);  
-    });
-    /*
-    KALS_context.init_profile.add_listener(function () {
-        //KALS_context.auth.add_once_listener(function () {
-            //setTimeout(function () {
-                $.test_msg("gogo select");
-                KALS_text.selection.select.load_select(_scope_text);  
-            ///}, 5000);
-        //});
-    });
-    */
-    //setTimeout(function () {
-    //	KALS_text.selection.select.load_select(_scope_text);
-    //}, 3000); 
-    
     return this;
 };
 

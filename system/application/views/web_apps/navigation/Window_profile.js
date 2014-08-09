@@ -130,7 +130,6 @@ Window_profile.prototype._$create_ui = function () {
     _password_link.get_ui().appendTo(_password_link_data);
     */
     
-	// 建立一個視窗變換連結
     var _password_link = _factory.window_change_link(
         new KALS_language_param('Open password change window.'
             , 'window.profile.content.password_change.link'),

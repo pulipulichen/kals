@@ -3,8 +3,6 @@
  * logger
  *
  * 用來記錄資料的功能. A part of KALS
- * 這是記錄在file文件中的，不是資料庫中的
- * 
  * @author Pudding Chen <puddingchen.35@gmail.com>
  * @version 1.0 2010/6/18 上午 11:56:29
  * @copyright Copyright (c) 2010, Pudding Chen
@@ -43,16 +41,14 @@ class Logger {
     
     function debug($message = NULL)
     {
-        if ($this->enable_logging === TRUE) {
+        if ($this->enable_logging === TRUE)
             log_message('debug', $this->_prepend_class_name($message));
-        }
     }
 
     function info($message = NULL)
     {
-        if ($this->enable_logging === TRUE) {
+        if ($this->enable_logging === TRUE)
             log_message('info', $this->_prepend_class_name($message));
-        }
     }
 
     function error($exception, $message = NULL)
@@ -65,22 +61,17 @@ class Logger {
                 $exception = NULL;
             }
 
-            if (is_object($exception)) {
+            if (is_object($exception))
                 $error_message = "Error on line ".$exception->getLine()." in ".$exception->getFile();
-            }
-            else if (is_string($exception)) {
+            else if (is_string($exception))
                 $error_message = $exception;
-            }
-            else {
+            else
                 $error_message = '';
-            }
 
-            if ($message == NULL) {
+            if ($message == NULL)
                 $message = $error_message;
-            }
-            else if ($error_message != '') {
+            else if ($error_message != '')
                 $message = $error_message.": ".$message;
-            }
             
             $message = $this->_prepend_class_name($message);
             log_message('error', $message);
@@ -92,15 +83,15 @@ class Logger {
     function _prepend_class_name($message = NULL)
     {
         $class_name = $this->class_name;
-        if ($class_name != NULL) {
-            if ($message != NULL) {
+        if ($class_name != NULL)
+        {
+            if ($message != NULL)
                 $message = '['.$class_name.'] '.$message;
-            }
-            else {
+            else
                 $message = '['.$class_name.']';
-            }
         }
-        else if ($message == NULL) {
+        else if ($message == NULL)
+        {
             $message = '';
         }
         return $message;

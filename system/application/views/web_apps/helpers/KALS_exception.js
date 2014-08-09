@@ -16,23 +16,19 @@
 function KALS_exception(_class, _message) {
     
     if ($.is_object(_class) 
-        && (typeof(_class.heading) !== 'undefined' 
-        || typeof(_class.message) !== 'undefined'
-        || typeof(_class.request_uri) !== 'undefined')) {
+        && (typeof(_class.heading) != 'undefined' 
+        || typeof(_class.message) != 'undefined'
+        || typeof(_class.request_uri) != 'undefined')) {
         var _server_error = _class;
-        if (typeof(_server_error.heading) !== 'undefined') {
-            this.heading = _server_error.heading;
-        }
-        if (typeof(_server_error.message) !== 'undefined') {
-            this.message = _server_error.message;
-        }
-        if (typeof(_server_error.request_uri) !== 'undefined') {
-            this.request_uri = _server_error.request_uri;
-        }
-    }
-    else if ($.is_class(_class, "KALS_language_param")) {
-        var _lang = _class;
-        this.message = KALS_context.lang.line(_lang);
+        if (typeof(_server_error.heading) != 'undefined') {
+			this.heading = _server_error.heading;
+		}
+        if (typeof(_server_error.message) != 'undefined') {
+			this.message = _server_error.message;
+		}
+        if (typeof(_server_error.request_uri) != 'undefined') {
+			this.request_uri = _server_error.request_uri;
+		}
     }
     else {
         if ($.is_null(_message) && $.is_string(_class)) {
@@ -40,30 +36,16 @@ function KALS_exception(_class, _message) {
             _class = null;
         }
         
-		var _base_url = KALS_context.get_base_url();
-		if ($.is_string(_class) && _class.substr(0, _base_url.length) === _base_url) {
-			_message = KALS_context.lang.line(_message);
-			
-			var _url = _class;
-			//_message = _message + '\n <br /><a href="'+_url+'" target="_blank">'+_url+'</a>';
-			this.request_uri = _url;
+        var _class_name = false;
+        if ($.isset(_class)) {
+			_class_name = $.get_class(_class);
 		}
-		else {
-			var _class_name = false;
-            if ($.isset(_class)) {
-                _class_name = $.get_class(_class);
-            }
-                
-            if (false !== _class_name) {
-                _message = '[' + _class_name + '] ' + _message;
-            }
-			
-	        //_message = new KALS_language_param(_message, _message);
-	        _message = KALS_context.lang.line(_message);
-		}   
+            
+        if (false != _class_name) {
+			_message = '[' + _class_name + '] ' + _message;
+		}
         
         this.message = _message;
-		
         //return _message;   
     }
 }

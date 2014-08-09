@@ -38,8 +38,7 @@ class Unit_test extends Controller {
                 //'ut_kasl_actor',
                 'ut_notification',
                 'ut_user',
-                'ut_user/friend',
-                'ut_user/stat'
+                'ut_user/friend'
             ),
             'ut_kals_resource' => array(
                 'ut_domain',

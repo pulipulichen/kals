@@ -3,22 +3,16 @@
  * 
  * 只有跨越不同程式而需要同一個參數時，才到此設定
  *
- * @package         KALS
- * @category        Webpage Application Libraries
- * @author          Pudding Chen <puddingchen.35@gmail.com>
- * @copyright       Copyright (c) 2010, Pudding Chen
- * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link            https://github.com/pulipulichen/kals
- * @version		1.5 2014/4/28 下午 07:50:21
+ * @package		KALS
+ * @category		Webpage Application Libraries
+ * @author		Pudding Chen <puddingchen.35@gmail.com>
+ * @copyright		Copyright (c) 2010, Pudding Chen
+ * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link		http://sites.google.com/site/puddingkals/
+ * @version		1.0 2010/8/5 下午 07:50:21
  */
 
 DEFAULT_KALS_CONFIG = {
-    
-    /**
-     * 是否啟用KALS
-     * @type Boolean
-     */
-    enable_kals: true,
     
     /**
      * 標註範圍指定區塊
@@ -40,7 +34,6 @@ DEFAULT_KALS_CONFIG = {
     /**
      * 預設登入的帳號
      * @type {string} = null E-mail郵件地址
-     *     也可以使用網址，該網址應該要回傳使用者的email，例如 "http://localhost/user.txt"
      *     不使用預設登入時則是null 
      */
     user_email: null,
@@ -88,13 +81,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * 使用的標註類型
      * 標註類型的順序會照以下設定排列。
-     * 
-     * 20140425 Pulipuli Chen
-     * 舊名稱「annotation_type_option」，新名稱「annotation_type_basic_enable」
-     * 20140505 Pulipuli Chen
-     * 舊名稱「annotation_type_basic_enable」，新名稱「annotation_type_basic」
-     * 
-     * 基本的標註類型如下：
+     * @type {array[string]} 可用的標註類型如下，如果不想用該類型的標註時，您可以省略它：
      *     importance: 重要
      *     concept: 概念
      *     confusion: 困惑
@@ -102,66 +89,19 @@ DEFAULT_KALS_CONFIG = {
      *     example: 舉例
      *     summary: 摘要
      *     custon: 自訂
-     *     
-     *  請自行調整各標註類型的啟用範圍與順序
      */
-    annotation_type_basic: {
-        'importance' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        },
-        'concept' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        },
-        'confusion' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        },
-        'question' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        },
-        'example' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        },
-        'summary' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        },
-        'custom' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
-        }
-    },
+    annotation_type_option: [
+        'importance'
+        , 'concept'
+        , 'confusion'
+        , 'question'
+        , 'example'
+        , 'summary'
+        , 'custom'
+    ],
     
     /**
      * 是否讓「自訂」選項可供使用者自由填入資料
-     * 
-     * 如果是true，就會顯示「自訂」
-     * 如果是false，就會顯示「其他」
      * @type {boolean} = false
      */
     enable_custom_name: true,
@@ -172,13 +112,10 @@ DEFAULT_KALS_CONFIG = {
      * 注意，這個設定不會覆蓋annotation_type_option設定的標註類型
      * 而是會加在原本的標註類型下面。
      * 如果你要取消原本的標註類型，請修改annotation_type_option
-     * 
-     * 20140425 Pulipuli Chen
-     * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefined」
      */
     /*
-    annotation_type_predefined: {
-        "預先定義1": {
+    annotation_custom_type: {
+        "測試": {
             //type_id: 15,
             hint: '測試的說明',
             option: {
@@ -188,14 +125,9 @@ DEFAULT_KALS_CONFIG = {
             anchor: {
                 style: 'dottedline',
                 color: 'blue'    
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
+            }
         },
-        '預先定義2': {
+        '在測試': {
             //type_id: 16,
             hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
             option: {
@@ -206,12 +138,7 @@ DEFAULT_KALS_CONFIG = {
                 style: 'background',
                 color: '#F53004',
                 font_color: 'white'
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            order: 1    // 數字越大，排序越上面
+            }
         }
     },
      */
@@ -224,58 +151,33 @@ DEFAULT_KALS_CONFIG = {
      */
     help_base_url: 'help/',
 	
-    /**
-     * 預設標註類型
-     *
-     * @copyright 20130603 Pudding Chen
-     * @type {string} = "importance" 重要，也可以寫上自訂的名字
-     */
-    default_annotation_type: "importance",
-
-    /**
-     * 網頁搜尋
-     * 
-     * @copyright 20130603 Pudding Chen
-     * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
-     * 
-     * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
-     */
-    web_search_url: { 
-        "Google搜尋": "http://www.google.com/search?q={query}",
-        "維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
-        "Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
-        "Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}"
-    },
-    //web_search_url: "disable",
-
-    /**
-     * 獨立模式
-     * @type {boolean} isolation_mode: false，預設不開啟
-     * 
-     * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
-     * 但是關閉之後，所有人又能看到別人的標註
-     */
-    isolation_mode: false,
+	/**
+	 * 預設標註類型
+	 *
+	 * @copyright 20130603 Pudding Chen
+	 * @type {string} = "importance" 重要，也可以寫上自訂的名字
+	 */
+	default_annotation_type: "importance",
     
-    /**
-     * 是否啟用選取文字快取
-     * @type Boolean
-     */
-    selectable_text_cache: true,
-    
-    /**
-     * 是否覆寫選取文字快取
-     * 當文字修改之後要重新建立快取時，可以啟用這個選項
-     * 如果該選項一直維持true，則會強制一直覆寫快取，而不會讀取快取
-     * @type Boolean
-     */
-    selectable_text_clean_overwrite: false,
-    
-    /**
-     * 是否啟用搜尋工具列
-     * @type Boolean
-     */
-    enable_search_toolbar: true,
+	/**
+	 * 網頁搜尋
+	 * 
+	 * @copyright 20130603 Pudding Chen
+	 * 可以設定網頁搜尋的網址。要搜尋的參數請設成{query}
+	 * 
+	 * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
+	 */
+	web_search_url: "http://www.google.com/search?q={query}",
+	//web_search_url: "disable",
+	
+	/**
+	 * 獨立模式
+	 * @type {boolean} isolation_mode: false，預設不開啟
+	 * 
+	 * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
+	 * 但是關閉之後，所有人又能看到別人的標註
+	 */
+	isolation_mode: false,
 	
     //----------------------------
     
@@ -301,7 +203,7 @@ DEFAULT_KALS_CONFIG = {
             ['TextColor','BGColor'],
 			
 			//最小化的時候顯示的工具列
-            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'Image','Youtube']	
+            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']	
         ],
         height: '50px',
         //width: '261px',
@@ -309,327 +211,24 @@ DEFAULT_KALS_CONFIG = {
         startupFocus: false,
         uiColor : '#CB842E'
     },
-    //標註列表設定
-    annotation_list: {
-        //筆記顯示設定
-        note: {
-            simple_max_length: 150,
-            //允許顯示的HTML標籤
-            allow_html_tags: ["a", "img", "iframe"]
-        }
-    },
-    
-    // --------------------------
-    // KALS framework
-    // --------------------------
-    
-    /**
-     * 需要初始化的事件名稱
-     */
-    view: {
-        init_attrs: [
-            'class',
-            'value',
-            //'style',
-            'src',
-            'height',
-            'width',
-            'alt',
-            'title',
-            'kals-style'
-        ],
-        event_names: [
-            'click',
-            'mouseover',
-            'mouseout',
-            'mouseenter',
-            'blur',
-            'focus',
-            'change',
-            'dblclick',
-            'submit'
-        ],
-        kals_events: {
-            'field_set': 'kals-event-field-set',
-            'field_reset': 'kals-event-field-reset'
-        },
-        kals_attrs: {
-            'field': 'kals-field',
-            'field_parent': 'kals-field-parent',
-            'field_repeat': 'kals-field-repeat',
-            'repeat_index': 'kals-field-repeat-index',
-            'attr_prefix': 'kals-attr-',
-            'origin_value_postfix': '-origin-value',
-            'event_prefix': 'kals-event-'
-        },
-        /**
-         * 找尋變數的規則
-         * @type {RegExp}
-         */
-        regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
-    },   //view: {
-    
-    /**
-     * 偵錯用設定
-     * @type JSON
-     */
-    debug: {
-        /**
-         * 是否顯示ajax_get的連接訊息
-         * @type Boolean
-         */
-        ajax_get_message: false,
-        
-        /**
-         * 開啟ajax_post設定
-         * 設定檔案為 [VIEW]/helpers/KALS_util.js
-         * @type Boolean
-         */
-        ajax_post: false, 
-        
-        /**
-         * 取消載入KALS_context的後續動作
-         * 等於不初始化其他元件
-         * @type Boolean
-         */
-        kals_context_disable: false,
-        
-        /**
-         * 上傳快取資料
-         * @type Boolean
-         */
-        //webpage_cache_save_enable: false
-    },
-    
-    /**
-     * 模組設定
-     * @type {JSON}
-     */
-    modules: {
-        /**
-         * 模組名稱: 模組設定內容
-         * @type {JSON}
-         */
-        /**
-         * 資訊區
-         * @type {Object}
-         */
-        Dashboard: {
-            /**
-             * 是否啟用模組
-             * @type Boolean
-             */
-            "enable": true,
-            "nav_config": {
-                /**
-                 * 顯示資料
-                 * @type Boolean
-                 */
-                display: true,
-
-                /**
-                 * 決定顯示導覽列的位置
-                 * 
-                 * 類型包括：
-                 * - common: 不管什麼類型都會顯示(在以下三種類型中都會顯示)
-                 * - login: 已經登入的使用者就會顯示
-                 * - profile: 以手動登入的使用者才會顯示
-                 * - embed: 以內嵌登入的使用者才會顯示
-                 * - anonymous: 未登入的使用者才會顯示
-                 * @type String
-                 */
-                nav_type: "common",
-
-                /**
-                 * 排序順序
-                 * 
-                 * 數字越大，越往左邊靠
-                 * 數字最小的是1
-                 * @type Number
-                 */
-                order: 1
-            }
-        },
-        /**
-         * 標註小地圖
-         * @type {Object}
-         */
-        Annotation_navigation_map: {
-            /**
-             * 是否啟用模組
-             * @type Boolean
-             */
-            "enable": true,
-            "nav_config": {
-                display: true,
-                nav_type: "common",
-                order: 1
-            },
-            /**
-             * 安照原本的章節順序排序
-             * @type boolean
-             */
-            order_by_article: true
-        },
-        /**
-         * 零碎時間
-         * @type type
-         */
-        Frag_reading: {
-            /**
-             * 是否啟用模組
-             * @type Boolean
-             */
-            "enable": true,
-            "nav_config": {
-                display: false,
-                nav_type: "login",
-                order: 1
-            },
-            /**
-             * 設定自動save_reading_progress的時間頻率
-             * 單位：秒
-             * 
-             * 預設30秒
-             * @type Number
-             */
-            //"interval_span": 5,
-            /**
-             * 頁面停止時延遲的增加時間
-             * @type Number
-             */
-            //"increase_interval_span": 10
-        },
-        /**
-         * 章節地圖
-         */
-        Window_map: {
-            "enable": true
-        },
-        /**
-         * 標註顯示
-         */
-        Window_filter: {
-            "enable": true
-        },
-        /**
-         * 標註顯示
-         */
-        //Window_search: {
-        //    "enable": true
-        //},
-        /**
-         * 導讀功能
-         * 
-         * @version 20140625 因為不穩定，所以沒事不開啟
-         */
-        Reading_guide: {
-            "enable": false
-        },
-        /**
-         * 回報功能
-         */
-        Feedback_manager: {
-            "enable": true
-            /**
-             * 回報接收者的電子郵件信箱
-             * 
-             * 可以設定很多位，用陣列組成
-             * @type String|Array<String>
-             */
-            //,"receiver_email": "pudding@nccu.edu.tw"
-            //,"receiver_email": ["puddingchen.35@gmail.com", "pudding@nccu.edu.tw", "pulipuli.chen@gmail.com"]
-        },
-        /**
-         * 獎章功能
-         */
-        KALS_stamp: {
-        "enable": false,
-            /**
-             * 獎章資格設定
-             */
-            "stamps": [
-                {
-                    /**
-                     * 獎章稱號
-                     * @types {String}
-                     */
-                    "title": "獎章1",
-                    /**
-                     * 如何獲得獎章的訊息
-                     * @types {String}
-                     */
-                    "qualification_message": "如何獲得這個獎章",
-                    /**
-                     * 獲得獎章時候的通知 
-                     * @types {String}
-                     */
-                    "quailfy_message": "通知您獲得了獎章",
-                    /**
-                     * 已經獲得獎章的訊息 
-                     * @types {String}
-                     */
-                    "qualified_message": "您已經獲得了這個獎章",
-                    /**
-                     * 獎章資格
-                     * @types {JSON}
-                     */
-                    "qualifier": {
-                        
-                    },
-                    /**
-                     * 權限設定
-                     * @types {JSON}
-                     */
-                    "policy": {
-                        
-                    }
-                }
-            ]
-        },
-        /**
-         * 開啟行動版網頁
-         * @type type
-         */
-        Open_mobile_apps: {
-            enable: true
-        },
-        /**
-         * 最新標註
-         */
-        Window_search_recent: {
-            "enable": true
-        }
-    }
+	//標註列表設定
+	annotation_list: {
+		//筆記顯示設定
+		note: {
+			simple_max_length: 150,
+			//允許顯示的HTML標籤
+			allow_html_tags: ["a", "img", "iframe"]
+		}
+	}
 };
 
-(function () {
-    /**
-     * 偵測是否有參數，否則直接覆蓋
-     */
-    if (typeof(KALS_CONFIG) !== 'undefined') {
-        for (var _i in KALS_CONFIG) {
-            /**
-             * @version 20140618 Pulipuli Chen
-             * 對應到Modules的 deeper copy
-             */
-            if (_i === "modules") {
-                for (var _j in KALS_CONFIG[_i]) {
-                    //console.log(_j);
-                    DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];
-                }
-            }
-            else {
-                DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
-            }
-        }
+if (typeof(KALS_CONFIG) != 'undefined') {
+    for (var _i in KALS_CONFIG) {
+        DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
     }
+}
 
-    KALS_CONFIG = DEFAULT_KALS_CONFIG;
-    
-})();
-
-
+KALS_CONFIG = DEFAULT_KALS_CONFIG;
 
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */

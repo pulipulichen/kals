@@ -24,27 +24,7 @@ View_list_collection.prototype._$name = "view-list";
 
 View_list_collection.prototype._$topic_id = null;
 
-View_list_collection.prototype._$enable_check_login = false;
-
 View_list_collection.prototype._$target_topic = true;
-
-/**
- * 預設讀取的回應標註
- * @type {number|null} 如果是null，表示讀取全部
- */
-View_list_collection.prototype._$respond_limit = null;
-
-/**
- * 排序的方向。
- * @type {string} desc|asc，如果是null，則由系統預設
- */
-View_list_collection.prototype._$direction = 'asc';
-
-/**
- * 回應的排序方向。
- * @type {string} desc|asc，如果是null，則由系統預設
- */
-View_list_collection.prototype._$respond_direction = 'asc';
 
 /**
  * @type {Annotation_param}
@@ -97,6 +77,7 @@ View_list_collection.prototype.add_list_item = function(_param, _from_head) {
         return List_collection.prototype.add_list_item.call(this, _param, _from_head);
     }
 };
+
 
 /*
 View_list_collection.prototype.editor_add_list_item = function (_param, _from_head) {

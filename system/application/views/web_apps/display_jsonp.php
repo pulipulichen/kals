@@ -12,9 +12,9 @@
  * @version		1.0 2010/7/26 下午 18:17:29
  */
 
-if (isset($callback_hash) && isset($json)) {
+if (isset($callback_hash) && isset($json))
+{
     echo $callback_hash.'('.$json.')';
 }
-else {
+else
     echo $json;
-}

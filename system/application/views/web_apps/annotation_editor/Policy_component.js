@@ -83,7 +83,10 @@ Policy_component.prototype._$create_ui = function () {
         var _option = $('<span></span>')
             .addClass('policy-option')
             .addClass(_type)
-            .hide();
+            .hide()
+            .click(function () {
+                _this.open_window();
+            });
         
         var _lang = new KALS_language_param(
             _type,
@@ -94,10 +97,6 @@ Policy_component.prototype._$create_ui = function () {
         
         _option.appendTo(_ui);
     }
-	
-	_ui.click(function () {
-        _this.open_window();
-    });
     
     setTimeout(function() {
         _this.set_policy_type();
@@ -119,9 +118,9 @@ Policy_component.prototype.set_policy_type = function(_type) {
     //$.test_msg('set_policy_type', [_type, this._policy_type]);
     
     //防止重複變更
-    if (_type === this._policy_type) {
-        return this;
-    }
+    if (_type == this._policy_type) {
+		return this;
+	}
     
     this._policy_type = _type;
     
@@ -136,11 +135,11 @@ Policy_component.prototype.set_policy_type = function(_type) {
     
     _ui.addClass('test' + _type);
     
-    if (_type === 'public') {
+    if (_type == 'public') {
         this._share_list = null;
         _ui.removeClass(_lock_classname);
     }
-    else if (_type === 'private') {
+    else if (_type == 'private') {
         
         var _user_coll = new User_collection_param();
         _user_coll.add(KALS_context.user.get_data());
@@ -148,7 +147,7 @@ Policy_component.prototype.set_policy_type = function(_type) {
         _ui.addClass(_lock_classname);
         //$.test_msg('Policy.set_policy_type', _type);
     }
-    else if (_type === 'share') {
+    else if (_type == 'share') {
         _ui.addClass(_lock_classname);
     }
     

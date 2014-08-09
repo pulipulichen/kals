@@ -46,14 +46,6 @@ class Annotation_type_custom extends Annotation_type {
         $this->custom_name = $custom_name;
         return $this;
     }
-    
-    /**
-     * 如果是自訂類型，則回傳數字(custom)或是自訂類型的名字
-     * @return Int|String
-     */
-    public function export_to_array() {
-        return $this->export_data();
-    }
 
     public function export_data()
     {

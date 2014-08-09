@@ -2,11 +2,11 @@
  * @section Window_filter
  */
 
-.KALS .window-filter .my-type-div {
+.window-filter .my-type-div {
     margin-left: 2em;
 }
 
-.KALS .window-filter .my-type-div label {
+.window-filter .my-type-div label {
     display: block;
     margin: 5px 0;
 }

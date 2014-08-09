@@ -363,24 +363,20 @@ class Generic_collection extends Collection {
     public function load_default()
     {
         $id = $this->get_id();
-        if (is_null($id)) {
+        if (is_null($id))
             return FALSE;
-        }
 
         $db = $this->db;
 
         $db->from($this->table_name);
         $this->_load_default_index_where($db, $id);
 
-        if (isset($this->offset)) {
+        if (isset($this->offset))
             $db->offset ($this->offset);
-        }
-        if (isset($this->limit)) {
+        if (isset($this->limit))
             $db->limit($this->limit);
-        }
-        if (isset($this->order_by)) {
+        if (isset($this->order_by))
             $db->order_by ($this->order_by);
-        }
 
         $this->_load_custom($db, $id);
         $query = $db->get();
@@ -395,12 +391,10 @@ class Generic_collection extends Collection {
         {
             $data = $this->_filter_data_field($row);
             //$member = new $class_name($data);
-            if (isset($this->type_field) && isset($row[$this->type_field])) {
+            if (isset($this->type_field) && isset($row[$this->type_field]))
                 $member = $this->create_item($row[$this->type_field], $data);
-            }
-            else {
+            else
                 $member = $this->create_item(NULL, $data);
-            }
             //array_push($members, $member);
             $this->_load_default_setup_member($row, $member);
         }
@@ -790,24 +784,6 @@ class Generic_collection extends Collection {
         return get_class($this).'::$index_id='.$this->get_id();
     }
     
-    
-    /**
-     * 輸出
-     * @return \Generic_collection
-     */
-    public function export_to_array() {
-        $output = array();
-        
-        foreach ($this AS $key => $item) {
-            if (method_exists($item, 'export_to_array')) {
-                $output[$key] = $item->export_to_array();
-            }
-            else {
-                $output[$key] = $item;
-            }
-        }
-        return $output;
-    }
 }
 
 /* End of file Generic_collection.php */

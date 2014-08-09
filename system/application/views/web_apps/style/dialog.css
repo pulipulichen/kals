@@ -20,14 +20,14 @@
 	
 }
 
-.KALS.dialog-modal.compact-width {
+.dialog-modal.compact-width {
     
     min-width: 0;
     max-width: 100%;
     
 }
 
-.KALS.dialog-modal.compact-height {
+.dialog-modal.compact-height {
     
     max-height:100%;
     overflow:auto;
@@ -39,22 +39,18 @@
     border-bottom-width: 0;
 }
 
-.KALS.dialog-modal.compact-height .dialog-table {
+.dialog-modal.compact-height .dialog-table {
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.KALS.dialog-modal .dialog-table {
-    margin-bottom: 0;
-} 
-
-.KALS .dialog-toolbar-tr,
-.KALS .dialog-toolbar-table {
+.dialog-toolbar-tr,
+.dialog-toolbar-table {
     height: 36px;
 	margin:0px !important;
 	background: rgba(0,0,0,0)!important;
 }
-.KALS .dialog-toolbar-table tr{
+.dialog-toolbar-table tr{
 	background: rgba(0,0,0,0)!important;
 }
 
@@ -96,30 +92,23 @@
 }
 
 .KALS.window .dialog-toolbar .button.dialog-option {
-    /**
-     * @copyright 20130608 Pudding Chen
-     */
+	
+	/**
+	 * @copyright 20130608 Pudding Chen
+	 */
     line-height: 30px;
     height: 30px;
-    padding: 0 0.2em;
 }
 
-.KALS .dialog-toolbar tr td {
-	padding:0px 0px;
-	border:0px;
-	border-collapse:inherit;
+.dialog-toolbar tr td {
+	padding:0px 0px !important;
+	border:0px !important;
+	border-collapse:inherit !important;
 }
-
-.KALS .dialog-toolbar tr td.toolbar-options.toolbar-forward {
-    padding-right: 5px;
-}
-.KALS .dialog-heading {
+.dialog-heading {
     margin: 0.1em 16px 0.2em 0;
-    
     -moz-user-select: none;
     -webkit-user-select: none;
-    -khtml-user-select: none;
-    
     cursor:default;
     padding: 0;
     text-align:center;
@@ -128,19 +117,18 @@
     line-height: 1.1em;
 }
 
-.KALS .dialog-content-td {
+.dialog-content-td {
     vertical-align:top;
 }
 
-.KALS .toolbar-options {
+.toolbar-options {
     display: none;
     width: 40px;
     overflow:hidden;
 }
 
-.KALS .toolbar-options .dialog-option {
+.toolbar-options .dialog-option {
     font-size: 0.7em;
-    font: 70% arial,helvetica,clean,sans-serif;
     min-height: 0;
     height: 30px;
     line-height: 30px;
@@ -150,25 +138,23 @@
     margin-bottom: 10px;
 }
 
-.KALS .dialog-toolbar.hide-option .dialog-option {
+.dialog-toolbar.hide-option .dialog-option {
     visibility:hidden;
 }
 
-.KALS .toolbar-forward {
+.toolbar-forward {
     text-align:right;
 }
 
-.KALS .toolbar-backward .dialog-option {
+.toolbar-backward .dialog-option {
     margin-left: 3px;
 }
 
-.KALS .toolbar-forward .dialog-option {
+.toolbar-forward .dialog-option {
     margin-right: 3px;
 }
 
-.KALS .button.dialog-option,
-.KALS .kals-view button,
-.KALS .kals-view .button {
+.KALS .button.dialog-option {
     cursor:pointer;
     margin: 0;
     
@@ -186,7 +172,6 @@
     /*font-weight: bold;*/
     outline: medium none;
     font-size: 0.7em;
-    font: 70% arial,helvetica,clean,sans-serif;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;
@@ -201,16 +186,16 @@
     -webkit-border-radius: 8px;
     border-radius: 8px;
     -khtml-border-radius: 8px;
-    /*min-height: 33px;*/
+    min-height: 33px;
 }
 
 
 
-.KALS .dialog-option.link {
+.dialog-option.link {
     color: blue;
 }
 
-.KALS .button.dialog-option.hover {
+.button.dialog-option.hover {
     
     background: -moz-linear-gradient(#FFE08E 0%, #FFDE7D 100%);
     background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FFE08E)
@@ -224,100 +209,98 @@
 }
 
 /*
-.KALS .dialog-content-tr {
+.dialog-content-tr {
     display: none;
 }
 */
-.KALS .dialog-content-tr{
+.dialog-content-tr{
 	background: rgba(0,0,0,0)!important;
 }
 
-.KALS .dialog-content {
+.dialog-content {
     border:0 none;
     overflow: auto;
-    overflow-y: hidden;
-    padding: 0.5em 1em /*!important*/;
-    /*padding-bottom: 0;*/
+    padding: 0.5em 1em !important;
     color: #383838;
     cursor: auto;    
-    /*max-height: 400px;*/
-    line-height:normal !important;
+    max-height: 400px;
+	line-height:normal !important;
 }
 
-.KALS.dialog-modal.compact-height .dialog-content {
+.dialog-modal.compact-height .dialog-content {
     overflow:visible;
     max-height:inherit;
     height:auto;
 }
 
-.KALS .dialog-options .dialog-option {
+.dialog-options .dialog-option {
     
     width: 100%;
     margin-top: 5px;
 }
 
-.KALS .dialog-option.option-left {
+.dialog-option.option-left {
     float:left;
     width: 49%;
 }
 
-.KALS .dialog-option.option-right {
+.dialog-option.option-right {
     float:right;
     width: 49%;
 }
 
-.KALS.dialog-modal.with-content.with-options .dialog-content {
+.dialog-modal.with-content.with-options .dialog-content {
     border-bottom:1px solid #8E846B !important;
     margin-bottom: 5px;
 }
 
-.KALS.dialog-modal.with-content.with-options.hide-options .dialog-content {
+.dialog-modal.with-content.with-options.hide-options .dialog-content {
     border-bottom-width: 0;
     margin-bottom: auto;
 }
 
-.KALS.dialog-modal.hide-options .dialog-options {
+.dialog-modal.hide-options .dialog-options {
     display: none;
 }
 
 /* -------- */
 /* exception */
 
-.KALS .dialog-content .exception {
+.dialog-content .exception {
     margin-top:0;
     margin-bottom: 0;
 }
 
-.KALS .dialog-content .exception dd p {
+.dialog-content .exception dd p {
     margin: 0;
 }
 
-.KALS .dialog-content .exception dd {
+.dialog-content .exception dd {
     word-break:break-all;
 }
-.KALS .window-loading-tr{
+.window-loading-tr{
 	height:0px !important;
 	padding:0px 0px !important;
 	background: rgba(0,0,0,0)!important;
 }
-.KALS .window-loading-tr td{
+.window-loading-tr td{
 	height:0px !important;
 	padding:0px 0px !important;
 	border: 0px !important;
 }
-.KALS .dialog-content-tr{
+.dialog-content-tr{
 	padding:0px 0px !important;
 }
-.KALS .dialog-content-td{
+.dialog-content-td{
 	padding:0px 0px !important;
 	border: 0px !important;
 	
 }
-.KALS .dialog-options{
+.dialog-options{
 	height:28px !important;
 	padding:0px 0px !important;
 	background: rgba(0,0,0,0)!important;
 }
-.KALS .dialog-options td{
+.dialog-options td{
 	border: 0px !important;
 }

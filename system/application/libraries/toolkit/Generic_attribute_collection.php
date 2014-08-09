@@ -62,12 +62,6 @@ class Generic_attribute_collection extends Generic_collection {
      * @var array
      */
     protected $class_name = array();
-    
-    /**
-     * 資源的ID
-     * @var type 
-     */
-    protected $resource_type_id;
 
     /**
      * 預設設定集合成員的方法
@@ -80,9 +74,8 @@ class Generic_attribute_collection extends Generic_collection {
     protected function _load_default_setup_member($row, $member)
     {
         $type_id = NULL;
-        if (isset($row[$this->type_field])) {
+        if (isset($row[$this->type_field]))
             $type_id = $row[$this->type_field];
-        }
         $this->members[$type_id] = $member;
     }
 
@@ -108,11 +101,11 @@ class Generic_attribute_collection extends Generic_collection {
      */
     public function  get_item($type_id) {
         $item = parent::get_item($type_id);
-        if (is_null($item)) {
+        if (is_null($item))
+        {
             $item = $this->create_item($type_id);
-            if (isset($item)) {
+            if (isset($item))
                 $this->add_item($item, $type_id);
-            }
         }
         return $item;
     }
@@ -130,7 +123,8 @@ class Generic_attribute_collection extends Generic_collection {
     public function  create_item($type_id = NULL, $data = array()) {
         $item = parent::create_item($type_id, $data);
 
-        if (isset($item)) {
+        if (isset($item))
+        {
             if (isset($this->type_field) && isset($type_id)
                 && is_null($item->get_field($this->type_field)))
                 $item->set_field($this->type_field, $type_id);

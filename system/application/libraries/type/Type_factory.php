@@ -113,29 +113,8 @@ class Type_factory extends Generic_object {
             $type = $this->create_type($type_name);
             return $type->get_id();
         }
-        else {
+        else
             return null;
-        }
-    }
-    
-    /**
-     * 取得type的Object
-     * @version 20140512 Pudding Chen
-     * @param number|string $type_name 要查詢的值。
-     *  可以是數字(那應該就是type_id)，
-     *  也可以是字串，那會查詢並轉換成type_id。
-     */
-    public function filter_object($type_name) {
-        if (is_int($type_name)) {
-            return new Annotation_type($type_name);
-        }
-        else if (is_string($type_name)){
-            $type = $this->create_type($type_name);
-            return $type;
-        }
-        else {
-            return null;
-        }
     }
 
     /**

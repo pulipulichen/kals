@@ -141,13 +141,10 @@ List_item_topic.prototype.clear_selection = function () {
 
 //List_item_topic.prototype._classname = 'list-item';
 
-/**
- * 回應標註
- */
 List_item_topic.prototype.respond_annotation = function () {
-    return List_item_respond.prototype.respond_annotation.call(this);
+    
+    return this.view_thread();
 };
-
 
 /* End of file List_item_topic */
 /* Location: ./system/application/views/web_apps/List_item_topic.js */

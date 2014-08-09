@@ -41,7 +41,6 @@ $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "kals";
 $db['default']['password'] = "password";
 $db['default']['database'] = "kals";
-//$db['default']['database'] = "demo-kals-tanja-2013";
 $db['default']['dbdriver'] = "postgre";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;

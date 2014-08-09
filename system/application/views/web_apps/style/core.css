@@ -1,23 +1,10 @@
-.KALS .init-component.excute-confirm .browser {
+.init-component.excute-confirm .browser {
     font-weight: bold;
     /*color: blue;*/
     /*padding: 0 1em;*/
 }
 
-.KALS .init-component.excute-confirm .recommend-browser {
+.init-component.excute-confirm .recommend-browser {
     /*padding: 0 1em;*/
     font-weight: bold;
-}
-
-.KALS.check-css {
-	color:rgb(128, 128, 128);
-}
-
-@font-face {
-    font-family: 'KALS-font';
-    src: local("微軟正黑體"), url(${base_url}images/msjh.ttf);
-}
-
-.KALS {
-    font-family: KALS-font;
 }

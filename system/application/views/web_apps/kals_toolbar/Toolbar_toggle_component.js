@@ -27,7 +27,9 @@ Toolbar_toggle_component.prototype._$create_ui = function () {
     
     var _this = this;
     _button.click(function () {
+        
         KALS_toolbar.toggle_toolbar();
+        
     });
     
     return _ui;  
@@ -39,12 +41,11 @@ Toolbar_toggle_component.prototype.hide = function (_instant) {
     _ui.addClass('hidden');
     
     if (_instant === true) {
-        _ui.hide();
-    }
-    else {
-        //_ui.slideUp();
-        _ui.fadeOut();
-    }
+		_ui.hide();
+	}
+	else {
+		_ui.slideUp();
+	}
     
     return this;
 };
@@ -55,12 +56,11 @@ Toolbar_toggle_component.prototype.show = function (_instant) {
     _ui.removeClass('hidden');
     
     if (_instant === true) {
-        _ui.show();
-    }
-    else {
-        //_ui.slideDown();
-        _ui.fadeIn();
-    }
+		_ui.show();
+	}
+	else {
+		_ui.slideDown();
+	}
     
     return this;
 };

@@ -57,15 +57,14 @@ Overlay_modal.prototype._$get_config = function () {
         load: false,
         onBeforeLoad: function() {
             //跟Modal_controller註冊開啟
-            if (typeof(KALS_context) === 'object' 
-                    && typeof(KALS_context.overlay) === 'object') {
-                KALS_context.overlay.add_opened(_this);
-            }
+            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
+				KALS_context.overlay.add_opened(_this);
+			}
             
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onviewportmove)) {
-                _this._$onviewportmove(_ui);
-            }
+				_this._$onviewportmove(_ui);
+			}
         },
         onLoad: function () {
             
@@ -81,26 +80,27 @@ Overlay_modal.prototype._$get_config = function () {
                 complete: function () {
                     setTimeout(function () {
                         if ($.is_function(_this._$onopen)) {
-                            _this._$onopen(_ui);
-                        }
+							_this._$onopen(_ui);
+						}
                         _this.call_temp_callback(_ui);    
                     }, 1000);
+                       
                 }
             });
         },
         onBeforeClose: function () {
             //跟Modal_controller註冊關閉
-            if (typeof(KALS_context) === 'object' 
-                    && typeof(KALS_context.overlay) === 'object') {
-                KALS_context.overlay.delete_opened(_this);
-            }
+            if (typeof(KALS_context) == 'object' && typeof(KALS_context.overlay) == 'object') {
+				KALS_context.overlay.delete_opened(_this);
+			}
             
         },
         onClose: function () {
+            
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onclose)) {
-                _this._$onclose(_ui);
-            }
+				_this._$onclose(_ui);
+			}
             _this.call_temp_callback(_ui);
             
             
@@ -110,20 +110,6 @@ Overlay_modal.prototype._$get_config = function () {
         oneInstance: false
     };   
     return _config; 
-};
-
-/**
- * 設定好effect
- */
-Overlay_modal.prototype._setup_effect = function () {
-	$.tools.overlay.addEffect("fade", function(position, done) {
-	      this.getOverlay().css(position).fadeIn(this.getConf().speed, done);
-	   },// close function
-	   function(done) {
-	      // fade out the overlay
-	      this.getOverlay().fadeOut(this.getConf().closeSpeed, done);
-	   }
-	); 
 };
 
 /**
@@ -139,7 +125,7 @@ Overlay_modal.prototype.open = function (_callback) {
         //$.test_msg('Overlay_modal.open() check _ui', [(_ui != null), (typeof(_ui.overlay) == 'function'), _callback]);
         
         if (_ui !== null) {
-            if (typeof(_ui.overlay) === 'function') {
+            if (typeof(_ui.overlay) == 'function') {
                 //$.test_msg('Overlay_modal.open() 設置this._$temp_callback', _callback);
                 this._$temp_callback = _callback;
                 //$.test_msg('Overlay_modal.open() 設置了this._$temp_callback', this._$temp_callback);
@@ -147,23 +133,9 @@ Overlay_modal.prototype.open = function (_callback) {
                 //此處的callback會在load的時候就呼叫了
                 var _api = _ui.data("overlay");
 				//$.test_msg('Overlay_modal.open() 有API嗎?', $.isset(_api));
-				
                 if ($.isset(_api)) {
                     _api.setOpened(false);
-					try {
-						_api.load();
-					}
-					catch (_e) {
-						_this._setup_effect();
-						try {
-							//再試著讀取一次
-							_api.load();
-						}
-						catch (_final_e) {
-							$.test_msg('open Overlay failed: ' , _final_e);
-						}
-					}
-                      
+                    _api.load();    
                 }
                 _ui.show();
                 
@@ -200,7 +172,7 @@ Overlay_modal.prototype.close = function (_callback) {
         var _this = this;
         
         if (_ui !== null) {
-            if (typeof(_ui.overlay) === 'function') {
+            if (typeof(_ui.overlay) == 'function') {
                 //$.test_msg('close set temp callback', [this.get_modal_name(), typeof(_callback)]);
                 //$.test_msg('close set temp callback', _ui.overlay().close);
                 this._$temp_callback = _callback;
@@ -255,7 +227,7 @@ Overlay_modal.prototype.expose = function (_callback) {
     
     var _ui = this.get_ui();
     
-    if ($.isset(_ui) && typeof(_ui.expose) === "function") {
+    if ($.isset(_ui) && typeof(_ui.expose) == "function") {
         _ui.expose({
             color: '#333333',
             loadSpeed: 200,
@@ -279,8 +251,8 @@ Overlay_modal.prototype.expose = function (_callback) {
  */
 Overlay_modal.prototype.cover = function (_callback) {
     if (this._$exposable === false) {
-        return this;
-    }
+		return this;
+	}
     
     var _ui = this.get_ui();
     

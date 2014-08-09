@@ -86,16 +86,6 @@ Scope_collection_param.prototype.import_coll = function (_scope_coll) {
         this.empty();
         this.add(_scope_coll);
     }
-    else if ($.is_array(_scope_coll) 
-        && _scope_coll.length === 2
-        && $.is_number(_scope_coll[0]) ) {
-        var _from = _scope_coll[0];
-        var _to = _scope_coll[1];
-        //$.test_msg('Scope_collection_para.import_coll() add', [_from, _to]);
-        this.add(_from, _to);
-        
-        this._resorted = true;
-    }
     else if ($.is_array(_scope_coll)) {
         var _scope_coll_json = _scope_coll;
         
@@ -114,12 +104,6 @@ Scope_collection_param.prototype.import_coll = function (_scope_coll) {
         
         //this.resort();
         //$.test_msg('Scope_collection_para.import_coll()', this.scopes[0].get_to());
-    }
-    else if ($.is_object(_scope_coll)) {
-        for (var _i in _scope_coll) {
-            var _webpage_scope_coll = _scope_coll[_i];
-            this.import_coll(_webpage_scope_coll);
-        }
     }
     return this;
 };
@@ -285,14 +269,6 @@ Scope_collection_param.prototype.get_first_index = function () {
     return _index;
 };
 
-/**
- * 取得第一個from
- * @type number
- */
-Scope_collection_param.prototype.get_from = function(){
-	return this.get_first_index();
-};
-
 Scope_collection_param.prototype.get_last_index = function () {
     
     var _index;
@@ -305,19 +281,6 @@ Scope_collection_param.prototype.get_last_index = function () {
     return _index;
 };
 
-/**
- * 取得最後一個to
- * @type number
- */
-Scope_collection_param.prototype.get_to = function(){
-    return this.get_last_index();
-};
-
-/**
- * 匯出標註範圍的資料
- * @param {boolean} _export_anchor_text 是否匯出標註範圍文字，預設是false
- * @returns {Array}
- */
 Scope_collection_param.prototype.export_json = function (_export_anchor_text) {
     
     var _json = [];

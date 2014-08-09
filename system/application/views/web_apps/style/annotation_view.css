@@ -1,12 +1,11 @@
-.KALS .view-anchor-text-component {
+.view-anchor-text-component {
     background-color: white;
 }
 
-.KALS .view-anchor-text-component .text-container {
+.view-anchor-text-component .text-container {
     text-align: left;
     font-style: italic;
     font-size: 1em;
-    font: 100% arial,helvetica,clean,sans-serif;
     color: black;
     background-color: #CCC;
     margin: 1em !important;
@@ -16,38 +15,30 @@
     -webkit-border-radius: 8px;
     border-radius: 8px;
     -khtml-border-radius: 8px;
-    
     -moz-box-shadow: 0 0 20px #666666;
     -webkit-box-shadow: 0 0 20px #666666;
-    -khtml-box-shadow: 0 0 20px #666666;
-    box-shadow: 0 0 20px #666666;
-	
-	max-height: 3em;
-	overflow-y: auto;
 }
 
-.KALS .window-view-content .editor-container {
+.window-view-content .editor-container {
     border-style: none;
 }
 
-.KALS .window-view-content .editor-container .toggle,
-.KALS .window-view-content .editor-container .toggle td {
+.window-view-content .editor-container .toggle,
+.window-view-content .editor-container .toggle td {
     -moz-box-shadow: 0 0 0;
     -webkit-box-shadow: 0 0 0;
-    -html-box-shadow: 0 0 0;
-    box-shadow: 0 0 0;
 }
 
-.KALS .window-view-content .list-item.focus {
+.window-view-content .list-item.focus {
     background-color: white;
 }
 
-.KALS .window-view-content.not-login .editor-container,
-.KALS .window-view-content.temp-logout .editor-container {
+.window-view-content.not-login .editor-container,
+.window-view-content.temp-logout .editor-container {
     display: none;
 }
 
-.KALS .window-view-content .list-item-topic .list-item {
+.window-view-content .list-item-topic .list-item {
     padding-left: 5px;
     padding-right: 5px;
     background-color: white;
@@ -55,12 +46,12 @@
 	clear:both;
 }
 
-.KALS .window-view-content .list-item-respond .list-item {
+.window-view-content .list-item-respond .list-item {
     padding-left: 2em;
 	clear:both;
 }
 
-.KALS .window-view-content .view-list-container {
+.window-view-content .view-list-container {
     /*max-height:215px;*/
     max-height:160px;
     height:160px;
@@ -68,48 +59,43 @@
     overflow-y:auto;
     background-color: white;
     border: 1px solid #494437;
-	padding-bottom: 20px;
 }
 
-.KALS .window-view-content.hide-editor .view-list-container {
-    max-height:340px;
-    height:345px;
+.window-view-content.hide-editor .view-list-container {
+    max-height:365px;
+    height:365px;
 }
 
-.KALS .window-view-content.not-login .view-list-container,
-.KALS .window-view-content.temp-logout .view-list-container {
+.window-view-content.not-login .view-list-container,
+.window-view-content.temp-logout .view-list-container {
     max-height: 100%;
     height: 100%;
 } 
 
-.KALS .window-view-content .list-item-topic {
+.window-view-content .list-item-topic {
     border-bottom-style: none;
 }
 
-.KALS .window-view-content .editor-container {
+.window-view-content .editor-container {
     height: 180px;
 }
 
-.KALS .window-view-content.hide-editor .editor-container {
+.window-view-content.hide-editor .editor-container {
     height:30px;
 }
 
-.KALS .window-view-content.temp-logout .list-menu-option {
+.window-view-content.temp-logout .list-menu-option {
     display: none !important;
 }
 
-.KALS .window-view-content .list-menu-block {
+.window-view-content .list-menu-block {
     float:right;
 }
 
-.KALS .window-view-content .editor-container .toggle.top {
+.window-view-content .editor-container .toggle.top {
     border-width:0;
 }
 
-.KALS .window-view-content .editor-container .toggle.top td {
+.window-view-content .editor-container .toggle.top td {
     display: block;
-}
-
-.KALS .list-collection.view-list .skip-component {
-	display: none;
 }

@@ -2,24 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
+<title>KALS!標註工具 指定預設登入帳號</title>
 </head>
 
 <body>
 <div>
-<p style="float:right"><a href="index.php">回首頁</a></p>
+<p style="float:right"><a href="index.html">回首頁</a></p>
 <h1>KALS!標註工具 指定預設登入帳號</h1>
 <p>讓您設定此網頁登入KALS的帳號。此帳號不能登出或切換其他帳號登入，只能用設定的帳號進行標註。</p>
 <img border="1" src="embed_email 2011-11-13_214615.png" />
 
 <hr />
 
-<!-- <div id="scope" style="line-height: 2em;"> -->
 <div id="scope">
-<h1>數位圖書館概說</h1>
+<h2>數位圖書館概說</h2>
 <p>近五十年來圖書館的發展歷程，歷經參考諮詢與資訊服務的開始發展，至1970年代步入圖書館自動化，再踏入1980年代的各類型資料庫的全面開展，  隨後進入1990年代的網路時代多媒體。電子出版的世界，因網際網路與數位科技的迅速發展，對圖書館的角色與發展投下巨大的變數，傳統的紙本館藏取而代之  的是如雨後春筍般急速成長的電子出版品，因應環境的變遷，原本傳統紙質型態的出版品，也不斷被掃瞄數位化以便於傳遞服務。圖書館一詞開始有「數位圖書館」  (Digital library)的出現，也有電子圖書館(Electronic library)、虛擬圖書館(Virtual  library)、無牆圖書館(Library without wall)等近似詞。不僅代表人們對於圖書館的期望，亦反應出新科技對圖書館的衝擊。</p>
 <p>圖書館從早期以紙質媒體的典藏，配合電腦科技的發展開始有電子文件，到利用圖書館自動化系統整合圖書館作業，引進各項電子資源，並進入網路環境的複  合圖書館時代，近幾年更因寬頻、高速、高密度的數位傳訊與數位典藏環境，造就數位圖書館、網站圖書館時代的來臨。  然而傳統圖書館與數位圖書館均有不足之處，整理兩者可互補者在於</p>
-<h1>下一章</h1>
 <ol>
   <li>傳統圖書館館藏文獻是數位圖書館的基礎，數位圖書館的形成三要素 :  使用者、資訊資源與通訊網路。其中資訊資源需要存在於載體上，不論是印刷或是電子型式，都需要一個機構進行資訊的徵集、加工和組織，所有資訊資訊和資料庫  都必須由人開發整理，而圖書館長久以來扮演的資訊中介者角色，也積累了豐富的各項資訊資源，是發展數位圖書館的最佳基礎。</li>
   <li>數位圖書館透過網路促進資源共享的功能，可彌補傳統圖書館限於空間及本身資源不足問題，難以履行資源共享的困境，透過網路，館際間可便利交換共享其他圖書館的數位資源，加速館際間合作關係的推動。</li>
@@ -61,7 +59,7 @@
 
 var _id_header = "setup_location";
 var _url = "http://" + location.host;
-if (_url.substr(_url.length -1 , _url.length) === "/")
+if (_url.substr(_url.length -1 , _url.length) == "/")
     _url = _url.substring(0, _url.length-1);
     
 for (var _i = 6; _i < 7; _i++)
@@ -77,7 +75,7 @@ for (var _i = 6; _i < 7; _i++)
 KALS_CONFIG = {
     annotation_scope_selector: "#scope",
     login_hint: 'You can use demo account: 電子信箱位址：<strong>demo@dlll.nccu.edu.tw</strong> / 密碼：<strong>demo</strong>',
-    //selectable_text_cache: false,
+    
     /**
      * 預設登入的帳號
      * @type {string} = null E-mail郵件地址

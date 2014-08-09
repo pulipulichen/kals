@@ -29,14 +29,6 @@ Window_change_link.prototype.close_handle = function (_ui, _callback) {
     KALS_context.overlay.lock_mask();
     
     var _this = this;
-    if (typeof(_this.content_name) != 'undefined') {
-            KALS_window.setup_window(_this.content_name, function () {
-                KALS_context.overlay.unlock_mask();
-            });
-    }
-	
-    /*
-    var _this = this;
     setTimeout(function () {
         Dialog_close_link.prototype.close_handle.call(_this, _ui, function () {
             //if (typeof(_this.content_name) == 'string')
@@ -46,7 +38,7 @@ Window_change_link.prototype.close_handle = function (_ui, _callback) {
                 
         });    
     }, 0);
-    */
+    
     
 };
 

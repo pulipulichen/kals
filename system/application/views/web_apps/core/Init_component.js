@@ -1,8 +1,6 @@
 /**
  * Init_component
  *
- * 初始化第二步驟
- * 
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>
@@ -18,14 +16,7 @@ function Init_component (_onstart, _oncomplete) {
     
     Task_event_dispatcher.call(this, _onstart, _oncomplete);
     
-    this._$schedule_task = [
-        'KALS_toolbar', 
-        'KALS_text', 
-        'KALS_window', 
-        'site_reform',
-        'modules_config',
-        "webpage_info"
-    ];
+    this._$schedule_task = ['KALS_toolbar', 'KALS_text', 'KALS_window'];
 }
 
 Init_component.prototype = new Task_event_dispatcher();
@@ -47,15 +38,6 @@ Init_component.prototype._$onstart = function () {
         */
         return this.deny_ie6();
     }
-    
-    var _this = this;
-    
-    KALS_text = new KALS_text();
-    
-    // 執行Site_reform
-    KALS_context.site_reform.reform(function () {
-        _this.complete('site_reform');
-    });
         
     //初始化時大概是這項這樣子的
     //KALS_toolbar = new KALS_toolbar(); 
@@ -64,48 +46,19 @@ Init_component.prototype._$onstart = function () {
     
     KALS_toolbar = new KALS_toolbar();    
     //KALS_context.init_component.complete('KALS_toolbar');
-        
-    //KALS_text = new KALS_text();
     
+    
+    KALS_text = new KALS_text();
     //$.test_msg('Init_component.$onstart()');
     if ($.browser.msie) {
         //this.excute_confirm();
     }
-    
-    KALS_context.loader.load_modules_config(function () {
-        _this.complete("modules_config");
-    });
-    
-    /**
-     * @version 20140519 Pulipuli Chen
-     */ 
-    KALS_context.loader.load_webpage_info(function () {
-        _this.complete("webpage_info");
-        KALS_text.init_start();
-    });
-    
-    $(function() {
-        KALS_context.feedback.init();
-    });
-    
 };
 
 Init_component.prototype._is_ie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);
 
 Init_component.prototype._$oncomplete = function () {
     //$.test_msg('Init_component.$oncomplete()');
-    
-    /**
-     * 根據頁面條件，強制調整網頁的樣式
-     * 
-     * 但是應該寫成獨立物件
-     * @20131113 Pulipuli Chen
-     * @deprecated 20131227 寫成了Site_reform，所以不使用這個了
-     */
-    //KALS_text.style_adapter();
-
-    //this._check_css_loaded();
-
     KALS_context.init_profile.start();
 };
 
