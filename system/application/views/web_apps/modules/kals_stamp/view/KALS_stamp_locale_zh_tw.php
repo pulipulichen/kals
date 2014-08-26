@@ -22,12 +22,21 @@ $lang["stamps_level_4_message"] = "你是國王！太棒了！";
 
 $lang["statistic_heading"] = "您的閱讀進度";
 $lang["statistic_topic_annotation_count"] = "主題標註";
-$lang["statistic_topic_predefined_count"] = "補充資料標註";
+$lang["statistic_topic_knowed_count"] = "我知道";
+$lang["statistic_topic_knowledge_count"] = "新知識";
+$lang["statistic_topic_dont_know_count"] = "我不懂";
+$lang["statistic_topic_strange_count"] = "很奇怪";
+$lang["statistic_topic_predefined_count"] = "補充舉例";
+$lang["statistic_topic_discuss_count"] = "我想說";
+
 $lang["statistic_topic_annotation_importance_count"] = "主題重要標註";
 $lang["statistic_topic_annotation_confusion_count"] = "主題困惑標註";
 $lang["statistic_topic_annotation_summary_count"] = "主題摘要標註";
+
 $lang["statistic_responded_annotation_count"] = "被回覆標註";
 $lang["statistic_respond_to_annotation_count"] = "回覆標註";
+$lang["statistic_responded_user_count"] = "被回覆人數";
+$lang["statistic_respond_to_user_count"] = "回覆人數";
 
 $lang["annotation_counts"] = "標註數量";
 $lang["stamp_geted"] = "已獲得獎章";

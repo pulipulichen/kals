@@ -685,12 +685,48 @@ Context_user.prototype.set_responded_annotation_count = function (_count) {
 
 /**
  * 取得被別人回應的標註次數
- * 
- * @returns {Int}
+ * @param {Int} _count 次數
+ * @returns {Context_user}
  */
 Context_user.prototype.get_responded_annotation_count = function () {
     // 取用user_statistic的方法？
     return this.get_attr("responded_annotation_count", 0);
+};
+
+/**
+ * 設定被多少人回應的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_responded_user_count = function (_count) {
+    return this.set_attr("responded_user_count", _count);
+};
+
+/**
+ * 取得被多少人回應的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_responded_user_count = function () {
+    return this.get_attr("responded_user_count", 0);
+};
+
+/**
+ * 設定回應了多少人的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_respond_to_user_count = function (_count) {
+    return this.set_attr("respond_to_user_count", _count);
+};
+
+/**
+ * 取得回應了多少人的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_respond_to_user_count = function () {
+    return this.get_attr("respond_to_user_count", 0);
 };
 
 // ------------------------------

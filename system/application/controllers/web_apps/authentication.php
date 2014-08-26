@@ -127,6 +127,8 @@ class Authentication extends Web_apps_controller {
             'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
             'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
             'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+            'responded_user_count' =>$this->user_statistic->get_responded_users_count($user, $webpage),
+            'respond_to_user_count' =>$this->user_statistic->get_respond_to_users_count($user, $webpage),
             
             // int count
             'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),

@@ -108,50 +108,50 @@ DEFAULT_KALS_CONFIG = {
     annotation_type_basic: {
         'importance' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'concept' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'confusion' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'question' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'example' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'summary' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'custom' : {
             enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+                topic: false,    // 新標註
+                respond: false   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         }
@@ -178,11 +178,100 @@ DEFAULT_KALS_CONFIG = {
      */
    
     annotation_type_predefined: {
-        "補充資料": {
+      "我知道": {
             //type_id: 15,
-            hint: '額外增加說明的資料',
+            hint: '已經學過或知道的詞語/文句意思',
+            option: {
+                background_color: 'rgb(189,252,50)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },
+      "新知識": {
+            //type_id: 15,
+            hint: '從文章/標註中學到的新知識',
+            option: {
+                background_color: 'rgb(250,250,0)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        }, 
+
+      "我不懂": {
+            //type_id: 15,
+            hint: '看不懂或不了解的地方，並簡單說明原因，讓同學來幫助你吧！',
+            option: {
+                background_color: 'rgb(245,147,48)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },
+     
+      "很奇怪": {
+            //type_id: 15,
+            hint: '覺得文章意思或標註有問題的地方，並說明理由',
+            option: {
+                background_color: 'rgb(222,120,222)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },     
+        
+        "補充舉例": {
+            //type_id: 15,
+            hint: '利用線上搜尋工具來額外增加說明文章意思的資料',
             option: {
                 background_color: 'gray',
+                font_color: 'white'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },
+        
+      "我想說": {
+            //type_id: 15,
+            hint: '針對文章的內容，和大家一起討論交換意見吧！',
+            option: {
+                background_color: 'rgb(18,49,204)',
                 font_color: 'white'
             },
             anchor: {
@@ -604,7 +693,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升騎士的話請試著標註10篇重要標註喔！",
+                    "qualification_message": "想要晉升騎士的話請試著標註3篇標註！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -628,11 +717,8 @@ DEFAULT_KALS_CONFIG = {
                         //    }
                         //}
                         topic_annotation_count: {
-                            //"_total": {
-                            //    count:5
-                            //},
-                            "importance": {
-                              count:10
+                            "_total": {
+                                count:3
                             }
                         }                      
                     }, //qualifier
@@ -656,7 +742,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到主教的話請撰寫3篇困惑標註、5篇摘要標註，並試著回應別人至少2篇回應標註吧",
+                    "qualification_message": "想要達到主教的話請撰寫10篇標註，並試著標註5篇我知道與3篇我不懂喔！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -673,14 +759,13 @@ DEFAULT_KALS_CONFIG = {
                      */
                     "qualifier": {
                         topic_annotation_count: {
-                            //count:3,
-                            //"_total":{
-                            //  count:10  
-                            //},
-                            "confusion": {
-                              count:3
+                            "_total":{
+                              count:10  
                             },
-                             "summary": {
+                            "我知道": {
+                              count:5
+                            },
+                             "我不懂": {
                               count:3
                             }
                             /*"example": {
@@ -688,10 +773,10 @@ DEFAULT_KALS_CONFIG = {
                             }, */                     
                         },
                        respond_annotation_count: {
-                            //"_respond_total":{
+                           /* "_respond_total":{
                               count:3 
-                            //}
-                            /*"confusion": {
+                            }
+                            "confusion": {
                               count:3
                             } */ 
                         }
@@ -717,7 +802,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升皇后的話請撰寫3篇摘要標註、5篇舉例標註，並試著回應別人5篇以上吧！",
+                    "qualification_message": "想要晉升皇后的話請撰寫5篇新知識、5篇補充舉例，並試著回應6個同學的標註吧！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -737,24 +822,19 @@ DEFAULT_KALS_CONFIG = {
                             /*"_total":{
                               count:15  
                             },*/
-                            "summary": {
-                              count:6
+                            "新知識": {
+                              count:5
                             },
-                            "example": {
+                            "補充舉例": {
                               count:5
                             }                      
                         },
-                        respond_annotation_count: {
-                            //"_respond_total":{
-                              count:5  
-                            //}
-                            /*"confusion": {
-                              count:3
-                            } */ 
+                        respond_to_user_count: {                  
+                              count:6  
+                        },
+                        responded_user_count: {
+                            count:2  
                         }
-                        /*respond_to_users_count: {
-                            count:1
-                        }*/                 
                     },
                     /**
                      * 權限設定
@@ -797,17 +877,23 @@ DEFAULT_KALS_CONFIG = {
                            // "_total":{
                            //   count:20  
                            //},
-                             "concept": {
-                              count:5
+                             "我想說": {
+                              count:6
                             },
-                            "example": {
-                              count:8
+                            "很奇怪": {
+                              count:3
                             }                     
                         },
                         respond_annotation_count: {
                             //"_respond_total":{
-                              count:10  
+                              count:20  
                             //}
+                        },
+                        respond_to_user_count: {                  
+                              count:12 
+                        },
+                        responded_user_count: {
+                            count:3  
                         },
                         liked_count:{
                             count:3
