@@ -489,7 +489,7 @@ class Search_engine extends Generic_collection {
             $db->join('annotation2anchor_text AS search_anchor_text', 'search_anchor_text.annotation_id = annotation.annotation_id '
             . "AND search_anchor_text.text like '%".$this->search_anchor_text."%'");    
             $db->limit(5);
-          echo $this->webpage_id;
+            //echo $this->webpage_id;
             
         }   //if (isset($this->search_anchor_text))
 
@@ -527,10 +527,12 @@ class Search_engine extends Generic_collection {
 
         if (isset($this->target_topic))
         {
-            if ($this->target_topic === TRUE)
+            if ($this->target_topic === TRUE) {
                 $db->where("annotation.topic_id IS NULL");
-            else
+            }
+            else {
                 $db->where("annotation.topic_id IS NOT NULL");
+            }
         }
 
         //------------------------------------------------
@@ -598,7 +600,10 @@ class Search_engine extends Generic_collection {
         {
 
             $db->join('user AS search_username', 'search_username.user_id = annotation.user_id '. "AND search_username.name like '%".$this->search_username."%'" );
-            $db->limit(15);
+            
+            // 20131113 Pudding Chen
+            // 為什麼要在這裡加limit？
+            //$db->limit(15);
         }
   
         //------------------------------------------------
@@ -620,11 +625,33 @@ class Search_engine extends Generic_collection {
     }
 
     protected $target_webpage_id;
+    
+    /**
+     * 設定目標網頁
+     * @param Webpage|Int $webpage_id
+     * @return \Search_engine
+     */
     public function set_target_webpage($webpage_id)
     {
         $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');
         $this->target_webpage_id = $this->CI->webpage->filter_webpage_id($webpage_id);
         return $this;
+    }
+    
+    /**
+     * 設定目前的網頁作為預設的搜尋對象
+     * 
+     * @author Pudding Chen 20131113
+     * @return boolan
+     */
+    public function set_target_referer_webpage() {
+        $webpage = get_context_webpage();
+        if (isset($webpage)) {
+            return $this->set_target_webpage($webpage->get_id());
+        }
+        else {
+            return false;
+        }
     }
 
     //-----------------------------------------
@@ -641,6 +668,29 @@ class Search_engine extends Generic_collection {
     public function set_overlap_scope(Annotation_scope_collection $scope)
     {
         $this->overlap_scope = $scope;
+        return $this;
+    }
+    
+    /**
+     * 根據$from跟$to來指定覆蓋範圍
+     * @param int $from
+     * @param int $to
+     * @param Webpage $webpage
+     * @return \Search_engine
+     */
+    public function set_overlap_scope_index($from, $to, Webpage $webpage = null)
+    {
+        if (is_null($webpage)) {
+            $webpage = get_context_webpage();
+        }
+        
+        $scope_coll = new Annotation_scope_collection();
+        $scope_coll_data = array(
+            array($from, $to)
+        );
+        $scope_coll = $scope_coll->import_webpage_search_data($webpage, $scope_coll_data);
+        
+        $this->overlap_scope = $scope_coll;
         return $this;
     }
 
@@ -784,6 +834,14 @@ class Search_engine extends Generic_collection {
 
     protected $target_topic;
 
+    /**
+     * 設定是否限定是topic
+     * @param boolean $is_topic
+     *  TRUE 限定只能是topic
+     *  FALSE 限定不能是topic
+     *  NULL 不限定
+     * @return Search_engine
+     */
     public function set_target_topic($is_topic)
     {
         if (is_bool($is_topic))

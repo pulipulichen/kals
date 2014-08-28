@@ -24,6 +24,8 @@ List_collection_other.prototype._$target_my = false;
 
 List_collection_other.prototype._$target_like = false;
 
+List_collection_other.prototype._$enable_check_login = true;
+
 List_collection_other.prototype._$need_login = true;
 
 /* End of file List_collection_other */

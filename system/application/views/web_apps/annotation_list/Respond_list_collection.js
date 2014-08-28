@@ -46,6 +46,8 @@ Respond_list_collection.prototype._$order_by = 'create';
 
 Respond_list_collection.prototype._$topic_id = null;
 
+Respond_list_collection.prototype._$enable_check_login = false;
+
 // --------
 // UI
 // --------
@@ -55,6 +57,9 @@ Respond_list_collection.prototype._$create_ui = function () {
     
     _ui.addClass('respond-list-collection');
     
+	var _skip = this._create_skip_component();
+    _skip.prependTo(_ui);
+	
     var _view = this._create_view_component();
     _view.appendTo(_ui);
     
@@ -62,6 +67,7 @@ Respond_list_collection.prototype._$create_ui = function () {
 };
 
 /**
+ * 檢視全部回應
  * @type {jQuery}
  */
 Respond_list_collection.prototype._view_component = null;
@@ -70,8 +76,12 @@ Respond_list_collection.prototype._create_view_component = function () {
     var _component = $('<div></div>')
         .addClass('view-component');
     
+	var _message = $('<span></span>')
+	   .addClass("message")
+	   .appendTo(_component);
+	
     var _msg1 = $('<span></span>')
-        .appendTo(_component);
+        .appendTo(_message);
     
     var _lang1 = new KALS_language_param(
         'View All ',
@@ -82,10 +92,10 @@ Respond_list_collection.prototype._create_view_component = function () {
     
     var _count = $('<span></span>')
         .addClass('respond-count')
-        .appendTo(_component);
+        .appendTo(_message);
     
     var _msg2 = $('<span></span>')
-        .appendTo(_component);
+        .appendTo(_message);
     
     var _lang2 = new KALS_language_param(
         ' messages',
@@ -107,6 +117,10 @@ Respond_list_collection.prototype._create_view_component = function () {
     return _component;
 };
 
+/**
+ * 設定全部回應的數量
+ * @param {number} _respond_count
+ */
 Respond_list_collection.prototype._set_respond_count = function (_respond_count) {
     
     var _item_count = this.count_list_item();
@@ -114,13 +128,91 @@ Respond_list_collection.prototype._set_respond_count = function (_respond_count)
     if (_respond_count > _item_count) {
         this._view_component.find('.respond-count:first').html(_respond_count);    
         this._view_component.show();
+		
+	    var _skip_count = _respond_count - this._$limit;
+	    this._set_skip_count(_skip_count);
     }
     else {
         this._view_component.hide();
     }
+	
+    return this;
+};
+
+// --------------------------------------------------
+
+/**
+ * 省略回應
+ * @type {jQuery}
+ */
+Respond_list_collection.prototype._skip_component = null;
+
+/**
+ * 建立省略的元件
+ */
+Respond_list_collection.prototype._create_skip_component = function () {
+    var _component = $('<div></div>')
+        .addClass('skip-component');
+    
+    var _message = $('<span></span>')
+       .addClass("message")
+       .appendTo(_component);
+	   
+    var _msg1 = $('<span></span>')
+        .appendTo(_message);
+    
+    var _lang1 = new KALS_language_param(
+        'Skip ',
+        'respond_list_collection.skip_message.1'
+    );
+    
+    KALS_context.lang.add_listener(_msg1, _lang1);
+    
+    var _count = $('<span></span>')
+        .addClass('skip-count')
+        .appendTo(_message);
+    
+    var _msg2 = $('<span></span>')
+        .appendTo(_message);
+    
+    var _lang2 = new KALS_language_param(
+        ' messages',
+        'respond_list_collection.view_thread.2'
+    );
+    
+    KALS_context.lang.add_listener(_msg2, _lang2);
+    
+    _component.hide();
+    
+    var _topic_item = this._topic_item;
+    _component.click(function () {
+        _topic_item.view_thread();
+    });
+    
+    _component.setup_hover();
+    
+    this._skip_component = _component;
+    return _component;
+};
+
+/**
+ * 設定省略回應的數量
+ * @param {number} _respond_count
+ */
+Respond_list_collection.prototype._set_skip_count = function (_skip_count) {
+    
+    if (_skip_count > 0) {
+        this._skip_component.find('.skip-count:first').html(_skip_count);    
+        this._skip_component.show();
+    }
+    else {
+        this._skip_component.hide();
+    }
     
     return this;
 };
+
+// ------------------------
 
 Respond_list_collection.prototype.get_search_data = function () {
     var _data = List_collection.prototype.get_search_data.call(this);
@@ -141,7 +233,7 @@ Respond_list_collection.prototype.setup_load_list = function (_data, _callback) 
             _this.hide();
         }
         else {
-            _this._set_respond_count(_respond_count);    
+            _this._set_respond_count(_respond_count);
         }
         
         //_this.notify_ready();    
@@ -160,6 +252,12 @@ Respond_list_collection.prototype.hide = function () {
     _ui.hide();
     return this;
 };
+
+/**
+ * 新增時從頭新增嗎？
+ * @type boolean
+ */
+Respond_list_collection.prototype._$default_add_item_from_head = true;
 
 /*
 Respond_list_collection.prototype.is_ready = function () {

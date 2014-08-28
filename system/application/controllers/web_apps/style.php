@@ -51,8 +51,9 @@ class style extends Web_apps_controller {
             $temp = '';
             foreach ($selector AS $s)
             {
-                if ($temp != '')
+                if ($temp != '') {
                     $temp = $temp . ', ';
+                }
                 $temp = $temp . $s;
             }
             $selector = $temp;
@@ -67,8 +68,9 @@ class style extends Web_apps_controller {
                 $formal_field = str_replace('_', '-', $field);
                 $r = $formal_field . ':' . $value;
 
-                if ($first == false)
+                if ($first == false) {
                     $style_temp = $style_temp . '; ';
+                }
                 $style_temp = $style_temp . $r;
                 $first = false;
             }
@@ -77,16 +79,19 @@ class style extends Web_apps_controller {
         else if (is_string($rule))
         {
             $rule = trim($rule);
-            if (substr($rule, 0, 1) == '{')
+            if (substr($rule, 0, 1) == '{') {
                 $rule = substr($rule, 1, strlen($rule));
+            }
 
-            if (substr($rule, -1) == '}')
+            if (substr($rule, -1) == '}') {
                 $rule = substr($rule, 0, strlen($rule)-1);
+            }
         }
 
         $rule = $selector . '{' . $rule . '}';
         return $rule;
     }
+    
 }
 
 /* End of file style.php */

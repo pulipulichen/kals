@@ -18,12 +18,12 @@ function Context_search (){
 
 Context_search.prototype = new Attribute_event_dispatcher(); 
 
-Context_search.prototype.set_field = function(_value) { //設定searchrange
-    return this.set_attr('searchrange', _value);
+Context_search.prototype.set_field = function(_value) { //設定search_range
+    return this.set_attr('search_range', _value);
 };
 
-Context_search.prototype.get_field = function() {  //取得searchrange
-    return this.get_attr('searchrange');
+Context_search.prototype.get_field = function() {  //取得search_range
+    return this.get_attr('search_range');
 };
 
 Context_search.prototype.set_keyword = function(_value) { //設定keyword
@@ -49,7 +49,7 @@ Context_search.prototype.set_page_limit = function(_value) {
  */
 Context_search.prototype.get_search_option = function () {
     return {
-        searchrange: this.get_attr('searchrange'),
+        search_range: this.get_attr('search_range'),
         keyword: this.get_attr('keyword')
 		
         //page: this.get_attr('page', 0),

@@ -193,12 +193,12 @@ Task_event_dispatcher.prototype.is_completed = function (_task) {
 /**
  * 開始進行任務
  */
-Task_event_dispatcher.prototype.start = function () {
+Task_event_dispatcher.prototype.start = function (_callback) {
     if ($.is_function(this._$onstart)) {
         var _this = this;
         //隔一下再開始進行
         setTimeout(function () {
-            _this._$onstart();    
+            _this._$onstart(_callback);    
         }, 0);
     }
         

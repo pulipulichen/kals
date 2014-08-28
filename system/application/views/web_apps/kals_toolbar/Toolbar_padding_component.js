@@ -25,7 +25,8 @@ Toolbar_padding_component.prototype = new KALS_user_interface();
  * @type {jQuery} UI
  */
 Toolbar_padding_component.prototype._$create_ui = function () {
-    var _ui = $('<div class="toolbar-padding"></div>');
+    var _ui = $('<div class="toolbar-padding"></div>')
+            .css("height", 0);
     return _ui;
 };
 

@@ -15,10 +15,10 @@ function Overlay_manager () {
     
     var _this = this;
     //跟URL_hash_dispatcher註冊
-    if (typeof(KALS_context) == 'object'
-        && typeof(KALS_context.hash) == 'object') {
+    if (typeof(KALS_context) === 'object'
+        && typeof(KALS_context.hash) === 'object') {
         KALS_context.hash.add_listener(function (_dispatcher, _data) {
-            if (typeof(_data.backward) == 'boolean'
+            if (typeof(_data.backward) === 'boolean'
                 && _data.backward === true) {
                 //$.test_msg('modal listener', _data);
                 _this.close_all();
@@ -27,7 +27,7 @@ function Overlay_manager () {
     }   
     
     //跟onviewportmove註冊mash的fit事件
-    if (typeof($.mask) != 'undefined') {
+    if (typeof($.mask) !== 'undefined') {
         KALS_context.view.add_listener(function () {
             if ($.mask.isLoaded()) {
                 $.mask.fit();
@@ -169,11 +169,22 @@ Overlay_manager.prototype.check_mask = function (_is_close) {
 };
 
 Overlay_manager.prototype._mask_locker = false;
+
+/**
+ * 鎖定黑幕
+ */
 Overlay_manager.prototype.lock_mask = function () {
-    
-    //$.test_msg('Overlay_manager.lock_mask()');
-    
+    $.test_msg('Overlay_manager.lock_mask()');
     this._mask_locker = true;
+    return this;
+};
+
+/**
+ * 取消鎖定黑幕
+ */
+Overlay_manager.prototype.unlock_mask = function () {
+    $.test_msg('Overlay_manager.unlock_mask()');
+    this._mask_locker = false;
     return this;
 };
 
@@ -187,11 +198,11 @@ Overlay_manager.prototype.add_opened = function (_modal) {
 		return this;
 	}
     
-    if (_modal === null || typeof(_modal.is_closable) != 'function') {
+    if (_modal === null || typeof(_modal.is_closable) !== 'function') {
 		return this;
 	}
     
-    if ($.inArray(_modal, this._opened_modals) == -1
+    if ($.inArray(_modal, this._opened_modals) === -1
         && _modal.is_closable()) {
         
         //$.test_msg('add_opened', [_modal.get_modal_name(), _modal.is_exposable()]);
@@ -206,7 +217,7 @@ Overlay_manager.prototype.add_opened = function (_modal) {
 					_opened_modal.cover();
 				}
             } 
-			if (typeof(_modal.expose) == "function") {
+			if (typeof(_modal.expose) === "function") {
 				_modal.expose();
 			}
         }
@@ -239,7 +250,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
 	}
     
 	//$.test_msg("Overlay_manager delete_opended", "check point 1");
-	
+    var _this = this;
     var _deleted = $.inArray(_modal, this._opened_modals);
     if (_deleted > -1) {
         //delete this._opened_modals[_i];
@@ -248,7 +259,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         
         var _new_opened = [];
         for (var _i = 0; _i < this._opened_modals.length; _i++) {
-            if (_i == _deleted) {
+            if (_i === _deleted) {
 				continue;
 			}
 			else {
@@ -277,32 +288,47 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         if (_last_modal !== null && _last_modal !== undefined) {
 			//$.test_msg("Overlay_manager delete_opended", "check point 3.1 " + typeof(_last_modal.expose));
             //_last_modal.get_ui().css('z-index', 9999);
-			if (typeof(_last_modal.expose) != "undefined") {
-				$.test_msg("Overlay_manager", "before last_modal expose");
-				_last_modal.expose();	
-			}
+            if (typeof(_last_modal.expose) !== "undefined") {
+                    $.test_msg("Overlay_manager", "before last_modal expose");
+                    _last_modal.expose();	
+            }
             
             //_last_modal.focus_option();
             
             //跟URL_hash_dispatcher註冊
-            if (typeof(KALS_context) == 'object'
-                && typeof(KALS_context.hash) == 'object') {
-                KALS_context.hash.set_field('modal', _modal.get_modal_name());
-            } 
+            if (typeof(KALS_context) === 'object'
+                && typeof(KALS_context.hash) === 'object') {
+                KALS_context.hash.set_field('modal', _modal.get_modal_name(), function () {
+                    //$.test_msg('deleted_opended length', this._opened_modals.length);
+                    _this.check_mask(true);
+                });
+            }
+            else {
+                _this.check_mask(true);
+            }
 			//$.test_msg("Overlay_manager delete_opended", "check point 3.1.1");
         }
         else {
 			//$.test_msg("Overlay_manager delete_opended", "check point 3.2");
             //跟URL_hash_dispatcher註冊
-            if (typeof(KALS_context) == 'object'
-                && typeof(KALS_context.hash) == 'object') {
+            if (typeof(KALS_context) === 'object'
+                && typeof(KALS_context.hash) === 'object') {
                 KALS_context.hash.delete_field('modal');
+            }
+            else {
+                //$.test_msg('deleted_opended length', this._opened_modals.length);
+                this.check_mask(true);
             }
 			//$.test_msg("Overlay_manager delete_opended", "check point 3.2.1");
         }
 		
 		//$.test_msg("Overlay_manager delete_opended", "check point 4");
+    }   //if (_deleted > -1) {
+    else {
+        //$.test_msg('deleted_opended length', this._opened_modals.length);
+        this.check_mask(true);
     }
+        
     
     //$.test_msg('deleted_opended length', this._opened_modals.length);
     this.check_mask(true);

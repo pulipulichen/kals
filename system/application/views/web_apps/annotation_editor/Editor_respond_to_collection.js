@@ -85,6 +85,11 @@ Editor_respond_to_collection.prototype.add_respond_to = function (_param) {
         return this;
     }
     
+	// 如果是回應的才要加入
+	if (_param.is_respond() === false) {
+		return this;
+	}
+	
     //要先確認是否已經有這個respond
     if (this.has_respond_to(_param) === true) {
 		return this;
@@ -131,6 +136,10 @@ Editor_respond_to_collection.prototype.has_respond_to = function (_param) {
     return false;
 };
 
+/**
+ * 重置編輯器
+ * @returns {Editor_respond_to_collection}
+ */
 Editor_respond_to_collection.prototype.reset = function () {
     
     var _responds = this._responds;
@@ -201,8 +210,8 @@ Editor_respond_to_collection.prototype._listen_editor = function () {
         //$.test_msg('Editor_respond_to_collection._listen_editor() get', _data);
         
         if ($.isset(_data)) {
-			_param[_this._$listen_field] = _data;
-		}
+            _param[_this._$listen_field] = _data;
+        }
     });
 };
 

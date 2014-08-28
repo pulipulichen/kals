@@ -74,16 +74,20 @@ Window_user_interface.prototype._setup_text_input = function (_input, _default_v
     return _input;
 };
 
-Window_user_interface.prototype.check_input = function (_input) {
+Window_user_interface.prototype.check_input = function (_input, _force_empty) {
     
     //$.test_msg('win ui.check_input()', _input.length);
+    
+    if (_force_empty === undefined || typeof _force_empty !== "boolean") {
+        _force_empty = true;
+    }
     
     _input.change(function () {
         var _input = $(this);
         
         //$.test_msg('window ui.check_input()', _input.val());
         
-        if (_input.val() === '') {
+        if (_input.val() === '' || _force_empty) {
             _input.addClass('empty');
         }
         else {
@@ -114,8 +118,10 @@ Window_user_interface.prototype.dropdown = function (_name, _options, _default_v
     
     //選擇預設的選項
     if ($.isset(_default_value)) {
-        _select.children('[value="' + _default_value + '"]').attr('selected', 'selected');
-        //$.test_msg('win ui.dropdown()' , [_default_value
+        //_select.children('[value="' + _default_value + '"]').attr('selected', 'selected');
+		_select.attr("value", _default_value);
+        
+		//$.test_msg('win ui.dropdown()' , [_default_value
         //    , _select.children('[value="' + _default_value + '"]').length
         //    , _select.children('[value="' + _default_value + '"]:selected').length]);
     }
@@ -216,6 +222,62 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
     return _list;
 };
 
+/**
+ * 修改指定列表的值
+ * @type {jQuery} _list
+ * @type {String} _value 要設定的值 
+ */
+Window_user_interface.prototype.change_list_value = function (_list, _value) {
+	
+	if (_list.length == 1) {
+		//$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
+		var _classname = _list.attr("className");
+		if (_classname.indexOf("radio-list") != -1) {
+			_list.find("input:radio").attr("checked", false);
+			_list.find("input:radio[value='"+_value+"']").attr("checked", true);
+		}
+		else {
+			_list.attr("value", _value);
+		}
+	}
+	else {
+		/*
+		var _this = this;
+		_list.each(function (_index, _l) {
+			_this.change_list_value(_l, _value);
+		});
+		*/
+		for (var _i = 0; _i < _list.length; _i++) {
+			this.change_list_value(_list.eq(_i), _value);
+		}
+	}
+};
+
+/**
+ * 取得指定列表的值
+ * @type {jQuery} _list 
+ */
+Window_user_interface.prototype.get_list_value = function (_list) {
+	
+	if (_list.length > 1) {
+		_list = _list.eq(0);
+	}
+	
+	var _value;
+	//$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
+	var _classname = _list.attr("className");
+	if (_classname.indexOf("radio-list") != -1) {
+		_value = _list.find("input:radio:checked").attr("value");
+	}
+	else {
+		_value = _list.attr("value");
+	}
+	return _value;
+};
+
+
+//------------------------------------------
+
 Window_user_interface.prototype.window_change_link = function (_lang_param, _content_name) {
     
     var _link = new Window_change_link(
@@ -305,10 +367,28 @@ Window_user_interface.prototype.heading_row = function (_heading) {
     return _ui;
 };
 
+/**
+ * 建立Span的HTML物件
+ * @param {KALS_language_param} _lang_param
+ * @type {jQuery}
+ */
 Window_user_interface.prototype.tip = function (_lang_param) {
     var _tip = KALS_context.lang.create_listener(_lang_param);
     _tip.addClass('tip');
     return _tip;
+};
+
+/**
+ * 建立button的HTML物件
+ * @param {KALS_language_param} _lang_param
+ * @type {jQuery}
+ */
+Window_user_interface.prototype.button = function (_lang_param) {
+	var _btn = $("<button type='button'></button>");
+	KALS_context.lang.add_listener(_btn, _lang_param);
+    _btn.addClass('button')
+        .addClass('dialog-option');
+    return _btn;
 };
 
 Window_user_interface.prototype._setup_content = function (_container, _content) {
@@ -321,7 +401,6 @@ Window_user_interface.prototype._setup_content = function (_container, _content)
     }
     return _container;
 };
-
 
 /**
  * 製造換頁的選單

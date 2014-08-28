@@ -8,9 +8,15 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/10/26 下午 02:07:24
- * @extends {KALS_user_interface}
+ * @param {Annotation_type_param|JSON|String} _param 預先匯入的資料
  */
 function Annotation_type_param(_param) {
+    
+    this._enable_config = {
+        topic: true,
+        respond: true
+    };
+    
     if ($.isset(_param)) {
         return this.set(_param);
     }
@@ -115,6 +121,10 @@ Annotation_type_param.prototype.set = function (_param) {
         //this.custom_name = _param.get_custom_name();
         return _param;
     }
+    else if (_param === "[object Object]") {
+        this.id = 7;
+        this.custom_name = null;
+    }
     else {
         //如果是字串的話，那表示是自訂類型囉
         //this.id = 7;
@@ -216,23 +226,38 @@ Annotation_type_param.prototype.get_type_name = function () {
  * @return {KALS_language_param}
  */
 Annotation_type_param.prototype.get_type_name_lang = function () {
-	var _name = this.get_type_name();
-	
-	var _lang;
-	if (this.is_basic()) {
-		_lang = new KALS_language_param(
-			_name,
-			"annotation.type." + _name
-		);
-	}
-	else {
-		//如果是自訂類型的話
-		_lang = new KALS_language_param(
-			_name
-		);
-	}
-	
-	return _lang;
+    var _name = this.get_type_name();
+
+    var _lang;
+    if (this.is_basic()) {
+        _lang = new KALS_language_param(
+            _name,
+            "annotation.type." + _name
+        );
+    }
+    else {
+        //如果是自訂類型的話
+        _lang = new KALS_language_param(
+            _name
+        );
+    }
+
+    return _lang;
+};
+
+/**
+ * 直接顯示標註名字的翻譯字串
+ * 
+ * @return {String}
+ */
+Annotation_type_param.prototype.get_type_name_display = function () {
+    var _lang = this.get_type_name_lang();
+    if (this.is_basic()) {
+        return KALS_context.lang.line(_lang);
+    }
+    else {
+        return this.get_custom_name();
+    }
 };
 
 Annotation_type_param.prototype.get_custom_name = function () {
@@ -244,23 +269,28 @@ Annotation_type_param.prototype.get_custom_name = function () {
  * @return {boolean}
  */
 Annotation_type_param.prototype.is_custom = function () {
-    return (this.id == 7);
+    return (this.id === 7);
 };
 
 Annotation_type_param.prototype.has_custom_name= function () {
     return (this.custom_name !== null);
 };
 
+/**
+ * 相等
+ * @param {Annotation_type_param} _type
+ * @returns {Boolean}
+ */
 Annotation_type_param.prototype.equals = function (_type) {
     if ($.is_null(_type)) {
-		return false;
-	}
+        return false;
+    }
     if ($.is_class(_type, 'Annotation_type_param') === false) {
-		_type = new Annotation_collection_param(_type);
-	}
+        _type = new Annotation_collection_param(_type);
+    }
     
-    return (_type.get_id() == this.get_id()
-            && _type.get_custom_name() == this.get_custom_name());
+    return (_type.get_id() === this.get_id()
+            && _type.get_custom_name() === this.get_custom_name());
 };
 
 Annotation_type_param.prototype.export_json = function () {
@@ -269,7 +299,7 @@ Annotation_type_param.prototype.export_json = function () {
     
     if (this.is_basic() === false) {
         var _name = this.get_name();
-        if (_name != 'custom') {
+        if (_name !== 'custom') {
             _json = encodeURIComponent(_name);
         }
     }
@@ -280,19 +310,19 @@ Annotation_type_param.prototype.export_json = function () {
 Annotation_type_param.filter_basic_id = function (_param) {
     
     if ($.is_number(_param)) {
-        if (typeof(Annotation_type_param._type_mapping[_param]) == 'string') {
-			return _param;
-		}
-		else {
-			return null;
-		}
+        if (typeof(Annotation_type_param._type_mapping[_param]) === 'string') {
+            return _param;
+        }
+        else {
+            return null;
+        }
     }
     else if ($.is_string(_param)) {
         for (var _i in Annotation_type_param._type_mapping) {
-            _typename = Annotation_type_param._type_mapping[_i];
-            if (_typename == _param) {
-				return parseInt(_i,10);
-			}
+            var _typename = Annotation_type_param._type_mapping[_i];
+            if (_typename === _param) {
+                return parseInt(_i,10);
+            }
         }
     }
     
@@ -302,16 +332,15 @@ Annotation_type_param.filter_basic_id = function (_param) {
 Annotation_type_param.filter_name = function (_param) {
     
     if ($.is_string(_param)) {
-		return _param;
-	}
-	else 
-		if ($.is_number(_param) &&
-		typeof(Annotation_type_param._type_mapping[_param]) == 'string') {
-			return Annotation_type_param._type_mapping[_param];
-		}
-		else {
-			return _param;
-		}
+        return _param;
+    }
+    else if ($.is_number(_param) 
+            && typeof(Annotation_type_param._type_mapping[_param]) === 'string') {
+        return Annotation_type_param._type_mapping[_param];
+    }
+    else {
+        return _param;
+    }
 };
 
 /**
@@ -325,12 +354,12 @@ Annotation_type_param.filter_name = function (_param) {
  *     'background': 背景顏色
  */
 Annotation_type_param.prototype.set_anchor_style = function (_style) {
-    if (_style == 'background') {
-		this._anchor_style = _style;
-	}
-	else {
-		this._anchor_style = 'underline';
-	}
+    if (_style === 'background') {
+        this._anchor_style = _style;
+    }
+    else {
+        this._anchor_style = 'underline';
+    }
     return this;
 };
 
@@ -365,19 +394,19 @@ Annotation_type_param.prototype.get_anchor_css = function () {
     var _style = this._anchor_style;
     var _color = this._anchor_color;
     
-    if (_style == 'underline') {
+    if (_style === 'underline') {
         _css = 'border-bottom:1px solid ' + _color;
     }
-    else if (_style == 'dottedline') {
+    else if (_style === 'dottedline') {
         _css = 'border-bottom:1px dotted ' + _color;
     }
-    else if (_style == 'doubleline') {
+    else if (_style === 'doubleline') {
         _css = 'border-bottom:1px double ' + _color;
     }
-    else if (_style == 'hashedline') {
+    else if (_style === 'hashedline') {
         _css = 'border-bottom:1px dashed ' + _color;
     }
-    else if (_style == 'background') {
+    else if (_style === 'background') {
         _css = 'background-color:' + _color;
     }
     else {
@@ -385,7 +414,7 @@ Annotation_type_param.prototype.get_anchor_css = function () {
     }
     _css = _css + ' !important';
     
-    if (typeof(this._anchor_font_color) == 'string') {
+    if (typeof(this._anchor_font_color) === 'string') {
         _css = _css + ';color:' + this._anchor_font_color + ' !important';
     }
     //_css = ' {' + _css + '} ';
@@ -411,15 +440,15 @@ Annotation_type_param.prototype.set_hint = function(_hint) {
  * @return {string}
  */
 Annotation_type_param.prototype.get_hint = function () {
-	if ($.is_null(this._hint)) {
-		var _type = this.get_type_name();
-		var _lang = new KALS_language_param(
-                '',
-                'annotation.type.' + _type + '.hint'
-        );
-		var _hint = KALS_context.lang.line(_lang);
-		this._hint = _hint;
-	}
+    if ($.is_null(this._hint)) {
+        var _type = this.get_type_name();
+        var _lang = new KALS_language_param(
+        '',
+        'annotation.type.' + _type + '.hint'
+    );
+        var _hint = KALS_context.lang.line(_lang);
+        this._hint = _hint;
+    }
     return this._hint;
 };
 
@@ -448,8 +477,8 @@ Annotation_type_param.prototype.is_predefined = function () {
  */
 Annotation_type_param.prototype.set_predefined = function (_is_prefined) {
     if ($.is_boolean(_is_prefined)) {
-		this._is_predefined_annotation_type = _is_prefined;
-	}
+        this._is_predefined_annotation_type = _is_prefined;
+    }
     return this;
 };
 
@@ -461,17 +490,17 @@ Annotation_type_param.prototype.set_predefined = function (_is_prefined) {
  */
 Annotation_type_param.prototype.get_classname = function (_prefix, _postfix) {
     
-    if (typeof(_prefix) == 'undefined') {
-		_prefix = '';
-	}
-    if (typeof(_postfix) == 'undefined') {
-		_postfix = '';
-	}
+    if (typeof(_prefix) === 'undefined') {
+        _prefix = '';
+    } 
+    if (typeof(_postfix) === 'undefined') {
+        _postfix = '';
+    }
     
     var _type_id = this.get_id();
     var _type_classname = '';
     
-    if (typeof(Annotation_type_param._type_mapping[_type_id]) == 'string') {
+    if (typeof(Annotation_type_param._type_mapping[_type_id]) === 'string') {
         _type_classname = Annotation_type_param._type_mapping[_type_id];
     }
     else {
@@ -519,5 +548,121 @@ Annotation_type_param.prototype.get_option_style = function () {
     return _style;
 };
 
+//-----------------------------------------------------------
+
+/**
+ * 建立標註類別的按鈕
+ * @returns {jQuery}
+ */
+Annotation_type_param.prototype.get_ui = function () {
+    return this.get_option_ui();
+};
+
+/**
+ * 建立標註類別的按鈕
+ * @returns {jQuery}
+ */
+Annotation_type_param.prototype.get_option_ui = function () {
+    if (this._option_ui === undefined) {
+        var _view = new View_annotation_type_option(this);
+        _view = _view.get_ui();
+        this._option_ui = _view;
+    }
+    return this._option_ui;
+};
+
+/**
+ * 標註類別的按鈕
+ */
+Annotation_type_param.prototype._option_ui;
+
+//-----------------------------------------------------------
+
+/**
+ * 啟用標註類型的功能
+ * @type type
+ */
+Annotation_type_param.prototype._enable_config = null;
+
+/**
+ * 設定自己的適用類型
+ * @param {String|JSON} _type
+ * @param {Boolean} _option
+ * @returns {Annotation_type_param.prototype}
+ */
+Annotation_type_param.prototype.set_enable_config = function (_type, _option) {
+    
+    if (typeof(_type) === "object") {
+        var _config = _type;
+        for (var _type in _config) {
+            _option = _config[_type];
+            this.set_enable_config(_type, _option);
+        }
+        return this;
+    }
+    
+    //$.test_msg("set_enable_config", [_type, _option]);
+    this._enable_config[_type] = _option;
+    
+    return this;
+};
+
+/**
+ * 取得標註類型的啟用設定
+ * @returns {JSON}
+ */
+Annotation_type_param.prototype.get_enable_config = function() {
+    return this._enable_config;
+};
+
+/**
+ * 是否啟用於該類型底下
+ * 
+ * get_enable_config()的別名
+ * @param {String} _type
+ * @returns {Boolean}
+ */
+Annotation_type_param.prototype.is_enable = function (_type) {
+    var _option = true;
+    
+    if (typeof(this._enable_config[_type]) === "boolean"
+            && this._enable_config[_type] === false) {
+        _option = false;
+    }
+    
+    return _option;
+};
+
+// --------------------------------------------------
+
+/**
+ * 排序參數
+ * 
+ * 數字越大，越往上排
+ * 數字越小，越往下排
+ * 預設是1
+ * @type Number
+ */
+Annotation_type_param.prototype._order = 1;
+
+/**
+ * 設定排序
+ * @param {Number} _order
+ * @returns {Annotation_type_param}
+ */
+Annotation_type_param.prototype.set_order = function (_order) {
+    if (typeof(_order) === 'number') {
+        this._order = _order;
+    }
+    return this;
+}
+
+/**
+ * 取得排序
+ * @returns {Number} _order
+ */
+Annotation_type_param.prototype.get_order = function () {
+    return this._order;
+}
 /* End of file Annotation_type_param */
 /* Location: ./system/application/views/web_apps/Annotation_type_param.js */

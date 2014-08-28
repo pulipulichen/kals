@@ -17,6 +17,7 @@ function Type_component(_editor) {
     if ($.isset(_editor)) {
         this._editor = _editor;
         this._default_type = new Annotation_type_param();
+        //this._is_respond = _editor.is_respond();
         //this._type = new Annotation_type_param();
         //$.test_msg('Type_component() _type', this._type.export_json());
     }
@@ -50,6 +51,12 @@ Type_component.prototype.menu = null;
 Type_component.prototype._type = null;
 
 /**
+ * 現在編輯時是否是回應狀態
+ * @type {Boolean}
+ */
+Type_component.prototype._is_respond;
+
+/**
  * Create UI
  * @memberOf {Type_component}
  * @type {jQuery} UI
@@ -67,6 +74,7 @@ Type_component.prototype._$create_ui = function () {
     var _menu = this._setup_menu();
     _menu.get_ui().appendTo(_ui);
     var _config = _menu._$get_config();
+    _ui.tooltip(_config);
     
     //$.test_msg('Type_component._$create_ui()', _config);
     
@@ -75,43 +83,44 @@ Type_component.prototype._$create_ui = function () {
     for (var _i in _options) {
         var _option = _options[_i];
         
-        _option.tooltip(_config);
+        //_option.tooltip(_config);
         
-        if (_i == 'custom') {
+        if (_i === 'custom') {
             _option = this._create_custom_type_option(_option);
         }
         _option.hide().appendTo(_ui);
     }
     
-    _ui.tooltip(_config);
+    
+	
     //_ui.setup_hover();
     
 	// 20130603 Pudding Chen
 	// 預設選單
 	var _default_type = null;
-	if (typeof(KALS_CONFIG.default_annotation_type) == "string") {
-		var _default_type_name = KALS_CONFIG.default_annotation_type;
-		for (_i in _options) {
-			_option = _options[_i];
-			var _type_name = _i;
-			//$.test_msg("Type_component", [_i, _default_type_name]);
-			if (_default_type_name == _type_name) {
-				this._default_type = KALS_context.custom_type.find_type(_i);
-				_default_type = this._default_type;
-				//$.test_msg("Type_component set default", this._default_type); 
-				break;
-			}
-		}
+	if (typeof(KALS_CONFIG.default_annotation_type) === "string") {
+            var _default_type_name = KALS_CONFIG.default_annotation_type;
+            for (_i in _options) {
+                _option = _options[_i];
+                var _type_name = _i;
+                //$.test_msg("Type_component", [_i, _default_type_name]);
+                if (_default_type_name === _type_name) {
+                    this._default_type = KALS_context.predefined_type.find_type(_i);
+                    _default_type = this._default_type;
+                    //$.test_msg("Type_component set default", this._default_type); 
+                    break;
+                }
+            }
 	}
 	
 	//如果沒有設定預設選單，則自動選擇第一個選單
 	if (_default_type === null) {
-		for (_i in _options) {
-			_option = _options[_i];
-			var _type_name = _i;
-			this._default_type = KALS_context.custom_type.find_type(_i);
-			break;
-		}
+            for (_i in _options) {
+                _option = _options[_i];
+                _type_name = _i;
+                this._default_type = KALS_context.predefined_type.find_type(_i);
+                break;
+            }
 	}
     this._listen_editor();
     
@@ -140,40 +149,40 @@ Type_component.prototype.set_type = function (_type, _is_manual) {
 	 */
     var _is_custom_type = false;
     if ($.is_null(_type)) {
-		_type = this.get_type();
-	}
-	else 
-		if (_type === '') {
-			_type = new Annotation_type_param(7);
-		}
-		else {
-			_custom_type = KALS_context.custom_type.find_type(_type);
-			
-			if (_custom_type !== null) {
-				_type = _custom_type;
-			}
-			else {
-				//$.test_msg('Type_component.set_type() [add_custom_type]', _type);
-				_type = KALS_context.custom_type.add_custom_type(_type);
-				_is_custom_type = true;
-			}
-		}
+        _type = this.get_type();
+    }
+    else if (_type === '') {
+        _type = new Annotation_type_param(7);
+    }
+    else {
+        _custom_type = KALS_context.predefined_type.find_type(_type);
+
+        if (_custom_type !== null) {
+            _type = _custom_type;
+        }
+        else {
+            //$.test_msg('Type_component.set_type() [add_custom_type]', _type);
+            _type = KALS_context.predefined_type.add_custom_type(_type);
+            _is_custom_type = true;
+        }
+    }
     
-	/**
-	 * 20130603 Pudding Chen
-	 * 如果是人為選擇的，則記錄起來
-	 */
-	if (typeof(_is_manual) == "boolean" && _is_manual === true) {
-		KALS_context.last_select_annotation_type = _type;
-	}
+    /**
+     * 20130603 Pudding Chen
+     * 如果是人為選擇的，則記錄起來
+     */
+    if (typeof(_is_manual) === "boolean" 
+            && _is_manual === true) {
+        KALS_context.last_select_annotation_type = _type;
+    }
 	
     //$.test_msg('Type_component.set_type()', [$.isset(this._type), _type.equals(this._type)]);
     
-    if ($.isset(this._type) &&
-		_type.equals(this._type) &&
-		_is_custom_type === false) {
-		return this;
-	}
+    if ($.isset(this._type) 
+            && _type.equals(this._type) 
+            && _is_custom_type === false) {
+        return this;
+    }
     
     //$.test_msg('Type_component.set_type() pass', [_type.export_json(), _type.export_json()
     //    , _type.get_id(), _type.get_type_name()
@@ -232,11 +241,11 @@ Type_component.prototype.get_type = function () {
     }
     else {
         if (this._custom_name === null) {
-			return this._type;
-		}
-		else {
-			return this._custom_name;
-		}
+            return this._type;
+        }
+        else {
+            return this._custom_name;
+        }
     }    
 };
 
@@ -245,8 +254,8 @@ Type_component.prototype.get_type = function () {
  * @type {string}
  */
 Type_component.prototype.get_hint = function () {
-	var _type = this.get_type();
-	return _type.get_hint();
+    var _type = this.get_type();
+    return _type.get_hint();
 };
 
 /**
@@ -262,21 +271,66 @@ Type_component.prototype.get_default_type = function () {
  */
 Type_component.prototype.reset_type = function () {
     this.reset_custom_name();
-	/**
-	 * 20130603 Pudding Chen
-	 * 改成記錄最後一次選擇的標註類型
-	 */
-	//return this.set_type(this._default_type);
-	var _last_select_annotation_type = KALS_context.last_select_annotation_type;
-	
-	if (_last_select_annotation_type === null && typeof(KALS_CONFIG.default_annotation_type) == "string") {
-		
-	}
+    
+    /**
+     * 20130603 Pudding Chen
+     * 改成記錄最後一次選擇的標註類型
+     */
+    //return this.set_type(this._default_type);
+    var _last_select_annotation_type = KALS_context.last_select_annotation_type;
+
+    if (_last_select_annotation_type === null 
+            && typeof(KALS_CONFIG.default_annotation_type) === "string") {
+        // 不做任何事情？
+    }
+    
+    // 確認一下是否是可以選擇的類型
+    var _enable_type = "topic";
+    if (this.is_respond()) {
+        _enable_type = "respond";
+    }
+    var _type_list = KALS_context.create_type_param_list(_enable_type);
+    var _last_select_annotation_type_name = "";
+    if ($.is_class(_last_select_annotation_type, "Annotation_type_param")) {
+        _last_select_annotation_type_name = _last_select_annotation_type.get_name();
+    }
+    else if ($.is_string(_last_select_annotation_type)) {
+        _last_select_annotation_type_name = _last_select_annotation_type;
+    }
+        
+    if (typeof(_type_list[_last_select_annotation_type_name]) === "undefined") {
+        var _first_type_param;
+        for (var _type_name in _type_list) {
+            _first_type_param = _type_list[_type_name];
+            break;
+        }
+        _last_select_annotation_type = _first_type_param;
+    }
+    
 	
     return this.set_type(_last_select_annotation_type);
 };
 
+/**
+ * 設定好標註選單
+ * @returns {Type_menu}
+ */
 Type_component.prototype._setup_menu = function () {
+    
+    /**
+     * @author 20140505 Pulipuli Chen
+     * 不在此處寫死類型
+     */
+    /*
+    var _enable_type = "topic";
+    if (this._is_respond 
+            && this._is_respond === true) {
+        _enable_type = "respond";
+    }
+    
+    $.test_msg("_setup_menu", _enable_type);
+    */
+    //var _menu = new Type_menu(this, _enable_type);
     
     var _menu = new Type_menu(this);
     this.menu = _menu;
@@ -290,6 +344,10 @@ Type_component.prototype._setup_menu = function () {
 Type_component.prototype._listen_editor = function () {
     
     var _this = this;
+    
+    if ($.is_null(this._editor)) {
+        return;
+    }
     
     this._editor.add_listener('reset', function () {
         _this.reset_type();
@@ -308,10 +366,12 @@ Type_component.prototype._listen_editor = function () {
         //    _annotation_param.set_type(_type);
         //}
 		
-		// @20130609 Pudding Chen
-		// 因為現在預設值都可以做修改，所以不管怎樣都要回傳預設值
-		_annotation_param.set_type(_type);
+        // @20130609 Pudding Chen
+        // 因為現在預設值都可以做修改，所以不管怎樣都要回傳預設值
+        _annotation_param.set_type(_type);
     });
+    
+    return this;
 };
 
 /**
@@ -321,7 +381,7 @@ Type_component.prototype._listen_editor = function () {
 Type_component.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.type) != 'undefined') {
+        && typeof(_param.type) !== 'undefined') {
         this.set_type(_param.type);
     }
     return this;
@@ -352,7 +412,7 @@ Type_component.prototype._create_custom_type_option = function (_option) {
     
     var _config = this.menu._$get_config();
     //_custom.tooltip(_config);
-    _ui.tooltip(_config);
+    //_ui.tooltip(_config);
     
     _custom.mouseover(function () {
         _ui.tooltip().show();
@@ -374,20 +434,20 @@ Type_component.prototype.set_custom_name = function (_name) {
     //$.test_msg('Type_component.set_custom_name 1', _name);
     
     if ($.is_string(_name)) {
-		_name = $.trim(_name);
+            _name = $.trim(_name);
 	}
-	else {
-		if ($.is_class(_name, 'Annotation_type_param')) {
-			_name = _name.get_type_name();
-		}
-	}
+    else {
+        if ($.is_class(_name, 'Annotation_type_param')) {
+            _name = _name.get_type_name();
+        }
+    }
     if (_name === '') {
-		_name = null;
-	}
+        _name = null;
+    }
     
     if (this._custom_type_option === null) {
-		return this;
-	}
+        return this;
+    }
     
     var _classname = '.' + this._custom_type_option_classname + ':first';
         
@@ -421,10 +481,24 @@ Type_component.prototype.set_custom_name = function (_name) {
 Type_component.prototype.reset_custom_name = function () {
     
     if (this._custom_type_option === null) {
-		return this;
-	}
+        return this;
+    }
     
     return this.set_custom_name();
+};
+
+/**
+ * 確認是否是回應的狀態
+ * 
+ * 直接介接到Annotation_editor.is_respond()
+ * @returns {Boolean}
+ */
+Type_component.prototype.is_respond = function () {
+    var _is_respond = false;
+    if (this._editor !== null) {
+        _is_respond = this._editor.is_respond();
+    }
+    return _is_respond;
 };
 
 /* End of file Type_component */

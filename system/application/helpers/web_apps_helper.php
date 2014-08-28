@@ -17,7 +17,12 @@ if ( ! function_exists('json_to_object'))
 {
     function json_to_object($json)
     {
-        return json_decode($json);
+        if (defined("JSON_UNESCAPED_UNICODE") ) {
+            return json_decode($json, false, JSON_UNESCAPED_UNICODE);
+        }
+        else {
+            return json_decode($json, false);
+        }
     }
 }
 
@@ -106,6 +111,10 @@ if ( ! function_exists('create_json_excpetion'))
 
 if ( ! function_exists('get_client_ip'))
 {
+    /**
+     * 取得使用者的IP資訊
+     * @return String
+     */
     function get_client_ip()
     {
         $myip = NULL;
@@ -119,12 +128,80 @@ if ( ! function_exists('get_client_ip'))
     }
 }
 
+if ( ! function_exists('get_client_ip_browser'))
+{
+    /**
+     * 取得使用者的IP資訊與瀏覽器資訊
+     * @return String
+     */
+    function get_client_ip_browser()
+    {
+        return array(
+           'ip' => get_client_ip(),
+           'browser' => $_SERVER['HTTP_USER_AGENT']
+        );
+    }
+}
+
+if ( !function_exists("kals_json_encode")) {
+    function kals_json_encode($arr)
+    {
+        if (defined('JSON_UNESCAPED_UNICODE') === TRUE ) {
+            //return json_encode($arr, JSON_UNESCAPED_UNICODE);
+        }
+        
+        //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
+        
+        if (is_array($arr)) {
+            array_walk_recursive($arr, 
+                function (&$item, $key) { 
+                    if (is_string($item)) {
+                        //$item = mb_encode_numericentity($item, array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+                        mb_convert_encoding($item, 'HTML-ENTITIES', 'utf-8');
+                    }
+                });
+        }
+        
+        //return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
+        //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
+        $arr = json_encode($arr);
+        
+        $arr = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                        function($matches) {
+                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+                        }, $arr);
+        return $arr;
+        
+        //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
+        
+        /*
+        array_walk_recursive($arr, 
+            function (&$item, $key) { 
+                if (is_string($item)) {
+                    $item = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                        function($matches) {
+                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+                        }, $item);
+                }
+            });
+        */
+        /*
+        array_walk_recursive($arr, function(&$item, $key) {
+            if(is_string($item)) {
+                $item = htmlentities($item);
+            }
+        });
+         */
+        //return json_encode($arr);
+    }
+}
+
 if ( !function_exists("get_kals_base_url")) {
     
     /**
      * 取得KALS伺服器的根網址
      */
-    function get_kals_base_url() {
+    function get_kals_base_url($path = NULL) {
         $s = &$_SERVER;
         $ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') ? true:false;
         $sp = strtolower($s['SERVER_PROTOCOL']);
@@ -135,50 +212,62 @@ if ( !function_exists("get_kals_base_url")) {
         $uri = $protocol . '://' . $host . $port . base_url();
         $segments = explode('?', $uri, 2);
         $url = $segments[0];
+        
+        if (is_null($path) !== true) {
+            if (starts_with($path, '/')) {
+                $path = substr($path, 1);
+            }
+            $url = $url . $path;
+        }
         return $url;
     }
  }
+ 
+if ( !function_exists("get_kals_root_path")) {
+    
+    /**
+     * 取得KALS伺服器的根網址
+     */
+    function get_kals_root_path($path = NULL) {
+        $dir = __DIR__;
+        $dir_sep = DIRECTORY_SEPARATOR;
+        
+        $strip_end = 'system'.$dir_sep.'application'.$dir_sep.'helpers'.$dir_sep;
+        $dir = substr($dir, 0, (1-strlen($strip_end)));
+        
+        if (isset($path)) {
+            //$detectdir_sep = '/';
+            if (DIRECTORY_SEPARATOR == '\\') {
+                $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+            }
+            
+            if (substr($path, 0, 1) == DIRECTORY_SEPARATOR) {
+                $path = substr($path, 1);
+            }
+            
+            $dir = $dir . $path;
+        }
+        
+        //test_msg($dir);
+        return $dir;
+    }
+ }
+ 
+  
 
 if ( ! function_exists('kals_log'))
 {
     /**
-     * 記錄
+     * 以資料庫記錄Log
      * 
-     * @param {CI_Database} $db 資料庫
-     * @param {Int} $action 動作編號，參考資料如下
-     * @param {String|JSON} $data 把額外要記錄的屬性以JSON保存
+     * 20140511 注意，資料庫中的log資料表欄位需要新增「action_key」
      * 
-     * $action參數列表
-     * 1=檢查登入成功	//記得要取得瀏覽器資料
-     * 2=檢查登入失敗
-     * 3=輸入登入成功
-     * 4=輸入登入失敗
-     * 5=內嵌登入成功
-     * 6=內嵌登入失敗
-     * 7=登出
-     * 8=註冊成功
-     * 9=註冊失敗
-     * 10=變更帳戶
-     * 11=變更密碼
-     * 12=瀏覽標註: 範圍
-     * 13=標註沒有建議:type;note
-     * 14=新增標註具有建議:type;note;recommend_id
-     * 15=修改標註:type:note
-     * 16=瀏覽討論
-     * 17=未登入者瀏覽
-     * 18=未登入者瀏覽討論
-     * 19=刪除標註:annotation_id
-     * 20=新增回應標註:type;topic_id;respond_id_list;note
-     * 21=修改回應標註:type;topic_id;respond_id_list;note
-     * 22=加入喜愛清單:被喜愛的annotation_id
-     * 23=移除喜愛清單:被移除的annotation_id
-     * 24=接受建議，沒有推薦:recommend_id
-     * 25=接受建議，有推薦:recommend_id
-     * 26=拒絕建議:recommend_id
-     * 27=發生錯誤:錯誤內容
-     * 28=查看說明
-     * 29=寄送意見回饋
-     * 30=點選文章結構地圖:章節標題內文,heading tag(如h1)
+     * log資料表的建置SQL如下：
+     * 
+     * 
+     * @param type $db
+     * @param type $action
+     * @param type $data
      */
     function kals_log($db, $action, $data = array())
     {
@@ -197,20 +286,120 @@ if ( ! function_exists('kals_log'))
         }
         
         $user_id = NULL;
-        $memo = NULL;
+        $note = NULL;
 
-        if (isset($data['user_id']))
-            $user_id = $data['user_id'];
-        if (isset($data['memo']))
-        {
-            $memo = $data['memo'];
-            if (is_array($memo) || is_object($memo))
-            {
-                $memo = json_encode($memo);
+        if (is_array($data) && 
+                (isset($data['user_id']) || isset($data['memo']) ) ) {
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
             }
+            if (isset($data['memo']))
+            {
+                $note = $data['memo'];
+                if (is_array($note) || is_object($note)) {
+                    $note = json_encode($note);
+                }
 
-            if ($memo == '')
-                $memo = NULL;
+                if ($note === '') {
+                    $note = NULL;
+                }
+            }
+        }
+        else {
+            if (defined("JSON_UNESCAPED_UNICODE")) {
+                $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            else {
+                $note = kals_json_encode($data);
+            }
+        }
+        
+        if (is_null($user_id)) {
+            $user = get_context_user();
+            if (isset($user)) {
+                $user_id = $user->get_id();
+            }
+        }
+            
+        // 根據action的類型，修改action資料
+        $action_field = "action_key";
+        if (is_int($action) || strval(intval($action)) === $action ) {
+            $action_field = "action";
+        }
+
+        $db->insert('log', array(
+            'webpage_id' => $webpage_id,
+            'user_id' => $user_id,
+            'user_ip' => get_client_ip(),
+            $action_field=> $action,
+            'note'=>$note
+        ));
+    }
+}
+
+/**
+ * mobile_log
+ * 供Mobile使用的Log記錄檔案
+ * @param $this->db, $action, array|$data, webpage_id
+ */
+if ( ! function_exists('kals_mobile_log'))
+{
+    function kals_mobile_log($db, $webpage_id, $action, $data = array())
+    {
+        
+       
+       /* 不使用get_context_webpage()->get_id()來取webpage_id 
+        $url = get_referer_url(FALSE);
+        $webpage_id = NULL;
+        if ($url !== FALSE)
+        {
+            
+            //$CI =& get_instance();
+            //if (isset($CI->webpage) == FALSE || is_null($CI->webpage))
+            //    $CI->load->library('kals_resource/Webpage');
+            //$webpage_id = $CI->webpage->filter_webpage_id($url);
+             
+            $webpage_id = get_context_webpage()->get_id();
+        }*/
+        
+        $user_id = NULL;
+        $note = NULL;
+
+        if (is_array($data) && 
+                (isset($data['user_id']) || isset($data['memo']) ) ) {
+            if (isset($data['user_id'])) {
+                $user_id = $data['user_id'];
+            }
+            if (isset($data['memo']))
+            {
+                $note = $data['memo'];
+                if (is_array($note) || is_object($note)) {
+                    $note = json_encode($note);
+                }
+
+                if ($note === '') {
+                    $note = NULL;
+                }
+            }
+        }
+        else {
+            if (defined("JSON_UNESCAPED_UNICODE")) {
+                $note = json_encode($data, JSON_UNESCAPED_UNICODE);
+            }
+            else {
+                $note = kals_json_encode($data);
+            }
+        }
+        
+        if (is_null($user_id) || $user_id == '') {
+            $user = get_context_user();
+            if (isset($user)) {
+                $user_id = $user->get_id();
+            }
+            
+            if (is_null($user_id) || $user_id == "") {
+                $user_id = NULL;
+            }
         }
 
         $db->insert('log', array(
@@ -218,7 +407,7 @@ if ( ! function_exists('kals_log'))
             'user_id' => $user_id,
             'user_ip' => get_client_ip(),
             'action'=> $action,
-            'note'=>$memo
+            'note'=>$note
         ));
     }
 }

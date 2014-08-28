@@ -44,6 +44,8 @@ View_editor_container.prototype.set_topic = function (_topic_param) {
         
         //設定policy
         _editor.policy.set_data(_topic_param);
+        
+        this.check_policy();
     }
     return this;
 };
@@ -61,8 +63,18 @@ View_editor_container.prototype.add_respond_to = function (_respond_param) {
             this.add_respond_to(_respond_param[_i]);
         }
     }
+	
+	//$.test_msg("add_respond_to");
+    this.toggle_container(true);
     return this;
 };
+
+
+/**
+ * 預設的開啟狀態
+ * @tyep boolean true=開啟; false=關閉
+ */
+View_editor_container.prototype._$default_toggle = false;
 
 /* End of file View_editor_container */
 /* Location: ./system/application/views/web_apps/View_editor_container.js */

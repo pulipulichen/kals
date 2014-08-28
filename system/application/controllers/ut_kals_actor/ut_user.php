@@ -268,6 +268,28 @@ class Ut_user extends Controller {
 
         unit_test_report($this, __METHOD__);
     }
+    
+    public function stat()
+    {
+        // 1. 載入library
+        // 2. Mock 
+        
+        // Test.1 Url -> Webpage
+        // Webpage->filter_webpage_object
+        
+        // Test.2 Type(Int String) -> Annotation_type
+        // new Annotation_type($type)
+        
+        $user1 = $this->user->create_user($this->url, $this->user_email);
+        //檢查user1的name
+        $this->unit->run($user1->get_name(),
+                'puddingchen.35',
+                '檢查user1的name');
+        
+        
+        // ----------------------------------------------
+        unit_test_report($this, __METHOD__);
+    }
 }
 
 

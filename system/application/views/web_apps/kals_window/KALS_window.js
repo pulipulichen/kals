@@ -61,7 +61,8 @@ KALS_window.prototype.ui = null;
  * @type {KALS_language_param}
  */
 KALS_window.prototype._default_heading = new KALS_language_param(
-    'INFORMATION', 'web_apps.window.noheading'
+    'INFORMATION',
+    'window.noheading'
 );
 
 /**
@@ -107,7 +108,7 @@ KALS_window.prototype._$get_config = function () {
     //$.test_msg('KALS_window._$get_config()', [ this._$modal_name , _config.onLoad]);
     
     var _parent_onbeforeload;
-    if (typeof(_config.onBeforeLoad) != 'undefined') {
+    if (typeof(_config.onBeforeLoad) !== 'undefined') {
         _parent_onbeforeload = _config.onBeforeLoad;
     }
     
@@ -145,8 +146,8 @@ KALS_window.prototype._$get_config = function () {
         _ui.css('height', _this._height);
         
         if ($.is_function(_parent_onbeforeload)) {
-			_parent_onbeforeload();
-		}
+            _parent_onbeforeload();
+        }
     };
     
     return _config;
@@ -171,7 +172,7 @@ KALS_window.prototype._$create_ui = function () {
     var _ui = this.base.prototype._$create_ui.call(this);
     
     _ui.addClass('window')
-		.addClass("KALS");
+        .addClass("KALS");
     
     var _content_tr = _ui.find('.dialog-content-tr:first');
     var _loading_tr = $('<tr class="window-loading-tr"><td></td></tr>')
@@ -198,7 +199,7 @@ KALS_window.prototype._default_onviewportmove = null;
  */
 KALS_window.prototype.setup_window = function (_content, _callback) {
     
-    if (typeof(_content) == 'string') {
+    if (typeof(_content) === 'string') {
         eval('_content = new ' + _content + '();');
     }
     
@@ -214,19 +215,41 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         _content._window = _this;
         
         if ($.is_string(_content.name)) {
-			_this.set_modal_name(_content.name);
-		}
-        
+            _this.set_modal_name(_content.name);
+        }
         if ($.isset(_content.width)) {
-			_this.set_width(_content.width);
-		}
+            _this.set_width(_content.width);
+        }
         if ($.isset(_content.height)) {
-			_this.set_height(_content.height);
-		}
+            _this.set_height(_content.height);
+        }
         //if ($.isset(_content.overflow))
         //    _this.set_overflow(_content.overflow);
         
-        _this.set_heading(_content.heading);
+        if ($.isset(_content.heading)) {
+            _this.set_heading(_content.heading);
+        }
+        // -------------
+        // 加上_$的參數
+        if ($.is_string(_content._$name)) {
+            _this.set_modal_name(_content._$name);
+        }
+        if ($.isset(_content._$width)) {
+            _this.set_width(_content._$width);
+        }
+        if ($.isset(_content._$height)) {
+            _this.set_height(_content._$height);
+        }
+        //if ($.isset(_content.overflow))
+        //    _this.set_overflow(_content.overflow);
+        
+        if ($.isset(_content._$heading)) {
+            _this.set_heading(_content._$heading);
+        }
+            
+        
+        
+        // -------------
         
         //$.test_msg('KALS_window.setup_window() setting window 1');
         
@@ -268,17 +291,22 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
             
             
         if ($.is_function(_content.onviewportmove)) {
-			_this.set_onviewportmove(_content.onviewportmove);
-		}
+            _this.set_onviewportmove(_content.onviewportmove);
+        }
         
         //$.test_msg('準備檢查window open之後的callback', _this._$modal_name);
         
+        // 準備開啟囉！
         _this.open(function () {
             
             //$.test_msg('檢查window open之後的callback', $.is_function(_content.setup_content));
             
             if ($.is_function(_content.setup_content)) {
+                
+                // 開始設定內容囉
                 _content.setup_content(function () {
+                    
+                    // 設定完成囉
                     $.trigger_callback(_callback);
                 });
             }   
@@ -426,7 +454,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     }
     
     if (_is_loading !== null
-       && this.is_loading() == _is_loading) {
+       && this.is_loading() === _is_loading) {
         $.trigger_callback(_callback);
         return;
     }
@@ -479,10 +507,9 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
         _close_loading();
     }
     
-    
     if ($.is_function(this._$onviewportmove)) {
-		this._$onviewportmove(_ui);
-	}
+        this._$onviewportmove(_ui);
+    }
     
     setTimeout(function () {
         
@@ -524,14 +551,16 @@ KALS_window.prototype.is_loading = function () {
     var _ui = this.get_ui();
     var _loading = _ui.find('.window-loading:first');
     
-    return (!(_loading.css('display') == 'none'));
+    return (!(_loading.css('display') === 'none'));
 };
 
+// ------------------------------------------------------------
+// 聚焦 focus
+// ------------------------------------------------------------
+
 KALS_window.prototype.focus_option = function (_offset) {
-    
     //覆寫原本的動作
     //變成不做任何事情
-    
 };
 
 /**
@@ -539,8 +568,14 @@ KALS_window.prototype.focus_option = function (_offset) {
  */
 KALS_window.prototype.focus_input = function () {
     var _ui = this.get_ui();
-    var _first_input = _ui.find('.dialog-content:first input:first');
-    var _first_submit = _ui.find('.dialog-options button.window-content-submit:first');
+	
+	var _content = this._content;
+	if (_content === null) {
+            return;
+	}
+	
+    var _first_input = _ui.find(_content.default_focus_input);
+    var _first_submit = _ui.find(_content.default_focus_submit);
     
     //$.test_msg('KALS_window.toggle_loading() focus', [_first_input.length, _first_submit.length]);
     
@@ -551,8 +586,8 @@ KALS_window.prototype.focus_input = function () {
     else {
         _first_submit.focus();
     }
-        
+	
+	return this;
 };
-
 /* End of file KALS_window */
 /* Location: ./system/application/views/web_apps/KALS_window.js */

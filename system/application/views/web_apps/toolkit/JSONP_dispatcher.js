@@ -18,11 +18,12 @@ function JSONP_dispatcher(_url) {
     
     this._default_reset_data = null;
     
-    this._data = null;
+    //this._data = null;
     if ($.isset(_url)) {
-		this.set_load_url(_url);
-	}
-        
+        this.set_load_url(_url);
+    }
+
+    this._register_context();
 }
 
 JSONP_dispatcher.prototype = new Event_dispatcher();
@@ -32,7 +33,7 @@ JSONP_dispatcher.prototype = new Event_dispatcher();
  * @type {Object}
  * @private
  */
-JSONP_dispatcher.prototype._data = null;
+//JSONP_dispatcher.prototype._data = {};
 
 /**
  * 此類別要讀取的url網址。
@@ -55,6 +56,18 @@ JSONP_dispatcher.prototype._$load_url = null;
 JSONP_dispatcher.prototype.set_load_url = function (_url) {
     this._$load_url = _url;
     return this;
+};
+
+JSONP_dispatcher.prototype.get_load_url = function () {
+	var _url = this._$load_url;
+	if ($.is_null(_url)) {
+		return _url;
+	}
+	
+	if ($.ends_with(_url, '/')) {
+		_url = _url.substr(0, _url.length-1);
+	}
+	return _url;
 };
 
 /**
@@ -83,8 +96,8 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
             //$.test_msg('JSONP_dispatcher.load() ajax_get', _data);
             
             if ($.is_function(_callback)) {
-				_callback(_this, _data);
-			}
+                    _callback(_this, _data);
+            }
                 
             _this.set_data(_data);
         },
@@ -95,7 +108,6 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
         _config.exception_handle = function (_data) {
             _this._$exception_handle(_data);    
         }; 
-        
     }
     
     KALS_util.ajax_get(_config);
@@ -142,6 +154,45 @@ JSONP_dispatcher.prototype.get_data = function () {
 JSONP_dispatcher.prototype.reset_data = function () {
     this._data = this._default_reset_data;
     return this._data;
+};
+
+/**
+ * 取得指定欄位的資料
+ * @param {String} _field
+ * @type {Object}
+ */
+JSONP_dispatcher.prototype.get_field = function (_field) {
+	if (this._data !== null && typeof(this._data[_field]) !== 'undefind') {
+		return this._data[_field];
+	}
+	else {
+		return;
+	}
+};
+
+/**
+ * 如果要向KALS_context註冊，則填入自己的Class Name
+ * 設定null表示不註冊
+ */
+JSONP_dispatcher.prototype._$context_register = null;
+
+/**
+ * 向KALS_context註冊，索取資料
+ */
+JSONP_dispatcher.prototype._register_context = function () {
+	if (this._$context_register !== null) {
+		
+		var _register = this._$context_register;
+		var _this = this;
+		//Context訂閱一下
+	    if (typeof(KALS_context) != 'undefined') {
+	        KALS_context.add_listener(function (_dispatcher, _data) {
+	            if (typeof(_data[_register]) != 'undefined') {
+	                _this.set_data(_data[_register]);
+	            }
+	        });
+	    }
+	};
 };
 
 JSONP_dispatcher.prototype._default_reset_data = null;

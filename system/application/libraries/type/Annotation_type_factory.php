@@ -111,8 +111,9 @@ class Annotation_type_factory extends KALS_object {
             return NULL;
         }
 
-        if (isset($this->CI->annotation_type_object))
+        if (isset($this->CI->annotation_type_object)) {
             unset($this->CI->annotation_type_object);
+        }
         $this->CI->load->library('type/Annotation_type_'.$name, NULL, 'annotation_type_object');
 
         /*
@@ -158,6 +159,10 @@ class Annotation_type_factory extends KALS_object {
         return $name;
     }
 
+    /**
+     * 取得所有的標註類型
+     * @return Array|Annotation_type
+     */
     public function get_total_types()
     {
         $total = array();
@@ -175,15 +180,19 @@ class Annotation_type_factory extends KALS_object {
      * @param int|string $type_id
      * @return Annotation_type
      */
-    public function filter_type_id($type_id)
-    {
-        if (is_string($type_id))
-        {
+    public function filter_type_id($type_id) {
+        $int_type_id = intval($type_id);
+        //test_msg("filter_type_id", array(is_string($type_id), intval($type_id), $type_id, $int_type_id,  strval($int_type_id), ($type_id !== strval($int_type_id))  ));
+        if (is_string($type_id)
+            && $type_id !== strval($int_type_id)  ) {
             $type_id = $this->create($type_id)->get_type_id();
         }
-        else if (is_object($type_id))
-        {
+        else if (is_object($type_id)) {
             $type_id = $type_id->get_type_id();
+        }
+        else if (is_string($type_id)
+                && $type_id === strval($int_type_id)) {
+            $type_id = $int_type_id;
         }
         //如果是int，則直接回傳吧
 
@@ -221,6 +230,28 @@ class Annotation_type_factory extends KALS_object {
                 ->set_custom_name($type->get_name());
         return $custom_type;
     }
+
+        
+    /**
+     * 取得type的Object
+     * @version 20140512 Pudding Chen
+     * @param number|string $type_name 要查詢的值。
+     *  可以是數字(那應該就是type_id)，
+     *  也可以是字串，那會查詢並轉換成type_id。
+     */
+    public function filter_object($type_name) {
+        if (is_int($type_name)) {
+            return new Annotation_type($type_name);
+        }
+        else if (is_string($type_name)){
+            $type = $this->create($type_name);
+            return $type;
+        }
+        else {
+            return null;
+        }
+    }
+    
 }
 
 

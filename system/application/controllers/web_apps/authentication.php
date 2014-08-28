@@ -17,6 +17,11 @@ include_once 'web_apps_controller.php';
 class Authentication extends Web_apps_controller {
 
     var $url;
+    
+    /**
+     * 來源網址的資料
+     * @var Webpage 
+     */
     var $webpage;
     var $client_ip;
 
@@ -33,6 +38,8 @@ class Authentication extends Web_apps_controller {
            'ip' => get_client_ip(),
            'browser' => $_SERVER['HTTP_USER_AGENT']
         );
+        
+        $this->load->library("kals_actor/User_statistic");
     }
 
     /**
@@ -42,7 +49,7 @@ class Authentication extends Web_apps_controller {
      * }
      * @param {Object} $callback
      */
-    function login($json, $callback)
+    function login($json, $callback = NULL)
     {
         $data = json_to_object($json);
 
@@ -50,20 +57,26 @@ class Authentication extends Web_apps_controller {
         //$data->embed = TRUE;
 
         $user = NULL;
-        if ($data->embed)
-        {
-            $user = $this->user->create_user($this->url, $data->email);
-        }
-        else
-        {
-            $user = $this->user->find_user($this->url, $data->email, $data->password);
+        if (isset($data->email)) {
+            if ($data->embed ) {
+                //test_msg("login embed", array(
+                //    'url' => $this->url,
+                //    'user' => $data->email
+                //));
+
+                $user = $this->user->create_user($this->url, $data->email);
+            }
+            else {
+                $user = $this->user->find_user($this->url, $data->email, $data->password);
+            }
         }
         
         //$output = NULL;
         //$output['login'] = FALSE;
         $output = $this->_create_default_data();
 
-        $action = 3;
+        //$action = 3;
+        $action = "login.manual.success";
         $user_id = NULL;
         if (isset($user))
         {
@@ -72,7 +85,8 @@ class Authentication extends Web_apps_controller {
         }
         else    //if (isset($user)) else
         {
-            $action = 4;
+            //$action = 4;
+            $action = "login.manual.failed";
             $output['error'] = 'user_not_found';
             //handle_error('user_not_found');
         }
@@ -82,8 +96,19 @@ class Authentication extends Web_apps_controller {
         $this->_display_jsonp($output, $callback);
     }
 
+    /**
+     * 如果已經成功登入的話，將使用者資訊轉換成JSON
+     * @param User $user
+     * @param Boolean $embed_login
+     * @return Array
+     */
     private function _parse_user_output($user, $embed_login) {
+        
+        
+        $webpage = get_context_webpage();
+        
         $output = array();
+        //$output["webpage_id"] = get_context_webpage()->get_id();
         $output['login'] = TRUE;
         $output['embed_login'] = $embed_login;
         $output['user'] = array(
@@ -92,7 +117,25 @@ class Authentication extends Web_apps_controller {
             'id' => $user->get_id(),
             'has_photo' => $user->has_photo(),
             'locale' => $user->get_locale(),
-            'sex' => $user->get_sex()
+            'sex' => $user->get_sex(),
+            
+            // @TODO 請wyfan把這些假資料轉換成$this->user_statistic可以取得的資料
+            //'topic_annotation_count' => array (
+            //    'importance' => 1
+            //),
+            //'respond_to_my_annotation_count' => array (
+            //    'importance' => 1
+            //),
+            //'respond_to_other_annotation_count' => array (
+            //    'importance' => 1
+            //),
+            'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
+            'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
+            'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+            
+            'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
+            'like_to_count' => $this->user_statistic->get_like_to_annotation_count($user, $webpage),
+            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage)
         );
         
         //將使用者寫入Context當中
@@ -105,6 +148,16 @@ class Authentication extends Web_apps_controller {
         $my_annotation = $annotation_getter->my();
         $output['policy']['my_basic'] = $my_annotation['basic'];
         $output['policy']['my_custom'] = $my_annotation['custom'];
+        
+        //$mobile_redirect = $this->session->flashdata("mobile_redirect");
+        $mobile_redirect = $this->session->userdata("mobile_redirect");
+        //$mobile_redirect = "http://localhost/kals/mobile_apps/annotation_thread/topic_id/15651#annotation_15661";
+        //test_msg("mobile_redirect", $mobile_redirect);
+        if ($mobile_redirect !== FALSE) {
+            $output['mobile_redirect'] = $mobile_redirect;
+            $this->session->unset_userdata("mobile_redirect");
+            //context_complete();
+        }
 
         return $output;
     }
@@ -114,8 +167,9 @@ class Authentication extends Web_apps_controller {
      */
     private function _get_login_policy_output($output = NULL) {
 
-        if (is_null($output))
+        if (is_null($output)) {
             $output = array();
+        }
 
         //Policy這邊還沒處理好QQ
         $output['policy'] = array(
@@ -136,6 +190,7 @@ class Authentication extends Web_apps_controller {
         $annotation_getter = new annotation_getter();
 
         $output = array(
+            //"webpage_id" => get_context_webpage()->get_id(),
             'login' => FALSE,
             'embed_login' => FALSE,
             'user' => array(
@@ -179,13 +234,15 @@ class Authentication extends Web_apps_controller {
         //$output['login'] = FALSE;
         $output = $this->_create_default_data();
 
-        $action = 8;
+        //$action = 8;
+        $action = "register.success";
         $user_id = NULL;
-        if (isset($user) )
+        if (isset($user) && $user->has_password() === FALSE)
         {
             //handle_error('user_already_exist');
             $output['error'] = 'user_already_existed';
-            $action = 9;
+            //$action = 9;
+            $action = "register.fail";
         }
         else    //if (isset($user)) else
         {
@@ -254,8 +311,9 @@ class Authentication extends Web_apps_controller {
 
         $user= get_context_user();
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
         kals_log($this->db, 7, array('memo'=>$this->client_ip, 'user_id' => $user_id));
 
         clear_context_user();
@@ -276,8 +334,9 @@ class Authentication extends Web_apps_controller {
     {
         $user = get_context_user();
         $id = null;
-        if (isset($user))
+        if (isset($user)) {
             $id = $user->get_id();
+        }
 
         $data = array(
             'user' => array(
@@ -292,20 +351,22 @@ class Authentication extends Web_apps_controller {
     {
         $output = FALSE;
 
-        $action = 1;
+        //$action = 1;
+        $action = "login.check.success";
         $user_id = NULL;
-        if (login_require(FALSE))   //表示有登入喔！
-        {
+        if (login_require(FALSE)) {  
+            //表示有登入喔！
+        
             $user = get_context_user();
             set_context_user($user);
             $output = $this->_parse_user_output($user, FALSE);
 
             $user_id = $user->get_id();
         }
-        else
-        {
+        else {
             $output = $this->_create_default_data();
-            $action = 2;
+            //$action = 2;
+            $action = "login.check.failed";
         }
         
         $memo = $this->client_ip;

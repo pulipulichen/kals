@@ -23,8 +23,9 @@ class Search_annotation_collection extends Search_engine {
         $db->select('annotation.*');
 
         //加入other_from
-        foreach ($this->other_from AS $from)
+        foreach ($this->other_from AS $from){
             $db->from($from);
+        }
         $db->from('annotation');
 
         $query = $db->get();
@@ -37,6 +38,22 @@ class Search_annotation_collection extends Search_engine {
             $this->members[] = $member;
         }
         return TRUE;
+    }
+    
+    /**
+     * 取得搜尋結果的範圍位置
+     * @return Annotation_scope_collection
+     */
+    public function get_result_scope_coll() {
+        $scope_coll = new Annotation_scope_collection();
+        
+        foreach ($this AS $index => $annotation) {
+            $annotation_scope_coll = $annotation->get_scopes();
+            //test_msg("get_result_scope_coll" . $index, $annotation_scope_coll->export_);
+            $scope_coll->add_scope_collection($annotation_scope_coll);
+        }
+        
+        return $scope_coll;
     }
 }
 

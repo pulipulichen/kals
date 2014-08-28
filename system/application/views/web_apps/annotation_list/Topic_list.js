@@ -256,8 +256,9 @@ Topic_list.prototype.is_totally_loaded = function () {
 // --------
 
 /**
- * 
+ * 聚焦於某個item上
  * @param {Annotation_param|Number} _param
+ * @param {Boolean} _scrollto 是否要捲動到此處，預設是true
  * @type {List_item}
  */
 Topic_list.prototype.focus = function(_param, _scollto) {
@@ -265,8 +266,8 @@ Topic_list.prototype.focus = function(_param, _scollto) {
     
     //$.test_msg('Topic_list.focus()', [_scollto, this.is_overflow()]);
     if (this.is_overflow() === false) {
-		_scollto = false;
-	}
+        _scollto = false;
+    }
     
     var _list_item;
     for (var _i in this._list_colls) {
@@ -319,7 +320,7 @@ Topic_list.prototype.move = function(_param, _name) {
         var _list_coll = this._list_colls[_i];
         var _list_coll_name = _list_coll.get_name();
         
-        if (_list_coll_name == _name) {
+        if (_list_coll_name === _name) {
             _list_coll.add_list_item(_param, true);
         }
         else {
@@ -364,6 +365,7 @@ Topic_list.prototype.reset = function () {
 
 /**
  * Reload是保留tool原本的位置，直接讀取標註的內容
+ * @param {Function} _callback
  */
 Topic_list.prototype.reload = function (_callback) {
     this._toggle_blank(false);
@@ -440,9 +442,10 @@ Topic_list.prototype.load_list = function (_callback) {
     var _this = this;
     var _loop = function (_i, _load_id) {
         //$.test_msg('Topic_list.load_list()', [_load_id, _this._load_id]);
-        if (_load_id != _this._load_id || _this._load_id === null) {
-			return;
-		}
+        if (_load_id !== _this._load_id 
+                || _this._load_id === null) {
+            return;
+        }
         
         if (_i < _this._list_colls.length) {
             var _coll = _this._list_colls[_i];
@@ -472,16 +475,17 @@ Topic_list.prototype._load_list_complete = function (_callback) {
         var _this = this;
         setTimeout(function() {
             if (_this.has_list_item() === false) {
-				_this._toggle_blank(true);
-			}
+                _this._toggle_blank(true);
+            }
             
             //$.test_msg([_this.has_list_item() , _this.is_totally_loaded()]);
             
             if (_this.has_list_item() && _this.is_totally_loaded()) {
-				_this._toggle_complete(true);
-			}
+                _this._toggle_complete(true);
+            }
             
             _this.check_editing();
+            
             _this._toggle_loading(false, function () {
                 
                 //$.test_msg('Topic_list._load_list_complete()', _this._set_focus_param);
@@ -548,15 +552,19 @@ Topic_list.prototype.is_overflow = function () {
     //$.test_msg('Topic_list.is_overflow()', [_colls_height, _max_height, (_colls_height < _max_height || _colls_height == _max_height)]);
     
     if (_colls_height < _max_height ||
-	_colls_height == _max_height) {
-		return false;
+	_colls_height === _max_height) {
+            return false;
 	}
 	else {
-		return true;
+            return true;
 	}
     
 };
 
+/**
+ * 是否有標註資料
+ * @returns {Boolean}
+ */
 Topic_list.prototype.has_list_item = function () {
     return (this.count_list_item() > 0);
 };
@@ -573,6 +581,10 @@ Topic_list.prototype.count_list_item = function () {
     return _count;
 };
 
+/**
+ * 編輯中的標註
+ * @type {Annotation_param}
+ */
 Topic_list.prototype._editing_param = null;
 
 /**

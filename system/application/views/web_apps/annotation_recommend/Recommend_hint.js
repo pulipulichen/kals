@@ -41,6 +41,14 @@ Recommend_hint.prototype._recommended = null;
  * @param {List_item}
  */
 Recommend_hint.prototype.setup_recommend = function(_recommended) {
+    
+    if (KALS_CONFIG.enable_annotation_recommend === false) {
+        /**
+         * 如果允許建議的話，再讓他可以用標註
+         */
+        return this;
+    }
+    
     if ($.isset(_recommended)) {   
         //this._recommended_item = _recommended_item;
         //this._recommended = _recommended_item.get_annotation_param();
@@ -192,7 +200,8 @@ Recommend_hint.prototype._touch_top = function () {
     var _ui = this.get_ui();
     var _ui_height = _ui.height();
     var _first_word = this._first_word;
-    var _first_word_top = _first_word.offset().top;
+    //var _first_word_top = _first_word.offset().top;
+    var _first_word_top = $.get_offset_top(_first_word);
     
     var _body_top = 0;
     if ($.is_small_height() === false) {
@@ -207,7 +216,8 @@ Recommend_hint.prototype._touch_bottom = function () {
     var _ui_height = _ui.height();
     
     var _last_word = this._last_word;
-    var _last_word_bottom = _last_word.offset().top + _last_word.height();
+    //var _last_word_bottom = _last_word.offset().top + _last_word.height();
+    var _last_word_bottom = $.get_offset_bottom(_last_word);
     
     var _body_bottom = $('body').height();
     //$.test_msg('Recommend_hint._touch_bottom()', [_body_bottom, _last_word_bottom, _ui_height, _last_word_bottom + _ui_height, ( _last_word_bottom + _ui_height > _body_bottom )]);
@@ -229,11 +239,11 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     
     var _pos = this._$default_position;
     //$.test_msg('Recommend_hint.setup_position() decide pos', [_pos, this._touch_top(), this._touch_bottom()]);
-    if (_pos == 'top'
+    if (_pos === 'top'
         && (this._touch_top() === true && this._touch_bottom() === false)) {
         _pos = 'bottom';
     }
-    else if (_pos == 'bottom'
+    else if (_pos === 'bottom'
         && (this._touch_bottom() === true && this._touch_top() === false)) {
         _pos = 'top';
     }
@@ -244,16 +254,18 @@ Recommend_hint.prototype.setup_position = function (_callback) {
     
     var _get_center = function (_obj) {
         var _obj_width = _obj.width();
-        var _obj_left = _obj.offset().left;
+        //var _obj_left = _obj.offset().left;
+        var _obj_left = $.get_offset_left(_obj);
         return _obj_left + (_obj_width / 2);
     };
     
     //$.test_msg('Recommend_hint.setup_position()', _pos, this._last_word.css('color', 'blue'));
     
-    var _ui_offset = _ui.offset();
+    //var _ui_offset = _ui.offset();
+    var _ui_offset = $.get_offset(_ui);
     var _ui_width = _ui.width();
     var _center, _ui_left, _ui_top;
-    if (_pos == 'bottom') {     
+    if (_pos === 'bottom') {     
        /*
        $.test_msg('Recommend_hint.setup_position() bottom before', [_ui.css('position'), _ui.offset().top, this._last_word.offset().top]);
         _ui.position({
@@ -266,7 +278,9 @@ Recommend_hint.prototype.setup_position = function (_callback) {
         */
         _center = _get_center(this._last_word);
         
-        _ui_top = this._last_word.offset().top + this._last_word.height() + 10; 
+        //_ui_top = this._last_word.offset().top + this._last_word.height();
+        _ui_top = $.get_offset_bottom(this._last_word);
+        _ui_top = _ui_top + 10; 
         
         _ui.addClass(_tooltip_bottom_classname);
     }
@@ -280,7 +294,9 @@ Recommend_hint.prototype.setup_position = function (_callback) {
         });
         */
         _center = _get_center(this._first_word);
-        _ui_top = this._first_word.offset().top - _ui.height() - 10;
+        //_ui_top = this._first_word.offset().top - _ui.height() - 10;
+        _ui_top = $.get_offset_top(this._first_word);
+        _ui_top = _ui_top - _ui.height() - 10;
        
         _ui.removeClass(_tooltip_bottom_classname);
     }

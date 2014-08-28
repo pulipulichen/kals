@@ -110,8 +110,9 @@ class Annotation_getter extends Web_apps_controller {
 
             if ($is_basic == true)
             {
-                if (isset($type_scope_colls[$annotation_type_id]) == false)
+                if (isset($type_scope_colls[$annotation_type_id]) === false) {
                     $type_scope_colls[$annotation_type_id] = new Annotation_scope_collection();
+                }
 
                 //test_msg('標註', array($annotation_type_id, $annotation));
 
@@ -121,7 +122,7 @@ class Annotation_getter extends Web_apps_controller {
 
                 foreach ($type_scope_colls AS $type_id => $scope_coll)
                 {
-                    if ($annotation_type_id == $type_id)
+                    if ($annotation_type_id === $type_id)
                     {
                         foreach ($annotation_scope_coll AS $scope)
                         {
@@ -139,12 +140,13 @@ class Annotation_getter extends Web_apps_controller {
             }   //if ($is_basic)
             else
             {
-                if (isset($custom_type_scope_colls[$annotation_type_name]) == false)
+                if (isset($custom_type_scope_colls[$annotation_type_name]) === false) {
                     $custom_type_scope_colls[$annotation_type_name] = new Annotation_scope_collection();
+                }
 
                 foreach ($custom_type_scope_colls AS $type_name => $scope_coll)
                 {
-                    if ($annotation_type_name == $type_name)
+                    if ($annotation_type_name === $type_name)
                     {
                         foreach ($annotation_scope_coll AS $scope)
                         {
@@ -217,10 +219,12 @@ class Annotation_getter extends Web_apps_controller {
         $output_data = array();
 
         $my_annotation = $this->my();
-        if (isset($my_annotation['custom']))
+        if (isset($my_annotation['custom'])) {
             $output_data = $my_annotation['custom'];
-        else if (is_array($my_annotation))
+        }
+        else if (is_array($my_annotation)) {
             $output_data = $my_annotation;
+        }
 
         return $this->_display_jsonp($output_data, $callback);
     }
@@ -234,12 +238,15 @@ class Annotation_getter extends Web_apps_controller {
     {
         $type = $GLOBALS['context']->get_anchor_navigation_type();
 
-        if ($type == 'recommend')
+        if ($type == 'recommend') {
             return $this->navigation_recommend($json, $callback);
-        else if ($type == 'none')
+        }
+        else if ($type == 'none') {
             return $this->navigation_none($json, $callback);
-        else
+        }
+        else {
             return $this->navigation_all($json, $callback);
+        }
     }
 
     /**
@@ -476,14 +483,18 @@ class Annotation_getter extends Web_apps_controller {
     public function parse_navigation_level($score)
     {
         $score_type = 1;
-        if ($score < 1.5)
+        if ($score < 1.5) {
             $score_type = 1;
-        else if ($score >= 1.5 && $score < 2)
+        }
+        else if ($score >= 1.5 && $score < 2) {
             $score_type = 2;
-        else if ($score >= 2 && $score < 2.5)
+        }
+        else if ($score >= 2 && $score < 2.5) {
             $score_type = 3;
-        else
+        }
+        else {
             $score_type = 4;
+        }
         return $score_type;
     }
 
@@ -491,21 +502,25 @@ class Annotation_getter extends Web_apps_controller {
     {
         $enable_profiler = FALSE;
 
-        if ($enable_profiler == TRUE)
+        if ($enable_profiler === TRUE) {
             $this->output->enable_profiler(TRUE);
+        }
 
-        if (is_string($json))
+        if (is_string($json)) {
             $data = json_to_object($json);
-        else
+        }
+        else {
             $data = $json;
+        }
 
         $user = get_context_user();
         $url = $this->url;
         $search = new Search_annotation_collection();
 
         $search_id = null;
-        if (isset($data->limit))
+        if (isset($data->limit)) {
             $search_id = new Search_annotation_collection();
+        }
 
         // 1 [ topic id ]
         if (isset($data->topic_id)
@@ -525,8 +540,9 @@ class Annotation_getter extends Web_apps_controller {
             && isset($data->target_topic) && $data->target_topic === FALSE)
         {
             $search->set_target_topic_id($data->topic_id);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_target_topic_id($data->topic_id);
+            }
         }
 
         // 2 [ scope ]
@@ -547,8 +563,9 @@ class Annotation_getter extends Web_apps_controller {
 
 
             $search->set_overlap_scope($scope_coll);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_overlap_scope($scope_coll);
+            }
 
             //test_msg('2 [ scope ] 3', is_null($data->scope));
         }
@@ -558,7 +575,7 @@ class Annotation_getter extends Web_apps_controller {
         // 4 [ target my ]
         //test_msg('3 [ target like ] 4 [ target my ]');
 
-        if ((isset($data->target_lik) OR isset($data->target_my) )
+        if ((isset($data->target_like) OR isset($data->target_my) )
             && is_null($user))
         {
             return $this->_create_null_list($callback);
@@ -567,8 +584,9 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->target_like))
         {
             $search->set_target_like($data->target_like, $user);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_target_like($data->target_like, $user);
+            }
         }
 
         if (isset($data->target_my))
@@ -576,14 +594,16 @@ class Annotation_getter extends Web_apps_controller {
             if ($data->target_my === TRUE)
             {
                 $search->set_target_user($user);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->set_target_user($user);
+                }
             }
             else
             {
                 $search->set_exclude_user($user);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->set_exclude_user($user);
+                }
             }
         }
         
@@ -591,54 +611,62 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->target_topic))
         {
             $search->set_target_topic($data->target_topic);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_target_topic($data->target_topic);
+            }
         }
 
         // 6 [ order by ]
+        // 6 [ is_desc]
         //test_msg('6 [ order by ]', isset($data->order_by));
+        //test_msg('6 [ order by ] direction', $data->direction);
+        $order_id = 1;
+        $default_direction = TRUE;
         if (isset($data->order_by))
         {
             if ($data->order_by == 'update')
             {
-                $search->add_order (6, TRUE);
-                if (isset($search_id))
-                    $search_id->add_order (6, TRUE);
+                $order_id = 6;
+                $default_direction = TRUE;
             }
             else if ($data->order_by == 'create')
             {
-                $search->add_order (7);
-                if (isset($search_id))
-                    $search_id->add_order (7);
+                $order_id = 7;
+                $default_direction = TRUE;
             }
             else
             {
-                $search->add_order (1, TRUE);
-                if (isset($search_id))
-                    $search_id->add_order (1, TRUE);
+                // 依照分數排序
+                $order_id = 1;
+                $default_direction = TRUE;
             }
         }
-        else
-        {
-            $search->add_order (1, TRUE);
-            if (isset($search_id))
-                $search_id->add_order (1, TRUE);
+        if (isset($data->direction) && $data->direction == 'asc') {
+            $default_direction = FALSE;
         }
-
+        
+        /*
         if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
         {
-            $search->add_order (6, TRUE);
-            if (isset($search_id))
-                $search_id->add_order (6, TRUE);
+            $order_id = 6;
+            $default_is_desc = TRUE;
         }
-
+        */
+        
+        //test_msg('6 [ order by ] add_oder', array($order_id, $default_is_desc));
+        $search->add_order ($order_id, $default_direction);
+        if (isset($search_id)) {
+            $search_id->add_order ($order_id, $default_direction);
+        }
+        
         // 7 [ offset ]
         //test_msg('7 [ offset ]', isset($data->offset));
         if (isset($data->offset))
         {
             $search->set_offset($data->offset);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->set_offset($data->offset);
+            }
         }
 
         // 8 [ limit ]
@@ -647,14 +675,16 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->limit))
         {
             $search->set_limit($data->limit);
-
             //$search_id在此不作設限
         }
+        
+        $search->set_target_webpage(get_context_webpage());
 
         //輸出
         $totally_loaded = TRUE;
-        if (isset ($search_id))
+        if (isset ($search_id)) {
             $totally_loaded = FALSE;
+        }
         
         //不作limit的情況下讀完，表示完全讀取
         if (isset($search_id)
@@ -676,17 +706,25 @@ class Annotation_getter extends Web_apps_controller {
                 $search_data = json_to_object('{}');
                 $search_data->target_topic = FALSE;
                 $search_data->topic_id = $search_annotation->get_id();
-                $search_data->limit = 5;
+                if (isset($data->respond_limit)) {
+                    $search_data->limit = $data->respond_limit;
+                }
                 //$search_data->is_like = NULL;
                 $search_data->order_by = 'create';
+                
+                if (isset($data->respond_direction)) {
+                    $search_data->direction = $data->respond_direction;
+                }
+                else {
+                    //$search_data->direction = "asc";
+                }
                 $search_data->show_total_count = TRUE;
 
                 $search_result = $this->list_annotation($search_data);
                 
                 //test_msg($search_result);
 
-                if (count($search_result['annotation_collection']) > 0)
-                {
+                if (count($search_result['annotation_collection']) > 0) {
                     $annotation_data['respond_list'] = $search_result;
                 }
             }
@@ -703,38 +741,47 @@ class Annotation_getter extends Web_apps_controller {
         if (isset($data->show_total_count)
             && $data->show_total_count === TRUE)
         {
-            if (count($annotation_collection) === 0)
+            if (count($annotation_collection) === 0) {
                 $output_data['total_count'] = 0;
-            else if (isset($search_id))
+            }
+            else if (isset($search_id)) {
                 $output_data['total_count'] = $search_id->length();
-            else
+            }
+            else {
                 $output_data['total_count'] = count($annotation_collection);
+            }
         }
 
         //log區
         $array_data = NULL;
-        if (is_string($json))
+        if (is_string($json)){
             $array_data = json_to_array($json);
-        else
+        }
+        else {
             $array_data = (array) $json;
+        }
         $user_id = NULL;
-        if (isset($user))
+        if (isset($user)) {
             $user_id = $user->get_id();
+        }
 
         $action = 12;
         if (isset($data->topic_id)
             && isset($data->target_topic) && $data->target_topic === FALSE
-            && isset($data->limit) == FALSE)
+            && isset($data->limit) == FALSE) {
             $action = 16;
+        }
 
         $do_log = TRUE;
-        if (isset($data->limit) && $data->limit == 5)
+        if (isset($data->limit) && $data->limit == 5){
             $do_log = FALSE;
+        }
 
         if (isset($data->target_my))
         {
-            if ($data->target_my == FALSE)
+            if ($data->target_my == FALSE){
                 $do_log = FALSE;
+            }
         }
         else if ($user_id == NULL)
         {
@@ -742,8 +789,9 @@ class Annotation_getter extends Web_apps_controller {
             $action = 17;
             if (isset($data->topic_id)
                 && isset($data->target_topic) && $data->target_topic === FALSE
-                && isset($data->limit) == FALSE)
-                $action = 18;
+                && isset($data->limit) == FALSE){
+                    $action = 18;
+                }
         }
          
         if ($do_log)
@@ -754,22 +802,27 @@ class Annotation_getter extends Web_apps_controller {
         context_complete();
 
         if ($enable_profiler != TRUE)
-            return $this->_display_jsonp($output_data, $callback);
+        {return $this->_display_jsonp($output_data, $callback);}
     }
 
+    /**
+     * 搜尋標註
+     * @param string $json
+     * @param type $callback
+     * @return type
+     */
     function search_annotation($json, $callback = NULL)
     {
          //$enable_profiler = true; //？
          $enable_profiler = false; //？
 
-        if ($enable_profiler == TRUE)
-            $this->output->enable_profiler(TRUE);  
+        if ($enable_profiler == TRUE) {
+            $this->output->enable_profiler(TRUE); 
+        }
 
-        if (is_string($json)) 
-        {
+        if (is_string($json)) {
             $data = json_to_object($json); //把js丟過來的資料(search)包成物件data，內含
-                                           // searchrange，keyword，新增order_by
-        
+                                           // search_range，keyword，新增order_by
         }    
         else {
             $data = $json;
@@ -785,11 +838,11 @@ class Annotation_getter extends Web_apps_controller {
         
           //test_msg("輸入資料", $json);
         
-        //$data->searchrange = "annotation_anchor"; //測試用
-        if (isset($data->searchrange) === FALSE) {
-            $data->searchrange = "annotation_anchor";
+        //$data->search_range = "annotation_anchor"; //測試用
+        if (isset($data->search_range) === FALSE) {
+            $data->search_range = "annotation_anchor";
         }
-        switch ( $data->searchrange ) {
+        switch ( $data->search_range ) {
             case "author": 
                 //示範用
                 //$search->set_target_user(new User(1701));
@@ -797,62 +850,66 @@ class Annotation_getter extends Web_apps_controller {
                
                 break;
             case "note": //標註內容
-                $search->set_search_note($data->keyword);
+                if ($data->keyword != "" && $data->keyword != "*") {
+                    $search->set_search_note($data->keyword);
+                }
                 break;
            case "annotation_type": //標註類型
-                $search->set_target_type(intval($data->keyword));
+                $search->set_target_type($data->keyword);
                 break;
             case "annotation_anchor":
                 $search->set_search_anchor_text($data->keyword);
-                break;
-
-            
+                break;   
         }
-
-  
+        
         // 6 [ order by ] 設定排序方式(order_by_id,大小|小大 )-data內要有order_by的選項
         //test_msg('6 [ order by ]', isset($data->order_by)); 
         //order_by的typ類型e在Search_order_collection
-        if (isset($data->order_by))
-        {
-            if ($data->order_by == 'update')
-            {
+        if (isset($data->order_by)) {
+            if ($data->order_by == 'update') {
                 $search->add_order (6, TRUE); 
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->add_order (6, TRUE);
+                }
             }
-            else if ($data->order_by == 'create')
-            {
+            else if ($data->order_by == 'create') {
                 $search->add_order (7);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->add_order (7);
+                }
             }
-            else
-            {
+            else {
                 $search->add_order (2, TRUE);
-                if (isset($search_id))
+                if (isset($search_id)) {
                     $search_id->add_order (2, TRUE);
+                }
             }
         }
-        else
-        {
+        else {
             $search->add_order (2, TRUE);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->add_order (2, TRUE);
+            }
         }
 
         if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
         {
             $search->add_order (6, TRUE);
-            if (isset($search_id))
+            if (isset($search_id)) {
                 $search_id->add_order (6, TRUE);
+            }
         }
 
+        /**
+         * 限定搜尋範圍只在來源的網頁
+         */
+        $search->set_target_referer_webpage();
 
         //輸出
         $totally_loaded = TRUE;
-        if (isset ($search_id))
+        if (isset ($search_id)) {
             $totally_loaded = FALSE;
+        }
         
         //不作limit的情況下讀完，表示完全讀取
         if (isset($search_id)
@@ -868,71 +925,69 @@ class Annotation_getter extends Web_apps_controller {
         foreach ($search AS $search_annotation)
         {
             $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
-
             array_push($annotation_collection, $annotation_data);
         }
         
-       // $search_annotation = new Annotation(783);
-       // $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
+        // $search_annotation = new Annotation(783);
+        // $annotation_data = $search_annotation->export_webpage_data($url); //把Data export到目前的頁面上
+        // array_push($annotation_collection, $annotation_data);
 
-       // array_push($annotation_collection, $annotation_data);
+        // --------------
+        
+        /**
+         * 取得搜尋結果的位置
+         */
+               
+        $scope_collection = $search->get_result_scope_coll();
+        $scope_collection_json = $scope_collection->export_webpage_data(get_context_webpage());
 
-
+        // --------------
+        
         $output_data = array(
             'annotation_collection' => $annotation_collection,
-            'totally_loaded' => $totally_loaded
+            'totally_loaded' => $totally_loaded, 
+            'scope_collection' => $scope_collection_json
         );
         
         if (isset($data->show_total_count)
             && $data->show_total_count === TRUE)
         {
-            if (count($annotation_collection) === 0)
+            if (count($annotation_collection) === 0) {
                 $output_data['total_count'] = 0;
-            else if (isset($search_id))
+            }
+            else if (isset($search_id)) {
                 $output_data['total_count'] = $search_id->length();
-            else
+            }
+            else {
                 $output_data['total_count'] = count($annotation_collection);
+            }
         }   
 
         //log區
-        $array_data = NULL;
-        if (is_string($json))
-            $array_data = json_to_array($json);
-        else
-            $array_data = (array) $json;
-        $user_id = NULL;
-        if (isset($user))
-            $user_id = $user->get_id();
-
-        $action = 12;
-        if (isset($data->topic_id)
-            && isset($data->target_topic) && $data->target_topic === FALSE
-            && isset($data->limit) == FALSE)
-            $action = 16;
-
-        $do_log = TRUE;
-        if (isset($data->limit) && $data->limit == 5)
-            $do_log = FALSE;
-        
-        if (isset($data->target_my))
-        {
-            if ($data->target_my == FALSE)
-                $do_log = FALSE;
+        $action = 30;
+        switch ( $data->search_range ) {
+            case "author": 
+                $action = 31;
+                break;
+           case "annotation_type": //標註類型
+                $action = 32;
+                break;
+            case "annotation_anchor":
+                $action = 33;
+                break;   
         }
-        else if ($user_id == NULL)
-        {
-
-            $action = 17;
-            if (isset($data->topic_id)
-                && isset($data->target_topic) && $data->target_topic === FALSE
-                && isset($data->limit) == FALSE)
-                $action = 18;
+        
+        if ($data->search_range == "note" && $data->keyword == "*"
+            && $data->order_by == "update") {
+            $action = 34;
         }
          
-        if ($do_log)
-        {
-            kals_log($this->db, $action, array('memo'=>$array_data, 'user_id' => $user_id));
-        }
+        kals_log($this->db, $action, array(
+            "keyword" => $data->keyword,
+            "order_by" => $data->order_by,
+            "total_count" => $output_data['total_count']
+        ));
+        
         context_complete();
 
         if ($enable_profiler != TRUE) {
@@ -990,6 +1045,68 @@ class Annotation_getter extends Web_apps_controller {
         return $this->_display_jsonp($output_data, $callback);
     }
      */
+    
+    /**
+     * 取得tooltip指定的標註
+     * @param int $annotation_index 標註的位置
+     * @param string $callback
+     */
+    public function tooltip($annotation_index, $callback) {
+        
+        // -------------
+        // 搜尋
+        
+        //$annotation_index = 100000;
+        
+        $search = new Search_annotation_collection();
+        
+        // 限定範圍
+        $search->set_overlap_scope_index($annotation_index, $annotation_index);
+        
+        // 依照分數排序，由高到低
+        $search->add_order(1, TRUE);
+        
+        // 只輸出一份
+        //$search->set_limit(1);
+        
+        // 限定該網頁
+        $search->set_target_referer_webpage();
+        
+        //--------------
+        // 轉換資料
+        
+        //$annotation = new Annotation();
+        //$annotation = null;
+        $annotation = null;
+        $output_data = array();
+        $result = null;
+        foreach ($search AS $search_annotation) {
+            $annotation = $search_annotation;
+            $result = $annotation->get_id();
+            $output_data["annotation"] = $annotation->export_data();
+            break;
+        }
+        $output_data["count"] = $search->length();
+        
+        //--------------
+        // 記錄
+        
+        $action = 35;
+        
+        $log_note = array(
+            'index'=> $annotation_index,
+            'result' => $result
+        );
+        
+        kals_log($this->db, $action, $log_note);
+
+        context_complete();
+        
+        // -------------
+        // 輸出
+        
+        return $this->_display_jsonp($output_data, $callback);
+    }
 }
 
 /* End of file annotation_getter.php */
