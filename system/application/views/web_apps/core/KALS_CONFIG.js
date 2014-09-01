@@ -285,6 +285,9 @@ DEFAULT_KALS_CONFIG = {
         autoGrow_maxHeight: false,
         autoGrow_maxWidth: false,
         extraPlugins: 'kals_maximize,youtube',
+        filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
+        //filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+        filebrowserUploadUrl: 'http://localhost/kals/libraries/ckeditor/test.html',
         toolbar: [
 			//最大化的時候顯示的工具列
             ['Maximize','Source','Preview','-'],
