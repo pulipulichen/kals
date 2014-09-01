@@ -52,7 +52,9 @@ this.generic_load = function (_conf, _callback) {
     var _libraries = {
         libraries_list: [
             "libraries/ckeditor/ckeditor.js",
-            "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js"
+            "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js",
+            'libraries/jquery-file-upload/js/jquery.iframe-transport.js'
+            //'libraries/jquery-file-upload/js/vendor/jquery.ui.widget.js'
         ],
         // @version 20140703 Pudding Chen
         // 解決CKeditor圖示無法顯示的問題
@@ -64,7 +66,8 @@ this.generic_load = function (_conf, _callback) {
     var _toolkit_libraries = {
         //script_list: _prefix+'toolkit',
         libraries_list: [
-            "libraries/ckeditor/adapters/jquery.js"
+            "libraries/ckeditor/adapters/jquery.js",
+            "libraries/jquery-file-upload/js/jquery.fileupload.js"
         ],
         style_list: _prefix+'style|generic'
     };
@@ -408,7 +411,7 @@ this.load_styles = function (_style_list, _callback) {
         //檢查一下是否已有該title
         var _link = null;
         if (_style_title !== null) {
-            _link = $('link[type=text/css][rel=stylesheet][title=' + _style_title + ']');
+            _link = $('link[type="text/css"][rel="stylesheet"][title="' + _style_title + '"]');
             if (_link.length === 0) {
                 _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
             }
