@@ -338,12 +338,13 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     
     for (var _i in _script_list) {
        var _script_url = _base_url + _script_list[_i];
+       console.log(_script_url);
        var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
        _script_tag.appendTo($('head'));
        
        //console.log('[KALS] append script: ' + _script_url);
-       $.getScript(_script_url, function () {
-           
+       //$.getScript(_script_url, function () {
+       var _get_script_callback = function () {
            /**
             * @author Pulipuli Chen 20140428
             * 加上了讀取次數的改進
@@ -358,7 +359,14 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
            }
            
            //_loaded = true;
-       });
+       };
+       
+       $.ajax({
+           dataType: "script",
+           cache: true,
+           url: _script_url,
+           complete: _get_script_callback
+       })
     }
     return this;
 };
