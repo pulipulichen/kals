@@ -121,16 +121,16 @@ Init_profile.prototype._test = [
      * 測試CKeditor檔案上傳功能
      * @author 20140901 Pulipuli Chen
      */
-    , function () {
-        setTimeout(function () {
-            console.log($(".ckeditor.note-editor-ckeditor.Note_editor_ckeditor .cke_off cke_button_image").lenght);
-            $(".ckeditor.note-editor-ckeditor.Note_editor_ckeditor .cke_off cke_button_image").click();
-            
-            setTimeout(function () {
-                $(".cke_dialog_tabs *[title='上傳']").click();
-            }, 1000);
-        }, 3000);
-    }
+//    , function () {
+//        setTimeout(function () {
+//            console.log($(".ckeditor.note-editor-ckeditor.Note_editor_ckeditor .cke_off cke_button_image").lenght);
+//            $(".ckeditor.note-editor-ckeditor.Note_editor_ckeditor .cke_off cke_button_image").click();
+//            
+//            setTimeout(function () {
+//                $(".cke_dialog_tabs *[title='上傳']").click();
+//            }, 1000);
+//        }, 3000);
+//    }
     /**
      * 測試網頁暫存功能
      * @author Pulipuli Chen 20140517

@@ -286,8 +286,8 @@ DEFAULT_KALS_CONFIG = {
         autoGrow_maxWidth: false,
         extraPlugins: 'kals_maximize,youtube',
         filebrowserBrowseUrl: 'ckfinder/ckfinder.html',
-        //filebrowserUploadUrl: 'ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
-        filebrowserUploadUrl: 'http://localhost/kals/libraries/ckeditor/test.html',
+        filebrowserUploadUrl: 'http://localhost/kals/libraries/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+        //filebrowserUploadUrl: 'http://localhost/kals/libraries/ckeditor/test.html',
         toolbar: [
 			//最大化的時候顯示的工具列
             ['Maximize','Source','Preview','-'],
@@ -631,8 +631,6 @@ DEFAULT_KALS_CONFIG = {
     KALS_CONFIG = DEFAULT_KALS_CONFIG;
     
 })();
-
-
 
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */

@@ -66,12 +66,15 @@ class CKFinder_Connector_ErrorHandler_QuickUpload extends CKFinder_Connector_Err
             }
 
             $funcNum = preg_replace("/[^0-9]/", "", $_GET['CKEditorFuncNum']);
+            // 控制CKeditor的語法
             echo "window.parent.CKEDITOR.tools.callFunction($funcNum, '" . str_replace("'", "\\'", $sFileUrl . CKFinder_Connector_Utils_Misc::encodeURIComponent($sEncodedFileName)) . "', '" .str_replace("'", "\\'", $errorMessage). "');";
         }
         else {
             if (!$uploaded) {
+                //// 控制CKeditor的語法
                 echo "window.parent.OnUploadCompleted(" . $number . ", '', '', '') ;";
             } else {
+                // 控制CKeditor的語法
                 echo "window.parent.OnUploadCompleted(" . $number . ", '" . str_replace("'", "\\'", $sFileUrl . CKFinder_Connector_Utils_Misc::encodeURIComponent($sEncodedFileName)) . "', '" . str_replace("'", "\\'", $sEncodedFileName) . "', '') ;";
             }
         }

@@ -62,6 +62,8 @@ Note_editor_ckeditor._setup_ckeditor = function () {
         clearTimeout(this._setup_timer);
     }
     
+    //this._setup_php_file_upload();
+    
     var _this = Note_editor_ckeditor;
     var _setup = function () {
         
@@ -452,6 +454,60 @@ Note_editor_ckeditor.prototype.focus = function () {
     //$.test_msg(_ckeditor);
 
     return this;	
+};
+
+/**
+ * 設定檔案上傳功能
+ */
+Note_editor_ckeditor.php_file_host = function () {
+    
+    var _btn = $(".cke_dialog_ui_button.upload_to_server");
+    $.test_msg(_btn.length);
+    
+    //window.CKEDITOR.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
+    
+//    if (typeof(window.CKEDITOR) === "object"
+//            && typeof(window.CKEDITOR.php_file_host) !== "function") {
+//        window.CKEDITOR.php_file_host = function () {
+//            //$.test_msg("rewe");
+//            this.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
+//        };
+//    }
+//    
+//    var myDefinition = window.CKEDITOR.tools.extend( {}, elementDefinition );
+//    var onClick = myDefinition.onClick;
+//    
+    //$.test_msg("rewe");
+//    //var target = elementDefinition[ 'for' ];		// [ pageId, elementId ]
+//    if ( !onClick || onClick.call( this, evt ) !== false )
+//    {
+//            //dialog.getContentElement( target[0], target[1] ).submit();
+//            this.disable();
+//    }
+
+    // 1. 把表單放上去
+    var _php_file_host_url = "http://localhost/php-file-host/upload";
+    
+    var _form_html = '<form action="' + _php_file_host_url + '" method="post" enctype="multipart/form-data"><input id="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
+            + '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
+            + '</form>';
+    
+    $.test_msg(_form_html);
+    
+    //_btn.css("border", "4px solid red");
+    
+    
+    _btn.after($(_form_html));
+    
+    
+    
+    // 2. jQuery File Uploader化
+    
+    // 3. 點下選擇檔案的按鈕
+    
+    //window.CKEDITOR.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
+    //window.OnUploadCompleted(1, '/ckfinder/userfiles/files/app.png', '');
+    return this;
 };
 
 /* End of file Note_editor_ckeditor */
