@@ -127,7 +127,7 @@ $.widget = function( name, base, prototype ) {
 	// are inheriting from it and redefine all of them so that they inherit from
 	// the new version of this widget. We're essentially trying to replace one
 	// level in the prototype chain.
-	if ( existingConstructor ) {
+	if ( existingConstructor && existingConstructor._childConstructors ) {
 		$.each( existingConstructor._childConstructors, function( i, child ) {
 			var childPrototype = child.prototype;
 

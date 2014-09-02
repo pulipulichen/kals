@@ -9,6 +9,14 @@
  * http://www.opensource.org/licenses/MIT
  */
 
+/**
+ * 避免找不到這個功能
+ * http://blog.xuite.net/vexed/tech/44905647-jQuery+1.6+.attr()+%E5%92%8C+.prop()
+ */
+if(!$.prop) {
+  $.fn.prop = $.fn.attr;
+}
+
 /* jshint nomen:false */
 /* global define, window, document, location, Blob, FormData */
 
