@@ -489,39 +489,19 @@ Note_editor_ckeditor.php_file_host = function () {
     var _php_file_host_url = "http://localhost/php-file-host/upload";
     
     var _form_html = '<form action="' + _php_file_host_url + '" method="post" enctype="multipart/form-data"><input id="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
-            + '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
+            + '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
             + '</form>';
-    
-    var _form = $(_form_html);
-    var _progress_bar = _form.find(".progress");
     
     $.test_msg(_form_html);
     
     //_btn.css("border", "4px solid red");
     
     
-    _btn.after(_form);
+    _btn.after($(_form_html));
+    
+    
     
     // 2. jQuery File Uploader化
-    _form.fileupload({
-        dataType: 'json',
-        add: function (e, data) {
-            data.submit();
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            _progress_bar.css(
-                'width',
-                progress + '%'
-            );
-        },
-        done: function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                var _link = file.url;
-                window.CKEDITOR.tools.callFunction(1, _link, '');
-            });
-        }
-    });
     
     // 3. 點下選擇檔案的按鈕
     

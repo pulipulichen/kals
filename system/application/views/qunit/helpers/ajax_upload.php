@@ -78,33 +78,29 @@ test("ajax_upload", function() {
         onSelect: showCoords
     });
     */ 
-   
-    /**
-     * 由於jQuery Jcrop不符合jQuery 1.9以上，所以移除
-     */
-//    var jcrop_api = $.Jcrop('.photo-temp', {
-//        aspectRatio: 1,
-//        onChange: showCoords,
-//        onSelect: showCoords
-//    });
-//    
-//    setTimeout(function () {
-//        var photo = $('.photo-temp');
-//        var width = photo.width();
-//        var height = photo.height();
-//        
-//        if (width < height)
-//        {
-//            jcrop_api.setSelect([0,0, width, width]);
-//        }
-//        else
-//        {
-//            jcrop_api.setSelect([0,0, height, height]);
-//        }
-//        
-//        jcrop_api.enable();
-//        
-//    }, 0);
+    var jcrop_api = $.Jcrop('.photo-temp', {
+        aspectRatio: 1,
+        onChange: showCoords,
+        onSelect: showCoords
+    });
+    
+    setTimeout(function () {
+        var photo = $('.photo-temp');
+        var width = photo.width();
+        var height = photo.height();
+        
+        if (width < height)
+        {
+            jcrop_api.setSelect([0,0, width, width]);
+        }
+        else
+        {
+            jcrop_api.setSelect([0,0, height, height]);
+        }
+        
+        jcrop_api.enable();
+        
+    }, 0);
     
 
 }); //$(function() {

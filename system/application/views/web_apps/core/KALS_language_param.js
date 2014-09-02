@@ -14,7 +14,7 @@
  * 可以在create_listener的參數中再插入一個listener
  */
 function KALS_language_param (_msg, _line, _arg) {
-  
+    
     if ($.is_array(_line)
         && $.is_null(_arg)) {
         _arg = _line;

@@ -18,8 +18,6 @@ KALS_context = new JSONP_dispatcher();
  */
 KALS_context.initialize = function () {
     
-    //$.test_msg("KALS_context.initialize ok?");
-    
     if (KALS_CONFIG.enable_kals === false) {
         return this;
     }

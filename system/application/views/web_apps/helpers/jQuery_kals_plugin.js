@@ -11,7 +11,7 @@
  * @requires jQuery
  * @memberOf {jQUery}
  * @alias $
- */;
+ */
 
 // Deny defined again.
 if (typeof($jquery_extends) === 'undefined') {
@@ -558,20 +558,17 @@ jQuery.is_boolean = function(_obj) {
  * @type boolean
  */
 jQuery.is_array = function(_obj) {
-    return (typeof(_obj) === 'object' 
-            && (_obj instanceof Array));
+    return (typeof(_obj) == 'object' && (_obj instanceof Array));
 };
 
-//alert(typeof($.is_array));
-
 jQuery.filter_array = function (_obj) {
-    var _is_array = (typeof(_obj) === 'object' && (_obj instanceof Array));
-    if (false === _is_array) {
-        return [_obj];
-    }
-    else {
-        return _obj;
-    }
+    var _is_array = (typeof(_obj) == 'object' && (_obj instanceof Array));
+    if (false == _is_array) {
+		return [_obj];
+	}
+	else {
+		return _obj;
+	}
 };
 
 /**
@@ -3146,17 +3143,11 @@ jQuery._cache = {
     }
 };
 
-/**
- * @version 20140902 Pulipuli Chen
- * 這一段到底是幹嘛用的？
- */
-if (typeof($.ui) !== "undefined") {
-    $.widget("ui.dialog", $.ui.dialog, {
-        _allowInteraction: function(event) {
-            return !!$(event.target).closest(".cke").length || this._super(event);
-        }
-    });
-}
+$.widget("ui.dialog", $.ui.dialog, {
+    _allowInteraction: function(event) {
+        return !!$(event.target).closest(".cke").length || this._super(event);
+    }
+});
 
 /**
  * 將jQuery加上append事件
