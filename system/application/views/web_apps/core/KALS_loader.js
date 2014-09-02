@@ -53,7 +53,7 @@ this.generic_load = function (_conf, _callback) {
         libraries_list: [
             "libraries/ckeditor/ckeditor.js",
             "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js",
-            'libraries/jquery-file-upload/js/jquery.iframe-transport.js'
+            //'libraries/jquery-file-upload/js/jquery.iframe-transport.js',
             //'libraries/jquery-file-upload/js/vendor/jquery.ui.widget.js'
         ],
         // @version 20140703 Pudding Chen
@@ -67,7 +67,7 @@ this.generic_load = function (_conf, _callback) {
         //script_list: _prefix+'toolkit',
         libraries_list: [
             "libraries/ckeditor/adapters/jquery.js",
-            "libraries/jquery-file-upload/js/jquery.fileupload.js"
+            //"libraries/jquery-file-upload/js/jquery.fileupload.js"
         ],
         style_list: _prefix+'style|generic'
     };

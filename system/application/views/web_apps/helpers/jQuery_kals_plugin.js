@@ -562,6 +562,8 @@ jQuery.is_array = function(_obj) {
             && (_obj instanceof Array));
 };
 
+//alert(typeof($.is_array));
+
 jQuery.filter_array = function (_obj) {
     var _is_array = (typeof(_obj) === 'object' && (_obj instanceof Array));
     if (false === _is_array) {
