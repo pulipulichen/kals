@@ -53,6 +53,13 @@ Note_editor_ckeditor.prototype._$create_ui = function () {
  */
 Note_editor_ckeditor.prototype._ckeditor = null;
 
+/**
+ * 開啟檔案上傳的功能，但只是個空殼子
+ * @version 20140902 Pulipuli Chen
+ * @type String
+ */
+KALS_CONFIG.ckeditor_config.filebrowserUploadUrl = '_blank';
+    
 Note_editor_ckeditor._ckeditor_config = KALS_CONFIG.ckeditor_config;
 
 Note_editor_ckeditor._setup_timer = null;
@@ -160,7 +167,6 @@ Note_editor_ckeditor.prototype._setup_ckeditor = function () {
     };
     */
    var _config  = Note_editor_ckeditor._ckeditor_config;
-    
     var _ckeditor = null;
     
     //try
