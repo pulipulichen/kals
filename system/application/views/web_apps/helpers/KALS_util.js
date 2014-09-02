@@ -783,7 +783,7 @@ KALS_util.ajax_upload = function (_config) {
                 cross_origin: _cross_origin,
                 exception_handle: _exception_handle 
             });
-        }, 3000);    //setTimeout(function () {
+        }, 1000);    //setTimeout(function () {
         
     });    //_iframe.load(function () {
     
@@ -800,6 +800,7 @@ KALS_util.ajax_upload = function (_config) {
  *      cross_origin: boolean = false, 預設是否是跨網域
  *      change: function 選擇檔案事件
  *      callback: function  //上傳完成事件
+ *      exception_handle: function // 上傳失敗事件
  * }
  * @returns {KALS_util}
  */
@@ -810,6 +811,7 @@ KALS_util.ajax_click_upload_file = function (_config) {
     var _cross_origin = $.get_parameter(_config, 'cross_origin', false);
     var _change = $.get_parameter(_config, 'change');
     var _callback = $.get_parameter(_config, 'callback');
+    var _exception_handle = $.get_parameter(_config, 'exception_handle');
     
     var _file_input = $("#kals_ajax_click_upload_file");
     
@@ -824,7 +826,8 @@ KALS_util.ajax_click_upload_file = function (_config) {
         get_link_url: _get_link_url,
         userfile: _file_input,
         cross_origin: _cross_origin,
-        callback: _callback
+        callback: _callback,
+        exception_handle: _exception_handle
     };
     
     var _upload_action = function () {

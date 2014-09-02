@@ -571,6 +571,15 @@ Note_editor_ckeditor.php_file_host = function () {
         get_link_url: _php_file_host_get_link_url,
         cross_origin: true,
         input_name: "file",
+        exception_handle: function (_exception) {
+            var _respond = $.json_decode(_exception.response);
+            var _message = _respond.text;
+            
+            var _line = KALS_context.lang.line("ckeditor.php_file_host.upload_error");
+            alert(_line + ": " + _message);
+            
+            _btn.removeClass(_classname);
+        },
         change: function () {
             _btn.addClass(_classname);
         },

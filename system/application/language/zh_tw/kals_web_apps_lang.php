@@ -370,5 +370,7 @@ $lang['web_apps.window.dashboard.activity'] = "活躍度";
 
 $lang['web_apps.kals_framework.view_config_error'] = "VIEW設定錯誤";
 
+$lang['web_apps.ckeditor.php_file_host.upload_error'] = '檔案上傳錯誤';
+
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */
