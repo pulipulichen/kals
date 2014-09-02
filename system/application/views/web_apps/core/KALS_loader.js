@@ -52,7 +52,12 @@ this.generic_load = function (_conf, _callback) {
     var _libraries = {
         libraries_list: [
             "libraries/ckeditor/ckeditor.js",
-            "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js"
+            "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js",
+            
+            // jQuery File Upload 最小安裝法 https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
+            "libraries/jquery-file-upload/js/vendor/jquery.ui.widget.js",
+            "libraries/jquery-file-upload/js/jquery.iframe-transport.js",
+            "libraries/jquery-file-upload/js/jquery.fileupload.js",
         ],
         // @version 20140703 Pudding Chen
         // 解決CKeditor圖示無法顯示的問題
