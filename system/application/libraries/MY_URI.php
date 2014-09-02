@@ -17,7 +17,9 @@ class MY_URI extends CI_URI {
     
 	function _filter_uri($str)
 	{
-		if ($str != '' && $this->config->item('permitted_uri_chars') != '' && $this->config->item('enable_query_strings') == FALSE)
+		if ($str != '' 
+                        && $this->config->item('permitted_uri_chars') != '' 
+                        && $this->config->item('enable_query_strings') == FALSE)
 		{
                     //if (!(substr($str, 0, 5) == '%257B' && substr($str, -5, 5) == '%257D'))
                     if (!(substr($str, 0, 1) == '{' && substr($str, -1, 1) == '}')
@@ -34,7 +36,6 @@ class MY_URI extends CI_URI {
                     }
 		}
                 
-
 		// Convert programatic characters to entities
 		$bad	= array('$', 		'(', 		')',	 	'%28', 		'%29');
 		$good	= array('&#36;',	'&#40;',	'&#41;',	'&#40;',	'&#41;');
