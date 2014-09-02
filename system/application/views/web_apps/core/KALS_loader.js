@@ -352,7 +352,8 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
         document.head.appendChild(_s);
        
        //console.log('[KALS] append script: ' + _script_url);
-       $.getScript(_script_url, function () {
+       //$.getScript(_script_url, function () {
+       var _complete_callback = function () {
            
            /**
             * @author Pulipuli Chen 20140428
@@ -368,6 +369,12 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
            }
            
            //_loaded = true;
+       };
+       
+       $.ajax({
+           url: _script_url,
+           cache: true,
+           complete: _complete_callback
        });
     }
     return this;
