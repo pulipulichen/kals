@@ -3144,11 +3144,17 @@ jQuery._cache = {
     }
 };
 
-$.widget("ui.dialog", $.ui.dialog, {
-    _allowInteraction: function(event) {
-        return !!$(event.target).closest(".cke").length || this._super(event);
-    }
-});
+/**
+ * @version 20140902 Pulipuli Chen
+ * 這一段到底是幹嘛用的？
+ */
+if (typeof($.ui) !== "undefined") {
+    $.widget("ui.dialog", $.ui.dialog, {
+        _allowInteraction: function(event) {
+            return !!$(event.target).closest(".cke").length || this._super(event);
+        }
+    });
+}
 
 /**
  * 將jQuery加上append事件
