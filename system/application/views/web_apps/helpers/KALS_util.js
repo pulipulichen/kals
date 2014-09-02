@@ -31,7 +31,9 @@ KALS_util.ajax_get = function (_config) {
     var _url = $.get_parameter(_config, 'url');
     var _data = $.get_parameter(_config, 'data');
     var _callback = $.get_parameter(_config, 'callback', function() {});
-    var _exception_handle = $.get_parameter(_config, 'exception_handle');
+    var _exception_handle = $.get_parameter(_config, 'exception_handle', function (_exception) {
+        KALS_util.show_exception(_exception, _url);
+    });
     var _cross_origin = $.get_parameter(_config, 'cross_origin', false);
     
     var _retry = $.get_parameter(_config, 'retry', 3);
@@ -180,7 +182,17 @@ KALS_util.ajax_get = function (_config) {
         //    return;
         
         if (_callback_parameter === "?") {
-            $.getJSON(_url, _get_callback); 
+            //$.getJSON(_url, _get_callback); 
+            $.ajax({
+                dataType: "json",
+                url: _url,
+                success: _get_callback,
+                error: _exception_handle
+//                error: function (_data) {
+//                    alert("error!!!");
+//                    $.test_msg("error", _data);
+//                }
+              });
         }
         else {
             //$.getJSON(_url);
@@ -904,9 +916,9 @@ KALS_util.show_exception = function (_exception, _uri) {
     }
     
     
-    var _this = this;
+    //var _this = this;
     setTimeout(function () {
-        var _alert = _this.alert(_exception_heading, _exception_content);
+        var _alert = KALS_util.alert(_exception_heading, _exception_content);
         _alert.get_ui().addClass('exception');    
     }, 1000);
 	
