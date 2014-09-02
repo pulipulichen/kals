@@ -462,7 +462,7 @@ Note_editor_ckeditor.prototype.focus = function () {
 Note_editor_ckeditor.php_file_host = function () {
     
     var _btn = $(".cke_dialog_ui_button.upload_to_server");
-    $.test_msg(_btn.length);
+    //$.test_msg(_btn.length);
     
     //window.CKEDITOR.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
     
@@ -490,18 +490,30 @@ Note_editor_ckeditor.php_file_host = function () {
     
     var _form_html = '<form action="' + _php_file_host_url + '" method="post" enctype="multipart/form-data"><input id="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
             + '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
+            + '<button type="submit">遞交</button>'
             + '</form>';
     
-    $.test_msg(_form_html);
+    var _form = $(_form_html);
+    
+    //$.test_msg(_form_html);
     
     //_btn.css("border", "4px solid red");
     
     
-    _btn.after($(_form_html));
-    
-    
+    _btn.after(_form);
     
     // 2. jQuery File Uploader化
+    // 最小化安裝 https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
+    
+    _form.fileupload({
+        dataType: 'json',
+        done: function (_e, _data) {
+            $.test_msg("fileupload done", _data);
+            //$.each(_data.result.files, function (_index, _file) {
+            //    $.test_msg("ok?", _file.name);
+            //});
+        }
+    });
     
     // 3. 點下選擇檔案的按鈕
     

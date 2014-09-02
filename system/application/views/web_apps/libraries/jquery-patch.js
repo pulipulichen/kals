@@ -12,3 +12,7 @@ $.ajaxSetup({cache:true});
 if(!$.prop) {
   $.fn.prop = $.fn.attr;
 }
+
+if(!$._on) {
+  $.fn._on = $.fn.on;
+}

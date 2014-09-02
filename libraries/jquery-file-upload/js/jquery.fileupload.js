@@ -1258,6 +1258,9 @@
         },
 
         _initEventHandlers: function () {
+            if (!this._on) {
+                return;
+            }
             if (this._isXHRUpload(this.options)) {
                 this._on(this.options.dropZone, {
                     dragover: this._onDragOver,
