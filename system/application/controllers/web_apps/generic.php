@@ -54,7 +54,7 @@ class generic extends Web_apps_controller {
          */
         "toolkit_list" => array(
             'libraries/min/jquery.tools-1.2.6.min'
-            //,'libraries/min/jquery.ba-bbq.min'    // 由於不相容jQuery 1.9以上版本，所以移除
+            ,'libraries/min/jquery.ba-bbq.min'    // 由於不相容jQuery 1.9以上版本，所以移除
             //, 'libraries/min/jquery.jcrop-0.9.12.min'   // 由於不相容jQuery 1.9以上版本，所以移除
             //, 'libraries/min/jquery.ba-hashchange'   // 由於不相容jQuery 1.9以上版本，所以移除
             , 'libraries/min/jquery.placeheld.min'
