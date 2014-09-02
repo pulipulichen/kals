@@ -761,7 +761,10 @@ class generic extends Web_apps_controller {
 
     function jquery()
     {
-        $path = 'libraries/jquery';
+        $path = array(
+            'libraries/jquery',
+            'libraries/jquery-patch',
+        );
         //$this->pack_js($path);
         $this->load_js($path);
     }
