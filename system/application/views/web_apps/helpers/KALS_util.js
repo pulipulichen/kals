@@ -781,7 +781,8 @@ KALS_util.ajax_upload = function (_config) {
                 url: _get_link_url, 
                 callback: _ajax_get_callback,
                 cross_origin: _cross_origin,
-                exception_handle: _exception_handle 
+                exception_handle: _exception_handle,
+                retry: 1
             });
         }, 1000);    //setTimeout(function () {
         
@@ -819,23 +820,23 @@ KALS_util.ajax_click_upload_file = function (_config) {
         _file_input = $('<input type="file" name="' + _input_name + '" id="kals_ajax_click_upload_file" />')
                 .css("display", "none")
                 .appendTo("body");
+        
+        var _config = {
+            url: _url,
+            get_link_url: _get_link_url,
+            userfile: _file_input,
+            cross_origin: _cross_origin,
+            callback: _callback,
+            exception_handle: _exception_handle
+        };
+
+        var _upload_action = function () {
+            $.trigger_callback(_change);
+            KALS_util.ajax_upload(_config);
+        };
+
+        _file_input.change(_upload_action);
     }
-    
-    var _config = {
-        url: _url,
-        get_link_url: _get_link_url,
-        userfile: _file_input,
-        cross_origin: _cross_origin,
-        callback: _callback,
-        exception_handle: _exception_handle
-    };
-    
-    var _upload_action = function () {
-        $.trigger_callback(_change);
-        KALS_util.ajax_upload(_config);
-    };
-    
-    _file_input.change(_upload_action);
     _file_input.click();
 };
 
