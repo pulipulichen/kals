@@ -14,3 +14,7 @@
     padding-right: 10px;
     background-position-y: -881px !important;
 }
+
+.cke_dialog_ui_input_file {
+    display: none;
+}

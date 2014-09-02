@@ -475,7 +475,6 @@ Note_editor_ckeditor.php_file_host = function () {
         return;
     }
     
-    _btn.addClass(_classname);
     //$.test_msg(_btn.length);
     
     //window.CKEDITOR.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
@@ -501,7 +500,7 @@ Note_editor_ckeditor.php_file_host = function () {
 
     // 1. 把表單放上去
     var _php_file_host_upload_url = "http://localhost/php-file-host/upload";
-    var _php_file_host_get_link_url = "http://localhost/php-file-host/get_link?callback=?";
+    var _php_file_host_get_link_url = "http://localhost/php-file-host/get_link";
     /*
     var _form_html = '<form action="' + _php_file_host_upload_url + '" method="post" enctype="multipart/form-data" style="display:none;"><input class="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
             //+ '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
@@ -568,6 +567,9 @@ Note_editor_ckeditor.php_file_host = function () {
         get_link_url: _php_file_host_get_link_url,
         cross_origin: true,
         input_name: "file",
+        change: function () {
+            _btn.addClass(_classname);
+        },
         callback: function (_data) {
             window.CKEDITOR.tools.callFunction(1, _data, '');
             _btn.removeClass(_classname);

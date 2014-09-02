@@ -23,6 +23,7 @@ KALS_util = {};
  *   exception_handle: function (_data), //可省略，省略則自動使用KALS_util.show_exception來處理
  *   retry: 3, //可省略，預設嘗試次數
  *   retry_wait: 60 * 1000, //預設嘗試等待時間，單位是毫秒
+ *   cross_origin: false, //是否是同源網址
  *   fixed_callback: "fixed_callback"   //預設省略，固定callback的參數
  * };
  */
@@ -31,6 +32,7 @@ KALS_util.ajax_get = function (_config) {
     var _data = $.get_parameter(_config, 'data');
     var _callback = $.get_parameter(_config, 'callback', function() {});
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
+    var _cross_origin = $.get_parameter(_config, 'cross_origin', false);
     
     var _retry = $.get_parameter(_config, 'retry', 3);
     var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
@@ -40,7 +42,7 @@ KALS_util.ajax_get = function (_config) {
      * @version 20140902 Pulipuli Chen
      * 考量到是以http作為開頭的場合
      */
-    if ($.starts_with(_url, "http") === false) {
+    if (_cross_origin === false && $.starts_with(_url, "http") === false) {
         _url = $.appends_with(_url, '/');
     }
     
@@ -54,39 +56,44 @@ KALS_util.ajax_get = function (_config) {
         _full_callback_parameter = "KALS_util.c." + _callback_parameter;
     }
     
-    if (_data !== null) {
-        if ($.is_object(_data)) {
-            _data = $.json_encode(_data);
-            _data = encodeURIComponent(_data);
-            _data = escape(_data);
+    if (_cross_origin === false) {
+        if (_data !== null) {
+            if ($.is_object(_data)) {
+                _data = $.json_encode(_data);
+                _data = encodeURIComponent(_data);
+                _data = escape(_data);
+            }
+            else if ($.is_string(_data)) {
+                _data = encodeURIComponent(_data);
+                _data = escape(_data);
+            }
+
+            _url = _url + _data + '/callback=' + _full_callback_parameter;
         }
-        else if ($.is_string(_data)) {
-            _data = encodeURIComponent(_data);
-            _data = escape(_data);
+        else {
+            _url = _url + 'callback=' + _full_callback_parameter;
         }
-		
-        _url = _url + _data + '/callback=' + _full_callback_parameter;
-    }
-    else {
-        _url = _url + 'callback=' + _full_callback_parameter;
-    }
-    
-	if (_url.indexOf('http') === 0 
+        
+        if (_url.indexOf('http') === 0 
                 || _url.indexOf('%22') === 0) {
             $.test_msg('ajax get exception', 'KALS_util.ajax_get try to load exception url: ' + _url);
             //throw ;
             return this;
-	}
-	
-    if (typeof(KALS_context) !== 'undefined') {
-        //while ($.starts_with(_url, '/'))
-        //    _url = _url.substring(1, _url.length);
-        //_url = KALS_context.get_base_url() + _url;
+        }
         
-        //$.test_msg('KALS_util.ajax_get()'
-        //    , [_url, KALS_context.get_base_url(), KALS_context.base_url, KALS_context.get_base_url(_url)]);
-        
-        _url = KALS_context.get_base_url(_url);
+        if (typeof(KALS_context) !== 'undefined') {
+            //while ($.starts_with(_url, '/'))
+            //    _url = _url.substring(1, _url.length);
+            //_url = KALS_context.get_base_url() + _url;
+
+            //$.test_msg('KALS_util.ajax_get()'
+            //    , [_url, KALS_context.get_base_url(), KALS_context.base_url, KALS_context.get_base_url(_url)]);
+
+            _url = KALS_context.get_base_url(_url);
+        }
+    }
+    else {
+        _url = _url + "?callback=?";
     }
     var _this = this;
     
@@ -737,17 +744,19 @@ KALS_util.ajax_upload = function (_config) {
                     'request_uri': _url
                 };
 
-                if (typeof(_data) === 'undefined'
-                        || typeof(_data.completed) === 'undefined') {
-                    $.test_msg("show_exception 1");
-                    _this.show_exception(_exception, _url);
-                }
-                else if (_data.completed === false) {
-                    if (_data.data !== false) {
-                        _exception.message = _data.data;
+                if (typeof(_data) === "object") {
+                    if (typeof(_data) === 'undefined'
+                            || typeof(_data.completed) === 'undefined') {
+                        $.test_msg("show_exception 1");
+                        _this.show_exception(_exception, _url);
                     }
-                    $.test_msg("show_exception 2");
-                    _this.show_exception(_exception, _url);
+                    else if (_data.completed === false) {
+                        if (_data.data !== false) {
+                            _exception.message = _data.data;
+                        }
+                        $.test_msg("show_exception 2");
+                        _this.show_exception(_exception, _url);
+                    }
                 }
 
                 if ($.is_function(_callback)) {
@@ -755,16 +764,13 @@ KALS_util.ajax_upload = function (_config) {
                 }
             };
             
-            if (_cross_origin === false) {
-                _this.ajax_get({
-                    url: _get_link_url, 
-                    callback: _ajax_get_callback,
-                    exception_handle: _exception_handle 
-                });
-            }
-            else {
-                $.getJSON(_get_link_url, _callback);
-            }
+
+            _this.ajax_get({
+                url: _get_link_url, 
+                callback: _ajax_get_callback,
+                cross_origin: _cross_origin,
+                exception_handle: _exception_handle 
+            });
         }, 3000);    //setTimeout(function () {
         
     });    //_iframe.load(function () {
@@ -780,7 +786,8 @@ KALS_util.ajax_upload = function (_config) {
  *      get_link_url: String 取得連結的網址
  *      input_name: 檔案上傳的名字,
  *      cross_origin: boolean = false, 預設是否是跨網域
- *      callback: function
+ *      change: function 選擇檔案事件
+ *      callback: function  //上傳完成事件
  * }
  * @returns {KALS_util}
  */
@@ -789,11 +796,16 @@ KALS_util.ajax_click_upload_file = function (_config) {
     var _get_link_url = $.get_parameter(_config, 'get_link_url', _url);
     var _input_name = $.get_parameter(_config, 'input_name', "userfile");
     var _cross_origin = $.get_parameter(_config, 'cross_origin', false);
+    var _change = $.get_parameter(_config, 'change');
     var _callback = $.get_parameter(_config, 'callback');
     
-    var _file_input = $('<input type="file" name="' + _input_name + '" />')
-            .css("display", "none")
-            .appendTo("body");
+    var _file_input = $("#kals_ajax_click_upload_file");
+    
+    if (_file_input.length === 0) {
+        _file_input = $('<input type="file" name="' + _input_name + '" id="kals_ajax_click_upload_file" />')
+                .css("display", "none")
+                .appendTo("body");
+    }
     
     var _config = {
         url: _url,
@@ -804,6 +816,7 @@ KALS_util.ajax_click_upload_file = function (_config) {
     };
     
     var _upload_action = function () {
+        $.trigger_callback(_change);
         KALS_util.ajax_upload(_config);
     };
     
