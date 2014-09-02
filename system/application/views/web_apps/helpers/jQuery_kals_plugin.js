@@ -558,17 +558,19 @@ jQuery.is_boolean = function(_obj) {
  * @type boolean
  */
 jQuery.is_array = function(_obj) {
-    return (typeof(_obj) == 'object' && (_obj instanceof Array));
+    return (typeof(_obj) === 'object' 
+            && (_obj instanceof Array));
 };
 
 jQuery.filter_array = function (_obj) {
-    var _is_array = (typeof(_obj) == 'object' && (_obj instanceof Array));
-    if (false == _is_array) {
-		return [_obj];
-	}
-	else {
-		return _obj;
-	}
+    var _is_array = (typeof(_obj) === 'object' 
+            && (_obj instanceof Array));
+    if (false === _is_array) {
+        return [_obj];
+    }
+    else {
+        return _obj;
+    }
 };
 
 /**

@@ -36,7 +36,13 @@ KALS_util.ajax_get = function (_config) {
     var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
     var _retry_counter = 0;
     
-    _url = $.appends_with(_url, '/');
+    /**
+     * @version 20140902 Pulipuli Chen
+     * 考量到是以http作為開頭的場合
+     */
+    if ($.starts_with(_url, "http") === false) {
+        _url = $.appends_with(_url, '/');
+    }
     
     var _callback_parameter = $.get_parameter(_config, "fixed_callback", "?");
     if (_callback_parameter === true) {
@@ -602,6 +608,7 @@ KALS_util._retry_exception = function (_url) {
  * 
  * @param {Object} _config = {
  *   url: String (without base_url),
+ *   get_link_url: String, //可以省略，省略就用url
  *   userfile: jQuery //<input type="file">的表單
  *   userdata: JSON,
  *   callback: function (_data),
@@ -610,35 +617,59 @@ KALS_util._retry_exception = function (_url) {
  */
 KALS_util.ajax_upload = function (_config) {
     
+    var _debug = true;
+    
     var _url = $.get_parameter(_config, 'url');
     var _userfile = $.get_parameter(_config, 'userfile');
     var _userdata = $.get_parameter(_config, 'userdata');
     var _callback = $.get_parameter(_config, 'callback');
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
     
-    _url = $.appends_with(_url, '/');
+    var _get_link_url = $.get_parameter(_config, 'get_link_url', _url);
     
     var _action = _url;
-    if (typeof(KALS_context) !== 'undefined') {
+    var _cross_origin = false;
+    if (typeof(KALS_context) !== 'undefined' 
+            && $.starts_with(_action, "http") === false) {
+        _url = $.appends_with(_url, '/');
         _action = KALS_context.get_base_url(_action);
+        _cross_origin = true;
     }
+    
+    $.test_msg("KALS_util.ajax_upload action", _action);
     
     //取得現在時間作為id
     var _id = $.create_id();
     var _name = 'name_' + _id;
     
     var _layer = $('<div></div>')
-        .css('position', 'absolute')
-        .css('top', '-1000px')
         .appendTo($('body'));
+
+    if (_debug === true) {
+        _layer.css("top", "200px")
+                .css("position", "fixed")
+                .css("border", "1px solid red")
+                .css("z-index", "9999999");
+    }
+    else {
+        _layer.css('position', 'absolute')
+            .css('top', '-1000px');
+    }
     
     //建立一個暫存的iframe
-    var _iframe = $('<iframe></iframe')
-        .css('width', '0')
-        .css('height', '0')
+    var _iframe = $('<iframe></iframe>')
         .id(_id)
         .attr('name', _name)
         .appendTo(_layer);
+    
+    if (_debug === true) {
+        _iframe.css('width', '200px')
+            .css('height', '200px');
+    }
+    else {
+        _iframe.css('width', '0')
+            .css('height', '0');
+    }
     
     //建立一個FORM
     //然後讓form target到該iframe
@@ -648,12 +679,25 @@ KALS_util.ajax_upload = function (_config) {
         .attr('action', _action)
         .attr('enctype', 'multipart/form-data')
         .appendTo(_layer);
+    
+    if (_debug === true) {
+        //_form.attr("target", "_blank");
+    }
         
     //擺放檔案input並指定成_file_path，
     //建立一個json的input
-    var _file = $(_userfile).clone()
-        .attr('name', 'userfile')
-        .appendTo(_form);
+    _userfile = $(_userfile);
+    if (_userfile.hasAttr("name") === false) {
+        var _file = _userfile
+            //.clone()
+            .attr('name', 'userfile')
+            .appendTo(_form);
+    }
+    else {
+        var _file = _userfile
+            //.clone()
+            .appendTo(_form);
+    }
         
     var _check = $('<input name="fileupload" value="true" type="hidden" />')
         .appendTo(_form);
@@ -666,50 +710,61 @@ KALS_util.ajax_upload = function (_config) {
             .appendTo(_form);
     }
     
+    if (_debug === true) {
+        var _submit_btn = $('<button type="submit">SUBMIT</button>')
+            .appendTo(_form);
+    }
+    
     var _this = this;
     //當iframe讀取完畢時，等待三秒鐘
     _iframe.load(function () {
-        
+        alert("iframe網頁讀取完畢");
         setTimeout(function () {
     
             //以同樣路徑，用ajax_get去取得資料，並回傳給callback
-            _this.ajax_get({
-                url: _url, 
-                callback: function (_data) {
-                    
-                    _layer.remove();
-                    
-                    var _exception = {
-                        'heading': 'Upload File Failed',
-                        'request_uri': _url
-                    };
-                    
-                    if (typeof(_data) === 'undefined'
-                            || typeof(_data.completed) === 'undefined') {
-                        $.test_msg("show_exception 1");
-                        _this.show_exception(_exception, _url);
+            var _ajax_get_callback = function (_data) {
+
+                _layer.remove();
+
+                var _exception = {
+                    'heading': 'Upload File Failed',
+                    'request_uri': _url
+                };
+
+                if (typeof(_data) === 'undefined'
+                        || typeof(_data.completed) === 'undefined') {
+                    $.test_msg("show_exception 1");
+                    _this.show_exception(_exception, _url);
+                }
+                else if (_data.completed === false) {
+                    if (_data.data !== false) {
+                        _exception.message = _data.data;
                     }
-                    else if (_data.completed === false) {
-                        if (_data.data !== false) {
-                            _exception.message = _data.data;
-                        }
-                        $.test_msg("show_exception 2");
-                        _this.show_exception(_exception, _url);
-                    }
-                    
-                    if ($.is_function(_callback)) {
-						_callback(_data);
-					}
-                },
-                exception_handle: _exception_handle 
-            });
+                    $.test_msg("show_exception 2");
+                    _this.show_exception(_exception, _url);
+                }
+
+                if ($.is_function(_callback)) {
+                    _callback(_data);
+                }
+            };
             
+            if (_cross_origin === false) {
+                _this.ajax_get({
+                    url: _get_link_url, 
+                    callback: _ajax_get_callback,
+                    exception_handle: _exception_handle 
+                });
+            }
+            else {
+                $.getJSON(_get_link_url, _callback);
+            }
         }, 3000);    //setTimeout(function () {
         
     });    //_iframe.load(function () {
     
     //準備完畢，遞交
-    _form.submit();
+    //_form.submit();
 };
 
 /**

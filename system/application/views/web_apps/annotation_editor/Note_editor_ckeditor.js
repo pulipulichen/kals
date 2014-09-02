@@ -488,8 +488,8 @@ Note_editor_ckeditor.php_file_host = function () {
     // 1. 把表單放上去
     var _php_file_host_url = "http://localhost/php-file-host/upload";
     
-    var _form_html = '<form action="' + _php_file_host_url + '" method="post" enctype="multipart/form-data"><input id="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
-            + '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
+    var _form_html = '<form action="' + _php_file_host_url + '" method="post" enctype="multipart/form-data"><input class="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
+            //+ '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
             + '<button type="submit">遞交</button>'
             + '</form>';
     
@@ -502,18 +502,37 @@ Note_editor_ckeditor.php_file_host = function () {
     
     _btn.after(_form);
     
+    var _file_input = _form.find(".fileupload");
+    _form.submit(function () {
+        var _config = {
+            url: _php_file_host_url,
+            userfile: _file_input,
+            callback: function () {
+                alert("ok?");
+            }
+        };
+        //$.test_msg("form, submit", _option);
+        KALS_util.ajax_upload(_config);
+        return false;
+    });
+    
+    _file_input.click();
+    _form.submit();
+    
+    
+    
     // 2. jQuery File Uploader化
     // 最小化安裝 https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
     
-    _form.fileupload({
-        dataType: 'json',
-        done: function (_e, _data) {
-            $.test_msg("fileupload done", _data);
-            //$.each(_data.result.files, function (_index, _file) {
-            //    $.test_msg("ok?", _file.name);
-            //});
-        }
-    });
+//    _form.fileupload({
+//        dataType: 'json',
+//        done: function (_e, _data) {
+//            $.test_msg("fileupload done", _data);
+//            //$.each(_data.result.files, function (_index, _file) {
+//            //    $.test_msg("ok?", _file.name);
+//            //});
+//        }
+//    });
     
     // 3. 點下選擇檔案的按鈕
     

@@ -337,19 +337,22 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     var _loaded_count = 0;
     
     var _loaded = false;
+    var _head = $("head");
     
     for (var _i in _script_list) {
        var _script_url = _base_url + _script_list[_i];
         //console.log(_script_url);
-        //var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
-        //_script_tag.appendTo(_head);
-        var _s = document.createElement("script");
-        _s.type = "text/javascript";
-        _s.src = _script_url;
+        var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
+        _script_tag.appendTo(_head);
         // Use any selector
         //console.log($(_s).html());
         //_head.append(_s);
-        document.head.appendChild(_s);
+        
+        
+        //var _s = document.createElement("script");
+        //_s.type = "text/javascript";
+        //_s.src = _script_url;
+        //document.head.appendChild(_s);
        
        //console.log('[KALS] append script: ' + _script_url);
        //$.getScript(_script_url, function () {
@@ -371,11 +374,12 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
            //_loaded = true;
        };
        
-       $.ajax({
-           url: _script_url,
-           cache: true,
-           complete: _complete_callback
-       });
+       //$.ajax({
+       //    url: _script_url,
+       //    cache: true,
+       //    complete: _complete_callback
+       //});
+       $.getScript(_script_url, _complete_callback);
     }
     return this;
 };
