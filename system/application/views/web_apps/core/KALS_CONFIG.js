@@ -276,6 +276,23 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      */
     enable_search_toolbar: true,
+    
+    /**
+     * 啟用檔案上傳功能
+     * @version 20140902 Pulipuli Chen
+     */
+    file_host: {
+        /**
+         * 上傳的網址
+         * @type String
+         */
+        upload_url: "/php-file-host/upload",
+        /**
+         * 取得檔案網址的網址
+         * @type String
+         */
+        get_link_url: "/php-file-host/get_link"
+    },
 	
     //----------------------------
     

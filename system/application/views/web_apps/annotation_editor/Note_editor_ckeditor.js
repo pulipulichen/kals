@@ -55,10 +55,14 @@ Note_editor_ckeditor.prototype._ckeditor = null;
 
 /**
  * 開啟檔案上傳的功能，但只是個空殼子
+ * 如果有設定上傳網址才這樣做
+ * 
  * @version 20140902 Pulipuli Chen
  * @type String
  */
-KALS_CONFIG.ckeditor_config.filebrowserUploadUrl = '_blank';
+if (typeof(KALS_CONFIG.file_host) === "object") {
+    KALS_CONFIG.ckeditor_config.filebrowserUploadUrl = '_blank';
+}
     
 Note_editor_ckeditor._ckeditor_config = KALS_CONFIG.ckeditor_config;
 
@@ -499,8 +503,8 @@ Note_editor_ckeditor.php_file_host = function () {
 //    }
 
     // 1. 把表單放上去
-    var _php_file_host_upload_url = "http://localhost/php-file-host/upload";
-    var _php_file_host_get_link_url = "http://localhost/php-file-host/get_link";
+    var _php_file_host_upload_url = KALS_CONFIG.file_host.upload_url;
+    var _php_file_host_get_link_url = KALS_CONFIG.file_host.get_link_url;
     /*
     var _form_html = '<form action="' + _php_file_host_upload_url + '" method="post" enctype="multipart/form-data" style="display:none;"><input class="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
             //+ '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
