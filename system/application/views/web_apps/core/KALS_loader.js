@@ -340,8 +340,16 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     
     for (var _i in _script_list) {
        var _script_url = _base_url + _script_list[_i];
-       var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
-       _script_tag.appendTo($('head'));
+        //console.log(_script_url);
+        //var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
+        //_script_tag.appendTo(_head);
+        var _s = document.createElement("script");
+        _s.type = "text/javascript";
+        _s.src = _script_url;
+        // Use any selector
+        //console.log($(_s).html());
+        //_head.append(_s);
+        document.head.appendChild(_s);
        
        //console.log('[KALS] append script: ' + _script_url);
        $.getScript(_script_url, function () {
@@ -413,7 +421,7 @@ this.load_styles = function (_style_list, _callback) {
         //檢查一下是否已有該title
         var _link = null;
         if (_style_title !== null) {
-            _link = $('link[type=text/css][rel=stylesheet][title=' + _style_title + ']');
+            _link = $('link[type="text/css"][rel="stylesheet"][title="' + _style_title + '"]');
             if (_link.length === 0) {
                 _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
             }
