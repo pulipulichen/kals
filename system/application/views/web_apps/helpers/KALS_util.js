@@ -611,32 +611,38 @@ KALS_util._retry_exception = function (_url) {
  *   get_link_url: String, //可以省略，省略就用url
  *   userfile: jQuery //<input type="file">的表單
  *   userdata: JSON,
+ *   cross_origin: boolean = false, // 跨網域嗎
  *   callback: function (_data),
  *   exception_handle: function (_data) //可省略，省略則自動使用KALS_util.show_exception來處理
  * };
  */
 KALS_util.ajax_upload = function (_config) {
     
-    var _debug = true;
+    var _debug = false;
     
     var _url = $.get_parameter(_config, 'url');
     var _userfile = $.get_parameter(_config, 'userfile');
     var _userdata = $.get_parameter(_config, 'userdata');
     var _callback = $.get_parameter(_config, 'callback');
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
+    var _cross_origin = $.get_parameter(_config, 'cross_origin', false);
     
     var _get_link_url = $.get_parameter(_config, 'get_link_url', _url);
     
     var _action = _url;
-    var _cross_origin = false;
-    if (typeof(KALS_context) !== 'undefined' 
+    //var _cross_origin = false;
+    if (_cross_origin === false && typeof(KALS_context) !== 'undefined' 
             && $.starts_with(_action, "http") === false) {
         _url = $.appends_with(_url, '/');
         _action = KALS_context.get_base_url(_action);
+    }
+    else {
         _cross_origin = true;
     }
     
-    $.test_msg("KALS_util.ajax_upload action", _action);
+    if (_debug === true) {
+        $.test_msg("KALS_util.ajax_upload action", _action);
+    }
     
     //取得現在時間作為id
     var _id = $.create_id();
@@ -718,7 +724,7 @@ KALS_util.ajax_upload = function (_config) {
     var _this = this;
     //當iframe讀取完畢時，等待三秒鐘
     _iframe.load(function () {
-        alert("iframe網頁讀取完畢");
+        //alert("iframe網頁讀取完畢");
         setTimeout(function () {
     
             //以同樣路徑，用ajax_get去取得資料，並回傳給callback
@@ -764,7 +770,45 @@ KALS_util.ajax_upload = function (_config) {
     });    //_iframe.load(function () {
     
     //準備完畢，遞交
-    //_form.submit();
+    _form.submit();
+};
+
+/**
+ * 
+ * @param {JSON} _config = {
+ *      url: String 目標網址
+ *      get_link_url: String 取得連結的網址
+ *      input_name: 檔案上傳的名字,
+ *      cross_origin: boolean = false, 預設是否是跨網域
+ *      callback: function
+ * }
+ * @returns {KALS_util}
+ */
+KALS_util.ajax_click_upload_file = function (_config) {
+    var _url = $.get_parameter(_config, 'url');
+    var _get_link_url = $.get_parameter(_config, 'get_link_url', _url);
+    var _input_name = $.get_parameter(_config, 'input_name', "userfile");
+    var _cross_origin = $.get_parameter(_config, 'cross_origin', false);
+    var _callback = $.get_parameter(_config, 'callback');
+    
+    var _file_input = $('<input type="file" name="' + _input_name + '" />')
+            .css("display", "none")
+            .appendTo("body");
+    
+    var _config = {
+        url: _url,
+        get_link_url: _get_link_url,
+        userfile: _file_input,
+        cross_origin: _cross_origin,
+        callback: _callback
+    };
+    
+    var _upload_action = function () {
+        KALS_util.ajax_upload(_config);
+    };
+    
+    _file_input.change(_upload_action);
+    _file_input.click();
 };
 
 /**

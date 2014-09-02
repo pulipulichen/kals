@@ -462,6 +462,14 @@ Note_editor_ckeditor.prototype.focus = function () {
 Note_editor_ckeditor.php_file_host = function () {
     
     var _btn = $(".cke_dialog_ui_button.upload_to_server");
+    
+    var _classname = "uploading";
+    
+    if (_btn.hasClass(_classname)) {
+        return;
+    }
+    
+    _btn.addClass(_classname);
     //$.test_msg(_btn.length);
     
     //window.CKEDITOR.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
@@ -486,11 +494,12 @@ Note_editor_ckeditor.php_file_host = function () {
 //    }
 
     // 1. 把表單放上去
-    var _php_file_host_url = "http://localhost/php-file-host/upload";
-    
-    var _form_html = '<form action="' + _php_file_host_url + '" method="post" enctype="multipart/form-data"><input class="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
+    var _php_file_host_upload_url = "http://localhost/php-file-host/upload";
+    var _php_file_host_get_link_url = "http://localhost/php-file-host/get_link?callback=?";
+    /*
+    var _form_html = '<form action="' + _php_file_host_upload_url + '" method="post" enctype="multipart/form-data" style="display:none;"><input class="fileupload" type="file" name="file"><input name="local_upload" type="hidden" value="1" />' 
             //+ '<div id="progress" class="progress"><div class="progress-bar progress-bar-warning"></div></div>'
-            + '<button type="submit">遞交</button>'
+            //+ '<button type="submit">遞交</button>'
             + '</form>';
     
     var _form = $(_form_html);
@@ -503,23 +512,32 @@ Note_editor_ckeditor.php_file_host = function () {
     _btn.after(_form);
     
     var _file_input = _form.find(".fileupload");
-    _form.submit(function () {
+    
+    
+    //_form.submit(function () {
+    var _upload = function () {
         var _config = {
-            url: _php_file_host_url,
+            url: _php_file_host_upload_url,
+            get_link_url: _php_file_host_get_link_url,
             userfile: _file_input,
-            callback: function () {
-                alert("ok?");
+            callback: function (_data) {
+                //$.test_msg("form submit callback", _data);
+                window.CKEDITOR.tools.callFunction(1, _data, '');
             }
         };
         //$.test_msg("form, submit", _option);
         KALS_util.ajax_upload(_config);
-        return false;
-    });
+        //return false;
+    //});
+    };
     
+    
+    _file_input.change(_upload);
     _file_input.click();
-    _form.submit();
     
-    
+    //setTimeout(function () {
+    //    _form.submit();
+    //}, 100);
     
     // 2. jQuery File Uploader化
     // 最小化安裝 https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
@@ -538,6 +556,18 @@ Note_editor_ckeditor.php_file_host = function () {
     
     //window.CKEDITOR.tools.callFunction(1, '/ckfinder/userfiles/files/app.png', '');
     //window.OnUploadCompleted(1, '/ckfinder/userfiles/files/app.png', '');
+    */
+    var _config = {
+        url: _php_file_host_upload_url,
+        get_link_url: _php_file_host_get_link_url,
+        cross_origin: true,
+        input_name: "file",
+        callback: function (_data) {
+            window.CKEDITOR.tools.callFunction(1, _data, '');
+            _btn.removeClass(_classname);
+        }
+    };
+    KALS_util.ajax_click_upload_file(_config);
     return this;
 };
 
