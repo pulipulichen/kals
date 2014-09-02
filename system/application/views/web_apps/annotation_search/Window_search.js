@@ -535,26 +535,26 @@ Window_search.prototype.type_classname = "search-range-type";
  */
 Window_search.prototype.create_keyword_ui = function(){
 	
-	/*
-	var _factory = KALS_window.ui;
-	
+    /*
+    var _factory = KALS_window.ui;
+
     // 輸入關鍵字
-	var _keyword_input = _factory.input('keyword');
-	*/
-	var _input = $('<input type="text" placeholder="Search..." name="keyword" class="search-form-input" />');
+    var _keyword_input = _factory.input('keyword');
+    */
+    var _input = $('<input type="text" placeholder="Search..." name="keyword" class="search-form-input" />');
     
     KALS_context.lang.add_listener(_input, new KALS_language_param('Search...'
         , 'toolbar.search.input_placeholder'));
     
     _input.placeHeld();
-	_input.addClass(this.keyword_input_classname);
-	
-	var _this = this;
-	_input.change(function () {
-		_this.set_keyword_value(this.value);
-	});
-	
-	return _input;
+    _input.addClass(this.keyword_input_classname);
+
+    var _this = this;
+    _input.change(function () {
+        _this.set_keyword_value(this.value);
+    });
+
+    return _input;
 };
 
 /**

@@ -396,7 +396,12 @@ URL_hash_dispatcher.prototype._set_lock = false;
 URL_hash_dispatcher.prototype._setup_onhashchange_backward = function () {
     if (this._had_setup_onhashchange === false) {
         var _this = this;
-        $(window).hashchange(function () {
+        /**
+         * 由於jquery.ba-hashchange.js 不支援jQuery 1.9以上，所以不使用這個套件
+         * @version 20140902 Pulipuli Chen
+         */
+        //$(window).hashchange(function () {
+        $(window).on("hashchange", function () {
             if (_this._set_lock === false) {
                 //$.test_msg('backward setup 之前', _this._hash_data.get_data());
                 
