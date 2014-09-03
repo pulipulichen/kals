@@ -5,7 +5,6 @@ test/
 .settings/
 /aptana/
 /nbproject/
-/test/
 /.settings/
 
 /system/cache/
@@ -14,3 +13,4 @@ test/
 /*/Thumbs.db
 Thumbs.db
 /libraries/ckfinder/userfiles/
+!/test/

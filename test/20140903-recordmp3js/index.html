@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Live input record and playback</title>
+  <style type='text/css'>
+    ul { list-style: none; }
+    #recordingslist audio { display: block; margin-bottom: 10px; }
+  </style>
+   <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+  <h1>Record to MP3 Test</h1>
+
+  <button onclick="startRecording(this);">record</button>
+  <button onclick="stopRecording(this);" disabled>stop</button>
+  
+  <h2>Recordings</h2>
+  <ul id="recordingslist"></ul>
+  
+  <h2>Log</h2>
+  <pre id="log"></pre>
+
+  <script src="js/main.js"></script>
+	
+   <script src="js/jquery-1.11.0.min.js"></script>	
+  <script src="recordmp3.js"></script>
+  <script src="js/worker_manager.js"></script>
+  <script src="js/init_worker.js"></script>
+  <a href="http://audior.ec/recordmp3js/">原始網站</a>
+  <form action="/php-file-host/upload" target="phpfilehost" method="post" enctype="multipart/form-data">
+      <input type="text" name="fname" id="fname" />
+      <input type="text" name="file" id="file" />
+      <button type="submit">遞交</button>
+  </form>
+</body>
+</html>
