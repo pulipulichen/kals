@@ -284,7 +284,7 @@ DEFAULT_KALS_CONFIG = {
     ckeditor_config: {
         autoGrow_maxHeight: false,
         autoGrow_maxWidth: false,
-        extraPlugins: 'kals_maximize,youtube,helloworld',
+        extraPlugins: 'kals_maximize,youtube,recordmp3js',
         //filebrowserUploadUrl: 'http://localhost/kals/libraries/ckeditor/test.html',
         toolbar: [
 			//最大化的時候顯示的工具列
@@ -302,7 +302,7 @@ DEFAULT_KALS_CONFIG = {
             ['TextColor','BGColor'],
 			
 			//最小化的時候顯示的工具列
-            ['helloworld', 'Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'Image','Youtube']	
+            ['Maximize','Source','-','Bold', 'Italic', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', 'Image','Youtube', 'recordmp3js']	
         ],
         height: '50px',
         //width: '261px',
