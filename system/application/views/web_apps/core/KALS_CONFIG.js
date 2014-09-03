@@ -276,24 +276,7 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      */
     enable_search_toolbar: true,
-    
-    /**
-     * 啟用檔案上傳功能
-     * @version 20140902 Pulipuli Chen
-     */
-    file_host: {
-        /**
-         * 上傳的網址
-         * @type String
-         */
-        upload_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/upload",
-        /**
-         * 取得檔案網址的網址
-         * @type String
-         */
-        get_link_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get_link"
-    },
-	
+    	
     //----------------------------
     
     //以下是版面調整
@@ -617,6 +600,23 @@ DEFAULT_KALS_CONFIG = {
          */
         Window_search_recent: {
             "enable": true
+        },
+        /**
+         * 啟用檔案上傳功能
+         * @version 20140902 Pulipuli Chen
+         */
+        CKeditor_file_upload: {
+            "enable": true,
+            /**
+             * 上傳的網址
+             * @type String
+             */
+            upload_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/upload",
+            /**
+             * 取得檔案網址的網址
+             * @type String
+             */
+            get_link_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get_link"
         }
     }
 };
