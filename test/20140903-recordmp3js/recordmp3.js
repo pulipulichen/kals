@@ -102,7 +102,7 @@
         encoderWorker.postMessage({ cmd: 'encode', buf: Uint8ArrayToFloat32Array(data.samples) });
         encoderWorker.postMessage({ cmd: 'finish'});
         encoderWorker.onmessage = function(e) {
-            if (e.data.cmd == 'data') {
+            if (e.data.cmd === 'data') {
 			
 				console.log("Done converting to Mp3");
 				log.innerHTML += "\n" + "Done converting to Mp3";
@@ -164,8 +164,8 @@
 			}
 			return ret;
 		}
-		if (readInt(20, 2) != 1) throw 'Invalid compression code, not PCM';
-		if (readInt(22, 2) != 1) throw 'Invalid number of channels, not 1';
+		if (readInt(20, 2) !== 1) throw 'Invalid compression code, not PCM';
+		if (readInt(22, 2) !== 1) throw 'Invalid number of channels, not 1';
 		return {
 			sampleRate: readInt(24, 4),
 			bitsPerSample: readInt(34, 2),
