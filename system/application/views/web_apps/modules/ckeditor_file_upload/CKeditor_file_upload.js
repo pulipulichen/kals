@@ -88,7 +88,13 @@ CKeditor_file_upload.php_file_host = function () {
         },
         callback: function (_data) {
             //alert(121212);
-            window.CKEDITOR.tools.callFunction(1, _data, '');
+            if ($.starts_with(_data, "http")) {
+                window.CKEDITOR.tools.callFunction(1, _data, '');
+            }
+            else {
+                var _line = KALS_context.lang.line("ckeditor.php_file_host.upload_error");
+                alert(_line + ": " + _data);
+            }
             _btn.removeClass(_classname);
         }
     };
