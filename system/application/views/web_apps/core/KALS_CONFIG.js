@@ -286,12 +286,12 @@ DEFAULT_KALS_CONFIG = {
          * 上傳的網址
          * @type String
          */
-        upload_url: "/php-file-host/upload",
+        upload_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/upload",
         /**
          * 取得檔案網址的網址
          * @type String
          */
-        get_link_url: "/php-file-host/get_link"
+        get_link_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get_link"
     },
 	
     //----------------------------

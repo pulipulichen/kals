@@ -820,8 +820,8 @@ KALS_util.ajax_click_upload_file = function (_config) {
         _file_input = $('<input type="file" name="' + _input_name + '" id="kals_ajax_click_upload_file" />')
                 .css("display", "none")
                 .appendTo("body");
-        
-        var _config = {
+     
+       var _config = {
             url: _url,
             get_link_url: _get_link_url,
             userfile: _file_input,

@@ -581,9 +581,11 @@ Note_editor_ckeditor.php_file_host = function () {
             _btn.removeClass(_classname);
         },
         change: function () {
+            //alert(44444);
             _btn.addClass(_classname);
         },
         callback: function (_data) {
+            //alert(121212);
             window.CKEDITOR.tools.callFunction(1, _data, '');
             _btn.removeClass(_classname);
         }
