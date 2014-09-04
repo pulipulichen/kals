@@ -1,11 +1,31 @@
 (function(){
 // --------------------------------------------------
 
-// @TODO 上傳檔案的cross origin
-var _upload_url = "/php-file-host/upload";
-var _get_link_url = "/php-file-host/get_link";
+var _upload_url = "";
+var _get_link_url = "";
+var _record_limit = 3;
+//alert(CKEDITOR.config.autoGrow_maxWidth);
+var _dialog_open = false;
+var _editor_lang;
     
 CKEDITOR.dialog.add('recordmp3js',function(editor){
+    _editor_lang = editor.lang;
+
+    //console.log(editor);
+    if (typeof(editor.config.recordmp3js) === "object") {
+        var _config = editor.config.recordmp3js;
+        _upload_url = _config.upload_url;
+        _get_link_url = _config.get_link_url;
+        _record_limit = _config.record_limit;
+    }
+
+    if (_record_limit > 60) {
+        _record_limit = 60;
+    }
+    else if (_record_limit < 1) {
+        _record_limit = 3;
+    }
+    
     return {
         title:editor.lang.dlgTitle,
         resizable: CKEDITOR.DIALOG_RESIZE_BOTH,
@@ -18,8 +38,29 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
         onOk:function(){
             var _link = this.getValueOf('recordmp3js', 'audio_link');
             //<audio controls="" src=""></audio>
-            _link = '<audio controls="play" src="' + _link + '"></audio>';
-            editor.insertHtml(_link);
+            if (_link !== "") {
+                _link = '<audio controls="play" src="' + _link + '"></audio>';
+                editor.insertHtml(_link);
+            }
+        },
+        onShow: function () {
+            _dialog_open = true;
+        },
+        onHide: function () {
+            _dialog_open = false;
+
+            // 停止recorder
+            recorder && recorder.stop();
+            RECORDING = false;
+
+            var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+            var _btn = _panel.find(".record_button");
+            _btn.css("background", "")
+                .removeClass("recording")
+                .removeClass("wait");
+
+            _panel.find(".dashboard").hide();
+            _panel.find(".download").empty();
         },
         contents: [{
                 // 可以使用的功能 http://docs.ckeditor.com/#!/api/CKEDITOR.dialog.definition.uiElement
@@ -31,7 +72,7 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                     id: 'recorder',
                     html: '<div class="recorder-panel">'
     + '<div class="controller" style="text-align: center;display: inline-block;float: left;min-width: 250px;">'
-    + '  <button class="record_button" style="width: 128px;height: 128px;background-color: transparent;cursor: pointer;margin-bottom: 5px;">'
+    + '  <button class="record_button" style="cursor: pointer;width: 128px;height: 128px;background-color: transparent;cursor: pointer;margin-bottom: 5px;">'
     + '     <img src="' + CKEDITOR.getUrl('plugins/recordmp3js/images/mic128.png') + '" style="width: 100%;height: auto;"/>'
     + '  </button>'
     + '<div class="dashboard" style="display:none;text-align:center;">'
@@ -44,41 +85,50 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
     + '      <span class="label sec">' + editor.lang.sec + '</span>'
     + '  </div>'
     + '  <div class="download" style="width: 250px;"></div>'
+    + '  <div class="error" style="display:none;text-align:center;">' + editor.lang.mic_disabled + '</div>'
     + '</div>'
     + '<div class="viz" style="margin-top: 10px;flex-direction: column;justify-content: space-around;align-items: center;background-color: #202020;box-shadow: 0px 0px 10px blue;height: 150px;width: 300px;display: inline-block;">'
-    + '      <canvas class="analyser" width="300" height="150" style="border 1px solid white;"></canvas>'
+    + '      <canvas class="recordmp3js_analyser" width="300" height="150" style="border 1px solid white;"></canvas>'
     + '</div>'
     + '<div style="clear:both"></div>'
     + '</div>',
-                onLoad: function () {
-                    // 註冊事件
-                    
-                    var _panel = $(".recorder-panel");
-                    
-                    var _btn = _panel.find(".record_button");
-                    var _btn_background;
-                    _btn.mouseover(function () {
-                        if ($(this).hasClass("recording") || $(this).hasClass("wait")) {
-                            return;
-                        }
+                    onLoad: function (editor) {
+                        // 註冊事件
+                        //alert(typeof(editor.config));
+                        //console.log(editor);
+                        
+                        var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+                        
+                        var _btn = _panel.find(".record_button");
+                        var _btn_background;
+                        _btn.mouseover(function () {
+                            if ($(this).hasClass("recording") || $(this).hasClass("wait") || !recorder) {
+                                return;
+                            }
 
-                        _btn_background = this.style.background;
-                        this.style.background = '-webkit-radial-gradient(center, ellipse cover, #ff3333 0%, #ff3333 30%, transparent 75%, transparent 100%)';
-                    });
-                    _btn.mouseout(function () {
-                        if ($(this).hasClass("recording") || $(this).hasClass("wait")) {
-                            return;
-                        }
+                            _btn_background = this.style.background;
+                            //this.style.background = '-webkit-radial-gradient(center, ellipse cover, #ff3333 0%, #ff3333 30%, transparent 75%, transparent 100%)';
+                            this.style.background = 'radial-gradient(ellipse at center, #ff3333 0%, #ff3333 30%, transparent 75%, transparent 100%)';
 
-                        this.style.background = _btn_background;
-                    });
-                    
-                    init();
+                        });
+                        _btn.mouseout(function () {
+                            if ($(this).hasClass("recording") || $(this).hasClass("wait") || !recorder) {
+                                return;
+                            }
 
-                    _btn.click(function () {
-                        toggleRecording(this);
-                    });
-                }
+                            this.style.background = _btn_background;
+                        });
+
+                        _btn.click(function () {
+                            toggleRecording(this);
+                        });
+                        
+                        init();
+
+                        $("<iframe />")
+                            .hide()
+                            .appendTo(_panel);
+                    }
                 },
                 {
                     type: 'text',
@@ -86,7 +136,8 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                     required: true,
                     style: "display:none",
                     id: 'audio_link',
-                    default: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get/y/audio_recording_1409735858691.mp3"
+                    className: "recordmp3js_audio_link"
+                    //default: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get/y/audio_recording_1409735858691.mp3"
                 }
             ]
         }
@@ -127,6 +178,16 @@ var startUserMedia = function(stream) {
 };  //var startUserMedia = function(stream) {
 
 var toggleRecording = function (button) {
+
+    var _error = $(".cke_editor_ckeditor_dialog .recorder-panel .error");
+    if (!recorder) {
+        _error.show();
+        return;
+    }
+    else {
+        _error.hide();
+    }
+
     var _recording_classname = "recording";
     var _wait_classname = "wait";
     var button = $(button);
@@ -137,35 +198,50 @@ var toggleRecording = function (button) {
     
     var _dashboard = DASHBOARD.get_dashboard(button);
     if (button.hasClass(_recording_classname) === false) {
-        button.addClass(_recording_classname);
-        button.css("background", "-webkit-radial-gradient(center, ellipse cover, #ff0000 0%, #ff0000 50%, transparent 60%, transparent 100%)");
-
-        //_dashboard.show();
-        DASHBOARD.start_dashboard(button);
-        
-        recorder && recorder.record();
-        __log('Recording...');
-        //updateAnalysers();
-        RECORDING = true;
+        startRecording(button);
     }
     else {
-        button.removeClass(_recording_classname);
-        button.addClass(_wait_classname);
-        button.css("background", "-webkit-radial-gradient(center, ellipse cover, #333333 0%, transparent 75%, transparent 100%,#7db9e8 100%)");
-        
-        DASHBOARD.stop_dashboard(button);
-        
-        recorder && recorder.stop();
-        __log('Stopped recording.');
-
-        // create WAV download link using audio data blob
-        createDownloadLink();
-
-        recorder.clear();
-        //cancelAnalyserUpdates();
-        RECORDING = false;
+        stopRecording(button);
     }
 };  //var toggleRecording = function (button) {
+
+var startRecording = function (button) {
+    var _recording_classname = "recording";
+    button.addClass(_recording_classname);
+    
+    //button.css("background", "-webkit-radial-gradient(center, ellipse cover, #ff0000 0%, #ff0000 50%, transparent 60%, transparent 100%)");
+    button.css("background", "radial-gradient(ellipse at center, #ff0000 0%, #ff0000 50%, transparent 75%, transparent 100%)");
+    
+
+    //_dashboard.show();
+    DASHBOARD.start_dashboard(button);
+    
+    recorder && recorder.record();
+    __log('Recording...');
+    //updateAnalysers();
+    RECORDING = true;
+};
+
+var stopRecording = function (button) {
+    var _recording_classname = "recording";
+    var _wait_classname = "wait";
+    button.removeClass(_recording_classname);
+    button.addClass(_wait_classname);
+    //button.css("background", "-webkit-radial-gradient(center, ellipse cover, #333333 0%, transparent 75%, transparent 100%,#7db9e8 100%)");
+    button.css("background", "radial-gradient(ellipse at center, #333333 0%, #333333 50%, transparent 75%, transparent 100%)");
+    
+    DASHBOARD.stop_dashboard(button);
+    
+    recorder && recorder.stop();
+    __log('Stopped recording.');
+
+    // create WAV download link using audio data blob
+    createDownloadLink();
+
+    recorder.clear();
+    //cancelAnalyserUpdates();
+    RECORDING = false;
+}
 
 var DASHBOARD = {
     timer: null,
@@ -173,7 +249,7 @@ var DASHBOARD = {
         return _button.parents(".controller:first").find(".dashboard");
     },
     get_canvas: function (_button) {
-        return _button.parents(".recorder-panel:first").find(".analyser");
+        return _button.parents(".cke_editor_ckeditor_dialog .recorder-panel:first").find(".analyser");
     },
     get_download: function (_button) {
         return _button.parents(".controller:first").find(".download");
@@ -183,7 +259,7 @@ var DASHBOARD = {
         var _dashboard = this.get_dashboard(_button);
         
         if (!_remain_sec) {
-            _remain_sec = 3;
+            _remain_sec = _record_limit;
             //_remain_sec = 60;
         }
         
@@ -197,19 +273,25 @@ var DASHBOARD = {
         //this.get_canvas(_button).show();
         
         var _ = this;
-        _.timer = setInterval(function () {
+        DASHBOARD.timer = setInterval(function () {
+            if (_dialog_open === false) {
+                clearInterval(DASHBOARD.timer);
+                return;
+            }
+
             var _secs = _.get_remain_sec(_dashboard);
             _secs = _secs - 1;
             _.set_remain_sec(_dashboard, _secs);
-            
+
+            if (_secs === 0 || _secs < 1) {
+                clearInterval(DASHBOARD.timer);
+                _button.click();
+            }
+
             _secs = _.get_recorded_sec(_dashboard);
             _secs = _secs + 1;
             _.set_recorded_sec(_dashboard, _secs);
             
-            if (_secs === 0) {
-                clearInterval(_.timer);
-                _button.click();
-            }
         }, 1000);
     },
     get_remain_sec: function (_dashboard) {
@@ -231,7 +313,7 @@ var DASHBOARD = {
         return this;
     },
     stop_dashboard: function (_button) {
-        clearInterval(this.timer);
+        clearInterval(DASHBOARD.timer);
         var _dashboard = this.get_dashboard(_button);
         _dashboard.hide();
         //this.get_canvas(_button).hide();
@@ -323,6 +405,7 @@ var init = function () {
       __log('No live audio input: ' + e);
     });
 };  //var init = function () {
+init();
 
 // [/main.js]
 // ---------------------------------
@@ -418,8 +501,8 @@ var init = function () {
 		var buffer = new Uint8Array(arrayBuffer),
         data = parseWav(buffer);
         
-        console.log(data);
-		console.log("Converting to Mp3");
+        //console.log(data);
+		//console.log("Converting to Mp3");
 		//log.innerHTML += "\n" + "Converting to Mp3";
 
         encoderWorker.postMessage({ cmd: 'init', config:{
@@ -432,6 +515,9 @@ var init = function () {
         encoderWorker.postMessage({ cmd: 'encode', buf: Uint8ArrayToFloat32Array(data.samples) });
         encoderWorker.postMessage({ cmd: 'finish'});
         encoderWorker.onmessage = function(e) {
+            if (_dialog_open === false) {
+                return;
+            }
             if (e.data.cmd === 'data') {
 			
 				//console.log("Done converting to Mp3");
@@ -456,19 +542,21 @@ var init = function () {
 				au.src = url;
 				hf.href = url;
 				hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
+                $(hf).css("margin-left", "5px");
 				//hf.innerHTML = hf.download;
-                                hf.innerHTML = '<img src="download.png" />';
-				li.appendChild(au);
-				li.appendChild(hf);
-				recordingslist.appendChild(li);
-                                
-                $(".recorder-panel .download")
+                                hf.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVNnVFPpFj333vRCS4iAlEtvUhUIIFJCi4AUkSYqIQkQSoghodkVUcERRUUEG8igiAOOjoCMFVEsDIoK2AfkIaKOg6OIisr74Xuja9a89+bN/rXXPues852zzwfACAyWSDNRNYAMqUIeEeCDx8TG4eQuQIEKJHAAEAizZCFz/SMBAPh+PDwrIsAHvgABeNMLCADATZvAMByH/w/qQplcAYCEAcB0kThLCIAUAEB6jkKmAEBGAYCdmCZTAKAEAGDLY2LjAFAtAGAnf+bTAICd+Jl7AQBblCEVAaCRACATZYhEAGg7AKzPVopFAFgwABRmS8Q5ANgtADBJV2ZIALC3AMDOEAuyAAgMADBRiIUpAAR7AGDIIyN4AISZABRG8lc88SuuEOcqAAB4mbI8uSQ5RYFbCC1xB1dXLh4ozkkXKxQ2YQJhmkAuwnmZGTKBNA/g88wAAKCRFRHgg/P9eM4Ors7ONo62Dl8t6r8G/yJiYuP+5c+rcEAAAOF0ftH+LC+zGoA7BoBt/qIl7gRoXgugdfeLZrIPQLUAoOnaV/Nw+H48PEWhkLnZ2eXk5NhKxEJbYcpXff5nwl/AV/1s+X48/Pf14L7iJIEyXYFHBPjgwsz0TKUcz5IJhGLc5o9H/LcL//wd0yLESWK5WCoU41EScY5EmozzMqUiiUKSKcUl0v9k4t8s+wM+3zUAsGo+AXuRLahdYwP2SycQWHTA4vcAAPK7b8HUKAgDgGiD4c93/+8//UegJQCAZkmScQAAXkQkLlTKsz/HCAAARKCBKrBBG/TBGCzABhzBBdzBC/xgNoRCJMTCQhBCCmSAHHJgKayCQiiGzbAdKmAv1EAdNMBRaIaTcA4uwlW4Dj1wD/phCJ7BKLyBCQRByAgTYSHaiAFiilgjjggXmYX4IcFIBBKLJCDJiBRRIkuRNUgxUopUIFVIHfI9cgI5h1xGupE7yAAygvyGvEcxlIGyUT3UDLVDuag3GoRGogvQZHQxmo8WoJvQcrQaPYw2oefQq2gP2o8+Q8cwwOgYBzPEbDAuxsNCsTgsCZNjy7EirAyrxhqwVqwDu4n1Y8+xdwQSgUXACTYEd0IgYR5BSFhMWE7YSKggHCQ0EdoJNwkDhFHCJyKTqEu0JroR+cQYYjIxh1hILCPWEo8TLxB7iEPENyQSiUMyJ7mQAkmxpFTSEtJG0m5SI+ksqZs0SBojk8naZGuyBzmULCAryIXkneTD5DPkG+Qh8lsKnWJAcaT4U+IoUspqShnlEOU05QZlmDJBVaOaUt2ooVQRNY9aQq2htlKvUYeoEzR1mjnNgxZJS6WtopXTGmgXaPdpr+h0uhHdlR5Ol9BX0svpR+iX6AP0dwwNhhWDx4hnKBmbGAcYZxl3GK+YTKYZ04sZx1QwNzHrmOeZD5lvVVgqtip8FZHKCpVKlSaVGyovVKmqpqreqgtV81XLVI+pXlN9rkZVM1PjqQnUlqtVqp1Q61MbU2epO6iHqmeob1Q/pH5Z/YkGWcNMw09DpFGgsV/jvMYgC2MZs3gsIWsNq4Z1gTXEJrHN2Xx2KruY/R27iz2qqaE5QzNKM1ezUvOUZj8H45hx+Jx0TgnnKKeX836K3hTvKeIpG6Y0TLkxZVxrqpaXllirSKtRq0frvTau7aedpr1Fu1n7gQ5Bx0onXCdHZ4/OBZ3nU9lT3acKpxZNPTr1ri6qa6UbobtEd79up+6Ynr5egJ5Mb6feeb3n+hx9L/1U/W36p/VHDFgGswwkBtsMzhg8xTVxbzwdL8fb8VFDXcNAQ6VhlWGX4YSRudE8o9VGjUYPjGnGXOMk423GbcajJgYmISZLTepN7ppSTbmmKaY7TDtMx83MzaLN1pk1mz0x1zLnm+eb15vft2BaeFostqi2uGVJsuRaplnutrxuhVo5WaVYVVpds0atna0l1rutu6cRp7lOk06rntZnw7Dxtsm2qbcZsOXYBtuutm22fWFnYhdnt8Wuw+6TvZN9un2N/T0HDYfZDqsdWh1+c7RyFDpWOt6azpzuP33F9JbpL2dYzxDP2DPjthPLKcRpnVOb00dnF2e5c4PziIuJS4LLLpc+Lpsbxt3IveRKdPVxXeF60vWdm7Obwu2o26/uNu5p7ofcn8w0nymeWTNz0MPIQ+BR5dE/C5+VMGvfrH5PQ0+BZ7XnIy9jL5FXrdewt6V3qvdh7xc+9j5yn+M+4zw33jLeWV/MN8C3yLfLT8Nvnl+F30N/I/9k/3r/0QCngCUBZwOJgUGBWwL7+Hp8Ib+OPzrbZfay2e1BjKC5QRVBj4KtguXBrSFoyOyQrSH355jOkc5pDoVQfujW0Adh5mGLw34MJ4WHhVeGP45wiFga0TGXNXfR3ENz30T6RJZE3ptnMU85ry1KNSo+qi5qPNo3ujS6P8YuZlnM1VidWElsSxw5LiquNm5svt/87fOH4p3iC+N7F5gvyF1weaHOwvSFpxapLhIsOpZATIhOOJTwQRAqqBaMJfITdyWOCnnCHcJnIi/RNtGI2ENcKh5O8kgqTXqS7JG8NXkkxTOlLOW5hCepkLxMDUzdmzqeFpp2IG0yPTq9MYOSkZBxQqohTZO2Z+pn5mZ2y6xlhbL+xW6Lty8elQfJa7OQrAVZLQq2QqboVFoo1yoHsmdlV2a/zYnKOZarnivN7cyzytuQN5zvn//tEsIS4ZK2pYZLVy0dWOa9rGo5sjxxedsK4xUFK4ZWBqw8uIq2Km3VT6vtV5eufr0mek1rgV7ByoLBtQFr6wtVCuWFfevc1+1dT1gvWd+1YfqGnRs+FYmKrhTbF5cVf9go3HjlG4dvyr+Z3JS0qavEuWTPZtJm6ebeLZ5bDpaql+aXDm4N2dq0Dd9WtO319kXbL5fNKNu7g7ZDuaO/PLi8ZafJzs07P1SkVPRU+lQ27tLdtWHX+G7R7ht7vPY07NXbW7z3/T7JvttVAVVN1WbVZftJ+7P3P66Jqun4lvttXa1ObXHtxwPSA/0HIw6217nU1R3SPVRSj9Yr60cOxx++/p3vdy0NNg1VjZzG4iNwRHnk6fcJ3/ceDTradox7rOEH0x92HWcdL2pCmvKaRptTmvtbYlu6T8w+0dbq3nr8R9sfD5w0PFl5SvNUyWna6YLTk2fyz4ydlZ19fi753GDborZ752PO32oPb++6EHTh0kX/i+c7vDvOXPK4dPKy2+UTV7hXmq86X23qdOo8/pPTT8e7nLuarrlca7nuer21e2b36RueN87d9L158Rb/1tWeOT3dvfN6b/fF9/XfFt1+cif9zsu72Xcn7q28T7xf9EDtQdlD3YfVP1v+3Njv3H9qwHeg89HcR/cGhYPP/pH1jw9DBY+Zj8uGDYbrnjg+OTniP3L96fynQ89kzyaeF/6i/suuFxYvfvjV69fO0ZjRoZfyl5O/bXyl/erA6xmv28bCxh6+yXgzMV70VvvtwXfcdx3vo98PT+R8IH8o/2j5sfVT0Kf7kxmTk/8EA5jz/GMzLdsAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAAeZQTFRF////Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02Qo02ZmZmQo02Ro46SYU/TIFCUHxHVIVLWpFQWpFRXZ5SXpVOYZ5YYaBWYp5YY2liY5lTZJtUZmZmZqNdaJ5YbKNdbqFgcKNhdq1oe3t7gbV3gbd0hbl8h7t9iDaNiLx8iLx+iWqJir6Bi7uBjL2DjMKAjWuOjWyOjsOCj72FkcGJksKIk8CJk8aHlMWLlsWNlsyKl8yLmsiRnMaRnM+RnmGinsWTnseTn2Kjn8aVoMeWoWOloo6gpNeZpWSppaWlpcqbpmWppmappmaqp8yeqmqurdGkrs+lr2+yr3Cyr9Kmr9SmsHSzsNOnsnW1sne2stOps3e3tHm4tNOrttiut9uvvY6/vd61veC0wZLDwZPEwZTEwnvGw+S7w+a7x+i/yJrKyZzLyuvDz6LQz6LRz6bQz8/P0KLR0KfR0qrT05fX09PT1K3W1ZnZ1rDY1t3V15va2KDb2bHa2dnZ2rPb2t/Z27Xc3bjf37vh4ODg4r3j5Lrm5MDm5OTk5eXl5sPo6MTp6MXp6Mbq6sfr6urq68nt7/bu8vLy+vr6/tb/////w49rPwAAABl0Uk5TAAoTFSYoKywtMDlBUszP1uPk6Onq8fL196gH5jAAAAGOSURBVDjLrdNVV8NAEAVgXIpDcQ0uBYIMWtzdi7sXJ7gXTSkOKQ7JP6WbtCECPHFfch++czJ7dsfK6h+SIAkuA5Q4OC4DzHcoDS4TUsBIhQxIhRwwlGhSMwBzcEYqLICm6bfnZwJnpIIHZ8c6nW4Q50L9AMi7R6ORIIhBAjQaKkAGXsghdojjKxIo6kEAuPnhiQSuXKIiAp8oYCSBK3pUboTgAwXuSeCKHpVzIXhFgVsSuKJH5VAI2EuEazQbKnpUduXgygL2zcBaAi5ZANCxFBGI4icCAH3bJyYA9M5iU3iLVqsdEAGgDVsTR2D6LrfWz4U1J0fGDfgKZgB6b3p8oweBgpy2wpDelPikSX8XhULBg6nR9W72D0EYhhV3qlSqhrJoDAvkgeGgiz0DhKaNDTemotT2D+cp+RlM4d70aUzaTFY6m5F8LwfBMS25iMqYL1er1UWzJUp74W3yeU/MXKmrql4o9XL6ebMSYoOz19pXK33sf11GG/fczQpPxz/W1datxtvuz4V29nA1ty8VQxFOU0vZ9QAAAABJRU5ErkJggg==" />';
+				//li.appendChild(au);
+				//li.appendChild(hf);
+				//recordingslist.appendChild(li);
+                
+                var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");             
+                _panel.find(".download")
                         //.empty()
                         .append(au)
                         .append(hf);
                                 
-				$(".recorder-panel .record_button").removeClass("wait");
-                $(".recorder-panel .record_button").css("background", "");
+				_panel.find(".record_button").removeClass("wait");
+                _panel.find(".record_button").css("background", "");
             }
         };
 	  };
@@ -525,22 +613,72 @@ var init = function () {
 	function uploadAudio(mp3Data){
 		var reader = new FileReader();
 		reader.onload = function(event){
+            if (_dialog_open === false) {
+                return;
+            }
+            if (!_upload_url || _upload_url === "") {
+                alert(_editor_lang.download_msg);
+                return;
+            }
+
 			var fd = new FormData();
 			var mp3Name = encodeURIComponent('audio_recording_' + new Date().getTime() + '.mp3');
 			//console.log("mp3name = " + mp3Name);
-			fd.append('fname', mp3Name);
-			fd.append('file', event.target.result);
+			//fd.append('fname', mp3Name);
+			//fd.append('file', event.target.result);
                         //console.log(event.target.result);
                         
                         //$("#fname").val(mp3Name);
                         //$("#file").val(event.target.result);
-            $.ajax({
-				type: 'POST',
-				url: _upload_url,
-				data: fd,
-				processData: false,
-				contentType: false
-			});
+            //$.ajax({
+			//	type: 'POST',
+			//	url: _upload_url,
+			//	data: fd,
+			//	processData: false,
+			//	contentType: false
+			//});
+            
+            var _div = $("<div />")
+                    .css("display", "none")
+                    .appendTo("body");
+            var _name = "recordmp3js" + (new Date()).getTime();
+            
+            var _form = $('<form method="post" target="' + _name + '"/>')
+                    .attr("action", _upload_url)
+                    .appendTo(_div);
+            var _fname = $('<input type="text" name="fname" />')
+                    .val(mp3Name)
+                    .appendTo(_form);
+            var _file = $('<input type="text" name="file" />')
+                    .val(event.target.result)
+                    .appendTo(_form);
+            
+            var _iframe = $("<iframe />")
+                .attr("src", "")
+                .attr("name", _name);
+            
+            var _first = true;
+            _iframe.load(function () {
+                if (_first === true) {
+                    _first = false;
+                    _form.submit();
+                }
+                else {
+                    //console.log(_get_link_url + "?callback=?");
+                    $.getJSON(_get_link_url + "?callback=?", function (_result) {
+                        //console.log("Get Link: " + _result);
+                        if (_result.substr(0, 4) !== "http") {
+                            alert("ERROR: " + _result);
+                        }
+                        else {
+                            $(".recordmp3js_audio_link input:text").val(_result);
+                        }
+                        _div.remove();
+                    });
+                }
+            });
+            
+            _iframe.appendTo(_div);
 		};      
 		reader.readAsDataURL(mp3Data);
 	}
@@ -2044,7 +2182,7 @@ h.name)return h.status;if("SimulateInfiniteLoop"==h)Module.noExitRuntime=!0;else
 "number",["number"]),set_VBR_q:Module.cwrap("lame_set_VBR_q","number",["number","number"]),get_VBR_q:Module.cwrap("lame_get_VBR_q","number",["number"]),set_VBR_mean_bitrate_kbps:Module.cwrap("lame_set_VBR_mean_bitrate_kbps","number",["number","number"]),get_VBR_mean_bitrate_kbps:Module.cwrap("lame_get_VBR_mean_bitrate_kbps","number",["number"]),set_VBR_min_bitrate_kbps:Module.cwrap("lame_set_VBR_min_bitrate_kbps","number",["number","number"]),get_VBR_min_bitrate_kbps:Module.cwrap("lame_get_VBR_min_bitrate_kbps",
 "number",["number"]),set_VBR_max_bitrate_kbps:Module.cwrap("lame_set_VBR_max_bitrate_kbps","number",["number","number"]),get_VBR_max_bitrate_kbps:Module.cwrap("lame_get_VBR_max_bitrate_kbps","number",["number"]),encode_buffer_ieee_float:function(a,b,e){for(var f=Tc(1024E3),c=Tc(4*b.length),g=Tc(4*e.length),h=0;h<b.length;h++)Pi(c+4*h,b[h],"float");for(h=0;h<e.length;h++)Pi(g+4*h,e[h],"float");a=Module.ccall("lame_encode_buffer_ieee_float","number","number number number number number number".split(" "),
 [a,c,g,b.length,f,1024E3]);if(-1==a)throw"buffer over flow";b=new ArrayBuffer(a);b=new Uint8Array(b);b.set(bc.subarray(f,f+a));ua(f);ua(c);ua(g);return{size:a,data:b}},encode_flush:function(a){var b=Tc(1024E3);a=Module.ccall("lame_encode_flush","number",["number","number","number"],[a,b,1024E3]);var e=new ArrayBuffer(a),e=new Uint8Array(e);e.set(bc.subarray(b,b+a));ua(b);return{size:a,data:e}},close:Module.cwrap("lame_close","number",["number"])}}();self.Lame=Lame;
-       ;var mp3codec;self.onmessage=function(b){switch(b.data.cmd){case"init":if(!b.data.config){b.data.config={}}mp3codec=Lame.init();Lame.set_mode(mp3codec,b.data.config.mode||Lame.JOINT_STEREO);Lame.set_num_channels(mp3codec,b.data.config.channels||2);Lame.set_num_samples(mp3codec,b.data.config.samples||-1);Lame.set_in_samplerate(mp3codec,b.data.config.samplerate||44100);Lame.set_out_samplerate(mp3codec,b.data.config.samplerate||44100);Lame.set_bitrate(mp3codec,b.data.config.bitrate||128);Lame.init_params(mp3codec);console.log("Version :",Lame.get_version()+" / ","Mode: "+Lame.get_mode(mp3codec)+" / ","Samples: "+Lame.get_num_samples(mp3codec)+" / ","Channels: "+Lame.get_num_channels(mp3codec)+" / ","Input Samplate: "+Lame.get_in_samplerate(mp3codec)+" / ","Output Samplate: "+Lame.get_in_samplerate(mp3codec)+" / ","Bitlate :"+Lame.get_bitrate(mp3codec)+" / ","VBR :"+Lame.get_VBR(mp3codec));break;case"encode":var a=Lame.encode_buffer_ieee_float(mp3codec,b.data.buf,b.data.buf);self.postMessage({cmd:"data",buf:a.data});break;case"finish":var a=Lame.encode_flush(mp3codec);self.postMessage({cmd:"end",buf:a.data});Lame.close(mp3codec);mp3codec=null;break}};
+       ;var mp3codec;self.onmessage=function(b){switch(b.data.cmd){case"init":if(!b.data.config){b.data.config={}}mp3codec=Lame.init();Lame.set_mode(mp3codec,b.data.config.mode||Lame.JOINT_STEREO);Lame.set_num_channels(mp3codec,b.data.config.channels||2);Lame.set_num_samples(mp3codec,b.data.config.samples||-1);Lame.set_in_samplerate(mp3codec,b.data.config.samplerate||44100);Lame.set_out_samplerate(mp3codec,b.data.config.samplerate||44100);Lame.set_bitrate(mp3codec,b.data.config.bitrate||128);Lame.init_params(mp3codec);break;case"encode":var a=Lame.encode_buffer_ieee_float(mp3codec,b.data.buf,b.data.buf);self.postMessage({cmd:"data",buf:a.data});break;case"finish":var a=Lame.encode_flush(mp3codec);self.postMessage({cmd:"end",buf:a.data});Lame.close(mp3codec);mp3codec=null;break}};
     }); //WORKER_MANAGER.embed_to_head("mp3Worker", function () {
     
     WORKER_MANAGER.embed_to_head("recorderWorker", function () {

@@ -308,7 +308,25 @@ DEFAULT_KALS_CONFIG = {
         //width: '261px',
         resize_enabled: false,
         startupFocus: false,
-        uiColor : '#CB842E'
+        uiColor : '#CB842E',
+        recordmp3js: {
+            /**
+             * 上傳檔案的位置
+             * @type String
+             */
+            upload_url: "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/upload",
+            /**
+             * 取得網址的位置
+             * @type String
+             */
+            get_link_url: "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/get_link",
+            /**
+             * 錄音檔案的限制
+             * 最多60秒
+             * @type Number
+             */
+            record_limit: 15    
+        }
     },
     //標註列表設定
     annotation_list: {

@@ -16,6 +16,8 @@
             requires:['dialog'],
             init:function(editor){
                 var commandName='recordmp3js';
+                //alert(typeof(editor.config.recordmp3js));
+                //console.log(editor);
                 editor.addCommand(commandName,recordmp3jsCmd);
                 editor.ui.addButton('recordmp3js',{
                     label:editor.lang.youtube.button,

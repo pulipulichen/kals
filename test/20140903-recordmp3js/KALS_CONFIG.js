@@ -308,7 +308,12 @@ DEFAULT_KALS_CONFIG = {
         //width: '261px',
         resize_enabled: false,
         startupFocus: false,
-        uiColor : '#CB842E'
+        uiColor : '#CB842E',
+        recordmp3js: {
+            upload_url: "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/upload",
+            get_link_url: "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/get_link",
+            record_limit: 5
+        }
     },
     //標註列表設定
     annotation_list: {
