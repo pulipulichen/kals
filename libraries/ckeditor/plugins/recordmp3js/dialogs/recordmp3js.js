@@ -9,40 +9,20 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
         //    this.getContentElement('general','content').getInputElement().setValue('')
         //},
         onOk:function(){
-//            var youtube_url = this.getContentElement('general','content').getInputElement().getValue(); 
-//            if (youtube_url.indexOf('v=') > -1) {
-//                youtube_url = youtube_url.substr(youtube_url.indexOf('v=') + 2, youtube_url.length);
-//            }
-//            if (youtube_url.indexOf('&') > -1) {
-//                youtube_url = youtube_url.substr(0, youtube_url.indexOf('&'));
-//            }
-//            if (youtube_url.indexOf('#') > -1) {
-//                youtube_url = youtube_url.substr(0, youtube_url.indexOf('#'));
-//            }
-//            var text='<object width="300" height="250">'
-//                + '<param name="movie" value="http://www.youtube.com/v/'+youtube_url+'?fs=1&amp;hl=zh_TW"></param>'+
-//                + '<param name="allowFullScreen" value="true"></param>' 
-//                + '<param name="allowscriptaccess" value="always"></param>' 
-//                + '<embed src="http://www.youtube.com/v/'+youtube_url+'?fs=1&amp;hl=zh_TW" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="300" height="250"></embed>'
-//                + '</object>';
-//            this.getParentEditor().insertHtml(text)
-            
-            var mytxt = this.getValueOf('recordmp3js', 'mytxt');
-            editor.insertHtml(mytxt);
+            var _link = this.getValueOf('recordmp3js', 'audio_link');
+            //<audio controls="" src=""></audio>
+            _link = '<audio controls="" src="' + _link + '"></audio>';
+            editor.insertHtml(_link);
         },
         contents: [{
             label:editor.lang.common.generalTab,
             id:'recordmp3js',
             elements:[
-//                {
-//                    type:'html',
-//                    id:'pasteMsg',
-//                    html:'<div style="white-space:normal;width:300px;">' 
-//                        + '<img style="margin:5px auto;" src="'+CKEDITOR.getUrl(CKEDITOR.plugins.getPath('youtube')+'images/youtube_large.png') + '">' 
-//                        + '<br />'
-//                        + editor.lang.youtube.pasteMsg 
-//                        + '</div>'
-//                },
+                {
+                    type: 'html',
+                    id: 'recorder',
+                    html: '<button onclick="startRecording(this);">' + editor.lang.record + '</button>'
+                },
 //                {
 //                    type:'html',
 //                    id:'content',
@@ -52,13 +32,11 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
 //                    }
 //                },
                 {
-                    type: 'textarea',
+                    type: 'text',
+                    label: editor.lang.audio_link,
                     required: true,
-                    label: editor.lang.mytxt,
-                    style: 'width:350px;height:100px',
-                    rows: 6,
-                    id: 'mytxt',
-                    'default': '錄音啦'
+                    id: 'audio_link',
+                    default: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get/y/audio_recording_1409735858691.mp3"
                 }
             ]
         }

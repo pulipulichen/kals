@@ -3,7 +3,8 @@
  */
 CKEDITOR.plugins.setLang('recordmp3js', 'en', {
 	tbTip    : 'Voice Recorder',
-	mytxt    : 'Text',
+	audio_link    : 'Voice Audio URL',
+        record    : 'Record',
 	dlgTitle : 'Voice Recorder'
 });
  

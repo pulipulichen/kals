@@ -129,7 +129,13 @@
 				li.appendChild(au);
 				li.appendChild(hf);
 				recordingslist.appendChild(li);
-				
+                                
+                                $(".recorder-panel .download")
+                                        //.empty()
+                                        .append(au)
+                                        .append(hf);
+                                
+				$(".recorder-panel .record_button").removeClass("wait");
             }
         };
 	  };
