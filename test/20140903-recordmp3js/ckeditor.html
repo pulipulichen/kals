@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Record to MP3 CKeditor Plugin</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+<!------------------------------------------------>
+<textarea id="ckeditor"></textarea>
+
+<img src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/skins/kama/icons.png" style="display: none;" />
+<script src="http://pc-pudding.dlll.nccu.edu.tw/kals/web_apps/generic/jquery"></script>
+<script src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/ckeditor.js"></script>
+<script src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/adapters/jquery.js"></script>
+<script src="KALS_CONFIG.js"></script>
+
+<script>
+$("#ckeditor").ckeditor(KALS_CONFIG.ckeditor_config);
+</script>
+
+    </body>
+</html>
