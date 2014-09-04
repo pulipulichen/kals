@@ -7,5 +7,6 @@ CKEDITOR.plugins.setLang('recordmp3js', 'zh', {
         remain: '剩餘',
         recorded: '已錄',
         mic_disabled: '未偵測到麥克風，請允許瀏覽器啟用麥克風',
-        download_msg: '由於未設定檔案上傳伺服器，錄音結果不會插入到編輯器，請按下載圖示下載檔案。'
+        download_msg: '由於未設定檔案上傳伺服器，錄音結果不會插入到編輯器，請按下載圖示下載檔案。',
+        wait_message: '檔案處理中，請稍候'
 });

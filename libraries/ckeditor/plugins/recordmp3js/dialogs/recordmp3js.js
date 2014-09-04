@@ -3,7 +3,7 @@
 
 var _upload_url = "";
 var _get_link_url = "";
-var _record_limit = 3;
+var _record_limit = 15;
 //alert(CKEDITOR.config.autoGrow_maxWidth);
 var _dialog_open = false;
 var _editor_lang;
@@ -84,7 +84,8 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
     + '      <span class="remain_secs"></span>'
     + '      <span class="label sec">' + editor.lang.sec + '</span>'
     + '  </div>'
-    + '  <div class="download" style="width: 250px;"></div>'
+    + '  <div class="wait_message" style="width: 250px;display:none;text-align:center;">' + editor.lang.wait_message + '</div>'
+    + '  <div class="download" style="width: 250px;display:none;text-align:center;"></div>'
     + '  <div class="error" style="display:none;text-align:center;">' + editor.lang.mic_disabled + '</div>'
     + '</div>'
     + '<div class="viz" style="margin-top: 10px;flex-direction: column;justify-content: space-around;align-items: center;background-color: #202020;box-shadow: 0px 0px 10px blue;height: 150px;width: 300px;display: inline-block;">'
@@ -241,7 +242,22 @@ var stopRecording = function (button) {
     recorder.clear();
     //cancelAnalyserUpdates();
     RECORDING = false;
+
+    var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+    _panel.find(".wait_message").show();
 }
+
+var completeAction = function (_result) {
+    $(".recordmp3js_audio_link input:text").val(_result);
+
+    var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+    
+    _panel.find(".wait_message").hide();
+
+    _panel.find(".download").show();
+    _panel.find(".record_button").removeClass("wait");
+    _panel.find(".record_button").css("background", "");
+};
 
 var DASHBOARD = {
     timer: null,
@@ -267,6 +283,8 @@ var DASHBOARD = {
         this.set_recorded_sec(_dashboard, 0);
         
         _dashboard.show();
+
+        _button.parents(".controller:first").find(".download").hide();
         
         this.get_download(_button).empty();
         
@@ -555,8 +573,7 @@ init();
                         .append(au)
                         .append(hf);
                                 
-				_panel.find(".record_button").removeClass("wait");
-                _panel.find(".record_button").css("background", "");
+				
             }
         };
 	  };
@@ -617,7 +634,9 @@ init();
                 return;
             }
             if (!_upload_url || _upload_url === "") {
-                alert(_editor_lang.download_msg);
+                //alert(_editor_lang.download_msg);
+                //$(".recordmp3js_audio_link input:text").val(event.target.result);
+                completeAction(event.target.result);
                 return;
             }
 
@@ -669,9 +688,11 @@ init();
                         //console.log("Get Link: " + _result);
                         if (_result.substr(0, 4) !== "http") {
                             alert("ERROR: " + _result);
+                            completeAction();
                         }
                         else {
-                            $(".recordmp3js_audio_link input:text").val(_result);
+                            //$(".recordmp3js_audio_link input:text").val(_result);
+                            completeAction(_result);
                         }
                         _div.remove();
                     });
