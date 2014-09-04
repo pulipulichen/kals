@@ -193,7 +193,8 @@ DASHBOARD = {
   
   function updateAnalysers(time) {
     if (!analyserContext) {
-        var canvas = document.getElementById("analyser");
+        //var canvas = document.getElementById("analyser");
+        var canvas = document.getElementsByClassName("recordmp3js_analyser")[0];
         canvasWidth = canvas.width;
         canvasHeight = canvas.height;
         analyserContext = canvas.getContext('2d');

@@ -43,11 +43,15 @@
         display: inline-block;
         float: left;
         min-height: 200px;
-        min-width: 350px;
+        min-width: 250px;
     }
     
     .controller .download {
-        width: 350px;
+        width: 250px;
+    }
+    
+    .controller .download a {
+        margin-left: 5px;
     }
       
     ul { list-style: none; }
@@ -62,8 +66,8 @@
         align-items: center;
         background-color: #202020;
         box-shadow: 0px 0px 10px blue;
-        height: 200px;
-        width: 500px;
+        height: 150px;
+        width: 300px;
         display: inline-block;
     }
     .viz .analyser {
@@ -98,8 +102,9 @@
       <div class="download"></div>
     </div>
     <div class="viz">
-          <canvas class="analyser" id="analyser" width="500" height="200"></canvas>
+          <canvas class="recordmp3js_analyser" width="300" height="150"></canvas>
     </div>
+      <div style="clear:both"></div>
   </div>
     
   <!--

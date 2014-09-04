@@ -6,7 +6,10 @@
   //var WORKER_PATH =
   //http://pc-pudding-2013.dlll.nccu.edu.tw/kals/test/20140903-recordmp3js/js/recorderWorker.js
   //var encoderWorker = new Worker('js/mp3Worker.js');
-  
+
+    var _upload_url = "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/upload";
+    var _get_link_url = "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/get_link";
+    
   var Recorder = function(source, cfg){
       var encoderWorker = WORKER_MANAGER.load_worker("mp3Worker");
 
@@ -122,10 +125,12 @@
 				var hf = document.createElement('a');
 				  
 				au.controls = true;
+                                au.style.width = "200px";
 				au.src = url;
 				hf.href = url;
 				hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
-				hf.innerHTML = hf.download;
+				//hf.innerHTML = hf.download;
+                                hf.innerHTML = '<img src="download.png" />';
 				li.appendChild(au);
 				li.appendChild(hf);
 				recordingslist.appendChild(li);
@@ -202,9 +207,10 @@
                         $("#fname").val(mp3Name);
                         $("#file").val(event.target.result);
                         
+                        /*
 			$.ajax({
 				type: 'POST',
-				url: '/php-file-host/upload',
+				url: 'http://pc-pudding.dlll.nccu.edu.tw/php-file-host/upload',
 				data: fd,
 				processData: false,
 				contentType: false
@@ -212,6 +218,41 @@
 				//console.log(data);
 				log.innerHTML += "\n" + data;
 			});
+                        */
+                        var _div = $("<div />")
+                                .css("display", "none")
+                                .appendTo("body");
+                        var _name = "recordmp3js" + (new Date()).getTime();
+                        
+                        var _form = $('<form method="post" target="' + _name + '"/>')
+                                .attr("action", _upload_url)
+                                .appendTo(_div);
+                        var _fname = $('<input type="text" name="fname" />')
+                                .val(mp3Name)
+                                .appendTo(_form);
+                        var _file = $('<input type="text" name="file" />')
+                                .val(event.target.result)
+                                .appendTo(_form);
+                        
+                        var _iframe = $("<iframe />").attr("name", _name);
+                        
+                        var _first = true;
+                        _iframe.load(function () {
+                            if (_first === true) {
+                                _first = false;
+                                _form.submit();
+                            }
+                            else {
+                                //console.log(_get_link_url + "?callback=?");
+                                $.getJSON(_get_link_url + "?callback=?", function (_result) {
+                                    console.log("Get Link: " + _result);
+                                    _div.remove();
+                                });
+                            }
+                        });
+                        
+                        _iframe.appendTo(_div);
+                        //-------------------
 		};      
 		reader.readAsDataURL(mp3Data);
 	}

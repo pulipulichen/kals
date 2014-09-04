@@ -23,7 +23,10 @@
                     icon:this.path+"images/mic.png"
                 });
                 CKEDITOR.dialog.add(commandName
-                    ,CKEDITOR.getUrl(this.path+'dialogs/recordmp3js.js'))
+                    ,CKEDITOR.getUrl(this.path+'dialogs/recordmp3js.js'));
+                
+                // 以下插入預設的內容
+                
             }
     })
 })();
