@@ -14,11 +14,11 @@ Put all of the files under this path: **[CKEditor]/plugin/recordmp3js/**
 And then revise your CKEditor config, add "**recordmp3js**" to "**extraPlugins**". 
 
 Like following code:
-
+```JavaScript
     var config = {
 	    "extraPlugins": "recordmp3js"
     };
-
+```
 Configuration
 =======
 
@@ -26,7 +26,7 @@ You can revise default configuration of this plugin.
 
 Just add "**recordmp3js**" configuration your CKEditor config, like following code:
 
-```json
+```JavaScript
 var config = {
     "extraPlugins": "recordmp3js",
     "recordmp3js": {
