@@ -10,6 +10,7 @@ CKEDITOR.plugins.setLang('recordmp3js', 'en', {
         remain: 'Remain: ',
         recorded: 'Recorded: ',
         mic_disabled: 'You have not enable microphone. Please allow browser to use microphone first.',
-        download_msg: 'Because of no upload server at your configuration, please download your record file by clicking download icon.'
+        download_msg: 'Because of no upload server at your configuration, please download your record file by clicking download icon.',
+        wait_message: 'Please wait.'
 });
  

@@ -15,9 +15,9 @@ And then revise your CKEditor config, add "**recordmp3js**" to "**extraPlugins**
 
 Like following code:
 ```JavaScript
-    var config = {
-	    "extraPlugins": "recordmp3js"
-    };
+var config = {
+        "extraPlugins": "recordmp3js"
+};
 ```
 Configuration
 =======
