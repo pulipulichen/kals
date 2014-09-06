@@ -59,7 +59,7 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
             recorder && recorder.stop();
             RECORDING = false;
 
-            var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+            var _panel = $("[role=\"dialog\"] .recorder-panel");
             var _btn = _panel.find(".record_button");
             _btn.css("background", "")
                 .removeClass("recording")
@@ -104,11 +104,12 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                         //alert(typeof(editor.config));
                         //console.log(editor);
                         
-                        var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+                        var _panel = $("[role=\"dialog\"] .recorder-panel");
                         
                         var _btn = _panel.find(".record_button");
                         var _btn_background;
                         _btn.mouseover(function () {
+                            //console.log(!recorder);
                             if ($(this).hasClass("recording") || $(this).hasClass("wait") || !recorder) {
                                 return;
                             }
@@ -132,9 +133,12 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                         
                         init();
 
-                        $("<iframe />")
-                            .hide()
-                            .appendTo(_panel);
+                        try {
+                            $("<iframe />")
+                                .hide()
+                                .appendTo(_panel);
+                        }
+                        catch (_e) {}
                     }
                 },
                 {
@@ -163,9 +167,12 @@ var RECORDING = false;
 var startUserMedia = function(stream) {
     var input = audio_context.createMediaStreamSource(stream);
     __log('Media stream created.' );
-	__log("input sample rate " +input.context.sampleRate);
-    
+    __log("input sample rate " +input.context.sampleRate);
+
+    //alert(typeof(recorder));
+
     recorder = new Recorder(input);
+
     
     inputPoint = audio_context.createGain();
     realAudioInput = audio_context.createMediaStreamSource(stream);
@@ -186,7 +193,7 @@ var startUserMedia = function(stream) {
 
 var toggleRecording = function (button) {
 
-    var _error = $(".cke_editor_ckeditor_dialog .recorder-panel .error");
+    var _error = $("[role=\"dialog\"] .recorder-panel .error");
     if (!recorder) {
         _error.show();
         return;
@@ -235,7 +242,7 @@ var stopRecording = function (button) {
     button.removeClass(_recording_classname);
     button.addClass(_wait_classname);
     //button.css("background", "-webkit-radial-gradient(center, ellipse cover, #333333 0%, transparent 75%, transparent 100%,#7db9e8 100%)");
-    button.css("background", "radial-gradient(ellipse at center, #333333 0%, #333333 50%, transparent 75%, transparent 100%)");
+    button.css("background", "radial-gradient(ellipse at center, #6666CC 0%, #6666CC 50%, transparent 75%, transparent 100%)");
     
     DASHBOARD.stop_dashboard(button);
     
@@ -249,14 +256,14 @@ var stopRecording = function (button) {
     //cancelAnalyserUpdates();
     RECORDING = false;
 
-    var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+    var _panel = $("[role=\"dialog\"] .recorder-panel");
     _panel.find(".wait_message").show();
 }
 
 var completeAction = function (_result) {
     $(".recordmp3js_audio_link input:text").val(_result);
 
-    var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");
+    var _panel = $("[role=\"dialog\"] .recorder-panel");
     
     _panel.find(".wait_message").hide();
 
@@ -271,7 +278,7 @@ var DASHBOARD = {
         return _button.parents(".controller:first").find(".dashboard");
     },
     get_canvas: function (_button) {
-        return _button.parents(".cke_editor_ckeditor_dialog .recorder-panel:first").find(".analyser");
+        return _button.parents("[role=\"dialog\"] .recorder-panel:first").find(".analyser");
     },
     get_download: function (_button) {
         return _button.parents(".controller:first").find(".download");
@@ -405,7 +412,9 @@ var cancelAnalyserUpdates = function () {
     rafID = null;
 };  // var cancelAnalyserUpdates = function () {
 
-var __log = function () {};
+var __log = function (_msg) {
+    //console.log(_msg)
+};
 
 var init = function () {
       
@@ -517,29 +526,29 @@ init();
         type: type
       });
     }
-	
-	//Mp3 conversion
+    
+    //Mp3 conversion
     worker.onmessage = function(e){
       var blob = e.data;
-	  //console.log("the blob " +  blob + " " + blob.size + " " + blob.type);
-	  
-	  var arrayBuffer;
-	  var fileReader = new FileReader();
-	  
-	  fileReader.onload = function(){
-		arrayBuffer = this.result;
-		var buffer = new Uint8Array(arrayBuffer),
+      //console.log("the blob " +  blob + " " + blob.size + " " + blob.type);
+      
+      var arrayBuffer;
+      var fileReader = new FileReader();
+      
+      fileReader.onload = function(){
+        arrayBuffer = this.result;
+        var buffer = new Uint8Array(arrayBuffer),
         data = parseWav(buffer);
         
         //console.log(data);
-		//console.log("Converting to Mp3");
-		//log.innerHTML += "\n" + "Converting to Mp3";
+        //console.log("Converting to Mp3");
+        //log.innerHTML += "\n" + "Converting to Mp3";
 
         encoderWorker.postMessage({ cmd: 'init', config:{
             mode : 3,
-			channels:1,
-			samplerate: data.sampleRate,
-			bitrate: data.bitsPerSample
+            channels:1,
+            samplerate: data.sampleRate,
+            bitrate: data.bitsPerSample
         }});
 
         encoderWorker.postMessage({ cmd: 'encode', buf: Uint8ArrayToFloat32Array(data.samples) });
@@ -549,31 +558,31 @@ init();
                 return;
             }
             if (e.data.cmd === 'data') {
-			
-				//console.log("Done converting to Mp3");
-				//log.innerHTML += "\n" + "Done converting to Mp3";
-				
-				/*var audio = new Audio();
-				audio.src = 'data:audio/mp3;base64,'+encode64(e.data.buf);
-				audio.play();*/
+            
+                //console.log("Done converting to Mp3");
+                //log.innerHTML += "\n" + "Done converting to Mp3";
                 
-				//console.log ("The Mp3 data " + e.data.buf);
-				
-				var mp3Blob = new Blob([new Uint8Array(e.data.buf)], {type: 'audio/mp3'});
-				uploadAudio(mp3Blob);
-				
-				var url = 'data:audio/mp3;base64,'+encode64(e.data.buf);
-				var li = document.createElement('li');
-				var au = document.createElement('audio');
-				var hf = document.createElement('a');
-				  
-				au.controls = true;
+                /*var audio = new Audio();
+                audio.src = 'data:audio/mp3;base64,'+encode64(e.data.buf);
+                audio.play();*/
+                
+                //console.log ("The Mp3 data " + e.data.buf);
+                
+                var mp3Blob = new Blob([new Uint8Array(e.data.buf)], {type: 'audio/mp3'});
+                uploadAudio(mp3Blob);
+                
+                var url = 'data:audio/mp3;base64,'+encode64(e.data.buf);
+                var li = document.createElement('li');
+                var au = document.createElement('audio');
+                var hf = document.createElement('a');
+                  
+                au.controls = true;
                 au.style.width = "200px";
-				au.src = url;
-				hf.href = url;
-				hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
+                au.src = url;
+                hf.href = url;
+                hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
                 $(hf).css("margin-left", "5px");
-				//hf.innerHTML = hf.download;
+                //hf.innerHTML = hf.download;
                 
                 /**
                  * 音樂下載圖示來源
@@ -581,73 +590,73 @@ init();
                  * @type {String}
                  */
                 hf.innerHTML = '<img src="data:image/png;base64,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" />';
-				//li.appendChild(au);
-				//li.appendChild(hf);
-				//recordingslist.appendChild(li);
+                //li.appendChild(au);
+                //li.appendChild(hf);
+                //recordingslist.appendChild(li);
                 
-                var _panel = $(".cke_editor_ckeditor_dialog .recorder-panel");             
+                var _panel = $("[role=\"dialog\"] .recorder-panel");             
                 _panel.find(".download")
                         //.empty()
                         .append(au)
                         .append(hf);
                                 
-				
+                
             }
         };
-	  };
-	  
-	  fileReader.readAsArrayBuffer(blob);
-	  
+      };
+      
+      fileReader.readAsArrayBuffer(blob);
+      
       currCallback(blob);
     }
-	
-	
-	function encode64(buffer) {
-		var binary = '',
-			bytes = new Uint8Array( buffer ),
-			len = bytes.byteLength;
+    
+    
+    function encode64(buffer) {
+        var binary = '',
+            bytes = new Uint8Array( buffer ),
+            len = bytes.byteLength;
 
-		for (var i = 0; i < len; i++) {
-			binary += String.fromCharCode( bytes[ i ] );
-		}
-		return window.btoa( binary );
-	}
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode( bytes[ i ] );
+        }
+        return window.btoa( binary );
+    }
 
-	function parseWav(wav) {
-		function readInt(i, bytes) {
-			var ret = 0,
-				shft = 0;
+    function parseWav(wav) {
+        function readInt(i, bytes) {
+            var ret = 0,
+                shft = 0;
 
-			while (bytes) {
-				ret += wav[i] << shft;
-				shft += 8;
-				i++;
-				bytes--;
-			}
-			return ret;
-		}
-		if (readInt(20, 2) !== 1) throw 'Invalid compression code, not PCM';
-		if (readInt(22, 2) !== 1) throw 'Invalid number of channels, not 1';
-		return {
-			sampleRate: readInt(24, 4),
-			bitsPerSample: readInt(34, 2),
-			samples: wav.subarray(44)
-		};
-	}
+            while (bytes) {
+                ret += wav[i] << shft;
+                shft += 8;
+                i++;
+                bytes--;
+            }
+            return ret;
+        }
+        if (readInt(20, 2) !== 1) throw 'Invalid compression code, not PCM';
+        if (readInt(22, 2) !== 1) throw 'Invalid number of channels, not 1';
+        return {
+            sampleRate: readInt(24, 4),
+            bitsPerSample: readInt(34, 2),
+            samples: wav.subarray(44)
+        };
+    }
 
-	function Uint8ArrayToFloat32Array(u8a){
-		var f32Buffer = new Float32Array(u8a.length);
-		for (var i = 0; i < u8a.length; i++) {
-			var value = u8a[i<<1] + (u8a[(i<<1)+1]<<8);
-			if (value >= 0x8000) value |= ~0x7FFF;
-			f32Buffer[i] = value / 0x8000;
-		}
-		return f32Buffer;
-	}
-	
-	function uploadAudio(mp3Data){
-		var reader = new FileReader();
-		reader.onload = function(event){
+    function Uint8ArrayToFloat32Array(u8a){
+        var f32Buffer = new Float32Array(u8a.length);
+        for (var i = 0; i < u8a.length; i++) {
+            var value = u8a[i<<1] + (u8a[(i<<1)+1]<<8);
+            if (value >= 0x8000) value |= ~0x7FFF;
+            f32Buffer[i] = value / 0x8000;
+        }
+        return f32Buffer;
+    }
+    
+    function uploadAudio(mp3Data){
+        var reader = new FileReader();
+        reader.onload = function(event){
             if (_dialog_open === false) {
                 return;
             }
@@ -658,22 +667,22 @@ init();
                 return;
             }
 
-			var fd = new FormData();
-			var mp3Name = encodeURIComponent('audio_recording_' + new Date().getTime() + '.mp3');
-			//console.log("mp3name = " + mp3Name);
-			//fd.append('fname', mp3Name);
-			//fd.append('file', event.target.result);
+            var fd = new FormData();
+            var mp3Name = encodeURIComponent('audio_recording_' + new Date().getTime() + '.mp3');
+            //console.log("mp3name = " + mp3Name);
+            //fd.append('fname', mp3Name);
+            //fd.append('file', event.target.result);
                         //console.log(event.target.result);
                         
                         //$("#fname").val(mp3Name);
                         //$("#file").val(event.target.result);
             //$.ajax({
-			//	type: 'POST',
-			//	url: _upload_url,
-			//	data: fd,
-			//	processData: false,
-			//	contentType: false
-			//});
+            //  type: 'POST',
+            //  url: _upload_url,
+            //  data: fd,
+            //  processData: false,
+            //  contentType: false
+            //});
             
             var _div = $("<div />")
                     .css("display", "none")
@@ -718,16 +727,16 @@ init();
             });
             
             _iframe.appendTo(_div);
-		};      
-		reader.readAsDataURL(mp3Data);
-	}
-	
+        };      
+        reader.readAsDataURL(mp3Data);
+    }
+    
     source.connect(this.node);
     this.node.connect(this.context.destination);    //this should not be necessary
   };
   
   /*Recorder.forceDownload = function(blob, filename){
-	console.log("Force download");
+    console.log("Force download");
     var url = (window.URL || window.webkitURL).createObjectURL(blob);
     var link = window.document.createElement('a');
     link.href = url;
