@@ -65,7 +65,7 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                 .removeClass("recording")
                 .removeClass("wait");
 
-            _panel.find(".dashboard").hide();
+            _panel.find(".dashboard, .download, wait_message").hide();
             _panel.find(".download").empty();
         },
         contents: [{
@@ -81,7 +81,7 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
     + '  <button class="record_button" style="cursor: pointer;width: 128px;height: 128px;background-color: transparent;cursor: pointer;margin-bottom: 5px;">'
     + '     <img src="' + CKEDITOR.getUrl('plugins/recordmp3js/images/mic128.png') + '" style="width: 100%;height: auto;"/>'
     + '  </button>'
-    + '<div class="dashboard" style="display:none;text-align:center;">'
+    + '  <div class="dashboard" style="display:none;text-align:center;">'
     + '      <span class="label remain">' + editor.lang.recorded + '</span>'
     + '      <span class="recorded_secs">0</span>'
     + '      <span class="label sec">' + editor.lang.sec + '</span>'
