@@ -258,17 +258,29 @@ List_note_component.prototype.set_note = function (_note, _callback) {
 	//	this._note_container.append(_note);
 	//}
     this._note_container.html(_note);
+        
+    /**
+     * 在跟以下元件操作時，不開啟檢視畫面
+     * @author 20140907 Pulipuli Chen
+     */
+    //$.test_msg("有找到audio標籤嗎？", this._note_container.find("audio").length);
+//    this._note_container.find("audio").click(function (_e) {
+//        //$.test_msg("點選了 audio 標籤"); 
+//        //_e.preventDefault();
+//        //return false;
+//        //return true;
+//    });
     
-	var _this = this;
-        _this.adjust_note();
+    var _this = this;
+    _this.adjust_note();
 		
     if (true) {
-		setTimeout(function () {
+        setTimeout(function () {
             _this.adjust_note(function () {
                 $.trigger_callback(_callback);
             });
         }, 200);
-	}
+    }
 		
     
     return this;

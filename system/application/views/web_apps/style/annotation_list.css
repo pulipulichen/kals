@@ -51,14 +51,11 @@
  */
 .KALS.annotation-tool .list-item {
     background-color: white;
-    
     padding-top: 5px;
     padding-bottom: 5px;
-	padding: 5px;
+    padding: 5px;
     clear: both;
-	
-	cursor: pointer;
-	
+    /*cursor: pointer;*/
 }
 
 .KALS .list-item-topic {
@@ -87,6 +84,7 @@
  */
 .KALS .list-header-component {
     padding: 5px 0 !important;
+    cursor: pointer;
 }
 
 .KALS .list-header-component .respond-indicator {
@@ -267,11 +265,10 @@
 }
 
 
-/*
 .KALS .list-menu-tooltip .list-timestamp-component {
-    display: block;
+    /*display: block;*/
+    cursor: pointer;
 }
-*/
 
 .KALS .list-menu .list-menu-option,
 .KALS .list-menu-option {
