@@ -310,7 +310,7 @@ Note_editor_manager.prototype.reset = function () {
         this._active_editor.reset();
     }
     
-    $.test_msg('Note_editor_managr.reset()', "收到了重置的動作");
+    //$.test_msg('Note_editor_managr.reset()', "收到了重置的動作");
     //this.set_text('');
     
     //var _ui = this.get_ui('textarea');

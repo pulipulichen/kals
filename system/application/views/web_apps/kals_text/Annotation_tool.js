@@ -480,6 +480,10 @@ Annotation_tool.prototype.close = function (_callback) {
         }, 300);
     };
     
+    /**
+     * 關閉Annotation_tool的時候，檢查是否有note，如果有note則遞交。
+     * @author 20140907 Pulipuli
+     */
     if (_note === null) {
         _close_action();
     }
