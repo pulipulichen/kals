@@ -264,12 +264,14 @@ List_note_component.prototype.set_note = function (_note, _callback) {
      * @author 20140907 Pulipuli Chen
      */
     //$.test_msg("有找到audio標籤嗎？", this._note_container.find("audio").length);
-//    this._note_container.find("audio").click(function (_e) {
-//        //$.test_msg("點選了 audio 標籤"); 
-//        //_e.preventDefault();
-//        //return false;
-//        //return true;
-//    });
+    this._note_container.find(".prevent-default, audio, video").click(function (_e) {
+        $.test_msg("點選了 audio 標籤"); 
+        //_e.preventDefault();
+        _e.stopPropagation(); // do something
+        //return false;
+        //return false;
+        //return true;
+    });
     
     var _this = this;
     _this.adjust_note();
