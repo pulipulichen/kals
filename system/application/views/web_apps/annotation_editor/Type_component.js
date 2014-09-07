@@ -349,9 +349,15 @@ Type_component.prototype._listen_editor = function () {
         return;
     }
     
-    this._editor.add_listener('reset', function () {
-        _this.reset_type();
-    });
+    /**
+     * @author Pulipuli 20140907
+     * 選項是否要重置，改用參數化設定
+     */
+    if (KALS_CONFIG.annotation_editor.annotation_type_reset_enable === true) {
+        this._editor.add_listener('reset', function () {
+            _this.reset_type();
+        });
+    }
     
     this._editor.add_listener('set', function (_editor, _param) {
         _this.set_data(_param);

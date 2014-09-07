@@ -94,12 +94,12 @@ Note_editor.prototype.set_text = function (_text) {
     //$.test_msg('Note_editor.set_text() setted text', [_text, _setted_text]);
     
     if ($.is_null(_text)) {
-		_text = '';
-	}
+        _text = '';
+    }
     
-    if (_text == _setted_text) {
-		return this;
-	}
+    if (_text === _setted_text) {
+        return this;
+    }
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);
@@ -111,7 +111,7 @@ Note_editor.prototype.set_text = function (_text) {
 
 Note_editor.prototype.reset = function () {
     //var _ui = this.get_ui('.note-editor-textarea:first');
-    //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);
+    //$.test_msg('Note_editor.reset()');
     
     this.set_text('');
     return this;

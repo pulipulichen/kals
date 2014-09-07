@@ -37,7 +37,7 @@
 
 .KALS.annotation-tool .annotation-tool-header {
     text-align:right;
-    cursor: crosshair;
+    cursor: move;
     height: 20px;
     font-size: small;
     

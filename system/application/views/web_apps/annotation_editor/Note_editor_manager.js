@@ -119,8 +119,9 @@ Note_editor_manager.prototype.set_text = function (_text) {
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor))
+    if ($.isset(this._active_editor)) {
         this._active_editor.set_text(_text);
+    }
     return this;
 };
 
@@ -132,8 +133,9 @@ Note_editor_manager.prototype._get_editor_list = function () {
     {
         var _editor_name = this._type_mapping[_i];
         
-        if ($.inArray(_editor_name, _list) == -1)
+        if ($.inArray(_editor_name, _list) === -1) {
             _list.push(_editor_name);
+        }
     }
     
     //$.test_msg('Note_editor._get_editor_list', _list);
@@ -288,8 +290,11 @@ Note_editor_manager.prototype._listen_editor = function () {
     });
 };
 
-
-
+/**
+ * 重置文字編輯器
+ * @author 20140907 Pulipuli Chen
+ * @returns {Note_editor_manager.prototype}
+ */
 Note_editor_manager.prototype.reset = function () {
     
     /*
@@ -302,10 +307,10 @@ Note_editor_manager.prototype.reset = function () {
     }
     */
     if ($.isset(this._active_editor)) {
-		this._active_editor.reset();
-	}
+        this._active_editor.reset();
+    }
     
-    //$.test_msg('Note_editor_managr.reset()');
+    $.test_msg('Note_editor_managr.reset()', "收到了重置的動作");
     //this.set_text('');
     
     //var _ui = this.get_ui('textarea');

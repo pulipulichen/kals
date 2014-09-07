@@ -367,13 +367,15 @@ Annotation_editor.prototype.submit = function (_callback) {
     };
     
     this.toggle_loading(true, function () {
-        
-        //2010.10.25 測試時使用，略過伺服器的步驟
-        //_submit_callback(_annotation_param);
-        
-        //return;
-        //$.test_msg("------------------------- 預備submit annotation ---------------------");
-        KALS_util.ajax_post(_get_config);
+        if (KALS_CONFIG.annotation_editor.create_annotation_mock === true) {
+            //2010.10.25 測試時使用，略過伺服器的步驟
+            _submit_callback(_annotation_param);
+            return;
+        }
+        else {
+            //$.test_msg("------------------------- 預備submit annotation ---------------------");
+            KALS_util.ajax_post(_get_config);
+        }
     });
     
     _submit_final_callback();
@@ -455,11 +457,17 @@ Annotation_editor.prototype._create_callback = function (_annotation_param, _cal
             _message
         );
 		
-        // @20131115 Pulipuli Chen
-        // 不使用編輯模式，改用新增模式
-        //this.set_editing(_annotation_param);
-
-        //this.reset();
+        if (KALS_CONFIG.annotation_editor.mode_after_create_annotation === "edit") {
+            // @20131115 Pulipuli Chen
+            // 不使用編輯模式，改用新增模式
+            this.set_editing(_annotation_param);
+        }
+        else if (KALS_CONFIG.annotation_editor.mode_after_create_annotation === "create") {
+            // @20140907 Pulipuli Chen
+            // 什麼時候被關掉的呢？
+            this.reset();
+        }
+        
     }
     else {
         _notify_lang = new KALS_language_param(

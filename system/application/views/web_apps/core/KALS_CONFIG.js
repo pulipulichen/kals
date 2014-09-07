@@ -337,6 +337,38 @@ DEFAULT_KALS_CONFIG = {
             allow_html_tags: ["a", "img", "iframe"]
         }
     },
+    /**
+     * 編輯器的相關設定
+     */
+    annotation_editor: {
+        /**
+         * 新增標註之後，是否要變成編輯模式？
+         * 
+         * "edit": 編輯模式
+         * "create": 新增模式
+         * @relation Annotation_editor.js
+         * @type String
+         */
+        mode_after_create_annotation: "create",
+        /**
+         * 是否實際遞交資料給伺服器
+         * 
+         * false: 真的遞交，正常運作應該選擇此項
+         * true: 假的遞交，測試時使用
+         * @type Boolean
+         */
+        create_annotation_mock: false,
+        /**
+         * 新增模式時，是否要重置標註類型？
+         * 
+         * false: 不重置標註類型
+         * true: 重置標註類型
+         * @relation Type_component.js
+         * @type Boolean
+         */
+        annotation_type_reset_enable: false,
+        
+    },
     
     // --------------------------
     // KALS framework
