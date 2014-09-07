@@ -205,11 +205,14 @@ Annotation_editor.prototype.get_data = function () {
         //在create模式底下，要加入標註範圍的資料
         //var _select = KALS_text.selection.select;
         //_annotation_param.scope = _select.get_scope_coll();
+        _annotation_param.scope = [];
         var _select_scope_data = this.get_select_scope_data();
-        _annotation_param.scope = _select_scope_data.scope;
-        
-        _annotation_param.feature_location = _select_scope_data.feature_location;
-        _annotation_param.feature_recommend_scope = _select_scope_data.feature_recommend_scope;
+        if (_select_scope_data !== null 
+                && typeof(_select_scope_data.scope) !== "undefined") {
+            _annotation_param.scope = _select_scope_data.scope;
+            _annotation_param.feature_location = _select_scope_data.feature_location;
+            _annotation_param.feature_recommend_scope = _select_scope_data.feature_recommend_scope;
+        }
         //_annotation_param.anchor_text = _select.get_anchor_text();        
     }
     

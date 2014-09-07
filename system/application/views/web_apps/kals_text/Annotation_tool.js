@@ -145,6 +145,12 @@ Annotation_tool.prototype._$create_ui = function () {
     this._setup_recommend();
     this._setup_recommend_hint();
     
+    /**
+     * @author 20140907 Pulipuli
+     * 註冊事件，點選文字其他地方關閉時才遞交
+     */
+    this._listen_submit();
+    
     return _ui;
 };
 
@@ -455,14 +461,18 @@ Annotation_tool.prototype._scroll_into_enable = true;
  */
 Annotation_tool.prototype.close = function (_callback) {
     
-    var _param = this.get_annotation_param();
-    var _note = _param.note;
     //$.test_msg("Annotation_tool close", [_param.note, (_note === ""), (_note === null)]);
     
     var _this = this;
     
     var _close_action = function (_overlay_close_action) {
         _this.list.reset();
+        
+        /**
+         * @author Pulipuli 20140907
+         * 關閉時，也把編輯器reset
+         */
+        //_this.editor_container.reset();
         //KALS_modal.prototype.close.call(this, _callback);
 
         var _ui = _this.get_ui();
@@ -482,36 +492,45 @@ Annotation_tool.prototype.close = function (_callback) {
     
     /**
      * 關閉Annotation_tool的時候，檢查是否有note，如果有note則遞交。
+     * @deprecated 20140907 不應該從這裡判斷
      * @author 20140907 Pulipuli
      */
-    if (_note === null) {
-        _close_action();
-    }
-    else {
-//        var _heading_lang = new KALS_language_param(
-//                "Your annotation is not saved.",
-//                "annotation_tool.close_confirm.annotation_not_save.heading"
-//                );
-//        var _body_lang = new KALS_language_param(
-//                "You have not save this annotation. Do you want to save it?",
-//                "annotation_tool.close_confirm.annotation_not_save.body"
-//                );
-//        
-//        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _overlay_close_action) {
-//            //return;
-//            if (_result === true) {
-//                $.test_msg("儲存資料", _this._close_lock);
-//                //_this.submit_annotation(function () {
-//                    _close_action(_overlay_close_action);
-//                //});
-//            }
-//            else {
-//                _close_action(_overlay_close_action);
-//            }
-//        });
-        _close_action();
-        _this.submit_annotation();
-    }
+//    var _param = this.get_annotation_param();
+//    var _note = _param.note;
+//    if (_note === null) {
+//        _close_action();
+//    }
+//    else {
+////        var _heading_lang = new KALS_language_param(
+////                "Your annotation is not saved.",
+////                "annotation_tool.close_confirm.annotation_not_save.heading"
+////                );
+////        var _body_lang = new KALS_language_param(
+////                "You have not save this annotation. Do you want to save it?",
+////                "annotation_tool.close_confirm.annotation_not_save.body"
+////                );
+////        
+////        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _overlay_close_action) {
+////            //return;
+////            if (_result === true) {
+////                $.test_msg("儲存資料", _this._close_lock);
+////                //_this.submit_annotation(function () {
+////                    _close_action(_overlay_close_action);
+////                //});
+////            }
+////            else {
+////                _close_action(_overlay_close_action);
+////            }
+////        });
+//        _close_action();
+//        _this.submit_annotation();
+//    }
+    
+    /**
+     * 直接關閉訊息
+     * @author 20140907 Pulipuli
+     */
+    _close_action();
     
     return this;
 };
@@ -780,6 +799,26 @@ Annotation_tool.prototype.check_editing = function () {
     }
     return this;
     
+};
+
+/**
+ * 註冊KALS_text，當點選時則進行啟動
+ * @author 20140907 Pulipuli
+ * @returns {Annotation_tool.prototype}
+ */
+Annotation_tool.prototype._listen_submit = function () {
+    var _this = this;
+    this._text.click(function () {
+        //if (_this.is_opened() === false) {
+        //    return;
+        //}
+        
+        var _note = _this.get_annotation_param().note;
+        if (_note !== null && typeof(_note) === "string") {
+            _this.submit_annotation();
+        }
+    });
+    return this;
 };
 
 /* End of file Annotation_tool */
