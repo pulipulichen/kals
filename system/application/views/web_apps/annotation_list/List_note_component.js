@@ -265,7 +265,7 @@ List_note_component.prototype.set_note = function (_note, _callback) {
      */
     //$.test_msg("有找到audio標籤嗎？", this._note_container.find("audio").length);
     this._note_container.find(".prevent-default, audio, video").click(function (_e) {
-        $.test_msg("點選了 audio 標籤"); 
+        //$.test_msg("點選了 audio 標籤"); 
         //_e.preventDefault();
         _e.stopPropagation(); // do something
         //return false;
