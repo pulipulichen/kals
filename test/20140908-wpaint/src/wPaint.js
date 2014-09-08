@@ -32,7 +32,7 @@
       // for the tempCanvas we will be setting some extra attributes but don't won't matter
       // as they will be reset on mousedown anyway.
       function createCanvas(name) {
-        var newName = (name ? name.capitalize() : ''),
+        var newName = (name && typeof(name.capitalize) === "function" ? name.capitalize() : ''),
             canvasName = 'canvas' + newName,
             ctxName = 'ctx' + newName;
 
