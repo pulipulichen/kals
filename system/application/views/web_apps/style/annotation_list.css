@@ -423,8 +423,20 @@
     display: none;
 }
 
-.KALS .list-note-component audio {
+/*.KALS .list-note-component audio {
     max-width: 100%;
+}*/
+
+.KALS .list-note-component.simple audio,
+.KALS .list-note-component.simple video,
+.KALS .list-note-component.simple iframe,
+.KALS .list-note-component.simple img {
+    max-width: 100%;
+    display: block;
+}
+
+.KALS .list-note-component img {
+    height: auto;
 }
 
 /**

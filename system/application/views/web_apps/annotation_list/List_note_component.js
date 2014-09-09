@@ -322,36 +322,45 @@ List_note_component.prototype.extract_abstract = function (_note) {
 		
 		var _abstract = null;
 		
-		// 先選出有影片的
+		// 先選出有影片、圖片、聲音
 		if (_abstract === null) {
-			var _video = _result.find('object, iframe').eq(0);
-			if (_video.length > 0) {
-				_abstract = _video;
-			}
+                    
+                    var _media = _result.find('object, iframe, img, audio').eq(0);
+                    if (_media.length > 0) {
+                        _abstract = $("<span />")
+                                .append(_media);
+                    }
 		}
 		
 		// 再選出圖片
-		if (_abstract === null) {
-			var _img = _result.find('img').eq(0);
-            if (_img.length > 0) {
-                _abstract = _img;
-            }
-		}
+//		if (_abstract === null) {
+//                    var _img = _result.find('img').eq(0);
+//                    if (_img.length > 0) {
+//                        _abstract = _img;
+//                    }
+//		}
 		
 		// 如果沒有只好選出文字
-		if (_abstract === null) {
-            var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
-			var _foot_part = this._simple_max_length - _head_part;
-			 
-			_abstract =  _plain_text.substr(0, _head_part)
-			     + '...'
-				 + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
-				 
-			_abstract = $('<span>' + _abstract + '</span>');
-        }
+		//if (_abstract === null) {
+                    var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
+                    var _foot_part = this._simple_max_length - _head_part;
+
+                    var _abstract_text =  _plain_text.substr(0, _head_part)
+                         + '...'
+                             + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
+                    _abstract_text = $('<span>' + _abstract_text + '</span>');
+
+                    if (_abstract === null) {
+                        //$.test_msg("abstract text", _abstract_text);
+                        _abstract = _abstract_text;
+                    }
+                    else {
+                        _abstract.append(_abstract_text);
+                    }
+                //}
 		
 		if (_abstract !== null) {
-			_result = _abstract;
+                    _result = _abstract;
 		}
 		
 		var _view = this._create_view_thread(_plain_text.length);
