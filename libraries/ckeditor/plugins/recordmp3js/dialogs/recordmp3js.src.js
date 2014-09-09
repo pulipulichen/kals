@@ -182,10 +182,10 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                                     _btn.click();
                                     //console.log(_editor_lang);
                                     
-                                    if (_dialog_btn.hasClass("recording") === false) {
-                                        _dialog_btn.html(_editor_lang.stop_record);
-                                        _dialog_btn.addClass("recording");
-                                    }
+                                    //if (_dialog_btn.hasClass("recording") === false) {
+                                        //_dialog_btn.html(_editor_lang.stop_record);
+                                    //    _dialog_btn.addClass("recording");
+                                    //}
                                     //else {
                                     //    _dialog_btn.removeClass("recording");
                                     //    _dialog_btn.addClass("waiting");
@@ -292,6 +292,10 @@ var startRecording = function (button) {
     __log('Recording...');
     //updateAnalysers();
     RECORDING = true;
+
+    var _dialog_btn = $(".cke_dialog_ui_button_ok.record_dialog_button span");
+    _dialog_btn.html(_editor_lang.stop_record);
+    _dialog_btn.addClass("recording");
 };
 
 var stopRecording = function (button) {

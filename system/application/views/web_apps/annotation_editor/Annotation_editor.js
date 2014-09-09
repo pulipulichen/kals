@@ -447,7 +447,14 @@ Annotation_editor.prototype._create_callback = function (_annotation_param, _cal
             if (_message.length > 10) {
                 _message = _message.substr(0,10) + "...";
             }
-            _message = "(" + _message + ")"; 
+            
+            _message = $.trim(_message);
+            if (_message !== "") {
+                _message = "(" + _message + ")"; 
+            }
+            else {
+                _message = "#" + _annotation_param.annotation_id;
+            }
         }
         else if (_message === null) {
             _message = "#" + _annotation_param.annotation_id;

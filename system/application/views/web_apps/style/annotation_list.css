@@ -423,6 +423,10 @@
     display: none;
 }
 
+.KALS .list-note-component audio {
+    max-width: 100%;
+}
+
 /**
  * @section Respond_list_collection
  */
