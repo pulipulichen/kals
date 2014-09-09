@@ -67,6 +67,11 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
 
             _panel.find(".dashboard, .download, wait_message").hide();
             _panel.find(".download").empty();
+
+            var _dialog_btn = $(".cke_dialog_ui_button_ok.record_dialog_button span");
+            _dialog_btn.removeClass("recording")
+                .removeClass("waiting")
+                .html(_editor_lang.record);
         },
         contents: [{
                 // 可以使用的功能 http://docs.ckeditor.com/#!/api/CKEDITOR.dialog.definition.uiElement
@@ -152,7 +157,60 @@ CKEDITOR.dialog.add('recordmp3js',function(editor){
                 }
             ]
         }
-    ]
+    ],
+                    buttons: [
+                        //CKEDITOR.dialog.okButton,
+                        {
+                           id: 'record_button',
+                           type: 'button',
+                           label: editor.lang.record,
+                           title: editor.lang.record,
+                           class:'cke_dialog_ui_button_ok record_dialog_button',
+                           accessKey: 'R',
+                           disabled: false,
+                           onClick: function()
+                           {
+                                var _link = $('.recordmp3js_audio_link input').val();
+                                //console.log(_link);
+                                var _dialog_btn = $(".cke_dialog_ui_button_ok.record_dialog_button span");
+                                if (_dialog_btn.hasClass("waiting")) {
+                                    return;
+                                }
+                                else if (_link === undefined || _link === "") {
+                                    var _panel = $("[role=\"dialog\"] .recorder-panel");
+                                    var _btn = _panel.find(".record_button");
+                                    _btn.click();
+                                    //console.log(_editor_lang);
+                                    
+                                    if (_dialog_btn.hasClass("recording") === false) {
+                                        _dialog_btn.html(_editor_lang.stop_record);
+                                        _dialog_btn.addClass("recording");
+                                    }
+                                    //else {
+                                    //    _dialog_btn.removeClass("recording");
+                                    //    _dialog_btn.addClass("waiting");
+                                    //    _dialog_btn.html(_editor_lang.waiting);
+                                    //}
+                                    
+
+                                    //_dialog_btn.css("border", "4px solid red");
+
+                                    //console.log(_dialog_btn.length);
+
+                                    //this.innerHTML = editor.lang.stop_record;
+                                    //
+                                    
+                                    //<audio controls="" src=""></audio>
+                                }
+                                else {
+                                    _link = '<audio controls="play" src="' + _link + '"></audio>';
+                                    editor.insertHtml(_link);
+                                    CKEDITOR.dialog.getCurrent().hide()
+                                }
+                           }
+                        },
+                        CKEDITOR.dialog.cancelButton,
+                     ]
     };  //return {
 }); //CKEDITOR.dialog.add('recordmp3js',function(editor){
 
@@ -258,6 +316,11 @@ var stopRecording = function (button) {
 
     var _panel = $("[role=\"dialog\"] .recorder-panel");
     _panel.find(".wait_message").show();
+
+
+    var _dialog_btn = $(".cke_dialog_ui_button_ok.record_dialog_button span");
+    _dialog_btn.addClass("waiting")
+        .html(_editor_lang.waiting);
 }
 
 var completeAction = function (_result) {
@@ -599,7 +662,10 @@ init();
                         //.empty()
                         .append(au)
                         .append(hf);
-                                
+                
+                var _dialog_btn = $(".cke_dialog_ui_button_ok.record_dialog_button span");
+                _dialog_btn.removeClass("waiting")
+                    .html(_editor_lang.insert);
                 
             }
         };

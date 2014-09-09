@@ -2,12 +2,13 @@
 //-------------------------------
 
     var images = [
-          '/test/uploads/wPaint.png',
-        ];
+        '/test/uploads/wPaint.png',
+    ];
 
         function saveImg(image) {
           var _this = this;
-
+          console.log(image);
+          return;
           $.ajax({
             type: 'POST',
             url: '/test/upload.php',
@@ -57,7 +58,9 @@
           saveImg: saveImg,
           loadImgBg: loadImgBg,
           loadImgFg: loadImgFg,
-          path: "http://localhost/kals/test/20140908-wpaint/"
+          path: "http://localhost/kals/test/20140908-wpaint/",
+          menuHandle: false,
+          imageStretch: true
         });
         
 //-------------------------------
