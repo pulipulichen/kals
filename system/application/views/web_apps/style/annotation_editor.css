@@ -234,6 +234,7 @@
 
 .KALS.kals-modal .annotation-editor .submit-container {
     display: block;
+    text-align: center;
 }
 
 .KALS.kals-modal .annotation-editor .submit-container .edit,
@@ -735,6 +736,10 @@ table.cke_editor.inline-table {
 	font-size: small;
 	text-align:left;
 	padding: 0 1em !important; 
+}
+
+.KALS.kals-modal .editor-tool tr td .annotation-type-hint {
+        padding: 0 1em !important; 
 }
 
 .KALS .container-td .annotation-editor table tbody tr{
