@@ -264,7 +264,7 @@ List_note_component.prototype.set_note = function (_note, _callback) {
      * @author 20140907 Pulipuli Chen
      */
     //$.test_msg("有找到audio標籤嗎？", this._note_container.find("audio").length);
-    this._note_container.find(".prevent-default, audio, video").click(function (_e) {
+    this._note_container.find(".prevent-default, audio, video, a, img").click(function (_e) {
         //$.test_msg("點選了 audio 標籤"); 
         //_e.preventDefault();
         _e.stopPropagation(); // do something
@@ -274,15 +274,17 @@ List_note_component.prototype.set_note = function (_note, _callback) {
     });
     
     var _this = this;
-    _this.adjust_note();
+    _this.adjust_note(function () {
+        $.trigger_callback(_callback);
+    });
 		
-    if (true) {
-        setTimeout(function () {
-            _this.adjust_note(function () {
-                $.trigger_callback(_callback);
-            });
-        }, 200);
-    }
+    //if (true) {
+    //    setTimeout(function () {
+    //        _this.adjust_note(function () {
+    //            $.trigger_callback(_callback);
+    //        });
+    //    }, 200);
+    //}
 		
     
     return this;
@@ -438,7 +440,6 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
 	
 	});
 	*/
-     
     // 幫超連結加上target=_blank
     _result.find('a, img').each(function (_index, _a) {
 		
@@ -515,7 +516,8 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
 	//var _safe_margin = 25;
 	//_max_width = _max_width - _safe_margin;
     // 縮小筆記內的資料
-    _result.find('img, iframe, object, embed').each(function (_index, _ele) {
+    //_result.find('img, iframe, object, embed').each(function (_index, _ele) {
+    _result.find('iframe, object, embed').each(function (_index, _ele) {
         _ele = $(_ele);
         //_ele.css('border', '1px solid red');
         var _width = _ele.width();

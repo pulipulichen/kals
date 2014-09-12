@@ -285,7 +285,6 @@ DEFAULT_KALS_CONFIG = {
         autoGrow_maxHeight: false,
         autoGrow_maxWidth: false,
         extraPlugins: 'kals_maximize,youtube,recordmp3js',
-        //filebrowserUploadUrl: 'http://localhost/kals/libraries/ckeditor/test.html',
         toolbar: [
 			//最大化的時候顯示的工具列
             ['Maximize','Source','Preview','-'],
@@ -314,12 +313,12 @@ DEFAULT_KALS_CONFIG = {
              * 上傳檔案的位置
              * @type String
              */
-            upload_url: "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/upload",
+            upload_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/upload",
             /**
              * 取得網址的位置
              * @type String
              */
-            get_link_url: "http://pc-pudding.dlll.nccu.edu.tw/php-file-host/get_link",
+            get_link_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link",
             /**
              * 錄音檔案的限制
              * 最多60秒
@@ -661,12 +660,12 @@ DEFAULT_KALS_CONFIG = {
              * 上傳的網址
              * @type String
              */
-            upload_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/upload",
+            upload_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/upload",
             /**
              * 取得檔案網址的網址
              * @type String
              */
-            get_link_url: "http://pc-pudding-2013.dlll.nccu.edu.tw/php-file-host/get_link"
+            get_link_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link"
         }
     }
 };

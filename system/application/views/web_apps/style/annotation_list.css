@@ -436,7 +436,8 @@
 }
 
 .KALS .list-note-component img {
-    height: auto;
+    height: auto !important;
+    max-width: 100% !important;
 }
 
 /**
