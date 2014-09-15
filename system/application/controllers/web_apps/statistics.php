@@ -71,8 +71,8 @@ class Statistics extends Web_apps_controller {
             $data =  array(
                 "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
                 //"responded_count" => 5,
-                "responded_user_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
-                "respond_to_user_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
+                "responded_users_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
+                "respond_to_users_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
             );
         }
         // 將資料再放進user屬性中

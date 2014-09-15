@@ -698,8 +698,8 @@ Context_user.prototype.get_responded_annotation_count = function () {
  *
  *  @returns {Int}
  */
-Context_user.prototype.set_responded_user_count = function (_count) {
-    return this.set_attr("responded_user_count", _count);
+Context_user.prototype.set_responded_users_count = function (_count) {
+    return this.set_attr("responded_users_count", _count);
 };
 
 /**
@@ -707,8 +707,8 @@ Context_user.prototype.set_responded_user_count = function (_count) {
  * 
  *   @returns {Int}
  */
-Context_user.prototype.get_responded_user_count = function () {
-    return this.get_attr("responded_user_count", 0);
+Context_user.prototype.get_responded_users_count = function () {
+    return this.get_attr("responded_users_count", 0);
 };
 
 /**
@@ -716,8 +716,8 @@ Context_user.prototype.get_responded_user_count = function () {
  *
  *  @returns {Int}
  */
-Context_user.prototype.set_respond_to_user_count = function (_count) {
-    return this.set_attr("respond_to_user_count", _count);
+Context_user.prototype.set_respond_to_users_count = function (_count) {
+    return this.set_attr("respond_to_users_count", _count);
 };
 
 /**
@@ -725,8 +725,8 @@ Context_user.prototype.set_respond_to_user_count = function (_count) {
  * 
  *   @returns {Int}
  */
-Context_user.prototype.get_respond_to_user_count = function () {
-    return this.get_attr("respond_to_user_count", 0);
+Context_user.prototype.get_respond_to_users_count = function () {
+    return this.get_attr("respond_to_users_count", 0);
 };
 
 // ------------------------------

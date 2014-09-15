@@ -35,20 +35,25 @@ $lang["statistic_topic_annotation_summary_count"] = "主題摘要標註";
 
 $lang["statistic_responded_annotation_count"] = "被回覆標註";
 $lang["statistic_respond_to_annotation_count"] = "回覆標註";
-$lang["statistic_responded_user_count"] = "被回覆人數";
-$lang["statistic_respond_to_user_count"] = "回覆人數";
+$lang["statistic_responded_users_count"] = "有多少人回覆我";
+$lang["statistic_respond_to_users_count"] = "我回覆了幾個人";
 
 $lang["annotation_counts"] = "標註數量";
 $lang["stamp_geted"] = "已獲得獎章";
 $lang["stamp_not_get"] = "未獲得獎章";
-$lang["king_list"] = "國王名單";
+$lang["stamp_list"] = "階級排行名單";
 
 
 $lang["qualified_heading"] = "您已經獲得的獎章";
 $lang["qualification_heading"] = "獲得其他獎章的方法";
 $lang["qualification_subheading"] = "透過以下方式獲得獎章，有助於您讀起來更順利喔！";
-$lang["king_list_heading"] = "現在已經是國王了";
-        
+
+$lang["stamp_list_heading"] = "你現在在哪個階級呢？";
+$lang["stamp_list_king"] = "已經成為國王";  
+$lang["stamp_list_queen"] = "已經成為皇后"; 
+$lang["stamp_list_bishop"] = "已經成為主教"; 
+$lang["stamp_list_knight"] = "已經成為騎士"; 
+$lang["stamp_list_soldier"] = "已經成為士兵"; 
 
 
 

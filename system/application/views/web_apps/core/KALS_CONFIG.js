@@ -666,6 +666,11 @@ DEFAULT_KALS_CONFIG = {
                     "qualifier": {                
                     }, //qualifier
                     /**
+                     * 設定是否呈現名單
+                     */
+                    "set_list":false,
+                    
+                    /**
                      * 權限設定
                      * @types {JSON}
                      */
@@ -722,6 +727,11 @@ DEFAULT_KALS_CONFIG = {
                             }
                         }                      
                     }, //qualifier
+                     /**
+                     * 設定是否呈現名單
+                     */
+                    "set_list":false,
+                    
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -781,7 +791,11 @@ DEFAULT_KALS_CONFIG = {
                             } */ 
                         }
                     },
-                   
+                     /**
+                     * 設定是否呈現名單
+                     */
+                    "set_list":false,
+                    
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -836,6 +850,10 @@ DEFAULT_KALS_CONFIG = {
                             count:2  
                         }
                     },
+                    /**
+                     * 設定是否呈現名單
+                     */
+                    "set_list":false,                    
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -899,6 +917,10 @@ DEFAULT_KALS_CONFIG = {
                             count:3
                         }
                     },
+                    /**
+                     * 設定是否呈現名單
+                     */
+                    "set_list":true,                    
                     /**
                      * 權限設定
                      * @types {JSON}

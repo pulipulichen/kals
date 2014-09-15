@@ -281,6 +281,7 @@ KALS_stamp.prototype._$onopen = function () {
     this.set_stamp_statistic();
     this.set_stamp_qualified();
     this.set_stamp_qualification();
+    this.get_stamp_list();
     KALS_context.user.load_user_params();
     return this;
 };
@@ -382,9 +383,9 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
         //回應別人的數量
         "statistic_respond_to_annotation_count":KALS_context.user.get_respond_to_other_annotation_count(),
         //被回應的人數
-        "statistic_responded_user_count":KALS_context.user.get_respond_to_my_annotation_count(),
+        "statistic_responded_users_count":KALS_context.user.get_responded_users_count(),
         //回應的人數
-        "statistic_respond_to_user_count":KALS_context.user.get_respond_to_my_annotation_count(),
+        "statistic_respond_to_users_count":KALS_context.user.get_respond_to_users_count()
 
     };
     
@@ -504,6 +505,58 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
 };
 
 /**
+ * 設定顯示階級名單
+ * @return array
+ */
+KALS_stamp.prototype.get_stamp_list = function() { 
+    var _stamp_data = this._init_config();
+    // 要改成每個階級都要顯示！
+    for (var _i in _stamp_data) {
+        //if (_stamp_data[_i].set_list === true){
+            // 從kals_config取得現在要呈現哪個階級的名單
+            //var _list_config = _stamp_data[_i].name; //name = 國王      
+             //KALS_util.notify("是國王嗎" + _list_config);
+             //this.request_post("open", {data:"aaa"});
+             /*this.request_post("open", {data:"aaa"}, function() {
+        
+             }); */            
+        //}
+    }
+    var _data = {
+        stamp: "士兵"
+    };
+    this.request_post("get_stamps_list", _data, function( $user_list){
+        $.test_msg("get_stamps_list", $user_list);
+        for ( var _k in $user_list)
+        {
+            $.test_msg("USER = ", $user_list[_k] );
+        }
+    });
+    //把要搜尋的條件交給search去做，不在這裡直接寫
+    //var _list = _search_stamp(_list_config);
+
+    //對應到class名為stamps-list的區塊show出資訊
+    var _list_container = this.find('.stamps-list')//.text("try!! <b>OK?</b>");
+
+
+    
+   //$.test_msg("是國王嗎", _i);
+   //KALS_util.notify("是國王嗎" + _i);
+
+
+   return this;
+};
+/**
+ * 搜尋指定條件的名單列表
+ * @return ?
+ */
+KALS_stamp.prototype._search_stamp = function( _stamp ) {
+    
+    
+    
+} 
+
+/**
  * ====================
  * 獎章資格設定
  * ====================
@@ -603,7 +656,7 @@ KALS_stamp.prototype.check_qualification = function(_user) {
         // 檢查qualifier中的所有條件
         for (var _key in _qualifier) {
             var _config = _qualifier[_key];
-            //ALS_util.notify("_KEY =" + _key); //KEY有哪些
+            //KALS_util.notify("_KEY =" + _key); //KEY有哪些
             //------第一項---------------------------------
             if (_key === "topic_annotation_count") {
                 

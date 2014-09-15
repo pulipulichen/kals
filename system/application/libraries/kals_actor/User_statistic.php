@@ -171,8 +171,7 @@ class User_statistic extends KALS_actor {
         // 要加入未刪除的限制啊！
         $this->db->where('topic.deleted', 'false');
         $this->db->where('respond.deleted', 'false');
-        
-        
+
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
@@ -198,7 +197,8 @@ class User_statistic extends KALS_actor {
         }
         $user_id = $user->get_id();
         
-        $this->db->distinct('respond.user_id');
+        //$this->db->distinct('respond.user_id');
+        $this->db->select('respond.user_id');
         $this->db->from('annotation respond');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = respond.annotation_id');
         $this->db->join('annotation topic', 'respond.topic_id = topic.annotation_id');
@@ -210,12 +210,15 @@ class User_statistic extends KALS_actor {
         // 要加入未刪除的限制啊！
         $this->db->where('topic.deleted', 'false');
         $this->db->where('respond.deleted', 'false');
-        
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
+        
+        $this->db->group_by('respond.user_id');
+        
         $query = $this->db->get();
         $count = $query->num_rows();
+        //test_msg("count",$count);
         return $count;        
     }
  
@@ -323,7 +326,8 @@ class User_statistic extends KALS_actor {
         $user_id = $user->get_id();
         
         //--------
-        $this->db->distinct('respond_to.user_id');
+        //$this->db->distinct('respond_to.user_id');
+        $this->db->select('respond_to.user_id');
         $this->db->from('annotation my_res');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = my_res.annotation_id');
         $this->db->join('annotation respond_to', 'my_res.topic_id = respond_to.annotation_id');
@@ -339,6 +343,8 @@ class User_statistic extends KALS_actor {
         if ($annotation_type !== NULL) {
             $this->db->where('my_res.annotation_type_id', $type_id);
         }
+        $this->db->group_by('respond_to.user_id');
+       
         $query = $this->db->get();
         $respond_user = array();
         foreach ($query->result() as $row) {
