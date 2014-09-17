@@ -296,13 +296,13 @@ KALS_stamp.prototype.change_tab = function (_btn){
     for(var _i in _types){
         var _type = _types[_i];
         var _type_id = _type.get_id();
-        $.test_msg("type_id=", _type_id);      
+        //$.test_msg("type_id=", _type_id);      
     }
    //----------
     this.find(".tab-button").removeAttr("style");
 
    //KALS_util.notify("test",this.find("list-button-counts"));
-    $.test_msg("change_tab", [typeof(_btn.attr), _btn.parent().length]);
+    //$.test_msg("change_tab", [typeof(_btn.attr), _btn.parent().length]);
    //取出btn-name屬性的值   
     var _tab_name = _btn.attr("tab_name");
 
@@ -511,18 +511,24 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
 KALS_stamp.prototype.get_stamp_list = function() { 
     var _stamp_data = this._init_config();
     // 要改成每個階級都要顯示！
-    for (var _i in _stamp_data) {
+    //for (var _i in _stamp_data) {
         //if (_stamp_data[_i].set_list === true){
             // 從kals_config取得現在要呈現哪個階級的名單
-            //var _list_config = _stamp_data[_i].name; //name = 國王      
-             //KALS_util.notify("是國王嗎" + _list_config);
-             //this.request_post("open", {data:"aaa"});
-             /*this.request_post("open", {data:"aaa"}, function() {
-        
-             }); */            
+            //var _data = _stamp_data; //name = 國王 
+            //KALS_util.notify("是國王嗎" + _stamp_data[_i].name); 
+            //$.test_msg("stamp_name = ", _stamp_data[_i].name);
+            this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
+                $.test_msg("get_stamps_list", _stamp_result);
+                for ( var _k in _stamp_result){
+                 $.test_msg("USER1 = "+ _stamp_result[_k].user_id );
+                 $.test_msg("NAME1 = "+ _stamp_result[_k].name );
+                }
+            });
+          
         //}
-    }
-    var _data = {
+    //}
+   //--------
+    /*var _data = {
         stamp: "士兵"
     };
     this.request_post("get_stamps_list", _data, function( $user_list){
@@ -531,7 +537,7 @@ KALS_stamp.prototype.get_stamp_list = function() {
         {
             $.test_msg("USER = ", $user_list[_k] );
         }
-    });
+    });*/
     //把要搜尋的條件交給search去做，不在這裡直接寫
     //var _list = _search_stamp(_list_config);
 

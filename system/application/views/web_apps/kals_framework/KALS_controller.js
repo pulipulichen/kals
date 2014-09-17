@@ -170,6 +170,12 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         _data = {};
     }
     
+    if (typeof(_data) !== "object" || $.is_array(_data) === true) {
+        _data = {
+            "_data": _data
+        };
+    }
+    
     if (this._enable_controller_flag === false) {
         //this.debug('request', 'enable flag is false');
         $.trigger_callback(_callback);

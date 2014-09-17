@@ -41,37 +41,88 @@ class KALS_stamp extends KALS_model {
      * 一樣是以關聯式陣列組成
      * 取得各階級的USER 名單
      */
-    public function get_stamps_list($data) {
+    public function get_stamps_list($stamps) {
+        
+        //$stamps = $stamps["stamps"];
+        //var_dump($stamps);
         
         // -----------------------
-        // 取得現在的網頁ID
+        // 取得現在的網頁ID, user_id
         $webpage = $this->get_current_webpage();
         $webpage_id = $webpage->get_id();
+        $user = $this->get_current_user();
+        $user_id = $user->get_id();
         //return array("id"=>$webpage_id);
         //$webpage_id = 1573
         //------------------------
         //依條件查詢stamp_user_list
-        switch ($data["stamp"]) {
-            case "士兵":
-                $query = $this->db->select('annotation.user_id')
-                    ->from('annotation')
-                    ->join('webpage2annotation', 'annotation.annotation_id = webpage2annotation.annotation_id')
-                    ->where('webpage_id', $webpage_id)
-                    ->where('annotation.topic_id', NULL)
-                    ->where('annotation.deleted', 'false')
-                    ->group_by('annotation.user_id')
-                    ->having('count(annotation.annotation_id) > 3')
-                    ->get();
-                $user_list = array();
-                foreach ($query->result() as $row) {
-                    $user_list[] = $row->user_id;
-                }            
-                return $user_list;
-                break;
-
-            default:
-                break;
-        }
+        $qualifier_tables = array();
+       //-假資料----
+        $qualifier_rules = array(
+                    "topic_annotation_count" => array( 
+                        "_total" => array(
+                            "count" => "2"
+                        )
+                    ) 
+         );
+        //-----------------
+        $stamps_result = array();
+        $i = 0;
+        foreach ($stamps AS $stamp ){
+            
+            $qualifier = $stamp["qualifier"];
+            var_dump($qualifier);
+            
+            // 查詢
+            $result = array(
+                111,222,333
+            );
+      
+            $name = $stamp["name"];
+            //$name = $stamp->$i->name;
+            $stamps_result[] = array(
+                "name" => $name,
+                "user_id" => $result
+            );
+            //$stamp_name[] = $stamp->name;
+            test_msg("i = ",$i);
+            test_msg("name = ",$name);
+            test_msg("result = ",$result);
+            $i++;
+        };
+        
+        return $stamps_result;
+            
+        //----------------------
+               
+               
+                
+                
+              /*  foreach ($qualifier_rules AS $type => $rule) {
+                    if ($type === "topic_annotation_count") {
+                        $table = "SELECT ....";
+                        array_push($qualifier_tables, $table);
+                    }
+                    else if ($type === "...?") {
+                        $table = "SELECT ....";
+                        array_push($qualifier_tables, $table);
+                    }
+                }
+                
+                // --------------------
+                
+                $this->db->select('table_01.user_id')->from("user");
+                
+                foreach ($qualifier_tables AS $table) {
+                    $this->db->join($table);
+                }
+                
+                $query = $this->db->get();*/
+                
+                // ---------------------
+                
+               
+        
     }
 }
 

@@ -467,7 +467,7 @@ DEFAULT_KALS_CONFIG = {
          * 設定檔案為 [VIEW]/helpers/KALS_util.js
          * @type Boolean
          */
-        ajax_post: false, 
+        ajax_post: true, 
         
         /**
          * 取消載入KALS_context的後續動作
@@ -641,7 +641,7 @@ DEFAULT_KALS_CONFIG = {
                  * 獎章稱號
                  * @types {String}
                  */
-                 {  // 第0階
+               {  // 第0階
                     "name": "士兵",
                     "is_qualified": true,
                     /**
@@ -723,7 +723,7 @@ DEFAULT_KALS_CONFIG = {
                         //}
                         topic_annotation_count: {
                             "_total": {
-                                count:3
+                                count:2
                             }
                         }                      
                     }, //qualifier
@@ -770,26 +770,29 @@ DEFAULT_KALS_CONFIG = {
                     "qualifier": {
                         topic_annotation_count: {
                             "_total":{
-                              count:10  
+                              count:8  
                             },
                             "我知道": {
-                              count:5
+                              count:3
                             },
                              "我不懂": {
-                              count:3
+                              count:2
                             }
                             /*"example": {
                               count:0,
                             }, */                     
                         },
-                       respond_annotation_count: {
-                           /* "_respond_total":{
+                        respond_to_user_count: {                  
+                              count:3  
+                        }
+                       /*respond_annotation_count: {
+                            "_respond_total":{
                               count:3 
                             }
                             "confusion": {
                               count:3
-                            } */ 
-                        }
+                            }  
+                        }*/
                     },
                      /**
                      * 設定是否呈現名單
@@ -837,10 +840,10 @@ DEFAULT_KALS_CONFIG = {
                               count:15  
                             },*/
                             "新知識": {
-                              count:5
+                              count:3
                             },
                             "補充舉例": {
-                              count:5
+                              count:3
                             }                      
                         },
                         respond_to_user_count: {                  
@@ -896,19 +899,19 @@ DEFAULT_KALS_CONFIG = {
                            //   count:20  
                            //},
                              "我想說": {
-                              count:6
+                              count:4
                             },
                             "很奇怪": {
-                              count:3
+                              count:2
                             }                     
                         },
                         respond_annotation_count: {
                             //"_respond_total":{
-                              count:20  
+                             // count:11  
                             //}
                         },
                         respond_to_user_count: {                  
-                              count:12 
+                              count:11 
                         },
                         responded_user_count: {
                             count:3  

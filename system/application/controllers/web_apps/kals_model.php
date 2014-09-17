@@ -187,7 +187,12 @@ class KALS_model extends Web_apps_controller {
         if (isset($data['_action'])) {
             $action = $data['_action'];
             if (method_exists($this, $action)) {
-                $data = $this->$action($data);
+                
+                $data_to_action = $data;
+                if (isset($data["_data"])) {
+                    $data_to_action = $data["_data"];
+                }
+                $data = $this->$action($data_to_action);
                 
                 $data = $this->_object_export($data);
             }
@@ -258,7 +263,6 @@ class KALS_model extends Web_apps_controller {
     // ---------------
     // 處理資料的方式
     // ---------------
-    
     private function _object_export($data) {
         
         if (is_array($data)) {
