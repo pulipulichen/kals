@@ -58,44 +58,30 @@ class KALS_stamp extends KALS_model {
         //依條件查詢stamp_user_list
         $qualifier_tables = array();
        //-假資料----
-        $qualifier_rules = array(
+       /* $qualifier_rules = array(
                     "topic_annotation_count" => array( 
                         "_total" => array(
                             "count" => "2"
                         )
                     ) 
-         );
+         );*/
         //-----------------
         $stamps_result = array();
-        $i = 0;
         foreach ($stamps AS $stamp ){
             
             $qualifier = $stamp["qualifier"];
-            var_dump($qualifier);
+            var_dump($qualifier); //show qualifer data
+            
             
             // 查詢
-            $result = array(
-                111,222,333
-            );
-      
-            $name = $stamp["name"];
-            //$name = $stamp->$i->name;
-            $stamps_result[] = array(
-                "name" => $name,
-                "user_id" => $result
-            );
-            //$stamp_name[] = $stamp->name;
-            test_msg("i = ",$i);
-            test_msg("name = ",$name);
-            test_msg("result = ",$result);
-            $i++;
-        };
-        
-        return $stamps_result;
-            
-        //----------------------
-               
-               
+            foreach ($qualifier AS $type => $rule){
+                test_msg("key = ",$type);
+                test_msg("value = ",$rule);
+                //if($type === ""){
+                    
+                    
+               // };
+            }  
                 
                 
               /*  foreach ($qualifier_rules AS $type => $rule) {
@@ -119,7 +105,27 @@ class KALS_stamp extends KALS_model {
                 
                 $query = $this->db->get();*/
                 
-                // ---------------------
+                // ---------------------            
+            //---------
+            $result = array(
+                111,222,333
+            );
+      
+            $name = $stamp["name"];
+            $stamps_result[] = array(
+                "name" => $name,
+                "user_id" => $result
+            );
+            //$stamp_name[] = $stamp->name;
+            test_msg("name = ",$name);
+            test_msg("result = ",$result);
+        };
+        
+        return $stamps_result;
+            
+        //----------------------
+               
+
                 
                
         
