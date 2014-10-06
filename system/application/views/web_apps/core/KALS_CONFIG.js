@@ -467,7 +467,7 @@ DEFAULT_KALS_CONFIG = {
          * 設定檔案為 [VIEW]/helpers/KALS_util.js
          * @type Boolean
          */
-        ajax_post: true, 
+        ajax_post: false, 
         
         /**
          * 取消載入KALS_context的後續動作
@@ -642,7 +642,7 @@ DEFAULT_KALS_CONFIG = {
                  * @types {String}
                  */
                {  // 第0階
-                    "name": "士兵",
+                    "name": "soldier",
                     "is_qualified": true,
                     /**
                      * 如何獲得獎章的訊息
@@ -663,7 +663,12 @@ DEFAULT_KALS_CONFIG = {
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {                
+                    "qualifier": {   
+                        topic_annotation_count: {
+                            "_total": {
+                                count:0
+                            }
+                        }
                     }, //qualifier
                     /**
                      * 設定是否呈現名單
@@ -692,7 +697,7 @@ DEFAULT_KALS_CONFIG = {
                  * @types {String}
                  */
                  {  // 第一階
-                    "name": "騎士",
+                    "name": "knight",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
@@ -746,7 +751,7 @@ DEFAULT_KALS_CONFIG = {
                     }
                 }, // 第一階OVER
                 {  // 第二階
-                    "name": "主教",
+                    "name": "bishop",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
@@ -783,7 +788,7 @@ DEFAULT_KALS_CONFIG = {
                             }, */                     
                         },
                         respond_to_user_count: {                  
-                              count:3  
+                              count:1  
                         }
                        /*respond_annotation_count: {
                             "_respond_total":{
@@ -813,7 +818,7 @@ DEFAULT_KALS_CONFIG = {
                     }
                 }, // 第二階OVER
                 {  // 第三階
-                    "name": "皇后",
+                    "name": "queen",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
@@ -847,10 +852,10 @@ DEFAULT_KALS_CONFIG = {
                             }                      
                         },
                         respond_to_user_count: {                  
-                              count:6  
+                              count:5  
                         },
                         responded_user_count: {
-                            count:2  
+                            count:1  
                         }
                     },
                     /**
@@ -871,7 +876,7 @@ DEFAULT_KALS_CONFIG = {
                     }
                 }, //第三階over
                 {  // 第四階
-                    "name": "國王",
+                    "name": "king",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
@@ -911,13 +916,13 @@ DEFAULT_KALS_CONFIG = {
                             //}
                         },
                         respond_to_user_count: {                  
-                              count:11 
+                              count:8
                         },
                         responded_user_count: {
-                            count:3  
+                            count:2  
                         },
                         liked_count:{
-                            count:3
+                            count:2
                         }
                     },
                     /**

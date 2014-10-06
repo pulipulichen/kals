@@ -17,6 +17,7 @@
          target="_blank">
           Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> 
       <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
+	  
 </ul>
 <hr />
 <h2>設定說明 (兼簡單的展示頁面)</h2>
@@ -36,6 +37,7 @@
   <li><a href="config_web_search.html">設定網頁搜尋</a></li> 
   <li><a href="config_annotation_navigation_map.html">設定標註地圖</a></li> 
   <li><a href="config_windows_map.html">設定章節地圖</a></li> 
+  <li> <a href="config_walking.html">獎章功能展示(暫時)</a></li>
 </ul>
 
 <hr />

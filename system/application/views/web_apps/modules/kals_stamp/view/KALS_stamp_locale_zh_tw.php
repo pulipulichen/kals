@@ -48,12 +48,12 @@ $lang["qualified_heading"] = "您已經獲得的獎章";
 $lang["qualification_heading"] = "獲得其他獎章的方法";
 $lang["qualification_subheading"] = "透過以下方式獲得獎章，有助於您讀起來更順利喔！";
 
-$lang["stamp_list_heading"] = "你現在在哪個階級呢？";
-$lang["stamp_list_king"] = "已經成為國王";  
-$lang["stamp_list_queen"] = "已經成為皇后"; 
-$lang["stamp_list_bishop"] = "已經成為主教"; 
-$lang["stamp_list_knight"] = "已經成為騎士"; 
-$lang["stamp_list_soldier"] = "已經成為士兵"; 
+$lang["stamp_list_heading"] = "大家都在哪個階級呢？";
+$lang["king"] = "國王";  
+$lang["queen"] = "皇后"; 
+$lang["bishop"] = "主教"; 
+$lang["knight"] = "騎士"; 
+$lang["soldier"] = "士兵"; 
 
 
 

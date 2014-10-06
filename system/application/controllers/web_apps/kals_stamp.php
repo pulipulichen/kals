@@ -50,6 +50,7 @@ class KALS_stamp extends KALS_model {
         // 取得現在的網頁ID, user_id
         $webpage = $this->get_current_webpage();
         $webpage_id = $webpage->get_id();
+        //test_msg('web_id = ', $webpage_id);
         $user = $this->get_current_user();
         $user_id = $user->get_id();
         //return array("id"=>$webpage_id);
@@ -57,77 +58,104 @@ class KALS_stamp extends KALS_model {
         //------------------------
         //依條件查詢stamp_user_list
         $qualifier_tables = array();
-       //-假資料----
-       /* $qualifier_rules = array(
-                    "topic_annotation_count" => array( 
-                        "_total" => array(
-                            "count" => "2"
-                        )
-                    ) 
-         );*/
-        //-----------------
         $stamps_result = array();
         foreach ($stamps AS $stamp ){
             
             $qualifier = $stamp["qualifier"];
-            var_dump($qualifier); //show qualifer data
-            
-            
+            //var_dump($qualifier); //show qualifer data
+            //------------------------          
             // 查詢
             foreach ($qualifier AS $type => $rule){
                 test_msg("key = ",$type);
                 test_msg("value = ",$rule);
-                //if($type === ""){
+                //  type類型
+                if($type === "topic_annotation_count"){
+                    //查詢的條件要全部都判斷出來！
+                    foreach ($rule AS $rule_type => $rule_value ){
+                        // 取到最底層的count值
+                        //test_msg("rule_type = ",$rule_type);
+                        //test_msg("rule_value =", $rule_value["count"] ); 
+                        $rule_count = $rule_value["count"];
+                        //條件值取出後開始查詢
+                        $table = 'SELECT annotation.user_id
+FROM annotation JOIN webpage2annotation ON ( annotation.annotation_id = webpage2annotation.annotation_id )
+WHERE webpage_id = '.$webpage_id.' AND annotation.topic_id IS NULL AND annotation.deleted = false
+GROUP BY annotation.user_id
+HAVING COUNT(annotation.annotation_id) >'.$rule_count;
+                       
+                        //把查出來的表(array)塞到另一個arry中
+                        array_push($qualifier_tables, $table); 
+                        
+                   }
+                }//if($type === "topic_annotation_count"){
+                // 回應多少人
+                 else if ($type === "respond_to_user_count") {
+                     $respond_to_user_count = $rule["count"];
+                     $table = 'SELECT respond_to.user_id
+FROM user_respond_to_count AS respond_to JOIN webpage ON (webpage.webpage_id = respond_to.webpage_id)
+WHERE respond_to.webpage_id = '.$webpage_id.' AND respond_to.count > '.$respond_to_user_count;
+                     
+                     //test_msg("user_count =", $user_count );
+                         array_push($qualifier_tables, $table);                            
+                } //elseif($type === "respond_to_user_count"){
+                
+                else if( $type === "responded_user_count"){
+                    $responded_user_count = $rule["count"];
+                    //test_msg("responded_user_count =", $rule["count"] ); 
+                    $table = 'SELECT responded.user_id
+FROM user_responded_count AS responded JOIN webpage ON (webpage.webpage_id = responded.webpage_id)
+WHERE responded.webpage_id = '.$webpage_id.'AND responded.count > '.$responded_user_count;
+                   
+                         array_push($qualifier_tables, $table);             
+                }//else if( $type === "responded_user_count"){
+                
+                else if ($type === "liked_count") {
+                    $liked_count = $rule["count"];
+                    $table = 'SELECT annotation.user_id
+FROM annotation JOIN annotation2like_count ON ( annotation.annotation_id = annotation2like_count.annotation_id) JOIN webpage2annotation ON (annotation.annotation_id = webpage2annotation.annotation_id)
+WHERE webpage_id = '.$webpage_id.'AND like_count >'.$liked_count; 
+                    array_push($qualifier_tables, $table);
                     
-                    
-               // };
-            }  
+                }//else if ($type === "liked_count") {
                 
-                
-              /*  foreach ($qualifier_rules AS $type => $rule) {
-                    if ($type === "topic_annotation_count") {
-                        $table = "SELECT ....";
-                        array_push($qualifier_tables, $table);
-                    }
-                    else if ($type === "...?") {
-                        $table = "SELECT ....";
-                        array_push($qualifier_tables, $table);
-                    }
-                }
-                
-                // --------------------
-                
-                $this->db->select('table_01.user_id')->from("user");
-                
-                foreach ($qualifier_tables AS $table) {
-                    $this->db->join($table);
-                }
-                
-                $query = $this->db->get();*/
-                
-                // ---------------------            
-            //---------
-            $result = array(
-                111,222,333
-            );
-      
-            $name = $stamp["name"];
+            }  //foreach ($qualifier AS $type => $rule){
+            // 把所有條件查好的表合併，找出都符合條件的user_id    
+            $this->db->select('user.user_id, user.name')
+                    ->from("user");    
+            //var_dump($qualifier_tables); //show qualifer data
+            foreach ($qualifier_tables AS $key => $table) {
+                $cond = 'user.user_id = T'.$key.'.user_id';
+                $this->db->join('('.$table.' ) AS "T'.$key.'"' , $cond);
+                //test_msg("table = ",$cond);
+            }
+            $query = $this->db->get();
+            //test_msg("table = ",$query);
+           // var_dump($query);
+            /*foreach ($query->result() as $row){ 
+                    echo $row->user_id;
+                    echo '+';
+                    echo $row->name;  
+                    echo '||';
+            }   */       
+            //------------
+            //把資料塞進要回傳的ARRAY中
+            $user_name = array();
+            foreach ($query->result() as $key=>$row){ 
+                $user_name[$key] = $row->name;
+            }
+            $stamp_name = $stamp["name"]; //stamp name
             $stamps_result[] = array(
-                "name" => $name,
-                "user_id" => $result
+                "stamp_name" => $stamp_name,
+                "user_name" => $user_name // user name
             );
-            //$stamp_name[] = $stamp->name;
-            test_msg("name = ",$name);
-            test_msg("result = ",$result);
-        };
+            test_msg("stamp_name = ",$stamp_name);
+            test_msg("user_name = ",$user_name);
+            
+        } //foreach ($stamps AS $stamp )
+        
+        $stamps_result = array_reverse($stamps_result);    
         
         return $stamps_result;
-            
-        //----------------------
-               
-
-                
-               
         
     }
 }

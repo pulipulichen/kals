@@ -511,43 +511,35 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
 KALS_stamp.prototype.get_stamp_list = function() { 
     var _stamp_data = this._init_config();
     // 要改成每個階級都要顯示！
-    //for (var _i in _stamp_data) {
-        //if (_stamp_data[_i].set_list === true){
-            // 從kals_config取得現在要呈現哪個階級的名單
-            //var _data = _stamp_data; //name = 國王 
-            //KALS_util.notify("是國王嗎" + _stamp_data[_i].name); 
-            //$.test_msg("stamp_name = ", _stamp_data[_i].name);
-            this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
-                $.test_msg("get_stamps_list", _stamp_result);
-                for ( var _k in _stamp_result){
-                 $.test_msg("USER1 = "+ _stamp_result[_k].user_id );
-                 $.test_msg("NAME1 = "+ _stamp_result[_k].name );
-                }
-            });
-          
-        //}
-    //}
-   //--------
-    /*var _data = {
-        stamp: "士兵"
-    };
-    this.request_post("get_stamps_list", _data, function( $user_list){
-        $.test_msg("get_stamps_list", $user_list);
-        for ( var _k in $user_list)
-        {
-            $.test_msg("USER = ", $user_list[_k] );
+    var _this = this;
+    
+    var _list_container = this.find('.stamps-list').empty();
+    this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
+    //$.test_msg("get_stamps_list", _stamp_result);
+    //加入class在stamps-list的區塊畫出user
+        var _i = _stamp_result.length - 1;
+        $.test_msg("length = "+ _i);
+        for ( var _k in _stamp_result){
+            //_list_container.empty();
+            $.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
+            $.test_msg("user_name = "+ _stamp_result[_k].user_name );
+            //名稱
+            var _stamp_title = _stamp_result[_k].stamp_name ;
+            var _stamp_title_lang = _this.get_view_lang_line(_stamp_title);
+            //$.test_msg("_stamp_list_title = "+ _stamp_title_lang );
+            var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);
+            //縮圖與名單
+            var _name = _stamp_result[_k].user_name;
+            var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _i +".png", true);
+            var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'+_name+'</div><hr>').appendTo(_list_container);  
+            _i--;
         }
-    });*/
-    //把要搜尋的條件交給search去做，不在這裡直接寫
+        
+     });
+            
     //var _list = _search_stamp(_list_config);
 
-    //對應到class名為stamps-list的區塊show出資訊
-    var _list_container = this.find('.stamps-list')//.text("try!! <b>OK?</b>");
 
-
-    
-   //$.test_msg("是國王嗎", _i);
-   //KALS_util.notify("是國王嗎" + _i);
 
 
    return this;
