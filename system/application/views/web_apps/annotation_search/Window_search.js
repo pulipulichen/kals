@@ -752,6 +752,7 @@ Window_search.prototype.default_focus_input = '.dialog-content:first input:radio
 
 /**
  * 執行搜尋
+ * KALS_context.search.search({...}, false);
  * @param {JSON} _search_option 搜尋選項
  * _param = {
  *      range: "note","author","annotation_type","annotation_anchor",

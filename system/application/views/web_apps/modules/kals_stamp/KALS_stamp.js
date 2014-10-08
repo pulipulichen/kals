@@ -436,18 +436,8 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
         if( this._stamps_config[_i].is_qualified === true){
            //KALS_util.notify("現在是幾呢？"+ _i);
             var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
-            // 來試著改用TABLE吧
-			//var _title = $("<dt></dt>").html(_stamp_title_lang)
-            //        .appendTo(_qualified_container);
-
-			var _title = $("<td width=60px align=center></td>").html(_stamp_title_lang)
+            var _title = $("<td width=60px align=center></td>").html(_stamp_title_lang)
                     .appendTo(_qualified_name);					
-
-			//var _message = $("<dd></dd>").html(_qualified_message)
-            //        .appendTo(_qualified_container);
-            //var _stamp_picture = $();來加入圖片吧！
-            //var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png></>").html(_qualified_message)
-            //        .appendTo(_qualified_container);
             _i++;
         }
 		if( this._stamps_config[_k].is_qualified === true ){
@@ -518,7 +508,7 @@ KALS_stamp.prototype.get_stamp_list = function() {
     //$.test_msg("get_stamps_list", _stamp_result);
     //加入class在stamps-list的區塊畫出user
         var _i = _stamp_result.length - 1;
-        $.test_msg("length = "+ _i);
+        //$.test_msg("length = "+ _i);
         for ( var _k in _stamp_result){
             //_list_container.empty();
             $.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
@@ -527,11 +517,56 @@ KALS_stamp.prototype.get_stamp_list = function() {
             var _stamp_title = _stamp_result[_k].stamp_name ;
             var _stamp_title_lang = _this.get_view_lang_line(_stamp_title);
             //$.test_msg("_stamp_list_title = "+ _stamp_title_lang );
-            var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);
+            //var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);
             //縮圖與名單
-            var _name = _stamp_result[_k].user_name;
+            var _name_arr = _stamp_result[_k].user_name;  
             var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _i +".png", true);
-            var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'+_name+'</div><hr>').appendTo(_list_container);  
+            //for( var _index=0; _index<_stamp_result.length; _index++){
+            if( _name_arr !== null || _name_arr !== "undefined" ){
+                var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);                  
+                $.test_msg("_k",_k);
+                $.test_msg("_name_arr",_name_arr);
+                var _stamp_user_list = $('<ul class="stamps-list king-list-area list-name" style="border-bottom: 3px solid gray; padding-left: 80px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'
+                        //+ _name_arr 
+                        +'</ul>')
+                        .appendTo(_list_container);    
+                for (var _index in _name_arr){
+                    
+                    var _name_span = $('<li style=" width: 100px; cursor: pointer"/>').html(_name_arr[_index]);
+                    _name_span.appendTo(_stamp_user_list);
+                    
+                    _name_span.click(function() {
+                        //搜尋
+                        KALS_context.search.search({
+                            range: "author",
+                            keyword: $(this).html()
+                        }, false);
+                    });
+                    
+                    _name_span.addClass("list-span");
+                    
+                    _name_span.css("float","left");
+                    
+                    if (_index % 3 === 0) {
+                        _name_span.css("clear", "both");
+                    } 
+                    
+                    //
+                    //$.test_msg("_index",_index);
+                    //
+                    //$('.list-name').html(""+_name_arr[_index] +"");
+                    //var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'+_name_arr[_index]+'</div><hr>').appendTo(_list_container);    
+                    //var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat"></div><hr>').appendTo(_list_container);    
+                }     
+            }
+           // else {$.test_msg("NO USER",_name_arr)};
+            
+            //var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat"></div><hr>').appendTo(_list_container);    
+            /*var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat"></div><hr>').appendTo(_list_container);  
+            for (var _index in _name_arr){
+               $('.list-name').html(""+_name_arr[_index] +"");
+               $.test_msg("_name = ", _name_arr[_index]); 
+            }*/
             _i--;
         }
         

@@ -757,7 +757,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到主教的話請撰寫10篇標註，並試著標註5篇我知道與3篇我不懂喔！",
+                    "qualification_message": "想要達到主教的話請撰寫10篇<>標註，並試著標註5篇我知道與3篇我不懂喔！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}

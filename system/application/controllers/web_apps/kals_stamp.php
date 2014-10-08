@@ -143,6 +143,12 @@ WHERE webpage_id = '.$webpage_id.'AND like_count >'.$liked_count;
             foreach ($query->result() as $key=>$row){ 
                 $user_name[$key] = $row->name;
             }
+            
+            // 20141007 不顯示沒有名單的階級
+            if (count($user_name) === 0) {
+                continue;
+            }
+            
             $stamp_name = $stamp["name"]; //stamp name
             $stamps_result[] = array(
                 "stamp_name" => $stamp_name,
@@ -154,6 +160,11 @@ WHERE webpage_id = '.$webpage_id.'AND like_count >'.$liked_count;
         } //foreach ($stamps AS $stamp )
         
         $stamps_result = array_reverse($stamps_result);    
+        
+//        $filtered_result = array();
+//        foreach ($stamps_result AS $stamp) {
+//            $stamp_name = $stamp["stamp_name"]; //stamp name
+//        }
         
         return $stamps_result;
         
