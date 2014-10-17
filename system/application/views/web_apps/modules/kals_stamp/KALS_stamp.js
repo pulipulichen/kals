@@ -385,7 +385,11 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
         //被回應的人數
         "statistic_responded_users_count":KALS_context.user.get_responded_users_count(),
         //回應的人數
-        "statistic_respond_to_users_count":KALS_context.user.get_respond_to_users_count()
+        "statistic_respond_to_users_count":KALS_context.user.get_respond_to_users_count(),
+        //我喜愛的人數
+        "statistic_like_to_users_count":KALS_context.user.get_like_to_users_count(),
+        //有多少人喜愛我
+        "statistic_liked_users_count": KALS_context.user.get_liked_users_count()
 
     };
     
@@ -430,7 +434,7 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
     var _qualified_img = this.find(".qualified-img").empty();
 	
     var _i = 0;
-	var _k = 0;
+    var _k = 0;
     for (var _stamp_title in _qualified_config) {   
         // 取得is_qualified的值來讓後面的迴圈判斷要不要顯示圖片(取得獎章) 
         if( this._stamps_config[_i].is_qualified === true){
@@ -445,11 +449,9 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
            //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
            var _qualified_image = "<img src=/kals/images/stamp_imgs/stamp_"+ _k +".png></>";
 		   var _stamp_picture = $("<td width=60px align=center></td>").html(_qualified_image)
-		   .appendTo(_qualified_img);
-			
+		   .appendTo(_qualified_img)			
 			_k++;
-		}
-		
+		}	
     }
         
     return this;
@@ -516,16 +518,13 @@ KALS_stamp.prototype.get_stamp_list = function() {
             //名稱
             var _stamp_title = _stamp_result[_k].stamp_name ;
             var _stamp_title_lang = _this.get_view_lang_line(_stamp_title);
-            //$.test_msg("_stamp_list_title = "+ _stamp_title_lang );
-            //var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);
+
             //縮圖與名單
             var _name_arr = _stamp_result[_k].user_name;  
             var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _i +".png", true);
             //for( var _index=0; _index<_stamp_result.length; _index++){
             if( _name_arr !== null || _name_arr !== "undefined" ){
                 var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);                  
-                $.test_msg("_k",_k);
-                $.test_msg("_name_arr",_name_arr);
                 var _stamp_user_list = $('<ul class="stamps-list king-list-area list-name" style="border-bottom: 3px solid gray; padding-left: 80px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'
                         //+ _name_arr 
                         +'</ul>')
@@ -550,44 +549,14 @@ KALS_stamp.prototype.get_stamp_list = function() {
                     if (_index % 3 === 0) {
                         _name_span.css("clear", "both");
                     } 
-                    
-                    //
-                    //$.test_msg("_index",_index);
-                    //
-                    //$('.list-name').html(""+_name_arr[_index] +"");
-                    //var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'+_name_arr[_index]+'</div><hr>').appendTo(_list_container);    
-                    //var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat"></div><hr>').appendTo(_list_container);    
                 }     
             }
-           // else {$.test_msg("NO USER",_name_arr)};
-            
-            //var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat"></div><hr>').appendTo(_list_container);    
-            /*var _stamp_user_list = $('<div class="stamps-list king-list-area list-name" style="padding-left: 60px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat"></div><hr>').appendTo(_list_container);  
-            for (var _index in _name_arr){
-               $('.list-name').html(""+_name_arr[_index] +"");
-               $.test_msg("_name = ", _name_arr[_index]); 
-            }*/
             _i--;
         }
         
      });
-            
-    //var _list = _search_stamp(_list_config);
-
-
-
-
    return this;
 };
-/**
- * 搜尋指定條件的名單列表
- * @return ?
- */
-KALS_stamp.prototype._search_stamp = function( _stamp ) {
-    
-    
-    
-} 
 
 /**
  * ====================
@@ -759,6 +728,7 @@ KALS_stamp.prototype.check_qualification = function(_user) {
              }  //if (_key === "respond_annotation_count") { 
              //-------------------------------------------------------
             this._stamps_config[_i].is_qualified = _stamp_qualified;
+           // KALS_util.notify("_i.is_qualified為" + _i + this._stamps_config[_i].is_qualified);
             if (_stamp_qualified === false) {
                 break;
             }
@@ -766,7 +736,8 @@ KALS_stamp.prototype.check_qualification = function(_user) {
         
         // 獲得獎章的設定
         this._stamps_config[_i].is_qualified = _stamp_qualified;
-        //KALS_util.notify("現在到底有什麼~"+ this._stamps_config[_i].name + this._stamps_config[_i].is_qualified);
+
+       // KALS_util.notify("現在到底有什麼~"+ this._stamps_config[_i].name + this._stamps_config[_i].is_qualified);
         //---------------     
     }   //for (var _key in _qualifier) {
     
@@ -782,7 +753,16 @@ KALS_stamp.prototype.check_qualification = function(_user) {
  * 
  * @returns {KALS_stamp.prototype}
  */
+
+KALS_stamp.prototype._stamp_level = null;
+KALS_stamp.prototype._stamp_level_modified = false;
+KALS_stamp.prototype._stamp_level_up = true;
+
 KALS_stamp.prototype.qualify = function() {
+    
+    this._stamp_level_modified = false;
+    this._stamp_level_up = true;
+    
     // 設定開啟功能
     var _stamps_data = this._init_config();
     for( var _i in _stamps_data){
@@ -818,11 +798,57 @@ KALS_stamp.prototype.qualify = function() {
                 }
 
             }
-          KALS_util.notify("現在階段為"+ _stamps_data[_i].name); 
-
+          // 確認有晉升再提示訊息，提示訊息為圖+文 ->由獲得獎章來判斷 
+          //if(this._stamps_config[_i].is_qualified === false){};
+          //KALS_util.notify("現在階段為"+ _stamps_data[_i].name); 
+          /*
+          if(this._stamps_config[_i].is_notify === false) {
+                var _img = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _i +".png", true);
+                var _name = this._stamps_config[_i].name;
+                var _name_lang = this.get_view_lang_line(_name);
+                //_this.get_view_lang_line(_stamp_title);
+                KALS_util.notify("恭喜你成為"+_name_lang+ _img);
+                $.test_msg("_stamps_config.is_notify",_i+ this._stamps_config[_i].is_notify);
+                this._stamps_config[_i].is_notify = true;
+                $.test_msg("_stamps_config.is_notify_2",_i + this._stamps_config[_i].is_notify);
+                //降級的情況
+           }
+           */
+          
+           if (this._stamps_config[_i].is_qualified === true){
+               if (this._stamp_level === null) {
+                   this._stamp_level = _i;
+                   this._stamp_level_modified = true;
+                   this._stamp_level_up = true;
+               }
+               else if (_i > this._stamp_level) {
+                   this._stamp_level = _i;
+                   this._stamp_level_modified = true;
+                   this._stamp_level_up = true;
+               }
+           }
+           else if (this._stamp_level === _i && this._stamp_level > 0) {
+               this._stamp_level--;
+               this._stamp_level_modified = true;
+               this._stamp_level_up = false;
+           }
        }
-    // KALS_context.policy.set_readable(true);
+       
+        // KALS_context.policy.set_readable(true);
     }//for( var _i in _stamps_data){
+    
+    if (this._stamp_level_modified === true) {
+        var _msg;
+        if (this._stamp_level_up === true) {
+           //_msg = this._stamps_config[this._stamp_level].level_up_msg;
+        }
+        else {
+            //_msg = this._stamps_config[this._stamp_level].level_down_msg;
+        }
+        
+        KALS_util.notify(_msg);
+    }
+    
     return this;
 };
 

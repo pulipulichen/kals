@@ -731,7 +731,6 @@ Context_user.prototype.get_respond_to_users_count = function () {
 
 // ------------------------------
 // like_to_count
-
 /**
  * 設定喜愛別人的次數
  * 
@@ -798,6 +797,42 @@ Context_user.prototype.set_liked_count = function (_count) {
  */
 Context_user.prototype.get_liked_count = function () {
     return this.get_attr("liked_count", 0);
+};
+
+/**
+ * 設定我喜愛了多少人的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_like_to_users_count = function (_count) {
+    return this.set_attr("like_to_users_count", _count);
+};
+
+/**
+ * 取得我喜愛了多少人的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_like_to_users_count = function () {
+    return this.get_attr("like_to_users_count", 0);
+};
+//-----------------
+/**
+ * 設定有多少人喜愛我的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_liked_users_count = function (_count) {
+    return this.set_attr("liked_users_count", _count);
+};
+
+/**
+ * 取得我喜愛了多少人的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_liked_users_count = function () {
+    return this.get_attr("liked_users_count", 0);
 };
 
 // ---------------------------------

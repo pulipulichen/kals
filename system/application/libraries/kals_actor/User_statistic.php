@@ -416,7 +416,7 @@ class User_statistic extends KALS_actor {
      * @param Webpage $webpage
      * @param User $user 
      */
-    public function get_like_to_user_count($user, $webpage, $like_to_user) {
+    public function get_like_to_annotation_by_user_count($user, $webpage, $like_to_user) {
      // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
@@ -492,26 +492,81 @@ class User_statistic extends KALS_actor {
     }
     
     /**
-     * 取得被誰喜愛的名單
+     * 取得被誰喜愛的名單(有哪些人喜愛我)
      * 
      * @param Webpage $webpage
      * @param User $user 
-     * @todo 之後再完成
      */
-    public function get_liked_user($webpage) {
-        
-        return 0;
+    public function get_liked_users($user, $webpage) {
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //-------------------------
+        $this->db->select('user_liked.liked_user');
+        $this->db->from('user_liked');
+        $this->db->join('webpage2annotation', 'user_liked.annotation_id = 
+webpage2annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('user_liked.me', $user_id);
+        //----------
+        $this->db->distinct();
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $liked_user_array[] = $row->liked_user;
+        }
+        return $liked_user_array;       
+
     }
-        /**
+    /**
      * 取得被多少人喜愛的數量
      * 
      * @param Webpage $webpage
      * @param User $user 
-     * @todo 之後再完成
+     * 
      */
-    public function get_liked_user_count($webpage) {
-        
-        return 0;
+    public function get_liked_users_count($user, $webpage) {
+        $liked_user = $this->get_liked_users($user, $webpage);
+        $count = count($liked_user);
+        //test_msg("liked_user_count", $count);
+        return $count;             
+
+    }
+    //---------------------------------------
+    /**
+     * 取得我喜愛了哪些人的名單
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_like_to_users($user, $webpage) {
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //-------------------------
+        $this->db->select('like_to_user');
+        $this->db->from('user_like_to');
+        $this->db->join('webpage2annotation', 'user_like_to.annotation_id = 
+webpage2annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('user_like_to.me', $user_id);
+        //----------
+        $this->db->distinct();
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $like_to_user_array[] = $row->like_to_user;
+        }
+        return $like_to_user_array;    
+    }
+    /**
+     * 取得我喜愛了多少人的數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     * 
+     */
+    public function get_like_to_users_count($user, $webpage) {
+        $like_to_user = $this->get_like_to_users($user, $webpage);
+        $count = count($like_to_user);
+        return $count;             
+
     }
     
     // --------------------------------------

@@ -81,7 +81,7 @@ class KALS_stamp extends KALS_model {
 FROM annotation JOIN webpage2annotation ON ( annotation.annotation_id = webpage2annotation.annotation_id )
 WHERE webpage_id = '.$webpage_id.' AND annotation.topic_id IS NULL AND annotation.deleted = false
 GROUP BY annotation.user_id
-HAVING COUNT(annotation.annotation_id) >'.$rule_count;
+HAVING COUNT(annotation.annotation_id) >='.$rule_count;
                        
                         //把查出來的表(array)塞到另一個arry中
                         array_push($qualifier_tables, $table); 
@@ -93,32 +93,60 @@ HAVING COUNT(annotation.annotation_id) >'.$rule_count;
                      $respond_to_user_count = $rule["count"];
                      $table = 'SELECT respond_to.user_id
 FROM user_respond_to_count AS respond_to JOIN webpage ON (webpage.webpage_id = respond_to.webpage_id)
-WHERE respond_to.webpage_id = '.$webpage_id.' AND respond_to.count > '.$respond_to_user_count;
+WHERE respond_to.webpage_id = '.$webpage_id.' AND respond_to.count >= '.$respond_to_user_count;
                      
                      //test_msg("user_count =", $user_count );
                          array_push($qualifier_tables, $table);                            
                 } //elseif($type === "respond_to_user_count"){
-                
+                // 有多少人回應我
                 else if( $type === "responded_user_count"){
                     $responded_user_count = $rule["count"];
                     //test_msg("responded_user_count =", $rule["count"] ); 
                     $table = 'SELECT responded.user_id
 FROM user_responded_count AS responded JOIN webpage ON (webpage.webpage_id = responded.webpage_id)
-WHERE responded.webpage_id = '.$webpage_id.'AND responded.count > '.$responded_user_count;
+WHERE responded.webpage_id = '.$webpage_id.'AND responded.count >= '.$responded_user_count;
                    
                          array_push($qualifier_tables, $table);             
                 }//else if( $type === "responded_user_count"){
-                
-                else if ($type === "liked_count") {
+                //被喜愛的次數
+                /*else if ($type === "liked_count") {
                     $liked_count = $rule["count"];
                     $table = 'SELECT annotation.user_id
 FROM annotation JOIN annotation2like_count ON ( annotation.annotation_id = annotation2like_count.annotation_id) JOIN webpage2annotation ON (annotation.annotation_id = webpage2annotation.annotation_id)
-WHERE webpage_id = '.$webpage_id.'AND like_count >'.$liked_count; 
+WHERE webpage_id = '.$webpage_id.'AND like_count >='.$liked_count; 
                     array_push($qualifier_tables, $table);
                     
-                }//else if ($type === "liked_count") {
+                }//else if ($type === "liked_count") {*/
+                //喜愛的人數
+                else if ($type === "like_to_users_count"){
+                    $like_to_user_count = $rule["count"];
+                    $table = 'SELECT like_to.me AS user_id
+FROM (SELECT DISTINCT user_like_to.me, user_like_to.like_to_user
+FROM user_like_to JOIN webpage2annotation ON (user_like_to.annotation_id = webpage2annotation.annotation_id) 
+WHERE webpage_id = '.$webpage_id.'
+ORDER BY user_like_to.me) AS like_to
+GROUP BY like_to.me
+HAVING count(like_to.me) >='.$like_to_user_count;
+                    
+                    array_push($qualifier_tables, $table);
+                }// else if ($type === "like_to_users_count"){
+                // 被多少人喜愛的人數
+                else if ($type === "liked_users_count"){
+                    $liked_user_count = $rule["count"];
+                    $table = 'SELECT liked.me AS user_id
+FROM (SELECT DISTINCT user_liked.me, user_liked.liked_user
+FROM user_liked JOIN webpage2annotation ON (user_liked.annotation_id = webpage2annotation.annotation_id)
+WHERE webpage_id = '.$webpage_id.'
+ORDER BY user_liked.me) AS liked
+GROUP BY liked.me
+HAVING count(liked.me) >='.$liked_user_count;
+                    
+                     array_push($qualifier_tables, $table);
+                }
                 
             }  //foreach ($qualifier AS $type => $rule){
+            
+            // -----------------------------------------------------
             // 把所有條件查好的表合併，找出都符合條件的user_id    
             $this->db->select('user.user_id, user.name')
                     ->from("user");    
@@ -128,8 +156,8 @@ WHERE webpage_id = '.$webpage_id.'AND like_count >'.$liked_count;
                 $this->db->join('('.$table.' ) AS "T'.$key.'"' , $cond);
                 //test_msg("table = ",$cond);
             }
+            
             $query = $this->db->get();
-            //test_msg("table = ",$query);
            // var_dump($query);
             /*foreach ($query->result() as $row){ 
                     echo $row->user_id;

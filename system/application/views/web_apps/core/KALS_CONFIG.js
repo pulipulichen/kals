@@ -650,10 +650,15 @@ DEFAULT_KALS_CONFIG = {
                      */
                     "qualification_message": "你已經是士兵了",
                     /**
-                     * 獲得獎章時候的通知 
+                     * 獲得獎章時候的通知(升級) 
                      * @types {String}
                      */
                     "quailfy_message": "恭喜你晉升為士兵！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                    "disqualify_message": "你降級了喔~請多加油吧！",                    
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
@@ -674,7 +679,10 @@ DEFAULT_KALS_CONFIG = {
                      * 設定是否呈現名單
                      */
                     "set_list":false,
-                    
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                    "is_notify":false,    
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -703,7 +711,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升騎士的話請試著標註3篇標註！",
+                    "qualification_message": "想要晉升騎士的話請試著標註2篇標註！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -736,7 +744,10 @@ DEFAULT_KALS_CONFIG = {
                      * 設定是否呈現名單
                      */
                     "set_list":false,
-                    
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -757,7 +768,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到主教的話請撰寫10篇<>標註，並試著標註5篇我知道與3篇我不懂喔！",
+                    "qualification_message": "想要達到主教的話請撰寫8篇標註，至少試著標註3篇【我知道】、2篇【我不懂】與回應3位同學喔！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -775,7 +786,7 @@ DEFAULT_KALS_CONFIG = {
                     "qualifier": {
                         topic_annotation_count: {
                             "_total":{
-                              count:8  
+                              count:8 
                             },
                             "我知道": {
                               count:3
@@ -788,7 +799,7 @@ DEFAULT_KALS_CONFIG = {
                             }, */                     
                         },
                         respond_to_user_count: {                  
-                              count:1  
+                              count:2  
                         }
                        /*respond_annotation_count: {
                             "_respond_total":{
@@ -803,7 +814,10 @@ DEFAULT_KALS_CONFIG = {
                      * 設定是否呈現名單
                      */
                     "set_list":false,
-                    
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -818,23 +832,23 @@ DEFAULT_KALS_CONFIG = {
                     }
                 }, // 第二階OVER
                 {  // 第三階
-                    "name": "queen",
+                    "name": "castle",
                     "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升皇后的話請撰寫5篇新知識、5篇補充舉例，並試著回應6個同學的標註吧！",
+                    "qualification_message": "想要晉升城主的話請撰寫3篇【新知識】、3篇【補充舉例】，並試著回應6位同學的標註吧！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為皇后！",
+                    "quailfy_message": "恭喜你晉升為城主！",
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為皇后了！",
+                    "qualified_message": "您已經晉升為城主了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
@@ -852,16 +866,20 @@ DEFAULT_KALS_CONFIG = {
                             }                      
                         },
                         respond_to_user_count: {                  
-                              count:5  
+                              count:6  
                         },
                         responded_user_count: {
-                            count:1  
+                            count:2  
                         }
                     },
                     /**
                      * 設定是否呈現名單
                      */
-                    "set_list":false,                    
+                    "set_list":false,  
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -882,7 +900,7 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要成為國王的話請自己嘗試看看喔！",
+                    "qualification_message": "想要成為國王的話請試著標註4篇【我想說】與2篇【很奇怪】，並多多回應與喜愛別人喔~",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -916,19 +934,29 @@ DEFAULT_KALS_CONFIG = {
                             //}
                         },
                         respond_to_user_count: {                  
-                              count:8
+                              count:9
                         },
                         responded_user_count: {
-                            count:2  
+                            count:3  
                         },
-                        liked_count:{
-                            count:2
-                        }
+                        //liked_count:{
+                        //    count:2
+                        //}
+                        like_to_users_count: {
+                            count:6  
+                        }, 
+                        liked_users_count: {
+                            count:3  
+                        }, 
                     },
                     /**
                      * 設定是否呈現名單
                      */
-                    "set_list":true,                    
+                    "set_list":true,  
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
