@@ -295,7 +295,7 @@ KALS_stamp.prototype.change_tab = function (_btn){
     var _types = this.get_annotation_types();
     for(var _i in _types){
         var _type = _types[_i];
-        var _type_id = _type.get_id();
+        //var _type_id = _type.get_id();
         //$.test_msg("type_id=", _type_id);      
     }
    //----------
@@ -305,8 +305,7 @@ KALS_stamp.prototype.change_tab = function (_btn){
     //$.test_msg("change_tab", [typeof(_btn.attr), _btn.parent().length]);
    //取出btn-name屬性的值   
     var _tab_name = _btn.attr("tab_name");
-
-    
+   
     _btn.css("background", "red");   
     _btn.css("color", "white");
     $.test_msg("tab name", _tab_name);
@@ -321,8 +320,7 @@ KALS_stamp.prototype.change_tab = function (_btn){
     _tab_contents.filter("." + _tab_name).show();
     
     //var _tab = this.find("list-button-counts");
-    
-    
+   
 }
 
 
@@ -389,7 +387,11 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
         //我喜愛的人數
         "statistic_like_to_users_count":KALS_context.user.get_like_to_users_count(),
         //有多少人喜愛我
-        "statistic_liked_users_count": KALS_context.user.get_liked_users_count()
+        "statistic_liked_users_count": KALS_context.user.get_liked_users_count(),
+        //我有多少愛心
+        "statistic_liked_count": KALS_context.user.get_liked_count(),
+        //我送出去多少愛心
+        "statistic_like_to_count": KALS_context.user.get_like_to_count()
 
     };
     
@@ -507,21 +509,23 @@ KALS_stamp.prototype.get_stamp_list = function() {
     
     var _list_container = this.find('.stamps-list').empty();
     this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
-    //$.test_msg("get_stamps_list", _stamp_result);
-    //加入class在stamps-list的區塊畫出user
-        var _i = _stamp_result.length - 1;
-        //$.test_msg("length = "+ _i);
+
+        //加入class在stamps-list的區塊畫出user
+        //$.test_msg("接收stamp_result", _stamp_result);
         for ( var _k in _stamp_result){
+            $.test_msg("接收stamp_result " + _k, _stamp_result[_k]);
+            
             //_list_container.empty();
             $.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
-            $.test_msg("user_name = "+ _stamp_result[_k].user_name );
+            $.test_msg("user_name = "+ _stamp_result[_k].user_name_list );
             //名稱
             var _stamp_title = _stamp_result[_k].stamp_name ;
             var _stamp_title_lang = _this.get_view_lang_line(_stamp_title);
 
             //縮圖與名單
-            var _name_arr = _stamp_result[_k].user_name;  
-            var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _i +".png", true);
+            var _name_arr = _stamp_result[_k].user_name_list;  
+            var _stamp_name = _stamp_result[_k].stamp_name;
+            var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+_stamp_name +".png", true);
             //for( var _index=0; _index<_stamp_result.length; _index++){
             if( _name_arr !== null || _name_arr !== "undefined" ){
                 var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);                  
@@ -551,7 +555,6 @@ KALS_stamp.prototype.get_stamp_list = function() {
                     } 
                 }     
             }
-            _i--;
         }
         
      });
@@ -667,7 +670,7 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                     
                     if (_type === "_total") {
                         var _total_annotation_count = _user.get_topic_annotation_count();
-                        if ( _total_annotation_count < _type_config.count ){
+                        if ( _type_config.count > _total_annotation_count ){
                             // 不合格
                             _stamp_qualified = false;    
                             break;
@@ -684,8 +687,8 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                         var _annotation_type = new Annotation_type_param(_type);
                         var _total_annotation_count = _user.get_topic_annotation_count(_annotation_type);
                         
-                        $.test_msg(_i + "現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _total_annotation_count < _type_config.count )]);
-                        if ( _total_annotation_count < _type_config.count ){
+                        $.test_msg(_i + "現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _type_config.count > _total_annotation_count )]);
+                        if ( _type_config.count > _total_annotation_count ){
                             // 不合格
                             _stamp_qualified = false;    
                             break;
@@ -736,14 +739,11 @@ KALS_stamp.prototype.check_qualification = function(_user) {
         
         // 獲得獎章的設定
         this._stamps_config[_i].is_qualified = _stamp_qualified;
-
-       // KALS_util.notify("現在到底有什麼~"+ this._stamps_config[_i].name + this._stamps_config[_i].is_qualified);
-        //---------------     
     }   //for (var _key in _qualifier) {
     
     this.qualify();
     
-    this.open();
+    //this.open();
     
     return this;
 };
@@ -762,10 +762,10 @@ KALS_stamp.prototype.qualify = function() {
     
     this._stamp_level_modified = false;
     this._stamp_level_up = true;
-    
+    var _i;
     // 設定開啟功能
     var _stamps_data = this._init_config();
-    for( var _i in _stamps_data){
+    for( _i in _stamps_data){
         if(this._stamps_config[_i].is_qualified === true){
             var _policy = _stamps_data[_i].policy;
             // 用迴圈檢視設定policy中的權限設定
@@ -839,14 +839,20 @@ KALS_stamp.prototype.qualify = function() {
     
     if (this._stamp_level_modified === true) {
         var _msg;
+        var _img_path =  KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ this._stamps_config[this._stamp_level].name +".png", true);
+        var _img ='<img src="'+_img_path+'"/>';
         if (this._stamp_level_up === true) {
-           //_msg = this._stamps_config[this._stamp_level].level_up_msg;
+            //升級通知訊息
+           _msg = '<div style="text-align:center">'+this._stamps_config[this._stamp_level].quailfy_message +'</div>';
+           //$.test_msg("_i", _i);
         }
         else {
-            //_msg = this._stamps_config[this._stamp_level].level_down_msg;
+            //降級通知訊息
+            _msg = '<div style="text-align:center">'+this._stamps_config[this._stamp_level].disquailfy_message +'</div>';
         }
         
-        KALS_util.notify(_msg);
+        KALS_util.notify(_msg+_img);
+        this.open();
     }
     
     return this;

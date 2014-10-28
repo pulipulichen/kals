@@ -463,6 +463,29 @@ class User_statistic extends KALS_actor {
         $count = $query->num_rows(); 
         return $count;
     }
+    /**
+     * 取得我喜愛的標註數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_like_to_count($user, $webpage) {
+     // @TODO 20140512 Pulipuli Chen
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('annotation2like.annotation_id');
+        $this->db->from('annotation2like');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation2like.annotation_id');
+        $this->db->where('annotation2like.user_id', $user_id);
+        $this->db->where('webpage_id', $webpage_id);        
+        // 要加入未刪除的限制啊！
+        $this->db->where("canceled", "false");
+        
+        $query = $this->db->get();
+        $count = $query->num_rows(); 
+        return $count;
+    }
      
     /**
      * 取得被指定對象喜愛的數量

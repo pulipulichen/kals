@@ -718,6 +718,11 @@ DEFAULT_KALS_CONFIG = {
                      */
                     "quailfy_message": "恭喜你晉升為騎士！",
                     /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                    /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
@@ -774,6 +779,11 @@ DEFAULT_KALS_CONFIG = {
                      * @types {String}
                      */
                     "quailfy_message": "恭喜你晉升為主教！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                    "disqualify_message": "你降級了喔~請多加油吧！",                     
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
@@ -845,6 +855,11 @@ DEFAULT_KALS_CONFIG = {
                      */
                     "quailfy_message": "恭喜你晉升為城主！",
                     /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                    /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
@@ -865,12 +880,12 @@ DEFAULT_KALS_CONFIG = {
                               count:3
                             }                      
                         },
-                        respond_to_user_count: {                  
-                              count:6  
-                        },
-                        responded_user_count: {
-                            count:2  
-                        }
+                       // respond_to_user_count: {                  
+                       //       count:6 
+                       // },
+                      //  responded_user_count: {
+                      //      count:2  
+                      //  }
                     },
                     /**
                      * 設定是否呈現名單
@@ -906,6 +921,11 @@ DEFAULT_KALS_CONFIG = {
                      * @types {String}
                      */
                     "quailfy_message": "恭喜你晉升為國王！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                    "disqualify_message": "你降級了喔~請多加油吧！",                     
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}

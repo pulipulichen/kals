@@ -39,6 +39,8 @@ $lang["statistic_responded_users_count"] = "有多少人回覆我";
 $lang["statistic_respond_to_users_count"] = "我回覆了幾個人";
 $lang["statistic_like_to_users_count"] = "我喜愛了幾個人";
 $lang["statistic_liked_users_count"] = "有幾個人喜愛我";
+$lang["statistic_liked_count"] = "我有多少愛心";
+$lang["statistic_like_to_count"] = "我送出多少愛心";
 
 $lang["annotation_counts"] = "標註數量";
 $lang["stamp_geted"] = "已獲得獎章";

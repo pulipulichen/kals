@@ -66,15 +66,15 @@ class KALS_stamp extends KALS_model {
             //------------------------          
             // 查詢
             foreach ($qualifier AS $type => $rule){
-                test_msg("key = ",$type);
-                test_msg("value = ",$rule);
+                //test_msg("key = ",$type);
+                //test_msg("value = ",$rule);
                 //  type類型
                 if($type === "topic_annotation_count"){
                     //查詢的條件要全部都判斷出來！
                     foreach ($rule AS $rule_type => $rule_value ){
                         // 取到最底層的count值
-                        //test_msg("rule_type = ",$rule_type);
-                        //test_msg("rule_value =", $rule_value["count"] ); 
+                        test_msg("rule_type = ",$rule_type);
+                        test_msg("rule_value =", $rule_value["count"] ); 
                         $rule_count = $rule_value["count"];
                         //條件值取出後開始查詢
                         $table = 'SELECT annotation.user_id
@@ -109,14 +109,25 @@ WHERE responded.webpage_id = '.$webpage_id.'AND responded.count >= '.$responded_
                          array_push($qualifier_tables, $table);             
                 }//else if( $type === "responded_user_count"){
                 //被喜愛的次數
-                /*else if ($type === "liked_count") {
+                else if ($type === "liked_count") {
                     $liked_count = $rule["count"];
                     $table = 'SELECT annotation.user_id
 FROM annotation JOIN annotation2like_count ON ( annotation.annotation_id = annotation2like_count.annotation_id) JOIN webpage2annotation ON (annotation.annotation_id = webpage2annotation.annotation_id)
 WHERE webpage_id = '.$webpage_id.'AND like_count >='.$liked_count; 
                     array_push($qualifier_tables, $table);
                     
-                }//else if ($type === "liked_count") {*/
+                }//else if ($type === "liked_count") {
+                //喜愛的次數
+                else if ($type === "like_count"){
+                    $like_count = $rule["count"];
+                    $table = 'SELECT annotation2like.user_id
+FROM annotation2like JOIN webpage2annotation ON (annotation2like.annotation_id = webpage2annotation.annotation_id)
+WHERE webpage_id = '.$webpage_id.'
+AND annotation2like.canceled = false
+GROUP BY annotation2like.user_id
+HAVING count(user_id) >='.$like_count; 
+                    array_push($qualifier_tables, $table);
+                }//else if ($type === "like_count"){
                 //喜愛的人數
                 else if ($type === "like_to_users_count"){
                     $like_to_user_count = $rule["count"];
@@ -167,35 +178,59 @@ HAVING count(liked.me) >='.$liked_user_count;
             }   */       
             //------------
             //把資料塞進要回傳的ARRAY中
-            $user_name = array();
+            $user_name_list = array();
             foreach ($query->result() as $key=>$row){ 
-                $user_name[$key] = $row->name;
+                $user_name_list[$key] = $row->name;
             }
             
             // 20141007 不顯示沒有名單的階級
-            if (count($user_name) === 0) {
+            if (count($user_name_list) === 0) {
                 continue;
             }
             
             $stamp_name = $stamp["name"]; //stamp name
             $stamps_result[] = array(
                 "stamp_name" => $stamp_name,
-                "user_name" => $user_name // user name
-            );
-            test_msg("stamp_name = ",$stamp_name);
-            test_msg("user_name = ",$user_name);
-            
+                "user_name_list" => $user_name_list // user name
+            );                 
         } //foreach ($stamps AS $stamp )
-        
+        // 反轉陣列順序
         $stamps_result = array_reverse($stamps_result);    
         
-//        $filtered_result = array();
-//        foreach ($stamps_result AS $stamp) {
-//            $stamp_name = $stamp["stamp_name"]; //stamp name
-//        }
+        //20141015 將階級名單中重複的對象刪除
+        $stamps_result2 = array();
+        $added_user_list = array();
         
-        return $stamps_result;
+        foreach ($stamps_result AS $value){ //$stamp1_list
+            
+            $new_user_name_list = array();
+            
+            $user_name_list = $value['user_name_list'];
+            $stamp_name = $value['stamp_name'];
+
+            foreach($user_name_list AS $user_name){             
+                //var_dump($username);
+                if (in_array($user_name, $added_user_list) === FALSE) {
+                    $added_user_list[] = $user_name;
+                    $new_user_name_list[] = $user_name;
+                    //test_msg("user_name " . $user_name, $added_user_list); 
+                }
+            } 
+            
+            if (count($new_user_name_list) > 0) {
+                //test_msg("new user name list", $new_user_name_list);
+                $stamps_result2[] = array(
+                    "stamp_name" => $stamp_name,
+                    "user_name_list" => $new_user_name_list
+                );
+                //$stamp1_result2[$stamp_name]["stamp_name"] = $stamp_name;
+                //$stamp1_result2[$stamp_name]["user_name_list"] = $new_user_name_list;             
+            }
+        }
+        //var_dump($stamp1_result2);
         
+        //return array();
+        return $stamps_result2;
     }
 }
 

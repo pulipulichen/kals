@@ -132,7 +132,7 @@ class Authentication extends Web_apps_controller {
             
             // int count
             'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
-            'like_to_count' => $this->user_statistic->get_like_to_annotation_count($user, $webpage),
+            'like_to_count' => $this->user_statistic->get_like_to_count($user, $webpage),
             'liked_count' => $this->user_statistic->get_liked_count($user, $webpage),
             'like_to_users_count' => $this->user_statistic->get_like_to_users_count($user, $webpage),
             'liked_users_count' => $this->user_statistic->get_liked_users_count($user, $webpage)
