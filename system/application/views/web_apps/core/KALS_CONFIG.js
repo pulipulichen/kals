@@ -108,50 +108,50 @@ DEFAULT_KALS_CONFIG = {
     annotation_type_basic: {
         'importance' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'concept' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'confusion' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'question' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'example' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'summary' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         },
         'custom' : {
             enable: {   // 啟用範圍
-                topic: false,    // 新標註
-                respond: false   // 回應標註
+                topic: true,    // 新標註
+                respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
         }
@@ -178,6 +178,7 @@ DEFAULT_KALS_CONFIG = {
      */
    
     annotation_type_predefined: {
+	/*
       "我知道": {
             //type_id: 15,
             hint: '已經學過或知道的詞語/文句意思',
@@ -284,7 +285,7 @@ DEFAULT_KALS_CONFIG = {
             },
             //order: 1    // 數字越大，排序越上面
         }
-        /*
+        
         '預先定義2': {
             //type_id: 16,
             hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
@@ -632,43 +633,44 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         KALS_stamp: {
-            "enable": true,
+            "enable": false,
             /**
              * 獎章資格設定
              */
-            "stamps": [
+			 
+            //"stamps": [
                  /**
                  * 獎章稱號
                  * @types {String}
                  */
-               {  // 第0階
+              /* {  // 第0階
                     "name": "soldier",
                     "is_qualified": true,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "你已經是士兵了",
+               /*     "qualification_message": "你已經是士兵了",
                     /**
                      * 獲得獎章時候的通知(升級) 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為士兵！",
+               /*     "quailfy_message": "恭喜你晉升為士兵！",
                     /**
                      * 取消獎章時候的通知(降級) 
                      * @types {String}
                      */
-                    "disqualify_message": "你降級了喔~請多加油吧！",                    
+               /*     "disqualify_message": "你降級了喔~請多加油吧！",                    
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為士兵了！",
+               /*     "qualified_message": "您已經晉升為士兵了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {   
+               /*    "qualifier": {   
                         topic_annotation_count: {
                             "_total": {
                                 count:0
@@ -678,16 +680,16 @@ DEFAULT_KALS_CONFIG = {
                     /**
                      * 設定是否呈現名單
                      */
-                    "set_list":false,
+               /*     "set_list":false,
                     /**
                      * 設定是已通知過晉升
                      */
-                    "is_notify":false,    
+               /*     "is_notify":false,    
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {// 要寫出所有的設定條件
+               /*     "policy": {// 要寫出所有的設定條件
                         // 可以寫topic
                         "topic_writable": true,
                         // 可以看他人的topic
@@ -704,7 +706,7 @@ DEFAULT_KALS_CONFIG = {
                  * 獎章稱號
                  * @types {String}
                  */
-                 {  // 第一階
+                /* {  // 第一階
                     "name": "knight",
                     "is_qualified": false,
                     /**
@@ -712,26 +714,26 @@ DEFAULT_KALS_CONFIG = {
                      * @types {String}
                      */
                     "qualification_message": "想要晉升騎士的話請試著標註2篇標註！",
-                    /**
+                /*    /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為騎士！",
+                /*    "quailfy_message": "恭喜你晉升為騎士！",
                     /**
                      * 取消獎章時候的通知(降級) 
                      * @types {String}
                      */
-                    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為騎士了！",
+                /*    "qualified_message": "您已經晉升為騎士了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {
+                /*    "qualifier": {
                         // 表示topic必須重要1個
                         //topic_annotation_count: {
                         //    importance: {
@@ -748,16 +750,16 @@ DEFAULT_KALS_CONFIG = {
                      /**
                      * 設定是否呈現名單
                      */
-                    "set_list":false,
+                /*    "set_list":false,
                     /**
                      * 設定是已通知過晉升
                      */
-                    "is_notify":false,                       
+                /*    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {
+                /*    "policy": {
                         // 要寫出所有的設定條件
                         "topic_writable": true,
                         "other_topic_readable": true,
@@ -773,27 +775,27 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到主教的話請撰寫8篇標註，至少試著標註3篇【我知道】、2篇【我不懂】與回應3位同學喔！",
+                /*   "qualification_message": "想要達到主教的話請撰寫8篇標註，至少試著標註3篇【我知道】、2篇【我不懂】與回應3位同學喔！<hr><li>文章中或同學們的標註內容有沒有你知道的地方呢?請試著使用<font style='background-color:#37FF39'><b>標註類型-我知道</b></font>將你的意見說出來吧。</li><li>文章中或同學的意見有沒有讓你覺得疑惑的地方呢？請試著使用<font style='background-color:#FF8F19'><b>標註類型-我不懂</b></font>來向大家提問題吧。</li>",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為主教！",
+                /*    "quailfy_message": "恭喜你晉升為主教！",
                     /**
                      * 取消獎章時候的通知(降級) 
                      * @types {String}
                      */
-                    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為主教了！",
+                /*    "qualified_message": "您已經晉升為主教了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {
+                /*    "qualifier": {
                         topic_annotation_count: {
                             "_total":{
                               count:8 
@@ -803,10 +805,7 @@ DEFAULT_KALS_CONFIG = {
                             },
                              "我不懂": {
                               count:2
-                            }
-                            /*"example": {
-                              count:0,
-                            }, */                     
+                            }                  
                         },
                         respond_to_user_count: {                  
                               count:2  
@@ -819,20 +818,20 @@ DEFAULT_KALS_CONFIG = {
                               count:3
                             }  
                         }*/
-                    },
+                /*    },
                      /**
                      * 設定是否呈現名單
                      */
-                    "set_list":false,
+                /*    "set_list":false,
                     /**
                      * 設定是已通知過晉升
                      */
-                    "is_notify":false,                       
+                /*    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {
+                /*    "policy": {
                         // 要寫出所有的設定條件
                         "topic_writable": true,
                         "other_topic_readable": true,
@@ -848,31 +847,28 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升城主的話請撰寫3篇【新知識】、3篇【補充舉例】，並試著回應6位同學的標註吧！",
+                /*    "qualification_message": "想要晉升城主的話請撰寫3篇【新知識】、3篇【補充舉例】，並試著回應6位同學的標註吧！<hr><li>文章中或同學的討論有沒有你第一次學到的知識呢？請試著使用<font style='background-color:#F7FA00'><b>標註類型-新知識</b></font>來說明吧。</li><li>對於文章內容或是同學的想法你有什麼想要額外補充資料或舉例的呢？請試著使用<font style='background-color:#F2F8F8'><b>標註類型-補充舉例</b></font>分享給同學吧。</li>",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為城主！",
+                /*    "quailfy_message": "恭喜你晉升為城主！",
                     /**
                      * 取消獎章時候的通知(降級) 
                      * @types {String}
                      */
-                    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為城主了！",
+                /*    "qualified_message": "您已經晉升為城主了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {
+                /*    "qualifier": {
                         topic_annotation_count: {
-                            /*"_total":{
-                              count:15  
-                            },*/
                             "新知識": {
                               count:3
                             },
@@ -880,26 +876,26 @@ DEFAULT_KALS_CONFIG = {
                               count:3
                             }                      
                         },
-                       // respond_to_user_count: {                  
-                       //       count:6 
-                       // },
-                      //  responded_user_count: {
-                      //      count:2  
-                      //  }
+                        respond_to_user_count: {                  
+                              count:6 
+                        },
+                        responded_user_count: {
+                            count:2  
+                        }
                     },
                     /**
                      * 設定是否呈現名單
                      */
-                    "set_list":false,  
+                /*    "set_list":false,  
                     /**
                      * 設定是已通知過晉升
                      */
-                    "is_notify":false,                       
+                /*    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {
+                /*    "policy": {
                         // 要寫出所有的設定條件
                         "topic_writable": true,
                         "other_topic_readable": true,
@@ -915,27 +911,27 @@ DEFAULT_KALS_CONFIG = {
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要成為國王的話請試著標註4篇【我想說】與2篇【很奇怪】，並多多回應與喜愛別人喔~",
+                /*    "qualification_message": "想要成為國王的話請試著標註4篇【我想說】與2篇【很奇怪】，並多多回應與喜愛別人喔~<hr><li>對於文章或同學們的標註內容你有什麼想法呢？請試著使用<font style='background-color:#3799FF'><b>標註類型-我想說</b></font>將你的意見說出來吧。</li><li>文章中或同學的討論中有什麼讓你覺得奇怪的地方嗎？請試著使用<font style='background-color:#FF55FD'><b>標註類型-很奇怪</b></font>和同學們一起討論？</li><li>你同意同學們的說法嗎？覺得認同的話就大方地給他一個<font style='color:red'><b>愛心</b></font>吧！</li>",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
                      */
-                    "quailfy_message": "恭喜你晉升為國王！",
+                /*    "quailfy_message": "恭喜你晉升為國王！",
                     /**
                      * 取消獎章時候的通知(降級) 
                      * @types {String}
                      */
-                    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經晉升為國王了！",
+                /*    "qualified_message": "您已經晉升為國王了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {
+                /*    "qualifier": {
                         topic_annotation_count: {
                             //count:3,
                            // "_total":{
@@ -948,20 +944,20 @@ DEFAULT_KALS_CONFIG = {
                               count:2
                             }                     
                         },
-                        respond_annotation_count: {
+                       // respond_annotation_count: {
                             //"_respond_total":{
                              // count:11  
                             //}
-                        },
+                        //},
                         respond_to_user_count: {                  
-                              count:9
+                              count:10
                         },
                         responded_user_count: {
                             count:3  
                         },
                         //liked_count:{
-                        //    count:2
-                        //}
+                       //     count:2
+                        //},
                         like_to_users_count: {
                             count:6  
                         }, 
@@ -972,16 +968,16 @@ DEFAULT_KALS_CONFIG = {
                     /**
                      * 設定是否呈現名單
                      */
-                    "set_list":true,  
+                /*    "set_list":true,  
                     /**
                      * 設定是已通知過晉升
                      */
-                    "is_notify":false,                       
+                /*    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {   
+                /*    "policy": {   
                         "topic_writable": true,
                         "other_topic_readable": true,
                         "other_topic_respondable": true,
@@ -989,7 +985,7 @@ DEFAULT_KALS_CONFIG = {
                         "like": true   
                     }
                 } //第四階over
-            ]
+            ]*/
         },
         /**
          * 開啟行動版網頁

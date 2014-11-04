@@ -523,6 +523,7 @@ class User_statistic extends KALS_actor {
     public function get_liked_users($user, $webpage) {
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
+        $liked_user_array = array();
         //-------------------------
         $this->db->select('user_liked.liked_user');
         $this->db->from('user_liked');
@@ -536,6 +537,7 @@ webpage2annotation.annotation_id');
         foreach ( $query->result() as $row){
             $liked_user_array[] = $row->liked_user;
         }
+       
         return $liked_user_array;       
 
     }
@@ -563,6 +565,7 @@ webpage2annotation.annotation_id');
     public function get_like_to_users($user, $webpage) {
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
+        $like_to_user_array = array();
         //-------------------------
         $this->db->select('like_to_user');
         $this->db->from('user_like_to');

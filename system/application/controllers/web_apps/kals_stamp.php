@@ -76,12 +76,22 @@ class KALS_stamp extends KALS_model {
                         test_msg("rule_type = ",$rule_type);
                         test_msg("rule_value =", $rule_value["count"] ); 
                         $rule_count = $rule_value["count"];
+                        
                         //條件值取出後開始查詢
-                        $table = 'SELECT annotation.user_id
-FROM annotation JOIN webpage2annotation ON ( annotation.annotation_id = webpage2annotation.annotation_id )
+                        if ( $rule_type === "_total"){
+                            $table = 'SELECT annotation.user_id
+FROM annotation JOIN webpage2annotation ON ( annotation.annotation_id = webpage2annotation.annotation_id ) JOIN type ON (annotation.annotation_type_id = type.type_id)
 WHERE webpage_id = '.$webpage_id.' AND annotation.topic_id IS NULL AND annotation.deleted = false
 GROUP BY annotation.user_id
 HAVING COUNT(annotation.annotation_id) >='.$rule_count;
+                        }
+                        else {
+                            $table = "SELECT annotation.user_id
+FROM annotation JOIN webpage2annotation ON ( annotation.annotation_id = webpage2annotation.annotation_id ) JOIN type ON (annotation.annotation_type_id = type.type_id)
+WHERE webpage_id = '$webpage_id' AND annotation.topic_id IS NULL AND annotation.deleted = false AND type.name = '$rule_type'
+    GROUP BY annotation.user_id
+HAVING COUNT(annotation.annotation_id) >='$rule_count'";                       
+                        }
                        
                         //把查出來的表(array)塞到另一個arry中
                         array_push($qualifier_tables, $table); 

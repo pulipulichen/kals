@@ -702,33 +702,69 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                 }   //for (var _type in _config) {              
                
             }   //if (_key === "topic_annotation_count") {
-            //-------第二項respond----------------------------------    
-            if (_key === "respond_annotation_count") {
-                 var _respond_annotation_count = _user.get_respond_to_other_annotation_count();
-                 if ( _respond_annotation_count < _config[_key] ){
-                            // 不合格
-                            _stamp_qualified = false;
-                            KALS_util.notify("第二項respond count未達成"+ _config[_key] + _stamp_qualified);
-                            break;
-                        }
-                        else{ // 合格
-                            _stamp_qualified = true;
-                        }
+            //    
+            //-----第2項respond_to_user_count-----------------------------------
+            if (_key === "respond_to_user_count"){
+                var _respond_to_user_count = _user.get_respond_to_users_count();
+               // var _respond_to_user_count_config = _config[_key];
+                 $.test_msg("NO2.respond_to_user_count = ", _qualifier[_key].count);
+                if (_respond_to_user_count < _qualifier[_key].count){
+                    // 不合格
+                    _stamp_qualified = false;
+                   //KALS_util.notify("第3項respond_to_user_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+                   break;                  
+                }
+                else{// 合格
+                    _stamp_qualified = true;                
+                }     
+            }//if (_key === "respond_to_user_count"){  
+            
+            //-------第3項responded_user_count-----------------------
+            if (_key === "responded_user_count"){
+                var _responded_user_count = _user.get_responded_users_count();
+
+                 $.test_msg("NO3.responded_user_count = ", _qualifier[_key].count);
+                if (_responded_user_count < _qualifier[_key].count){
+                    // 不合格
+                    _stamp_qualified = false;
+                   //KALS_util.notify("第3項responded_user_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+                   break;                  
+                }
+                else{// 合格
+                    _stamp_qualified = true;                
+                }     
+            }//if (_key === "responded_user_count"){               
              
-            }//if (_key === "respond_annotation_count") {       
-            //--------第三項like--------------------------------------
-            if (_key === "liked_count") {
-                 var _liked_count = _user.get_liked_count();
-                 if ( _liked_count < _config[liked_count].count ){
-                            // 不合格
-                            _stamp_qualified = false;
-                            KALS_util.notify("第三項like count未達成"+ _config[liked_count].count + _stamp_qualified);
-                            break;
-                        }
-                        else{ // 合格
-                            _stamp_qualified = true;
-                        }
-             }  //if (_key === "respond_annotation_count") { 
+            //-----第4項like_to_users_count---------------------------
+            if (_key === "like_to_users_count"){
+                var _like_to_users_count = _user.get_like_to_users_count();
+
+                 $.test_msg("NO4.responded_user_count = ", _qualifier[_key].count);
+                if (_like_to_users_count < _qualifier[_key].count){
+                    // 不合格
+                    _stamp_qualified = false;
+                   //KALS_util.notify("第4項_like_to_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+                   break;                  
+                }
+                else{// 合格
+                    _stamp_qualified = true;                
+                }     
+            }//if (_key === "like_to_users_count"){        
+           
+            //--------第5項liked_users_count--------------------------------------
+            if (_key === "liked_users_count") {
+                 var _liked_users_count = _user.get_liked_users_count();
+                  $.test_msg("NO5.liked_users_count = ", _qualifier[_key].count);
+                 if ( _liked_users_count < _qualifier[_key].count ){
+                    // 不合格
+                    _stamp_qualified = false;
+                    // KALS_util.notify("第5項liked_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+                    break;
+                 }
+                 else{ // 合格
+                    _stamp_qualified = true;
+                 }
+             }  //if (_key === "liked_users_count") {
              //-------------------------------------------------------
             this._stamps_config[_i].is_qualified = _stamp_qualified;
            // KALS_util.notify("_i.is_qualified為" + _i + this._stamps_config[_i].is_qualified);
