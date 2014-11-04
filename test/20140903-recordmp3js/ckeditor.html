@@ -13,16 +13,17 @@ and open the template in the editor.
     <body>
         
 <!------------------------------------------------>
-<textarea id="ckeditor"></textarea>
+<textarea id="ckeditor" name="ckeditor"></textarea>
 
 <img src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/skins/kama/icons.png" style="display: none;" />
-<script src="http://pc-pudding.dlll.nccu.edu.tw/kals/web_apps/generic/jquery"></script>
+<!-- <script src="http://pc-pudding.dlll.nccu.edu.tw/kals/web_apps/generic/jquery"></script> -->
 <script src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/ckeditor.js"></script>
-<script src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/adapters/jquery.js"></script>
+<!-- <script src="http://pc-pudding.dlll.nccu.edu.tw/kals/libraries/ckeditor/adapters/jquery.js"></script> -->
 <script src="KALS_CONFIG.js"></script>
 
 <script>
-$("#ckeditor").ckeditor(KALS_CONFIG.ckeditor_config);
+//$("#ckeditor").ckeditor(KALS_CONFIG.ckeditor_config);
+CKEDITOR.replace( 'ckeditor', KALS_CONFIG.ckeditor_config );
 </script>
 
     </body>
