@@ -56,7 +56,7 @@ class Statistics extends Web_apps_controller {
         }
         $user = get_context_user();
         if (is_null($user) === TRUE) {
-            test_msg("user is null");
+            //test_msg("user is null");
         }
         
         $webpage = get_context_webpage();
@@ -64,8 +64,9 @@ class Statistics extends Web_apps_controller {
         $this->load->library("kals_actor/User_statistic", "user_statistic");
         $this->user_statistic = new User_statistic();
         
+        $data = array();
         if(is_null($user)){
-            test_msg("user is null", $user);
+            //test_msg("user is null", $user);
         }
         else{
             $data =  array(
