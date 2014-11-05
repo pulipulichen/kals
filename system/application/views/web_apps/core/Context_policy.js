@@ -213,7 +213,7 @@ Context_policy.prototype.topic_writable = function () {
  * @param {Boolean} _boolean 設定條件
  * @version 20140511 Pulipuli Chen
  */
-Context_policy.prototype.set_topic_wrtiable = function (_boolean) {
+Context_policy.prototype.set_topic_writable = function (_boolean) {
     return this.set_writable(_boolean);
 };
 

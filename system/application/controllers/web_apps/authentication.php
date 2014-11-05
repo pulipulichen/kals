@@ -97,7 +97,7 @@ class Authentication extends Web_apps_controller {
     }
 
     /**
-     * 如果已經成功登入的話，將使用者資訊轉換成JSON
+     * 將使用者資訊轉換成JSON
      * @param User $user
      * @param Boolean $embed_login
      * @return Array
@@ -106,6 +106,9 @@ class Authentication extends Web_apps_controller {
         
         
         $webpage = get_context_webpage();
+                
+        $this->load->library("kals_actor/User_statistic", "user_statistic");
+        $this->user_statistic = new User_statistic();
         
         $output = array();
         //$output["webpage_id"] = get_context_webpage()->get_id();
@@ -119,25 +122,21 @@ class Authentication extends Web_apps_controller {
             'locale' => $user->get_locale(),
             'sex' => $user->get_sex(),
             
-            // @TODO 請wyfan把這些假資料轉換成$this->user_statistic可以取得的資料
-            //'topic_annotation_count' => array (
-            //    'importance' => 1
-            //),
-            //'respond_to_my_annotation_count' => array (
-            //    'importance' => 1
-            //),
-            //'respond_to_other_annotation_count' => array (
-            //    'importance' => 1
-            //),
+            // 從$this->user_statistic可以取得的資料
+            // types_array
             'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
             'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
             'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+            'responded_users_count' =>$this->user_statistic->get_responded_users_count($user, $webpage),
+            'respond_to_users_count' =>$this->user_statistic->get_respond_to_users_count($user, $webpage),
             
+            // int count
             'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
-            'like_to_count' => $this->user_statistic->get_like_to_annotation_count($user, $webpage),
-            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage)
+            'like_to_count' => $this->user_statistic->get_like_to_count($user, $webpage),
+            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage),
+            'like_to_users_count' => $this->user_statistic->get_like_to_users_count($user, $webpage),
+            'liked_users_count' => $this->user_statistic->get_liked_users_count($user, $webpage)
         );
-        
         //將使用者寫入Context當中
         set_context_user($user);
 

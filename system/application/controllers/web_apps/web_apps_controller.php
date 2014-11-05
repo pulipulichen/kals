@@ -734,7 +734,7 @@ $style = implode("}\n", $parts);
         $index = $this->post_session_index_prefix.$index;
         //$data = $this->session->flashdata($index);
         $data = $this->session->userdata($index);
-        $this->session->unset_userdata($index);
+        //$this->session->unset_userdata($index);
         return $data;
     }
     
@@ -773,7 +773,7 @@ $style = implode("}\n", $parts);
      * @author Pulipuli Chen <pulipuli.chen@gmail.com>
      */
     protected function _display_post_complete() {
-        //send_js_header($this->output);
+        send_js_header($this->output);
         $this->load->view('web_apps/display_post_complete');
     }
     

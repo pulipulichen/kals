@@ -30,11 +30,3 @@ dt.mobile-topics {
     height: 16px;
     padding-left: 20px;
 }
-
-dt.rss-feed {
-    background-image: url('${base_url}images/rss-feed.png');
-    background-position:left;
-    background-repeat:no-repeat;
-    height: 16px;
-    padding-left: 20px;
-}
