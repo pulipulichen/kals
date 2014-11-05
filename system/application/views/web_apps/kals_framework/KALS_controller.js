@@ -190,7 +190,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         return $.trigger_callback(_callback);
     }
 
-    _action = _action.toLowerCase();
+    //_action = _action.toLowerCase();
     if (_method === 'get') {
         _url = _url + '/request_get';        
     }
@@ -265,7 +265,7 @@ KALS_controller.prototype.request_get_cache = function (_action, _data, _callbac
         return $.trigger_callback(_callback);
     }
     
-    _action = _action.toLowerCase();
+    //_action = _action.toLowerCase();
     _url = _url + '/request_get';
 
     if (this._enable_debug_flag === true) {

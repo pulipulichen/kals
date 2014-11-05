@@ -105,7 +105,7 @@ Annotation_navigation_map.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-Annotation_navigation_map.prototype._$open_request_action = 'open';
+//Annotation_navigation_map.prototype._$open_request_action = 'open';
 
 /**
  * close()時執行的Action

@@ -529,6 +529,7 @@
 }
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .name{
 	border: 0px !important;
+        color: white;
 }
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .notification{
 	border: 0px !important;

@@ -126,6 +126,8 @@
     width: 60%;
     position:relative;
     line-height: 1.1em;
+    
+    color: white;
 }
 
 .KALS .dialog-content-td {
