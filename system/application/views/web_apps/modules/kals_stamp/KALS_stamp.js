@@ -605,6 +605,30 @@ KALS_stamp.prototype._init_listener = function() {
             _this._delay_check_qualification(_user);
         }
     });
+    KALS_context.user.add_attr_listener("responded_users_count", function (_user) {
+        //$.test_msg("KALS_stamp _init_listener", KALS_context.completed);
+        if (KALS_context.completed === true) {
+            _this._delay_check_qualification(_user);
+        }
+    });
+    KALS_context.user.add_attr_listener("respond_to_users_count", function (_user) {
+        //$.test_msg("KALS_stamp _init_listener", KALS_context.completed);
+        if (KALS_context.completed === true) {
+            _this._delay_check_qualification(_user);
+        }
+    });    
+    KALS_context.user.add_attr_listener("like_to_users_count", function (_user) {
+        //$.test_msg("KALS_stamp _init_listener", KALS_context.completed);
+        if (KALS_context.completed === true) {
+            _this._delay_check_qualification(_user);
+        }
+    });     
+    KALS_context.user.add_attr_listener("liked_users_count", function (_user) {
+        //$.test_msg("KALS_stamp _init_listener", KALS_context.completed);
+        if (KALS_context.completed === true) {
+            _this._delay_check_qualification(_user);
+        }
+    });     
     
     return this;
 };
