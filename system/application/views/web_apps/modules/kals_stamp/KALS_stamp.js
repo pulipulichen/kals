@@ -292,31 +292,56 @@ KALS_stamp.prototype._$onopen = function () {
 
 /**
  * 切換顯示分頁
+ * @param {String} _btn 按鈕的Classname
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.change_tab = function (_btn){
-    //-------------
-    var _types = this.get_annotation_types();
-    for(var _i in _types){
-        var _type = _types[_i];
-        //var _type_id = _type.get_id();
-        //$.test_msg("type_id=", _type_id);      
+    
+    if (typeof(_btn) === "string") {
+        _btn = this.find(".tab-button." + _btn);
     }
-   //----------
-    this.find(".tab-button").removeAttr("style");
+    
+    var _selected_classname = "selected";
+    this.find(".tab-button."+_selected_classname).removeClass(_selected_classname);
+    _btn.addClass(_selected_classname);
+    
+    this.find(".tab-content").hide();
+    this.find(".tab-content." + _btn.attr("tab_name")).show();
+    
+    //----------
+    //this.find(".tab-button").removeAttr("style");
 
    //KALS_util.notify("test",this.find("list-button-counts"));
     //$.test_msg("change_tab", [typeof(_btn.attr), _btn.parent().length]);
    //取出btn-name屬性的值   
-    var _tab_name = _btn.attr("tab_name");
+    //var _tab_name = _btn.attr("tab_name");
+    
+    /*
+    var _selected_classname = "selected";
+    this.find(".tab-button."+_selected_classname).removeClass(_selected_classname);
+    
+    var _tab_name = _btn;
+    if (typeof(_btn) === "object") {
+        _tab_name = _btn.attr;
+    }
+    else {
+        _btn = this.find(".tab-button."+_tab_name).addClass(_selected_classname);
+    }
+    _btn.addClass(_selected_classname);
+    
+//    $.test_msg("change_tabl", typeof(_tab_name));
+//    $.test_msg("change_tab2", _tab_name);
+    
    
-    _btn.css("background", "red");   
-    _btn.css("color", "white");
-    $.test_msg("tab name", _tab_name);
+    //_btn.css("background", "red");   
+    //_btn.css("color", "white");
+    //$.test_msg("tab name", _tab_name);
     //KALS_util.notify("_btn_name="+ _tab_name);
     
-    var _tab_contents = $(_btn).parents(".tab-area:first").find(".tab-content");
-   // _btn.css("background", "red");
+    $.test_msg("change_tab3", [_tab_name, ".tab-button."+_tab_name]);
+   
+    var _tab_contents = _btn.parents(".tab-area:first").find(".tab-content");
+    // _btn.css("background", "red");
    
     //先隱藏所有的div
     _tab_contents.hide();
@@ -324,8 +349,15 @@ KALS_stamp.prototype.change_tab = function (_btn){
     _tab_contents.filter("." + _tab_name).show();
     
     //var _tab = this.find("list-button-counts");
-   
-}
+    //-------------
+//    var _types = this.get_annotation_types();
+//    for(var _i in _types){
+//        var _type = _types[_i];
+//        //var _type_id = _type.get_id();
+//        //$.test_msg("type_id=", _type_id);      
+//    }
+    */
+};
 
 
 /**
@@ -583,6 +615,7 @@ KALS_stamp.prototype._stamps_config;
 KALS_stamp.prototype._init_config = function() {
     // @TODO 20140516 Pulipuli Chen
     this._stamps_config = KALS_CONFIG.modules.KALS_stamp.stamps;
+    
     return this._stamps_config;
 };
 
@@ -623,6 +656,11 @@ KALS_stamp.prototype._init_listener = function() {
             _this._delay_check_qualification(_user);
         }
     });
+    
+    KALS_context.add_listener(function () {
+        _this.change_tab("btn-annotation-count");
+    });
+    
     return this;
 };
 

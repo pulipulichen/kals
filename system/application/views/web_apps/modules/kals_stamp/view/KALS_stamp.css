@@ -30,3 +30,9 @@ dt.mobile-topics {
     height: 16px;
     padding-left: 20px;
 }
+
+.list-header-component .tab-button.selected {
+    background-color: red;
+    background-image: none;
+    color: white;
+}

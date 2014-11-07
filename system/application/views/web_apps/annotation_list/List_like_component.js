@@ -15,7 +15,7 @@ function List_like_component(_item) {
     
     JSONP_dispatcher.call(this);
     
-	//$.test_msg("set item了嗎？", $.isset(_item));
+    //$.test_msg("set item了嗎？", $.isset(_item));
     this._set_list_item(_item);
 }
 
@@ -191,6 +191,12 @@ List_like_component.prototype.set_is_like = function (_is_like) {
         }
 
         _this._lock = false;
+        
+        /**
+         * @author Pulipuli Chen
+         * 20141107 不採用local update，直接從伺服器端update
+         */
+        KALS_context.user.load_user_params();
     });
     return this;
 };

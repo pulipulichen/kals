@@ -511,7 +511,13 @@ Annotation_editor.prototype._create_callback = function (_annotation_param, _cal
         }
     }
     */
-    KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
+   
+    /**
+     * @author Pulipuli Chen
+     * 20141107 不採用local update，直接從伺服器端update
+     */
+    //KALS_context.user.set_annotation_count_add_by_param(_annotation_param);
+    KALS_context.user.load_user_params();
     
     //$.test_msg("完成create annotation");
     
