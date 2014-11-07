@@ -267,7 +267,7 @@ Annotation_param.prototype.export_json = function () {
                 // 不做輸出！
                 continue;
             }
-            else {
+            else if (typeof(this[_attr].export_json) === "function" ) {
                 _json[_attr] = this[_attr].export_json();
             }
         }
