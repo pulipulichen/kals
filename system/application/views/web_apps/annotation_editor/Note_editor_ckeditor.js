@@ -45,7 +45,7 @@ Note_editor_ckeditor.prototype._$create_ui = function () {
         //Note_editor_ckeditor._setup_ckeditor();
         Note_editor_ckeditor._setup_ckeditor();
         
-        _this.set_text("測試看看");
+        //_this.set_text("測試看看");
     }, 0);
     return _ui;
 };

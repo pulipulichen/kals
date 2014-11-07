@@ -673,18 +673,30 @@ $style = implode("}\n", $parts);
             return $object;
         }
 
-        send_js_header($this->output);
         //test_msg($object['policy']['my_custom']);
-        
         $json = kals_json_encode($object);
         $pos = stripos($callback, '='); // 取得 = 號的位置
-        $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
-        //echo "{$jsonp}({$json})"; // 輸出
+        
+        test_msg("_display_jsonp", gettype($callback));
+        if ($callback !== NULL) {
+            $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
+            //echo "{$jsonp}({$json})"; // 輸出
 
-        $vars = array(
-            'callback_hash' => $callback_hash,
-            'json' => $json
-        );
+            $vars = array(
+                'callback_hash' => $callback_hash,
+                'json' => $json
+            );
+            send_js_header($this->output);
+        }
+        else {
+            test_msg("_display_jsonp", "send_text_header");
+            $vars = array(
+                'callback_hash' => NULL,
+                'json' => $json
+            );
+            send_text_header($this->output);
+        }
+        
         $this->load->view($this->dir.'display_jsonp', $vars);
     }
 

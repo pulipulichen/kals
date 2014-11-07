@@ -815,6 +815,8 @@ Annotation_tool.prototype._listen_submit = function () {
         
         var _note = _this.get_annotation_param().note;
         if (_note !== null && typeof(_note) === "string") {
+            $.test_msg("text click submit note=", _note);
+            
             _this.submit_annotation();
         }
     });

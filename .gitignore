@@ -7,7 +7,7 @@ test/
 /nbproject/
 /.settings/
 
-/system/cache/
+# /system/cache/
 /system/logs/
 /drupal/*
 /*/Thumbs.db

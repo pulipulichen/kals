@@ -168,7 +168,7 @@ Initialization_progress.prototype.set_finished = function () {
     var _cost = _timestamp - this._start_timestamp;
     
     _cost = parseInt(_cost / 60, 10);    
-    $.test_msg("Webpage (" + KALS_context.get_webpage_id() + ") init progress finished", _cost);
+    //$.test_msg("Webpage (" + KALS_context.get_webpage_id() + ") init progress finished", _cost);
     
     return this;
 };

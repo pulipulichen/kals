@@ -24,11 +24,11 @@ if (typeof($jquery_extends) === 'undefined') {
  */
 jQuery.test_msg = function (_title, _test) {
 	
-	//return;
-	
-	// @20130607 Pudding Chen
-	// 加入原本的底層吧XD
-    
+    //return;
+
+    // @20130607 Pudding Chen
+    // 加入原本的底層吧XD
+
     var _info_box = this('.KALS.info-box:first');
 	
     if (_info_box.length === 0) {   
@@ -57,48 +57,48 @@ jQuery.test_msg = function (_title, _test) {
     }
     else if (this.is_null(_title) && this.is_null(_test)) {
         _test = '---------------';
-		this('<hr />').appendTo(_info_box);
+        this('<hr />').appendTo(_info_box);
         return;
     }
     
     if (this.is_object(_test)) {
 		
-		try {
-			_test = '[Object: '+this.json_encode(_test)+']';
-		}
+        try {
+            _test = '[Object: '+this.json_encode(_test)+']';
+        }
         catch (_e) {
-			_text = '[Exception: '+_e+']';
-		}
+            _test = '[Exception: '+_e+']';
+        }
 		
     }
 	
-	var _info_test = _test;
-	
-	if ($.starts_with(_info_test, "http") || $.starts_with(_info_test, "/kals/")) {
-		_info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
-	}
-	
-        //_info_test = $.str_replace(_info_test, 'http', 'htt p');
-	
-	var _info = this('<pre></pre>')
-            .addClass("info")
-			.appendTo(_info_box);
+    var _info_test = _test;
 
-	try {
-		//_info_test = $(_info_test);
-		//_info.text(_info_test);
-		//_info.html(_info.text());
-		//console.log(_info_test);
-		if (_info_test.indexOf('<a') === 0) {
-			_info.html(_info_test);
-		}
-		else {
-			_info.text(_info_test);
-		}
-	}
-	catch (_e) {
-		
-	}
+    if ($.starts_with(_info_test, "http") || $.starts_with(_info_test, "/kals/")) {
+        _info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
+    }
+	
+    //_info_test = $.str_replace(_info_test, 'http', 'htt p');
+	
+    var _info = this('<pre></pre>')
+        .addClass("info")
+        .appendTo(_info_box);
+
+    try {
+        //_info_test = $(_info_test);
+        //_info.text(_info_test);
+        //_info.html(_info.text());
+        //console.log(_info_test);
+        if (_info_test.indexOf('<a') === 0) {
+            _info.html(_info_test);
+        }
+        else {
+            _info.text(_info_test);
+        }
+    }
+    catch (_e) {
+
+    }
     
     if (this.isset(_title)) {
         console.log('[KALS]' + '[' + _title + '] ' + _test);
@@ -115,7 +115,19 @@ jQuery.test_msg = function (_title, _test) {
         .css('float', 'right')
         .prependTo(_info);
       
-	return this;
+    //return this;
+    return _info.text();
+};
+
+/**
+ * 顯示測試訊息，並且丟出訊息
+ * @version 20130222 Pulipuli Chen 把錯誤訊息改成console.log()輸出
+ * @param {string} _title
+ * @param {Object} _test
+ */
+jQuery.throw_msg = function (_title, _test) {
+    var _info = this.test_msg(_title, _test);
+    throw _info;
 };
 
 // --------

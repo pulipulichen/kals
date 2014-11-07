@@ -76,12 +76,20 @@ if ( ! function_exists('display_jsonp'))
     }
 }
 
-if ( ! function_exists('send_js_header'))
-{
+if ( ! function_exists('send_js_header')) {
     function send_js_header(CI_Output $output)
     {
         //header('Content-type: text/javascript');
         $header = 'Content-type: text/javascript';
+        $output->set_header($header, TRUE);
+    }
+}
+
+if ( ! function_exists('send_text_header')) {
+    function send_text_header(CI_Output $output)
+    {
+        //header('Content-type: text/javascript');
+        $header = 'Content-type: text/plain';
         $output->set_header($header, TRUE);
     }
 }

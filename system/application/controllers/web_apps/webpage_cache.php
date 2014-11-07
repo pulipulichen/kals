@@ -63,7 +63,7 @@ class Webpage_cache extends KALS_model {
         {
             $callback = $json;
             $data = $this->_get_post_session($index);
-
+            
             $this->_display_jsonp($data, $callback);
         }
         context_complete();

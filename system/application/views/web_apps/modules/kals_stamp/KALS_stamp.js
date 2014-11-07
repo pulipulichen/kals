@@ -286,7 +286,7 @@ KALS_stamp.prototype._$onopen = function () {
     this.set_stamp_qualified();
     this.set_stamp_qualification();
     this.get_stamp_list();
-    KALS_context.user.load_user_params();
+    //KALS_context.user.load_user_params();
     return this;
 };
 
@@ -536,11 +536,17 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
 
 /**
  * 設定顯示階級名單
+ * @author Pulipuli Chen 20141107
  * @return array
  */
 KALS_stamp.prototype.get_stamp_list = function() { 
+    
+    $.test_msg("get_stamp_list", "先在這裡打住");
+    return this;
+    
     var _stamp_data = this._init_config();
     // 要改成每個階級都要顯示！
+    
     var _this = this;
     
     var _list_container = this.find('.stamps-list').empty();
@@ -550,11 +556,11 @@ KALS_stamp.prototype.get_stamp_list = function() {
         //加入class在stamps-list的區塊畫出user
         //$.test_msg("接收stamp_result", _stamp_result);
         for ( var _k in _stamp_result){
-            $.test_msg("接收stamp_result " + _k, _stamp_result[_k]);
+            //$.test_msg("接收stamp_result " + _k, _stamp_result[_k]);
             
             //_list_container.empty();
-            $.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
-            $.test_msg("user_name = "+ _stamp_result[_k].user_name_list );
+            //$.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
+            //$.test_msg("user_name = "+ _stamp_result[_k].user_name_list );
             //名稱
             var _stamp_title = _stamp_result[_k].stamp_name ;
             var _stamp_title_lang = _this.get_view_lang_line(_stamp_title);
@@ -629,34 +635,47 @@ KALS_stamp.prototype._init_listener = function() {
     // 這邊只有監聽部分屬性，請把它擴增其他監聽的事件
     // 監聽其他需要的變數是否有變動，若是有變動則檢查獎章條件
     
+    var _listen_attr_list = [
+        "topic_annotation_count",
+        "responded_annotation_count",
+        "respond_to_users_count"
+    ];
+    
     var _this = this;
-    KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
-        
-        $.test_msg("KALS_stamp _init_listener_topic", KALS_context.completed);
-        
+    var _listen_callback = function (_user, _attr_value, _attr) {
         if (KALS_context.completed === true) {
+            //$.test_msg("KALS_stamp _init_listener", _attr);
             _this._delay_check_qualification(_user);
            //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
         }
+    };
+    
+    $.each(_listen_attr_list, function(_key, _value) {
+        KALS_context.user.add_attr_listener(_value, _listen_callback);
     });
     
-    KALS_context.user.add_attr_listener("responded_annotation_count", function (_user) {
-        
-        $.test_msg("KALS_stamp _init_listener_res", KALS_context.completed);
-        
-        if (KALS_context.completed === true) {
-            _this._delay_check_qualification(_user);
-        }
-    });    
-    KALS_context.user.add_attr_listener("respond_to_users_count", function (_user) {
-        
-        $.test_msg("KALS_stamp _init_listener_respond_to_users_count", KALS_context.completed);
-        
-        if (KALS_context.completed === true) {
-            _this._delay_check_qualification(_user);
-        }
-    });
-    
+//    
+//    KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
+//        if (KALS_context.completed === true) {
+//            $.test_msg("KALS_stamp _init_listener_topic", KALS_context.completed);
+//            _this._delay_check_qualification(_user);
+//           //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
+//        }
+//    });
+//    
+//    KALS_context.user.add_attr_listener("responded_annotation_count", function (_user) {
+//        if (KALS_context.completed === true) {
+//            $.test_msg("KALS_stamp _init_listener_res", KALS_context.completed);
+//            _this._delay_check_qualification(_user);
+//        }
+//    });    
+//    KALS_context.user.add_attr_listener("respond_to_users_count", function (_user) {
+//        if (KALS_context.completed === true) {
+//            $.test_msg("KALS_stamp _init_listener_respond_to_users_count", KALS_context.completed);
+//            _this._delay_check_qualification(_user);
+//        }
+//    });
+//    
     KALS_context.add_listener(function () {
         _this.change_tab("btn-annotation-count");
     });
@@ -867,71 +886,40 @@ KALS_stamp.prototype.qualify = function() {
 
     var _stamps_data = this._init_config();
     //$.test_msg("ERROR: " + JSON.stringify(_stamps_data));
-    for( _i in _stamps_data){
-        if(this._stamps_config[_i].is_qualified === true){
-            var _policy = _stamps_data[_i].policy;
-            // 用迴圈檢視設定policy中的權限設定
-            for( var _k in _policy ){
-                // _ k = topic_writable
-                switch (_k){
-                    case "topic_writable":
-                        KALS_context.policy.set_topic_writable(_policy[_k]);
-                       //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-                        break;
-                    case "other_topic_readable":
-                        KALS_context.policy.set_other_topic_readable(_policy[_k]);
-                        //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-                        break;
-                    case "other_topic_respondable":
-                        KALS_context.policy.set_respond_other_topic_wrtiable(_policy[_k]);
-                        //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-                        break;
-                    case "other_respond_readable":
-                        KALS_context.policy.set_other_respond_readable(_policy[_k]);
-                        //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-                        break;  
-                    case "like":
-                        KALS_context.policy.set_able_like_topic(_policy[_k]);
-                        KALS_context.policy.set_able_like_respond(_policy[_k]);
-                       //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-                        break; 
-                    default :
-                        KALS_util.notify("no = "+ _policy[_k]);
-                }
-
-            }
-
-          }
-          // $.test_msg("KALS_stamp qualify 3");
-           if (this._stamps_config[_i].is_qualified === true){
+    for ( _i in _stamps_data) {
+        if (this._stamps_config[_i].is_qualified === true) {
+          
+           // $.test_msg("KALS_stamp qualify 3");
+           if (this._stamps_config[_i].is_qualified === true) {
                if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
                    this._stamp_level = _i;
                    this._stamp_level_modified = true;
                    this._stamp_level_up = true;
                    //$.test_msg("KALS_stamp qualify 4 this._stamp_level" + this._stamp_level);                  
-               }
+               }    //if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
                else if (_i > this._stamp_level) { //已經有等級了->升級
                    this._stamp_level = _i;
                    this._stamp_level_modified = true;
                    this._stamp_level_up = true;
                   
                    //$.test_msg("KALS_stamp qualify 5 this._stamp_level" + this._stamp_level);
-               }
+               }    //else if (_i > this._stamp_level) { //已經有等級了->升級
                else{ //已經等級了->降級
                    //...?
-                   $.test_msg("KALS_stamp qualify FALSE _1!!" + this._stamps_config[_i].is_qualified + "NOW IS "+ _i + "this._stamp_level"+ this._stamp_level);  
-               }
-           }
-           else if (this._stamp_level === _i && this._stamp_level > 0) {
+                   //$.test_msg("KALS_stamp qualify FALSE _1!!" + this._stamps_config[_i].is_qualified + "NOW IS "+ _i + "this._stamp_level"+ this._stamp_level);  
+               }    //else{ //已經等級了->降級
+           }    //if (this._stamps_config[_i].is_qualified === true) {
+           else if (this._stamp_level === _i 
+                   && this._stamp_level > 0) {
                this._stamp_level--;
                this._stamp_level_modified = true;
                this._stamp_level_up = false;
                //$.test_msg("KALS_stamp qualify 6 this._stamp_level" + this._stamp_level);  
-           }
+           }    //else if (this._stamp_level === _i 
    
        //$.test_msg("KALS_stamp qualify 7 this._stamp_level" + this._stamp_level); 
         // KALS_context.policy.set_readable(true);
-    }//for( var _i in _stamps_data){
+    }   //for( var _i in _stamps_data){
     
     if (this._stamp_level_modified === true) {
         var _msg;
@@ -942,13 +930,48 @@ KALS_stamp.prototype.qualify = function() {
            _msg = '<div style="text-align:center">'+this._stamps_config[this._stamp_level].quailfy_message +'</div>';
            //KALS_util.notify(_msg+_img);
            //$.test_msg("KALS_stamp qualify 8 _stamp_level_up" + this._stamp_level_up);
-        }
+        }   //if (this._stamp_level_up === true) {
         else {
             //降級通知訊息
             _msg = '<div style="text-align:center">'+this._stamps_config[this._stamp_level].disqualify_message +'</div>';
             //KALS_util.notify(_msg+_img);
             //$.test_msg("KALS_stamp qualify 9 _stamp_level_up" + this._stamp_level_up);
-        }
+        }   //else {
+        
+        // -------------------
+        // 權限重新設定
+
+        var _policy = this._stamps_config[this._stamp_level].policy;
+        // 用迴圈檢視設定policy中的權限設定
+        for( var _k in _policy ){
+            // _ k = topic_writable
+            switch (_k) {
+                case "topic_writable":
+                    //KALS_context.policy.set_topic_writable(_policy[_k]);
+                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                    break;
+//                case "other_topic_readable":
+//                    KALS_context.policy.set_other_topic_readable(_policy[_k]);
+//                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+//                    break;
+//                case "other_topic_respondable":
+//                    KALS_context.policy.set_respond_other_topic_wrtiable(_policy[_k]);
+//                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+//                    break;
+//                case "other_respond_readable":
+//                    KALS_context.policy.set_other_respond_readable(_policy[_k]);
+//                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+//                    break;  
+//                case "like":
+//                    KALS_context.policy.set_able_like_topic(_policy[_k]);
+//                    KALS_context.policy.set_able_like_respond(_policy[_k]);
+//                   //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+//                    break; 
+//                default :
+//                    KALS_util.notify("no = "+ _policy[_k]);
+                }   //switch (_k) {
+            }   //for( var _k in _policy ){
+        } //if (this._stamps_config[_i].is_qualified === true) {
         
         KALS_util.notify(_msg+_img);
         this.open();

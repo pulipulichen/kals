@@ -247,6 +247,10 @@ KALS_modal.prototype.is_opened = function () {
  * @param {function|null} _callback
  */
 KALS_modal.prototype.open = function (_callback) {
+    if (this.is_opened() === true) {
+        return this;
+    }
+    
     var _ui = this.get_ui();
     if (_ui !== null) {
         _ui.show();
