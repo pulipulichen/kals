@@ -142,7 +142,7 @@ KALS_util.ajax_get = function (_config) {
         if (KALS_context !== undefined
                 && KALS_context.completed === true) {
             if (KALS_CONFIG.debug.ajax_get_message) {			
-                $.test_msg('ajax_get from ' + _url + ' \n return data', _data);
+                //$.test_msg('ajax_get from ' + _url + ' \n return data', _data);
             }
         }
 

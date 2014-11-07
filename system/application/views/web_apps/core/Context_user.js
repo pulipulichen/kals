@@ -437,6 +437,7 @@ Context_user.prototype.get_annotation_count_by_param = function (_annotation_par
  * @returns {Context_user}
  */
 Context_user.prototype.set_annotation_count_modify_by_param = function (_annotation_param, _count) {
+    
     if ($.is_class(_annotation_param, "Annotation_param") === false 
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count() parameters error");
