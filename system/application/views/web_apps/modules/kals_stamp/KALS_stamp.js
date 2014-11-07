@@ -278,6 +278,10 @@ KALS_stamp.prototype.nav_config = {
  */
 KALS_stamp.prototype._$onopen = function () {
     
+    if (KALS_context.auth.is_login() === false) {
+        return this;
+    }
+    
     this.set_stamp_statistic();
     this.set_stamp_qualified();
     this.set_stamp_qualification();
@@ -594,20 +598,27 @@ KALS_stamp.prototype._init_listener = function() {
     
     var _this = this;
     KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
+        
         $.test_msg("KALS_stamp _init_listener_topic", KALS_context.completed);
+        
         if (KALS_context.completed === true) {
             _this._delay_check_qualification(_user);
            //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
         }
     });
+    
     KALS_context.user.add_attr_listener("responded_annotation_count", function (_user) {
+        
         $.test_msg("KALS_stamp _init_listener_res", KALS_context.completed);
+        
         if (KALS_context.completed === true) {
             _this._delay_check_qualification(_user);
         }
     });    
     KALS_context.user.add_attr_listener("respond_to_users_count", function (_user) {
+        
         $.test_msg("KALS_stamp _init_listener_respond_to_users_count", KALS_context.completed);
+        
         if (KALS_context.completed === true) {
             _this._delay_check_qualification(_user);
         }
@@ -623,6 +634,10 @@ KALS_stamp.prototype._delay_interval = 1000;
  * @param {Context_user} _user
  */
 KALS_stamp.prototype._delay_check_qualification = function (_user) {
+    
+    if (KALS_context.auth.is_login() === false) {
+        return this;
+    }
     
     var _this = this;
     
