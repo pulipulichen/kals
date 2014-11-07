@@ -677,8 +677,8 @@ $style = implode("}\n", $parts);
         $json = kals_json_encode($object);
         $pos = stripos($callback, '='); // 取得 = 號的位置
         
-        test_msg("_display_jsonp", gettype($callback));
-        if ($callback !== NULL) {
+        //test_msg("_display_jsonp", gettype($callback));
+        if ($callback !== NULL && $callback !== "") {
             $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
             //echo "{$jsonp}({$json})"; // 輸出
 
