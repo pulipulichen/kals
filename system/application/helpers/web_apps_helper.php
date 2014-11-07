@@ -30,12 +30,38 @@ if ( ! function_exists('json_to_array'))
 {
     function json_to_array($json)
     {
-        if (is_object($json))
+        if (is_object($json)) {
             return (array) $json;
-        if (is_array($json))
+        }
+        if (is_array($json)) {
             return $json;
-        else
-            return json_decode($json, TRUE);
+        }
+        else {
+            //$json = removeBOM($json);
+            $result = json_decode($json, TRUE);
+            
+            if ($result === NULL) {
+                test_msg("json_to_array", json_last_error());
+            }
+            
+            return $result;
+        }
+    }
+}
+
+if ( ! function_exists('removeBOM'))
+{
+    /**
+     * http://blog.longwin.com.tw/2008/06/php_check_remove_bom_utf8_2008/
+     * @param String $str
+     * @return String
+     */
+    function removeBOM($str = '')
+    {
+       if (substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+           $str = substr($str, 3);
+       }
+       return $str;
     }
 }
 

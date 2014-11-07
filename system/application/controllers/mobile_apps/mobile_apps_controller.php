@@ -742,6 +742,7 @@ $style = implode("}\n", $parts);
             //return $_POST['json'];
             
             $json = $_POST["json"];
+            
             /**
              * 20121224 Pulipuli Chen
              * 移除scope中text包含\'的資料

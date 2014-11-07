@@ -83,7 +83,8 @@ class Context extends KALS_object {
      * @return User
      */
     function get_current_user() {
-        if ($this->user == NULL) {
+        //test_msg("this->user", is_null($this->user));
+        if ($this->user === NULL) {
             //先讀取session，取得user_id
             $user_id = $this->session->userdata('user_id');
             $user_id = intval($user_id);
@@ -328,8 +329,8 @@ class Context extends KALS_object {
         {
             //試著從session抓資料看看
             $session_data = get_session($session_name);
-            //test_msg('取得的資料是', ($session_data == FALSE));
-            if ($session_data != FALSE)
+           // test_msg('取得的資料是', ($session_data === FALSE));
+            if ($session_data !== FALSE)
             {
                 $this->set_anchor_navigation_type($session_data);
                 $output = $session_data;

@@ -428,7 +428,7 @@ DEFAULT_KALS_CONFIG = {
          * 是否顯示ajax_get的連接訊息
          * @type Boolean
          */
-        ajax_get_message: false,
+        ajax_get_message: true,
         
         /**
          * 開啟ajax_post設定
@@ -509,7 +509,7 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": true,
+            "enable": false,
             "nav_config": {
                 display: true,
                 nav_type: "common",
@@ -549,6 +549,12 @@ DEFAULT_KALS_CONFIG = {
              * @type Number
              */
             //"increase_interval_span": 10
+        },
+        /**
+         * 搜尋功能
+         */
+        Window_search: {
+            "enable": false
         },
         /**
          * 章節地圖
@@ -598,44 +604,355 @@ DEFAULT_KALS_CONFIG = {
             /**
              * 獎章資格設定
              */
-            "stamps": [
-                {
-                    /**
-                     * 獎章稱號
-                     * @types {String}
-                     */
-                    "title": "獎章1",
+			 
+            //"stamps": [
+                 /**
+                 * 獎章稱號
+                 * @types {String}
+                 */
+              /* {  // 第0階
+                    "name": "soldier",
+                    "is_qualified": true,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "如何獲得這個獎章",
+               /*     "qualification_message": "你已經是士兵了",
                     /**
-                     * 獲得獎章時候的通知 
+                     * 獲得獎章時候的通知(升級) 
                      * @types {String}
                      */
-                    "quailfy_message": "通知您獲得了獎章",
+               /*     "quailfy_message": "恭喜你晉升為士兵！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+               /*     "disqualify_message": "你降級了喔~請多加油吧！",                    
                     /**
                      * 已經獲得獎章的訊息 
                      * @types {String}
                      */
-                    "qualified_message": "您已經獲得了這個獎章",
+               /*     "qualified_message": "您已經晉升為士兵了！",
                     /**
                      * 獎章資格
                      * @types {JSON}
                      */
-                    "qualifier": {
-                        
-                    },
+               /*    "qualifier": {   
+                        topic_annotation_count: {
+                            "_total": {
+                                count:0
+                            }
+                        }
+                    }, //qualifier
+                    /**
+                     * 設定是否呈現名單
+                     */
+               /*     "set_list":false,
+                    /**
+                     * 設定是已通知過晉升
+                     */
+               /*     "is_notify":false,    
                     /**
                      * 權限設定
                      * @types {JSON}
                      */
-                    "policy": {
-                        
+               /*     "policy": {// 要寫出所有的設定條件
+                        // 可以寫topic
+                        "topic_writable": true,
+                        // 可以看他人的topic
+                        "other_topic_readable": false,
+                        // 可以回應他人的topic
+                        "other_topic_respondable": false,
+                        // 可以看別人回自己topic的內容
+                        "other_respond_readable": false,
+                        // 可以使用喜愛功能
+                        "like": false
                     }
-                }
-            ]
+                },//第0階over                
+                /**
+                 * 獎章稱號
+                 * @types {String}
+                 */
+                /* {  // 第一階
+                    "name": "knight",
+                    "is_qualified": false,
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                    "qualification_message": "想要晉升騎士的話請試著標註2篇標註！",
+                /*    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                /*    "quailfy_message": "恭喜你晉升為騎士！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                /*    "qualified_message": "您已經晉升為騎士了！",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                /*    "qualifier": {
+                        // 表示topic必須重要1個
+                        //topic_annotation_count: {
+                        //    importance: {
+                        //      count:1,
+                        //      condition: ">"
+                        //    }
+                        //}
+                        topic_annotation_count: {
+                            "_total": {
+                                count:2
+                            }
+                        }                      
+                    }, //qualifier
+                     /**
+                     * 設定是否呈現名單
+                     */
+                /*    "set_list":false,
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                /*    "is_notify":false,                       
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                /*    "policy": {
+                        // 要寫出所有的設定條件
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": false,
+                        "like": false
+                    }
+                }, // 第一階OVER
+                {  // 第二階
+                    "name": "bishop",
+                    "is_qualified": false,
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                /*   "qualification_message": "想要達到主教的話請撰寫8篇標註，至少試著標註3篇【我知道】、2篇【我不懂】與回應3位同學喔！<hr><li>文章中或同學們的標註內容有沒有你知道的地方呢?請試著使用<font style='background-color:#37FF39'><b>標註類型-我知道</b></font>將你的意見說出來吧。</li><li>文章中或同學的意見有沒有讓你覺得疑惑的地方呢？請試著使用<font style='background-color:#FF8F19'><b>標註類型-我不懂</b></font>來向大家提問題吧。</li>",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                /*    "quailfy_message": "恭喜你晉升為主教！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                /*    "qualified_message": "您已經晉升為主教了！",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                /*    "qualifier": {
+                        topic_annotation_count: {
+                            "_total":{
+                              count:8 
+                            },
+                            "我知道": {
+                              count:3
+                            },
+                             "我不懂": {
+                              count:2
+                            }                  
+                        },
+                        respond_to_user_count: {                  
+                              count:2  
+                        }
+                       /*respond_annotation_count: {
+                            "_respond_total":{
+                              count:3 
+                            }
+                            "confusion": {
+                              count:3
+                            }  
+                        }*/
+                /*    },
+                     /**
+                     * 設定是否呈現名單
+                     */
+                /*    "set_list":false,
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                /*    "is_notify":false,                       
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                /*    "policy": {
+                        // 要寫出所有的設定條件
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": true,
+                        "like": false                  
+                    }
+                }, // 第二階OVER
+                {  // 第三階
+                    "name": "castle",
+                    "is_qualified": false,
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                /*    "qualification_message": "想要晉升城主的話請撰寫3篇【新知識】、3篇【補充舉例】，並試著回應6位同學的標註吧！<hr><li>文章中或同學的討論有沒有你第一次學到的知識呢？請試著使用<font style='background-color:#F7FA00'><b>標註類型-新知識</b></font>來說明吧。</li><li>對於文章內容或是同學的想法你有什麼想要額外補充資料或舉例的呢？請試著使用<font style='background-color:#F2F8F8'><b>標註類型-補充舉例</b></font>分享給同學吧。</li>",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                /*    "quailfy_message": "恭喜你晉升為城主！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                /*    "qualified_message": "您已經晉升為城主了！",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                /*    "qualifier": {
+                        topic_annotation_count: {
+                            "新知識": {
+                              count:3
+                            },
+                            "補充舉例": {
+                              count:3
+                            }                      
+                        },
+                        respond_to_user_count: {                  
+                              count:6 
+                        },
+                        responded_user_count: {
+                            count:2  
+                        }
+                    },
+                    /**
+                     * 設定是否呈現名單
+                     */
+                /*    "set_list":false,  
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                /*    "is_notify":false,                       
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                /*    "policy": {
+                        // 要寫出所有的設定條件
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": true,
+                        "like": true           
+                    }
+                }, //第三階over
+                {  // 第四階
+                    "name": "king",
+                    "is_qualified": false,
+                    /**
+                     * 如何獲得獎章的訊息
+                     * @types {String}
+                     */
+                /*    "qualification_message": "想要成為國王的話請試著標註4篇【我想說】與2篇【很奇怪】，並多多回應與喜愛別人喔~<hr><li>對於文章或同學們的標註內容你有什麼想法呢？請試著使用<font style='background-color:#3799FF'><b>標註類型-我想說</b></font>將你的意見說出來吧。</li><li>文章中或同學的討論中有什麼讓你覺得奇怪的地方嗎？請試著使用<font style='background-color:#FF55FD'><b>標註類型-很奇怪</b></font>和同學們一起討論？</li><li>你同意同學們的說法嗎？覺得認同的話就大方地給他一個<font style='color:red'><b>愛心</b></font>吧！</li>",
+                    /**
+                     * 獲得獎章時候的通知 
+                     * @types {String}
+                     */
+                /*    "quailfy_message": "恭喜你晉升為國王！",
+                    /**
+                     * 取消獎章時候的通知(降級) 
+                     * @types {String}
+                     */
+                /*    "disqualify_message": "你降級了喔~請多加油吧！",                     
+                    /**
+                     * 已經獲得獎章的訊息 
+                     * @types {String}
+                     */
+                /*    "qualified_message": "您已經晉升為國王了！",
+                    /**
+                     * 獎章資格
+                     * @types {JSON}
+                     */
+                /*    "qualifier": {
+                        topic_annotation_count: {
+                            //count:3,
+                           // "_total":{
+                           //   count:20  
+                           //},
+                             "我想說": {
+                              count:4
+                            },
+                            "很奇怪": {
+                              count:2
+                            }                     
+                        },
+                       // respond_annotation_count: {
+                            //"_respond_total":{
+                             // count:11  
+                            //}
+                        //},
+                        respond_to_user_count: {                  
+                              count:10
+                        },
+                        responded_user_count: {
+                            count:3  
+                        },
+                        //liked_count:{
+                       //     count:2
+                        //},
+                        like_to_users_count: {
+                            count:6  
+                        }, 
+                        liked_users_count: {
+                            count:3  
+                        }, 
+                    },
+                    /**
+                     * 設定是否呈現名單
+                     */
+                /*    "set_list":true,  
+                    /**
+                     * 設定是已通知過晉升
+                     */
+                /*    "is_notify":false,                       
+                    /**
+                     * 權限設定
+                     * @types {JSON}
+                     */
+                /*    "policy": {   
+                        "topic_writable": true,
+                        "other_topic_readable": true,
+                        "other_topic_respondable": true,
+                        "other_respond_readable": true,
+                        "like": true   
+                    }
+                } //第四階over
+            ]*/
         },
         /**
          * 開啟行動版網頁

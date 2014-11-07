@@ -26,10 +26,10 @@ function KALS_controller() {
         
         if (typeof(KALS_context) === 'object') {
             KALS_context.auth.add_listener(function () {
-                _this._auth_check();
+                //_this._auth_check();
             });
         }
-        _this._auth_check();
+        //_this._auth_check();
     }
 }
 
@@ -136,13 +136,14 @@ KALS_controller.prototype._$initialize_view = function () {
  * @type {String}
  */
 KALS_controller.prototype.get_request_url = function () {
-	var _url = this._$model;
-    
-	if ($.is_null(_url)) {
+    var _url = this._$model;
+    _url = _url.toLowerCase();
+
+    if ($.is_null(_url)) {
         return _url;
     }
     
-	if ($.ends_with(_url, '/')) {
+    if ($.ends_with(_url, '/')) {
         _url = _url.substr(0, _url.length-1);
     }
     return _url;
@@ -170,6 +171,12 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         _data = {};
     }
     
+    if (typeof(_data) !== "object" || $.is_array(_data) === true) {
+        _data = {
+            "_data": _data
+        };
+    }
+    
     if (this._enable_controller_flag === false) {
         //this.debug('request', 'enable flag is false');
         $.trigger_callback(_callback);
@@ -183,6 +190,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         return $.trigger_callback(_callback);
     }
 
+    //_action = _action.toLowerCase();
     if (_method === 'get') {
         _url = _url + '/request_get';        
     }
@@ -211,6 +219,8 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
             }
         }
     };
+    
+    //$.test_msg("request", _data);
 
     //this.debug('request', _callback);
     //return;
@@ -254,7 +264,8 @@ KALS_controller.prototype.request_get_cache = function (_action, _data, _callbac
         //$.test_msg('temp', 'url is null');
         return $.trigger_callback(_callback);
     }
-
+    
+    //_action = _action.toLowerCase();
     _url = _url + '/request_get';
 
     if (this._enable_debug_flag === true) {
@@ -381,10 +392,13 @@ KALS_controller.prototype._initialize_view_data = function (_view) {
         
         if (typeof(KALS_context) === 'object') {
             KALS_context.auth.add_listener(function () {
-                _this._auth_check();
+                //$.test_msg("KALS_controller before auth");
+                if (KALS_context.completed === true) {
+                    _this._auth_check();
+                }
             });
         }
-        _this._auth_check();
+       _this._auth_check();
     }
     
     return _view;
@@ -571,6 +585,8 @@ KALS_controller.prototype.debug = function (_header, _message) {
  * @returns {KALS_controller.prototype}
  */
 KALS_controller.prototype._auth_check = function () {
+    
+    //throw "是誰呼叫了_auth_check?";
     if (this._$enable_auth_check === false) {
         return;
     }
@@ -613,6 +629,7 @@ KALS_controller.prototype.disable_controller = function (_callback) {
     //this.debug('disable_controller');
     
     var _this = this;
+    //throw "誰設定了我?";
     setTimeout(function () {
         _this.addClass('controller-disable');
     }, 0);

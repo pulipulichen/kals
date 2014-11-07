@@ -34,8 +34,10 @@ KALS_view_manager.prototype.get_view = function (_index) {
     //$.test_msg('KALS_view_manager', this._data);
     //return JSONP_dispatcher.prototype.get_field.call(this, _index);
     var _view = JSONP_dispatcher.prototype.get_field.call(this, _index);
+    
     if (_view === undefined) {
-        _view = "{{kals-lang:kals_framework.view_config_error}}";
+        _view = "{{kals-lang:kals_framework.view_config_error}}" + "<br>" + _index;
+        throw _view;
     }
     var _classname = this._get_view_classname(_index);
     _view = $("<span>" + _view + "<span>")

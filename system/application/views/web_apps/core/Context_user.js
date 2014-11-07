@@ -308,6 +308,7 @@ Context_user.prototype.get_annotation_count = function (_write_type, _annotation
     if ($.is_string(_write_type)) {
         if ($.is_class(_annotation_type, "Annotation_type_param")) {
             // 限定類型
+            //$.test_msg("this._annotation_count[_write_type]" , this._annotation_count[_write_type]);
             _type_name = _annotation_type.get_name();
             if (typeof(this._annotation_count[_write_type][_type_name]) !== "undefined") {
                 _count = this._annotation_count[_write_type][_type_name];
@@ -436,6 +437,7 @@ Context_user.prototype.get_annotation_count_by_param = function (_annotation_par
  * @returns {Context_user}
  */
 Context_user.prototype.set_annotation_count_modify_by_param = function (_annotation_param, _count) {
+    
     if ($.is_class(_annotation_param, "Annotation_param") === false 
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count() parameters error");
@@ -684,16 +686,52 @@ Context_user.prototype.set_responded_annotation_count = function (_count) {
 
 /**
  * 取得被別人回應的標註次數
- * 
- * @returns {Int}
+ * @param {Int} _count 次數
+ * @returns {Context_user}
  */
 Context_user.prototype.get_responded_annotation_count = function () {
+    // 取用user_statistic的方法？
     return this.get_attr("responded_annotation_count", 0);
+};
+
+/**
+ * 設定被多少人回應的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_responded_users_count = function (_count) {
+    return this.set_attr("responded_users_count", _count);
+};
+
+/**
+ * 取得被多少人回應的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_responded_users_count = function () {
+    return this.get_attr("responded_users_count", 0);
+};
+
+/**
+ * 設定回應了多少人的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_respond_to_users_count = function (_count) {
+    return this.set_attr("respond_to_users_count", _count);
+};
+
+/**
+ * 取得回應了多少人的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_respond_to_users_count = function () {
+    return this.get_attr("respond_to_users_count", 0);
 };
 
 // ------------------------------
 // like_to_count
-
 /**
  * 設定喜愛別人的次數
  * 
@@ -762,6 +800,42 @@ Context_user.prototype.get_liked_count = function () {
     return this.get_attr("liked_count", 0);
 };
 
+/**
+ * 設定我喜愛了多少人的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_like_to_users_count = function (_count) {
+    return this.set_attr("like_to_users_count", _count);
+};
+
+/**
+ * 取得我喜愛了多少人的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_like_to_users_count = function () {
+    return this.get_attr("like_to_users_count", 0);
+};
+//-----------------
+/**
+ * 設定有多少人喜愛我的人數
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_liked_users_count = function (_count) {
+    return this.set_attr("liked_users_count", _count);
+};
+
+/**
+ * 取得我喜愛了多少人的人數
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_liked_users_count = function () {
+    return this.get_attr("liked_users_count", 0);
+};
+
 // ---------------------------------
 
 /**
@@ -774,10 +848,11 @@ Context_user.prototype.get_liked_count = function () {
 Context_user.prototype.update = function (_dispatcher, _data) {
     
     var _data_key = this._$data_key;
-    if (_data_key === null) {
+    if (_data_key === null || _data === undefined) {
         return this;
     }
     
+    //$.test_msg("user.update", [typeof(_data[_data_key]), _data_key ]);
     if (typeof(_data[_data_key]) !== 'undefined') {
         for (var _key in _data[_data_key]) {
             this._pre_update(_key, _data[_data_key][_key]);
@@ -816,6 +891,38 @@ Context_user.prototype._pre_update = function (_key, _value) {
         }
     }
     
+    return this;
+};
+
+
+// ---------------------------------
+
+/**
+ * 從server端獲取user相關資料
+ *
+ */
+Context_user.prototype._load_params_uri = "statistics/user_params";
+
+/**
+ * 
+ * @returns {undefined}
+ */
+Context_user.prototype.load_user_params = function ( _callback){
+    
+    var _this = this;
+    var _get_callback = function (_data){
+        _this.update(_this, _data);
+        $.trigger_callback( _callback);
+        //$.test_msg("test_responded_count", _data);
+    };       
+        
+    var _config = {
+        url: _this._load_params_uri,
+        callback: _get_callback
+    };
+    
+    KALS_util.ajax_get(_config);
+
     return this;
 };
 

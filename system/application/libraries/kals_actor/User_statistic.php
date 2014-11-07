@@ -1,9 +1,10 @@
 <?php
 include_once 'KALS_actor.php';
+//include_once 'KALS_actor.php';
 /**
  * User_statistic
  *
- * 使用者統計
+ * 使用者統計資料
  *
  * @package		KALS
  * @category		Controllers
@@ -14,22 +15,12 @@ include_once 'KALS_actor.php';
  * @version		1.0 2014/5/15 下午 03:51:22
  */
 class User_statistic extends KALS_actor {
-
-   /* public $actor_type_id = 1;
-
-    protected $table_name = 'user';
-    protected $table_fields = array('user_id', 'name', 'email', 'sex', 'photo', 'locale', 'style', 'password', 'deleted', 'domain_id');
-    protected $primary_key = 'user_id';
-    protected $not_null_field = array('email', 'domain_id');
-    protected $unique_restriction = array('email', 'domain_id');
-    protected $default_field = 'email';
-    protected $fake_delete = 'deleted';
     
-    private $notification_coll;*/
     protected function  _post_construct() {
         $this->CI->load->library("annotation/annotation_collection");
         $this->CI->load->library("kals_resource/annotation");
         $this->CI->load->library('kals_actor/User');
+
         //$this->_CI_load('library', 'kals_actor/Notification_collection', 'notification_collection');
         //$this->notification_coll = new Notification_collection($this);
     }
@@ -126,7 +117,7 @@ class User_statistic extends KALS_actor {
         // use to test 
         //$user_id = 2002;
         $user_id = $user->get_id();
-        
+
         $this->db->select('respond.annotation_id');
         $this->db->from('annotation respond');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = respond.annotation_id');
@@ -155,7 +146,7 @@ class User_statistic extends KALS_actor {
      * @param User $responded_user
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @param User $user 
-     * @return array | user_id
+     * @return Int | count
      */
     public function get_responded_by_user_count($user, $webpage, $responded_user, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
@@ -180,8 +171,7 @@ class User_statistic extends KALS_actor {
         // 要加入未刪除的限制啊！
         $this->db->where('topic.deleted', 'false');
         $this->db->where('respond.deleted', 'false');
-        
-        
+
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
@@ -198,7 +188,7 @@ class User_statistic extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return Int $count
      */
-    public function get_respond_users_count($user, $webpage, $annotation_type = NULL) {
+    public function get_responded_users_count($user, $webpage, $annotation_type = NULL) {
         // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
@@ -207,7 +197,8 @@ class User_statistic extends KALS_actor {
         }
         $user_id = $user->get_id();
         
-        $this->db->distinct('respond.user_id');
+        //$this->db->distinct('respond.user_id');
+        $this->db->select('respond.user_id');
         $this->db->from('annotation respond');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = respond.annotation_id');
         $this->db->join('annotation topic', 'respond.topic_id = topic.annotation_id');
@@ -219,12 +210,15 @@ class User_statistic extends KALS_actor {
         // 要加入未刪除的限制啊！
         $this->db->where('topic.deleted', 'false');
         $this->db->where('respond.deleted', 'false');
-        
         if ($annotation_type !== NULL){
             $this->db->where('respond.annotation_type_id', $type_id);
         }
+        
+        $this->db->group_by('respond.user_id');
+        
         $query = $this->db->get();
         $count = $query->num_rows();
+        //test_msg("count",$count);
         return $count;        
     }
  
@@ -332,7 +326,8 @@ class User_statistic extends KALS_actor {
         $user_id = $user->get_id();
         
         //--------
-        $this->db->distinct('respond_to.user_id');
+        //$this->db->distinct('respond_to.user_id');
+        $this->db->select('respond_to.user_id');
         $this->db->from('annotation my_res');
         $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = my_res.annotation_id');
         $this->db->join('annotation respond_to', 'my_res.topic_id = respond_to.annotation_id');
@@ -348,6 +343,8 @@ class User_statistic extends KALS_actor {
         if ($annotation_type !== NULL) {
             $this->db->where('my_res.annotation_type_id', $type_id);
         }
+        $this->db->group_by('respond_to.user_id');
+       
         $query = $this->db->get();
         $respond_user = array();
         foreach ($query->result() as $row) {
@@ -419,7 +416,7 @@ class User_statistic extends KALS_actor {
      * @param Webpage $webpage
      * @param User $user 
      */
-    public function get_like_to_user_count($user, $webpage, $like_to_user) {
+    public function get_like_to_annotation_by_user_count($user, $webpage, $like_to_user) {
      // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
@@ -466,6 +463,29 @@ class User_statistic extends KALS_actor {
         $count = $query->num_rows(); 
         return $count;
     }
+    /**
+     * 取得我喜愛的標註數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_like_to_count($user, $webpage) {
+     // @TODO 20140512 Pulipuli Chen
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('annotation2like.annotation_id');
+        $this->db->from('annotation2like');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation2like.annotation_id');
+        $this->db->where('annotation2like.user_id', $user_id);
+        $this->db->where('webpage_id', $webpage_id);        
+        // 要加入未刪除的限制啊！
+        $this->db->where("canceled", "false");
+        
+        $query = $this->db->get();
+        $count = $query->num_rows(); 
+        return $count;
+    }
      
     /**
      * 取得被指定對象喜愛的數量
@@ -495,88 +515,335 @@ class User_statistic extends KALS_actor {
     }
     
     /**
-     * 取得被誰喜愛的名單
+     * 取得被誰喜愛的名單(有哪些人喜愛我)
      * 
      * @param Webpage $webpage
      * @param User $user 
-     * @todo 之後再完成
      */
-    public function get_liked_user($webpage) {
-        
-        return 0;
+    public function get_liked_users($user, $webpage) {
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        $liked_user_array = array();
+        //-------------------------
+        $this->db->select('user_liked.liked_user');
+        $this->db->from('user_liked');
+        $this->db->join('webpage2annotation', 'user_liked.annotation_id = 
+webpage2annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('user_liked.me', $user_id);
+        //----------
+        $this->db->distinct();
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $liked_user_array[] = $row->liked_user;
+        }
+       
+        return $liked_user_array;       
+
     }
-        /**
+    /**
      * 取得被多少人喜愛的數量
      * 
      * @param Webpage $webpage
      * @param User $user 
-     * @todo 之後再完成
+     * 
      */
-    public function get_liked_user_count($webpage) {
-        
-        return 0;
+    public function get_liked_users_count($user, $webpage) {
+        $liked_user = $this->get_liked_users($user, $webpage);
+        $count = count($liked_user);
+        //test_msg("liked_user_count", $count);
+        return $count;             
+
+    }
+    //---------------------------------------
+    /**
+     * 取得我喜愛了哪些人的名單
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     */
+    public function get_like_to_users($user, $webpage) {
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        $like_to_user_array = array();
+        //-------------------------
+        $this->db->select('like_to_user');
+        $this->db->from('user_like_to');
+        $this->db->join('webpage2annotation', 'user_like_to.annotation_id = 
+webpage2annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('user_like_to.me', $user_id);
+        //----------
+        $this->db->distinct();
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $like_to_user_array[] = $row->like_to_user;
+        }
+        return $like_to_user_array;    
+    }
+    /**
+     * 取得我喜愛了多少人的數量
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     * 
+     */
+    public function get_like_to_users_count($user, $webpage) {
+        $like_to_user = $this->get_like_to_users($user, $webpage);
+        $count = count($like_to_user);
+        return $count;             
+
     }
     
     // --------------------------------------
+     /**
+     * 取得所有有用過的標註類型(自己寫的)
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Array $annotation_type
+     */
+    public function get_topic_types(User $user, Webpage $webpage) {
+        $type_array = array();
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('annotation.annotation_type_id');
+        $this->db->from('annotation');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
+        $this->db->where('annotation.user_id', $user_id);
+        $this->db->where('webpage_id', $webpage_id);      
+        $this->db->where('deleted', 'false');
+        $this->db->group_by('annotation.annotation_type_id');
+        $this->db->order_by('annotation_type_id', 'asc');
+        
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $type_array[] = $row->annotation_type_id;
+        }
+        return $type_array;
+    } 
     
     
     /**
      * 取得主題標註所有類型個別統計次數的陣列
-     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
+     * @todo 20140516 Pulipuli Chen 
      * @param User $user
      * @param Webpage $webpage
-     * @return int
+     * @return Array $type_count_collection
      */
     public function get_topic_types_count(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+           
         $type_count_collection = array();
+        // 取得所有有使用到的type_id->array
+        $type_id_array = $this->get_topic_types($user, $webpage);
+        //test_msg("type_id_array", $type_id_array);
+        $annotation_type_factory = new Annotation_type_factory();
+        // 因為Annotation_type沒有繼承 $key =自General Object，所以不能直接用，改用Annotation_type_factory()
+        foreach ($type_id_array as $value) {       
+            $value = intval($value, 10);            
+            $type = $annotation_type_factory->filter_object($value);  
+            // 直接用$type->get_name()是basic才能用
+            
+            if ($type->is_basic()) {
+                $type_name = $type->get_name();  
+                //test_msg("BASIC_type=", $type->get_name());
+                $type_name = substr($type_name, 16); //SUBSTR是因為這邊抓到的是annotation.type.question，只留後面
+            }
+            else {
+                $type_name = $type->get_custom_name();
+                //test_msg("CUSTOM_type=", $type->get_custom_name());
+            }
+            //test_msg("type_id", $type->get_id());
+            
+            //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            //test_msg("type_count_collection", array($type_name, $type->get_id(), $this->get_topic_count($user, $webpage, $type)));
+            $type_count_collection[$type_name] = $this->get_topic_count($user, $webpage, $type);          
+           //test_msg('value', $value);
+           //test_msg('name', $type_name);
+            }
+        //$type_test = $type_count_collection['importance']; // annotation.type.importance
         
-        // 以下是假資料，請想辦法取代
-        $type_count_collection = array(
+        /*$type_count_collection = array(
             // 標註類型名稱 => 次數
-            'importance' => 1,
-        );
-        
+            'importance' => $this->get_topic_count($user, $webpage, $annotation_type),
+        );*/  
         return $type_count_collection;
     }
     
+ /**
+     * 取得主題標註所有類型個別統計次數的陣列長度(使用了多少種類型)
+     * @todo 20140516 Pulipuli Chen 
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Int $type_used_count
+     */
+    public function get_topic_types_used_count_(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+           
+        $type_count_collection = $this->get_topic_types_count($user, $webpage);
+        $type_used_count = $type_count_collection.length();
+        return $type_used_count;
+    }   
+    
+     /**
+     * 取得所有別人回應自己的標註中有用過的標註類型的陣列
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Array $annotation_type
+     */
+    public function get_respond_to_my_types(User $user, Webpage $webpage) {
+        $type_array = array();
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('respond.annotation_type_id');
+        $this->db->from('annotation respond');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = respond.annotation_id');
+        $this->db->join('annotation topic', 'respond.topic_id = topic.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('topic.user_id', $user_id);
+        $this->db->where('respond.topic_id IS NOT NULL');
+        $this->db->where('respond.user_id <>', $user_id);
+        $this->db->where('topic.deleted', 'false');
+        $this->db->where('respond.deleted', 'false');
+        $this->db->group_by('respond.annotation_type_id');
+        $this->db->order_by('respond.annotation_type_id', 'asc');     
+               
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $type_array[] = $row->annotation_type_id;
+        }
+        return $type_array;
+    } 
+    
     /**
-     * 取得回應給自己的標註所有類型個別統計次數的陣列
+     * 取得別人回應自己的標註所有類型個別統計次數的陣列
      * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
-     * @return int
+     * @return Array $type_count_collection
      */
     public function get_respond_to_my_types_count(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+     
         $type_count_collection = array();
+        //取得別人回應自己所有有用到的type_id->array
+        $type_id_array = $this->get_respond_to_my_types($user, $webpage);
         
-        // 以下是假資料，請想辦法取代
-        $type_count_collection = array(
-            // 標註類型名稱 => 次數
-            'importance' => 1,
-        );
-        
+        $annotation_type_factory = new Annotation_type_factory();
+        foreach ($type_id_array as $value) {       
+            $value = intval($value, 10);
+            $type = $annotation_type_factory->filter_object($value);  
+            $type_name = $type->get_name();  
+            $type_name = substr($type_name, 16); 
+            //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            $type_count_collection[$type_name] = $this->get_responded_count($user, $webpage, $type);          
+            }
+        //$type_test = $type_count_collection['importance']; // annotation.type.importance
+
         return $type_count_collection;
     }
     
+     /**
+     * 取得回應給別人的標註所有類型陣列(自己回應給別人的標註有使用過的標註類型陣列)
+     * @param User $user
+     * @param Webpage $webpage
+     * @return Array $annotation_type
+     */
+    public function get_respond_to_other_types(User $user, Webpage $webpage) {
+        $type_array = array();
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //--------
+        $this->db->select('annotation.annotation_type_id');
+        $this->db->from('annotation');
+        $this->db->join('webpage2annotation', 'webpage2annotation.annotation_id = annotation.annotation_id');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('annotation.user_id', $user_id);
+        $this->db->where('annotation.topic_id IS NOT NULL');
+        $this->db->where('annotation.deleted', 'false');
+        $this->db->group_by('annotation.annotation_type_id');
+        $this->db->order_by('annotation.annotation_type_id', 'asc');     
+               
+        $query = $this->db->get();
+        foreach ( $query->result() as $row){
+            $type_array[] = $row->annotation_type_id;
+        }
+        return $type_array;
+    }    
     
     /**
-     * 取得回應給別人的標註所有類型個別統計次數的陣列
+     * 取得回應給別人的標註所有類型個別統計次數的陣列(自己回應給別人的標註)
      * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
      * @return int
      */
     public function get_respond_to_other_types_count(User $user, Webpage $webpage) {
+        $this->CI->load->library('type/Type_factory');
+        $this->CI->load->library('type/Annotation_type_factory');
+        $this->CI->load->library('type/Annotation_type');
+     
         $type_count_collection = array();
+        //自己回應給別人所有有使用過的type_id->array
+        $type_id_array = $this->get_respond_to_other_types($user, $webpage);
         
-        // 以下是假資料，請想辦法取代
-        $type_count_collection = array(
-            // 標註類型名稱 => 次數
-            'importance' => 1,
+        $annotation_type_factory = new Annotation_type_factory();
+        foreach ($type_id_array as $value) {       
+            $value = intval($value, 10);
+            $type = $annotation_type_factory->filter_object($value);  
+            $type_name = $type->get_name();  
+            $type_name = substr($type_name, 16); 
+            //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
+            $type_count_collection[$type_name] = $this->get_respond_to_count($user, $webpage, $type);   
+            }
+        //$type_test = $type_count_collection['importance']; // annotation.type.importance
+        return $type_count_collection;       
+    }
+    
+// ---------------------------------------------------------------------
+    /**
+     * 統整所有要丟給Context_user的資料
+     * 
+     * @deprecated since version 20140620 改到statistics/user_params去
+     * @param User $user
+     * @param Webpage $webpage
+     * @return JSON
+     */
+    public function user_params( $callback = NULL ) {
+        $user = get_context_user();
+        $webpage = get_context_webpage();
+        
+        $data =  array(
+            //"responded_count" => $this->get_responded_count($user, $webpage),
+            "responded_count" => 5,
+            "responded_user_count" =>$this->get_responded_users_count($user, $webpage),
+            "respond_to_user_count" =>$this->get_respond_to_users_count($user, $webpage)
+        );
+
+        
+        $output = array(
+            "user" => $data
         );
         
-        return $type_count_collection;
+        //打包成json丟回去 
+        return $this->_display_jsonp($output, $callback);       
     }
+    
+    
+
+    
+    
+    
+    
+    
 }
 
 

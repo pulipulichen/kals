@@ -173,6 +173,23 @@ class Annotation_setter extends Web_apps_controller {
         //context_complete();
         
         set_ignore_authorize(false);
+        
+        $data['Context_user'] = array(
+            // 從$this->user_statistic可以取得的資料
+            // types_array
+            'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
+            'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
+            'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+            'responded_users_count' =>$this->user_statistic->get_responded_users_count($user, $webpage),
+            'respond_to_users_count' =>$this->user_statistic->get_respond_to_users_count($user, $webpage),
+            
+            // int count
+            'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
+            'like_to_count' => $this->user_statistic->get_like_to_count($user, $webpage),
+            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage),
+            'like_to_users_count' => $this->user_statistic->get_like_to_users_count($user, $webpage),
+            'liked_users_count' => $this->user_statistic->get_liked_users_count($user, $webpage)
+        );
 
         return $data;
     }

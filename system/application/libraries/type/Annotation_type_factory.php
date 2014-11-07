@@ -115,7 +115,10 @@ class Annotation_type_factory extends KALS_object {
             unset($this->CI->annotation_type_object);
         }
         $this->CI->load->library('type/Annotation_type_'.$name, NULL, 'annotation_type_object');
-
+        
+        $type_name = "Annotation_type_" . $name;
+        $this->CI->annotation_type_object = new $type_name();
+        
         /*
         if (isset($this->CI->annotation_type_object) === FALSE)
         {
@@ -143,19 +146,24 @@ class Annotation_type_factory extends KALS_object {
             }
         }
          */
+        
+        //echo $this->CI->annotation_type_object->get_id(). ",";
         return $this->CI->annotation_type_object;
     }
 
     private function get_type_name($type_name)
     {
-        if (!is_string($type_name))
+        if (!is_string($type_name)) {
             return NULL;
+        }
 
         $index = strrpos($type_name, '.');
-        if (FALSE === $index)
+        if (FALSE === $index) {
             $name = $type_name;
-        else
+        }
+        else {
             $name = substr($type_name, $index + 1);
+        }
         return $name;
     }
 
@@ -240,10 +248,10 @@ class Annotation_type_factory extends KALS_object {
      *  也可以是字串，那會查詢並轉換成type_id。
      */
     public function filter_object($type_name) {
-        if (is_int($type_name)) {
-            return new Annotation_type($type_name);
-        }
-        else if (is_string($type_name)){
+        //if (is_int($type_name)) {
+        //    return new Annotation_type($type_name);
+        //}
+        if (is_string($type_name) || is_int($type_name)){
             $type = $this->create($type_name);
             return $type;
         }
