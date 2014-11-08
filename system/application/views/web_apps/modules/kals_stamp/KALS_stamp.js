@@ -684,6 +684,11 @@ KALS_stamp.prototype._init_listener = function() {
 };
 
 KALS_stamp.prototype._delay_timer = null;
+
+/**
+ * 延後確認晉級訊息
+ * @type Number
+ */
 KALS_stamp.prototype._delay_interval = 1000;
 
 /**
@@ -710,6 +715,7 @@ KALS_stamp.prototype._delay_check_qualification = function (_user) {
         _this.check_qualification(_user);
         
         // 執行完畢，計時器清空
+        clearTimeout(_this._delay_timer);
         _this._delay_timer = null;
     
         // 要延遲的時間
@@ -726,7 +732,11 @@ KALS_stamp.prototype._delay_check_qualification = function (_user) {
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.check_qualification = function(_user) {
-   
+    
+    $.test_msg("KALS_stamp.check_qualification");
+    
+    var _qualification_modified = false;
+    
     //-----要check的資料------
     //var _topic_impotrance_count = _user.get_topic_annotation_count();
     //-----------------------
@@ -734,133 +744,91 @@ KALS_stamp.prototype.check_qualification = function(_user) {
     //$.test_msg("KALS_stamp check_qualification 1");
     var _stamps_data = this._init_config();
     // 全部的資格
-    for ( var _i=0; _i< _stamps_data.length; _i++ ){
+    for ( var _i=0; _i< _stamps_data.length; _i++ ) {
         // 用來判斷是否有通過資格
         var _stamp_qualified = false;
         var _qualifier = _stamps_data[_i].qualifier;
         // 檢查qualifier中的所有條件
         for (var _key in _qualifier) {
+            
             var _config = _qualifier[_key];
             //KALS_util.notify("_KEY =" + _key); //KEY有哪些
-            //------第一項---------------------------------
-            if (_key === "topic_annotation_count") {
-                
-                for (var _type in _config) {
-                    var _type_config = _config[_type];
-                    
-                    if (_type === "_total") {
-                        var _total_annotation_count = _user.get_topic_annotation_count();
-                        if ( _type_config.count > _total_annotation_count ){
-                            // 不合格
-                            _stamp_qualified = false;    
-                            break;
-                        }
-                        else{ // 合格
-                            _stamp_qualified = true;
-                            
-                            //KALS_util.notify("第一項有跑嗎？"+ _type_config.count + _stamp_qualified + _total_annotation_count);
-                            //this.qualify();
-                        }
-                    }
-                    else {
-                        // 取出指定type的數量
-                        var _annotation_type = new Annotation_type_param(_type);
-                        var _total_annotation_count = _user.get_topic_annotation_count(_annotation_type);
-                        
-                        $.test_msg(_i + "現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _type_config.count > _total_annotation_count )]);
-                        if ( _type_config.count > _total_annotation_count ){
-                            // 不合格
-                            _stamp_qualified = false;    
-                            break;
-                        }
-                        else{ // 合格
-                            _stamp_qualified = true;
-                            //KALS_util.notify("第二項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
-                            //this.qualify();
-                        }
-                    }
-                }   //for (var _type in _config) {              
-               
-            }   //if (_key === "topic_annotation_count") {
-            //    
-            //-----第2項respond_to_user_count-----------------------------------
-            if (_key === "respond_to_user_count"){
-                var _respond_to_user_count = _user.get_respond_to_users_count();
-               // var _respond_to_user_count_config = _config[_key];
-                 $.test_msg("NO2.respond_to_user_count = ", _qualifier[_key].count);
-                if (_respond_to_user_count < _qualifier[_key].count){
-                    // 不合格
-                    _stamp_qualified = false;
-                   //KALS_util.notify("第2項respond_to_user_count未達成"+ _qualifier[_key].count + _stamp_qualified);
-                   break;                  
-                }
-                else{// 合格
-                    _stamp_qualified = true;                
-                }     
-            }//if (_key === "respond_to_user_count"){  
-            
-            //-------第3項responded_user_count-----------------------
-            if (_key === "responded_user_count"){
-                var _responded_user_count = _user.get_responded_users_count();
-
-                 $.test_msg("NO3.responded_user_count = ", _qualifier[_key].count);
-                if (_responded_user_count < _qualifier[_key].count){
-                    // 不合格
-                    _stamp_qualified = false;
-                   //KALS_util.notify("第3項responded_user_count未達成"+ _qualifier[_key].count + _stamp_qualified);
-                   break;                  
-                }
-                else{// 合格
-                    _stamp_qualified = true;                
-                }     
-            }//if (_key === "responded_user_count"){               
-             
-            //-----第4項like_to_users_count---------------------------
-            if (_key === "like_to_users_count"){
-                var _like_to_users_count = _user.get_like_to_users_count();
-
-                 $.test_msg("NO4.responded_user_count = ", _qualifier[_key].count);
-                if (_like_to_users_count < _qualifier[_key].count){
-                    // 不合格
-                    _stamp_qualified = false;
-                   //KALS_util.notify("第4項_like_to_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
-                   break;                  
-                }
-                else{// 合格
-                    _stamp_qualified = true;                
-                }     
-            }//if (_key === "like_to_users_count"){        
-           
-            //--------第5項liked_users_count--------------------------------------
-            if (_key === "liked_users_count") {
-                 var _liked_users_count = _user.get_liked_users_count();
-                  $.test_msg("NO5.liked_users_count = ", _qualifier[_key].count);
-                 if ( _liked_users_count < _qualifier[_key].count ){
-                    // 不合格
-                    _stamp_qualified = false;
-                     //KALS_util.notify("第5項liked_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+            switch (_key) {
+                case "topic_annotation_count":
+                    //------第一項---------------------------------
+                    _stamp_qualified = this.check_qualification_topic_annotation_count(_user, _config);
                     break;
-                 }
-                 else{ // 合格
-                    _stamp_qualified = true;
-                 }
-             }  //if (_key === "liked_users_count") {
+                case "respond_to_user_count":
+                    //-----第2項respond_to_user_count-----------------------------------
+                    _stamp_qualified = this.check_qualification_respond_to_user_count(_user, _config);
+                    break;
+                case "responded_user_count":
+                    //-------第3項responded_user_count-----------------------
+                    _stamp_qualified = this.check_qualification_responded_user_count(_user, _config);
+                    break;
+                case "like_to_users_count":
+                    //-----第4項like_to_users_count---------------------------
+                    _stamp_qualified = this.check_qualification_like_to_users_count(_user, _config);
+                    break;
+                case "liked_users_count":
+                    //--------第5項liked_users_count--------------------------------------
+                    _stamp_qualified = this.check_qualification_liked_users_count(_user, _config);                
+                    break;
+            }   //switch (_key) {
+//            if (_key === "topic_annotation_count") {
+//                //------第一項---------------------------------
+//                _stamp_qualified = this.check_qualification_topic_annotation_count(_user, _config);
+//            }   //if (_key === "topic_annotation_count") {
+//            else if (_key === "respond_to_user_count") {
+//                //-----第2項respond_to_user_count-----------------------------------
+//                _stamp_qualified = this.check_qualification_respond_to_user_count(_user, _config);
+//            } //if (_key === "respond_to_user_count"){  
+//            else if (_key === "responded_user_count") {
+//                //-------第3項responded_user_count-----------------------
+//                _stamp_qualified = this.check_qualification_responded_user_count(_user, _config);
+//            } //if (_key === "responded_user_count"){               
+//            else if (_key === "like_to_users_count") {
+//                //-----第4項like_to_users_count---------------------------
+//                _stamp_qualified = this.check_qualification_like_to_users_count(_user, _config);
+//            } //if (_key === "like_to_users_count"){        
+//            else if (_key === "liked_users_count") {
+//                //--------第5項liked_users_count--------------------------------------
+//                _stamp_qualified = this.check_qualification_liked_users_count(_user, _config);                
+//            }  //if (_key === "liked_users_count") {
              //-------------------------------------------------------
-            this._stamps_config[_i].is_qualified = _stamp_qualified;
-           // KALS_util.notify("_i.is_qualified為" + _i + this._stamps_config[_i].is_qualified);
+            // KALS_util.notify("_i.is_qualified為" + _i + this._stamps_config[_i].is_qualified);
             if (_stamp_qualified === false) {
                 break;
             }
+//            else {
+//                this._stamps_config[_i].is_qualified = _stamp_qualified;
+//            }
         }   //for (var _key in _qualifier) {
+        
+//        var _qualifier = _stamps_data[_i].qualifier;
+//        var _stamp_qualified = (
+//                this.check_qualification_topic_annotation_count(_user, _config)
+//                && this.check_qualification_respond_to_user_count(_user, _config)
+//                && this.check_qualification_responded_user_count(_user, _config)
+//                && this.check_qualification_like_to_users_count(_user, _config)
+//                && this.check_qualification_liked_users_count(_user, _config)
+//                );
+        
+        if (this._stamps_config[_i].is_qualified !== _stamp_qualified) {
+            _qualification_modified = true;
+        }
         
         // 獲得獎章的設定
         this._stamps_config[_i].is_qualified = _stamp_qualified;
         //KALS_util.notify("_i.is_qualified為" + _i + this._stamps_config[_i].is_qualified);
         //$.test_msg("KALS_stamp _i.is_qualified為"+  _i + this._stamps_config[_i].is_qualified);
         
-    }   //for (var _key in _qualifier) {
+    }   //for ( var _i=0; _i< _stamps_data.length; _i++ ) {
     
-    this.qualify();
+    if (_qualification_modified === true) {
+        this.qualify();
+    }
+    
     //$.test_msg("KALS_stamp check_qualification 2");
     //this.open();
     
@@ -868,39 +836,279 @@ KALS_stamp.prototype.check_qualification = function(_user) {
 };
 
 /**
- * 獲得資格後的動作->開放權限？
- * 
- * @returns {KALS_stamp.prototype}
+ * 確認主題標註總數
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config
+ * @returns {Boolean} 是否符合資格
  */
+KALS_stamp.prototype.check_qualification_topic_annotation_count = function(_user, _config) {
+    var _stamp_qualified = false;
+    for (var _type in _config) {
+        var _type_config = _config[_type];
 
-KALS_stamp.prototype._stamp_level = null;
-KALS_stamp.prototype._stamp_level_modified = false;
-KALS_stamp.prototype._stamp_level_up = true;
+        if (_type === "_total") {
+            var _total_annotation_count = _user.get_topic_annotation_count();
+            if ( _type_config.count > _total_annotation_count ){
+                // 不合格
+                _stamp_qualified = false;    
+                break;
+            }
+            else{ // 合格
+                _stamp_qualified = true;
 
-KALS_stamp.prototype.qualify = function() {
+                //KALS_util.notify("第一項有跑嗎？"+ _type_config.count + _stamp_qualified + _total_annotation_count);
+                //this.qualify();
+            }
+        }
+        else {
+            // 取出指定type的數量
+            var _annotation_type = new Annotation_type_param(_type);
+            var _total_annotation_count = _user.get_topic_annotation_count(_annotation_type);
+
+            $.test_msg("現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _type_config.count > _total_annotation_count )]);
+            if ( _type_config.count > _total_annotation_count ){
+                // 不合格
+                _stamp_qualified = false;    
+                break;
+            }
+            else{ // 合格
+                _stamp_qualified = true;
+                //KALS_util.notify("第二項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
+                //this.qualify();
+            }
+        }
+    }   //for (var _type in _config) {              
+
+    return _stamp_qualified;
+};
+
+
+/**
+ * 確認回應標註總數
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config 回應標註的數量
+ * @returns {Boolean} 是否符合資格
+ */
+KALS_stamp.prototype.check_qualification_respond_to_user_count = function(_user, _config) {
+    var _stamp_qualified = false;
     
-    this._stamp_level_modified = false;
-    this._stamp_level_up = true;
+    var _count = _config.count;
+    var _respond_to_user_count = _user.get_respond_to_users_count();
+    // var _respond_to_user_count_config = _config[_key];
+      $.test_msg("NO2.respond_to_user_count = ", _count);
+     if (_respond_to_user_count < _count) {
+         // 不合格
+         _stamp_qualified = false;
+        //KALS_util.notify("第2項respond_to_user_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+        //break;                  
+     }
+     else {// 合格
+         _stamp_qualified = true;                
+     }     
+     
+     return _stamp_qualified;
+};
+
+/**
+ * 確認被回應標註總數
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config 條件設定
+ * @returns {Boolean} 是否符合資格
+ */
+KALS_stamp.prototype.check_qualification_responded_user_count = function(_user, _config) {
+    var _stamp_qualified = false;
+    
+    var _responded_user_count = _user.get_responded_users_count();
+
+    $.test_msg("NO3.responded_user_count = ", _config.count);
+    if (_responded_user_count < _config.count){
+        // 不合格
+        _stamp_qualified = false;
+       //KALS_util.notify("第3項responded_user_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+       //break;                  
+    }
+    else{// 合格
+        _stamp_qualified = true;                
+    }     
+    
+    return _stamp_qualified;
+};
+
+/**
+ * 確認喜愛別人的標註總數
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config 回應標註的數量
+ * @returns {Boolean} 是否符合資格
+ */
+KALS_stamp.prototype.check_qualification_like_to_users_count = function(_user, _config) {
+    var _stamp_qualified = false;
+    
+    var _like_to_users_count = _user.get_like_to_users_count();
+
+    $.test_msg("NO4.responded_user_count = ", _config.count);
+    if (_like_to_users_count < _config.count){
+        // 不合格
+        _stamp_qualified = false;
+       //KALS_util.notify("第4項_like_to_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+       //break;                  
+    }
+    else { // 合格
+        _stamp_qualified = true;                
+    }     
+    
+    return _stamp_qualified;
+};
+
+/**
+ * 確認喜愛人數的標註總數
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config 回應標註的數量
+ * @returns {Boolean} 是否符合資格
+ */
+KALS_stamp.prototype.check_qualification_liked_users_count = function(_user, _config) {
+    var _stamp_qualified = false;
+    
+    var _liked_users_count = _user.get_liked_users_count();
+    $.test_msg("NO5.liked_users_count = ", _config.count);
+    if ( _liked_users_count < _config.count ){
+       // 不合格
+       _stamp_qualified = false;
+        //KALS_util.notify("第5項liked_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+       //break;
+    }
+    else { // 合格
+       _stamp_qualified = true;
+    }
+    
+    return _stamp_qualified;
+};
+
+///**
+// * 獲得資格後的動作->開放權限？
+// * 
+// * @returns {KALS_stamp.prototype}
+// */
+
+/**
+ * 最後資格的等級
+ * @type Number
+ * @author Pulipuli Chen 20141108
+ */
+KALS_stamp.prototype._stamp_level = null;
+
+//KALS_stamp.prototype._stamp_level_modified = false;
+
+//KALS_stamp.prototype._stamp_level_up = true;
+
+/**
+ * 確認晉升動作
+ * @author Pulipuli Chen 20141108
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype.qualify = function() {
+//    
+//    //this._stamp_level_modified = false;
+//    this._stamp_level_up = true;
+//    var _i;
+//    // 設定開啟功能
+//
+//    var _stamps_data = this._init_config();
+//    //$.test_msg("ERROR: " + JSON.stringify(_stamps_data));
+//    for ( var _i in _stamps_data) {
+//        if (this._stamps_config[_i].is_qualified === true) {
+//          
+//           // $.test_msg("KALS_stamp qualify 3");
+//           if (this._stamps_config[_i].is_qualified === true) {
+//               if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
+//                   this._stamp_level = _i;
+//                   //this._stamp_level_modified = true;
+//                   this._stamp_level_up = true;
+//                   //$.test_msg("KALS_stamp qualify 4 this._stamp_level" + this._stamp_level);                  
+//               }    //if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
+//               else if (_i > this._stamp_level) { //已經有等級了->升級
+//                   this._stamp_level = _i;
+//                   //this._stamp_level_modified = true;
+//                   this._stamp_level_up = true;
+//                  
+//                   //$.test_msg("KALS_stamp qualify 5 this._stamp_level" + this._stamp_level);
+//               }    //else if (_i > this._stamp_level) { //已經有等級了->升級
+//               else{ //已經等級了->降級
+//                   //...?
+//                   //$.test_msg("KALS_stamp qualify FALSE _1!!" + this._stamps_config[_i].is_qualified + "NOW IS "+ _i + "this._stamp_level"+ this._stamp_level);  
+//               }    //else{ //已經等級了->降級
+//           }    //if (this._stamps_config[_i].is_qualified === true) {
+//           else if (this._stamp_level === _i 
+//                   && this._stamp_level > 0) {
+//               this._stamp_level--;
+//               //this._stamp_level_modified = true;
+//               this._stamp_level_up = false;
+//               //$.test_msg("KALS_stamp qualify 6 this._stamp_level" + this._stamp_level);  
+//           }    //else if (this._stamp_level === _i 
+//   
+//       //$.test_msg("KALS_stamp qualify 7 this._stamp_level" + this._stamp_level); 
+//        // KALS_context.policy.set_readable(true);
+//        }   //if (this._stamps_config[_i].is_qualified === true) {
+//    }   //for ( _i in _stamps_data) {
+    
+    var _stamp_config = this._stamps_config;
+    var _stamp_level = this._stamp_level;
+    var _stamp_level_up = null;
+    
+    var _stamp_new_level = this.qualify_check_modified_direct(_stamp_config, _stamp_level);
+    if (_stamp_new_level < _stamp_level) {
+        _stamp_level_up = false;
+    }
+    else {
+        _stamp_level_up = true;
+    }
+    this.qualify_change_policy(_stamp_config, _stamp_new_level);
+    this.qualify_notify(_stamp_config, _stamp_new_level, _stamp_level_up);
+    ///if (this._stamp_level_modified === true) {
+    
+    this._stamp_level = _stamp_new_level;
+    
+    //} //if (this._stamp_level_modified === true) {
+    
+    return this;
+};
+
+/**
+ * 確認晉升或降級
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _stamps_config 所有獎章的設定
+ * @param {Number} _stamp_level 現在獎章的等級
+ * @returns {boolean} true=升級 false=降級
+ */
+KALS_stamp.prototype.qualify_check_modified_direct = function(_stamps_config, _stamp_level) {
+    
+    //this._stamp_level_modified = false;
+    //var _stamp_level_up = true;
+    
     var _i;
     // 設定開啟功能
 
     var _stamps_data = this._init_config();
     //$.test_msg("ERROR: " + JSON.stringify(_stamps_data));
     for ( _i in _stamps_data) {
-        if (this._stamps_config[_i].is_qualified === true) {
+        if (_stamps_config[_i].is_qualified === true) {
           
            // $.test_msg("KALS_stamp qualify 3");
-           if (this._stamps_config[_i].is_qualified === true) {
-               if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
-                   this._stamp_level = _i;
-                   this._stamp_level_modified = true;
-                   this._stamp_level_up = true;
+           if (_stamps_config[_i].is_qualified === true) {
+               if (_stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
+                   _stamp_level = _i;
+                   //this._stamp_level_modified = true;
+                   //_stamp_level_up = true;
                    //$.test_msg("KALS_stamp qualify 4 this._stamp_level" + this._stamp_level);                  
                }    //if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
-               else if (_i > this._stamp_level) { //已經有等級了->升級
-                   this._stamp_level = _i;
-                   this._stamp_level_modified = true;
-                   this._stamp_level_up = true;
+               else if (_i > _stamp_level) { //已經有等級了->升級
+                   _stamp_level = _i;
+                   //this._stamp_level_modified = true;
+                   //_stamp_level_up = true;
                   
                    //$.test_msg("KALS_stamp qualify 5 this._stamp_level" + this._stamp_level);
                }    //else if (_i > this._stamp_level) { //已經有等級了->升級
@@ -909,73 +1117,99 @@ KALS_stamp.prototype.qualify = function() {
                    //$.test_msg("KALS_stamp qualify FALSE _1!!" + this._stamps_config[_i].is_qualified + "NOW IS "+ _i + "this._stamp_level"+ this._stamp_level);  
                }    //else{ //已經等級了->降級
            }    //if (this._stamps_config[_i].is_qualified === true) {
-           else if (this._stamp_level === _i 
-                   && this._stamp_level > 0) {
-               this._stamp_level--;
-               this._stamp_level_modified = true;
-               this._stamp_level_up = false;
+           else if (_stamp_level === _i 
+                   && _stamp_level > 0) {
+               _stamp_level--;
+               //this._stamp_level_modified = true;
+               //_stamp_level_up = false;
                //$.test_msg("KALS_stamp qualify 6 this._stamp_level" + this._stamp_level);  
            }    //else if (this._stamp_level === _i 
    
        //$.test_msg("KALS_stamp qualify 7 this._stamp_level" + this._stamp_level); 
         // KALS_context.policy.set_readable(true);
-    }   //for( var _i in _stamps_data){
+        }   //if (this._stamps_config[_i].is_qualified === true) {
+    }   //for ( _i in _stamps_data) {
     
-    if (this._stamp_level_modified === true) {
-        var _msg;
-        var _img_path =  KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ this._stamps_config[this._stamp_level].name +".png", true);
-        var _img ='<img src="'+_img_path+'"/>';
-        if (this._stamp_level_up === true) {
-            //升級通知訊息
-           _msg = '<div style="text-align:center">'+this._stamps_config[this._stamp_level].quailfy_message +'</div>';
-           //KALS_util.notify(_msg+_img);
-           //$.test_msg("KALS_stamp qualify 8 _stamp_level_up" + this._stamp_level_up);
-        }   //if (this._stamp_level_up === true) {
-        else {
-            //降級通知訊息
-            _msg = '<div style="text-align:center">'+this._stamps_config[this._stamp_level].disqualify_message +'</div>';
-            //KALS_util.notify(_msg+_img);
-            //$.test_msg("KALS_stamp qualify 9 _stamp_level_up" + this._stamp_level_up);
-        }   //else {
-        
-        // -------------------
-        // 權限重新設定
+    return _stamp_level;
+};
 
-        var _policy = this._stamps_config[this._stamp_level].policy;
-        // 用迴圈檢視設定policy中的權限設定
-        for( var _k in _policy ){
-            // _ k = topic_writable
-            switch (_k) {
-                case "topic_writable":
-                    //KALS_context.policy.set_topic_writable(_policy[_k]);
-                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-                    break;
-//                case "other_topic_readable":
-//                    KALS_context.policy.set_other_topic_readable(_policy[_k]);
-//                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-//                    break;
-//                case "other_topic_respondable":
-//                    KALS_context.policy.set_respond_other_topic_wrtiable(_policy[_k]);
-//                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-//                    break;
-//                case "other_respond_readable":
-//                    KALS_context.policy.set_other_respond_readable(_policy[_k]);
-//                    //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-//                    break;  
-//                case "like":
-//                    KALS_context.policy.set_able_like_topic(_policy[_k]);
-//                    KALS_context.policy.set_able_like_respond(_policy[_k]);
-//                   //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
-//                    break; 
-//                default :
-//                    KALS_util.notify("no = "+ _policy[_k]);
-                }   //switch (_k) {
-            }   //for( var _k in _policy ){
-        } //if (this._stamps_config[_i].is_qualified === true) {
-        
-        KALS_util.notify(_msg+_img);
-        this.open();
+/**
+ * 變更權限
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _stamps_config 所有獎章的設定
+ * @param {Number} _stamp_level 現在獎章的等級
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype.qualify_change_policy = function(_stamps_config, _stamp_level) {
+    
+    if (typeof(_stamps_config[_stamp_level].policy) === "undefined") {
+        // 如果沒有需要設定的權限，那就略過
+        return this;
     }
+    
+    var _policy = _stamps_config[_stamp_level].policy;
+    // 用迴圈檢視設定policy中的權限設定
+    for ( var _k in _policy ) {
+        // _ k = topic_writable
+        switch (_k) {
+            case "topic_writable":
+                //KALS_context.policy.set_topic_writable(_policy[_k]);
+                //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                break;
+            case "other_topic_readable":
+                KALS_context.policy.set_other_topic_readable(_policy[_k]);
+                //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                break;
+            case "other_topic_respondable":
+                KALS_context.policy.set_respond_other_topic_wrtiable(_policy[_k]);
+                //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                break;
+            case "other_respond_readable":
+                KALS_context.policy.set_other_respond_readable(_policy[_k]);
+                //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                break;  
+            case "like":
+                KALS_context.policy.set_able_like_topic(_policy[_k]);
+                KALS_context.policy.set_able_like_respond(_policy[_k]);
+               //KALS_util.notify("設定"+_k +"為"+ _policy[_k]);
+                break; 
+            default :
+                KALS_util.notify("no = "+ _policy[_k]);
+        }   //switch (_k) {
+    }   //for( var _k in _policy ){
+    
+    return this;
+};
+
+/**
+ * 顯示升級或降級訊息
+ * @author Pulipuli Chen 20141108
+ * @param {Object} _stamps_config 所有獎章的設定
+ * @param {Number} _stamp_level 現在獎章的內容
+ * @param {boolean} _stamp_level_up 是否升級
+ * @returns {boolean} true=升級 false=降級
+ */
+KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _stamp_level_up) {
+    var _msg;
+    var _img_path =  KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _stamps_config[_stamp_level].name +".png", true);
+    var _img ='<img src="'+_img_path+'"/>';
+    if (_stamp_level_up === true) {
+        //升級通知訊息
+       _msg = '<div style="text-align:center">'+_stamps_config[_stamp_level].quailfy_message +'</div>';
+       //KALS_util.notify(_msg+_img);
+       //$.test_msg("KALS_stamp qualify 8 _stamp_level_up" + this._stamp_level_up);
+    }   //if (this._stamp_level_up === true) {
+    else {  //if (this._stamp_level_up === true) {
+        //降級通知訊息
+        _msg = '<div style="text-align:center">'+_stamps_config[_stamp_level].disqualify_message +'</div>';
+        //KALS_util.notify(_msg+_img);
+        //$.test_msg("KALS_stamp qualify 9 _stamp_level_up" + this._stamp_level_up);
+    }   //else {
+
+    //$.test_msg("KALS_stamp.qualify", _msg);
+    KALS_util.notify(_msg+_img);
+
+    this.open();
     
     return this;
 };
