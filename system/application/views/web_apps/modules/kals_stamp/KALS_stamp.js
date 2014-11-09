@@ -112,33 +112,33 @@ KALS_stamp.prototype._$enable_debug = true;
  */
 KALS_stamp.prototype._$enable_auth_check = true;
 
-/**
- * 權限檢查
- * 
- * 請用KALS_controller提供的兩個參數，以及其他自己設定的資料
- * 來決定是否要讓權限檢查通過
- * 
- * 舉例：
- * 
- * 不允許未登入的人使用
- * return _is_login;
- * 
- * 不允許已登入的人使用
- * retunr !(_is_login);
- * 
- * @param {boolean} _is_login 是否已經登入
- * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
- * @returns {boolean} true=通過;false=未通過
- */
-
-KALS_stamp.prototype._$auth_check = function (_is_login, _user) {
-    if (_is_login === false) {
-        return false;
-    }
-    else {
-        return true;
-    }
-};
+///**
+// * 權限檢查
+// * 
+// * 請用KALS_controller提供的兩個參數，以及其他自己設定的資料
+// * 來決定是否要讓權限檢查通過
+// * 
+// * 舉例：
+// * 
+// * 不允許未登入的人使用
+// * return _is_login;
+// * 
+// * 不允許已登入的人使用
+// * retunr !(_is_login);
+// * 
+// * @param {boolean} _is_login 是否已經登入
+// * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
+// * @returns {boolean} true=通過;false=未通過
+// */
+//
+//KALS_stamp.prototype._$auth_check = function (_is_login, _user) {
+//    if (_is_login === false) {
+//        return false;
+//    }
+//    else {
+//        return true;
+//    }
+//};
 
 /**
  * ====================
@@ -844,13 +844,15 @@ KALS_stamp.prototype._init_listener = function() {
 //    });
 //    
     KALS_context.ready(function () {
-        _this.change_tab("btn-annotation-count");
+        _this.change_tab("btn-qualification");
         
         // 選擇標註範圍時，把獎章關掉
         KALS_text.selection.select.add_listener("select", function() {
             //$.test_msg("KALS_stamp._init_listener()", "已經有選擇");
             _this.close();
         });
+        
+        _this.setup_stamp_content();
         
 //        KALS_context.policy.add_attr_listener('write', function (_policy) {
 //            if (_policy.writable()) {
@@ -1004,7 +1006,9 @@ KALS_stamp.prototype.check_qualification = function(_user) {
         
     }   //for ( var _i=0; _i< _stamps_data.length; _i++ ) {
     
-    if (_qualification_modified === true) {
+    //$.test_msg("KALS_stamp.prototype.check_qualification", _qualification_modified);
+    if ( _qualification_modified === true 
+            || this._stamp_level === -1) {
         this.qualify();
     }
     
@@ -1178,7 +1182,7 @@ KALS_stamp.prototype.check_qualification_liked_users_count = function(_user, _co
  * @type Number
  * @author Pulipuli Chen 20141108
  */
-KALS_stamp.prototype._stamp_level = null;
+KALS_stamp.prototype._stamp_level = -1;
 
 //KALS_stamp.prototype._stamp_level_modified = false;
 
@@ -1251,9 +1255,7 @@ KALS_stamp.prototype.qualify = function() {
      * 資料有更新時，才重新設定
      * @author Pulipuli Chen 20141110 
      */
-    this.set_stamp_statistic();
-    this.set_stamp_qualified();
-    this.get_stamp_list();
+    this.setup_stamp_content();
     
     this.qualify_notify(_stamp_config, _stamp_new_level, _stamp_level_up);
     ///if (this._stamp_level_modified === true) {
@@ -1289,26 +1291,26 @@ KALS_stamp.prototype.qualify_check_modified_direct = function(_stamps_config, _s
     //$.test_msg("ERROR: " + JSON.stringify(_stamps_data));
     for ( _i in _stamps_data) {
         if (_stamps_config[_i].is_qualified === true) {
-          
            // $.test_msg("KALS_stamp qualify 3");
            if (_stamps_config[_i].is_qualified === true) {
-               if (_stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
-                   _stamp_level = _i;
-                   //this._stamp_level_modified = true;
-                   //_stamp_level_up = true;
-                   //$.test_msg("KALS_stamp qualify 4 this._stamp_level" + this._stamp_level);                  
-               }    //if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
-               else if (_i > _stamp_level) { //已經有等級了->升級
-                   _stamp_level = _i;
-                   //this._stamp_level_modified = true;
-                   //_stamp_level_up = true;
-                  
-                   //$.test_msg("KALS_stamp qualify 5 this._stamp_level" + this._stamp_level);
-               }    //else if (_i > this._stamp_level) { //已經有等級了->升級
-               else{ //已經等級了->降級
-                   //...?
-                   //$.test_msg("KALS_stamp qualify FALSE _1!!" + this._stamps_config[_i].is_qualified + "NOW IS "+ _i + "this._stamp_level"+ this._stamp_level);  
-               }    //else{ //已經等級了->降級
+               _stamp_level = _i;
+//               if (_stamp_level === -1) { //如果你還沒有等級的話就設定現在的等級給level
+//                   _stamp_level = _i;
+//                   //this._stamp_level_modified = true;
+//                   //_stamp_level_up = true;
+//                   //$.test_msg("KALS_stamp qualify 4 this._stamp_level" + this._stamp_level);                  
+//               }    //if (this._stamp_level === null) { //如果你還沒有等級的話就設定現在的等級給level
+//               else if (_i > _stamp_level) { //已經有等級了->升級
+//                   _stamp_level = _i;
+//                   //this._stamp_level_modified = true;
+//                   //_stamp_level_up = true;
+//                  
+//                   //$.test_msg("KALS_stamp qualify 5 this._stamp_level" + this._stamp_level);
+//               }    //else if (_i > this._stamp_level) { //已經有等級了->升級
+//               else{ //已經等級了->降級
+//                   //...?
+//                   //$.test_msg("KALS_stamp qualify FALSE _1!!" + this._stamps_config[_i].is_qualified + "NOW IS "+ _i + "this._stamp_level"+ this._stamp_level);  
+//               }    //else{ //已經等級了->降級
            }    //if (this._stamps_config[_i].is_qualified === true) {
            else if (_stamp_level === _i 
                    && _stamp_level > 0) {
@@ -1409,6 +1411,19 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
     _msg = '<span style="clear:both; line-height: 50px;float:right">' + _msg + '</span>' + _img;
     KALS_util.notify(_msg);
 
+    return this;
+};
+
+/**
+ * 設定獎章的資料
+ * @author Pulipuli Chen 20141110
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype.setup_stamp_content = function () {
+    this.set_stamp_statistic();
+    this.set_stamp_qualified();
+    this.get_stamp_list();
+    
     return this;
 };
 

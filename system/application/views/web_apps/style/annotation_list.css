@@ -382,6 +382,8 @@
 
 .KALS .list-menu-tooltip td {
     vertical-align:middle;
+    color: white;
+    font-size: small;
 }
 
 /**

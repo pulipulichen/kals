@@ -51,11 +51,12 @@
 .KALS .dialog-toolbar-tr,
 .KALS .dialog-toolbar-table {
     height: 36px;
-	margin:0px !important;
-	background: rgba(0,0,0,0)!important;
+    margin:0px !important;
+    background: rgba(0,0,0,0)!important;
 }
-.KALS .dialog-toolbar-table tr{
-	background: rgba(0,0,0,0)!important;
+.KALS .dialog-toolbar-table tr {
+    background: rgba(0,0,0,0)!important;
+    color: white;
 }
 
 .KALS.window .dialog-toolbar {
@@ -127,7 +128,7 @@
     position:relative;
     line-height: 1.1em;
     
-    color: white;
+    /*color: white;*/
 }
 
 .KALS .dialog-content-td {
