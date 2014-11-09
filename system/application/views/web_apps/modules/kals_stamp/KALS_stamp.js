@@ -1290,7 +1290,7 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
     var _image_url = _stamps_config[_stamp_level].image_url;
     _image_url = KALS_context.url.filter_base_url(_image_url);
     
-    var _img ='<img src="'+_image_url+'" style="height: 60px; width: auto;margin-right: 1em;"/>';
+    var _img ='<img src="'+_image_url+'" style="height: 50px; width: auto;margin-right: 1em;"/>';
     
     if (_stamp_level_up === true) {
         //升級通知訊息
@@ -1308,7 +1308,7 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
     //$.test_msg("KALS_stamp.qualify", _msg);
     //KALS_util.notify(_msg+_img);
     
-    _msg = '<div style="clear:both; line-height: 60px;">' + _img + " " + _msg + '</div>';
+    _msg = '<span style="clear:both; line-height: 50px;float:right">' + _msg + '</span>' + _img;
     KALS_util.notify(_msg);
 
     return this;
