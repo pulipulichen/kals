@@ -819,7 +819,8 @@ Annotation_navigation_map.prototype._request_heading_data = function (_current_t
         }
     });
     
-    return _data;
+    return this;
+    //return _data;
 };   
 
 /**

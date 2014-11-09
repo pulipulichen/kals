@@ -178,7 +178,7 @@ KALS_stamp.prototype._$nav_heading = 'heading';
  * 設定視窗的寬度
  * @type Number 單位是px，null表示不設定
  */
-KALS_stamp.prototype._$width = 400;
+KALS_stamp.prototype._$width = 800;
 
 /**
  * 設定視窗的高度
