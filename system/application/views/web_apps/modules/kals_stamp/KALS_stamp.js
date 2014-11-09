@@ -617,71 +617,143 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
 /**
  * 設定顯示階級名單
  * @author Pulipuli Chen 20141107
- * @return array
  */
 KALS_stamp.prototype.get_stamp_list = function() { 
     
-    $.test_msg("get_stamp_list", "先在這裡打住");
-    return this;
+    //$.test_msg("get_stamp_list", "先在這裡打住");
+    //return this;
     
     var _stamp_data = this._init_config();
     // 要改成每個階級都要顯示！
     
     var _this = this;
     
+    this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
+        _this.get_stamp_list_after_post(_stamp_result);
+    });
+   return this;
+};
+
+/**
+ * 設定顯示階級名單，在送出post之後
+ * @param {Object} _stamp_result
+ * @author Pulipuli Chen 20141110
+ */
+KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) { 
+    //加入class在stamps-list的區塊畫出user
+    $.test_msg("KALS_stamp.get_stamp_list_after_post() 接收stamp_result", _stamp_result[0]);
+    
     var _list_container = this.find('.stamps-list').empty();
     
-    this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
-
-        //加入class在stamps-list的區塊畫出user
-        //$.test_msg("接收stamp_result", _stamp_result);
-        for ( var _k in _stamp_result) {
-            //$.test_msg("接收stamp_result " + _k, _stamp_result[_k]);
-            
-            //_list_container.empty();
-            //$.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
-            //$.test_msg("user_name = "+ _stamp_result[_k].user_name_list );
-            //名稱
-            var _stamp_title = _stamp_result[_k].stamp_name ;
-            var _stamp_title_lang = _this.get_view_lang_line(_stamp_title);
-
-            //縮圖與名單
-            var _name_arr = _stamp_result[_k].user_name_list;  
-            var _stamp_name = _stamp_result[_k].stamp_name;
-            var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+_stamp_name +".png", true);
-            //for( var _index=0; _index<_stamp_result.length; _index++){
-            if( _name_arr !== null || _name_arr !== "undefined" ){
-                var _title = $("<h4></h4>").html(_stamp_title_lang).appendTo(_list_container);                  
-                var _stamp_user_list = $('<ul class="stamps-list king-list-area list-name" style="border-bottom: 3px solid gray; padding-left: 80px; background-image: url('+_image+'); min-height: 100px; background-repeat: no-repeat">'
-                        //+ _name_arr 
-                        +'</ul>')
-                        .appendTo(_list_container);    
-                for (var _index in _name_arr){
-                    
-                    var _name_span = $('<li style=" width: 100px; cursor: pointer"/>').html(_name_arr[_index]);
-                    _name_span.appendTo(_stamp_user_list);
-                    
-                    _name_span.click(function() {
-                        //搜尋
-                        KALS_context.search.search({
-                            range: "author",
-                            keyword: $(this).html()
-                        }, false);
-                    });
-                    
-                    _name_span.addClass("list-span");
-                    
-                    _name_span.css("float","left");
-                    
-                    if (_index % 3 === 0) {
-                        _name_span.css("clear", "both");
-                    } 
-                }     
-            }
+    for ( var _i in _stamp_result) {
+//        //$.test_msg("接收stamp_result " + _k, _stamp_result[_k]);
+//
+//        //_list_container.empty();
+//        //$.test_msg("stamp_name = "+ _stamp_result[_k].stamp_name );
+//        //$.test_msg("user_name = "+ _stamp_result[_k].user_name_list );
+//        //名稱
+//        var _stamp_index = _stamp_result[_k].stamp_index;
+//        //var _stamp_title = _stamp_result[_k].stamp_name ;
+//        var _stamp_title_lang = _stamp_data[_stamp_index].name;
+//        //var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+//        //var _stamp_title_lang = _stamp_data[_];
+//
+//        //縮圖與名單
+//        var _name_arr = _stamp_result[_k].user_name_list;  
+//        //var _stamp_name = _stamp_result[_k].stamp_name;
+//        //var _image = KALS_context.get_base_url("/images/stamp_imgs/stamp_"+_stamp_name +".png", true);
+//        var _image_url = _stamp_data[_stamp_index].image_url;
+//        _image_url = KALS_context.url.filter_base_url(_image_url);
+//        //for( var _index=0; _index<_stamp_result.length; _index++){
+//        if( _name_arr !== null 
+//                || _name_arr !== "undefined" ){
+//            var _title = $("<h4></h4>")
+//                    .html(_stamp_title_lang)
+//                    .appendTo(_list_container);                  
+//            var _stamp_user_list = $('<ul class="stamps-list king-list-area list-name" style="border-bottom: 3px solid gray; padding-left: 80px; background-image: url('+_image_url+'); min-height: 100px; background-repeat: no-repeat">'
+//                    //+ _name_arr 
+//                    +'</ul>')
+//                    .appendTo(_list_container);    
+//            for (var _index in _name_arr) {
+//
+//                var _name_span = $('<li style=" width: 100px; cursor: pointer"/>').html(_name_arr[_index]);
+//                _name_span.appendTo(_stamp_user_list);
+//
+//                _name_span.click(function() {
+//                    //搜尋
+//                    KALS_context.search.search({
+//                        range: "author",
+//                        keyword: $(this).html()
+//                    }, false);
+//                });
+//
+//                _name_span.addClass("list-span");
+//
+//                _name_span.css("float","left");
+//
+//                if (_index % 3 === 0) {
+//                    _name_span.css("clear", "both");
+//                } 
+//            }   //for (var _index in _name_arr) {
+//        }
+        
+        $.test_msg("KALS_stamp.get_stamp_list_after_post() _i=", _i);
+        var _stamp_index = _stamp_result[_i].stamp_index;
+        var _user_name_list = _stamp_result[_i].user_name_list;
+        
+        if ($.is_array(_user_name_list)) {
+            var _list_ele = this.get_stamp_list_create(_stamp_index, _user_name_list);
+            _list_ele.appendTo(_list_container); 
         }
         
-     });
-   return this;
+    }   //for ( var _i in _stamp_result) {
+};
+
+/**
+ * 設定顯示階級名單，單一階級
+ * @param {Object} _stamp_result
+ * @author Pulipuli Chen 20141110
+ */
+KALS_stamp.prototype.get_stamp_list_create = function(_stamp_index, _user_name_list) { 
+    var _list_ele = $("<tr/>");
+    
+    var _stamp_data = this._init_config();
+    var _stamp_title_lang = _stamp_data[_stamp_index].name;
+    
+    var _image_url = _stamp_data[_stamp_index].image_url;
+    _image_url = KALS_context.url.filter_base_url(_image_url);
+    var _image = '<img src="' + _image_url + '" />';
+    
+    $("<th />")
+            .html('<div class="header">' + _stamp_title_lang + "</div>"
+                + _image)
+            .appendTo(_list_ele);
+    
+    var _td = $("<td />").appendTo(_list_ele);
+    
+    for (var _i in _user_name_list) {
+
+        var _name_span = $('<li class="user-name-list" />').html(_user_name_list[_i]);
+        _name_span.appendTo(_td);
+
+        _name_span.click(function() {
+            //搜尋
+            KALS_context.search.search({
+                range: "author",
+                keyword: $(this).html()
+            }, false);
+        });
+
+        //_name_span.addClass("list-span");
+
+        //_name_span.css("float","left");
+
+        if (_i % 3 === 0) {
+            _name_span.css("clear", "both");
+        } 
+    }   //for (var _index in _name_arr) {
+    
+    return _list_ele;
 };
 
 /**

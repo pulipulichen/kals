@@ -60,7 +60,7 @@ class KALS_stamp extends KALS_model {
         //依條件查詢stamp_user_list
         $qualifier_tables = array();
         $stamps_result = array();
-        foreach ($stamps AS $stamp ){
+        foreach ($stamps AS $stamp_index => $stamp ){
             
             $qualifier = $stamp["qualifier"];
             //var_dump($qualifier); //show qualifer data
@@ -199,9 +199,10 @@ HAVING count(liked.me) >='.$liked_user_count;
                 continue;
             }
             
-            $stamp_name = $stamp["name"]; //stamp name
+            //$stamp_name = $stamp["name"]; //stamp name
             $stamps_result[] = array(
-                "stamp_name" => $stamp_name,
+                "stamp_index" => $stamp_index,
+                //"stamp_name" => $stamp_name,
                 "user_name_list" => $user_name_list // user name
             );                 
         } //foreach ($stamps AS $stamp )
@@ -217,21 +218,22 @@ HAVING count(liked.me) >='.$liked_user_count;
             $new_user_name_list = array();
             
             $user_name_list = $value['user_name_list'];
-            $stamp_name = $value['stamp_name'];
+            //$stamp_name = $value['stamp_name'];
 
             foreach($user_name_list AS $user_name){             
                 //var_dump($username);
                 if (in_array($user_name, $added_user_list) === FALSE) {
                     $added_user_list[] = $user_name;
                     $new_user_name_list[] = $user_name;
-                    test_msg("user_name " . $user_name, $added_user_list); 
+                    //test_msg("user_name " . $user_name, $added_user_list); 
                 }
             } 
             
             if (count($new_user_name_list) > 0) {
                 //test_msg("new user name list", $new_user_name_list);
                 $stamps_result2[] = array(
-                    "stamp_name" => $stamp_name,
+                    "stamp_index" => $value['stamp_index'],
+                    //"stamp_name" => $stamp_name,
                     "user_name_list" => $new_user_name_list
                 );
                 //$stamp1_result2[$stamp_name]["stamp_name"] = $stamp_name;

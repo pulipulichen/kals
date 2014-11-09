@@ -29,16 +29,27 @@
     overflow-y: auto;
 }
 
-.stamp-qualification-list .header {
+.header {
     font-weight: bold;
 }
 
-.stamp-qualification-list th,
-.stamp-qualification-list td {
+th,
+td {
     vertical-align: top;
     padding-top: 1em;
 }
 
-.stamp-qualification-list th {
+th {
     padding-right: 1em;
 }
+
+.user-name-list {
+    float:left;
+    width: 100px;
+    cursor: pointer;
+}
+
+.stamp-qualified th, 
+.stamp-qualified td {
+    padding-top:0;
+} 
