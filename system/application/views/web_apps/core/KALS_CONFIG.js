@@ -455,7 +455,7 @@ DEFAULT_KALS_CONFIG = {
          * 確認KALS_util.notify的時間
          * @type Boolean
          */
-        notify_auto_hide: false
+        notify_auto_hide: true
     },
     
     /**
