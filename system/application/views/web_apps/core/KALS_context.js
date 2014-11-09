@@ -192,7 +192,13 @@ KALS_context.ready = function (_callback) {
     
     if (this.completed === false) {
         //$.test_msg("KALS_context, 尚未準備好", _callback);
-        this.add_once_listener(_callback);
+        $.test_msg("KALS_context, 尚未準備好");
+        var _this = this;
+        this.add_once_listener(function () {
+            if (_this.completed === true) {
+                _callback();
+            }
+        });
     }
     else {
         setTimeout(function () {

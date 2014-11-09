@@ -19,7 +19,7 @@ function KALS_stamp() {
     
     var _this = this;
     
-    KALS_context.add_listener(function () {
+    KALS_context.ready(function () {
         _this._init_listener();
     });
 }

@@ -156,6 +156,7 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
         //    $.test_msg("註冊 (啟動=" + _trigger + ")", _obj);
         //}
         //$.test_msg("註冊 (啟動=" + _trigger + ")", _obj);
+        //$.test_msg("註冊 (啟動=" + _trigger + ")");
         this._once_listeners.push(_obj);
         
         //$.test_msg("註冊once_listeners", [this._once_listeners.length, _obj]);
@@ -164,6 +165,7 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
             this._notify_once_listener(_obj);
         }
     }
+    //$.test_msg("Event_dispatcher.add_once_listener()", "end 註冊 (啟動=" + _trigger + ")");
     return this;
 };
 
