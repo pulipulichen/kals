@@ -805,7 +805,16 @@ KALS_stamp.prototype._init_listener = function() {
     var _listen_attr_list = [
         "topic_annotation_count",
         "responded_annotation_count",
-        "respond_to_users_count"
+        "respond_to_users_count",
+        "respond_to_my_annotation_count",
+        "respond_to_other_annotation_count",
+        "responded_users_count",
+        "respond_to_users_count",
+        "responded_count",
+        "like_to_count",
+        "liked_count",
+        "like_to_users_count",
+        "liked_users_count"
     ];
     
     var _this = this;
@@ -816,10 +825,6 @@ KALS_stamp.prototype._init_listener = function() {
             //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
         }
     };
-    
-    $.each(_listen_attr_list, function(_key, _value) {
-        KALS_context.user.add_attr_listener(_value, _listen_callback);
-    });
     
 //    
 //    KALS_context.user.add_attr_listener("topic_annotation_count", function (_user) {
@@ -852,7 +857,16 @@ KALS_stamp.prototype._init_listener = function() {
             _this.close();
         });
         
-        _this.setup_stamp_content();
+        KALS_context.auth.add_listener(function (_auth) {
+            if (_auth.is_login() === true) {
+                _this.setup_stamp_content();
+            }
+        }, true);
+        //_this.setup_stamp_content();
+        
+        $.each(_listen_attr_list, function(_key, _value) {
+            KALS_context.user.add_attr_listener(_value, _listen_callback);
+        });
         
 //        KALS_context.policy.add_attr_listener('write', function (_policy) {
 //            if (_policy.writable()) {
