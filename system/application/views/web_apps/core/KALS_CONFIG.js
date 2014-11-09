@@ -429,7 +429,7 @@ DEFAULT_KALS_CONFIG = {
          * 是否顯示ajax_get的連接訊息
          * @type Boolean
          */
-        ajax_get_message: true,
+        ajax_get_message: false,
         
         /**
          * 開啟ajax_post設定

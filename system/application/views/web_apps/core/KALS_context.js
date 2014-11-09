@@ -179,15 +179,22 @@ KALS_context.set_completed = function () {
 
 /**
  * 準備好的時候呼叫
+ * 
+ * @author Pulipuli Chen 20141109
  * @param {Function} _callback
  * @returns {KALS_context}
  */
 KALS_context.ready = function (_callback) {
+    
+     if ($.is_function(_callback) === false) {
+         return this;
+     }
+    
     if (this.completed === false) {
-        //$.test_msg("KALS_context, 尚未準備好");
+        //$.test_msg("KALS_context, 尚未準備好", _callback);
         this.add_once_listener(_callback);
     }
-    else if ($.is_function(_callback)) {
+    else {
         setTimeout(function () {
             _callback(this);
         }, 0);

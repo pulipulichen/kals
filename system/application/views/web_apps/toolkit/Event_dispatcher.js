@@ -125,7 +125,7 @@ Event_dispatcher.prototype.add_instant_listener = function (_obj, _function) {
  * 
  * @param {Object} _obj
  * @param {Object} _function
- * @param {Object} _trigger
+ * @param {boolean} _trigger = false 是否馬上啟動
  */
 Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigger) {
     //參數初始化
@@ -152,7 +152,10 @@ Event_dispatcher.prototype.add_once_listener = function (_obj, _function, _trigg
             _obj[this._$event_name] = _function;
         }
         
-        //$.test_msg("註冊", _obj);
+        //if (this._$load_url === 'generic/info') {
+        //    $.test_msg("註冊 (啟動=" + _trigger + ")", _obj);
+        //}
+        //$.test_msg("註冊 (啟動=" + _trigger + ")", _obj);
         this._once_listeners.push(_obj);
         
         //$.test_msg("註冊once_listeners", [this._once_listeners.length, _obj]);

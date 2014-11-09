@@ -68,26 +68,30 @@ Init_component.prototype._$onstart = function () {
     //KALS_text = new KALS_text();
     
     //$.test_msg('Init_component.$onstart()');
-    if ($.browser.msie) {
+    //if ($.browser.msie) {
         //this.excute_confirm();
-    }
+    //}
     
     KALS_context.loader.load_modules_config(function () {
+        $.test_msg("Init_component" , "modules_config");
         _this.complete("modules_config");
     });
     
     /**
-     * @version 20140519 Pulipuli Chen
+     * @author 20140519 Pulipuli Chen
      */ 
     KALS_context.loader.load_webpage_info(function () {
         _this.complete("webpage_info");
-        KALS_text.init_start();
+        KALS_text.init_start(function () {
+            //$.test_msg("Init_component", "KALS_text");
+            _this.complete('KALS_text');
+        });
     });
     
-    $(function() {
-        KALS_context.feedback.init();
-    });
-    
+//    //$(function() {
+//        KALS_context.feedback.init();
+//    //});
+    KALS_context.feedback.init();
 };
 
 Init_component.prototype._is_ie6 = ($.browser.msie && $.browser.version.substr(0,1) < 7);
