@@ -512,17 +512,19 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
 	//TABLE
     var _qualified_name = this.find(".qualified-name").empty();
     var _qualified_img = this.find(".qualified-img").empty();
-    var _qualification_container = this.find(".stamp-qualification").empty();
+    var _qualification_container = this.find(".stamp-qualification-list").empty();
 	
 //    var _i = 0;
 //    var _k = 0;
     for (var _stamp_index in _stamps_config) {   
         // 取得is_qualified的值來讓後面的迴圈判斷要不要顯示圖片(取得獎章) 
-        var _stamp_title = "stamps_level_" + _stamp_index;
+        //var _stamp_title = "stamps_level_" + _stamp_index;
         
         var _image_url = _stamps_config[_stamp_index].image_url;
         //$.test_msg("KALS_stamp.set_stamp_qualified()", typeof(KALS_context.url));
         _image_url = KALS_context.url.filter_base_url(_image_url);
+        var _image = '<img src="' + _image_url + '" />';
+        
         var _stamp_title_lang = _stamps_config[_stamp_index].name;
         
         if ( _stamps_config[_stamp_index].is_qualified === true) {
@@ -539,22 +541,34 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
             //var _stamp_picture = $();來加入圖片吧！
             //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
             
-            var _qualified_image = '<img src="' + _image_url + '" />';
+            
             var _stamp_picture = $('<td></td>')
-                    .html(_qualified_image)
+                    .html(_image)
                     .appendTo(_qualified_img);		
             //_k++;
         }   //if ( _stamps_config[_stamp_index].is_qualified === true) {
         else {
-            //var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
-            var _title = $("<dt></dt>").html(_stamp_title_lang)
-                    .appendTo(_qualification_container);
-            //var _qualification_message = _qualification_config[_stamp_title];
-            var _qualification_message = _stamps_config[_stamp_index].qualification_message;            
-            var _stamp_picture = $('<img src="' + _image_url + '" />').html(_qualification_message)
-                        .appendTo(_qualification_container);			
-            var _message = $("<dd></dd>").html(_qualification_message)
-                    .appendTo(_qualification_container);
+//            //var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+//            var _title = $("<dt></dt>").html(_stamp_title_lang)
+//                    .appendTo(_qualification_container);
+//            //var _qualification_message = _qualification_config[_stamp_title];
+//            var _qualification_message = _stamps_config[_stamp_index].qualification_message;            
+//            var _stamp_picture = $('<img src="' + _image_url + '" />').html(_qualification_message)
+//                        .appendTo(_qualification_container);			
+//            var _message = $("<dd></dd>").html(_qualification_message)
+//                    .appendTo(_qualification_container);
+            var _tr = $("<tr />");
+            $("<th />")
+                    .html('<div class="header">' + _stamp_title_lang + "</div>"
+                        + _image)
+                    .appendTo(_tr);
+            
+            var _qualification_message = _stamps_config[_stamp_index].qualification_message;   
+            $("<td />")
+                    .html(_qualification_message)
+                    .appendTo(_tr);
+            
+            _tr.appendTo(_qualification_container);
         }
     }
         

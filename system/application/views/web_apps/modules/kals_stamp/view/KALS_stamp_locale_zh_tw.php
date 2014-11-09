@@ -50,7 +50,8 @@ $lang["stamp_list"] = "階級排行名單";
 
 $lang["qualified_heading"] = "您已經獲得的獎章";
 $lang["qualification_heading"] = "獲得其他獎章的方法";
-$lang["qualification_subheading"] = "透過以下方式獲得獎章，有助於您讀起來更順利喔！";
+//$lang["qualification_subheading"] = "透過以下方式獲得獎章，有助於您讀起來更順利喔！";
+$lang["qualification_subheading"] = "想知道怎麼獲得其他獎章嗎？不要錯過以下的提示喔！";
 
 $lang["stamp_list_heading"] = "大家都在哪個階級呢？";
 //$lang["king"] = "國王";  
