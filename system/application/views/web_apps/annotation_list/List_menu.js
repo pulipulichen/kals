@@ -436,12 +436,8 @@ List_menu.prototype.delete_annotation = function () {
                 }
             }
             
-            /**
-             * @author Pulipuli Chen
-             * 20141107 不採用local update，直接從伺服器端update
-             */
             // 設定計數
-            //_this._set_anntation_count_reduce(_annotation_param);
+            _this._set_anntation_count_reduce(_annotation_param);
             KALS_context.user.load_user_params();
         }
     };

@@ -915,15 +915,18 @@ Context_user.prototype._load_params_uri = "statistics/user_params";
  */
 Context_user.prototype.load_user_params = function ( _callback){
     
+    
     //$.test_msg("load_user_params", "暫時在這裡打住");
     //$.throw_msg("load_user_params", "暫時在這裡打住");
     //return this;
     
     var _this = this;
     var _get_callback = function (_data){
+        $.test_msg("Context_user.load_user_params", _data);
+        
         _this.update(_this, _data);
         $.trigger_callback( _callback);
-        //$.test_msg("test_responded_count", _data);
+        
     };       
         
     var _config = {
