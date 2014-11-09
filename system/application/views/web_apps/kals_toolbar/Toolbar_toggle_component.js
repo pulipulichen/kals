@@ -25,7 +25,7 @@ Toolbar_toggle_component.prototype._$create_ui = function () {
     var _button = $('<button type="button"  class="toolbar-toggle-button"> : : : : </button>')
         .appendTo(_ui);
     
-    var _this = this;
+    //var _this = this;
     _button.click(function () {
         KALS_toolbar.toggle_toolbar();
     });
