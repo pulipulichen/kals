@@ -22,7 +22,7 @@ function Window_content(){
     if ($.isset(this._$load_config)) {
         var _this = this;
         KALS_context.add_listener(function (_context) {
-            _data = _context._data;
+            var _data = _context._data;
             
             //$.test_msg('Window_content load context data', _data);
             

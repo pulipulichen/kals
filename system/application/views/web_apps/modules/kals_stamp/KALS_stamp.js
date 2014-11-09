@@ -455,41 +455,45 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
  */
 KALS_stamp.prototype.set_stamp_qualified = function() {
  
-	var _qualified_config = {
-
-         "stamps_level_0": this._stamps_config[0].name,
-         "stamps_level_1": this._stamps_config[1].name,
-         "stamps_level_2": this._stamps_config[2].name,
-         "stamps_level_3": this._stamps_config[3].name,
-         "stamps_level_4": this._stamps_config[4].name
-    };
-    
-    //var _qualified_container = this.find(".stamp-qualified")
-    //        .empty();
-
+    var _stamps_config = this._init_config();
+//    var _qualified_config = {
+//         "stamps_level_0": _stamps_config[0].name,
+//         "stamps_level_1": _stamps_config[1].name,
+//         "stamps_level_2": this._stamps_config[2].name,
+//         "stamps_level_3": this._stamps_config[3].name,
+//         "stamps_level_4": this._stamps_config[4].name
+//    };
+//    
+//    //var _qualified_container = this.find(".stamp-qualified")
+//    //        .empty();
+//
 	//TABLE
     var _qualified_name = this.find(".qualified-name").empty();
     var _qualified_img = this.find(".qualified-img").empty();
 	
     var _i = 0;
     var _k = 0;
-    for (var _stamp_title in _qualified_config) {   
+    for (var _stamp_index in _stamps_config) {   
         // 取得is_qualified的值來讓後面的迴圈判斷要不要顯示圖片(取得獎章) 
-        if( this._stamps_config[_i].is_qualified === true){
-           //KALS_util.notify("現在是幾呢？"+ _i);
+        var _stamp_title = "stamps_level_" + _stamp_index;
+        if( _stamps_config[_i].is_qualified === true) {
+            //KALS_util.notify("現在是幾呢？"+ _i);
+            
             var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
-            var _title = $("<td width=60px align=center></td>").html(_stamp_title_lang)
+            var _title = $("<td width=60px align=center></td>")
+                    .html(_stamp_title_lang)
                     .appendTo(_qualified_name);					
             _i++;
         }
 		if( this._stamps_config[_k].is_qualified === true ){
-			//var _stamp_picture = $();來加入圖片吧！
-           //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
-           var _qualified_image = "<img src=/kals/images/stamp_imgs/stamp_"+ _k +".png></>";
-		   var _stamp_picture = $("<td width=60px align=center></td>").html(_qualified_image)
-		   .appendTo(_qualified_img)			
-			_k++;
-		}	
+                    //var _stamp_picture = $();來加入圖片吧！
+                    //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
+                    var _qualified_image = "<img src=/kals/images/stamp_imgs/stamp_"+ _k +".png></>";
+                    var _stamp_picture = $("<td width='60px' align=center></td>")
+                            .html(_qualified_image)
+                            .appendTo(_qualified_img);		
+                     _k++;
+             }	
     }
         
     return this;
@@ -610,17 +614,23 @@ KALS_stamp.prototype.get_stamp_list = function() {
  * ====================
  */
 
-KALS_stamp.prototype._stamps_config;
+/**
+ * 初始化獎章的設定
+ * @type {Object}
+ */
+KALS_stamp.prototype._stamps_config = null;
 
 /**
  * 取得設定
  * 
  * 請從KALS_CONFIG中取得獎章模組的資格設定
- * @returns {KALS_stamp.prototype}
+ * @returns {KALS_stamp}
  */
 KALS_stamp.prototype._init_config = function() {
-    // @TODO 20140516 Pulipuli Chen
-    this._stamps_config = KALS_CONFIG.modules.KALS_stamp.stamps;
+    
+    if (this._stamps_config === null) {
+        this._stamps_config = KALS_CONFIG.modules.KALS_stamp.stamps;
+    }
     
     return this._stamps_config;
 };

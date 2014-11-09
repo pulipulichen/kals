@@ -174,6 +174,7 @@ KALS_context.reset = function (_callback) {
 KALS_context.set_completed = function () {
     this.completed = true;
     this.notify_listeners(this);
+    this._ready_event_dispatcher.notify_listeners(this);
     return this;
 };
 
@@ -193,12 +194,9 @@ KALS_context.ready = function (_callback) {
     if (this.completed === false) {
         //$.test_msg("KALS_context, 尚未準備好", _callback);
         $.test_msg("KALS_context, 尚未準備好");
-        var _this = this;
-        this.add_once_listener(function () {
-            if (_this.completed === true) {
-                _callback();
-            }
-        });
+        //var _this = this;
+        //this.add_once_listener(_callback);
+        this._ready_event_dispatcher.add_once_listener(_callback);
     }
     else {
         setTimeout(function () {
@@ -207,6 +205,12 @@ KALS_context.ready = function (_callback) {
     }
     return this;
 };
+
+/**
+ * 當KALS_context完成之後，可以用這個呼叫
+ * @type Event_dispatcher
+ */
+KALS_context._ready_event_dispatcher = new Event_dispatcher();
 
 /**
  * 模組準備好的時候呼叫
