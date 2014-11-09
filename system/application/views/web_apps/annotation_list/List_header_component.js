@@ -293,8 +293,8 @@ List_header_component.prototype.set_type = function (_type) {
     //$.test_msg('List_header_component.set_type [is_null]', _type);
     
     if ($.is_null(this._type_container)) {
-		this.get_ui();
-	}
+        this.get_ui();
+    }
     
     this._type_container.empty();
     
@@ -337,7 +337,7 @@ List_header_component.prototype.set_type = function (_type) {
     }
     */
    
-    var _option = KALS_context.predefined_type.get_type_option(_type);
+    var _option = KALS_context.predefined_type.create_type_option(_type);
     _option.appendTo(this._type_container);
     
     return this;

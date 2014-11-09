@@ -409,5 +409,14 @@ Context_predefined_type.prototype.get_type_option = function (_type_data) {
     */
 };
 
+/**
+ * 複製type選項的按鈕
+ * @param {Annotation_type_param|string|number} _type_data
+ * @return {Annotation_type_param}
+ */
+Context_predefined_type.prototype.create_type_option = function (_type_data) {
+    return _type_data.get_option_ui().clone();
+};
+
 /* End of file Context_predefined_type */
 /* Location: ./system/application/views/web_apps/Context_predefined_type.js */
