@@ -46,6 +46,15 @@ List_item_tooltip.prototype._$create_ui = function () {
         KALS_text.tool.set_once_close_editor();
         _this.select();
     });
+    
+    /**
+     * @version 20141110 Pulipuli Chen
+     * 初始化權限監聽器
+     */
+//    KALS_context.ready(function () {
+//        _this._init_readable_policy_listener();
+//        _this._init_writable_policy_listener();
+//    });
 
     return _ui;
 };
@@ -74,7 +83,7 @@ List_item_tooltip.prototype._setup_count = function () {
             'selection_manager.select_tooltip.annotation_count2'
          ))
        .appendTo(_ui);
-
+     
     return _ui;
 };
 
@@ -83,9 +92,27 @@ List_item_tooltip.prototype._setup_count = function () {
  * @param {int} _count
  */
 List_item_tooltip.prototype.set_count = function (_count) {
-	var _ui = this.get_ui();
-	_ui.find(".count-component .count").html(_count);
+    var _ui = this.get_ui();
+    _ui.find(".count-component .count").html(_count);
 };
+
+/**
+ * 初始化權限
+ * @author Pulipuli Chen 20141110
+ */
+List_item_tooltip.prototype._init_policy = function () {
+    if (this._annotation_param !== null  && this._policy_initialized === false) {
+        this._init_readable_policy_listener();
+        this._policy_initialized = true;
+    }
+};
+
+/**
+ * 是否已經初始化過了
+ * @type Boolean
+ * @author Pulipuli Chen 20141110
+ */
+List_item_tooltip.prototype._policy_initialized = false;
 
 /* End of file List_item_tooltip */
 /* Location: ./system/application/views/web_apps/List_item_tooltip.js */

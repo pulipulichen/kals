@@ -85,8 +85,8 @@ List_note_component.prototype._$create_ui = function () {
         .addClass('list-note-component');
     
     if (this._show_fulltext === false) {
-		_ui.addClass('simple');
-	}
+        _ui.addClass('simple');
+    }
     
     var _respond = this._create_respond_container();
     _respond.appendTo(_ui);
@@ -158,12 +158,12 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
     }
     
     if ($.is_null(_respond_to_coll)) {
-		return this;
-	}
+        return this;
+    }
     
     if ($.is_null(this._respond_container)) {
-		this.get_ui();
-	}
+        this.get_ui();
+    }
     
     this._respond_container.empty();
     
@@ -304,12 +304,12 @@ List_note_component.prototype.extract_abstract = function (_note) {
     _text = $.strip_html_tag(_text, _allow_html_tags);
     _text = $.trim(_text);
 	
-	var _plain_text = $.strip_html_tag(_text);
-	
-	var _result = _text;
+    var _plain_text = $.strip_html_tag(_text);
+
+    var _result = _text;
     if (_plain_text.length > this._simple_max_length) {
-		_result = $('<span></span>').html(_origin_text);
-		/*
+        _result = $('<span></span>').html(_origin_text);
+        /*
 		
         if (_text.length > this._simple_max_length) {
             _abstract = _text.substr(0, this._simple_max_length) + '...';
@@ -322,17 +322,17 @@ List_note_component.prototype.extract_abstract = function (_note) {
 		_view.appendTo(_result);
 		*/
 		
-		var _abstract = null;
-		
-		// 先選出有影片、圖片、聲音
-		if (_abstract === null) {
-                    
-                    var _media = _result.find('object, iframe, img, audio').eq(0);
-                    if (_media.length > 0) {
-                        _abstract = $("<span />")
-                                .append(_media);
-                    }
-		}
+        var _abstract = null;
+
+        // 先選出有影片、圖片、聲音
+        if (_abstract === null) {
+
+            var _media = _result.find('object, iframe, img, audio').eq(0);
+            if (_media.length > 0) {
+                _abstract = $("<span />")
+                        .append(_media);
+            }
+        }
 		
 		// 再選出圖片
 //		if (_abstract === null) {
@@ -342,43 +342,43 @@ List_note_component.prototype.extract_abstract = function (_note) {
 //                    }
 //		}
 		
-		// 如果沒有只好選出文字
-		//if (_abstract === null) {
-                    var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
-                    var _foot_part = this._simple_max_length - _head_part;
+        // 如果沒有只好選出文字
+        //if (_abstract === null) {
+        var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
+        var _foot_part = this._simple_max_length - _head_part;
 
-                    var _abstract_text =  _plain_text.substr(0, _head_part)
-                         + '...'
-                             + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
-                    _abstract_text = $('<span>' + _abstract_text + '</span>');
+        var _abstract_text =  _plain_text.substr(0, _head_part)
+             + '...'
+                 + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
+        _abstract_text = $('<span>' + _abstract_text + '</span>');
 
-                    if (_abstract === null) {
-                        //$.test_msg("abstract text", _abstract_text);
-                        _abstract = _abstract_text;
-                    }
-                    else {
-                        _abstract.append(_abstract_text);
-                    }
+        if (_abstract === null) {
+            //$.test_msg("abstract text", _abstract_text);
+            _abstract = _abstract_text;
+        }
+        else {
+            _abstract.append(_abstract_text);
+        }
                 //}
 		
-		if (_abstract !== null) {
-                    _result = _abstract;
-		}
+        if (_abstract !== null) {
+            _result = _abstract;
+        }
 		
-		var _view = this._create_view_thread(_plain_text.length);
-		_view.appendTo(_result);
+        var _view = this._create_view_thread(_plain_text.length);
+        _view.appendTo(_result);
     }
-	else {
-		_result = $('<span>'+_origin_text+'</span>');
-	}
-	
+    else {
+        _result = $('<span>'+_origin_text+'</span>');
+    }
+
 	//var _max_width = this.get_ui().parents('.KALS').width();
 	
 	//_result.appendTo($('body'));
 	
-	_result.addClass('note-content');
-	
-	return _result;   
+    _result.addClass('note-content');
+
+    return _result;   
 };
 
 /**

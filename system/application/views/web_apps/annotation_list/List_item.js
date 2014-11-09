@@ -105,7 +105,7 @@ List_item.prototype._$create_ui = function () {
     }
     
     
-    setTimeout(function() {
+    KALS_context.ready(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         
         if (_this._menu_style_default === null 
@@ -115,7 +115,7 @@ List_item.prototype._$create_ui = function () {
         }
             
         _this._toggle_menu_style();
-    }, 0);
+    });
     
     
     this.notify_listeners('set');
@@ -124,11 +124,10 @@ List_item.prototype._$create_ui = function () {
      * @version 20140512 Pulipuli Chen
      * 初始化權限監聽器
      */
-    setTimeout(function () {
+    KALS_context.ready(function () {
         _this._init_readable_policy_listener();
         _this._init_writable_policy_listener();
-    }, 0);
-    
+    });
     
     //this._ready = true;
     
@@ -225,11 +224,11 @@ List_item.prototype._setup_anchor_text_component = function () {
 
 List_item.prototype.is_enable = function (_option_name) {
     if (_option_name === null || this._disable_option === null) {
-		return true;
-	}
-	else {
-		return ($.inArray(_option_name, this._disable_option) == -1);
-	}
+        return true;
+    }
+    else {
+        return ($.inArray(_option_name, this._disable_option) === -1);
+    }
 };
 
 List_item.prototype._$onviewportmove = function (_ui) {
@@ -247,23 +246,23 @@ List_item.prototype._$onviewportmove = function (_ui) {
 List_item.prototype.get_list_item_ui = function () {
     var _ui = this.get_ui('.list-item:first');
     if (_ui.length === 0) {
-		_ui = this.get_ui();
-	}
+        _ui = this.get_ui();
+    }
     return _ui;
 };
 
 List_item.prototype._toggle_menu_style = function (_style) {
     
     if ($.isset(this._menu_style_default)) {
-		_style = this._menu_style_default;
-	}
-    if ($.is_null(_style) || _style == 'none') {
-		return this;
-	}
+        _style = this._menu_style_default;
+    }
+    if ($.is_null(_style) || _style === 'none') {
+        return this;
+    }
     
     var _block_classname = this._menu_style_classname;
     var _ui = this.get_list_item_ui();
-    if (_style == 'block') {
+    if (_style === 'block') {
         _ui.addClass(_block_classname);
     }
     else {
@@ -328,8 +327,8 @@ List_item.prototype.get_menu_style = function () {
     
     var _ui = this.get_ui();
     if (_ui.hasClass(this._menu_style_classname)) {
-		_style = 'block';
-	}
+        _style = 'block';
+    }
     return _style;
 };
 
@@ -621,11 +620,12 @@ List_item.prototype._init_readable_policy_listener = function () {
     }
 
     var _this = this;
+    //$.test_msg("List_item.prototype._init_readable_policy_listener _readable_policy_name", _readable_policy_name);
     if (_readable_policy_name !== undefined) {
         KALS_context.policy.add_attr_listener(_readable_policy_name, function (_policy) {
             var _enable = _policy[_readable_policy_name]();
             _this.set_note_readable(_enable);
-        });
+        }, true);
     }
     
     return this;

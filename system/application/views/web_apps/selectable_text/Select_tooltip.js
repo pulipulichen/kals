@@ -849,6 +849,8 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
 
             var _count = _data.count;
             _this._item.set_count(_count);
+            
+            _this._item._init_policy();
 
             //_item_ui.show();
             _this.set_has_annotation();
