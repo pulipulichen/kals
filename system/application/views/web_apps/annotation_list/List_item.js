@@ -95,7 +95,8 @@ List_item.prototype._$create_ui = function () {
 //        });
 //    }
     if (this._note_show_fulltext === false) {
-        _ui.find(".list-header-component, .list-timestamp-component, .list-note-component").click(function () {
+        //_ui.find(".list-header-component, .list-timestamp-component, .list-note-component").click(function () {
+        _ui.find(".list-timestamp-component, .list-note-component").click(function () {
             _this.view_thread();
         });
 //        _ui.find(".list-note-component .list-menu").click(function (_e) {

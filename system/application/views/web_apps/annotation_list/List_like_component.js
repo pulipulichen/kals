@@ -95,13 +95,14 @@ List_like_component.prototype._$create_ui = function () {
     //如果沒有登入，則不顯示like
     var _this = this;
     
-    _ui.click(function () {
+    _ui.click(function (_e) {
+        _e.preventDefault();
         _this.set_is_like();
     });
     
-    setTimeout(function () {
+    KALS_context.ready(function () {
         _this._init_policy_listener();
-    }, 0);
+    });
     
     return _ui;
 };
