@@ -35,7 +35,7 @@ KALS_view_manager.prototype.get_view = function (_index) {
     //return JSONP_dispatcher.prototype.get_field.call(this, _index);
     var _view = JSONP_dispatcher.prototype.get_field.call(this, _index);
     
-    $.test_msg("KALS_view_manager.get_view()", _index);
+    //$.test_msg("KALS_view_manager.get_view()", _index);
     if (_view === undefined) {
         _view = "{{kals-lang:kals_framework.view_config_error}}" + "<br>" + _index;
         //throw _view;
