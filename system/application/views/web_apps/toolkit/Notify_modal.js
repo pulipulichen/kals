@@ -211,8 +211,8 @@ Notify_modal.prototype._message_classname = 'message';
 Notify_modal.prototype.set_message = function (_lang, _lang_time) {
     
     if ($.is_null(_lang)) {
-		return this;
-	}
+        return this;
+    }
     
     var _ui = this.get_ui();
 	var _this = this;
@@ -222,12 +222,12 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
         _lang_time = parseInt(_lang_time, 10);
     }
 	
-    if (typeof(_lang_time) == 'undefined') {
-		_lang_time = 11000;
-	}
-	else {
-		_lang_time = _lang_time + 1000;
-	}
+    if (typeof(_lang_time) === 'undefined') {
+        _lang_time = 11000;
+    }
+    else {
+        _lang_time = _lang_time + 1000;
+    }
     
     var _container = $('<div class="' + this._message_classname + '"></div>')
         .hide();
@@ -237,32 +237,32 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
     _ui.find('.wrapper:first')
         .prepend(_container);
     
-	if (_ui.hasClass("fadeout")) {
-		//$.test_msg("ui fadeout");
-		_ui.removeClass("fadeout");
-		//_ui.fadeIn().stop(false, true);
-		_ui.stop(true, false).fadeIn();
-	}
+    if (_ui.hasClass("fadeout")) {
+        //$.test_msg("ui fadeout");
+        _ui.removeClass("fadeout");
+        //_ui.fadeIn().stop(false, true);
+        _ui.stop(true, false).fadeIn();
+    }
 	
 	//$.test_msg("container fadeIn", _lang_time);
     _container.fadeIn(function () {
-		
-		_this.open();
-		
-		var _container = $(this);
-		
-		var _timer = setTimeout(function () {
+
+        _this.open();
+
+        var _container = $(this);
+
+        var _timer = setTimeout(function () {
             _this._close_message(_container);
         }, _lang_time);
 		
         _container.attr("timer", _timer);
 		
-		_container.click(function () {
+        _container.click(function () {
             var _timer = $(this).attr("timer");
             clearTimeout(_timer);
             _this._close_message($(this));
         }); 
-	});
+    });
     
     //加入新留言之後，就要重新對齊一下
     this._$onviewportmove(_ui);
@@ -278,10 +278,15 @@ Notify_modal.prototype.set_message = function (_lang, _lang_time) {
  * 關閉整個模型的動作
  */
 Notify_modal.prototype._close_message = function (_container) {
+    
+    if (KALS_CONFIG.debug.notify_auto_hide === false) {
+        return this;
+    }
+    
     // @20130603 Pudding Chen
     // 先確認是否可關閉？
-    if (typeof(this.close) != "function") {
-        return;
+    if (typeof(this.close) !== "function") {
+        return this;
     }
     
 	var _this = this;

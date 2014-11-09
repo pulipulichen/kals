@@ -18,7 +18,6 @@ function KALS_stamp() {
     KALS_controller_window.call(this);
     
     var _this = this;
-    
     KALS_context.ready(function () {
         _this._init_listener();
     });
@@ -269,26 +268,28 @@ KALS_stamp.prototype.nav_config = {
  * ====================
  */
 
-/**
- * 開啟時的載入動作
- * 
- * 開啟KALS_stamp的視窗時，跟伺服器請求資訊，以載入必要資料到view上顯示的動作
- * 
- * @returns {KALS_stamp.prototype}
- */
-KALS_stamp.prototype._$onopen = function () {
-    
-    if (KALS_context.auth.is_login() === false) {
-        return this;
-    }
-    
-    this.set_stamp_statistic();
-    this.set_stamp_qualified();
-    this.set_stamp_qualification();
-    this.get_stamp_list();
-    //KALS_context.user.load_user_params();
-    return this;
-};
+///**
+// * 開啟時的載入動作
+// * 
+// * 開啟KALS_stamp的視窗時，跟伺服器請求資訊，以載入必要資料到view上顯示的動作
+// * 
+// * @returns {KALS_stamp.prototype}
+// */
+//KALS_stamp.prototype._$onopen = function () {
+//    
+//    if (KALS_context.auth.is_login() === false
+//            || KALS_context.completed === false) {
+//        return this;
+//    }
+//    
+//    this.set_stamp_statistic();
+//    this.set_stamp_qualified();
+//    //this.set_stamp_qualification();
+//    
+//    this.get_stamp_list();
+//    //KALS_context.user.load_user_params();
+//    return this;
+//};
 
 /**
  * 切換顯示分頁
@@ -366,6 +367,9 @@ KALS_stamp.prototype.change_tab = function (_btn){
  */
 KALS_stamp.prototype.set_stamp_statistic = function() {
     
+    //$.test_msg("KALS_stamp.set_stamp_statistic()", "暫停運作");
+    //return;
+    
     //抓取目前所有的types_id(含basic與自訂義)
     /*var _types = this.get_annotation_types();
     for(var _i in _types){
@@ -397,20 +401,20 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
     var _annotation_type_discuss = new Annotation_type_param(_type_discuss);  
     //KALS_util.notify("predefined = "+ _annotation_type_predefined.get_name());
     
-    var _statistic_config = { 
+    var _statistic_count_list = { 
         //topic總數量       
         "statistic_topic_annotation_count": KALS_context.user.get_topic_annotation_count(),        
-        // topic我知道
-        "statistic_topic_knowed_count": KALS_context.user.get_topic_annotation_count(_annotation_type_knowed),
-        // topic新知識
-        "statistic_topic_knowledge_count": KALS_context.user.get_topic_annotation_count(_annotation_type_knowledge),
-        // topic我不懂
-        "statistic_topic_dont_know_count": KALS_context.user.get_topic_annotation_count(_annotation_type_dont_know),
-        // topic很奇怪
-        "statistic_topic_strange_count": KALS_context.user.get_topic_annotation_count(_annotation_type_strange),
-        // topic補充舉例
-        "statistic_topic_predefined_count":KALS_context.user.get_topic_annotation_count(_annotation_type_predefined),       
-        // topic我想說
+//        // topic我知道
+//        "statistic_topic_knowed_count": KALS_context.user.get_topic_annotation_count(_annotation_type_knowed),
+//        // topic新知識
+//        "statistic_topic_knowledge_count": KALS_context.user.get_topic_annotation_count(_annotation_type_knowledge),
+//        // topic我不懂
+//        "statistic_topic_dont_know_count": KALS_context.user.get_topic_annotation_count(_annotation_type_dont_know),
+//        // topic很奇怪
+//        "statistic_topic_strange_count": KALS_context.user.get_topic_annotation_count(_annotation_type_strange),
+//        // topic補充舉例
+//        "statistic_topic_predefined_count":KALS_context.user.get_topic_annotation_count(_annotation_type_predefined),       
+//        // topic我想說
         "statistic_topic_discuss_count": KALS_context.user.get_topic_annotation_count(_annotation_type_discuss),    
         //被回應的數量
         "statistic_responded_annotation_count":KALS_context.user.get_respond_to_my_annotation_count(),
@@ -431,19 +435,56 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
 
     };
     
+    /**
+     * 要用自訂標註的偵測
+     * @author Pulipuli Chen 20141110
+     */
+    var _annotation_type_count_list = {};
+    var _types = this.get_annotation_types();
+    for(var _i in _types){
+        var _type = _types[_i];
+        var _type_name = _type.get_name();
+        //var _type_id = _type.get_id();
+        //$.test_msg("type_id=", _type_id);      
+        //$.test_msg("type_name=", _type_name);
+        
+        //var _annotation_param = KALS_context.user.get_topic_annotation_count(_type_name);
+        _annotation_type_count_list[_type_name] = KALS_context.user.get_topic_annotation_count(_type_name);
+    }
+    
     var _container_selector = ".stamp-statistic";
     var _container = this.find(_container_selector)
             .empty();
     
-    for (var _statistic_title in _statistic_config) {
-        var _li = $("<li></li>").appendTo(_container);
-        var _title_lang = this.get_view_lang_line(_statistic_title);
+    for (var _key in _statistic_count_list) {
         
-        var _title = $("<strong></strong>").html(_title_lang + ": ")
-                .appendTo(_li);
-        var _qualified_message = _statistic_config[_statistic_title];
-        var _message = $("<span></span>").html(_qualified_message)
-                .appendTo(_li);
+        var _field_name  = this.get_view_lang_line(_key);
+        var _field_value = _statistic_count_list[_key];
+        var _li_html = "<strong>" + _field_name + "</strong>: " + _field_value; 
+        
+        $("<li></li>")
+                .html(_li_html)
+                .addClass(_key)
+                .appendTo(_container);
+//        
+//        
+//        var _title = $("<strong></strong>").html(_title_lang + ": ")
+//                .appendTo(_li);
+//        var _qualified_message = _statistic_config[_statistic_title];
+//        var _message = $("<span></span>").html(_qualified_message)
+//                .appendTo(_li);
+//        
+//        _li.appendTo(_container);
+    }
+    
+    var _annotation_type_container = $("<ul />").appendTo(_container.find(".statistic_topic_annotation_count"));
+    
+    for (var _key in _annotation_type_count_list) {
+        var _li_html = "<strong>" + _key + "</strong>: " + _annotation_type_count_list[_key]; 
+        $("<li />")
+                .addClass(_key)
+                .html(_li_html)
+                .appendTo(_annotation_type_container);
     }
         
     return this;
@@ -451,7 +492,8 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
 
 /**
  * 設定已經獲得的獎章
- * @returns {KALS_stamp.prototype}
+ * @author Pulipuli Chen 20141109
+ * @returns {KALS_stamp}
  */
 KALS_stamp.prototype.set_stamp_qualified = function() {
  
@@ -470,73 +512,93 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
 	//TABLE
     var _qualified_name = this.find(".qualified-name").empty();
     var _qualified_img = this.find(".qualified-img").empty();
+    var _qualification_container = this.find(".stamp-qualification").empty();
 	
-    var _i = 0;
-    var _k = 0;
+//    var _i = 0;
+//    var _k = 0;
     for (var _stamp_index in _stamps_config) {   
         // 取得is_qualified的值來讓後面的迴圈判斷要不要顯示圖片(取得獎章) 
         var _stamp_title = "stamps_level_" + _stamp_index;
-        if( _stamps_config[_i].is_qualified === true) {
+        
+        var _image_url = _stamps_config[_stamp_index].image_url;
+        //$.test_msg("KALS_stamp.set_stamp_qualified()", typeof(KALS_context.url));
+        _image_url = KALS_context.url.filter_base_url(_image_url);
+        var _stamp_title_lang = _stamps_config[_stamp_index].name;
+        
+        if ( _stamps_config[_stamp_index].is_qualified === true) {
             //KALS_util.notify("現在是幾呢？"+ _i);
             
-            var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
-            var _title = $("<td width=60px align=center></td>")
+            //var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+            var _title = $('<td></td>')
                     .html(_stamp_title_lang)
                     .appendTo(_qualified_name);					
-            _i++;
-        }
-		if( this._stamps_config[_k].is_qualified === true ){
-                    //var _stamp_picture = $();來加入圖片吧！
-                    //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
-                    var _qualified_image = "<img src=/kals/images/stamp_imgs/stamp_"+ _k +".png></>";
-                    var _stamp_picture = $("<td width='60px' align=center></td>")
-                            .html(_qualified_image)
-                            .appendTo(_qualified_img);		
-                     _k++;
-             }	
-    }
-        
-    return this;
-};
-
-/**
- * 設定尚未獲得的獎章
- * @returns {KALS_stamp.prototype}
- */
-KALS_stamp.prototype.set_stamp_qualification = function() {   
-    
-    var _qualification_config = {
-         "stamps_level_0": this._stamps_config[0].qualification_message,
-         "stamps_level_1": this._stamps_config[1].qualification_message,
-         "stamps_level_2": this._stamps_config[2].qualification_message,
-         "stamps_level_3": this._stamps_config[3].qualification_message,
-         "stamps_level_4": this._stamps_config[4].qualification_message
-        };
-    var _qualification_container = this.find(".stamp-qualification")
-            .empty();
-    var _i = 0;
-    
-    for (var _stamp_title in _qualification_config) {
-        if( this._stamps_config[_i].is_qualified !== false){
-            _i++;
-        }
-        else{
-            //KALS_util.notify("現在是幾呢？"+ _i);
-            var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
-            var _title = $("<dt style=clear:both></dt>").html(_stamp_title_lang)
+            //_i++;
+//        }
+//        
+//        if ( _stamps_config[_stamp_index].is_qualified === true ) {
+            //var _stamp_picture = $();來加入圖片吧！
+            //var _stamp_picture = $("<td background=/kals/images/stamp_imgs/stamp_"+ _k +".png></td>").html(_qualified_message)
+            
+            var _qualified_image = '<img src="' + _image_url + '" />';
+            var _stamp_picture = $('<td></td>')
+                    .html(_qualified_image)
+                    .appendTo(_qualified_img);		
+            //_k++;
+        }   //if ( _stamps_config[_stamp_index].is_qualified === true) {
+        else {
+            //var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+            var _title = $("<dt></dt>").html(_stamp_title_lang)
                     .appendTo(_qualification_container);
-            var _qualification_message = _qualification_config[_stamp_title];
-            var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png style=float:left;></>").html(_qualification_message)
+            //var _qualification_message = _qualification_config[_stamp_title];
+            var _qualification_message = _stamps_config[_stamp_index].qualification_message;            
+            var _stamp_picture = $('<img src="' + _image_url + '" />').html(_qualification_message)
                         .appendTo(_qualification_container);			
-            var _message = $("<dd style=margin-left:75px;></dd>").html(_qualification_message)
+            var _message = $("<dd></dd>").html(_qualification_message)
                     .appendTo(_qualification_container);
-
-            _i++;
         }
     }
         
     return this;
 };
+
+///**
+// * 設定尚未獲得的獎章
+// * @returns {KALS_stamp.prototype}
+// */
+//KALS_stamp.prototype.set_stamp_qualification = function() {   
+//    
+//    var _qualification_config = {
+//         "stamps_level_0": this._stamps_config[0].qualification_message,
+//         "stamps_level_1": this._stamps_config[1].qualification_message,
+//         "stamps_level_2": this._stamps_config[2].qualification_message,
+//         "stamps_level_3": this._stamps_config[3].qualification_message,
+//         "stamps_level_4": this._stamps_config[4].qualification_message
+//        };
+//    var _qualification_container = this.find(".stamp-qualification")
+//            .empty();
+//    var _i = 0;
+//    
+//    for (var _stamp_title in _qualification_config) {
+//        if( this._stamps_config[_i].is_qualified !== false){
+//            _i++;
+//        }
+//        else{
+//            //KALS_util.notify("現在是幾呢？"+ _i);
+//            var _stamp_title_lang = this.get_view_lang_line(_stamp_title);
+//            var _title = $("<dt style=clear:both></dt>").html(_stamp_title_lang)
+//                    .appendTo(_qualification_container);
+//            var _qualification_message = _qualification_config[_stamp_title];
+//            var _stamp_picture = $("<img src=/kals/images/stamp_imgs/stamp_"+ _i +".png style=float:left;></>").html(_qualification_message)
+//                        .appendTo(_qualification_container);			
+//            var _message = $("<dd style=margin-left:75px;></dd>").html(_qualification_message)
+//                    .appendTo(_qualification_container);
+//
+//            _i++;
+//        }
+//    }
+//        
+//    return this;
+//};
 
 /**
  * 設定顯示階級名單
@@ -545,8 +607,8 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
  */
 KALS_stamp.prototype.get_stamp_list = function() { 
     
-    //$.test_msg("get_stamp_list", "先在這裡打住");
-    //return this;
+    $.test_msg("get_stamp_list", "先在這裡打住");
+    return this;
     
     var _stamp_data = this._init_config();
     // 要改成每個階級都要顯示！
@@ -559,7 +621,7 @@ KALS_stamp.prototype.get_stamp_list = function() {
 
         //加入class在stamps-list的區塊畫出user
         //$.test_msg("接收stamp_result", _stamp_result);
-        for ( var _k in _stamp_result){
+        for ( var _k in _stamp_result) {
             //$.test_msg("接收stamp_result " + _k, _stamp_result[_k]);
             
             //_list_container.empty();
@@ -656,7 +718,7 @@ KALS_stamp.prototype._init_listener = function() {
         if (KALS_context.completed === true) {
             //$.test_msg("KALS_stamp _init_listener", _attr);
             _this._delay_check_qualification(_user);
-           //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
+            //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
         }
     };
     
@@ -695,11 +757,11 @@ KALS_stamp.prototype._init_listener = function() {
             _this.close();
         });
         
-        KALS_context.policy.add_attr_listener('write', function (_policy) {
-            if (_policy.writable()) {
-                _this.open();
-            }
-        }, true);
+//        KALS_context.policy.add_attr_listener('write', function (_policy) {
+//            if (_policy.writable()) {
+//                //_this.open();
+//            }
+//        }, true);
     });
     
     return this;
@@ -755,7 +817,7 @@ KALS_stamp.prototype._delay_check_qualification = function (_user) {
  */
 KALS_stamp.prototype.check_qualification = function(_user) {
     
-    $.test_msg("KALS_stamp.check_qualification");
+    //$.test_msg("KALS_stamp.check_qualification");
     
     var _qualification_modified = false;
     
@@ -1089,13 +1151,24 @@ KALS_stamp.prototype.qualify = function() {
         _stamp_level_up = true;
     }
     this.qualify_change_policy(_stamp_config, _stamp_new_level);
+    
+    /**
+     * 資料有更新時，才重新設定
+     * @author Pulipuli Chen 20141110 
+     */
+    this.set_stamp_statistic();
+    this.set_stamp_qualified();
+    this.get_stamp_list();
+    
     this.qualify_notify(_stamp_config, _stamp_new_level, _stamp_level_up);
     ///if (this._stamp_level_modified === true) {
     
     this._stamp_level = _stamp_new_level;
-    
     //} //if (this._stamp_level_modified === true) {
     
+    //$.test_msg("KALS_stamp.qualify()", "有人open嗎？");
+    this.open();
+        
     return this;
 };
 
@@ -1213,26 +1286,31 @@ KALS_stamp.prototype.qualify_change_policy = function(_stamps_config, _stamp_lev
  */
 KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _stamp_level_up) {
     var _msg;
-    var _img_path =  KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _stamps_config[_stamp_level].name +".png", true);
-    var _img ='<img src="'+_img_path+'"/>';
+    //var _img_path =  KALS_context.get_base_url("/images/stamp_imgs/stamp_"+ _stamps_config[_stamp_level].name +".png", true);
+    var _image_url = _stamps_config[_stamp_level].image_url;
+    _image_url = KALS_context.url.filter_base_url(_image_url);
+    
+    var _img ='<img src="'+_image_url+'" style="height: 60px; width: auto;margin-right: 1em;"/>';
+    
     if (_stamp_level_up === true) {
         //升級通知訊息
-       _msg = '<div style="text-align:center">'+_stamps_config[_stamp_level].quailfy_message +'</div>';
-       //KALS_util.notify(_msg+_img);
-       //$.test_msg("KALS_stamp qualify 8 _stamp_level_up" + this._stamp_level_up);
+        _msg = _stamps_config[_stamp_level].quailfy_message;
+        //KALS_util.notify(_msg+_img);
+        //$.test_msg("KALS_stamp qualify 8 _stamp_level_up" + this._stamp_level_up);
     }   //if (this._stamp_level_up === true) {
     else {  //if (this._stamp_level_up === true) {
         //降級通知訊息
-        _msg = '<div style="text-align:center">'+_stamps_config[_stamp_level].disqualify_message +'</div>';
+        _msg = _stamps_config[_stamp_level].disqualify_message;
         //KALS_util.notify(_msg+_img);
         //$.test_msg("KALS_stamp qualify 9 _stamp_level_up" + this._stamp_level_up);
     }   //else {
 
     //$.test_msg("KALS_stamp.qualify", _msg);
-    KALS_util.notify(_msg+_img);
-
-    this.open();
+    //KALS_util.notify(_msg+_img);
     
+    _msg = '<div style="clear:both; line-height: 60px;">' + _img + " " + _msg + '</div>';
+    KALS_util.notify(_msg);
+
     return this;
 };
 

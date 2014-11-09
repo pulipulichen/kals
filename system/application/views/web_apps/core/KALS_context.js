@@ -140,7 +140,6 @@ KALS_context.get_image_url = function (_img) {
     return this.url.get_image_url(_img);
 };
 
-
 /**
  * 回傳libraries網址
  * @param {string} _file 檔案名稱
@@ -193,7 +192,7 @@ KALS_context.ready = function (_callback) {
     
     if (this.completed === false) {
         //$.test_msg("KALS_context, 尚未準備好", _callback);
-        $.test_msg("KALS_context, 尚未準備好");
+        //$.test_msg("KALS_context, 尚未準備好");
         //var _this = this;
         //this.add_once_listener(_callback);
         this._ready_event_dispatcher.add_once_listener(_callback);

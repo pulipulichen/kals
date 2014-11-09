@@ -449,7 +449,13 @@ DEFAULT_KALS_CONFIG = {
          * 上傳快取資料
          * @type Boolean
          */
-        //webpage_cache_save_enable: false
+        //webpage_cache_save_enable: false,
+        
+        /**
+         * 確認KALS_util.notify的時間
+         * @type Boolean
+         */
+        notify_auto_hide: false
     },
     
     /**

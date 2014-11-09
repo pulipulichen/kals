@@ -7,16 +7,16 @@
 
 $lang["heading"] = "獎章";
 
-$lang["stamps_level_0"] = "士兵";
-$lang["stamps_level_0_message"] = "你現在是士兵！";
-$lang["stamps_level_1"] = "騎士";
-$lang["stamps_level_1_message"] = "你現在是騎士！";
-$lang["stamps_level_2"] = "主教";
-$lang["stamps_level_2_message"] = "你現在是主教！";
-$lang["stamps_level_3"] = "城主";
-$lang["stamps_level_3_message"] = "你現在是城主！";
-$lang["stamps_level_4"] = "國王";
-$lang["stamps_level_4_message"] = "你是國王！太棒了！";
+//$lang["stamps_level_0"] = "士兵";
+//$lang["stamps_level_0_message"] = "你現在是士兵！";
+//$lang["stamps_level_1"] = "騎士";
+//$lang["stamps_level_1_message"] = "你現在是騎士！";
+//$lang["stamps_level_2"] = "主教";
+//$lang["stamps_level_2_message"] = "你現在是主教！";
+//$lang["stamps_level_3"] = "城主";
+//$lang["stamps_level_3_message"] = "你現在是城主！";
+//$lang["stamps_level_4"] = "國王";
+//$lang["stamps_level_4_message"] = "你是國王！太棒了！";
 
 
 
@@ -53,11 +53,11 @@ $lang["qualification_heading"] = "獲得其他獎章的方法";
 $lang["qualification_subheading"] = "透過以下方式獲得獎章，有助於您讀起來更順利喔！";
 
 $lang["stamp_list_heading"] = "大家都在哪個階級呢？";
-$lang["king"] = "國王";  
-$lang["castle"] = "城主"; 
-$lang["bishop"] = "主教"; 
-$lang["knight"] = "騎士"; 
-$lang["soldier"] = "士兵"; 
+//$lang["king"] = "國王";  
+//$lang["castle"] = "城主"; 
+//$lang["bishop"] = "主教"; 
+//$lang["knight"] = "騎士"; 
+//$lang["soldier"] = "士兵"; 
 
 
 

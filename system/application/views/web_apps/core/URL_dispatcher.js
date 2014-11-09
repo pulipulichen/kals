@@ -214,5 +214,21 @@ URL_dispatcher.prototype.redirect = function (_url, _from_root) {
     return this;
 };
 
+
+/**
+ * 過濾${base_url}
+ * @author Pulipuli Chen 20141109
+ * @param {string} _url 網址
+ * @type {string} 完整網址
+ */
+URL_dispatcher.prototype.filter_base_url = function (_url) {
+    //return this.url.get_image_url(_img);
+    var _base_url = this.get_base_url("", true);
+    
+    _url = $.str_replace("${base_url}/", _base_url, _url);
+    
+    return _url;
+};
+
 /* End of file URL_dispatcher */
 /* Location: ./system/application/views/web_apps/URL_dispatcher.js */

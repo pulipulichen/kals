@@ -73,7 +73,7 @@ Init_component.prototype._$onstart = function () {
     //}
     
     KALS_context.loader.load_modules_config(function () {
-        $.test_msg("Init_component" , "modules_config");
+        //$.test_msg("Init_component" , "modules_config");
         _this.complete("modules_config");
     });
     

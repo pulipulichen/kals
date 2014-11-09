@@ -1122,7 +1122,7 @@ KALS_util.notify = function (_message, _wait) {
     var _notify_modal = this._get_notify_modal();
     
 	if (_wait === undefined) {
-		_wait = 10000;
+            _wait = 10000;
 	}
 	
 	// @20130610 Pudding Chen
