@@ -1198,6 +1198,13 @@ KALS_stamp.prototype.check_qualification_liked_users_count = function(_user, _co
  */
 KALS_stamp.prototype._stamp_level = -1;
 
+/**
+ * 是不是第一次開啟獎章
+ * @type  Boolean
+ * @author Pulipuli Chen 20141110
+ */
+KALS_stamp.prototype._first_notify = true;
+
 //KALS_stamp.prototype._stamp_level_modified = false;
 
 //KALS_stamp.prototype._stamp_level_up = true;
@@ -1406,9 +1413,13 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
     
     var _img ='<img src="'+_image_url+'" style="height: 50px; width: auto;margin-right: 1em;"/>';
     
-    if (_stamp_level_up === true) {
-        //升級通知訊息
+    if (this._first_notify === true) {
         _msg = _stamps_config[_stamp_level].quailfy_message;
+        this._first_notify = false;
+    }
+    else if (_stamp_level_up === true) {
+        //升級通知訊息
+        _msg = _stamps_config[_stamp_level].qualified_message;
         //KALS_util.notify(_msg+_img);
         //$.test_msg("KALS_stamp qualify 8 _stamp_level_up" + this._stamp_level_up);
     }   //if (this._stamp_level_up === true) {
