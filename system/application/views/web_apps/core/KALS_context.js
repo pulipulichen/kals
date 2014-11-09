@@ -173,7 +173,12 @@ KALS_context.reset = function (_callback) {
 KALS_context.set_completed = function () {
     this.completed = true;
     this.notify_listeners(this);
-    this._ready_event_dispatcher.notify_listeners(this);
+    
+    var _this = this;
+    setTimeout(function () {
+        _this._ready_event_dispatcher.notify_listeners(_this);
+    }, 500);
+    
     return this;
 };
 

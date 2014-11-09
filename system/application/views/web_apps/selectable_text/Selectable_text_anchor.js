@@ -151,6 +151,11 @@ Selectable_text_anchor.prototype.get_abbreviated_anchor_text = function (_scope_
  */
 Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll, _focus_coll) {
     
+    //$.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _scope_coll", _scope_coll);
+    //$.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_coll", _focus_coll);
+    
+    $.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_coll", _focus_coll.count_length());
+    
     if ($.is_null(_scope_coll)) {
         return null;
     }
@@ -162,29 +167,21 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
     var _focus_foot_index = [];
     if ($.is_class(_focus_coll, 'Scope_collection_param')) {
         _focus_index = _focus_coll.get_index_array();
+        $.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_index", _focus_index);
         _focus_head_index = _focus_coll.get_from_index_array();
         _focus_foot_index = _focus_coll.get_to_index_array();
     }
     
-    var _focus_text = function (_index, _text) {
-        if ($.inArray(_index, _focus_head_index) > -1) {
-            _text = '<span class="select select_from view">' + _text + '</span>';
-        }
-        else if ($.inArray(_index, _focus_foot_index) > -1) {
-            _text = '<span class="select select_to view">' + _text + '</span>';
-        }
-        else {
-            _text = '<span class="select select_middle view">' + _text + '</span>';
-        }
-        return _text;
-    };
+//    var _focus_text = function (_index, _text) {
+//        
+//    };
 	
-    var _focus_single_text = function (_index, _text) {
-        if ($.inArray(_index, _focus_head_index) > -1) {
-            _text = '<span class="select select_from select_to view">' + _text + '</span>';
-        }
-        return _text;
-    };
+//    var _focus_single_text = function (_index, _text) {
+//        if ($.inArray(_index, _focus_head_index) > -1) {
+//            _text = '<span class="select select_from select_to view">' + _text + '</span>';
+//        }
+//        return _text;
+//    };
     
     var _selectable_text_word = this._selectable_text_word;
     
@@ -213,11 +210,13 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
             
             for (var _k in _focus_index) {
                 if ($.inArray(_j, _focus_index[_k]) > -1) {
-                    if (_focus_index.length > 1) {
-                        _text = _focus_text(_j, _text);
+                    //$.test_msg("_focus_coll.length()", _focus_coll.length());
+                    if (_focus_coll.count_length() > 1) {
+                        _text =  this._focus_text(_j, _text, _focus_head_index, _focus_foot_index);
                     }
                     else {
-                        _text = _focus_single_text(_j, _text);
+                        _text = this._focus_single_text(_j, _text, _focus_head_index, _focus_foot_index);
+                        break;
                     }
                 }    
             }
@@ -244,6 +243,34 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
     }
     
     return _anchor_text;
+};
+
+/**
+ * 設定聚焦文字
+ * @author Pulipuli Chen 20141110
+ */
+Selectable_text_anchor.prototype._focus_text = function (_index, _text, _focus_head_index, _focus_foot_index) {
+    if ($.inArray(_index, _focus_head_index) > -1) {
+        _text = '<span class="select select_from view">' + _text + '</span>';
+    }
+    else if ($.inArray(_index, _focus_foot_index) > -1) {
+        _text = '<span class="select select_to view">' + _text + '</span>';
+    }
+    else {
+        _text = '<span class="select select_middle view">' + _text + '</span>';
+    }
+    return _text;
+};
+
+/**
+ * 設定單一聚焦文字
+ * @author Pulipuli Chen 20141110
+ */
+Selectable_text_anchor.prototype._focus_single_text = function (_index, _text, _focus_head_index, _focus_foot_index) {
+    if ($.inArray(_index, _focus_head_index) > -1) {
+        _text = '<span class="select select_from select_to view">' + _text + '</span>';
+    }
+    return _text;
 };
 
 /* End of file Selectable_text_anchor */

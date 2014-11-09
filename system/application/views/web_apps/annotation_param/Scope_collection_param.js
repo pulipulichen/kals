@@ -129,6 +129,19 @@ Scope_collection_param.prototype.length = function () {
 };
 
 /**
+ * 計算總長度
+ * @type Number
+ * @author Pulipuli Chen 20141110
+ */
+Scope_collection_param.prototype.count_length = function () {
+    var _len = 0;
+    for (var _i in this.scopes) {
+        _len = _len + this.scopes[_i].count_length();
+    }
+    return _len;
+};
+
+/**
  * 
  * @param {number} _index
  * @type {Scope_param}
