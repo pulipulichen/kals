@@ -1287,14 +1287,16 @@ KALS_stamp.prototype.qualify = function() {
     ///if (this._stamp_level_modified === true) {
     
     this._stamp_level = _stamp_new_level;
+    _stamp_new_level = parseInt(_stamp_new_level, 10);
     //} //if (this._stamp_level_modified === true) {
     
     //$.test_msg("KALS_stamp.qualify()", "有人open嗎？");
     this.change_tab("btn-qualification");
     //this.change_tab("btn-king-list");
     
+    //$.test_msg("KALS_stamp.prototype.qualify", [KALS_context.module.get_module_config("KALS_stamp", "quailfy_open_window"), _stamp_new_level,(_stamp_new_level === 0)]);
     if (KALS_context.module.get_module_config("KALS_stamp", "quailfy_open_window") === true
-            && this._first_notify === false) {
+            && (this._first_notify === false || _stamp_new_level === 0)) {
         this.open();
     }
     
