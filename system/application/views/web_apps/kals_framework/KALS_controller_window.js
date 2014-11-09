@@ -197,8 +197,18 @@ KALS_controller_window.prototype.close = function (_callback) {
         //return $.trigger_callback(_callback);
         return;
     }
+    var _this = this;
     return KALS_controller.prototype.close.call(this, function () {
-        KALS_window.close(_callback);
+        KALS_window.close(function () {
+            if (_this._$absolute === true) {
+                $.trigger_callback(_callback);
+            }
+            else {
+                setTimeout(function () {
+                    $.trigger_callback(_callback);
+                }, 500);
+            }
+        });
     });
 };
 

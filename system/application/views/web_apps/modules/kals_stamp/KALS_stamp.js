@@ -641,7 +641,7 @@ KALS_stamp.prototype.get_stamp_list = function() {
  */
 KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) { 
     //加入class在stamps-list的區塊畫出user
-    $.test_msg("KALS_stamp.get_stamp_list_after_post() 接收stamp_result", _stamp_result[0]);
+    //$.test_msg("KALS_stamp.get_stamp_list_after_post() 接收stamp_result", _stamp_result[0]);
     
     var _list_container = this.find('.stamps-list').empty();
     
@@ -697,7 +697,7 @@ KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) {
 //            }   //for (var _index in _name_arr) {
 //        }
         
-        $.test_msg("KALS_stamp.get_stamp_list_after_post() _i=", _i);
+        //$.test_msg("KALS_stamp.get_stamp_list_after_post() _i=", _i);
         var _stamp_index = _stamp_result[_i].stamp_index;
         var _user_name_list = _stamp_result[_i].user_name_list;
         
@@ -713,8 +713,12 @@ KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) {
  * 設定顯示階級名單，單一階級
  * @param {Object} _stamp_result
  * @author Pulipuli Chen 20141110
+ * @return {jQuery} 單一階級的jQuery元素
  */
 KALS_stamp.prototype.get_stamp_list_create = function(_stamp_index, _user_name_list) { 
+    
+    var _this = this;
+    
     var _list_ele = $("<tr/>");
     
     var _stamp_data = this._init_config();
@@ -737,11 +741,16 @@ KALS_stamp.prototype.get_stamp_list_create = function(_stamp_index, _user_name_l
         _name_span.appendTo(_td);
 
         _name_span.click(function() {
-            //搜尋
-            KALS_context.search.search({
-                range: "author",
-                keyword: $(this).html()
-            }, false);
+            var _keyword = $(this).html();
+            _this.close(function () {
+                //setTimeout(function () {
+                    //搜尋
+                    KALS_context.search.search({
+                        range: "author",
+                        keyword: _keyword
+                    }, true);
+                //}, 500);
+            });
         });
 
         //_name_span.addClass("list-span");
@@ -1253,6 +1262,9 @@ KALS_stamp.prototype.qualify = function() {
     //} //if (this._stamp_level_modified === true) {
     
     //$.test_msg("KALS_stamp.qualify()", "有人open嗎？");
+    //this.change_tab("btn-qualification");
+    this.change_tab("btn-king-list");
+    
     this.open();
         
     return this;
