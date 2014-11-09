@@ -136,5 +136,13 @@
 .KALS.window .dialog-content h1 {
     font-size: 1.2em;
     font-weight: bold;
-    
+}
+
+/**
+ * 解決視窗超過的問題
+ * @author Pulipuli Chen 20141110
+ */
+.KALS.window .dialog-content {
+    max-height: 400px;
+    overflow-y: auto;
 }

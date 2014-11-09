@@ -3,29 +3,11 @@
     
 
 <div class="list-header-component">
-   <button type="button" class="tab-button list-button-counts btn-annotation-count" kals-event-click="change_tab('btn-annotation-count')" tab_name="btn-annotation-count" >{{kals-lang:annotation_counts}}</button>    
-   <button type="button" class="tab-button list-button-qualified btn-qualified" kals-event-click="change_tab('btn-qualified')" tab_name="btn-qualified">{{kals-lang:stamp_geted}}</button> 
    <button type="button" class="tab-button list-button-qualification btn-qualification" kals-event-click="change_tab('btn-qualification')" tab_name="btn-qualification">{{kals-lang:stamp_not_get}}</button> 
+   <button type="button" class="tab-button list-button-qualified btn-qualified" kals-event-click="change_tab('btn-qualified')" tab_name="btn-qualified">{{kals-lang:stamp_geted}}</button> 
+   <button type="button" class="tab-button list-button-counts btn-annotation-count" kals-event-click="change_tab('btn-annotation-count')" tab_name="btn-annotation-count" >{{kals-lang:annotation_counts}}</button>    
    <button type="button" class="tab-button list-button-king btn-king-list" kals-event-click="change_tab('btn-king-list')" tab_name=btn-king-list">{{kals-lang:stamp_list}}</button> 
     <!--<span class="header-button" kals-event-click="change_tab()">{{annotation_type}}</span>-->
-</div>
-
-<!--標註數量-->
-<div class="btn-annotation-count tab-content" >
-<p>{{kals-lang:statistic_heading}}</p>
-<ul class="stamp-statistic">
-    
-</ul>
-</div>
-
-<!--已獲得獎章-->
-<div class="stamp_qualified btn-qualified tab-content" >
-<h1>{{kals-lang:qualified_heading}}</h1>
-<table class="stamp-qualified">
-<tr class="qualified-name"></tr>
-<tr class="qualified-img"></tr>
-    
-</table>
 </div>
 
 <!--未獲得獎章-->
@@ -38,6 +20,26 @@
     
 </table>
 </div>
+
+<!--已獲得獎章-->
+<div class="stamp_qualified btn-qualified tab-content" >
+<h1>{{kals-lang:qualified_heading}}</h1>
+<table class="stamp-qualified">
+<tr class="qualified-name"></tr>
+<tr class="qualified-img"></tr>
+    
+</table>
+</div>
+
+<!--標註數量-->
+<div class="btn-annotation-count tab-content" >
+<p>{{kals-lang:statistic_heading}}</p>
+<ul class="stamp-statistic">
+    
+</ul>
+</div>
+
+
 
 <!--國王名單-->
 

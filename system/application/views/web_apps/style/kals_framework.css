@@ -24,7 +24,6 @@
     overflow-y: auto;
 }
 
-
 .KALS.kals-controller-window.absolute {
     position: fixed;
     z-index: 999;

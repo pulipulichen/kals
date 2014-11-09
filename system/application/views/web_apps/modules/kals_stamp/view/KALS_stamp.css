@@ -24,10 +24,12 @@
     float:left;
 }
 
+/*
 .stamp_qualification {
     max-height: 300px;
     overflow-y: auto;
 }
+*/
 
 .header {
     font-weight: bold;

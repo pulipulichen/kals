@@ -1262,8 +1262,8 @@ KALS_stamp.prototype.qualify = function() {
     //} //if (this._stamp_level_modified === true) {
     
     //$.test_msg("KALS_stamp.qualify()", "有人open嗎？");
-    //this.change_tab("btn-qualification");
-    this.change_tab("btn-king-list");
+    this.change_tab("btn-qualification");
+    //this.change_tab("btn-king-list");
     
     this.open();
         
