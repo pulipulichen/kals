@@ -244,7 +244,8 @@ DEFAULT_KALS_CONFIG = {
         "Google搜尋": "http://www.google.com/search?q={query}",
         "維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
         "Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
-        "Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}"
+        "Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}",
+        "萌典": "https://www.moedict.tw/{query}"
     },
     //web_search_url: "disable",
 
