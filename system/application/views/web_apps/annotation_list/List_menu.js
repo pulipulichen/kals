@@ -413,8 +413,9 @@ List_menu.prototype.delete_annotation = function () {
                 //$.test_msg('Item remove()');
                 
                 var _lang = new KALS_language_param(
-                    'Annotation is deleted.',
-                    'list_menu.delete_complete'
+                    'Annotation #{0} is deleted.',
+                    'list_menu.delete_complete',
+                    [_annotation_id]
                 );
                 KALS_util.notify(_lang);
                 
