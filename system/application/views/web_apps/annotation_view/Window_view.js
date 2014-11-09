@@ -272,11 +272,11 @@ Window_view.prototype._$create_ui = function () {
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
         if (_policy.writable()) {
-			_ui.removeClass(_not_login_classname);
-		}
-		else {
-			_ui.addClass(_not_login_classname);
-		}
+            _ui.removeClass(_not_login_classname);
+        }
+        else {
+            _ui.addClass(_not_login_classname);
+        }
     }, true);
     
     return _ui;

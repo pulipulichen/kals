@@ -179,6 +179,10 @@
     font-size: small;
 }
 
+.KALS.kals-modal .editor-container .editor-deny {
+    height: 30px;
+}
+
 .KALS.kals-modal .editor-container .editor-deny .not-login {
     color: blue;
     text-decoration:underline;

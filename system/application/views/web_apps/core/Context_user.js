@@ -904,14 +904,15 @@ Context_user.prototype._pre_update = function (_key, _value) {
 Context_user.prototype._load_params_uri = "statistics/user_params";
 
 /**
+ * 讀取使用者的資訊
  * @author Pulipuli Chen 20141107
  * @returns Context_user
  */
 Context_user.prototype.load_user_params = function ( _callback){
     
     //$.test_msg("load_user_params", "暫時在這裡打住");
-    $.throw_msg("load_user_params", "暫時在這裡打住");
-    return this;
+    //$.throw_msg("load_user_params", "暫時在這裡打住");
+    //return this;
     
     var _this = this;
     var _get_callback = function (_data){

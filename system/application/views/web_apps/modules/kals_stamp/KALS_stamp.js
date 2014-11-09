@@ -151,7 +151,7 @@ KALS_stamp.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-KALS_stamp.prototype._$absolute = true;
+KALS_stamp.prototype._$absolute = false;
 
 /**
  * 視窗的Class Name
@@ -541,8 +541,8 @@ KALS_stamp.prototype.set_stamp_qualification = function() {
  */
 KALS_stamp.prototype.get_stamp_list = function() { 
     
-    $.test_msg("get_stamp_list", "先在這裡打住");
-    return this;
+    //$.test_msg("get_stamp_list", "先在這裡打住");
+    //return this;
     
     var _stamp_data = this._init_config();
     // 要改成每個階級都要顯示！
@@ -676,8 +676,20 @@ KALS_stamp.prototype._init_listener = function() {
 //        }
 //    });
 //    
-    KALS_context.add_listener(function () {
+    KALS_context.ready(function () {
         _this.change_tab("btn-annotation-count");
+        
+        // 選擇標註範圍時，把獎章關掉
+        KALS_text.selection.select.add_listener("select", function() {
+            //$.test_msg("KALS_stamp._init_listener()", "已經有選擇");
+            _this.close();
+        });
+        
+        KALS_context.policy.add_attr_listener('write', function (_policy) {
+            if (_policy.writable()) {
+                _this.open();
+            }
+        }, true);
     });
     
     return this;
@@ -866,7 +878,7 @@ KALS_stamp.prototype.check_qualification_topic_annotation_count = function(_user
             var _annotation_type = new Annotation_type_param(_type);
             var _total_annotation_count = _user.get_topic_annotation_count(_annotation_type);
 
-            $.test_msg("現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _type_config.count > _total_annotation_count )]);
+            //$.test_msg("現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _type_config.count > _total_annotation_count )]);
             if ( _type_config.count > _total_annotation_count ){
                 // 不合格
                 _stamp_qualified = false;    
@@ -897,7 +909,7 @@ KALS_stamp.prototype.check_qualification_respond_to_user_count = function(_user,
     var _count = _config.count;
     var _respond_to_user_count = _user.get_respond_to_users_count();
     // var _respond_to_user_count_config = _config[_key];
-      $.test_msg("NO2.respond_to_user_count = ", _count);
+      //$.test_msg("NO2.respond_to_user_count = ", _count);
      if (_respond_to_user_count < _count) {
          // 不合格
          _stamp_qualified = false;
@@ -923,7 +935,7 @@ KALS_stamp.prototype.check_qualification_responded_user_count = function(_user, 
     
     var _responded_user_count = _user.get_responded_users_count();
 
-    $.test_msg("NO3.responded_user_count = ", _config.count);
+    //$.test_msg("NO3.responded_user_count = ", _config.count);
     if (_responded_user_count < _config.count){
         // 不合格
         _stamp_qualified = false;
@@ -949,7 +961,7 @@ KALS_stamp.prototype.check_qualification_like_to_users_count = function(_user, _
     
     var _like_to_users_count = _user.get_like_to_users_count();
 
-    $.test_msg("NO4.responded_user_count = ", _config.count);
+    //$.test_msg("NO4.responded_user_count = ", _config.count);
     if (_like_to_users_count < _config.count){
         // 不合格
         _stamp_qualified = false;
@@ -974,7 +986,7 @@ KALS_stamp.prototype.check_qualification_liked_users_count = function(_user, _co
     var _stamp_qualified = false;
     
     var _liked_users_count = _user.get_liked_users_count();
-    $.test_msg("NO5.liked_users_count = ", _config.count);
+    //$.test_msg("NO5.liked_users_count = ", _config.count);
     if ( _liked_users_count < _config.count ){
        // 不合格
        _stamp_qualified = false;
