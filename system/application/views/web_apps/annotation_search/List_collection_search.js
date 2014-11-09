@@ -50,11 +50,19 @@ List_collection_search.prototype._search_range = null;
 List_collection_search.prototype._keyword = null;
 
 /**
+ * 導讀按鈕
+ * @type {jQuery}
+ * @author Pulipuli Chen 20141110
+ */
+List_collection_search.prototype._guide_button = null;
+
+
+/**
  * 設定搜尋範圍
  * @param {string} _search_range
  */
 List_collection_search.prototype.set_search_range = function (_search_range) {
-	this._search_range = _search_range;
+    this._search_range = _search_range;
 };
 
 /**
@@ -62,7 +70,7 @@ List_collection_search.prototype.set_search_range = function (_search_range) {
  * @param {string} _keyword
  */
 List_collection_search.prototype.set_keyword = function (_keyword) {
-	this._keyword = _keyword;
+    this._keyword = _keyword;
 };
 
 /**
@@ -70,7 +78,7 @@ List_collection_search.prototype.set_keyword = function (_keyword) {
  * @param {string} _order_by
  */
 List_collection_search.prototype.set_order_by = function (_order_by) {
-	this._$order_by = _order_by;
+    this._$order_by = _order_by;
 };
 
 
@@ -95,92 +103,105 @@ List_collection_search.prototype.get_search_data = function () {
     //}
     
     if ($.isset(this._$target_like)) {
-		_search_data.target_like = this._$target_like;
-	}
+        _search_data.target_like = this._$target_like;
+    }
     if ($.isset(this._$target_my)) {
-		_search_data.target_my = this._$target_my;
-	}
+        _search_data.target_my = this._$target_my;
+    }
     
     if ($.isset(this._$limit)) {
-		_search_data.limit = this._$limit;
-	}
+        _search_data.limit = this._$limit;
+    }
     
     if ($.isset(this._$target_topic)) {
-		_search_data.target_topic = this._$target_topic;
-	}
+        _search_data.target_topic = this._$target_topic;
+    }
     if ($.isset(this._$order_by) && this._$order_by !== 'score') {
-		_search_data.order_by = this._$order_by;
-	}
+        _search_data.order_by = this._$order_by;
+    }
         
     if ($.isset(this._offset)) {
-		_search_data.offset = this._offset;
-	}
+        _search_data.offset = this._offset;
+    }
     
     //$.test_msg('Respond_list_collection.get_search_data()', _data);
     _search_data.search_range = this._search_range;
-	_search_data.keyword = this._keyword;
-	_search_data.order_by = this._$order_by;
+    _search_data.keyword = this._keyword;
+    _search_data.order_by = this._$order_by;
 	
     _search_data.show_total_count = true;
-    
-        //$.test_msg("List_coll get_search_data", _search_data);
-	return _search_data;
+
+    //$.test_msg("List_coll get_search_data", _search_data);
+    return _search_data;
 };
 
-// 呈現結果數量
+/**
+ * 呈現結果數量
+ * @param {Object} _data
+ * @param {Function} _callback
+ * @returns {unresolved}
+ */ 
 List_collection_search.prototype.setup_load_list = function(_data, _callback){
-	
-	// 做一個假的_this，讓function中使用
-	var _this = this;
-	
-        //$.test_msg("search.setup_load_list", _data);
-        //$.test_msg("search.setup_load_list", this.get_name());
-	return List_collection.prototype.setup_load_list.call(this, _data, function () {
 
-		// 取得UI
-	   var _ui = _this.get_ui();
-		
-	   var _search_count =_data.total_count;
-	   var _search_loaded = _data.totally_loaded;
-	   
-	   //var _show_result_row = _ui.find(".totally-loaded"); //全部讀完
-	   var _show_no_result_row = _ui.find(".no-result");  //無查詢結果
-	   var _reset_button = _ui.find(".reset-button");  //無查詢結果
-	  
-	   //顯示查詢訊息
-	   if (_search_loaded === true && _search_count === 0){ 
-		    _show_no_result_row.show();
-			//_show_result_row.hide();
-			_reset_button.hide();
-		  }
-		else if(_search_loaded === true && _search_count !== 0 ) {
-		    //_show_result_row.show();
-		    _show_no_result_row.hide();
-			_reset_button.show();
-		}
-	
-                //顯示查詢結果	
-                _ui.find(".result-count-tip").show();
-		_ui.find(".result-count-tip .result-count").html(_search_count);
- 		
-		//$.test_msg('_search_count', _search_count);
-		//$.test_msg('_search_loaded',_search_loaded);
-		
-		// ------------
-		
-		var _search_scope = _data.scope_collection;
-		
-		KALS_text.selection.search.set_scope_coll(_search_scope);
-		
-		_ui.show();
-		
-		// ------------
+    // 做一個假的_this，讓function中使用
+    var _this = this;
+    var _guide_button = this._guide_button;
 
-		// 要改用$._trigger，以免_callback不是function
-		// @20131114 Pulipuli Chen
-		$.trigger_callback(_callback);
-	});
-	
+    //$.test_msg("search.setup_load_list", _data);
+    //$.test_msg("search.setup_load_list", this.get_name());
+    return List_collection.prototype.setup_load_list.call(this, _data, function () {
+
+            // 取得UI
+        var _ui = _this.get_ui();
+
+        var _search_count =_data.total_count;
+        var _search_loaded = _data.totally_loaded;
+
+        //var _show_result_row = _ui.find(".totally-loaded"); //全部讀完
+        var _show_no_result_row = _ui.find(".no-result");  //無查詢結果
+        var _reset_button = _ui.find(".reset-button");  //無查詢結果
+
+        //顯示查詢訊息
+        if (_search_loaded === true 
+               && _search_count === 0){ 
+            _show_no_result_row.show();
+            //_show_result_row.hide();
+            _reset_button.hide();
+            if (_guide_button !== null) {
+                _guide_button.hide();
+            }
+        }
+        else if (_search_loaded === true 
+                && _search_count !== 0 ) {
+            //_show_result_row.show();
+            _show_no_result_row.hide();
+            _reset_button.show();
+            if (_guide_button !== null) {
+                _guide_button.show();
+            }
+        }
+
+        //顯示查詢結果	
+        _ui.find(".result-count-tip").show();
+        _ui.find(".result-count-tip .result-count").html(_search_count);
+
+        //$.test_msg('_search_count', _search_count);
+        //$.test_msg('_search_loaded',_search_loaded);
+
+        // ------------
+
+        var _search_scope = _data.scope_collection;
+
+        KALS_text.selection.search.set_scope_coll(_search_scope);
+
+        _ui.show();
+
+        // ------------
+
+        // 要改用$._trigger，以免_callback不是function
+        // @20131114 Pulipuli Chen
+        $.trigger_callback(_callback); 
+    });
 };
 
 /**
@@ -279,8 +300,11 @@ List_collection_search.prototype._$create_ui = function () {
     _reset_button.appendTo(_header_panel);
     
     // 建立導覽的按鈕
-    var _guide_button = this.create_guide_button();
-    _guide_button.appendTo(_header_panel);
+    if (KALS_context.module.has_module("Reading_guide")) { 
+        var _guide_button = this.create_guide_button();
+        _guide_button.appendTo(_header_panel);
+        this._guide_button = _guide_button;
+    }
 
     //_factory.hr_row().appendTo(_ui);	
     	
@@ -334,20 +358,20 @@ List_collection_search.prototype._$create_ui = function () {
  * @return jQuery
  */
 List_collection_search.prototype.create_reset_button = function () {
-	var _factory = KALS_window.ui;
-	var _button = _factory.button(new KALS_language_param(
-		"Clear search result",
-		"window.search.clear_search_result"
-	))
-		.addClass("reset-button");
-	
-	
-	var _this = this;
-	_button.click(function () {
-		_this.reset();
-	});
-	
-	return _button;
+    var _factory = KALS_window.ui;
+    var _button = _factory.button(new KALS_language_param(
+        "Clear search result",
+        "window.search.clear_search_result"
+    ))
+        .addClass("reset-button");
+
+
+    var _this = this;
+    _button.click(function () {
+            _this.reset();
+    });
+
+    return _button;
 };
 
 /**
@@ -358,17 +382,17 @@ List_collection_search.prototype.create_reset_button = function () {
 List_collection_search.prototype.create_guide_button = function () {
     var _factory = KALS_window.ui;
     var _button = _factory.button(new KALS_language_param(
-                "Reading Guide",
-                "window.search.reading_guide"
-        ))
-        .addClass("guide-button");
+        "Reading Guide",
+        "window.search.reading_guide"
+    ))
+    .addClass("guide-button");
 
     var _this = this;
     _button.click(function () {
         //_this.reset();
         var _coll = _this.get_annotation_collection_param();
         
-        // @TODO 20131230 要輸出到導讀的功能中
+        // @20131230 要輸出到導讀的功能中
         KALS_text.guide.setup_steps(_coll);
         KALS_window.close();
         

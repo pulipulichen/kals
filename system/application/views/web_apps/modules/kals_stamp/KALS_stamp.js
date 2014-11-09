@@ -746,7 +746,7 @@ KALS_stamp.prototype.get_stamp_list_create = function(_stamp_index, _user_name_l
                 //setTimeout(function () {
                     //搜尋
                     KALS_context.search.search({
-                        range: "author",
+                        search_range: "author",
                         keyword: _keyword
                     }, true);
                 //}, 500);

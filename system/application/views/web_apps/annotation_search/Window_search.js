@@ -720,13 +720,13 @@ Window_search.prototype.setup_recent = function(){
 
         //$.test_msg("setup_recent", "keyword *");
         _this.set_input_value({
-                search_range: "note",
-                keyword: "*",
-                order_by: "update"
+            search_range: "note",
+            keyword: "*",
+            order_by: "update"
         });
 
         _this.submit.submit(function () {
-                _this.set_input_value(_save_input_value);
+            _this.set_input_value(_save_input_value);
         });
     };
 };
@@ -754,7 +754,7 @@ Window_search.prototype.default_focus_input = '.dialog-content:first input:radio
  * 執行搜尋
  * @param {JSON} _search_option 搜尋選項
  * _param = {
- *      range: "note","author","annotation_type","annotation_anchor",
+ *      search_range: "note","author","annotation_type","annotation_anchor",
  *      keyword:"keyword",
  *      order_by: "update|create"
  * }

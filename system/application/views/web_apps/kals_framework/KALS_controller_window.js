@@ -199,6 +199,11 @@ KALS_controller_window.prototype.close = function (_callback) {
     }
     var _this = this;
     return KALS_controller.prototype.close.call(this, function () {
+        
+        /**
+         * 依照視窗是否獨立，判斷是否要延後呼叫callback
+         * @author Pulipuli Chen 20141110
+         */
         KALS_window.close(function () {
             if (_this._$absolute === true) {
                 $.trigger_callback(_callback);
