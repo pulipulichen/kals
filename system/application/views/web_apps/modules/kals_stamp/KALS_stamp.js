@@ -1441,7 +1441,8 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
     //$.test_msg("KALS_stamp.qualify", _msg);
     //KALS_util.notify(_msg+_img);
     
-    _msg = '<span style="clear:both; line-height: 50px;float:right">' + _msg + '</span>' + _img;
+    //_msg = '<span style="clear:both; line-height: 50px;float:right">' + _msg + '</span>' + _img;
+    _msg = '<span style="clear:both; float:right">' + _msg + '</span>' + _img;
     KALS_util.notify(_msg);
 
     return this;
