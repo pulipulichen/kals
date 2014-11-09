@@ -852,10 +852,10 @@ KALS_stamp.prototype._init_listener = function() {
         _this.change_tab("btn-qualification");
         
         // 選擇標註範圍時，把獎章關掉
-        KALS_text.selection.select.add_listener("select", function() {
+        //KALS_text.selection.select.add_listener("select", function() {
             //$.test_msg("KALS_stamp._init_listener()", "已經有選擇");
-            _this.close();
-        });
+            //_this.close();
+        //});
         
         KALS_context.auth.add_listener(function (_auth) {
             if (_auth.is_login() === true) {

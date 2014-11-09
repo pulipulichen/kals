@@ -182,8 +182,9 @@ Window_view.prototype.set_selection = function () {
     
     if ($.isset(this._topic_param)) {
         var _this = this;
+        var _scope = this._topic_param.scope;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
+            KALS_text.selection.select.set_scope_coll(_scope);
         }, 1000);
     }
     
