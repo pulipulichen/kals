@@ -33,8 +33,8 @@ $lang["statistic_topic_annotation_importance_count"] = "主題重要標註";
 $lang["statistic_topic_annotation_confusion_count"] = "主題困惑標註";
 $lang["statistic_topic_annotation_summary_count"] = "主題摘要標註";
 
-$lang["statistic_responded_annotation_count"] = "被回覆標註";
-$lang["statistic_respond_to_annotation_count"] = "回覆標註";
+$lang["statistic_responded_annotation_count"] = "被別人回覆的標註";
+$lang["statistic_respond_to_annotation_count"] = "回覆別人的標註";
 $lang["statistic_responded_users_count"] = "有多少人回覆我";
 $lang["statistic_respond_to_users_count"] = "我回覆了幾個人";
 $lang["statistic_like_to_users_count"] = "我喜愛了幾個人";

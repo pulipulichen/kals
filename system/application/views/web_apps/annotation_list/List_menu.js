@@ -421,6 +421,10 @@ List_menu.prototype.delete_annotation = function () {
                 
                 _this._toggle_loading(false);
                 
+                // 設定計數
+                _this._set_anntation_count_reduce(_annotation_param);
+                KALS_context.user.load_user_params();
+                
                 var _editor = _this.get_editor();
                 if ($.isset(_editor._editing_param)
                     && _editor._editing_param.annotation_id === _annotation_id)
@@ -435,10 +439,6 @@ List_menu.prototype.delete_annotation = function () {
                     KALS_text.load_navigation.reload(_nav_data);
                 }
             }
-            
-            // 設定計數
-            _this._set_anntation_count_reduce(_annotation_param);
-            KALS_context.user.load_user_params();
         }
     };
     
@@ -484,6 +484,7 @@ List_menu.prototype._set_anntation_count_reduce = function (_annotation_param) {
         }
     }
     */
+    //$.test_msg("List_menu._set_anntation_count_reduce()", "減少標註");
     KALS_context.user.set_annotation_count_reduce_by_param(_annotation_param);
     return this;
 };
@@ -532,12 +533,10 @@ List_menu.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable() === true)
-        {
+        if (_policy.writable() === true) {
             _ui.removeClass(_not_login_classname);
         }
-        else
-        {
+        else {
             _ui.addClass(_not_login_classname);
         }
     }, true);

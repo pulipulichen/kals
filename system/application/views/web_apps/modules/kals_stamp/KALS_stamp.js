@@ -821,6 +821,7 @@ KALS_stamp.prototype._init_listener = function() {
     var _listen_callback = function (_user, _attr_value, _attr) {
         if (KALS_context.completed === true) {
             //$.test_msg("KALS_stamp _init_listener", _attr);
+            _this.set_stamp_statistic();
             _this._delay_check_qualification(_user);
             //$.test_msg("KALS_stamp _init_listener_topic KALS_context.completed", KALS_context.completed); 
         }
@@ -1454,7 +1455,7 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
  * @returns {KALS_stamp}
  */
 KALS_stamp.prototype.setup_stamp_content = function () {
-    this.set_stamp_statistic();
+    
     this.set_stamp_qualified();
     this.get_stamp_list();
     

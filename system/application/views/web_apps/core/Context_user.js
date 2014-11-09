@@ -452,6 +452,8 @@ Context_user.prototype.set_annotation_count_modify_by_param = function (_annotat
     var _annotation_type_param = _annotation_param.type;
     var _write_type = this.parse_anntation_param_write_type(_annotation_param);
     
+    //$.test_msg("Context_user.prototype.set_annotation_count_modify_by_param _write_type", _write_type);
+    
     return this.set_annotation_count_modify(_write_type, _annotation_type_param, _count);
 };
 
@@ -630,6 +632,7 @@ Context_user.prototype.get_respond_to_my_annotation_count = function (_annotatio
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_other_annotation_count = function (_annotation_type, _count) {
+    //$.test_msg("Context_user.prototype.set_respond_to_other_annotation_count", _count);
     return this.set_annotation_count("respond_to_other_annotation_count", _annotation_type, _count);
 };
 
@@ -922,7 +925,7 @@ Context_user.prototype.load_user_params = function ( _callback){
     
     var _this = this;
     var _get_callback = function (_data){
-        $.test_msg("Context_user.load_user_params", _data);
+        //$.test_msg("Context_user.load_user_params", _data);
         
         _this.update(_this, _data);
         $.trigger_callback( _callback);
