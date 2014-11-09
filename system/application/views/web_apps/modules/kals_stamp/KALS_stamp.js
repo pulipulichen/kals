@@ -1288,7 +1288,12 @@ KALS_stamp.prototype.qualify = function() {
     this.change_tab("btn-qualification");
     //this.change_tab("btn-king-list");
     
-    this.open();
+    if (KALS_context.module.get_module_config("KALS_stamp", "quailfy_open_window") === true
+            && this._first_notify === false) {
+        this.open();
+    }
+    
+    this._first_notify = false;
         
     return this;
 };
@@ -1415,7 +1420,6 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
     
     if (this._first_notify === true) {
         _msg = _stamps_config[_stamp_level].quailfy_message;
-        this._first_notify = false;
     }
     else if (_stamp_level_up === true) {
         //升級通知訊息
