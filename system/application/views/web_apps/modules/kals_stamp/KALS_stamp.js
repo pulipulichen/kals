@@ -861,6 +861,10 @@ KALS_stamp.prototype._init_listener = function() {
             if (_auth.is_login() === true) {
                 _this.setup_stamp_content();
             }
+            else {
+                _this._first_notify = true;
+                _this._stamp_level = -1;
+            }
         }, true);
         //_this.setup_stamp_content();
         
