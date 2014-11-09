@@ -1,5 +1,6 @@
 <?php
 include_once 'web_apps_controller.php';
+
 /**
  * authentication
  *
@@ -108,6 +109,7 @@ class Authentication extends Web_apps_controller {
         $webpage = get_context_webpage();
                 
         $this->load->library("kals_actor/User_statistic", "user_statistic");
+        $this->load->library("kals_actor/User_statistic", "user_statistic");
         $this->user_statistic = new User_statistic();
         
         $output = array();
@@ -137,6 +139,12 @@ class Authentication extends Web_apps_controller {
             'like_to_users_count' => $this->user_statistic->get_like_to_users_count($user, $webpage),
             'liked_users_count' => $this->user_statistic->get_liked_users_count($user, $webpage)
         );
+        
+        $user_params = $this->user_statistic->get_user_params($user, $webpage);
+        foreach ($user_params as $key => $value) {
+            $output['user'][$key] = $value;
+        }
+        
         //將使用者寫入Context當中
         set_context_user($user);
 

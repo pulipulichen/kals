@@ -41,6 +41,7 @@ class Statistics extends Web_apps_controller {
         $this->view('admin_apps/domain_select', array('all_domains', $all_domains) );
         $this->view('admin_apps/footer');
     }
+
     
     /**
      * 統整所有要丟給Context_user的資料
@@ -65,17 +66,12 @@ class Statistics extends Web_apps_controller {
         $this->user_statistic = new User_statistic();
         
         $data = array();
-        if(is_null($user)){
-            //test_msg("user is null", $user);
+        if(isset($user)){
+            $data = $this->user_statistic->get_user_params($user, $webpage);
         }
-        else{
-            $data =  array(
-                "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
-                //"responded_count" => 5,
-                "responded_users_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
-                "respond_to_users_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
-            );
-        }
+//        else{
+//            //test_msg("user is null", $user);
+//        }
         // 將資料再放進user屬性中
         $output = array(
             "user" => $data
