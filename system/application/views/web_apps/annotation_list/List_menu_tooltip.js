@@ -79,8 +79,10 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         var _trigger = this.getTrigger();
         
         var _tooltip_width = _tooltip.width();
+        
         //var _trigger_left = _trigger.offset().left;
         var _trigger_left = $.get_offset_left(_trigger);
+        //$.test_msg("List_menu_tooltip._$get_config() offset_left", [_trigger.offset().left, $.get_offset_left(_trigger)]);
         
         var _trigger_width = _trigger.width();
         var _trigger_padding_left = $.strip_unit(_trigger.css('padding-left'));
@@ -134,6 +136,9 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
     _config.offset = [31, -5];
     //_config.offset = [0, -5];
     
+    /**
+     * @type Number 消失時間
+     */
     _config.delay = 5000; 
     
     _config.events = {

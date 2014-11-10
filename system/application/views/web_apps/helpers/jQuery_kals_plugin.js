@@ -2804,6 +2804,9 @@ jQuery.get_offset_left = function(_ele) {
         _ele = $(_ele);
     }
     var _offset = _ele.attr("offsetLeft");
+    if (_offset === 0 && _ele.offset().left > 0) {
+        _offset = _ele.offset().left;
+    }
     
     if (_ele.css("position") === "relative") {
         
