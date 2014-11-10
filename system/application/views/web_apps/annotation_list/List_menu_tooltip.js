@@ -37,8 +37,25 @@ List_menu_tooltip.prototype._$tooltip_id = 'list_menu_tooltip';
 List_menu_tooltip.prototype._$create_ui = function () {
     var _ui = List_menu.prototype._$create_ui.call(this);
     
+    var _td_array = _ui.find("td");
+    var _ui_container = $("<div />").attr("className", _ui.attr("className"));
+    _td_array.each(function (_key, _ele) {
+        var _ele = $(_ele);
+        var _content = $("<div />")
+                .hover(function () {
+                    $(this).addClass("hover");
+                }, function () {
+                    $(this).removeClass("hover");
+                })
+                .html(_ele.html())
+                .attr("className", _ele.attr("className"))
+                .appendTo(_ui_container);
+    });
+    
+    
+    
     var _tooltip = this._create_tooltip_prototype({
-        content: _ui,
+        content: _ui_container,
         classname: 'list-menu-tooltip kals-modal'
     });
     
@@ -93,6 +110,9 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         //確認tip不要超過畫面左方
         var _tooltip_left = _trigger_left - _tooltip_width;
         
+        $.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
+                , (_tooltip_right < $('body').width())]);
+        
         if (_tooltip_left < 0) {
             // @20130602 Pudding Chen
             // 不知道為什麼+20之後會出問題，現在先關掉
@@ -101,8 +121,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
             
             var _tooltip_right = _tooltip_left + _tooltip_width;
             
-            //$.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
-            //    , (_tooltip_right < $('body').width()), _tooltip_right]);
+            $.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
+                , (_tooltip_right < $('body').width()), _tooltip_right]);
                     
             
             if (_tooltip_right < $('body').width()) {
@@ -128,13 +148,13 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
     };
     
     //方向
-    _config.position = 'top left';
+    _config.position = 'center right';
     //_config.position = 'center left';
     
     _config.relative = true;
     
-    _config.offset = [31, -5];
-    //_config.offset = [0, -5];
+    //_config.offset = [31, -5];
+    _config.offset = [0, 5];
     
     /**
      * @type Number 消失時間
