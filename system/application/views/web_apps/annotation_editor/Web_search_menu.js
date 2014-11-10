@@ -140,7 +140,7 @@ Web_search_menu.prototype._$tooltip_id = 'editor_web_search_menu';
 Web_search_menu.prototype._$get_config = function () {
     
     //var _selector = '#' + this._menu_id + ':first';
-    $.test_msg("Web_search_menu._$get_config() get_tooltip_id", this.get_tooltip_id());
+    //$.test_msg("Web_search_menu._$get_config() get_tooltip_id", this.get_tooltip_id());
     var _selector = '#' + this.get_tooltip_id() + ':first';
     
     var _config = Tooltip_modal.prototype._$get_config.call(this, _selector);
@@ -148,6 +148,11 @@ Web_search_menu.prototype._$get_config = function () {
     _config.position = 'bottom right';
     //_config.offset = [-50, -13];
     _config.offset = [-30, -18];
+    
+    var _label_count = this.find(".label").length;
+    _config.offset[0] = _config.offset[0] - (10 * (_label_count/2) );
+    //$.test_msg("_$get_config()", [_label_count, _config.offset[1]]);
+    
     _config.events = {def: 'mouseover, mouseleave' };
     
 //    var _onbeforeshow;
