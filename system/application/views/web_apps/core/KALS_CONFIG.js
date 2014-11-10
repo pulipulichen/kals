@@ -517,7 +517,7 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": false,
+            "enable": true,
             "nav_config": {
                 display: true,
                 nav_type: "common",

@@ -59,9 +59,9 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         //$.test_msg('List_menu_tooltip._$get_config() onBeforeShow', _this._item.get_menu_style());
         
         var _menu_style = _this._item.get_menu_style();
-        if (_menu_style == 'block') {
-			return false;
-		}
+        if (_menu_style === 'block') {
+            return false;
+        }
         
         //先找到其他顯示的tooltip，並把他們關掉
         //$('.list-menu-tooltip:not(#'+_this._$tooltip_id+')').fadeOut();
@@ -92,10 +92,10 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         var _tooltip_left = _trigger_left - _tooltip_width;
         
         if (_tooltip_left < 0) {
-			// @20130602 Pudding Chen
-			// 不知道為什麼+20之後會出問題，現在先關掉
+            // @20130602 Pudding Chen
+            // 不知道為什麼+20之後會出問題，現在先關掉
             //_tooltip_left = _trigger_width + 20;
-			_tooltip_left = _trigger_width;
+            _tooltip_left = _trigger_width;
             
             var _tooltip_right = _tooltip_left + _tooltip_width;
             
@@ -104,11 +104,11 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
                     
             
             if (_tooltip_right < $('body').width()) {
-				_tooltip.css("visibility", "hidden");
+                _tooltip.css("visibility", "hidden");
                 setTimeout(function () {
                     _tooltip.css('left', _tooltip_left + 'px');   
                     _tooltip.css('width', _tooltip_width + 'px');
-					_tooltip.css("visibility", "visible"); 
+                    _tooltip.css("visibility", "visible"); 
                 }, 0);
             }
         }
