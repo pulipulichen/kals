@@ -268,28 +268,28 @@ KALS_stamp.prototype.nav_config = {
  * ====================
  */
 
-///**
-// * 開啟時的載入動作
-// * 
-// * 開啟KALS_stamp的視窗時，跟伺服器請求資訊，以載入必要資料到view上顯示的動作
-// * 
-// * @returns {KALS_stamp.prototype}
-// */
-//KALS_stamp.prototype._$onopen = function () {
-//    
-//    if (KALS_context.auth.is_login() === false
-//            || KALS_context.completed === false) {
-//        return this;
-//    }
+/**
+ * 開啟時的載入動作
+ * 
+ * 開啟KALS_stamp的視窗時，跟伺服器請求資訊，以載入必要資料到view上顯示的動作
+ * 
+ * @returns {KALS_stamp.prototype}
+ */
+KALS_stamp.prototype._$onopen = function () {
+    
+    if (KALS_context.auth.is_login() === false
+            || KALS_context.completed === false) {
+        return this;
+    }
 //    
 //    this.set_stamp_statistic();
 //    this.set_stamp_qualified();
 //    //this.set_stamp_qualification();
 //    
-//    this.get_stamp_list();
-//    //KALS_context.user.load_user_params();
-//    return this;
-//};
+    this.setup_stamp_list();
+    //KALS_context.user.load_user_params();
+    return this;
+};
 
 /**
  * 切換顯示分頁
@@ -527,6 +527,10 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
         
         var _stamp_title_lang = _stamps_config[_stamp_index].name;
         
+        if (typeof(_stamps_config[_stamp_index].is_qualified) !== "boolean") {
+            _stamps_config[_stamp_index].is_qualified = false;
+        }
+        
         if ( _stamps_config[_stamp_index].is_qualified === true) {
             //KALS_util.notify("現在是幾呢？"+ _i);
             
@@ -618,7 +622,7 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
  * 設定顯示階級名單
  * @author Pulipuli Chen 20141107
  */
-KALS_stamp.prototype.get_stamp_list = function() { 
+KALS_stamp.prototype.setup_stamp_list = function() { 
     
     //$.test_msg("get_stamp_list", "先在這裡打住");
     //return this;
@@ -629,8 +633,9 @@ KALS_stamp.prototype.get_stamp_list = function() {
     var _this = this;
     
     this.request_post("get_stamps_list", _stamp_data, function( _stamp_result){
-        _this.get_stamp_list_after_post(_stamp_result);
+        _this.setup_stamp_list_after_post(_stamp_result);
     });
+    
    return this;
 };
 
@@ -639,9 +644,9 @@ KALS_stamp.prototype.get_stamp_list = function() {
  * @param {Object} _stamp_result
  * @author Pulipuli Chen 20141110
  */
-KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) { 
+KALS_stamp.prototype.setup_stamp_list_after_post = function(_stamp_result) { 
     //加入class在stamps-list的區塊畫出user
-    //$.test_msg("KALS_stamp.get_stamp_list_after_post() 接收stamp_result", _stamp_result[0]);
+    //$.test_msg("KALS_stamp.setup_stamp_list_after_post() 接收stamp_result", _stamp_result[0]);
     
     var _list_container = this.find('.stamps-list').empty();
     
@@ -697,13 +702,15 @@ KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) {
 //            }   //for (var _index in _name_arr) {
 //        }
         
-        //$.test_msg("KALS_stamp.get_stamp_list_after_post() _i=", _i);
+        //$.test_msg("KALS_stamp.setup_stamp_list_after_post() _i=", _i);
         var _stamp_index = _stamp_result[_i].stamp_index;
         var _user_name_list = _stamp_result[_i].user_name_list;
         
         if ($.is_array(_user_name_list)) {
-            var _list_ele = this.get_stamp_list_create(_stamp_index, _user_name_list);
-            _list_ele.appendTo(_list_container); 
+            var _list_ele = this.setup_stamp_list_create(_stamp_index, _user_name_list);
+            if (_list_ele !== null) {
+                _list_ele.appendTo(_list_container); 
+            }
         }
         
     }   //for ( var _i in _stamp_result) {
@@ -715,13 +722,19 @@ KALS_stamp.prototype.get_stamp_list_after_post = function(_stamp_result) {
  * @author Pulipuli Chen 20141110
  * @return {jQuery} 單一階級的jQuery元素
  */
-KALS_stamp.prototype.get_stamp_list_create = function(_stamp_index, _user_name_list) { 
+KALS_stamp.prototype.setup_stamp_list_create = function(_stamp_index, _user_name_list) { 
     
     var _this = this;
     
     var _list_ele = $("<tr/>");
     
     var _stamp_data = this._init_config();
+    
+    var _show_list = _stamp_data[_stamp_index].show_list;
+    if (_show_list === false) {
+        return null;
+    }
+    
     var _stamp_title_lang = _stamp_data[_stamp_index].name;
     
     var _image_url = _stamp_data[_stamp_index].image_url;
@@ -1459,7 +1472,7 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
 KALS_stamp.prototype.setup_stamp_content = function () {
     
     this.set_stamp_qualified();
-    this.get_stamp_list();
+    this.setup_stamp_list();
     
     return this;
 };
