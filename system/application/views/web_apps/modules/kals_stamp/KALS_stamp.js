@@ -250,7 +250,7 @@ KALS_stamp.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    nav_type: "login",
+    nav_type: ["login"],
     
     /**
      * 排序順序

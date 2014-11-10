@@ -47,7 +47,7 @@ Embed_navigation.prototype._$classname = 'embed-navigation';
  * - null: 不列入在目前的導覽列
  * @type String
  */
-Embed_navigation.prototype._$nav_type = ["embed", "login", "common"];
+Embed_navigation.prototype._$nav_type = ["embed", "login"];
 
 /* End of file Embed_navigation */
 /* Location: ./system/application/views/web_apps/Embed_navigation.js */
