@@ -242,6 +242,7 @@ DEFAULT_KALS_CONFIG = {
      */
     web_search_url: { 
         "Google搜尋": "http://www.google.com/search?q={query}",
+        "Google圖片": "https://www.google.com.tw/search?tbm=isch&safe=active&q={query}",
         "維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
         "Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
         "Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}",
