@@ -21,7 +21,49 @@ Tooltip_modal.prototype = new KALS_modal();
 
 Tooltip_modal.prototype._$modal_name = 'Tooltip_modal';
 
+/**
+ * 設定tooltip現在的ID
+ * @author Pulipuli Chen 20141110
+ * @type Number
+ */
 Tooltip_modal.prototype._$tooltip_id = null;
+
+/**
+ * 設定tooltip現在的ID
+ * @author Pulipuli Chen 20141110
+ * @type Number
+ */
+Tooltip_modal.prototype._$tooltip_id_final = null;
+
+/**
+ * 取得提示列的ID
+ * @author Pulipuli Chen 20141110
+ * @returns {KALS_modal.get_tooltip_id._final_id|String}
+ */
+Tooltip_modal.prototype.get_tooltip_id = function () {
+    
+    if ($.is_string(this._$tooltip_id_final)) {
+        return this._$tooltip_id_final;
+    }
+    else if ($.is_string(this._$tooltip_id)) {
+        //var _length = $("#" + this._$tooltip_id).length;
+        //var _final_id = this._$tooltip_id + "" + (_length+1);
+        //this._$tooltip_id_final = _final_id;
+        
+        
+        if ($("#" + this._$tooltip_id).length > 0) {
+            this._$tooltip_id_final = this._$tooltip_id + "" + ($("#" + this._$tooltip_id).length + 1);
+        }
+        else {
+            this._$tooltip_id_final = this._$tooltip_id;
+        }
+        
+        //$.test_msg("get_tooltip_id", this._$tooltip_id_final);
+        
+        return this._$tooltip_id_final;
+    }
+    return null;
+};
 
 /**
  * trigger的classname，跟this._$modal_name一起運作

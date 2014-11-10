@@ -61,7 +61,7 @@ Web_search_component.prototype._$create_ui = function () {
 //    //https://www.google.com.tw/#safe=off&site=&source=hp&q=test&oq=test&gs_l=hp.3..0l10.1094.1687.0.2052.4.4.0.0.0.0.45.155.4.4.0.eqrwrth..0.0.0..1.1.15.hp.rh1WD0sToJU&qscrl=1&bav=on.2,or.r_cp.&bvm=bv.47244034,d.dGI&fp=543fd01eff5ed8d6&biw=950&bih=934
 
     _ui.click(function () {
-        _this._search_action()
+        _this._search_action();
     });
 
     _ui.hover(function () {

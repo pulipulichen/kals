@@ -10,6 +10,11 @@
  * @version    1.0 2013/7/1 下午 02:59:42
  */
 function Web_search_menu() {
+    
+//    if ($("#" + this._menu_id).length > 0) {
+//        this._menu_id = this._menu_id + "" + ($("#" + this._menu_id).length + 1);
+//    }
+    
     Tooltip_modal.call(this);
 }
 
@@ -27,7 +32,7 @@ Web_search_menu.prototype._$create_ui = function () {
             .addClass("web-search")
             .addClass("menu")
             .hide()
-            .attr("id" , this._menu_id);
+            .attr("id" , this.get_tooltip_id());
     //var _ui = this._create_tooltip_prototype({
     //    id: this._menu_id,
     //    classname: 'web-search-menu'
@@ -126,7 +131,7 @@ Web_search_menu.prototype.get_selected_option = function () {
  * type menu id
  * @type {String}
  */
-Web_search_menu.prototype._menu_id = 'editor_web_search_menu';
+Web_search_menu.prototype._$tooltip_id = 'editor_web_search_menu';
 
 /**
  * 改寫設定
@@ -134,7 +139,9 @@ Web_search_menu.prototype._menu_id = 'editor_web_search_menu';
  */
 Web_search_menu.prototype._$get_config = function () {
     
-    var _selector = '#' + this._menu_id + ':first';
+    //var _selector = '#' + this._menu_id + ':first';
+    $.test_msg("Web_search_menu._$get_config() get_tooltip_id", this.get_tooltip_id());
+    var _selector = '#' + this.get_tooltip_id() + ':first';
     
     var _config = Tooltip_modal.prototype._$get_config.call(this, _selector);
     

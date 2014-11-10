@@ -385,21 +385,21 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
     var _type_confusion = 'confusion';
     var _annotation_type_confusion = new Annotation_type_param(_type_confusion); */
     
-    //自訂義
-    var _type_knowed = "我知道";
-    var _type_knowledge = "新知識";
-    var _type_dont_know = "我不懂";
-    var _type_strange = "很奇怪";
-    var _type_predefined = "補充舉例";//這個是name
-    var _type_discuss = "我想說";
-    //用id建立annotation_type_param再代入
-    var _annotation_type_knowed = new Annotation_type_param(_type_knowed); 
-    var _annotation_type_knowledge = new Annotation_type_param(_type_knowledge); 
-    var _annotation_type_dont_know = new Annotation_type_param(_type_dont_know); 
-    var _annotation_type_strange = new Annotation_type_param(_type_strange); 
-    var _annotation_type_predefined = new Annotation_type_param(_type_predefined); 
-    var _annotation_type_discuss = new Annotation_type_param(_type_discuss);  
-    //KALS_util.notify("predefined = "+ _annotation_type_predefined.get_name());
+//    //自訂義
+//    var _type_knowed = "我知道";
+//    var _type_knowledge = "新知識";
+//    var _type_dont_know = "我不懂";
+//    var _type_strange = "很奇怪";
+//    var _type_predefined = "補充舉例";//這個是name
+//    var _type_discuss = "我想說";
+//    //用id建立annotation_type_param再代入
+//    var _annotation_type_knowed = new Annotation_type_param(_type_knowed); 
+//    var _annotation_type_knowledge = new Annotation_type_param(_type_knowledge); 
+//    var _annotation_type_dont_know = new Annotation_type_param(_type_dont_know); 
+//    var _annotation_type_strange = new Annotation_type_param(_type_strange); 
+//    var _annotation_type_predefined = new Annotation_type_param(_type_predefined); 
+//    var _annotation_type_discuss = new Annotation_type_param(_type_discuss);  
+//    //KALS_util.notify("predefined = "+ _annotation_type_predefined.get_name());
     
     var _statistic_count_list = { 
         //topic總數量       
@@ -873,7 +873,7 @@ KALS_stamp.prototype._init_listener = function() {
         
         KALS_context.auth.add_listener(function (_auth) {
             if (_auth.is_login() === true) {
-                _this.setup_stamp_content();
+                _this.set_stamp_qualified();
             }
             else {
                 _this._first_notify = true;
@@ -1294,7 +1294,7 @@ KALS_stamp.prototype.qualify = function() {
      * 資料有更新時，才重新設定
      * @author Pulipuli Chen 20141110 
      */
-    this.setup_stamp_content();
+    this.set_stamp_qualified();
     
     this.qualify_notify(_stamp_config, _stamp_new_level, _stamp_level_up);
     ///if (this._stamp_level_modified === true) {
@@ -1469,13 +1469,13 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
  * @author Pulipuli Chen 20141110
  * @returns {KALS_stamp}
  */
-KALS_stamp.prototype.setup_stamp_content = function () {
-    
-    this.set_stamp_qualified();
-    this.setup_stamp_list();
-    
-    return this;
-};
+//KALS_stamp.prototype.setup_stamp_content = function () {
+//    
+//    this.set_stamp_qualified();
+//    //this.setup_stamp_list();
+//    
+//    return this;
+//};
 
 /* End of file KALS_stamp */
 /* Location: ./system/application/views/web_apps/extension/KALS_stamp/KALS_stamp.js */

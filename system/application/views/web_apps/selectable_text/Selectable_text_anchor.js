@@ -154,7 +154,7 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
     //$.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _scope_coll", _scope_coll);
     //$.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_coll", _focus_coll);
     
-    $.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_coll", _focus_coll.count_length());
+    //$.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_coll", _focus_coll.count_length());
     
     if ($.is_null(_scope_coll)) {
         return null;
@@ -167,7 +167,7 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
     var _focus_foot_index = [];
     if ($.is_class(_focus_coll, 'Scope_collection_param')) {
         _focus_index = _focus_coll.get_index_array();
-        $.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_index", _focus_index);
+        //$.test_msg("Selectable_text_anchor.prototype.get_display_anchor_text _focus_index", _focus_index);
         _focus_head_index = _focus_coll.get_from_index_array();
         _focus_foot_index = _focus_coll.get_to_index_array();
     }
