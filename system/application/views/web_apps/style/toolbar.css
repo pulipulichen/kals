@@ -267,9 +267,12 @@
  * 搜尋類別
  * @author Pulipuli Chen 20131113
  */
-.KALS .search-component .search-range {
-	height: 2em;
+.KALS .search-component .search-range,
+.KALS .search-component .search-range-type {
+    height: 2em;
     width: auto;
+    border-radius: 5px;
+    margin-right: 0.5em;
 }
 
 .KALS .search-component * {
@@ -277,7 +280,7 @@
     height: 2em;
 }
 
-.KALS .search-component .search-form-input {
+.KALS .search-component .search-keyword {
     height: 1.5em;
     padding-left: 5px;
     padding-right: 5px;
@@ -292,17 +295,17 @@
     height: 25px;
     width: 25px;
     display: block;
-	float:right;
+    float:right;
     padding: 0;
 	
-	border-radius: 5px;
-	min-height: 25px;
-	background-image:url("${base_url}images/web_search.png") !important;
-	background-repeat:no-repeat;
-	background-position: center;
-	
-	border-width: 0 !important;
-	background-color: transparent;
+    border-radius: 5px;
+    min-height: 25px;
+    background-image:url("${base_url}images/web_search.png") !important;
+    background-repeat:no-repeat;
+    background-position: center;
+
+    border-width: 0 !important;
+    background-color: transparent;
     /*float:right;*/
 }
 
@@ -350,17 +353,23 @@
     display: none;
 }
 
-.KALS .search-component .search-form-input {
+.KALS .search-component .search-keyword {
     width: 7em;
     margin:0;
-    margin-left: 0.5em;
+    
+    /**
+     * @author Pulipuli Chen 20141111
+     * 調整頁面資料
+     */
+    /*margin-left: 0.5em;*/
+    
     margin-right: 0.5em;
     margin-top: 1px;
 }
 
 @media screen and (max-width: 800px){
-	.KALS .search-component .search-range,
-    .KALS .search-component .search-form-input {
+    .KALS .search-component .search-range,
+    .KALS .search-component .search-keyword {
     	display:none;
     }
 }

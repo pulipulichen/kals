@@ -526,11 +526,11 @@
  */
 .KALS .respond-list-collection .skip-component .message {
     padding: 0.5em;
-	border-radius: 10px;
+    border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     -khtml-border-radius: 10px;
-	margin: 0.5em 1em;
+    margin: 0.5em 1em;
     background-color: #CCC;
 }
 
@@ -540,8 +540,15 @@
 
 .KALS .list-item-respond {
     border-top: 1px dashed #CCC;
-    padding-left: 2em !important;
+    
+    /**
+     * @author Pulipuli Chen 20141111
+     * 盡量不要使用!important
+     */
+    /*padding-left: 2em !important;*/
+    padding-left: 2em;
 }
+
 /*
 .item-list-respond.first {
     border-top-style: none;

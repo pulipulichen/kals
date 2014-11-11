@@ -553,7 +553,16 @@ Window_search.prototype.create_keyword_ui = function(){
     // 輸入關鍵字
     var _keyword_input = _factory.input('keyword');
     */
-    var _input = $('<input type="text" placeholder="Search..." name="keyword" class="search-form-input" />');
+   
+    /**
+     * @author Pulipuli Chen 20141111
+     * 統一改用factory的input來產生表單內容
+     */
+    //var _input = $('<input type="text" placeholder="Search..." name="keyword" class="search-form-input" />');
+    
+    var _factory = KALS_window.ui;
+    var _input = _factory.input("keyword");
+    _input.attr("placeholder", "Search...");
 
     KALS_context.lang.add_listener(_input, new KALS_language_param('Search...'
         , 'toolbar.search.input_placeholder'));
@@ -563,9 +572,9 @@ Window_search.prototype.create_keyword_ui = function(){
 
     var _this = this;
     _input.change(function () {
-            _this.set_keyword_value(this.value);
+        _this.set_keyword_value(this.value);
     });
-
+    
     return _input;
 };
 

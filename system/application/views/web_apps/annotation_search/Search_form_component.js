@@ -103,7 +103,18 @@ Search_form_component.prototype._window_search = null;
  * @type {jQuery}
  */
 Search_form_component.prototype._create_input = function () {
-    return this._window_search.create_keyword_ui();
+    var _ui = this._window_search.create_keyword_ui();
+    _ui.keypress(function (_e) {
+        
+        if (_e.which === 13) {   //13表示enter鍵
+        
+            var _submit = _ui.parents('.input:first')
+                .find('.dialog-option:first')
+                .focus()
+                .click();
+        }
+    });
+    return _ui;
 	/*
     var _input = $('<input type="text" placeholder="Search..." name="keyword" class="search-form-input" />');
     

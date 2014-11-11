@@ -21,13 +21,13 @@
 }
 
 .KALS .window-panel.window-search .list-collection.search .window-panel .result-count-tip {
-	text-align:right;
-	margin-top: 3px;	
+    text-align:right;
+    margin-top: 3px;	
 }
 
 
 .KALS .window-panel.window-search .heading-row {
-	float:left;
+    float:left;
 }
 
 
@@ -37,16 +37,24 @@
 
 .KALS .window-panel.window-search .foot-tip {
     padding-top: 5px;
-	text-align:center;
-	display:block;
+    text-align:center;
+    display:block;
 }
 
-.KALS .window-panel.window-search .list-item {
-	padding-left: 5px;
-	padding-right: 5px;
-	background-color: white;
-	cursor:pointer;
+.KALS .list-collection.search .list-item {
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: white;
+    cursor:pointer;
 } 
+
+/**
+ * @author Pulipuli Chen 20141111
+ * 搜尋結果中不明顯標示回應
+ */
+.KALS .list-collection.search .list-item-respond {
+    padding-left: 5px;
+}
 
 /*
 .KALS .window-panel.window-search .list-menu-option.edit,

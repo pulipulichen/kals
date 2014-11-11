@@ -813,7 +813,11 @@ class Annotation_getter extends Web_apps_controller {
      */
     function search_annotation($json, $callback = NULL)
     {
-        sleep(3);
+        /**
+         * @author Pulipuli Chen 20141111
+         * 測試很長時間才回應搜尋結果用的
+         */
+        //sleep(3);
         
         //$enable_profiler = true; //？
         $enable_profiler = false; //？
@@ -834,6 +838,12 @@ class Annotation_getter extends Web_apps_controller {
         $url = $this->url;  //存放目前data來源的頁面連結
         $search = new Search_annotation_collection($url); //Search_annotation_collection→Search_engine
 
+        /**
+         * @author Pulipuli Chen 20141111
+         * 測試搜尋結果用，要記得拿掉
+         */
+        //$search->set_limit(1);
+        
         $search_id = null;
         //if (isset($data->limit)) //limit：無限捲軸的極限值
           //  $search_id = new Search_annotation_collection();
