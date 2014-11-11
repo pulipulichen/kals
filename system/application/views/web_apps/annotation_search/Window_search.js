@@ -795,6 +795,32 @@ Window_search.prototype.search = function (_search_option, _open_window) {
     }
 };
 
+/**
+ * 設定KALS_window的內容，預設是在設置完成之後直接完成loading。請覆寫此方法。
+ * @param {function} _callback
+ */
+Window_search.prototype.setup_content = function (_callback) {
+    
+    //2010.9.9 觀察loading狀態測試用
+    //return;
+    
+    var _this = this;
+    var _load_callback = function () {
+        // 調整內部的物件
+        _this.adjust_note();
+        
+        $.trigger_callback(_callback);
+    };
+    
+    if (this.submit._submit_locked === false) { 
+        KALS_window.loading_complete(_load_callback);
+    }
+    else {
+        _this.adjust_note();
+    }
+    return this;
+};
+
 
 /* End of file Window_profile */
 /* Location: ./system/application/views/web_apps/Window_profile.js */

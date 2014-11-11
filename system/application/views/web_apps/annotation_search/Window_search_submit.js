@@ -66,7 +66,8 @@ Window_search_submit.prototype.complete_handle = function () {
     //因為complete_handle.call做完後會自動關閉視窗，所以不使用
     
     //alert("搜尋完成");
-    
+    this._unlock_submit();
+    KALS_window.toggle_loading(false);
     return this;
 };
 
@@ -77,6 +78,9 @@ Window_search_submit.prototype.complete_handle = function () {
  * @param {boolean} _pass_validate 取消檢查條件
  */
 Window_search_submit.prototype.submit = function(_callback, _pass_validate) {
+    
+    this._lock_submit();
+    KALS_window.toggle_loading(true);
     
     //alert("開始搜尋");
 
@@ -105,10 +109,12 @@ Window_search_submit.prototype.submit = function(_callback, _pass_validate) {
         //$.test_msg("Window_search_submit.prototype.submit");
         _this.complete_handle();
         _content.get_ui().find(".search-result-subpanel").show();
+        
+        $.trigger_callback(_callback);
     });
 
     //$.test_msg("Window_search_submit.prototype.submit", "預備callback")
-    $.trigger_callback(_callback);
+    
     return this;
 };
 

@@ -227,6 +227,7 @@ Window_content_submit.prototype._lock_submit = function () {
         return false;
     }
     _ui.attr('disabled', true);
+    this._submit_locked = true;
     
     return true;
     
@@ -240,9 +241,17 @@ Window_content_submit.prototype._unlock_submit = function () {
     
     var _ui = this.get_ui();
     _ui.removeAttr('disabled');
+    this._submit_locked = false;
     
     return true;
 };
+
+/**
+ * 現在是否在遞交中
+ * @author Pulipuli Chen 20141111
+ * @type Boolean
+ */
+Window_content_submit.prototype._submit_locked = false;
 
 /**
  * 建立UI

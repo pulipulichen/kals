@@ -143,8 +143,6 @@ Window_content.prototype.setup_content = function (_callback) {
     return this;
 };
 
-
-
 /**
  * 調整視窗內部的note大小
  * @returns {KALS_window.prototype}

@@ -813,8 +813,10 @@ class Annotation_getter extends Web_apps_controller {
      */
     function search_annotation($json, $callback = NULL)
     {
-         //$enable_profiler = true; //？
-         $enable_profiler = false; //？
+        sleep(3);
+        
+        //$enable_profiler = true; //？
+        $enable_profiler = false; //？
 
         if ($enable_profiler == TRUE) {
             $this->output->enable_profiler(TRUE); 

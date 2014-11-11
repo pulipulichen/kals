@@ -378,12 +378,11 @@ KALS_window.prototype._reset_window = function (_callback) {
  */
 KALS_window.prototype.set_width = function(_width) {
     if ($.is_null(_width)) {
-		_width = this._default_width;
-	}
-	else 
-		if ($.is_number(_width)) {
-			_width = _width + 'px';
-		}
+        _width = this._default_width;
+    }
+    else  if ($.is_number(_width)) {
+        _width = _width + 'px';
+    }
    
     this._width = _width;
    
@@ -396,12 +395,11 @@ KALS_window.prototype.set_width = function(_width) {
  */
 KALS_window.prototype.set_height = function(_height) {
     if ($.is_null(_height)) {
-		_height = this._default_height;
-	}
-	else 
-		if ($.is_number(_height)) {
-			_height = _height + 'px';
-		}
+        _height = this._default_height;
+    }
+    else if ($.is_number(_height)) {
+        _height = _height + 'px';
+    }
    
     this._height = _height;
     return this;
