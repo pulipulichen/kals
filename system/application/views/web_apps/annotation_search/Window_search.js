@@ -14,6 +14,7 @@ function Window_search() {
     
     Window_content.call(this);
     
+    $.test_msg("this._setup_submit(new Window_search_submit());");
     this._setup_submit(new Window_search_submit()); // send keyword and search_range
 
     this.child("list", new List_collection_search());

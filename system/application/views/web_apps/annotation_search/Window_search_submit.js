@@ -29,7 +29,6 @@ Window_search_submit.prototype.lang = new KALS_language_param(
     'window.send'
 );
 
-
 /*Window_profile_submit.prototype.complete_notification = new KALS_language_param(
     'Profile updated.',
     'window.profile.submit.complete'

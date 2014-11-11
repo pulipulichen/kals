@@ -81,8 +81,13 @@ Window_content.prototype.height = null;
 
 // --------
 
+/**
+ * 開啟window
+ * @param {Function} _callback
+ * @returns {Window_content}
+ */
 Window_content.prototype.open = function (_callback) {
-	this.open_window(_callback);
+    return this.open_window(_callback);
 };
 
 Window_content.prototype.close = function (_callback) {
@@ -169,11 +174,49 @@ Window_content.prototype.onviewportmove = null;
 
 /**
  * 設定遞交按鈕
- * @param {Window_content_submit} _submit
+ * 
+ * @author Pulipuli Chen 20141111
+ * 增加可以輸入多個submit的功能
+ * 
+ * @param {Window_content_submit|JSON<Window_content_submit>} _submit
+ *  或是 _submit = [_submit1, _submit2]
  */
 Window_content.prototype._setup_submit = function (_submit) {
+    
+    if ($.is_array(_submit)) {
+        var _submit_json = {};
+        for (var _i in _submit) {
+            var _name = _submit[_i].name;
+
+            if (typeof(_submit_json[_name]) !== "undefined") {
+                $.throw_msg("Window_content._setup_submit() 重複的名稱", _name );
+            }
+
+            _submit_json[_name] = _submit[_i];
+        }
+        
+        _submit = _submit_json;
+    }
+    
     this.submit = _submit;
-    this.submit._content = this;
+    
+    if (typeof(this.submit._content) !== "undefined" 
+            && this.submit._content === null) {
+        this.submit._content = this;
+        //$.test_msg("Window_content._setup_submit() 設定submit._content 單一object");
+    }
+    else if ($.is_object(this.submit)) {
+        for (var _i in this.submit) {
+            if ($.is_class(this.submit[_i], "Window_content_submit")) {
+                this.submit[_i]._content = this;
+                //$.test_msg("Window_content._setup_submit() 設定submit._content", _i);
+            }
+        }
+    }
+    else {
+        //$.throw_msg("Window_content._setup_submit() 設定this.submit._content失敗");
+    }
+    
     return this;
 };
 
@@ -188,34 +231,33 @@ Window_content.prototype._setup_submit = function (_submit) {
 Window_content.prototype.get_input_value = function (_name) {
     
     if ($.is_null(_name)) {
-		return _name;
-	}
+        return _name;
+    }
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     
     if (_ui.length === 1) {
-		return _ui.attr('value');
-	}
-	else {
-		var _type = _ui.eq(0).attr('type').toLowerCase();
-		var _checked = _ui.filter(':checked');
-		if (_type === 'radio') {
-			if (_checked.length === 1) {
-				return _checked.val();
-			}
-			else {
-				return null;
-			}
-		}
-		else 
-			if (_type === 'checkbox') {
-				var _result = [];
-				for (var _i = 0; _i < _checked.length; _i++) {
-					_result.push(_checked.eq(_i).val());
-				}
-				return _result;
-			}
-	}
+        return _ui.attr('value');
+    }
+    else {
+        var _type = _ui.eq(0).attr('type').toLowerCase();
+        var _checked = _ui.filter(':checked');
+        if (_type === 'radio') {
+            if (_checked.length === 1) {
+                return _checked.val();
+            }
+            else {
+                return null;
+            }
+        }
+        else if (_type === 'checkbox') {
+            var _result = [];
+            for (var _i = 0; _i < _checked.length; _i++) {
+                _result.push(_checked.eq(_i).val());
+            }
+            return _result;
+        }
+    }
 };
 
 /**
@@ -223,27 +265,27 @@ Window_content.prototype.get_input_value = function (_name) {
  * @param {Object} _json 格式是 {name1: value1, name2: value2}
  */
 Window_content.prototype.set_input_value = function (_json) {
+
+    if (typeof(_json) !== "object") {
+        return this;
+    }
 	
-	if (typeof(_json) !== "object") {
-		return this;
-	}
-	
-	var _ui = this.get_ui();
-	for (var _name in _json) {
-		var _value = _json[_name];
-		
-		var _input = _ui.find("[name='"+_name+"']");
-		
-		if (_input.length == 1) {
-			_input.attr("value", _value);
-		}
-		else if (_input.length > 1) {
-			_input.attr("checked", false);
-			_input.filter("[value='"+_value+"']").attr("checked", true);
-		}
-	}
-	
-	return this;
+    var _ui = this.get_ui();
+    for (var _name in _json) {
+        var _value = _json[_name];
+
+        var _input = _ui.find("[name='"+_name+"']");
+
+        if (_input.length === 1) {
+            _input.attr("value", _value);
+        }
+        else if (_input.length > 1) {
+            _input.attr("checked", false);
+            _input.filter("[value='"+_value+"']").attr("checked", true);
+        }
+    }
+
+    return this;
 };
 
 
@@ -254,8 +296,8 @@ Window_content.prototype.set_input_value = function (_json) {
  */
 Window_content.prototype.get_input = function (_name) {
     if ($.is_null(_name)) {
-		return _name;
-	}
+        return _name;
+    }
     
     var _ui = this.get_ui('[name="'+_name+'"]');
     return _ui;
@@ -267,7 +309,7 @@ Window_content.prototype.get_input = function (_name) {
  * @type {jQuery}
  */
 Window_content.prototype.get_first_input = function (_name) {
-	return this.get_input(_name).eq(0);
+    return this.get_input(_name).eq(0);
 };
 
 // --------
@@ -295,11 +337,11 @@ Window_content.prototype.get_config = function (_index) {
     
     if ($.isset(_index) &&
 	typeof(this._config[_index]) !== 'undefined') {
-		return this._config[_index];
-	}
-	else {
-		return this._config;
-	}
+        return this._config[_index];
+    }
+    else {
+        return this._config;
+    }
 };
 
 Window_content.prototype.set_config_loaded = function () {
@@ -355,7 +397,7 @@ Window_content.prototype.set_error = function (_message) {
 Window_content.prototype._$absolute = false;
 
 Window_content.prototype.is_absolute = function () {
-	return this._$absolute;
+    return this._$absolute;
 };
 
 /**
@@ -363,18 +405,18 @@ Window_content.prototype.is_absolute = function () {
  * @author Pulipuli Chen 20131113
  */
 Window_content.prototype.open_window = function (_callback) {
-	var _content = this;
-            
-	if (_content.is_absolute() === false) {
-        KALS_window.setup_window(_content, function () {
-			$.trigger_callback(_callback);
-		});
-	}
-	else {
-		_content.open(function() {
-			$.trigger_callback(_callback);
-		});
-	}
+    var _content = this;
+
+    if (_content.is_absolute() === false) {
+    KALS_window.setup_window(_content, function () {
+            $.trigger_callback(_callback);
+        });
+    }
+    else {
+        _content.open(function() {
+            $.trigger_callback(_callback);
+        });
+    }
 };
 
 /**
