@@ -247,7 +247,7 @@
     padding: 0;
 	
 }
-.KALS .list-menu-tooltip tr{
+.KALS .list-menu-tooltip tr {
 	background: rgba(0,0,0,0)!important;
 }
 
@@ -281,7 +281,8 @@
     border-width: 0;
     border-top: 1px groove white; 
     margin-left: 0;
-    text-align: center
+    text-align: center;
+    width: 50px;
 }
 
 .KALS.annotation-tool .list-menu-tooltip list-menu-option:first-child {
@@ -300,15 +301,17 @@
 .KALS.window .list-menu .list-menu-option,
 .KALS.window .list-menu-option {
     /**
-     * 由於看起來挺醜的，所以刪掉了
+     * 由於中間的格線看起來挺醜的，所以刪掉了
      * @20131115 Pulipuli Chen
      */
     border-left-width: 0px; 
 }
 
+.KALS .list-menu.list-menu-block .list-timestamp-component,
 .KALS .list-menu.list-menu-block .list-menu-option {
     padding-top: 0;
     padding-bottom: 0;
+    font-size: small;
 }
 
 .KALS .list-menu-tooltip .list-menu-option.hover {
@@ -316,9 +319,18 @@
     color: #8C8473;
 }
 
+/**
+ * @author Pulipuli Chen 20141111
+ * 在block中也加入hover的效果
+ */
+.KALS .list-menu-tooltip .list-menu-block .list-menu-option.hover {
+    background-color: #F9F9F9;
+    color: inherit;
+}
+
 .KALS .list-menu .list-timestamp-component {
     padding: 0.2em 0.5em;
-	border-left-width: 0 !important;
+    border-left-width: 0 !important;
 }
 
 .KALS .list-menu.not-login .list-menu-option {

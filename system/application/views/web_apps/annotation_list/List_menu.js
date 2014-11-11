@@ -30,7 +30,19 @@ List_menu.prototype = new Tooltip_modal();
  */
 List_menu.prototype._item = null;
 
+/**
+ * 不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
 List_menu.prototype._disable_option = [];
+
+/**
+ * 預設不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
+List_menu.prototype._default_disable_option = [];
 
 List_menu.prototype._set_list_item = function (_item, _disable_option) {
     if ($.isset(_item))
@@ -42,7 +54,22 @@ List_menu.prototype._set_list_item = function (_item, _disable_option) {
             _this.set_data();
         });
         
-        this._disable_option = _disable_option;
+        // -----------------------------
+        /**
+         * @author Pulipuli Chen 20141111
+         * 為_disable_option多加一些功能
+         */
+        if ($.is_string(_disable_option)) {
+            _disable_option = [_disable_option];
+        }
+        
+        if ($.is_array(_disable_option)) {
+            this._disable_option = _disable_option;
+        }
+        
+        for (var _i in this._default_disable_option) {
+            this._disable_option.push(this._default_disable_option[_i]);
+        }
     }
     return this;
 };

@@ -36,5 +36,12 @@ List_menu_block.prototype._$create_ui = function () {
     return _ui;
 };
 
+/**
+ * 預設不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
+List_menu_block.prototype._default_disable_option = ["review"];
+
 /* End of file List_menu_block */
 /* Location: ./system/application/views/web_apps/List_menu_block.js */
