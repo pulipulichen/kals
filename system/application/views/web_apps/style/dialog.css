@@ -227,6 +227,24 @@
     color: blue;
 }
 
+/**
+ * @author Pulipuli Chen 20141111
+ * 加入停止使用的功能
+ */
+.KALS .button.dialog-option-disabled {
+    background: -moz-linear-gradient(#FFE08E 0%, #FFDE7D 100%);
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FFE08E)
+        , color-stop(0.00, #FFE08E), to(#FFDE7D));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFE08E'
+        , endColorstr='#FFDE7D');
+    background-color: #FFDE7D;
+    
+    border-color: #8A661C;
+    color: #512900;
+    
+    cursor: default;
+}
+
 .KALS .button.dialog-option.hover {
     
     background: -moz-linear-gradient(#FFE08E 0%, #FFDE7D 100%);

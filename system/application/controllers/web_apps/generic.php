@@ -87,6 +87,7 @@ class generic extends Web_apps_controller {
             , 'toolkit/Dialog_link'
             , 'toolkit/Dialog_close_option'
             , 'toolkit/Dialog_close_link'
+            , 'toolkit/Dialog_disabled_option'  // Pulipuli Chen 20141111
             , 'toolkit/Notify_modal'
             , 'toolkit/Event_dispatcher'
             , 'toolkit/Multi_event_dispatcher'
@@ -144,6 +145,7 @@ class generic extends Web_apps_controller {
             'kals_window/Window_content',
             'kals_framework/KALS_controller_window',  // Pulipuli Chen 201311119
             'kals_window/Window_content_submit',
+            'kals_window/Window_content_submit_loading',    // Pulipuli Chen 20141111
             'kals_window/Window_user_interface',
             'kals_window/Window_change_link',
 

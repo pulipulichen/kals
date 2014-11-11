@@ -14,8 +14,12 @@ function Window_search() {
     
     Window_content.call(this);
     
-    $.test_msg("this._setup_submit(new Window_search_submit());");
-    this._setup_submit(new Window_search_submit()); // send keyword and search_range
+    //$.test_msg("this._setup_submit(new Window_search_submit());");
+    var _submit_array = [
+        new Window_search_submit(),
+        new Window_content_submit_loading()
+    ];
+    this._setup_submit(_submit_array); // send keyword and search_range
 
     this.child("list", new List_collection_search());
     
@@ -682,6 +686,8 @@ Window_search.prototype.show_recent_annotation = function(_callback){
     
     //this.open_window();
     this.submit.submit(_submit_callback, true);
+    
+    //this.change_submit("loading");
     
     return this;
 };

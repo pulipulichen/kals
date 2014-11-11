@@ -264,7 +264,8 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
             */
             //$.test_msg('set submit', typeof(_content.submit.get_ui));
             
-            _this.set_options(_content.submit);
+            _this.set_options(_content.get_submit());
+            //_this.set_options(_content.get_submit_array());
             _this.toggle_options(false);
             
             //_content.submit.get_ui().hide();

@@ -56,6 +56,7 @@ $lang['web_apps.dialog.option.button'] = '按鈕';
 $lang['web_apps.dialog.option.close'] = '關閉';
 $lang['web_apps.dialog.option.yes'] = '是';
 $lang['web_apps.dialog.option.no'] = '否';
+$lang['web_apps.dialog.option.disabled'] = '停用';
 
 $lang['web_apps.time.recent'] = '最近';
 $lang['web_apps.time.within_1_minute'] = '在1分鐘之內';
@@ -96,6 +97,7 @@ $lang['web_apps.window.save.failed'] = '儲存失敗';
 $lang['web_apps.window.ok'] = '確定';
 $lang['web_apps.window.loading'] = '讀取中，請稍候';
 $lang['web_apps.window.send'] = '查詢';
+$lang['web_apps.window.reset'] = '重置設定';
 
 $lang['web_apps.toolbar.search.advanced_search'] = '進階搜尋';
 $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';

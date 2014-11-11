@@ -106,6 +106,13 @@ Window_content.prototype._window = null;
  */
 Window_content.prototype.submit = null;
 
+/**
+ * 多重Window_content_submit的保存位置
+ * @type {JSON<Window_content_submit>}
+ * @author Pulipuli Chen 20141111
+ */
+Window_content.prototype.submit_list = null;
+
 // --------
 
 /**
@@ -183,41 +190,118 @@ Window_content.prototype.onviewportmove = null;
  */
 Window_content.prototype._setup_submit = function (_submit) {
     
+//    if ($.is_array(_submit)) {
+//        var _submit_json = {};
+//        for (var _i in _submit) {
+//            var _name = _submit[_i].name;
+//
+//            if (typeof(_submit_json[_name]) !== "undefined") {
+//                $.throw_msg("Window_content._setup_submit() 重複的名稱", _name );
+//            }
+//
+//            _submit_json[_name] = _submit[_i];
+//        }
+//        
+//        //_submit = _submit_json;
+//    }
+//    
+//    this.submit = _submit;
+//    this.submit._content = this;
+//    
+//    
+//    if (typeof(this.submit._content) !== "undefined" 
+//            && this.submit._content === null) {
+//        this.submit._content = this;
+//        //$.test_msg("Window_content._setup_submit() 設定submit._content 單一object");
+//    }
+//    else if ($.is_object(this.submit)) {
+//        for (var _i in this.submit) {
+//            this.submit[_i]._content = this;
+//        }
+//    }
+//    else {
+//        $.throw_msg("Window_content._setup_submit() 設定this.submit._content失敗");
+//    }
+    
+    var _submit_list = {};
     if ($.is_array(_submit)) {
-        var _submit_json = {};
         for (var _i in _submit) {
             var _name = _submit[_i].name;
 
-            if (typeof(_submit_json[_name]) !== "undefined") {
+            if (typeof(_submit_list[_name]) !== "undefined") {
                 $.throw_msg("Window_content._setup_submit() 重複的名稱", _name );
             }
-
-            _submit_json[_name] = _submit[_i];
+            _submit_list[_name] = _submit[_i];
         }
-        
-        _submit = _submit_json;
     }
-    
-    this.submit = _submit;
-    
-    if (typeof(this.submit._content) !== "undefined" 
-            && this.submit._content === null) {
-        this.submit._content = this;
-        //$.test_msg("Window_content._setup_submit() 設定submit._content 單一object");
-    }
-    else if ($.is_object(this.submit)) {
-        for (var _i in this.submit) {
-            if ($.is_class(this.submit[_i], "Window_content_submit")) {
-                this.submit[_i]._content = this;
-                //$.test_msg("Window_content._setup_submit() 設定submit._content", _i);
-            }
-        }
+    else if ($.is_string(_submit.name)) {
+        _submit_list[_submit.name] = _submit;
     }
     else {
-        //$.throw_msg("Window_content._setup_submit() 設定this.submit._content失敗");
+        _submit_list = _submit;
+    }
+    
+    var _first_submit;
+    
+    for (var _i in _submit_list) {
+        _first_submit = _submit_list[_i];
+        break;
+    }
+    
+    this.submit = _first_submit;
+    this.submit._content = this;
+    
+    this.submit_list = _submit_list;
+    
+    return this;
+};
+
+/**
+ * 變更目前的submit按鈕
+ * 
+ * @author Pulipuli Chen 20141111
+ * 
+ * @param {String} _name
+ */
+Window_content.prototype.change_submit = function (_name) {
+    
+    if (typeof(this.submit_list[_name]) !== "undefined") {
+        var _current_submit = this.submit.get_ui();
+        var _target_submit = this.submit_list[_name].get_ui();
+        
+        _current_submit.hide();
+        _current_submit.before(_target_submit);
+        _target_submit.show();
+        
+        this.submit = this.submit_list[_name];
     }
     
     return this;
+};
+
+/**
+ * 取得目前的submit
+ * 
+ * @author Pulipuli Chen 20141111
+ * @return {Window_content_submit} 
+ */
+Window_content.prototype.get_submit = function () {
+    return this.submit;
+};
+
+/**
+ * 取得所有的submit，以陣列形態回傳
+ * 
+ * @author Pulipuli Chen 20141111
+ * @return {Array<Window_content_submit>} 
+ */
+Window_content.prototype.get_submit_array = function () {
+    var _array = [];
+    for (var _i in this.submit_list) {
+        _array.push(this.submit_list[_i]);
+    }
+    
+    return _array;
 };
 
 // --------

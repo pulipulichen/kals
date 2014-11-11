@@ -363,18 +363,17 @@ Dialog_modal.prototype.toggle_content = function (_display, _callback) {
 Dialog_modal.prototype.set_options = function (_options, _double_col) {
     
     if ($.is_null(_options)) {
-		_options = [];
-	}
-	else 
-		if (false == $.is_array(_options)) {
-			_options = [_options];
-		}
+        _options = [];
+    }
+    else if (false == $.is_array(_options)) {
+        _options = [_options];
+    }
         
     //$.test_msg('set_options', _options.length);
     
     if ($.is_null(_double_col)) {
-		_double_col = true;
-	}
+        _double_col = true;
+    }
     
     var _ui = this.get_ui();
     
@@ -388,9 +387,9 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
     for (var _index = 0; _index < _options.length; _index++) {
         //$.test_msg('set_options forloop', [$.get_class(_options[_index]), (typeof(_options[_index].get_ui))]);
         
-        if (typeof(_options[_index].get_ui) != 'function') {
-			continue;
-		}
+        if (typeof(_options[_index].get_ui) !== 'function') {
+            continue;
+        }
         
         var _option_ui = _options[_index].get_ui();
         
