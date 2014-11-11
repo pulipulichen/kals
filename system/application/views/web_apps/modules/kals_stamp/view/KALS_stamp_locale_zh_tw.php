@@ -20,7 +20,9 @@ $lang["heading"] = "獎章";
 
 
 
-$lang["statistic_heading"] = "以下是您撰寫標註以及與他人互動的統計結果：";
+//$lang["statistic_heading"] = "以下是您撰寫標註以及與他人互動的統計結果：";
+$lang["statistic_heading"] = "您的標註數量";
+
 $lang["statistic_topic_annotation_count"] = "主題標註";
 $lang["statistic_topic_knowed_count"] = "我知道";
 $lang["statistic_topic_knowledge_count"] = "新知識";
@@ -44,7 +46,7 @@ $lang["statistic_like_to_count"] = "我送出多少愛心";
 
 $lang["annotation_counts"] = "進度統計";
 $lang["stamp_geted"] = "已獲得獎章";
-$lang["stamp_not_get"] = "未獲得獎章";
+$lang["stamp_not_get"] = "進度統計與未獲得獎章";
 $lang["stamp_list"] = "階級排行名單";
 
 

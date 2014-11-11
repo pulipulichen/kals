@@ -415,7 +415,7 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
 //        // topic補充舉例
 //        "statistic_topic_predefined_count":KALS_context.user.get_topic_annotation_count(_annotation_type_predefined),       
 //        // topic我想說
-        "statistic_topic_discuss_count": KALS_context.user.get_topic_annotation_count(_annotation_type_discuss),    
+//        "statistic_topic_discuss_count": KALS_context.user.get_topic_annotation_count(_annotation_type_discuss),    
         //被回應的數量
         "statistic_responded_annotation_count":KALS_context.user.get_respond_to_my_annotation_count(),
         //回應別人的數量
@@ -512,7 +512,7 @@ KALS_stamp.prototype.set_stamp_qualified = function() {
 	//TABLE
     var _qualified_name = this.find(".qualified-name").empty();
     var _qualified_img = this.find(".qualified-img").empty();
-    var _qualification_container = this.find(".stamp-qualification-list").empty();
+    var _qualification_container = this.find(".stamp-qualification-list tbody").empty();
 	
 //    var _i = 0;
 //    var _k = 0;

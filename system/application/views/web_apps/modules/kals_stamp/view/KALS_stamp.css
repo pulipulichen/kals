@@ -55,3 +55,28 @@ th {
 .stamp-qualified td {
     padding-top:0;
 } 
+
+/**
+ * @author Pulipuli Chen 20141111
+ * 合併未獲得獎章與進度統計
+ */
+.stamp-statistic-container {
+    float: left;
+    border-right: 1px dotted gray;
+    margin-right: 0.5em !important;
+    padding-right: 0.5em;
+}
+
+/*
+.stamp-qualification-container {
+}
+*/
+
+h1 {
+    text-align: center;
+    margin:0;
+}
+
+.stamp_qualified.tab-content {
+    text-align: center;
+}
