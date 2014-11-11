@@ -236,6 +236,11 @@ $lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成
 $lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。 {0}';
 $lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成！ {0}';
 
+$lang['web_apps.annotation_editor.annotation_invalid'] = '抱歉，您的標註有些問題，所以無法儲存喔。問題如下：<br />{0}';
+$lang['web_apps.annotation_editor.note_word_minimum_limit_null'] = '您最少要撰寫{0}個字，而現在您還沒寫字喔。';
+$lang['web_apps.annotation_editor.note_word_minimum_limit'] = '您最少要撰寫{0}個字，而現在您已經寫了{1}個字了。';
+
+
 $lang['web_apps.annotation.type.importance'] = '重要';
 $lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
 $lang['web_apps.annotation.type.concept'] = '概念';

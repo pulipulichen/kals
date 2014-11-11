@@ -238,7 +238,8 @@ Annotation_editor.prototype.submit = function (_callback) {
     
     var _annotation_param = this.get_data();
     
-    if (this._check_note(_annotation_param) === false) {
+     //if (this._check_note(_annotation_param) === false) {
+    if (this._validate_annotation_param(_annotation_param) === false) {
         $.trigger_callback(_callback);
         return this;
     }
@@ -386,22 +387,76 @@ Annotation_editor.prototype.submit = function (_callback) {
     return this;
 };
 
-Annotation_editor.prototype._check_note = function (_annotation_param) {
+/**
+ * 檢查標註note的內容
+ * @param {Annotation_param} _annotation_param
+ * @returns {Boolean}
+ * @deprecated Pulipuli Chen 20141111
+ */
+//Annotation_editor.prototype._check_note = function (_annotation_param) {
+//    
+//    if (this.is_enable('note_allow_empty')) {
+//        return true;
+//    }
+//    
+//    if (typeof(_annotation_param.note) === 'undefined' 
+//            || _annotation_param.note === null) {
+//        //顯示錯誤
+//        var _heading = new KALS_language_param('ERROR', 'alert.heading.error');
+//
+//        var _content = new KALS_language_param('You have to write something in note.', 'annotation_editor.note_deny_empty');
+//
+//        var _this = this;
+//        KALS_util.alert(_heading, _content, function(){
+//        //_this.note.focus();
+//        });
+//
+//        return false;
+//    }
+//    else {
+//        return true;
+//    }
+//};
+
+/**
+ * 檢查標註參數是否合法
+ * @param {Annotation_param} _annotation_param
+ * @returns {Boolean}
+ * @author Pulipuli Chen 20141111
+ */
+Annotation_editor.prototype._validate_annotation_param = function (_annotation_param) {
     
-    if (this.is_enable('note_allow_empty')) {
-        return true;
+    if (this.is_enable('note_allow_empty') === false 
+            && (typeof(_annotation_param.note) === 'undefined' 
+                || _annotation_param.note === null)) {
+        _annotation_param.add_invalid(new KALS_language_param('You have to write something in note.', 'annotation_editor.note_deny_empty'));
     }
     
-    if (typeof(_annotation_param.note) === 'undefined' 
-            || _annotation_param.note === null) {
+    if (_annotation_param.validate() === false) {
         //顯示錯誤
+        var _invalid = _annotation_param.invalid;
+        
+        var _invalid_messages = "<ul>";
+        for (var _i in _invalid) {
+            var _lang = _invalid[_i];
+            var _line = KALS_context.lang.line(_lang);
+            //$.test_msg("_validate_annotation_param", typeof(_line));
+            _line = _line.text();
+            _line = "<li>" + _line + "</li>";
+            _invalid_messages = _invalid_messages + _line;
+        }
+        _invalid_messages = _invalid_messages + "</ul>";
+        
         var _heading = new KALS_language_param('ERROR', 'alert.heading.error');
-
-        var _content = new KALS_language_param('You have to write something in note.', 'annotation_editor.note_deny_empty');
-
+        
+        var _content = new KALS_language_param(
+                'Your annotation is invalid: <br />{0}'
+                , 'annotation_editor.annotation_invalid'
+                , _invalid_messages);
+        
         var _this = this;
         KALS_util.alert(_heading, _content, function(){
-        //_this.note.focus();
+            //_this.note.focus();
         });
 
         return false;

@@ -58,10 +58,10 @@ Note_editor.prototype._$create_ui = function () {
     var _this = this;
     this.notify_ready();
     
-        _this = this;
-        setTimeout(function() {
-            _this.notify_ready();    
-        }, 0);
+    _this = this;
+    setTimeout(function() {
+        _this.notify_ready();    
+    }, 0);
         
     return _ui;
 };
@@ -130,11 +130,11 @@ Note_editor.prototype.notify_ready = function () {
 };
 
 Note_editor.prototype.focus = function () {
-	var _ui = this.get_ui('.note-editor-textarea:first');
-	if (_ui.length > 0) {
-		_ui.focus();	
-	}
-	return this;
+    var _ui = this.get_ui('.note-editor-textarea:first');
+    if (_ui.length > 0) {
+            _ui.focus();	
+    }
+    return this;
 };
 
 

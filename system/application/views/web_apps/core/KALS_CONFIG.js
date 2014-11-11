@@ -369,6 +369,11 @@ DEFAULT_KALS_CONFIG = {
          */
         annotation_type_reset_enable: false,
         
+        /**
+         * 註解最少字數
+         * @type Number
+         */
+        //note_word_minimum_limit: 10
     },
     
     // --------------------------

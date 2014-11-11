@@ -110,8 +110,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         //確認tip不要超過畫面左方
         var _tooltip_left = _trigger_left - _tooltip_width;
         
-        $.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
-                , (_tooltip_right < $('body').width())]);
+        //$.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
+        //        , (_tooltip_right < $('body').width())]);
         
         if (_tooltip_left < 0) {
             // @20130602 Pudding Chen
@@ -121,8 +121,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
             
             var _tooltip_right = _tooltip_left + _tooltip_width;
             
-            $.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
-                , (_tooltip_right < $('body').width()), _tooltip_right]);
+            //$.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
+            //    , (_tooltip_right < $('body').width()), _tooltip_right]);
                     
             
             if (_tooltip_right < $('body').width()) {
@@ -154,7 +154,8 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
     _config.relative = true;
     
     //_config.offset = [31, -5];
-    _config.offset = [0, 5];
+    //_config.offset = [0, 5];
+    _config.offset = [0, 15];
     
     /**
      * @type Number 消失時間

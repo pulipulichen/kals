@@ -260,7 +260,7 @@ Note_editor_manager.prototype.ontypechange = function (_type) {
 Note_editor_manager.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.note) != 'undefined')
+        && typeof(_param.note) !== 'undefined')
     {
         this.set_text(_param.note);
     }
@@ -278,9 +278,10 @@ Note_editor_manager.prototype._listen_editor = function () {
     this._editor.add_listener('get', function (_editor, _annotation_param) {
         var _text = _this.get_text();
         
+        _annotation_param = _this.validate(_text, _annotation_param);
+        
         //如果是空值，則不傳輸資料，由伺服器端去取得預設值
-        if ($.isset(_text))
-        {
+        if ($.isset(_text)) {
             _annotation_param.note = _text;
         }
     });
@@ -288,6 +289,55 @@ Note_editor_manager.prototype._listen_editor = function () {
     this._editor.add_listener('reset', function (_editor) {
         _this.reset();
     });
+};
+
+/**
+ * 驗證是否合格
+ * @author Pulipuli Chen 20141111
+ * @param {null|String} _text
+ * @param {Annotation_param} _annotation_param
+ * @returns {Annotation_param}
+ */
+Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
+    
+    var _plain_text = "";
+    if (_text !== null) {
+        _plain_text = $(_text).text();
+        _plain_text = $.trim(_plain_text);
+    }
+    
+    var _config = KALS_CONFIG.annotation_editor;
+    
+    // ------------------------------
+    
+    var _note_word_minimum_limit = _config.note_word_minimum_limit;
+    var _plain_text_length = $.str_replace(" ", '', _plain_text);
+    
+    //$.test_msg("Note_editor_manager.validate() note_word_minimum_limit", [_plain_text_length, _note_word_minimum_limit]);
+    if (typeof(_note_word_minimum_limit) === "number"
+        && (_plain_text_length < _note_word_minimum_limit)) {
+
+        //$.test_msg("無法新增，字數過少");
+        if (_plain_text_length > 0) {
+            _annotation_param.add_invalid(new KALS_language_param(
+                    "You have to write at least {0} words. Now you have wrote {1} words.",
+                    "annotation_editor.note_word_minimum_limit",
+                    [_note_word_minimum_limit, _plain_text_length]
+            ));
+        }
+        else {
+            _annotation_param.add_invalid(new KALS_language_param(
+                    "You have to write at least {0} words. Plese write something.",
+                    "annotation_editor.note_word_minimum_limit_null",
+                    _note_word_minimum_limit
+            ));
+        }
+    }   //if (typeof(KALS_CONFIG.annotation_editor.note_word_minimum_limit) === "number"
+    
+    // ------------------------------
+    
+    return _annotation_param;
+
 };
 
 /**
