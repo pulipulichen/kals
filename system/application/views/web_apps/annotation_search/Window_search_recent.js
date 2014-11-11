@@ -31,9 +31,9 @@ Window_search_recent.prototype.open = function () {
 
     //$.test_msg("setup_recent", "keyword *");
     _search.set_input_value({
-            search_range: "note",
-            keyword: "*",
-            order_by: "update"
+        search_range: "note",
+        keyword: "*",
+        order_by: "update"
     });
 
     _search.submit.submit(function () {
