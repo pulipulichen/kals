@@ -296,8 +296,8 @@ List_collection_search.prototype._$create_ui = function () {
 		.appendTo(_ui);
 
     // 建立清除搜尋結果的按鈕
-    var _reset_button = this.create_reset_button();
-    _reset_button.appendTo(_header_panel);
+//    var _reset_button = this.create_reset_button();
+//    _reset_button.appendTo(_header_panel);
     
     // 建立導覽的按鈕
     if (KALS_context.module.has_module("Reading_guide")) { 
@@ -368,7 +368,7 @@ List_collection_search.prototype.create_reset_button = function () {
 
     var _this = this;
     _button.click(function () {
-            _this.reset();
+        _this.reset();
     });
 
     return _button;

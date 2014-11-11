@@ -101,6 +101,7 @@ Init_profile.prototype._$oncomplete = function () {
         setTimeout(function () {
             for (var _t in _auto_run) {
                 if (typeof(_auto_run[_t]) === "function") {
+                    $.test_msg("AUTORUN", _t);
                     _auto_run[_t]();
                 }
             }	

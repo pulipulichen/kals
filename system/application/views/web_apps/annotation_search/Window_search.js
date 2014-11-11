@@ -15,11 +15,12 @@ function Window_search() {
     Window_content.call(this);
     
     //$.test_msg("this._setup_submit(new Window_search_submit());");
-    var _submit_array = [
-        new Window_search_submit(),
-        new Window_content_submit_loading()
-    ];
-    this._setup_submit(_submit_array); // send keyword and search_range
+    this._setup_submit(new Window_search_submit()); // send keyword and search_range
+//    var _submit_array = [
+//        new Window_search_submit(),
+//        new Window_content_submit_loading()
+//    ];
+//    this._setup_submit(_submit_array); // send keyword and search_range
 
     this.child("list", new List_collection_search());
     
@@ -700,11 +701,10 @@ Window_search.prototype.show_recent_annotation = function(_callback){
  */
 Window_search.prototype.open_recent_annotation = function (_callback) {
     var _this = this;
-    this.show_recent_annotation(function () {
-        _this.open_window(function () {
-            $.trigger_callback(_callback);
-        }); 
-    });
+    _this.open_window();
+    _this.show_recent_annotation(function () {
+        $.trigger_callback(_callback);
+    }); 
     return this;
 };
 
@@ -812,11 +812,15 @@ Window_search.prototype.setup_content = function (_callback) {
         $.trigger_callback(_callback);
     };
     
+    //KALS_window.loading_complete(_load_callback);
+    $.test_msg("Window_search.setup_content()", "讀取狀態=" + this.submit._submit_locked);
     if (this.submit._submit_locked === false) { 
         KALS_window.loading_complete(_load_callback);
     }
     else {
+        $.test_msg("Window_search.setup_content()", "讀取中，請稍候");
         _this.adjust_note();
+        $.trigger_callback(_callback);
     }
     return this;
 };

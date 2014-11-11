@@ -568,10 +568,10 @@ KALS_window.prototype.focus_option = function (_offset) {
 KALS_window.prototype.focus_input = function () {
     var _ui = this.get_ui();
 	
-	var _content = this._content;
-	if (_content === null) {
-            return;
-	}
+    var _content = this._content;
+    if (_content === null) {
+        return;
+    }
 	
     var _first_input = _ui.find(_content.default_focus_input);
     var _first_submit = _ui.find(_content.default_focus_submit);
@@ -586,7 +586,7 @@ KALS_window.prototype.focus_input = function () {
         _first_submit.focus();
     }
 	
-	return this;
+    return this;
 };
 /* End of file KALS_window */
 /* Location: ./system/application/views/web_apps/KALS_window.js */
