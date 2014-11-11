@@ -160,6 +160,7 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
      * @type Number 消失時間
      */
     _config.delay = 5000; 
+    //_config.delay = 500000; 
     
     _config.events = {
         def: 'mouseover click focus, blur mouseout'

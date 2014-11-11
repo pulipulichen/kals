@@ -274,7 +274,7 @@
  * @author Pulipuli Chen 20141111
  * 要讓浮動選單變成垂智顯示
  */
-.KALS.annotation-tool .list-menu-tooltip list-menu-option,
+.KALS.annotation-tool .list-menu-tooltip .list-menu-option,
 .KALS.annotation-tool .list-menu-tooltip.list-menu.is-my.tooltip .list-menu-option {
     display: block;
     line-height: 20px;
