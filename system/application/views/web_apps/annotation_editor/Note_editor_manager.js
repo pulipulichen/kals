@@ -310,6 +310,24 @@ Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
     
     // ------------------------------
     
+    _annotation_param = this.validate_word_minimum_limit(_plain_text, _annotation_param, _config);
+    
+    // ------------------------------
+    
+    return _annotation_param;
+
+};
+
+/**
+ * 驗證是否合格
+ * @author Pulipuli Chen 20141111
+ * @param {String} _plain_text
+ * @param {Annotation_param} _annotation_param
+ * @param {JSON} _config 來自KALS_CONFIG.annotation_editor
+ * @returns {Annotation_param}
+ */
+Note_editor_manager.prototype.validate_word_minimum_limit = function (_plain_text, _annotation_param, _config) {
+        
     var _note_word_minimum_limit = _config.note_word_minimum_limit;
     var _plain_text_length = $.str_replace(" ", '', _plain_text);
     

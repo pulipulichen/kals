@@ -358,7 +358,7 @@ DEFAULT_KALS_CONFIG = {
          * true: 假的遞交，測試時使用
          * @type Boolean
          */
-        create_annotation_mock: false,
+        create_annotation_mock: true,
         /**
          * 新增模式時，是否要重置標註類型？
          * 
@@ -373,7 +373,7 @@ DEFAULT_KALS_CONFIG = {
          * 註解最少字數
          * @type Number
          */
-        //note_word_minimum_limit: 10
+        note_word_minimum_limit: 10
     },
     
     // --------------------------

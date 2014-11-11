@@ -985,6 +985,13 @@ KALS_util._confirm_modal = null;
 KALS_util._get_alert_modal = function () {
     if ($.is_null(this._alert_modal)) {
         var _modal = new Dialog_modal();
+        
+        /**
+         * @author Pulipuli Chen 20141112
+         * 強迫背景遮罩
+         */
+        _modal._$exposable = true;
+        
         //var _close_option = _modal.create_close_option();
         var _close_option = new Dialog_close_option();
         _modal.set_options(_close_option);
