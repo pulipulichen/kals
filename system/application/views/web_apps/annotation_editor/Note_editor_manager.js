@@ -203,31 +203,29 @@ Note_editor_manager.prototype.initialize = function (_callback) {
  */
 Note_editor_manager.prototype.toggle_editor = function (_type) {
     
-    if ($.is_null(_type))
-    {
+    if ($.is_null(_type)) {
         _type = this._editor.type.get_default_type();
     }
     
-    if ($.is_class(_type, 'Annotation_type_param'))
-    {
+    if ($.is_class(_type, 'Annotation_type_param')) {
         _type = _type.get_type_name();
     }
     
     var _note_editor_name;
-    if (typeof(this._type_mapping[_type]) == 'string')
-    {
+    if (typeof(this._type_mapping[_type]) === 'string') {
         _note_editor_name = this._type_mapping[_type];
     }
-    else
-    {
+    else {
         _note_editor_name = this._default_editor;
     }
     
     //防止重複更換
-    if (_note_editor_name == this._active_editor_name)
+    if (_note_editor_name === this._active_editor_name) {
         return this;
-    else
+    }
+    else {
         this._active_editor_name = _note_editor_name;    
+    }
     
     var _ui = this.get_ui();
     
@@ -241,8 +239,9 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     
     this._active_editor = this._note_editors[ _note_editor_name ];
     
-    if (_text != false)
+    if (_text !== false) {
         this._active_editor.set_text(_text);
+    }
     
     return this;
 };
@@ -260,8 +259,7 @@ Note_editor_manager.prototype.ontypechange = function (_type) {
 Note_editor_manager.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.note) !== 'undefined')
-    {
+        && typeof(_param.note) !== 'undefined') {
         this.set_text(_param.note);
     }
     return this;
@@ -310,6 +308,7 @@ Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
     
     // ------------------------------
     
+    //$.test_msg("Note_editor_manager.validate() validate", _text);
     _annotation_param = this.validate_word_minimum_limit(_plain_text, _annotation_param, _config);
     _annotation_param = this.validate_check_stop_words(_plain_text, _annotation_param, _config);
     
@@ -333,6 +332,7 @@ Note_editor_manager.prototype.validate_word_minimum_limit = function (_plain_tex
     var _plain_text_length = $.str_replace(" ", '', _plain_text).length;
     
     //$.test_msg("Note_editor_manager.validate() note_word_minimum_limit", [_plain_text_length, _note_word_minimum_limit]);
+    //$.test_msg("Note_editor_manager.validate() note_word_minimum_limit", _plain_text);
     if (typeof(_note_word_minimum_limit) === "number"
         && (_plain_text_length < _note_word_minimum_limit)) {
 
@@ -371,10 +371,16 @@ Note_editor_manager.prototype.validate_check_stop_words = function (_plain_text,
         
     var _stop_words = _config.note_stop_words;
     
+    if (_stop_words === undefined) {
+        return _annotation_param;
+    }
+    
+    _plain_text = _plain_text.toLocaleLowerCase();
     var _match_stop_words = [];
     
     for (var _i in _stop_words) {
         var _word = _stop_words[_i];
+        _word = _word.toLocaleString();
         
         if (_plain_text.indexOf(_word) > -1) {
             _match_stop_words.push(_word);
@@ -427,8 +433,8 @@ Note_editor_manager.prototype.reset = function () {
  */
 Note_editor_manager.prototype.focus = function () {
     if ($.isset(this._active_editor)) {
-		this._active_editor.focus();
-	} 
+        this._active_editor.focus();
+    } 
     
     return this;
 };

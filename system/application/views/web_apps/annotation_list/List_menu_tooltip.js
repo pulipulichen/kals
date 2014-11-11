@@ -29,33 +29,59 @@ List_menu_tooltip.prototype._$modal_name = 'List_menu_tooltip';
 List_menu_tooltip.prototype._$tooltip_id = 'list_menu_tooltip';
 
 /**
- * Create UI
- * 建立時預設是隱藏的。等待別人呼叫tooltip()來召喚他。
- * @memberOf {List_menu_tooltip}
- * @type {jQuery} UI
+ * 基本的樣板
+ * @type String
  */
+List_menu_tooltip.prototype._$template = '<div><table cellpadding="0" cellspacing="0" align="right"><tbody>'
+    + '<tr class="timestamp-container"></tr>'
+    + '<tr class="edit-container"></tr>'
+    + '<tr class="delete-container"></tr>'
+    + '<tr class="respond-container"></tr>'
+    + '<tr class="view-container"></tr>'
+    + '<tr class="review-container"></tr>'
+    + '<tr class="select-container"></tr>'    
+    + '</tbody></table></div>';
+
+
+///**
+// * Create UI
+// * 建立時預設是隱藏的。等待別人呼叫tooltip()來召喚他。
+// * @memberOf {List_menu_tooltip}
+// * @type {jQuery} UI
+// */
+//List_menu_tooltip.prototype._$create_ui = function () {
+//    var _ui = List_menu.prototype._$create_ui.call(this);
+//    
+//    var _td_array = _ui.find("td");
+//    var _ui_container = $("<div />").attr("className", _ui.attr("className"));
+//    _td_array.each(function (_key, _ele) {
+//        var _ele = $(_ele);
+//        var _content = $("<div />")
+//                .hover(function () {
+//                    $(this).addClass("hover");
+//                }, function () {
+//                    $(this).removeClass("hover");
+//                })
+//                .html(_ele.html())
+//                .attr("className", _ele.attr("className"))
+//                .appendTo(_ui_container);
+//    });
+//    
+//    var _tooltip = this._create_tooltip_prototype({
+//        content: _ui_container,
+//        classname: 'list-menu-tooltip kals-modal'
+//    });
+//    
+//    _tooltip.hide();
+//    
+//    return _tooltip;
+//};
+
 List_menu_tooltip.prototype._$create_ui = function () {
     var _ui = List_menu.prototype._$create_ui.call(this);
     
-    var _td_array = _ui.find("td");
-    var _ui_container = $("<div />").attr("className", _ui.attr("className"));
-    _td_array.each(function (_key, _ele) {
-        var _ele = $(_ele);
-        var _content = $("<div />")
-                .hover(function () {
-                    $(this).addClass("hover");
-                }, function () {
-                    $(this).removeClass("hover");
-                })
-                .html(_ele.html())
-                .attr("className", _ele.attr("className"))
-                .appendTo(_ui_container);
-    });
-    
-    
-    
     var _tooltip = this._create_tooltip_prototype({
-        content: _ui_container,
+        content: _ui,
         classname: 'list-menu-tooltip kals-modal'
     });
     
@@ -110,8 +136,11 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
         //確認tip不要超過畫面左方
         var _tooltip_left = _trigger_left - _tooltip_width;
         
-        //$.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left, _tooltip_width, _trigger_width
-        //        , (_tooltip_right < $('body').width())]);
+        $.test_msg('List_menu_tooltip._$get_config()', [_tooltip_left, _trigger_left
+            , _tooltip_width, _trigger_width
+            , $('body').width()
+            , $(document).width()
+            , (_tooltip_right < $('body').width())]);
         
         if (_tooltip_left < 0) {
             // @20130602 Pudding Chen
@@ -127,6 +156,7 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
             
             if (_tooltip_right < $('body').width()) {
                 _tooltip.css("visibility", "hidden");
+                _tooltip_left = _tooltip_left + 25;
                 setTimeout(function () {
                     _tooltip.css('left', _tooltip_left + 'px');   
                     _tooltip.css('width', _tooltip_width + 'px');
@@ -148,20 +178,20 @@ List_menu_tooltip.prototype._$get_config = function (_selector) {
     };
     
     //方向
-    _config.position = 'center right';
+    _config.position = 'center left';
     //_config.position = 'center left';
     
     _config.relative = true;
     
     //_config.offset = [31, -5];
     //_config.offset = [0, 5];
-    _config.offset = [0, 15];
+    _config.offset = [0, -5];
     
     /**
      * @type Number 消失時間
      */
-    _config.delay = 5000; 
-    //_config.delay = 500000; 
+    //_config.delay = 5000; 
+    _config.delay = 500000; 
     
     _config.events = {
         def: 'mouseover click focus, blur mouseout'

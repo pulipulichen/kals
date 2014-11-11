@@ -84,6 +84,14 @@ List_menu.prototype.set_data = function () {
 // --------
 
 /**
+ * 基本的樣板
+ * @type String
+ */
+List_menu.prototype._$template = '<div><table cellpadding="0" cellspacing="0" align="right"><tbody>'
+    + '<tr class="timestamp-container select-container review-container view-container respond-container delete-container edit-container"></tr>'
+    + '</tbody></table><span>&nbsp;</span></div>';
+
+/**
  * Create UI
  * @memberOf {List_menu}
  * @type {jQuery} UI
@@ -92,47 +100,47 @@ List_menu.prototype._$create_ui = function ()
 {
     var _writable = KALS_context.policy.writable();
     
-    var _ui = $('<div><table cellpadding="0" cellspacing="0" align="right"><tbody><tr></tr></tbody></table><span>&nbsp;</span></div>')
+    var _ui = $(this._$template)
         .addClass('list-menu')
         .addClass(this._not_login_classname);
     
-    var _tr = _ui.find('tr:first');
+    //var _tr = _ui.find('tr:first');
     
     if (this.is_enable('edit') && _writable === true) {
         var _edit = this._create_edit_ui();
-        _edit.appendTo(_tr);
+        _edit.appendTo(_ui.find(".edit-container"));
     }
     
     if (this.is_enable('delete') && _writable === true) {
         var _delete = this._create_delete_ui();
-        _delete.appendTo(_tr);
+        _delete.appendTo(_ui.find(".delete-container"));
     }
     
     if (this.is_enable('respond') && _writable === true) {
         var _respond = this._create_respond_ui();
-        _respond.appendTo(_tr);    
+        _respond.appendTo(_ui.find(".respond-container"));    
     }
     
     //$.test_msg('List_menu._$create_ui() this._enable_view_thread', this._enable_view_thread);
     //if (this._enable_view_thread == true)
     if (this.is_enable('view')) {
         var _view = this._create_view_ui();
-        _view.appendTo(_tr);    
+        _view.appendTo(_ui.find(".view-container"));    
     }
     if (this.is_enable('review')) {
         var _review = this._create_review_ui();
-        _review.appendTo(_tr);    
+        _review.appendTo(_ui.find(".review-container"));    
     }
     
     if (this.is_enable('select')) {
         if (KALS_text.selection.select.equals(this._item.get_scope_coll()) === false) {
             var _select = this._create_select_ui();
-            _select.appendTo(_tr);    
+            _select.appendTo(_ui.find(".select-container"));    
         }   
     }
     
     var _timestamp = this._setup_timestamp();
-    _timestamp.get_ui().prependTo(_tr);
+    _timestamp.get_ui().prependTo(_ui.find(".timestamp-container"));
     
     return _ui;
 };

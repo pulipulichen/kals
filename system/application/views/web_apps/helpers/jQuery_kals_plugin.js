@@ -733,13 +733,18 @@ jQuery.object_isset = function (_object_path) {
  * @returns {Boolean}
  */
 jQuery.is_link = function(_url) {
+    /**
+     * @author Pulipuli Chen 1112
+     */
+    _url = $.trim(_url);
+    
     if (this.starts_with(_url, 'http://') ||
 	this.starts_with(_url, 'https://') ||
 	this.starts_with(_url, 'ftp://')) {
-            return true;
+        return true;
     }
     else {
-            return false;
+        return false;
     }
 };
 
@@ -830,6 +835,11 @@ jQuery.parse_url = function (_str, _component) {
  * @returns {Boolean}
  */
 jQuery.is_image = function(_url) {
+    /**
+     * @author Pulipuli Chen 1112
+     */
+    _url = $.trim(_url);
+    
     if (false === this.is_link(_url)) {
         return false;
     }
@@ -849,6 +859,61 @@ jQuery.is_image = function(_url) {
     else {
         return false;
     }
+};
+
+/**
+ * 連結是Youtube
+ * @param {String} _url
+ * @returns {Boolean}
+ * @author Pulipuli Chen 20141112
+ */
+jQuery.is_youtube = function(_url) {
+    /**
+     * @author Pulipuli Chen 1112
+     */
+    _url = $.trim(_url);
+    
+    if (false === this.is_link(_url)) {
+        return false;
+    }
+    var _param = this.parse_url(_url);
+    if (this.is_null(_param) || this.is_null(_param.query)) {
+        return false;
+    }
+    var _host = _param.host;
+    var _query = _param.query;
+    
+    if (_host.indexOf(".youtube.") > -1 
+            && _query.indexOf("v=") > -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+/**
+ * 連結是Youtube，取得影片ID
+ * @param {String} _url
+ * @returns {Boolean}
+ * 
+ * @author Pulipuli Chen 20141112
+ * 參考了 http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
+ */
+jQuery.get_youtube_id = function(_url) {
+    if (this.is_youtube(_url) === false) {
+        return null;
+    }
+    
+    var _param = this.parse_url(_url);
+    var _query = _param.query;
+    
+    var _id = _query.split('v=')[1];
+    var _ampersandPosition = _id.indexOf('&');
+    if (_ampersandPosition !== -1) {
+        _id = _id.substring(0, _ampersandPosition);
+    }
+    return _id;
 };
 
 jQuery.parse_extension_name = function (_path) {

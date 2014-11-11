@@ -401,6 +401,8 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
         }
     }
     
+    // -----------------------
+    
     if (!$.is_jquery(_result)) {
         _result = this._note_container;
     }
@@ -440,6 +442,41 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
 	
 	});
 	*/
+    
+    
+    // ----------------------------------------------
+    
+    var _plain_result = _result.text();
+    _plain_result = $.trim(_plain_result);
+    
+    /**
+     * @author Pulipuli Chen 20141112
+     * 連接自動變成圖片、影片
+     */
+    //$.test_msg("adjust_note is image", [_plain_result, $.is_image(_plain_result)]);
+    //$.test_msg("adjust_note is youtube", [_plain_result, $.is_image(_plain_result)]);
+    
+    if ($.is_image(_plain_result)) {
+        _result.html('<img src="' + _plain_result + '" style="" />');
+    }
+    else if ($.is_youtube(_plain_result)) {
+        var _youtube_id = $.get_youtube_id(_plain_result);
+        _result.html('<iframe width="300" height="220" src="//www.youtube.com/embed/' + _youtube_id + '" frameborder="0" allowfullscreen></iframe>');
+    }
+    else if ($.is_link(_plain_result)) {
+        var _encode_url = encodeURIComponent(_plain_result);
+        //$.test_msg("is_link", _encode_url);
+        //var _websnapr_image = '<img src="http://cligs.websnapr.com/?url='+ _encode_url + '&size=t&nocache=80" />';
+        
+        var _title_span = '<span>' + _plain_result + '</span>';
+        
+        var _link = '<a href="' + _plain_result + '">' + _title_span + '</a>';
+        
+        _result.html(_link);
+    }
+    
+    // --------------------------------------
+    
     // 幫超連結加上target=_blank
     _result.find('a, img').each(function (_index, _a) {
 		
@@ -454,7 +491,7 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
         
         var _link;
         if (_a.hasAttr('src')) {
-                _link = _a.attr('src');
+            _link = _a.attr('src');
         }
         else if (_a.hasAttr('href')) {
             _link = _a.attr('href');
@@ -523,7 +560,7 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
         var _width = _ele.width();
         //$.test_msg("ele width", _width);
         
-        //$.test_msg('縮小圖片', [_width, _max_width]);
+        $.test_msg('縮小圖片', [_width, _max_width]);
         if (_width > _max_width) {
             var _height = _ele.height();
             
@@ -543,6 +580,8 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
     });
     
     //this._note_container.addClass('adjusted');
+    
+    // ---------------------
 
     $.trigger_callback(_callback);
     return this;
