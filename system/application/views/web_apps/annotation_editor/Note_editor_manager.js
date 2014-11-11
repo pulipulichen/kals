@@ -311,6 +311,7 @@ Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
     // ------------------------------
     
     _annotation_param = this.validate_word_minimum_limit(_plain_text, _annotation_param, _config);
+    _annotation_param = this.validate_check_stop_words(_plain_text, _annotation_param, _config);
     
     // ------------------------------
     
@@ -319,7 +320,7 @@ Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
 };
 
 /**
- * 驗證是否合格
+ * 驗證是否合格：最小字數
  * @author Pulipuli Chen 20141111
  * @param {String} _plain_text
  * @param {Annotation_param} _annotation_param
@@ -329,7 +330,7 @@ Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
 Note_editor_manager.prototype.validate_word_minimum_limit = function (_plain_text, _annotation_param, _config) {
         
     var _note_word_minimum_limit = _config.note_word_minimum_limit;
-    var _plain_text_length = $.str_replace(" ", '', _plain_text);
+    var _plain_text_length = $.str_replace(" ", '', _plain_text).length;
     
     //$.test_msg("Note_editor_manager.validate() note_word_minimum_limit", [_plain_text_length, _note_word_minimum_limit]);
     if (typeof(_note_word_minimum_limit) === "number"
@@ -356,6 +357,39 @@ Note_editor_manager.prototype.validate_word_minimum_limit = function (_plain_tex
     
     return _annotation_param;
 
+};
+
+/**
+ * 驗證是否合格：停用字
+ * @author Pulipuli Chen 20141111
+ * @param {String} _plain_text
+ * @param {Annotation_param} _annotation_param
+ * @param {JSON} _config 來自KALS_CONFIG.annotation_editor
+ * @returns {Annotation_param}
+ */
+Note_editor_manager.prototype.validate_check_stop_words = function (_plain_text, _annotation_param, _config) {
+        
+    var _stop_words = _config.note_stop_words;
+    
+    var _match_stop_words = [];
+    
+    for (var _i in _stop_words) {
+        var _word = _stop_words[_i];
+        
+        if (_plain_text.indexOf(_word) > -1) {
+            _match_stop_words.push(_word);
+        }
+    }
+    
+    if (_match_stop_words.length > 0) {
+        _annotation_param.add_invalid(new KALS_language_param(
+                "Please don't write indecent words: {0}",
+                "annotation_editor.note_stop_words",
+                [_match_stop_words.join(" ")]
+        ));
+    }
+    
+    return _annotation_param;
 };
 
 /**

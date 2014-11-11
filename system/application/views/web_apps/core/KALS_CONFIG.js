@@ -373,7 +373,13 @@ DEFAULT_KALS_CONFIG = {
          * 註解最少字數
          * @type Number
          */
-        note_word_minimum_limit: 10
+        note_word_minimum_limit: 10,
+        
+        /**
+         * 禁止字
+         * @type Array<String>
+         */
+        note_stop_words: ["1", "we"]
     },
     
     // --------------------------
