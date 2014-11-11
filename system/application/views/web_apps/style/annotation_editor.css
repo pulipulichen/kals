@@ -441,6 +441,13 @@
     font-weight:normal;
     margin-right: 5px;
     margin-left: 5px;
+    
+    /**
+     * @author Pulipuli Chen 2014111
+     * 因為鎖圖片的高度為20，可是原本的畫面無法顯示完整的鎖圖片，故調高圖片高度
+     */
+    display: inline-block;
+    height: 16px;
 }
 
 .KALS.kals-modal .annotation-editor .policy-component.lock {

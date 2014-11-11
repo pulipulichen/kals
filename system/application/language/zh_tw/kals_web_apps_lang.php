@@ -284,7 +284,7 @@ $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
 $lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
-$lang['web_apps.list_menu.review'] = '細節';
+$lang['web_apps.list_menu.review'] = '查看';
 
 $lang['web_apps.list_menu.delete_complete'] = '標註#{0}已經刪除';
 

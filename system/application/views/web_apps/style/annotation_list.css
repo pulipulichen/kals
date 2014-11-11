@@ -323,9 +323,10 @@
  * @author Pulipuli Chen 20141111
  * 在block中也加入hover的效果
  */
-.KALS .list-menu-tooltip .list-menu-block .list-menu-option.hover {
+.KALS .list-menu-block .list-menu-option.hover {
     background-color: #F9F9F9;
     color: inherit;
+    text-decoration: underline;
 }
 
 .KALS .list-menu .list-timestamp-component {
