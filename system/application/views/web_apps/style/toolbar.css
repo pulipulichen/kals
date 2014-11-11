@@ -36,10 +36,10 @@
  
 .KALS.kals-toolbar tr td{
     /*
- 	padding: 0 .5em !important;
-	text-align:right !important;
-	font-size:100% !important;
-	*/
+    padding: 0 .5em !important;
+    text-align:right !important;
+    font-size:100% !important;
+    */
 	
  }
 
@@ -519,17 +519,22 @@
 }
 
 .KALS.kals-toolbar tbody tr td{
-	
-	border-bottom:0px !important;
-	border-top:0px !important;
+
+    border-bottom:0px !important;
+    border-top:0px !important;
+}
+
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .stamp-icon img {
+    margin-right: 0.5em;
+    cursor:pointer;
 }
 
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .photo{
-	border: 0px !important;
+    border: 0px !important;
 }
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .name{
-	border: 0px !important;
-        color: white;
+    border: 0px !important;
+    color: white;
 }
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .notification{
 	border: 0px !important;

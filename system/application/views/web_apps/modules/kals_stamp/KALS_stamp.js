@@ -874,10 +874,12 @@ KALS_stamp.prototype._init_listener = function() {
         KALS_context.auth.add_listener(function (_auth) {
             if (_auth.is_login() === true) {
                 _this.set_stamp_qualified();
+                _this.show_stamp_icon();
             }
             else {
                 _this._first_notify = true;
                 _this._stamp_level = -1;
+                _this.hide_stamp_icon();
             }
         }, true);
         //_this.setup_stamp_content();
@@ -885,6 +887,8 @@ KALS_stamp.prototype._init_listener = function() {
         $.each(_listen_attr_list, function(_key, _value) {
             KALS_context.user.add_attr_listener(_value, _listen_callback);
         });
+        
+        _this._init_stamp_icon();
         
 //        KALS_context.policy.add_attr_listener('write', function (_policy) {
 //            if (_policy.writable()) {
@@ -1313,6 +1317,7 @@ KALS_stamp.prototype.qualify = function() {
         this.open();
     }
     
+    this.update_stamp_icon();
     this._first_notify = false;
         
     return this;
@@ -1476,6 +1481,87 @@ KALS_stamp.prototype.qualify_notify = function(_stamps_config, _stamp_level, _st
 //    
 //    return this;
 //};
+
+/**
+ * 獎章的icon位置
+ * @type jQuery
+ */
+KALS_stamp.prototype._stamp_icon = null;
+
+/**
+ * 設置獎章的圖示
+ * @author Pulipuli Chen 20141111
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype._init_stamp_icon = function () {
+    
+    if (typeof(this._stamps_config[0].icon_url) === "undefined") {
+        return this;
+    }
+    
+    //var _stamp_icon_container = $('<img />')
+    //        .addClass("stamp-icon");
+    
+    //$.test_msg("KALS_stamp._init_stamp_icon()", KALS_toolbar.avatar.get_ui().length);
+    
+    var _stamp_icon_container = $('<td class="stamp-icon"><img /></td>');
+    
+    KALS_toolbar.avatar.get_ui().find(".photo").before(_stamp_icon_container);
+    
+    var _this = this;
+    _stamp_icon_container.find("img").click(function () {
+        _this.open();
+    });
+    
+    this._stamp_icon = _stamp_icon_container;
+    
+    return this;
+};
+
+/**
+ * 更新階級的圖片
+ * @author Pulipuli Chen 20141111
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype.update_stamp_icon = function () {
+    var _level = this._stamp_level;
+    
+    if (_level < 0 || this._stamp_icon === null) {
+        return this;
+    }
+    
+    var _icon_url = this._stamps_config[_level].icon_url;
+    _icon_url = KALS_context.url.filter_base_url(_icon_url);
+    
+    $.test_msg("update_stamp_icon()", _icon_url);
+    this._stamp_icon.find("img").attr("src", _icon_url);
+    
+    return this;
+};
+
+/**
+ * 顯示獎章圖示
+ * @author Pulipuli Chen 20141111
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype.show_stamp_icon = function () {
+    if (this._stamp_icon !== null) {
+        this._stamp_icon.show();
+    }
+    return this;
+};
+
+/**
+ * 隱藏獎章圖示
+ * @author Pulipuli Chen 20141111
+ * @returns {KALS_stamp}
+ */
+KALS_stamp.prototype.hide_stamp_icon = function () {
+    if (this._stamp_icon !== null) {
+        this._stamp_icon.hide();
+    }
+    return this;
+};
 
 /* End of file KALS_stamp */
 /* Location: ./system/application/views/web_apps/extension/KALS_stamp/KALS_stamp.js */
