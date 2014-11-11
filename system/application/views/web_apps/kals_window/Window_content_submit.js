@@ -254,6 +254,15 @@ Window_content_submit.prototype._unlock_submit = function () {
 Window_content_submit.prototype._submit_locked = false;
 
 /**
+ * 確認現在是否在遞交中
+ * @author Pulipuli Chen 20141111
+ * @type Boolean
+ */
+Window_content_submit.prototype.is_submit_locked = function () {
+    return this._submit_locked;
+};
+
+/**
  * 建立UI
  * @returns {jQuery}
  */

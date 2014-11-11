@@ -409,12 +409,19 @@ Window_search.prototype.get_range_ui = function () {
 
 /**
  * 更換選擇範圍
+ * 
+ *  @author Pulipuli Chen 20141111
+ * 如果範圍一樣，則不重置
  * @param {String} _range
  */
 Window_search.prototype.change_range = function (_range) {
 
     if (this._last_range === null) {
         this._last_range = this._search_default_option.range;
+    }
+    
+    if (this._last_range === _range) {
+        return this;
     }
 
     //$.test_msg("change range", [_range, this.is_input_keyword()]);
@@ -682,6 +689,9 @@ Window_search.prototype.show_recent_annotation = function(_callback){
     
     var _submit_callback = function () {
         _content.get_ui().find(".search-result-subpanel").show();
+        
+        //$.test_msg("Window_search.show_recent_annotation()", "讀取完了？") ;
+        //$.throw_msg("Window_search.show_recent_annotation()", "讀取完了？") ;
         $.trigger_callback(_callback);
     };
     
@@ -700,6 +710,12 @@ Window_search.prototype.show_recent_annotation = function(_callback){
  * @returns {Window_search.prototype}
  */
 Window_search.prototype.open_recent_annotation = function (_callback) {
+    
+    if (this.submit.is_submit_locked()) {
+        //$.throw_msg("重複呼叫了！");
+        return this;
+    }
+    
     var _this = this;
     _this.open_window();
     _this.show_recent_annotation(function () {
@@ -813,12 +829,12 @@ Window_search.prototype.setup_content = function (_callback) {
     };
     
     //KALS_window.loading_complete(_load_callback);
-    $.test_msg("Window_search.setup_content()", "讀取狀態=" + this.submit._submit_locked);
+    //$.test_msg("Window_search.setup_content()", "讀取狀態=" + this.submit._submit_locked);
     if (this.submit._submit_locked === false) { 
         KALS_window.loading_complete(_load_callback);
     }
     else {
-        $.test_msg("Window_search.setup_content()", "讀取中，請稍候");
+        //$.test_msg("Window_search.setup_content()", "讀取中，請稍候");
         _this.adjust_note();
         $.trigger_callback(_callback);
     }

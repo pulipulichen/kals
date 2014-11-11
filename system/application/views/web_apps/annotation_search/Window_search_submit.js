@@ -79,6 +79,11 @@ Window_search_submit.prototype.complete_handle = function () {
  */
 Window_search_submit.prototype.submit = function(_callback, _pass_validate) {
     
+    if (this.is_submit_locked()) {
+        $.trigger_callback(_callback);
+        return this;
+    }
+    
     this._lock_submit();
     KALS_window.toggle_loading(true);
     

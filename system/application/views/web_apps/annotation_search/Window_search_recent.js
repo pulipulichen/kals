@@ -18,9 +18,9 @@ Window_search_recent.prototype = new Navigation_item_link();
 
 Window_search_recent.prototype.name = "Window_search_recent";
 
-Window_search_recent.prototype.open = function () {
+Window_search_recent.prototype.open = function (_callback) {
     var _search = KALS_context.search;
-    
+    /*
     var _save_input_value = {
         search_range: _search.get_input_value("search_range"),
         keyword: _search.get_input_value("keyword"),
@@ -41,7 +41,8 @@ Window_search_recent.prototype.open = function () {
     });
     
     _search.open();
-    
+    */
+    _search.open_recent_annotation(_callback);
     return this;
 };
 
@@ -81,7 +82,7 @@ Window_search_recent.prototype.nav_config = {
      * 數字最小的是1
      * @type Number
      */
-    order: 1
+    order: 2
 };
 
 /**

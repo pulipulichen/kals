@@ -1519,5 +1519,15 @@ KALS_controller_window.prototype.focus_input = function () {
  */
 KALS_controller_window.prototype._$nav_click_callback = null;
 
+/**
+ * 取得目前的submit
+ * 
+ * @author Pulipuli Chen 20141111
+ * @return {Window_content_submit} 
+ */
+KALS_controller_window.prototype.get_submit = function () {
+    return this.submit;
+};
+
 /* End of file KALS_controller_window */
 /* Location: ./system/application/views/web_apps/kals_framework/KALS_controller_window.js */

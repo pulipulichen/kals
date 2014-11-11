@@ -2511,8 +2511,8 @@ jQuery.create_namespace = function () {
 jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5) {
     var _delay = 0;
     
-    if (typeof(_callback) == 'number') {
-        if (typeof(_arg1) == 'function') {
+    if (typeof(_callback) === 'number') {
+        if (typeof(_arg1) === 'function') {
             _delay = _callback;
             _callback = _arg1;
         }
@@ -2522,27 +2522,23 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
         setTimeout(function () {
             
             if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4) && $.isset(_arg5)) {
-				_callback(_arg1, _arg2, _arg3, _arg4, _arg5);
-			}
-			else 
-				if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4)) {
-					_callback(_arg1, _arg2, _arg3, _arg4);
-				}
-				else 
-					if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3)) {
-						_callback(_arg1, _arg2, _arg3);
-					}
-					else 
-						if ($.isset(_arg1) && $.isset(_arg2)) {
-							_callback(_arg1, _arg2);
-						}
-						else 
-							if ($.isset(_arg1)) {
-								_callback(_arg1);
-							}
-							else {
-								_callback();
-							}
+                _callback(_arg1, _arg2, _arg3, _arg4, _arg5);
+            }
+            else if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4)) {
+                _callback(_arg1, _arg2, _arg3, _arg4);
+            }
+            else if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3)) {
+                _callback(_arg1, _arg2, _arg3);
+            }
+            else if ($.isset(_arg1) && $.isset(_arg2)) {
+                _callback(_arg1, _arg2);
+            }
+            else if ($.isset(_arg1)) {
+                _callback(_arg1);
+            }
+            else {
+                _callback();
+            }
                 
         }, _delay);
     }
