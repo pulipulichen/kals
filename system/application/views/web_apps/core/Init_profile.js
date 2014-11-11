@@ -90,13 +90,22 @@ Init_profile.prototype._$oncomplete = function () {
     KALS_context.set_completed();
 
     // 以下啟動測試區
-    var _this = this;
-    setTimeout(function () {
-        for (var _t in _this._test) {
-            _this._test[_t]();
-        }	
-    }, 1000);
-        
+//    var _this = this;
+//    setTimeout(function () {
+//        for (var _t in _this._test) {
+//            _this._test[_t]();
+//        }	
+//    }, 1000);
+    if (typeof(KALS_CONFIG.debug.auto_run) === "object") {
+        var _auto_run = KALS_CONFIG.debug.auto_run;
+        setTimeout(function () {
+            for (var _t in _auto_run) {
+                if (typeof(_auto_run[_t]) === "function") {
+                    _auto_run[_t]();
+                }
+            }	
+        }, 1000);
+    }
 };
 
 // --------------------------------

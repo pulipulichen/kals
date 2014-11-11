@@ -456,7 +456,18 @@ DEFAULT_KALS_CONFIG = {
          * 確認KALS_util.notify的時間
          * @type Boolean
          */
-        notify_auto_hide: true
+        notify_auto_hide: true,
+        
+        /**
+         * 自動執行，測試使用的自動執行，請把要執行的function依序寫入auto_run中，以陣列組合
+         * @author Pulipuli Chen 20141111
+         * @type Array
+         */
+        auto_run: [
+            function () {
+                KALS_context.search.open_recent_annotation();
+            }
+        ]
     },
     
     /**

@@ -676,12 +676,18 @@ Window_search.prototype.show_recent_annotation = function(_callback){
 	});
 };
 
+
+/**
+ * 開啟最新標註
+ * @param {Function} _callback
+ * @returns {Window_search.prototype}
+ */
 Window_search.prototype.open_recent_annotation = function (_callback) {
-	var _this = this;
+    var _this = this;
     this.show_recent_annotation(function () {
-		_this.open_window(function () {
-			$.trigger_callback(_callback);
-		}); 
+        _this.open_window(function () {
+            $.trigger_callback(_callback);
+        }); 
     });
     return this;
 };

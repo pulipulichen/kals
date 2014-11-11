@@ -270,7 +270,9 @@ KALS_context.user = null;
 KALS_context.policy = null;
 
 /**
- * @type {Context_search}
+ * @author Pulipuli Chen 20141111
+ * 捨棄@type {Context_search}，改用Window_search
+ * @type {Window_search}
  */
 KALS_context.search = null;
 
