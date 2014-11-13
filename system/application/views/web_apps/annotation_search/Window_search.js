@@ -809,6 +809,9 @@ Window_search.prototype.search = function (_search_option, _open_window) {
         this.set_input_value(_search_option);
     }
 
+    //$.test_msg("開始搜尋");
+    this._dispacher.notify_listeners("search");
+    
     this.submit.submit();
 
     if (_open_window === undefined) {
@@ -850,6 +853,38 @@ Window_search.prototype.setup_content = function (_callback) {
     return this;
 };
 
+/**
+ * 清理搜尋結果
+ * @author Pulipuli Chen 20141113
+ * @returns {Window_search.prototype}
+ */
+Window_search.prototype.clear_search_result = function () {
+    this.list.reset();
+    
+    $.test_msg("重置");
+    this._dispacher.notify_listeners("clear");
+    return this;
+};
+
+/**
+ * 增加監聽者
+ * 
+ * @author Pulipuli Chen 20141113
+ * @param {string} _type 監聽類型
+ * @param {function} _function 回呼函數。
+ * _function = function (_dispatcher) { //... }
+ * @param {boolean} _trigger 是否立刻啟動
+ */
+Window_search.prototype.add_listener = function (_event_name, _function, _trigger) {
+    this._dispacher.add_listener(_event_name, _function, _trigger)
+    return this;
+};
+
+/**
+ * 事件記錄器
+ * @type Multi_event_dispatcher
+ */
+Window_search.prototype._dispacher = new Multi_event_dispatcher();
 
 /* End of file Window_profile */
 /* Location: ./system/application/views/web_apps/Window_profile.js */

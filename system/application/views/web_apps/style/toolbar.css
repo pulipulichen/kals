@@ -277,7 +277,14 @@
 
 .KALS .search-component * {
     margin:0;
-    height: 2em;
+    /*height: 2em;*/
+}
+
+/**
+ * 讓搜尋功能置中
+ */
+.KALS .search-component .input {
+    vertical-align: middle;
 }
 
 .KALS .search-component .search-keyword {
@@ -307,6 +314,14 @@
     border-width: 0 !important;
     background-color: transparent;
     /*float:right;*/
+}
+
+.KALS .search-component .search-form-searched {
+    display: none;
+}
+
+.KALS .search-component .search-form-searched .button.dialog-option {
+    font-size: small;
 }
 
 /* 寬度縮小的情況 */

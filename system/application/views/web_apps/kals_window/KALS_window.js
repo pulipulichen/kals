@@ -207,6 +207,15 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
     
     var _this = this;    
     
+    if (this._content === _content) {
+        //$.test_msg("KALS_window.setup_window()", "不必重新設定");
+        this.open(function () {
+            $.trigger_callback(_callback);
+        });
+        return this;
+    }
+    
+    
     this._reset_window(function () {
         
         //$.test_msg('KALS_window.setup_window() ready to set window');
@@ -306,7 +315,6 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
                 
                 // 開始設定內容囉
                 _content.setup_content(function () {
-                    
                     // 設定完成囉
                     $.trigger_callback(_callback);
                 });

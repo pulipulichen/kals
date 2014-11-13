@@ -560,7 +560,7 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
         var _width = _ele.width();
         //$.test_msg("ele width", _width);
         
-        $.test_msg('縮小圖片', [_width, _max_width]);
+        //$.test_msg('縮小圖片', [_width, _max_width]);
         if (_width > _max_width) {
             var _height = _ele.height();
             

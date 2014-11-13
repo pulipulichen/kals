@@ -287,73 +287,73 @@ List_collection.prototype.get_search_data = function () {
         _search_data.topic_id = this._$topic_id;
         
         if ($.isset(this._$limit)) {
-			_search_data.limit = this._$limit;
-		}
+            _search_data.limit = this._$limit;
+        }
 		
-		if ($.isset(this._$respond_limit)) {
+        if ($.isset(this._$respond_limit)) {
             _search_data.respond_limit = this._$respond_limit;
         }
             
         if ($.isset(this._$target_topic)) {
-			_search_data.target_topic = this._$target_topic;
-		}
-        if ($.isset(this._$order_by) && this._$order_by != 'score') {
-			_search_data.order_by = this._$order_by;
-		}
+            _search_data.target_topic = this._$target_topic;
+        }
+        if ($.isset(this._$order_by) && this._$order_by !== 'score') {
+            _search_data.order_by = this._$order_by;
+        }
         
         if ($.isset(this._$direction)) {
             _search_data.direction = this._$direction;
         }
             
         if ($.isset(this._offset)) {
-			_search_data.offset = this._offset;
-		}
+            _search_data.offset = this._offset;
+        }
         
         return _search_data;
     }
     
     //一定要有範圍資料！
     if ($.is_null(this._scope_coll)) {
-		return null;
-	}
+        return null;
+    }
     
     _search_data.scope = this._scope_coll.export_json(false);
     
     //需要登入身分的兩個參數
     if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
 	KALS_context.auth.is_login() === false) {
-		return null;
-	}
+        return null;
+    }
     
     if ($.isset(this._$target_like)) {
-		_search_data.target_like = this._$target_like;
-	}
+        _search_data.target_like = this._$target_like;
+    }
     if ($.isset(this._$target_my)) {
-		_search_data.target_my = this._$target_my;
-	}
+        _search_data.target_my = this._$target_my;
+    }
 	
-	if ($.isset(this._$respond_limit)) {
+    if ($.isset(this._$respond_limit)) {
         _search_data.respond_limit = this._$respond_limit;
     }
     
     if ($.isset(this._$limit)) {
-		_search_data.limit = this._$limit;
-	}
+        _search_data.limit = this._$limit;
+    }
     
     if ($.isset(this._$target_topic)) {
-		_search_data.target_topic = this._$target_topic;
-	}
-    if ($.isset(this._$order_by) && this._$order_by != 'score') {
-		_search_data.order_by = this._$order_by;
-	}
+        _search_data.target_topic = this._$target_topic;
+    }
+    if ($.isset(this._$order_by) && this._$order_by !== 'score') {
+        _search_data.order_by = this._$order_by;
+    }
 	
-	if ($.isset(this._$direction)) {
+    if ($.isset(this._$direction)) {
         _search_data.direction = this._$direction;
     }
         
     if ($.isset(this._offset)) {
-		_search_data.offset = this._offset;
-	}
+        _search_data.offset = this._offset;
+    }
     
     return _search_data;
     
@@ -367,17 +367,17 @@ List_collection.prototype.get_search_data = function () {
  */
 List_collection.prototype._check_login = function () {
     
-	if (this._$enable_check_login === false) {
-		return true;
-	}
+    if (this._$enable_check_login === false) {
+        return true;
+    }
 	
     //$.test_msg('List_coll._check_login()', [this._$name, this._$need_login, KALS_context.auth.is_login()]);
     
     if ($.isset(this._$need_login) === false) {
-		return true;
-	}
+        return true;
+    }
     
-    var _pass = (this._$need_login == KALS_context.auth.is_login());
+    var _pass = (this._$need_login === KALS_context.auth.is_login());
     if (_pass === false) {
         this._totally_loaded = true;
     } 
@@ -397,18 +397,24 @@ List_collection.prototype.set_load_id = function (_dispatcher) {
 
 List_collection.prototype.check_load_id = function (_load_id) {
     if (this._check_load_id === true) {
-		if ($.is_null(_load_id)) {
-			return (this._load_id_dispatcher.get_load_id() == this._load_id);
-		}
-		else {
-			return (this._load_id_dispatcher.get_load_id() == _load_id);
-		}
-	}
-	else {
-		return true;
-	}
+        if ($.is_null(_load_id)) {
+            return (this._load_id_dispatcher.get_load_id() === this._load_id);
+        }
+        else {
+            return (this._load_id_dispatcher.get_load_id() === _load_id);
+        }
+    }
+    else {
+        return true;
+    }
 };
 
+/**
+ * 現在是初始化的狀態
+ * @type Boolean
+ * @author Pulipuli Chen 20141113
+ */
+List_collection.prototype._is_initialized_flag = true;
 
 List_collection.prototype.setup_load_list = function (_data, _callback) {
     
@@ -419,6 +425,8 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         $.trigger_callback(_callback);
         return this;
     }
+    
+    this._is_initialized_flag = false;
     
     var _this = this;
     
@@ -540,8 +548,8 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
  */
 List_collection.prototype.reset = function() {
     if ($.isset(this._list_container)) {
-		this._list_container.empty();
-	}
+        this._list_container.empty();
+    }
     this._list_items = [];
     this._offset = null;
     this._totally_loaded = false;
@@ -549,6 +557,8 @@ List_collection.prototype.reset = function() {
     
     this._set_focus_param = null;
     this._set_focus_scrollto = null;
+    
+    this._is_initialized_flag = true;
     
     return this;
 };
@@ -565,13 +575,13 @@ List_collection.prototype.reload = function(_callback) {
  */
 List_collection.prototype.create_list_item = function(_param) {
     if (this._$target_topic === true) {
-		return new List_item_topic(_param);
-	}
-	//else if (this._$target_topic === false)
-	//    return new List_item_respond(_param);
-	else {
-		return new List_item(_param);
-	}
+        return new List_item_topic(_param);
+    }
+    //else if (this._$target_topic === false)
+    //    return new List_item_respond(_param);
+    else {
+        return new List_item(_param);
+    }
 };
 
 /**
@@ -582,8 +592,20 @@ List_collection.prototype._set_is_totally = function(_is_totally) {
     this._totally_loaded = _is_totally;
 };
 
+/**
+ * 是否已經完全讀取
+ * @returns {Boolean}
+ */
 List_collection.prototype.is_totally_loaded = function() {
     return this._totally_loaded;
+};
+
+/**
+ * 是否已經開始
+ * @returns {Boolean}
+ */
+List_collection.prototype.is_initialized = function() {
+    return this._is_initialized_flag;
 };
 
 List_collection.prototype.set_topic_id = function(_id) {

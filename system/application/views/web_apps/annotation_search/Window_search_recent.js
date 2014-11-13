@@ -42,7 +42,16 @@ Window_search_recent.prototype.open = function (_callback) {
     
     _search.open();
     */
-    _search.open_recent_annotation(_callback);
+    //_search.open_recent_annotation(_callback);
+    
+    var _search_option = {
+        search_range: "note",
+        keyword: "*",
+        order_by: "update"
+    };
+    
+    _search.search(_search_option);
+    
     return this;
 };
 
