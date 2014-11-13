@@ -1531,10 +1531,18 @@ KALS_stamp.prototype.update_stamp_icon = function () {
     }
     
     var _icon_url = this._stamps_config[_level].icon_url;
-    _icon_url = KALS_context.url.filter_base_url(_icon_url);
-    
-    $.test_msg("update_stamp_icon()", _icon_url);
-    this._stamp_icon.find("img").attr("src", _icon_url);
+    var _img = this._stamp_icon.find("img");
+    if (typeof(_icon_url) === "string") {
+             _icon_url = KALS_context.url.filter_base_url(_icon_url);
+
+        //$.test_msg("update_stamp_icon()", _icon_url);
+        _img.attr("src", _icon_url);
+        _img.show();
+    }
+    else {
+        _img.hide();
+    }
+   
     
     return this;
 };

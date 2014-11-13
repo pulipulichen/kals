@@ -284,6 +284,7 @@
     margin-left: 0;
     text-align: center;
     width: 50px;
+    font-weight: normal;
 }
 
 .KALS.annotation-tool .list-menu-tooltip .list-timestamp-component {
