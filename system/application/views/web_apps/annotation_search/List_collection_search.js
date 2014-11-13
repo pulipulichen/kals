@@ -195,6 +195,7 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
         var _search_scope = _data.scope_collection;
 
         KALS_text.selection.search.set_scope_coll(_search_scope);
+        _this._last_search_scope = _search_scope;
 
         _ui.show();
 
@@ -204,6 +205,22 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
         // @20131114 Pulipuli Chen
         $.trigger_callback(_callback); 
     });
+};
+
+/**
+ * 最後的搜尋範圍
+ * @author Pulipuli Chen 20141113
+ * @type Scope_collection_param
+ */
+List_collection_search.prototype._last_search_scope = null;
+
+/**
+ * @author Pulipuli Chen 20141113
+ * @returns {List_collection_search.prototype}
+ */
+List_collection_search.prototype.restore_last_search_scope = function () {
+    KALS_text.selection.search.set_scope_coll(this._last_search_scope);
+    return this;
 };
 
 /**

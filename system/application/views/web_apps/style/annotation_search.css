@@ -1,3 +1,7 @@
+.KALS .window-panel.window-search .search-form dt {
+    margin-bottom: 1em;
+}
+
 .KALS .window-panel.window-search .list-collection.search {
     /*border-top: 1px solid gray;*/
 }

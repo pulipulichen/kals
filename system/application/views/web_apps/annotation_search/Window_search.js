@@ -61,7 +61,7 @@ Window_search.prototype.list = null;
  * 搜尋的預設值
  */
 Window_search.prototype._search_default_option = {
-    range: "note",
+    search_range: "note",
     type: null,
     order_by: null
 };
@@ -80,7 +80,7 @@ Window_search.prototype._search_param = {
     /**
      * 搜尋欄位
      */
-    range: [ "note","author","annotation_type","annotation_anchor" ],
+    search_range: [ "note","author","annotation_type","annotation_anchor" ],
 
     /**
      * 排序順序
@@ -151,7 +151,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
          _search_range_radio	
     ).appendTo(_subpanel);
 	
-    _search_range_row.find("dt:first").css("margin-bottom", "1em");
+    //_search_range_row.find("dt:first").css("margin-bottom", "1em");
 
     // --------------------------
 
@@ -168,7 +168,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
     // 隱藏標註類型選單 
     _type_radio_row.hide(); // 平常時候把_type_radio隱藏起來
-    _type_radio_row.find("dt:first").css("margin-bottom", "1em");
+    //_type_radio_row.find("dt:first").css("margin-bottom", "1em");
 	
 	
     // 當使用者有點選動作時的事件
@@ -233,8 +233,9 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     //_keyword_input.val("test");
 
     var _searchkey_row = _factory.row(
-    new KALS_language_param('Searchkey', 'window.content.searchkey'),
-    _keyword_input)
+                new KALS_language_param('Searchkey', 'window.content.searchkey'),
+                _keyword_input
+            )
             .addClass("keyword-row")
             .appendTo(this._search_form_subpanel); //"關鍵字"標題	
 
@@ -341,8 +342,8 @@ Window_search.prototype.create_range_options = function(_type){
     var _factory = KALS_window.ui;
 	
     var _search_range_options = [];
-    var _search_range_default_value = this._search_default_option.range;
-    var _search_range_param_list = this._search_param.range;
+    var _search_range_default_value = this._search_default_option.search_range;
+    var _search_range_param_list = this._search_param.search_range;
     
     for (var _r in _search_range_param_list) {
         // _type_param = new Annotation_type_param();
@@ -384,7 +385,7 @@ Window_search.prototype.create_range_ui = function (_type) {
     //var _options = this.create_range_options(_type);
 
     var _search_range_options = this.create_range_options(_type);
-    var _search_range_default_value = this._search_default_option.range;
+    var _search_range_default_value = this._search_default_option.search_range;
 
     var _search_range;
     if (_type === "radio") {
@@ -440,12 +441,20 @@ Window_search.prototype.get_range_ui = function () {
  */
 Window_search.prototype.change_range = function (_range) {
 
+//    if (this._last_range === null) {
+//        this._last_range = this._search_default_option.range;
+//    }
+//    
+//    if (this._last_range === _range) {
+//        return this;
+//    }
     if (this._last_range === null) {
-        this._last_range = this._search_default_option.range;
-    }
-    
-    if (this._last_range === _range) {
-        return this;
+        if (this._last_search_option === null) {
+            this._last_range = this._search_default_option.search_range;
+        }
+        else {
+            this._last_range = this._last_search_option.search_range;
+        }
     }
 
     //$.test_msg("change range", [_range, this.is_input_keyword()]);
@@ -640,6 +649,9 @@ Window_search.prototype.toggle_input = function (_type) {
 
     if (_type === "annotation_type") {
         var _keyword_value = _keyword_ui.eq(0).val();
+        if (_keyword_value === "*") {
+            _keyword_value = "";
+        }
         this._last_keyword_value = _keyword_value;
 
         var _type_value = _factory.get_list_value(_type_ui);
@@ -686,14 +698,14 @@ Window_search.prototype._last_keyword_value = null;
  * 取得關鍵字的UI
  */
 Window_search.prototype.get_keyword_ui = function () {
-    return $(".KALS ." + this.keyword_input_classname);
+    return this.find("." + this.keyword_input_classname);
 };
 
 /**
  * 取得標註類型的UI
  */
 Window_search.prototype.get_annotation_type_ui = function () {
-    return $(".KALS ." + this.type_classname);
+    return this.find("." + this.type_classname);
 };
 
 // -------------------------------------------------
@@ -824,8 +836,20 @@ Window_search.prototype.set_input_value = function(_data){
     if (typeof _data.search_range === 'string') {
         this.toggle_input(_data.search_range);
     }
+    
+    var _filtered_data = {};
+    for (var _i in _data) {
+        var _val = _data[_i];
+        
+        if (_i === "keyword"
+                && _val === "*") {
+            _val = "";
+        }
+        
+        _filtered_data[_i] = _val;
+    }
 
-    return Window_content.prototype.set_input_value.call(this, _data);
+    return Window_content.prototype.set_input_value.call(this, _filtered_data);
 };
 
 /**
@@ -923,6 +947,7 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
             && this._last_search_option.keyword === _data.keyword
             && this._last_search_option.order_by === _data.order_by) {
 //        $.test_msg("重複內容！");
+        _content.list.restore_last_search_scope();
         _content._search_complete_callback(_callback);
         return this;
     }

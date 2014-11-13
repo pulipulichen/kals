@@ -179,7 +179,9 @@ Search_form_component.prototype._create_submit = function () {
             });	
         }
         else {
-            _this._window_search.open_window();
+            _this._window_search.open_window(function () {
+                KALS_window.loading_complete();
+            });
         }
         
 //        _this.find("." + _this._classname_init).hide();
