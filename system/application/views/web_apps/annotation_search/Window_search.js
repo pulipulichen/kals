@@ -127,6 +127,8 @@ Window_search.prototype._$create_ui = function (){  //建立UI
       
     // 新增一層subplan來畫SEARCH表單	
     var _subpanel = _factory.subpanel('range').appendTo(_ui);
+    
+    this._search_form_subpanel = _subpanel;
     //var _this = this;
     
     // search_range為radio選單
@@ -293,6 +295,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     var _result = _factory.subpanel("search-result-subpanel")
         .appendTo(_ui)
         .hide();
+    this._search_result_subpanel = _result;
     
     var _list_ui = this.list.get_ui();
 	_list_ui.appendTo(_result);
@@ -300,7 +303,19 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     return _ui;
 };
 
+/**
+ * 搜尋表單面板
+ * @author Pulipuli Chen 20141113
+ * @type jQuery
+ */
+Window_search.prototype._search_form_subpanel = null;
 
+/**
+ * 搜尋結果面板
+ * @author Pulipuli Chen 20141113
+ * @type jQuery
+ */
+Window_search.prototype._search_result_subpanel = null;
 
 /**
  * 建立搜尋範圍的選單
@@ -697,7 +712,8 @@ Window_search.prototype.show_recent_annotation = function(_callback){
 //    });
     
     var _submit_callback = function () {
-        _content.get_ui().find(".search-result-subpanel").show();
+        //_content.get_ui().find(".search-result-subpanel").show();
+        _content._search_result_subpanel.show();
         
         //$.test_msg("Window_search.show_recent_annotation()", "讀取完了？") ;
         //$.throw_msg("Window_search.show_recent_annotation()", "讀取完了？") ;
@@ -801,26 +817,106 @@ Window_search.prototype.default_focus_input = '.dialog-content:first input:radio
  *      search_range: "note","author","annotation_type","annotation_anchor",
  *      keyword:"keyword",
  *      order_by: "update|create"
+ *      _disable_validate: false
  * }
  * @paam {Boolean} _open_window 預設是true
  */
 Window_search.prototype.search = function (_search_option, _open_window) {
+    
+    var _this = this;
+    
     if (typeof(_search_option) === "object") {
         this.set_input_value(_search_option);
     }
+    
+    var _disable_validate = false;
+    if (typeof(_search_option._disable_validate) === "boolean") {
+        _disable_validate = _search_option._disable_validate;
+    }
+    if (this.validate(_search_option) === false 
+            && _disable_validate === true) {
+        return this;
+    }
+    
+    // -----------------------------------
+    
+    KALS_window.toggle_loading(true);
 
     //$.test_msg("開始搜尋");
     this._dispacher.notify_listeners("search");
-    
-    this.submit.submit();
+    this.submit._lock_submit();
 
     if (_open_window === undefined) {
         _open_window = true;
     }
 
     if (_open_window) {
-        this.open_window();
+        this.open_window(function () {
+            //this.submit.submit();
+            _this._setup_search_list(_search_option);
+        });
     }
+};
+
+/**
+ * 執行搜尋的動作
+ * 
+ * @author Pulipuli Chen 20141113
+ * @param {JSON} _search_option
+ * @param {Function} _callback
+ * @returns {Window_search.prototype}
+ */
+Window_search.prototype._setup_search_list = function (_search_option, _callback) {
+    var _content = this;
+    var _list = this.list;
+    //var _data = this.submit.get_data();
+    var _data = _search_option;
+    
+    _list.reset();
+    //_list.get_ui().show();
+
+    //$.test_msg("Window_search._setup_search_list() 1", _data);
+    //$.test_msg("Window_search._setup_search_list() 2", this.get_data());
+    
+    if (_data.search_range === "annotation_type"
+            && (typeof(_data.keyword) === "undefined" || _data.keyword === "") ) {
+        _data.keyword = _data.type;
+    }
+    
+    if (typeof(_data.order_by) === "undefined") {
+        _data.order_by = this._search_default_option.order_by;
+    }
+        
+    _list.set_search_range(_data.search_range);
+    _list.set_keyword(_data.keyword);
+    _list.set_order_by(_data.order_by);
+
+    // 我們要叫List_collection_search進行搜尋
+    //var _this = this;
+    //$.test_msg("Window_search_submit _list.load_list()", _list.get_name());
+    _list.load_list(function () {
+        _content._search_complete_callback(_callback);
+    });
+    
+    return this;
+};
+
+/**
+ * 搜尋完成之後的動作
+ * 
+ * @author Pulipuli Chen 20141113
+ * @param {Function} _callback
+ * @returns {Window_search.prototype}
+ */
+Window_search.prototype._search_complete_callback = function (_callback) {
+    
+    this._search_result_subpanel.show();
+    this.submit._unlock_submit();
+
+    KALS_window.toggle_loading(false);
+
+    $.trigger_callback(_callback);
+    return this;
 };
 
 /**
@@ -859,10 +955,14 @@ Window_search.prototype.setup_content = function (_callback) {
  * @returns {Window_search.prototype}
  */
 Window_search.prototype.clear_search_result = function () {
-    this.list.reset();
     
-    $.test_msg("重置");
+    //var _this = this;
+    
+    this.list.get_ui().hide();
+    this.list.reset();
+    KALS_text.selection.search.clear();
     this._dispacher.notify_listeners("clear");
+    
     return this;
 };
 
@@ -885,6 +985,30 @@ Window_search.prototype.add_listener = function (_event_name, _function, _trigge
  * @type Multi_event_dispatcher
  */
 Window_search.prototype._dispacher = new Multi_event_dispatcher();
+
+/**
+ * 驗證搜尋資料
+ * @author Pulipuli Chen 20141113
+ * @returns {Boolean}
+ */
+Window_search.prototype.validate = function (_data) {
+    
+    var _result = true;
+
+    var _ui = this.get_ui();
+    var _keyword_empty_hint = _ui.find(".keyword-empty-hint");
+
+    if (_data.keyword === "") {
+        _result = false;
+        _keyword_empty_hint.show();
+        this.get_first_input("keyword").focus();
+    }
+    else {
+        _keyword_empty_hint.hide();
+    }
+    
+    return _result;
+};
 
 /* End of file Window_profile */
 /* Location: ./system/application/views/web_apps/Window_profile.js */

@@ -819,8 +819,8 @@ class Annotation_getter extends Web_apps_controller {
          */
         //sleep(3);
         
-        //$enable_profiler = true; //？
-        $enable_profiler = false; //？
+        //$enable_profiler = true; 
+        $enable_profiler = false; 
 
         if ($enable_profiler == TRUE) {
             $this->output->enable_profiler(TRUE); 
@@ -829,6 +829,8 @@ class Annotation_getter extends Web_apps_controller {
         if (is_string($json)) {
             $data = json_to_object($json); //把js丟過來的資料(search)包成物件data，內含
                                            // search_range，keyword，新增order_by
+            //test_msg($json);
+            //test_msg($data);
         }    
         else {
             $data = $json;

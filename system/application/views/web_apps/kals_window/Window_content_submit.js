@@ -207,7 +207,7 @@ Window_content_submit.prototype.submit = function () {
     
     KALS_window.toggle_loading(true, function () {
         KALS_util.ajax_get(_config);
-    });    
+    });
     
     return this;
 };

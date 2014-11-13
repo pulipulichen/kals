@@ -490,7 +490,7 @@ Window_content.prototype.open_window = function (_callback) {
     var _content = this;
 
     if (_content.is_absolute() === false) {
-        KALS_window.setup_window(_content, function () {
+    KALS_window.setup_window(_content, function () {
             $.trigger_callback(_callback);
         });
     }

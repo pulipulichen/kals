@@ -485,17 +485,20 @@ DEFAULT_KALS_CONFIG = {
              * @author Pulipuli Chen 20141111
              * 測試搜尋最新標註用
              */
-//            function () {
-////                KALS_context.search.open_recent_annotation(function () {
-////                    KALS_window.close(function () {
-////                        setTimeout(function () {
-////                            KALS_context.search.open_recent_annotation();
-////                        }, 3000);
-////                    });
-////                });
-//
-//                $("td.item a.Window_search_recent").click();
-//            }
+            function () {
+//                KALS_context.search.open_recent_annotation(function () {
+//                    KALS_window.close(function () {
+//                        setTimeout(function () {
+//                            KALS_context.search.open_recent_annotation();
+//                        }, 3000);
+//                    });
+//                });
+
+                //$("td.item a.Window_search_recent").click();
+                
+                $(".search-form-init .text.search-keyword").val("1");
+                $(".search-form-init .search-form-submit").click();
+            }
         ]
     },
     

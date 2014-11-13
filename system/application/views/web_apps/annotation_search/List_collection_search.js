@@ -366,9 +366,9 @@ List_collection_search.prototype.create_reset_button = function () {
         .addClass("reset-button");
 
 
-    var _this = this;
+    //var _content = this;
     _button.click(function () {
-        _this.reset();
+        KALS_context.search.clear_search_result();
     });
 
     return _button;
@@ -402,16 +402,19 @@ List_collection_search.prototype.create_guide_button = function () {
     return _button;
 };
 
-/**
- * 修改預設的重設動作
- */
-List_collection_search.prototype.reset = function () {
-    //$.test_msg("List_collection_search.prototype.reset");
-    
-    this.get_ui().hide();
-    KALS_text.selection.search.clear();
-    return List_collection.prototype.reset.call(this);
-};
+///**
+// * 修改預設的重設動作
+// * @author Pulipuli Chen 20141113
+// * @param {Function} _callback
+// */
+//List_collection_search.prototype.reset = function (_callback) {
+//    //$.test_msg("List_collection_search.prototype.reset");
+//    
+//    this.get_ui().hide();
+//    KALS_text.selection.search.clear();
+//    
+//    return List_collection.prototype.reset.call(this, _callback);
+//};
 
 /* End of file List_collection_search */
 /* Location: ./system/application/views/web_apps/List_collection_search.js */

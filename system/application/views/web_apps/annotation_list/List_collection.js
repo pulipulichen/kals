@@ -544,9 +544,10 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
 };
 
 /**
- * 將設定回歸原始 
+ * 將設定回歸原始
+ * @param {Function} _callback 重置
  */
-List_collection.prototype.reset = function() {
+List_collection.prototype.reset = function(_callback) {
     if ($.isset(this._list_container)) {
         this._list_container.empty();
     }
@@ -559,6 +560,8 @@ List_collection.prototype.reset = function() {
     this._set_focus_scrollto = null;
     
     this._is_initialized_flag = true;
+    
+    $.trigger_callback(_callback);
     
     return this;
 };
