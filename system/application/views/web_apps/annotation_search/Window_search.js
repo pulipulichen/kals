@@ -15,12 +15,12 @@ function Window_search() {
     Window_content.call(this);
     
     //$.test_msg("this._setup_submit(new Window_search_submit());");
-    this._setup_submit(new Window_search_submit()); // send keyword and search_range
-//    var _submit_array = [
-//        new Window_search_submit(),
-//        new Window_content_submit_loading()
-//    ];
-//    this._setup_submit(_submit_array); // send keyword and search_range
+//    this._setup_submit(new Window_search_submit()); // send keyword and search_range
+    var _submit_array = [
+        new Window_search_submit(),
+        new Window_search_submit_reset()
+    ];
+    this._setup_submit(_submit_array); // send keyword and search_range
 
     this.child("list", new List_collection_search());
     
@@ -131,11 +131,12 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     var _ui = KALS_window.ui.panel('window-search');//建立search版面
 
     var _factory = KALS_window.ui;
-      
-    // 新增一層subplan來畫SEARCH表單	
-    var _subpanel = _factory.subpanel('range').appendTo(_ui);
     
-    this._search_form_subpanel = _subpanel;
+    this._search_form_subpanel = _factory.subpanel('search-form').appendTo(_ui);
+    
+    // 新增一層subplan來畫SEARCH表單	
+    var _subpanel = _factory.subpanel('range').appendTo(this._search_form_subpanel);
+    
     //var _this = this;
     
     // search_range為radio選單
@@ -163,7 +164,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
             _type_radio
         )
         .addClass("annotation-type-row")
-        .appendTo(_ui); 
+        .appendTo(this._search_form_subpanel); 
 
     // 隱藏標註類型選單 
     _type_radio_row.hide(); // 平常時候把_type_radio隱藏起來
@@ -235,8 +236,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     new KALS_language_param('Searchkey', 'window.content.searchkey'),
     _keyword_input)
             .addClass("keyword-row")
-            .appendTo(_ui); //"關鍵字"標題	
-
+            .appendTo(this._search_form_subpanel); //"關鍵字"標題	
 
     var _keyword_empty_hint = _factory.tip(new KALS_language_param('Please input keyword', 'window.search.keyword_empty_hint'))
             .addClass("keyword-empty-hint")
@@ -246,7 +246,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
     // 選擇排序方式-update,create,scope
 
-    _subpanel = _factory.subpanel('order').appendTo(_ui); //新增一層subplan	
+    _subpanel = _factory.subpanel('order').appendTo(this._search_form_subpanel); //新增一層subplan	
   
    // order_by為radio選單
 
@@ -289,6 +289,8 @@ Window_search.prototype._$create_ui = function (){  //建立UI
 
 */
    
+    // ---------------------------------------------------------
+    
     // 搜尋結果數量
     /**
      * 移至List_collection_search顯示
@@ -605,6 +607,11 @@ Window_search.prototype.create_keyword_ui = function(){
  * @param {String} _value
  */
 Window_search.prototype.set_keyword_value = function (_value) {
+    
+    if (_value === "*") {
+        _value = "";
+    }
+    
     this.get_keyword_ui().val(_value);
     //this.list.reset();
     return this;
@@ -957,12 +964,15 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
 Window_search.prototype._search_complete_callback = function (_callback) {
     
     this._search_result_subpanel.show();
+    this._search_form_subpanel.hide();
+    
     this.submit._unlock_submit();
 
 //    KALS_window.toggle_loading(false);
 //    $.trigger_callback(_callback);
     
     KALS_window.loading_complete(_callback);
+    this.change_submit("reset");
     this._dispacher.notify_listeners("search");
     return this;
 };
@@ -1007,13 +1017,15 @@ Window_search.prototype.clear_search_result = function () {
     
     //var _this = this;
     
-    this.list.get_ui().hide();
-    this.list.reset();
+    this._search_result_subpanel.hide();
+    this._search_form_subpanel.show();
+    
+    //this.list.reset();
     KALS_text.selection.search.clear();
+    this.change_submit("submit");
     this._dispacher.notify_listeners("clear");
     
-    this._last_search_option = null;
-    
+    //this._last_search_option = null;
     return this;
 };
 

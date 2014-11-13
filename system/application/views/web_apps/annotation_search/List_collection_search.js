@@ -130,6 +130,8 @@ List_collection_search.prototype.get_search_data = function () {
     _search_data.order_by = this._$order_by;
 	
     _search_data.show_total_count = true;
+    
+//    this._init_listener();
 
     //$.test_msg("List_coll get_search_data", _search_data);
     return _search_data;
@@ -414,6 +416,26 @@ List_collection_search.prototype.create_guide_button = function () {
 //    KALS_text.selection.search.clear();
 //    
 //    return List_collection.prototype.reset.call(this, _callback);
+//};
+
+///**
+// * 監聽Window_search
+// * @author Pulipuli Chen 20141113
+// * @type {List_collection_search}
+// */
+//List_collection_search.prototype._init_listener = function () {
+//    var _search = KALS_context.search;
+//    var _ui = this.get_ui();
+//    
+//    _search.add_listener("search", function () {
+//        _ui.show();
+//    });
+//    
+//    _search.add_listener("clear", function () {
+//        _ui.hide();
+//    });
+//    
+//    return this;
 //};
 
 /* End of file List_collection_search */

@@ -340,6 +340,11 @@ Search_form_component.prototype._setup_search_option = function (_search_option)
     //$.test_msg("Search_form_component._setup_search_option()", _search_option);
     
     this._search_range.val(_search_option.search_range);
+    
+    if (_search_option.keyword === "*") {
+        _search_option.keyword = "";
+    }
+    
     this._keyword.val(_search_option.keyword);
     
     if (typeof(_search_option.type) === "undefined") {
