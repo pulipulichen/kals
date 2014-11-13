@@ -336,7 +336,13 @@ DEFAULT_KALS_CONFIG = {
             simple_max_length: 150,
             //允許顯示的HTML標籤
             allow_html_tags: ["a", "img", "iframe"]
-        }
+        },
+        /**
+         * 加入喜愛的間隔限制，單位是秒
+         * @author Pulipuli Chen 20141113
+         * @type Number
+         */
+        like_interval: 5
     },
     /**
      * 編輯器的相關設定
@@ -1039,8 +1045,7 @@ DEFAULT_KALS_CONFIG = {
              * @version 20140618 Pulipuli Chen
              * 對應到Modules的 deeper copy
              */
-            if (_i === "modules"
-                    || _i === "annotation_editor") {
+            if ($.inArray(_i, ["modules", "annotation_editor", "annotation_list"]) > -1) {
                 for (var _j in KALS_CONFIG[_i]) {
                     //console.log(_j);
                     DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];

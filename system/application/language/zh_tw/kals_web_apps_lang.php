@@ -310,6 +310,8 @@ $lang['web_apps.list_like_component.like_count'] = '{0}人喜愛';
 $lang['web_apps.list_like_component.set_like'] = '加入喜愛清單';
 $lang['web_apps.list_like_component.set_not_like'] = '移出喜愛清單';
 $lang['web_apps.list_like_component.disable_like'] = '無法使用喜愛功能';
+$lang['web_apps.list_like_component.robot_check.heading'] = '您確定要加入喜愛清單嗎？';
+$lang['web_apps.list_like_component.robot_check.content'] = '您把標註加入喜愛的間隔太短了，您真的要把這篇標註加入喜愛清單嗎？';
 
 /**
  * Respond_list_component
