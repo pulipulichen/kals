@@ -19,7 +19,7 @@ Window_search_recent.prototype = new Navigation_item_link();
 Window_search_recent.prototype.name = "Window_search_recent";
 
 Window_search_recent.prototype.open = function (_callback) {
-    var _search = KALS_context.search;
+//    var _search = KALS_context.search;
     /*
     var _save_input_value = {
         search_range: _search.get_input_value("search_range"),
@@ -44,13 +44,14 @@ Window_search_recent.prototype.open = function (_callback) {
     */
     //_search.open_recent_annotation(_callback);
     
-    var _search_option = {
-        search_range: "note",
-        keyword: "*",
-        order_by: "update"
-    };
-    
-    _search.search(_search_option);
+//    var _search_option = {
+//        search_range: "note",
+//        keyword: "*",
+//        order_by: "update"
+//    };
+//    
+//    _search.search(_search_option);
+    KALS_context.search.open_recent_annotation();
     
     return this;
 };

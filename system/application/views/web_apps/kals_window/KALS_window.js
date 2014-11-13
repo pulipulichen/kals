@@ -215,7 +215,6 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         return this;
     }
     
-    
     this._reset_window(function () {
         
         //$.test_msg('KALS_window.setup_window() ready to set window');
@@ -256,8 +255,6 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
             _this.set_heading(_content._$heading);
         }
             
-        
-        
         // -------------
         
         //$.test_msg('KALS_window.setup_window() setting window 1');
@@ -298,7 +295,6 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
                 _content.onclose();
             });
         }
-            
             
         if ($.is_function(_content.onviewportmove)) {
             _this.set_onviewportmove(_content.onviewportmove);
@@ -551,7 +547,9 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
  * @param {function} _callback
  */
 KALS_window.prototype.loading_complete = function (_callback) {
-    return this.toggle_loading(false, _callback);
+    this.toggle_loading(false, _callback);
+//    $.throw_msg("KALS_window", "loading_complete");
+    return this;
 };
 
 KALS_window.prototype.is_loading = function () {

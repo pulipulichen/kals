@@ -493,11 +493,13 @@ DEFAULT_KALS_CONFIG = {
 //                        }, 3000);
 //                    });
 //                });
-
-                //$("td.item a.Window_search_recent").click();
+                //$.test_msg("點選最近連接");
+                $("td.item a.Window_search_recent:first").click();
                 
-                $(".search-form-init .text.search-keyword").val("1");
-                $(".search-form-init .search-form-submit").click();
+                //KALS_context.search.close_window();
+                
+//                $(".search-form-init .text.search-keyword").val("1");
+//                $(".search-form-init .search-form-submit").click();
             }
         ]
     },

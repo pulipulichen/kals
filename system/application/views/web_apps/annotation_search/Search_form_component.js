@@ -122,6 +122,7 @@ Search_form_component.prototype._classname_searched = "search-form-searched";
  */
 Search_form_component.prototype._create_input = function () {
     var _ui = this._window_search.create_keyword_ui();
+    this._keyword = _ui;
     _ui.keypress(function (_e) {
         
         if (_e.which === 13) {   //13表示enter鍵
@@ -144,6 +145,13 @@ Search_form_component.prototype._create_input = function () {
     return _input;
     */
 };
+
+/**
+ * 關鍵字的輸入
+ * @author Pulipuli Chen 20141113
+ * @type jQuery
+ */
+Search_form_component.prototype._keyword = null;
 
 /**
  * 開啟搜尋視窗，進行搜尋
@@ -247,9 +255,17 @@ Search_form_component.prototype._create_range_ui = function () {
     var _search = this._window_search;
 
     var _search_range = _search.create_range_ui("dropdown");
+    this._search_range = _search_range;
 
     return _search_range;
 };
+
+/**
+ * 範圍
+ * @author Pulipuli Chen 20141113
+ * @type jQuery
+ */
+Search_form_component.prototype._search_range = null;
 
 /**
  * 建立標註類別的選單
@@ -260,9 +276,17 @@ Search_form_component.prototype._create_type_ui = function () {
     var _search = this._window_search;
 
     var _search_type = _search.create_annotation_type_ui("dropdown").hide();
+    this._type = _search_type;
 
     return _search_type;
 };
+
+/**
+ * 選擇類型
+ * @author Pulipuli Chen 20141113
+ * @tyep {jQuery}
+ */
+Search_form_component.prototype._type = null;
 
 /**
  * 初始化監聽者
@@ -275,6 +299,8 @@ Search_form_component.prototype._init_listener = function () {
     this._window_search.add_listener("search", function () {
         //$.test_msg("切換");
         _this._toggle_mode(_this._classname_searched);
+        var _search_option = KALS_context.search.get_search_option();
+        _this._setup_search_option(_search_option);
     });
     
     this._window_search.add_listener("clear", function () {
@@ -301,6 +327,24 @@ Search_form_component.prototype._toggle_mode = function (_mode) {
         this.find("." + this._classname_searched).show();
     }
     
+    return this;
+};
+
+/**
+ * 設定參數
+ * @param {JSON} _search_option
+ * @returns {Search_form_component}
+ */
+Search_form_component.prototype._setup_search_option = function (_search_option) {
+    
+    //$.test_msg("Search_form_component._setup_search_option()", _search_option);
+    
+    this._search_range.val(_search_option.search_range);
+    this._keyword.val(_search_option.keyword);
+    
+    if (typeof(_search_option.type) === "undefined") {
+        this._type.val(_search_option.type);
+    }
     return this;
 };
 
