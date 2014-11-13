@@ -285,6 +285,7 @@
  */
 .KALS .search-component .input {
     vertical-align: middle;
+    text-align: left;
 }
 
 .KALS .search-component .search-keyword {

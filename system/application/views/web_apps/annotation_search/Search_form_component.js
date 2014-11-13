@@ -168,14 +168,15 @@ Search_form_component.prototype._create_submit = function () {
         var _ui = _this.get_ui();
 
         var _range = _ui.find("[name='search_range']").val();
-        var _type = _ui.find("[name='type']").val();
         var _keyword = _ui.find("[name='keyword']").val();
+        if (_range === "annotation_type") {
+            _keyword = _ui.find("[name='type']").val();
+        }
 
         if (_keyword !== "") {
             _this._window_search.search({
                 "search_range": _range,
-                "keyword": _keyword,
-                "type": _type
+                "keyword": _keyword
             });	
         }
         else {
@@ -257,6 +258,19 @@ Search_form_component.prototype._create_range_ui = function () {
     var _search = this._window_search;
 
     var _search_range = _search.create_range_ui("dropdown");
+    
+    var _this = this;
+    _search_range.change(function () {
+        if (this.value === "annotation_type") {
+            _this._keyword.hide();
+            _this._type.show();
+        }
+        else {
+            _this._keyword.show();
+            _this._type.hide();
+        }
+    });
+    
     this._search_range = _search_range;
 
     return _search_range;
@@ -347,7 +361,16 @@ Search_form_component.prototype._setup_search_option = function (_search_option)
         _search_option.keyword = "";
     }
     
-    this._keyword.val(_search_option.keyword);
+    if (_search_option.search_range === "annotation_type") {
+        this._keyword.hide();
+        this._type.show();
+        this._type.val(_search_option.keyword);
+    }
+    else {
+        this._keyword.show();
+        this._type.hide();
+        this._keyword.val(_search_option.keyword);
+    }
     
     if (typeof(_search_option.type) === "undefined") {
         this._type.val(_search_option.type);

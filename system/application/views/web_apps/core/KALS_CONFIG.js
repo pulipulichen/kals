@@ -494,7 +494,7 @@ DEFAULT_KALS_CONFIG = {
 //                    });
 //                });
                 //$.test_msg("點選最近連接");
-                $("td.item a.Window_search_recent:first").click();
+                //$("td.item a.Window_search_recent:first").click();
                 
                 //KALS_context.search.close_window();
                 

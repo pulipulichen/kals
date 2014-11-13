@@ -411,6 +411,7 @@ Window_search.prototype.create_range_ui = function (_type) {
     }
     else if (_type === "dropdown") {
         _search_range.change(function () {
+            //$.test_msg("_search_range.change()", this.value);
             _this.change_range(this.value);
         });	
     }
@@ -435,7 +436,7 @@ Window_search.prototype.get_range_ui = function () {
 /**
  * 更換選擇範圍
  * 
- *  @author Pulipuli Chen 20141111
+ * @author Pulipuli Chen 20141111
  * 如果範圍一樣，則不重置
  * @param {String} _range
  */
@@ -448,6 +449,7 @@ Window_search.prototype.change_range = function (_range) {
 //    if (this._last_range === _range) {
 //        return this;
 //    }
+    
     if (this._last_range === null) {
         if (this._last_search_option === null) {
             this._last_range = this._search_default_option.search_range;
@@ -457,16 +459,29 @@ Window_search.prototype.change_range = function (_range) {
         }
     }
 
-    //$.test_msg("change range", [_range, this.is_input_keyword()]);
-    if (_range === "annotation_type" && this.is_input_keyword()) {
-        this.toggle_input("annotation_type");
-    }
-    else if (_range !== "annotation_type" && this.is_input_keyword() === false) {
-        this.toggle_input("keyword");
-    }	
+//    $.test_msg("Window_search.prototype.change_range", this._last_range);
+//    //$.test_msg("change range", [_range, this.is_input_keyword()]);
+//    if (_range === "annotation_type" 
+//            && this.is_input_keyword()) {
+//        this.toggle_input("annotation_type");
+//    }
+//    else if (_range !== "annotation_type" 
+//            && this.is_input_keyword() === false) {
+//        this.toggle_input("keyword");
+//    }	
+//
+//    var _range_ui = this.get_range_ui();
+//    KALS_window.ui.change_list_value(_range_ui, _range);
 
-    var _range_ui = this.get_range_ui();
-    KALS_window.ui.change_list_value(_range_ui, _range);
+    if (_range !== this._last_range) {
+        if (_range === "annotation_type") {
+            this.toggle_input("annotation_type");
+        }
+        else {
+            this.toggle_input("keyword");
+            this.set_keyword_value("");
+        }
+    }
 
     this._last_range = _range;
 
@@ -560,6 +575,7 @@ Window_search.prototype.change_annotation_type = function (_type) {
 
     var _type_value = _factory.get_list_value(_type_ui);
     //$.test_msg("change_annotation_type", _type_value);
+    
     this.set_keyword_value(_type_value); 
 
     //this.list.reset();
@@ -604,9 +620,9 @@ Window_search.prototype.create_keyword_ui = function(){
     _input.addClass(this.keyword_input_classname);
 
     var _this = this;
-    _input.change(function () {
-        _this.set_keyword_value(this.value);
-    });
+//    _input.change(function () {
+//        _this.set_keyword_value(this.value);
+//    });
     
     return _input;
 };
@@ -680,13 +696,13 @@ Window_search.prototype.toggle_input = function (_type) {
  * 現在是顯示關鍵字輸入框嗎？
  * @type {boolean}
  */
-Window_search.prototype.is_input_keyword = function () {
-    var _keyword_ui = this.get_keyword_ui().eq(0);
-    var _classname = _keyword_ui.attr("className");
-    var _is_keyword = (_classname.indexOf("use-annotation-type") === -1);
-    //$.test_msg("is_input_keyword", _is_keyword);
-    return _is_keyword;
-};
+//Window_search.prototype.is_input_keyword = function () {
+//    var _keyword_ui = this.get_keyword_ui().eq(0);
+//    var _classname = _keyword_ui.attr("className");
+//    var _is_keyword = (_classname.indexOf("use-annotation-type") === -1);
+//    //$.test_msg("is_input_keyword", _is_keyword);
+//    return _is_keyword;
+//};
 
 /**
  * 最後輸入的關鍵字
@@ -838,6 +854,7 @@ Window_search.prototype.set_input_value = function(_data){
     }
     
     var _filtered_data = {};
+    
     for (var _i in _data) {
         var _val = _data[_i];
         
@@ -847,6 +864,14 @@ Window_search.prototype.set_input_value = function(_data){
         }
         
         _filtered_data[_i] = _val;
+    }
+    
+    if (_filtered_data.search_range === "annotation_type") {
+        if (typeof(_filtered_data.keyword) === "string") {
+            _filtered_data.type = _filtered_data.keyword;
+        }
+        _filtered_data.keyword = "";
+        $.test_msg("set_input_value", _filtered_data);
     }
 
     return Window_content.prototype.set_input_value.call(this, _filtered_data);
