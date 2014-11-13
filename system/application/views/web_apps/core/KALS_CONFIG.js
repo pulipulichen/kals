@@ -1039,7 +1039,8 @@ DEFAULT_KALS_CONFIG = {
              * @version 20140618 Pulipuli Chen
              * 對應到Modules的 deeper copy
              */
-            if (_i === "modules") {
+            if (_i === "modules"
+                    || _i === "annotation_editor") {
                 for (var _j in KALS_CONFIG[_i]) {
                     //console.log(_j);
                     DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];
