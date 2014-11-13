@@ -298,18 +298,14 @@ Note_editor_manager.prototype._listen_editor = function () {
  */
 Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
     
-    var _plain_text = "";
-    if (_text !== null) {
-        _plain_text = $(_text).text();
-        _plain_text = $.trim(_plain_text);
-    }
+    var _plain_text = this._flat_text(_text);
     
     var _config = KALS_CONFIG.annotation_editor;
     
     // ------------------------------
     
     //$.test_msg("Note_editor_manager.validate() validate", _text);
-    _annotation_param = this.validate_word_minimum_limit(_plain_text, _annotation_param, _config);
+    _annotation_param = this.validate_word_minimum_limit(_text, _plain_text, _annotation_param, _config);
     _annotation_param = this.validate_check_stop_words(_plain_text, _annotation_param, _config);
     
     // ------------------------------
@@ -319,15 +315,59 @@ Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
 };
 
 /**
+ * 使帶有HTML Element的text變成純文字 
+ * @author Pulipuli Chen 20141113
+ * @param {type} _text
+ * @returns {String}
+ */
+Note_editor_manager.prototype._flat_text = function (_text) {
+    var _plain_text = "";
+    if (_text !== null) {
+        _plain_text = $(_text).text();
+        _plain_text = $.trim(_plain_text);
+    }
+    return _plain_text;
+};
+
+/**
+ * 使帶有HTML Element的text變成純文字 
+ * @author Pulipuli Chen 20141113
+ * @param {type} _text
+ * @returns {String}
+ */
+Note_editor_manager.prototype._text_has_multimedia = function (_text) {
+    
+    var _jquery_text = $(_text);
+    var _result = (_jquery_text.find("img, a, iframe, embed").length > 0);
+    
+    //$.test_msg("_text_has_multimedia", _result);
+    
+    return _result;
+};
+  
+/**
  * 驗證是否合格：最小字數
  * @author Pulipuli Chen 20141111
- * @param {String} _plain_text
+ * 
+ * @author Pulipuli Chen 20141113
+ * 排除圖片、影片、網頁
+ * 
+ * @param {String} _text note
+ * @param {String} _plain_text 化為純文字之後的note
  * @param {Annotation_param} _annotation_param
  * @param {JSON} _config 來自KALS_CONFIG.annotation_editor
  * @returns {Annotation_param}
  */
-Note_editor_manager.prototype.validate_word_minimum_limit = function (_plain_text, _annotation_param, _config) {
-        
+Note_editor_manager.prototype.validate_word_minimum_limit = function (_text, _plain_text, _annotation_param, _config) {
+    
+    /**
+     * @author Pulipuli Chen 20141113
+     * 排除圖片、影片、網頁
+     */
+    if (this._text_has_multimedia(_text) === true) {
+        return _annotation_param;
+    }
+    
     var _note_word_minimum_limit = _config.note_word_minimum_limit;
     var _plain_text_length = $.str_replace(" ", '', _plain_text).length;
     
