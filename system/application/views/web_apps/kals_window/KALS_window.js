@@ -188,6 +188,12 @@ KALS_window.prototype._$create_ui = function () {
     
 };
 
+/**
+ * 即使被隱藏了，也能夠使用viewportmove
+ * @type Boolean
+ */
+KALS_window.prototype._$viewportmove_visible_enable = true;
+
 KALS_window.prototype._default_onopen = null;
 KALS_window.prototype._default_onclose = null;
 KALS_window.prototype._default_onviewportmove = null;

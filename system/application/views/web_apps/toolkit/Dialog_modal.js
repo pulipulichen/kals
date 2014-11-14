@@ -59,30 +59,36 @@ Dialog_modal.prototype._$create_ui = function () {
 };
 
 Dialog_modal.prototype._$onviewportmove = function (_ui) {
+    //$.test_msg("Dialog_modal._$onviewportmove()");
+    
     if ($.browser.msie6) {
         return;
     }
     
+    var _classname_compact_width = 'compact-width';
+    var _classname_compact_height = 'compact-height';
+    
     if ($.is_small_width()) {
         _ui.fullscreen_width();
-        _ui.addClass('compact-width');
+        _ui.addClass(_classname_compact_width);
     }
     else {
         _ui.restore();
-        _ui.removeClass('compact-width');
+        _ui.removeClass(_classname_compact_width);
     }
     
     if ($.is_small_height()) {
-        _ui.addClass('compact-height');
+        _ui.addClass(_classname_compact_height);
     }
     else {
-        _ui.removeClass('compact-height');
+        _ui.removeClass(_classname_compact_height);
     }
     
     _ui.ready(function () {
         
         if ($.is_small_height() 
-            && (_ui.height() > $.get_viewport_height() || _ui.height() == $.get_viewport_height())) {
+            && (_ui.height() > $.get_viewport_height() 
+            || _ui.height() === $.get_viewport_height())) {
             _ui.valign('top');
         }
         else {

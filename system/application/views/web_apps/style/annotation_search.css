@@ -6,11 +6,16 @@
     /*border-top: 1px solid gray;*/
 }
 
-.KALS .window-panel.window_search .list_collection_search .list-container {
-	max-height: 320px;
-	overflow-y: auto;
-	clear: both;
-	
+.KALS .window-panel.window_search .list_collection_search .topic-list {
+    max-height: 320px;
+    overflow-y: auto;
+    clear: both;
+    /*border-top: 1px solid gray;*/
+}
+
+.KALS .window-panel.window_search .list_collection_search .topic-list .list-item-search-topic,
+.KALS .window-panel.window_search .list_collection_search .topic-list .list-item-respond {
+    /*clear: both;*/
     border-top: 1px solid gray;
 }
 

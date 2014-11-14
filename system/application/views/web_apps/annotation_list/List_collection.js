@@ -15,7 +15,6 @@ function List_collection() {
     JSONP_dispatcher.call(this);
     
     this._list_items = [];
-    
 }
 
 List_collection.prototype = new JSONP_dispatcher();
@@ -257,6 +256,8 @@ List_collection.prototype.load_list = function(_data, _callback) {
         return this;
     }
     
+    // ---------------------------------------
+    
     var _search_data = this.get_search_data();
     
     if ($.isset(_search_data)) {
@@ -326,13 +327,15 @@ List_collection.prototype.get_search_data = function () {
     }
     
     //需要登入身分的兩個參數
-    if ((this._$target_like === true || this._$target_my === true) 
+//    if ((this._$target_like === true || this._$target_my === true) 
+//            && KALS_context.auth.is_login() === false) {
+//        $.test_msg("List_collection.get_search_data()", [
+//            this._$target_like === true
+//            , this._$target_my === true
+//            , KALS_context.auth.is_login()
+//        ]);
+    if (($.isset(this._$target_like) || $.isset(this._$target_my)) 
             && KALS_context.auth.is_login() === false) {
-        $.test_msg("List_collection.get_search_data()", [
-            this._$target_like === true
-            , this._$target_my === true
-            , KALS_context.auth.is_login()
-        ]);
         $.throw_msg("List_collection.get_search_data()", "應該要取得登入參數資料，卻沒有登入");
         return null;
     }
@@ -473,8 +476,8 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
             var _length = _annotation_coll.length();
             
             if (_this._offset === null) {
-				_this._offset = 0;
-			}
+                _this._offset = 0;
+            }
             _this._offset = _this._offset + _length;
             
             //$.test_msg('List_collection.setup_load_list()', 'before complete');
@@ -484,26 +487,6 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         
         var _annotation_coll = new Annotation_collection_param(_data.annotation_collection);
         
-        /*
-        for (var _i = 0; _i < _annotation_coll.length(); _i++) {
-            var _param = _annotation_coll.get(_i);
-            var _list_item = this.add_list_item(_param);
-            
-            //if (typeof(_list_item.respond_list) != 'undefined'
-            //    && _list_item.respond_list != null)
-            //{
-            //    //$.test_msg('List_collection.setup_load_list() listen respond list', _param.annotation_id);
-            //    _list_item.respond_list.add_listener(function (_respond_list) {
-            //        //$.test_msg('List_collection.setup_load_list() _respond_list.is_ready()', _respond_list.is_ready());
-            //        if (_respond_list.is_ready())
-            //        {
-            //            _this.notify_ready();
-            //        }
-            //    }, true);
-            //}
-        }
-        */
-       
         var _load_id = this._load_id;
         var _loop_annotation = function (_i) {
             if (_this.check_load_id(_load_id) === false) {

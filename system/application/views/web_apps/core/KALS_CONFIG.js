@@ -487,6 +487,7 @@ DEFAULT_KALS_CONFIG = {
              */
             function () {
                 $.test_msg("點選最新標註");
+                $("td.item a.Window_search_recent").click();
             }
         ]
     },

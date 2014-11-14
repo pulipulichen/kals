@@ -24,9 +24,8 @@ function Window_search() {
     ];
     this._setup_submit(_submit_array); // send keyword and field
 
-    this.child("list", new List_collection_search());
-    
-    //var _this = this;
+    //this.child("list", new List_collection_search());
+    this.child("list", new Search_topic_list());
 }
 
 Window_search.prototype = new Window_content();
@@ -55,7 +54,7 @@ Window_search.prototype.width = 500;
 
 /**
  * 搜尋結果
- * @type {List_collection_search}
+ * @type {Search_topic_list}
  */
 Window_search.prototype.list = null;
 
@@ -138,6 +137,10 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     var _ui = KALS_window.ui.panel(this.name);//建立search版面
 
     var _factory = KALS_window.ui;
+    
+    
+    
+    // -----------------------------------
     
     this._search_form_subpanel = _factory.subpanel('search-form').appendTo(_ui);
     
@@ -257,12 +260,13 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     ).appendTo(_ui); */
    
     var _result = _factory.subpanel("search-result-subpanel")
-        .appendTo(_ui)
-        .hide();
+            //.addClass("topic-list")
+            .appendTo(_ui)
+            .hide();
     this._search_result_subpanel = _result;
     
     var _list_ui = this.list.get_ui();
-	_list_ui.appendTo(_result);
+    _list_ui.appendTo(_result);
 	
     return _ui;
 };
@@ -944,10 +948,10 @@ Window_search.prototype.search = function (_search_option, _open_window, _callba
     
     // -----------------------------------
     
-    KALS_window.toggle_loading(true);
-
     //$.test_msg("開始搜尋", _search_option);
     //this._dispacher.notify_listeners("search");
+    
+    KALS_window.toggle_loading(true);
     this.submit._lock_submit();
     
     if (_open_window) {
@@ -994,9 +998,10 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
         _content._search_complete_callback(_callback);
         return this;
     }
-    else {
-        this._last_search_option = _data;
-    }
+    
+    // --------------------------------------------
+    
+    this._last_search_option = _data;
     
     var _list = this.list;
     //var _data = this.submit.get_data();
@@ -1007,14 +1012,23 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
     //$.test_msg("Window_search._setup_search_list() 1", _data);
     //$.test_msg("Window_search._setup_search_list() 2", this.get_data());
     
-    _list.set_query_field(_data.query_field);
-    _list.set_query_value(_data.query_value);
-    _list.set_order_by(_data.order_by);
-    
+//    _list.set_query_field(_data.query_field);
+//    _list.set_query_value(_data.query_value);
+//    _list.set_order_by(_data.order_by);
+    _list.set_search_option(_data);
 
     // 我們要叫List_collection_search進行搜尋
     //var _this = this;
     //$.test_msg("Window_search_submit _list.load_list()", _list.get_name());
+    
+    this._search_result_subpanel.show();
+    this._search_form_subpanel.hide();
+    
+    this.submit._unlock_submit();
+    KALS_window.loading_complete();
+    
+    $.test_msg("before load list");
+    
     _list.load_list(function () {
         _content._search_complete_callback(_callback);
     });
@@ -1036,13 +1050,16 @@ Window_search.prototype._search_complete_callback = function (_callback) {
     this._search_form_subpanel.hide();
     
     this.submit._unlock_submit();
+    KALS_window.loading_complete(_callback);
 
 //    KALS_window.toggle_loading(false);
 //    $.trigger_callback(_callback);
     
-    KALS_window.loading_complete(_callback);
     this.change_submit("reset");
     this._dispacher.notify_listeners("search");
+    
+    $.test_msg("Window_search._search_complete_callback()", "讀取完成");
+    
     return this;
 };
 

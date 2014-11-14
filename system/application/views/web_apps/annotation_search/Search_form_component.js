@@ -265,7 +265,7 @@ Search_form_component.prototype._create_open_search = function () {
     
     var _submit = (new Dialog_option('', _click_callback)).get_ui();
     _submit.addClass("search-form-submit")
-            .empty();
+            .html('<i class="fa fa-search"></i>');
 	
     return _submit;
 };

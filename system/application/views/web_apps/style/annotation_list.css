@@ -20,7 +20,7 @@
 }
 
 .KALS .topic-list.loading .topic-list-loading {
-	cursor: wait;
+    cursor: wait;
 }
 
 .KALS.annotation-tool .topic-list {
