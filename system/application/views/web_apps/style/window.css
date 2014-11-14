@@ -42,6 +42,10 @@
     cursor: wait;
 }
 
+.KALS .window-loading .window-loading-message {
+    margin-right: 1em;
+}
+
 .KALS.window.mobile .dialog-content {
     
     /*max-width:100%;
