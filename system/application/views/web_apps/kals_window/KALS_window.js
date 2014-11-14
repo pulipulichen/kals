@@ -462,10 +462,11 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
         _is_loading = null;
     }
     
+    //$.test_msg("仍在開啟中", [this.is_loading(), _is_loading]);
     if (_is_loading !== null
-       && this.is_loading() === _is_loading) {
+            && this.is_loading() === _is_loading) {
         $.trigger_callback(_callback);
-        return;
+        return this;
     }
     var _ui = this.get_ui();
     
@@ -474,7 +475,9 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     var _submit = _ui.find('.window-content-submit:first');
     
     var _close_loading = function () {
-        _loading.slideUp(_speed, function () { _loading.hide(); });
+        _loading.slideUp(_speed, function () { 
+            _loading.hide(); 
+        });
         _content.slideDown(_speed);
         //if (_submit.length > 0)
         //{
@@ -487,7 +490,9 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     
     var _open_loading = function () {
         _loading.slideDown(_speed);
-        _content.slideUp(_speed, function () { _content.hide(); });
+        _content.slideUp(_speed, function () { 
+            _content.hide(); 
+        });
         //if (_submit.length > 0)
         //{
             //_submit.slideUp(_speed, function () { _submit.hide(); });

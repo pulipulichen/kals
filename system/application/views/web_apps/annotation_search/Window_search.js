@@ -803,7 +803,7 @@ Window_search.prototype.open_recent_annotation = function (_callback) {
     
     var _search_option = {
         query_field: "note",
-        query_value: "*",
+        query_value: "we",
         order_by: "update"
     };
     
@@ -1021,17 +1021,14 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
     //var _this = this;
     //$.test_msg("Window_search_submit _list.load_list()", _list.get_name());
     
-    this._search_result_subpanel.show();
-    this._search_form_subpanel.hide();
-    
-    this.submit._unlock_submit();
-    KALS_window.loading_complete();
-    
     $.test_msg("before load list");
     
-    _list.load_list(function () {
-        _content._search_complete_callback(_callback);
-    });
+//    _list.load_list(function () {
+//        
+//    });
+    
+    _list.load_list();
+    _content._search_complete_callback(_callback);
     
     return this;
 };
@@ -1046,19 +1043,25 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
  */
 Window_search.prototype._search_complete_callback = function (_callback) {
     
+    if (this.submit.is_submit_locked() === false) {
+        $.throw_msg("Window_search.search()", "submit unlocked");
+        return this;
+    }
+    
     this._search_result_subpanel.show();
     this._search_form_subpanel.hide();
     
     this.submit._unlock_submit();
-    KALS_window.loading_complete(_callback);
-
+    
 //    KALS_window.toggle_loading(false);
 //    $.trigger_callback(_callback);
     
-    this.change_submit("reset");
+    //this.change_submit("reset");
     this._dispacher.notify_listeners("search");
     
     $.test_msg("Window_search._search_complete_callback()", "讀取完成");
+    
+    KALS_window.loading_complete(_callback);
     
     return this;
 };
