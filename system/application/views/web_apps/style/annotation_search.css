@@ -178,7 +178,7 @@
 	
     border-radius: 5px;
     min-height: 25px;
-    background-image:url("${base_url}images/web_search.png") !important;
+    /*background-image:url("${base_url}images/web_search.png") !important;*/
     background-repeat:no-repeat;
     background-position: center;
 

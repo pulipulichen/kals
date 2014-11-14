@@ -53,7 +53,7 @@ this.generic_load = function (_conf, _callback) {
         libraries_list: [
             "libraries/ckeditor/ckeditor.js",
             "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js",
-            
+            //"libraries/bootstrap/js/bootstrap.min.js",
             // jQuery File Upload 最小安裝法 https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
             //"libraries/jquery-file-upload/js/vendor/jquery.ui.widget.js",
             //"libraries/jquery-file-upload/js/jquery.iframe-transport.js",
@@ -63,6 +63,11 @@ this.generic_load = function (_conf, _callback) {
         // 解決CKeditor圖示無法顯示的問題
         images_list: [
             "libraries/ckeditor/skins/kama/icons.png"
+        ],
+        style_list: [
+            //"libraries/bootstrap/css/bootstrap.min.css",
+            //"libraries/bootstrap/css/bootstrap-theme.min.css",
+            "libraries/font-awesome/css/font-awesome.min.css"
         ]
     };
     
@@ -407,6 +412,8 @@ this.load_styles = function (_style_list, _callback) {
     };
     
     var _base_url = this.get_base_url();
+    //var _base_url = this.get_libraries_url();
+    
     //_base_url = _base_url + '/load_css/';
     
     if (typeof(_style_list) === 'string') {
@@ -428,6 +435,10 @@ this.load_styles = function (_style_list, _callback) {
         }
         
         var _style = _base_url + _style_url;
+        var _needle = "libraries/";
+        if (_style_url.substr(0, _needle.length) === _needle) {
+            _style = this.get_libraries_url() + _style_url;
+        }
             
         //檢查一下是否已有該title
         var _link = null;
