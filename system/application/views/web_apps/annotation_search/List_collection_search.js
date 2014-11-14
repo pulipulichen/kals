@@ -71,7 +71,7 @@ List_collection_search.prototype._query_info = null;
  * @author Pulipuli Chen 20141113 rename checked
  */
 List_collection_search.prototype.set_query_field = function (_value) {
-    $.test_msg("List_collection_search.prototype.set_query_field", _value);
+    //$.test_msg("List_collection_search.prototype.set_query_field", _value);
     this._query_field = _value;
 };
 
@@ -81,7 +81,7 @@ List_collection_search.prototype.set_query_field = function (_value) {
  * @author Pulipuli Chen 20141113 rename checked
  */
 List_collection_search.prototype.set_query_value = function (_value) {
-    $.test_msg("List_collection_search.prototype.set_query_value", _value);
+    //$.test_msg("List_collection_search.prototype.set_query_value", _value);
     this._query_value = _value;
 };
 

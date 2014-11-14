@@ -88,6 +88,7 @@ class Annotation_getter extends Web_apps_controller {
         $search = new Search_annotation_collection();
         $search->set_target_user($user);
         $search->set_target_topic(TRUE);
+        $search->set_target_referer_webpage();
 
         if (isset ($check_time))
         {
@@ -105,7 +106,7 @@ class Annotation_getter extends Web_apps_controller {
             $annotation_type_id = $annotation_type->get_type_id();
             $annotation_type_name = $annotation_type->get_custom_name();
             $is_basic = $annotation_type->is_basic();
-            //test_msg('is_basic', array($is_basic, $annotation_type_id) );
+            //test_msg('is_basic', array($is_basic, $annotation_type_id, $annotation->get_id()) );
             $annotation_scope_coll = $annotation->get_scopes();
 
             if ($is_basic == true)
@@ -141,6 +142,7 @@ class Annotation_getter extends Web_apps_controller {
             else
             {
                 if (isset($custom_type_scope_colls[$annotation_type_name]) === false) {
+                    //test_msg($annotation_type_name);
                     $custom_type_scope_colls[$annotation_type_name] = new Annotation_scope_collection();
                 }
 
@@ -293,7 +295,9 @@ class Annotation_getter extends Web_apps_controller {
         $search->add_order(1, FALSE);
         $search->set_target_topic(TRUE);
         $search->set_target_over_score($recommend_by);
-        $search->set_target_webpage($this->url);
+        //$search->set_target_webpage($this->url);
+        
+        $search->set_target_referer_webpage();
 
         //取得搜尋結果
         $score_type = 4;
@@ -396,7 +400,9 @@ class Annotation_getter extends Web_apps_controller {
 
         $search->add_order(1, FALSE);
         $search->set_target_topic(TRUE);
-        $search->set_target_webpage($this->url);
+        //$search->set_target_webpage($this->url);
+        
+        $search->set_target_referer_webpage();
         
         //不限定全部標註
         //$search->set_target_over_score($recommend_by);
@@ -869,8 +875,15 @@ class Annotation_getter extends Web_apps_controller {
                     $search->set_search_note($data->query_value);
                 }
                 break;
-           case "annotation_type": //標註類型
-                $search->set_target_type($data->query_value);
+            case "annotation_type": //標註類型
+                if ($data->query_value !== "custom") {
+                    $search->set_target_type($data->query_value);
+                }
+                else {
+                    $search->set_exclude_type_list(array(
+                        "importance"
+                    ));
+                }
                 break;
             case "annotation_anchor_text":
                 $search->set_search_anchor_text($data->query_value);

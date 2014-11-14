@@ -517,8 +517,6 @@ KALS_context.create_type_param_list = function(_enable_type) {
     //var _type_options = this.get_basic_type_options();
     var _type_options = this.basic_type.get_type_list(_enable_type);
     
-    
-    
     for (var _i in _type_options) {
         //var _type_string = _type_options[_i];
         //var _type_param = new Annotation_type_param(_type_string);

@@ -946,7 +946,7 @@ Window_search.prototype.search = function (_search_option, _open_window, _callba
     
     KALS_window.toggle_loading(true);
 
-    $.test_msg("開始搜尋", _search_option);
+    //$.test_msg("開始搜尋", _search_option);
     //this._dispacher.notify_listeners("search");
     this.submit._lock_submit();
     

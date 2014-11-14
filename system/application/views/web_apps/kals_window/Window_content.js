@@ -234,6 +234,7 @@ Window_content.prototype._setup_submit = function (_submit) {
         }
     }
     else if ($.is_string(_submit.name)) {
+        _submit._content = this;
         _submit_list[_submit.name] = _submit;
     }
     else {
