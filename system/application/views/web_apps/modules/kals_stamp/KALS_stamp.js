@@ -754,13 +754,13 @@ KALS_stamp.prototype.setup_stamp_list_create = function(_stamp_index, _user_name
         _name_span.appendTo(_td);
 
         _name_span.click(function() {
-            var _keyword = $(this).html();
+            var _query_value = $(this).html();
             _this.close(function () {
                 //setTimeout(function () {
                     //搜尋
                     KALS_context.search.search({
-                        search_range: "author",
-                        keyword: _keyword
+                        query_field: "annotation_user_name",
+                        query_value: _query_value
                     }, true);
                 //}, 500);
             });

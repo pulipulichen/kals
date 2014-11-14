@@ -58,7 +58,7 @@ Window_search_recent.prototype.open = function (_callback) {
 
 Window_search_recent.prototype.nav_heading = new KALS_language_param (
     'Recent',
-    'window.search_recent.nav_heading'
+    'window_search_recent.nav_heading'
 );
 
 /**

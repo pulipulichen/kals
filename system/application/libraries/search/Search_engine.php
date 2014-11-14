@@ -705,13 +705,19 @@ class Search_engine extends Generic_collection {
     //annotation直接相關屬性
 
     protected $target_type_id;
+    /**
+     * 查詢目標的標註類型
+     * @param Int|String $type_id 標註編號或是標註名稱都可以
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     * @return \Search_engine
+     */
     public function set_target_type($type_id)
     {
         $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
         $this->target_type_id = $this->CI->annotation_type_factory->filter_type_id($type_id);
         return $this;
     }
-
+    
     protected $target_user_id;
     public function set_target_user(User $user)
     {

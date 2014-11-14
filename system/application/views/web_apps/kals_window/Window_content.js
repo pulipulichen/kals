@@ -229,6 +229,7 @@ Window_content.prototype._setup_submit = function (_submit) {
             if (typeof(_submit_list[_name]) !== "undefined") {
                 $.throw_msg("Window_content._setup_submit() 重複的名稱", _name );
             }
+            _submit[_i]._content = this;
             _submit_list[_name] = _submit[_i];
         }
     }
@@ -247,7 +248,6 @@ Window_content.prototype._setup_submit = function (_submit) {
     }
     
     this.submit = _first_submit;
-    this.submit._content = this;
     
     this.submit_list = _submit_list;
     

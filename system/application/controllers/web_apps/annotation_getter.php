@@ -853,50 +853,47 @@ class Annotation_getter extends Web_apps_controller {
           //test_msg("輸入資料", $json);
         
         //$data->search_range = "annotation_anchor"; //測試用
-        if (isset($data->search_range) === FALSE) {
-            $data->search_range = "annotation_anchor";
+        if (isset($data->query_field) === FALSE) {
+            $data->query_field = "note";
         }
-        switch ( $data->search_range ) {
-            case "author": 
+        
+        switch ( $data->query_field ) {
+            case "annotation_user_name": 
                 //示範用
                 //$search->set_target_user(new User(1701));
-                $search->set_search_user_name($data->keyword);
+                $search->set_search_user_name($data->query_value);
                
                 break;
             case "note": //標註內容
-                if ($data->keyword != "" && $data->keyword != "*") {
-                    $search->set_search_note($data->keyword);
+                if ($data->query_value != "" && $data->query_value != "*") {
+                    $search->set_search_note($data->query_value);
                 }
                 break;
            case "annotation_type": //標註類型
-                $search->set_target_type($data->keyword);
+                $search->set_target_type($data->query_value);
                 break;
-            case "annotation_anchor":
-                $search->set_search_anchor_text($data->keyword);
+            case "annotation_anchor_text":
+                $search->set_search_anchor_text($data->query_value);
                 break;   
         }
         
         // 6 [ order by ] 設定排序方式(order_by_id,大小|小大 )-data內要有order_by的選項
         //test_msg('6 [ order by ]', isset($data->order_by)); 
         //order_by的typ類型e在Search_order_collection
-        if (isset($data->order_by)) {
-            if ($data->order_by == 'update') {
-                $search->add_order (6, TRUE); 
-                if (isset($search_id)) {
-                    $search_id->add_order (6, TRUE);
-                }
+        if (isset($data->order_by) === FALSE) {
+            $data->order_by = "update";
+        }
+        
+        if ($data->order_by == 'update') {
+            $search->add_order (6, TRUE); 
+            if (isset($search_id)) {
+                $search_id->add_order (6, TRUE);
             }
-            else if ($data->order_by == 'create') {
-                $search->add_order (7);
-                if (isset($search_id)) {
-                    $search_id->add_order (7);
-                }
-            }
-            else {
-                $search->add_order (2, TRUE);
-                if (isset($search_id)) {
-                    $search_id->add_order (2, TRUE);
-                }
+        }
+        else if ($data->order_by == 'create') {
+            $search->add_order (7);
+            if (isset($search_id)) {
+                $search_id->add_order (7);
             }
         }
         else {
@@ -905,14 +902,14 @@ class Annotation_getter extends Web_apps_controller {
                 $search_id->add_order (2, TRUE);
             }
         }
-
-        if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
-        {
-            $search->add_order (6, TRUE);
-            if (isset($search_id)) {
-                $search_id->add_order (6, TRUE);
-            }
-        }
+//
+//        if (isset($data->order_by) === FALSE OR $data->order_by != 'update')
+//        {
+//            $search->add_order (6, TRUE);
+//            if (isset($search_id)) {
+//                $search_id->add_order (6, TRUE);
+//            }
+//        }
 
         /**
          * 限定搜尋範圍只在來源的網頁
@@ -964,8 +961,7 @@ class Annotation_getter extends Web_apps_controller {
         );
         
         if (isset($data->show_total_count)
-            && $data->show_total_count === TRUE)
-        {
+            && $data->show_total_count === TRUE) {
             if (count($annotation_collection) === 0) {
                 $output_data['total_count'] = 0;
             }
@@ -979,25 +975,26 @@ class Annotation_getter extends Web_apps_controller {
 
         //log區
         $action = 30;
-        switch ( $data->search_range ) {
-            case "author": 
+        switch ( $data->query_field ) {
+            case "annotation_user_name": 
                 $action = 31;
                 break;
            case "annotation_type": //標註類型
                 $action = 32;
                 break;
-            case "annotation_anchor":
+            case "annotation_anchor_text":
                 $action = 33;
                 break;   
         }
         
-        if ($data->search_range == "note" && $data->keyword == "*"
+        if ($data->query_field == "note" && $data->query_value == "*"
             && $data->order_by == "update") {
+            // 搜尋最新標註
             $action = 34;
         }
          
         kals_log($this->db, $action, array(
-            "keyword" => $data->keyword,
+            "query_value" => $data->query_value,
             "order_by" => $data->order_by,
             "total_count" => $output_data['total_count']
         ));

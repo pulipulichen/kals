@@ -29,8 +29,8 @@ Window_search_submit_reset.prototype.name = "reset";
  * @type {KALS_language_param}
  */
 Window_search_submit_reset.prototype.lang = new KALS_language_param(
-    "Clear Search Result",
-    "window.search.clear_search_result"
+    "Reset Search Result",
+    "window_search.reset_search_result"
 );
 
 /**
@@ -53,7 +53,8 @@ Window_search_submit_reset.prototype._$create_ui = function () {
  * @returns {Window_search_submit}
  */
 Window_search_submit_reset.prototype.submit = function () {
-    KALS_context.search.clear_search_result();
+    //KALS_context.search.reset_search();
+    this._content.reset_search();
     return this;
 };
 

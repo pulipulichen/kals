@@ -275,6 +275,13 @@ List_collection.prototype.load_list = function(_data, _callback) {
 };
 
 /**
+ * 必須要填入範圍資訊
+ * @author Pulipuli Chen 20141114
+ * @type Boolean
+ */
+List_collection.prototype._search_data_scope_require = true;
+
+/**
  * 取得要搜尋的資料
  * @returns {List_collection}
  */
@@ -313,15 +320,20 @@ List_collection.prototype.get_search_data = function () {
     }
     
     //一定要有範圍資料！
-    if ($.is_null(this._scope_coll)) {
-        return null;
+    if (this._search_data_scope_require === true 
+            && $.is_null(this._scope_coll) === false) {
+        _search_data.scope = this._scope_coll.export_json(false);
     }
     
-    _search_data.scope = this._scope_coll.export_json(false);
-    
     //需要登入身分的兩個參數
-    if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
-	KALS_context.auth.is_login() === false) {
+    if ((this._$target_like === true || this._$target_my === true) 
+            && KALS_context.auth.is_login() === false) {
+        $.test_msg("List_collection.get_search_data()", [
+            this._$target_like === true
+            , this._$target_my === true
+            , KALS_context.auth.is_login()
+        ]);
+        $.throw_msg("List_collection.get_search_data()", "應該要取得登入參數資料，卻沒有登入");
         return null;
     }
     

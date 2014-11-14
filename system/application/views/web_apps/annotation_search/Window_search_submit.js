@@ -15,7 +15,7 @@ function Window_search_submit() {
     Window_content_submit.call(this);
    
     // 送出seatchrange,keyword,order_by
-    this._$input_names = ['search_range', 'keyword', 'order_by']; 
+    this._$input_names = ['query_field', 'query_value', 'annotation_type', 'order_by']; 
 }
 
 Window_search_submit.prototype = new Window_content_submit();

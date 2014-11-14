@@ -486,6 +486,7 @@ DEFAULT_KALS_CONFIG = {
              * 測試搜尋最新標註用
              */
             function () {
+                $.test_msg("點選最新標註");
 //                KALS_context.search.open_recent_annotation(function () {
 //                    KALS_window.close(function () {
 //                        setTimeout(function () {
@@ -493,8 +494,7 @@ DEFAULT_KALS_CONFIG = {
 //                        }, 3000);
 //                    });
 //                });
-                //$.test_msg("點選最近連接");
-                //$("td.item a.Window_search_recent:first").click();
+                $("td.item a.Window_search_recent:first").click();
                 
                 //KALS_context.search.close_window();
                 

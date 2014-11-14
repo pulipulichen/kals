@@ -123,27 +123,31 @@ $lang['web_apps.window.content.error_no_email'] = '請輸入電子信箱位址�
 $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
 $lang['web_apps.window.content.error_no_email_password'] = '請輸入電子信箱位址與密碼。';
 
-$lang['web_apps.window.search_recent.nav_heading'] = '最新標註';
-$lang['web_apps.window.search.nav_heading'] = '搜尋';
-$lang['web_apps.window.content.search_range'] = '搜尋範圍';
-$lang['web_apps.window.content.search.field.note'] = '標註內容';
-$lang['web_apps.window.content.search.field.author'] = '作者';
-$lang['web_apps.window.content.search.field.annotation_type'] = '類別';
-$lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文';
-$lang['web_apps.window.content.type_radio'] = '標註類別';
-$lang['web_apps.window.content.searchkey'] = '關鍵字';
-$lang['web_apps.window.search.keyword_empty_hint'] = '請輸入關鍵字';
-$lang['web_apps.window.content.searchresult'] = '搜尋結果';
-$lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
-$lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';
-$lang['web_apps.window.content.loaded_already'] = '沒有其他搜尋結果';
-$lang['web_apps.window.search.clear_search_result'] = '清除搜尋結果';
-$lang['web_apps.window.search.reading_guide'] = '導讀';
+$lang['web_apps.window_search_recent.nav_heading'] = '最新標註';
+$lang['web_apps.window_search.nav_heading'] = '搜尋';
+$lang['web_apps.window_search.query_field'] = '搜尋範圍';
+$lang['web_apps.window_search.query_field.note'] = '標註筆記';
+$lang['web_apps.window_search.query_field.annotation_user_name'] = '標註作者';
+$lang['web_apps.window_search.query_field.annotation_type'] = '標註類別';
+$lang['web_apps.window_search.query_field.annotation_anchor_text'] = '文章內文';
+$lang['web_apps.window_search.annotation_type_label'] = '標註類別';
+$lang['web_apps.window_search.query_value_label'] = '關鍵字';
+$lang['web_apps.window_search.query_value_empty_hint'] = '請輸入關鍵字';
 
-$lang['web_apps.window.content.oreder_by'] = '排序方式';
-$lang['web_apps.window.content.oreder_by.update'] = '更新日期';
-$lang['web_apps.window.content.oreder_by.create'] = '最新建立';
-$lang['web_apps.window.content.oreder_by.scope'] = '內文順序';
+$lang['web_apps.window_search.list.search_result'] = '搜尋結果';
+$lang['web_apps.window_search.list.query_info_single'] = '搜尋條件 [{0}]=[{1}]，結果只找到{2}筆資料：';
+$lang['web_apps.window_search.list.query_info_mass'] = '搜尋條件 [{0}]=[{1}]，結果找到{2}筆資料，依照[{3}]排列：';
+$lang['web_apps.window_search.list.query_info_empty'] = '搜尋條件 [{0}]=[{1}] ，結果沒有找到資料。';
+$lang['web_apps.window_search.list.noresult'] = '查無相關搜尋結果，請重新搜尋';
+//$lang['web_apps.window_search.list.loaded_already'] = '沒有其他搜尋結果';
+$lang['web_apps.window_search.reset_search_result'] = '清除搜尋結果';
+$lang['web_apps.window_search.reading_guide'] = '導讀';
+
+$lang['web_apps.window_search.oreder_by'] = '排序方式';
+$lang['web_apps.window_search.oreder_by.update'] = '更新日期';
+$lang['web_apps.window_search.oreder_by.create'] = '最新建立';
+$lang['web_apps.window_search.oreder_by.scope'] = '內文順序';
+$lang['web_apps.window_search.oreder_by.liked'] = '喜愛次數';
 
 $lang['web_apps.window.map.nav_heading'] = '小地圖';
 
