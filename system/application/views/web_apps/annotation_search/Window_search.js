@@ -1035,13 +1035,16 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
 //        
 //    });
     
-    _content._list_loaded = false;
-    _list.load_list(function () {
-        if (_content._list_loaded === false) {
-            _content._list_loaded = true;
-            _content._search_complete_callback(_callback); 
-        }
-    });
+//    _content._list_loaded = false;
+//    _list.load_list(function () {
+//        if (_content._list_loaded === false) {
+//            _content._list_loaded = true;
+//            _content._search_complete_callback(_callback); 
+//        }
+//    });
+    
+    _list.load_list();
+    _content._search_complete_callback(_callback); 
     
 //    setTimeout(function () {
 //    //$(function () {
@@ -1052,7 +1055,7 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
     return this;
 };
 
-Window_search.prototype._list_loaded = false; 
+//Window_search.prototype._list_loaded = false; 
 
 /**
  * 搜尋完成之後的動作

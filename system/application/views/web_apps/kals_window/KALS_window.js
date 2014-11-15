@@ -197,7 +197,13 @@ KALS_window.prototype._$viewportmove_visible_enable = true;
 KALS_window.prototype._default_onopen = null;
 KALS_window.prototype._default_onclose = null;
 KALS_window.prototype._default_onviewportmove = null;
- 
+
+/**
+ * 現在正在進行設定中
+ * @type Boolean
+ */
+KALS_window.prototype._window_setuping = false;
+
 /**
  * 將Window_content輸入KALS_window中
  * @param {Window_content} _content
@@ -209,7 +215,7 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         eval('_content = new ' + _content + '();');
     }
     
-    //$.test_msg('KALS_window.setup_window() ready to reset_window');
+    $.test_msg('KALS_window.setup_window() ready to reset_window');
     
     var _this = this;    
     
@@ -220,6 +226,8 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         });
         return this;
     }
+    
+    this._window_setuping= true;
     
     this._reset_window(function () {
         
@@ -328,6 +336,11 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
                 $.trigger_callback(100, _callback);
             }
             
+            _this._window_setuping = false;
+            if ($.is_function(_this._wait_for_loading_complete)) {
+                _this._wait_for_loading_complete();
+            }
+            //$.test_msg("KALS_window.setup_window()", "完成");
         });
         
         //$.test_msg('KALS_window.setup_window() set window complete');
@@ -571,12 +584,39 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
  * @param {function} _callback
  */
 KALS_window.prototype.loading_complete = function (_callback) {
-    this.toggle_loading(false, _callback);
+    var _this = this;
+    if (this._window_setuping === false) {
+        this.toggle_loading(false, _callback);
+    }
+    else {
+        this._wait_for_loading_complete = function () {
+            _this.toggle_loading(false, _callback);
+            _this._wait_for_loading_complete = false;
+        };
+    }
 //    $.throw_msg("KALS_window", "loading_complete");
     return this;
 };
 
+/**
+ * 等待讀取完成
+ * @type {null|Function}
+ * @author Pulipuli Chen
+ */
+KALS_window.prototype._wait_for_loading_complete = null;
+
+/**
+ * 現在KALS_window是否在讀取中
+ * @returns {Boolean}
+ * 
+ * @author Pulipuli Chen 20141115
+ * 如果是在window_setup設定中，那也算是讀取中
+ */
 KALS_window.prototype.is_loading = function () {
+    if (this._window_setuping === true) {
+        return true;
+    }
+    
     var _ui = this.get_ui();
     var _loading = _ui.find('.window-loading:first');
     

@@ -19,6 +19,12 @@ function Topic_list() {
 Topic_list.prototype = new Event_dispatcher();
 
 /**
+ * 辨別事件的名稱
+ * @type String
+ */
+Topic_list.prototype._$event_name = 'topic_list';
+
+/**
  * @type {List_collection[]}
  */
 Topic_list.prototype._list_colls = [];
@@ -112,17 +118,18 @@ Topic_list.prototype._setup_endless_scroll = function (_ui) {
         //$.test_msg("Topic_list._setup_endless_scroll", [_this.is_totally_loaded()]);
         if (_this.is_totally_loaded() === false) {
             if (_this.is_loading() === false) {
-                clearTimeout(_this._endless_scroll_timer);
+                //clearTimeout(_this._endless_scroll_timer);
                 _this._endless_scroll_timer = null;
                 
+                //$.test_msg("Topic_list._setup_endless_scroll", [_this.is_totally_loaded()]);
                 _this.load_list();
             }
-            else {
-                _this._endless_scroll_timer = setTimeout(
-                        _endless_scroll_callback
-                        , 3000
-                );
-            }
+//            else {
+//                _this._endless_scroll_timer = setTimeout(
+//                        _endless_scroll_callback
+//                        , 3000
+//                );
+//            }
         }
         else {
             clearTimeout(_this._endless_scroll_timer);
@@ -181,11 +188,16 @@ Topic_list.prototype._toggle_loading = function (_is_loading, _callback) {
         _ui.addClass(_loading_classname);
     }
     else {
-        this._loading_component.slideUp(function(){
-            $(this).removeAttr('style');
-            _ui.removeClass(_loading_classname);
-            $.trigger_callback(_callback);
-        });
+//        this._loading_component.slideUp(function(){
+//            $(this).removeAttr('style');
+//            _ui.removeClass(_loading_classname);
+//            $.trigger_callback(_callback);
+//        });
+
+        this._loading_component.show();
+        this._loading_component.removeAttr('style');
+        _ui.removeClass(_loading_classname);
+        $.trigger_callback(_callback);
     }        
     
     return this;
@@ -423,6 +435,12 @@ Topic_list.prototype.reset = function () {
  * @param {Function} _callback
  */
 Topic_list.prototype.reload = function (_callback) {
+    
+    if (this._first_load === true) {
+        $.trigger_callback(_callback);
+        return this;
+    }
+    
     this._toggle_blank(false);
     this._toggle_loading(true);
     this._toggle_complete(false);
@@ -493,33 +511,41 @@ Topic_list.prototype.load_list = function (_callback) {
     */
     
     this._load_id = $.create_id();
-    //$.test_msg('Topic_list.load_list() set load id', this._load_id);
+    
+    if (this._$event_name === "topic_list") {
+        $.throw_msg('Topic_list.load_list() set load id', [this._load_id, this._$event_name]);
+    }
     var _this = this;
-    var _loop = function (_i, _load_id) {
+    this._list_loading_index = 0;
+    
+    var _loop = function (_load_id) {
         //$.test_msg('Topic_list.load_list()', [_load_id, _this._load_id]);
         if (_load_id !== _this._load_id 
                 || _this._load_id === null) {
             return;
         }
         
-        if (_i < _this._list_colls.length) {
-            var _coll = _this._list_colls[_i];
+        if (_this._list_loading_index < _this._list_colls.length) {
+            var _coll = _this._list_colls[_this._list_loading_index];
             _coll.set_load_id(_this); 
+            //$.test_msg("Topic_list.load_list()", [_this._list_loading_index, _load_id, _this._list_colls.length]);
             _coll.load_list(function () {
                 setTimeout(function () {
-                    _i++;
-                    _loop(_i, _load_id);
-                }, 0);
+                    _this._list_loading_index++;
+                    _loop(_load_id);
+                }, 500);
             });
         }
         else {
             _this._load_list_complete(_callback);
         }
     };
-    _loop(0, this._load_id);
+    _loop(this._load_id);
    
     return this;
 };
+
+Topic_list.prototype._list_loading_index = 0;
 
 Topic_list.prototype._load_list_complete = function (_callback) {
     //自動重新讀取，避免endless scroll無法觸發的情況

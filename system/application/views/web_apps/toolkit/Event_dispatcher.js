@@ -41,6 +41,10 @@ Event_dispatcher.prototype._change = false;
 
 Event_dispatcher.prototype._$enable_changed_lock = false;
 
+/**
+ * 辨別事件的名稱
+ * @type String
+ */
 Event_dispatcher.prototype._$event_name = 'update';
 
 /**

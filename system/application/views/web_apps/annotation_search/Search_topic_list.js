@@ -19,6 +19,12 @@ function Search_topic_list() {
 Search_topic_list.prototype = new Topic_list();
 
 /**
+ * 辨別事件的名稱
+ * @type String
+ */
+Search_topic_list.prototype._$event_name = 'search_topic_list';
+
+/**
  * Create UI
  * @memberOf {Topic_list}
  * @type {jQuery} UI
