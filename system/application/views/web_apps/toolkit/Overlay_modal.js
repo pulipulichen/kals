@@ -116,14 +116,14 @@ Overlay_modal.prototype._$get_config = function () {
  * 設定好effect
  */
 Overlay_modal.prototype._setup_effect = function () {
-	$.tools.overlay.addEffect("fade", function(position, done) {
-	      this.getOverlay().css(position).fadeIn(this.getConf().speed, done);
-	   },// close function
-	   function(done) {
-	      // fade out the overlay
-	      this.getOverlay().fadeOut(this.getConf().closeSpeed, done);
-	   }
-	); 
+    $.tools.overlay.addEffect("fade", function(position, done) {
+          this.getOverlay().css(position).fadeIn(this.getConf().speed, done);
+       },// close function
+       function(done) {
+          // fade out the overlay
+          this.getOverlay().fadeOut(this.getConf().closeSpeed, done);
+       }
+    ); 
 };
 
 /**
@@ -146,28 +146,29 @@ Overlay_modal.prototype.open = function (_callback) {
                 
                 //此處的callback會在load的時候就呼叫了
                 var _api = _ui.data("overlay");
-				//$.test_msg('Overlay_modal.open() 有API嗎?', $.isset(_api));
+                //$.test_msg('Overlay_modal.open() 有API嗎?', $.isset(_api));
 				
                 if ($.isset(_api)) {
                     _api.setOpened(false);
-					try {
-						_api.load();
-					}
-					catch (_e) {
-						_this._setup_effect();
-						try {
-							//再試著讀取一次
-							_api.load();
-						}
-						catch (_final_e) {
-							$.test_msg('open Overlay failed: ' , _final_e);
-						}
-					}
+                    try {
+                        _api.load();
+                    }
+                    catch (_e) {
+                        _this._setup_effect();
+                        try {
+                            //再試著讀取一次
+                            _api.load();
+                        }
+                        catch (_final_e) {
+                            $.test_msg('open Overlay failed: ' , _final_e);
+                        }
+                    }
                       
                 }
                 _ui.show();
                 
-                if (this.is_exposable() && typeof(this.expose) == "function") {
+                if (this.is_exposable() 
+                        && typeof(this.expose) === "function") {
                     this.expose();
                 }
             }
@@ -177,8 +178,8 @@ Overlay_modal.prototype.open = function (_callback) {
                 //$.test_msg('Overlay_modal.open() after show');
                 
                 if ($.is_function(_callback)) {
-					_callback(_ui);
-				}
+                    _callback(_ui);
+                }
             }
         }
     }

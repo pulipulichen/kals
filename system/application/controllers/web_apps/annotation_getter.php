@@ -823,8 +823,12 @@ class Annotation_getter extends Web_apps_controller {
          * @author Pulipuli Chen 20141111
          * 測試很長時間才回應搜尋結果用的
          */
-        sleep(3);
+        //sleep(3);
         
+        /**
+         * 檢查SQL用
+         * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+         */
         //$enable_profiler = true; 
         $enable_profiler = false; 
 
@@ -947,6 +951,7 @@ class Annotation_getter extends Web_apps_controller {
         // 8 [ limit ]
         //test_msg('8 [ limit ]', array(isset($data->limit),$data->limit));
         if (isset($data->limit)) {
+            //test_msg("設定限制 limit", $data->limit);
             $search->set_limit($data->limit);
             //$search_id在此不作設限
         }

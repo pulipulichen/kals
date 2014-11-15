@@ -37,6 +37,8 @@ List_collection_search.prototype._$load_url = 'annotation_getter/search_annotati
 
 List_collection_search.prototype._$limit = 3;
 
+List_collection_search.prototype._$respond_limit = 0;
+
 /**
  * 是否啟用登入檢查
  * @type boolean

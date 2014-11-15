@@ -139,6 +139,7 @@ $lang['web_apps.window_search.list.query_info_single'] = '搜尋條件 <strong>{
 $lang['web_apps.window_search.list.query_info_mass'] = '搜尋條件 <strong>{0}</strong> = <strong>{1}</strong>，結果找到 {2} 筆資料，依照 <strong>{3}</strong> 排列：';
 $lang['web_apps.window_search.list.query_info_empty'] = '搜尋條件 <strong>{0}</strong> = <strong>{1}</strong> ，結果沒有找到資料。';
 $lang['web_apps.window_search.list.noresult'] = '查無相關搜尋結果，請重新搜尋';
+$lang['web_apps.window_search.list.load_complete'] = '搜尋完畢';
 //$lang['web_apps.window_search.list.loaded_already'] = '沒有其他搜尋結果';
 $lang['web_apps.window_search.reset_search_result'] = '清除搜尋結果';
 $lang['web_apps.window_search.reading_guide'] = '導讀';

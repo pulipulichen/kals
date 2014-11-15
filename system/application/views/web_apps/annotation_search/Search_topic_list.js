@@ -25,6 +25,8 @@ Search_topic_list.prototype = new Topic_list();
  */
 Search_topic_list.prototype._$create_ui = function () {
     var _ui = Topic_list.prototype._$create_ui.call(this);
+    //_ui.show();
+    this._loading_component.appendTo(_ui);
     return _ui;
 };
 
@@ -74,6 +76,16 @@ Search_topic_list.prototype.restore_last_search_scope = function () {
     this.list_collection_search.restore_last_search_scope();
     return this;
 };
+
+/**
+ * 讀取完成的訊息
+ * @returns {KALS_langauge_param}
+ * @author Pulipuli Chen 20141115
+ */
+Search_topic_list.prototype._lang_complete_component = new KALS_language_param(
+        'THERE IS ALL.',
+        'window_search.list.load_complete'
+    );
 
 /* End of file Search_topic_list */
 /* Location: ./system/application/views/web_apps/Search_topic_list.js */

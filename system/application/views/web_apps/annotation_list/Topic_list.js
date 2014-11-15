@@ -203,14 +203,25 @@ Topic_list.prototype.is_loading = function () {
 
 Topic_list.prototype._complete_component = null;
 
+/**
+ * 讀取完成的訊息
+ * @returns {KALS_langauge_param}
+ * @author Pulipuli Chen 20141115
+ */
+Topic_list.prototype._lang_complete_component = new KALS_language_param(
+        'THERE IS ALL.',
+        'list_collection.complete'
+    );
+
+/**
+ * 建立讀取完成的訊息
+ * @returns {jQuery}
+ */
 Topic_list.prototype._create_complete_component = function () {
     var _ui = $('<div></div>')
         .addClass('topic-list-complete');
         
-    var _lang = new KALS_language_param(
-        'THERE IS ALL.',
-        'list_collection.complete'
-    );
+    var _lang = this._lang_complete_component;
     
     KALS_context.lang.add_listener(_ui, _lang);
     

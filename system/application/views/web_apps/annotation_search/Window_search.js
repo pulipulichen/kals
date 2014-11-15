@@ -50,6 +50,12 @@ Window_search.prototype._$nav_heading = new KALS_language_param (
 
 Window_search.prototype._$load_config = 'Window_search';
 
+/**
+ * 開啟KALS_window時，是否預設啟用讀取中
+ * @type Boolean
+ */
+//Window_search.prototype._$kals_window_open_loading = false;
+
 Window_search.prototype.width = 500;
 
 /**
@@ -267,7 +273,7 @@ Window_search.prototype._$create_ui = function (){  //建立UI
     
     var _list_ui = this.list.get_ui();
     _list_ui.appendTo(_result);
-	
+        
     return _ui;
 };
 
@@ -803,6 +809,8 @@ Window_search.prototype.open_recent_annotation = function (_callback) {
     
     var _search_option = {
         query_field: "note",
+        //query_value: "*",
+        //query_value: "心願",
         query_value: "we",
         order_by: "update"
     };
@@ -1027,11 +1035,24 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
 //        
 //    });
     
-    _list.load_list();
-    _content._search_complete_callback(_callback);
+    _content._list_loaded = false;
+    _list.load_list(function () {
+        if (_content._list_loaded === false) {
+            _content._list_loaded = true;
+            _content._search_complete_callback(_callback); 
+        }
+    });
+    
+//    setTimeout(function () {
+//    //$(function () {
+//        
+//    //});
+//    }, 1000);
     
     return this;
 };
+
+Window_search.prototype._list_loaded = false; 
 
 /**
  * 搜尋完成之後的動作
@@ -1056,7 +1077,7 @@ Window_search.prototype._search_complete_callback = function (_callback) {
 //    KALS_window.toggle_loading(false);
 //    $.trigger_callback(_callback);
     
-    //this.change_submit("reset");
+    this.change_submit("reset");
     this._dispacher.notify_listeners("search");
     
     $.test_msg("Window_search._search_complete_callback()", "讀取完成");

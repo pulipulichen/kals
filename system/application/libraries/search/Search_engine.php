@@ -457,7 +457,7 @@ class Search_engine extends Generic_collection {
          {
                        
              $db->like('note',  $this->search_note );  // 生成: WHERE title LIKE '%match%'
-             $db->limit(10);
+             //$db->limit(10);
              //判斷this->search_note裡面有抓到值嗎？
             /*if (isset($this->search_note))
                {

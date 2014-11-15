@@ -288,7 +288,10 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         var _content_ui = _content.get_ui();
         _this.set_content(_content_ui);
         
-        _this.get_ui().find('.dialog-content').hide();
+        if (_content._$kals_window_open_loading === true) {
+            _this.get_ui(".dialog-content:first").hide();
+        }
+        //_this._content.hide();
         
         if ($.is_function(_content.onopen)) {
             _this.set_onopen(function () {
@@ -357,6 +360,7 @@ KALS_window.prototype._reset_window = function (_callback) {
         _this.set_options();    //傳入空資料，就會刪除既有按鈕
         //_this.set_content();    //傳入空資料，就會隱藏content欄位
         _this.set_content_temp();
+        _this.get_ui().find('.dialog-content:first').hide();
         
         _this.set_onopen(_this._default_onopen);
         _this.set_onclose(_this._default_onclose);
@@ -457,7 +461,8 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     
     var _this = this;
     
-    if ($.is_function(_is_loading) && $.is_null(_callback)) {
+    if ($.is_function(_is_loading) 
+            && $.is_null(_callback)) {
         _callback = _is_loading;
         _is_loading = null;
     }
@@ -478,7 +483,11 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
         _loading.slideUp(_speed, function () { 
             _loading.hide(); 
         });
-        _content.slideDown(_speed);
+        
+        $.test_msg("KALS_window.toggle_loading()", "關閉讀取");
+        //_content.slideDown(_speed);
+        _content.show();
+                
         //if (_submit.length > 0)
         //{
             //_submit.slideDown(_speed);
@@ -490,9 +499,13 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     
     var _open_loading = function () {
         _loading.slideDown(_speed);
-        _content.slideUp(_speed, function () { 
-            _content.hide(); 
-        });
+        
+        $.test_msg("KALS_window.toggle_loading()", "開啟讀取");
+        //_content.slideUp(_speed, function () { 
+        //    _content.hide(); 
+        //});
+        _content.hide(); 
+        
         //if (_submit.length > 0)
         //{
             //_submit.slideUp(_speed, function () { _submit.hide(); });
