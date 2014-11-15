@@ -1002,7 +1002,7 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
             && this._last_search_option.query_value === _data.query_value
             && this._last_search_option.order_by === _data.order_by) {
 //        $.test_msg("重複內容！");
-        _content.list.restore_last_search_scope();
+        _content._restore_search_scope_coll();
         _content._search_complete_callback(_callback);
         return this;
     }
@@ -1205,6 +1205,35 @@ Window_search.prototype.get_search_option = function () {
     }
     
     return _search_option;
+};
+
+/**
+ * 最後的搜尋範圍
+ * @author Pulipuli Chen 20141115
+ * @type Scope_collection_param
+ */
+Window_search.prototype._search_scope_coll = null;
+
+/**
+ * 繪製搜尋結果範圍
+ * @author Pulipuli Chen 20141115
+ * @returns {List_collection_search.prototype}
+ */
+Window_search.prototype.set_search_scope_coll = function (_search_scope_coll) {
+    //$.test_msg("Window_search.set_search_scope_coll()", "設定範圍");
+    this._search_scope_coll = _search_scope_coll;
+    KALS_text.selection.search.set_scope_coll(_search_scope_coll);
+    return this;
+};
+
+/**
+ * 重新繪製搜尋結果範圍
+ * @author Pulipuli Chen 20141115
+ * @returns {List_collection_search.prototype}
+ */
+Window_search.prototype._restore_search_scope_coll = function () {
+    KALS_text.selection.search.set_scope_coll(this._search_scope_coll);
+    return this;
 };
 
 /* End of file Window_profile */

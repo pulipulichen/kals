@@ -846,11 +846,16 @@ class Annotation_getter extends Web_apps_controller {
             $data = $json;
         }
         
+        $reuqest_scope_collection = (isset($data->limit) 
+                && isset($data->offset) === false);
+        //$reuqest_scope_collection = true;
+        //test_msg("reuqest_scope_collection", array($reuqest_scope_collection)  );
+        
 //        $user = get_context_user();
         $url = $this->url;  //存放目前data來源的頁面連結
 //        $search = new Search_annotation_collection($url); //Search_annotation_collection→Search_engine
         $search = new Search_annotation_collection(); //Search_annotation_collection→Search_engine
-        if (isset($data->limit)) {
+        if ($reuqest_scope_collection) {
             $search_all = new Search_annotation_collection();
         }
         
@@ -858,7 +863,7 @@ class Annotation_getter extends Web_apps_controller {
          * 限定搜尋範圍只在來源的網頁
          */
         $search->set_target_referer_webpage();
-        if (isset($data->limit)) {
+        if ($reuqest_scope_collection) {
             $search_all->set_target_referer_webpage();
         }
 
@@ -874,14 +879,14 @@ class Annotation_getter extends Web_apps_controller {
                 //示範用
                 //$search->set_target_user(new User(1701));
                 $search->set_search_user_name($data->query_value);
-                if (isset($data->limit)) {
+                if ($reuqest_scope_collection) {
                     $search_all->set_search_user_name($data->query_value);
                 }
                 break;
             case "note": //標註內容
                 if ($data->query_value != "" && $data->query_value != "*") {
                     $search->set_search_note($data->query_value);
-                    if (isset($data->limit)) {
+                    if ($reuqest_scope_collection) {
                         $search_all->set_search_note($data->query_value);
                     }
                 }
@@ -889,21 +894,21 @@ class Annotation_getter extends Web_apps_controller {
             case "annotation_type": //標註類型
                 if ($data->query_value !== "custom") {
                     $search->set_target_type($data->query_value);
-                    if (isset($data->limit)) {
+                    if ($reuqest_scope_collection) {
                         $search_all->set_target_type($data->query_value);
                     }
                 }
                 else {
                     $exclude_type_list = $data->exclude_type_list;
                     $search->set_exclude_type_list($exclude_type_list);
-                    if (isset($data->limit)) {
+                    if ($reuqest_scope_collection) {
                         $search_all->set_exclude_type_list($exclude_type_list);
                     }
                 }
                 break;
             case "annotation_anchor_text":
                 $search->set_search_anchor_text($data->query_value);
-                if (isset($data->limit)) {
+                if ($reuqest_scope_collection) {
                     $search_all->set_search_anchor_text($data->query_value);
                 }
                 break;   
@@ -936,7 +941,7 @@ class Annotation_getter extends Web_apps_controller {
 
         //輸出
         $totally_loaded = TRUE;
-        if (isset ($data->limit)) {
+        if (isset($data->limit)) {
             $totally_loaded = FALSE;
         }
         
@@ -960,8 +965,8 @@ class Annotation_getter extends Web_apps_controller {
         
         //不作limit的情況下讀完，表示完全讀取
         if (isset($data->limit)
-                && ($search->length() == $search_all->length() 
-                || $search->length() == 0)) {
+                && ( ($reuqest_scope_collection && $search->length() == $search_all->length())
+                || $search->length() === 0)) {
             $totally_loaded = TRUE;
         }
         
@@ -981,25 +986,29 @@ class Annotation_getter extends Web_apps_controller {
         // array_push($annotation_collection, $annotation_data);
 
         // --------------
+          
         
-        /**
-         * 取得搜尋結果的位置
-         */
-               
-        $scope_collection = $search_all->get_result_scope_coll();
-        $scope_collection_json = $scope_collection->export_webpage_data(get_context_webpage());
-
         // --------------
         
         $output_data = array(
             'annotation_collection' => $annotation_collection,
-            'totally_loaded' => $totally_loaded, 
-            'scope_collection' => $scope_collection_json
+            'totally_loaded' => $totally_loaded
         );
         
-        if (isset($data->show_total_count)
-            && $data->show_total_count === TRUE) {
-            if (isset($search_all)) {
+        /**
+         * 取得搜尋結果的位置
+         */
+        if ($reuqest_scope_collection) {
+            $scope_collection = $search_all->get_result_scope_coll();
+            $scope_collection_json = $scope_collection->export_webpage_data(get_context_webpage());
+
+            $output_data['scope_collection'] = $scope_collection_json;
+        }
+        
+        if ($reuqest_scope_collection
+                && isset($data->show_total_count)
+                && $data->show_total_count === TRUE) {
+            if ($reuqest_scope_collection) {
                 $output_data['total_count'] = $search_all->length();
             }
             else if (count($annotation_collection) === 0) {

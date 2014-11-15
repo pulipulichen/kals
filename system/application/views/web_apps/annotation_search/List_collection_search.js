@@ -222,14 +222,19 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
 
         //$.test_msg('_search_count', _search_count);
         //$.test_msg('_search_loaded',_search_loaded);
-        _this._setup_query_info(_search_count);
+        if (typeof(_data.total_count) !== "undefined") {
+            _this._setup_query_info(_search_count);
+        }
 
         // ------------
 
-        var _search_scope = _data.scope_collection;
-
-        KALS_text.selection.search.set_scope_coll(_search_scope);
-        _this._last_search_scope = _search_scope;
+        if (typeof(_data.scope_collection) !== "undefined") {
+            KALS_context.search.set_search_scope_coll(_data.scope_collection);
+        }
+//        var _search_scope = _data.scope_collection;
+//
+//        KALS_text.selection.search.set_scope_coll(_search_scope);
+//        _this._last_search_scope = _search_scope;
 
         //_ui.show();
         // ------------
@@ -330,21 +335,21 @@ List_collection_search.prototype._setup_query_info = function (_result_count) {
     return this;
 };
 
-/**
- * 最後的搜尋範圍
- * @author Pulipuli Chen 20141113
- * @type Scope_collection_param
- */
-List_collection_search.prototype._last_search_scope = null;
-
-/**
- * @author Pulipuli Chen 20141113
- * @returns {List_collection_search.prototype}
- */
-List_collection_search.prototype.restore_last_search_scope = function () {
-    KALS_text.selection.search.set_scope_coll(this._last_search_scope);
-    return this;
-};
+///**
+// * 最後的搜尋範圍
+// * @author Pulipuli Chen 20141113
+// * @type Scope_collection_param
+// */
+//List_collection_search.prototype._last_search_scope = null;
+//
+///**
+// * @author Pulipuli Chen 20141113
+// * @returns {List_collection_search.prototype}
+// */
+//List_collection_search.prototype.restore_last_search_scope = function () {
+//    KALS_text.selection.search.set_scope_coll(this._last_search_scope);
+//    return this;
+//};
 
 ///**
 // * 這樣可以跑嗎？
