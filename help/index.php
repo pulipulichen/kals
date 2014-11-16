@@ -43,6 +43,7 @@
 <h2>KALS網路資源</h2>
 <ul>
 	<li><a href="https://github.com/pulipulichen/kals">GitHub</a> 主要程式碼典藏庫</li>
+        <li><a href="https://github.com/pulipulichen/kals/issues">GitHub 問題發佈區</a></li>
 	<li><a href="https://sites.google.com/site/puddingkals/">Google Stie</a> 舊的程式碼典藏庫</li>
 </ul>
 
