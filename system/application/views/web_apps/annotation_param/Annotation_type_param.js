@@ -643,7 +643,7 @@ Annotation_type_param.prototype.is_enable = function (_type) {
  * 預設是1
  * @type Number
  */
-Annotation_type_param.prototype._order = 1;
+Annotation_type_param.prototype._order = 5;
 
 /**
  * 設定排序
