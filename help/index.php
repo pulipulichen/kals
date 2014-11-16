@@ -47,11 +47,20 @@
 </ul>
 
 <hr />
-<h2>KALS使用的框架：CodeIgnitor 1.7.2 使用說明</h2>
+<h2>KALS使用的框架與函式庫說明</h2>
 <ul>
-	<li><a href="../user_guide_zh/">中文</a></li>
-	<li><a href="../user_guide/">English</a></li>
+	<li><a href="../user_guide_zh/" target="_blank">CodeIgnitor 1.7.2 使用說明 中文</a></li>
+	<li><a href="../user_guide/" target="_blank">CodeIgnitor 1.7.2 使用說明 English</a></li>
+        
+        <li><a href="http://jquery.com/" target="_blank">jQuery 1.4.2</a></li>
+        <li><a href="http://jquerytools.github.io/download/" target="_blank">jQuery TOOLS</a></li>
+        <li><a href="http://jqueryui.com/" target="_blank">jQuery UI</a></li>
+        
+        <li><a href="http://semantic-ui.com/">Semantic UI 樣式表</a></li>
 </ul>
+
+
+
 <hr />
 
 <h2>KALS系統管理</h2>
@@ -74,7 +83,7 @@
 <h2>偵錯使用資料</h2>
 <ul>
     <li><a href="debug/20140625-pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
-	<li><a href="debug/20140627-moodle_ctes_03/index.html">數位時代公共圖書館虛擬參考服務之發展</a></li>
+    <li><a href="debug/20140627-moodle_ctes_03/index.html">數位時代公共圖書館虛擬參考服務之發展</a></li>
 </ul>
 
 <hr />

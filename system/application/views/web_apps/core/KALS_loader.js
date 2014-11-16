@@ -58,6 +58,7 @@ this.generic_load = function (_conf, _callback) {
             //"libraries/jquery-file-upload/js/vendor/jquery.ui.widget.js",
             //"libraries/jquery-file-upload/js/jquery.iframe-transport.js",
             //"libraries/jquery-file-upload/js/jquery.fileupload.js"
+            "libraries/semantic-ui/javascript/semantic.min.js"
         ],
         // @version 20140703 Pudding Chen
         // 解決CKeditor圖示無法顯示的問題
@@ -67,7 +68,8 @@ this.generic_load = function (_conf, _callback) {
         style_list: [
             //"libraries/bootstrap/css/bootstrap.min.css",
             //"libraries/bootstrap/css/bootstrap-theme.min.css",
-            "libraries/font-awesome/css/font-awesome.min.css"
+            //"libraries/font-awesome/css/font-awesome.min.css",
+            "libraries/semantic-ui/css/semantic.min.css"
         ]
     };
     

@@ -210,7 +210,8 @@ Search_form_component.prototype._create_search_submit_button = function () {
 //       .addClass("search-form-submit");
     
     _submit.addClass("search-form-submit")
-            .html('<i class="fa fa-search"></i>');
+            //.html('<i class="fa fa-search"></i>');
+            .html('<i class="search icon"></i>');
     
     //var _submit = $('<button type="button" class="search-form-submit"></button>')
     //    .append(KALS_context.get_image_url('search.gif'));

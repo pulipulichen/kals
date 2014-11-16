@@ -192,6 +192,10 @@
     /*float:right;*/
 }
 
+.KALS .search-component .search-form-submit .icon {
+    margin: 0;
+}
+
 .KALS .search-component .search-form-searched {
     display: none;
 }
