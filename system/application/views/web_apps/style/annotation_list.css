@@ -546,7 +546,7 @@
     background-color: #FEEEBD; 
 }
 
-.KALS .list-item-respond {
+.KALS .list-item.list-item-respond {
     border-top: 1px dashed #CCC;
     
     /**
