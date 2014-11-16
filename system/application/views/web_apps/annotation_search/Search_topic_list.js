@@ -29,12 +29,12 @@ Search_topic_list.prototype._$event_name = 'search_topic_list';
  * @memberOf {Topic_list}
  * @type {jQuery} UI
  */
-Search_topic_list.prototype._$create_ui = function () {
-    var _ui = Topic_list.prototype._$create_ui.call(this);
-    //_ui.show();
-    this._loading_component.appendTo(_ui);
-    return _ui;
-};
+//Search_topic_list.prototype._$create_ui = function () {
+//    var _ui = Topic_list.prototype._$create_ui.call(this);
+//    //_ui.show();
+//    this._loading_component.appendTo(_ui);
+//    return _ui;
+//};
 
 /**
  * 設定內在的List_collection

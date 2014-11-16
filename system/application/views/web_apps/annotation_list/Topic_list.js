@@ -43,10 +43,10 @@ Topic_list.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('topic-list');
     
+    _ui = this._setup_list_collection(_ui);
+        
     var _loading = this._create_loading_component();
     _loading.appendTo(_ui);
-    
-    _ui = this._setup_list_collection(_ui);
     
     var _blank = this._create_blank_component();
     _blank.appendTo(_ui);
