@@ -512,9 +512,9 @@ Topic_list.prototype.load_list = function (_callback) {
     
     this._load_id = $.create_id();
     
-    if (this._$event_name === "topic_list") {
-        $.throw_msg('Topic_list.load_list() set load id', [this._load_id, this._$event_name]);
-    }
+//    if (this._$event_name === "topic_list") {
+//        $.throw_msg('Topic_list.load_list() set load id', [this._load_id, this._$event_name]);
+//    }
     var _this = this;
     this._list_loading_index = 0;
     
@@ -549,48 +549,47 @@ Topic_list.prototype._list_loading_index = 0;
 
 Topic_list.prototype._load_list_complete = function (_callback) {
     //自動重新讀取，避免endless scroll無法觸發的情況
-    if (this.is_overflow() === false 
-            && this.is_totally_loaded() === false) {
-        
-        this.load_list(_callback);
-        
-    }
-    else {
-        var _this = this;
-        setTimeout(function() {
-            if (_this.has_list_item() === false) {
-                _this._toggle_blank(true);
-            }
-            
-            //$.test_msg([_this.has_list_item() , _this.is_totally_loaded()]);
-            
-            if (_this.has_list_item() && _this.is_totally_loaded()) {
-                _this._toggle_complete(true);
-            }
-            
-            _this.check_editing();
-            
-            _this._toggle_loading(false, function () {
-                
-                //$.test_msg('Topic_list._load_list_complete()', _this._set_focus_param);
-                
-                if (_this._set_focus_param !== null) {
-                    
-                    var _item = _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
-                    if ($.is_function(_this._set_focus_callback)) {
-                        _this._set_focus_callback(_item);
-                    }
-                    
-                    _this.reset_focus();
+//    if (this.is_overflow() === false 
+//            && this.is_totally_loaded() === false) {
+//        
+//        this.load_list(_callback);
+//        return this;
+//    }
+    
+    var _this = this;
+    setTimeout(function() {
+        if (_this.has_list_item() === false) {
+            _this._toggle_blank(true);
+        }
+
+        //$.test_msg([_this.has_list_item() , _this.is_totally_loaded()]);
+
+        if (_this.has_list_item() && _this.is_totally_loaded()) {
+            _this._toggle_complete(true);
+        }
+
+        _this.check_editing();
+
+        _this._toggle_loading(false, function () {
+
+            //$.test_msg('Topic_list._load_list_complete()', _this._set_focus_param);
+
+            if (_this._set_focus_param !== null) {
+
+                var _item = _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
+                if ($.is_function(_this._set_focus_callback)) {
+                    _this._set_focus_callback(_item);
                 }
-                
-                $.trigger_callback(_callback);
-                _this.notify_listeners();    
-                
-            });
-            
-        }, 1000);
-    }
+
+                _this.reset_focus();
+            }
+
+            $.trigger_callback(_callback);
+            _this.notify_listeners();    
+
+        });
+
+    }, 0);
 };
 
 /**

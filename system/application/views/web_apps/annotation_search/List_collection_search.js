@@ -164,7 +164,7 @@ List_collection_search.prototype.get_search_data = function () {
  * 呈現結果數量
  * @param {Object} _data
  * @param {Function} _callback
- * @returns {unresolved}
+ * @returns {List_collection_search}
  */ 
 List_collection_search.prototype.setup_load_list = function(_data, _callback){
 
@@ -177,6 +177,10 @@ List_collection_search.prototype.setup_load_list = function(_data, _callback){
     var _this = this;
     var _guide_button = this._guide_button;
     var _list_container = this._list_container;
+    
+    if ($.isset(this._offset) === false || this._offset === 0) {
+        this._query_info.hide();
+    }
 
     //$.test_msg("search.setup_load_list", _data);
     //$.test_msg("search.setup_load_list", this.get_name());
@@ -331,6 +335,7 @@ List_collection_search.prototype._setup_query_info = function (_result_count) {
     var _line = KALS_context.lang.line(_lang);
     
     this._query_info.html(_line);
+    this._query_info.show();
     
     return this;
 };
