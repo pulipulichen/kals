@@ -109,13 +109,18 @@ List_collection_search.prototype.set_order_by = function (_order_by) {
  * @param {JSON} _search_option
  * @author Pulipuli Chen 20141114
  */
-List_collection_search.prototype.set_search_option = function (_search_option) {
-    //$.test_msg("List_collection_search.prototype.set_query_field", _value);
-    this._query_field = _search_option.query_field;
-    this._query_value = _search_option.query_value;
-    this._$order_by = _search_option.order_by;
-    return this;
-};
+//List_collection_search.prototype.set_search_option = function (_search_option) {
+//    //$.test_msg("List_collection_search.prototype.set_query_field", _value);
+//    this._query_field = _search_option.query_field;
+//    this._query_value = _search_option.query_value;
+//    this._$order_by = _search_option.order_by;
+//    
+//    if ($.isset(_search_option.exclude_type_list)) {
+//        this._exclude_type_list = ;
+//    }
+//    
+//    return this;
+//};
 
 // 開始建立List_item-topic & respond
 List_collection_search.prototype.create_list_item = function(_param) {
@@ -142,11 +147,20 @@ List_collection_search.prototype.get_search_data = function () {
 
     var _search_data = List_collection.prototype.get_search_data.call(this);
     
-    _search_data.query_field = this._query_field;
-    _search_data.query_value = this._query_value;
+    var _search_option = KALS_context.search.get_search_option();
+    
+    _search_data.query_field = _search_option.query_field;
+    _search_data.query_value = _search_option.query_value;
+    _search_data._$order_by = _search_option.order_by;
+    
+    if ($.isset(_search_option.exclude_type_list)) {
+        _search_data.exclude_type_list = _search_option.exclude_type_list;
+    }
+    
     _search_data.show_total_count = true;
     
-//    $.test_msg("List_coll_search get_search_data()", _search_data);
+    //$.test_msg("List_coll_search get_search_data() 1", _search_option);
+    //$.test_msg("List_coll_search get_search_data() 2", _search_data);
     
     return _search_data;
 };

@@ -111,42 +111,42 @@ DEFAULT_KALS_CONFIG = {
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'concept' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'confusion' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'question' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'example' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'summary' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'custom' : {
             enable: {   // 啟用範圍
@@ -502,6 +502,16 @@ DEFAULT_KALS_CONFIG = {
 //                        $("td.item a.Filter:first").click();
 //                    }, 1000);
 //                }, 3000);
+//            }
+            /**
+             * @author Pulipuli Chen 20141116
+             * 測試自訂標註類型
+             */
+//            function () {
+//                $.test_msg("測試自訂標註類型");
+//                $(".search-form-init .dropdown.query-field").val("annotation_type");
+//                $(".search-form-init .dropdown.annotation-type").val("custom");
+//                $(".search-form-init .button.dialog-option.search-form-submit").click();
 //            }
         ]
     },

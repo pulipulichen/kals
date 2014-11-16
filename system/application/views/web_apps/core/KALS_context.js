@@ -474,7 +474,7 @@ KALS_context.last_select_annotation_type = null;
  * topic: 只有主題標註使用
  * respond: 只有回覆時使用
  * 預設：全部啟用
- * @return {Array} 包含標註類型的陣列
+ * @return {Array<Annotation_type_param>} 包含標註類型的陣列
  */
 KALS_context.create_type_param_list = function(_enable_type) {
     var _list = {};

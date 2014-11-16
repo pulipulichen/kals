@@ -26,6 +26,11 @@ function Window_search() {
 
     //this.child("list", new List_collection_search());
     this.child("list", new Search_topic_list());
+    
+    var _this = this;
+    KALS_context.ready(function () {
+        _this._setup_exclude_type_list();
+    });
 }
 
 Window_search.prototype = new Window_content();
@@ -905,6 +910,41 @@ Window_search.prototype.set_input_value = function(_data){
 Window_search.prototype.default_focus_input = '.dialog-content:first input:radio:checked';
 
 /**
+ * 要排除的元件
+ * @type {String} jQuery Selector
+ */
+Window_search.prototype._exclude_type_list = null;
+
+/**
+ * 設定要排除的名單
+ * @author Pulipuli Chen 20141116
+ * @returns {Array}
+ */
+Window_search.prototype._setup_exclude_type_list = function () {
+    if (this._exclude_type_list !== null) {
+        return this._exclude_type_list;
+    }
+    
+    var _type_param_list = KALS_context.create_type_param_list();
+    
+    var _list = [];
+    for (var _i in _type_param_list) {
+        //$.test_msg("_setup_exclude_type_list", [_order]);
+        
+        var _type_param = _type_param_list[_i];
+        var _type_name = _type_param.get_name();
+        if (_type_name === "custom") {
+            continue;
+        }
+        _list.push(_type_name);
+    }
+    
+    this._exclude_type_list = _list;
+    
+    return this._exclude_type_list;
+};
+
+/**
  * 執行搜尋
  * @param {JSON} _search_option 搜尋選項
  * _param = {
@@ -945,6 +985,24 @@ Window_search.prototype.search = function (_search_option, _open_window, _callba
         this.set_input_value(_search_option);
     }
     
+    //$.test_msg("Window_search.search()", [_search_option.query_field, _search_option.query_value]);
+    if (_search_option.query_field === "annotation_type" 
+            && _search_option.query_value === "custom") {
+        //$.test_msg("是自訂標註", this._exclude_type_list);
+        _search_option.exclude_type_list = this._exclude_type_list;
+    }
+    
+    if (_search_option.query_field === "annotation_type"
+            && (typeof(_search_option.query_value) === "undefined" || _search_option.query_value === "") ) {
+        _search_option.query_value = _search_option.annotation_type;
+    }
+    
+    if (typeof(_search_option.order_by) === "undefined") {
+        _search_option.order_by = this._default_search_option.order_by;
+    }
+
+    // -------------------------------
+    
     var _disable_validate = false;
     if (typeof(_search_option._disable_validate) === "boolean") {
         _disable_validate = _search_option._disable_validate;
@@ -984,23 +1042,14 @@ Window_search.prototype.search = function (_search_option, _open_window, _callba
 Window_search.prototype._setup_search_list = function (_search_option, _callback) {
     var _content = this;
     
-    var _data = _search_option;
+    //var _data = _search_option;
     
-    if (_data.query_field === "annotation_type"
-            && (typeof(_data.query_value) === "undefined" || _data.query_value === "") ) {
-        _data.query_value = _data.annotation_type;
-    }
-    
-    if (typeof(_data.order_by) === "undefined") {
-        _data.order_by = this._default_search_option.order_by;
-    }
-
     //$.test_msg("_setup_search_list 1", this._last_search_option);
     //$.test_msg("_setup_search_list 2", _data);
     if (this._last_search_option !== null
-            && this._last_search_option.query_field === _data.query_field
-            && this._last_search_option.query_value === _data.query_value
-            && this._last_search_option.order_by === _data.order_by) {
+            && this._last_search_option.query_field === _search_option.query_field
+            && this._last_search_option.query_value === _search_option.query_value
+            && this._last_search_option.order_by === _search_option.order_by) {
 //        $.test_msg("重複內容！");
         _content._restore_search_scope_coll();
         _content._search_complete_callback(_callback);
@@ -1009,7 +1058,7 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
     
     // --------------------------------------------
     
-    this._last_search_option = _data;
+    this._last_search_option = _search_option;
     
     var _list = this.list;
     //var _data = this.submit.get_data();
@@ -1023,7 +1072,7 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
 //    _list.set_query_field(_data.query_field);
 //    _list.set_query_value(_data.query_value);
 //    _list.set_order_by(_data.order_by);
-    _list.set_search_option(_data);
+//    _list.set_search_option(_search_option);
 
     // 我們要叫List_collection_search進行搜尋
     //var _this = this;
@@ -1200,13 +1249,14 @@ Window_search.prototype.get_search_option = function () {
     var _search_option = {
         query_field: this._last_search_option.query_field,
         query_value: this._last_search_option.query_value,
-        order_by: this._last_search_option.order_by
+        order_by: this._last_search_option.order_by,
+        exclude_type_list: this._last_search_option.exclude_type_list
     };
     
-    if (typeof(_search_option.order_by) === "undefined" ) {
-        _search_option.order_by = this._default_search_option.order_by;
-    }
-    
+//    if (typeof(_search_option.order_by) === "undefined" ) {
+//        _search_option.order_by = this._default_search_option.order_by;
+//    }
+//    
     return _search_option;
 };
 

@@ -823,7 +823,7 @@ class Annotation_getter extends Web_apps_controller {
          * @author Pulipuli Chen 20141111
          * 測試很長時間才回應搜尋結果用的
          */
-        sleep(3);
+        //sleep(3);
         
         /**
          * 檢查SQL用
