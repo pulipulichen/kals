@@ -146,7 +146,7 @@ List_collection_search.prototype.get_search_data = function () {
     _search_data.query_value = this._query_value;
     _search_data.show_total_count = true;
     
-    $.test_msg("List_coll get_search_data()", _search_data);
+//    $.test_msg("List_coll_search get_search_data()", _search_data);
     
     return _search_data;
 };
@@ -649,15 +649,15 @@ List_collection_search.prototype.is_loading = function () {
     return Topic_list.prototype.is_loading.call(this);
 };
 
-/**
- * 切換讀取中
- * @returns {Boolean}
- * @author Pulipuli Chen 20141114
- */
-List_collection_search.prototype._toggle_loading = function (_is_loading, _callback) {
-    $.test_msg("_toggle_loading", _is_loading);
-    return Topic_list.prototype._toggle_loading.call(this, _is_loading, _callback);
-};
+///**
+// * 切換讀取中
+// * @returns {Boolean}
+// * @author Pulipuli Chen 20141114
+// */
+//List_collection_search.prototype._toggle_loading = function (_is_loading, _callback) {
+//    //$.test_msg("_toggle_loading", _is_loading);
+//    return Topic_list.prototype._toggle_loading.call(this, _is_loading, _callback);
+//};
 
 // ------------------------------------------
 

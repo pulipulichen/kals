@@ -1029,7 +1029,7 @@ Window_search.prototype._setup_search_list = function (_search_option, _callback
     //var _this = this;
     //$.test_msg("Window_search_submit _list.load_list()", _list.get_name());
     
-    $.test_msg("before load list");
+//    $.test_msg("before load list");
     
 //    _list.load_list(function () {
 //        
@@ -1083,7 +1083,7 @@ Window_search.prototype._search_complete_callback = function (_callback) {
     this.change_submit("reset");
     this._dispacher.notify_listeners("search");
     
-    $.test_msg("Window_search._search_complete_callback()", "讀取完成");
+//    $.test_msg("Window_search._search_complete_callback()", "讀取完成");
     
     KALS_window.loading_complete(_callback);
     

@@ -215,7 +215,7 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         eval('_content = new ' + _content + '();');
     }
     
-    $.test_msg('KALS_window.setup_window() ready to reset_window');
+    //$.test_msg('KALS_window.setup_window() ready to reset_window');
     
     var _this = this;    
     
@@ -338,6 +338,7 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
             
             _this._window_setuping = false;
             if ($.is_function(_this._wait_for_loading_complete)) {
+                //$.test_msg("KALS_window.setup_window()", "呼叫_wait_for_loading_complete");
                 _this._wait_for_loading_complete();
             }
             //$.test_msg("KALS_window.setup_window()", "完成");
@@ -497,7 +498,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
             _loading.hide(); 
         });
         
-        $.test_msg("KALS_window.toggle_loading()", "關閉讀取");
+        //$.test_msg("KALS_window.toggle_loading()", "關閉讀取");
         //_content.slideDown(_speed);
         _content.show();
                 
@@ -513,7 +514,7 @@ KALS_window.prototype.toggle_loading = function (_is_loading, _callback) {
     var _open_loading = function () {
         _loading.slideDown(_speed);
         
-        $.test_msg("KALS_window.toggle_loading()", "開啟讀取");
+        //$.test_msg("KALS_window.toggle_loading()", "開啟讀取");
         //_content.slideUp(_speed, function () { 
         //    _content.hide(); 
         //});
@@ -613,9 +614,9 @@ KALS_window.prototype._wait_for_loading_complete = null;
  * 如果是在window_setup設定中，那也算是讀取中
  */
 KALS_window.prototype.is_loading = function () {
-    if (this._window_setuping === true) {
-        return true;
-    }
+//    if (this._window_setuping === true) {
+//        return true;
+//    }
     
     var _ui = this.get_ui();
     var _loading = _ui.find('.window-loading:first');

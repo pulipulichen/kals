@@ -485,9 +485,23 @@ DEFAULT_KALS_CONFIG = {
              * @author Pulipuli Chen 20141111
              * 測試搜尋最新標註用
              */
+            function () {
+                $.test_msg("點選最新標註");
+                $("td.item a.Window_search_recent:first").click();
+            }
+            /**
+             * @author Pulipuli Chen 20141116
+             * 測試帳號資料按鈕用
+             */
 //            function () {
-//                $.test_msg("點選最新標註");
+//                $.test_msg("測試帳號資料按鈕用");
 //                $("td.item a.Window_search_recent:first").click();
+//                setTimeout(function () {
+//                    KALS_window.close();
+//                    setTimeout(function () {
+//                        $("td.item a.Filter:first").click();
+//                    }, 1000);
+//                }, 3000);
 //            }
         ]
     },
