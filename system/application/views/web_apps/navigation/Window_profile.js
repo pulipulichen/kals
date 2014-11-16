@@ -169,5 +169,11 @@ Window_profile.prototype._$create_ui = function () {
     return _ui;
 };
 
+///**
+// * 開啟KALS_window時，是否預設啟用讀取中
+// * @type Boolean
+// */
+//Window_profile.prototype._$kals_window_open_loading = false;
+
 /* End of file Window_profile */
 /* Location: ./system/application/views/web_apps/Window_profile.js */
