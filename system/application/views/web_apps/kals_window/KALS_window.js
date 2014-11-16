@@ -296,9 +296,9 @@ KALS_window.prototype.setup_window = function (_content, _callback) {
         var _content_ui = _content.get_ui();
         _this.set_content(_content_ui);
         
-        if (_content._$kals_window_open_loading === true) {
+        //if (_content._$kals_window_open_loading === true) {
             _this.get_ui(".dialog-content:first").hide();
-        }
+        //}
         //_this._content.hide();
         
         if ($.is_function(_content.onopen)) {

@@ -68,7 +68,7 @@ Topic_list.prototype._$create_ui = function () {
  */
 Topic_list.prototype._setup_list_collection = function (_ui) {
     
-    $.test_msg("_setup_list_collection");
+    //$.test_msg("_setup_list_collection");
     
     var _my = new List_collection_my();
     _my.get_ui().appendTo(_ui);

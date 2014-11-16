@@ -483,7 +483,7 @@ Window_content.prototype._$absolute = false;
  * 開啟KALS_window時，是否預設啟用讀取中
  * @type Boolean
  */
-Window_content.prototype._$kals_window_open_loading = true;
+//Window_content.prototype._$kals_window_open_loading = true;
 
 Window_content.prototype.is_absolute = function () {
     return this._$absolute;
