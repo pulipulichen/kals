@@ -174,7 +174,7 @@ Overlay_manager.prototype._mask_locker = false;
  * 鎖定黑幕
  */
 Overlay_manager.prototype.lock_mask = function () {
-    $.test_msg('Overlay_manager.lock_mask()');
+    //$.test_msg('Overlay_manager.lock_mask()');
     this._mask_locker = true;
     return this;
 };
@@ -183,7 +183,7 @@ Overlay_manager.prototype.lock_mask = function () {
  * 取消鎖定黑幕
  */
 Overlay_manager.prototype.unlock_mask = function () {
-    $.test_msg('Overlay_manager.unlock_mask()');
+    //$.test_msg('Overlay_manager.unlock_mask()');
     this._mask_locker = false;
     return this;
 };

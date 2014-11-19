@@ -242,11 +242,12 @@ DEFAULT_KALS_CONFIG = {
      */
     web_search_url: { 
         "Google搜尋": "http://www.google.com/search?q={query}",
-        "Google圖片": "https://www.google.com.tw/search?tbm=isch&safe=active&q={query}",
-        "維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
-        "Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
-        "Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}",
-        "萌典": "https://www.moedict.tw/{query}"
+        "圖片：Google圖片": "https://www.google.com.tw/search?tbm=isch&safe=active&q={query}",
+        "百科：維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
+        "中英翻譯：Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
+        "中英字典：Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}",
+        "中文字典：萌典": "https://www.moedict.tw/{query}",
+        "影片：YouTube": "https://www.youtube.com/results?search_query={query}&page=&utm_source=opensearch"
     },
     //web_search_url: "disable",
 

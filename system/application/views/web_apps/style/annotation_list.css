@@ -546,7 +546,9 @@
     background-color: #FEEEBD; 
 }
 
-.KALS .list-item.list-item-respond {
+.KALS .list-item.list-item-respond,
+.KALS .window-view-content .list-item-topic .list-item.list-item-respond
+{
     border-top: 1px dashed #CCC;
     
     /**

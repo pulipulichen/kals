@@ -921,11 +921,22 @@ class Annotation_getter extends Web_apps_controller {
             $data->order_by = "update";
         }
         
+        //test_msg($data->order_by);
         if ($data->order_by == 'update') {
             $search->add_order(6, TRUE); 
         }
         else if ($data->order_by == 'create') {
             $search->add_order(7);
+        }
+        else if ($data->order_by == 'responded') {
+            $search->add_order(4);
+            $search->set_target_topic(true);
+        }
+        else if ($data->order_by == 'liked') {
+            $search->add_order(3);
+        }
+        else if ($data->order_by == 'scope') {
+            $search->add_order(2);
         }
         else {
             $search->add_order(2, TRUE);

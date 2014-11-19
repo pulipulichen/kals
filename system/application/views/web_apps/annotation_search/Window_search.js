@@ -105,7 +105,7 @@ Window_search.prototype._search_param = {
      * 由於內文順序的排序尚未完成，所以先關閉
      */
     //order_by: ["update","create","scope"]
-    order_by: ["update","create"]	
+    order_by: ["update","create","responded","liked", "scope"]	
 };
 
 Window_search.prototype.nav_config = {
@@ -814,10 +814,10 @@ Window_search.prototype.open_recent_annotation = function (_callback) {
     
     var _search_option = {
         query_field: "note",
-        //query_value: "*",
+        query_value: "*",
         //query_value: "心願",
-        query_value: "we",
-        order_by: "update"
+        //query_value: "we",
+        order_by: "scope"
     };
     
     this.search(_search_option);
@@ -893,7 +893,8 @@ Window_search.prototype.set_input_value = function(_data){
     }
     
     if (_filtered_data.query_field === "annotation_type") {
-        if (typeof(_filtered_data.query_value) === "string") {
+        if (typeof(_filtered_data.query_value) === "string" 
+                && _filtered_data.query_value !== "") {
             _filtered_data.annotation_type = _filtered_data.query_value;
         }
         _filtered_data.query_value = "";
@@ -953,7 +954,7 @@ Window_search.prototype._setup_exclude_type_list = function () {
  *      order_by: "update|create"
  *      _disable_validate: false
  * }
- * @paam {Boolean} _open_window 預設是true
+ * @param {Boolean} _open_window 預設是true
  * @author Pulipuli Chen 20141113 rename checked
  */
 Window_search.prototype.search = function (_search_option, _open_window, _callback) {
@@ -985,12 +986,24 @@ Window_search.prototype.search = function (_search_option, _open_window, _callba
         this.set_input_value(_search_option);
     }
     
+    if (_search_option.query_field === "annotation_type") {
+        if ($.isset(_search_option.annotation_type)) {
+            _search_option.query_value = _search_option.annotation_type;
+        }
+        else if (_search_option.query_value !== "") {
+            _search_option.annotation_type = _search_option.query_value;
+        }
+    }
+    
     //$.test_msg("Window_search.search()", [_search_option.query_field, _search_option.query_value]);
     if (_search_option.query_field === "annotation_type" 
             && _search_option.query_value === "custom") {
-        //$.test_msg("是自訂標註", this._exclude_type_list);
+//        $.test_msg("是自訂標註", this._exclude_type_list);
         _search_option.exclude_type_list = this._exclude_type_list;
     }
+//    else {
+//        $.test_msg("不是自訂標註", [_search_option.query_field === "annotation_type", _search_option.query_value === "custom", _search_option.query_value]);
+//    }
     
     if (_search_option.query_field === "annotation_type"
             && (typeof(_search_option.query_value) === "undefined" || _search_option.query_value === "") ) {
@@ -1000,6 +1013,8 @@ Window_search.prototype.search = function (_search_option, _open_window, _callba
     if (typeof(_search_option.order_by) === "undefined") {
         _search_option.order_by = this._default_search_option.order_by;
     }
+    
+//   $.test_msg("最後決定的search_option", _search_option);
 
     // -------------------------------
     

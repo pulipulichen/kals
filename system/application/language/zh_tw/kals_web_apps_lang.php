@@ -143,11 +143,13 @@ $lang['web_apps.window_search.list.load_complete'] = '搜尋完畢';
 //$lang['web_apps.window_search.list.loaded_already'] = '沒有其他搜尋結果';
 $lang['web_apps.window_search.reset_search_result'] = '清除搜尋結果';
 $lang['web_apps.window_search.reading_guide'] = '導讀';
+$lang['web_apps.window_search.search_icon'] = '<i class="search icon"></i>';
 
 $lang['web_apps.window_search.oreder_by'] = '排序方式';
 $lang['web_apps.window_search.oreder_by.update'] = '更新日期';
 $lang['web_apps.window_search.oreder_by.create'] = '最新建立';
 $lang['web_apps.window_search.oreder_by.scope'] = '內文順序';
+$lang['web_apps.window_search.oreder_by.responded'] = '被回應次數';
 $lang['web_apps.window_search.oreder_by.liked'] = '喜愛次數';
 
 $lang['web_apps.window.map.nav_heading'] = '小地圖';

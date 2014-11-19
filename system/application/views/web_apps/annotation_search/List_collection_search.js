@@ -151,7 +151,7 @@ List_collection_search.prototype.get_search_data = function () {
     
     _search_data.query_field = _search_option.query_field;
     _search_data.query_value = _search_option.query_value;
-    _search_data._$order_by = _search_option.order_by;
+    _search_data.order_by = _search_option.order_by;
     
     if ($.isset(_search_option.exclude_type_list)) {
         _search_data.exclude_type_list = _search_option.exclude_type_list;

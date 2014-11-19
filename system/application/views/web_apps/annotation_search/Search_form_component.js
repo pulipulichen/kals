@@ -205,13 +205,20 @@ Search_form_component.prototype._create_search_submit_button = function () {
     };
 
     
-    var _submit = (new Dialog_option("", _click_callback)).get_ui();
+    var _lang = new KALS_language_param(
+                '<i class="search icon"></i>',
+                'window_search.search_icon'
+            );
+    
+    var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
 //    _submit.empty()
 //       .addClass("search-form-submit");
     
-    _submit.addClass("search-form-submit")
-            //.html('<i class="fa fa-search"></i>');
-            .html('<i class="search icon"></i>');
+//    _submit.addClass("search-form-submit")
+//            //.html('<i class="fa fa-search"></i>');
+//            .html('<i class="search icon"></i>');
+    
+    _submit.addClass("search-form-submit");
     
     //var _submit = $('<button type="button" class="search-form-submit"></button>')
     //    .append(KALS_context.get_image_url('search.gif'));
@@ -264,9 +271,14 @@ Search_form_component.prototype._create_open_search = function () {
         _this._window_search.open_window();
     };
     
-    var _submit = (new Dialog_option('', _click_callback)).get_ui();
-    _submit.addClass("search-form-submit")
-            .html('<i class="fa fa-search"></i>');
+    var _lang = new KALS_language_param(
+                '<i class="search icon"></i>',
+                'window_search.search_icon'
+            );
+    
+    var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
+    _submit.addClass("search-form-submit");
+//            .html('<i class="fa fa-search"></i>');
 	
     return _submit;
 };

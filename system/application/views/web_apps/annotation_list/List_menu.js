@@ -291,7 +291,7 @@ List_menu.prototype._create_review_ui = function () {
     
     var _this = this;
     _ui.click(function () {
-        $.test_msg("click review_ui");
+        //$.test_msg("click review_ui");
         _this.view_thread();
     });
     
