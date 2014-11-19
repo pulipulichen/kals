@@ -35,7 +35,7 @@ List_collection_search.prototype._$target_topic = null;
 //接收資料的來源
 List_collection_search.prototype._$load_url = 'annotation_getter/search_annotation'; 
 
-List_collection_search.prototype._$limit = 3;
+//List_collection_search.prototype._$limit = 3;
 
 List_collection_search.prototype._$respond_limit = 0;
 
