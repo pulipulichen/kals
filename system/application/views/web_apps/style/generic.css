@@ -1,0 +1,152 @@
+
+.KALS.kals-modal {
+    
+    
+    
+    border: 1px solid #8E846B !important;
+    
+    background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
+        , #FEEEBD 70px, #FEEEBD 100%);
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FEF8E4)
+        , color-stop(0.00, #FEF8E4), color-stop(0.25, #FEF8E4)
+        , color-stop(0.35, #FEEEBD), to(#FEEEBD));    
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FEF8E4'
+        , endColorstr='#FEEEBD');
+    background-color: #FEEEBD;
+        
+    -moz-box-shadow: #6F5A40 0px 2px 10px;
+    -webkit-box-shadow: #6F5A40 0px 2px 10px;
+    -html-box-shadow: #6F5A40 0px 2px 10px;
+    box-shadow: #6F5A40 0px 2px 10px;
+    
+    color: #383838;
+    font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+    font-size: 1.1em;
+    font: 110% arial,helvetica,clean,sans-serif;
+    
+    -moz-border-radius: 8px !important;
+    -webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+    
+    display: block;
+    outline: 0 none;
+    
+    position: absolute;
+    
+}
+
+.KALS.kals-modal .scroll-container {
+    width: 5px;
+    position: fixed;
+    top: 0;
+    right: 5px;
+    margin: 0;
+    padding: 0;
+    
+    /* 觀察container的位置
+     * 2010.9.14 先不用太在意手機上的scroll吧，好像有點難度的感覺 */
+    /*background-color:red;*/
+}
+
+.KALS.kals-modal .scroll {
+    background-color: #666666;
+    border-radius: 2.5px !important;
+    -moz-border-radius: 2.5px !important;
+    position:relative;
+}
+
+.KALS.kals-modal .scroll-wrapper {
+    padding: 0;
+    margin: 0;
+}
+.KALS.kals-modal .list-option{
+	display:inline;
+}
+
+/* -------- */
+/* form */
+
+.KALS input.placeheld,
+.KALS textarea.placeheld {
+    color: gray;
+} 
+
+.KALS .link {
+    text-decoration:underline;
+    cursor: pointer;
+}
+
+.KALS span, 
+.KALS.kals-model span {
+    display: inline;
+    position: static;
+}
+
+.KALS.info-box {
+	border: 1px solid gray;
+	color: gray;
+}
+
+/* -------- */
+/* font */
+.KALS {
+    font: 100% arial,helvetica,clean,sans-serif;
+}
+
+/**
+ * 為了配合KALS-moodle的設計
+ */
+.KALS div.hide,
+.KALS p.hide{
+    display: block;
+}
+
+.KALS span.hide {
+    display: inline;
+}
+
+.KALS li.hide {
+    display: list-item;
+}
+
+.KALS table.hide {
+    display: table;
+}
+
+.KALS caption.hide {
+    display: table-caption;
+}
+
+.KALS colgroup.hide {
+    display: table-column-group;
+}
+
+.KALS td.hide {
+    display: table-cell;
+}
+
+.KALS tr.hide {
+    display: table-row;
+}
+
+.KALS .header {
+    color: inherit;
+}
+
+.KALS th, .KALS td {
+    border: inherit;
+    padding: inherit;
+}
+
+.KALS p, .KALS fieldset, .KALS table, .KALS pre {
+    margin-bottom: auto;
+}
+
+/* ------------------------ */
+.KALS.fake {
+    /*display: none;*/
+}
+.KALS.absolute {
+    /*position: absolute;*/
+}

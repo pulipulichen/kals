@@ -700,6 +700,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 						var iframe = CKEDITOR.document.getById( _.frameId ),
 							contentDiv = iframe.getParent();
 						contentDiv.addClass( 'cke_dialog_ui_input_file' );
+                                                contentDiv.addClass( 'AAA' );
 					} );
 
 				CKEDITOR.ui.dialog.labeledElement.call( this, dialog, elementDefinition, htmlList, innerHTML );

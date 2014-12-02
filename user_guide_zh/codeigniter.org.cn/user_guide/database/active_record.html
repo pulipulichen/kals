@@ -1,0 +1,812 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Active Record 模式 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;<a href="index.html">数据库类</a>&nbsp;&#8250;&nbsp;Active Record 模式	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/database/active_record.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>Active Record 类</h1>
+
+
+<p>CodeIgniter 使用的是修改过的 Active Record 数据库模式。
+这种模式是以较少的程序代码来实现信息在数据库中的获取，插入，更改。
+有时只用一两行的代码就能完成对数据库的操作。
+CodeIgniter 不需要每一个数据库表拥有自己的类。它提供了一个更简单的接口。</p>
+
+<p>不只是简单，使用 Active Record 的一个主要的优点是允许你创建独立的数据库应用程序，因为查询语法是由数据库的适配器来产生的。它可以进行更安全的查询，因为系统会自动的对所有的输入值进行转义。</p>
+
+<p class="important"><strong>注意:</strong>  你如果想要写自己的查询表达式，可以在数据库配置文件中禁止这个类。同时相比 Active Record，使用核心数据库类库和适配器将会使用更少资源。<br /></p>
+
+
+<ul>
+<li><a href="wsdindex.html#select">选择数据</a></li>
+<li><a href="wsdindex.html#insert">插入数据</a></li>
+<li><a href="wsdindex.html#update">更新数据</a></li>
+<li><a href="wsdindex.html#delete">删除数据</a></li>
+<li><a href="wsdindex.html#chaining">链式方法</a></li>
+<li><a href="wsdindex.html#caching">Active Record 缓存</a></li>
+</ul>
+
+
+
+<a name="select">&nbsp;</a>
+<h1>选择数据</h1>
+
+<p>下面的函数帮助你构建 SQL <strong>SELECT</strong>语句。</p>
+
+<p><strong>备注：如果你正在使用 PHP5，你可以在复杂情况下使用链式语法。本页面底部有具体描述。</strong></p>
+
+
+<h2>$this-&gt;db-&gt;get();</h2>
+
+<p>运行选择查询语句并且返回结果集。可以获取一个表的全部数据。</p>
+
+<code>$query = $this-&gt;db-&gt;get('mytable');<br />
+<br />
+// Produces: SELECT * FROM mytable</code>
+
+<p>第二和第三个参数允许你设置一个结果集每页纪录数(limit)和结果集的偏移(offset)</p>
+
+<code>$query = $this-&gt;db-&gt;get('mytable', 10, 20);<br />
+<br />
+// Produces: SELECT * FROM mytable LIMIT 20, 10 (in MySQL. Other databases have slightly different syntax)</code>
+
+<p>注意：第二参数是每页纪录数，第三个参数是偏移</p>
+<p>你会注意到上面的函数由一个变量<kbd>$query</kbd>执行，这个<kbd>$query</kbd>可以用来显示结果集。</p>
+
+<code>$query = $this-&gt;db-&gt;get('mytable');<br />
+<br />
+foreach ($query-&gt;result() as $row)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $row-&gt;title;<br />
+
+&#125;</code>
+
+<p>请访问<a href="results.html">查询结果</a>页查看详细的生成结果的方法。</p>
+
+<h2>$this-&gt;db-&gt;get_where();</h2>
+
+<p>跟上面的函数一样，只是它允许你在函数的第二个参数那里添加一个 where 从句，从而不用使用 db-&gt;where() 这个函数：</p>
+
+<code>$query = $this-&gt;db-&gt;get_where('mytable', array('id' => $id), $limit, $offset);</code>
+
+<p>请阅读下面的 where 函数了解更多。</p>
+<p class="important">注意: get_where() 在以前的版本中写作 getwhere()，这是已经过时的用法。</p>
+
+<h2>$this-&gt;db-&gt;select();</h2>
+<p>允许你在SQL查询中写 SELECT 部分:</p>
+<p><code>
+$this-&gt;db-&gt;select('title, content, date');<br />
+<br />
+$query = $this-&gt;db-&gt;get('mytable');<br />
+<br />
+
+// Produces: SELECT title, content, date FROM mytable</code></p>
+<p class="important"><strong>注意:</strong> 如果你你要查询表中的所有行，你可以不用写这个函数。省略后，CodeIgniter 会认为你要查询
+全部行(SELECT *)。</p>
+
+<p>$this-&gt;db-&gt;select() 可接受一个可选的第二个参数。如果你把它设为FALSE， CodeIgniter 将不会使用反引号保护你的字段或者表名
+。这在进行复合查询时很有用。</p>
+<p><code>$this-&gt;db-&gt;select('(SELECT SUM(payments.amount) FROM payments WHERE payments.invoice_id=4') AS amount_paid', FALSE); <br />
+$query = $this-&gt;db-&gt;get('mytable');<br />
+
+</code></p>
+<h2>$this-&gt;db-&gt;select_max();</h2>
+<p>为你的查询编写一个 "SELECT MAX(field)"。你可以选择性的给出第二个参数，以便重命名结果字段名。</p>
+<p><code>
+$this-&gt;db-&gt;select_max('age');<br />
+$query = $this-&gt;db-&gt;get('members');<br />
+
+// Produces: SELECT MAX(age) as age FROM members<br />
+<br />
+$this-&gt;db-&gt;select_max('age', 'member_age');<br />
+
+$query = $this-&gt;db-&gt;get('members');<br />
+// Produces: SELECT MAX(age) as member_age FROM members</code></p>
+
+<h2>$this-&gt;db-&gt;select_min();</h2>
+<p>为你的查询编写一个 "SELECT MIN(field)" 。与 <dfn>select_max()</dfn> 相似, 你可以选择性地给出第二个参数，用来给结果字段重命名。</p>
+<p><code>
+$this-&gt;db-&gt;select_min('age');<br />
+$query = $this-&gt;db-&gt;get('members');<br />
+
+// 生成: SELECT MIN(age) as age FROM members</code></p>
+
+<h2>$this-&gt;db-&gt;select_avg();</h2>
+<p>为你的查询编写一个 "SELECT AVG(field)" 。与 <dfn>select_max()</dfn> 相似, 你可以选择性地给出第二个参数，用来给结果字段重命名。</p>
+<p><code>
+$this-&gt;db-&gt;select_avg('age');<br />
+$query = $this-&gt;db-&gt;get('members');<br />
+// 生成: SELECT AVG(age) as age FROM members</code></p>
+
+<h2>$this-&gt;db-&gt;select_sum();</h2>
+<p>为你的查询编写一个 "SELECT SUM(field)" 。与 <dfn>select_max()</dfn> 相似, 你可以选择性地给出第二个参数，用来给结果字段重命名。</p>
+<p><code>
+$this-&gt;db-&gt;select_sum('age');<br />
+$query = $this-&gt;db-&gt;get('members');<br />
+// 生成: SELECT SUM(age) as age FROM members</code></p>
+
+<h2>$this-&gt;db-&gt;from();</h2>
+
+<p>允许你编写查询中的FROM部分:</p>
+
+<code>
+$this-&gt;db-&gt;select('title, content, date');<br />
+$this-&gt;db-&gt;from('mytable');<br />
+<br />
+$query = $this-&gt;db-&gt;get();<br />
+<br />
+// 生成: SELECT title, content, date FROM mytable</code>
+
+<p class="important">说明: 正如前面所说，查询中的FROM部分可以在 <dfn>$this-&gt;db-&gt;get()</dfn> 函数中指定，所以你可以根据自己的喜好来选择使用哪个方法。</p>
+
+<h2>$this-&gt;db-&gt;join();</h2>
+
+<p>允许你编写查询中的JOIN部分:</p>
+
+<code>
+$this-&gt;db-&gt;select('*');<br />
+$this-&gt;db-&gt;from('blogs');<br />
+$this-&gt;db-&gt;join('comments', 'comments.id = blogs.id');<br />
+<br />
+$query = $this-&gt;db-&gt;get();<br />
+
+<br />
+// 生成: <br />
+// SELECT * FROM blogs<br />
+// JOIN comments ON comments.id = blogs.id<br />
+</code>
+
+<p>如果你想要在查询中使用多个连接，可以多次调用本函数。</p>
+
+<p>如果你需要使用除自然连接(natural join)之外的其它连接，你可以通过本函数的第三个参数来指定。可选项包括：left, right, outer, inner, left outer, 以及 right outer.</p>
+
+<code>
+$this-&gt;db-&gt;join('comments', 'comments.id = blogs.id', <strong>'left'</strong>);<br />
+
+<br />
+// 生成: LEFT JOIN comments ON comments.id = blogs.id</code>
+
+
+
+
+
+<h2>$this-&gt;db-&gt;where();</h2>
+<p>本函数允许你使用四种方法中的一种来设置 <strong>WHERE</strong> 子句:</p>
+
+<p class="important"><strong>说明:</strong> 传递给本函数的所有值都会被自动转义，以便生成安全的查询。</p>
+
+<ol>
+ <li><strong>简单的 key/value 方法:</strong>
+
+ <code>$this-&gt;db-&gt;where('name', $name);
+ <br /><br />// 生成: WHERE name = 'Joe'
+ </code>
+ 
+ <p>请注意等号已经为你添加。</p>
+ 
+ <p>如果你多次调用本函数，那么这些条件会被 <var>AND</var> 连接起来:</p>
+
+ 
+ <code>$this-&gt;db-&gt;where('name', $name);<br />
+ $this-&gt;db-&gt;where('title', $title);<br />
+ $this-&gt;db-&gt;where('status', $status);
+ <br /><br />// WHERE name = 'Joe' AND title = 'boss' AND status = 'active'
+ </code>
+ 
+
+ </li>
+ 
+ <li><strong>自定义 key/value 方法:</strong>
+ 
+ <p>你可以在第一个参数中包含一个运算符，以便控制比较:</p>
+
+ 
+ <code>$this-&gt;db-&gt;where('name !=', $name);<br />
+ $this-&gt;db-&gt;where('id <', $id);
+ <br /><br />// 生成: WHERE name != 'Joe' AND id < 45</code></li>
+
+ <li><strong>关联数组方法:</strong>
+
+ <code>
+ $array = array('name' => $name, 'title' => $title, 'status' => $status);<br /><br />
+ 
+ $this-&gt;db-&gt;where($array);
+ <br /><br />// 生成: WHERE name = 'Joe' AND title = 'boss' AND status = 'active'
+ </code>
+
+ <p>使用这个方法时你也可以包含运算符:</p>
+
+ <code>
+
+ $array = array('name !=' => $name, 'id <' => $id, 'date >' => $date);<br /><br />
+ 
+ $this-&gt;db-&gt;where($array);</code>
+
+ </li>
+  <li><strong>自定义字符串:</strong>
+  
+  <p>你可以手动的编写子句:</p>
+
+  <code>
+  $where = "name='Joe' AND status='boss' OR status='active'";<br /><br />
+  $this-&gt;db-&gt;where($where);</code>
+
+ </li>
+</ol>
+
+<p>$this-&gt;db-&gt;where() 接受可选的第三个参数。如果你将它设置为 FALSE, CodeIgniter 将不会为你那些包含反勾号的字段名或表名提供保护。</p>
+<p><code>   $this-&gt;db-&gt;where('MATCH (field) AGAINST (&quot;value&quot;)', NULL, FALSE);<br />
+</code></p>
+
+<h2>$this-&gt;db-&gt;or_where();</h2>
+<p>本函数与上面的那个几乎完全相同，唯一的区别是本函数生成的子句是用 OR 来连接的:</p>
+
+<code>
+$this-&gt;db-&gt;where('name !=', $name);<br />
+$this-&gt;db-&gt;or_where('id >', $id);
+<br />
+<br />// 生成: WHERE name != 'Joe' OR id > 50</code>
+
+<p class="important">说明: or_where() 以前被叫作 orwhere(), 后者已经过时。</p>
+
+
+<h2>$this-&gt;db-&gt;where_in();</h2>
+<p>生成一段 WHERE field IN ('item', 'item') 查询语句，如果合适的话，用 AND 连接起来。</p>
+
+<p><code>
+    $names = array('Frank', 'Todd', 'James');<br />
+    $this-&gt;db-&gt;where_in('username', $names);<br />
+    // 生成: WHERE username IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this-&gt;db-&gt;or_where_in();</h2>
+<p>生成一段 WHERE field IN ('item', 'item') 查询语句，如果合适的话，用 OR 连接起来。</p>
+<p><code>
+    $names = array('Frank', 'Todd', 'James');<br />
+
+    $this-&gt;db-&gt;or_where_in('username', $names);<br />
+    // 生成: OR username IN ('Frank', 'Todd', 'James')</code></p>
+    
+<h2>$this-&gt;db-&gt;where_not_in();</h2>
+<p>生成一段 WHERE field NOT IN ('item', 'item') 查询语句，如果合适的话，用 AND 连接起来。</p>
+<p><code>
+    $names = array('Frank', 'Todd', 'James');<br />
+    $this-&gt;db-&gt;where_not_in('username', $names);<br />
+
+    // 生成: WHERE username NOT IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this-&gt;db-&gt;or_where_not_in();</h2>
+<p>生成一段 WHERE field NOT IN ('item', 'item') 查询语句，如果合适的话，用 OR 连接起来。</p>
+<p><code>
+    $names = array('Frank', 'Todd', 'James');<br />
+    $this-&gt;db-&gt;or_where_not_in('username', $names);<br />
+    // 生成: OR username NOT IN ('Frank', 'Todd', 'James')</code></p>
+
+<h2>$this-&gt;db-&gt;like();</h2>
+<p>本函数允许你生成 <strong>LIKE</strong> 子句，在做查询时非常有用。</p>
+
+<p class="important"><strong>说明:</strong> 传递给本函数的所有值都会被自动转义。</p>
+
+
+<ol>
+ <li><strong>简单 key/value 方式:</strong>
+
+ <code>$this-&gt;db-&gt;like('title', 'match');
+ <br /><br />// 生成: WHERE title LIKE '%match%' </code>
+  
+ <p>如果你多次调用本函数，那么这些条件将由 <var>AND</var> 连接起来:</p>
+ 
+ <code>$this-&gt;db-&gt;like('title', 'match');<br />
+ $this-&gt;db-&gt;like('body', 'match');
+ <br /><br />
+
+ // WHERE title LIKE '%match%' AND  body LIKE '%match%'</code>
+ 如果你想要控制通配符(%)所出现的位置，你可以使用可选的第三个参数。可用的选项是 'before', 'after' 以及 'both' (这是默认值)。 
+ <code>$this-&gt;db-&gt;like('title', 'match', 'before');
+ <br />
+  // 生成: WHERE title LIKE '%match' <br />
+     <br />
+ $this-&gt;db-&gt;like('title', 'match', 'after'); <br />
+
+// 生成: WHERE title LIKE 'match%' <br />
+<br />
+ $this-&gt;db-&gt;like('title', 'match', 'both'); <br />
+// 生成: WHERE title LIKE '%match%' </code> </li>
+ 
+ <li><strong>关联数组方式:</strong>
+
+ <code>
+
+ $array = array('title' => $match, 'page1' => $match, 'page2' => $match);<br /><br />
+ 
+ $this-&gt;db-&gt;like($array);
+ <br /><br />// WHERE title LIKE '%match%' AND page1 LIKE '%match%' AND page2 LIKE '%match%'</code></li>
+    </ol>
+ 
+ 
+<h2>$this-&gt;db-&gt;or_like();</h2>
+<p>本函数与上面那个函数几乎完全相同，唯一的区别是多个实例之间是用 OR 连接起来的:</p>
+
+<code>
+$this-&gt;db-&gt;like('title', 'match');<br />
+
+$this-&gt;db-&gt;or_like('body', $match);
+<br />
+<br />// WHERE title LIKE '%match%' OR body LIKE '%match%'</code>
+
+
+
+ 
+<p class="important">说明: or_like() 曾经被称为 orlike(), 后者已经过时。</p>
+<h2>$this-&gt;db-&gt;not_like();</h2>
+<p>本函数与 <strong>like()</strong> 几乎完全相同，唯一的区别是它生成 NOT LIKE 语句:</p>
+
+<code> $this-&gt;db-&gt;not_like('title', 'match');<br />
+<br />
+// WHERE title NOT LIKE '%match%</code>
+<h2>$this-&gt;db-&gt;or_not_like();</h2>
+<p>本函数与 <strong>not_like()</strong> 几乎完全相同，唯一的区别是多个实例之间是用 OR 连接起来的:</p>
+<code> $this-&gt;db-&gt;like('title', 'match');<br />
+
+$this-&gt;db-&gt;or_not_like('body', 'match'); <br />
+<br />
+// WHERE title  LIKE '%match%' OR body NOT LIKE '%match%'</code>
+<h2>$this-&gt;db-&gt;group_by();</h2>
+<p>允许你编写查询语句中的 GROUP BY 部分:</p>
+ 
+<code>$this-&gt;db-&gt;group_by("title");
+<br /><br />// 生成: GROUP BY title
+</code>
+
+<p>你也可以把多个值作为数组传递过去:</p>
+
+ 
+<code>$this-&gt;db-&gt;group_by(array("title", "date"));
+<br />
+<br />// 生成: GROUP BY title, date</code>
+ 
+<p class="important">说明: group_by() 曾经被称为 groupby(), 后者已经过时。</p>
+
+<h2> $this-&gt;db-&gt;distinct();<br />
+</h2>
+<p>为查询语句添加 &quot;DISTINCT&quot; 关键字:</p>
+
+<p><code>$this-&gt;db-&gt;distinct();<br />
+    $this-&gt;db-&gt;get('table');<br />
+        <br />
+    // 生成: SELECT DISTINCT * FROM table</code></p>
+<h2>$this-&gt;db-&gt;having();</h2>
+<p>允许你为你的查询语句编写 HAVING 部分。有两种语法形式，一个或两个参数都可以:</p>
+
+ 
+<code>$this-&gt;db-&gt;having('user_id = 45');
+<br />
+// 生成: HAVING user_id = 45<br />
+<br />
+$this-&gt;db-&gt;having('user_id',  45); <br />
+// 生成: HAVING user_id = 45<br />
+<br />
+</code>
+ 
+<p>你也可以把多个值通过数组传递过去:</p>
+
+
+<p><code>$this-&gt;db-&gt;having(array('title =' => 'My Title', 'id <' => $id)); <br />
+  <br />
+ // 生成: HAVING title = 'My Title', id < 45</code></p>
+<p>如果你正在使用一个由CodeIgniter进行转义保护的数据库，为了避免内容转义，你可以传递可选的第三个参数，并将其设置为FALSE。</p>
+<p><code>$this-&gt;db-&gt;having('user_id',  45); <br />
+// 生成: HAVING `user_id` = 45 (在诸如MySQL等数据库中)
+  <br />
+  $this-&gt;db-&gt;having('user_id',  45, FALSE); <br />
+// 生成: HAVING user_id = 45</code></p>
+ 
+ 
+<h2>$this-&gt;db-&gt;or_having();</h2>
+<p>与 having() 函数几乎完全一样，唯一的区别是多个子句之间是用 &quot;OR&quot; 分隔的。</p>
+<h2>$this-&gt;db-&gt;order_by();</h2>
+<p>帮助你设置一个 ORDER BY 子句。第一个参数是你想要排序的字段名。第二个参数设置结果的顺序，可用的选项包括 <kbd>asc</kbd> (升序)或 <kbd>desc</kbd>(降序), 或 <kbd>random</kbd>(随机)。</p>
+
+ 
+<code>$this-&gt;db-&gt;order_by("title", "desc");
+<br />
+<br />// 生成: ORDER BY title DESC
+</code>
+
+<p>你也可以在第一个参数中传递你自己的字符串:</p>
+ 
+<code>$this-&gt;db-&gt;order_by('title desc, name asc');
+<br />
+<br />// 生成: ORDER BY title DESC, name ASC
+</code>
+
+<p>或者，多次调用本函数就可以排序多个字段。</p>
+
+<p><code>$this-&gt;db-&gt;order_by("title", "desc");<br />
+    $this-&gt;db-&gt;order_by("name", "asc"); <br />
+    <br />
+    // 生成: ORDER BY title DESC, name ASC
+    </code></p>
+<p class="important">说明: order_by() 曾经被称为 orderby(), 后者已经过时。</p>
+<p class="important">说明: 目前 Oracle 和 MSSQL 的驱动还不支持随机排序，将被默认设置为 'ASC'(升序)。</p>
+<h2>$this-&gt;db-&gt;limit();</h2>
+<p>限制查询所返回的结果数量:</p>
+
+<code>
+$this-&gt;db-&gt;limit(10);<br />
+<br />
+// 生成: LIMIT 10</code>
+
+
+<p>第二个参数设置的是结果偏移量。</p>
+
+<code>
+$this-&gt;db-&gt;limit(10, 20);<br />
+<br />
+// 生成: LIMIT 20, 10 (仅限MySQL中。其它数据库有稍微不同的语法)</code>
+
+
+<h2>$this-&gt;db-&gt;count_all_results();</h2>
+
+<p>允许你获得某个特定的Active Record查询所返回的结果数量。可以使用Active Record限制函数，例如 where(),  or_where(), like(), or_like() 等等。范例：</p>
+<code>echo $this-&gt;db-&gt;count_all_results('<var>my_table</var>');<br />
+
+// 生成一个整数，例如 25<br />
+<br />
+$this-&gt;db-&gt;like('title', 'match');<br />
+
+$this-&gt;db-&gt;from('<var>my_table</var>');<br />
+echo $this-&gt;db-&gt;count_all_results();<br />
+// 生成一个整数，例如 17 </code>
+
+
+ 
+<a name="insert">&nbsp;</a>
+<h1>插入数据</h1>
+ 
+<h2>$this-&gt;db-&gt;insert();</h2>
+
+<p>生成一条基于你所提供的数据的SQL插入字符串并执行查询。你可以向函数传递 <strong>数组</strong> 或一个 <strong>对象</strong>。下面是一个使用数组的例子：</p>
+
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => 'My title' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'My Name' ,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => 'My date'<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this-&gt;db-&gt;insert('mytable', $data);
+<br /><br />
+// Produces: INSERT INTO mytable (title, name, date) VALUES ('My title', 'My name', 'My date')</code>
+
+<p>第一个参数包含表名，第二个是一个包含数据的关联数组。</p>
+
+<p>下面是一个使用对象的例子：</p>
+
+<code>
+/*<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;class Myclass &#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $title = 'My Title';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $content = 'My Content';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $date = 'My Date';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+*/<br />
+<br />
+$object = new Myclass;<br />
+<br />
+$this-&gt;db-&gt;insert('mytable', $object);
+
+<br /><br />
+// Produces: INSERT INTO mytable (title, content, date) VALUES ('My Title', 'My Content', 'My Date')</code>
+
+<p>第一个参数包含表名，第二个是一个对象。（原文有错：The first parameter will contain the table name, the second is an associative array of values.）</p>
+
+<p class="important"><strong>注意:</strong> 所有的值已经被自动转换为安全查询。</p>
+ 
+ 
+ 
+
+<h2>$this-&gt;db-&gt;set();</h2>
+<p>本函数使您能够设置<dfn>inserts</dfn>(插入)或<dfn>updates</dfn>(更新)值。</p>
+
+<p><strong>它可以用来代替那种直接传递数组给插入和更新函数的方式:</strong> </p>
+
+<code>$this-&gt;db-&gt;set('name', $name);
+<br />
+$this-&gt;db-&gt;insert('mytable');
+<br /><br />
+// 生成: INSERT INTO mytable (name) VALUES ('&#123;$name&#125;')</code>
+
+<p>如果你多次调用本函数，它们会被合理地组织起来，这取决于你执行的是插入操作还是更新操作:</p>
+
+<code>$this-&gt;db-&gt;set('name', $name);<br />
+
+$this-&gt;db-&gt;set('title', $title);<br />
+$this-&gt;db-&gt;set('status', $status);<br />
+$this-&gt;db-&gt;insert('mytable'); </code>
+<p><strong>set()</strong> 也接受可选的第三个参数($escape)，如果此参数被设置为 FALSE，就可以阻止数据被转义。为了说明这种差异，这里将对 包含转义参数 和 不包含转义参数 这两种情况的 set() 函数做一个说明。</p>
+<p><code>$this-&gt;db-&gt;set('field', 'field+1', FALSE);<br />
+
+    $this-&gt;db-&gt;insert('mytable'); <br />
+    // 得到 INSERT INTO mytable (field) VALUES (field+1)<br />
+    <br />
+    $this-&gt;db-&gt;set('field', 'field+1');<br />
+    $this-&gt;db-&gt;insert('mytable'); <br />
+
+    // 得到 INSERT INTO mytable (field) VALUES ('field+1')</code></p>
+<p>你也可以将一个关联数组传递给本函数:</p>
+<code>
+$array = array('name' => $name, 'title' => $title, 'status' => $status);<br /><br />
+
+$this-&gt;db-&gt;set($array);<br />
+$this-&gt;db-&gt;insert('mytable');
+</code>
+
+<p>或者一个对象也可以:</p>
+
+<code>
+/*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;class Myclass &#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $title = 'My Title';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $content = 'My Content';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $date = 'My Date';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+*/<br />
+<br />
+
+$object = new Myclass;<br />
+<br />
+$this-&gt;db-&gt;set($object);<br />
+$this-&gt;db-&gt;insert('mytable');
+</code>
+
+
+ 
+<a name="update">&nbsp;</a>
+<h1>更新数据</h1>
+ 
+<h2>$this-&gt;db-&gt;update();</h2>
+<p>根据你提供的数据生成并执行一条update(更新)语句。你可以将一个<strong>数组</strong>或者<strong>对象</strong>传递给本函数。这里是一个使用数组的例子:</p>
+
+<code>
+$data = array(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'title' => $title,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'name' => $name,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'date' => $date<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this-&gt;db-&gt;where('id', $id);<br />
+$this-&gt;db-&gt;update('mytable', $data);
+<br /><br />
+// 生成:<br />
+// UPDATE mytable <br />
+// SET title = '&#123;$title&#125;', name = '&#123;$name&#125;', date = '&#123;$date&#125;'<br />
+// WHERE id = $id</code>
+
+<p>或者你也可以传递一个对象:</p>
+
+<code>
+/*<br />
+&nbsp;&nbsp;&nbsp;&nbsp;class Myclass &#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $title = 'My Title';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $content = 'My Content';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var  $date = 'My Date';<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+*/<br />
+<br />
+
+$object = new Myclass;<br />
+<br />
+$this-&gt;db-&gt;where('id', $id);<br />
+$this-&gt;db-&gt;update('mytable', $object);
+<br />
+<br />
+// 生成:<br />
+// UPDATE mytable <br />
+// SET title = '&#123;$title&#125;', name = '&#123;$name&#125;', date = '&#123;$date&#125;'<br />
+// WHERE id = $id</code>
+
+
+<p class="important"><strong>说明:</strong> 所有值都会被自动转义，以便生成安全的查询。</p>
+ 
+<p>你会注意到 <dfn>$this-&gt;db-&gt;where()</dfn> 函数的用法，它允许你设置 WHERE 子句。你可以有选择性地将这一信息直接以字符串的形式传递给 update 函数:</p>
+
+<code>$this-&gt;db-&gt;update('mytable', $data, "id = 4");</code>
+
+<p>或者是一个数组:</p>
+
+<code>$this-&gt;db-&gt;update('mytable', $data, array('id' => $id));</code>
+ 
+<p>在进行更新时，你还可以使用上面所描述的 <dfn>$this-&gt;db-&gt;set()</dfn> 函数。</p>
+
+ 
+<a name="delete">&nbsp;</a>
+<h1>删除数据</h1>
+
+
+ 
+
+<h2>$this-&gt;db-&gt;delete();</h2>
+<p>生成并执行一条DELETE(删除)语句。</p>
+
+<code>
+$this-&gt;db-&gt;delete('mytable', array('id' => $id));
+<br /><br />
+// 生成:<br />
+// DELETE FROM mytable <br />
+// WHERE id = $id</code>
+
+<p>第一个参数是表名，第二个参数是where子句。你可以不传递第二个参数，使用 <dfn>where()</dfn> 或者 <dfn>or_where()</dfn> 函数来替代它:</p>
+
+<p><code> $this-&gt;db-&gt;where('id', $id);<br />
+    $this-&gt;db-&gt;delete('mytable'); <br />
+    <br />
+    // 生成:<br />
+    // DELETE FROM mytable <br />
+    // WHERE id = $id</code></p>
+
+<p>如果你想要从一个以上的表中删除数据，你可以将一个包含了多个表名的数组传递给delete()函数。</p>
+<p><code>$tables = array('table1', 'table2', 'table3');<br />
+$this-&gt;db-&gt;where('id', '5');<br />
+$this-&gt;db-&gt;delete($tables);</code></p>
+<p>如果你想要删除表中的全部数据，你可以使用 <dfn>truncate()</dfn> 函数，或者 <dfn>empty_table()</dfn> 函数。</p>
+
+<h2>$this-&gt;db-&gt;empty_table();</h2>
+<p>生成并执行一条DELETE(删除)语句。<code>    $this-&gt;db-&gt;empty_table('mytable'); <br />
+    <br />
+// 生成<br />
+// DELETE FROM mytable</code></p>
+<h2>$this-&gt;db-&gt;truncate();</h2>
+
+<p>生成并执行一条TRUNCATE(截断)语句。</p>
+<code> $this-&gt;db-&gt;from('mytable'); <br />
+$this-&gt;db-&gt;truncate(); <br />
+// 或 <br />
+$this-&gt;db-&gt;truncate('mytable'); <br />
+
+<br />
+// 生成:<br />
+// TRUNCATE mytable <br />
+</code>
+<p class="important"><strong>说明:</strong> 如果 TRUNCATE 命令不可用，truncate() 将会以 &quot;DELETE FROM table&quot; 的方式执行。</p>
+<h1><a name="chaining">&nbsp;</a>链式方法</h1>
+
+<p>链式方法允许你以连接多个函数的方式简化你的语法。考虑一下这个范例:</p>
+
+<code>
+<dfn>$this-&gt;db</dfn><kbd>-&gt;</kbd><var>select</var>('title')<kbd>-&gt;</kbd><var>from</var>('mytable')<kbd>-&gt;</kbd><var>where</var>('id', $id)<kbd>-&gt;</kbd><var>limit</var>(10, 20);<br />
+<br />
+
+$query = $this-&gt;db-&gt;get();</code>
+
+<p class="important"><strong>说明:</strong> 链式方法只能在PHP 5下面运行。</p>
+
+<p>&nbsp;</p>
+
+<h1><a name="caching">&nbsp;</a>Active Record 缓存</h1>
+
+<p>尽管不是 &quot;真正的&quot; 缓存，Active Record 允许你将查询的某个特定部分保存(或&quot;缓存&quot;)起来，以便在你的脚本执行之后重用。一般情况下，当一次Active Record调用结束，所有已存储的信息都会被重置，以便下一次调用。如果开启缓存，你就可以使信息避免被重置，方便你进行重用。</p>
+
+<p>缓存调用是累加的。如果你调用了两次有缓存的 select()，然后再调用两次没有缓存的 select()，这会导致 select() 被调用4次。有三个可用的缓存函数:</p>
+
+<h2>$this-&gt;db-&gt;start_cache()</h2>
+<p>本函数必须被用来开启缓存。所有类型正确的(下面给出了支持的查询类型) Active Record 查询都会被存储起来供以后使用。</p>
+<h2>$this-&gt;db-&gt;stop_cache()</h2>
+<p>本函数可以被用来停止缓存。</p>
+<h2>$this-&gt;db-&gt;flush_cache()</h2>
+<p>本函数从Active Record 缓存中删除全部项目。</p>
+<p>这里是一个使用范例:</p>
+<p><code>$this-&gt;db-&gt;start_cache();<br />
+$this-&gt;db-&gt;select('field1');<br />
+$this-&gt;db-&gt;stop_cache();<br /><br />
+$this-&gt;db-&gt;get('tablename');<br />
+<br />
+//Generates: SELECT `field1` FROM (`tablename`)<br />
+<br />
+$this-&gt;db-&gt;select('field2');<br />
+$this-&gt;db-&gt;get('tablename');<br />
+<br />
+//Generates:  SELECT `field1`, `field2` FROM (`tablename`)<br />
+<br />
+$this-&gt;db-&gt;flush_cache();<br />
+<br />
+$this-&gt;db-&gt;select('field2');<br />
+$this-&gt;db-&gt;get('tablename');<br />
+<br />
+//Generates:  SELECT `field2` FROM (`tablename`)</code></p>
+
+<p class="important"> <strong>说明:</strong> 下列语句能够被缓存: select, from, join, where, like, groupby, having, orderby, set</p>
+<p>&nbsp;</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+aykirk, Fanbin, Hex, huanxiangwu, imjie, thankwsx, yinzhili, zhangminghua218</div>
+<div id="DocDate">
+最后修改: 2009-09-22 09:36:16</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="helpers.html">查询辅助函数</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="transactions.html">事务</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

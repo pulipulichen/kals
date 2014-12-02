@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CodeIgniter 是什么？ - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;CodeIgniter 是什么？	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/overview/at_a_glance.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1><font size="5">CodeIgniter 是什么？</font></h1>
+<h2>CodeIgniter 是一个应用程序框架</h2>
+<p>CodeIgniter 是一个为用 PHP 编写网络应用程序的人员提供的工具包。它的目标是实现让你比从零开始编写代码更快速地开发项目，为此，CI 提供了一套丰富的类库来满足通常的任务需求，并且提供了一个简单的接口和逻辑结构来调用这些库。CodeIgniter 可以将需要完成的任务代码量最小化，这样你就可以把更多的精力放到项目的开发上了。</p>
+<h2>CodeIgniter 是免费的</h2>
+<p>CodeIgniter 是经过 Apache/BSD-style 开源许可授权的，只要你愿意就可以使用它。阅读 <a href="../../user_guide/license.html">许可协议</a> 可获得更多的信息。</p>
+<h2>CodeIgniter 在 PHP 4 上运行</h2>
+<p>CodeIgniter 的编写完全兼容 PHP 4。尽管 PHP 5 在面向对象处理方面更具优势，我们本该利用此优势来简化我们（在 PHP4 下的）实现创造性解决方案的(例如：多继承)工作，但是我们建立此框架时，PHP 5 并未被广泛使用，这意味着(如果用 PHP 5来写)我们将要放弃大部分的潜在用户。主流操作系统供应商比如 REDHAT 非常缓慢得转向对 PHP5 的支持，并且短期内他们不大可能会全面支持 PHP5。所以，我们认为用 PHP 5 来写 CodeIgniter 不合 PHP 社区的最大利益。</p>
+
+<p>注解: CodeIgniter 能够在PHP5环境下运行。只是它没有使用PHP5独有的高级特征。</p>
+<h2>CodeIgniter 是轻量级的</h2>
+<p>真正的轻量级。我们的核心系统只需要一些非常小的库，这与那些需要更多资源的框架完全相反。额外的库文件只在请求的时候加载，依需求而定，所以核心系统是非常快而且轻的。</p>
+<h2>CodeIgniter 是快速的</h2>
+<p>速度非常快。你要找到一个比 CodeIgniter 表现更优的框架应该很难吧。</p>
+<h2>CodeIgniter 使用 M-V-C 模型</h2>
+<p>CodeIgniter 使用了模型（Model）- 视图（View）- 控制器（Controllers）的方法，这样可以更好地使表现层和逻辑层分离。这对项目的模板设计者来说是非常有用的，它最小化了模板中的程序代码量。我们在 MVC 各自的页面中对此做了更多的介绍。</p>
+<h2>CodeIgniter 生成干净的 URL</h2>
+<p>CodeIgniter 生成的 URL 非常干净而且是对搜索引擎友好化的。不同于标准的&ldquo;字符串查询&rdquo;方法，CodeIgniter使用了 segment-based 这样的方法：</p>
+<code>example.com/<var>news</var>/<dfn>article</dfn>/<samp>345</samp></code>
+<p>注意：index.php 文件是被默认包含在 URL 中的，但是可以通过更改 .htaccess 文件来改变这个设置。</p>
+<h2>CodeIgniter 功能强大</h2>
+<p>CodeIgniter 拥有全范围的类库，可以完成大多数通常需要的网络开发任务，包括： 读取数据库、发送电子邮件、数据确认、保存 session 、对图片的操作，以及支持 XML-RPC 数据传输等。</p>
+<h2>CodeIgniter 是可扩展的</h2>
+<p>这个系统可以非常简单的通过插件和 helper 类库来进行扩展，或者也可以通过扩展类、系统钩子来实现。</p>
+<h2>CodeIgniter 不需要模板引擎</h2>
+<p>虽然 CodeIgniter <em>确实</em> 自带了一个可选的模板解析器程序，但不要求你必须使用模板。模板引擎完全与本地化PHP代码的性能需求不符，使用模板引擎我们要学习其语法，这最低限度只比学PHP基础要容易一点点。考虑以下PHP代码：</p>
+<p><code>&lt;ul&gt;<br />
+<br />
+&lt;?php foreach ($addressbook as $name):?&gt;<br />
+<br />
+&lt;li&gt;&lt;?=$name?&gt;&lt;/li&gt;<br />
+<br />
+&lt;?php endforeach; ?&gt;<br />
+<br />
+&lt;/ul&gt;</code></p>
+<p>再来对比模板引擎所使用的伪代码：</p>
+<p><code>&lt;ul&gt;<br />
+<br />
+&#123;foreach from=$addressbook item=&quot;name&quot;&#125;<br />
+<br />
+&lt;li&gt;&#123;$name&#125;&lt;/li&gt;<br />
+<br />
+&#123;/foreach&#125;<br />
+<br />
+&lt;/ul&gt;</code></p>
+<p>的确，例中模板引擎的代码比较清晰，但这带来一个性能问题，因为伪代码要先被转换成PHP才能运行。我们的目标是<em>性能最大化</em>, 所以我们选择不使用专用的模板引擎。</p>
+<h2>CodeIgniter 已彻底文档化</h2>
+<p>程序员都喜欢写代码讨厌写文档。当然我们也一样，但是既然文档和代码本身一样重要，我们就要完成它了。况且我们代码资源极其干净而且方便注释。</p>
+<h2>CodeIgniter 拥有一个友好的用户社区</h2>
+<p>你可以在我们的 <a href="http://www.codeigniter.com/forums/">社区论坛 </a>中看到一个成长中的积极活跃的用户社区。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, iptton, irini, Rayne</div>
+<div id="DocDate">
+最后修改: 2009-09-12 15:37:56</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="getting_started.html">开始</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="cheatsheets.html">CodeIgniter 速记表</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

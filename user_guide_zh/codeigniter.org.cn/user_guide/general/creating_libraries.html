@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>创建程序库 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;创建程序库	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/general/creating_libraries.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>创建程序库</h1>
+
+<p>当我们使用术语"类库"时,我们一般指的是位于<kbd>libraries</kbd> 文件夹中的类,它们在wiki的"类库参考"这个板块被讨论.在当前这个话题中,我们将讨论如何在 <dfn>application/libraries</dfn> 文件夹中建立你自己的类库,并使它们与全框架的资源维持分离.</p>
+
+<p>作为一个额外的功能,当你需要在原始类中简单地添加一些功能时,CodeIgniter能使你的类库<kbd>extend</kbd> 自原始类.你甚至可以通过在<dfn>application/libraries</dfn>文件夹下安放同名类库文件的方法来完全替换原始类.</p>
+
+<p>总之:</p>
+
+<ul>
+<li>你可以创建全新的类库.</li>
+<li>你可以扩展原始类库.</li>
+<li>你可以替换原始类库.</li>
+</ul>
+
+<p>以下页面将深入介绍这三个概念.</p>
+
+<p class="important"><strong>注意:</strong> 除了数据库类和装载器类(PHP4 环境中)无法被扩展或取代，剩余其他类均可。</p>
+
+
+<h2>建立你的类库文件</h2>
+
+<p>你的类库文件必须保存在 <dfn>application/libraries</dfn> 文件夹,CodeIgniter将在这个文件夹中寻找并初始化它们.</p>
+
+
+<h2>命名约定</h2>
+
+<ul>
+<li>文件名首字母大写. 例如:&nbsp; <dfn>Myclass.php</dfn></li>
+
+<li>类声明首字母大写. 例如:&nbsp;  <kbd>class Myclass</kbd></li>
+<li>类的名字和文件名应符合.</li>
+</ul>
+
+
+<h2>类文件</h2>
+
+<p>所有的类应有基础原型(注意,这里我们以 <kbd>Someclass</kbd> 这个名字为例):</p>
+
+<code>&lt;?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+<br /><br />
+class Someclass &#123;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;function some_function()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+&#125;<br /><br />
+?&gt;</code>
+
+<h2>使用你自己的类</h2>
+
+<p>在所有的<a href="controllers.html">Controller</a> 函数中,你可以用以下的标准方式初始化你的类:</p>
+
+<code>$this-&gt;load-&gt;library('<kbd>someclass</kbd>');</code>
+
+<p>当 <em>someclass</em> 是文件名时,不用加上".php"扩展名.这里名字不分大小写.</p>
+
+<p>一旦你自定义的类加载完毕,你可以通过以下方式调用类,注意使用 <kbd>小写</kbd> 的名字:</p>
+
+<code>$this-&gt;<kbd>someclass</kbd>-&gt;some_function();&nbsp; // 对象的实例名永远都是小写的
+</code>
+
+
+
+<h2>在初始化自定义类时传递参数</h2>
+
+<p>当初始化类库时，你可以通过第二个参数动态的传递数组到类的构造函数中去:</p>
+
+<code>
+$params = array('type' => 'large', 'color' => 'red');<br />
+<br />
+$this-&gt;load-&gt;library('Someclass', <kbd>$params</kbd>);</code>
+
+<p>当你使用这个特性时,你必须为类的构造函数加上参数:</p>
+
+<code>&lt;?php  if (!defined('BASEPATH')) exit('No direct script access allowed');<br />
+
+<br />
+class Someclass &#123;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;function Someclass($params)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Do something with $params<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+&#125;<br /><br />
+?&gt;</code>
+
+<p class="important">你也可以传递存于配置文件中的参数.你只需简单的建立一个与 <kbd>类文件名</kbd>相同的config文件,并保存在 <dfn>application/config/</dfn> 文件夹中.注意当你通过上文所述的方式动态传递参数时,config文件中的选项将不起作用.</p>
+
+
+
+
+
+
+
+<h2>在你自定义的类库中初始化CodeIgniter资源</h2>
+
+
+<p>要你自定义的类库中访问CodeIgniter的原始资源,你必须使用 <kbd>get_instance()</kbd> 函数.这个函数返回一个CodeIgniter super object.</p>
+
+<p>一般来说在你的控制器函数中你可以通过 <kbd>$this</kbd> 调用任何可用的CodeIgniter函数:</p>
+
+<code>
+<strong>$this</strong>-&gt;load-&gt;helper('url');<br />
+
+<strong>$this</strong>-&gt;load-&gt;library('session');<br />
+<strong>$this</strong>-&gt;config-&gt;item('base_url');<br />
+//etc.
+</code>
+
+<p><kbd>$this</kbd>, 只直接作用在你自己的控制器,模型和视图中.当你在自定义类中想使用CodeIgniter原始类时,你可以这样做:</p>
+
+
+<p>首先,定义CodeIgniter对象赋给一个变量:</p>
+
+<code>$CI =& get_instance();</code>
+
+<p>一旦定义某个对象为一个变量,你就可以使用那个变量名 <em>取代</em>  <kbd>$this</kbd>:</p>
+
+<code>
+$CI =& get_instance();<br /><br />
+$CI-&gt;load-&gt;helper('url');<br />
+
+$CI-&gt;load-&gt;library('session');<br />
+$CI-&gt;config-&gt;item('base_url');<br />
+//etc.
+</code>
+
+<p class="important"><strong>注意:</strong> 你将注意到get_instance()这个函数通过被引用的方式被传递:<br /><br />
+<var>$CI =& get_instance();</var>
+<br /><br />
+<kbd>这十分重要.</kbd> 通过引用的方式赋给变量将使使用原始的CodeIgniter对象,而不是创建一个拷贝 <br /><br />
+<kbd>同时,请注意:</kbd> 如果你使用php 4,那么请最好不要在类的构造函数中调用 <dfn>get_instance()</dfn> .php4在引用位于构造函数中的CI super object时存在问题,因为对象只有在类完全实例化后才存在.</p>
+
+
+<h2>用你自己的类替换原始类</h2>
+
+<p>简单的将你自己的类命名为与原始类一样就能使CodeIgniter使用这个新类．要使用这个特性，文件名与类声明必须与原始类完全一致。例如，要替换原始的 <kbd>Email</kbd> 类库。你必须创建一个文件<dfn>application/libraries/Email.php</dfn>, 并按如下方式声明类:</p>
+
+<code>
+class CI_Email &#123;<br /><br />
+
+&#125;</code>
+
+<p>注意大多数原始类以<kbd>CI_</kbd>为前缀.</p>
+
+<p>你可以只用标准载入函数来载入你自己的类:</p>
+
+<code>$this-&gt;load-&gt;library('<kbd>email</kbd>');</code>
+
+<p class="important"><strong>注意:</strong> 这个时候Database无法替换为你自定义的类.</p>
+
+
+<h2>扩展现有类</h2>
+
+<p>如果你需要在现有类库中加入一两个新的功能,那就完全不必要替换整个类库文件.你只需简单地扩展(继承)现有的类,扩展一个类就像在类中增加一些例外:</p>
+
+<ul>
+<li>扩展的类必须申明由母类扩展而来.</li>
+<li>新扩展的类所在的文件必须以 <kbd>MY_</kbd> 为前缀(这个选项是可配置的,下面有说明).</li>
+
+</ul>
+
+<p>例如，要扩展原始类 <kbd>Email</kbd> 类你要建立文件 <dfn>application/libraries/</dfn><kbd>MY_Email.php</kbd>, 并按如下方式在文件中声明:</p>
+
+<code>
+class MY_Email extends CI_Email &#123;<br /><br />
+
+&#125;</code>
+
+<p>注意:如果你需要在类中使用构造函数,你必须在构造函数中显式继承母类构造函数:</p>
+
+
+<code>
+class MY_Email extends CI_Email &#123;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;function My_Email()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parent::CI_Email();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+
+&#125;</code>
+
+
+<h3>载入你的子类</h3>
+
+<p>要载入扩展子类，你应该使用标准字符名.  请不要使用前缀.  例如,要载入上文说过的email扩展子类，你应该这样写:</p>
+
+<code>$this-&gt;load-&gt;library('<kbd>email</kbd>');</code>
+
+<p>扩展子类一旦被载入，就能想一般的类一样使用它们.  Email类中的所有函数就能被调用:</p>
+
+
+<code>$this-&gt;<kbd>email</kbd>-&gt;some_function();</code>
+
+
+<h3>设定自定义前缀</h3>
+
+<p>要设定你自己的子类前缀,请打开 <dfn>application/config/config.php</dfn> 文件并找到这一项:</p>
+
+<code>$config['subclass_prefix'] = 'MY_';</code>
+
+<p>注意所有原始CodeIgniter类库以 <kbd>CI_</kbd> 作为前缀,所以请勿以CI_作为你自己的前缀.</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+billycui, Hex, shishirui, soyota, thinksand</div>
+<div id="DocDate">
+最后修改: 2010-02-24 17:20:54</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="libraries.html">使用 CodeIgniter 程序库</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="core_classes.html">创建核心系统类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

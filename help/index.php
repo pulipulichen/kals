@@ -17,7 +17,6 @@
          target="_blank">
           Developing a Taiwan library history digital library with reader knowledge archiving and sharing mechanisms based on the DSpace platform.</a> 
       <i>Electronic Library, The</i>, <i>30</i>(3), 426–442. doi:10.1108/02640471211241681</li>
-	  
 </ul>
 <hr />
 <h2>設定說明 (兼簡單的展示頁面)</h2>
@@ -37,22 +36,32 @@
   <li><a href="config_web_search.html">設定網頁搜尋</a></li> 
   <li><a href="config_annotation_navigation_map.html">設定標註地圖</a></li> 
   <li><a href="config_windows_map.html">設定章節地圖</a></li> 
-  <li> <a href="config_walking.html">獎章功能展示(暫時)</a></li>
+  <li><a href="night.html">設定獎章機制</a></li> 
 </ul>
 
 <hr />
 <h2>KALS網路資源</h2>
 <ul>
 	<li><a href="https://github.com/pulipulichen/kals">GitHub</a> 主要程式碼典藏庫</li>
+        <li><a href="https://github.com/pulipulichen/kals/issues">GitHub 問題發佈區</a></li>
 	<li><a href="https://sites.google.com/site/puddingkals/">Google Stie</a> 舊的程式碼典藏庫</li>
 </ul>
 
 <hr />
-<h2>KALS使用的框架：CodeIgnitor 1.7.2 使用說明</h2>
+<h2>KALS使用的框架與函式庫說明</h2>
 <ul>
-	<li><a href="../user_guide_zh/">中文</a></li>
-	<li><a href="../user_guide/">English</a></li>
+	<li><a href="../user_guide_zh/" target="_blank">CodeIgnitor 1.7.2 使用說明 中文</a></li>
+	<li><a href="../user_guide/" target="_blank">CodeIgnitor 1.7.2 使用說明 English</a></li>
+        
+        <li><a href="http://jquery.com/" target="_blank">jQuery 1.4.2</a></li>
+        <li><a href="http://jquerytools.github.io/download/" target="_blank">jQuery TOOLS</a></li>
+        <li><a href="http://jqueryui.com/" target="_blank">jQuery UI</a></li>
+        
+        <li><a href="http://semantic-ui.com/">Semantic UI 樣式表</a></li>
 </ul>
+
+
+
 <hr />
 
 <h2>KALS系統管理</h2>
@@ -75,7 +84,7 @@
 <h2>偵錯使用資料</h2>
 <ul>
     <li><a href="debug/20140625-pdf-public-library/index.html">公共圖書館數位閱讀新體驗－以國立公共資訊圖書館為例</a></li>
-	<li><a href="debug/20140627-moodle_ctes_03/index.html">數位時代公共圖書館虛擬參考服務之發展</a></li>
+    <li><a href="debug/20140627-moodle_ctes_03/index.html">數位時代公共圖書館虛擬參考服務之發展</a></li>
 </ul>
 
 <hr />

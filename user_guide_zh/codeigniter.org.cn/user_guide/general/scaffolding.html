@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>脚手架(Scaffolding) - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;脚手架(Scaffolding)	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/general/scaffolding.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>脚手架</h1>
+
+<p class="important">从 CodeIgniter 1.6.0 开始，脚手架功能已经废弃掉了。</p>
+
+<p>CodeIgniter 的脚手架功能使您可以在开发过程中方便快速的在数据库中添加、删除、修改数据。</p>
+
+<p class="important"><strong>非常重要：</strong>脚手架只可以在开发过程中使用。因为它提供了非常少的安全保护，所以可以访问到您的 CodeIgniter 站点的任何人都可以添加删除或修改您数据库中的数据。如果您使用脚手架，那么请确认您在使用完之后一定要立刻禁止它。千万不要在上线的站点中激活它，并且一定要在使用前给它设置一个密匙（secret word）。</p>
+
+
+<h2>为什么要使用脚手架？</h2>
+
+<p>这是一个经典场景：开发过程中，你创建了一个数据表并且希望快速地插入一些数据。没有“脚手架”时，你要么写些插入命令，要么就使用如phpMyAdmin之类的数据库管理工具。用CodeIgniter的脚手架特性，你可以快捷地通过浏览器添加数据。当你用完时，也可以轻易删除掉这些数据。</p>
+
+<h2>设置一个密匙（Secret Word）</h2>
+
+<p>激活脚手架之前，要先设置一个密匙。我们将通过这个密匙来启动脚手架，所以要用一些不常见的词防止被人猜到。</p>
+
+<p>设置密匙，打开文件 <kbd>application/config/routes.php</kbd> 找到下面字段：</p>
+
+<code>$route['scaffolding_trigger'] = '';</code>
+
+<p>把值替换成你的密匙</p>
+
+<p class="important"><strong>注意：</strong> 脚手架密匙 <strong>不能</strong> 以下划线开头。</p>
+
+
+<h2>激活脚手架</h2>
+
+<p>注意：本页信息假设你已经知道 <a href="controllers.html">控制器</a> 是怎么工作的了, 并且你已经有一个正在运行的控制器。同时，我们假设你已经设置好CodeIgniter使之能自动连上 <a href="../../user_guide/database/index.html">数据库</a> 。如果不是，此页的信息不会很有价值，所以我们建议你先阅读相关内容。最后，我们假设你已经知道什么叫类的构造函数。否则，请阅读 <a href="controllers.html">控制器</a> 的最后一节。</p>
+
+<p>激活脚手架，你的控制器构造函数应该有像这样的代码：</p>
+
+<code>
+&lt;?php<br />
+class Blog extends Controller &#123;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function Blog()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parent::Controller();<br /><br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<samp>$this-&gt;load-&gt;scaffolding(</samp><kbd>'table_name'</kbd>);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#125;<br />
+&#125;<br />
+?&gt;</code>
+
+<p>此处的 <kbd>table_name</kbd> 为你想操作的数据表名 (表名，不是数据库名) </p>
+
+<p>一旦初始化脚手架，你可以以这样的URL来访问它：</p>
+
+<code>example.com/index.php/<var>class</var>/<dfn>secret_word</dfn>/</code>
+
+<p>比如，控制器名为 <var>Blog</var> ，密匙为 <dfn>abracadabra</dfn> ,
+你可以这样访问脚手架：</p>
+
+<code>example.com/index.php/<var>blog</var>/<dfn>abracadabra</dfn>/</code>
+
+<p>脚手架界面是简单明了的。你可以添加，修改或删除数据。</p>
+
+
+<h2>最后需要注意的地方:</h2>
+
+<p>脚手架特性只能操作有主键的表，因为这是各种数据库函数所必需的信息。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, iptton, shishirui, zwldy001</div>
+<div id="DocDate">
+最后修改: 2009-10-10 16:22:18</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="common_functions.html">公共函数</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="routing.html">URI 路由</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

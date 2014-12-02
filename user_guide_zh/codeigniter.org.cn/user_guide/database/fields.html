@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>字段元数据 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;<a href="index.html">数据库类</a>&nbsp;&#8250;&nbsp;字段元数据	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/database/fields.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>字段数据</h1>
+
+<h2>$this-&gt;db-&gt;list_fields()</h2>
+<p>Returns an array containing the field names. This query can be called two ways:</p>
+<br>返回一个抉字段名称的数组。这个查询可以用两种方法调用：
+
+<p>1. You can supply the table name and call it from the <dfn>$this-&gt;db-&gt;</dfn> object:</p>
+<br/>
+1.您可以将表名称提供给<dfn>$this-&gt;db-&gt;</dfn>调用。
+
+<code>
+$fields = $this-&gt;db-&gt;list_fields('table_name');<br /><br />
+
+foreach ($fields as $field)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;echo $field;<br />
+&#125;
+</code>
+
+<p>2. You can gather the field names associated with any query you run by calling the function
+from your query result object:</p>
+<br/>
+2.您可以将组合查询语句传递给query函数执行并返回：
+
+<code>
+$query = $this-&gt;db-&gt;query('SELECT * FROM some_table');
+<br /><br />
+
+foreach ($query-&gt;list_fields() as $field)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;echo $field;<br />
+&#125;
+</code>
+
+
+<h2>$this-&gt;db-&gt;field_exists()</h2>
+
+<p>Sometimes it's helpful to know whether a particular field exists before performing an action.
+Returns a boolean TRUE/FALSE.  Usage example:</p>
+<br/>
+执行一个动作前确认字段是否存在时它就变得非常有用了。返回一个布尔值：TRUE/FALSE。实例：
+<code>
+if ($this-&gt;db-&gt;field_exists('field_name', 'table_name'))<br />
+&#123;<br />
+&nbsp;&nbsp; // some code...<br />
+&#125;
+</code>
+
+<p>Note:  Replace <em>field_name</em> with the name of the column you are looking for, and replace
+
+<em>table_name</em> with the name of the table you are looking for.</p>
+<br/>
+注解：替换<em>field_name</em>为您要查找人字段名称，同时替换<em>table_name</em>为您要查找表名。
+
+
+
+<h2>$this-&gt;db-&gt;field_data()</h2>
+<p>Returns an array of objects containing field information.</p>
+<br/>
+返回一个包含字段名称信息的数组。
+<p>Sometimes it's helpful to gather the field names or other metadata, like the column type, max length, etc.</p>
+<br/>
+取得字段名称或者其它元数据时就变得非常有用了，例如列的数据类型、最大长度等。
+
+<p class="important">Note: Not all databases provide meta-data.</p>
+<br/>注解：并非所有数据库都提供元数据。
+
+<p>Usage example:</p>
+<br/>
+例子：
+
+<code>
+$fields = $this-&gt;db-&gt;field_data('table_name');<br /><br />
+
+foreach ($fields as $field)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;echo $field-&gt;name;<br />
+&nbsp;&nbsp;&nbsp;echo $field-&gt;type;<br />
+&nbsp;&nbsp;&nbsp;echo $field-&gt;max_length;<br />
+
+&nbsp;&nbsp;&nbsp;echo $field-&gt;primary_key;<br />
+&#125;
+</code>
+
+<p>If you have run a query already you can use the result object instead of supplying the table name:</p>
+<br/>如果您想执行一个已有的查询时你可用返回项替换掉表格名称：
+
+<code>
+$query = $this-&gt;db-&gt;query("YOUR QUERY");<br />
+$fields = $query-&gt;field_data();
+</code>
+
+
+<p>The following data is available from this function if supported by your database:</p>
+<br/>
+如果这个函数支持您的数据库，它将会返回以下数据：
+
+<ul>
+<li>name - 列名称</li>
+<li>max_length - 列的最大长度</li>
+<li>primary_key - 1 如果此列被定义为主键</li>
+<li>type - 指定列的数据类型</li>
+</ul><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+analyzer, Hex</div>
+<div id="DocDate">
+最后修改: 2008-06-28 02:36:02</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="table_data.html">数据库表数据</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="call_function.html">自定义函数调用</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

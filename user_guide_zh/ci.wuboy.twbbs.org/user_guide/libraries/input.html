@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<!-- Mirrored from ci.wuboy.twbbs.org/user_guide/libraries/input.html by HTTrack Website Copier/3.x [XR&CO'2008], Sun, 27 Jun 2010 06:29:38 GMT -->
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Input 類別 : CodeIgniter 使用手冊</title>
+
+<style type='text/css' media='all'>@import url('../userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<script type="text/javascript" src="../nav/nav.js"></script>
+<script type="text/javascript" src="../nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../nav/moo.fx.js"></script>
+<script type="text/javascript" src="../nav/user_guide_menu.js"></script>
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<meta name='author' content='ExpressionEngine Dev Team' />
+<meta name='description' content='CodeIgniter 使用手冊' />
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner"><script type="text/javascript">create_menu('../index.html');</script></div></div>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="Toggle 目錄" alt="Toggle 目錄" /></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>CodeIgniter 使用手冊 Version 1.7.2</h1></td>
+<td id="breadcrumb_right"><a href="../toc.html">目錄</a></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="http://ci.wuboy.twbbs.org/">CodeIgniter 首頁</a> &nbsp;&#8250;&nbsp;
+<a href="../index-2.html">使用手冊首頁</a> &nbsp;&#8250;&nbsp;
+Input and Security 類別
+</td>
+<td id="searchbox"><form method="get" action="http://www.google.com/search"><input type="hidden" name="as_sitesearch" id="as_sitesearch" value="ci.wuboy.twbbs.org/user_guide/" />搜尋使用手冊&nbsp; <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />&nbsp;<input type="submit" class="submit" name="sa" value="Go" /></form></td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>Input 類別</h1>
+
+<p>Input 類別有兩個目的：</p>
+
+<ol>
+<li>基於安全，它預處理全域輸入資料。</li>
+<li>它提提供幾個補助函數用來取得輸入資料並預處理。</li>
+</ol>
+
+<p class="important"><strong>注意：</strong> 系統會自動初始這個類別，所以不需要手動載入。</p>
+
+
+<h2>安全過濾</h2>
+
+<p>安全過濾函數在執行一個新的<a href="../general/controllers.html">controller</a> 時會自動呼叫。它會執行：</p>
+
+<ul>
+<li>破壞全域 GET 陣列。既然 CodeIgniter 不使用 GET 字串，也沒有理由要允許使用它。</li>
+<li>在 register_globals 打開時，破壞所有全域變數。</li>
+<li>過濾 POST/COOKIE 陣列的索引鍵值，只允許英文文數字與少數其他字元。</li>
+<li>提供 XSS (Cross-site Scripting Hacks) 過濾。這可以是全域啟動或根據請求啟動 (request)。</li>
+<li>將換行字元標準化成為 \n 。</li>
+</ul>
+
+
+<h2>XSS 過濾</h2>
+
+<p>CodeIgniter 內建一個防止跨站腳本攻擊的過濾器，它可以自動過濾所有 POST 與 COOKIE 的資料，或是你自己一項一項過濾。因為進行處理需要額外的負擔，而且你也不是在所有的狀況下需要使用，所以預設它 <strong>不會</strong> 全域執行。</p>
+
+<p>XSS 過濾器會搜尋常使用來觸發 Javascript 或是其他企圖挾持 cookie 或是進行危險活動的程式碼。如果碰到不允許的東西，它會用安全的方式把它轉成html entities來呈現。</p>
+
+<p>
+注意： 這個函數應該只用在處理提交(submit)的資料。它並不適用在一般執行時處理的狀況下，因為它需要相當大量的負載支出。</p>
+
+
+<p>要用XSS過濾器來過濾資料，要用這個函數：</p>
+
+<h2>$this->input->xss_clean()</h2>
+
+<p>使用參考範例：</p>
+
+<code>$data = $this->input->xss_clean($data);</code>
+
+<p>如果你要每次碰到 POST 或是 COOKIE 時都會自動過濾，你可以編輯 <kbd>application/config/config.php</kbd> 檔案並設定以下項目：</p>
+
+<code>$config['global_xss_filtering'] = TRUE;</code>
+
+<p>注意： 如果你使用表單驗證類別，它也會給你XSS過濾的選項。</p>
+
+<p>可選的第二個參數 <dfn>is_image</dfn> 允許這個函數用來測試影像以預防潛在的 XSS 攻擊，這對於檔案上傳的安全性非常有用。當這個參數設定為 <dfn>TRUE</dfn> 時，這個函數就不是回傳替代字串，而是在影像檔是安全的時回傳 TRUE ，並在影像檔包含可能讓瀏覽器執行的潛在危險資訊時回傳 FALSE。</p>
+
+<code>if ($this->input->xss_clean($file，TRUE) === FALSE)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;// file failed the XSS test<br />
+}</code>
+
+
+<h2>使用 POST, COOKIE, 或 SERVER 資料</h2>
+
+<p>CodeIgniter 提供三個讓你取出 POST, COOKIE 或 SERVER 中項目的補助函數。使用這些函數的主要便利性在於，它們會確認並檢視是否這些項目已被設定並且在未設定時回傳 false (boolean) ，而不是直接取出 ($_POST['something'])。這讓你可以方便地使用資料而不必預先測試它們是否存在。不然，通常你可能會像這樣做：</p>
+
+<code>
+if ( ! isset($_POST['something']))<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$something = FALSE;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$something = $_POST['something'];<br />
+}</code>
+
+<p>有了 CodeIgniter 的內建函數，你可以簡單地這樣做：</p>
+
+<code>$something = $this->input->post('something');</code>
+
+<p>這三個函數是：</p>
+
+<ul>
+<li>$this->input->post()</li>
+<li>$this->input->cookie()</li>
+<li>$this->input->server()</li>
+</ul>
+
+<h2>$this->input->post()</h2>
+
+<p>第一個參數包含你要找的 POST 項目名稱：</p>
+
+<code>$this->input->post('some_data');</code>
+
+<p>這個函數在你要取得的項目不存在時會回傳 FALSE (boolean)。</p>
+
+<p>額外的第二個參數讓你用 XSS 過濾器處理資料。把第二個參數設定為 TRUE (boolean) 就可以啟動：</p>
+
+<code>$this->input->post('some_data'，TRUE);</code>
+
+<h2>$this->input->get()</h2>
+
+<p>這個函數與 post 函數相同，只是他會取得 get 的資料：</p>
+
+<code>$this->input->get('some_data'，TRUE);</code>
+
+<h2>$this->input->get_post()</h2>
+
+<p>這個函數會搜尋 post 及 get 串流來取得資料，會先尋找 post 而後尋找 get ：</p>
+
+<code>$this->input->get_post('some_data'，TRUE);</code>
+
+<h2>$this->input->cookie()</h2>
+
+<p>這個函數與 post 函數相同，只是他會取得 cookie 的資料：</p>
+
+<code>$this->input->cookie('some_data'，TRUE);</code>
+
+<h2>$this->input->server()</h2>
+
+<p>這個函數與以上的函數相同，只是他會取得 server 的資料：</p>
+
+<code>$this->input->server('some_data');</code>
+
+
+
+
+<h2>$this->input->ip_address()</h2>
+<p>取得當前使用者的 IP 位址。如果 IP 位址不合法，那函數會回傳 0.0.0.0。</p>
+<code>echo $this->input->ip_address();</code>
+
+
+<h2>$this->input->valid_ip(<var>$ip</var>)</h2>
+
+<p>傳入一個 IP 位址並依照它是否合法來返回 TRUE 或 FALSE (boolean) 。 注意： 上面的 $this->input->ip_address() 函數會自動驗證 IP 是否合法。</p>
+
+<code>if ( ! $this-&gt;input-&gt;valid_ip($ip))<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp; echo 'Not Valid';<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp; echo 'Valid';<br />
+}</code>
+
+
+<h2>$this->input->user_agent()</h2>
+<p>返回當前使用者所使用的網頁瀏覽器，如果沒有有效資訊則回傳 FALSE 。</p>
+<code>echo $this->input->user_agent();</code>
+
+
+
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+上個主題:&nbsp;&nbsp;<a href="image_lib.html">Image Manipulation 類別</a>
+&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#top">頁首</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="../index-2.html">使用手冊首頁</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+下個主題:&nbsp;&nbsp;<a href="loader.html">Loader 類別</a>
+</p>
+<p><a href="http://ci.wuboy.twbbs.org/">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab，Inc.</a></p>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-5766319-11");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+
+<!-- Mirrored from ci.wuboy.twbbs.org/user_guide/libraries/input.html by HTTrack Website Copier/3.x [XR&CO'2008], Sun, 27 Jun 2010 06:29:38 GMT -->
+</html>

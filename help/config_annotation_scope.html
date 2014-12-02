@@ -60,7 +60,7 @@
 
 var _id_header = "setup_location";
 var _url = "http://" + location.host;
-if (_url.substr(_url.length -1 , _url.length) == "/")
+if (_url.substr(_url.length -1 , _url.length) === "/")
     _url = _url.substring(0, _url.length-1);
     
 for (var _i = 6; _i < 7; _i++)
@@ -84,6 +84,8 @@ KALS_CONFIG = {
      */
     annotation_scope_selector: "#scope",
     login_hint: 'You can use demo account: 電子信箱位址：<strong>demo@dlll.nccu.edu.tw</strong> / 密碼：<strong>demo</strong>',
+    //selectable_text_cache: false
+    //selectable_text_clean_overwrite: true
 };    
 </script>
 <!-- [/KALS] -->

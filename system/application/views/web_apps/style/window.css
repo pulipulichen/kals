@@ -1,0 +1,152 @@
+/* 
+    Document   : window
+    Created on : 2010/9/9, 下午 01:50:59
+    Author     : pudding
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#exposeMask {
+    margin:0;
+}
+
+.KALS.dialog-modal.window {
+    /*width: 480px;*/
+    width: 100%;
+    font-size:medium;
+    margin:0;
+    height: auto;
+    z-index: 999;
+}
+
+.KALS.dialog-modal.window div {
+    margin:0;
+}
+
+.KALS.dialog-modal.window dd.message {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.KALS .window-loading {
+    padding: 30px 1em !important;
+    text-align:center;
+    line-height: 30px;
+    /*width: 480px;
+    min-width: 240px;*/
+    margin: 0;
+    cursor: wait;
+}
+
+.KALS .window-loading .window-loading-message {
+    margin-right: 1em;
+}
+
+.KALS.window.mobile .dialog-content {
+    
+    /*max-width:100%;
+    overflow:hidden;*/
+    /*color:red;*/
+    /*
+    width: 480px;
+    min-width: 240px;
+    */
+    /*
+    width:inherit;
+    overflow:inherit;
+    */
+}
+
+.KALS .window-panel .row {
+    margin: 0;
+    clear:both;
+}
+
+.KALS .window-panel .row dt {
+    text-align:right;
+    width: 150px;
+    float: left;
+    padding-right: 0.5em !important;
+    cursor:pointer;
+}
+
+.KALS.dialog-modal.compact-width .window-panel .row dt {
+    text-align:left;
+    width: 100%;
+    float: none;
+    padding: 0;
+}
+
+.KALS .window-panel .row dd {
+    padding: 0;
+    margin: 0;
+    padding-bottom: 0.5em !important;
+}
+
+.KALS .window-panel .text {
+    /*width: 80%;*/
+}
+
+.KALS .window-panel .text.empty {
+    border: 2px solid red !important;
+}
+
+.KALS.dialog-modal.compact-width .window-panel .text {
+    width: 100%;
+}
+
+.KALS .window-panel h2.heading {
+    font-size:large;
+    border-bottom: 1px solid black !important;
+    padding-left: 0.5em !important;
+}
+
+.KALS .window-panel .list label {
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+
+.KALS .window-panel .tip {
+    font-size:small;
+    display:block;
+    text-align:center;
+}
+
+.KALS .window-panel .error-row { font-size: smaller;color:red;text-align:center; } 
+
+/**
+ * @subsection Window_login & Window_register
+ */
+.KALS .window-login .register-link,
+.KALS .window-register .login-link { font-size: small; text-align:center; }
+
+/**
+ * @subsection Window_password_change
+ */
+
+.KALS .window-password-change .row dt {
+    width: 170px;
+}
+
+.KALS.window .dialog-options .dialog-option {
+	height: 33px;
+}
+
+
+.KALS.window .dialog-content h1 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/**
+ * 解決視窗超過的問題
+ * @author Pulipuli Chen 20141110
+ */
+.KALS.window .dialog-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
