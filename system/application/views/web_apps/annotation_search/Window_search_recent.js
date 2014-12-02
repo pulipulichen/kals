@@ -18,9 +18,9 @@ Window_search_recent.prototype = new Navigation_item_link();
 
 Window_search_recent.prototype.name = "Window_search_recent";
 
-Window_search_recent.prototype.open = function () {
-    var _search = KALS_context.search;
-    
+Window_search_recent.prototype.open = function (_callback) {
+//    var _search = KALS_context.search;
+    /*
     var _save_input_value = {
         search_range: _search.get_input_value("search_range"),
         keyword: _search.get_input_value("keyword"),
@@ -31,9 +31,9 @@ Window_search_recent.prototype.open = function () {
 
     //$.test_msg("setup_recent", "keyword *");
     _search.set_input_value({
-            search_range: "note",
-            keyword: "*",
-            order_by: "update"
+        search_range: "note",
+        keyword: "*",
+        order_by: "update"
     });
 
     _search.submit.submit(function () {
@@ -41,13 +41,24 @@ Window_search_recent.prototype.open = function () {
     });
     
     _search.open();
+    */
+    //_search.open_recent_annotation(_callback);
+    
+//    var _search_option = {
+//        search_range: "note",
+//        keyword: "*",
+//        order_by: "update"
+//    };
+//    
+//    _search.search(_search_option);
+    KALS_context.search.open_recent_annotation();
     
     return this;
 };
 
 Window_search_recent.prototype.nav_heading = new KALS_language_param (
     'Recent',
-    'window.search_recent.nav_heading'
+    'window_search_recent.nav_heading'
 );
 
 /**
@@ -81,7 +92,7 @@ Window_search_recent.prototype.nav_config = {
      * 數字最小的是1
      * @type Number
      */
-    order: 1
+    order: 2
 };
 
 /**

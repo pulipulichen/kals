@@ -22,7 +22,8 @@ $config['base_url']	= "/kals/";
  * 在KALS之中，會被視為是「http://localhost/」
  */
 $config["localhost_domains"] = array(
-    "http://pc-pudding-2013.dlll.nccu.edu.tw/"
+    "http://pc-pudding-2013.dlll.nccu.edu.tw/",
+    "http://140.119.61.127/"
 );
 
 /*

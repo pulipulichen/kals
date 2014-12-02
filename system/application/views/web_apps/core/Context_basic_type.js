@@ -133,6 +133,12 @@ Context_basic_type.prototype.get_type_list = function (_enable_type) {
     
     var _type_list = [];
     for (var _type_name in this._type_list) {
+        
+        if (_type_name === "custom" 
+                && KALS_CONFIG.enable_custom_name === false) {
+            continue;
+        }
+        
         var _type_param = this._type_list[_type_name];
         
         //$.test_msg("Context_basic_type.get_type_list: " + _type_name, [_enable_type, this._type_list[_type_name].is_enable(_enable_type)]);

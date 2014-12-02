@@ -88,18 +88,18 @@ class Annotation_type_factory extends KALS_object {
         
         if (is_int($type_id))
         {
-            if (isset($this->types[$type_id])) {
+            if (isset($this->types[$type_id]))
+            {
                 $name = $this->types[$type_id];
             }
-            else {
+            else
+            {
                 return $this->get_custom_type($type_id);
             }
-            //test_msg($name);
         }
         else if (is_string($type_id))   //如果$type_id是字串
         {
             $name = $this->get_type_name($type_id);
-            
 
             if (in_array($name, $this->types) == false)
             {
@@ -111,11 +111,9 @@ class Annotation_type_factory extends KALS_object {
             return NULL;
         }
 
-        //echo $name . "|";
         if (isset($this->CI->annotation_type_object)) {
             unset($this->CI->annotation_type_object);
         }
-        
         $this->CI->load->library('type/Annotation_type_'.$name, NULL, 'annotation_type_object');
         
         $type_name = "Annotation_type_" . $name;
@@ -223,9 +221,8 @@ class Annotation_type_factory extends KALS_object {
         {
             $type = $this->type_factory->find('type_id', $type_id);
 
-            if ($type == NULL) {
+            if ($type == NULL)
                 return NULL;
-            }
         }
         else    //字串或其他
         {

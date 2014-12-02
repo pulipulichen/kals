@@ -15,7 +15,7 @@ function List_like_component(_item) {
     
     JSONP_dispatcher.call(this);
     
-	//$.test_msg("set item了嗎？", $.isset(_item));
+    //$.test_msg("set item了嗎？", $.isset(_item));
     this._set_list_item(_item);
 }
 
@@ -95,13 +95,14 @@ List_like_component.prototype._$create_ui = function () {
     //如果沒有登入，則不顯示like
     var _this = this;
     
-    _ui.click(function () {
+    _ui.click(function (_e) {
+        _e.preventDefault();
         _this.set_is_like();
     });
     
-    setTimeout(function () {
+    KALS_context.ready(function () {
         _this._init_policy_listener();
-    }, 0);
+    });
     
     return _ui;
 };
@@ -124,13 +125,47 @@ List_like_component.prototype._create_icon_component = function () {
         .addClass('icon-component');
     this._icon_component = _ui;
     return _ui;
+    
 };
 
 /**
+ * 對伺服器送出喜愛訊息
+ * 
  * @param {boolean} _is_like
  * @returns {List_like_component} description
  */
 List_like_component.prototype.set_is_like = function (_is_like) {
+    
+    if ($.is_null(_is_like)) {
+        _is_like = !(this.is_liked());
+    }
+    
+    /**
+     * @author Pulipuli Chen 20141113
+     * 加入防止大量愛心
+     */
+    var _this = this;
+    //$.test_msg("List_like_component._interval_timer()", [typeof(List_like_component._interval_timer), _is_like, (List_like_component._interval_timer !== null), (_is_like === true)]);
+    if (typeof(List_like_component._interval_timer) === "number" && _is_like === true) {
+        KALS_util.confirm(_this._lang.robot_check_heading
+                , _this._lang.robot_check_content
+                , function (_boolean_value, _overlay_close_action) {
+                    if (_boolean_value === true) {
+                        clearTimeout(List_like_component._interval_timer);
+                        List_like_component._interval_timer = null;
+
+                        _this.set_is_like(_is_like);
+                        
+                        //$.test_msg("List_like_component.set_is_like()", [_boolean_value, _is_like]);
+                    }
+                    _overlay_close_action();
+                });
+        return this;
+    }
+    else if (_is_like === true) {
+        //$.test_msg("先設定-1");
+        List_like_component._interval_timer = -1;
+    }
     
     if (this._lock === true) {
         return this;
@@ -138,10 +173,6 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     
     if (this._enable === false) {
         return this;
-    }
-	
-    if ($.is_null(_is_like)) {
-        _is_like = !(this.is_liked());
     }
     
     //$.test_msg("set_is_like", [_is_like, this.is_liked()]);
@@ -155,7 +186,6 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     
     this._lock = true;
     
-        
     /**
      * @type {Context_user} _context_user
      */
@@ -185,17 +215,59 @@ List_like_component.prototype.set_is_like = function (_is_like) {
     KALS_util.notify(_lang);
         
     this.load(_data, function (_this, _data) {
-        
-        if (_this._lock === false) {
-            return;
-        }
-
-        _this._lock = false;
+        _this.set_is_like_after_post(_this, _data, _is_like);
     });
     return this;
 };
 
+/**
+ * 對伺服器送出喜愛訊息
+ * 
+ * @author Pulipuli Chen 20141113
+ * @param {List_like_component} _this
+ * @para {JSON} _data
+ * @param {boolean} _is_like
+ * @returns {List_like_component} description
+ */
+List_like_component.prototype.set_is_like_after_post = function (_this, _data, _is_like) {
+    
+    if (_this._lock === false) {
+        return this;
+    }
+
+    _this._lock = false;
+
+    /**
+     * @author Pulipuli Chen
+     * 20141107 不採用local update，直接從伺服器端update
+     */
+    KALS_context.user.load_user_params(function () {
+        
+        if (_is_like === true) {
+            //$.test_msg("List_like_component.set_is_like_after_post()", ["開始設定", KALS_CONFIG.annotation_list.like_interval * 1000]);
+            List_like_component._interval_timer = setTimeout(function () {
+                clearTimeout(List_like_component._interval_timer);
+                List_like_component._interval_timer = null;
+                //$.test_msg("List_like_component.set_is_like_after_post()", "結束");
+            }, KALS_CONFIG.annotation_list.like_interval * 1000);
+        }
+        
+    });
+    
+    return this;
+};
+
+/**
+ * 防止喜愛
+ * @type Boolean
+ */
 List_like_component.prototype._lock = false;
+
+/**
+ * 計時器
+ * @author Pulipuli Chen 20141103
+ */
+List_like_component._interval_timer = null;
 
 List_like_component.prototype._lang = {
     'set_like': new KALS_language_param(
@@ -205,10 +277,22 @@ List_like_component.prototype._lang = {
     'set_not_like': new KALS_language_param(
             'Remove from like list',
             'list_like_component.set_not_like'
+        ),
+    'robot_check_heading': new KALS_language_param(
+            "Are You Sure?",
+            "list_like_component.robot_check.heading"
+        ), 
+    'robot_check_content': new KALS_language_param(
+            "Are you sure that you like this annotation?",
+            "list_like_component.robot_check.content"
         )
 }; 
 
-
+/**
+ * 是否是喜愛
+ * @author Pulipuli Chen
+ * @returns {Boolean}
+ */
 List_like_component.prototype.is_liked = function () {
     var _ui = this.get_ui();
     return _ui.hasClass(this.like_classname);
@@ -352,10 +436,10 @@ List_like_component.prototype.toggle_enable = function (_enable) {
     var _disable_classname = "disable-like";
     
     var _title = KALS_context.lang.line(new KALS_language_param(
-                "Your like function is disabled.",
-                "list_like_component.disable_like"
-            ));
-    
+            "Your like function is disabled.",
+            "list_like_component.disable_like"
+        ));
+
     if (_enable === true) {
         _ui.removeClass(_disable_classname);
         _ui.removeAttr("title");

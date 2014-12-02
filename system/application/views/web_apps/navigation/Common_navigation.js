@@ -34,9 +34,15 @@ function Common_navigation() {
         //var _search = new Window_search();
         
         if (KALS_CONFIG.enable_search_toolbar === true) {
-            var _search_recent = new Window_search();
+            /**
+             * @author Pulipuli Chen 20141111
+             * 不應該使用這種方式，應該直接呼叫open_recent_annotation()
+             */
+            //var _search_recent = new Window_search();
             //var _search_recent = KALS_context.search;
-            _search_recent.setup_recent();
+            //_search_recent.setup_recent();
+            
+            var _search_recent = new Window_search_recent();
             this._$nav_items.push(_search_recent);
         }
         

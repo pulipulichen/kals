@@ -199,11 +199,39 @@ KALS_toolbar.prototype._$create_ui = function () {
     
     // 點兩下關閉工具列
     _ui.dblclick(function () {
-        _this.toggle_toolbar(false);
+        _this.toggle_toolbar(false, function () {
+            /**
+             * @author Pulipuli Chen 20141109
+             * 把點選兩下加入拉軸
+             */
+            _this.toggle.show();
+            _this._hide_mode = true;
+        });
     });
     
     return _ui;
 };
+
+/**
+ * 隱藏模式
+ * @author Pulipuli Chen 20141109
+ * @type Boolean
+ */
+KALS_toolbar.prototype._hide_mode = false;
+
+/**
+ * 顯示模式
+ * @author Pulipuli Chen 20141109
+ * @type String
+ */
+KALS_toolbar.prototype._display_mode = "standard";
+
+/**
+ * 導航模式
+ * @author Pulipuli Chen 20141109
+ * @type String
+ */
+KALS_toolbar.prototype._navigation_mode = "standard";
 
 /**
  * 監聽帳號功能
@@ -241,8 +269,30 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
     
     //$.test_msg('KALS_toolbar onviewportmove', {height: $.is_small_height(), width: $.is_small_width()});
     
-    if ($.is_small_height()) {   
+    if ($.is_small_height() === false
+            && this._display_mode !== "standard") {
+        
+        // 如果是標準高度的話
+        this._display_mode = "standard";
+        
+        if (this._hide_mode === false) {
+            this.toggle_toolbar(true);
+            this.toggle.hide();
+        }
+        
+        if (_padding_ui.hasClass('compact-height')) {
+            _padding_ui.removeClass('compact-height');
+            _padding_ui.slideDown(function () {
+                //_padding_ui.css('display', null);
+                _padding_ui.removeAttr('style');    
+            });   
+        }
+    }
+    else if ($.is_small_height() === true
+            && this._display_mode !== "small_height") {
         // 如果是小高度的話
+        
+        this._display_mode = "small_height";
         
         if (this.toggle.is_show() === false) {
             this.toggle_toolbar(false);
@@ -254,28 +304,28 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
             });
         }
     }
-    else {
-        this.toggle_toolbar(true);
-        this.toggle.hide();
-        
-        if (_padding_ui.hasClass('compact-height')) {
-            _padding_ui.removeClass('compact-height');
-            _padding_ui.slideDown(function () {
-                //_padding_ui.css('display', null);
-                _padding_ui.removeAttr('style');    
-            });   
-        }
-    }
     
-    if ($.is_small_width()) {
-        _ui.addClass('compact-width');
-        //this.toolbar.toggle_left(false);
-    }
-    else {
+    /**
+     * 控制寬度
+     * @author Pulipuli Chen 20141109
+     */
+    if ($.is_small_width() === false 
+            && this._navigation_mode !== "standard") {
+        this._navigation_mode = "standard";
         _ui.removeClass('compact-width');
         //this.toolbar.toggle_left(true);
     }
+    else if ($.is_small_width() === true 
+            && this._navigation_mode !== "compact") {
+        this._navigation_mode = "compact";
+        _ui.addClass('compact-width');
+        //this.toolbar.toggle_left(false);
+    }
     
+    /**
+     * 時常控制的位置
+     * @author Pulipuli Chen 20141109
+     */
     if ($.is_mobile_mode()) {
         _ui.valign('top');
     }
@@ -299,6 +349,14 @@ KALS_toolbar.prototype._$viewportmove_visible_enable = true;
  * @param {function} _callback
  */
 KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
+   
+//   if (_display === true) {
+//       return this;
+//   }
+   if (this._hide_mode === true 
+        && $.is_small_height() === false) {
+       this.toggle.hide();
+   }
    
    var _toolbar_ui = this.toolbar.get_ui();
    var _ui = this.get_ui();
@@ -366,6 +424,10 @@ KALS_toolbar.prototype.toggle_toolbar = function (_display, _callback) {
    return this;
 };
 
+/**
+ * 確認現在標註列是否顯示
+ * @returns {boolean}
+ */
 KALS_toolbar.prototype.toolbar_visible = function () {
     var _ui = this.get_ui();
     return (!(_ui.hasClass('hide'))); 

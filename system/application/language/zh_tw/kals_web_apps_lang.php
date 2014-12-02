@@ -56,6 +56,7 @@ $lang['web_apps.dialog.option.button'] = '按鈕';
 $lang['web_apps.dialog.option.close'] = '關閉';
 $lang['web_apps.dialog.option.yes'] = '是';
 $lang['web_apps.dialog.option.no'] = '否';
+$lang['web_apps.dialog.option.disabled'] = '停用';
 
 $lang['web_apps.time.recent'] = '最近';
 $lang['web_apps.time.within_1_minute'] = '在1分鐘之內';
@@ -96,6 +97,7 @@ $lang['web_apps.window.save.failed'] = '儲存失敗';
 $lang['web_apps.window.ok'] = '確定';
 $lang['web_apps.window.loading'] = '讀取中，請稍候';
 $lang['web_apps.window.send'] = '查詢';
+$lang['web_apps.window.reset'] = '重置設定';
 
 $lang['web_apps.toolbar.search.advanced_search'] = '進階搜尋';
 $lang['web_apps.toolbar.search.input_placeholder'] = '搜尋...';
@@ -121,27 +123,34 @@ $lang['web_apps.window.content.error_no_email'] = '請輸入電子信箱位址�
 $lang['web_apps.window.content.error_no_password'] = '請輸入密碼。';
 $lang['web_apps.window.content.error_no_email_password'] = '請輸入電子信箱位址與密碼。';
 
-$lang['web_apps.window.search_recent.nav_heading'] = '最新標註';
-$lang['web_apps.window.search.nav_heading'] = '搜尋';
-$lang['web_apps.window.content.search_range'] = '搜尋範圍';
-$lang['web_apps.window.content.search.field.note'] = '標註內容';
-$lang['web_apps.window.content.search.field.author'] = '作者';
-$lang['web_apps.window.content.search.field.annotation_type'] = '類別';
-$lang['web_apps.window.content.search.field.annotation_anchor'] = '文章內文';
-$lang['web_apps.window.content.type_radio'] = '標註類別';
-$lang['web_apps.window.content.searchkey'] = '關鍵字';
-$lang['web_apps.window.search.keyword_empty_hint'] = '請輸入關鍵字';
-$lang['web_apps.window.content.searchresult'] = '搜尋結果';
-$lang['web_apps.window.content.searchnumber'] = '搜尋結果筆數：';
-$lang['web_apps.window.content.noresult'] = '查無相關搜尋結果，請重新搜尋';
-$lang['web_apps.window.content.loaded_already'] = '沒有其他搜尋結果';
-$lang['web_apps.window.search.clear_search_result'] = '清除搜尋結果';
-$lang['web_apps.window.search.reading_guide'] = '導讀';
+$lang['web_apps.window_search_recent.nav_heading'] = '最新標註';
+$lang['web_apps.window_search.nav_heading'] = '搜尋';
+$lang['web_apps.window_search.query_field'] = '搜尋範圍';
+$lang['web_apps.window_search.query_field.note'] = '標註筆記';
+$lang['web_apps.window_search.query_field.annotation_user_name'] = '標註作者';
+$lang['web_apps.window_search.query_field.annotation_type'] = '標註類別';
+$lang['web_apps.window_search.query_field.annotation_anchor_text'] = '文章內文';
+$lang['web_apps.window_search.annotation_type_label'] = '標註類別';
+$lang['web_apps.window_search.query_value_label'] = '關鍵字';
+$lang['web_apps.window_search.query_value_empty_hint'] = '請輸入關鍵字';
 
-$lang['web_apps.window.content.oreder_by'] = '排序方式';
-$lang['web_apps.window.content.oreder_by.update'] = '更新日期';
-$lang['web_apps.window.content.oreder_by.create'] = '最新建立';
-$lang['web_apps.window.content.oreder_by.scope'] = '內文順序';
+$lang['web_apps.window_search.list.search_result'] = '搜尋結果';
+$lang['web_apps.window_search.list.query_info_single'] = '搜尋條件 <strong>{0}</strong> = <strong>{1}</strong>，結果只找到 {2} 筆資料：';
+$lang['web_apps.window_search.list.query_info_mass'] = '搜尋條件 <strong>{0}</strong> = <strong>{1}</strong>，結果找到 {2} 筆資料，依照 <strong>{3}</strong> 排列：';
+$lang['web_apps.window_search.list.query_info_empty'] = '搜尋條件 <strong>{0}</strong> = <strong>{1}</strong> ，結果沒有找到資料。';
+$lang['web_apps.window_search.list.noresult'] = '查無相關搜尋結果，請重新搜尋';
+$lang['web_apps.window_search.list.load_complete'] = '搜尋完畢';
+//$lang['web_apps.window_search.list.loaded_already'] = '沒有其他搜尋結果';
+$lang['web_apps.window_search.reset_search_result'] = '清除搜尋結果';
+$lang['web_apps.window_search.reading_guide'] = '導讀';
+$lang['web_apps.window_search.search_icon'] = '<i class="search icon"></i>';
+
+$lang['web_apps.window_search.oreder_by'] = '排序方式';
+$lang['web_apps.window_search.oreder_by.update'] = '更新日期';
+$lang['web_apps.window_search.oreder_by.create'] = '最新建立';
+$lang['web_apps.window_search.oreder_by.scope'] = '內文順序';
+$lang['web_apps.window_search.oreder_by.responded'] = '被回應次數';
+$lang['web_apps.window_search.oreder_by.liked'] = '喜愛次數';
 
 $lang['web_apps.window.map.nav_heading'] = '小地圖';
 
@@ -152,6 +161,7 @@ $lang['web_apps.window.login.content.error_email'] = '電子信箱位址錯誤�
 $lang['web_apps.window.login.content.error_password'] = '密碼錯誤。';
 $lang['web_apps.window.login.content.register_link'] = '需要註冊者請點此連結';
 $lang['web_apps.window.login.submit.complete'] = '歡迎登入，{0}！';
+$lang['web_apps.window.login.submit.error'] = '登入功能異常，請聯絡系統管理者';
 
 $lang['web_apps.window.register.heading'] = '註冊';
 $lang['web_apps.window.register.nav_heading'] = '註冊';
@@ -211,6 +221,8 @@ $lang['web_apps.kals_text.exception.selector_illegal'] = '選取語法錯誤';
 $lang['web_apps.kals_text.exception.selector_not_exist'] = '找不到可選取的範圍';
 
 $lang['web_apps.annotation_tool.load_annotation_param.annotation_not_found'] = '找不到編號為{0}的標註，它可能不存在或是已經被刪除。';
+$lang['web_apps.annotation_tool.close_confirm.annotation_not_save.heading'] = '您的標註尚未儲存';
+$lang['web_apps.annotation_tool.close_confirm.annotation_not_save.body'] = '您有撰寫了標註但是尚未儲存，確定要儲存嗎？';
 
 $lang['web_apps.kals_text.selectable_text_chapter.top_heading'] = '(回到頁首)';
 /**
@@ -227,9 +239,15 @@ $lang['web_apps.annotation_editor.loading'] = '資料處理中，請稍候…';
 $lang['web_apps.annotation_editor.submit.create'] = '新增標註';
 $lang['web_apps.annotation_editor.submit.edit'] = '更新標註';
 $lang['web_apps.annotation_editor.submit.cancel'] = '取消編輯';
-$lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成';
-$lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。';
-$lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成';
+$lang['web_apps.annotation_editor.submit.create_complete'] = '新增標註完成！ {0}';
+$lang['web_apps.annotation_editor.submit.create_complete_with_recommend'] = '新增標註完成。在此有些建議給您。 {0}';
+$lang['web_apps.annotation_editor.submit.edit_complete'] = '更新標註完成！ {0}';
+
+$lang['web_apps.annotation_editor.annotation_invalid'] = '抱歉，您的標註有些問題，所以無法儲存喔。問題如下：<br />{0}';
+$lang['web_apps.annotation_editor.note_word_minimum_limit_null'] = '您最少要撰寫{0}個字，而現在您還沒寫字喔。';
+$lang['web_apps.annotation_editor.note_word_minimum_limit'] = '您最少要撰寫{0}個字，而現在您已經寫了{1}個字了。';
+$lang['web_apps.annotation_editor.note_stop_words'] = '請不要寫不雅的字眼：{0}';
+
 
 $lang['web_apps.annotation.type.importance'] = '重要';
 $lang['web_apps.annotation.type.importance.hint'] = '標示文章中重要的段落。要熟知這篇文章，就必須要熟讀的部份。';
@@ -281,9 +299,9 @@ $lang['web_apps.list_menu.edit'] = '編輯';
 $lang['web_apps.list_menu.respond'] = '回應';
 $lang['web_apps.list_menu.view'] = '留言';
 $lang['web_apps.list_menu.select'] = '位置';
-$lang['web_apps.list_menu.review'] = '細節';
+$lang['web_apps.list_menu.review'] = '查看';
 
-$lang['web_apps.list_menu.delete_complete'] = '標註已經刪除';
+$lang['web_apps.list_menu.delete_complete'] = '標註#{0}已經刪除';
 
 /**
  * List_note_component
@@ -299,6 +317,8 @@ $lang['web_apps.list_like_component.like_count'] = '{0}人喜愛';
 $lang['web_apps.list_like_component.set_like'] = '加入喜愛清單';
 $lang['web_apps.list_like_component.set_not_like'] = '移出喜愛清單';
 $lang['web_apps.list_like_component.disable_like'] = '無法使用喜愛功能';
+$lang['web_apps.list_like_component.robot_check.heading'] = '您確定要加入喜愛清單嗎？';
+$lang['web_apps.list_like_component.robot_check.content'] = '您把標註加入喜愛的間隔太短了，您真的要把這篇標註加入喜愛清單嗎？';
 
 /**
  * Respond_list_component
@@ -366,6 +386,8 @@ $lang['web_apps.window.dashboard.last_annotation'] = "最近的標註";
 $lang['web_apps.window.dashboard.activity'] = "活躍度";
 
 $lang['web_apps.kals_framework.view_config_error'] = "VIEW設定錯誤";
+
+$lang['web_apps.ckeditor.php_file_host.upload_error'] = '檔案上傳錯誤';
 
 /* End of file kals_web_apps_lang.php */
 /* Location: ./system/application/language/${lang}/kals_web_apps_lang.php */

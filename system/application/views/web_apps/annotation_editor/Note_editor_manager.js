@@ -119,8 +119,9 @@ Note_editor_manager.prototype.set_text = function (_text) {
         //$.test_msg('Note_editor_managr.reset() set ', [_i, $.isset(this._note_editors[_i]), $.get_class(_note_editor)]);
     }
     */
-    if ($.isset(this._active_editor))
+    if ($.isset(this._active_editor)) {
         this._active_editor.set_text(_text);
+    }
     return this;
 };
 
@@ -132,8 +133,9 @@ Note_editor_manager.prototype._get_editor_list = function () {
     {
         var _editor_name = this._type_mapping[_i];
         
-        if ($.inArray(_editor_name, _list) == -1)
+        if ($.inArray(_editor_name, _list) === -1) {
             _list.push(_editor_name);
+        }
     }
     
     //$.test_msg('Note_editor._get_editor_list', _list);
@@ -201,31 +203,29 @@ Note_editor_manager.prototype.initialize = function (_callback) {
  */
 Note_editor_manager.prototype.toggle_editor = function (_type) {
     
-    if ($.is_null(_type))
-    {
+    if ($.is_null(_type)) {
         _type = this._editor.type.get_default_type();
     }
     
-    if ($.is_class(_type, 'Annotation_type_param'))
-    {
+    if ($.is_class(_type, 'Annotation_type_param')) {
         _type = _type.get_type_name();
     }
     
     var _note_editor_name;
-    if (typeof(this._type_mapping[_type]) == 'string')
-    {
+    if (typeof(this._type_mapping[_type]) === 'string') {
         _note_editor_name = this._type_mapping[_type];
     }
-    else
-    {
+    else {
         _note_editor_name = this._default_editor;
     }
     
     //防止重複更換
-    if (_note_editor_name == this._active_editor_name)
+    if (_note_editor_name === this._active_editor_name) {
         return this;
-    else
+    }
+    else {
         this._active_editor_name = _note_editor_name;    
+    }
     
     var _ui = this.get_ui();
     
@@ -239,8 +239,9 @@ Note_editor_manager.prototype.toggle_editor = function (_type) {
     
     this._active_editor = this._note_editors[ _note_editor_name ];
     
-    if (_text != false)
+    if (_text !== false) {
         this._active_editor.set_text(_text);
+    }
     
     return this;
 };
@@ -258,8 +259,7 @@ Note_editor_manager.prototype.ontypechange = function (_type) {
 Note_editor_manager.prototype.set_data = function (_param) {
     
     if ($.isset(_param)
-        && typeof(_param.note) != 'undefined')
-    {
+        && typeof(_param.note) !== 'undefined') {
         this.set_text(_param.note);
     }
     return this;
@@ -276,9 +276,10 @@ Note_editor_manager.prototype._listen_editor = function () {
     this._editor.add_listener('get', function (_editor, _annotation_param) {
         var _text = _this.get_text();
         
+        _annotation_param = _this.validate(_text, _annotation_param);
+        
         //如果是空值，則不傳輸資料，由伺服器端去取得預設值
-        if ($.isset(_text))
-        {
+        if ($.isset(_text)) {
             _annotation_param.note = _text;
         }
     });
@@ -288,8 +289,160 @@ Note_editor_manager.prototype._listen_editor = function () {
     });
 };
 
+/**
+ * 驗證是否合格
+ * @author Pulipuli Chen 20141111
+ * @param {null|String} _text
+ * @param {Annotation_param} _annotation_param
+ * @returns {Annotation_param}
+ */
+Note_editor_manager.prototype.validate = function (_text, _annotation_param) {
+    
+    var _plain_text = this._flat_text(_text);
+    
+    var _config = KALS_CONFIG.annotation_editor;
+    
+    // ------------------------------
+    
+    //$.test_msg("Note_editor_manager.validate() validate", _text);
+    _annotation_param = this.validate_word_minimum_limit(_text, _plain_text, _annotation_param, _config);
+    _annotation_param = this.validate_check_stop_words(_plain_text, _annotation_param, _config);
+    
+    // ------------------------------
+    
+    return _annotation_param;
 
+};
 
+/**
+ * 使帶有HTML Element的text變成純文字 
+ * @author Pulipuli Chen 20141113
+ * @param {type} _text
+ * @returns {String}
+ */
+Note_editor_manager.prototype._flat_text = function (_text) {
+    var _plain_text = "";
+    if (_text !== null) {
+        _plain_text = $(_text).text();
+        _plain_text = $.trim(_plain_text);
+    }
+    return _plain_text;
+};
+
+/**
+ * 使帶有HTML Element的text變成純文字 
+ * @author Pulipuli Chen 20141113
+ * @param {type} _text
+ * @returns {String}
+ */
+Note_editor_manager.prototype._text_has_multimedia = function (_text) {
+    
+    var _jquery_text = $(_text);
+    var _result = (_jquery_text.find("img, a, iframe, embed").length > 0);
+    
+    //$.test_msg("_text_has_multimedia", _result);
+    
+    return _result;
+};
+  
+/**
+ * 驗證是否合格：最小字數
+ * @author Pulipuli Chen 20141111
+ * 
+ * @author Pulipuli Chen 20141113
+ * 排除圖片、影片、網頁
+ * 
+ * @param {String} _text note
+ * @param {String} _plain_text 化為純文字之後的note
+ * @param {Annotation_param} _annotation_param
+ * @param {JSON} _config 來自KALS_CONFIG.annotation_editor
+ * @returns {Annotation_param}
+ */
+Note_editor_manager.prototype.validate_word_minimum_limit = function (_text, _plain_text, _annotation_param, _config) {
+    
+    /**
+     * @author Pulipuli Chen 20141113
+     * 排除圖片、影片、網頁
+     */
+    if (this._text_has_multimedia(_text) === true) {
+        return _annotation_param;
+    }
+    
+    var _note_word_minimum_limit = _config.note_word_minimum_limit;
+    var _plain_text_length = $.str_replace(" ", '', _plain_text).length;
+    
+    //$.test_msg("Note_editor_manager.validate() note_word_minimum_limit", [_plain_text_length, _note_word_minimum_limit]);
+    //$.test_msg("Note_editor_manager.validate() note_word_minimum_limit", _plain_text);
+    if (typeof(_note_word_minimum_limit) === "number"
+        && (_plain_text_length < _note_word_minimum_limit)) {
+
+        //$.test_msg("無法新增，字數過少");
+        if (_plain_text_length > 0) {
+            _annotation_param.add_invalid(new KALS_language_param(
+                    "You have to write at least {0} words. Now you have wrote {1} words.",
+                    "annotation_editor.note_word_minimum_limit",
+                    [_note_word_minimum_limit, _plain_text_length]
+            ));
+        }
+        else {
+            _annotation_param.add_invalid(new KALS_language_param(
+                    "You have to write at least {0} words. Plese write something.",
+                    "annotation_editor.note_word_minimum_limit_null",
+                    _note_word_minimum_limit
+            ));
+        }
+    }   //if (typeof(KALS_CONFIG.annotation_editor.note_word_minimum_limit) === "number"
+    
+    // ------------------------------
+    
+    return _annotation_param;
+
+};
+
+/**
+ * 驗證是否合格：停用字
+ * @author Pulipuli Chen 20141111
+ * @param {String} _plain_text
+ * @param {Annotation_param} _annotation_param
+ * @param {JSON} _config 來自KALS_CONFIG.annotation_editor
+ * @returns {Annotation_param}
+ */
+Note_editor_manager.prototype.validate_check_stop_words = function (_plain_text, _annotation_param, _config) {
+        
+    var _stop_words = _config.note_stop_words;
+    
+    if (_stop_words === undefined) {
+        return _annotation_param;
+    }
+    
+    _plain_text = _plain_text.toLocaleLowerCase();
+    var _match_stop_words = [];
+    
+    for (var _i in _stop_words) {
+        var _word = _stop_words[_i];
+        _word = _word.toLocaleString();
+        
+        if (_plain_text.indexOf(_word) > -1) {
+            _match_stop_words.push(_word);
+        }
+    }
+    
+    if (_match_stop_words.length > 0) {
+        _annotation_param.add_invalid(new KALS_language_param(
+                "Please don't write indecent words: {0}",
+                "annotation_editor.note_stop_words",
+                [_match_stop_words.join(" ")]
+        ));
+    }
+    
+    return _annotation_param;
+};
+
+/**
+ * 重置文字編輯器
+ * @author 20140907 Pulipuli Chen
+ * @returns {Note_editor_manager.prototype}
+ */
 Note_editor_manager.prototype.reset = function () {
     
     /*
@@ -302,10 +455,10 @@ Note_editor_manager.prototype.reset = function () {
     }
     */
     if ($.isset(this._active_editor)) {
-		this._active_editor.reset();
-	}
+        this._active_editor.reset();
+    }
     
-    //$.test_msg('Note_editor_managr.reset()');
+    //$.test_msg('Note_editor_managr.reset()', "收到了重置的動作");
     //this.set_text('');
     
     //var _ui = this.get_ui('textarea');
@@ -320,8 +473,8 @@ Note_editor_manager.prototype.reset = function () {
  */
 Note_editor_manager.prototype.focus = function () {
     if ($.isset(this._active_editor)) {
-		this._active_editor.focus();
-	} 
+        this._active_editor.focus();
+    } 
     
     return this;
 };

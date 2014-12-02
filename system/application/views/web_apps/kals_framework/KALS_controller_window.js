@@ -197,8 +197,23 @@ KALS_controller_window.prototype.close = function (_callback) {
         //return $.trigger_callback(_callback);
         return;
     }
+    var _this = this;
     return KALS_controller.prototype.close.call(this, function () {
-        KALS_window.close(_callback);
+        
+        /**
+         * 依照視窗是否獨立，判斷是否要延後呼叫callback
+         * @author Pulipuli Chen 20141110
+         */
+        KALS_window.close(function () {
+            if (_this._$absolute === true) {
+                $.trigger_callback(_callback);
+            }
+            else {
+                setTimeout(function () {
+                    $.trigger_callback(_callback);
+                }, 500);
+            }
+        });
     });
 };
 
@@ -1373,8 +1388,8 @@ KALS_controller_window.prototype.toggle_loading = function (_is_loading, _callba
         _loading.slideUp(_speed, function () { _loading.hide(); });
         _content.slideDown(_speed);
         _ui.removeClass("loading");
-        //this.toggle_options(true);
-        //this.toggle_toolbar_option(true);
+        //_this.toggle_options(true);
+        //_this.toggle_toolbar_option(true);
     };
     
     var _open_loading = function () {
@@ -1503,6 +1518,16 @@ KALS_controller_window.prototype.focus_input = function () {
  * @type {Function}
  */
 KALS_controller_window.prototype._$nav_click_callback = null;
+
+/**
+ * 取得目前的submit
+ * 
+ * @author Pulipuli Chen 20141111
+ * @return {Window_content_submit} 
+ */
+KALS_controller_window.prototype.get_submit = function () {
+    return this.submit;
+};
 
 /* End of file KALS_controller_window */
 /* Location: ./system/application/views/web_apps/kals_framework/KALS_controller_window.js */

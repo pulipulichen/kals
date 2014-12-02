@@ -89,13 +89,24 @@ List_item.prototype._$create_ui = function () {
     
     // @20130609 Pudding Chen
     // 只有在不顯示全文的情況下，按下內容才會顯示thread
+//    if (this._note_show_fulltext === false) {
+//        _ui.find(".name-container, .type-container, .list-note-component").click(function () {
+//            _this.view_thread();
+//        });
+//    }
     if (this._note_show_fulltext === false) {
-        _ui.find(".name-container, .type-container, .list-note-component").click(function () {
+        //_ui.find(".list-header-component, .list-timestamp-component, .list-note-component").click(function () {
+        _ui.find(".list-timestamp-component, .list-note-component").click(function () {
             _this.view_thread();
         });
-    }       
-	
-    setTimeout(function() {
+//        _ui.find(".list-note-component .list-menu").click(function (_e) {
+//            _e.preventDefault();
+//            return false;
+//        });
+    }
+    
+    
+    KALS_context.ready(function() {
         //$.test_msg('List_item._$create_ui()', _config);
         
         if (_this._menu_style_default === null 
@@ -105,7 +116,7 @@ List_item.prototype._$create_ui = function () {
         }
             
         _this._toggle_menu_style();
-    }, 0);
+    });
     
     
     this.notify_listeners('set');
@@ -114,11 +125,10 @@ List_item.prototype._$create_ui = function () {
      * @version 20140512 Pulipuli Chen
      * 初始化權限監聽器
      */
-    setTimeout(function () {
+    KALS_context.ready(function () {
         _this._init_readable_policy_listener();
         _this._init_writable_policy_listener();
-    }, 0);
-    
+    });
     
     //this._ready = true;
     
@@ -215,11 +225,11 @@ List_item.prototype._setup_anchor_text_component = function () {
 
 List_item.prototype.is_enable = function (_option_name) {
     if (_option_name === null || this._disable_option === null) {
-		return true;
-	}
-	else {
-		return ($.inArray(_option_name, this._disable_option) == -1);
-	}
+        return true;
+    }
+    else {
+        return ($.inArray(_option_name, this._disable_option) === -1);
+    }
 };
 
 List_item.prototype._$onviewportmove = function (_ui) {
@@ -237,23 +247,23 @@ List_item.prototype._$onviewportmove = function (_ui) {
 List_item.prototype.get_list_item_ui = function () {
     var _ui = this.get_ui('.list-item:first');
     if (_ui.length === 0) {
-		_ui = this.get_ui();
-	}
+        _ui = this.get_ui();
+    }
     return _ui;
 };
 
 List_item.prototype._toggle_menu_style = function (_style) {
     
     if ($.isset(this._menu_style_default)) {
-		_style = this._menu_style_default;
-	}
-    if ($.is_null(_style) || _style == 'none') {
-		return this;
-	}
+        _style = this._menu_style_default;
+    }
+    if ($.is_null(_style) || _style === 'none') {
+        return this;
+    }
     
     var _block_classname = this._menu_style_classname;
     var _ui = this.get_list_item_ui();
-    if (_style == 'block') {
+    if (_style === 'block') {
         _ui.addClass(_block_classname);
     }
     else {
@@ -318,8 +328,8 @@ List_item.prototype.get_menu_style = function () {
     
     var _ui = this.get_ui();
     if (_ui.hasClass(this._menu_style_classname)) {
-		_style = 'block';
-	}
+        _style = 'block';
+    }
     return _style;
 };
 
@@ -374,7 +384,8 @@ List_item.prototype.select = function () {
     KALS_text.tool.close();
     //$.test_msg('List_item.select', this.get_annotation_param());
     KALS_text.tool.list.set_focus(this.get_annotation_param(), true);
-	
+
+    KALS_text.selection.select.cancel_select();
     KALS_text.selection.select.set_scope_coll(_scope);
     
     return this;
@@ -440,8 +451,8 @@ List_item._blur_timer = null;
 List_item.prototype.blur = function () {
     
     if (List_item._blur_timer !== null) {
-		clearTimeout(List_item._blur_timer);
-	}
+        clearTimeout(List_item._blur_timer);
+    }
     
     var _this = this;
     List_item._blur_timer = setTimeout(function () {
@@ -610,11 +621,12 @@ List_item.prototype._init_readable_policy_listener = function () {
     }
 
     var _this = this;
+    //$.test_msg("List_item.prototype._init_readable_policy_listener _readable_policy_name", _readable_policy_name);
     if (_readable_policy_name !== undefined) {
         KALS_context.policy.add_attr_listener(_readable_policy_name, function (_policy) {
             var _enable = _policy[_readable_policy_name]();
             _this.set_note_readable(_enable);
-        });
+        }, true);
     }
     
     return this;

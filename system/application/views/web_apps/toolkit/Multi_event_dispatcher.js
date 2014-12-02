@@ -60,6 +60,15 @@ Multi_event_dispatcher.prototype._default_type = 'trigger';
  * @param {boolean} _trigger 是否立刻啟動
  */
 Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _trigger) {
+    
+    if ($.is_array(_type)) {
+        var _types = _type;
+        for (var _t in _types) {
+            this.add_listener(_types[_t], _function, _trigger);
+        }
+        return this;
+    }
+    
     if ($.is_function(_type) 
         && ($.is_null(_function) || $.is_boolean(_function))) {
         _trigger = _function;
@@ -119,17 +128,10 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
     
     var _key = $.inArray(_function, this._type_listeners[_type]);
     if (_key > -1) {
-		delete this._type_listeners[_type][_key];
-	}
+        delete this._type_listeners[_type][_key];
+    }
     return this;
 };
-
-/**
- * @TODO 應該要做KALS_context.completed判斷，但是怎麼做好呢?
- * @version 20140630 Pulipuli Chen
- * @type Boolean
- */
-//Multi_event_dispatcher.prototype.depend_kals_context = true;
 
 /**
  * 通知監聽者
@@ -139,13 +141,6 @@ Multi_event_dispatcher.prototype.notify_listeners = function (_type, _arg) {
     if (false === this.has_type(_type)) {
         return this;
     }
-    
-    // @TODO 應該要做判斷，但是怎麼做好呢?
-    // 20140630 Pulipuli Chen
-//    if (this.depend_kals_context === true
-//            && KALS_context.completed === false) {
-//        return this;
-//    }
     
     var _this = this;
     

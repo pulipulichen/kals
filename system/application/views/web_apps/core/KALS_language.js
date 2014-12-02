@@ -23,8 +23,8 @@ function KALS_language() {
     if (typeof(KALS_context) !== 'undefined') {
         KALS_context.add_listener(function (_dispatcher, _data) {
             if (typeof(_data.KALS_language) !== 'undefined') {
-				_this.set_lang(_data.KALS_language);
-			}
+                _this.set_lang(_data.KALS_language);
+            }
         });
     }
 }
@@ -119,6 +119,7 @@ KALS_language.prototype.get_line_string = function(_lang_param){
 /**
  * 是否有該語系檔
  * @param {KALS_language_param|String} _lang_param
+ * @returns {Boolean} ture=有 false=沒有
  */
 KALS_language.prototype.has_line = function (_lang_param) {
     //var _line, _arg;
@@ -126,8 +127,8 @@ KALS_language.prototype.has_line = function (_lang_param) {
         _lang_param = $.get_parameter(_lang_param, 'line');
     }
 
-    if ($.isset(this._lang) &&
-    $.isset(this._lang[_lang_param])) {
+    if ($.isset(this._lang) 
+            && $.isset(this._lang[_lang_param])) {
         return true;
     }
     else {

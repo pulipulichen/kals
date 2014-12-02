@@ -82,9 +82,11 @@ Selection_my_manager.prototype.custom = null;
  */
 Selection_my_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
+    //if (typeof(_scope_coll) !== "object" 
+    //        || _scope_coll.length() === 0) {
     if (_scope_coll.length() === 0) {
-		return this;
-	}
+        return this;
+    }
         
     if ($.is_null(_is_initialize)) {
 		_is_initialize = false;
@@ -135,6 +137,24 @@ Selection_my_manager.prototype.clear = function () {
         this[_type].clear();
     }
     return this;
+};
+
+/**
+ * 這個文字是否是我的標註？
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
+Selection_my_manager.prototype.is_my = function (_word) {
+    //$.test_msg("開始檢查 is_my", _word.attr("className"));
+    for (var _i in this._my_selections) {
+        var _selection_name = this._my_selections[_i];
+        var _selection = this[_selection_name];
+        var _selection_classname = _selection._$name;
+        if (_word.hasClass(_selection_classname)) {
+            return true;
+        }
+    }
+    return false;
 };
 
 /* End of file Selection_my_manager */

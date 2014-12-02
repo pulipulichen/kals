@@ -1,32 +1,82 @@
 /**
  * CSS for template Dashboard.html
  */
-dt {
-    font-weight:bold;
-    margin-top: 0.7em;
-    margin-bottom: 0.3em;
+.stamp-qualified td {
+    text-align: center;
+}
+/*
+.stamp-qualification dt {
+    clear: both;
+    font-weight: bold;
+    border-top: 1px solid gray;
+    padding-top: 0.5em;
 }
 
-.activity-good {
-    font-weight: bold;
-    font-size: larger;
-    color:green;
-}
-.activity-normal {
-    font-weight: bold;
-    font-size: larger;
-    color:blue;
-}
-.activity-bad {
-    font-weight: bold;
-    font-size: larger;
-    color:red;
+.stamp-qualification dt:first-child {
+    border-top-width: 0px;
 }
 
-dt.mobile-topics {
-    background-image: url('${base_url}images/mobile.png');
-    background-position:left;
-    background-repeat:no-repeat;
-    height: 16px;
-    padding-left: 20px;
+.stamp-qualification dd {
+    margin-left:75px;
+}
+*/
+.stamp-qualification img {
+    float:left;
+}
+
+/*
+.stamp_qualification {
+    max-height: 300px;
+    overflow-y: auto;
+}
+*/
+
+.header {
+    font-weight: bold;
+}
+
+th,
+td {
+    vertical-align: top;
+    padding-top: 1em;
+}
+
+th {
+    padding-right: 1em;
+}
+
+.user-name-list {
+    float:left;
+    width: 100px;
+    cursor: pointer;
+}
+
+.stamp-qualified th, 
+.stamp-qualified td {
+    padding-top:0;
+} 
+
+/**
+ * @author Pulipuli Chen 20141111
+ * 合併未獲得獎章與進度統計
+ */
+.stamp-statistic-container {
+    float: left;
+    border-right: 1px dotted gray;
+    margin-right: 0.5em !important;
+    padding-right: 0.5em;
+}
+
+/*
+.stamp-qualification-container {
+}
+*/
+
+h1 {
+    text-align: center;
+    margin:0;
+}
+
+.stamp_qualified.tab-content {
+    text-align: center;
 }

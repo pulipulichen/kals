@@ -396,6 +396,14 @@ class Search_engine extends Generic_collection {
         {
             $db->where('annotation.annotation_type_id', $this->target_type_id);
         }   //if (isset($this->target_type_id))
+        
+        //------------------------------------------------
+        // 第6.5關 exclude_type_id_list
+
+        if (count($this->exclude_type_id_list) > 0)
+        {
+            $db->where_not_in('annotation.annotation_type_id', $this->exclude_type_id_list);
+        }   //if (isset($this->target_type_id))
 
         //------------------------------------------------
         // 第七關 target_user_id
@@ -449,7 +457,7 @@ class Search_engine extends Generic_collection {
          {
                        
              $db->like('note',  $this->search_note );  // 生成: WHERE title LIKE '%match%'
-             $db->limit(10);
+             //$db->limit(10);
              //判斷this->search_note裡面有抓到值嗎？
             /*if (isset($this->search_note))
                {
@@ -705,13 +713,58 @@ class Search_engine extends Generic_collection {
     //annotation直接相關屬性
 
     protected $target_type_id;
+    /**
+     * 查詢目標的標註類型
+     * @param Int|String $type_id 標註編號或是標註名稱都可以
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     * @return \Search_engine
+     */
     public function set_target_type($type_id)
     {
         $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
         $this->target_type_id = $this->CI->annotation_type_factory->filter_type_id($type_id);
         return $this;
     }
-
+    
+    /**
+     * 要排除的標註類型
+     * @type Array<Int> $type_list 標註類型的ID列表，注意，只能放ID
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     */
+    protected $exclude_type_id_list = array();
+    
+    /**
+     * 設定要排除的標註類型
+     * @param Array<String|Int> $type_list 標註類型的列表
+     * @return \Search_engine
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     */
+    public function set_exclude_type_list($type_list)
+    {
+        $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
+        $type_id_list = array();
+        foreach ($type_list AS $type) {
+            $type_id = $this->CI->annotation_type_factory->filter_type_id($type);
+            $type_id_list[] = $type_id;
+        }
+        $this->exclude_type_id_list = $type_id_list;
+        return $this;
+    }
+    
+    /**
+     * 增加要排除的標註類型
+     * @param String|Int $type 標註類型
+     * @return \Search_engine
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     */
+    public function add_exclude_type_list($type)
+    {
+        $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
+        $type_id = $this->CI->annotation_type_factory->filter_type_id($type);
+        array_push($this->exclude_type_id_list, $type_id);
+        return $this;
+    }
+    
     protected $target_user_id;
     public function set_target_user(User $user)
     {

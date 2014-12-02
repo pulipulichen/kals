@@ -82,26 +82,26 @@
  * List_item_tooltip
  */
 .KALS.tooltip.has-annotation {
-	width: 200px;
-	max-width: 200px;
-	overflow: hidden;
+    width: 200px;
+    max-width: 200px;
+    overflow: hidden;
 }
 
 .KALS.tooltip .list-item-tooltip {
-	display:none;
+    display:none;
 }
 
 .KALS.tooltip.has-annotation .list-item-tooltip {
-	background-color: white;
-	color: black;
-	font-size:smaller;
-	font-weight:normal;
-	/*width: 200px;*/
-	
-	padding: 3px;
-	text-align:left;
-	
-	border-color: #22272C;
+    background-color: white;
+    color: black;
+    font-size:smaller;
+    font-weight:normal;
+    /*width: 200px;*/
+
+    padding: 3px;
+    text-align:left;
+
+    border-color: #22272C;
 	
 	
     border-radius: 5px 5px 0 0 ;
@@ -109,18 +109,18 @@
     -webkit-border-radius: 5px 5px 0 0 ;
     -khtml-border-radius: 5px 5px 0 0 ;
 	
-	display:block;
-	
-	/*max-height: 200px;*/
-	max-width: 200px;
-	overflow: hidden;
+    display:block;
+
+    /*max-height: 200px;*/
+    max-width: 200px;
+    overflow: hidden;
 }
 
 .KALS.tooltip.has-annotation .list-item-tooltip .count-component {
-	float:right;
-	font-size: smaller;
-	color:gray;
-	margin-right: 2px;
+    float:right;
+    font-size: smaller;
+    color:gray;
+    margin-right: 2px;
 }
 
 .KALS.tooltip.has-annotation.bottom .list-item-tooltip {
@@ -185,6 +185,17 @@
 .KALS.tooltip.deny-read .tip-content,
 .KALS.tooltip.deny-read .tip-needle {
     display:none;
+}
+
+.KALS.tooltip.disable-tooltip .tip-content button {
+    display:none;
+}
+
+.KALS.tooltip.disable-tooltip .tip-content .list-item-tooltip {
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
 }
 
 .KALS.tooltip .kals-select-trigger {

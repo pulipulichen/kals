@@ -19,6 +19,12 @@ function Topic_list() {
 Topic_list.prototype = new Event_dispatcher();
 
 /**
+ * 辨別事件的名稱
+ * @type String
+ */
+Topic_list.prototype._$event_name = 'topic_list';
+
+/**
  * @type {List_collection[]}
  */
 Topic_list.prototype._list_colls = [];
@@ -37,8 +43,32 @@ Topic_list.prototype._$create_ui = function () {
     var _ui = $('<div></div>')
         .addClass('topic-list');
     
+    _ui = this._setup_list_collection(_ui);
+        
     var _loading = this._create_loading_component();
     _loading.appendTo(_ui);
+    
+    var _blank = this._create_blank_component();
+    _blank.appendTo(_ui);
+    
+    var _complete = this._create_complete_component();
+    _complete.appendTo(_ui);
+    
+    _ui = this._setup_endless_scroll(_ui);
+    
+    return _ui;
+};
+
+/**
+ * 設定內在的List_collection
+ * @memberOf {Topic_list}
+ * @author Pulipuli Chen 201411114
+ * @param {jQuery} _ui
+ * @returns {jQuery}
+ */
+Topic_list.prototype._setup_list_collection = function (_ui) {
+    
+    //$.test_msg("_setup_list_collection");
     
     var _my = new List_collection_my();
     _my.get_ui().appendTo(_ui);
@@ -46,47 +76,60 @@ Topic_list.prototype._$create_ui = function () {
     this.child('my', _my);
     
     var _like = new List_collection_like();
-	var _like_ui = _like.get_ui();
+    var _like_ui = _like.get_ui();
     _like_ui.appendTo(_ui);
     this._list_colls.push(_like);
     
     var _other = new List_collection_other();
-	var _other_ui = _other.get_ui();
+    var _other_ui = _other.get_ui();
     _other_ui.appendTo(_ui);
     this._list_colls.push(_other);
 	
     var _anonymous = new List_collection_anonymous();
-	var _anonymous_ui = _anonymous.get_ui(); 
+    var _anonymous_ui = _anonymous.get_ui(); 
     _anonymous_ui.appendTo(_ui);
     this._list_colls.push(_anonymous);
     
-	// @20130603 Pudding Chen
-	// Isolation Mode
-	if (KALS_context.policy.allow_show_navigation() === false) {
-		_like_ui.hide();
-		_other_ui.hide();
-		_anonymous_ui.hide();
-	}
-	
-    var _blank = this._create_blank_component();
-    _blank.appendTo(_ui);
-    
-    var _complete = this._create_complete_component();
-    _complete.appendTo(_ui);
+    // @20130603 Pudding Chen
+    // Isolation Mode
+    if (KALS_context.policy.allow_show_navigation() === false) {
+        _like_ui.hide();
+        _other_ui.hide();
+        _anonymous_ui.hide();
+    }
+    return _ui;
+};
+
+/**
+ * 設定無限讀取
+ * @memberOf {Topic_list}
+ * @type {jQuery} UI
+ * @author Pulipuli Chen 201411114
+ * @param {jQuery} _ui
+ * @returns {jQuery}
+ */
+Topic_list.prototype._setup_endless_scroll = function (_ui) {
     
     var _this = this;
     
-    var _endless_scroll_callback = function (p) {
+    //$.test_msg("Topic_list._setup_endless_scroll setup");
+    
+    var _endless_scroll_callback = function (_p) {
+        //$.test_msg("Topic_list._setup_endless_scroll", [_this.is_totally_loaded()]);
         if (_this.is_totally_loaded() === false) {
             if (_this.is_loading() === false) {
-                clearTimeout(_this._endless_scroll_timer);
+                //clearTimeout(_this._endless_scroll_timer);
                 _this._endless_scroll_timer = null;
                 
+                //$.test_msg("Topic_list._setup_endless_scroll", [_this.is_totally_loaded()]);
                 _this.load_list();
             }
-            else {
-                _this._endless_scroll_timer = setTimeout(_endless_scroll_callback, 3000);
-            }
+//            else {
+//                _this._endless_scroll_timer = setTimeout(
+//                        _endless_scroll_callback
+//                        , 3000
+//                );
+//            }
         }
         else {
             clearTimeout(_this._endless_scroll_timer);
@@ -104,6 +147,10 @@ Topic_list.prototype._$create_ui = function () {
     return _ui;
 };
 
+/**
+ * 無限捲軸讀取的計時器
+ * @type Number
+ */
 Topic_list.prototype._endless_scroll_timer = null;
 
 // --------
@@ -134,23 +181,32 @@ Topic_list.prototype._toggle_loading = function (_is_loading, _callback) {
     var _ui = this.get_ui();
     
     if ($.is_null(_is_loading)) {
-		_is_loading = !(_ui.hasClass(_loading_classname));
-	}
+        _is_loading = !(_ui.hasClass(_loading_classname));
+    }
         
     if (_is_loading === true) {
-		_ui.addClass(_loading_classname);
-	}
-	else {
-		this._loading_component.slideUp(function(){
-			$(this).removeAttr('style');
-			_ui.removeClass(_loading_classname);
-			$.trigger_callback(_callback);
-		});
-	}        
+        _ui.addClass(_loading_classname);
+    }
+    else {
+//        this._loading_component.slideUp(function(){
+//            $(this).removeAttr('style');
+//            _ui.removeClass(_loading_classname);
+//            $.trigger_callback(_callback);
+//        });
+
+        this._loading_component.show();
+        this._loading_component.removeAttr('style');
+        _ui.removeClass(_loading_classname);
+        $.trigger_callback(_callback);
+    }        
     
     return this;
 };
 
+/**
+ * 現在是否是在讀取中
+ * @returns {Boolean}
+ */
 Topic_list.prototype.is_loading = function () {
     var _loading_classname = 'loading';
     var _ui = this.get_ui();
@@ -159,14 +215,25 @@ Topic_list.prototype.is_loading = function () {
 
 Topic_list.prototype._complete_component = null;
 
+/**
+ * 讀取完成的訊息
+ * @returns {KALS_langauge_param}
+ * @author Pulipuli Chen 20141115
+ */
+Topic_list.prototype._lang_complete_component = new KALS_language_param(
+        'THERE IS ALL.',
+        'list_collection.complete'
+    );
+
+/**
+ * 建立讀取完成的訊息
+ * @returns {jQuery}
+ */
 Topic_list.prototype._create_complete_component = function () {
     var _ui = $('<div></div>')
         .addClass('topic-list-complete');
         
-    var _lang = new KALS_language_param(
-        'THERE IS ALL.',
-        'list_collection.complete'
-    );
+    var _lang = this._lang_complete_component;
     
     KALS_context.lang.add_listener(_ui, _lang);
     
@@ -256,8 +323,9 @@ Topic_list.prototype.is_totally_loaded = function () {
 // --------
 
 /**
- * 
+ * 聚焦於某個item上
  * @param {Annotation_param|Number} _param
+ * @param {Boolean} _scrollto 是否要捲動到此處，預設是true
  * @type {List_item}
  */
 Topic_list.prototype.focus = function(_param, _scollto) {
@@ -265,8 +333,8 @@ Topic_list.prototype.focus = function(_param, _scollto) {
     
     //$.test_msg('Topic_list.focus()', [_scollto, this.is_overflow()]);
     if (this.is_overflow() === false) {
-		_scollto = false;
-	}
+        _scollto = false;
+    }
     
     var _list_item;
     for (var _i in this._list_colls) {
@@ -319,7 +387,7 @@ Topic_list.prototype.move = function(_param, _name) {
         var _list_coll = this._list_colls[_i];
         var _list_coll_name = _list_coll.get_name();
         
-        if (_list_coll_name == _name) {
+        if (_list_coll_name === _name) {
             _list_coll.add_list_item(_param, true);
         }
         else {
@@ -364,8 +432,15 @@ Topic_list.prototype.reset = function () {
 
 /**
  * Reload是保留tool原本的位置，直接讀取標註的內容
+ * @param {Function} _callback
  */
 Topic_list.prototype.reload = function (_callback) {
+    
+    if (this._first_load === true) {
+        $.trigger_callback(_callback);
+        return this;
+    }
+    
     this._toggle_blank(false);
     this._toggle_loading(true);
     this._toggle_complete(false);
@@ -436,73 +511,85 @@ Topic_list.prototype.load_list = function (_callback) {
     */
     
     this._load_id = $.create_id();
-    //$.test_msg('Topic_list.load_list() set load id', this._load_id);
+    
+//    if (this._$event_name === "topic_list") {
+//        $.throw_msg('Topic_list.load_list() set load id', [this._load_id, this._$event_name]);
+//    }
     var _this = this;
-    var _loop = function (_i, _load_id) {
+    this._list_loading_index = 0;
+    
+    var _loop = function (_load_id) {
         //$.test_msg('Topic_list.load_list()', [_load_id, _this._load_id]);
-        if (_load_id != _this._load_id || _this._load_id === null) {
-			return;
-		}
+        if (_load_id !== _this._load_id 
+                || _this._load_id === null) {
+            return;
+        }
         
-        if (_i < _this._list_colls.length) {
-            var _coll = _this._list_colls[_i];
+        if (_this._list_loading_index < _this._list_colls.length) {
+            var _coll = _this._list_colls[_this._list_loading_index];
             _coll.set_load_id(_this); 
+            //$.test_msg("Topic_list.load_list()", [_this._list_loading_index, _load_id, _this._list_colls.length]);
             _coll.load_list(function () {
                 setTimeout(function () {
-                    _i++;
-                    _loop(_i, _load_id);
-                }, 0);
+                    _this._list_loading_index++;
+                    _loop(_load_id);
+                }, 500);
             });
         }
         else {
             _this._load_list_complete(_callback);
         }
     };
-    _loop(0, this._load_id);
+    _loop(this._load_id);
    
     return this;
 };
 
+Topic_list.prototype._list_loading_index = 0;
+
 Topic_list.prototype._load_list_complete = function (_callback) {
     //自動重新讀取，避免endless scroll無法觸發的情況
-    if (this.is_overflow() === false && this.is_totally_loaded() === false) {
-        this.load_list(_callback);
-    }
-    else {
-        var _this = this;
-        setTimeout(function() {
-            if (_this.has_list_item() === false) {
-				_this._toggle_blank(true);
-			}
-            
-            //$.test_msg([_this.has_list_item() , _this.is_totally_loaded()]);
-            
-            if (_this.has_list_item() && _this.is_totally_loaded()) {
-				_this._toggle_complete(true);
-			}
-            
-            _this.check_editing();
-            _this._toggle_loading(false, function () {
-                
-                //$.test_msg('Topic_list._load_list_complete()', _this._set_focus_param);
-                
-                if (_this._set_focus_param !== null) {
-                    
-                    var _item = _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
-                    if ($.is_function(_this._set_focus_callback)) {
-                        _this._set_focus_callback(_item);
-                    }
-                    
-                    _this.reset_focus();
+//    if (this.is_overflow() === false 
+//            && this.is_totally_loaded() === false) {
+//        
+//        this.load_list(_callback);
+//        return this;
+//    }
+    
+    var _this = this;
+    setTimeout(function() {
+        if (_this.has_list_item() === false) {
+            _this._toggle_blank(true);
+        }
+
+        //$.test_msg([_this.has_list_item() , _this.is_totally_loaded()]);
+
+        if (_this.has_list_item() && _this.is_totally_loaded()) {
+            _this._toggle_complete(true);
+        }
+
+        _this.check_editing();
+
+        _this._toggle_loading(false, function () {
+
+            //$.test_msg('Topic_list._load_list_complete()', _this._set_focus_param);
+
+            if (_this._set_focus_param !== null) {
+
+                var _item = _this.focus(_this._set_focus_param, _this._set_focus_scrollto);
+                if ($.is_function(_this._set_focus_callback)) {
+                    _this._set_focus_callback(_item);
                 }
-                
-                $.trigger_callback(_callback);
-                _this.notify_listeners();    
-                
-            });
-            
-        }, 1000);
-    }
+
+                _this.reset_focus();
+            }
+
+            $.trigger_callback(_callback);
+            _this.notify_listeners();    
+
+        });
+
+    }, 0);
 };
 
 /**
@@ -548,15 +635,19 @@ Topic_list.prototype.is_overflow = function () {
     //$.test_msg('Topic_list.is_overflow()', [_colls_height, _max_height, (_colls_height < _max_height || _colls_height == _max_height)]);
     
     if (_colls_height < _max_height ||
-	_colls_height == _max_height) {
-		return false;
+	_colls_height === _max_height) {
+            return false;
 	}
 	else {
-		return true;
+            return true;
 	}
     
 };
 
+/**
+ * 是否有標註資料
+ * @returns {Boolean}
+ */
 Topic_list.prototype.has_list_item = function () {
     return (this.count_list_item() > 0);
 };

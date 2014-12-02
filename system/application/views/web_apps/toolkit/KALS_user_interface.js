@@ -7,7 +7,7 @@
 function KALS_user_interface() {
     
     this._children = [];
-	this._data = {};
+    this._data = {};
     this._default_data = this._data;
 }
 
@@ -1195,13 +1195,69 @@ KALS_user_interface.prototype._parse_event_config = function (_ele, _event_name)
 };
 
 KALS_user_interface.prototype._trigger_controller = function (_ele, _config) {
-	var _controller_name = _config.name;
-	
-	if (typeof(this[_controller_name]) == 'function') {
-		var _params = _config.params;
-		return this[_controller_name](_ele, _params);
-	}
-	return this;
+    var _controller_name = _config.name;
+
+    if (typeof(this[_controller_name]) === 'function') {
+            var _params = _config.params;
+            return this[_controller_name](_ele, _params);
+    }
+    return this;
+};
+
+// -----------------------------------------
+// 加入事件驅動的功能
+// -----------------------------------------
+
+/**
+ * 事件通知器
+ * @type {Injection_event_dispatcher}
+ */
+KALS_user_interface.prototype._dispacher = null;
+
+KALS_user_interface.prototype._get_dispatcher = function () {
+    if (this._dispacher === null) {
+        this._dispacher = new Injection_event_dispatcher(this);
+    }
+    return this._dispacher;
+};
+
+/**
+ * 新增監聽者
+ * @param {String} _event_name
+ * @param {Function} _function
+ * @returns {KALS_user_interface}
+ */
+KALS_user_interface.prototype.add_listener = function (_event_name, _function) {
+    var _dispatcher = this._get_dispatcher();
+    
+    _dispatcher.add_listener(_event_name, _function, false);
+    return this;
+};
+
+/**
+ * 新增監聽者，並立即啟動
+ * @param {String} _event_name
+ * @param {Function} _function
+ * @returns {KALS_user_interface}
+ */
+KALS_user_interface.prototype.add_instant_listener = function (_event_name, _function) {
+    var _dispatcher = this._get_dispatcher();
+    
+    _dispatcher.add_listener(_event_name, _function, true);
+    return this;
+};
+
+/**
+ * 新增監聽者，並立即啟動
+ * @param {String} _event_name
+ * @param {Function} _function
+ * @returns {KALS_user_interface}
+ */
+KALS_user_interface.prototype.notify_listeners = function (_event_name, _arg) {
+    var _dispatcher = this._get_dispatcher();
+    
+    _dispatcher.notify_listeners(_event_name, _arg);
+    return this;
 };
 
 /* End of file KALS_user_interface */

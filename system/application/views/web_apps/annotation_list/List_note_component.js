@@ -85,8 +85,8 @@ List_note_component.prototype._$create_ui = function () {
         .addClass('list-note-component');
     
     if (this._show_fulltext === false) {
-		_ui.addClass('simple');
-	}
+        _ui.addClass('simple');
+    }
     
     var _respond = this._create_respond_container();
     _respond.appendTo(_ui);
@@ -158,12 +158,12 @@ List_note_component.prototype.set_respond_to_coll = function (_respond_to_coll) 
     }
     
     if ($.is_null(_respond_to_coll)) {
-		return this;
-	}
+        return this;
+    }
     
     if ($.is_null(this._respond_container)) {
-		this.get_ui();
-	}
+        this.get_ui();
+    }
     
     this._respond_container.empty();
     
@@ -258,17 +258,33 @@ List_note_component.prototype.set_note = function (_note, _callback) {
 	//	this._note_container.append(_note);
 	//}
     this._note_container.html(_note);
+        
+    /**
+     * 在跟以下元件操作時，不開啟檢視畫面
+     * @author 20140907 Pulipuli Chen
+     */
+    //$.test_msg("有找到audio標籤嗎？", this._note_container.find("audio").length);
+    this._note_container.find(".prevent-default, audio, video, a, img").click(function (_e) {
+        //$.test_msg("點選了 audio 標籤"); 
+        //_e.preventDefault();
+        _e.stopPropagation(); // do something
+        //return false;
+        //return false;
+        //return true;
+    });
     
-	var _this = this;
-        _this.adjust_note();
+    var _this = this;
+    _this.adjust_note(function () {
+        $.trigger_callback(_callback);
+    });
 		
-    if (true) {
-		setTimeout(function () {
-            _this.adjust_note(function () {
-                $.trigger_callback(_callback);
-            });
-        }, 200);
-	}
+    //if (true) {
+    //    setTimeout(function () {
+    //        _this.adjust_note(function () {
+    //            $.trigger_callback(_callback);
+    //        });
+    //    }, 200);
+    //}
 		
     
     return this;
@@ -288,12 +304,12 @@ List_note_component.prototype.extract_abstract = function (_note) {
     _text = $.strip_html_tag(_text, _allow_html_tags);
     _text = $.trim(_text);
 	
-	var _plain_text = $.strip_html_tag(_text);
-	
-	var _result = _text;
+    var _plain_text = $.strip_html_tag(_text);
+
+    var _result = _text;
     if (_plain_text.length > this._simple_max_length) {
-		_result = $('<span></span>').html(_origin_text);
-		/*
+        _result = $('<span></span>').html(_origin_text);
+        /*
 		
         if (_text.length > this._simple_max_length) {
             _abstract = _text.substr(0, this._simple_max_length) + '...';
@@ -306,54 +322,63 @@ List_note_component.prototype.extract_abstract = function (_note) {
 		_view.appendTo(_result);
 		*/
 		
-		var _abstract = null;
-		
-		// 先選出有影片的
-		if (_abstract === null) {
-			var _video = _result.find('object, iframe').eq(0);
-			if (_video.length > 0) {
-				_abstract = _video;
-			}
-		}
-		
-		// 再選出圖片
-		if (_abstract === null) {
-			var _img = _result.find('img').eq(0);
-            if (_img.length > 0) {
-                _abstract = _img;
+        var _abstract = null;
+
+        // 先選出有影片、圖片、聲音
+        if (_abstract === null) {
+
+            var _media = _result.find('object, iframe, img, audio').eq(0);
+            if (_media.length > 0) {
+                _abstract = $("<span />")
+                        .append(_media);
             }
-		}
-		
-		// 如果沒有只好選出文字
-		if (_abstract === null) {
-            var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
-			var _foot_part = this._simple_max_length - _head_part;
-			 
-			_abstract =  _plain_text.substr(0, _head_part)
-			     + '...'
-				 + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
-				 
-			_abstract = $('<span>' + _abstract + '</span>');
         }
 		
-		if (_abstract !== null) {
-			_result = _abstract;
-		}
+		// 再選出圖片
+//		if (_abstract === null) {
+//                    var _img = _result.find('img').eq(0);
+//                    if (_img.length > 0) {
+//                        _abstract = _img;
+//                    }
+//		}
 		
-		var _view = this._create_view_thread(_plain_text.length);
-		_view.appendTo(_result);
+        // 如果沒有只好選出文字
+        //if (_abstract === null) {
+        var _head_part = parseInt((this._simple_max_length * 2 / 3), 10);
+        var _foot_part = this._simple_max_length - _head_part;
+
+        var _abstract_text =  _plain_text.substr(0, _head_part)
+             + '...'
+                 + _plain_text.substr(_plain_text.length - _foot_part, _foot_part);
+        _abstract_text = $('<span>' + _abstract_text + '</span>');
+
+        if (_abstract === null) {
+            //$.test_msg("abstract text", _abstract_text);
+            _abstract = _abstract_text;
+        }
+        else {
+            _abstract.append(_abstract_text);
+        }
+                //}
+		
+        if (_abstract !== null) {
+            _result = _abstract;
+        }
+		
+        var _view = this._create_view_thread(_plain_text.length);
+        _view.appendTo(_result);
     }
-	else {
-		_result = $('<span>'+_origin_text+'</span>');
-	}
-	
+    else {
+        _result = $('<span>'+_origin_text+'</span>');
+    }
+
 	//var _max_width = this.get_ui().parents('.KALS').width();
 	
 	//_result.appendTo($('body'));
 	
-	_result.addClass('note-content');
-	
-	return _result;   
+    _result.addClass('note-content');
+
+    return _result;   
 };
 
 /**
@@ -375,6 +400,8 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
             _callback = _result;
         }
     }
+    
+    // -----------------------
     
     if (!$.is_jquery(_result)) {
         _result = this._note_container;
@@ -415,7 +442,41 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
 	
 	});
 	*/
-     
+    
+    
+    // ----------------------------------------------
+    
+    var _plain_result = _result.text();
+    _plain_result = $.trim(_plain_result);
+    
+    /**
+     * @author Pulipuli Chen 20141112
+     * 連接自動變成圖片、影片
+     */
+    //$.test_msg("adjust_note is image", [_plain_result, $.is_image(_plain_result)]);
+    //$.test_msg("adjust_note is youtube", [_plain_result, $.is_image(_plain_result)]);
+    
+    if ($.is_image(_plain_result)) {
+        _result.html('<img src="' + _plain_result + '" style="" />');
+    }
+    else if ($.is_youtube(_plain_result)) {
+        var _youtube_id = $.get_youtube_id(_plain_result);
+        _result.html('<iframe width="300" height="220" src="//www.youtube.com/embed/' + _youtube_id + '" frameborder="0" allowfullscreen></iframe>');
+    }
+    else if ($.is_link(_plain_result)) {
+        var _encode_url = encodeURIComponent(_plain_result);
+        //$.test_msg("is_link", _encode_url);
+        //var _websnapr_image = '<img src="http://cligs.websnapr.com/?url='+ _encode_url + '&size=t&nocache=80" />';
+        
+        var _title_span = '<span>' + _plain_result + '</span>';
+        
+        var _link = '<a href="' + _plain_result + '">' + _title_span + '</a>';
+        
+        _result.html(_link);
+    }
+    
+    // --------------------------------------
+    
     // 幫超連結加上target=_blank
     _result.find('a, img').each(function (_index, _a) {
 		
@@ -430,7 +491,7 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
         
         var _link;
         if (_a.hasAttr('src')) {
-                _link = _a.attr('src');
+            _link = _a.attr('src');
         }
         else if (_a.hasAttr('href')) {
             _link = _a.attr('href');
@@ -492,7 +553,8 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
 	//var _safe_margin = 25;
 	//_max_width = _max_width - _safe_margin;
     // 縮小筆記內的資料
-    _result.find('img, iframe, object, embed').each(function (_index, _ele) {
+    //_result.find('img, iframe, object, embed').each(function (_index, _ele) {
+    _result.find('iframe, object, embed').each(function (_index, _ele) {
         _ele = $(_ele);
         //_ele.css('border', '1px solid red');
         var _width = _ele.width();
@@ -518,6 +580,8 @@ List_note_component.prototype.adjust_note = function (_result, _callback) {
     });
     
     //this._note_container.addClass('adjusted');
+    
+    // ---------------------
 
     $.trigger_callback(_callback);
     return this;

@@ -37,7 +37,7 @@
 
 .KALS.annotation-tool .annotation-tool-header {
     text-align:right;
-    cursor: crosshair;
+    cursor: move;
     height: 20px;
     font-size: small;
     
@@ -152,15 +152,14 @@
  * @section {Reset recovery}
  */
 .KALS.annotation-tool tbody tr th{
-	background:rgba(255, 255, 255, 0) !important;
-	color: black;
+    background:rgba(255, 255, 255, 0) !important;
+    color: black;
 }
 
 .KALS.annotation-tool tbody tr td,
 .KALS.annotation-tool tbody tr th {
-	
-	border-bottom:0px !important;
-	border-top:0px !important;
+    border-bottom:0px !important;
+    border-top:0px;
 }
 
 /**

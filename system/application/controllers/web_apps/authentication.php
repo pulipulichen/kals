@@ -1,5 +1,6 @@
 <?php
 include_once 'web_apps_controller.php';
+
 /**
  * authentication
  *
@@ -108,6 +109,7 @@ class Authentication extends Web_apps_controller {
         $webpage = get_context_webpage();
                 
         $this->load->library("kals_actor/User_statistic", "user_statistic");
+        $this->load->library("kals_actor/User_statistic", "user_statistic");
         $this->user_statistic = new User_statistic();
         
         $output = array();
@@ -122,21 +124,32 @@ class Authentication extends Web_apps_controller {
             'locale' => $user->get_locale(),
             'sex' => $user->get_sex(),
             
-            // 從$this->user_statistic可以取得的資料
-            // types_array
-            'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
-            'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
-            'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
-            'responded_users_count' =>$this->user_statistic->get_responded_users_count($user, $webpage),
-            'respond_to_users_count' =>$this->user_statistic->get_respond_to_users_count($user, $webpage),
-            
-            // int count
-            'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
-            'like_to_count' => $this->user_statistic->get_like_to_count($user, $webpage),
-            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage),
-            'like_to_users_count' => $this->user_statistic->get_like_to_users_count($user, $webpage),
-            'liked_users_count' => $this->user_statistic->get_liked_users_count($user, $webpage)
+//            // 從$this->user_statistic可以取得的資料
+//            // types_array
+//            'topic_annotation_count' => $this->user_statistic->get_topic_types_count($user, $webpage),
+//            'respond_to_my_annotation_count' => $this->user_statistic->get_respond_to_my_types_count($user, $webpage),
+//            'respond_to_other_annotation_count' => $this->user_statistic->get_respond_to_other_types_count($user, $webpage),
+//            'responded_users_count' =>$this->user_statistic->get_responded_users_count($user, $webpage),
+//            'respond_to_users_count' =>$this->user_statistic->get_respond_to_users_count($user, $webpage),
+//            
+//            // int count
+//            'responded_count' => $this->user_statistic->get_responded_count($user, $webpage),
+//            'like_to_count' => $this->user_statistic->get_like_to_count($user, $webpage),
+//            'liked_count' => $this->user_statistic->get_liked_count($user, $webpage),
+//            'like_to_users_count' => $this->user_statistic->get_like_to_users_count($user, $webpage),
+//            'liked_users_count' => $this->user_statistic->get_liked_users_count($user, $webpage)
         );
+        
+        $user_params = $this->user_statistic->get_init_user_params($user, $webpage);
+        foreach ($user_params as $key => $value) {
+            $output['user'][$key] = $value;
+        }
+        
+        $user_params = $this->user_statistic->get_user_params($user, $webpage);
+        foreach ($user_params as $key => $value) {
+            $output['user'][$key] = $value;
+        }
+        
         //將使用者寫入Context當中
         set_context_user($user);
 

@@ -52,7 +52,24 @@ this.generic_load = function (_conf, _callback) {
     var _libraries = {
         libraries_list: [
             "libraries/ckeditor/ckeditor.js",
-            "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js"
+            "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js",
+            //"libraries/bootstrap/js/bootstrap.min.js",
+            // jQuery File Upload 最小安裝法 https://github.com/blueimp/jQuery-File-Upload/wiki/Basic-plugin
+            //"libraries/jquery-file-upload/js/vendor/jquery.ui.widget.js",
+            //"libraries/jquery-file-upload/js/jquery.iframe-transport.js",
+            //"libraries/jquery-file-upload/js/jquery.fileupload.js"
+            "libraries/semantic-ui/javascript/semantic.min.js"
+        ],
+        // @version 20140703 Pudding Chen
+        // 解決CKeditor圖示無法顯示的問題
+        images_list: [
+            "libraries/ckeditor/skins/kama/icons.png"
+        ],
+        style_list: [
+            //"libraries/bootstrap/css/bootstrap.min.css",
+            //"libraries/bootstrap/css/bootstrap-theme.min.css",
+            //"libraries/font-awesome/css/font-awesome.min.css",
+            "libraries/semantic-ui/css/semantic.min.css"
         ]
     };
     
@@ -164,10 +181,14 @@ this.get_base_url = function () {
     return this.base_url;
 };
 
+/**
+ * 
+ * @returns {String}
+ */
 this.get_libraries_url = function () {
     var _libraries_url = this.get_base_url();
     var _needle = "web_apps/";
-    if (_libraries_url.substr(_libraries_url.length - _needle.length, _needle.length) == _needle) {
+    if (_libraries_url.substr(_libraries_url.length - _needle.length, _needle.length) === _needle) {
         _libraries_url = _libraries_url.substr(0, _libraries_url.length - _needle.length);
     }
     return _libraries_url;
@@ -176,9 +197,9 @@ this.get_libraries_url = function () {
 
 this.load_jquery = function (_callback) {
     if (this.has_jquery()) {
-        if (typeof(_callback) == 'function') {
-			_callback();
-		}
+        if (typeof(_callback) === 'function') {
+            _callback();
+        }
     }
     else {   
         var _base_url = this.get_base_url();
@@ -259,6 +280,52 @@ this.load_scripts = function (_script_list, _callback, _is_libraries) {
 };
 
 /**
+ * 同時讀取指定的所有images，並在完全完成之後呼叫callback。
+ * @param {Array} _images_list
+ * @param {Function} _callback
+ */
+this.load_images = function (_images_list, _callback, _is_libraries) {
+    var _loaded = [];
+    
+    var _check_complete = function (_script) {
+        if (typeof(_script) === 'undefined'
+            || _script === ''
+            || $.inArray(_script, _loaded) > -1) {
+            return this;
+        }
+        
+        //console.log(["load_scripts", _script]);
+        _loaded.push(_script);
+        
+        if (_loaded.length === _images_list.length) {
+            if (typeof(_callback) === 'function') {
+                _callback();
+            }
+        }
+    };
+    
+    var _base_url = this.get_base_url();
+    if (typeof(_is_libraries) === "boolean" 
+            && _is_libraries === true) {
+        _base_url = this.get_libraries_url();
+    }
+    
+    if (typeof(_images_list) === 'string') {
+        _images_list = [_images_list];
+    }
+    
+    for (var _i in _images_list) {
+        var _url = _base_url + _images_list[_i];
+        
+        //console.log('[KALS] start load image: '+_url);
+        $.get(_url, function () {
+            _check_complete(_url);
+        });           
+    }
+    return this;
+};
+
+/**
  * 以插入標籤的方式讀取JavaScript
  * @param {Array|String} _script_list
  * @param {Function} _callback
@@ -277,14 +344,26 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
     var _loaded_count = 0;
     
     var _loaded = false;
+    var _head = $("head");
     
     for (var _i in _script_list) {
        var _script_url = _base_url + _script_list[_i];
-       var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
-       _script_tag.appendTo($('head'));
+        //console.log(_script_url);
+        var _script_tag = $('<script type="text/javascript" src="' + _script_url + '"></script>');
+        _script_tag.appendTo(_head);
+        // Use any selector
+        //console.log($(_s).html());
+        //_head.append(_s);
+        
+        
+        //var _s = document.createElement("script");
+        //_s.type = "text/javascript";
+        //_s.src = _script_url;
+        //document.head.appendChild(_s);
        
        //console.log('[KALS] append script: ' + _script_url);
-       $.getScript(_script_url, function () {
+       //$.getScript(_script_url, function () {
+       var _complete_callback = function () {
            
            /**
             * @author Pulipuli Chen 20140428
@@ -300,7 +379,14 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
            }
            
            //_loaded = true;
-       });
+       };
+       
+       //$.ajax({
+       //    url: _script_url,
+       //    cache: true,
+       //    complete: _complete_callback
+       //});
+       $.getScript(_script_url, _complete_callback);
     }
     return this;
 };
@@ -328,6 +414,8 @@ this.load_styles = function (_style_list, _callback) {
     };
     
     var _base_url = this.get_base_url();
+    //var _base_url = this.get_libraries_url();
+    
     //_base_url = _base_url + '/load_css/';
     
     if (typeof(_style_list) === 'string') {
@@ -349,11 +437,15 @@ this.load_styles = function (_style_list, _callback) {
         }
         
         var _style = _base_url + _style_url;
+        var _needle = "libraries/";
+        if (_style_url.substr(0, _needle.length) === _needle) {
+            _style = this.get_libraries_url() + _style_url;
+        }
             
         //檢查一下是否已有該title
         var _link = null;
         if (_style_title !== null) {
-            _link = $('link[type=text/css][rel=stylesheet][title=' + _style_title + ']');
+            _link = $('link[type="text/css"][rel="stylesheet"][title="' + _style_title + '"]');
             if (_link.length === 0) {
                 _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
             }
@@ -421,6 +513,10 @@ this.load_libraries = function (_libraries, _callback) {
     if (typeof(_libraries.libraries_list) !== 'undefined') {
         _threshold++;
     }
+    //console.log("[KALS] 有image嗎？" + typeof(_libraries.images_list));
+    if (typeof(_libraries.images_list) !== 'undefined') {
+        _threshold++;
+    }
     // 在此處開始執行
     
     var _this = this;
@@ -440,6 +536,11 @@ this.load_libraries = function (_libraries, _callback) {
                         _complete();
                     });
                 }
+                if (typeof(_libraries.images_list) !== 'undefined') {
+                    _this.load_images(_libraries.images_list, function () {
+                        _complete();
+                    }, true);
+                }
             
             }, 0);    //setTimeout(function () {
             
@@ -452,6 +553,11 @@ this.load_libraries = function (_libraries, _callback) {
             _this.load_scripts(_libraries.script_list, function () {
                 _complete();
             });
+        }
+        if (typeof(_libraries.images_list) !== 'undefined') {
+            _this.load_images(_libraries.images_list, function () {
+                _complete();
+            }, true);
         }
         if (typeof(_libraries.style_list) !== 'undefined') {   
             _this.load_styles(_libraries.style_list, function () {

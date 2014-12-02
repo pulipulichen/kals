@@ -36,10 +36,10 @@
  
 .KALS.kals-toolbar tr td{
     /*
- 	padding: 0 .5em !important;
-	text-align:right !important;
-	font-size:100% !important;
-	*/
+    padding: 0 .5em !important;
+    text-align:right !important;
+    font-size:100% !important;
+    */
 	
  }
 
@@ -257,55 +257,6 @@
 	margin-right: 0.5em;
 }
 
-/* --------- */
-/* Search_component */
-.KALS .search-component {
-    
-}
-
-/**
- * 搜尋類別
- * @author Pulipuli Chen 20131113
- */
-.KALS .search-component .search-range {
-	height: 2em;
-    width: auto;
-}
-
-.KALS .search-component * {
-    margin:0;
-    height: 2em;
-}
-
-.KALS .search-component .search-form-input {
-    height: 1.5em;
-    padding-left: 5px;
-    padding-right: 5px;
-	
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-}
-
-.KALS .search-component .search-form-submit {
-    height: 25px;
-    width: 25px;
-    display: block;
-	float:right;
-    padding: 0;
-	
-	border-radius: 5px;
-	min-height: 25px;
-	background-image:url("${base_url}images/web_search.png") !important;
-	background-repeat:no-repeat;
-	background-position: center;
-	
-	border-width: 0 !important;
-	background-color: transparent;
-    /*float:right;*/
-}
-
 /* 寬度縮小的情況 */
 .KALS.kals-toolbar.compact-width .advanced-button {
     display: inline !important;
@@ -350,17 +301,23 @@
     display: none;
 }
 
-.KALS .search-component .search-form-input {
+.KALS .search-component .search-keyword {
     width: 7em;
     margin:0;
-    margin-left: 0.5em;
+    
+    /**
+     * @author Pulipuli Chen 20141111
+     * 調整頁面資料
+     */
+    /*margin-left: 0.5em;*/
+    
     margin-right: 0.5em;
     margin-top: 1px;
 }
 
 @media screen and (max-width: 800px){
-	.KALS .search-component .search-range,
-    .KALS .search-component .search-form-input {
+    .KALS .search-component .search-range,
+    .KALS .search-component .search-keyword {
     	display:none;
     }
 }
@@ -519,16 +476,22 @@
 }
 
 .KALS.kals-toolbar tbody tr td{
-	
-	border-bottom:0px !important;
-	border-top:0px !important;
+
+    border-bottom:0px !important;
+    border-top:0px !important;
+}
+
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .stamp-icon img {
+    margin-right: 0.5em;
+    cursor:pointer;
 }
 
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .photo{
-	border: 0px !important;
+    border: 0px !important;
 }
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .name{
-	border: 0px !important;
+    border: 0px !important;
+    color: white;
 }
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .notification{
 	border: 0px !important;

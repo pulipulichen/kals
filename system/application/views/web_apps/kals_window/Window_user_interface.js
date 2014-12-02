@@ -20,16 +20,16 @@ Window_user_interface.prototype = new KALS_user_interface();
 Window_user_interface.prototype.panel = function (_classname) {
     var _ui = $('<div class="window-panel"></div>');
     if ($.isset(_classname)) {
-		_ui.addClass(_classname);
-	}
+        _ui.addClass(_classname);
+    }
     return _ui; 
 };
 
 Window_user_interface.prototype.subpanel = function (_classname) {
     var _ui = $('<div class="window-subpanel"></div>');
     if ($.isset(_classname)) {
-		_ui.addClass(_classname);
-	}
+        _ui.addClass(_classname);
+    }
     return _ui; 
 };
 
@@ -55,15 +55,15 @@ Window_user_interface.prototype._setup_text_input = function (_input, _default_v
     _input.addClass(this._input_text_classname);
     
     if ($.isset(_default_value)) {
-		_input.val(_default_value);
-	}
+        _input.val(_default_value);
+    }
     
     _input.keypress(function (e) {
         
         //$.test_msg('Window ui._setup_text_input()', e.which);
         
-        if (e.which == 13)    //13表示enter鍵
-        {
+        if (e.which === 13) {   //13表示enter鍵
+        
             var _submit = _input.parents('.dialog-table:first')
                 .find('.dialog-options .window-content-submit:first')
                 .focus()
@@ -109,8 +109,8 @@ Window_user_interface.prototype.dropdown = function (_name, _options, _default_v
         .addClass('dropdown');
         
     if ($.is_array(_options) === false) {
-		_options = [_options];
-	}
+        _options = [_options];
+    }
     
     for (var _i in _options) {
         _options[_i].appendTo(_select); 
@@ -119,9 +119,9 @@ Window_user_interface.prototype.dropdown = function (_name, _options, _default_v
     //選擇預設的選項
     if ($.isset(_default_value)) {
         //_select.children('[value="' + _default_value + '"]').attr('selected', 'selected');
-		_select.attr("value", _default_value);
-        
-		//$.test_msg('win ui.dropdown()' , [_default_value
+        _select.attr("value", _default_value);
+
+        //$.test_msg('win ui.dropdown()' , [_default_value
         //    , _select.children('[value="' + _default_value + '"]').length
         //    , _select.children('[value="' + _default_value + '"]:selected').length]);
     }
@@ -141,11 +141,11 @@ Window_user_interface.prototype.dropdown_option = function (_lang_param, _value)
     KALS_context.lang.add_listener(_option, _lang_param);
     if ($.is_null(_value)) {
         if ($.is_class(_lang_param, 'KALS_language_param')) {
-			_value = _lang_param.lang;
-		}
-		else {
-			_value = _lang_param;
-		}
+            _value = _lang_param.lang;
+        }
+        else {
+            _value = _lang_param;
+        }
     }
     
     _option.attr('value', _value);
@@ -169,11 +169,11 @@ Window_user_interface.prototype.list_option = function (_lang_param, _value) {
     
     if ($.is_null(_value)) {
         if ($.is_class(_lang_param, 'KALS_language_param')) {
-			_value = _lang_param.lang;
-		}
-		else {
-			_value = _lang_param;
-		}
+            _value = _lang_param.lang;
+        }
+        else {
+            _value = _lang_param;
+        }
     }
     
     _heading.attr('value', _value);
@@ -188,7 +188,7 @@ Window_user_interface.prototype.list_option = function (_lang_param, _value) {
  * @param {Object} _value
  */
 Window_user_interface.prototype.radio_option = function(_lang_param, _value){
-	return this.list_option(_lang_param, _value);
+    return this.list_option(_lang_param, _value);
 };
 
 Window_user_interface.prototype.radio_list = function (_name, _options, _default_value) {
@@ -198,9 +198,9 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
         .addClass('list');
     
     if ($.is_array(_options) === false) {
-		_options = [_options];
-	}
-    
+        _options = [_options];
+    }
+
     for (var _i in _options) {
         var _option = _options[_i];
         
@@ -229,27 +229,27 @@ Window_user_interface.prototype.radio_list = function (_name, _options, _default
  */
 Window_user_interface.prototype.change_list_value = function (_list, _value) {
 	
-	if (_list.length == 1) {
-		//$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
-		var _classname = _list.attr("className");
-		if (_classname.indexOf("radio-list") != -1) {
-			_list.find("input:radio").attr("checked", false);
-			_list.find("input:radio[value='"+_value+"']").attr("checked", true);
-		}
-		else {
-			_list.attr("value", _value);
-		}
+	if (_list.length === 1) {
+            //$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
+            var _classname = _list.attr("className");
+            if (_classname.indexOf("radio-list") !== -1) {
+                _list.find("input:radio").attr("checked", false);
+                _list.find("input:radio[value='"+_value+"']").attr("checked", true);
+            }
+            else {
+                _list.attr("value", _value);
+            }
 	}
 	else {
-		/*
-		var _this = this;
-		_list.each(function (_index, _l) {
-			_this.change_list_value(_l, _value);
-		});
-		*/
-		for (var _i = 0; _i < _list.length; _i++) {
-			this.change_list_value(_list.eq(_i), _value);
-		}
+            /*
+            var _this = this;
+            _list.each(function (_index, _l) {
+                    _this.change_list_value(_l, _value);
+            });
+            */
+            for (var _i = 0; _i < _list.length; _i++) {
+                this.change_list_value(_list.eq(_i), _value);
+            }
 	}
 };
 
@@ -260,17 +260,17 @@ Window_user_interface.prototype.change_list_value = function (_list, _value) {
 Window_user_interface.prototype.get_list_value = function (_list) {
 	
 	if (_list.length > 1) {
-		_list = _list.eq(0);
+            _list = _list.eq(0);
 	}
 	
 	var _value;
 	//$.test_msg("Window_search change_annotation_type", _ui.attr("className"));
 	var _classname = _list.attr("className");
-	if (_classname.indexOf("radio-list") != -1) {
-		_value = _list.find("input:radio:checked").attr("value");
+	if (_classname.indexOf("radio-list") !== -1) {
+            _value = _list.find("input:radio:checked").attr("value");
 	}
 	else {
-		_value = _list.attr("value");
+            _value = _list.attr("value");
 	}
 	return _value;
 };
@@ -313,12 +313,12 @@ Window_user_interface.prototype.row = function (_title, _data) {
             var _input = _dd.find('input:first');
             if (_input.length > 0) {
                 var _type = _input.attr('type');
-                if (_type == 'text' || _type == 'password') {
-					_input.select();
-				}
-				else {
-					_input.focus();
-				}
+                if (_type === 'text' || _type === 'password') {
+                    _input.select();
+                }
+                else {
+                    _input.focus();
+                }
             }                
         }
     });
@@ -413,138 +413,136 @@ Window_user_interface.prototype._setup_content = function (_container, _content)
  */
 
 Window_user_interface.prototype.create_pager = function (_now_page, _all_page, _callback) {
-	var _factory = this;
-	var _ui = _factory.panel('pager');
-	
-	var _first = new KALS_language_param (
-	    'First',
-	    'window.pager.first'
-	);
-	var _first_value = 1;
-	
-	var _prev = new KALS_language_param (
-	    'Prev',
-	    'window.pager.prev'
-	);
-	var _prev_value = _now_page - 1;
-	
-	var _next = new KALS_language_param (
-	    'Next',
-	    'window.pager.next'
-	);
-	var _next_value = parseInt(_now_page) + 1;
-	
-	var _last = new KALS_language_param (
-	    'Last',
-	    'window.pager.last'
-	);
-	var _last_value = _all_page;
-	
-	var _now = new KALS_language_param (
-	    _now_page,
-	    'window.pager.now'
-	);
-	var _now_value = _now_page;
-	
-	var _now_prev = new KALS_language_param (
-	    parseInt(_now_page) - 1,
-	    'window.pager._now_prev'
-	);
-	var _now_prev_value = parseInt(_now_page) - 1;
-	
-	var _now_prev2 = new KALS_language_param (
-	    parseInt(_now_page) - 2,
-	    'window.pager._now_prev2'
-	);
-	var _now_prev2_value = parseInt(_now_page) - 2;
-	
-	var _now_next = new KALS_language_param (
-	    parseInt(_now_page) + 1,
-	    'window.pager._now_next'
-	);
-	var _now_next_value = parseInt(_now_page) + 1;
+    var _factory = this;
+    var _ui = _factory.panel('pager');
 
-	var _now_next2 = new KALS_language_param (
-	    parseInt(_now_page) + 2,
-	    'window.pager._now_next2'
-	);
-	var _now_next2_value = parseInt(_now_page) + 2;
+    var _first = new KALS_language_param (
+        'First',
+        'window.pager.first'
+    );
+    var _first_value = 1;
 
-	//var _lastnum = _all_page;
-	
-	// Prev First ... 3 4 5 6 7 ... Last Next
-	// [1       ] [2] [3][4][5] [6] [7      ]
-	
-	// Part 1
-	if (_now_page != 1) {
-		this.create_pager_button(_prev, _prev_value, _callback).appendTo(_ui);
-		this.create_pager_button(_first, _first_value, _callback).appendTo(_ui);
-	} 
-    if (_now_page ==2){
-			
-		this.create_pager_button('1', _first_value, _callback).appendTo(_ui);
-		}
-		
-	
-	//Part2
-    if (_now_page > 3){
-		
-		this.create_pager_button('...').appendTo(_ui);
-		
-	}
-		
-	//PART3
-	if (_now_page > 3) {
-		this.create_pager_button(_now_prev2, _now_prev2_value, _callback).appendTo(_ui);
-	}
+    var _prev = new KALS_language_param (
+        'Prev',
+        'window.pager.prev'
+    );
+    var _prev_value = _now_page - 1;
 
-    if (_now_page ==3){
-			
-		this.create_pager_button('1', _first_value, _callback).appendTo(_ui);
-		}
-	if (_now_page > 2) {
-		this.create_pager_button(_now_prev, _now_prev_value, _callback).appendTo(_ui);
-	}
+    var _next = new KALS_language_param (
+        'Next',
+        'window.pager.next'
+    );
+    var _next_value = parseInt(_now_page) + 1;
 
-	
-	
-	//PART4 //當前頁面
-	this.create_pager_button(_now).appendTo(_ui);
-	
-	
-	//PART5
-	if (_now_page < _all_page - 1) {
-		this.create_pager_button(_now_next, _now_next_value, _callback).appendTo(_ui);
-	}
-	
-	if (_now_page < _all_page - 2) {
-		this.create_pager_button(_now_next2, _now_next2_value, _callback).appendTo(_ui);
-	}
-	
-	//PART6
-	if (_now_page < _all_page - 3){
-		
-		this.create_pager_button('...').appendTo(_ui);
-		
-	}
-	
-	
-	//PART7	
-	
-	    if (_now_page == _all_page - 1) {
-			this.create_pager_button(_all_page, _last_value, _callback).appendTo(_ui);
-		}
-	    if (_now_page == _all_page - 2) {
-			this.create_pager_button(_all_page, _last_value, _callback).appendTo(_ui);
-		}
-		if (_now_page != _all_page) {
-		this.create_pager_button(_last, _last_value, _callback).appendTo(_ui);
-		this.create_pager_button(_next, _next_value, _callback).appendTo(_ui);
-	
-	     
-	} 
-				
-	return _ui;
+    var _last = new KALS_language_param (
+        'Last',
+        'window.pager.last'
+    );
+    var _last_value = _all_page;
+
+    var _now = new KALS_language_param (
+        _now_page,
+        'window.pager.now'
+    );
+    var _now_value = _now_page;
+
+    var _now_prev = new KALS_language_param (
+        parseInt(_now_page) - 1,
+        'window.pager._now_prev'
+    );
+    var _now_prev_value = parseInt(_now_page) - 1;
+
+    var _now_prev2 = new KALS_language_param (
+        parseInt(_now_page) - 2,
+        'window.pager._now_prev2'
+    );
+    var _now_prev2_value = parseInt(_now_page) - 2;
+
+    var _now_next = new KALS_language_param (
+        parseInt(_now_page) + 1,
+        'window.pager._now_next'
+    );
+    var _now_next_value = parseInt(_now_page) + 1;
+
+    var _now_next2 = new KALS_language_param (
+        parseInt(_now_page) + 2,
+        'window.pager._now_next2'
+    );
+    var _now_next2_value = parseInt(_now_page) + 2;
+
+    //var _lastnum = _all_page;
+
+    // Prev First ... 3 4 5 6 7 ... Last Next
+    // [1       ] [2] [3][4][5] [6] [7      ]
+
+    // Part 1
+    if (_now_page != 1) {
+            this.create_pager_button(_prev, _prev_value, _callback).appendTo(_ui);
+            this.create_pager_button(_first, _first_value, _callback).appendTo(_ui);
+    } 
+if (_now_page ==2){
+
+            this.create_pager_button('1', _first_value, _callback).appendTo(_ui);
+            }
+
+
+    //Part2
+if (_now_page > 3){
+
+            this.create_pager_button('...').appendTo(_ui);
+
+    }
+
+    //PART3
+    if (_now_page > 3) {
+            this.create_pager_button(_now_prev2, _now_prev2_value, _callback).appendTo(_ui);
+    }
+
+if (_now_page === 3){
+
+            this.create_pager_button('1', _first_value, _callback).appendTo(_ui);
+            }
+    if (_now_page > 2) {
+            this.create_pager_button(_now_prev, _now_prev_value, _callback).appendTo(_ui);
+    }
+
+
+
+    //PART4 //當前頁面
+    this.create_pager_button(_now).appendTo(_ui);
+
+
+    //PART5
+    if (_now_page < _all_page - 1) {
+            this.create_pager_button(_now_next, _now_next_value, _callback).appendTo(_ui);
+    }
+
+    if (_now_page < _all_page - 2) {
+            this.create_pager_button(_now_next2, _now_next2_value, _callback).appendTo(_ui);
+    }
+
+    //PART6
+    if (_now_page < _all_page - 3){
+
+            this.create_pager_button('...').appendTo(_ui);
+
+    }
+
+
+    //PART7	
+
+        if (_now_page === _all_page - 1) {
+            this.create_pager_button(_all_page, _last_value, _callback).appendTo(_ui);
+        }
+        if (_now_page === _all_page - 2) {
+            this.create_pager_button(_all_page, _last_value, _callback).appendTo(_ui);
+        }
+        if (_now_page !== _all_page) {
+        this.create_pager_button(_last, _last_value, _callback).appendTo(_ui);
+        this.create_pager_button(_next, _next_value, _callback).appendTo(_ui);
+    } 
+
+    return _ui;
 };
 
 

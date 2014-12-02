@@ -406,6 +406,10 @@ Selection_manager.prototype.get_selection_bottom = function () {
 };
 */
 
+Selection_manager.prototype.has_annotation = function (_word) {
+    return (this.my_basic.is_my(_word)
+            || this.navigation.is_navigation(_word));
+};
 
 /* End of file Selection_manager */
 /* Location: ./system/application/views/web_apps/kals_text/Selection_manager.js */

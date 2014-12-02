@@ -59,30 +59,36 @@ Dialog_modal.prototype._$create_ui = function () {
 };
 
 Dialog_modal.prototype._$onviewportmove = function (_ui) {
+    //$.test_msg("Dialog_modal._$onviewportmove()");
+    
     if ($.browser.msie6) {
         return;
     }
     
+    var _classname_compact_width = 'compact-width';
+    var _classname_compact_height = 'compact-height';
+    
     if ($.is_small_width()) {
         _ui.fullscreen_width();
-        _ui.addClass('compact-width');
+        _ui.addClass(_classname_compact_width);
     }
     else {
         _ui.restore();
-        _ui.removeClass('compact-width');
+        _ui.removeClass(_classname_compact_width);
     }
     
     if ($.is_small_height()) {
-        _ui.addClass('compact-height');
+        _ui.addClass(_classname_compact_height);
     }
     else {
-        _ui.removeClass('compact-height');
+        _ui.removeClass(_classname_compact_height);
     }
     
     _ui.ready(function () {
         
         if ($.is_small_height() 
-            && (_ui.height() > $.get_viewport_height() || _ui.height() == $.get_viewport_height())) {
+            && (_ui.height() > $.get_viewport_height() 
+            || _ui.height() === $.get_viewport_height())) {
             _ui.valign('top');
         }
         else {
@@ -363,18 +369,17 @@ Dialog_modal.prototype.toggle_content = function (_display, _callback) {
 Dialog_modal.prototype.set_options = function (_options, _double_col) {
     
     if ($.is_null(_options)) {
-		_options = [];
-	}
-	else 
-		if (false == $.is_array(_options)) {
-			_options = [_options];
-		}
+        _options = [];
+    }
+    else if (false == $.is_array(_options)) {
+        _options = [_options];
+    }
         
     //$.test_msg('set_options', _options.length);
     
     if ($.is_null(_double_col)) {
-		_double_col = true;
-	}
+        _double_col = true;
+    }
     
     var _ui = this.get_ui();
     
@@ -388,9 +393,9 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
     for (var _index = 0; _index < _options.length; _index++) {
         //$.test_msg('set_options forloop', [$.get_class(_options[_index]), (typeof(_options[_index].get_ui))]);
         
-        if (typeof(_options[_index].get_ui) != 'function') {
-			continue;
-		}
+        if (typeof(_options[_index].get_ui) !== 'function') {
+            continue;
+        }
         
         var _option_ui = _options[_index].get_ui();
         

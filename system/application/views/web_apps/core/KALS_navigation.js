@@ -141,68 +141,124 @@ KALS_navigation.prototype.get_list = function (_nav_type) {
     }
     
     var _list = [], _order, _item, _item_list, _disorder_list = {};
+    var _added_order = [];
     
-    //$.test_msg("get_list nav_type", [_nav_type, typeof(this._list[_nav_type])]);
+    //$.test_msg("開頭！！get_list nav_type", [_nav_type, typeof(this._list[_nav_type])]);
     
     if ($.is_string(_nav_type)) {
         _nav_type = [_nav_type];
     }
     
+    // 執行一種類型
     for (var _index in _nav_type) {
-        var _nav_type_name = _nav_type[_index];
         
+        // 類型名稱
+        var _nav_type_name = _nav_type[_index];
+        //$.test_msg("get_type 現在要取出的是：", _nav_type_name);
+        
+        // 測試用計數
+        var _count = 0;
+        
+        // 列表中有這個類型
         if (typeof(this._list[_nav_type_name]) === "object") {
+            
+            // 先把列表中的類型取出來
             var _disorder_list_part = this._list[_nav_type_name];
+            
+            //var _disorder_list_part = this._list[_nav_type_name];
+            
+            /**
+             * 為了避免this._list被影響到
+             * 改用深度複製
+             * @author Pulipuli Chen 20141110
+             * @type Array|Array
+             */
+            var _disorder_list_part = {};
+            for (var _i in this._list[_nav_type_name]) {
+                _disorder_list_part[_i] = [];
+                for (var _j in this._list[_nav_type_name][_i]) {
+                    _disorder_list_part[_i].push(this._list[_nav_type_name][_i][_j]);
+                }
+            }
+            
+            //$.test_msg("get_type _disorder_list_part.length：", _disorder_list_part.length);
+            
             for (var _order in _disorder_list_part) {
+                
+                // 變成字串
+                //_order = _order + "";
+                
                 var _order_array = _disorder_list_part[_order];
                 //_disorder_list.push(_part_item);
-                //$.test_msg("nav " + _order, [$.is_array(_order_array), typeof(_disorder_list[_order])]);
+                
+                //$.test_msg("nav " + _order, [_nav_type_name, $.is_array(_order_array), _order_array.length,typeof(_disorder_list[_order])]);
+                //if (typeof(_disorder_list[_order]) === "undefined") {
+                //$.test_msg("get_list", $.inArray(_order, _added_order));
+                
+                //if ($.inArray(_order, _added_order) === -1) {
                 if (typeof(_disorder_list[_order]) === "undefined") {
+                    //$.test_msg("get_list", _order_array);
+                    
                     _disorder_list[_order] = _order_array;
+                    //$.test_msg("nav1 after" , [_nav_type_name , _order, _disorder_list[_order].length]);
+                    
+                    //_added_order.push(_order);
+                    _count++;
                 }
                 else {
+                    
+                    //$.test_msg("nav before" , [_nav_type_name, _order, _disorder_list[_order].length]);
+                    //for (var _part_index = 0; _part_index < _order_array.length; _part_index++) {
                     for (var _part_index in _order_array) {
                         var _part_item = _order_array[_part_index];
                         _disorder_list[_order].push(_part_item);
                         
-                        //$.test_msg("nav " + _part_index, [_order, _disorder_list[_order].length]);
+                        _count++;
                     }
+                    //$.test_msg("nav after", [_nav_type_name, _order, _disorder_list[_order].length]);
+                    
                 }
             }
         }
+        
+        //$.test_msg("get_type type:" + _nav_type_name + "總數", _count);
     }
     
     //if (_disorder_list.length > 0) {
         
-        //$.test_msg("get_list get!");
-        
-        //_disorder_list = this._list[_nav_type];
-        //$.test_msg("_disorder_list", _disorder_list);
-        var _order_key = [];
-        for (_order in _disorder_list) {
-            //$.test_msg("order", [_order, _nav_type]);
-            _order_key.push(_order);
+    //$.test_msg("get_list get!", _nav_type);
+
+
+    //_disorder_list = this._list[_nav_type];
+    //$.test_msg("_disorder_list", _disorder_list);
+    var _order_key = [];
+    for (_order in _disorder_list) {
+        //$.test_msg("order", [_order, _nav_type]);
+        _order_key.push(_order);
+    }
+
+    // 把order的順序由大到小顯示
+    _order_key.sort(function(a,b){return b-a});
+
+    for (var _i in _order_key) {
+        _order = _order_key[_i];
+        _item_list = _disorder_list[_order];
+
+        for (var _j in _item_list) {
+            _item = _item_list[_j];
+
+            _list.push(_item);
         }
-        
-        // 把order的順序由大到小顯示
-        _order_key.sort(function(a,b){return b-a});
-        
-        for (var _i in _order_key) {
-            _order = _order_key[_i];
-            _item_list = _disorder_list[_order];
-            
-            for (var _j in _item_list) {
-                _item = _item_list[_j];
-                
-                _list.push(_item);
-            }
-        }
+    }
     //}
     
     // 儲存快取
     if (_list.length > 0) {
         this._sorted_list[_cache_key] = _list;
     }
+    
+    //$.test_msg("KALS_navigation.get_list() _list.length", _list.length);
+    //delete _disorder_list;
     
     return _list;
 };

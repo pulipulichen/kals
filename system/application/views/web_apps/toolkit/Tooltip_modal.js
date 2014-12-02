@@ -21,7 +21,49 @@ Tooltip_modal.prototype = new KALS_modal();
 
 Tooltip_modal.prototype._$modal_name = 'Tooltip_modal';
 
+/**
+ * 設定tooltip現在的ID
+ * @author Pulipuli Chen 20141110
+ * @type Number
+ */
 Tooltip_modal.prototype._$tooltip_id = null;
+
+/**
+ * 設定tooltip現在的ID
+ * @author Pulipuli Chen 20141110
+ * @type Number
+ */
+Tooltip_modal.prototype._$tooltip_id_final = null;
+
+/**
+ * 取得提示列的ID
+ * @author Pulipuli Chen 20141110
+ * @returns {KALS_modal.get_tooltip_id._final_id|String}
+ */
+Tooltip_modal.prototype.get_tooltip_id = function () {
+    
+    if ($.is_string(this._$tooltip_id_final)) {
+        return this._$tooltip_id_final;
+    }
+    else if ($.is_string(this._$tooltip_id)) {
+        //var _length = $("#" + this._$tooltip_id).length;
+        //var _final_id = this._$tooltip_id + "" + (_length+1);
+        //this._$tooltip_id_final = _final_id;
+        
+        
+        if ($("#" + this._$tooltip_id).length > 0) {
+            this._$tooltip_id_final = this._$tooltip_id + "" + ($("#" + this._$tooltip_id).length + 1);
+        }
+        else {
+            this._$tooltip_id_final = this._$tooltip_id;
+        }
+        
+        //$.test_msg("get_tooltip_id", this._$tooltip_id_final);
+        
+        return this._$tooltip_id_final;
+    }
+    return null;
+};
 
 /**
  * trigger的classname，跟this._$modal_name一起運作
@@ -65,8 +107,8 @@ Tooltip_modal.prototype._$get_config = function (_selector) {
         onHide: function () {
             var _ui = _this.get_ui();
             if ($.is_function(_this._$onclose)) {
-				_this._$onclose(_ui);
-			}
+                _this._$onclose(_ui);
+            }
             _this.call_temp_callback(_ui);
         },
         delay: 30,
@@ -80,8 +122,8 @@ Tooltip_modal.prototype._$get_config = function (_selector) {
     }
     
     if ($.isset(_selector)) {
-		_config.tip = _selector;
-	}
+        _config.tip = _selector;
+    }
     
     return _config;  
 };
@@ -107,8 +149,8 @@ Tooltip_modal.prototype._create_tooltip_prototype = function (_config) {
     
     var _id = $.get_parameter(_config, 'id');
     if ($.is_null(_id) && $.isset(this._$tooltip_id)) {
-		_id = this._$tooltip_id;
-	}
+        _id = this._$tooltip_id;
+    }
     
     var _content = $.get_parameter(_config, 'content');
     var _classname = $.get_parameter(_config, 'classname');
@@ -133,16 +175,16 @@ Tooltip_modal.prototype._create_tooltip_prototype = function (_config) {
     if (_tooltip_existed === false) {  
         _tooltip = _content
             .addClass('tooltip')
-			.addClass("KALS")
+            .addClass("KALS")
             .appendTo($('body'));
         
         if ($.isset(_id)) {
-			_tooltip.attr('id', _id);
-		}
+            _tooltip.attr('id', _id);
+        }
         
         if ($.isset(_classname)) {
-			_tooltip.addClass(_classname);
-		}
+            _tooltip.addClass(_classname);
+        }
         
         //$.test_msg('Tooltip_modal._create_tooltip.prototype()', _tooltip.length);
     }
@@ -160,15 +202,15 @@ Tooltip_modal.prototype.open = function (_callback) {
     var _this = this;
     
     if (_ui !== null) {
-        if (typeof(_ui.tooltip) == 'function') {
+        if (typeof(_ui.tooltip) === 'function') {
             this._$temp_callback = _callback;
             _ui.tooltip().show();
         }
         else {
             _ui.show();
             if ($.is_function(_callback)) {
-				_callback(_ui);
-			}
+                _callback(_ui);
+            }
         }
     }
     
@@ -187,15 +229,15 @@ Tooltip_modal.prototype.close = function (_callback) {
         var _this = this;
         
         if (_ui !== null) {
-            if (typeof(_ui.tooltip) == 'function') {
+            if (typeof(_ui.tooltip) === 'function') {
                  this._$temp_callback = _callback;
                  _ui.tooltip().hide();
             }
             else {
                 _ui.hide();
                 if ($.is_function(_callback)) {
-					_callback(_ui);
-				}
+                    _callback(_ui);
+                }
             }
         }
     }

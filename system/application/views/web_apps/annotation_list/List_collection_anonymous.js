@@ -24,5 +24,11 @@ List_collection_anonymous.prototype._$enable_check_login = true;
 
 List_collection_anonymous.prototype._$need_login = false;
 
+/**
+ * 一次讀取的標註數量
+ * @type {number|null} 如果是null，表示讀取全部
+ */
+//List_collection_anonymous.prototype._$limit = 3;
+
 /* End of file List_collection_anonymous */
 /* Location: ./system/application/views/web_apps/List_collection_anonymous.js */

@@ -16,12 +16,12 @@ function Selection_my_custom_manager(_text) {
     
     this._text = _text;
 	
-	var _this = this;
-	KALS_context.auth.add_listener(function (_auth) {
-		if (_auth.is_login() === false) {
-			_this.clear();
-		}
-	});
+    var _this = this;
+    KALS_context.auth.add_listener(function (_auth) {
+        if (_auth.is_login() === false) {
+            _this.clear();
+        }
+    });
 }
 
 // Extend from KALS_user_interface
@@ -44,12 +44,12 @@ Selection_my_custom_manager.prototype._my_selections = {
 Selection_my_custom_manager.prototype.set_scope_coll = function (_type_id, _scope_coll, _is_initialize) {
     
     if (_scope_coll.length() === 0) {
-		return this;
-	}
+        return this;
+    }
         
     if ($.is_null(_is_initialize)) {
-		_is_initialize = false;
-	}
+        _is_initialize = false;
+    }
     
     //$.test_msg('my_custom_manager set_scope_coll 1'
     //    , typeof(this._my_selections[_type_id]));

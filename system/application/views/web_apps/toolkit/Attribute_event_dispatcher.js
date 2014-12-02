@@ -156,14 +156,14 @@ Attribute_event_dispatcher.prototype.get_attr = function (_type, _default, _leng
  */
 Attribute_event_dispatcher.prototype.add_attr_listener = function (_type, _attr_function, _trigger) {
     if ($.is_null(_trigger)) {
-		_trigger = true;
-	}
+        _trigger = true;
+    }
     
     var _function = function(_dispatcher) {
         var _attr = _dispatcher.get_attr(_type);
         
         if ($.is_function(_attr_function)) {
-            _attr_function(_dispatcher, _attr);
+            _attr_function(_dispatcher, _attr, _type);
         }
         else if (typeof(_attr_function.innerHTML)) {
             _attr_function.innerHTML = _attr;

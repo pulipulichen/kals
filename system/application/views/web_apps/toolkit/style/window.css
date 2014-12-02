@@ -27,6 +27,11 @@
     margin:0;
 }
 
+.KALS.dialog-modal.window dd.message {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
 .KALS .window-loading {
     padding: 30px 1em !important;
     text-align:center;
@@ -35,6 +40,10 @@
     min-width: 240px;*/
     margin: 0;
     cursor: wait;
+}
+
+.KALS .window-loading .window-loading-message {
+    margin-right: 1em;
 }
 
 .KALS.window.mobile .dialog-content {
@@ -131,5 +140,13 @@
 .KALS.window .dialog-content h1 {
     font-size: 1.2em;
     font-weight: bold;
-    
+}
+
+/**
+ * 解決視窗超過的問題
+ * @author Pulipuli Chen 20141110
+ */
+.KALS.window .dialog-content {
+    max-height: 400px;
+    overflow-y: auto;
 }

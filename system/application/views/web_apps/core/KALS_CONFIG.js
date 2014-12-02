@@ -111,42 +111,42 @@ DEFAULT_KALS_CONFIG = {
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'concept' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'confusion' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'question' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'example' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'summary' : {
             enable: {   // 啟用範圍
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            order: 10    // 數字越大，排序越上面
         },
         'custom' : {
             enable: {   // 啟用範圍
@@ -176,85 +176,13 @@ DEFAULT_KALS_CONFIG = {
      * 20140425 Pulipuli Chen
      * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefined」
      */
-   
+    /*
     annotation_type_predefined: {
-	/*
-      "我知道": {
+        "預先定義1": {
             //type_id: 15,
-            hint: '已經學過或知道的詞語/文句意思',
+            hint: '測試的說明',
             option: {
-                background_color: 'rgb(189,252,50)',
-                font_color: 'black'
-            },
-            anchor: {
-                style: 'dottedline',
-                color: 'blue'    
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            //order: 1    // 數字越大，排序越上面
-        },
-      "新知識": {
-            //type_id: 15,
-            hint: '從文章/標註中學到的新知識',
-            option: {
-                background_color: 'rgb(250,250,0)',
-                font_color: 'black'
-            },
-            anchor: {
-                style: 'dottedline',
-                color: 'blue'    
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            //order: 1    // 數字越大，排序越上面
-        }, 
-
-      "我不懂": {
-            //type_id: 15,
-            hint: '看不懂或不了解的地方，並簡單說明原因，讓同學來幫助你吧！',
-            option: {
-                background_color: 'rgb(245,147,48)',
-                font_color: 'black'
-            },
-            anchor: {
-                style: 'dottedline',
-                color: 'blue'    
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            //order: 1    // 數字越大，排序越上面
-        },
-     
-      "很奇怪": {
-            //type_id: 15,
-            hint: '覺得文章意思或標註有問題的地方，並說明理由',
-            option: {
-                background_color: 'rgb(222,120,222)',
-                font_color: 'black'
-            },
-            anchor: {
-                style: 'dottedline',
-                color: 'blue'    
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            //order: 1    // 數字越大，排序越上面
-        },     
-        
-        "補充舉例": {
-            //type_id: 15,
-            hint: '利用線上搜尋工具來額外增加說明文章意思的資料',
-            option: {
-                background_color: 'gray',
+                background_color: 'blue',
                 font_color: 'white'
             },
             anchor: {
@@ -265,27 +193,8 @@ DEFAULT_KALS_CONFIG = {
                 topic: true,    // 新標註
                 respond: true   // 回應標註
             },
-            //order: 1    // 數字越大，排序越上面
+            order: 1    // 數字越大，排序越上面
         },
-        
-      "我想說": {
-            //type_id: 15,
-            hint: '針對文章的內容，和大家一起討論交換意見吧！',
-            option: {
-                background_color: 'rgb(18,49,204)',
-                font_color: 'white'
-            },
-            anchor: {
-                style: 'dottedline',
-                color: 'blue'    
-            },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
-            },
-            //order: 1    // 數字越大，排序越上面
-        }
-        
         '預先定義2': {
             //type_id: 16,
             hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
@@ -303,9 +212,9 @@ DEFAULT_KALS_CONFIG = {
                 respond: true   // 回應標註
             },
             order: 1    // 數字越大，排序越上面
-        }*/
+        }
     },
-     
+     */
    
     /**
      * KALS操作說明的網址
@@ -331,7 +240,15 @@ DEFAULT_KALS_CONFIG = {
      * 
      * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
      */
-    web_search_url: "http://www.google.com/search?q={query}",
+    web_search_url: { 
+        "Google搜尋": "http://www.google.com/search?q={query}",
+        "圖片：Google圖片": "https://www.google.com.tw/search?tbm=isch&safe=active&q={query}",
+        "百科：維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
+        "中英翻譯：Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
+        "中英字典：Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}",
+        "中文字典：萌典": "https://www.moedict.tw/{query}",
+        "影片：YouTube": "https://www.youtube.com/results?search_query={query}&page=&utm_source=opensearch"
+    },
     //web_search_url: "disable",
 
     /**
@@ -347,14 +264,22 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    //selectable_text_cache: true,
+    selectable_text_cache: true,
+    
+    /**
+     * 是否覆寫選取文字快取
+     * 當文字修改之後要重新建立快取時，可以啟用這個選項
+     * 如果該選項一直維持true，則會強制一直覆寫快取，而不會讀取快取
+     * @type Boolean
+     */
+    selectable_text_clean_overwrite: false,
     
     /**
      * 是否啟用搜尋工具列
      * @type Boolean
      */
     enable_search_toolbar: true,
-	
+    	
     //----------------------------
     
     //以下是版面調整
@@ -362,7 +287,7 @@ DEFAULT_KALS_CONFIG = {
     ckeditor_config: {
         autoGrow_maxHeight: false,
         autoGrow_maxWidth: false,
-        extraPlugins: 'kals_maximize,youtube',
+        extraPlugins: 'kals_maximize,youtube,recordmp3js',
         toolbar: [
 			//最大化的時候顯示的工具列
             ['Maximize','Source','Preview','-'],
@@ -379,13 +304,31 @@ DEFAULT_KALS_CONFIG = {
             ['TextColor','BGColor'],
 			
 			//最小化的時候顯示的工具列
-            ['Maximize','Source','-','Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', '-', 'Image','Youtube']	
+            ['Maximize','Source','-','Bold', 'Italic', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink', 'Image','Youtube', 'recordmp3js']	
         ],
         height: '50px',
         //width: '261px',
         resize_enabled: false,
         startupFocus: false,
-        uiColor : '#CB842E'
+        uiColor : '#CB842E',
+        recordmp3js: {
+            /**
+             * 上傳檔案的位置
+             * @type String
+             */
+            upload_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/upload",
+            /**
+             * 取得網址的位置
+             * @type String
+             */
+            get_link_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link",
+            /**
+             * 錄音檔案的限制
+             * 最多60秒
+             * @type Number
+             */
+            record_limit: 15    
+        }
     },
     //標註列表設定
     annotation_list: {
@@ -394,7 +337,56 @@ DEFAULT_KALS_CONFIG = {
             simple_max_length: 150,
             //允許顯示的HTML標籤
             allow_html_tags: ["a", "img", "iframe"]
-        }
+        },
+        /**
+         * 加入喜愛的間隔限制，單位是秒
+         * @author Pulipuli Chen 20141113
+         * @type Number
+         */
+        like_interval: 5
+    },
+    /**
+     * 編輯器的相關設定
+     */
+    annotation_editor: {
+        /**
+         * 新增標註之後，是否要變成編輯模式？
+         * 
+         * "edit": 編輯模式
+         * "create": 新增模式
+         * @relation Annotation_editor.js
+         * @type String
+         */
+        mode_after_create_annotation: "create",
+        /**
+         * 是否實際遞交資料給伺服器
+         * 
+         * false: 真的遞交，正常運作應該選擇此項
+         * true: 假的遞交，測試時使用
+         * @type Boolean
+         */
+        create_annotation_mock: false,
+        /**
+         * 新增模式時，是否要重置標註類型？
+         * 
+         * false: 不重置標註類型
+         * true: 重置標註類型
+         * @relation Type_component.js
+         * @type Boolean
+         */
+        annotation_type_reset_enable: false,
+        
+        /**
+         * 註解最少字數
+         * @type Number
+         */
+        //note_word_minimum_limit: 10,
+        
+        /**
+         * 禁止字
+         * @type Array<String>
+         */
+        //note_stop_words: ["fuck", ""]
     },
     
     // --------------------------
@@ -446,11 +438,6 @@ DEFAULT_KALS_CONFIG = {
          */
         regular_expression: /\{\{([\w]|\-|\:|\.|\(|\))*\}\}/g
     },   //view: {
-    /**
-     * 是否啟用選取文字快取
-     * @type Boolean
-     */
-    //selectable_text_cache: false,
     
     /**
      * 偵錯用設定
@@ -461,7 +448,7 @@ DEFAULT_KALS_CONFIG = {
          * 是否顯示ajax_get的連接訊息
          * @type Boolean
          */
-        ajax_get_message: true,
+        ajax_get_message: false,
         
         /**
          * 開啟ajax_post設定
@@ -481,7 +468,53 @@ DEFAULT_KALS_CONFIG = {
          * 上傳快取資料
          * @type Boolean
          */
-        //webpage_cache_save_enable: false
+        //webpage_cache_save_enable: false,
+        
+        /**
+         * 確認KALS_util.notify的時間
+         * @type Boolean
+         */
+        notify_auto_hide: true,
+        
+        /**
+         * 自動執行，測試使用的自動執行，請把要執行的function依序寫入auto_run中，以陣列組合
+         * @author Pulipuli Chen 20141111
+         * @type Array
+         */
+        auto_run: [
+            /**
+             * @author Pulipuli Chen 20141111
+             * 測試搜尋最新標註用
+             */
+//            function () {
+//                $.test_msg("點選最新標註");
+//                $("td.item a.Window_search_recent:first").click();
+//            }
+            /**
+             * @author Pulipuli Chen 20141116
+             * 測試帳號資料按鈕用
+             */
+//            function () {
+//                $.test_msg("測試帳號資料按鈕用");
+//                $("td.item a.Window_search_recent:first").click();
+//                setTimeout(function () {
+//                    KALS_window.close();
+//                    setTimeout(function () {
+//                        $("td.item a.Filter:first").click();
+//                    }, 1000);
+//                }, 3000);
+//            }
+            /**
+             * @author Pulipuli Chen 20141116
+             * 測試自訂標註類型
+             */
+//            function () {
+//                $.test_msg("測試自訂標註類型");
+//                $(".search-form-init .dropdown.query-field").val("annotation_type");
+//                $(".search-form-init .dropdown.annotation-type").val("custom");
+//                $(".search-form-init .button.dialog-option.search-form-submit").click();
+//            }
+        ]
     },
     
     /**
@@ -563,7 +596,7 @@ DEFAULT_KALS_CONFIG = {
              * 是否啟用模組
              * @type Boolean
              */
-            "enable": false,
+            "enable": true,
             "nav_config": {
                 display: false,
                 nav_type: "login",
@@ -633,7 +666,7 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         KALS_stamp: {
-            "enable": false,
+        "enable": false,
             /**
              * 獎章資格設定
              */
@@ -999,6 +1032,23 @@ DEFAULT_KALS_CONFIG = {
          */
         Window_search_recent: {
             "enable": true
+        },
+        /**
+         * 啟用檔案上傳功能
+         * @version 20140902 Pulipuli Chen
+         */
+        CKeditor_file_upload: {
+            "enable": true,
+            /**
+             * 上傳的網址
+             * @type String
+             */
+            upload_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/upload",
+            /**
+             * 取得檔案網址的網址
+             * @type String
+             */
+            get_link_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link"
         }
     }
 };
@@ -1013,7 +1063,7 @@ DEFAULT_KALS_CONFIG = {
              * @version 20140618 Pulipuli Chen
              * 對應到Modules的 deeper copy
              */
-            if (_i === "modules") {
+            if ($.inArray(_i, ["modules", "annotation_editor", "annotation_list"]) > -1) {
                 for (var _j in KALS_CONFIG[_i]) {
                     //console.log(_j);
                     DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];
@@ -1028,8 +1078,6 @@ DEFAULT_KALS_CONFIG = {
     KALS_CONFIG = DEFAULT_KALS_CONFIG;
     
 })();
-
-
 
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */

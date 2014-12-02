@@ -51,7 +51,7 @@ List_anchor_text_component.prototype._set_list_item = function (_item) {
  */
 List_anchor_text_component.prototype.set_data = function () {
     var _text = this.get_anchor_text();
-	this.set_anchor_text(_text);
+    this.set_anchor_text(_text);
 };
 
 // --------

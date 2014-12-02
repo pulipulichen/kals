@@ -24,11 +24,11 @@ if (typeof($jquery_extends) === 'undefined') {
  */
 jQuery.test_msg = function (_title, _test) {
 	
-	//return;
-	
-	// @20130607 Pudding Chen
-	// 加入原本的底層吧XD
-    
+    //return;
+
+    // @20130607 Pudding Chen
+    // 加入原本的底層吧XD
+
     var _info_box = this('.KALS.info-box:first');
 	
     if (_info_box.length === 0) {   
@@ -57,48 +57,48 @@ jQuery.test_msg = function (_title, _test) {
     }
     else if (this.is_null(_title) && this.is_null(_test)) {
         _test = '---------------';
-		this('<hr />').appendTo(_info_box);
+        this('<hr />').appendTo(_info_box);
         return;
     }
     
     if (this.is_object(_test)) {
 		
-		try {
-			_test = '[Object: '+this.json_encode(_test)+']';
-		}
+        try {
+            _test = '[Object: '+this.json_encode(_test)+']';
+        }
         catch (_e) {
-			_text = '[Exception: '+_e+']';
-		}
+            _test = '[Exception: '+_e+']';
+        }
 		
     }
 	
-	var _info_test = _test;
-	
-	if ($.starts_with(_info_test, "http") || $.starts_with(_info_test, "/kals/")) {
-		_info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
-	}
-	
-        //_info_test = $.str_replace(_info_test, 'http', 'htt p');
-	
-	var _info = this('<pre></pre>')
-            .addClass("info")
-			.appendTo(_info_box);
+    var _info_test = _test;
 
-	try {
-		//_info_test = $(_info_test);
-		//_info.text(_info_test);
-		//_info.html(_info.text());
-		//console.log(_info_test);
-		if (_info_test.indexOf('<a') === 0) {
-			_info.html(_info_test);
-		}
-		else {
-			_info.text(_info_test);
-		}
-	}
-	catch (_e) {
-		
-	}
+    if ($.starts_with(_info_test, "http") || $.starts_with(_info_test, "/kals/")) {
+        _info_test = '<a href="'+_info_test+'" target="_blank">'+_info_test+'</a>';
+    }
+	
+    //_info_test = $.str_replace(_info_test, 'http', 'htt p');
+	
+    var _info = this('<pre></pre>')
+        .addClass("info")
+        .appendTo(_info_box);
+
+    try {
+        //_info_test = $(_info_test);
+        //_info.text(_info_test);
+        //_info.html(_info.text());
+        //console.log(_info_test);
+        if (_info_test.indexOf('<a') === 0) {
+            _info.html(_info_test);
+        }
+        else {
+            _info.text(_info_test);
+        }
+    }
+    catch (_e) {
+
+    }
     
     if (this.isset(_title)) {
         console.log('[KALS]' + '[' + _title + '] ' + _test);
@@ -115,7 +115,19 @@ jQuery.test_msg = function (_title, _test) {
         .css('float', 'right')
         .prependTo(_info);
       
-	return this;
+    //return this;
+    return _info.text();
+};
+
+/**
+ * 顯示測試訊息，並且丟出訊息
+ * @version 20130222 Pulipuli Chen 把錯誤訊息改成console.log()輸出
+ * @param {string} _title
+ * @param {Object} _test
+ */
+jQuery.throw_msg = function (_title, _test) {
+    var _info = this.test_msg(_title, _test);
+    throw _info;
 };
 
 // --------
@@ -131,8 +143,8 @@ jQuery.test_msg = function (_title, _test) {
 jQuery.substr = function(_str, _start, _length) {
     _str = _str + '';
     if (_start < 0) {
-		_start = _str.length + _start;
-	}
+        _start = _str.length + _start;
+    }
     if (this.isset(_length) === false) {
         return _str.substr(_start);
     }
@@ -172,12 +184,12 @@ jQuery.starts_with = function(_str, _prefix) {
     _str = _str + '';
     var _len = _prefix.length;
     var _start = 0;
-    if (_str.substr(_start, _len) == _prefix) {
-		return true;
-	}
-	else {
-		return false;
-	}
+    if (_str.substr(_start, _len) === _prefix) {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 /**
@@ -430,7 +442,7 @@ jQuery.addslashes = function (_str) {
     // *     example 1: addslashes("kevin's birthday");
     // *     returns 1: 'kevin\'s birthday'
 
-    _str = (_str+'').replace(/[\\"']/g, '\\$&')
+    _str = (_str+'').replace(/[\\"'\:]/g, '\\$&')
             .replace(/\u0000/g, '\\0');
     return _str;
 };
@@ -464,21 +476,20 @@ jQuery.get_class = function (_obj) {
     // *     returns 6: false
     
     if ($.is_jquery(_obj)) {
-		return 'jQuery';
-	}
-	else 
-		if ($.is_array(_obj)) {
-			return 'Array';
-		}
+        return 'jQuery';
+    }
+    else if ($.is_array(_obj)) {
+        return 'Array';
+    }
     
     var _class_name;
     if (_obj instanceof Object
-        && !(_obj instanceof Array)
-        && !(_obj instanceof Function)
-        && _obj.constructor
-        && _obj != this.window) {
+            && !(_obj instanceof Array)
+            && !(_obj instanceof Function)
+            && _obj.constructor
+            && _obj !== this.window) {
         var _arr = _obj.constructor.toString().match(/function\s*(\w+)/);
-        if (_arr && _arr.length == 2) {
+        if (_arr && _arr.length === 2) {
             return _arr[1];
         }
         else {
@@ -487,15 +498,15 @@ jQuery.get_class = function (_obj) {
             //$.test_msg('$.get_class()', _class_name);
     
             if (this.starts_with(_class_name, '[object ')) {
-				_class_name = _class_name.substring(8, _class_name.length);
-			}
-			else {
-				return false;
-			}
+                _class_name = _class_name.substring(8, _class_name.length);
+            }
+            else {
+                return false;
+            }
             
             if (this.ends_with(_class_name, ']')) {
-				_class_name = _class_name.substring(0, _class_name.length - 1);
-			}
+                _class_name = _class_name.substring(0, _class_name.length - 1);
+            }
             return _class_name;
         }
     }
@@ -511,7 +522,6 @@ jQuery.get_class = function (_obj) {
         }
     }
     catch (e) {}
-    
 
     return false;
 };
@@ -560,17 +570,19 @@ jQuery.is_boolean = function(_obj) {
  * @type boolean
  */
 jQuery.is_array = function(_obj) {
-    return (typeof(_obj) == 'object' && (_obj instanceof Array));
+    return (typeof(_obj) === 'object' 
+            && (_obj instanceof Array));
 };
 
 jQuery.filter_array = function (_obj) {
-    var _is_array = (typeof(_obj) == 'object' && (_obj instanceof Array));
-    if (false == _is_array) {
-		return [_obj];
-	}
-	else {
-		return _obj;
-	}
+    var _is_array = (typeof(_obj) === 'object' 
+            && (_obj instanceof Array));
+    if (false === _is_array) {
+        return [_obj];
+    }
+    else {
+        return _obj;
+    }
 };
 
 /**
@@ -721,13 +733,18 @@ jQuery.object_isset = function (_object_path) {
  * @returns {Boolean}
  */
 jQuery.is_link = function(_url) {
+    /**
+     * @author Pulipuli Chen 1112
+     */
+    _url = $.trim(_url);
+    
     if (this.starts_with(_url, 'http://') ||
 	this.starts_with(_url, 'https://') ||
 	this.starts_with(_url, 'ftp://')) {
-            return true;
+        return true;
     }
     else {
-            return false;
+        return false;
     }
 };
 
@@ -818,6 +835,11 @@ jQuery.parse_url = function (_str, _component) {
  * @returns {Boolean}
  */
 jQuery.is_image = function(_url) {
+    /**
+     * @author Pulipuli Chen 1112
+     */
+    _url = $.trim(_url);
+    
     if (false === this.is_link(_url)) {
         return false;
     }
@@ -837,6 +859,61 @@ jQuery.is_image = function(_url) {
     else {
         return false;
     }
+};
+
+/**
+ * 連結是Youtube
+ * @param {String} _url
+ * @returns {Boolean}
+ * @author Pulipuli Chen 20141112
+ */
+jQuery.is_youtube = function(_url) {
+    /**
+     * @author Pulipuli Chen 1112
+     */
+    _url = $.trim(_url);
+    
+    if (false === this.is_link(_url)) {
+        return false;
+    }
+    var _param = this.parse_url(_url);
+    if (this.is_null(_param) || this.is_null(_param.query)) {
+        return false;
+    }
+    var _host = _param.host;
+    var _query = _param.query;
+    
+    if (_host.indexOf(".youtube.") > -1 
+            && _query.indexOf("v=") > -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+/**
+ * 連結是Youtube，取得影片ID
+ * @param {String} _url
+ * @returns {Boolean}
+ * 
+ * @author Pulipuli Chen 20141112
+ * 參考了 http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
+ */
+jQuery.get_youtube_id = function(_url) {
+    if (this.is_youtube(_url) === false) {
+        return null;
+    }
+    
+    var _param = this.parse_url(_url);
+    var _query = _param.query;
+    
+    var _id = _query.split('v=')[1];
+    var _ampersandPosition = _id.indexOf('&');
+    if (_ampersandPosition !== -1) {
+        _id = _id.substring(0, _ampersandPosition);
+    }
+    return _id;
 };
 
 jQuery.parse_extension_name = function (_path) {
@@ -1731,21 +1808,21 @@ jQuery.strip_html_tag = function(_html, _except_tags) {
     //var _reTag = /<(?:.|\s)*?/g;
     var _reTag = /<[^>].*?>/g;
     
-    if (typeof(_except_tags) == "string") {
+    if (typeof(_except_tags) === "string") {
         _except_tags = [_except_tags];
     }
-    if (typeof(_except_tags) != "undefined" 
-		&& typeof(_except_tags[0]) == "string") {
-		_reTag = "<[^(";
-		for (var _i = 0; _i < _except_tags.length; _i++) {
-			if (_i > 0) {
-				_reTag = _reTag + "|";
-			}
-			_reTag = _reTag + _except_tags[_i];
-		}
-		_reTag = _reTag + ")>].*?>";
-		_reTag = new RegExp(_reTag, "g");
-	}
+    if (typeof(_except_tags) !== "undefined" 
+            && typeof(_except_tags[0]) === "string") {
+        _reTag = "<[^(";
+        for (var _i = 0; _i < _except_tags.length; _i++) {
+            if (_i > 0) {
+                _reTag = _reTag + "|";
+            }
+            _reTag = _reTag + _except_tags[_i];
+        }
+        _reTag = _reTag + ")>].*?>";
+        _reTag = new RegExp(_reTag, "g");
+    }
     
     return _html.replace(_reTag,"");
 };
@@ -2499,8 +2576,8 @@ jQuery.create_namespace = function () {
 jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5) {
     var _delay = 0;
     
-    if (typeof(_callback) == 'number') {
-        if (typeof(_arg1) == 'function') {
+    if (typeof(_callback) === 'number') {
+        if (typeof(_arg1) === 'function') {
             _delay = _callback;
             _callback = _arg1;
         }
@@ -2510,27 +2587,23 @@ jQuery.trigger_callback = function (_callback, _arg1, _arg2, _arg3, _arg4, _arg5
         setTimeout(function () {
             
             if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4) && $.isset(_arg5)) {
-				_callback(_arg1, _arg2, _arg3, _arg4, _arg5);
-			}
-			else 
-				if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4)) {
-					_callback(_arg1, _arg2, _arg3, _arg4);
-				}
-				else 
-					if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3)) {
-						_callback(_arg1, _arg2, _arg3);
-					}
-					else 
-						if ($.isset(_arg1) && $.isset(_arg2)) {
-							_callback(_arg1, _arg2);
-						}
-						else 
-							if ($.isset(_arg1)) {
-								_callback(_arg1);
-							}
-							else {
-								_callback();
-							}
+                _callback(_arg1, _arg2, _arg3, _arg4, _arg5);
+            }
+            else if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3) && $.isset(_arg4)) {
+                _callback(_arg1, _arg2, _arg3, _arg4);
+            }
+            else if ($.isset(_arg1) && $.isset(_arg2) && $.isset(_arg3)) {
+                _callback(_arg1, _arg2, _arg3);
+            }
+            else if ($.isset(_arg1) && $.isset(_arg2)) {
+                _callback(_arg1, _arg2);
+            }
+            else if ($.isset(_arg1)) {
+                _callback(_arg1);
+            }
+            else {
+                _callback();
+            }
                 
         }, _delay);
     }
@@ -2792,6 +2865,9 @@ jQuery.get_offset_left = function(_ele) {
         _ele = $(_ele);
     }
     var _offset = _ele.attr("offsetLeft");
+    if (_offset === 0 && _ele.offset().left > 0) {
+        _offset = _ele.offset().left;
+    }
     
     if (_ele.css("position") === "relative") {
         

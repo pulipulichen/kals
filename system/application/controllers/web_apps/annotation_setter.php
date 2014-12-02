@@ -173,7 +173,7 @@ class Annotation_setter extends Web_apps_controller {
         //context_complete();
         
         set_ignore_authorize(false);
-
+        
         return $data;
     }
 

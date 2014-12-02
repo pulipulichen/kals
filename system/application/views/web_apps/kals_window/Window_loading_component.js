@@ -26,7 +26,9 @@ Window_loading_component.prototype._$create_ui = function () {
     var _ui = $('<div class="window-loading"></div>')
         .append(_loading_img);
     
-    var _loading_span = $('<span></span>').prependTo(_ui);
+    var _loading_span = $('<span></span>')
+            .addClass("window-loading-message")
+            .prependTo(_ui);
     var _loading_lang = new KALS_language_param(
         'NOW LOADING...',
         'window.loading'

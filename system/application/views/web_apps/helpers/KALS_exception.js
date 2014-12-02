@@ -15,7 +15,15 @@
  */
 function KALS_exception(_class, _message) {
     
-    if ($.is_object(_class) 
+    $.test_msg("什麼錯誤呢？", _class);
+    
+    if (typeof(_class) === "object"
+            && typeof(_class.statusText) === "string") {
+        $.test_msg("抓到了？");
+        this.heading = _class.statusText + "(" + _class.status + ")";
+        this.message = $.json_encode(_class.response);
+    }
+    else if ($.is_object(_class) 
         && (typeof(_class.heading) !== 'undefined' 
         || typeof(_class.message) !== 'undefined'
         || typeof(_class.request_uri) !== 'undefined')) {

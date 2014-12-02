@@ -22,6 +22,21 @@ function Selectable_text_word(_selectable_text) {
     
     this._selectable_text = _selectable_text;
     this._text = _selectable_text._text;
+    
+    
+    // 監聽site_reform事件
+    var _this = this;
+    KALS_context.ready(function () {
+        //KALS_context.module_ready("KALS_context.site_reform", function (_site_reform) {
+            //$.test_msg("開始註冊site_reform");
+            KALS_context.site_reform.add_instant_listener(function (_site_reform) {
+                var _is_pdf2htmlex = _site_reform.is_site("pdf2htmlEx");
+                //$.test_msg("是pdf2htmlEx嗎？", _is_pdf2htmlex);
+                _this._mouse_event_enable = (_is_pdf2htmlex === false);
+            });
+        //});
+    });
+    
     return this;
 }
 
@@ -272,11 +287,30 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
     }
 
     var _this = this;
-    _words.mouseout(function () {
+    
+    // -----------------------------
+    
+    var _mouseout_event = function () {
+        
+        // 如果不啟用滑鼠事件，則關閉這整個事件
+        if (_this._mouse_event_enable === false) {
+            return;
+        }
+        
+        // 單點按壓選擇
         _this.KALS_SELECT_LOCK = false;
-    });
+    };
+    
+    _words.mouseout(_mouseout_event);
 
-    _words.mousedown(function (_event) {
+    // -----------------------------
+    
+    var _mousedown_event = function (_event) {
+        
+        // 如果不啟用滑鼠事件，則關閉這整個事件
+        if (_this._mouse_event_enable === false) {
+            return;
+        }
 
         // 限制只能用左鍵選取
         if (_event.which !== 1) {
@@ -294,36 +328,8 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
         var _link_tag = _word.parents("a[href]:first");
         if (_link_tag.length === 1) {
             // 如果是超連結的話
-            _is_link = true;
-
-            var _link_url = _link_tag.attr("href");
-
-            //alert(_link_tag.attr("target"));
-            /*
-            var _target = "_blank";
-            if (_link_url.substr(0,1) != "#"
-                    && (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") ) {
-                _link_tag.attr("target", "_blank");
-            }
-            else {
-                _target = _link_tag.attr("target");
-            }
-            */
-            var _target = "_self";
-            if (_link_tag.hasAttr("target") === false 
-                    || _link_tag.attr("target") === "") {
-                _target = _link_tag.attr("target");
-            }
-            //_link_url = "//";
-
-            var _log_data = {
-                "url": _link_url,
-                "target": _target
-            };
-
-            //$.test_msg("送出超連結", _log_data);
-            var _action = 39;
-            KALS_util.log(_action, _log_data);
+            
+            _mousedown_link_event(_link_tag);
 
             return;
         }
@@ -331,9 +337,54 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
         _this.KALS_SELECT_LOCK = true;
         _this.KALS_SELECT_MOUSEDOWN_LOCK = 1;
 
+        // 短時間點選事件
+        _mousedown_click_event(_md_this);
+
+        // 單點按壓選擇
+        _mousedown_hold_press_event(_md_this);
+    };
+    
+    /**
+     * 點選位置是連結的事件
+     * @param {jQuery} _link_tag
+     */
+    var _mousedown_link_event = function (_link_tag) {
+        var _is_link = true;
+
+        var _link_url = _link_tag.attr("href");
+
+        //alert(_link_tag.attr("target"));
+        /*
+        var _target = "_blank";
+        if (_link_url.substr(0,1) != "#"
+                && (_link_tag.hasAttr("target") === false || _link_tag.attr("target") == "") ) {
+            _link_tag.attr("target", "_blank");
+        }
+        else {
+            _target = _link_tag.attr("target");
+        }
+        */
+        var _target = "_self";
+        if (_link_tag.hasAttr("target") === false 
+                || _link_tag.attr("target") === "") {
+            _target = _link_tag.attr("target");
+        }
+        //_link_url = "//";
+
+        var _log_data = {
+            "url": _link_url,
+            "target": _target
+        };
+
+        //$.test_msg("送出超連結", _log_data);
+        var _action = 39;
+        KALS_util.log(_action, _log_data);
+    };
+    
+    var _mousedown_click_event = function (_md_this) {
         setTimeout(function () {
             if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 1) {
-                _word = $(_md_this);
+                var _word = $(_md_this);
 
                 _select.cancel_select();
                 _select.set_select(_word);	
@@ -341,25 +392,49 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
                 _this.KALS_SELECT_MOUSEDOWN_LOCK = 2;
             }
         }, 300);
-
+    };
+    
+    var _mousedown_hold_press_event = function (_md_this) {
         setTimeout(function () {
             if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 2 
                     && _this.KALS_SELECT_LOCK === true) {
-                _word = $(_md_this);
-                _select.set_select(_word);	
+                //$.test_msg("單點按壓選擇");
+                
+                // 相同位置選擇
+                var _word = $(_md_this);
+                
+                //_select.set_select(_word);
+                
+                var _sentence_start_word = _this.get_setence_start_word(_word);
+                var _sentence_end_word = _this.get_setence_end_word(_word);
+                
+                _select.cancel_select();
+                
+                _select.set_select(_sentence_start_word);
+                _select.set_select(_sentence_end_word);
+                
                 _this.KALS_SELECT_MOUSEDOWN_LOCK = null;
             }
         }, 1000);
-    });
+    };
+    
+    _words.mousedown(_mousedown_event);
 
-    _words.mouseup(function () {
+    // -----------------------------
+    
+    var _mouseup_event = function () {
+        
+        // 如果不啟用滑鼠事件，則關閉這整個事件
+        if (_this._mouse_event_enable === false) {
+            return;
+        }
+        
         var _mu_this = this;
         setTimeout(function () {
             if (_this.KALS_SELECT_MOUSEDOWN_LOCK === 2) {
                 var _word = $(_mu_this);
                 _select.set_select(_word);	
             }
-
             _this.KALS_SELECT_MOUSEDOWN_LOCK = null;
         }, 100);
 
@@ -384,69 +459,24 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
                 _callback();
             }
         }
-    });
+    };
+    
+    _words.mouseup(_mouseup_event);
+    
+    // ---------------------------------------
 
-            /*
-            _words.mousemove(function () {
-                    if (KALS_SELECT_MOUSEDOWN_LOCK !== 2) {
-                            KALS_SELECT_MOUSEDOWN_LOCK = null;	
-                    }
-            });
-            */			
-            /**
-             * 滑鼠放在文字上的自動選取功能
-             * 
-             * @author Pudding Chen 20121228
-             * @param {function} _callback
-             * @deprecated 不佳，太麻煩了，不使用
-             */
-            /*
-            var _hover_evt = function (_callback) {
-                    _select.set_hover();
-            };
 
-            var _last_word = null;
-            var _HOVER_TIMER = null;
-
-            _words.mouseover(function () {
-                    var _word = $(this);
-                            _HOVER_TIMER = setTimeout(function () {
-                                    setTimeout(function () {
-                        _word.tooltip().hide();
-                    }, 100);
-                                    _select.set_select(_word);
-                            }, 1500);
-                    })
-                    .mouseout(function () {
-                            clearTimeout(_HOVER_TIMER);
-                    });
-            */
-            /*
-            var _HOVER_TIMER = null;
-            _words.mouseover(function () {
-                    if (_HOVER_TIMER != null)
-                            clearTimeout(_HOVER_TIMER);
-
-                    var _word = $(this);
-                    _HOVER_TIMER = setTimeout(function () {
-                            _word.click();
-                            setTimeout(function () {}, 200);
-                                    _word.click();
-                                    clearTimeout(_HOVER_TIMER);
-                                    _HOVER_TIMER = null;
-                    }, 800);
-
-            })
-                    .mouseout(function () {
-                            clearTimeout(_HOVER_TIMER);
-                            _HOVER_TIMER = null;
-                    });
-            */
     if ($.is_function(_callback)) {
         _callback();
     }
     return this;
 };
+
+/**
+ * 檢查是否啟用滑鼠事件
+ * @type Boolean
+ */
+Selectable_text_word.prototype._mouse_event_enable = true;
 
 /**
  * 初始化這個文字的事件
@@ -888,6 +918,70 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
     _para_loop();
     
     return this;
+};
+
+// ----------------------------------------
+
+/**
+ * 取得開頭的文字
+ * @param {jQuery} _index_word
+ * @returns {jQuery} 目標文字
+ */
+Selectable_text_word.prototype.get_setence_start_word = function (_index_word) {
+    return this.get_setence_position_word(_index_word, true);
+};
+
+/**
+ * 取得結尾的文字
+ * @param {jQuery} _index_word
+ * @returns {jQuery} 目標文字
+ */
+Selectable_text_word.prototype.get_setence_end_word = function (_index_word) {
+    return this.get_setence_position_word(_index_word, false);
+};
+
+/**
+ * 找尋句子中的文字
+ * @param {jQuery} _index_word
+ * @param {Boolean} _target_start
+ * @returns {jQuery} 目標文字
+ */
+Selectable_text_word.prototype.get_setence_position_word = function (_index_word, _target_start) {
+    var _target_word = _index_word;
+    var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
+    var _sentence_punctuation_classname = this._selectable_text.sentence.sententce_punctuation_classname;
+    var _span_classname = this._span_classname;
+    
+    // 如果自己就是斷句位置
+    if (_index_word.hasClass(_punctuation_classname)) {
+        return _index_word;
+    }
+    
+    var _next_word;
+    var _get_next_word = function (_next_word) {
+        if (_target_start === true) {
+            _next_word = _next_word.prev();
+        }
+        else {
+            _next_word = _next_word.next();
+        }
+        return _next_word;
+    };
+    
+    var _is_stop_word = function (_next_word) {
+        return (_next_word.hasClass(_punctuation_classname)
+            || _next_word.hasClass(_sentence_punctuation_classname)
+            || _next_word.hasClass(_span_classname));
+    };
+    
+    _next_word = _get_next_word(_index_word);
+    while (_next_word.length === 1 
+            && _is_stop_word(_next_word) === false) {
+        _target_word = _next_word;
+        _next_word = _get_next_word(_next_word);
+    }
+    
+    return _target_word;
 };
 
 /* End of file Selectable_text_word */

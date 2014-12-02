@@ -223,7 +223,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     var _cache_enable = this.cache.enable_cache;
     //_cache_enable = false;
     
-    var _task_cache_text_backup = function (_callback) {
+    var _task_clone_text = function (_callback) {
         //$.test_msg("Selectacble_text _task_cache_text_backup");
         
         //_this._text.empty()
@@ -245,7 +245,7 @@ Selectable_text.prototype.initialize = function (_callback) {
         return _this.setup_selectable_element(_element, _callback);
     };
     
-    var _task_cache_text_restore = function (_callback) {
+    var _task_restore_clone_text = function (_callback) {
         //$.test_msg("Selectacble_text _task_cache_text_restore");
         
         //_this._text.empty()
@@ -296,14 +296,9 @@ Selectable_text.prototype.initialize = function (_callback) {
         
         // 20140223 Pulipuli Chen
         // 儲存快取
-        if (_cache_enable) {
-            _this.cache_save(function () {
-                $.trigger_callback(_callback);
-            });
-        }
-        else {
+        _this.cache_save(function () {
             $.trigger_callback(_callback);
-        }
+        });
         return;
     };
     
@@ -342,7 +337,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     
     // -----------------------------
     
-    var _taks_list;
+    var _task_list;
     
     var _loop = function (_task_list, _i, _callback) {
         //$.test_msg('loop ' + _i , _task_list.length);
@@ -350,71 +345,65 @@ Selectable_text.prototype.initialize = function (_callback) {
             return $.trigger_callback();
         }
         else {
-            _taks_list[_i](function () {
+            _task_list[_i](function () {
                 _i++;
-                _loop(_taks_list, _i, _callback);
+                _loop(_task_list, _i, _callback);
             });
         }
     };
     
     //_cache_enable = false;
     
-    if ($.is_mobile_mode()) {
-        _taks_list = [
-            _task_progress,
-            _task_complete,
-            _callback
-        ];
-        _loop(_taks_list, 0);
-    }
-    else if (_cache_enable) {
+//    if ($.is_mobile_mode()) {
+//        _task_list = [
+//            _task_progress,
+//            _task_complete,
+//            _callback
+//        ];
+//        _loop(_task_list, 0);
+//    }
+//    else if (_cache_enable) {
+
+    _task_list = [];
+
+    if (_cache_enable === true) {
+        //$.test_msg('啟用快取功能');
         this.has_cache(function (_existed) {
             //_existed = false;
             if (_existed) {
-                $.test_msg('selectable_text 啟用 cache');
-                _taks_list = [
-                    //_task_setup_selectable_element,
-                    //_task_setup_paragraph_location,
-                    _task_cache_restore,
-                    _task_setup_word_selectable,
-                    _task_progress,
-                    _task_complete,
-                    _callback
-                ];
+                $.test_msg('取得快取，開始還原文件');
+                _task_list.push(_task_cache_restore);
             }
             else {
-                _taks_list = [
-                    _task_cache_text_backup,
-                    _task_setup_selectable_element,
-                    _task_setup_paragraph_location,
-                    _task_cache_text_restore,
-                    _task_cache_save,
-                    _task_setup_word_selectable,
-                    _task_progress,
-                    _task_complete,
-                    _callback
-                ];
+                //$.test_msg('製作快取，開始初始化文件');
+                _task_list.push(_task_clone_text);
+                _task_list.push(_task_setup_selectable_element);
+                _task_list.push(_task_setup_paragraph_location);
+                _task_list.push(_task_restore_clone_text);
+                _task_list.push(_task_cache_save);
             }
             
-            // 開始執行動作
-            _loop(_taks_list, 0);
+            _task_list.push(_task_setup_word_selectable);
+            _task_list.push(_task_progress);
+            _task_list.push(_task_complete);
+            _task_list.push(_callback);
+    
+            _loop(_task_list, 0);
         });
     }
     else {
-        _taks_list = [
-            _task_cache_text_backup,
-            _task_setup_selectable_element,
-            _task_setup_paragraph_location,
-            _task_cache_text_restore,
-            _task_cache_save,
-            _task_setup_word_selectable,
-            _task_progress,
-            _task_complete,
-            _callback
-        ];
+        //$.test_msg('開始初始化文件');
+        _task_list.push(_task_clone_text);
+        _task_list.push(_task_setup_selectable_element);
+        _task_list.push(_task_setup_paragraph_location);
+        _task_list.push(_task_restore_clone_text);
         
-        // 以原本的列表來執行動作
-        _loop(_taks_list, 0);
+        _task_list.push(_task_setup_word_selectable);
+        _task_list.push(_task_progress);
+        _task_list.push(_task_complete);
+        _task_list.push(_callback);
+
+        _loop(_task_list, 0);
     }
     
     return this; 
@@ -1363,6 +1352,9 @@ Selectable_text.prototype.cache_save = function (_callback) {
     
     //this.cache.save(_text_html);
     
+    //_text_html = encodeURIComponent(_text_html);
+    _text_html = LZString.compressToBase64(_text_html);
+    
     var _cache_data = {
         "html": _text_html,
         "word": this.word.get_data(),
@@ -1427,6 +1419,10 @@ Selectable_text.prototype.cache_restore = function (_callback) {
     var _loaded_callback = function (_cache_data) {
         //$.test_msg('cache_restore ' + _cache_id, _text_html);
         var _text_html = _cache_data.html;
+        
+        //_text_html = decodeURIComponent(_text_html);
+        _text_html = LZString.decompressFromBase64(_text_html);
+        
         _this._text.html(_text_html);
         _this.word.set_data(_cache_data.word);
         _this.sentence.set_data(_cache_data.sentence);

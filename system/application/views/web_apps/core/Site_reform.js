@@ -22,6 +22,12 @@ function Site_reform() {
 Site_reform.prototype = new Event_dispatcher();
 
 /**
+ * 符合規則的類型
+ * @type Array
+ */
+Site_reform.prototype._matched_site = [];
+
+/**
  * 判斷是不是這個網站
  * @param {String} _site_feature
  * @returns {Boolean}
@@ -85,7 +91,7 @@ Site_reform.prototype.reform = function (_callback) {
     var _config = KALS_SITE_REFORM_CONFIG;
     
     var _i = 0;
-    var _this;
+    var _this = this;
     
     var _site_callback = function () {
         _i++;
@@ -96,12 +102,24 @@ Site_reform.prototype.reform = function (_callback) {
             }, 1);
         }
         else {
-            $.trigger_callback(_callback);
+            _this._reform_complete(_callback);
         }
     };
     
     this._reform_loop(_i, _config, _site_callback);
     
+    return this;
+};
+
+/**
+ * 重整完成
+ * @param {Function} _callback
+ * @returns {Site_reform.prototype}
+ */
+Site_reform.prototype._reform_complete = function (_callback) {
+    //$.test_msg("重整完成");
+    this.notify_listeners();
+    $.trigger_callback(_callback);
     return this;
 };
 
@@ -118,6 +136,7 @@ Site_reform.prototype._reform_loop = function (_i, _config, _callback) {
     if (_matched === true) {
         
         $.test_msg("Site_reform: match!", _site.title);
+        this._matched_site.push(_site.title);
         
         if ($.is_function(_site.reform)) {
             _site.reform(function () {
@@ -144,6 +163,18 @@ Site_reform.prototype._reform_loop = function (_i, _config, _callback) {
     else {
         _callback();
     }
+};
+
+/**
+ * 是這類型的網站嗎？
+ * @param {String} _target_site
+ * @returns {Number}
+ */
+Site_reform.prototype.is_site = function (_target_site) {
+    if ($.is_string(_target_site) === false) {
+        return false;
+    }
+    return ($.inArray(_target_site, this._matched_site) > -1);
 };
 
 /* End of file Site_reform */

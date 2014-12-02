@@ -30,7 +30,19 @@ List_menu.prototype = new Tooltip_modal();
  */
 List_menu.prototype._item = null;
 
+/**
+ * 不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
 List_menu.prototype._disable_option = [];
+
+/**
+ * 預設不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
+List_menu.prototype._default_disable_option = [];
 
 List_menu.prototype._set_list_item = function (_item, _disable_option) {
     if ($.isset(_item))
@@ -42,7 +54,22 @@ List_menu.prototype._set_list_item = function (_item, _disable_option) {
             _this.set_data();
         });
         
-        this._disable_option = _disable_option;
+        // -----------------------------
+        /**
+         * @author Pulipuli Chen 20141111
+         * 為_disable_option多加一些功能
+         */
+        if ($.is_string(_disable_option)) {
+            _disable_option = [_disable_option];
+        }
+        
+        if ($.is_array(_disable_option)) {
+            this._disable_option = _disable_option;
+        }
+        
+        for (var _i in this._default_disable_option) {
+            this._disable_option.push(this._default_disable_option[_i]);
+        }
     }
     return this;
 };
@@ -57,6 +84,14 @@ List_menu.prototype.set_data = function () {
 // --------
 
 /**
+ * 基本的樣板
+ * @type String
+ */
+List_menu.prototype._$template = '<div><table cellpadding="0" cellspacing="0" align="right"><tbody>'
+    + '<tr class="timestamp-container select-container review-container view-container respond-container delete-container edit-container"></tr>'
+    + '</tbody></table><span>&nbsp;</span></div>';
+
+/**
  * Create UI
  * @memberOf {List_menu}
  * @type {jQuery} UI
@@ -65,47 +100,47 @@ List_menu.prototype._$create_ui = function ()
 {
     var _writable = KALS_context.policy.writable();
     
-    var _ui = $('<div><table cellpadding="0" cellspacing="0" align="right"><tbody><tr></tr></tbody></table><span>&nbsp;</span></div>')
+    var _ui = $(this._$template)
         .addClass('list-menu')
         .addClass(this._not_login_classname);
     
-    var _tr = _ui.find('tr:first');
+    //var _tr = _ui.find('tr:first');
     
     if (this.is_enable('edit') && _writable === true) {
         var _edit = this._create_edit_ui();
-        _edit.appendTo(_tr);
+        _edit.appendTo(_ui.find(".edit-container"));
     }
     
     if (this.is_enable('delete') && _writable === true) {
         var _delete = this._create_delete_ui();
-        _delete.appendTo(_tr);
+        _delete.appendTo(_ui.find(".delete-container"));
     }
     
     if (this.is_enable('respond') && _writable === true) {
         var _respond = this._create_respond_ui();
-        _respond.appendTo(_tr);    
+        _respond.appendTo(_ui.find(".respond-container"));    
     }
     
     //$.test_msg('List_menu._$create_ui() this._enable_view_thread', this._enable_view_thread);
     //if (this._enable_view_thread == true)
     if (this.is_enable('view')) {
         var _view = this._create_view_ui();
-        _view.appendTo(_tr);    
+        _view.appendTo(_ui.find(".view-container"));    
     }
     if (this.is_enable('review')) {
         var _review = this._create_review_ui();
-        _review.appendTo(_tr);    
+        _review.appendTo(_ui.find(".review-container"));    
     }
     
     if (this.is_enable('select')) {
         if (KALS_text.selection.select.equals(this._item.get_scope_coll()) === false) {
             var _select = this._create_select_ui();
-            _select.appendTo(_tr);    
+            _select.appendTo(_ui.find(".select-container"));    
         }   
     }
     
     var _timestamp = this._setup_timestamp();
-    _timestamp.get_ui().prependTo(_tr);
+    _timestamp.get_ui().prependTo(_ui.find(".timestamp-container"));
     
     return _ui;
 };
@@ -256,7 +291,7 @@ List_menu.prototype._create_review_ui = function () {
     
     var _this = this;
     _ui.click(function () {
-        $.test_msg("click review_ui");
+        //$.test_msg("click review_ui");
         _this.view_thread();
     });
     
@@ -413,12 +448,17 @@ List_menu.prototype.delete_annotation = function () {
                 //$.test_msg('Item remove()');
                 
                 var _lang = new KALS_language_param(
-                    'Annotation is deleted.',
-                    'list_menu.delete_complete'
+                    'Annotation #{0} is deleted.',
+                    'list_menu.delete_complete',
+                    [_annotation_id]
                 );
                 KALS_util.notify(_lang);
                 
                 _this._toggle_loading(false);
+                
+                // 設定計數
+                _this._set_anntation_count_reduce(_annotation_param);
+                KALS_context.user.load_user_params();
                 
                 var _editor = _this.get_editor();
                 if ($.isset(_editor._editing_param)
@@ -434,9 +474,6 @@ List_menu.prototype.delete_annotation = function () {
                     KALS_text.load_navigation.reload(_nav_data);
                 }
             }
-            
-            // 設定計數
-            _this._set_anntation_count_reduce(_annotation_param);
         }
     };
     
@@ -482,6 +519,7 @@ List_menu.prototype._set_anntation_count_reduce = function (_annotation_param) {
         }
     }
     */
+    //$.test_msg("List_menu._set_anntation_count_reduce()", "減少標註");
     KALS_context.user.set_annotation_count_reduce_by_param(_annotation_param);
     return this;
 };
@@ -530,12 +568,10 @@ List_menu.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable() === true)
-        {
+        if (_policy.writable() === true) {
             _ui.removeClass(_not_login_classname);
         }
-        else
-        {
+        else {
             _ui.addClass(_not_login_classname);
         }
     }, true);

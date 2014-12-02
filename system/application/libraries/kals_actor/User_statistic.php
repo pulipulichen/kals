@@ -647,15 +647,15 @@ webpage2annotation.annotation_id');
             $type = $annotation_type_factory->filter_object($value);  
             // 直接用$type->get_name()是basic才能用
             
-            if ($type->is_basic()) {
-                $type_name = $type->get_name();  
+            //if ($type->is_basic()) {
+                //$type_name = $type->get_name();  
                 //test_msg("BASIC_type=", $type->get_name());
-                $type_name = substr($type_name, 16); //SUBSTR是因為這邊抓到的是annotation.type.question，只留後面
-            }
-            else {
+                //$type_name = substr($type_name, 16); //SUBSTR是因為這邊抓到的是annotation.type.question，只留後面
+            //}
+            //else {
                 $type_name = $type->get_custom_name();
                 //test_msg("CUSTOM_type=", $type->get_custom_name());
-            }
+            //}
             //test_msg("type_id", $type->get_id());
             
             //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
@@ -741,11 +741,12 @@ webpage2annotation.annotation_id');
         foreach ($type_id_array as $value) {       
             $value = intval($value, 10);
             $type = $annotation_type_factory->filter_object($value);  
-            $type_name = $type->get_name();  
-            $type_name = substr($type_name, 16); 
+            $type_name = $type->get_custom_name();  
+            //$type_name = $type->get_name();  
+            //$type_name = substr($type_name, 16); 
             //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
             $type_count_collection[$type_name] = $this->get_responded_count($user, $webpage, $type);          
-            }
+        }
         //$type_test = $type_count_collection['importance']; // annotation.type.importance
 
         return $type_count_collection;
@@ -799,8 +800,9 @@ webpage2annotation.annotation_id');
         foreach ($type_id_array as $value) {       
             $value = intval($value, 10);
             $type = $annotation_type_factory->filter_object($value);  
-            $type_name = $type->get_name();  
-            $type_name = substr($type_name, 16); 
+            //$type_name = $type->get_name();  
+            $type_name = $type->get_custom_name();  
+            //$type_name = substr($type_name, 16); 
             //preg_match('@^(?:annotation.type.)?([^/]+)@i',$type_name2, $type_name_test);
             $type_count_collection[$type_name] = $this->get_respond_to_count($user, $webpage, $type);   
             }
@@ -809,41 +811,108 @@ webpage2annotation.annotation_id');
     }
     
 // ---------------------------------------------------------------------
+//    /**
+//     * 統整所有要丟給Context_user的資料
+//     * 
+//     * @deprecated since version 20140620 改到statistics/user_params去
+//     * @param User $user
+//     * @param Webpage $webpage
+//     * @return JSON
+//     */
+//    public function user_params( $callback = NULL ) {
+//        $user = get_context_user();
+//        $webpage = get_context_webpage();
+//        
+//        $data =  array(
+//            //"responded_count" => $this->get_responded_count($user, $webpage),
+//            "responded_count" => 5,
+//            "responded_user_count" =>$this->get_responded_users_count($user, $webpage),
+//            "respond_to_user_count" =>$this->get_respond_to_users_count($user, $webpage)
+//        );
+//
+//        
+//        $output = array(
+//            "user" => $data
+//        );
+//        
+//        //打包成json丟回去 
+//        return $this->_display_jsonp($output, $callback);       
+//    }
+//    
+
     /**
-     * 統整所有要丟給Context_user的資料
-     * 
-     * @deprecated since version 20140620 改到statistics/user_params去
-     * @param User $user
-     * @param Webpage $webpage
-     * @return JSON
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141110
+     * @return Array
      */
-    public function user_params( $callback = NULL ) {
-        $user = get_context_user();
-        $webpage = get_context_webpage();
+    public function get_init_user_params($user = NULL, $webpage = NULL) {
+        
+        if (is_null($user)) {
+            $user = get_context_user();
+        }
+        if (is_null($webpage)) {
+            $webpage = get_context_webpage();
+        }
+        
+        $data =  array();
+//                "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
+//                //"responded_count" => 5,
+//                "responded_users_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
+//                "respond_to_users_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
+//                
+            // 從$this->user_statistic可以取得的資料
+            // types_array
+        $count = $this->get_topic_types_count($user, $webpage);
+        if (count($count) > 0) {
+            $data['topic_annotation_count'] = $count;
+        }
+        
+        $count = $this->get_respond_to_my_types_count($user, $webpage);
+        if (count($count) > 0) {
+            $data['respond_to_my_annotation_count'] = $count;
+        }
+        
+        $count = $this->get_respond_to_other_types_count($user, $webpage);
+        if (count($count) > 0) {
+            $data['respond_to_other_annotation_count'] = $count;
+        }
+        
+        return $data;
+    }   
+    
+    /**
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141110
+     * @return Array
+     */
+    public function get_user_params($user = NULL, $webpage = NULL) {
+        
+        if (is_null($user)) {
+            $user = get_context_user();
+        }
+        if (is_null($webpage)) {
+            $webpage = get_context_webpage();
+        }
         
         $data =  array(
-            //"responded_count" => $this->get_responded_count($user, $webpage),
-            "responded_count" => 5,
-            "responded_user_count" =>$this->get_responded_users_count($user, $webpage),
-            "respond_to_user_count" =>$this->get_respond_to_users_count($user, $webpage)
-        );
+//                "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
+//                //"responded_count" => 5,
+//                "responded_users_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
+//                "respond_to_users_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
+//                
+            // 從$this->user_statistic可以取得的資料
+            // types_array
+            'responded_users_count' =>$this->get_responded_users_count($user, $webpage),
+            'respond_to_users_count' =>$this->get_respond_to_users_count($user, $webpage),
 
-        
-        $output = array(
-            "user" => $data
+            // int count
+            'responded_count' => $this->get_responded_count($user, $webpage),
+            'like_to_count' => $this->get_like_to_count($user, $webpage),
+            'liked_count' => $this->get_liked_count($user, $webpage),
+            'like_to_users_count' => $this->get_like_to_users_count($user, $webpage),
+            'liked_users_count' => $this->get_liked_users_count($user, $webpage)
         );
         
-        //打包成json丟回去 
-        return $this->_display_jsonp($output, $callback);       
-    }
-    
-    
-
-    
-    
-    
-    
-    
+        return $data;
+    }   
 }
 
 

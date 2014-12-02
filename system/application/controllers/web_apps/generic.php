@@ -82,13 +82,16 @@ class generic extends Web_apps_controller {
             , 'toolkit/Overlay_modal'
             , 'toolkit/Tooltip_modal'
             , 'toolkit/Dialog_modal'
+            , 'toolkit/Confirm_dialog_modal'
             , 'toolkit/Dialog_option'
             , 'toolkit/Dialog_link'
             , 'toolkit/Dialog_close_option'
             , 'toolkit/Dialog_close_link'
+            , 'toolkit/Dialog_disabled_option'  // Pulipuli Chen 20141111
             , 'toolkit/Notify_modal'
             , 'toolkit/Event_dispatcher'
             , 'toolkit/Multi_event_dispatcher'
+            , 'toolkit/Injection_event_dispatcher'
             , 'toolkit/Attribute_event_dispatcher'
             , 'toolkit/JSONP_dispatcher'
             , 'toolkit/Task_event_dispatcher'
@@ -142,6 +145,7 @@ class generic extends Web_apps_controller {
             'kals_window/Window_content',
             'kals_framework/KALS_controller_window',  // Pulipuli Chen 201311119
             'kals_window/Window_content_submit',
+            'kals_window/Window_content_submit_loading',    // Pulipuli Chen 20141111
             'kals_window/Window_user_interface',
             'kals_window/Window_change_link',
 
@@ -306,7 +310,7 @@ class generic extends Web_apps_controller {
             'kals_text/My_basic_annotation_loader',
             'kals_text/My_custom_annotation_loader',
             'kals_text/Navigation_loader',
-            //'kals_text/Text_selector',  //20140519 Pulipuli Chen
+            'selectable_text/Text_selector',  //20140519 Pulipuli Chen
 
             'kals_text/Init_text',
             'kals_text/KALS_text',
@@ -759,7 +763,10 @@ class generic extends Web_apps_controller {
 
     function jquery()
     {
-        $path = 'libraries/jquery';
+        $path = array(
+            'libraries/jquery',
+            //'libraries/jquery-patch',
+        );
         //$this->pack_js($path);
         $this->load_js($path);
     }

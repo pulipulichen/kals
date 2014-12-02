@@ -74,6 +74,7 @@ Type_component.prototype._$create_ui = function () {
     var _menu = this._setup_menu();
     _menu.get_ui().appendTo(_ui);
     var _config = _menu._$get_config();
+    _ui.tooltip(_config);
     
     //$.test_msg('Type_component._$create_ui()', _config);
     
@@ -90,7 +91,7 @@ Type_component.prototype._$create_ui = function () {
         _option.hide().appendTo(_ui);
     }
     
-    _ui.tooltip(_config);
+    
 	
     //_ui.setup_hover();
     
@@ -348,9 +349,15 @@ Type_component.prototype._listen_editor = function () {
         return;
     }
     
-    this._editor.add_listener('reset', function () {
-        _this.reset_type();
-    });
+    /**
+     * @author Pulipuli 20140907
+     * 選項是否要重置，改用參數化設定
+     */
+    if (KALS_CONFIG.annotation_editor.annotation_type_reset_enable === true) {
+        this._editor.add_listener('reset', function () {
+            _this.reset_type();
+        });
+    }
     
     this._editor.add_listener('set', function (_editor, _param) {
         _this.set_data(_param);

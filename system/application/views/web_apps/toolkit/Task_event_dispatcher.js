@@ -21,12 +21,12 @@ function Task_event_dispatcher(_onstart, _oncomplete) {
     this.completed = false;
     
     if ($.is_function(_onstart)) {
-		this._$onstart = _onstart;
-	}
+        this._$onstart = _onstart;
+    }
     
     if ($.is_function(_oncomplete)) {
-		this._$oncomplete = _oncomplete;
-	}
+        this._$oncomplete = _oncomplete;
+    }
 }
 
 Task_event_dispatcher.prototype = new Event_dispatcher();
@@ -104,15 +104,15 @@ Task_event_dispatcher.prototype.complete = function(_task, _boolean) {
     setTimeout(function () {
         
         if ($.is_null(_task)) {
-			return;
-		}
+            return;
+        }
         if ($.is_null(_boolean)) {
-			_boolean = true;
-		}
+            _boolean = true;
+        }
             
         if (_this._task_state === null) {
-			_this.reset();
-		}
+            _this.reset();
+        }
         
         if ($.inArray(_task, _this._$schedule_task) > -1) {
             //$.test_msg('設定任務', [_task, _boolean]);
@@ -158,47 +158,53 @@ Task_event_dispatcher.prototype.reset = function() {
 
 /**
  * 確認任務是否完成
- * @param {string} _task
+ * 
  * 如果沒有輸入_task，則確認是否全部任務都已經完成
+ * @param {string} _task
  */
 Task_event_dispatcher.prototype.is_completed = function (_task) {
     
     if (this._task_state === null) {
-		return false;
-	}
+        return false;
+    }
     
     if ($.isset(_task)) {
-        if (typeof(this._task_state[_task]) == 'undefined') {
-			return false;
-		}
-		else {
-			return this._task_state[_task];
-		}
+        if (typeof(this._task_state[_task]) === 'undefined') {
+            return false;
+        }
+        else {
+            return this._task_state[_task];
+        }
     }
     else {
         for (var _t in this._$schedule_task) {
             _task = this._$schedule_task[_t];
-            if (typeof(this._task_state[_task]) == 'undefined') {
-				return false;
-			}
-			else 
-				if (false == this._task_state[_task]) {
-					return false;
-				}
-        }
+            if (typeof(this._task_state[_task]) === 'undefined') {
+                return false;
+            }
+            else if (false === this._task_state[_task]) {
+                return false;
+            }
+        }   //for (var _t in this._$schedule_task) {
         return true;
     }
 };
 
 /**
  * 開始進行任務
+ * @param {Function} _callback
+ * @author Pulipuli Chen 20141109
  */
 Task_event_dispatcher.prototype.start = function (_callback) {
     if ($.is_function(this._$onstart)) {
         var _this = this;
         //隔一下再開始進行
         setTimeout(function () {
-            _this._$onstart(_callback);    
+            _this._$onstart();
+            
+            if ($.is_function(_this._$oncomplete) === false) {
+                _this._$oncomplete = _callback;
+            }
         }, 0);
     }
         

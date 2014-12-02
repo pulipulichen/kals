@@ -163,8 +163,15 @@ class KALS_model extends Web_apps_controller {
      * @return String
      */
     public function request_get ($json = NULL, $callback = NULL) {
+        
         // 取得資料
         $data = $this->_retrieve_get_json($json);
+        
+        //if (is_boolean($data)) {
+        //    test_msg("request_get", $data["_action"]);
+        //}
+        
+        
         if (is_null($data)) {
             $data = $this->_retrieve_post_json($json);
         }
@@ -186,7 +193,10 @@ class KALS_model extends Web_apps_controller {
         $action = NULL;
         if (isset($data['_action'])) {
             $action = $data['_action'];
+
             if (method_exists($this, $action)) {
+                //$data = $this->$action($data);
+                
                 
                 $data_to_action = $data;
                 if (isset($data["_data"])) {
@@ -195,6 +205,9 @@ class KALS_model extends Web_apps_controller {
                 $data = $this->$action($data_to_action);
                 
                 $data = $this->_object_export($data);
+            }
+            else {
+                test_msg("action not found", $action);
             }
         }
         
@@ -246,8 +259,9 @@ class KALS_model extends Web_apps_controller {
         {
             //從POST中取得JSON的資料
             $json = $this->_get_post_json();
-            $data = $this->request_get($json);
             
+            $data = $this->request_get($json);
+     
             //然後把data存入session中
             $this->_set_post_session($index, $data);
             $this->_display_post_complete();
@@ -263,6 +277,7 @@ class KALS_model extends Web_apps_controller {
     // ---------------
     // 處理資料的方式
     // ---------------
+    
     private function _object_export($data) {
         
         if (is_array($data)) {

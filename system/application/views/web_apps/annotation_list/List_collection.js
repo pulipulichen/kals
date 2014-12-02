@@ -15,7 +15,6 @@ function List_collection() {
     JSONP_dispatcher.call(this);
     
     this._list_items = [];
-    
 }
 
 List_collection.prototype = new JSONP_dispatcher();
@@ -257,6 +256,8 @@ List_collection.prototype.load_list = function(_data, _callback) {
         return this;
     }
     
+    // ---------------------------------------
+    
     var _search_data = this.get_search_data();
     
     if ($.isset(_search_data)) {
@@ -275,6 +276,13 @@ List_collection.prototype.load_list = function(_data, _callback) {
 };
 
 /**
+ * 必須要填入範圍資訊
+ * @author Pulipuli Chen 20141114
+ * @type Boolean
+ */
+List_collection.prototype._search_data_scope_require = true;
+
+/**
  * 取得要搜尋的資料
  * @returns {List_collection}
  */
@@ -287,73 +295,80 @@ List_collection.prototype.get_search_data = function () {
         _search_data.topic_id = this._$topic_id;
         
         if ($.isset(this._$limit)) {
-			_search_data.limit = this._$limit;
-		}
+            _search_data.limit = this._$limit;
+        }
 		
-		if ($.isset(this._$respond_limit)) {
+        if ($.isset(this._$respond_limit)) {
             _search_data.respond_limit = this._$respond_limit;
         }
             
         if ($.isset(this._$target_topic)) {
-			_search_data.target_topic = this._$target_topic;
-		}
-        if ($.isset(this._$order_by) && this._$order_by != 'score') {
-			_search_data.order_by = this._$order_by;
-		}
+            _search_data.target_topic = this._$target_topic;
+        }
+        if ($.isset(this._$order_by) && this._$order_by !== 'score') {
+            _search_data.order_by = this._$order_by;
+        }
         
         if ($.isset(this._$direction)) {
             _search_data.direction = this._$direction;
         }
             
         if ($.isset(this._offset)) {
-			_search_data.offset = this._offset;
-		}
+            _search_data.offset = this._offset;
+        }
         
         return _search_data;
     }
     
     //一定要有範圍資料！
-    if ($.is_null(this._scope_coll)) {
-		return null;
-	}
-    
-    _search_data.scope = this._scope_coll.export_json(false);
+    if (this._search_data_scope_require === true 
+            && $.is_null(this._scope_coll) === false) {
+        _search_data.scope = this._scope_coll.export_json(false);
+    }
     
     //需要登入身分的兩個參數
-    if (($.isset(this._$target_like) || $.isset(this._$target_my)) &&
-	KALS_context.auth.is_login() === false) {
-		return null;
-	}
+//    if ((this._$target_like === true || this._$target_my === true) 
+//            && KALS_context.auth.is_login() === false) {
+//        $.test_msg("List_collection.get_search_data()", [
+//            this._$target_like === true
+//            , this._$target_my === true
+//            , KALS_context.auth.is_login()
+//        ]);
+    if (($.isset(this._$target_like) || $.isset(this._$target_my)) 
+            && KALS_context.auth.is_login() === false) {
+        $.throw_msg("List_collection.get_search_data()", "應該要取得登入參數資料，卻沒有登入");
+        return null;
+    }
     
     if ($.isset(this._$target_like)) {
-		_search_data.target_like = this._$target_like;
-	}
+        _search_data.target_like = this._$target_like;
+    }
     if ($.isset(this._$target_my)) {
-		_search_data.target_my = this._$target_my;
-	}
+        _search_data.target_my = this._$target_my;
+    }
 	
-	if ($.isset(this._$respond_limit)) {
+    if ($.isset(this._$respond_limit)) {
         _search_data.respond_limit = this._$respond_limit;
     }
     
     if ($.isset(this._$limit)) {
-		_search_data.limit = this._$limit;
-	}
+        _search_data.limit = this._$limit;
+    }
     
     if ($.isset(this._$target_topic)) {
-		_search_data.target_topic = this._$target_topic;
-	}
-    if ($.isset(this._$order_by) && this._$order_by != 'score') {
-		_search_data.order_by = this._$order_by;
-	}
+        _search_data.target_topic = this._$target_topic;
+    }
+    if ($.isset(this._$order_by) && this._$order_by !== 'score') {
+        _search_data.order_by = this._$order_by;
+    }
 	
-	if ($.isset(this._$direction)) {
+    if ($.isset(this._$direction)) {
         _search_data.direction = this._$direction;
     }
         
     if ($.isset(this._offset)) {
-		_search_data.offset = this._offset;
-	}
+        _search_data.offset = this._offset;
+    }
     
     return _search_data;
     
@@ -367,17 +382,17 @@ List_collection.prototype.get_search_data = function () {
  */
 List_collection.prototype._check_login = function () {
     
-	if (this._$enable_check_login === false) {
-		return true;
-	}
+    if (this._$enable_check_login === false) {
+        return true;
+    }
 	
     //$.test_msg('List_coll._check_login()', [this._$name, this._$need_login, KALS_context.auth.is_login()]);
     
     if ($.isset(this._$need_login) === false) {
-		return true;
-	}
+        return true;
+    }
     
-    var _pass = (this._$need_login == KALS_context.auth.is_login());
+    var _pass = (this._$need_login === KALS_context.auth.is_login());
     if (_pass === false) {
         this._totally_loaded = true;
     } 
@@ -397,18 +412,24 @@ List_collection.prototype.set_load_id = function (_dispatcher) {
 
 List_collection.prototype.check_load_id = function (_load_id) {
     if (this._check_load_id === true) {
-		if ($.is_null(_load_id)) {
-			return (this._load_id_dispatcher.get_load_id() == this._load_id);
-		}
-		else {
-			return (this._load_id_dispatcher.get_load_id() == _load_id);
-		}
-	}
-	else {
-		return true;
-	}
+        if ($.is_null(_load_id)) {
+            return (this._load_id_dispatcher.get_load_id() === this._load_id);
+        }
+        else {
+            return (this._load_id_dispatcher.get_load_id() === _load_id);
+        }
+    }
+    else {
+        return true;
+    }
 };
 
+/**
+ * 現在是初始化的狀態
+ * @type Boolean
+ * @author Pulipuli Chen 20141113
+ */
+List_collection.prototype._is_initialized_flag = true;
 
 List_collection.prototype.setup_load_list = function (_data, _callback) {
     
@@ -419,6 +440,8 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         $.trigger_callback(_callback);
         return this;
     }
+    
+    this._is_initialized_flag = false;
     
     var _this = this;
     
@@ -453,8 +476,8 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
             var _length = _annotation_coll.length();
             
             if (_this._offset === null) {
-				_this._offset = 0;
-			}
+                _this._offset = 0;
+            }
             _this._offset = _this._offset + _length;
             
             //$.test_msg('List_collection.setup_load_list()', 'before complete');
@@ -464,26 +487,6 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
         
         var _annotation_coll = new Annotation_collection_param(_data.annotation_collection);
         
-        /*
-        for (var _i = 0; _i < _annotation_coll.length(); _i++) {
-            var _param = _annotation_coll.get(_i);
-            var _list_item = this.add_list_item(_param);
-            
-            //if (typeof(_list_item.respond_list) != 'undefined'
-            //    && _list_item.respond_list != null)
-            //{
-            //    //$.test_msg('List_collection.setup_load_list() listen respond list', _param.annotation_id);
-            //    _list_item.respond_list.add_listener(function (_respond_list) {
-            //        //$.test_msg('List_collection.setup_load_list() _respond_list.is_ready()', _respond_list.is_ready());
-            //        if (_respond_list.is_ready())
-            //        {
-            //            _this.notify_ready();
-            //        }
-            //    }, true);
-            //}
-        }
-        */
-       
         var _load_id = this._load_id;
         var _loop_annotation = function (_i) {
             if (_this.check_load_id(_load_id) === false) {
@@ -536,12 +539,13 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
 };
 
 /**
- * 將設定回歸原始 
+ * 將設定回歸原始
+ * @param {Function} _callback 重置
  */
-List_collection.prototype.reset = function() {
+List_collection.prototype.reset = function(_callback) {
     if ($.isset(this._list_container)) {
-		this._list_container.empty();
-	}
+        this._list_container.empty();
+    }
     this._list_items = [];
     this._offset = null;
     this._totally_loaded = false;
@@ -549,6 +553,10 @@ List_collection.prototype.reset = function() {
     
     this._set_focus_param = null;
     this._set_focus_scrollto = null;
+    
+    this._is_initialized_flag = true;
+    
+    $.trigger_callback(_callback);
     
     return this;
 };
@@ -565,13 +573,13 @@ List_collection.prototype.reload = function(_callback) {
  */
 List_collection.prototype.create_list_item = function(_param) {
     if (this._$target_topic === true) {
-		return new List_item_topic(_param);
-	}
-	//else if (this._$target_topic === false)
-	//    return new List_item_respond(_param);
-	else {
-		return new List_item(_param);
-	}
+        return new List_item_topic(_param);
+    }
+    //else if (this._$target_topic === false)
+    //    return new List_item_respond(_param);
+    else {
+        return new List_item(_param);
+    }
 };
 
 /**
@@ -582,8 +590,20 @@ List_collection.prototype._set_is_totally = function(_is_totally) {
     this._totally_loaded = _is_totally;
 };
 
+/**
+ * 是否已經完全讀取
+ * @returns {Boolean}
+ */
 List_collection.prototype.is_totally_loaded = function() {
     return this._totally_loaded;
+};
+
+/**
+ * 是否已經開始
+ * @returns {Boolean}
+ */
+List_collection.prototype.is_initialized = function() {
+    return this._is_initialized_flag;
 };
 
 List_collection.prototype.set_topic_id = function(_id) {
@@ -603,12 +623,16 @@ List_collection.prototype.set_topic_id = function(_id) {
 List_collection.prototype._$default_add_item_from_head = false;
 
 /**
- * 
+ * 加入資料
  * @param {Annotation_param} _param
  * @param {Boolean} _from_head = false; 是否從頭加入，或是從尾加入
  */
 List_collection.prototype.add_list_item = function(_param, _from_head) {
     var _list_item = this.create_list_item(_param);
+    
+    if (_from_head === undefined) {
+        _from_head = this._$default_add_item_from_head;
+    }
     
     if (_list_item !== null) {
         this._list_items.push(_list_item);
@@ -619,8 +643,8 @@ List_collection.prototype.add_list_item = function(_param, _from_head) {
 		
         var _ui = this.get_ui();
 		//$.test_msg('add_list_item', _ui.html());
-		if (this._$default_add_item_from_head === false) {
-			this._list_container.append(_list_item_ui);
+        if (_from_head === false) {
+            this._list_container.append(_list_item_ui);
         }
         else {
             this._list_container.prepend(_list_item_ui);
@@ -761,13 +785,13 @@ List_collection.prototype.focus = function(_param, _scrollto) {
             
             return _list_item;
         }
-        else if (typeof(_list_item.respond_list) != 'undefined'
+        else if (typeof(_list_item.respond_list) !== 'undefined'
             && _list_item.respond_list !== null) {
             //$.test_msg('List_collection.focus() has respond list', _list_item.get_annotation_id());
             var _result = _list_item.respond_list.focus(_param, _scrollto);
             if (_result !== null) {
-				return _result;
-			}
+                return _result;
+            }
         }
 		
     }

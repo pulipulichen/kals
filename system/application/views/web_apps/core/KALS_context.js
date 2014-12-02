@@ -140,7 +140,6 @@ KALS_context.get_image_url = function (_img) {
     return this.url.get_image_url(_img);
 };
 
-
 /**
  * 回傳libraries網址
  * @param {string} _file 檔案名稱
@@ -174,6 +173,82 @@ KALS_context.reset = function (_callback) {
 KALS_context.set_completed = function () {
     this.completed = true;
     this.notify_listeners(this);
+    
+    var _this = this;
+    setTimeout(function () {
+        _this._ready_event_dispatcher.notify_listeners(_this);
+    }, 500);
+    
+    return this;
+};
+
+/**
+ * 準備好的時候呼叫
+ * 
+ * @author Pulipuli Chen 20141109
+ * @param {Function} _callback
+ * @returns {KALS_context}
+ */
+KALS_context.ready = function (_callback) {
+    
+     if ($.is_function(_callback) === false) {
+         return this;
+     }
+    
+    if (this.completed === false) {
+        //$.test_msg("KALS_context, 尚未準備好", _callback);
+        //$.test_msg("KALS_context, 尚未準備好");
+        //var _this = this;
+        //this.add_once_listener(_callback);
+        this._ready_event_dispatcher.add_once_listener(_callback);
+    }
+    else {
+        setTimeout(function () {
+            _callback(this);
+        }, 0);
+    }
+    return this;
+};
+
+/**
+ * 當KALS_context完成之後，可以用這個呼叫
+ * @type Event_dispatcher
+ */
+KALS_context._ready_event_dispatcher = new Event_dispatcher();
+
+/**
+ * 模組準備好的時候呼叫
+ * @param {String} _load_module
+ * @param {Function} _callback
+ * @returns {KALS_context}
+ */
+KALS_context.module_ready = function (_load_module, _callback) {
+    if ($.is_string(_load_module) === false
+            && $.is_function(_callback) === false) {
+        return this;
+    }
+    
+    var _module_stacks = _load_module.split(".");
+    var _base_obj = window;
+    var _module_loaded = true;
+
+    for (var _m in _module_stacks) {
+        var _module_name = _module_stacks[_m];
+        if (typeof(_base_obj[_module_name]) !== "undefined") {
+            _base_obj = _base_obj[_module_name];
+        }
+        else {
+            _module_loaded = false;
+            break;
+        }
+    }
+
+    if (_module_loaded === true) {
+        setTimeout(function () {
+            _callback(_base_obj);
+        }, 0);
+    }
+        
     return this;
 };
 
@@ -195,7 +270,9 @@ KALS_context.user = null;
 KALS_context.policy = null;
 
 /**
- * @type {Context_search}
+ * @author Pulipuli Chen 20141111
+ * 捨棄@type {Context_search}，改用Window_search
+ * @type {Window_search}
  */
 KALS_context.search = null;
 
@@ -289,6 +366,8 @@ KALS_context.init_component = null;
  * @type {Init_profile}
  */
 KALS_context.init_profile = null;
+
+// ------------------------
 
 /**
  * 確認所有任務是否完成。此屬性會在Init_component跟Init_profile完成時變成true。
@@ -395,7 +474,7 @@ KALS_context.last_select_annotation_type = null;
  * topic: 只有主題標註使用
  * respond: 只有回覆時使用
  * 預設：全部啟用
- * @return {Array} 包含標註類型的陣列
+ * @return {Array<Annotation_type_param>} 包含標註類型的陣列
  */
 KALS_context.create_type_param_list = function(_enable_type) {
     var _list = {};
@@ -437,8 +516,6 @@ KALS_context.create_type_param_list = function(_enable_type) {
      */
     //var _type_options = this.get_basic_type_options();
     var _type_options = this.basic_type.get_type_list(_enable_type);
-    
-    
     
     for (var _i in _type_options) {
         //var _type_string = _type_options[_i];

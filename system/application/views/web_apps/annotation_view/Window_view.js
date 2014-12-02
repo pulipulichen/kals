@@ -178,12 +178,18 @@ Window_view.prototype.set_topic_param = function (_topic_param) {
     return this;
 };
 
+/**
+ * 延後選取
+ * @author Pulipuli Chen 20141110
+ * @returns {Window_view}
+ */
 Window_view.prototype.set_selection = function () {
     
     if ($.isset(this._topic_param)) {
-        var _this = this;
+        //var _this = this;
+        var _scope = this._topic_param.scope;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
+            KALS_text.selection.select.set_scope_coll(_scope);
         }, 1000);
     }
     
@@ -272,11 +278,11 @@ Window_view.prototype._$create_ui = function () {
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
         if (_policy.writable()) {
-			_ui.removeClass(_not_login_classname);
-		}
-		else {
-			_ui.addClass(_not_login_classname);
-		}
+            _ui.removeClass(_not_login_classname);
+        }
+        else {
+            _ui.addClass(_not_login_classname);
+        }
     }, true);
     
     return _ui;

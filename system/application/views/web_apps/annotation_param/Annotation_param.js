@@ -267,7 +267,7 @@ Annotation_param.prototype.export_json = function () {
                 // 不做輸出！
                 continue;
             }
-            else {
+            else if (typeof(this[_attr].export_json) === "function" ) {
                 _json[_attr] = this[_attr].export_json();
             }
         }
@@ -391,6 +391,36 @@ Annotation_param.prototype.get_interval_time = function () {
  */
 Annotation_param.prototype.get_navigation_level = function () {
     return this.navigation_level;
+};
+
+/**
+ * 驗證錯誤訊息
+ * @author Pulipuli Chen 20141111
+ * @type {Array<KALS_language_param>}
+ */
+Annotation_param.prototype.invalid = null;
+
+/**
+ * 新增驗證錯誤訊息
+ * @author Pulipuli Chen 20141111
+ * @param {KALS_language_param} _lang
+ */
+Annotation_param.prototype.add_invalid = function (_lang) {
+    if (this.invalid === null) {
+        this.invalid = [];
+    }
+    
+    this.invalid.push(_lang);
+    return this;
+};
+
+/**
+ * 驗證這個標註是否有效
+ * @author Pulipuli Chen 20141111
+ * @return {Boolean}
+ */
+Annotation_param.prototype.validate = function () {
+    return (this.invalid === null);
 };
 
 /* End of file Annotation_param */

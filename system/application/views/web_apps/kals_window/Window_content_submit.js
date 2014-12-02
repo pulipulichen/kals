@@ -19,6 +19,12 @@ function Window_content_submit(){
 Window_content_submit.prototype = new Dialog_option();
 
 /**
+ * 遞交表單的名稱
+ * @type String
+ */
+Window_content_submit.prototype.name = "submit";
+
+/**
  * 遞交按鈕的語系參數。
  * @type {KALS_language_param}
  */
@@ -115,7 +121,7 @@ Window_content_submit.prototype.get_inputs = function () {
  * @type {jQuery}
  */
 Window_content_submit.prototype.get_input = function (_name) {
-	return this._content.get_input(_name);
+    return this._content.get_input(_name);
 };
 
 /**
@@ -124,7 +130,7 @@ Window_content_submit.prototype.get_input = function (_name) {
  * @type {jQuery}
  */
 Window_content_submit.prototype.get_first_input = function (_name) {
-	return this._content.get_first_input(_name);
+    return this._content.get_first_input(_name);
 };
 
 /**
@@ -137,11 +143,11 @@ Window_content_submit.prototype.complete_handle = function (_data) {
     //$.test_msg('Window_content_subumit.complete_handle()');
     
     if (_data === true) {
-		KALS_util.notify(this.complete_notification);
-	}
-	else {
-		KALS_util.notify(this.failed_notification);
-	}
+        KALS_util.notify(this.complete_notification);
+    }
+    else {
+        KALS_util.notify(this.failed_notification);
+    }
     
     var _this = this;
     KALS_window.close(function () {
@@ -172,14 +178,14 @@ Window_content_submit.prototype.submit = function () {
     }
     
     if (this._lock_submit() === false) {
-		return this;
-	}
+        return this;
+    }
     
     //如果沒有要遞交的資料，則回傳完成訊息
     if (this.url === null || this._content === null) {
         if ($.is_function(this.complete_handle)) {
-			this.complete_handle(_inputs, _data);
-		}
+            this.complete_handle(_inputs, _data);
+        }
         return this;
     }
     
@@ -193,7 +199,7 @@ Window_content_submit.prototype.submit = function () {
     _config.callback = function (_data) {
         _this.complete_handle(_data);    
     }; 
-    $.test_msg('Window_content_submit.submit()', _config['callback']);
+    //$.test_msg('Window_content_submit.submit()', _config['callback']);
     
     if (this.exception_handle !== null) {
         _config.exception_handle = this.exception_handle;
@@ -201,35 +207,65 @@ Window_content_submit.prototype.submit = function () {
     
     KALS_window.toggle_loading(true, function () {
         KALS_util.ajax_get(_config);
-    });    
+    });
     
     return this;
 };
 
+/**
+ * 鎖定遞交
+ * @returns {Boolean}
+ */
 Window_content_submit.prototype._lock_submit = function () {
     
     var _ui = this.get_ui();
     
     //$.test_msg(typeof(_ui.attr('disabled')), _ui.attr('disabled'));
     if (typeof(_ui.attr('disabled')) !== 'undefined'
-        && _ui.attr('disabled') === true) {
+            && _ui.attr('disabled') === true) {
         //不可以重複執行compelte_handle()！
         return false;
     }
     _ui.attr('disabled', true);
+    this._submit_locked = true;
     
     return true;
     
 };
 
+/**
+ * 遞交解鎖
+ * @returns {Boolean}
+ */
 Window_content_submit.prototype._unlock_submit = function () {
     
     var _ui = this.get_ui();
     _ui.removeAttr('disabled');
+    this._submit_locked = false;
     
     return true;
 };
 
+/**
+ * 現在是否在遞交中
+ * @author Pulipuli Chen 20141111
+ * @type Boolean
+ */
+Window_content_submit.prototype._submit_locked = false;
+
+/**
+ * 確認現在是否在遞交中
+ * @author Pulipuli Chen 20141111
+ * @type Boolean
+ */
+Window_content_submit.prototype.is_submit_locked = function () {
+    return this._submit_locked;
+};
+
+/**
+ * 建立UI
+ * @returns {jQuery}
+ */
 Window_content_submit.prototype._$create_ui = function () {
     var _this = this;
     this.callback = function () {
@@ -240,6 +276,19 @@ Window_content_submit.prototype._$create_ui = function () {
     _ui.addClass('window-content-submit');
     
     return _ui;
+    
+    /**
+     * @author Pulipuli Chen 20141111
+     * 測試看看submit可不可以很多個
+     */
+//    var _ui2 = Dialog_option.prototype._$create_ui.call(this);
+//    _ui2.addClass('window-content-submit-another');
+//    
+//    var _container = $("<div />")
+//            .append(_ui)
+//            .append(_ui2);
+//    
+//    return _container;
 };
 
 /**

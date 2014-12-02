@@ -49,7 +49,7 @@ Editor_container.prototype._toggle_position = 'bottom';
  * 預設的開啟狀態
  * @tyep boolean true=開啟; false=關閉
  */
-Editor_container.prototype._$default_toggle = false;
+Editor_container.prototype._$default_toggle = true;
 
 /**
  * 編輯器。
@@ -104,9 +104,8 @@ Editor_container.prototype._$create_ui = function () {
     var _loading = this._create_loading();
     _loading.appendTo(_container.find('td:first'));
 
-    if (this._$default_toggle === true
-       || this._$default_toggle === false) {
-            //$.test_msg("編輯器設定預設狀態", this._$default_toggle);
+    if ($.is_boolean(this._$default_toggle)) {
+        //$.test_msg("編輯器設定預設狀態", this._$default_toggle);
         this.toggle_container(this._$default_toggle);
     }
     
@@ -237,6 +236,25 @@ Editor_container.prototype.get_parent_container = function () {
     return this.get_ui().parents('.annotation-tool:first');
 };
 
+
+/**
+ * 取得正在編輯的標註資料
+ * @returns {Annotation_param}
+ */
+Editor_container.prototype.get_annotation_param = function () {
+    return this.editor.get_data();
+};
+
+/**
+ * 儲存標註資料
+ * @param {function} _callback
+ * @returns {Annotation_tool}
+ */
+Editor_container.prototype.submit_annotation = function (_callback) {
+    this.editor.submit(_callback);
+    return this;
+};
+
 /**
  * 開關編輯器
  * @param {boolean} _display
@@ -351,7 +369,7 @@ Editor_container.prototype._create_deny_conpoment = function () {
     var _not_login = $('<span></span>')
         .addClass('not-login')
         .appendTo(_deny);
-        
+
     var _not_login_lang = new KALS_language_param(
         'If you want to write annotation, please click here to login.',
         'editor_container.deny'
@@ -369,7 +387,9 @@ Editor_container.prototype._create_deny_conpoment = function () {
         .addClass("deny-message")
         .hide()
         .appendTo(_deny);
-       
+    
+    
+    
     /* 
     var _deny_write_lang = new KALS_language_param(
         'You can not write annotation.',
@@ -379,22 +399,6 @@ Editor_container.prototype._create_deny_conpoment = function () {
     KALS_context.lang.add_listener(_deny_write, _deny_write_lang);
     */
     // --------
-    
-    var _this = this;
-    KALS_context.auth.add_listener(function(_auth) {
-        //$.test_msg("Editor_container", "登入了嗎？: " + _auth.is_login());
-        var _ui = _this.get_ui();
-        if (_auth.is_login()) {
-            _deny_write.show();
-            _not_login.hide();
-            _ui.removeClass(_this._not_login_classname);
-        }
-        else {
-            _deny_write.hide();
-            _not_login.show();
-            _ui.addClass(_this._not_login_classname);
-        }
-    });
     
     this._deny = _deny;
     
@@ -414,24 +418,26 @@ Editor_container.prototype._not_login_classname = "not-login";
  */
 Editor_container.prototype._loading = null;
 
-
+/**
+ * 建立「讀取中」的顯示訊息元件
+ * @returns {jQuery}
+ */
 Editor_container.prototype._create_loading = function () {
     
     var _loading = $('<div></div>')
-        .addClass('editor-loading')
-        .addClass('editor-message');
+            .addClass('editor-loading')
+            .addClass('editor-message');
         
     var _lang = new KALS_language_param(
         'Loading...',
         'annotation_editor.loading'
     );
     
-    KALS_context.lang.add_listener(_loading, _lang);
-    
     this._loading = _loading;
     
-    return _loading;
+    KALS_context.lang.add_listener(_loading, _lang);
     
+    return _loading;
 };
 
 /**
@@ -592,6 +598,10 @@ Editor_container.prototype.toggle_loading = function (_is_loading) {
     return this;
 };
 
+/**
+ * 設定監聽器
+ * @returns {Editor_container}
+ */
 Editor_container.prototype._listen_auth = function () {
     
     var _this = this;
@@ -606,17 +616,58 @@ Editor_container.prototype._listen_auth = function () {
             _this.toggle_deny(true);
     }, true);
     */
-    KALS_context.policy.add_attr_listener('write', function (_policy) {
-        //$.test_msg("Editor_container toggle_deny", _policy.writable());
-        if (_policy.writable()) {
-            _this.toggle_deny(false);
+    
+    //var _this = this;
+    
+    var _check_policy = function () {
+        var _auth = KALS_context.auth;
+        var _policy = KALS_context.policy;
+        
+        var _ui = _this.get_ui();
+        
+        var _deny_write = _this._deny.find(".deny-message");
+        var _not_login = _this._deny.find(".not-login");
+        
+        if (_auth.is_login()) {
+            _deny_write.show();
+            _not_login.hide();
+            _ui.removeClass(_this._not_login_classname);
+            
+            if (_policy.writable()) {
+                _this.toggle_deny(false);
+            }
+            else {
+                _this.toggle_deny(true);
+            }
         }
         else {
-            _this.toggle_deny(true);
+            _deny_write.hide();
+            _not_login.show();
+            _ui.addClass(_this._not_login_classname);
         }
-    }, true);
+        
+        
+    };
+    
+    KALS_context.ready(function () {
+        KALS_context.auth.add_listener(function(_auth) {
+            _check_policy();
+        });
+
+        KALS_context.policy.add_attr_listener('write', function (_policy) {
+            _check_policy();
+        }, true);
+    });        
+    
+    return this;
 };
 
+/**
+ * 重置編輯容器
+ * @param {Function} _callback
+ * @param {Boolean} _reset_container 預設 true
+ * @returns {Editor_container}
+ */
 Editor_container.prototype.reset = function (_callback, _reset_container) {
     
     if ($.is_null(_reset_container)) {

@@ -136,13 +136,14 @@ KALS_controller.prototype._$initialize_view = function () {
  * @type {String}
  */
 KALS_controller.prototype.get_request_url = function () {
-	var _url = this._$model;
-    
-	if ($.is_null(_url)) {
+    var _url = this._$model;
+    _url = _url.toLowerCase();
+
+    if ($.is_null(_url)) {
         return _url;
     }
     
-	if ($.ends_with(_url, '/')) {
+    if ($.ends_with(_url, '/')) {
         _url = _url.substr(0, _url.length-1);
     }
     return _url;
@@ -189,6 +190,7 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
         return $.trigger_callback(_callback);
     }
 
+    //_action = _action.toLowerCase();
     if (_method === 'get') {
         _url = _url + '/request_get';        
     }
@@ -217,6 +219,8 @@ KALS_controller.prototype.request = function (_method, _action, _data, _callback
             }
         }
     };
+    
+    //$.test_msg("request", _data);
 
     //this.debug('request', _callback);
     //return;
@@ -260,7 +264,8 @@ KALS_controller.prototype.request_get_cache = function (_action, _data, _callbac
         //$.test_msg('temp', 'url is null');
         return $.trigger_callback(_callback);
     }
-
+    
+    //_action = _action.toLowerCase();
     _url = _url + '/request_get';
 
     if (this._enable_debug_flag === true) {

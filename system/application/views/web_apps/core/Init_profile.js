@@ -90,13 +90,23 @@ Init_profile.prototype._$oncomplete = function () {
     KALS_context.set_completed();
 
     // 以下啟動測試區
-    var _this = this;
-    setTimeout(function () {
-        for (var _t in _this._test) {
-            _this._test[_t]();
-        }	
-    }, 1000);
-        
+//    var _this = this;
+//    setTimeout(function () {
+//        for (var _t in _this._test) {
+//            _this._test[_t]();
+//        }	
+//    }, 1000);
+    if (typeof(KALS_CONFIG.debug.auto_run) === "object") {
+        var _auto_run = KALS_CONFIG.debug.auto_run;
+        setTimeout(function () {
+            for (var _t in _auto_run) {
+                if (typeof(_auto_run[_t]) === "function") {
+                    $.test_msg("AUTORUN", _t);
+                    _auto_run[_t]();
+                }
+            }	
+        }, 1000);
+    }
 };
 
 // --------------------------------
@@ -117,6 +127,20 @@ Init_profile.prototype._test = [
      * 第一個，不使用
      */
     function () {}
+    /**
+     * 測試CKeditor檔案上傳功能
+     * @author 20140901 Pulipuli Chen
+     */
+//    , function () {
+//        setTimeout(function () {
+//            console.log($(".ckeditor.note-editor-ckeditor.Note_editor_ckeditor .cke_off cke_button_image").lenght);
+//            $(".ckeditor.note-editor-ckeditor.Note_editor_ckeditor .cke_off cke_button_image").click();
+//            
+//            setTimeout(function () {
+//                $(".cke_dialog_tabs *[title='上傳']").click();
+//            }, 1000);
+//        }, 3000);
+//    }
     /**
      * 測試網頁暫存功能
      * @author Pulipuli Chen 20140517

@@ -298,13 +298,18 @@ Context_user.prototype.set_annotation_count_change = function (_write_type, _ori
  * 取得標註次數
  * 
  * @param {String} _write_type "topic", "respond_to_my", "respond_to_other"，可省略
- * @param {Annotation_type_param} _annotation_type 標註類型，可省略
+ * @param {Annotation_type_param|String} _annotation_type 標註類型，可省略
  * @returns {Int}
  */
 Context_user.prototype.get_annotation_count = function (_write_type, _annotation_type) {
     
     var _count = 0;
     var _type_name;
+    
+    if ($.is_string(_annotation_type)) {
+        _annotation_type = new Annotation_type_param(_annotation_type);
+    }
+    
     if ($.is_string(_write_type)) {
         if ($.is_class(_annotation_type, "Annotation_type_param")) {
             // 限定類型
@@ -419,7 +424,7 @@ Context_user.prototype.parse_anntation_param_write_type = function (_annotation_
  */
 Context_user.prototype.get_annotation_count_by_param = function (_annotation_param) {
     if ($.is_class(_annotation_param, "Annotation_param") === false) {
-        KALS_util.show_exception("Context_user.get_annotation_count() parameters error");
+        KALS_util.show_exception("Context_user.get_annotation_count() parameters error: Paramter is not Annotation_param");
         return this;
     }
     
@@ -437,6 +442,7 @@ Context_user.prototype.get_annotation_count_by_param = function (_annotation_par
  * @returns {Context_user}
  */
 Context_user.prototype.set_annotation_count_modify_by_param = function (_annotation_param, _count) {
+    
     if ($.is_class(_annotation_param, "Annotation_param") === false 
             || $.is_number(_count) === false) {
         KALS_util.show_exception("Context_user.set_annotation_count() parameters error");
@@ -445,6 +451,8 @@ Context_user.prototype.set_annotation_count_modify_by_param = function (_annotat
     
     var _annotation_type_param = _annotation_param.type;
     var _write_type = this.parse_anntation_param_write_type(_annotation_param);
+    
+    //$.test_msg("Context_user.prototype.set_annotation_count_modify_by_param _write_type", _write_type);
     
     return this.set_annotation_count_modify(_write_type, _annotation_type_param, _count);
 };
@@ -624,6 +632,7 @@ Context_user.prototype.get_respond_to_my_annotation_count = function (_annotatio
  * @returns {Context_user}
  */
 Context_user.prototype.set_respond_to_other_annotation_count = function (_annotation_type, _count) {
+    //$.test_msg("Context_user.prototype.set_respond_to_other_annotation_count", _count);
     return this.set_annotation_count("respond_to_other_annotation_count", _annotation_type, _count);
 };
 
@@ -903,16 +912,24 @@ Context_user.prototype._pre_update = function (_key, _value) {
 Context_user.prototype._load_params_uri = "statistics/user_params";
 
 /**
- * 
- * @returns {undefined}
+ * 讀取使用者的資訊
+ * @author Pulipuli Chen 20141107
+ * @returns Context_user
  */
 Context_user.prototype.load_user_params = function ( _callback){
     
+    
+    //$.test_msg("load_user_params", "暫時在這裡打住");
+    //$.throw_msg("load_user_params", "暫時在這裡打住");
+    //return this;
+    
     var _this = this;
     var _get_callback = function (_data){
+        //$.test_msg("Context_user.load_user_params", _data);
+        
         _this.update(_this, _data);
         $.trigger_callback( _callback);
-        //$.test_msg("test_responded_count", _data);
+        
     };       
         
     var _config = {

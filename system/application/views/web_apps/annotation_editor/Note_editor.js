@@ -58,10 +58,10 @@ Note_editor.prototype._$create_ui = function () {
     var _this = this;
     this.notify_ready();
     
-        _this = this;
-        setTimeout(function() {
-            _this.notify_ready();    
-        }, 0);
+    _this = this;
+    setTimeout(function() {
+        _this.notify_ready();    
+    }, 0);
         
     return _ui;
 };
@@ -94,12 +94,12 @@ Note_editor.prototype.set_text = function (_text) {
     //$.test_msg('Note_editor.set_text() setted text', [_text, _setted_text]);
     
     if ($.is_null(_text)) {
-		_text = '';
-	}
+        _text = '';
+    }
     
-    if (_text == _setted_text) {
-		return this;
-	}
+    if (_text === _setted_text) {
+        return this;
+    }
     
     var _ui = this.get_ui('.note-editor-textarea:first');
     //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);
@@ -111,7 +111,7 @@ Note_editor.prototype.set_text = function (_text) {
 
 Note_editor.prototype.reset = function () {
     //var _ui = this.get_ui('.note-editor-textarea:first');
-    //$.test_msg('Note_editor.set_text()', [_text, _ui.length]);
+    //$.test_msg('Note_editor.reset()');
     
     this.set_text('');
     return this;
@@ -130,11 +130,11 @@ Note_editor.prototype.notify_ready = function () {
 };
 
 Note_editor.prototype.focus = function () {
-	var _ui = this.get_ui('.note-editor-textarea:first');
-	if (_ui.length > 0) {
-		_ui.focus();	
-	}
-	return this;
+    var _ui = this.get_ui('.note-editor-textarea:first');
+    if (_ui.length > 0) {
+            _ui.focus();	
+    }
+    return this;
 };
 
 

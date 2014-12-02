@@ -51,11 +51,12 @@
 .KALS .dialog-toolbar-tr,
 .KALS .dialog-toolbar-table {
     height: 36px;
-	margin:0px !important;
-	background: rgba(0,0,0,0)!important;
+    margin:0px !important;
+    background: rgba(0,0,0,0)!important;
 }
-.KALS .dialog-toolbar-table tr{
-	background: rgba(0,0,0,0)!important;
+.KALS .dialog-toolbar-table tr {
+    background: rgba(0,0,0,0)!important;
+    color: white;
 }
 
 .KALS.window .dialog-toolbar {
@@ -126,6 +127,8 @@
     width: 60%;
     position:relative;
     line-height: 1.1em;
+    
+    /*color: white;*/
 }
 
 .KALS .dialog-content-td {
@@ -204,10 +207,42 @@
     /*min-height: 33px;*/
 }
 
-
+.KALS .button.dialog-option.selected,
+.KALS .kals-view button.selected,
+.KALS .kals-view .button.selected {
+    background: -moz-linear-gradient(#9C9586 0%, #9A9384 50%
+        , #918978 51%, #8C8473 100%);
+    background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#9C9586)
+        , color-stop(0.00, #9C9586), color-stop(0.5, #9A9384)
+        , color-stop(0.51, #918978), to(#8C8473));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9C9586'
+        , endColorstr='#8C8473');
+    background-color: #8C8473;
+    
+    border: 1px solid #494437 !important;    
+    color: #FFFFFF;
+}
 
 .KALS .dialog-option.link {
     color: blue;
+}
+
+/**
+ * @author Pulipuli Chen 20141111
+ * 加入停止使用的功能
+ */
+.KALS .button.dialog-option-disabled {
+    background: -moz-linear-gradient(#FFE08E 0%, #FFDE7D 100%);
+    background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FFE08E)
+        , color-stop(0.00, #FFE08E), to(#FFDE7D));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFE08E'
+        , endColorstr='#FFDE7D');
+    background-color: #FFDE7D;
+    
+    border-color: #8A661C;
+    color: #512900;
+    
+    cursor: default;
 }
 
 .KALS .button.dialog-option.hover {

@@ -101,9 +101,16 @@ KALS_text.prototype.guide = null;
  */
 KALS_text.prototype.text_selector = null;
 
-KALS_text.prototype.init_start = function () {
+/**
+ * 開始初始化KALS_text
+ * @author Pulipuli Chen 20141109
+ * @param {function} _callback
+ * @returns {KALS_text}
+ */
+KALS_text.prototype.init_start = function (_callback) {
     
-    this.init.start();
+    //$.test_msg("KALS_text", "init_start");
+    this.init.start(_callback);
     
     return this;
 };

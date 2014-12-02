@@ -125,7 +125,6 @@ Annotation_type_param.prototype.set = function (_param) {
         this.id = 7;
         this.custom_name = null;
     }
-
     else {
         //如果是字串的話，那表示是自訂類型囉
         //this.id = 7;
@@ -644,7 +643,7 @@ Annotation_type_param.prototype.is_enable = function (_type) {
  * 預設是1
  * @type Number
  */
-Annotation_type_param.prototype._order = 1;
+Annotation_type_param.prototype._order = 5;
 
 /**
  * 設定排序

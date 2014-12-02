@@ -25,10 +25,10 @@ function Selection_navigation_manager(_text) {
 Selection_navigation_manager.prototype = new KALS_user_interface();
 
 Selection_navigation_manager.prototype._nav_selections = {
-	1: 'bad',
-	2: 'normal',
-	3: 'good',
-	4: 'great'
+    1: 'bad',
+    2: 'normal',
+    3: 'good',
+    4: 'great'
 };
 
 /**
@@ -59,24 +59,24 @@ Selection_navigation_manager.prototype.great = null;
  */
 Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
-	if (KALS_context.policy.allow_show_navigation() === false) {
-		return this;
-	}
+    if (KALS_context.policy.allow_show_navigation() === false) {
+        return this;
+    }
 	
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_scope_coll.length(), _type, $.is_number(_type), typeof(this._nav_selections[_type])]);
     
     if (_scope_coll.length() === 0) {
-		return this;
-	}
-        
+        return this;
+    }
+
     if ($.is_null(_is_initialize)) {
-		_is_initialize = false;
-	}
+        _is_initialize = false;
+    }
     
     
     //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_type, $.is_number(_type), typeof(this._nav_selections[_type])]);
     
-    if (typeof(this._nav_selections[_type]) == 'string') {
+    if (typeof(this._nav_selections[_type]) === 'string') {
         _type = this._nav_selections[_type];
     }
     
@@ -86,7 +86,7 @@ Selection_navigation_manager.prototype.set_scope_coll = function (_type, _scope_
         
         //$.test_msg('Selection_navigation_manager.set_scope_coll()', [_type, _type_name, _i]);
         
-        if (_type_name == _type) {
+        if (_type_name === _type) {
             //如果是現在這個類型，則設置
             this[_type].set_scope_coll(_scope_coll);
          
@@ -111,6 +111,25 @@ Selection_navigation_manager.prototype.clear = function () {
         this[_type].clear();
     }
     return this;
+};
+
+/**
+ * 這個文字是否是導引標註？
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
+Selection_navigation_manager.prototype.is_navigation = function (_word) {
+    //$.test_msg("開始檢查 is_nav", _word.attr("className"));
+    for (var _i in this._nav_selections) {
+        var _selection_name = this._nav_selections[_i];
+        var _selection = this[_selection_name];
+        var _selection_classname = _selection._$name;
+        if (_word.hasClass(_selection_classname)) {
+            return true;
+        }
+        //$.test_msg("沒找到", _selection_classname);
+    }
+    return false;
 };
 
 /* End of file Selection_navigation_manager */
