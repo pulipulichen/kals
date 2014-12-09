@@ -402,7 +402,7 @@ Window_map.prototype.click_map_item = function (_item) {
     var _href = _this.attr("href");
     //$.test_msg("map-heaer", [$(_id).length, _id]);
 
-    //var _offset = $(_href).offset();
+    var _offset = $(_href);
     var _offset = $.get_offset(_offset);
     if (_offset.top > 60) {
         setTimeout(function () {
@@ -411,16 +411,19 @@ Window_map.prototype.click_map_item = function (_item) {
     }
 
     //記錄資料
-    var _action = "29";	//29=小地圖點選章節標題，note={index:1, title:"標題內文"}
+    var _action = 29;	//29=小地圖點選章節標題，note={index:1, title:"標題內文"}
 
     var _title = _this.text();
-    var _id = $.str_replace("#map-header", "", _href);
+    //var _id = $.str_replace("#map-header", "", _href);
+    var _id = _href.substring(("#map-header").length, _href.length );
     _id = $.str_replace("-anchor", "", _id);
-    _id = parseInt(_id, 10);
+    //_id = parseInt(_id, 10);
+    
+    //$.test_msg("id", [_id, _href]);
 
     var _note = {
-        "index": _id,
-        "title": _title 
+        index: _id,
+        title: _title 
     };
 
     KALS_util.log(_action, _note);

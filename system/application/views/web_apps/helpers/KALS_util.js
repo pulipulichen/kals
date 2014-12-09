@@ -1244,6 +1244,10 @@ KALS_util.decodeURIComponent = function (_str) {
  */
 KALS_util.log = function (_action, _note, _callback) {
     
+    if (_note === undefined) {
+        _note = null;
+    }
+    
     //_note = null;
     var _data = {
         "action": _action,

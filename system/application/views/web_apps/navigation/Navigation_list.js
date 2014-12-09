@@ -173,6 +173,12 @@ Navigation_list.prototype._create_window_nav_item = function (_content, _i) {
         var _i = $(this).attr('content_index');
         //var _content = _this._$nav_items[_i];
         var _content = _this._get_window_content(_i);
+        
+        /**
+         * 加上Log記錄
+         * @author Pulipuli Chen 20141210
+         */
+        KALS_util.log( _content.name + '.open');
 
         if (typeof(_content.callback) === "function") {
             _content.callback();

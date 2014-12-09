@@ -198,6 +198,9 @@ KALS_controller_window.prototype.close = function (_callback) {
         return;
     }
     var _this = this;
+    
+    KALS_util.log(this.name + ".close");
+    
     return KALS_controller.prototype.close.call(this, function () {
         
         /**

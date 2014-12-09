@@ -2784,6 +2784,9 @@ jQuery.get_offset_top = function(_ele) {
     if ($.is_string(_ele)) {
         _ele = $(_ele);
     }
+    else if (_ele === undefined) {
+        return 0;
+    }
     
     var _offset;
     

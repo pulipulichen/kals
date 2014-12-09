@@ -663,5 +663,22 @@ KALS_window.prototype.focus_input = function () {
 	
     return this;
 };
+
+/**
+ * 關閉KALS_window時留下記錄
+ * @author Pulipuli Chen 20141210
+ * @param {function} _callback
+ */
+//KALS_window.prototype.close = function (_callback) {
+//    var _action_key_header = "KALS_window";
+//    if (typeof(this._content) === "object" 
+//            && typeof(this._content.name) === "string") {
+//        _action_key_header = this._content.name;
+//    }
+//    $.test_msg("KALS_window.close()", _action_key_header);
+//    KALS_util.log(_action_key_header + ".close");
+//    return Dialog_modal.prototype.close.call(this, _callback);
+//};
+
 /* End of file KALS_window */
 /* Location: ./system/application/views/web_apps/KALS_window.js */

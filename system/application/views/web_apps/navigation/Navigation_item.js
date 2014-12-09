@@ -86,6 +86,15 @@ Navigation_item.prototype._$create_ui = function () {
     
     var _this = this;
     _ui.click(function () {
+//        
+//        /**
+//         * 加上Log記錄
+//         * @author Pulipuli Chen 20141210
+//         */
+//        KALS_util.log('navigation_item.click', {
+//            classname: _this.name
+//        });
+//        
         _this.callback();
     });
     
