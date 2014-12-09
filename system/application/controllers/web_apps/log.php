@@ -86,6 +86,8 @@ class Log extends Web_apps_controller {
      */
     public function create($json = NULL) {
         
+        //throw "test error";
+        
         $index = 'create_post';
         if ($this->_is_callback($json) == false)
         {
