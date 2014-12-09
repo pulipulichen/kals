@@ -13,5 +13,5 @@
  */
 
 if (isset($data)) {
-    echo ";".$data;
+    echo "\n;".$data;
 }

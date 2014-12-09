@@ -13,6 +13,48 @@
  * @version		1.0 2010/6/22 下午 10:41:19
  */
 
+// ---------------------
+// KALS URL
+// ---------------------
+
+/**
+ * 會被視為是localhost的網址名稱
+ * 需包括開頭的「http://」或「https://」與結尾的「/」
+ * 
+ * 例如：「http://pc-pudding-2013.dlll.nccu.edu.tw/」
+ * 在KALS之中，會被視為是「http://localhost/」
+ */
+$config["localhost_domains"] = array(
+    "http://pc-pudding-2013.dlll.nccu.edu.tw/",
+    "http://140.119.61.127/",
+    //"http://exp-kals-moodle-2014.dlll.nccu.edu.tw/"
+);
+
+// ---------------------
+// KALS Cache &  Package
+// ---------------------
+
+/**
+ * 禁止使用cache的domain
+ * 
+ * 除了本機測試之外，外部測試全部都啟用cache
+ */
+$config['output.cache.disable_domains'] = array(
+    //"http://localhost/",
+    "http://127.0.0.1/"
+);
+
+$config['output.cache.enable'] = true; //是否使用快取功能，預設是true;
+$config['output.cache.expiration'] = 50;  //快取的單位是「分鐘」
+
+/**
+ * 禁止使用package壓縮程式碼
+ * 
+ * 規則上同output.cache_disable_domains
+ */
+$config['output.package.disable_domains'] = $config['output.cache.disable_domains'];
+
+$config['output.package.enable'] = false; //是否啟用壓縮功能，預設是true;
 
 // --------
 // KALS User Password Key

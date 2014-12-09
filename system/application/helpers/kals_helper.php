@@ -52,10 +52,7 @@ if ( ! function_exists('get_referer_url'))
                 return $url;
             }
             else
-            {
-                
-            
-                
+            {    
                 if ($show_exception)
                 {
                     handle_error ('Cannot get referer url.');
@@ -66,35 +63,35 @@ if ( ! function_exists('get_referer_url'))
 	}
 }
 
-if ( ! function_exists('get_referer_host'))
-{
-	function get_referer_host($show_exception = FALSE)
-	{
-            $url = get_referer_url($show_exception);
-            if ($url === FALSE)
-                return FALSE;
-            else
-                return parse_host($url);
-	}
+if ( ! function_exists('get_referer_host')) {
+    function get_referer_host($show_exception = FALSE)
+    {
+        $url = get_referer_url($show_exception);
+        if ($url === FALSE) {
+            return FALSE;
+        }
+        else {
+            return parse_host($url);
+        }
+    }
 }
 
-if ( ! function_exists('parse_host'))
-{
-	function parse_host($url = NULL)
-	{
-            if ($url == NULL || is_string($url) === FALSE || strpos($url, '//') === FALSE)
-                return NULL;
-            $parameters = get_url_parameters($url);
-            if ($parameters === FALSE)
-                return NULL;
-            else
-            {
-                $host = $parameters['scheme'].'://'.$parameters['host'];
-                if (isset($parameters['port']))
-                    $host = $host.':'.$parameters['port'];
-                return $host.'/';
+if ( ! function_exists('parse_host')) {
+    function parse_host($url = NULL) {
+        if ($url == NULL || is_string($url) === FALSE || strpos($url, '//') === FALSE)
+            return NULL;
+        $parameters = get_url_parameters($url);
+        if ($parameters === FALSE) {
+            return NULL;
+        }
+        else {
+            $host = $parameters['scheme'].'://'.$parameters['host'];
+            if (isset($parameters['port'])) {
+                $host = $host.':'.$parameters['port'];
             }
-	}
+            return $host.'/';
+        }
+    }
 }
 
 if ( ! function_exists('parse_uri'))

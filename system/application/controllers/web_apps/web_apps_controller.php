@@ -79,7 +79,9 @@ class Web_apps_controller extends Controller {
                 //如果有快取檔案，回傳快取檔案的內容，記得送出js_header
                 
                 $packed = read_file($cache_path);
-                $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                if ($packed !== "") {
+                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                }
             }
             else {
                 //如果沒有快取檔案，那麼照以下步驟製作出快取之後，寫入快取檔案
@@ -89,14 +91,17 @@ class Web_apps_controller extends Controller {
                 //write_file($cache_path, $packed);
                 
                 foreach ($path AS $p) {
-                    if ($p == '') {
+                    if ($p === '') {
                         continue;
                     }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
-                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                    if ($packed !== '') {
+                        $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                        $packed_file = $packed_file . $packed;
+                    }
                     //echo $packed;
-                    $packed_file = $packed_file . $packed;
+                    
                 }
             }
         }
@@ -118,7 +123,9 @@ class Web_apps_controller extends Controller {
                     }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
-                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                    if ($packed !== '') {
+                        $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                    }
                     //echo $packed;
                 }
         }
@@ -232,8 +239,9 @@ class Web_apps_controller extends Controller {
      * @return string 壓縮完成的結果
      */
     protected function _minify_compression_js($script) {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $script;
+        }
         
         $packed = '';
         
@@ -241,7 +249,7 @@ class Web_apps_controller extends Controller {
         require_once './system/application/libraries/web_apps/min/lib/JSMinPlus.php';
         //echo '[][][][]'.$packed;
         $packed = JSMinPlus::minify($script);
-        $packed = $packed."\n";
+        //$packed = $packed."\n";
         
         return $packed;
     }
@@ -252,16 +260,18 @@ class Web_apps_controller extends Controller {
      * @return string 壓縮完成的結果
      */
     protected function _minify_compression_css($style) {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $style;
+        }
         
         $packed = '';
         
         //$this->load->library('web_apps/min/lib/JSMinPlus');
         require_once './system/application/libraries/web_apps/min/lib/CSSmin.php';
         //echo '[][][][]'.$packed;
-        if (is_null($this->cssmin))
+        if (is_null($this->cssmin)) {
             $this->cssmin = new CSSmin ();
+        }
         $packed = $this->cssmin->run($style);
         //$packed = $style;
         $packed = $packed;
@@ -276,8 +286,9 @@ class Web_apps_controller extends Controller {
 
     protected function _yui_compression_js($script)
     {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $script;
+        }
 
         
         $this->load->library('web_apps/Minify_YUICompressor');
@@ -321,8 +332,9 @@ class Web_apps_controller extends Controller {
 
     protected function _yui_compression_css($script)
     {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $script;
+        }
 
         $this->load->library('web_apps/Minify_YUICompressor');
 
@@ -425,8 +437,7 @@ class Web_apps_controller extends Controller {
         $style = $this->_initialize_css($path);
 
         
-        if ($this->config->item('output.package.enable'))
-        {
+        if ($this->_is_config_package_enable()) {
             //$style = $this->_compress_css($style);
             /**
              * 不使用YUI的CSS壓縮
@@ -582,7 +593,7 @@ $style = implode("}\n", $parts);
         }
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
-        if ($this->config->item('output.package.enable'))
+        if ($this->_is_config_package_enable())
         {
             $style = $this->_compress_css($style);
             /**
@@ -657,11 +668,60 @@ $style = implode("}\n", $parts);
     
     /**
      * 檢查設定檔中是否設定了快取
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141210
+     * 加上$config['cache_disable_domains']的判斷
+     * 
      * @return boolean 是or否
      */
     protected function _is_config_cache_enable() {
-        return $this->config->item('output.cache.enable');
+        if (is_bool($this->_config_cache_enable)) {
+            return $this->_config_cache_enable;
+        }
+        
+        $cache_enable = $this->config->item('output.cache.enable');
+        if ($cache_enable === TRUE) {
+            $referer_host = get_referer_host();
+            if (in_array($referer_host, $this->config->item('output.cache.disable_domains'))) {
+                return FALSE;
+            }
+        }
+        $this->_config_cache_enable = $cache_enable;
+        return $cache_enable;
     }
+    /**
+     * 暫存是否啟用cache指標
+     * @var NULL|Boolean 
+     */
+    private $_config_cache_enable = null;
+    
+    /**
+     * 檢查設定檔中是否設定了壓縮
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141210
+     * @return boolean 是or否
+     */
+    protected function _is_config_package_enable() {
+        if (is_bool($this->_config_package_enable)) {
+            return $this->_config_package_enable;
+        }
+        
+        $enable = $this->config->item('output.package.enable');
+        if ($enable === TRUE) {
+            $referer_host = get_referer_host();
+            if (in_array($referer_host, $this->config->item('output.package.disable_domains'))) {
+                return FALSE;
+            }
+        }
+        $this->_config_package_enable = $enable;
+        return $enable;
+    }
+    
+    /**
+     * 暫存是否啟用package指標
+     * @var NULL|Boolean 
+     */
+    private $_config_package_enable = null;
             
 
     protected function _disable_cache()
