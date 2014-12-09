@@ -79,7 +79,7 @@ class Web_apps_controller extends Controller {
                 //如果有快取檔案，回傳快取檔案的內容，記得送出js_header
                 
                 $packed = read_file($cache_path);
-                $this->load->view($this->dir.'display', array('data'=>$packed));
+                $this->load->view($this->dir.'display_js', array('data'=>$packed));
             }
             else {
                 //如果沒有快取檔案，那麼照以下步驟製作出快取之後，寫入快取檔案
@@ -89,11 +89,12 @@ class Web_apps_controller extends Controller {
                 //write_file($cache_path, $packed);
                 
                 foreach ($path AS $p) {
-                    if ($p == '')
+                    if ($p == '') {
                         continue;
+                    }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
-                    $this->load->view($this->dir.'display', array('data'=>$packed));
+                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
                     //echo $packed;
                     $packed_file = $packed_file . $packed;
                 }
@@ -112,11 +113,12 @@ class Web_apps_controller extends Controller {
             //$packed = $this->_combine_js($path);
             
                 foreach ($path AS $p) {
-                    if ($p == '')
+                    if ($p == '') {
                         continue;
+                    }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
-                    $this->load->view($this->dir.'display', array('data'=>$packed));
+                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
                     //echo $packed;
                 }
         }
