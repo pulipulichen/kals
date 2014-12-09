@@ -24,7 +24,7 @@ $config['base_url']	= "/kals/";
 $config["localhost_domains"] = array(
     "http://pc-pudding-2013.dlll.nccu.edu.tw/",
     "http://140.119.61.127/",
-    "http://exp-kals-moodle-2014.dlll.nccu.edu.tw/"
+    //"http://exp-kals-moodle-2014.dlll.nccu.edu.tw/"
 );
 
 /*
