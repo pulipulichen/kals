@@ -24,7 +24,7 @@
  * 例如：「http://pc-pudding-2013.dlll.nccu.edu.tw/」
  * 在KALS之中，會被視為是「http://localhost/」
  */
-$config["localhost_domains"] = array(
+$config["web_apps.localhost_domains"] = array(
     "http://pc-pudding-2013.dlll.nccu.edu.tw/",
     "http://140.119.61.127/",
     //"http://exp-kals-moodle-2014.dlll.nccu.edu.tw/"

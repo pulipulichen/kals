@@ -286,8 +286,6 @@ if ( !function_exists("get_kals_root_path")) {
         return $dir;
     }
  }
- 
-  
 
 if ( ! function_exists('kals_log'))
 {
@@ -299,9 +297,9 @@ if ( ! function_exists('kals_log'))
      * log資料表的建置SQL如下：
      * 
      * 
-     * @param type $db
-     * @param type $action
-     * @param type $data
+     * @param CI_DB $db
+     * @param String|Int $action
+     * @param Object $data
      */
     function kals_log($db, $action, $data = array())
     {
@@ -354,23 +352,34 @@ if ( ! function_exists('kals_log'))
                 $user_id = $user->get_id();
             }
         }
-            
+        
+        $CI =& get_instance();
+        $action_key_mapper = $CI->config->item("log.action_key_mapper");
+        
         // 根據action的類型，修改action資料
-        $action_field = "action_key";
+        $action_id = null;
+        $action_key = null;
         if (is_int($action) || strval(intval($action)) === $action ) {
-            $action_field = "action";
+            $action_id = $action;
+            if (array_key_exists($action_id, $action_key_mapper)) {
+                $action_key = $action_key_mapper[$action_id];
+            }
+        }
+        else {
+            $action_key = $action;
         }
 
         $db->insert('log', array(
             'webpage_id' => $webpage_id,
             'user_id' => $user_id,
             'user_ip' => get_client_ip(),
-            $action_field=> $action,
-            'note'=>$note
+            'action' => $action_id,
+            'action_key' => $action_key,
+            'note'=> $note
         ));
     }
 }
-
+    
 /**
  * mobile_log
  * 供Mobile使用的Log記錄檔案

@@ -14,53 +14,53 @@
  */
 if ( ! function_exists('get_referer_url'))
 {
-	function get_referer_url($show_exception = FALSE)
-	{
-            $url = getenv("HTTP_REFERER");
-            if ($url === FALSE) {
-                if (isset($GLOBALS['context']) !== FALSE) {
-                    $url = $GLOBALS['context']->get_referer_url();
-                }
+    function get_referer_url($show_exception = FALSE)
+    {
+        $url = getenv("HTTP_REFERER");
+        if ($url === FALSE) {
+            if (isset($GLOBALS['context']) !== FALSE) {
+                $url = $GLOBALS['context']->get_referer_url();
             }
-            
-            if ($url !== FALSE)
-            {
-                /**
-                 * 加入刪除多餘首頁檔案名稱的修正
-                 * @author Pulipuli Chen 20131117
-                 */
-                $url = url_strip_index($url);
-                
-                if (substr($url, -1, 1) == "/") {
-                    $url = substr($url, 0, -1);
-                }
-                
-                if (isset($GLOBALS['context']) !== FALSE) {
-                    $GLOBALS['context']->set_referer_url($url);
-                }
-                
-                $CI =& get_instance();
-                $localhost_domains = $CI->config->item("localhost_domains");
-                $localhost_domains[] = "http://127.0.0.1/";
-                foreach ($localhost_domains AS $key => $domain) {
-                    if (starts_with($url, $domain)) {
-                        $url = str_replace($domain, "http://localhost/", $url);
-                        break;
-                    }
-                }
-                
-                return $url;
-            }
-            else
-            {    
-                if ($show_exception)
-                {
-                    handle_error ('Cannot get referer url.');
-                }
+        }
 
-                return FALSE;
+        if ($url !== FALSE)
+        {
+            /**
+             * 加入刪除多餘首頁檔案名稱的修正
+             * @author Pulipuli Chen 20131117
+             */
+            $url = url_strip_index($url);
+
+            if (substr($url, -1, 1) == "/") {
+                $url = substr($url, 0, -1);
             }
-	}
+
+            if (isset($GLOBALS['context']) !== FALSE) {
+                $GLOBALS['context']->set_referer_url($url);
+            }
+
+            $CI =& get_instance();
+            $localhost_domains = $CI->config->item("web_apps.localhost_domains");
+            $localhost_domains[] = "http://127.0.0.1/";
+            foreach ($localhost_domains AS $key => $domain) {
+                if (starts_with($url, $domain)) {
+                    $url = str_replace($domain, "http://localhost/", $url);
+                    break;
+                }
+            }
+
+            return $url;
+        }
+        else
+        {    
+            if ($show_exception)
+            {
+                handle_error ('Cannot get referer url.');
+            }
+
+            return FALSE;
+        }
+    }
 }
 
 if ( ! function_exists('get_referer_host')) {

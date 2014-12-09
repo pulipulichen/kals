@@ -213,7 +213,13 @@ class KALS_model extends Web_apps_controller {
         
         // 留下記錄
         if (!is_null($action)) {
-            kals_log($this->db, $this->model_action_id, $data);
+            $log_data = $data;
+            //$log_data["_kals_model"] = get_class($this);
+            //$log_data["_action"] = $action;
+            
+            $action_key = get_class($this).".".$action;
+            
+            kals_log($this->db, $action_key, $log_data);
             context_complete();
         }
 

@@ -81,7 +81,7 @@ $autoload['plugin'] = array();
 |
 */
 
-$autoload['config'] = array('kals');
+$autoload['config'] = array('kals', 'kals_log');
 
 
 /*
