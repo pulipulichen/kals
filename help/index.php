@@ -68,7 +68,7 @@
 <ul>
         <li><a href="../web_apps/qunit/" target="_blank">KALS view web_apps的單元測試</a></li>
         <li><a href="../unit_test" target="_blank">KALS controller的單元測試</a></li>
-        <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫 phpPgAdmin</a></li>
+        <li><a href="../phppgadmin" target="_blank">PostgreSQL資料庫 phpPgAdmin</a> (<a href="../phppgadmin/display.php?server=localhost%3A5432%3Aallow&database=kals&schema=public&table=log&subject=table&return=table&sortkey=1&sortdir=desc&strings=collapsed&page=1">行為記錄</a>)</li>
 </ul>
 <hr />
 

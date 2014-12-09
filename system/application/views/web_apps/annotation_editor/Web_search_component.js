@@ -85,23 +85,48 @@ Web_search_component.prototype._$create_ui = function () {
 
 // -----------------------------
 
+/**
+ * 執行搜尋的動作
+ * @returns {Web_search_component.prototype}
+ */
 Web_search_component.prototype._search_action = function () {
     //var _query = "test";
     var _query = KALS_text.selection.select.get_anchor_text();
+    var _original_query = _query;
     _query = encodeURI(_query);
     var _web_search_url = this.get_web_search_url();
     var _url = $.str_replace("{query}", _query, _web_search_url) ;
 
     var _search_win = window.open(_url, '_blank');
+    
+    // 加入檢索語句
+    var _log_data = {
+        query: _original_query,
+        web_search_label: this.get_web_search_label(),
+        web_search_url: _web_search_url
+    };
+    //$.test_msg("Web_search_component._search_action()", _log_data);
+    KALS_util.log("Web_search_component.search_action", _log_data);
+    
     return this;
 };
 
+
 /**
- * 取得要搜尋的對象
+ * 取得要搜尋網站的網址
  * @returns {String}
  */
 Web_search_component.prototype.get_web_search_url = function () {
     return this.get_button().attr("web_search_url");
+};
+
+/**
+ * 取得搜尋網站的名稱
+ * @author Pulipuli Chen 20141210
+ * @returns {Web_search_component.prototype@call;get_button@call;text}
+ */
+Web_search_component.prototype.get_web_search_label = function () {
+    return this.get_button().text();
 };
 
 /**

@@ -40,7 +40,7 @@ $config["localhost_domains"] = array(
  * 除了本機測試之外，外部測試全部都啟用cache
  */
 $config['output.cache.disable_domains'] = array(
-    //"http://localhost/",
+    "http://localhost/",
     "http://127.0.0.1/"
 );
 

@@ -1262,7 +1262,7 @@ KALS_util.log = function (_action, _note, _callback) {
     };
     //KALS_util.ajax_get(_config);
     
-    //KALS_util.ajax_post(_config);
+    KALS_util.ajax_post(_config);
 };
 
 KALS_util.c = {};
