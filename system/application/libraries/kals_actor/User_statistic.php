@@ -810,6 +810,38 @@ webpage2annotation.annotation_id');
         return $type_count_collection;       
     }
     
+//---------------------------------------------------
+    /**
+     * 取得我在班上的名次(以標註數量計算)
+     * 
+     * @param Webpage $webpage
+     * @param User $user 
+     * @return Int ranking
+     * @author Wyfan 20141211
+     */
+    public function get_user_annotation_count_ranking($user, $webpage){
+        $webpage_id = $webpage->get_id(); 
+        $user_id = $user->get_id();
+        //-------------------------------------
+        $this->db->from('user_annotation_count_ranking');
+        $this->db->select('rank');
+        $this->db->where('webpage_id', $webpage_id);
+        $this->db->where('user_id', $user_id);
+        //---------------------------------------
+        $query = $this->db->get();
+        //$user_annotation_count_rank = array();
+        $user_annotation_count_rank = 0;
+        
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $user_annotation_count_rank = $row->rank;
+        }
+
+        //var_dump($row);
+        return $user_annotation_count_rank;
+
+    }
+
 // ---------------------------------------------------------------------
 //    /**
 //     * 統整所有要丟給Context_user的資料
@@ -824,8 +856,7 @@ webpage2annotation.annotation_id');
 //        $webpage = get_context_webpage();
 //        
 //        $data =  array(
-//            //"responded_count" => $this->get_responded_count($user, $webpage),
-//            "responded_count" => 5,
+//            "responded_count" => $this->get_responded_count($user, $webpage),
 //            "responded_user_count" =>$this->get_responded_users_count($user, $webpage),
 //            "respond_to_user_count" =>$this->get_respond_to_users_count($user, $webpage)
 //        );
@@ -847,10 +878,10 @@ webpage2annotation.annotation_id');
     public function get_init_user_params($user = NULL, $webpage = NULL) {
         
         if (is_null($user)) {
-            $user = get_context_user();
+            $user = get_context_user(); //取得現在的使用者
         }
         if (is_null($webpage)) {
-            $webpage = get_context_webpage();
+            $webpage = get_context_webpage(); //取得現在的webpage
         }
         
         $data =  array();
@@ -892,12 +923,7 @@ webpage2annotation.annotation_id');
             $webpage = get_context_webpage();
         }
         
-        $data =  array(
-//                "responded_count" => $this->user_statistic->get_responded_count($user, $webpage),
-//                //"responded_count" => 5,
-//                "responded_users_count" =>$this->user_statistic->get_responded_users_count($user, $webpage),
-//                "respond_to_users_count" =>$this->user_statistic->get_respond_to_users_count($user, $webpage)
-//                
+        $data =  array(               
             // 從$this->user_statistic可以取得的資料
             // types_array
             'responded_users_count' =>$this->get_responded_users_count($user, $webpage),
@@ -908,7 +934,8 @@ webpage2annotation.annotation_id');
             'like_to_count' => $this->get_like_to_count($user, $webpage),
             'liked_count' => $this->get_liked_count($user, $webpage),
             'like_to_users_count' => $this->get_like_to_users_count($user, $webpage),
-            'liked_users_count' => $this->get_liked_users_count($user, $webpage)
+            'liked_users_count' => $this->get_liked_users_count($user, $webpage),
+            'annotation_count_ranking' => $this->get_user_annotation_count_ranking($user, $webpage) 
         );
         
         return $data;

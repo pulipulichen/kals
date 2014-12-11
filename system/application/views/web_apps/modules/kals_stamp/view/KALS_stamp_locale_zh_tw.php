@@ -43,6 +43,7 @@ $lang["statistic_like_to_users_count"] = "我喜愛了幾個人";
 $lang["statistic_liked_users_count"] = "有幾個人喜愛我";
 $lang["statistic_liked_count"] = "我有多少愛心";
 $lang["statistic_like_to_count"] = "我送出多少愛心";
+$lang["statistic_count_ranking"] = "我在班上的名次";
 
 $lang["annotation_counts"] = "進度統計";
 $lang["stamp_geted"] = "已獲得獎章";

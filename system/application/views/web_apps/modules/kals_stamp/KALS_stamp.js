@@ -431,7 +431,9 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
         //我有多少愛心
         "statistic_liked_count": KALS_context.user.get_liked_count(),
         //我送出去多少愛心
-        "statistic_like_to_count": KALS_context.user.get_like_to_count()
+        "statistic_like_to_count": KALS_context.user.get_like_to_count(),
+        //我現在在班上的名次
+        "statistic_count_ranking": KALS_context.user.get_annotation_count_ranking()
 
     };
     

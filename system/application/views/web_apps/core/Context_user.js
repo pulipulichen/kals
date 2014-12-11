@@ -847,6 +847,27 @@ Context_user.prototype.get_liked_users_count = function () {
 // ---------------------------------
 
 /**
+ * 設定我在班上的名次(以標註數量計算)
+ *
+ *  @returns {Int}
+ */
+Context_user.prototype.set_annotation_count_ranking = function (_count) {
+    return this.set_attr("annotation_count_ranking", _count);
+};
+
+/**
+ * 取得設定我在班上的名次(以標註數量計算)
+ * 
+ *   @returns {Int}
+ */
+Context_user.prototype.get_annotation_count_ranking = function () {
+    return this.get_attr("annotation_count_ranking", 0);
+};
+
+// ---------------------------------
+
+
+/**
  * 接收來自他人的資料
  * 
  * 通常其他人利用JSONP_dispatcher.add_listener來訂閱資料
