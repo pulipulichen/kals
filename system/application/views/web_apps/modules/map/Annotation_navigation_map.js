@@ -679,12 +679,17 @@ Annotation_navigation_map.prototype._search_annotation = function (_type_id_sele
 
     var _type_id_selected = $(_btn).attr("type-id");
     */
+   
     KALS_context.search.search({
-        search_range: "annotation_type",
-        keyword:_type_id_selected,
+        query_field: "annotation_type",
+        query_value:_type_id_selected,
         order_by: "update|create"
     }, false);
-    
+    /*$.test_msg("[kals_search] search.search", {
+        query_field: "annotation_type",
+        query_value:_type_id_selected,
+        order_by: "update|create"
+    });*/
     return this;
 };
 Annotation_navigation_map.prototype.get_annotation_type_class_array = function () {
