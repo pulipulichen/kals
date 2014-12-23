@@ -442,7 +442,9 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
      * @author Pulipuli Chen 20141110
      */
     var _annotation_type_count_list = {};
-    var _types = this.get_annotation_types();
+    
+    var _types = this.get_annotation_types("topic"); //取得目前所有的標註類型(包含topic與response)
+    //var _topic_types = this.g
     for(var _i in _types){
         var _type = _types[_i];
         var _type_name = _type.get_name();
@@ -829,7 +831,8 @@ KALS_stamp.prototype._init_listener = function() {
         "like_to_count",
         "liked_count",
         "like_to_users_count",
-        "liked_users_count"
+        "liked_users_count", 
+        "annotation_count_ranking"
     ];
     
     var _this = this;
@@ -969,7 +972,7 @@ KALS_stamp.prototype.check_qualification = function(_user) {
         var _qualifier = _stamps_data[_i].qualifier;
         // 檢查qualifier中的所有條件
         for (var _key in _qualifier) {
-            
+            //$.test_msg("_qualifier=" + _key);
             var _config = _qualifier[_key];
             //KALS_util.notify("_KEY =" + _key); //KEY有哪些
             switch (_key) {
@@ -991,7 +994,10 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                     break;
                 case "liked_users_count":
                     //--------第5項liked_users_count--------------------------------------
-                    _stamp_qualified = this.check_qualification_liked_users_count(_user, _config);                
+                    _stamp_qualified = this.check_qualification_liked_users_count(_user, _config);  
+                case "annotation_count_ranking":
+                   //--------第6項annotation_count_ranking-------------------------------
+                    _stamp_qualified = this.check_qualification_annotation_count_ranking(_user, _config); 
                     break;
             }   //switch (_key) {
 //            if (_key === "topic_annotation_count") {
@@ -1208,6 +1214,34 @@ KALS_stamp.prototype.check_qualification_liked_users_count = function(_user, _co
     
     return _stamp_qualified;
 };
+
+
+/**
+ * 確認Annotation count rank符合設定
+ * @author wyfan 20141223
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config 排名限制條件
+ * @returns {Boolean} 是否符合資格
+ */
+KALS_stamp.prototype.check_qualification_annotation_count_ranking = function(_user, _config) {
+    var _stamp_qualified = false;
+    
+    var _annotation_count_ranking = _user.get_annotation_count_ranking(); //取得現在的排名名次
+    $.test_msg("NO6.annotation_count_ranking = ", _config.count);//現在的排名限制條件設定是幾名
+    if ( _annotation_count_ranking > _config.count ){
+       // 不合格
+       _stamp_qualified = false;
+        //KALS_util.notify("第5項liked_users_count未達成"+ _qualifier[_key].count + _stamp_qualified);
+       //break;
+    }
+    else { // 合格
+       _stamp_qualified = true;
+    }
+    
+    return _stamp_qualified;
+};
+
+
 
 ///**
 // * 獲得資格後的動作->開放權限？
