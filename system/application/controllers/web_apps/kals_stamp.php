@@ -164,7 +164,16 @@ GROUP BY liked.me
 HAVING count(liked.me) >='.$liked_user_count;
                     
                      array_push($qualifier_tables, $table);
-                }
+                }//else if ($type === "liked_users_count"){
+                // annotation_count的排名
+                else if ($type === "annotation_count_rank"){
+                    $annotation_count_rank = $rule["count"];
+                    $table = 'SELECT user_id
+FROM user_annotation_count_ranking
+WHERE webpage_id = '.$webpage_id.' and rank <='.$annotation_count_rank;
+                    
+                     array_push($qualifier_tables, $table);
+                }//else if ($type === "annotation_count_rank"){
                 
             }  //foreach ($qualifier AS $type => $rule){
             
