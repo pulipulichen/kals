@@ -415,11 +415,13 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
 //        // topic補充舉例
 //        "statistic_topic_predefined_count":KALS_context.user.get_topic_annotation_count(_annotation_type_predefined),       
 //        // topic我想說
-//        "statistic_topic_discuss_count": KALS_context.user.get_topic_annotation_count(_annotation_type_discuss),    
+//        "statistic_topic_discuss_count": KALS_context.user.get_topic_annotation_count(_annotation_type_discuss), 
+         //respond總數量
+        "statistic_respond_annotation_count": KALS_context.user.get_respond_to_other_annotation_count(),   
         //被回應的數量
         "statistic_responded_annotation_count":KALS_context.user.get_respond_to_my_annotation_count(),
         //回應別人的數量
-        "statistic_respond_to_annotation_count":KALS_context.user.get_respond_to_other_annotation_count(),
+       //"statistic_respond_to_annotation_count":KALS_context.user.get_respond_to_other_annotation_count(),
         //被回應的人數
         "statistic_responded_users_count":KALS_context.user.get_responded_users_count(),
         //回應的人數
@@ -438,23 +440,42 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
     };
     
     /**
-     * 要用自訂標註的偵測
+     * 要用自訂標註的偵測(topic)
      * @author Pulipuli Chen 20141110
      */
-    var _annotation_type_count_list = {};
     
-    var _types = this.get_annotation_types("topic"); //取得目前所有的標註類型(包含topic與response)
+    //--topic--------------------
+    var _annotation_topic_type_count_list = {};
+    
+    var _topic_types = this.get_annotation_types("topic"); //取得目前所有的標註類型(topic)
     //var _topic_types = this.g
-    for(var _i in _types){
-        var _type = _types[_i];
-        var _type_name = _type.get_name();
+    for(var _i in _topic_types){
+        var _topic_type = _topic_types[_i];
+        var _topic_type_name = _topic_type.get_name();
         //var _type_id = _type.get_id();
         //$.test_msg("type_id=", _type_id);      
         //$.test_msg("type_name=", _type_name);
         
         //var _annotation_param = KALS_context.user.get_topic_annotation_count(_type_name);
-        _annotation_type_count_list[_type_name] = KALS_context.user.get_topic_annotation_count(_type_name);
+        _annotation_topic_type_count_list[_topic_type_name] = KALS_context.user.get_topic_annotation_count(_topic_type_name);
     }
+    //---respond------
+         /**
+     * 要用自訂標註的偵測(response)
+     * @author wyfan 20141224
+     */
+    var _annotation_respond_type_count_list = {};
+    
+    var _respond_types = this.get_annotation_types("respond"); //取得目前所有的標註類型(topic)
+    //var _topic_types = this.g
+    for(var _i in _respond_types){
+        var _respond_type = _respond_types[_i];
+        var _respond_type_name = _respond_type.get_name();
+    //----------------取得回應到別人的標註次數-----------------
+        _annotation_respond_type_count_list[_respond_type_name] = KALS_context.user.get_respond_to_other_annotation_count(_respond_type_name);
+    
+    }
+    //-----------------------------------------------------------
     
     var _container_selector = ".stamp-statistic";
     var _container = this.find(_container_selector)
@@ -481,15 +502,30 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
 //        _li.appendTo(_container);
     }
     
-    var _annotation_type_container = $("<ul />").appendTo(_container.find(".statistic_topic_annotation_count"));
+    var _annotation_topic_type_container = $("<ul />").appendTo(_container.find(".statistic_topic_annotation_count"));
     
-    for (var _key in _annotation_type_count_list) {
-        var _li_html = "<strong>" + _key + "</strong>: " + _annotation_type_count_list[_key]; 
+    for (var _key in _annotation_topic_type_count_list) {
+        var _li_html = "<strong>" + _key + "</strong>: " + _annotation_topic_type_count_list[_key]; 
         $("<li />")
                 .addClass(_key)
                 .html(_li_html)
-                .appendTo(_annotation_type_container);
+                .appendTo(_annotation_topic_type_container);
     }
+    
+//----------------------------------------------------------------------
+
+    var _annotation_respond_type_container = $("<ul />").appendTo(_container.find(".statistic_respond_annotation_count"));
+    
+    for (var _key in _annotation_respond_type_count_list) {
+        var _li_html = "<strong>" + _key + "</strong>: " + _annotation_respond_type_count_list[_key]; 
+        $("<li />")
+                .addClass(_key)
+                .html(_li_html)
+                .appendTo(_annotation_respond_type_container);
+    } 
+    
+    
+    
         
     return this;
 };

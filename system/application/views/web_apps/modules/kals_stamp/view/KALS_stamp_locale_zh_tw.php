@@ -31,6 +31,8 @@ $lang["statistic_topic_strange_count"] = "很奇怪";
 $lang["statistic_topic_predefined_count"] = "補充舉例";
 $lang["statistic_topic_discuss_count"] = "我想說";
 
+$lang["statistic_respond_annotation_count"] = "回應標註";
+
 $lang["statistic_topic_annotation_importance_count"] = "主題重要標註";
 $lang["statistic_topic_annotation_confusion_count"] = "主題困惑標註";
 $lang["statistic_topic_annotation_summary_count"] = "主題摘要標註";
