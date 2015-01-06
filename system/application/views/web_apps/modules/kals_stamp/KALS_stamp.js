@@ -362,7 +362,7 @@ KALS_stamp.prototype.change_tab = function (_btn){
 
 
 /**
- * 設定目前獎章的進度
+ * 設定目前獎章的進度(統計目前使用者的標註類型)
  * @returns {KALS_stamp.prototype}
  */
 KALS_stamp.prototype.set_stamp_statistic = function() {
@@ -856,8 +856,8 @@ KALS_stamp.prototype._init_listener = function() {
     // 監聽其他需要的變數是否有變動，若是有變動則檢查獎章條件
     
     var _listen_attr_list = [
-        "topic_annotation_count",
-        "responded_annotation_count",
+        "topic_annotation_count", //主題標註類型數量變動(各種類型)
+        "responded_annotation_count", //回應標註類型數量變動(各種類型)
         "respond_to_users_count",
         "respond_to_my_annotation_count",
         "respond_to_other_annotation_count",
@@ -1034,7 +1034,11 @@ KALS_stamp.prototype.check_qualification = function(_user) {
                 case "annotation_count_ranking":
                    //--------第6項annotation_count_ranking-------------------------------
                     _stamp_qualified = this.check_qualification_annotation_count_ranking(_user, _config); 
-                    break;
+                case "respond_annotation_count":
+                   //--------第7項respond_annotation_count-------------------------------
+                    _stamp_qualified = this.check_qualification_respond_annotation_count(_user, _config);                   
+                  break;
+              
             }   //switch (_key) {
 //            if (_key === "topic_annotation_count") {
 //                //------第一項---------------------------------
@@ -1145,6 +1149,41 @@ KALS_stamp.prototype.check_qualification_topic_annotation_count = function(_user
 
     return _stamp_qualified;
 };
+
+/**
+ * 確認回應標註類型
+ * @author wyfan 20141230
+ * @param {Object} _user 來自Context_user
+ * @param {Object} _config
+ * @returns {Boolean} 是否符合資格
+ */
+KALS_stamp.prototype.check_qualification_respond_annotation_count = function(_user, _config) {
+    var _stamp_qualified = false;
+    for (var _type in _config) { //取出回應類型的條件
+        var _type_config = _config[_type];
+
+            // 取出指定回應type的數量
+            var _respond_annotation_type = new Annotation_type_param(_type);
+            //---*--*--回應到別人的次數
+            var _total_annotation_count = _user.get_respond_to_other_annotation_count(_respond_annotation_type);
+            //---*--*--
+            $.test_msg("現在的類型" + _type, [_total_annotation_count, _type_config.count, ( _type_config.count > _total_annotation_count )]);
+            if ( _type_config.count > _total_annotation_count ){
+                // 不合格
+                _stamp_qualified = false;    
+                break;
+            }
+            else{ // 合格
+                _stamp_qualified = true;
+                //KALS_util.notify("第二項有跑嗎？"+ this._stamps_config[_i].is_qualified + _i);
+                //this.qualify();
+            }
+        
+    }   //for (var _type in _config) {              
+
+    return _stamp_qualified;
+};
+//------------------------
 
 
 /**
