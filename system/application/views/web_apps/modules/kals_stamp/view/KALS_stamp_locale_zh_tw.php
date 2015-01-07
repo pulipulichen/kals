@@ -43,7 +43,7 @@ $lang["statistic_responded_users_count"] = "有多少人回覆我";
 $lang["statistic_respond_to_users_count"] = "我回覆了幾個人";
 $lang["statistic_like_to_users_count"] = "我喜愛了幾個人";
 $lang["statistic_liked_users_count"] = "有幾個人喜愛我";
-$lang["statistic_liked_count"] = "我有多少愛心";
+$lang["statistic_liked_count"] = "我得到多少愛心";
 $lang["statistic_like_to_count"] = "我送出多少愛心";
 $lang["statistic_count_ranking"] = "我在班上的名次";
 
@@ -59,11 +59,7 @@ $lang["qualification_heading"] = "獲得其他獎章的方法";
 $lang["qualification_subheading"] = "想知道怎麼獲得其他獎章嗎？不要錯過以下的提示喔！";
 
 $lang["stamp_list_heading"] = "大家都在哪個階級呢？";
-//$lang["king"] = "國王";  
-//$lang["castle"] = "城主"; 
-//$lang["bishop"] = "主教"; 
-//$lang["knight"] = "騎士"; 
-//$lang["soldier"] = "士兵"; 
+
 
 
 
