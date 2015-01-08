@@ -50,12 +50,12 @@ List_item_respond.prototype.view_thread = function (_focus_id, _callback) {
     
     var _content = KALS_text.tool.view;
     if ($.is_null(_focus_id)) {
-		_content.set_focus_id(this.get_annotation_id());
-	}
-	else {
-		_content.set_focus_id(_focus_id);
-	}
-    
+        _content.set_focus_id(this.get_annotation_id());
+    }
+    else {
+        _content.set_focus_id(_focus_id);
+    }
+
     return List_item.prototype.view_thread.call(this, _callback);
 };
 
@@ -76,16 +76,23 @@ List_item_respond.prototype.focus_respond = function (_respond_to_id) {
 };
 
 
-List_item_respond.prototype._disable_option = ['like', 'policy'];
+List_item_respond.prototype._disable_option = [
+    //'like', 
+    'policy'
+];
 
+/**
+ * 從回覆列表中，回應指定標註
+ * 會開啟Window_view
+ */
 List_item_respond.prototype.respond_annotation = function () {
-    
     var _respond_to = this.get_data();
     
     var _content = KALS_text.tool.view;
-    _content.set_focus_id(_respond_to.annotation_id);
     _content.set_respond_param(_respond_to);
-    
+	_content._respond_param = _respond_to;
+    _content.set_focus_id(_respond_to.annotation_id);
+	
     return this.view_thread();
 };
 

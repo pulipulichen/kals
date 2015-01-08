@@ -21,22 +21,8 @@ function Annotation_tool(_selector) {
         
         var _this = this;
         setTimeout(function () {
-            
-            
-            //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-            KALS_text.selection.select.add_listener('select', function () {
-                //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-                
-				_this.onselect();
-            });
-            
-            KALS_text.selection.select.add_listener('clear', function () {
-                _this.onselectcancel();
-            });
-            
             _this.get_ui();
-            
-        }, 0);    
+        }, 0);
     }
 }
 
@@ -79,9 +65,10 @@ Annotation_tool.prototype._$create_ui = function () {
         .addClass('annotation-tool')
         .addClass('draggable-tool')
         .addClass('kals-modal')
-		.addClass("KALS")
+        .addClass("KALS")
         .hide()
-        .appendTo($('body'));
+        //.insertBefore($('.selectable-text:first'));
+        .appendTo("body");
         
     var _config = this._$get_config();
     
@@ -137,67 +124,120 @@ Annotation_tool.prototype._$create_ui = function () {
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
         if ($.is_small_height() === false) {
-			_body_top = KALS_toolbar.get_ui().height();
-		}
-        if (_ui.offset().top < _body_top) {
-			_ui.css('top', _body_top + 'px');
-		} 
+            _body_top = KALS_toolbar.get_ui().height();
+        }
+        var _ui_top = $.get_offset_top(_ui);
+        if (_ui_top < _body_top) {
+            _ui.css('top', _body_top + 'px');
+        } 
     });
     
-    var _this = this;
     _ui.mouseover(function () {
         $('.draggable-tool.hover').removeClass('hover');
         $(this).addClass('hover');
         //_this.recommend.get_ui().removeClass('tool-hover');
     });
     
-    var _not_login = 'not-login';
-    
-    /*
-    KALS_context.auth.add_listener(function (_auth) {
-        if (_auth.is_login())
-            _ui.removeClass(_not_login);
-        else
-            _ui.addClass(_not_login);
-            
-        _topic_list.reload();
-    }, true);
-    */
-    KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable()) {
-			_ui.removeClass(_not_login);
-		}
-		else {
-			_ui.addClass(_not_login);
-		}
-            
-        _topic_list.reload();
-    }, true);
-    
     this.setup_view();
+    
+    this._init_listener(_ui, _topic_list);
     
     this._setup_recommend();
     this._setup_recommend_hint();
     
+    /**
+     * @author 20140907 Pulipuli
+     * 註冊事件，點選文字其他地方關閉時才遞交
+     */
+    this._listen_submit();
+    
     return _ui;
+};
+
+/**
+ * 初始化要監聽的事件
+ * @param {jQuery} _ui 主要物件
+ * @param {Topic_list} _topic_list 標題列表
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype._init_listener = function (_ui, _topic_list) {
+    
+    var _this = this;
+    
+    var _not_login = 'not-login';
+    
+    KALS_context.ready(function () {
+        KALS_context.auth.add_listener(function (_auth) {
+            //if (_auth.is_login_checked()) {
+            //if (this._first_open === false) {
+            //$.test_msg("gogo close");
+            _this.reopen();
+            //}
+            //}
+        });
+
+        KALS_context.policy.add_attr_listener('write', function (_policy) {
+            if (_policy.writable()) {
+                _ui.removeClass(_not_login);
+            }
+            else {
+                _ui.addClass(_not_login);
+            }
+
+            _topic_list.reload();
+        }, true);
+        
+        /**
+         * @version 20140702 Pulipuli Chen
+         * 如果是pdf2htmlEx，則不啟動自動捲動功能
+         */
+        KALS_context.site_reform.add_instant_listener(function (_site_reform) {
+            var _is_pdf2htmlex = _site_reform.is_site("pdf2htmlEx");
+            //$.test_msg("是pdf2htmlEx嗎？", _is_pdf2htmlex);
+            _this._scroll_into_enable = (_is_pdf2htmlex === false);
+        });
+    });
+    
+    KALS_context.module_ready("KALS_text.selection.select", function(_select) {
+        //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
+        _select.add_listener('select', function (_select) {
+            //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
+            _this.onselect();
+        });
+
+        _select.add_listener('clear', function () {
+            _this.onselectcancel();
+        });  
+    });
+    
+    return this;
 };
 
 Annotation_tool.prototype.setup_list = function () {
     var _component = new Topic_list();
     this.child('list', _component);
 	
-	var _tool = this;
-	//註冊一下
-	_component.add_listener(function () {
-		if (_component.is_totally_loaded()) {
-			_tool.editor_container.toggle_container(true);
-		}
+    var _tool = this;
+    //註冊一下
+    _component.add_listener(function () {
+        //$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
+        
+        
+//        // 如果讀取已經完成，而且沒有標註的話，則開啟標註
+        if (_tool._close_editor_onopen 
+                && _component.is_totally_loaded() 
+                && _component.has_list_item() === false) {
+            _tool.editor_container.toggle_container(true);
+        }
+        
+        //else {
+        //	_tool.editor_container.toggle_container(false);
+        //}
     });
     return _component;
 };
 
 Annotation_tool.prototype._$get_config = function () {
-    
     var _config = Overlay_modal.prototype._$get_config.call(this);
     _config.fixed = false;
     return _config;
@@ -259,11 +299,22 @@ Annotation_tool.prototype._$onviewportmove = function (_ui) {
 };
 */
 
+/**
+ * 選取後的觸發事件
+ * @returns {Annotation_tool}
+ */
 Annotation_tool.prototype.onselect = function () {
     var _this = this;
     //$.test_msg('Annotation_tool.onselect() before reset');
         
     //$.save_scroll_position();
+    
+    /**
+     * @version 20140703 Pulipuli Chen
+     * 改成強制重置容器
+     */
+    //var _reset_container = false;
+    var _reset_container = true;
     
     this.editor_container.reset(function () {
         //$.test_msg('Annotation_tool.onselect() open');
@@ -273,7 +324,7 @@ Annotation_tool.prototype.onselect = function () {
         
         _this.open();
         
-    }, false);
+    }, _reset_container);
     
     return this;
 };
@@ -285,7 +336,43 @@ Annotation_tool.prototype.onselectcancel = function () {
     return this.close();    
 };
 
+/**
+ * 是否是第一次開啟
+ * @type Boolean
+ */
+//Annotation_tool.prototype._first_open = true;
+
+/**
+ * 是否要在開啟時關閉編輯器
+ * @type Boolean
+ */
+Annotation_tool.prototype._close_editor_onopen = false;
+
+/**
+ * 下次開啟時是否要關閉編輯器
+ * @type Boolean
+ */
+Annotation_tool.prototype._once_close_editor = false;
+
+/**
+ * 設定下次開啟時關閉編輯器
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.set_once_close_editor = function () {
+    this._once_close_editor = true;
+    return this;
+};
+
+/**
+ * 開啟動作
+ * 
+ * 覆寫了KALS_modal的open，比較複雜
+ * @param {Function} _callback
+ * @returns {Annotation_tool}
+ */
 Annotation_tool.prototype.open = function (_callback) {
+    
+    this.get_ui().show();
     
     this.setup_position();
     
@@ -297,25 +384,173 @@ Annotation_tool.prototype.open = function (_callback) {
         _this.check_editing();
     });
 	
-	/**
-	 * 20121224 Pulipuli Chen
-	 * 開啟時自動關閉Editor_contrainer
-	 */
-	this.editor_container.toggle_container(false);
+    /**
+     * 20121224 Pulipuli Chen
+     * 開啟時自動關閉Editor_contrainer
+     */
+    if (this._close_editor_onopen === true
+            || this._once_close_editor === true) {
+        //$.test_msg("暫時關閉編輯器", [this._close_editor_onopen, this._once_close_editor]);
+        this.editor_container.toggle_container(false);
+        this._once_close_editor = false;
+    }
 	
-    KALS_modal.prototype.open.call(this, _callback);
+    KALS_modal.prototype.open.call(this, function () {
+        
+        _this.scroll_into_view();
+        
+        //_this._first_open = false;
+        $.trigger_callback(_callback);
+        
+        _this.notify_listeners("open");
+    });
+    
+    return this;
 };
 
+/**
+ * 重新開啟
+ * @param {Function} _callback
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.reopen = function (_callback) {
+    if (this.is_opened()) {
+        //$.test_msg("Annotation_tool.reopen");
+        var _scope_coll = KALS_text.selection.select.get_scope_coll();
+        this.close();
+        KALS_text.selection.select.set_scope_coll(_scope_coll);
+    }
+    return this;
+};
+
+/**
+ * 捲到可顯示的位置
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.scroll_into_view = function () {
+    //var _offset = this.get_ui().offset();
+    
+    if (this._scroll_into_enable === false) {
+        return this;
+    }
+    
+    var _y;
+    //var _offset = $.get_offset(this.get_ui());
+    //_y = _offset.top - 60;
+    _y = KALS_text.selection.select.get_offset_top() - 60;
+    
+    var _position = {
+        y: _y
+    };
+	//$.test_msg("Annotation_tool.scroll_into_view", _position);
+    $.scroll_to(_position);
+    
+    return this;
+};
+
+/**
+ * 是否啟用捲動捲軸的功能
+ * @type Boolean
+ */
+Annotation_tool.prototype._scroll_into_enable = true;
+
+/**
+ * 關閉標註工具
+ * @param {Function} _callback
+ * @returns {Annotation_tool.prototype}
+ */
 Annotation_tool.prototype.close = function (_callback) {
     
-    this.list.reset();
-    //KALS_modal.prototype.close.call(this, _callback);
+    //$.test_msg("Annotation_tool close", [_param.note, (_note === ""), (_note === null)]);
     
-    var _ui = this.get_ui();
-    _ui.css('top', '-1000px');
-    _ui.css('left', '-1000px');
+    var _this = this;
     
-    $.trigger_callback(_callback);
+    var _close_action = function (_overlay_close_action) {
+        _this.list.reset();
+        
+        /**
+         * @author Pulipuli 20140907
+         * 關閉時，也把編輯器reset
+         */
+        //_this.editor_container.reset();
+        //KALS_modal.prototype.close.call(this, _callback);
+
+        var _ui = _this.get_ui();
+        _ui.css('top', '-1000px');
+        _ui.css('left', '-1000px');
+        _ui.hide();
+
+        //$.test_msg("annotation tool close action");
+        
+        $.trigger_callback(_callback);
+        $.trigger_callback(_overlay_close_action);
+        
+        setTimeout(function () {
+            _this.notify_listeners("close");
+        }, 300);
+    };
+    
+    /**
+     * 關閉Annotation_tool的時候，檢查是否有note，如果有note則遞交。
+     * @deprecated 20140907 不應該從這裡判斷
+     * @author 20140907 Pulipuli
+     */
+//    var _param = this.get_annotation_param();
+//    var _note = _param.note;
+//    if (_note === null) {
+//        _close_action();
+//    }
+//    else {
+////        var _heading_lang = new KALS_language_param(
+////                "Your annotation is not saved.",
+////                "annotation_tool.close_confirm.annotation_not_save.heading"
+////                );
+////        var _body_lang = new KALS_language_param(
+////                "You have not save this annotation. Do you want to save it?",
+////                "annotation_tool.close_confirm.annotation_not_save.body"
+////                );
+////        
+////        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _overlay_close_action) {
+////            //return;
+////            if (_result === true) {
+////                $.test_msg("儲存資料", _this._close_lock);
+////                //_this.submit_annotation(function () {
+////                    _close_action(_overlay_close_action);
+////                //});
+////            }
+////            else {
+////                _close_action(_overlay_close_action);
+////            }
+////        });
+//        _close_action();
+//        _this.submit_annotation();
+//    }
+    
+    /**
+     * 直接關閉訊息
+     * @author 20140907 Pulipuli
+     */
+    _close_action();
+    
+    return this;
+};
+
+/**
+ * 取得正在編輯的標註資料
+ * @returns {Annotation_param}
+ */
+Annotation_tool.prototype.get_annotation_param = function () {
+    return this.editor_container.get_annotation_param();
+};
+
+/**
+ * 儲存標註資料
+ * @param {function} _callback
+ * @returns {Annotation_tool}
+ */
+Annotation_tool.prototype.submit_annotation = function (_callback) {
+    this.editor_container.submit_annotation(_callback);
+    return this;
 };
 
 /**
@@ -370,7 +605,7 @@ Annotation_tool.prototype.setup_position = function () {
         }
         
         var _l, _t, _margin = 10;
-        if (_mode == 'foot') {
+        if (_mode === 'foot') {
             _t = _selection_bottom + _margin;
             
             var _last_right = _selection.get_offset_last_right();
@@ -415,23 +650,28 @@ Annotation_tool.prototype.setup_position = function () {
         }
         
         if (_t < 0) {
-			_t = 0;
-		}
-		else 
-			if ($.is_small_height() === false && _t < KALS_toolbar.get_ui().height()) {
-				_t = KALS_toolbar.get_ui().height();
-			}
+            _t = 0;
+        }
+        else if ($.is_small_height() === false 
+                && _t < KALS_toolbar.get_ui().height()) {
+            _t = KALS_toolbar.get_ui().height();
+        }
         
         _ui.css('top', _t + 'px')
             .css('left', _l + 'px');
+    
+        //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
     }
+    return this;
 };
 
+/**
+ * 取得標註工具的寬度
+ * @returns {Int}
+ */
 Annotation_tool.prototype.get_width = function () {
-    
     var _ui = this.get_ui();
     return _ui.width();
-    
 };
 
 // --------
@@ -559,6 +799,28 @@ Annotation_tool.prototype.check_editing = function () {
     }
     return this;
     
+};
+
+/**
+ * 註冊KALS_text，當點選時則進行啟動
+ * @author 20140907 Pulipuli
+ * @returns {Annotation_tool.prototype}
+ */
+Annotation_tool.prototype._listen_submit = function () {
+    var _this = this;
+    this._text.click(function () {
+        //if (_this.is_opened() === false) {
+        //    return;
+        //}
+        
+        var _note = _this.get_annotation_param().note;
+        if (_note !== null && typeof(_note) === "string") {
+            $.test_msg("text click submit note=", _note);
+            
+            _this.submit_annotation();
+        }
+    });
+    return this;
 };
 
 /* End of file Annotation_tool */

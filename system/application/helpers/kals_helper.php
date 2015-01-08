@@ -14,77 +14,183 @@
  */
 if ( ! function_exists('get_referer_url'))
 {
-	function get_referer_url($show_exception = FALSE)
-	{
-            $url = getenv("HTTP_REFERER");
-            if ($url !== FALSE)
-            {
-                if (substr($url, -1, 1) == "/")
-                    $url = substr($url, 0, -1);
-                return $url;
+    function get_referer_url($show_exception = FALSE)
+    {
+        $url = getenv("HTTP_REFERER");
+        if ($url === FALSE) {
+            if (isset($GLOBALS['context']) !== FALSE) {
+                $url = $GLOBALS['context']->get_referer_url();
             }
-            else
-            {
-                if ($show_exception)
-                {
-                    handle_error ('Cannot get referer url.');
+        }
+
+        if ($url !== FALSE)
+        {
+            /**
+             * 加入刪除多餘首頁檔案名稱的修正
+             * @author Pulipuli Chen 20131117
+             */
+            $url = url_strip_index($url);
+
+            if (substr($url, -1, 1) == "/") {
+                $url = substr($url, 0, -1);
+            }
+
+            if (isset($GLOBALS['context']) !== FALSE) {
+                $GLOBALS['context']->set_referer_url($url);
+            }
+
+            $CI =& get_instance();
+            $localhost_domains = $CI->config->item("web_apps.localhost_domains");
+            $localhost_domains[] = "http://127.0.0.1/";
+            foreach ($localhost_domains AS $key => $domain) {
+                if (starts_with($url, $domain)) {
+                    $url = str_replace($domain, "http://localhost/", $url);
+                    break;
                 }
-
-                return FALSE;
             }
-	}
-}
 
-if ( ! function_exists('get_referer_host'))
-{
-	function get_referer_host($show_exception = FALSE)
-	{
-            $url = get_referer_url($show_exception);
-            if ($url === FALSE)
-                return FALSE;
-            else
-                return parse_host($url);
-	}
-}
-
-if ( ! function_exists('parse_host'))
-{
-	function parse_host($url = NULL)
-	{
-            if ($url == NULL || is_string($url) === FALSE || strpos($url, '//') === FALSE)
-                return NULL;
-            $parameters = get_url_parameters($url);
-            if ($parameters === FALSE)
-                return NULL;
-            else
+            return $url;
+        }
+        else
+        {    
+            if ($show_exception)
             {
-                $host = $parameters['scheme'].'://'.$parameters['host'];
-                if (isset($parameters['port']))
-                    $host = $host.':'.$parameters['port'];
-                return $host.'/';
+                handle_error ('Cannot get referer url.');
             }
-	}
+
+            return FALSE;
+        }
+    }
+}
+
+if ( ! function_exists('get_referer_host')) {
+    function get_referer_host($show_exception = FALSE)
+    {
+        $url = get_referer_url($show_exception);
+        if ($url === FALSE) {
+            return FALSE;
+        }
+        else {
+            return parse_host($url);
+        }
+    }
+}
+
+if ( ! function_exists('parse_host')) {
+    function parse_host($url = NULL) {
+        if ($url == NULL || is_string($url) === FALSE || strpos($url, '//') === FALSE)
+            return NULL;
+        $parameters = get_url_parameters($url);
+        if ($parameters === FALSE) {
+            return NULL;
+        }
+        else {
+            $host = $parameters['scheme'].'://'.$parameters['host'];
+            if (isset($parameters['port'])) {
+                $host = $host.':'.$parameters['port'];
+            }
+            return $host.'/';
+        }
+    }
 }
 
 if ( ! function_exists('parse_uri'))
 {
-	function parse_uri($url = NULL)
-	{
-            if ($url == NULL || is_string($url) === FALSE || strpos($url, '//') === FALSE)
-                return NULL;
-            $parameters = get_url_parameters($url);
-            if ($parameters === FALSE)
-                return NULL;
-            else
-            {
-                $uri = $parameters['path'];
-                //if (isset ($parameters['fragment']))
-                //    $uri = $uri.'#'.$parameters['fragment'];
-                if (isset ($parameters['query']))
-                    $uri = $uri.'?'.$parameters['query'];
-                return $uri;
+    /**
+     * 整理uri網址
+     * @param type $url
+     * @return null|string
+     * @author Pulipuli Chen 20131117
+     */
+    function parse_uri($url = NULL)
+    {
+        if ($url == NULL || is_string($url) === FALSE || strpos($url, '//') === FALSE) {
+            return NULL;
+        }
+        $parameters = get_url_parameters($url);
+        if ($parameters === FALSE) {
+            return NULL;
+        }
+        else {
+            $uri = $parameters['path'];
+            //if (isset ($parameters['fragment']))
+            //    $uri = $uri.'#'.$parameters['fragment'];
+
+            // 如果$uri後面包含幾個特定的網頁，則自動刪除
+            
+
+            //test_msg($uri);
+            $uri = url_strip_index($uri);
+            //test_msg($uri);
+
+            if (isset ($parameters['query'])) {
+                $uri = $uri.'?'.$parameters['query'];
             }
-	}
+
+            // 不用除去#之後，因為不會送到伺服器身上
+
+            return $uri;
+        }
+    }
+}
+
+if ( ! function_exists("url_strip_index")) {
+    
+    /**
+     * 刪除網頁最後的index.html等字串
+     * @param String $url
+     * @return String
+     */
+    function url_strip_index($url) {
+        $index_file_name = array(
+            'index.htm',
+            'index.html',
+            'index.php',
+            'index.asp',
+            'index.jsp',
+            'default.htm',
+            'default.html',
+            'default.php',
+            'default.asp',
+            'default.jsp'
+        );
+        
+        foreach ($index_file_name AS $file_name) {
+            $url = ends_strip($url, $file_name);
+        }
+        
+        return $url;
+    }    
+}
+
+if ( ! function_exists("starts_with")) {
+    function starts_with($haystack, $needle) {
+        return $needle === "" || strpos($haystack, $needle) === 0;
+    }    
+}
+
+if ( ! function_exists("ends_with")) {
+    function ends_with($haystack, $needle) {
+        return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+    }
+}
+
+if ( ! function_exists("starts_strip")) {
+    function starts_strip($haystack, $needle) {
+        if (starts_with($haystack, $needle)) {
+            return substr($haystack, strlen($needle), strlen($haystack));
+        }
+        return $haystack;
+    }
+}
+
+if ( ! function_exists("ends_strip")) {
+    function ends_strip($haystack, $needle) {
+        if (ends_with($haystack, $needle)) {
+            return substr($haystack, 0, strlen($haystack) - strlen($needle));
+        }
+        return $haystack;
+    }
 }
 
 if ( ! function_exists('get_url_parameters'))
@@ -424,10 +530,24 @@ if ( ! function_exists('test_msg'))
             if (is_array($msg))
             {
                 //print_r($msg);
-                echo test_array($msg);
+                //echo test_array($msg);
+                echo kals_json_encode($msg);
+            }
+            else if (is_object($msg)) {
+                /*
+                if (defined("JSON_UNESCAPED_UNICODE")) {
+                    echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+                }
+                else {
+                    echo json_encode($msg);
+                }
+                 */
+                echo kals_json_encode($msg);
             }
             else
+            {
                 echo $msg;
+            }
         }
         echo '
             </pre>]]]<br />
@@ -480,7 +600,7 @@ if ( ! function_exists('get_timestamp'))
         return date('Y-m-d H:i:s.u e');
     }
 }
-
+/*
 if ( ! function_exists('starts_with'))
 {
     function starts_with($subject, $prefix)
@@ -489,7 +609,7 @@ if ( ! function_exists('starts_with'))
             && substr($subject, 0, strlen($prefix)) == $prefix);
     }
 }
-
+*/
 if ( ! function_exists('strip_selected_tags'))
 {
     function strip_selected_tags($text, $tags = array())

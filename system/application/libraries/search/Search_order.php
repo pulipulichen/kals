@@ -31,18 +31,24 @@ class Search_order {
     {
         return $this->desc;
     }
-
+    /**
+     * 設定遞增(asc)、遞減(desc)或隨機(randam)的排序
+     * @return string
+     */
     public function get_direction()
     {
         if (is_bool($this->desc))
         {
-            if ($this->desc)
+            if ($this->desc) {
                 return 'desc';
-            else
+            }
+            else {
                 return 'asc';
+            }
         }
-        else
+        else {
             return 'randam';
+        }
     }
 
     public function set_desc($is)

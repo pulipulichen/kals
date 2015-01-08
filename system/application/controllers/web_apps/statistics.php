@@ -14,13 +14,14 @@ include_once 'web_apps_controller.php';
  * @version		1.0 2010/12/9 下午 03:28:15
  */
 
-class statistics extends Web_apps_controller {
+class Statistics extends Web_apps_controller {
 
     protected $controller_enable_cache = FALSE;
     protected $login_require = FALSE;
 
     function __construct() {
         parent::__construct();
+        //parent::Controller();
         $this->load->helper('url');
     }
 
@@ -39,6 +40,45 @@ class statistics extends Web_apps_controller {
         $this->view('admin_apps/header', array('title', $title));
         $this->view('admin_apps/domain_select', array('all_domains', $all_domains) );
         $this->view('admin_apps/footer');
+    }
+
+    
+    /**
+     * 統整所有要丟給Context_user的資料
+     * 
+     * @param User $user
+     * @param Webpage $webpage
+     * @return JSON
+     */
+    public function user_params( $callback = NULL ) {
+        //echo "!!!!";
+        if (isset($GLOBALS['context']) === TRUE) {
+            //test_msg("globals context = true", is_null($GLOBALS['context']));
+        }
+        $user = get_context_user();
+        if (is_null($user) === TRUE) {
+            //test_msg("user is null");
+        }
+        
+        $webpage = get_context_webpage();
+        
+        $this->load->library("kals_actor/User_statistic", "user_statistic");
+        $this->user_statistic = new User_statistic();
+        
+        $data = array();
+        if(isset($user)){
+            $data = $this->user_statistic->get_user_params($user, $webpage);
+        }
+//        else{
+//            //test_msg("user is null", $user);
+//        }
+        // 將資料再放進user屬性中
+        $output = array(
+            "user" => $data
+        );
+        
+        //打包成json丟回去 
+        return $this->_display_jsonp($output, $callback);       
     }
 }
 

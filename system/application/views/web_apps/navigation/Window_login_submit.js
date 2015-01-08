@@ -29,6 +29,11 @@ Window_login_submit.prototype.complete_notification = new KALS_language_param(
     'window.login.submit.complete'
 );
 
+Window_login_submit.prototype.error_notification = new KALS_language_param(
+    'System error. Please contact administrator.',
+    'window.login.submit.error'
+);
+
 /**
  * 取得email跟password
  * @type {Object}
@@ -59,11 +64,11 @@ Window_login_submit.prototype.get_data = function () {
 Window_login_submit.prototype.validate = function (_inputs, _data) {
     
     if (_inputs === null) {
-		_inputs = this.get_inputs();
-	}
+        _inputs = this.get_inputs();
+    }
     if (_data === null) {
-		_data = this.get_data();
-	}
+        _data = this.get_data();
+    }
     
     var _email = _data.email;
         _email = $.trim(_email);
@@ -121,14 +126,18 @@ Window_login_submit.prototype._setup_auth = function (_data) {
     _auth.set_password(_data.password);
 };
 
+/**
+ * 遞交送出
+ * @returns {Window_login_submit.prototype}
+ */
 Window_login_submit.prototype.submit = function () {
     
     var _data = this.get_data();
     var _inputs = this.get_inputs();
     
     if (this.validate(_inputs, _data) === false) {
-		return this;
-	}
+        return this;
+    }
     
     this._setup_auth(_data);
     
@@ -136,32 +145,39 @@ Window_login_submit.prototype.submit = function () {
     // 接下來要準備登入囉
     
     if (this._lock_submit() === false) {
-		return this;
-	}
+        return this;
+    }
     
     var _this = this;
     
     //$.test_msg('Window_login_submit.submit() 準備登入');
     var _auth = KALS_context.auth;
     KALS_window.toggle_loading(true, function () {
-        _auth.login(true, function (_auth, _data) {
-            if ($.is_class(_data, 'KALS_language_param')) {
-                _this._content.set_error(_data);
-                KALS_window.toggle_loading(false, function () {
-                    _this._unlock_submit();
-                });
-            }
-            else {
-                var _username = KALS_context.user.get_name();
-                _this.complete_notification.arg = _username;
-                KALS_util.notify(_this.complete_notification);
-                KALS_window.close(function () {
-                    _this._unlock_submit();
-                });
-            }
-            
-        });    
+        _auth.login(true, _login_callback);    
     });
+    
+    var _login_callback = function (_auth, _data) {
+        //KALS_util.throw_exception("有資料嗎？", [_data, typeof(_data)]);
+        if (_data === undefined) {
+            _data = _this.error_notification;
+        }
+        if ($.is_class(_data, 'KALS_language_param')) {
+            _this._content.set_error(_data);
+            KALS_window.toggle_loading(false, function () {
+                _this._unlock_submit();
+            });
+        }
+        else {
+            var _username = KALS_context.user.get_name();
+            _this.complete_notification.arg = _username;
+            KALS_util.notify(_this.complete_notification);
+            KALS_window.close(function () {
+                _this._unlock_submit();
+            });
+        }
+    };
+    
+    return this;
 };
 
 /* End of file Window_login_submit */

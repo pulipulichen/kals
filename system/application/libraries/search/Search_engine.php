@@ -396,6 +396,14 @@ class Search_engine extends Generic_collection {
         {
             $db->where('annotation.annotation_type_id', $this->target_type_id);
         }   //if (isset($this->target_type_id))
+        
+        //------------------------------------------------
+        // 第6.5關 exclude_type_id_list
+
+        if (count($this->exclude_type_id_list) > 0)
+        {
+            $db->where_not_in('annotation.annotation_type_id', $this->exclude_type_id_list);
+        }   //if (isset($this->target_type_id))
 
         //------------------------------------------------
         // 第七關 target_user_id
@@ -449,7 +457,7 @@ class Search_engine extends Generic_collection {
          {
                        
              $db->like('note',  $this->search_note );  // 生成: WHERE title LIKE '%match%'
-             $db->limit(10);
+             //$db->limit(10);
              //判斷this->search_note裡面有抓到值嗎？
             /*if (isset($this->search_note))
                {
@@ -489,7 +497,7 @@ class Search_engine extends Generic_collection {
             $db->join('annotation2anchor_text AS search_anchor_text', 'search_anchor_text.annotation_id = annotation.annotation_id '
             . "AND search_anchor_text.text like '%".$this->search_anchor_text."%'");    
             $db->limit(5);
-          echo $this->webpage_id;
+            //echo $this->webpage_id;
             
         }   //if (isset($this->search_anchor_text))
 
@@ -527,10 +535,12 @@ class Search_engine extends Generic_collection {
 
         if (isset($this->target_topic))
         {
-            if ($this->target_topic === TRUE)
+            if ($this->target_topic === TRUE) {
                 $db->where("annotation.topic_id IS NULL");
-            else
+            }
+            else {
                 $db->where("annotation.topic_id IS NOT NULL");
+            }
         }
 
         //------------------------------------------------
@@ -598,7 +608,10 @@ class Search_engine extends Generic_collection {
         {
 
             $db->join('user AS search_username', 'search_username.user_id = annotation.user_id '. "AND search_username.name like '%".$this->search_username."%'" );
-            $db->limit(15);
+            
+            // 20131113 Pudding Chen
+            // 為什麼要在這裡加limit？
+            //$db->limit(15);
         }
   
         //------------------------------------------------
@@ -620,11 +633,33 @@ class Search_engine extends Generic_collection {
     }
 
     protected $target_webpage_id;
+    
+    /**
+     * 設定目標網頁
+     * @param Webpage|Int $webpage_id
+     * @return \Search_engine
+     */
     public function set_target_webpage($webpage_id)
     {
         $this->_CI_load('library', 'kals_resource/Webpage', 'webpage');
         $this->target_webpage_id = $this->CI->webpage->filter_webpage_id($webpage_id);
         return $this;
+    }
+    
+    /**
+     * 設定目前的網頁作為預設的搜尋對象
+     * 
+     * @author Pudding Chen 20131113
+     * @return boolan
+     */
+    public function set_target_referer_webpage() {
+        $webpage = get_context_webpage();
+        if (isset($webpage)) {
+            return $this->set_target_webpage($webpage->get_id());
+        }
+        else {
+            return false;
+        }
     }
 
     //-----------------------------------------
@@ -643,6 +678,29 @@ class Search_engine extends Generic_collection {
         $this->overlap_scope = $scope;
         return $this;
     }
+    
+    /**
+     * 根據$from跟$to來指定覆蓋範圍
+     * @param int $from
+     * @param int $to
+     * @param Webpage $webpage
+     * @return \Search_engine
+     */
+    public function set_overlap_scope_index($from, $to, Webpage $webpage = null)
+    {
+        if (is_null($webpage)) {
+            $webpage = get_context_webpage();
+        }
+        
+        $scope_coll = new Annotation_scope_collection();
+        $scope_coll_data = array(
+            array($from, $to)
+        );
+        $scope_coll = $scope_coll->import_webpage_search_data($webpage, $scope_coll_data);
+        
+        $this->overlap_scope = $scope_coll;
+        return $this;
+    }
 
     protected $exclude_scope;
     public function set_exclude_scope(Annotation_scope_collection $scope)
@@ -655,13 +713,58 @@ class Search_engine extends Generic_collection {
     //annotation直接相關屬性
 
     protected $target_type_id;
+    /**
+     * 查詢目標的標註類型
+     * @param Int|String $type_id 標註編號或是標註名稱都可以
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     * @return \Search_engine
+     */
     public function set_target_type($type_id)
     {
         $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
         $this->target_type_id = $this->CI->annotation_type_factory->filter_type_id($type_id);
         return $this;
     }
-
+    
+    /**
+     * 要排除的標註類型
+     * @type Array<Int> $type_list 標註類型的ID列表，注意，只能放ID
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     */
+    protected $exclude_type_id_list = array();
+    
+    /**
+     * 設定要排除的標註類型
+     * @param Array<String|Int> $type_list 標註類型的列表
+     * @return \Search_engine
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     */
+    public function set_exclude_type_list($type_list)
+    {
+        $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
+        $type_id_list = array();
+        foreach ($type_list AS $type) {
+            $type_id = $this->CI->annotation_type_factory->filter_type_id($type);
+            $type_id_list[] = $type_id;
+        }
+        $this->exclude_type_id_list = $type_id_list;
+        return $this;
+    }
+    
+    /**
+     * 增加要排除的標註類型
+     * @param String|Int $type 標註類型
+     * @return \Search_engine
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141114
+     */
+    public function add_exclude_type_list($type)
+    {
+        $this->_CI_load('library', 'type/Annotation_type_factory', 'annotation_type_factory');
+        $type_id = $this->CI->annotation_type_factory->filter_type_id($type);
+        array_push($this->exclude_type_id_list, $type_id);
+        return $this;
+    }
+    
     protected $target_user_id;
     public function set_target_user(User $user)
     {
@@ -784,6 +887,14 @@ class Search_engine extends Generic_collection {
 
     protected $target_topic;
 
+    /**
+     * 設定是否限定是topic
+     * @param boolean $is_topic
+     *  TRUE 限定只能是topic
+     *  FALSE 限定不能是topic
+     *  NULL 不限定
+     * @return Search_engine
+     */
     public function set_target_topic($is_topic)
     {
         if (is_bool($is_topic))

@@ -171,6 +171,8 @@
 .recommend-tooltip .recommended-item-container {
     -moz-box-shadow: 0 5px 5px #AF9067;
     -webkit-box-shadow: 0 5px 5px #AF9067;
+    -khtml-box-shadow: 0 5px 5px #AF9067;
+    box-shadow: 0 5px 5px #AF9067;
     
     position:relative;
     z-index: 1;
@@ -217,6 +219,7 @@
     font-weight: bold;
     outline: medium none;
     font-size: 0.8em;
+    font: 80% arial,helvetica,clean,sans-serif;
     font-family: Segoe UI,Arial,sans-serif;
     
     display: inline-block;
@@ -253,6 +256,8 @@
     
     -moz-box-shadow: 0 -5px 5px #AF9067;
     -webkit-box-shadow: 0 -5px 5px #AF9067;
+    -html-box-shadow: 0 -5px 5px #AF9067;
+    box-shadow: 0 -5px 5px #AF9067;
     
     position:relative;
     z-index: 1;

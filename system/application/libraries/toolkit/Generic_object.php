@@ -595,6 +595,8 @@ class Generic_object extends KALS_object {
 
     /**
      * 取得ID
+     * 
+     * 如果尚未設置ID，則會回傳NULL
      * @return int
      */
     public function get_id()
@@ -609,8 +611,9 @@ class Generic_object extends KALS_object {
             $id = intval($this->id);
             return $id;
         }
-        else
+        else {
             return NULL;
+        }
     }
 
     /**
@@ -922,8 +925,8 @@ class Generic_object extends KALS_object {
                     && (FALSE === self::_check_unique($this)
                         OR FALSE === self::_check_not_null($data, $this->not_null_field)) )
                 {
-                    test_msg('約束沒過 ['.get_class($this).'] (_check_unique='.self::_check_unique($this).'; _check_not_null='.self::_check_not_null($data, $this->not_null_field).')'
-                        , $data);
+                    //test_msg('約束沒過 ['.get_class($this).'] (_check_unique='.self::_check_unique($this).'; _check_not_null='.self::_check_not_null($data, $this->not_null_field).')'
+                    //    , $data);
                     return $this;
                 }
 
@@ -1332,8 +1335,9 @@ class Generic_object extends KALS_object {
         $obj->update();
 
         //加入快取
-        if ($this->use_cache)
+        if ($this->use_cache) {
             set_cache($obj, $cache_cond);
+        }
         return $obj;
     }
 

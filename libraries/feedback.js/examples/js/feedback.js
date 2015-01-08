@@ -399,9 +399,19 @@ window.Feedback.Form.prototype.review = function( dom ) {
         
         if (item.element.value.length > 0) {
             dom.appendChild( element("label", item.name + ":") );
-            dom.appendChild( document.createTextNode( item.element.value.length ) );
-            dom.appendChild( document.createElement( "hr" ) );
+            dom.appendChild( document.createTextNode( item.element.value ) );
+            //dom.appendChild( document.createElement( "hr" ) );
+			dom.appendChild( document.createElement( "br" ) );
         }
+		
+        //dom.appendChild( element("label", "Browser" + ":") );
+        //dom.appendChild( document.createTextNode( $.browser.version ) );
+        //dom.appendChild( document.createElement( "hr" ) );
+		
+		dom.appendChild( element("label", "Client Browser" + ":") );
+        dom.appendChild( document.createTextNode( navigator.appVersion ) );
+		dom.appendChild( document.createElement( "br" ) );
+        //dom.appendChild( document.createElement( "hr" ) );
         
     }
     
@@ -737,7 +747,7 @@ window.Feedback.Screenshot.prototype.render = function() {
         script.onerror = function() {
             log("Failed to load html2canvas library, check that the path is correctly defined");
         };
-
+    
         script.onload = (scriptLoader)(script, function() {
 
             if (window.html2canvas === undefined) {
@@ -845,7 +855,9 @@ window.Feedback.Screenshot.prototype.review = function( dom ) {
         var img = new Image();
         img.src = data;
         img.style.width = "300px";
-        dom.appendChild( img );
+        
+        dom.insertBefore(img,dom.childNodes[0]);
+		//dom.appendChild( img );
     }
     
 };
@@ -867,6 +879,10 @@ window.Feedback.XHR.prototype.send = function( data, callback ) {
             callback( (xhr.status === 200) );
         }
     };
+	
+	//data[0].browser = $.browser;
+	data[0].browser = navigator.appVersion;
+	//console.log(window.JSON.stringify( data ));
     
     xhr.open( "POST", this.url, true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

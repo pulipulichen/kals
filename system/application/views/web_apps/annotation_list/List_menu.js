@@ -30,7 +30,19 @@ List_menu.prototype = new Tooltip_modal();
  */
 List_menu.prototype._item = null;
 
+/**
+ * 不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
 List_menu.prototype._disable_option = [];
+
+/**
+ * 預設不使用的功能
+ * @author Pulipuli Chen 20141111
+ * @type Array<String>
+ */
+List_menu.prototype._default_disable_option = [];
 
 List_menu.prototype._set_list_item = function (_item, _disable_option) {
     if ($.isset(_item))
@@ -42,7 +54,22 @@ List_menu.prototype._set_list_item = function (_item, _disable_option) {
             _this.set_data();
         });
         
-        this._disable_option = _disable_option;
+        // -----------------------------
+        /**
+         * @author Pulipuli Chen 20141111
+         * 為_disable_option多加一些功能
+         */
+        if ($.is_string(_disable_option)) {
+            _disable_option = [_disable_option];
+        }
+        
+        if ($.is_array(_disable_option)) {
+            this._disable_option = _disable_option;
+        }
+        
+        for (var _i in this._default_disable_option) {
+            this._disable_option.push(this._default_disable_option[_i]);
+        }
     }
     return this;
 };
@@ -57,6 +84,14 @@ List_menu.prototype.set_data = function () {
 // --------
 
 /**
+ * 基本的樣板
+ * @type String
+ */
+List_menu.prototype._$template = '<div><table cellpadding="0" cellspacing="0" align="right"><tbody>'
+    + '<tr class="timestamp-container select-container review-container view-container respond-container delete-container edit-container"></tr>'
+    + '</tbody></table><span>&nbsp;</span></div>';
+
+/**
  * Create UI
  * @memberOf {List_menu}
  * @type {jQuery} UI
@@ -65,66 +100,58 @@ List_menu.prototype._$create_ui = function ()
 {
     var _writable = KALS_context.policy.writable();
     
-    var _ui = $('<div><table cellpadding="0" cellspacing="0" align="right"><tbody><tr></tr></tbody></table><span>&nbsp;</span></div>')
+    var _ui = $(this._$template)
         .addClass('list-menu')
         .addClass(this._not_login_classname);
     
-	
-    var _tr = _ui.find('tr:first');
+    //var _tr = _ui.find('tr:first');
     
-    if (this.is_enable('edit') && _writable === true)
-    {
+    if (this.is_enable('edit') && _writable === true) {
         var _edit = this._create_edit_ui();
-        _edit.appendTo(_tr);
+        _edit.appendTo(_ui.find(".edit-container"));
     }
     
-    if (this.is_enable('delete') && _writable === true)
-    {
+    if (this.is_enable('delete') && _writable === true) {
         var _delete = this._create_delete_ui();
-        _delete.appendTo(_tr);
+        _delete.appendTo(_ui.find(".delete-container"));
     }
     
-    if (this.is_enable('respond') && _writable === true)
-    {
+    if (this.is_enable('respond') && _writable === true) {
         var _respond = this._create_respond_ui();
-        _respond.appendTo(_tr);    
+        _respond.appendTo(_ui.find(".respond-container"));    
     }
     
     //$.test_msg('List_menu._$create_ui() this._enable_view_thread', this._enable_view_thread);
     //if (this._enable_view_thread == true)
-    if (this.is_enable('view'))
-    {
+    if (this.is_enable('view')) {
         var _view = this._create_view_ui();
-        _view.appendTo(_tr);    
+        _view.appendTo(_ui.find(".view-container"));    
     }
-	if (this.is_enable('review'))
-    {
+    if (this.is_enable('review')) {
         var _review = this._create_review_ui();
-        _review.appendTo(_tr);    
+        _review.appendTo(_ui.find(".review-container"));    
     }
     
-    if (this.is_enable('select'))
-    {
-        if (KALS_text.selection.select.equals(this._item.get_scope_coll()) === false)
-        {
+    if (this.is_enable('select')) {
+        if (KALS_text.selection.select.equals(this._item.get_scope_coll()) === false) {
             var _select = this._create_select_ui();
-            _select.appendTo(_tr);    
+            _select.appendTo(_ui.find(".select-container"));    
         }   
     }
     
     var _timestamp = this._setup_timestamp();
-    _timestamp.get_ui().prependTo(_tr);
+    _timestamp.get_ui().prependTo(_ui.find(".timestamp-container"));
     
     return _ui;
 };
 
 List_menu.prototype.is_enable = function (_option_name) {
     if (_option_name === undefined || _option_name === null || this._disable_option === null || this._disable_option === undefined || this._disable_option.length === 0) {
-		return true;
-	}
-	else {
-		return ($.inArray(_option_name, this._disable_option) == -1);
-	}
+        return true;
+    }
+    else {
+        return ($.inArray(_option_name, this._disable_option) === -1);
+    }
 };
 
 // --------
@@ -163,8 +190,9 @@ List_menu.prototype._create_edit_ui = function () {
     var _this = this;
     _ui.click(function (_e) {
         _this.edit_annotation();
-		_e.preventDefault();
-		return false;
+        _this.close();
+        _e.preventDefault();
+        return false;
     });
     
     _ui.setup_hover();
@@ -188,8 +216,8 @@ List_menu.prototype._create_delete_ui = function () {
     var _this = this;
     _ui.click(function (_e) {
         _this.delete_annotation();
-		_e.preventDefault();
-		return false;
+        _e.preventDefault();
+        return false;
     });
     
     _ui.setup_hover();
@@ -217,6 +245,8 @@ List_menu.prototype._create_respond_ui = function () {
     
     _ui.setup_hover();
     
+    this.child("respond", _ui);
+    
     return _ui;
 };
 
@@ -235,10 +265,13 @@ List_menu.prototype._create_view_ui = function () {
     
     var _this = this;
     _ui.click(function () {
-        _this.view_thread();
+        //_this.view_thread();
+        _this.respond_annotation();
     });
     
     _ui.setup_hover();
+    
+    this.child("view", _ui);
     
     return _ui;
 };
@@ -258,6 +291,7 @@ List_menu.prototype._create_review_ui = function () {
     
     var _this = this;
     _ui.click(function () {
+        //$.test_msg("click review_ui");
         _this.view_thread();
     });
     
@@ -266,13 +300,16 @@ List_menu.prototype._create_review_ui = function () {
     return _ui;
 };
 
-
+/**
+ * 選擇位置的按鈕
+ * @author 20131115 Pulipuli Chen
+ */
 List_menu.prototype._create_select_ui = function () {
     var _ui = $('<td></td>')
         .addClass('list-menu-option')
         .addClass('select');
         
-    var _lang = new KALS_language_param(
+    var _lang = new KALS_language_param (
         'SELECT',
         'list_menu.select'
     );
@@ -303,8 +340,21 @@ List_menu.prototype.get_editor = function () {
     return this._item.get_editor();
 };
 
+/**
+ * 取得標註的ID
+ * @returns {Number}
+ */
 List_menu.prototype.get_annotation_id = function () {
     return this._item.get_data().annotation_id;
+};
+
+
+/**
+ * 取得標註參數
+ * @returns {Annotation_param}
+ */
+List_menu.prototype.get_annotation_param = function () {
+    return this._item.get_data();
 };
 
 /**
@@ -312,16 +362,19 @@ List_menu.prototype.get_annotation_id = function () {
  * @param {function} _callback
  */
 List_menu.prototype.view_thread = function (_callback) {
-    if ($.isset(this._item))
-    {
-		// @20130604 Pudding Chen
-		// 不知道為什麼關掉這串就會恢復正常
-        //this._item.view_thread(_callback);
+    if ($.isset(this._item)) {
+        // @20130604 Pudding Chen
+        // 不知道為什麼關掉這串就會恢復正常
+        this._item.view_thread(_callback);
         this.close();
     }   
     return this;
 };
 
+/**
+ * 選擇標註所在的指定位置
+ * @param {function} _callback
+ */
 List_menu.prototype.select = function (_callback) {
     if ($.isset(this._item))
     {
@@ -364,21 +417,30 @@ List_menu.prototype._delete_url = 'annotation_setter/delete';
 
 List_menu.prototype._delete_lock = false;
 
+
+/**
+ * 刪除標註
+ * @returns {List_menu}
+ */
 List_menu.prototype.delete_annotation = function () {
     
     if (this.is_loading() === true) {
-		return this;
-	}
+        return this;
+    }
     
     var _annotation_id = this.get_annotation_id();
+    var _annotation_param = this.get_annotation_param();
     
     if ($.is_null(_annotation_id)) {
-		return this;
-	}
+        return this;
+    }
         
+    var _this = this;
+    
     var _callback = function (_data) {
         //回傳的資料是重新讀取的my annotation範圍，回傳資料的形態請參考annotation_getter/my
         if (_data !== false) {   //如果是錯誤的狀況，才會回傳false
+            
             //因為範圍改變了，所以需要重新讀取
             KALS_text.load_my.reload(_data, function () {
                 _this._item.remove();
@@ -386,32 +448,35 @@ List_menu.prototype.delete_annotation = function () {
                 //$.test_msg('Item remove()');
                 
                 var _lang = new KALS_language_param(
-                    'Annotation is deleted.',
-                    'list_menu.delete_complete'
+                    'Annotation #{0} is deleted.',
+                    'list_menu.delete_complete',
+                    [_annotation_id]
                 );
                 KALS_util.notify(_lang);
                 
                 _this._toggle_loading(false);
                 
+                // 設定計數
+                _this._set_anntation_count_reduce(_annotation_param);
+                KALS_context.user.load_user_params();
+                
                 var _editor = _this.get_editor();
                 if ($.isset(_editor._editing_param)
-                    && _editor._editing_param.annotation_id == _annotation_id)
+                    && _editor._editing_param.annotation_id === _annotation_id)
                 {
                     _editor.reset();
                 }
             });
             
-            if (typeof(_data.nav) != 'undefined') {
+            if (typeof(_data.nav) !== 'undefined') {
                 var _nav_data = _data.nav;
-                if (KALS_context.user.get_anchor_navigation_type() == 'all') {
-					KALS_text.load_navigation.reload(_nav_data);
-				}
+                if (KALS_context.user.get_anchor_navigation_type() === 'all') {
+                    KALS_text.load_navigation.reload(_nav_data);
+                }
             }
-            
         }
     };
     
-    var _this = this;
     var _config = {
         data: _annotation_id,
         url: this._delete_url,
@@ -420,10 +485,42 @@ List_menu.prototype.delete_annotation = function () {
     
     this._toggle_loading(true);
     
-    
     //_callback({}); return;
     
     KALS_util.ajax_get(_config);
+    return this;
+};
+
+/**
+ * 減少Context_user的標註次數
+ * @param {Annotation_param} _annotation_param
+ * @returns {List_menu}
+ */
+List_menu.prototype._set_anntation_count_reduce = function (_annotation_param) {
+    
+    // ------------------------
+    // 加入Context_user的計數
+    /*
+    var _is_respond = _annotation_param.is_respond();
+    var _annotation_type_param = _annotation_param.type;
+    if (_is_respond === false) {
+        //$.test_msg("create callback", _annotation_type_param);
+        KALS_context.user.set_topic_annotation_count_reduce(_annotation_type_param);
+    } 
+    else {
+        var _topic_annotation_param = _annotation_param.topic;
+        var _is_my_topic = _topic_annotation_param.is_my_annotation();
+        
+        if (_is_my_topic) {
+            KALS_context.user.set_respond_to_my_annotation_count_reduce(_annotation_type_param);
+        }
+        else {
+            KALS_context.user.set_respond_to_other_annotation_count_reduce(_annotation_type_param);
+        }
+    }
+    */
+    //$.test_msg("List_menu._set_anntation_count_reduce()", "減少標註");
+    KALS_context.user.set_annotation_count_reduce_by_param(_annotation_param);
     return this;
 };
 
@@ -471,12 +568,10 @@ List_menu.prototype._listen_auth = function () {
     }, true);
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
-        if (_policy.writable() === true)
-        {
+        if (_policy.writable() === true) {
             _ui.removeClass(_not_login_classname);
         }
-        else
-        {
+        else {
             _ui.addClass(_not_login_classname);
         }
     }, true);
@@ -508,6 +603,33 @@ List_menu.prototype.is_loading = function () {
     return _ui.hasClass(this._loading_classname);
 };
 
+// ----------------------
+// set_respond_wrtiable
+// Context_policy
+// ----------------------
+
+/**
+ * 禁止回應標註
+ * @type String
+ */
+List_menu.prototype._deny_respond_writable_classname = "deny-respond-writable";
+
+/**
+ * 設定可否執行「回應」與「留言」
+ * @param {Boolean} _writable
+ * @returns {List_menu.prototype}
+ */
+List_menu.prototype.set_respond_writable = function (_writable) {
+    var _ui = this.get_ui();
+    if (_writable === true) {
+        _ui.removeClass(this._deny_respond_writable_classname);
+    }
+    else {
+        _ui.addClass(this._deny_respond_writable_classname);
+    }
+    
+    return this;
+};
 
 /* End of file List_menu */
 /* Location: ./system/application/views/web_apps/List_menu.js */

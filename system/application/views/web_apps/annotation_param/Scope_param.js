@@ -13,14 +13,14 @@
 function Scope_param(_from, _to, _anchor_text) {
     
     if ($.isset(_from)) {
-		this.set_from(_from);
-	}
+        this.set_from(_from);
+    }
     if ($.isset(_to)) {
-		this.set_to(_to);
-	}
+        this.set_to(_to);
+    }
     if ($.isset(_anchor_text)) {
-		this.set_anchor_text(_anchor_text);
-	}
+        this.set_anchor_text(_anchor_text);
+    }
 }
 
 Scope_param.prototype.from = null;
@@ -33,30 +33,27 @@ Scope_param.prototype._filter_index = function (_index) {
     
     var id;
     if ($.is_number(_index)) {
-		return _index;
-	}
-	else 
-		if ($.is_jquery(_index)) {
-			_id = _index.attr('id');
-			_id = $.get_prefixed_id(_id);
-			return _id;
-		}
-		else 
-			if (typeof(_index.id) != 'undefined') {
-				_id = _index.id;
-				_id = $.get_prefixed_id(_id);
-				return _id;
-			}
-			else {
-				try {
-					_index = parseInt(_index, 10);
-					return _index;
-				} 
-				catch (e) {
-					return null;
-				}
-			}
-    
+        return _index;
+    }
+    else if ($.is_jquery(_index)) {
+        _id = _index.attr('id');
+        _id = $.get_prefixed_id(_id);
+        return _id;
+    }
+    else if (typeof(_index.id) !== 'undefined') {
+        _id = _index.id;
+        _id = $.get_prefixed_id(_id);
+        return _id;
+    }
+    else {
+        try {
+            _index = parseInt(_index, 10);
+            return _index;
+        } 
+        catch (e) {
+            return null;
+        }
+    }
 };
 
 Scope_param.prototype.set_from = function (_index) {
@@ -64,9 +61,9 @@ Scope_param.prototype.set_from = function (_index) {
     _index = this._filter_index(_index);
     
     if (_index !== null) {
-		this.from = _index;
-	}
-    
+        this.from = _index;
+    }
+
     this._check_order();
     
     return this;
@@ -160,7 +157,16 @@ Scope_param.prototype.equals = function (_scope) {
     var _to = _scope.get_to();
     var _from = _scope.get_from();
     
-    return (_this_to == _to && _this_from == _from);
+    return (_this_to === _to && _this_from === _from);
+};
+
+/**
+ * 計算長度
+ * @author Pulipuli Chen 20141110
+ * @returns {Number}
+ */
+Scope_param.prototype.count_length = function () {
+     return this.get_to() - this.get_from() + 1;
 };
 
 /* End of file Scope_param */

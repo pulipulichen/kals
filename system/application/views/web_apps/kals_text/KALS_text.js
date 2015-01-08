@@ -16,10 +16,30 @@ function KALS_text(_selector) {
     
     KALS_user_interface.call(this);
     
-	if (typeof(_selector) == "undefined") {
-		_selector = this.get_selector();	
-	}
-    //$.test_msg('KALS_text()', _selector);
+    this.child('text_selector', new Text_selector());
+    if (_selector === undefined) {
+        var _this = this;
+        this.text_selector.check_text_selector(function () {
+            _this._init_component();
+        });
+    }
+    else {
+        this._init_component(_selector);
+    }
+}
+
+// Extend from KALS_user_interface
+KALS_text.prototype = new KALS_user_interface();
+
+/**
+ * 初始化後面的步驟
+ * @param {jQuery} _selector
+ * @returns {undefined}
+ */
+KALS_text.prototype._init_component = function (_selector) {
+    
+    _selector = this.get_selector();	
+    //$.test_msg('KALS_text()', _selector.length);
     
     _selector = this.filter_selector(_selector);
     
@@ -28,17 +48,16 @@ function KALS_text(_selector) {
     this.child('load_my', new My_annotation_loader());
     this.child('load_navigation', new Navigation_loader());
     this.child('tool', new Annotation_tool(_selector));
+    this.child('guide', new Reading_guide());
     
-    var _this = this;
-    setTimeout(function() {
-        _this.init_start();
-          
+    //var _this = this;
+    //setTimeout(function() {
+    //    _this.init_start();
         //_this.load_my.initialize();
-    }, 0);
-}
-
-// Extend from KALS_user_interface
-KALS_text.prototype = new KALS_user_interface();
+    //}, 0);
+    
+    return this;
+};
 
 /**
  * @type {Selection_manager}
@@ -71,15 +90,37 @@ KALS_text.prototype.load_my_custom = null;
  */
 KALS_text.prototype.load_recommend = null;
 
-KALS_text.prototype.init_start = function () {
+/**
+ * 導讀精靈
+ * @type {Reading_guide}
+ */
+KALS_text.prototype.guide = null;
+
+/**
+ * @type {Text_selector}
+ */
+KALS_text.prototype.text_selector = null;
+
+/**
+ * 開始初始化KALS_text
+ * @author Pulipuli Chen 20141109
+ * @param {function} _callback
+ * @returns {KALS_text}
+ */
+KALS_text.prototype.init_start = function (_callback) {
     
-    this.init.start();
+    //$.test_msg("KALS_text", "init_start");
+    this.init.start(_callback);
     
     return this;
 };
 
-KALS_text.prototype.get_selector = function () {
-    return KALS_context.get_text_selector();
+/**
+ * 
+ * @param {type} _callback
+ */
+KALS_text.prototype.get_selector = function (_callback) {
+    return this.text_selector.get_text_selector(_callback);
 };
 
 /**
@@ -107,14 +148,61 @@ KALS_text.prototype.filter_selector = function (_selector) {
     }
     
     if (_selector.length > 0) {
-		return _selector;
-	}
-	else {
-		//找不到_selector，丟出錯誤
-		_exception = new KALS_exception('kals_text.exception.selector_not_exist');
-		KALS_util.show_exception(_exception);
-		return null;
-	}
+            return _selector;
+    }
+    else {
+        //找不到_selector，丟出錯誤
+        _exception = new KALS_exception('kals_text.exception.selector_not_exist');
+        KALS_util.show_exception(_exception);
+        return null;
+    }
+};
+
+/**
+ * 根據頁面條件，強制調整網頁的樣式
+ * 
+ * 但是應該寫成獨立物件
+ * @20131113 Pulipuli Chen
+ * @deprecated 20131227 寫成了Site_reform，不使用了
+ */
+/*
+KALS_text.prototype.style_adapter = function () {
+    
+    // PDF2HTML EX
+    if ($("#sidebar").length == 1 && $("#page-container").length == 1
+        && $("#pf1").length > 0) {
+        
+        $("body").css("background-color", "#2f3236");
+        $("#page-container").css("position", "relative");
+    }
+};
+*/
+
+/**
+ * 讀取指定的標註
+ * @param {Int} _annotation_id
+ */
+KALS_text.prototype.load_annotation = function (_annotation_id) {
+	KALS_text.tool.view.load_view(_annotation_id);
+};
+
+/**
+ * 選擇物件
+ * @param {Scope_collection_param} _scope_coll
+ * @param {boolean} _scroll_into_view 是否捲動過去
+ * @returns {KALS_text}
+ * @author Pulipuli Chen 20131230
+ */
+KALS_text.prototype.set_select = function (_scope_coll, _scroll_into_view) {
+    this.selection.select.set_scope_coll(_scope_coll);
+    if (_scroll_into_view !== undefined && _scroll_into_view === true) {
+        this.selection.select.scroll_into_view();
+    }
+    return this;
+};
+
+KALS_text.prototype.get_sentence_structure = function () {
+    return this.selection.text.sentence.get_structure();
 };
 
 /* End of file KALS_text */

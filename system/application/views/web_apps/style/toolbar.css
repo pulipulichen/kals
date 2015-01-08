@@ -4,9 +4,21 @@
  * @date       2010/9/3, 下午 12:20:08
  */
 
+/**
+ * 調整工具列的範例
+ * max-width的切換點：1024 800 640 400 
+@media screen and (max-width: 800px){
+    .KALS.kals-toolbar .toolbar-center {
+        max-width: 30px;
+        overflow: hidden;
+    }
+}
+
+ */
+
 /* -------- */
 
-.kals-toolbar {
+.KALS.kals-toolbar {
      position:fixed;
      top: 0;
      left: 0;
@@ -15,51 +27,58 @@
      z-index: 10;
      margin: 0 0 !important;
      padding: 0 0 !important;
-     height: 30px !important;
-	 
+     height: 40px !important;
  }
- .kals-toolbar tr td{
- 	padding: 0 .5em !important;
-	text-align:right !important;
-	font-size:100% !important;
-	
+ 
+ .KALS.kals-toolbar.hide {
+     display:block;
+ }
+ 
+.KALS.kals-toolbar tr td{
+    /*
+    padding: 0 .5em !important;
+    text-align:right !important;
+    font-size:100% !important;
+    */
 	
  }
 
- .kals-toolbar table{
- 	border-collapse:inherit !important;
-	margin: 0px 0 !important;
-	text-align:right !important;
-	font-size:100% !important;
-	
+.KALS.kals-toolbar table{
+ 	border-collapse:inherit;
+	margin: 0px 0;
+	text-align:right;
+	font-size:100%;
+        font: 100% arial,helvetica,clean,sans-serif;
  }
  
- .kals-toolbar div {
+.KALS.kals-toolbar div {
      margin: 0;
      padding: 0;
 
  }
  
 
- .kals-toolbar.hide {
+.KALS.kals-toolbar.hide {
      width: 70px;
  }
  
- .kals-toolbar.hide .toolbar-component {
+.KALS.kals-toolbar.hide .toolbar-component {
      display: none;
  }
 
-.toolbar-component, .toolbar-padding {
-    height: 30px !important;
-	line-height:1 !important;
+.KALS .toolbar-component, 
+.KALS .toolbar-padding {
+    /*height: 30px !important;
+    line-height:1 !important;*/
+    height: 40px;
 }
 
-.toolbar-padding {
+.KALS .toolbar-padding {
     margin: 0;
     padding:0;
 }
 
-.toolbar-component {
+.KALS .toolbar-component {
     background-color: #D09042;
     -moz-user-select:none;
     cursor:default;
@@ -78,58 +97,85 @@
     font-weight: bold;
 }
 
-.toolbar-left {
+.KALS .toolbar-left {
     vertical-align: middle;
-    width: 120px;
-	border: 0px !important;
-	vertical-align:middle !important;
+    
+    /**
+     * @20140411 Pudding Chen
+     * 修改寬度自變項
+     */
+    /*width: 220px;*/
+    max-width: 220px;
+    
+    border: 0px !important;
+    vertical-align:middle !important;
 }
 
-.kals-toolbar.compact-width .toolbar-left {
+@media screen and (max-width: 800px){
+    .KALS .toolbar-left { 
+        max-width: 50px;
+		overflow: hidden;
+    }
+}
+
+.KALS.kals-toolbar.compact-width .toolbar-left {
     display: none;
 }
 
-.kals-toolbar.compact-width .toolbar-center {
+.KALS.kals-toolbar.compact-width .toolbar-center {
     text-align:left;
 }
 
-.toolbar-center {
+/**
+ * Pulipuli Chen 20131113
+ * Search form再開
+ */
+.KALS.kals-toolbar .toolbar-center {
     padding: 0 1em;
     /*width: 240px;*/
    /* 2010.11.25 因為暫時不做中間的search form 所以空間省了下來 */
-   width: 240px;
+   max-width: 300px;
     text-align: center;
-    display: none;
+    /*display: none;*/
 }
 
-.kals-toolbar.compact-width .toolbar-center {
+@media screen and (max-width: 800px){
+    .KALS.kals-toolbar .toolbar-center {
+        max-width: 30px;
+        overflow: hidden;
+    }
+}
+
+.KALS.kals-toolbar.compact-width .toolbar-center {
     width: 100px;
 }
 
-.toolbar-right {
+
+
+.KALS .toolbar-right {
     padding-right: 0.5em;
     text-align:right !important;
 	border: 0px !important;
 }
-.toolbar-right {
+.KALS .toolbar-right {
     padding-right: 0.5em;
     text-align:right !important;
 	border: 0px !important;
 	vertical-align:middle !important;
 }
 
-.toolbar-right table{
+.KALS .toolbar-right table{
 	width:auto !important;
 }
 
 /* 處理切換功能 */
-.toolbar-toggle {
+.KALS .toolbar-toggle {
     margin: 0;
     text-align: center;
     width: 100%;
 }
 
-.toolbar-toggle-button {
+.KALS .toolbar-toggle-button {
     border:1px solid #4A4531;
     border-top-width: 0;
     margin: 0 auto;
@@ -167,163 +213,214 @@
     text-shadow: rgba(0, 0, 0, 0.496094) 0px -1px 0px;
     -webkit-user-select: none;
     -moz-user-select: none;
+    -khtml-user-select: none;
     
 } 
 
-.toolbar-padding.compact-height {
+.KALS .toolbar-padding.compact-height {
     display: none;
 }
 
 /* -------- */
 /* Logo_component */
 
-.logo-component {
+.KALS .logo-component {
     margin: 0 1em;
     margin-left: 1em !important; 
     font-weight: bold;
-	vertical-align:middle !important;
-	
+    vertical-align:middle !important;
+    
+    /**
+     * @version 20140410 Pudding Chen
+     */
+    font-size: 16px;
 }
 
 /* --------- */
 /* Loading_component */
-.loading-component {
+.KALS .loading-component {
     display: none;
 }
 
-.kals-toolbar.compact-width .loading-component .message {
+.KALS.kals-toolbar.compact-width .loading-component .message {
     display: none;
 }
 
-.kals-toolbar.loading .loading-component {
+.KALS.kals-toolbar.loading .loading-component {
     display: inline;
     cursor: wait;
+    font-size: 16px;
 }
 
-/* --------- */
-/* Search_component */
-.search-component {
-    
-}
-
-.search-component .search-form-input {
-    height: 1em;
-}
-
-.search-component .search-form-submit {
-    height: 1.5em;
-    width: 1.7em;
-    display: block;
-    padding: 0;
-    /*float:right;*/
+.KALS.kals-toolbar.loading .loading-component .progress,
+.KALS.kals-toolbar.loading .loading-component .message {
+	margin-right: 0.5em;
 }
 
 /* 寬度縮小的情況 */
-.kals-toolbar.compact-width .advanced-button {
+.KALS.kals-toolbar.compact-width .advanced-button {
     display: inline !important;
 }
 
-.kals-toolbar.compact-width .search-form,
-.kals-toolbar.compact-width .search-result,
-.kals-toolbar.compact-width .advanced-link {
+.KALS.kals-toolbar.compact-width .search-form,
+.KALS.kals-toolbar.compact-width .search-result,
+.KALS.kals-toolbar.compact-width .advanced-link {
     display: none !important;
 }
 
-.search-form {
+
+.KALS .search-form {
     margin: 0;
 }
 
-.advanced-link {
-    font-size:small;
+.KALS.kals-toolbar .advanced-link {
+    font-size:100%;
     /*float:right;*/
     line-height: 1.5em;
 }
 
-.search-component.form .search-form,
-.search-component.form .advanced-link {
+.KALS .search-component.form .search-form,
+.KALS .search-component.form .advanced-link {
     display: inline;
 }
 
-.search-component.form .search-result {
+.KALS .search-component.form .search-result {
     display: none;
 }
 
-.search-component.result .search-form,
-.search-component.result .advanced-link {
+.KALS .search-component.result .search-form,
+.KALS .search-component.result .advanced-link {
     display: none;
 }
 
-.search-component.result .search-result {
+.KALS .search-component.result .search-result {
     display: inline;
 }
 
-.kals-toolbar.loading .search-component {
+.KALS.kals-toolbar.loading .search-component {
     display: none;
 }
 
-.search-component .search-form-input {
+.KALS .search-component .search-keyword {
     width: 7em;
+    margin:0;
+    
+    /**
+     * @author Pulipuli Chen 20141111
+     * 調整頁面資料
+     */
+    /*margin-left: 0.5em;*/
+    
     margin-right: 0.5em;
+    margin-top: 1px;
+}
+
+@media screen and (max-width: 800px){
+    .KALS .search-component .search-range,
+    .KALS .search-component .search-keyword {
+    	display:none;
+    }
 }
 
 /* -------- */
 /* Navigation_list */
 
+.KALS.kals-toolbar .navigation-list,
+.KALS.kals-toolbar .avatar-component {
+    font-size: 16px;
+}
+
+.KALS.kals-toolbar .avatar-component td {
+    padding: 0;
+}
+
+.KALS.kals-toolbar .avatar-component .navigation .navigation-list {
+    margin-left: 0.5em;
+}
+
 /**
  * 讀取中關掉部分元件
  */
-.kals-toolbar.loading .navigation-container {
+.KALS.kals-toolbar.loading .navigation-container {
     display: none;
 }
 
-.navigation-list .nav {
+.KALS .navigation-list .nav {
     display:table;
 }
 
-.navigation-list .menu {
+.KALS .navigation-list .menu {
     display: none;
 }
 
 /* 寬度縮小的情況 */
-.kals-toolbar.compact-width .navigation-list .nav {
+.KALS.kals-toolbar.compact-width .navigation-list .nav {
     display:none;
 } 
 
-.kals-toolbar.compact-width .navigation-list .menu {
+.KALS.kals-toolbar.compact-width .navigation-list .menu {
     display: inline;
 }
 
-.navigation-list .nav td.item {
+.KALS .navigation-list .nav td.item {
     border-color: white;
     border-style: none;
     border-width: 1px;
     border-left-style: solid;
     padding: 0 0.5em;
+    text-align: center;
+    
+    /**
+     * @version 20140410 Pudding Chen
+     */
+    /*font-size: 16px;*/
 }
 
-.navigation-list .nav td.item a {
+.KALS .navigation-list .nav td.item a {
     color:white;
+    text-decoration: underline;
 } 
 
-.navigation-list .nav td.item.last {
+.KALS .navigation-list .nav td.item.last {
     border-right-style: solid;
 }
 
 /**
  * @subsection Avatar_component
  */
-.avatar-component .photo.hide {
+
+.KALS .toolbar-right .navigation-container table.avatar-component {
+    margin-right: 0.5em;
+}
+
+/**
+ * 因為還沒使用，所以先關閉
+ * @20131115 Pulipuli Chen
+ */
+.KALS .avatar-component .photo {
+	display: none;
+}
+
+.KALS .avatar-component .photo.hide {
     display: none;
 }
 
-.avatar-component .photo.hide img {
+.KALS .avatar-component .photo.hide img {
     border-width: 0;
 }
 
 /**
  * @subsection Notification_component
  */
-.notification-component {
+/**
+ * 因為還沒使用，所以先關閉
+ * @20131115 Pulipuli Chen
+ */
+.KALS .avatar-component .notification {
+    display: none;
+}
+
+.KALS .notification-component {
     border: 1px solid white;
     
     -moz-border-radius: 8px;
@@ -340,11 +437,11 @@
     /*background-color: white;*/
 }
 
-.notification-component.has-unread {
+.KALS .notification-component.has-unread {
     background-image: url('${base_url}images/bell-enable.png');
 }
 
-.notification-component.hover {
+.KALS .notification-component.hover {
     background-color: white;
     border: 3px solid black;
     -moz-border-radius: 8px 8px 0 0;
@@ -353,7 +450,7 @@
     -khtml-border-radius: 8px 8px 0 0;
 }
  
-.notification-component .unread {
+.KALS .notification-component .unread {
     width: 1em;
     height: 1em;
     -moz-border-radius: 4px;
@@ -371,28 +468,34 @@
     display:none;
 }
 
-.notification-component.has-unread .unread {
+.KALS .notification-component.has-unread .unread {
     display: block;
 }
-.kals-toolbar tbody tr {
+.KALS.kals-toolbar tbody tr {
 	background:rgba(0, 0, 0, 0) !important;
 }
 
-.kals-toolbar tbody tr td{
-	
-	border-bottom:0px !important;
-	border-top:0px !important;
+.KALS.kals-toolbar tbody tr td{
+
+    border-bottom:0px !important;
+    border-top:0px !important;
 }
 
-.toolbar-right .navigation-container .avatar-component tbody tr .photo{
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .stamp-icon img {
+    margin-right: 0.5em;
+    cursor:pointer;
+}
+
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .photo{
+    border: 0px !important;
+}
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .name{
+    border: 0px !important;
+    color: white;
+}
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .notification{
 	border: 0px !important;
 }
-.toolbar-right .navigation-container .avatar-component tbody tr .name{
-	border: 0px !important;
-}
-.toolbar-right .navigation-container .avatar-component tbody tr .notification{
-	border: 0px !important;
-}
-.toolbar-right .navigation-container .avatar-component tbody tr .navigation.profile{
+.KALS .toolbar-right .navigation-container .avatar-component tbody tr .navigation.profile{
 	border: 0px !important;
 }

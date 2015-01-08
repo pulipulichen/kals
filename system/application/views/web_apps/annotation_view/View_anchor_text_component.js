@@ -45,16 +45,16 @@ View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
     return this;
 };
 
+/**
+ * 取得標註範圍文字
+ * @param {Array} _scope_coll
+ */
 View_anchor_text_component.prototype.get_anchor_text = function (_scope_coll) {
     
     var _text = KALS_text.selection.text;
     
     var _recommend_scope_coll = _text.get_recommend_scope_coll(_scope_coll);
     var _focused_anchor_text = _text.get_display_anchor_text(_recommend_scope_coll, _scope_coll);
-    
-    //_focused_anchor_text.find('.focus.head').addClass('from');
-    //_focused_anchor_text.find('.focus.foot').addClass('to');
-    //_focused_anchor_text.find('.focus').addClass('select');
     
     return _focused_anchor_text;
 };
@@ -63,11 +63,11 @@ View_anchor_text_component.prototype.set_anchor_text = function (_anchor_text) {
     this._anchor_text = _anchor_text;
     var _text_container = this._create_text_container();
     if ($.isset(_anchor_text)) {
-		_text_container.html(_anchor_text);
-	}
-	else {
-		_text_container.empty();
-	}
+        _text_container.html(_anchor_text);
+    }
+    else {
+        _text_container.empty();
+    }
     return this;
 };
 
@@ -120,6 +120,7 @@ View_anchor_text_component.prototype.reset = function () {
 
 View_anchor_text_component.prototype.focus = function () {
     var _anchor = this.get_ui();
+    //$.test_msg("View_anchor_text_component", "focus");
     _anchor.scrollIntoView();
 };
 

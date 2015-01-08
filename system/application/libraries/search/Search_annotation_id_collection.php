@@ -22,8 +22,9 @@ class Search_annotation_id_collection extends search_engine {
         $db->select('annotation.annotation_id');
 
         //加入other_from
-        foreach ($this->other_from AS $from)
+        foreach ($this->other_from AS $from) {
             $db->from($from);
+        }
         $db->from('annotation');
 
         $query = $db->get();

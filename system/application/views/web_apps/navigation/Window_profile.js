@@ -130,6 +130,7 @@ Window_profile.prototype._$create_ui = function () {
     _password_link.get_ui().appendTo(_password_link_data);
     */
     
+	// 建立一個視窗變換連結
     var _password_link = _factory.window_change_link(
         new KALS_language_param('Open password change window.'
             , 'window.profile.content.password_change.link'),
@@ -167,6 +168,12 @@ Window_profile.prototype._$create_ui = function () {
     
     return _ui;
 };
+
+///**
+// * 開啟KALS_window時，是否預設啟用讀取中
+// * @type Boolean
+// */
+//Window_profile.prototype._$kals_window_open_loading = false;
 
 /* End of file Window_profile */
 /* Location: ./system/application/views/web_apps/Window_profile.js */

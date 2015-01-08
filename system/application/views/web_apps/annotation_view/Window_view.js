@@ -48,6 +48,7 @@ Window_view.prototype._topic_param = null;
 Window_view.prototype._focus_id = null;
 
 Window_view.prototype.set_focus_id = function (_annotation_id) {
+	//$.test_msg("view focus", _annotation_id);
     this._focus_id = _annotation_id;
     return this;
 };
@@ -58,6 +59,7 @@ Window_view.prototype.set_focus_id = function (_annotation_id) {
 Window_view.prototype._respond_param = null;
 
 Window_view.prototype.set_respond_param = function (_param) {
+	//$.test_msg("view set respond", _param.annotation_id);
     this._respond_param = _param;
     return this;
 };
@@ -119,7 +121,11 @@ Window_view.prototype.load_topic_param = function (_topic_id) {
                     && $.is_array(_data.annotation_collection)
                     && _data.annotation_collection.length > 0) {
                     var _topic_data = _data.annotation_collection[0];
-                    var _topic_param = new Annotation_param(_data);
+					var _topic_param = _data;
+					if ($.is_class(_topic_data, 'Annotation_param') === false) {
+						_topic_param = new Annotation_param(_topic_param); 
+					}
+					
                     _this.set_topic_param(_topic_param);    
                 }
             }
@@ -172,12 +178,18 @@ Window_view.prototype.set_topic_param = function (_topic_param) {
     return this;
 };
 
+/**
+ * 延後選取
+ * @author Pulipuli Chen 20141110
+ * @returns {Window_view}
+ */
 Window_view.prototype.set_selection = function () {
     
     if ($.isset(this._topic_param)) {
-        var _this = this;
+        //var _this = this;
+        var _scope = this._topic_param.scope;
         setTimeout(function () {
-            KALS_text.selection.select.set_scope_coll(_this._topic_param.scope);
+            KALS_text.selection.select.set_scope_coll(_scope);
         }, 1000);
     }
     
@@ -266,11 +278,11 @@ Window_view.prototype._$create_ui = function () {
     */
     KALS_context.policy.add_attr_listener('write', function (_policy) {
         if (_policy.writable()) {
-			_ui.removeClass(_not_login_classname);
-		}
-		else {
-			_ui.addClass(_not_login_classname);
-		}
+            _ui.removeClass(_not_login_classname);
+        }
+        else {
+            _ui.addClass(_not_login_classname);
+        }
     }, true);
     
     return _ui;
@@ -338,8 +350,8 @@ Window_view.prototype._loaded = false;
 
 Window_view.prototype.onload = function () {
     
-        //$.test_msg('設定！！')
-        this.editor_container.editor.note.set_text(' ');    
+    //$.test_msg('設定！！')
+    this.editor_container.editor.note.set_text(' ');    
     
     
     //$.test_msg('Window_view.onload()');
@@ -366,12 +378,24 @@ Window_view.prototype.onload = function () {
         this.anchor.focus();
     }
     
+    //$.test_msg("isset respond_param", $.isset(this._respond_param));
     if ($.isset(this._respond_param)) {
-        this.editor_container.add_respond_to(this._respond_param);
+		
+		this.editor_container.add_respond_to(this._respond_param);
+		this.editor_container.toggle_container(true);
+		
         this._respond_param = null;
     }
     else if ($.isset(this._edit_param)) {
-        this.editor_container.editor.set_editing(this._edit_param);
+		//var _editor = this.editor_container.editor; 
+        //_editor.set_editing(this._edit_param);
+		//_editor.set_editing(this._edit_param);
+		
+		var _item = this.list.get_list_item(this._edit_param);
+		if (_item !== null) {
+			_item.edit_annotation();
+		}
+		
         this._edit_param = null;
     }            
     
@@ -394,6 +418,11 @@ Window_view.prototype.onload = function () {
         _ui.removeClass(_temp_logout);
     }
     
+    if ($.isset(this._topic_param)) {
+        KALS_text.selection.select.set_scope_coll(this._topic_param.scope);
+        //KALS_text.selection.select.scroll_into_view();
+    }
+	
     return this;
 };
 
@@ -412,9 +441,8 @@ Window_view.prototype.setup_content = function (_callback) {
    
     var _this = this;
     setTimeout(function () {
-       
        Window_content.prototype.setup_content.call(_this, _callback);
-       _this.onload();   
+       _this.onload();
     }, 500);
     
     return this;

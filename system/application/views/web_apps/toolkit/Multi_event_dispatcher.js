@@ -60,6 +60,15 @@ Multi_event_dispatcher.prototype._default_type = 'trigger';
  * @param {boolean} _trigger 是否立刻啟動
  */
 Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _trigger) {
+    
+    if ($.is_array(_type)) {
+        var _types = _type;
+        for (var _t in _types) {
+            this.add_listener(_types[_t], _function, _trigger);
+        }
+        return this;
+    }
+    
     if ($.is_function(_type) 
         && ($.is_null(_function) || $.is_boolean(_function))) {
         _trigger = _function;
@@ -68,10 +77,10 @@ Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _tri
     }
     
     if ($.is_null(_trigger)) {
-		_trigger = false;
-	}
+        _trigger = false;
+    }
     
-    if ($.inArray(_type, this._types) == -1) {
+    if ($.inArray(_type, this._types) === -1) {
         this._types.push(_type);
         this._type_listeners[_type] = [];
         
@@ -79,13 +88,13 @@ Multi_event_dispatcher.prototype.add_listener = function (_type, _function, _tri
         //    $.test_msg('Multi_event_dispatcher.add_listener() create new type', this._type_listeners[_type].length);
     } 
     
-    if ($.inArray(_function, this._type_listeners[_type]) == -1) {
+    if ($.inArray(_function, this._type_listeners[_type]) === -1) {
         
         this._type_listeners[_type].push(_function);
         
         if (_trigger === true) {
-			_function(this);
-		}
+            _function(this);
+        }
     }
     return this;
 };
@@ -113,14 +122,14 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
         _type = this._default_type;
     }
     
-    if (false == this.has_type(_type)) {
-		return this;
-	}
+    if (false === this.has_type(_type)) {
+        return this;
+    }
     
     var _key = $.inArray(_function, this._type_listeners[_type]);
     if (_key > -1) {
-		delete this._type_listeners[_type][_key];
-	}
+        delete this._type_listeners[_type][_key];
+    }
     return this;
 };
 
@@ -129,9 +138,9 @@ Multi_event_dispatcher.prototype.delete_listener = function (_type, _function) {
  * @param {function} _type
  */
 Multi_event_dispatcher.prototype.notify_listeners = function (_type, _arg) {
-    if (false == this.has_type(_type)) {
-		return this;
-	}
+    if (false === this.has_type(_type)) {
+        return this;
+    }
     
     var _this = this;
     

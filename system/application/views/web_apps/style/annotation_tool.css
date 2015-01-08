@@ -1,4 +1,4 @@
-.annotation-tool {
+.KALS.annotation-tool {
     position:absolute;
     z-index:2;
     width: 330px;
@@ -13,29 +13,31 @@
     -khtml-border-radius: 8px;
     
     -webkit-box-shadow: #6F5A40 0px 3px 5px;
+    -khtml-box-shadow: #6F5A40 0px 3px 5px;
     -moz-box-shadow: #A29584 0px 5px 5px;
+    box-shadow: #6F5A40 0px 3px 5px;
     
     padding: 0;
     margin:0;
     border-width: 3px;
 }
 
-.annotation-tool div {
+.KALS.annotation-tool div {
     margin:0;
 }
 
 
-.annotation-tool.ui-draggable-dragging {
+.KALS.annotation-tool.ui-draggable-dragging {
     cursor: move;
 }
 
-.draggable-tool.hover {
+.KALS.draggable-tool.hover {
     z-index: 3;
 }
 
-.annotation-tool .annotation-tool-header {
+.KALS.annotation-tool .annotation-tool-header {
     text-align:right;
-    cursor: crosshair;
+    cursor: move;
     height: 20px;
     font-size: small;
     
@@ -79,7 +81,7 @@
     background-color: #8C8473; 
 }
 
-.annotation-tool .annotation-tool-header .dialog-option {
+.KALS.annotation-tool .annotation-tool-header .dialog-option {
     padding: 0 1em;
     border-left: 2px groove #494437;
     /*color: #494437;*/
@@ -90,21 +92,21 @@
     line-height: 20px;
 }
 
-.annotation-tool .annotation-tool-header .dialog-option.last {
+.KALS.annotation-tool .annotation-tool-header .dialog-option.last {
     -moz-border-radius: 0 8px 8px 0;
     -webkit-border-radius: 0 8px 8px 0;
     border-radius: 0 8px 8px 0;
     -khtml-border-radius: 0 8px 8px 0;
 }
 
-.annotation-tool .annotation-tool-header .dialog-option.hover {
+.KALS.annotation-tool .annotation-tool-header .dialog-option.hover {
     /*color: white;*/
     background-color: #B6B4AF;
 }
 
-.annotation-tool .editor-tool {
-    background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
-        , #FEEEBD 70px, #FEEEBD 100%);
+.KALS.annotation-tool .editor-tool {
+    /*background: -moz-linear-gradient(#FEF8E4 0%, #FEF8E4 40px
+        , #FEEEBD 70px, #FEEEBD 100%);*/
     background-image: -webkit-gradient(linear, 0% 0, 0% 100%, from(#FEF8E4)
         , color-stop(0.00, #FEF8E4), color-stop(0.25, #FEF8E4)
         , color-stop(0.35, #FEEEBD), to(#FEEEBD));    
@@ -113,15 +115,15 @@
     background-color: #FEEEBD;
 }
 
-.annotation-tool .annotation-tool-editor {
+.KALS.annotation-tool .annotation-tool-editor {
     /*height: 180px;*/
 }
 
-.annotation-tool.not-login .annotation-tool-editor {
+.KALS.annotation-tool.not-login .annotation-tool-editor {
     height: 30px;
 }
 
-.annotation-tool .annotation-tool-list {
+.KALS.annotation-tool .annotation-tool-list {
     max-height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -132,15 +134,15 @@
     -khtml-border-radius: 0 0 8px 8px;
 }
 
-.annotation-tool.not-login .annotation-tool-list {
+.KALS.annotation-tool.not-login .annotation-tool-list {
     max-height: 228px;
 }
 
-.annotation-tool.hide-editor .annotation-tool-editor {
+.KALS.annotation-tool.hide-editor .annotation-tool-editor {
     height:20px; 
 }
 
-.annotation-tool.hide-editor .annotation-tool-list {
+.KALS.annotation-tool.hide-editor .annotation-tool-list {
     max-height: 270px;
 }
 
@@ -149,16 +151,15 @@
 /**
  * @section {Reset recovery}
  */
-.annotation-tool tbody tr th{
-	background:rgba(255, 255, 255, 0) !important;
-	color: black;
+.KALS.annotation-tool tbody tr th{
+    background:rgba(255, 255, 255, 0) !important;
+    color: black;
 }
 
-.annotation-tool tbody tr td,
-.annotation-tool tbody tr th {
-	
-	border-bottom:0px !important;
-	border-top:0px !important;
+.KALS.annotation-tool tbody tr td,
+.KALS.annotation-tool tbody tr th {
+    border-bottom:0px !important;
+    border-top:0px;
 }
 
 /**
@@ -173,7 +174,7 @@
 	display: none;
 }
 
-.annotation-tool .editor-tool table{
+.KALS.annotation-tool .editor-tool table{
    margin-top:0px !important;
    margin-bottom:0px !important;
 }

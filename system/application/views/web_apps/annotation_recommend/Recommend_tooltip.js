@@ -65,11 +65,10 @@ Recommend_tooltip.prototype.setup_recommend = function(_recommended, _scroll_to)
         var _recommended_scope = this._recommended.scope;
         KALS_text.selection.recommended.set_scope_coll(_recommended_scope);
         if ($.isset(_scroll_to) && _scroll_to === true) {
-			KALS_text.selection.recommended.scroll_into_view();
+			//KALS_text.selection.recommended.scroll_into_view();
 		}
         
         KALS_context.hash.set_field('recommend', this._recommended.annotation_id);
-        
         
         this.setup_position();
         var _this = this;
@@ -140,8 +139,8 @@ Recommend_tooltip.prototype.setup_tips = function () {
         for (var _i in _tips) {
             var _tip_list = this._create_tip_list(_tips[_i]);
             if ($.isset(_tip_list)) {
-				_tip_list.appendTo(this._tips_container);
-			}
+                _tip_list.appendTo(this._tips_container);
+            }
         }
     }
     else {
@@ -224,8 +223,6 @@ Recommend_tooltip.prototype._$create_ui = function () {
     
     var _this = this;
     setTimeout(function () {
-        
-    
         KALS_context.policy.add_attr_listener('write', function (_policy) {
             if (_policy.writable()) {
                 //_bottom.show();
@@ -254,14 +251,16 @@ Recommend_tooltip.prototype._$create_ui = function () {
     }
     
     _ui.draggable(_draggable_config);
+    
     _ui.bind('dragstop', function(_event) {
         var _body_top = 0;
         if ($.is_small_height() === false) {
-			_body_top = KALS_toolbar.get_ui().height();
-		}
-        if (_ui.offset().top < _body_top) {
-			_ui.css('top', _body_top + 'px');
-		} 
+            _body_top = KALS_toolbar.get_ui().height();
+        }
+        //if (_ui.offset().top < _body_top) {
+        if ($.get_offset_top(_ui) < _body_top) {
+            _ui.css('top', _body_top + 'px');
+        } 
     });
     
     _this = this;

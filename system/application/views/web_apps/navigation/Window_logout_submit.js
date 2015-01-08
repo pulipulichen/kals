@@ -30,16 +30,17 @@ Window_logout_submit.prototype.complete_notification = new KALS_language_param(
 
 Window_logout_submit.prototype.submit = function () {
     if (this._lock_submit() === false) {
-		return this;
-	}
+        return this;
+    }
     
     var _this = this;
     var _auth = KALS_context.auth;
     KALS_window.toggle_loading(true, function () {
         _auth.logout(function (_auth, _data) {
+            _this._unlock_submit();
             KALS_util.notify(_this.complete_notification);
             KALS_window.close(function () {
-                _this._unlock_submit();
+                //_this._unlock_submit();
             });
         });    
     });

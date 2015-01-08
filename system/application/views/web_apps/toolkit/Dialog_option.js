@@ -24,11 +24,11 @@ function Dialog_option(_lang, _callback, _arg) {
     }
     
     if ($.is_class(_lang, 'KALS_language_param')) {
-		this.lang = _lang;
-	}
+        this.lang = _lang;
+    }
     if ($.is_function(_callback)) {
-		this.callback = _callback;
-	}
+        this.callback = _callback;
+    }
     this.arg = _arg;
 }
 

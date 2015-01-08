@@ -15,20 +15,32 @@
  */
 function KALS_exception(_class, _message) {
     
-    if ($.is_object(_class) 
-        && (typeof(_class.heading) != 'undefined' 
-        || typeof(_class.message) != 'undefined'
-        || typeof(_class.request_uri) != 'undefined')) {
+    $.test_msg("什麼錯誤呢？", _class);
+    
+    if (typeof(_class) === "object"
+            && typeof(_class.statusText) === "string") {
+        $.test_msg("抓到了？");
+        this.heading = _class.statusText + "(" + _class.status + ")";
+        this.message = $.json_encode(_class.response);
+    }
+    else if ($.is_object(_class) 
+        && (typeof(_class.heading) !== 'undefined' 
+        || typeof(_class.message) !== 'undefined'
+        || typeof(_class.request_uri) !== 'undefined')) {
         var _server_error = _class;
-        if (typeof(_server_error.heading) != 'undefined') {
-			this.heading = _server_error.heading;
-		}
-        if (typeof(_server_error.message) != 'undefined') {
-			this.message = _server_error.message;
-		}
-        if (typeof(_server_error.request_uri) != 'undefined') {
-			this.request_uri = _server_error.request_uri;
-		}
+        if (typeof(_server_error.heading) !== 'undefined') {
+            this.heading = _server_error.heading;
+        }
+        if (typeof(_server_error.message) !== 'undefined') {
+            this.message = _server_error.message;
+        }
+        if (typeof(_server_error.request_uri) !== 'undefined') {
+            this.request_uri = _server_error.request_uri;
+        }
+    }
+    else if ($.is_class(_class, "KALS_language_param")) {
+        var _lang = _class;
+        this.message = KALS_context.lang.line(_lang);
     }
     else {
         if ($.is_null(_message) && $.is_string(_class)) {
@@ -36,16 +48,30 @@ function KALS_exception(_class, _message) {
             _class = null;
         }
         
-        var _class_name = false;
-        if ($.isset(_class)) {
-			_class_name = $.get_class(_class);
+		var _base_url = KALS_context.get_base_url();
+		if ($.is_string(_class) && _class.substr(0, _base_url.length) === _base_url) {
+			_message = KALS_context.lang.line(_message);
+			
+			var _url = _class;
+			//_message = _message + '\n <br /><a href="'+_url+'" target="_blank">'+_url+'</a>';
+			this.request_uri = _url;
 		}
-            
-        if (false != _class_name) {
-			_message = '[' + _class_name + '] ' + _message;
-		}
+		else {
+			var _class_name = false;
+            if ($.isset(_class)) {
+                _class_name = $.get_class(_class);
+            }
+                
+            if (false !== _class_name) {
+                _message = '[' + _class_name + '] ' + _message;
+            }
+			
+	        //_message = new KALS_language_param(_message, _message);
+	        _message = KALS_context.lang.line(_message);
+		}   
         
         this.message = _message;
+		
         //return _message;   
     }
 }

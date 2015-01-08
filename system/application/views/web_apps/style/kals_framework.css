@@ -1,0 +1,136 @@
+.KALS.kals-view.controller-disable {
+    display: none;
+}
+
+.KALS.kals-controller-window {
+    z-index: 2;
+    visibility: hidden;
+}
+
+.KALS.kals-controller-window .dialog-toolbar tr td {
+    line-height: 30px;
+}
+
+.KALS .view-annotation-type {
+    cursor: default;
+}
+
+.KALS.window.kals-controller-window .dialog-content {
+    max-height: 400px;
+    overflow-y: hidden;
+}
+
+.KALS.window.kals-controller-window.absolute .dialog-content {
+    overflow-y: auto;
+}
+
+.KALS.kals-controller-window.absolute {
+    position: fixed;
+    z-index: 999;
+}
+
+/*
+.KALS.kals-controller-window .resize-handler {
+    cursor: 
+}
+*/
+/*
+.KALS.dialog-modal.window.kals-controller-window.absolute {
+    height: auto;
+    width: 600px;
+}
+
+.KALS.dialog-modal.kals-controller-window.absolute {
+    min-width: 200px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.ui-resizable-se {
+	width: 12px;
+	height: 12px;
+	right: -5px;
+	bottom: -5px;
+	background-position: 16px 16px;
+}
+
+
+.ui-resizable-handle {
+	position: absolute;
+	font-size: 0.1px;
+	display: block;
+}
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+	display: none;
+}
+.ui-resizable-n {
+	cursor: n-resize;
+	height: 7px;
+	width: 100%;
+	top: -5px;
+	left: 0;
+}
+.ui-resizable-s {
+	cursor: s-resize;
+	height: 7px;
+	width: 100%;
+	bottom: -5px;
+	left: 0;
+}
+.ui-resizable-e {
+	cursor: e-resize;
+	width: 7px;
+	right: -5px;
+	top: 0;
+	height: 100%;
+}
+.ui-resizable-w {
+	cursor: w-resize;
+	width: 7px;
+	left: -5px;
+	top: 0;
+	height: 100%;
+}
+.ui-resizable-se {
+	cursor: se-resize;
+	width: 12px;
+	height: 12px;
+	right: 1px;
+	bottom: 1px;
+}
+.ui-resizable-sw {
+	cursor: sw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	bottom: -5px;
+}
+.ui-resizable-nw {
+	cursor: nw-resize;
+	width: 9px;
+	height: 9px;
+	left: -5px;
+	top: -5px;
+}
+.ui-resizable-ne {
+	cursor: ne-resize;
+	width: 9px;
+	height: 9px;
+	right: -5px;
+	top: -5px;
+}
+*/
+
+.KALS.kals-controller-window .window-loading {
+    display: none;
+}
+
+.KALS.kals-controller-window.loading .window-loading {
+    display: block;
+}
+
+.KALS.kals-controller-window.loading .dialog-content,
+.KALS.kals-controller-window.loading .dialog-heading .dialog-option {
+    display: none;
+}

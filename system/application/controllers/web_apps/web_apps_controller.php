@@ -79,7 +79,9 @@ class Web_apps_controller extends Controller {
                 //如果有快取檔案，回傳快取檔案的內容，記得送出js_header
                 
                 $packed = read_file($cache_path);
-                $this->load->view($this->dir.'display', array('data'=>$packed));
+                if ($packed !== "") {
+                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                }
             }
             else {
                 //如果沒有快取檔案，那麼照以下步驟製作出快取之後，寫入快取檔案
@@ -89,13 +91,17 @@ class Web_apps_controller extends Controller {
                 //write_file($cache_path, $packed);
                 
                 foreach ($path AS $p) {
-                    if ($p == '')
+                    if ($p === '') {
                         continue;
+                    }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
-                    $this->load->view($this->dir.'display', array('data'=>$packed));
+                    if ($packed !== '') {
+                        $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                        $packed_file = $packed_file . $packed;
+                    }
                     //echo $packed;
-                    $packed_file = $packed_file . $packed;
+                    
                 }
             }
         }
@@ -112,11 +118,14 @@ class Web_apps_controller extends Controller {
             //$packed = $this->_combine_js($path);
             
                 foreach ($path AS $p) {
-                    if ($p == '')
+                    if ($p == '') {
                         continue;
+                    }
                     $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
                     $packed = $this->_minify_compression_js($script);
-                    $this->load->view($this->dir.'display', array('data'=>$packed));
+                    if ($packed !== '') {
+                        $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                    }
                     //echo $packed;
                 }
         }
@@ -230,8 +239,9 @@ class Web_apps_controller extends Controller {
      * @return string 壓縮完成的結果
      */
     protected function _minify_compression_js($script) {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $script;
+        }
         
         $packed = '';
         
@@ -239,7 +249,7 @@ class Web_apps_controller extends Controller {
         require_once './system/application/libraries/web_apps/min/lib/JSMinPlus.php';
         //echo '[][][][]'.$packed;
         $packed = JSMinPlus::minify($script);
-        $packed = $packed."\n";
+        //$packed = $packed."\n";
         
         return $packed;
     }
@@ -250,16 +260,18 @@ class Web_apps_controller extends Controller {
      * @return string 壓縮完成的結果
      */
     protected function _minify_compression_css($style) {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $style;
+        }
         
         $packed = '';
         
         //$this->load->library('web_apps/min/lib/JSMinPlus');
         require_once './system/application/libraries/web_apps/min/lib/CSSmin.php';
         //echo '[][][][]'.$packed;
-        if (is_null($this->cssmin))
+        if (is_null($this->cssmin)) {
             $this->cssmin = new CSSmin ();
+        }
         $packed = $this->cssmin->run($style);
         //$packed = $style;
         $packed = $packed;
@@ -274,8 +286,9 @@ class Web_apps_controller extends Controller {
 
     protected function _yui_compression_js($script)
     {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $script;
+        }
 
         
         $this->load->library('web_apps/Minify_YUICompressor');
@@ -319,8 +332,9 @@ class Web_apps_controller extends Controller {
 
     protected function _yui_compression_css($script)
     {
-        if ($this->config->item('output.package.enable') == false)
+        if ($this->_is_config_package_enable() == false) {
             return $script;
+        }
 
         $this->load->library('web_apps/Minify_YUICompressor');
 
@@ -330,23 +344,34 @@ class Web_apps_controller extends Controller {
 
     function load_css($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
 
-        $style = $this->load->view($this->dir.$path, NULL, TRUE);
+        //$style = $this->load->view($this->dir.$path, NULL, TRUE);
+        $style = $this->_initialize_css($path);
+
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
 
         send_css_header($this->output);
         $this->load->view($this->dir.'display', array('data'=>$style));
     }
     
+    /**
+     * 壓縮CSS
+     * @param type $path
+     * @param type $cache_name
+     */
     function pack_css($path, $cache_name) {
         $this->load->helper('file');
         
@@ -391,28 +416,28 @@ class Web_apps_controller extends Controller {
         //$this->load->view($this->dir.'display', array('data'=>$packed));
     }
 
-    function create_pack_css($path, $path2 = NULL)
-    {
-        if (is_array($path))
-        {
+    function create_pack_css($path, $path2 = NULL) {
+        if (is_array($path)) {
             $style = '';
-            foreach ($path AS $p)
-            {
+            foreach ($path AS $p) {
                 $style = $style . $this->create_pack_css($p);
             }
             return $style;
         }
         
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
-            $path = 'style/'.$path;
-        $style = $this->load->view($this->dir.$path, NULL, TRUE);
+        //if (FALSE === starts_with($path, 'style/'))
+        //    $path = 'style/'.$path;
+        
+        //$style = $this->load->view($this->dir.$path, NULL, TRUE);
+        $style = $this->_initialize_css($path);
 
-        if ($this->config->item('output.package.enable'))
-        {
+        
+        if ($this->_is_config_package_enable()) {
             //$style = $this->_compress_css($style);
             /**
              * 不使用YUI的CSS壓縮
@@ -424,14 +449,129 @@ class Web_apps_controller extends Controller {
         }
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
 
         //send_css_header($this->output);
         //$style = $this->load->view($this->dir.'display', array('data'=>$style), TRUE);
         return $style;
     }
     
+    /**
+     * 取得
+     * @param type $path
+     * @param type $replace
+     * @param type $strip_end
+     * @return type
+     */
+    protected function _get_view_prefix($path, $replace = '-', $strip_end = NULL) {
+        $classname = $path;
+        if (!is_null($strip_end)) {
+            $classname = substr($classname,0, (1-  strlen($strip_end)));
+        }
+        $classname = preg_replace('/[\W|\_]/', $replace, $classname);
+
+        $classname = strtolower($classname);
+        return $classname;
+        //$classname = '.kals-view.' . $classname . ' ';
+    }
+    
+    /**
+     * 過濾CSS，把view的CSS處理掉
+     * @param String $path
+     * @return String 過濾過的CSS檔案
+     */
+    private function _initialize_css($path) {
+        $style = $this->load->view($this->dir.$path, NULL, TRUE);
+        $style = $this->_css_replace_base_url($style);
+        
+        
+        if (strpos($path, 'view/') !== FALSE) {
+            $classname = $path;
+            $classname = substr($classname,0, -4);
+            $classname = preg_replace('/[\W|\_]/', "-", $classname);
+            /*
+            $class_array1 = explode('}', $classname);
+            foreach ($class_array1 AS $c_ary1) {
+                $class_ary2 = explode('{', $c_ary1);
+                if (count($class_ary2) > 0) {
+                    $selectors_list = $class_ary2[0];
+                }
+                else {
+                    $selectors_list = $c_ary1;
+                }
+                
+                $selectors = explode(',', $selectors_list);
+                
+            }
+             */
+            
+            $classname = strtolower($classname);
+            $classname = '.kals-view.' . $classname . ' ';
+            
+            //test_msg($classname);
+            
+            // 如果是樣板的話
+            //preg_replace($style, $path, $style);
+            //$style = preg_replace('/[\}|\,]*[\{|\,]/', "" .$classname+"\$0", $style);
+            
+            
+$parts = explode('}', $style);
+foreach ($parts as &$part) {
+    if (empty($part) 
+            || strlen($part) === 0 
+            || strpos($part, '{') === FALSE) {
+        continue;
+    }
+    
+    $part = trim($part);
+    if (substr($part, 0, 1) == '@') {
+        $media_parts = explode('{', $part);
+        foreach ($media_parts AS $media_index => $media_part) {
+            $media_part = trim($media_part);
+            
+            if ($media_index > 0 
+                    && $media_index < count($media_parts) -1
+                    && substr($media_part, 0, 1) != '@') {
+                $media_part = $classname . $media_part;
+                $media_part = trim($media_part);
+            }
+            $media_parts[$media_index] = $media_part; 
+        }
+        $part = implode("{", $media_parts);
+        $part = trim($part);
+    }
+    
+    
+    $subParts = explode(',', $part);
+    foreach ($subParts as &$subPart) {
+        $subPart = trim($subPart);
+        if (substr($part, 0, 1) != '@') {
+            $subPart = $classname . ' ' . $subPart;
+            $subPart = trim($subPart);
+        }
+    }
+
+    $part = implode(', ', $subParts);
+    $part = trim($part);
+    
+}
+
+$style = implode("}\n", $parts);
+            
+            $style = trim($style);
+            $style = str_replace('  ', ' ', $style);
+            //if ($style != '') {
+            //    $style = $classname . $style;
+            //}
+            //test_msg($style);
+        }
+        return $style;
+    }
+            
+
     /**
      * 舊的pack css程式
      * 不應該使用，這只是測試用的
@@ -443,15 +583,17 @@ class Web_apps_controller extends Controller {
      */
     function _20130219_pack_css($path, $path2 = NULL)
     {
-        if (isset($path2))
+        if (isset($path2)) {
             $path .= '/'.$path2;
+        }
 
         $path .= '.css';
-        if (FALSE === starts_with($path, 'style/'))
+        if (FALSE === starts_with($path, 'style/')) {
             $path = 'style/'.$path;
+        }
         $style = $this->load->view($this->dir.$path, NULL, TRUE);
 
-        if ($this->config->item('output.package.enable'))
+        if ($this->_is_config_package_enable())
         {
             $style = $this->_compress_css($style);
             /**
@@ -462,13 +604,31 @@ class Web_apps_controller extends Controller {
         }
 
         //取代網址
-        $base_url = base_url();
-        $style = str_replace('${base_url}', $base_url, $style);
+        //$base_url = base_url();
+        //$base_url = trim($base_url);
+        //$style = str_replace('${base_url}', $base_url, $style);
+        $style = $this->_css_replace_base_url($style);
         
         send_css_header($this->output);
         $this->load->view($this->dir.'display', array('data'=>$style));
     }
     
+    /**
+     * 將CSS中的${base_url}取代成絕對網址
+     * @param String $style 取代前的CSS
+     * @return String 取代後的CSS
+     */
+    private function _css_replace_base_url($style) {
+        //取代網址
+        //$base_url = base_url();
+        $base_url = get_kals_base_url();
+        $base_url = trim($base_url);
+        //$style = str_replace('${base_url} ', $base_url, $style);
+        $style = str_replace('${base_url}', $base_url, $style);
+        
+        
+        return $style;
+    }
 
     /**
      * Converts a CSS-file contents into one string
@@ -508,11 +668,60 @@ class Web_apps_controller extends Controller {
     
     /**
      * 檢查設定檔中是否設定了快取
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141210
+     * 加上$config['cache_disable_domains']的判斷
+     * 
      * @return boolean 是or否
      */
     protected function _is_config_cache_enable() {
-        return $this->config->item('output.cache.enable');
+        if (is_bool($this->_config_cache_enable)) {
+            return $this->_config_cache_enable;
+        }
+        
+        $cache_enable = $this->config->item('output.cache.enable');
+        if ($cache_enable === TRUE) {
+            $referer_host = get_referer_host();
+            if (in_array($referer_host, $this->config->item('output.cache.disable_domains'))) {
+                return FALSE;
+            }
+        }
+        $this->_config_cache_enable = $cache_enable;
+        return $cache_enable;
     }
+    /**
+     * 暫存是否啟用cache指標
+     * @var NULL|Boolean 
+     */
+    private $_config_cache_enable = null;
+    
+    /**
+     * 檢查設定檔中是否設定了壓縮
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20141210
+     * @return boolean 是or否
+     */
+    protected function _is_config_package_enable() {
+        if (is_bool($this->_config_package_enable)) {
+            return $this->_config_package_enable;
+        }
+        
+        $enable = $this->config->item('output.package.enable');
+        if ($enable === TRUE) {
+            $referer_host = get_referer_host();
+            if (in_array($referer_host, $this->config->item('output.package.disable_domains'))) {
+                return FALSE;
+            }
+        }
+        $this->_config_package_enable = $enable;
+        return $enable;
+    }
+    
+    /**
+     * 暫存是否啟用package指標
+     * @var NULL|Boolean 
+     */
+    private $_config_package_enable = null;
             
 
     protected function _disable_cache()
@@ -522,19 +731,34 @@ class Web_apps_controller extends Controller {
 
     protected function _display_jsonp($object, $callback = NULL)
     {
-        if (is_null($callback))
+        if (is_null($callback)) {
             return $object;
+        }
 
-        send_js_header($this->output);
-        $json = json_encode($object);
+        //test_msg($object['policy']['my_custom']);
+        $json = kals_json_encode($object);
         $pos = stripos($callback, '='); // 取得 = 號的位置
-        $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
-        //echo "{$jsonp}({$json})"; // 輸出
+        
+        //test_msg("_display_jsonp", gettype($callback));
+        if ($callback !== NULL && $callback !== "") {
+            $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
+            //echo "{$jsonp}({$json})"; // 輸出
 
-        $vars = array(
-            'callback_hash' => $callback_hash,
-            'json' => $json
-        );
+            $vars = array(
+                'callback_hash' => $callback_hash,
+                'json' => $json
+            );
+            send_js_header($this->output);
+        }
+        else {
+            test_msg("_display_jsonp", "send_text_header");
+            $vars = array(
+                'callback_hash' => NULL,
+                'json' => $json
+            );
+            send_text_header($this->output);
+        }
+        
         $this->load->view($this->dir.'display_jsonp', $vars);
     }
 
@@ -556,18 +780,86 @@ class Web_apps_controller extends Controller {
 
     protected $post_session_index_prefix = 'post_';
 
-    protected function _set_post_session($index, $data)
-    {
+    /**
+     * 判斷輸入參數是否是callback
+     * @param String $param
+     * @return boolean
+     */
+    protected function _is_callback ($param = NULL) {
+        if (is_null($param)) {
+            return FALSE;
+        }
+        else {
+            return (starts_with($param, 'callback='));
+        }
+    }
+    
+    protected function _set_post_session($index, $data) {
         $index = $this->post_session_index_prefix.$index;
-        $this->session->set_flashdata($index, $data);
+        //$this->session->set_flashdata($index, $data);
+        $this->session->set_userdata(array(
+            $index => $data
+        ));
         return $this;
     }
 
     protected function _get_post_session($index)
     {
         $index = $this->post_session_index_prefix.$index;
-        $data = $this->session->flashdata($index);
+        //$data = $this->session->flashdata($index);
+        $data = $this->session->userdata($index);
+        //$this->session->unset_userdata($index);
         return $data;
+    }
+    
+    /**
+     * 取得POST的值
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     * 20131225 來自於annotation_setter
+     * @return String
+     */
+    protected function _get_post_json() {
+        if (isset($_POST['json'])) {
+            //return urldecode($_POST['json']);
+            //return $_POST['json'];
+            
+            $json = $_POST["json"];
+            /**
+             * 20121224 Pulipuli Chen
+             * 移除scope中text包含\'的資料
+             */
+            //$json = str_replace("\\'", "'", $json);
+            $json = stripslashes($json);
+            
+            return $json;
+        }
+        else {
+            //handle_error ('Cannot get json data.');
+            //return "{}";
+            return FALSE;
+        }
+    }
+    
+    /**
+     * 完成POST
+     * 
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     */
+    protected function _display_post_complete() {
+        send_js_header($this->output);
+        $this->load->view('web_apps/display_post_complete');
+    }
+    
+    /**
+     * 顯示給GET資料使用
+     * 
+     * @version 20140517
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com>
+     */
+    protected function _display_get($data) {
+        //send_js_header($this->output);
+        $this->load->view('web_apps/display', array("data" => $data) );
     }
 }
 
