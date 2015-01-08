@@ -56,7 +56,7 @@
 <script type="text/javascript" src="/kals/web_apps/generic/loader/release"></script>
 <script type="text/javascript">  
  KALS_CONFIG = {
-     //user_email: "/kals/help/user.txt",
+     //user_email: "/user.php",
  /**
      * 使用的標註類型
      * 標註類型的順序會照以下設定排列。
@@ -77,7 +77,7 @@
      *     
      *  請自行調整各標註類型的啟用範圍與順序
      */
-    annotation_type_basic: {
+	 annotation_type_basic: {
     },
     
     /**
@@ -92,6 +92,11 @@
      * @type {boolean} = true 可否調整權限
      */
     policy_changable: false,
+	
+	//字數限制
+	annotation_editor: {
+		note_word_minimum_limit: 3,
+	},
 	
 	/**
      * 預先定義標註類型。
@@ -157,11 +162,12 @@
             //order: 1    // 數字越大，排序越上面
         },
      
-      "很奇怪": {
+      "和我想的不一樣": {
             //type_id: 15,
-            hint: '覺得文章意思或標註有問題的地方，並說明理由',
+            hint: '覺得文章/同學的標註內容和我想的不一樣的地方，並請說明理由！',
             option: {
                 background_color: 'rgb(222,120,222)',
+                height: '100%',
                 font_color: 'black'
             },
             anchor: {
@@ -209,6 +215,23 @@
                 respond: true   // 回應標註
             },
             //order: 1    // 數字越大，排序越上面
+        },
+	  "指正": {
+            //type_id: 15,
+            hint: '針對文章的內容，和大家一起討論交換意見吧！',
+            option: {
+                background_color: 'rgb(234,0,0)',
+                font_color: 'white'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: false,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
         }
         /*
         '預先定義2': {
@@ -235,7 +258,7 @@
      * 模組設定(是否啟用)
      * @type {JSON}
      */
-    modules: {
+	 modules: {
         Dashboard:{
             "enable": false
         },	
@@ -251,6 +274,11 @@
              * @type Boolean
              */
             "enable": true,
+            "nav_config": {
+                display: true,
+                nav_type: "common",
+                order: 1
+            },
             /**
              * 安照原本的章節順序排序
              * @type boolean
@@ -273,8 +301,8 @@
                     //"name": "soldier",
                     "name": "士兵",
                     "image_url": "${base_url}/images/stamp_imgs/stamp_soldier.png",
-                    "icon_url": "${base_url}/images/stamp_imgs/stamp_icon_soldier.png",
-                    //"is_qualified": true,
+					"icon_url": "${base_url}/images/stamp_imgs/stamp_icon_soldier.png",
+                    "is_qualified": true,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
@@ -309,11 +337,11 @@
                     /**
                      * 設定是否呈現名單
                      */
-                    "show_list":true,
+                    "set_list":false,
                     /**
                      * 設定是已通知過晉升
                      */
-                    //"is_notify":false,    
+                    "is_notify":false,    
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -339,13 +367,13 @@
                     //"name": "knight",
                     "name": "騎士",
                     "image_url": "${base_url}/images/stamp_imgs/stamp_knight.png",
-                    "icon_url": "${base_url}/images/stamp_imgs/stamp_icon_knight.png",
-                    //"is_qualified": false,
+					"icon_url": "${base_url}/images/stamp_imgs/stamp_icon_knight.png",
+                    "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要晉升騎士的話，請試著標註2篇標註！",
+                    "qualification_message": "想要晉升騎士的話，請試著將各種類型的標註都撰寫一篇吧！",
                     /**
                      * 獲得獎章時候的通知 
                      * @types {String}
@@ -374,19 +402,34 @@
                         //    }
                         //}
                         topic_annotation_count: {
-                            "_total": {
-                                count:2
-                            }
+                            "我知道": {
+                                count:1
+                            },
+                            "新知識": {
+                                count:1
+                            },	
+                            "我不懂": {
+                                count:1
+                            },	
+                            "和我想的不一樣": {
+                                count:1
+                            },	
+                            "補充舉例": {
+                                count:1
+                            },	
+                            "我想說": {
+                                count:1
+                            }								
                         }                      
                     }, //qualifier
                      /**
                      * 設定是否呈現名單
                      */
-                    "show_list":true,
+                    "set_list":false,
                     /**
                      * 設定是已通知過晉升
                      */
-                    //"is_notify":false,                       
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -404,17 +447,17 @@
                     //"name": "bishop",
                     "name": "主教",
                     "image_url": "${base_url}/images/stamp_imgs/stamp_bishop.png",
-                    "icon_url": "${base_url}/images/stamp_imgs/stamp_icon_bishop.png",
-                    //"is_qualified": false,
+					"icon_url": "${base_url}/images/stamp_imgs/stamp_icon_bishop.png",
+                    "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
                      */
-                    "qualification_message": "想要達到主教的話請撰寫8篇標註，並試著完成以下任務吧！"
+                    "qualification_message": "想要達到主教的話請撰寫<b>14</b>篇標註，並試著完成以下任務吧！"
                         //+ "<hr />"
                         + "<ul>"
-                        + "<li>文章中或同學們的標註內容有沒有你知道的地方呢?請試著使用<span style='background-color:#37FF39;font-weight: bold;'>標註類型-我知道</span>撰寫3篇標註，將你的意見說出來吧。</li>"
-                        + "<li>文章中或同學的意見有沒有讓你覺得疑惑的地方呢？請試著使用<span style='background-color:#FF8F19;font-weight: bold'>標註類型-我不懂</span>撰寫2篇標註，來向大家提問題吧。</li>"
+                        + "<li>文章中或同學們的標註內容有沒有你知道的地方呢?請試著使用<span style='background-color:#37FF39;font-weight: bold;'>標註類型-我知道</span>撰寫4篇標註，將你的意見說出來吧。</li>"
+                        + "<li>文章中或同學的意見有沒有讓你覺得疑惑的地方呢？請試著使用<span style='background-color:#FF8F19;font-weight: bold'>標註類型-我不懂</span>撰寫3篇標註，來向大家提問題吧。</li>"
                         + "<li>請試著<b>回應</b>3位同學的標註吧！</li>"
                         + "</ul>",
                     /**
@@ -439,35 +482,39 @@
                      */
                     "qualifier": {
                         topic_annotation_count: {
-                            "_total": {
-                                count:3
-                            }
-                        }
-                        /*
-                        topic_annotation_count: {
                             "_total":{
-                              count:8 
+                              count:14 
                             },
                             "我知道": {
-                              count:3
+                              count:4
                             },
                              "我不懂": {
-                              count:2
-                            }                  
+                              count:3
+                            }
+                            /*"example": {
+                              count:0,
+                            }, */                     
                         },
                         respond_to_user_count: {                  
-                              count:2  
+                              count:3  
                         }
-                        */
+                       /*respond_annotation_count: {
+                            "_respond_total":{
+                              count:3 
+                            }
+                            "confusion": {
+                              count:3
+                            }  
+                        }*/
                     },
                      /**
                      * 設定是否呈現名單
                      */
-                    "show_list":true,
+                    "set_list":false,
                     /**
                      * 設定是已通知過晉升
                      */
-                    //"is_notify":false,                       
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -485,7 +532,8 @@
                     //"name": "castle",
                     "name": "城主",
                     "image_url": "${base_url}/images/stamp_imgs/stamp_castle.png",
-                    //"is_qualified": false,
+					"icon_url": "${base_url}/images/stamp_imgs/stamp_icon_castle.png",
+                    "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
@@ -493,10 +541,10 @@
                     "qualification_message": "想要晉升城主的話請試著完成以下任務吧！"
                         //+ "<hr/>"
                         + "<ul>"
-                        + "<li>文章中或同學的討論有沒有你第一次學到的知識呢？請試著使用<span style='background-color:#F7FA00;font-weight:bold;'>標註類型-新知識</span>撰寫3篇標註來說明吧。</li>"
-                        + "<li>對於文章內容或是同學的想法你有什麼想要額外補充資料或舉例的呢？請試著使用<span style='background-color:#F2F8F8;font-weight:bold;'>標註類型-補充舉例</span>撰寫3篇標註分享給同學吧。</li>"
+                        + "<li>文章中或同學的討論有沒有你第一次學到的知識呢？請試著使用<span style='background-color:#F7FA00;font-weight:bold;'>標註類型-新知識</span>撰寫4篇標註來說明吧。</li>"
+                        + "<li>對於文章內容或是同學的想法你有什麼想要額外補充資料或舉例的呢？請試著使用<span style='background-color:#F2F8F8;font-weight:bold;'>標註類型-補充舉例</span>撰寫4篇標註分享給同學吧。</li>"
                         + "<li>請試著<span style='font-weight:bold;'>回應</span>6位同學的標註吧</li>"
-                        + "<li>多多和同學回應討論，並試著獲得2位同學的回應吧！</li>"
+                        + "<li>多多和同學回應討論，並試著獲得3位同學的回應吧！</li>"
                         + "</ul>",
                 
                     /**
@@ -520,35 +568,37 @@
                      */
                     "qualifier": {
                         topic_annotation_count: {
-                            "_total": {
-                                count:4
-                            }
-                        }
-                        /*
-                        topic_annotation_count: {
+                            "_total":{
+                              count:14
+                            },
                             "新知識": {
-                              count:3
+                              count:4
                             },
                             "補充舉例": {
+                              count:4
+                            },
+							"我知道": {
+                              count:4
+                            },
+                             "我不懂": {
                               count:3
-                            }                      
+                            }							
                         },
                         respond_to_user_count: {                  
-                              count:6 
+                              count:6
                         },
                         responded_user_count: {
-                            count:2  
+                            count:3  
                         }
-                        */
                     },
                     /**
                      * 設定是否呈現名單
                      */
-                    "show_list":true,  
+                    "set_list":false,  
                     /**
                      * 設定是已通知過晉升
                      */
-                    //"is_notify":false,                       
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}
@@ -566,8 +616,8 @@
                     //"name": "king",
                     "name": "國王",
                     "image_url": "${base_url}/images/stamp_imgs/stamp_king.png",
-                    "icon_url": "${base_url}/images/stamp_imgs/stamp_icon_king.png",
-                    //"is_qualified": false,
+					"icon_url": "${base_url}/images/stamp_imgs/stamp_icon_king.png",
+                    "is_qualified": false,
                     /**
                      * 如何獲得獎章的訊息
                      * @types {String}
@@ -575,9 +625,10 @@
                     "qualification_message": "想要成為國王的話請試著完成以下任務吧！" 
                             //+ "<hr/>" 
                             + "<ul>"
-                            + "<li>對於文章或同學們的標註內容你有什麼想法呢？請試著使用<span style='background-color:#3799FF;font-weight: bold;'>標註類型-我想說</span>撰寫4篇標註來將你的意見說出來吧。</li>"
-                            + "<li>文章中或同學的討論中有什麼讓你覺得奇怪的地方嗎？請試著使用<span style='background-color:#FF55FD;font-weight: bold'>標註類型-很奇怪</span>撰寫2篇標註和同學們一起討論吧！</li>"
-                            + "<li>你同意同學們的說法嗎？覺得認同的話就大方地給他一個<span style='color:red;font-weight:bold;'>愛心</span>吧！</li>"
+                            + "<li>對於文章或同學們的標註內容你有什麼想法呢？請試著使用<span style='background-color:#3799FF;font-weight: bold;'>標註類型-我想說</span>撰寫5篇標註來將你的意見說出來吧。</li>"
+                            + "<li>文章中或同學的討論中有什麼讓你覺得奇怪的地方嗎？請試著使用<span style='background-color:#FF55FD;font-weight: bold'>標註類型-和我想的不一樣</span>撰寫3篇標註和同學們一起討論吧！</li>"
+                            + "<li>同學們所撰寫的標註中有讓你覺得不對或是錯誤的地方嗎？請試著使用<span style='background-color:#EA0000;font-weight: bold'>回應標註類型-指正</span>撰寫3篇標註，指出同學們錯誤的地方吧！</li>"                            
+							+ "<li>你同意同學們的說法嗎？覺得認同的話就大方地給他一個<span style='color:red;font-weight:bold;'>愛心</span>吧！</li>"
                             + "<li>多多和同學討論並回應吧！</li>"
                             + "</ul>",
                     /**
@@ -600,42 +651,68 @@
                      * @types {JSON}
                      */
                     "qualifier": {
-                        topic_annotation_count: {
-                            "_total": {
-                                count:5
-                            }
-                        }
-                        /*
-                        topic_annotation_count: {
-                             "我想說": {
+                        topic_annotation_count: { //主題標註類型條件
+                            //count:3,
+                           // "_total":{
+                           //   count:20  
+                           //},
+						    "_total":{
+                              count:14
+                            },
+                            "新知識": {
                               count:4
                             },
-                            "很奇怪": {
-                              count:2
+                            "補充舉例": {
+                              count:4
+                            },
+							"我知道": {
+                              count:4
+                            },
+                             "我不懂": {
+                              count:3
+                            },	
+                             "我想說": {
+                              count:5
+                            },
+                            "和我想的不一樣": {
+                              count:3
                             }                     
+                        },
+                        respond_annotation_count: { //回應標註類型條件
+                            "指正": {
+                              count:3
+                            },                            
+							//"_respond_total":{
+                             // count:11  
+                            //}
                         },
                         respond_to_user_count: {                  
                               count:10
                         },
                         responded_user_count: {
-                            count:3  
+                            count:6 
                         },
+                        //liked_count:{
+                       //     count:2
+                        //},
                         like_to_users_count: {
                             count:6  
                         }, 
                         liked_users_count: {
                             count:3  
-                        } 
-                        */
+                        },
+						annotation_count_rank: { //名次
+							count:3
+						},
                     },
                     /**
                      * 設定是否呈現名單
                      */
-                    "show_list":true,  
+                    "set_list":true,  
                     /**
                      * 設定是已通知過晉升
                      */
-                    //"is_notify":false,                       
+                    "is_notify":false,                       
                     /**
                      * 權限設定
                      * @types {JSON}

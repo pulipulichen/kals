@@ -521,10 +521,13 @@ KALS_controller.prototype.search_annotation = function (_param) {
 
 /**
  * 取得現在使用的標註類型
+ * topic: 只有主題標註使用
+ * respond: 只有回覆時使用
+ * 預設：全部啟用
  * @returns {Array|Annotation_type_param} 包含標註類型的陣列
  */
-KALS_controller.prototype.get_annotation_types = function () {
-    var _type_param_list = KALS_context.create_type_param_list();
+KALS_controller.prototype.get_annotation_types = function (_enable_type) {
+    var _type_param_list = KALS_context.create_type_param_list(_enable_type);
     return _type_param_list;
 };
 
