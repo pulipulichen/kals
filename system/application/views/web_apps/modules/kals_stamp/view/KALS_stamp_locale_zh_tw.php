@@ -27,7 +27,7 @@ $lang["statistic_topic_annotation_count"] = "主題標註";
 $lang["statistic_topic_knowed_count"] = "我知道";
 $lang["statistic_topic_knowledge_count"] = "新知識";
 $lang["statistic_topic_dont_know_count"] = "我不懂";
-$lang["statistic_topic_strange_count"] = "很奇怪";
+$lang["statistic_topic_strange_count"] = "和我想的不一樣";
 $lang["statistic_topic_predefined_count"] = "補充舉例";
 $lang["statistic_topic_discuss_count"] = "我想說";
 
@@ -37,14 +37,14 @@ $lang["statistic_topic_annotation_importance_count"] = "主題重要標註";
 $lang["statistic_topic_annotation_confusion_count"] = "主題困惑標註";
 $lang["statistic_topic_annotation_summary_count"] = "主題摘要標註";
 
-$lang["statistic_responded_annotation_count"] = "被別人回覆的標註";
-$lang["statistic_respond_to_annotation_count"] = "回覆別人的標註";
-$lang["statistic_responded_users_count"] = "有多少人回覆我";
-$lang["statistic_respond_to_users_count"] = "我回覆了幾個人";
+$lang["statistic_responded_annotation_count"] = "被別人回應的標註";
+$lang["statistic_respond_to_annotation_count"] = "回應別人的標註";
+$lang["statistic_responded_users_count"] = "有多少人回應我";
+$lang["statistic_respond_to_users_count"] = "我回應了幾個人";
 $lang["statistic_like_to_users_count"] = "我喜愛了幾個人";
 $lang["statistic_liked_users_count"] = "有幾個人喜愛我";
-$lang["statistic_liked_count"] = "我得到多少愛心";
-$lang["statistic_like_to_count"] = "我送出多少愛心";
+$lang["statistic_liked_count"] = "我得到多少顆愛心";
+$lang["statistic_like_to_count"] = "我送出多少顆愛心";
 $lang["statistic_count_ranking"] = "我在班上的名次";
 
 $lang["annotation_counts"] = "進度統計";
