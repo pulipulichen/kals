@@ -381,7 +381,7 @@
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
     margin: 0;
-    height:18px;
+    height:100%;
 }
 
 .KALS.kals-modal .type-component .type-option.custom .type-option {
