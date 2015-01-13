@@ -433,9 +433,9 @@ KALS_stamp.prototype.set_stamp_statistic = function() {
         //我有多少愛心
         "statistic_liked_count": KALS_context.user.get_liked_count(),
         //我送出去多少愛心
-        "statistic_like_to_count": KALS_context.user.get_like_to_count(),
+        "statistic_like_to_count": KALS_context.user.get_like_to_count()
         //我現在在班上的名次
-        "statistic_count_ranking": KALS_context.user.get_annotation_count_ranking()
+        //"statistic_count_ranking": KALS_context.user.get_annotation_count_ranking()
 
     };
     
@@ -1308,16 +1308,16 @@ KALS_stamp.prototype.check_qualification_annotation_count_ranking = function(_us
     
     var _annotation_count_ranking = _user.get_annotation_count_ranking(); //取得現在的排名名次
     //$.test_msg("NO6.annotation_count_ranking = ", _config.count);//現在的排名限制條件設定是幾名
-    KALS_util.notify("NO6.annotation_count_ranking"+ _config.count + " user = " + _annotation_count_ranking);
+    //KALS_util.notify("NO6.annotation_count_ranking"+ _config.count + " user = " + _annotation_count_ranking);
     if ( _annotation_count_ranking > _config.count ){
        // 不合格
        _stamp_qualified = false;
-        KALS_util.notify("第6項annotation_count_ranking未達成"+ _config.count + " user = " + _annotation_count_ranking);
+        //KALS_util.notify("第6項annotation_count_ranking未達成"+ _config.count + " user = " + _annotation_count_ranking);
        //break;
     }
     else { // 合格
        _stamp_qualified = true;
-       KALS_util.notify("第6項annotation_count_ranking已達成"+ _config.count + " user = " + _annotation_count_ranking);
+       //KALS_util.notify("第6項annotation_count_ranking已達成"+ _config.count + " user = " + _annotation_count_ranking);
     }
     
     return _stamp_qualified;
