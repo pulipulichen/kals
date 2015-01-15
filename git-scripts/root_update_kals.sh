@@ -6,7 +6,12 @@
 # 4. ~/root_update_kals.sh
 
 KALS_PATH=/var/www/moodle/kals
-BRANCH=kals/master
+export KALS_PATH
+KALS_BRANCH=kals/master
+export KALS_BRANCH
 
 chmod 700 "$KALS_PATH"/git-scripts/*.sh
 "$KALS_PATH"/git-scripts/update_kals.sh
+
+"$KALS_PATH"/git-scripts/clean_cache.sh
+"$KALS_PATH"/git-scripts/create_cache.sh
