@@ -99,6 +99,30 @@ HAVING COUNT(annotation.annotation_id) >='$rule_count'";
                         
                    }
                 }//if($type === "topic_annotation_count"){
+                //回應標註類型的條件
+                else if($type === "respond_annotation_count"){
+                    //同topic，查詢的條件要全部取出
+                    foreach ($rule AS $rule_type => $rule_value ){
+                        // 取到最底層的count值
+                        test_msg("rule_type = ",$rule_type);
+                        test_msg("rule_value =", $rule_value["count"] ); 
+                        $rule_count = $rule_value["count"];   
+                        
+                        //取出條件後開始進行查詢
+                        $table = "SELECT annotation.user_id
+FROM annotation JOIN webpage2annotation ON ( annotation.annotation_id = webpage2annotation.annotation_id ) JOIN type ON (annotation.annotation_type_id = type.type_id)
+WHERE webpage_id = '$webpage_id'
+AND annotation.topic_id IS NOT NULL 
+AND annotation.deleted = false 
+AND type.name = '$rule_type'
+GROUP BY annotation.user_id
+HAVING COUNT(annotation.annotation_id) >='$rule_count'";  
+                    
+                        //把查出來的表(array)塞到另一個arry中
+                       array_push($qualifier_tables, $table);
+                  }//foreach ($rule AS $rule_type => $rule_value ){         
+                    
+                }// else if($type === "respond_annotation_count"){
                 // 回應多少人
                  else if ($type === "respond_to_user_count") {
                      $respond_to_user_count = $rule["count"];
@@ -164,7 +188,16 @@ GROUP BY liked.me
 HAVING count(liked.me) >='.$liked_user_count;
                     
                      array_push($qualifier_tables, $table);
-                }
+                }//else if ($type === "liked_users_count"){
+                // annotation_count的排名
+                else if ($type === "annotation_count_ranking"){
+                    $annotation_count_rank = $rule["count"];
+                    $table = 'SELECT user_id
+FROM user_annotation_count_ranking
+WHERE webpage_id = '.$webpage_id.' and rank <='.$annotation_count_rank;
+                    
+                     array_push($qualifier_tables, $table);
+                }//else if ($type === "annotation_count_rank"){
                 
             }  //foreach ($qualifier AS $type => $rule){
             
