@@ -668,15 +668,15 @@ jQuery.is_html_element = function (_element) {
     
     //$.test_msg([_class_name, _element.constructor]);
     if (_class_name === false) {
-		return false;
+            return false;
 	}
     if (this.starts_with(_class_name, 'HTML') &&
 	(this.ends_with(_class_name, 'Element') || this.ends_with(_class_name, 'ElementConstructor'))) {
 		// 2010.9.3 Android會把HTML元素判斷為「HTMLDivElementConstructor」之類的
-		return true;
+            return true;
 	}
 	else {
-		return false;
+            return false;
 	}
 };
 
@@ -685,13 +685,13 @@ jQuery.is_html_element = function (_element) {
  * @param {Object} _obj
  */
 jQuery.isset = function (_obj) {
-    if (typeof(_obj) == "undefined" ||
-	this.is_null(_obj) === true) {
-		return false;
-	}
-	else {
-		return true;
-	}
+    if (typeof(_obj) === "undefined" 
+            || this.is_null(_obj) === true) {
+        return false;
+    }
+    else {
+        return true;
+    }
 };
 
 /**
@@ -706,19 +706,19 @@ jQuery.object_isset = function (_object_path) {
     var _path_now = '';
     for (var _key in _paths) {
         if (_path_now !== '') {
-			_path_now = _path_now + '.';
-		}
+            _path_now = _path_now + '.';
+        }
         _path_now = _path_now + _paths[_key];
         
         var _test_path = _path_now;
         if (this.ends_with(_test_path, '()')) {
-			_test_path = _test_path.substr(0, _test_path.length - 2);
-		}
+            _test_path = _test_path.substr(0, _test_path.length - 2);
+        }
         
         var _result = eval('typeof('+_test_path+')');     
-        if (_result == 'undefined') {
-			return false;
-		}
+        if (_result === 'undefined') {
+            return false;
+        }
     }
     return true;
 };
@@ -729,6 +729,7 @@ jQuery.object_isset = function (_object_path) {
 
 /**
  * 檢查字串是否是網址
+ * @author Pulipuli Chen 20150115
  * @param {String} _url
  * @returns {Boolean}
  */
@@ -746,6 +747,43 @@ jQuery.is_link = function(_url) {
     else {
         return false;
     }
+};
+
+/**
+ * 檢查字串是否是base64資料串
+ * @author Pulipuli Chen 20150115
+ * @param {String} _url
+ * @returns {Boolean}
+ */
+jQuery.is_base64 = function(_url) {
+     //data:image/jpeg;base64,/9j/4AAQSk...
+    _url = $.trim(_url);
+    
+    if (this.starts_with(_url, 'data:') &&
+	_url.indexOf(";base64,") > 10) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+/**
+ * 分析base64的副檔名
+ * @author Pulipuli Chen 20150115
+ * @param {String} _url
+ * @returns {Boolean}
+ */
+jQuery.parse_base64_ext = function(_url) {
+    //data:image/jpeg;base64,/9j/4AAQSk...
+    
+    if (this.is_base64(_url) === false) {
+        return null;
+    }
+    
+    var _split = _url.indexOf(";");
+    var _ext = _url.substring(5, _split);
+    return _ext;
 };
 
 /**
@@ -840,25 +878,41 @@ jQuery.is_image = function(_url) {
      */
     _url = $.trim(_url);
     
-    if (false === this.is_link(_url)) {
-        return false;
-    }
-    var _param = this.parse_url(_url);
-    if (this.is_null(_param) || this.is_null(_param.path)) {
-        return false;
-    }
-    var _path = _param.path;
-    var _ext = this.parse_extension_name(_path);
-    if (this.is_null(_ext)) {
-        return false;
-    }
-    var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
-    if (this.inArray(_ext, _image_array) !== -1) {
-        return true;
+    if (this.is_link(_url)) {
+        var _param = this.parse_url(_url);
+        if (this.is_null(_param) || this.is_null(_param.path)) {
+            return false;
+        }
+        var _path = _param.path;
+        var _ext = this.parse_extension_name(_path);
+        if (this.is_null(_ext)) {
+            return false;
+        }
+        var _image_array = ['jpg', 'jpeg', 'gif', 'png'];
+        if (this.inArray(_ext, _image_array) !== -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }   //if (this.is_link(_url)) {
+    else if (this.is_base64(_url)) {
+        var _ext = this.parse_base64_ext(_url);
+        if (this.is_null(_ext)) {
+            return false;
+        }
+        
+        if ($.starts_with(_ext, "image/")) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     else {
         return false;
     }
+        
 };
 
 /**
@@ -916,6 +970,11 @@ jQuery.get_youtube_id = function(_url) {
     return _id;
 };
 
+/**
+ * 輸入網址，取得其副檔名
+ * @param {String} _path
+ * @returns {String|null}
+ */
 jQuery.parse_extension_name = function (_path) {
     var _dot = _path.lastIndexOf('.');
     var _slash = _path.lastIndexOf('/');
@@ -924,6 +983,10 @@ jQuery.parse_extension_name = function (_path) {
     }
     else {
         var _ext = _path.substr(_dot + 1);
+        
+        // 全部變成小寫吧
+        _ext = _ext.toLowerCase();
+        
         return _ext;
     }
 };
