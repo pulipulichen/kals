@@ -1,5 +1,5 @@
-if [ -z "$BRANCH" ]; BRANCH=kals/master; fi
-if [ -z "$KALS_PATH" ]; KALS_PATH=/var/www/moodle/kals; fi
+if [ -z "$BRANCH" ]; then BRANCH=kals/master; fi
+if [ -z "$KALS_PATH" ]; then KALS_PATH=/var/www/moodle/kals; fi
 
 cd $KALS_PATH
 git --git-dir="$KALS_PATH"/.git clean -f -d
