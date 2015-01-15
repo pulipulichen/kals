@@ -7,7 +7,7 @@
 
 KALS_PATH=/var/www/moodle/kals
 export KALS_PATH
-KALS_BRANCH=kals/master
+KALS_BRANCH=origin/master
 export KALS_BRANCH
 
 chmod 700 "$KALS_PATH"/git-scripts/*.sh
