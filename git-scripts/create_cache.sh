@@ -1,3 +1,5 @@
+cd /tmp
+
 wget http://localhost/kals/web_apps/generic/toolkit
 rm -f toolkit
 
