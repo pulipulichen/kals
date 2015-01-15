@@ -771,12 +771,22 @@ class generic extends Web_apps_controller {
         $this->load_js($path);
     }
 
+    /**
+     * KALS網頁第一個讀取的程式碼
+     * @author Pulipuli Chen 20150115
+     * @param Boolean $is_release
+     */
     function loader($is_release = NULL)
     {
+        /**
+         * @author Pulipuli Chen 20150115
+         */
+        $this->_enable_cache();
+        
         //if (is_null($is_release) == false)
         if (true)
         {
-                $this->dir = $this->release_dir;
+            $this->dir = $this->release_dir;
         }
         
         $path = 'core/KALS_loader';
