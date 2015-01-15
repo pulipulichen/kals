@@ -611,9 +611,19 @@ class generic extends Web_apps_controller {
 
     }
     
-
+    /**
+     * KALS網頁使用css
+     * @author Pulipuli Chen 20150115
+     */
     function style()
     {
+        /**
+         * 加入快取功能
+         * @author Pulipuli Chen 20150115
+         */
+        $this->_enable_cache();
+        
+        
     	/*
         $list = array(
             'generic',
@@ -761,8 +771,18 @@ class generic extends Web_apps_controller {
         $this->load->view($this->release_dir.'display', array('data'=>$style));
     }
 
+    /**
+     * KALS網頁使用的jQuery
+     * @author Pulipuli Chen 20150115
+     */
     function jquery()
     {
+        /**
+         * 加入快取功能
+         * @author Pulipuli Chen 20150115
+         */
+        $this->_enable_cache();
+        
         $path = array(
             'libraries/jquery',
             //'libraries/jquery-patch',
@@ -779,6 +799,7 @@ class generic extends Web_apps_controller {
     function loader($is_release = NULL)
     {
         /**
+         * 加入快取功能
          * @author Pulipuli Chen 20150115
          */
         $this->_enable_cache();
