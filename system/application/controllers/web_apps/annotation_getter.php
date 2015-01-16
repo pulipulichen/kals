@@ -397,8 +397,9 @@ class Annotation_getter extends Web_apps_controller {
         {
             $search->set_target_newer_update($check_time);
         }
-
-        $search->add_order(1, FALSE);
+		
+		$search->set_limit(500);
+        $search->add_order(6, TRUE);
         $search->set_target_topic(TRUE);
         //$search->set_target_webpage($this->url);
         
@@ -406,13 +407,16 @@ class Annotation_getter extends Web_apps_controller {
         
         //不限定全部標註
         //$search->set_target_over_score($recommend_by);
-        
+        $score = 0;
+		
         //取得搜尋結果
         foreach ($search AS $annotation)
         {
 
             //如果要讓標註指引有分數層次的差別，則請解開這邊的註解
-            $score = $annotation->get_score(0)->get_score();
+            // @author Pulipuli Chen 20150116
+            // 分層次會吃掉大量記憶體，我們還是不要分層次就好，全部是0的這一層
+            //$score = $annotation->get_score(0)->get_score();
 
             $score_type = $this->parse_navigation_level($score);
             
