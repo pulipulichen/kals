@@ -279,6 +279,13 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      */
     enable_search_toolbar: true,
+    
+    /**
+     * 是否啟用離開時提示訊息
+     * @author Pulipuli Chen 20150117
+     * @type Boolean
+     */
+    enable_exit_confirm: false,
     	
     //----------------------------
     

@@ -23,8 +23,7 @@ function Init_component (_onstart, _oncomplete) {
         'KALS_text', 
         'KALS_window', 
         'site_reform',
-        'modules_config',
-        "webpage_info"
+        'modules_config'
     ];
 }
 
@@ -53,6 +52,7 @@ Init_component.prototype._$onstart = function () {
     KALS_text = new KALS_text();
     
     // 執行Site_reform
+    KALS_context.site_reform.add_exit_confirm();
     KALS_context.site_reform.reform(function () {
         _this.complete('site_reform');
     });
@@ -75,13 +75,10 @@ Init_component.prototype._$onstart = function () {
     KALS_context.loader.load_modules_config(function () {
         //$.test_msg("Init_component" , "modules_config");
         _this.complete("modules_config");
-    });
-    
-    /**
-     * @author 20140519 Pulipuli Chen
-     */ 
-    KALS_context.loader.load_webpage_info(function () {
-        _this.complete("webpage_info");
+        
+        /**
+         * @author 20150117 Pulipuli Chen
+         */
         KALS_text.init_start(function () {
             //$.test_msg("Init_component", "KALS_text");
             _this.complete('KALS_text');

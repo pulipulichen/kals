@@ -177,5 +177,22 @@ Site_reform.prototype.is_site = function (_target_site) {
     return ($.inArray(_target_site, this._matched_site) > -1);
 };
 
+/**
+ * 增加視窗關閉時確認的訊息
+ * @author Pulipuli Chen 20150117
+ */
+Site_reform.prototype.add_exit_confirm = function () {
+    if (KALS_CONFIG.enable_exit_confirm === false) {
+        return this;
+    }
+    
+    var _msg = KALS_context.lang.line("alert.exit_confirm");
+    $(window).bind('beforeunload', function (e) {
+        return _msg;
+    });
+    
+    return this;
+};
+
 /* End of file Site_reform */
 /* Location: ./system/application/views/web_apps/Site_reform.js */

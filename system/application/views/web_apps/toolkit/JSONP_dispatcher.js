@@ -77,13 +77,15 @@ JSONP_dispatcher.prototype.get_load_url = function () {
  * _callback = function (_dispatcher, _data) {
  *     //可以利用_data跟_dispatcher來做點事情，像是_dispatcher.get_data()
  * };
+ * @param {null|String} _fixed_callback 設定固定的callback，可以讓CodeIgnitor進行快取
  */
-JSONP_dispatcher.prototype.load = function (_arg, _callback) {
+JSONP_dispatcher.prototype.load = function (_arg, _callback, _fixed_callback) {
     
     if ($.is_function(_arg) && $.is_null(_callback)) {
         _callback = _arg;
         _arg = null;
     }
+    
     var _this = this;
     
     //$.test_msg('JSONP_dispatcher load', this._$load_url);
@@ -103,6 +105,10 @@ JSONP_dispatcher.prototype.load = function (_arg, _callback) {
         },
         retry: 1
     };
+    
+    if (_fixed_callback !== undefined) {
+        _config.fixed_callback = _fixed_callback;
+    }
     
     if ($.is_function(this._$exception_handle)) {
         _config.exception_handle = function (_data) {

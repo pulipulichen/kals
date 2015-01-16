@@ -455,11 +455,14 @@ KALS_context.load_info = function (_callback) {
     
     //先準備資料
     var _data = {};
-        
+    
+    // 網頁的ID
+    //_data.webpage_id = KALS_context.loader.webpage_id;
+    
     //指引預設
     _data.anchor_navigation_type = KALS_CONFIG.anchor_navigation_type;
-    
-    this.load(_data, _callback);
+        
+    this.load(_data, _callback, "webpage_id_" + KALS_context.loader.webpage_id);
 };
 
 /**

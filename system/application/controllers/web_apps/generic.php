@@ -857,6 +857,14 @@ class generic extends Web_apps_controller {
         // 20140517 Pulipuli Chen
         //$data['webpage_id'] = get_context_webpage()->get_id();
         
+        /**
+         * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20150117
+         * 不，不能這樣做
+         * 要把navigation data拆開來之後再做快取
+         * 快取網址要搭配 webpage_id 跟 user_id
+         */
+        //$this->output->cache($this->config->item('output.cache.info.expiration'));
+        
         $this->_display_jsonp($data, $callback);
     }
     

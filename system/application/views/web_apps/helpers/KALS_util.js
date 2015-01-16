@@ -52,6 +52,9 @@ KALS_util.ajax_get = function (_config) {
     if (_callback_parameter === true) {
         _callback_parameter = "_";
     }
+    else if ($.is_number(_callback_parameter)) {
+        _callback_parameter = "_" + _callback_parameter;
+    }
     
     var _full_callback_parameter = _callback_parameter;
     if ($.is_string(_callback_parameter) && _callback_parameter !== "?") {
@@ -277,6 +280,9 @@ KALS_util.ajax_local_get = function (_config) {
     var _callback_parameter = $.get_parameter(_config, "fixed_callback", "?");
     if (_callback_parameter === true) {
         _callback_parameter = "_";
+    }
+    else if ($.is_int(_callback_parameter)) {
+        _callback_parameter = "_" + _callback_parameter;
     }
     
     var _full_callback_parameter = _callback_parameter;

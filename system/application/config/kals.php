@@ -40,12 +40,13 @@ $config["web_apps.localhost_domains"] = array(
  * 除了本機測試之外，外部測試全部都啟用cache
  */
 $config['output.cache.disable_domains'] = array(
-    //"http://localhost/",
+    "http://localhost/",
     "http://127.0.0.1/"
 );
 
 $config['output.cache.enable'] = true; //是否使用快取功能，預設是true;
 $config['output.cache.expiration'] = 50;  //快取的單位是「分鐘」
+$config['output.cache.navigation_data.expiration'] = 0.25;  //快取的單位是「分鐘」
 
 /**
  * 禁止使用package壓縮程式碼

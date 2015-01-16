@@ -19,29 +19,39 @@ function Init_context() {
     Task_event_dispatcher.call(this);
     
     //this._$schedule_task = ['selector', 'load', "modules", "check_css_loaded"];
-    this._$schedule_task = ['load', "modules", "check_css_loaded"];
+    this._$schedule_task = [
+        'load', 
+        "modules", 
+        "check_css_loaded",
+        "webpage_info"];
     
 }
 
 Init_context.prototype = new Task_event_dispatcher();
 
 Init_context.prototype._$onstart = function () {
+    var _this = this;
+    
     //KALS_context資料的讀取
     
     //$.test_msg('Init_context._$onstart()');
     
     //準備基本資料
-    KALS_context.load_info(function () {
+    KALS_context.loader.load_webpage_info(function () {
+        _this.complete("webpage_info");
         
-        // 讀取模組，載入導覽列
-        var _loaded_modules = KALS_context.module.init();
-        KALS_context.navigation.init(_loaded_modules);
-        KALS_context.init_context.complete('modules');
-        
-        KALS_context.init_context.complete('load');
+        KALS_context.load_info(function () {
+
+            // 讀取模組，載入導覽列
+            var _loaded_modules = KALS_context.module.init();
+            KALS_context.navigation.init(_loaded_modules);
+            KALS_context.init_context.complete('modules');
+
+            // 完成KALS_context的載入
+            KALS_context.init_context.complete('load');
+        });
     });
-    
-    var _this = this;
+        
     $(function () {
        _this._check_css_setup();	
     });

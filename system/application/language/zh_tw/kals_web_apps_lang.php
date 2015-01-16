@@ -8,6 +8,7 @@
  */
 
 $lang['web_apps.alert.heading.error'] = '錯誤';
+$lang['web_apps.alert.exit_confirm'] = '您確定要離開嗎？';
 
 $lang['web_apps.alert.close'] = '關閉';
 $lang['web_apps.alert.open'] = '開啟';
