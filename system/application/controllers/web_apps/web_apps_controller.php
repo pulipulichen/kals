@@ -79,6 +79,7 @@ class Web_apps_controller extends Controller {
                 //如果有快取檔案，回傳快取檔案的內容，記得送出js_header
                 
                 $packed = read_file($cache_path);
+                echo "/*已經被刪除快取之後的狀態*/";
                 if ($packed !== "") {
                     $this->load->view($this->dir.'display_js', array('data'=>$packed));
                 }
@@ -90,6 +91,10 @@ class Web_apps_controller extends Controller {
                 //$packed = $this->_combine_js($path);
                 //write_file($cache_path, $packed);
                 
+                if (is_file($cache_path)) {
+                    unlink($cache_path);
+                }
+                
                 foreach ($path AS $p) {
                     if ($p === '') {
                         continue;
@@ -98,7 +103,8 @@ class Web_apps_controller extends Controller {
                     $packed = $this->_minify_compression_js($script);
                     if ($packed !== '') {
                         $this->load->view($this->dir.'display_js', array('data'=>$packed));
-                        $packed_file = $packed_file . $packed;
+                        //$packed_file = $packed_file . $packed;
+                        write_file($cache_path, "\n;".$packed, "a");
                     }
                     //echo $packed;
                     
@@ -117,22 +123,22 @@ class Web_apps_controller extends Controller {
             //$packed = $this->_minify_compression_js($script);
             //$packed = $this->_combine_js($path);
             
-                foreach ($path AS $p) {
-                    if ($p == '') {
-                        continue;
-                    }
-                    $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
-                    $packed = $this->_minify_compression_js($script);
-                    if ($packed !== '') {
-                        $this->load->view($this->dir.'display_js', array('data'=>$packed));
-                    }
-                    //echo $packed;
+            foreach ($path AS $p) {
+                if ($p == '') {
+                    continue;
                 }
-        }
+                $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
+                $packed = $this->_minify_compression_js($script);
+                if ($packed !== '') {
+                    $this->load->view($this->dir.'display_js', array('data'=>$packed));
+                }
+                //echo $packed;
+            }
+        }   //else
         
-        if ($packed_file != '') {
-            write_file($cache_path, $packed_file);
-        }
+        //if ($packed_file != '') {
+        //    write_file($cache_path, $packed_file);
+        //}
     }
 
     /**

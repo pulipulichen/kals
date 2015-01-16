@@ -389,7 +389,7 @@ class generic extends Web_apps_controller {
     {
         $this->_enable_cache();
         
-        $list = array(            
+        $list = array(      
             ''
         );
 
@@ -413,7 +413,6 @@ class generic extends Web_apps_controller {
         // 取得其他的JavaScript
         $exception_list = $this->_get_javascript_exception_list();
         $other_list_package = $this->_dir_get_list(".js", $exception_list);
-        
         
         $list_package = array_merge($list_package, $other_list_package);
         
