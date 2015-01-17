@@ -104,6 +104,7 @@ class Web_apps_controller extends Controller {
                     if ($packed !== '') {
                         $this->load->view($this->dir.'display_js', array('data'=>$packed));
                         //$packed_file = $packed_file . $packed;
+                        $packed = $this->load->view($this->dir.'display_js', array('data'=>$packed), true);
                         write_file($cache_path, "\n;".$packed, "a");
                     }
                     //echo $packed;
