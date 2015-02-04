@@ -247,7 +247,15 @@ List_note_component.prototype.set_note = function (_note, _callback) {
     //$.test_msg("List_note_component.set_note()", _note);
     //_note = $(_note);
     if (this._show_fulltext === false) {
-        _note = this.extract_abstract(_note);
+        
+        var _note_text = $(_note).text();
+        //$.test_msg("set_note", _note_text);
+        //$.test_msg("set_note is?", [$.is_image(_note_text), $.is_base64(_note_text)]);
+        
+        if ($.is_image(_note_text) === false
+                && $.is_youtube(_note_text)) {
+            _note = this.extract_abstract(_note);
+        }
     }
 	
 	//if ($.is_string(_note)) {

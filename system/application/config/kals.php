@@ -53,8 +53,7 @@ $config['output.cache.expiration'] = 50;  //快取的單位是「分鐘」
  * 規則上同output.cache_disable_domains
  */
 $config['output.package.disable_domains'] = $config['output.cache.disable_domains'];
-
-$config['output.package.enable'] = false; //是否啟用壓縮功能，預設是true;
+$config['output.package.enable'] = true; //是否啟用壓縮功能，預設是true;
 
 // --------
 // KALS User Password Key

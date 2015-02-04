@@ -28,10 +28,28 @@ test("<?= $title ?>", function() {
         
     var _data = {
         "test": "test:data"
-    }
+    };
     
-    var _data_string = $.json_encode(_data);
-    _data = $.json_decode(_data_string);
-    equals(_data_string,
-            '{"test":"test:data"}');
+    //var _data_string = $.json_encode(_data);
+    //_data = $.json_decode(_data_string);
+    //equals(_data_string,
+    //        '{"test":"test:data"}');
+    
+    var _img_url = "http://localhost/image.jpg";
+    equals($.is_image(_img_url),
+           true);
+           
+    var _img_url = "http://localhost/image.JPG";
+    equals($.is_image(_img_url),
+           true);
+           
+    var _base64_url = "data:image/jpeg;base64,/9j/4AAQSk...";
+    equals($.is_base64(_base64_url),
+           true);       
+    
+    equals($.parse_base64_ext(_base64_url),
+           "image/jpeg");  
+           
+    equals($.is_image(_base64_url),
+           true);  
 });
