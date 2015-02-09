@@ -1,0 +1,4 @@
+IDE metadata. Don't track them!
+analysis/
+Configuration. Keep private, don't track!
+config/
