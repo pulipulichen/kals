@@ -94,7 +94,7 @@ if ( ! function_exists('clear_context_user'))
     }
 }
 
-if ( ! function_exists('get_current_webpage'))
+if ( ! function_exists('get_context_webpage'))
 {
     /**
      * @return Webpage

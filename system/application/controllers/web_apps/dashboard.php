@@ -94,6 +94,16 @@ class dashboard extends KALS_model {
         
         $data["activity"] = "Good";
         
+//        $webpage_id = $this->get_current_webpage()->get_id();
+//        $query = $this->db->query('select title from webpage where webpage_id = '.$webpage_id);
+//        $row = $query->row_array();
+//        
+//        $data["from_R"] = $row['title'];
+        
+        $this->load->library("exec_cli/R_betweenness");
+        $result = $this->r_betweenness->get_output();
+        $data["from_R"] = $result;
+        
         return $data;
     }
 }
