@@ -1,9 +1,9 @@
 <?php
 include_once 'Exec_r.php';
 /**
- * R_betweenness
+ * R_in-degree
  *
- * 執行R計算betweenness
+ * 執行R計算in degree
  *
  * @package         KALS
  * @category        Libraries
@@ -13,9 +13,9 @@ include_once 'Exec_r.php';
  * @link            https://github.com/pulipulichen/kals
  * @version         1.0 2014/1/17 下午 08:29:12
  */
-class R_betweenness extends Exec_r {
+class R_indegree extends Exec_r {
     
-    protected $rscript = "D:/betweenness_rscript.r";
+    protected $rscript = "D:/indegree_rscript.r";
     
     protected $algorithm = "";
     protected $options = array();
@@ -202,11 +202,9 @@ class R_betweenness extends Exec_r {
         return $this->output_cache->get_content();
     }
     public function insert_data($file) {
-    
-    
-    
+       
 //        $date = date("Y_m_d_H_i_s");
-//        $file = "D:/tmp/output".$date.".csv";
+//        $file = "D:/tmp/id/output".$date.".csv";
 //        
 //        $query = $this->db->query('select * from stuin');
 //        $row = $query->row_array();
@@ -218,10 +216,8 @@ class R_betweenness extends Exec_r {
 //         }
 //
 //         fclose($fp);
-//            
-//        exec("C:/R/bin/Rscript.exe D:/betweenness_rscript.r $file", $b_output, $return_var);
-    
-        exec("C:/R/bin/Rscript.exe D:/betweenness_rscript.r $file", $b_output, $return_var);
+    exec("C:/R/bin/Rscript.exe D:/betweenness_rscript.r $file", $id_output, $return_var);
+//    exec("C:/R/bin/Rscript.exe D:/indegree_rscript.r $file", $id_output, $return_var);
 //    for($j = 1; $j < count($b_output); $j++){
 //	$usr_id = 1;
 //	$b_output_array = array_map('floatval', explode(" ",$b_output[$j]));	
@@ -241,7 +237,7 @@ class R_betweenness extends Exec_r {
 // }
 //	
 //    }
-    return $b_output;
+    return $id_output;
 
 }
 }

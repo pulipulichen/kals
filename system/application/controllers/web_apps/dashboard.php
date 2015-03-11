@@ -100,11 +100,102 @@ class dashboard extends KALS_model {
 //        
 //        $data["from_R"] = $row['title'];
         
-        $this->load->library("exec_cli/R_betweenness");
-        $result = $this->r_betweenness->get_output();
-        $data["from_R"] = $result;
+//        $output = "";
+//        
+//        foreach (true) {
+//            $result["a"] = 1;
+//            $result["b"] = 2;
+//            
+//            $output = $output . $result["a"] . "," . $result["b"] . "\n";
+//        }
         
+        //$file = "D:/tmp/o1u2qtput.csv";
+        $date = date("Y_m_d_H_i_s");
+        $file = "D:/tmp/output".$date.".csv";
+        
+        $query = $this->db->query('select * from stuin');
+        $row = $query->row_array();
+        $file = "sna".$date.".csv";
+        
+        $fp = fopen($file, 'w');
+        foreach ($row as $fields) {
+                fputcsv($fp, $fields);
+         }
+         fclose($fp);
+        
+        $this->load->library("exec_cli/R_betweenness");
+        $b_output = $this->r_betweenness->insert_data($file);
+        
+        $this->load->library("exec_cli/R_indegree");
+        $id_output = $this->r_indegree->insert_data($file);
+        //$data["from_R"] = $result;
+        
+        //儲存
+        for($j = 1; $j < count($b_output); $j++){
+	$usr_id = 1;
+	$b_output_array = array_map('floatval', explode(" ",$b_output[$j]));
+        $id_output_array = array_map('floatval', explode(" ",$id_output[$j]));
+        $array_count = count($b_output_array);
+        
+        for($x = 1; $x < $array_count; $x++){
+		$caculateb1 = ($array_count-1) * ($array_count-2);
+		$caculateb2 = $caculateb1 / 2;
+		$input_b = $b_output_array[$x]/$caculateb2;
+                
+                $caculateid1 = $array_count-1;
+		$input_id = $id_output_array[$x]/$caculateid1;
+		
+                 $data = array(
+               'user_id' => $usr_id,
+               'betweenness' => $input_b,
+               'indegree' => $input_id
+                );
+                $this->db->insert('stusna', $data);    
+		$usr_id++;
+ }
+	
+    }  
+    
+    
+        //$data["from_R"] = $usr_id;
+        //return $data;
+        
+        //選出來
+        $query = $this->db->query('SELECT * FROM stusna');
+        //$row = $query->row_array();
+        $OrigiArray= array("學習成果不良者為");
+        foreach ($query->result_array() as $row)
+        {
+            if($row['betweenness']>=0.3)
+                $stu_status1 = "A";
+            else
+                $stu_status1 = "B";
+            
+           if($row['indegree']>=0.4)
+                $stu_status2 = "A";
+            else
+                $stu_status2 = "B";
+            
+        
+            $stu_status = $stu_status1."、".$stu_status2;
+            $str_count_a = substr_count($stu_status, "A");
+            $str_count_b = substr_count($stu_status, "B");
+ 
+            
+            if($str_count_a >= 2 ){
+            //echo "<br>使用者『".$row['user_id']."』學習狀況良好<br>";
+            }else{
+            //echo "<br>使用者『".$row['user_id']."』學習狀況很差，需特別注意<br>";
+            array_push($OrigiArray, "<br>",$row['user_id']);
+            } 
+        //echo $row['name'];
+        //echo $row['body'];
+        }
+
+
+        $data["from_R"] = $OrigiArray;
         return $data;
+        
     }
 }
 
