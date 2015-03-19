@@ -108,19 +108,53 @@ class dashboard extends KALS_model {
 //            
 //            $output = $output . $result["a"] . "," . $result["b"] . "\n";
 //        }
+        $webpage_id = $this->get_current_webpage()->get_id();
+        //$query = $this->db->query('SELECT W2A.annotation_id FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
+        $query = $this->db->query('SELECT max(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
+        $max_annotation_id_row = $query->row_array();
+        $max = implode("",$max_annotation_id_row);
+        
+        $query = $this->db->query('SELECT min(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
+        $min_annotation_id_row = $query->row_array();
+        $min = implode("",$min_annotation_id_row);
+        
         
         //$file = "D:/tmp/o1u2qtput.csv";
         $date = date("Y_m_d_H_i_s");
-        $file = "D:/tmp/output".$date.".csv";
+        //$file = "D:/tmp/output".$date.".csv";
+        $file = "D:/tmp/output_".$date.".csv";
         
-        $query = $this->db->query('select * from stuin');
-        $row = $query->row_array();
-        $file = "sna".$date.".csv";
+        //抓出user_id
+        $query = $this->db->query('SELECT DISTINCT AN.user_id FROM annotation AN, annotation TOP WHERE AN.annotation_id >= '.$min.' AND AN.annotation_id <= '.$max.' ORDER BY 1 ASC');
+        $usr_id_row = $query->row_array();
         
+        foreach ($query->result_array() as $usr_id_row)
+        {
+            $i = 0;
+            $usrlist[$i] = $row['user_id'];
+            $i++;
+            
+            }
+        
+        //$query = $this->db->query('select * from stuin');
+        //$row = $query->row_array();
+        $query = $this->db->query('SELECT AN.user_id "user1", TOP.user_id "user2" FROM annotation AN, annotation TOP WHERE AN.annotation_id = TOP.topic_id AND TOP.topic_id is not NULL AND AN.deleted IS FALSE AND AN.annotation_id >= '.$min.' AND AN.annotation_id <= '.$max.' ORDER BY 1 ASC');
+                
         $fp = fopen($file, 'w');
-        foreach ($row as $fields) {
-                fputcsv($fp, $fields);
-         }
+
+        //測試使用者
+        //$usrlist = array(11, 12, 13, 14, 15);
+        foreach ($query->result_array() as $row)
+        {
+            
+            //$row1[0] = $row['user1'] - 10;
+            //$row1[1] = $row['user2'] - 10;
+            $row1[0] = array_search($row['user_id1'], $usrlist) + 1;
+            $row1[1] = array_search($row['user_id2'], $usrlist) + 1;
+         fputcsv($fp, $row1);
+            }
+
+         
          fclose($fp);
         
         $this->load->library("exec_cli/R_betweenness");
@@ -132,7 +166,8 @@ class dashboard extends KALS_model {
         
         //儲存
         for($j = 1; $j < count($b_output); $j++){
-	$usr_id = 1;
+        //$a = 1;    
+	//$usr_id = 1;
 	$b_output_array = array_map('floatval', explode(" ",$b_output[$j]));
         $id_output_array = array_map('floatval', explode(" ",$id_output[$j]));
         $array_count = count($b_output_array);
@@ -145,13 +180,16 @@ class dashboard extends KALS_model {
                 $caculateid1 = $array_count-1;
 		$input_id = $id_output_array[$x]/$caculateid1;
 		
+                $y = $x - 1;
+                $usr_id = $usrlist[$y]; //出啥問題
+                
                  $data = array(
                'user_id' => $usr_id,
                'betweenness' => $input_b,
                'indegree' => $input_id
                 );
                 $this->db->insert('stusna', $data);    
-		$usr_id++;
+		//$usr_id++;
  }
 	
     }  
