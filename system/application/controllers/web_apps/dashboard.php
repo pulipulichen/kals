@@ -108,58 +108,69 @@ class dashboard extends KALS_model {
 //            
 //            $output = $output . $result["a"] . "," . $result["b"] . "\n";
 //        }
+        
+        //抓取webpage_id
         $webpage_id = $this->get_current_webpage()->get_id();
+        
+        //抓取此webpage_id最大的annotation_id
+        //此段邏輯不夠完整
         //$query = $this->db->query('SELECT W2A.annotation_id FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
         $query = $this->db->query('SELECT max(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
         $max_annotation_id_row = $query->row_array();
         $max = implode("",$max_annotation_id_row);
         
+        //抓取此webpage_id最小的annotation_id
+        //此段邏輯不夠完整
         $query = $this->db->query('SELECT min(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
         $min_annotation_id_row = $query->row_array();
         $min = implode("",$min_annotation_id_row);
-        
-        
+                
+        //設定file名稱
         //$file = "D:/tmp/o1u2qtput.csv";
         $date = date("Y_m_d_H_i_s");
         //$file = "D:/tmp/output".$date.".csv";
         $file = "D:/tmp/output_".$date.".csv";
         
-        //抓出user_id
+        //抓出在min跟max之間所有標註的user_id
         $query = $this->db->query('SELECT DISTINCT AN.user_id FROM annotation AN, annotation TOP WHERE AN.annotation_id >= '.$min.' AND AN.annotation_id <= '.$max.' ORDER BY 1 ASC');
         $usr_id_row = $query->row_array();
         
+        //將抓出來的user_id按照順序丟入陣列
         foreach ($query->result_array() as $usr_id_row)
         {
             $i = 0;
-            $usrlist[$i] = $row['user_id'];
+            $usrlist[$i] = $row['user_id']; //有問題嗎?
             $i++;
             
             }
         
+        //抓出互動
         //$query = $this->db->query('select * from stuin');
         //$row = $query->row_array();
         $query = $this->db->query('SELECT AN.user_id "user1", TOP.user_id "user2" FROM annotation AN, annotation TOP WHERE AN.annotation_id = TOP.topic_id AND TOP.topic_id is not NULL AND AN.deleted IS FALSE AND AN.annotation_id >= '.$min.' AND AN.annotation_id <= '.$max.' ORDER BY 1 ASC');
-                
+        
+        //寫入csv檔
         $fp = fopen($file, 'w');
 
         //測試使用者
         //$usrlist = array(11, 12, 13, 14, 15);
         foreach ($query->result_array() as $row)
-        {
-            
+        {            
             //$row1[0] = $row['user1'] - 10;
             //$row1[1] = $row['user2'] - 10;
-            $row1[0] = array_search($row['user_id1'], $usrlist) + 1;
-            $row1[1] = array_search($row['user_id2'], $usrlist) + 1;
-         fputcsv($fp, $row1);
+            //以陣列的index取代user_id
+            $row1[0] = array_search($row['user_id1'], $usrlist) + 1; //有問題吧還要修改
+            $row1[1] = array_search($row['user_id2'], $usrlist) + 1; //有問題吧還要修改
+            fputcsv($fp, $row1);
             }
-
          
-         fclose($fp);
+        fclose($fp);
         
+        //將file丟給R_berweenness進行計算
         $this->load->library("exec_cli/R_betweenness");
         $b_output = $this->r_betweenness->insert_data($file);
         
+        //將file丟給R_indegree進行計算
         $this->load->library("exec_cli/R_indegree");
         $id_output = $this->r_indegree->insert_data($file);
         //$data["from_R"] = $result;
@@ -173,23 +184,26 @@ class dashboard extends KALS_model {
         $array_count = count($b_output_array);
         
         for($x = 1; $x < $array_count; $x++){
-		$caculateb1 = ($array_count-1) * ($array_count-2);
-		$caculateb2 = $caculateb1 / 2;
-		$input_b = $b_output_array[$x]/$caculateb2;
+            
+            //正規化
+            $caculateb1 = ($array_count-1) * ($array_count-2);
+            $caculateb2 = $caculateb1 / 2;
+            $input_b = $b_output_array[$x]/$caculateb2;
                 
-                $caculateid1 = $array_count-1;
-		$input_id = $id_output_array[$x]/$caculateid1;
+            $caculateid1 = $array_count-1;
+            $input_id = $id_output_array[$x]/$caculateid1;
 		
-                $y = $x - 1;
-                $usr_id = $usrlist[$y]; //出啥問題
+            //抓出user_id以進行儲存
+            $y = $x - 1;
+            $usr_id = $usrlist[$y]; //感覺有問題
                 
-                 $data = array(
+            $data = array(
                'user_id' => $usr_id,
                'betweenness' => $input_b,
                'indegree' => $input_id
                 );
-                $this->db->insert('stusna', $data);    
-		//$usr_id++;
+            $this->db->insert('stusna', $data);    
+            //$usr_id++;
  }
 	
     }  
@@ -198,7 +212,7 @@ class dashboard extends KALS_model {
         //$data["from_R"] = $usr_id;
         //return $data;
         
-        //選出來
+        //選出來SNA指標狀況
         $query = $this->db->query('SELECT * FROM stusna');
         //$row = $query->row_array();
         $OrigiArray= array("學習成果不良者為");
@@ -219,12 +233,11 @@ class dashboard extends KALS_model {
             $str_count_a = substr_count($stu_status, "A");
             $str_count_b = substr_count($stu_status, "B");
  
-            
             if($str_count_a >= 2 ){
             //echo "<br>使用者『".$row['user_id']."』學習狀況良好<br>";
             }else{
             //echo "<br>使用者『".$row['user_id']."』學習狀況很差，需特別注意<br>";
-            array_push($OrigiArray, "<br>",$row['user_id']);
+                array_push($OrigiArray, "<br>",$row['user_id']);
             } 
         //echo $row['name'];
         //echo $row['body'];
