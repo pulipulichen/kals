@@ -115,15 +115,15 @@ class dashboard extends KALS_model {
         //抓取此webpage_id最大的annotation_id
         //此段邏輯不夠完整
         //$query = $this->db->query('SELECT W2A.annotation_id FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
-        $query = $this->db->query('SELECT max(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
-        $max_annotation_id_row = $query->row_array();
-        $max = implode("",$max_annotation_id_row);
+        //$query = $this->db->query('SELECT max(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
+        //$max_annotation_id_row = $query->row_array();
+        //$max = implode("",$max_annotation_id_row);
         
         //抓取此webpage_id最小的annotation_id
         //此段邏輯不夠完整
-        $query = $this->db->query('SELECT min(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
-        $min_annotation_id_row = $query->row_array();
-        $min = implode("",$min_annotation_id_row);
+        //$query = $this->db->query('SELECT min(W2A.annotation_id) FROM webpage2annotation W2A WHERE webpage_id = '.$webpage_id.' ORDER BY 1 ASC');
+        //$min_annotation_id_row = $query->row_array();
+        //$min = implode("",$min_annotation_id_row);
                 
         //設定file名稱
         //$file = "D:/tmp/o1u2qtput.csv";
@@ -132,35 +132,58 @@ class dashboard extends KALS_model {
         $file = "D:/tmp/output_".$date.".csv";
         
         //抓出在min跟max之間所有標註的user_id
-        $query = $this->db->query('SELECT DISTINCT AN.user_id FROM annotation AN, annotation TOP WHERE AN.annotation_id >= '.$min.' AND AN.annotation_id <= '.$max.' ORDER BY 1 ASC');
+        $query = $this->db->query('SELECT user_id ' 
+                . 'FROM webpage2annotation ' 
+                . 'JOIN annotation USING (annotation_id)' 
+                . 'WHERE webpage_id = '.$webpage_id.' ' 
+                . 'GROUP BY user_id');
         $usr_id_row = $query->row_array();
         
         //將抓出來的user_id按照順序丟入陣列
+        $userlist = array();
+        $r_user_id = 1;
         foreach ($query->result_array() as $usr_id_row)
         {
-            $i = 0;
-            $usrlist[$i] = $row['user_id']; //有問題嗎?
-            $i++;
-            
-            }
+            $usrlist[$usr_id_row['user_id']] = $r_user_id; //有問題嗎?
+            $r_user_id++;
+        }
+        
+//        foreach ($userlist as $user_id => $r_user_id) {
+//            
+//        }
         
         //抓出互動
         //$query = $this->db->query('select * from stuin');
         //$row = $query->row_array();
-        $query = $this->db->query('SELECT AN.user_id "user1", TOP.user_id "user2" FROM annotation AN, annotation TOP WHERE AN.annotation_id = TOP.topic_id AND TOP.topic_id is not NULL AND AN.deleted IS FALSE AND AN.annotation_id >= '.$min.' AND AN.annotation_id <= '.$max.' ORDER BY 1 ASC');
+        $query = $this->db->query('SELECT topic.user_id "user_topic", reply.user_id "user_reply" '
+                .'FROM annotation topic ' 
+                    . 'JOIN webpage2annotation USING (annotation_id) '
+                    . 'JOIN annotation reply '
+                    .'ON topic.annotation_id = reply.topic_id '
+                    . 'AND reply.topic_id IS NOT NULL ' 
+                    . 'AND topic.deleted IS FALSE ' 
+                    . 'AND reply.deleted IS FALSE '
+                    . 'WHERE webpage_id = '.$webpage_id);
         
         //寫入csv檔
         $fp = fopen($file, 'w');
 
         //測試使用者
         //$usrlist = array(11, 12, 13, 14, 15);
+        
+        $row1 = array();
+        
         foreach ($query->result_array() as $row)
         {            
             //$row1[0] = $row['user1'] - 10;
             //$row1[1] = $row['user2'] - 10;
             //以陣列的index取代user_id
-            $row1[0] = array_search($row['user_id1'], $usrlist) + 1; //有問題吧還要修改
-            $row1[1] = array_search($row['user_id2'], $usrlist) + 1; //有問題吧還要修改
+//            $row1[0] = array_search($row[0], $usrlist) + 1; //有問題吧還要修改 不知該用啥來row
+//            $row1[1] = array_search($row[1], $usrlist) + 1; //有問題吧還要修改
+            
+            $row1[0] = $usrlist[$row['user_topic']];
+            $row1[1] = $usrlist[$row['user_reply']];
+            
             fputcsv($fp, $row1);
             }
          
@@ -183,6 +206,8 @@ class dashboard extends KALS_model {
         $id_output_array = array_map('floatval', explode(" ",$id_output[$j]));
         $array_count = count($b_output_array);
         
+        $origi_array = array("學習成果不良者為");
+        
         for($x = 1; $x < $array_count; $x++){
             
             //正規化
@@ -194,36 +219,24 @@ class dashboard extends KALS_model {
             $input_id = $id_output_array[$x]/$caculateid1;
 		
             //抓出user_id以進行儲存
-            $y = $x - 1;
-            $usr_id = $usrlist[$y]; //感覺有問題
-                
-            $data = array(
-               'user_id' => $usr_id,
-               'betweenness' => $input_b,
-               'indegree' => $input_id
-                );
-            $this->db->insert('stusna', $data);    
+            //$y = $x - 1;
+            //$usr_id = $usrlist[$y]; //感覺這裡有問題
+             
+            $usr_id = array_search($x, $usrlist);
+            
+//            $data = array(
+//               'user_id' => $usr_id,
+//               'betweenness' => $input_b,
+//               'indegree' => $input_id
+//                );
+//            $this->db->insert('stusna', $data);    
             //$usr_id++;
- }
-	
-    }  
-    
-    
-        //$data["from_R"] = $usr_id;
-        //return $data;
-        
-        //選出來SNA指標狀況
-        $query = $this->db->query('SELECT * FROM stusna');
-        //$row = $query->row_array();
-        $OrigiArray= array("學習成果不良者為");
-        foreach ($query->result_array() as $row)
-        {
-            if($row['betweenness']>=0.3)
+            if($input_b>=0.3)
                 $stu_status1 = "A";
             else
                 $stu_status1 = "B";
             
-           if($row['indegree']>=0.4)
+            if($input_id>=0.4)
                 $stu_status2 = "A";
             else
                 $stu_status2 = "B";
@@ -237,15 +250,54 @@ class dashboard extends KALS_model {
             //echo "<br>使用者『".$row['user_id']."』學習狀況良好<br>";
             }else{
             //echo "<br>使用者『".$row['user_id']."』學習狀況很差，需特別注意<br>";
-                array_push($OrigiArray, "<br>",$row['user_id']);
+                $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
+                $row_name = $query->row_array();
+                array_push($origi_array, "<br>", $row_name['name']);
             } 
-        //echo $row['name'];
-        //echo $row['body'];
-        }
-
-
-        $data["from_R"] = $OrigiArray;
+ }
+        $data["from_R"] = $origi_array;
         return $data;
+	
+    }  
+    
+    
+        //$data["from_R"] = $usr_id;
+        //return $data;
+        
+        //選出來SNA指標狀況
+//        $query = $this->db->query('SELECT * FROM stusna');
+//        //$row = $query->row_array();
+//        $origi_array = array("學習成果不良者為");
+//        foreach ($query->result_array() as $row)
+//        {
+//            if($row['betweenness']>=0.3)
+//                $stu_status1 = "A";
+//            else
+//                $stu_status1 = "B";
+//            
+//           if($row['indegree']>=0.4)
+//                $stu_status2 = "A";
+//            else
+//                $stu_status2 = "B";
+//            
+//        
+//            $stu_status = $stu_status1."、".$stu_status2;
+//            $str_count_a = substr_count($stu_status, "A");
+//            $str_count_b = substr_count($stu_status, "B");
+// 
+//            if($str_count_a >= 2 ){
+//            //echo "<br>使用者『".$row['user_id']."』學習狀況良好<br>";
+//            }else{
+//            //echo "<br>使用者『".$row['user_id']."』學習狀況很差，需特別注意<br>";
+//                array_push($origi_array, "<br>",$row['user_id']);
+//            } 
+//        //echo $row['name'];
+//        //echo $row['body'];
+//        }
+
+
+//        $data["from_R"] = $origi_array;
+//        return $data;
         
     }
 }
