@@ -131,7 +131,7 @@ class dashboard extends KALS_model {
         //$file = "D:/tmp/output".$date.".csv";
         $file = "D:/tmp/output_".$date.".csv";
         
-        //抓出在min跟max之間所有標註的user_id
+        //抓出所有標註的user_id
         $query = $this->db->query('SELECT user_id ' 
                 . 'FROM webpage2annotation ' 
                 . 'JOIN annotation USING (annotation_id)' 
@@ -186,23 +186,124 @@ class dashboard extends KALS_model {
             
             fputcsv($fp, $row1);
             }
+        
+        $query = $this->db->query('SELECT topic.user_id "user_topic", reply.user_id "user_reply" '
+                .'FROM annotation topic, annotation reply ' 
+                    . 'JOIN webpage2annotation USING (annotation_id) '
+                    . 'JOIN annotation2respond ar '
+                    . 'ON ar.respond_to = reply.annotation_id '
+                    . 'AND reply.deleted IS FALSE ' 
+                    . 'WHERE webpage_id = '.$webpage_id.' ' 
+                    . 'AND ar.annotation_id = topic.annotation_id '
+                    . 'AND topic.deleted IS FALSE ');    
+        
+        foreach ($query->result_array() as $row)
+        {             
+            $row1[0] = $usrlist[$row['user_topic']];
+            $row1[1] = $usrlist[$row['user_reply']];
+            
+            fputcsv($fp, $row1);
+            }
          
         fclose($fp);
+        
+        //degree需要另外抓取資料
+        $file_degree = "D:/tmp/outputdegree_".$date.".csv";
+        
+        $query = $this->db->query('SELECT CASE WHEN topic.user_id > reply.user_id '
+                . 'THEN topic.user_id ElSE reply.user_id END ' 
+                        . 'AS user_main '
+                . ', CASE WHEN topic.user_id > reply.user_id '
+                . 'THEN reply.user_id ElSE topic.user_id  END '
+                        . 'AS user_sub '
+                . 'FROM annotation topic '
+                    . 'JOIN webpage2annotation USING (annotation_id) '
+                    . 'JOIN annotation reply '
+                    . 'ON topic.annotation_id = reply.topic_id '
+                    . 'AND reply.topic_id IS NOT NULL ' 
+                    . 'AND topic.deleted IS FALSE ' 
+                    . 'AND reply.deleted IS FALSE '
+                    . 'WHERE webpage_id = '.$webpage_id
+                    . 'ORDER BY user_main');
+        
+        //寫入csv檔
+        $fp = fopen($file_degree, 'w');
+
+        //測試使用者
+        //$usrlist = array(11, 12, 13, 14, 15);
+        
+        $row1 = array();
+        
+        foreach ($query->result_array() as $row)
+        {            
+            //$row1[0] = $row['user1'] - 10;
+            //$row1[1] = $row['user2'] - 10;
+            //以陣列的index取代user_id
+//            $row1[0] = array_search($row[0], $usrlist) + 1; //有問題吧還要修改 不知該用啥來row
+//            $row1[1] = array_search($row[1], $usrlist) + 1; //有問題吧還要修改
+            
+            $row1[0] = $usrlist[$row['user_main']];
+            $row1[1] = $usrlist[$row['user_sub']];
+            
+            fputcsv($fp, $row1);
+            }
+        
+        $query = $this->db->query('SELECT CASE WHEN topic.user_id > reply.user_id '
+                . 'THEN topic.user_id ELSE reply.user_id END ' 
+                    . 'AS user_main '
+                . ',CASE WHEN topic.user_id > reply.user_id '
+                . 'THEN reply.user_id ELSE topic.user_id END '
+                    . 'AS user_sub '
+                . 'FROM annotation topic, annotation reply '
+                    . 'JOIN webpage2annotation USING (annotation_id) '
+                    . 'JOIN annotation2respond ar '
+                    . 'ON ar.respond_to = reply.annotation_id '
+                    . 'AND reply.deleted IS FALSE ' 
+                    . 'WHERE webpage_id = '.$webpage_id.' ' 
+                    . 'AND ar.annotation_id = topic.annotation_id '
+                    . 'AND topic.deleted IS FALSE ');    
+        
+        foreach ($query->result_array() as $row)
+        {             
+            $row1[0] = $usrlist[$row['user_main']];
+            $row1[1] = $usrlist[$row['user_sub']];
+            
+            fputcsv($fp, $row1);
+            }
+         
+        fclose($fp);
+        
         
         //將file丟給R_berweenness進行計算
         $this->load->library("exec_cli/R_betweenness");
         $b_output = $this->r_betweenness->insert_data($file);
         
-        //將file丟給R_indegree進行計算
+        $this->load->library("exec_cli/R_degree");
+        $d_output = $this->r_degree->insert_data($file_degree);
+        
+        $this->load->library("exec_cli/R_pagerank");
+        $p_output = $this->r_pagerank->insert_data($file);
+        
+        $this->load->library("exec_cli/R_outdegree");
+        $od_output = $this->r_out_degree->insert_data($file);
+        
         $this->load->library("exec_cli/R_indegree");
         $id_output = $this->r_indegree->insert_data($file);
-        //$data["from_R"] = $result;
+
+        $this->load->library("exec_cli/R_incloseness");
+        $ic_output = $this->r_incloseness->insert_data($file);
+        
+        
         
         //儲存
         for($j = 1; $j < count($b_output); $j++){
         //$a = 1;    
 	//$usr_id = 1;
 	$b_output_array = array_map('floatval', explode(" ",$b_output[$j]));
+        $d_output_array = array_map('floatval', explode(" ",$d_output[$j]));
+        $p_output_array = array_map('floatval', explode(" ",$p_output[$j]));
+        $od_output_array = array_map('floatval', explode(" ",$od_output[$j]));
+        $ic_output_array = array_map('floatval', explode(" ",$ic_output[$j]));
         $id_output_array = array_map('floatval', explode(" ",$id_output[$j]));
         $array_count = count($b_output_array);
         
@@ -214,9 +315,17 @@ class dashboard extends KALS_model {
             $caculateb1 = ($array_count-1) * ($array_count-2);
             $caculateb2 = $caculateb1 / 2;
             $input_b = $b_output_array[$x]/$caculateb2;
-                
-            $caculateid1 = $array_count-1;
-            $input_id = $id_output_array[$x]/$caculateid1;
+            
+            $caculated1 = $array_count-1;
+            $input_d = $d_output_array[$x]/$caculated1;
+            
+            $input_p = $p_output_array[$x];
+            
+            $input_od = $od_output_array[$x]/$caculated1;
+            
+            $input_id = $id_output_array[$x]/$caculated1;
+            
+            $input_ci = $ic_output_array[$x] * $caculated1;
 		
             //抓出user_id以進行儲存
             //$y = $x - 1;
@@ -224,6 +333,72 @@ class dashboard extends KALS_model {
              
             $usr_id = array_search($x, $usrlist);
             
+            $query = $this->db->query('SELECT sex FROM public.user ' 
+                . 'WHERE user_id =  '.$usr_id);
+            $sex_row = $query->row_array();
+            
+            if($sex_row[0] > 1)
+            {
+                if($input_b > 0.024469){
+                    $stu_status1 = "A";
+                }  else {
+                    $stu_status1 = "B";
+                }
+            }  else {
+                if($input_d > 0.576923){
+                    $stu_status1 = "B";
+                }  else {
+                    if($input_p > 0.035547){
+                        $stu_status1 = "A";
+                    }  else {
+                        if($input_b > 0.02174){
+                            $stu_status1 = "A";
+                        } else {
+                            $stu_status1 = "B";
+                        }                       
+                    }                    
+                }
+            }
+            
+            if($sex_row[0] > 1){
+                if($input_od > 0.333333){
+                    $stu_status2 = "A";
+                }  else {
+                    $stu_status2 = "B";
+                }
+            }  else {
+                if($input_id > 0.333333){
+                    if($input_p > 0.041894){
+                        if($input_id > 0.481481){
+                            $stu_status2 = "B";
+                        }  else {
+                            $stu_status2 = "A";
+                        }
+                    }  else {
+                        $stu_status2 = "B";
+                    }
+                }  else {
+                    $stu_status2 = "A";
+                }
+            }
+            
+            if($input_b > 0.067702){
+                $stu_status3 = "A";
+            }  else {
+                if($input_ci > 0.586957){
+                    $stu_status3 = "B";
+                }  else {
+                    if($input_ci > 0.5625){
+                        $stu_status3 = "A";
+                    }  else {
+                        if($input_p > 0.015601){
+                            $stu_status3 = "B";
+                        }  else {
+                            $stu_status3 = "A";
+                        }
+                    }
+                }
+            }
 //            $data = array(
 //               'user_id' => $usr_id,
 //               'betweenness' => $input_b,
@@ -231,18 +406,8 @@ class dashboard extends KALS_model {
 //                );
 //            $this->db->insert('stusna', $data);    
             //$usr_id++;
-            if($input_b>=0.3)
-                $stu_status1 = "A";
-            else
-                $stu_status1 = "B";
             
-            if($input_id>=0.4)
-                $stu_status2 = "A";
-            else
-                $stu_status2 = "B";
-            
-        
-            $stu_status = $stu_status1."、".$stu_status2;
+            $stu_status = $stu_status1."、".$stu_status2."、".$stu_status3;
             $str_count_a = substr_count($stu_status, "A");
             $str_count_b = substr_count($stu_status, "B");
  
