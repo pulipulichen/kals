@@ -199,8 +199,13 @@ class dashboard extends KALS_model {
         
         foreach ($query->result_array() as $row)
         {             
+            
             $row1[0] = $usrlist[$row['user_topic']];
             $row1[1] = $usrlist[$row['user_reply']];
+           
+//            
+//            $row1[0] = $usrlist[$row['user_topic']];
+//            $row1[1] = $usrlist[$row['user_reply']];
             
             fputcsv($fp, $row1);
             }
@@ -241,9 +246,16 @@ class dashboard extends KALS_model {
             //以陣列的index取代user_id
 //            $row1[0] = array_search($row[0], $usrlist) + 1; //有問題吧還要修改 不知該用啥來row
 //            $row1[1] = array_search($row[1], $usrlist) + 1; //有問題吧還要修改
+            if($usrlist[$row['user_main']] > $usrlist[$row['user_sub']]){
+                $row1[0] = $usrlist[$row['user_main']];
+                $row1[1] = $usrlist[$row['user_sub']];
+            }  else {
+                $row1[0] = $usrlist[$row['user_sub']];
+                $row1[1] = $usrlist[$row['user_main']];
+                }
             
-            $row1[0] = $usrlist[$row['user_main']];
-            $row1[1] = $usrlist[$row['user_sub']];
+//            $row1[0] = $usrlist[$row['user_main']];
+//            $row1[1] = $usrlist[$row['user_sub']];
             
             fputcsv($fp, $row1);
             }
@@ -265,8 +277,13 @@ class dashboard extends KALS_model {
         
         foreach ($query->result_array() as $row)
         {             
-            $row1[0] = $usrlist[$row['user_main']];
-            $row1[1] = $usrlist[$row['user_sub']];
+            if($usrlist[$row['user_main']] > $usrlist[$row['user_sub']]){
+                $row1[0] = $usrlist[$row['user_main']];
+                $row1[1] = $usrlist[$row['user_sub']];
+            }  else {
+                $row1[0] = $usrlist[$row['user_sub']];
+                $row1[1] = $usrlist[$row['user_main']];
+                }
             
             fputcsv($fp, $row1);
             }
@@ -285,7 +302,7 @@ class dashboard extends KALS_model {
         $p_output = $this->r_pagerank->insert_data($file);
         
         $this->load->library("exec_cli/R_outdegree");
-        $od_output = $this->r_out_degree->insert_data($file);
+        $od_output = $this->r_outdegree->insert_data($file);
         
         $this->load->library("exec_cli/R_indegree");
         $id_output = $this->r_indegree->insert_data($file);
@@ -301,13 +318,14 @@ class dashboard extends KALS_model {
 	//$usr_id = 1;
 	$b_output_array = array_map('floatval', explode(" ",$b_output[$j]));
         $d_output_array = array_map('floatval', explode(" ",$d_output[$j]));
-        $p_output_array = array_map('floatval', explode(" ",$p_output[$j]));
+        $p_output_array = array_map('floatval', explode(" ",$p_output[$j+1]));
         $od_output_array = array_map('floatval', explode(" ",$od_output[$j]));
         $ic_output_array = array_map('floatval', explode(" ",$ic_output[$j]));
         $id_output_array = array_map('floatval', explode(" ",$id_output[$j]));
         $array_count = count($b_output_array);
         
         $origi_array = array("學習成果不良者為");
+        //$stu_why = array("");
         
         for($x = 1; $x < $array_count; $x++){
             
@@ -337,16 +355,22 @@ class dashboard extends KALS_model {
                 . 'WHERE user_id =  '.$usr_id);
             $sex_row = $query->row_array();
             
-            if($sex_row[0] > 1)
+            $stu_why1 = "";
+            $stu_why2 = "";
+            $stu_why3 = "";
+            
+            if($sex_row['sex'] > 1)
             {
                 if($input_b > 0.024469){
                     $stu_status1 = "A";
                 }  else {
                     $stu_status1 = "B";
+                    $stu_why1 = "betweenness過低<br>";//多跟他人互動
                 }
             }  else {
                 if($input_d > 0.576923){
                     $stu_status1 = "B";
+                    $stu_why1 = "degree過高(女性)<br>";//濫回?
                 }  else {
                     if($input_p > 0.035547){
                         $stu_status1 = "A";
@@ -355,27 +379,31 @@ class dashboard extends KALS_model {
                             $stu_status1 = "A";
                         } else {
                             $stu_status1 = "B";
+                            $stu_why1 = "betweenness過低<br>";//多跟他人互動
                         }                       
                     }                    
                 }
             }
             
-            if($sex_row[0] > 1){
+            if($sex_row['sex'] > 1){
                 if($input_od > 0.333333){
                     $stu_status2 = "A";
                 }  else {
                     $stu_status2 = "B";
+                    $stu_why2 = "out-degree過低<br>";//多跟他人互動,挑出名單?
                 }
             }  else {
                 if($input_id > 0.333333){
                     if($input_p > 0.041894){
                         if($input_id > 0.481481){
                             $stu_status2 = "B";
+                            $stu_why2 = "in-degree過高(女性,p為高)<br>";
                         }  else {
                             $stu_status2 = "A";
                         }
                     }  else {
                         $stu_status2 = "B";
+                        $stu_why2 = "pagerank過低<br>";//給熱門標註?讓他做回應
                     }
                 }  else {
                     $stu_status2 = "A";
@@ -387,12 +415,14 @@ class dashboard extends KALS_model {
             }  else {
                 if($input_ci > 0.586957){
                     $stu_status3 = "B";
+                    $stu_why3 = "in closeness過高(b過低情況下)<br>";
                 }  else {
                     if($input_ci > 0.5625){
                         $stu_status3 = "A";
                     }  else {
                         if($input_p > 0.015601){
                             $stu_status3 = "B";
+                            $stu_why3 = "pagerank過高（b ic 過低情況下）<br>";
                         }  else {
                             $stu_status3 = "A";
                         }
@@ -417,7 +447,7 @@ class dashboard extends KALS_model {
             //echo "<br>使用者『".$row['user_id']."』學習狀況很差，需特別注意<br>";
                 $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
                 $row_name = $query->row_array();
-                array_push($origi_array, "<br>", $row_name['name']);
+                array_push($origi_array, "<br>", $row_name['name'], "<br>", $stu_why1, $stu_why2, $stu_why3);
             } 
  }
         $data["from_R"] = $origi_array;

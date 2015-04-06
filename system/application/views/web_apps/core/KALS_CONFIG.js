@@ -623,6 +623,12 @@ DEFAULT_KALS_CONFIG = {
             "enable": false
         },
         /**
+         * 社會網路分析功能
+         */
+        Sna_counting: {
+            "enable": true
+        },
+        /**
          * 章節地圖
          */
         Window_map: {
