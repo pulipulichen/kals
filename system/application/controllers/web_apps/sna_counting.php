@@ -258,12 +258,31 @@ class sna_counting extends KALS_model {
                     $stu_status1 = "A";
                 }  else {
                     $stu_status1 = "B";
-                    $stu_why1 = "betweenness過低<br>";//多跟他人互動
+                    //$stu_why1 = "別自己埋頭苦幹！多與不同人做回應與互動！（betweenness過低）<br>";//多跟他人互動
+                    $query = $this->db->query('SELECT topic.user_id "user_topic" '
+                            .'FROM annotation topic ' 
+                                . 'JOIN webpage2annotation USING (annotation_id) '
+                                . 'JOIN annotation reply '
+                                .'ON topic.annotation_id = reply.topic_id '
+                                . 'AND reply.topic_id IS NOT NULL ' 
+                                . 'AND topic.deleted IS FALSE ' 
+                                . 'AND reply.deleted IS FALSE '
+                                . 'WHERE webpage_id = '.$webpage_id
+                                . 'AND reply.user_id = '.$usr_id);           
+                    foreach ($query->result_array() as $row)
+                     { 
+                        $i = 0;
+                        $who_to_react = array();
+                        $who_to_react[$i] = $row['user_topic'];
+                        $i++;
+                     }
+                     $stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（betweenness過低）<br>".implode("、",$who_to_react);//多跟他人互動
+                    
                 }
             }  else {
                 if($input_d > 0.576923){
                     $stu_status1 = "B";
-                    $stu_why1 = "degree過高(女性)<br>";//濫回?
+                    $stu_why1 = "過低原因1：（女性之degree過高）<br>";//濫回?
                 }  else {
                     if($input_p > 0.035547){
                         $stu_status1 = "A";
@@ -272,7 +291,7 @@ class sna_counting extends KALS_model {
                             $stu_status1 = "A";
                         } else {
                             $stu_status1 = "B";
-                            $stu_why1 = "betweenness過低<br>";//多跟他人互動
+                            $stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（betweenness過低）<br>";//多跟他人互動
                         }                       
                     }                    
                 }
@@ -283,20 +302,22 @@ class sna_counting extends KALS_model {
                     $stu_status2 = "A";
                 }  else {
                     $stu_status2 = "B";
-                    $stu_why2 = "out-degree過低<br>";//多跟他人互動,挑出名單?
+                    $stu_why2 = "過低原因2：試著多寫些好標註，讓其他人來回應你吧！（in-degree過低）<br>";//多跟他人互動,挑出名單?
+                    
+                    
                 }
             }  else {
                 if($input_id > 0.333333){
                     if($input_p > 0.041894){
                         if($input_id > 0.481481){
                             $stu_status2 = "B";
-                            $stu_why2 = "in-degree過高(女性,p為高)<br>";
+                            $stu_why2 = "過低原因2：（女性，Pagerank過高的情況下，out-degree過高）<br>";
                         }  else {
                             $stu_status2 = "A";
                         }
                     }  else {
                         $stu_status2 = "B";
-                        $stu_why2 = "pagerank過低<br>";//給熱門標註?讓他做回應
+                        $stu_why2 = "過低原因2：去回應熱門標註吧！（Pagerank過低）<br>";//給熱門標註?讓他做回應
                     }
                 }  else {
                     $stu_status2 = "A";
@@ -308,14 +329,75 @@ class sna_counting extends KALS_model {
             }  else {
                 if($input_ci > 0.586957){
                     $stu_status3 = "B";
-                    $stu_why3 = "in closeness過高(b過低情況下)<br>";
+                    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
+                    $row_name = $query->row_array();
+                    $who_to_react = array($row_name['name']);
+                    
+                    $query = $this->db->query('SELECT topic.user_id "user_topic" '
+                            .'FROM annotation topic ' 
+                                . 'JOIN webpage2annotation USING (annotation_id) '
+                                . 'JOIN annotation reply '
+                                .'ON topic.annotation_id = reply.topic_id '
+                                . 'AND reply.topic_id IS NOT NULL ' 
+                                . 'AND topic.deleted IS FALSE ' 
+                                . 'AND reply.deleted IS FALSE '
+                                . 'WHERE webpage_id = '.$webpage_id
+                                . 'AND reply.user_id = '.$usr_id);  
+                    
+                    foreach ($query->result_array() as $row)
+                     { 
+                        $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
+                        $row_name = $query->row_array();
+                        array_push($who_to_react, $row_name['name']);
+                        
+                     }
+                     
+                     $usr_name_list = array();
+                     
+                     for($y = 1; $y < $array_count; $y++){
+                     $usr_id2 = array_search($y, $usrlist);
+                     
+                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
+                     $row_name2 = $query->row_array();
+                     array_push($usr_name_list, $row_name2['name']);
+                     }
+                     
+                     $tags = array_diff($usr_name_list, $who_to_react);
+                     
+                     //$who_to_react2 = array();
+                     
+                     
+                    //array_push($stu_list_array, "<br><tr><td>", $row_name['name'], "</td><td><br>", $stu_why1, $stu_why2, $stu_why3);
+                    if($tags != NULL){
+                    $stu_why3 = "過低原因3：試著多寫些好標註，讓其他人來回應你吧！（Betweenness過低情況下，out-closeness過高）<br>未互動名單：".implode("、",$tags)."<br><br>";
+                    }  else {
+                    $stu_why3 = "過低原因3：試著多寫些好標註，讓其他人來回應你吧！（Betweenness過低情況下，out-closeness過高）<br><br><br>";    
+                    }
                 }  else {
                     if($input_ci > 0.5625){
                         $stu_status3 = "A";
                     }  else {
                         if($input_p > 0.015601){
                             $stu_status3 = "B";
-                            $stu_why3 = "pagerank過高（b ic 過低情況下）<br>";
+                            $query = $this->db->query('SELECT topic.user_id "user_topic" '
+                            .'FROM annotation topic ' 
+                                . 'JOIN webpage2annotation USING (annotation_id) '
+                                . 'JOIN annotation reply '
+                                .'ON topic.annotation_id = reply.topic_id '
+                                . 'AND reply.topic_id IS NOT NULL ' 
+                                . 'AND topic.deleted IS FALSE ' 
+                                . 'AND reply.deleted IS FALSE '
+                                . 'WHERE webpage_id = '.$webpage_id
+                                . 'AND reply.user_id = '.$usr_id);   
+                            $who_to_react = array();
+                            foreach ($query->result_array() as $row)
+                             { 
+                                $i = 0;
+                                
+                                $who_to_react[$i] = $row['user_topic'];
+                                $i++;
+                             }
+                            $stu_why3 = "過低原因3：多回覆不同人！（Betweenness與out-closeness過低情況下，Pagerank過高）<br>".implode("、",$who_to_react);
                         }  else {
                             $stu_status3 = "A";
                         }
@@ -376,7 +458,7 @@ class sna_counting extends KALS_model {
         $name_array = array("name", "name2");
         //$data['from_R'] = $name_array;
         $data['name'] = $name_array;
-        $data['reason'] = "reaaaaa";
+        //$data['reason'] = "reaaaaa";
         return $data;
     }
     

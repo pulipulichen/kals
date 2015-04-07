@@ -105,7 +105,7 @@ Sna_counting.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-//Sna_counting.prototype._$open_request_action = 'open';
+Sna_counting.prototype._$open_request_action = 'open';
 
 /**
  * close()時執行的Action
@@ -310,13 +310,15 @@ Sna_counting.prototype._$onopen = null;
 Sna_counting.prototype._$onopen = function () {
     
     var _this = this;
+    //request_post
+    
     this.request_get("test3", {}, function (_data) {
         
         
         
         _this.set_data(_data);
-    
-    
+        
+        
 
         
     });
