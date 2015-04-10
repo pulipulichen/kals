@@ -2,24 +2,21 @@
  * Sna_counting
  *
  * 結合樣板的控制器
- * KALS Framework的Controller示範
+ * SNA計算與預測閱讀成效
  *
  * @package    KALS
  * @category   Webpage Application Libraries
- * @author     Pudding Chen <pulipuli.chen@gmail.com>
- * @copyright  Copyright (c) 2013, Pudding Chen
+ * @author     red mao hong <r3dmaohong@gmail.com>
+ * @copyright  Copyright (c) 2015, red mao hong
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://github.com/pulipulichen/kals/
- * @version    1.0 2013/11/19 下午 03:36:17
+ * @version    1.0 2015/04/10 下午 05:02
  * @extends {KALS_controller_window}
  */
 function Sna_counting() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
-//     var _this = this;
-//    KALS_context.ready(function () {
-//        _this._init_listener();
-//    });
+
 }
 
 /**
@@ -63,23 +60,7 @@ Sna_counting.prototype._$view = 'modules/sna_counting/view/Sna_counting';
  * 這個方法只會執行一次
  */
 Sna_counting.prototype._$initialize_view = function () {
-    
-    // 設置熱鍵
-    //this.init_hotkey();
-    
-//    var _types = this.get_annotation_types();
-    //this.set_field('annotation_type', ['1', '2', '3']);
-    //_types = _types.question;
-//    //this.debug('init view', typeof(_types.get_ui));
-//    this.set_field('annotation_type', _types);
-//    
-//    // 設定連結
-//    var _mobile_topics_link = KALS_context.get_base_url("mobile_apps/annotation_topics", true);
-//    this.find("a.mobile-topics-link").attr("href", _mobile_topics_link);
-//    
-//    var _rss_feed_link = KALS_context.get_base_url("/rss");
-//    this.find("a.rss-feed-link").attr("href", _rss_feed_link);
-    
+
     
 };
 
@@ -157,11 +138,9 @@ Sna_counting.prototype._$enable_auth_check = true;
  * @returns {boolean} true=通過;false=未通過
  */
 Sna_counting.prototype._$auth_check = function (_is_login, _user) {
-    //this.debug('auth check: has login', _is_login);
-    //return _is_login;
+
     return true;
-//    if(_user = ""){return true;}
-//    else{return false;}
+
 };
 
 /**
@@ -298,34 +277,22 @@ Sna_counting.prototype.nav_config = {
  * @returns {Sna_counting}
  */
 Sna_counting.prototype._$onopen = null;
-//Sna_counting.prototype._$onopen = function () {
-//    
-//    this.request_get("test", {"name": "pudding"}, function (_data) {
-//        
-//        var _name = _data.name;
-//        alert(_name);
-//        
-//    });
-//
+
 Sna_counting.prototype._$onopen = function () {
     
     var _this = this;
-    //request_post
     
     var _ui = this.get_ui();
     _ui.find(".loading").show();
     _ui.find(".main").hide();
     //KALS_context.search.search(_param);
-    this.request_get("open", {}, function (_data) {
-        
-        
-        
+    this.request_get("sna_start", {}, function (_data) {
+ 
         _this.set_data(_data);
         
         _ui.find(".loading").hide();
         _ui.find(".main").show();
 
-        
     });
     
     //return this;
@@ -346,84 +313,6 @@ Sna_counting.prototype.search_user = function (_ele) {
     };
     KALS_context.search.search(_param);
 };
-//
-//
-//Sna_counting.prototype.setup_stu_list = function(_stu_index) { 
-//    
-//    var _this = this;
-//    
-//    var _list_ele = $("<tr/>");
-//    
-//    $("<th />")
-//            .html('<div class="header">' + _stamp_title_lang + "</div>"
-//                + _image)
-//            .appendTo(_list_ele);
-//    
-//    var _td = $("<td />").appendTo(_list_ele);
-//    
-//    for (var _i in _user_name_list) {
-//
-//        var _name_span = $('<li class="user-name-list" />').html(_user_name_list[_i]);
-//        _name_span.appendTo(_td);
-//
-//        _name_span.click(function() {
-//            var _query_value = $(this).html();
-//            _this.close(function () {
-//                //setTimeout(function () {
-//                    //搜尋
-//                    KALS_context.search.search({
-//                        query_field: "annotation_user_name",
-//                        query_value: _query_value
-//                    }, true);
-//                //}, 500);
-//            });
-//        });
-
-        //_name_span.addClass("list-span");
-
-        //_name_span.css("float","left");
-//
-//        if (_i % 3 === 0) {
-//            _name_span.css("clear", "both");
-//        } 
-//    }   //for (var _index in _name_arr) {
-//    
-//    return _list_ele;
-//};
-
-/**
- * 開啟最新的標註
- * 
- * 這是kals-event-field-set的範例
- * 
- * @param {jQuery} _ele
- * 由於是kals-event-field-set事件，所以固定會回傳觸發事件的jQuery物件
- * @returns {Sna_counting}
- */
-//Sna_counting.prototype.setup_activity = function (_ele) {
-//    if (this.has_field("activity")) {
-//        var _activity = this.get_field('activity').toLowerCase();
-//        _ele.attr('className', 'activity-' + _activity);
-//    }
-//    return this;
-//};
-
-/**
- * 開啟最近的標註
- * @returns {Sna_counting}
- */
-//Sna_counting.prototype.open_recent_annotation = function() {
-//    if (this.is_opened()) {
-//        this.close(function () {
-//            KALS_context.search.open_recent_annotation();
-//        });
-//    }
-//    else {
-//        KALS_context.search.open_recent_annotation();
-//    }
-//        
-//    return this;
-//};
 
 /**
  * 這是一個action
@@ -444,99 +333,6 @@ Sna_counting.prototype.action = function (_param) {
     
     return false;
 };
-
-/**
- * 使用Hotkey的範例
- * http://unixpapa.com/js/key.html
- * 
- * 這是this.set_hotkey()的範例
- * 
- * @returns {Sna_counting}
- */
-//Sna_counting.prototype.init_hotkey = function () {
-//    // 65表示A
-//    // 按鍵對應的編號請參考http://unixpapa.com/js/key.html
-//    var _hotkey = 65;   
-//    
-//    var _this = this;    
-//    this.set_hotkey(_hotkey, function () {
-//        _this.open();
-//    });
-//    
-//    return this;
-//};
-
-/**
- * 選擇指定標註的action
- * 
- * 這是this.select_annotation()的範例
- * 
- * @param {jQuery} _ele
- * @returns {Sna_counting}
- */
-//Sna_counting.prototype.select = function (_ele) {
-//    this.debug('select', this._data);
-//    var _annotation_id = this.get_field('last_annotation_id');
-//    this.select_annotation(_annotation_id);
-//    return this;
-//};
-
-//Sna_counting.prototype.setup_stu_list_create = function(_user_name_list) { 
-//    
-//    var _this = this;
-//    
-//    var _list_ele = $("<tr/>");
-//    
-//    //var _stamp_data = this._init_config();
-//    
-//    //var _show_list = _stamp_data[_stamp_index].show_list;
-//    //if (_show_list === false) {
-//     //   return null;
-//   // }
-//    
-//   // var _stamp_title_lang = _stamp_data[_stamp_index].name;
-//    
-//    //var _image_url = _stamp_data[_stamp_index].image_url;
-//   // _image_url = KALS_context.url.filter_base_url(_image_url);
-//    //var _image = '<img src="' + _image_url + '" />';
-//    
-//    //$("<th />")
-//   //        .html('<div class="header">' + _stamp_title_lang + "</div>"
-//   //            + _image)
-//    //        .appendTo(_list_ele);
-//    
-//    var _td = $("<td />").appendTo(_list_ele);
-//    
-//    for (var _i in _user_name_list) {
-//
-//        var _name_span = $('<li class="user-name-list" />').html(_user_name_list[_i]);
-//        _name_span.appendTo(_td);
-//
-//        _name_span.click(function() {
-//            var _query_value = $(this).html();
-//            _this.close(function () {
-//                //setTimeout(function () {
-//                    //搜尋
-//                    KALS_context.search.search({
-//                        query_field: "annotation_user_name",
-//                        query_value: _query_value
-//                    }, true);
-//                //}, 500);
-//            });
-//        });
-//
-//        //_name_span.addClass("list-span");
-//
-//        //_name_span.css("float","left");
-//
-//        if (_i % 3 === 0) {
-//            _name_span.css("clear", "both");
-//        } 
-//    }   //for (var _index in _name_arr) {
-//    
-//    return _list_ele;
-//};
-
 
 
 
