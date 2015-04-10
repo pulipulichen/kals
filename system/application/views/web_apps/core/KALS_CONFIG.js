@@ -279,6 +279,16 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      */
     enable_search_toolbar: true,
+    
+    /**
+     * 管理者的名字清單
+     * @type Array|String
+     * @author Pudding Chen 20150410
+     * admin_email_list: [
+        "demo@dlll.nccu.edu.tw"
+    ],
+     */
+    admin_email_list: [],
     	
     //----------------------------
     

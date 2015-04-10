@@ -105,7 +105,7 @@ Sna_counting.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-Sna_counting.prototype._$open_request_action = 'open';
+//Sna_counting.prototype._$open_request_action = 'open';
 
 /**
  * close()時執行的Action
@@ -274,7 +274,7 @@ Sna_counting.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    nav_type: "common",
+    nav_type: "admin",
     
     /**
      * 排序順序
@@ -312,21 +312,40 @@ Sna_counting.prototype._$onopen = function () {
     var _this = this;
     //request_post
     
-    this.request_get("test3", {}, function (_data) {
+    var _ui = this.get_ui();
+    _ui.find(".loading").show();
+    _ui.find(".main").hide();
+    //KALS_context.search.search(_param);
+    this.request_get("open", {}, function (_data) {
         
         
         
         _this.set_data(_data);
         
-        
+        _ui.find(".loading").hide();
+        _ui.find(".main").show();
 
         
     });
-
+    
     //return this;
 
 };
 
+/**
+ * 
+ * @author Pudding 20150410
+ * @param {jQuery} _ele
+ * @returns {undefined}
+ */
+Sna_counting.prototype.search_user = function (_ele) {
+    var _user_name = _ele.text();
+    var _param = {
+        query_field: "author",
+        query_value:_user_name
+    };
+    KALS_context.search.search(_param);
+};
 //
 //
 //Sna_counting.prototype.setup_stu_list = function(_stu_index) { 

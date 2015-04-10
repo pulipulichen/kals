@@ -43,10 +43,28 @@ class sna_counting extends KALS_model {
      */
      public function open($data) {
         
-          
+        $log_action = "sna_counting.cache";
+               
+        
         //抓取webpage_id
         $webpage_id = $this->get_current_webpage()->get_id();
-                        
+        
+        $query = $this->db->query("SELECT note " 
+                . "FROM log " 
+                . "WHERE log_timestamp > CURRENT_TIMESTAMP - INTERVAL '3 minutes' " 
+                . "AND webpage_id = ".$webpage_id. " " 
+                . "AND action_key = 'sna_counting.cache'");
+        
+        if ($query->num_rows() > 0) {
+            $log_row = $query->row_array();
+        
+            $data = $log_row["note"];
+            $data = json_to_array($data);
+
+            return $data;
+        }
+        
+        
         //設定file名稱
         $date = date("Y_m_d_H_i_s");
         $file = "D:/tmp/output_".$date.".csv";
@@ -259,7 +277,7 @@ class sna_counting extends KALS_model {
                 }  else {
                     $stu_status1 = "B";
                     //$stu_why1 = "別自己埋頭苦幹！多與不同人做回應與互動！（betweenness過低）<br>";//多跟他人互動
-                    $query = $this->db->query('SELECT topic.user_id "user_topic" '
+                    $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
                             .'FROM annotation topic ' 
                                 . 'JOIN webpage2annotation USING (annotation_id) '
                                 . 'JOIN annotation reply '
@@ -333,7 +351,7 @@ class sna_counting extends KALS_model {
                     $row_name = $query->row_array();
                     $who_to_react = array($row_name['name']);
                     
-                    $query = $this->db->query('SELECT topic.user_id "user_topic" '
+                    $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
                             .'FROM annotation topic ' 
                                 . 'JOIN webpage2annotation USING (annotation_id) '
                                 . 'JOIN annotation reply '
@@ -379,7 +397,7 @@ class sna_counting extends KALS_model {
                     }  else {
                         if($input_p > 0.015601){
                             $stu_status3 = "B";
-                            $query = $this->db->query('SELECT topic.user_id "user_topic" '
+                            $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
                             .'FROM annotation topic ' 
                                 . 'JOIN webpage2annotation USING (annotation_id) '
                                 . 'JOIN annotation reply '
@@ -433,9 +451,18 @@ class sna_counting extends KALS_model {
         $data["from_R"] = $stu_list_array;
         
         $data["reason"] = $stu_why_array;
+        
+        $note = array(
+            'from_R' => $data['from_R'],
+            'reason' => $data['reason']
+        );
+        
+        // $data 寫入 log 資料表中
+        kals_log($this->db, $log_action, $data);
+        
         return $data;
 	
-    }        
+        }        
     }
     
     public function test() {
@@ -938,7 +965,7 @@ class sna_counting extends KALS_model {
         $this->load->library("exec_cli/R_incloseness");
         $ic_output = $this->r_incloseness->insert_data($file);
         
-        tree($b_output, $d_output, $p_output, $od_output, $id_output, $ic_output);
+        $this->tree($b_output, $d_output, $p_output, $od_output, $id_output, $ic_output);
     }
 
     

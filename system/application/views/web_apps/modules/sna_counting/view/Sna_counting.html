@@ -1,8 +1,13 @@
 
+<div class="loading">
+    讀取中
+</div>
+
+<div class="main">
 <dl>
    
     <dt>{{kals-lang:stu_list}}:</dt>
-    <dd>{{from_R}}</dd>
+    <dd kals-event-click="search_user()">{{from_R}}</dd>
     
     <dt>{{kals-lang:stu_reason}}:</dt>
     <dd>{{reason}}</dd>
@@ -22,6 +27,7 @@
     <dd kals-event-field-set="setup_activity()">{{activity}}</dd>
     -->
 </dl>
+</div>
 <!--
 請寫下您的閱讀心得筆記：
 <textarea width="100%" style="background-image: none; display: block; width: 100%; height: 20em; background-position: 259px 0px; background-repeat: repeat repeat;">[故事中有誰呢？]
