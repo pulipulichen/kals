@@ -638,6 +638,14 @@ DEFAULT_KALS_CONFIG = {
         Sna_counting: {
             "enable": true
         },
+        
+        /**
+         * 
+         * 推薦互動名單
+         */
+        Random_user: {
+            "enable": true
+        },
         /**
          * 章節地圖
          */

@@ -1,22 +1,21 @@
 /**
- * Sna_counting
+ * Random_user
  *
  * 結合樣板的控制器
- * SNA計算與預測閱讀成效
+ * KALS Framework的Controller示範
  *
  * @package    KALS
  * @category   Webpage Application Libraries
- * @author     red mao hong <r3dmaohong@gmail.com>
- * @copyright  Copyright (c) 2015, red mao hong
+ * @author     Pudding Chen <pulipuli.chen@gmail.com>
+ * @copyright  Copyright (c) 2013, Pudding Chen
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://github.com/pulipulichen/kals/
- * @version    1.0 2015/04/10 下午 05:02
+ * @version    1.0 2013/11/19 下午 03:36:17
  * @extends {KALS_controller_window}
  */
-function Sna_counting() {
+function Random_user() {
     // 繼承宣告的步驟之一
     KALS_controller_window.call(this);
-
 }
 
 /**
@@ -31,7 +30,7 @@ function Sna_counting() {
  * KALS_controller 是部分元件
  * KALS_controller_window 是獨立視窗
  */
-Sna_counting.prototype = new KALS_controller_window();
+Random_user.prototype = new KALS_controller_window();
 
 /**
  * 指定Module的名稱
@@ -39,7 +38,7 @@ Sna_counting.prototype = new KALS_controller_window();
  * 也是顯示在Hash的名稱。如果是null，則會顯示KALS_modal._$modal_name
  * @type String
  */
-Sna_counting.prototype.name = 'Sna_counting';
+Random_user.prototype.name = 'Random_user';
 
 /**
  * ====================
@@ -51,7 +50,7 @@ Sna_counting.prototype.name = 'Sna_counting';
  * 指定View
  * @type String
  */
-Sna_counting.prototype._$view = 'modules/sna_counting/view/Sna_counting';
+Random_user.prototype._$view = 'modules/random_user/view/Random_user';
 
 /**
  * 初始化View
@@ -59,8 +58,24 @@ Sna_counting.prototype._$view = 'modules/sna_counting/view/Sna_counting';
  * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
  * 這個方法只會執行一次
  */
-Sna_counting.prototype._$initialize_view = function () {
-
+Random_user.prototype._$initialize_view = function () {
+    
+    // 設置熱鍵
+    //this.init_hotkey();
+    
+    var _types = this.get_annotation_types();
+    //this.set_field('annotation_type', ['1', '2', '3']);
+    //_types = _types.question;
+    //this.debug('init view', typeof(_types.get_ui));
+    this.set_field('annotation_type', _types);
+    
+    // 設定連結
+    var _mobile_topics_link = KALS_context.get_base_url("mobile_apps/annotation_topics", true);
+    this.find("a.mobile-topics-link").attr("href", _mobile_topics_link);
+    
+    var _rss_feed_link = KALS_context.get_base_url("/rss");
+    this.find("a.rss-feed-link").attr("href", _rss_feed_link);
+    
     
 };
 
@@ -74,25 +89,25 @@ Sna_counting.prototype._$initialize_view = function () {
  * 指定Model
  * @type String
  */
-Sna_counting.prototype._$model = 'Sna_counting';
+Random_user.prototype._$model = 'Random_user';
 
 /**
  * 初始化物件時執行的Action
  * @type String|null null=不執行任何action
  */
-Sna_counting.prototype._$init_request_action = null;
+Random_user.prototype._$init_request_action = null;
 
 /**
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-//Sna_counting.prototype._$open_request_action = 'open';
+//Random_user.prototype._$open_request_action = 'open';
 
 /**
  * close()時執行的Action
  * @type String|null null=不執行任何action
  */
-Sna_counting.prototype._$close_request_action = null;
+Random_user.prototype._$close_request_action = null;
 
 
 /**
@@ -105,7 +120,7 @@ Sna_counting.prototype._$close_request_action = null;
  * 是否開啟偵錯功能
  * @type Boolean
  */
-Sna_counting.prototype._$enable_debug = true;
+Random_user.prototype._$enable_debug = true;
 
 /**
  * ====================
@@ -117,7 +132,7 @@ Sna_counting.prototype._$enable_debug = true;
  * 啟用權限檢查機制
  * @type {Boolean}
  */
-Sna_counting.prototype._$enable_auth_check = true;
+Random_user.prototype._$enable_auth_check = true;
 
 /**
  * 權限檢查
@@ -137,10 +152,10 @@ Sna_counting.prototype._$enable_auth_check = true;
  * @param {User_param} _user 現在登入的使用者，沒有登入的情況會是null
  * @returns {boolean} true=通過;false=未通過
  */
-Sna_counting.prototype._$auth_check = function (_is_login, _user) {
-
+Random_user.prototype._$auth_check = function (_is_login, _user) {
+    //this.debug('auth check: has login', _is_login);
+    //return _is_login;
     return true;
-
 };
 
 /**
@@ -153,13 +168,13 @@ Sna_counting.prototype._$auth_check = function (_is_login, _user) {
  * 獨立視窗功能
  * @type Boolean true=開啟獨立視窗|false=依附在KALS_window底下
  */
-Sna_counting.prototype._$absolute = true;
+Random_user.prototype._$absolute = false;
 
 /**
  * 視窗的Class Name
  * @type String
  */
-Sna_counting.prototype._$name = 'Sna_counting';
+Random_user.prototype._$name = 'Random_user';
 
 /**
  * 視窗的標題
@@ -167,7 +182,7 @@ Sna_counting.prototype._$name = 'Sna_counting';
  * @type KALS_language_param
  * 對應到樣板的語系檔
  */
-Sna_counting.prototype._$heading = 'heading';
+Random_user.prototype._$heading = 'heading';
 
 /**
  * 視窗位於導覽列的按鈕名稱
@@ -175,19 +190,19 @@ Sna_counting.prototype._$heading = 'heading';
  * @type KALS_language_param|String
  * 對應到樣板的語系檔
  */
-Sna_counting.prototype._$nav_heading = 'heading';
+Random_user.prototype._$nav_heading = 'heading';
 
 /**
  * 設定視窗的寬度
  * @type Number 單位是px，null表示不設定
  */
-Sna_counting.prototype._$width = 400;
+Random_user.prototype._$width = 400;
 
 /**
  * 設定視窗的高度
  * @type Number 單位是px，null表示不設定
  */
-Sna_counting.prototype._$height = null;
+Random_user.prototype._$height = null;
 
 
 /**
@@ -205,7 +220,7 @@ Sna_counting.prototype._$height = null;
  *  -10%: 靠右距離視窗寬度的10%
  * @type String
  */
-Sna_counting.prototype._$position_left = null;
+Random_user.prototype._$position_left = null;
 
 /**
  * 設定視窗的上下位置
@@ -222,7 +237,7 @@ Sna_counting.prototype._$position_left = null;
  *  -10%: 靠底距離視窗寬度的10%
  * @type String
  */
-Sna_counting.prototype._$position_top = null;
+Random_user.prototype._$position_top = null;
 
 /**
  * ====================
@@ -235,7 +250,7 @@ Sna_counting.prototype._$position_top = null;
  * @type JSON
  */
 
-Sna_counting.prototype.nav_config = {
+Random_user.prototype.nav_config = {
     /**
      * 顯示資料
      * @type Boolean
@@ -253,7 +268,7 @@ Sna_counting.prototype.nav_config = {
      * - anonymous: 未登入的使用者才會顯示
      * @type String
      */
-    nav_type: "admin",
+    nav_type: "login",
     
     /**
      * 排序順序
@@ -274,24 +289,18 @@ Sna_counting.prototype.nav_config = {
 /**
  * 開啟視窗時的載入動作
  * 
- * @returns {Sna_counting}
+ * @returns {Random_user}
  */
-Sna_counting.prototype._$onopen = null;
+Random_user.prototype._$onopen = null;
 
-Sna_counting.prototype._$onopen = function () {
+Random_user.prototype._$onopen = function () {
     
     var _this = this;
-    
-    var _ui = this.get_ui();
-    _ui.find(".loading").show();
-    _ui.find(".main").hide();
-    //KALS_context.search.search(_param);
-    this.request_get("sna_start", {}, function (_data) {
+    //var _login_id = 1362;
+    this.request_get("open", {}, function (_data) {
  
         _this.set_data(_data);
-        
-        _ui.find(".loading").hide();
-        _ui.find(".main").show();
+
 
     });
     
@@ -299,19 +308,60 @@ Sna_counting.prototype._$onopen = function () {
 
 };
 
-/**
- * 
- * @author Pudding 20150410
- * @param {jQuery} _ele
- * @returns {undefined}
- */
-Sna_counting.prototype.search_user = function (_ele) {
+Random_user.prototype.search_user = function (_ele) {
     var _user_name = _ele.text();
     var _param = {
         query_field: "annotation_user_name",
         query_value:_user_name
     };
     KALS_context.search.search(_param);
+};
+
+Random_user.prototype.search_hot_topic = function (_ele) {
+    //var _name = _ele.text();
+    var _param = {
+        query_field: "",
+        query_value: "熱門標註", 
+        order_by: "responded"
+        //order_by: ["update","create","responded","liked", "scope"]	
+        
+    };
+    KALS_context.search.search(_param);
+};
+
+
+/**
+ * 開啟最新的標註
+ * 
+ * 這是kals-event-field-set的範例
+ * 
+ * @param {jQuery} _ele
+ * 由於是kals-event-field-set事件，所以固定會回傳觸發事件的jQuery物件
+ * @returns {Random_user}
+ */
+Random_user.prototype.setup_activity = function (_ele) {
+    if (this.has_field("activity")) {
+        var _activity = this.get_field('activity').toLowerCase();
+        _ele.attr('className', 'activity-' + _activity);
+    }
+    return this;
+};
+
+/**
+ * 開啟最近的標註
+ * @returns {Random_user}
+ */
+Random_user.prototype.open_recent_annotation = function() {
+    if (this.is_opened()) {
+        this.close(function () {
+            KALS_context.search.open_recent_annotation();
+        });
+    }
+    else {
+        KALS_context.search.open_recent_annotation();
+    }
+        
+    return this;
 };
 
 /**
@@ -323,7 +373,7 @@ Sna_counting.prototype.search_user = function (_ele) {
  * @returns {Boolean} true=成功;false=失敗
  * @author Pulipuli Chen 20131122
  */
-Sna_counting.prototype.action = function (_param) {
+Random_user.prototype.action = function (_param) {
     
     /**
      * @type {boolean} 這個變數的名字
@@ -334,8 +384,41 @@ Sna_counting.prototype.action = function (_param) {
     return false;
 };
 
+/**
+ * 使用Hotkey的範例
+ * http://unixpapa.com/js/key.html
+ * 
+ * 這是this.set_hotkey()的範例
+ * 
+ * @returns {Random_user}
+ */
+Random_user.prototype.init_hotkey = function () {
+    // 65表示A
+    // 按鍵對應的編號請參考http://unixpapa.com/js/key.html
+    var _hotkey = 65;   
+    
+    var _this = this;    
+    this.set_hotkey(_hotkey, function () {
+        _this.open();
+    });
+    
+    return this;
+};
 
+/**
+ * 選擇指定標註的action
+ * 
+ * 這是this.select_annotation()的範例
+ * 
+ * @param {jQuery} _ele
+ * @returns {Random_user}
+ */
+Random_user.prototype.select = function (_ele) {
+    this.debug('select', this._data);
+    var _annotation_id = this.get_field('last_annotation_id');
+    this.select_annotation(_annotation_id);
+    return this;
+};
 
-
-/* End of file Sna_counting */
-/* Location: ./system/application/views/web_apps/extension/Sna_counting/Sna_counting.js */
+/* End of file Random_user */
+/* Location: ./system/application/views/web_apps/extension/Random_user/Random_user.js */
