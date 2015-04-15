@@ -1,10 +1,10 @@
 
 <dl>
     <dt>{{kals-lang:random_user}}</dt>
-    <dd kals-event-click="search_user()">{{random_user}}</dd>
+    <dd kals-event-click="search_user()" >{{random_user}}</dd>
     
     <dt>{{kals-lang:hot_annotation}}</dt>
-    <dd kals-event-click="search_hot_topic()">搜尋熱門標註</dd>
+    <dd><input type=button class="button orange bigrounded" id=hot_topic value="搜尋" kals-event-click="search_hot_topic()" style="width:50px;height:30px;font-size:14px;"></dd>
     
     <!--
     <dt kals-event-click="select()">{{kals-lang:last_annotation}}:</dt>
