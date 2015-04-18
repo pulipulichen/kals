@@ -833,7 +833,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                             array_push($who_to_react, $row_name['name']);
 
                         }
-
+                        $usr_id_list = array();
                         $usr_name_list = array();
 
                         for($y = 1; $y < $array_count; $y++){
@@ -906,10 +906,12 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
                     $row_name = $query->row_array();
                     array_push($who_to_react, $row_name['name']);
+                    array_push($usr_id_list, $usr_id);
                     
                 }
                     
                 $usr_name_list = array();
+                $usr_id_list = array();
                      
                 for($y = 1; $y < $array_count; $y++){
                     $usr_id2 = array_search($y, $usrlist);
@@ -917,6 +919,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
                     $row_name2 = $query->row_array();
                     array_push($usr_name_list, $row_name2['name']);
+                    array_push($usr_id_list, $usr_id);
                 }
                      
                 $tags = array_diff($usr_name_list, $who_to_react);
@@ -931,7 +934,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     $stu_status3 = "A";
                 }  else {
                     if($input_p > 0.015601){
-                        $stu_status3 = "B";
                         $stu_status3 = "B";
                         $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
                         $row_name = $query->row_array();
@@ -963,6 +965,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                             $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
                             $row_name2 = $query->row_array();
                             array_push($usr_name_list, $row_name2['name']);
+                            array_push($usr_id_list, $usr_id);
                         }
 
                         $tags = array_diff($usr_name_list, $who_to_react);
@@ -992,7 +995,10 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             $row_name = $query->row_array();
             //array_push($stu_list_array, "<br><tr><td>", $row_name['name'], "</td><td><br>", $stu_why1, $stu_why2, $stu_why3);
             array_push($stu_list_array, $row_name['name']);
-                
+            array_push($usr_id_list, $usr_id);
+            
+            //$good_stu = array_diff($tags, $stu_list_array);
+            
             if($stu_why1 != "" && $stu_why2 != "" && $stu_why3 != ""){
                 array_push($stu_why_array, $row_name['name'], "　　".$stu_why1, "　　".$stu_why2, "　　".$stu_why3);
             }elseif ($stu_why1 != "" && $stu_why2 != "") {
@@ -1008,7 +1014,61 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
     $data["from_R"] = $stu_list_array;
     
     $data["reason"] = $stu_why_array;
+    
+    ///////////////
+    $usr_name_list2 = array();
+                        
+    $query = $this->db->query('SELECT user_id ' 
+        . 'FROM webpage2annotation ' 
+        . 'JOIN annotation USING (annotation_id)' 
+        . 'WHERE webpage_id = '.$webpage_id.' ' 
+        . 'GROUP BY user_id');
+    $usr_id_row = $query->row_array();
+    
+    foreach ($query->result_array() as $usr_id_row){
+    $query2 = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_row['user_id']);
+    $row_name2 = $query2->row_array();
+    array_push($usr_name_list2, $row_name2['name']);
+    
+    }
+    $good_stu = array_diff($usr_name_list2, $stu_list_array);
+    $data["good"] = $good_stu;
+//    
+//    $good_to_react = array();
+    if(!empty($usr_id_list)){
+    for($i = 0; $i<count($usr_id_list);$i++){
+//    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
+//    $row_name = $query->row_array();
+//    $who_react = array($row_name['name']);
+//    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_list[$i]);
+//    $row_user_id = $query->row_array();
+   
+    $who_react = array();
         
+    $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
+                                .'FROM annotation topic ' 
+                                    . 'JOIN webpage2annotation USING (annotation_id) '
+                                    . 'JOIN annotation reply '
+                                    .'ON topic.annotation_id = reply.topic_id '
+                                    . 'AND reply.topic_id IS NOT NULL ' 
+                                    . 'AND topic.deleted IS FALSE ' 
+                                    . 'AND reply.deleted IS FALSE '
+                                    . 'WHERE webpage_id = '.$webpage_id
+                                    . 'AND reply.user_id = '.$usr_id_list[$i]);  
+
+    foreach ($query->result_array() as $row){ 
+                            $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
+                            $row_name = $query->row_array();
+                            array_push($who_react, $row_name['name']);
+
+      }
+    
+    array_push($good_to_react,  "<br>".$stu_list_array[$i]."<br>" , $who_react);
+    }}else{
+        $good_to_react = "尚未有成績優良之名單";
+    }
+    
+    $data['good_to_react'] = $good_to_react;
 //    $note = array(
 //            'from_R' => $data['from_R'],
 //            'reason' => $data['reason']
