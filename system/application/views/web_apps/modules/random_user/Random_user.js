@@ -101,7 +101,7 @@ Random_user.prototype._$init_request_action = null;
  * open()時執行的Action
  * @type String|null null=不執行任何action
  */
-//Random_user.prototype._$open_request_action = 'open';
+Random_user.prototype._$open_request_action = 'open';
 
 /**
  * close()時執行的Action
@@ -293,20 +293,20 @@ Random_user.prototype.nav_config = {
  */
 Random_user.prototype._$onopen = null;
 
-Random_user.prototype._$onopen = function () {
-    
-    var _this = this;
-    //var _login_id = 1362;
-    this.request_get("open", {}, function (_data) {
- 
-        _this.set_data(_data);
-
-
-    });
+//Random_user.prototype._$onopen = function () {
+//    
+//    var _this = this;
+//    //var _login_id = 1362;
+//    this.request_get("open", {}, function (_data) {
+// 
+//        _this.set_data(_data);
+//
+//
+//    });
     
     //return this;
 
-};
+//};
 
 Random_user.prototype.search_user = function (_ele) {
     var _user_name = _ele.text();

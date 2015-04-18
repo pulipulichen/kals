@@ -725,6 +725,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
     
         $stu_list_array = array("");
         $stu_why_array = array();
+        $good_usr_list = array();
         
         for($x = 1; $x < $array_count; $x++){
             
@@ -755,9 +756,12 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             $stu_why2 = "";
             $stu_why3 = "";
             
+            
             if($sex_row['sex'] > 1){
                 if($input_b > 0.024469){
                     $stu_status1 = "A";
+                    //$usr_id_array = array_map('intval', $usr_id);
+                    //array_push($good_usr_list, $usr_id);
                 }  else {
                     $stu_status1 = "B";
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
@@ -807,9 +811,13 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             }  else {
                 if($input_p > 0.035547){
                 $stu_status1 = "A";
+                //$usr_id_array = array_map('intval', $usr_id);
+                //array_push($good_usr_list, $usr_id);
                 }  else {
                     if($input_b > 0.02174){
                     $stu_status1 = "A";
+                    //$usr_id_array = array_map('intval', $usr_id);
+                    //array_push($good_usr_list, $usr_id);
                     } else {
                         $stu_status1 = "B";
                         $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
@@ -833,7 +841,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                             array_push($who_to_react, $row_name['name']);
 
                         }
-                        $usr_id_list = array();
+                        //$usr_id_list = array();
                         $usr_name_list = array();
 
                         for($y = 1; $y < $array_count; $y++){
@@ -859,6 +867,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
         if($sex_row['sex'] > 1){
             if($input_od > 0.333333){
                 $stu_status2 = "A";
+                //$usr_id_array = array_map('intval', $usr_id);
+                //array_push($good_usr_list, $usr_id);
             }  else {
                 $stu_status2 = "B";
                 $stu_why2 = "過低原因2：試著多寫些好標註，讓多點人來回應你吧！（男性in-degree過低）<br>";//多跟他人互動,挑出名單?
@@ -872,6 +882,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                         $stu_why2 = "過低原因2：（女性，Pagerank過高的情況下，out-degree過高）<br>";
                     }  else {
                         $stu_status2 = "A";
+                        //$usr_id_array = array_map('intval', $usr_id);
+                        //array_push($good_usr_list, $usr_id);
                     }
                 }  else {
                     $stu_status2 = "B";
@@ -879,11 +891,15 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                 }
             }  else {
                 $stu_status2 = "A";
+                //$usr_id_array = array_map('intval', $usr_id);
+                //array_push($good_usr_list, $usr_id);
             }
         }
             
         if($input_b > 0.067702){
             $stu_status3 = "A";
+            //$usr_id_array = array_map('intval', $usr_id);
+            //array_push($good_usr_list, $usr_id);
         }  else {
             if($input_ci > 0.586957){
                 $stu_status3 = "B";
@@ -911,7 +927,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                 }
                     
                 $usr_name_list = array();
-                $usr_id_list = array();
+                //$usr_id_list = array();
                      
                 for($y = 1; $y < $array_count; $y++){
                     $usr_id2 = array_search($y, $usrlist);
@@ -919,7 +935,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
                     $row_name2 = $query->row_array();
                     array_push($usr_name_list, $row_name2['name']);
-                    array_push($usr_id_list, $usr_id);
+                    //array_push($usr_id_list, $usr_id);
                 }
                      
                 $tags = array_diff($usr_name_list, $who_to_react);
@@ -932,6 +948,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             }  else {
                 if($input_ci > 0.5625){
                     $stu_status3 = "A";
+                    //$usr_id_array = array_map('intval', $usr_id);
+                    //array_push($good_usr_list, $usr_id);
                 }  else {
                     if($input_p > 0.015601){
                         $stu_status3 = "B";
@@ -978,6 +996,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                         
                     }  else {
 			$stu_status3 = "A";
+                        //$usr_id_array = array_map('intval', $usr_id);
+                        //array_push($good_usr_list, $usr_id);
                     }
                 }
             }
@@ -988,14 +1008,16 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
         $str_count_b = substr_count($stu_status, "B");
  
         if($str_count_a >= 2 ){
-            
+            $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
+            $row_name = $query->row_array();
+            array_push($good_usr_list, $row_name['name']);
         }else{
         
             $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
             $row_name = $query->row_array();
             //array_push($stu_list_array, "<br><tr><td>", $row_name['name'], "</td><td><br>", $stu_why1, $stu_why2, $stu_why3);
             array_push($stu_list_array, $row_name['name']);
-            array_push($usr_id_list, $usr_id);
+            //array_push($usr_id_list, $usr_id);
             
             //$good_stu = array_diff($tags, $stu_list_array);
             
@@ -1014,6 +1036,9 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
     $data["from_R"] = $stu_list_array;
     
     $data["reason"] = $stu_why_array;
+    
+    //$good_usr_list = array("demo23", "demo2");
+    $data["good"] = $good_usr_list;
     
     ///////////////
 //    $usr_name_list2 = array();
@@ -1035,14 +1060,14 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
 //    $data["good"] = $good_stu;
 //    
 //    $good_to_react = array();
-//    if(!empty($usr_id_list)){
-//    for($i = 0; $i<count($usr_id_list);$i++){
+//    if(!empty($good_usr_list)){
+//    for($i = 0; $i<count($good_usr_list);$i++){
 //    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
 //    $row_name = $query->row_array();
 //    $who_react = array($row_name['name']);
 //    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_list[$i]);
 //    $row_user_id = $query->row_array();
-   
+//   
 //    $who_react = array();
 //        
 //    $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
@@ -1069,6 +1094,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
 //    }
 //    
 //    $data['good_to_react'] = $good_to_react;
+    
+    
 //    $note = array(
 //            'from_R' => $data['from_R'],
 //            'reason' => $data['reason']
@@ -1077,6 +1104,9 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
     // $data 寫入 log 資料表中
     $log_action = "sna_counting.cache";
     kals_log($this->db, $log_action, $data);
+    
+    $log_action = "sna_counting_good.cache";
+    kals_log($this->db, $log_action, $data["good"]);
         
     return $data;
 	

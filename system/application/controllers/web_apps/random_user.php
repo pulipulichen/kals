@@ -42,10 +42,23 @@ class random_user extends KALS_model {
      * 
      */
     public function open() {
+    $webpage_id = $this->get_current_webpage()->get_id();    
+    $query = $this->db->query("SELECT note " 
+            . "FROM log " 
+            . "WHERE log_timestamp > CURRENT_TIMESTAMP - INTERVAL '3 minutes' " 
+            . "AND webpage_id = ".$webpage_id. " " 
+            . "AND action_key = 'sna_counting_good.cache'");
         
+    if ($query->num_rows() > 0) {
+        
+        $log_row = $query->row_array();
+        
+        $data_good = $log_row["note"];
+        $data_good = json_to_array($data_good);
+    
         //$usr_id = 1362;
         $usr_id = $this->get_current_user()->get_id();
-        $webpage_id = $this->get_current_webpage()->get_id();
+        
         
         $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
         $row_name = $query->row_array();
@@ -69,41 +82,56 @@ class random_user extends KALS_model {
 
                         }
 
-                        $usr_name_list = array();
-                        
-    $query = $this->db->query('SELECT user_id ' 
-        . 'FROM webpage2annotation ' 
-        . 'JOIN annotation USING (annotation_id)' 
-        . 'WHERE webpage_id = '.$webpage_id.' ' 
-        . 'GROUP BY user_id');
-    $usr_id_row = $query->row_array();
-    
-        foreach ($query->result_array() as $usr_id_row){
-        $query2 = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_row['user_id']);
-        $row_name2 = $query2->row_array();
-        array_push($usr_name_list, $row_name2['name']);
-    }
+//                        $usr_name_list = array();
+//                        
+//    $query = $this->db->query('SELECT user_id ' 
+//        . 'FROM webpage2annotation ' 
+//        . 'JOIN annotation USING (annotation_id)' 
+//        . 'WHERE webpage_id = '.$webpage_id.' ' 
+//        . 'GROUP BY user_id');
+//    $usr_id_row = $query->row_array();
+//    
+//        foreach ($query->result_array() as $usr_id_row){
+//        $query2 = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_row['user_id']);
+//        $row_name2 = $query2->row_array();
+//        array_push($usr_name_list, $row_name2['name']);
+//    }
     
     
 
-                        $tags = array_diff($usr_name_list, $who_to_react);
+                        $tags = array_diff($data_good, $who_to_react);
                         
                         $tags2 = array_values($tags);
-                        $rnd_tags2 = count($tags2) - 1;
+                        //$rnd_tags2 = count($tags2) - 1;
                         
                         
                         //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
                         if($tags != NULL){
-                            $rand_user = $tags2[rand(0, $rnd_tags2)];
+                            
+                            //$rand_user = $tags2[rand(0, $rnd_tags2)];
+                            //$rand_user = $tags;
+                            $data["random_user"] = $tags2;
+                            //$data["random_user"] = array("bp6bp6bp6");
                         }  else {
-                            $rand_user = "暫無推薦人選<br>";    
+                            $data["random_user"] = array("暫無推薦人選<br>");    
+                            
                         }
                         
-                        $rand_user_array = array($rand_user);
-                        $data["random_user"] = $rand_user_array;
+                        //$rand_user_array = array($rand_user);
+                        //$data["random_user"] = $rand_user_array;
+                       // $data["random_user"] = $tags;
+                        //$data["random_user"] = $data_good;
                         return $data;
         
+    }else{
+        //$rand_user = "暫無推薦人選!!!!!!!!!!!<br>";
+        $rand_user_array = array("暫無推薦人選!!!!!!!!!!!<br>");
+        $data["random_user"] = $rand_user_array;
+        return $data;
     }
+    
+    }
+    
 }
 
 /* End of file random_user.php */
