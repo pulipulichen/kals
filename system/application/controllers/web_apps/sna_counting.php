@@ -855,7 +855,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                         $tags = array_diff($usr_name_list, $who_to_react);
                         //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
                         if($tags != NULL){
-                            $stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（女性betweenness過低）<br>".implode("、",$tags)."<br><br>";
+                            $stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（女性betweenness過低）<br>";                                
+                            //$stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（女性betweenness過低）<br>未互動名單：".implode("、",$tags)."<br><br>";
                         }  else {
                             $stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（女性betweenness過低）<br>";    
                         }
@@ -989,7 +990,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                         $tags = array_diff($usr_name_list, $who_to_react);
                         //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
                         if($tags != NULL){
-                            $stu_why3 = "過低原因3：多回覆不同人！（Betweenness與out-closeness過低情況下，Pagerank過高）<br>".implode("、",$tags)."<br><br>";
+                            $stu_why3 = "過低原因3：多回覆不同人！（Betweenness與out-closeness過低情況下，Pagerank過高）<br>未互動名單：".implode("、",$tags)."<br><br>";
                         }  else {
                             $stu_why3 = "過低原因3：多回覆不同人！（Betweenness與out-closeness過低情況下，Pagerank過高）<br>";    
                         }
@@ -1021,14 +1022,18 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             
             //$good_stu = array_diff($tags, $stu_list_array);
             
+            
             if($stu_why1 != "" && $stu_why2 != "" && $stu_why3 != ""){
                 array_push($stu_why_array, $row_name['name'], "　　".$stu_why1, "　　".$stu_why2, "　　".$stu_why3);
             }elseif ($stu_why1 != "" && $stu_why2 != "") {
                     array_push($stu_why_array, $row_name['name'], "　　".$stu_why1, "　　".$stu_why2);
                 }elseif ($stu_why1 != "" && $stu_why3 != "") {
                     array_push($stu_why_array, $row_name['name'], "　　".$stu_why1, "　　".$stu_why3);
-                }else {
+                }elseif ($stu_why2 != "" && $stu_why3 != "") {
                     array_push($stu_why_array, $row_name['name'], "　　".$stu_why2, "　　".$stu_why3);
+                }else{
+                    //test
+                    array_push($stu_why_array, $row_name['name'], "　　".$stu_why1, "　　".$stu_why2, "　　".$stu_why3);
                 }
         }            
  }
