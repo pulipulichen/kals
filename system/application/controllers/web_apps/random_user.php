@@ -107,11 +107,15 @@ class random_user extends KALS_model {
                         
                         //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
                         if($tags != NULL){
-                            
+                            if(count($tags2)<=3){
                             //$rand_user = $tags2[rand(0, $rnd_tags2)];
                             //$rand_user = $tags;
                             $data["random_user"] = $tags2;
                             //$data["random_user"] = array("bp6bp6bp6");
+                            }  else {
+                               $random_keys=array_rand($tags2,3);
+                               $data["random_user"] = $random_keys;
+                            }
                         }  else {
                             $data["random_user"] = array("暫無推薦人選<br>");    
                             
