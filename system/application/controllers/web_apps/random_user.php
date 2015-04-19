@@ -120,7 +120,7 @@ class random_user extends KALS_model {
                             $data["random_user"] = array("暫無推薦人選<br>");    
                             
                         }
-                        //////
+
                         //$rand_user_array = array($rand_user);
                         //$data["random_user"] = $rand_user_array;
                        // $data["random_user"] = $tags;
