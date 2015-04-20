@@ -6,11 +6,11 @@
  *
  * @package    KALS
  * @category   Webpage Application Libraries
- * @author     Pudding Chen <pulipuli.chen@gmail.com>
- * @copyright  Copyright (c) 2013, Pudding Chen
+ * @author     red mao hong <r3dmaohong@gmail.com>
+ * @copyright  Copyright (c) 2015, red mao hong
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       https://github.com/pulipulichen/kals/
- * @version    1.0 2013/11/19 下午 03:36:17
+ * @version    1.0 2015/04/20 下午 04:29
  * @extends {KALS_controller_window}
  */
 function Random_user() {

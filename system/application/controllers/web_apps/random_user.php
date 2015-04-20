@@ -8,11 +8,11 @@ include_once 'kals_model.php';
  * 
  * @package		KALS
  * @category		Controllers
- * @author		Pudding Chen <pulipuli.chen@gmail.com>
- * @copyright		Copyright (c) 2013, Pudding Chen
+ * @author		red mao hong <r3dmaohong@gmail.com>
+ * @copyright		Copyright (c) 2015, red mao hong
  * @license		http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link                https://github.com/pulipulichen/kals/
- * @version		1.0 2013/11/19 下午 03:51:22
+ * @version		1.0 2015/04/20 下午 04:22
  */
 class random_user extends KALS_model {
 
@@ -56,85 +56,53 @@ class random_user extends KALS_model {
         $data_good = $log_row["note"];
         $data_good = json_to_array($data_good);
     
-        //$usr_id = 1362;
-        $usr_id = $this->get_current_user()->get_id();
-        
+        $usr_id = $this->get_current_user()->get_id();    
         
         $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
         $row_name = $query->row_array();
         $who_to_react = array($row_name['name']);
 
-                        $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
-                                .'FROM annotation topic ' 
-                                    . 'JOIN webpage2annotation USING (annotation_id) '
-                                    . 'JOIN annotation reply '
-                                    .'ON topic.annotation_id = reply.topic_id '
-                                    . 'AND reply.topic_id IS NOT NULL ' 
-                                    . 'AND topic.deleted IS FALSE ' 
-                                    . 'AND reply.deleted IS FALSE '
-                                    . 'WHERE webpage_id = '.$webpage_id
-                                    . 'AND reply.user_id = '.$usr_id);  
+        $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
+            .'FROM annotation topic ' 
+                . 'JOIN webpage2annotation USING (annotation_id) '
+                . 'JOIN annotation reply '
+                    .'ON topic.annotation_id = reply.topic_id '
+                    . 'AND reply.topic_id IS NOT NULL ' 
+                    . 'AND topic.deleted IS FALSE ' 
+                    . 'AND reply.deleted IS FALSE '
+            . 'WHERE webpage_id = '.$webpage_id
+                . 'AND reply.user_id = '.$usr_id);  
 
-                        foreach ($query->result_array() as $row){ 
-                            $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
-                            $row_name = $query->row_array();
-                            array_push($who_to_react, $row_name['name']);
+        foreach ($query->result_array() as $row){ 
+            $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
+            $row_name = $query->row_array();
+            array_push($who_to_react, $row_name['name']);
+                    }
 
-                        }
-
-//                        $usr_name_list = array();
-//                        
-//    $query = $this->db->query('SELECT user_id ' 
-//        . 'FROM webpage2annotation ' 
-//        . 'JOIN annotation USING (annotation_id)' 
-//        . 'WHERE webpage_id = '.$webpage_id.' ' 
-//        . 'GROUP BY user_id');
-//    $usr_id_row = $query->row_array();
-//    
-//        foreach ($query->result_array() as $usr_id_row){
-//        $query2 = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_row['user_id']);
-//        $row_name2 = $query2->row_array();
-//        array_push($usr_name_list, $row_name2['name']);
-//    }
-    
-    
-
-                        $tags = array_diff($data_good, $who_to_react);
+        $tags = array_diff($data_good, $who_to_react);
                         
-                        $tags2 = array_values($tags);
-                        //$rnd_tags2 = count($tags2) - 1;
-                        
-                        
-                        //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
-                        if($tags != NULL){
-                            if(count($tags2)<=3){
-                            //$rand_user = $tags2[rand(0, $rnd_tags2)];
-                            //$rand_user = $tags;
-                            $data["random_user"] = $tags2;
-                            //$data["random_user"] = array("bp6bp6bp6");
-                            }  else {
+        $tags2 = array_values($tags);
+        
+        if($tags != NULL){
+            if(count($tags2)<=3){
+                $data["random_user"] = $tags2;
+                        }  else {
                                $random_keys=array_rand($tags2,3);
                                $data["random_user"] = $random_keys;
-                            }
-                        }  else {
-                            $data["random_user"] = array("暫無推薦人選<br>");    
-                            
                         }
-
-                        //$rand_user_array = array($rand_user);
-                        //$data["random_user"] = $rand_user_array;
-                       // $data["random_user"] = $tags;
-                        //$data["random_user"] = $data_good;
-                        return $data;
+                        }  else {
+                            $data["random_user"] = array("你目前做的很好！暫時不需要推薦人選歐！<br>");    
+                        }
+                return $data;
         
-    }else{
-        //$rand_user = "暫無推薦人選!!!!!!!!!!!<br>";
-        $rand_user_array = array("暫無推薦人選!!!!!!!!!!!<br>");
-        $data["random_user"] = $rand_user_array;
-        return $data;
-    }
+        }else{
+
+            $rand_user_array = array("功能尚未開啟<br>");
+            $data["random_user"] = $rand_user_array;
+            return $data;
+            }
     
-    }
+     }
     
 }
 
