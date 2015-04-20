@@ -744,8 +744,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             $input_id = $id_output_array[$x]/$caculated1;
             
             $input_ci = $ic_output_array[$x] * $caculated1;
-		
-            //抓出user_id以進行儲存
+
             $usr_id = array_search($x, $usrlist);
             
             $query = $this->db->query('SELECT sex FROM public.user ' 
@@ -760,8 +759,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             if($sex_row['sex'] > 1){
                 if($input_b > 0.024469){
                     $stu_status1 = "A";
-                    //$usr_id_array = array_map('intval', $usr_id);
-                    //array_push($good_usr_list, $usr_id);
                 }  else {
                     $stu_status1 = "B";
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
@@ -797,7 +794,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     }
 
                     $tags = array_diff($usr_name_list, $who_to_react);
-                        //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
                     if($tags != NULL){
                         $stu_why1 = "過低原因1：別自己埋頭苦幹！多與不同人做回應與互動！（男性betweenness過低）<br>".implode("、",$tags)."<br><br>";
                     }  else {
@@ -811,13 +807,9 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             }  else {
                 if($input_p > 0.035547){
                 $stu_status1 = "A";
-                //$usr_id_array = array_map('intval', $usr_id);
-                //array_push($good_usr_list, $usr_id);
                 }  else {
                     if($input_b > 0.02174){
                     $stu_status1 = "A";
-                    //$usr_id_array = array_map('intval', $usr_id);
-                    //array_push($good_usr_list, $usr_id);
                     } else {
                         $stu_status1 = "B";
                         $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
@@ -841,7 +833,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                             array_push($who_to_react, $row_name['name']);
 
                         }
-                        //$usr_id_list = array();
                         $usr_name_list = array();
 
                         for($y = 1; $y < $array_count; $y++){
@@ -868,8 +859,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
         if($sex_row['sex'] > 1){
             if($input_od > 0.333333){
                 $stu_status2 = "A";
-                //$usr_id_array = array_map('intval', $usr_id);
-                //array_push($good_usr_list, $usr_id);
             }  else {
                 $stu_status2 = "B";
                 $stu_why2 = "過低原因2：試著多寫些好標註，讓多點人來回應你吧！（男性in-degree過低）<br>";//多跟他人互動,挑出名單?
@@ -883,8 +872,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                         $stu_why2 = "過低原因2：（女性，Pagerank過高的情況下，out-degree過高）<br>";
                     }  else {
                         $stu_status2 = "A";
-                        //$usr_id_array = array_map('intval', $usr_id);
-                        //array_push($good_usr_list, $usr_id);
                     }
                 }  else {
                     $stu_status2 = "B";
@@ -892,15 +879,11 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                 }
             }  else {
                 $stu_status2 = "A";
-                //$usr_id_array = array_map('intval', $usr_id);
-                //array_push($good_usr_list, $usr_id);
             }
         }
             
         if($input_b > 0.067702){
             $stu_status3 = "A";
-            //$usr_id_array = array_map('intval', $usr_id);
-            //array_push($good_usr_list, $usr_id);
         }  else {
             if($input_ci > 0.586957){
                 $stu_status3 = "B";
@@ -923,12 +906,10 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
                     $row_name = $query->row_array();
                     array_push($who_to_react, $row_name['name']);
-                    //array_push($usr_id_list, $usr_id);
-                    
+
                 }
                     
                 $usr_name_list = array();
-                //$usr_id_list = array();
                      
                 for($y = 1; $y < $array_count; $y++){
                     $usr_id2 = array_search($y, $usrlist);
@@ -936,11 +917,9 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                     $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
                     $row_name2 = $query->row_array();
                     array_push($usr_name_list, $row_name2['name']);
-                    //array_push($usr_id_list, $usr_id);
                 }
                      
                 $tags = array_diff($usr_name_list, $who_to_react);
-                //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
                 if($tags != NULL){
                     $stu_why3 = "過低原因3：試著多寫些好標註，讓其他人來回應你吧！（Betweenness過低情況下，out-closeness過高）<br>未互動名單：".implode("、",$tags)."<br><br>";
                 }  else {
@@ -949,8 +928,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             }  else {
                 if($input_ci > 0.5625){
                     $stu_status3 = "A";
-                    //$usr_id_array = array_map('intval', $usr_id);
-                    //array_push($good_usr_list, $usr_id);
+
                 }  else {
                     if($input_p > 0.015601){
                         $stu_status3 = "B";
@@ -973,9 +951,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                             $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
                             $row_name = $query->row_array();
                             array_push($who_to_react, $row_name['name']);
-
                         }
-
                         $usr_name_list = array();
 
                         for($y = 1; $y < $array_count; $y++){
@@ -984,11 +960,10 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                             $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
                             $row_name2 = $query->row_array();
                             array_push($usr_name_list, $row_name2['name']);
-                            //array_push($usr_id_list, $usr_id);
                         }
 
                         $tags = array_diff($usr_name_list, $who_to_react);
-                        //$this->none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count);
+
                         if($tags != NULL){
                             $stu_why3 = "過低原因3：多回覆不同人！（Betweenness與out-closeness過低情況下，Pagerank過高）<br>未互動名單：".implode("、",$tags)."<br><br>";
                         }  else {
@@ -997,8 +972,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
                         
                     }  else {
 			$stu_status3 = "A";
-                        //$usr_id_array = array_map('intval', $usr_id);
-                        //array_push($good_usr_list, $usr_id);
+
                     }
                 }
             }
@@ -1016,13 +990,8 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
         
             $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
             $row_name = $query->row_array();
-            //array_push($stu_list_array, "<br><tr><td>", $row_name['name'], "</td><td><br>", $stu_why1, $stu_why2, $stu_why3);
             array_push($stu_list_array, $row_name['name']);
-            //array_push($usr_id_list, $usr_id);
-            
-            //$good_stu = array_diff($tags, $stu_list_array);
-            
-            
+
             if($stu_why1 != "" && $stu_why2 != "" && $stu_why3 != ""){
                 array_push($stu_why_array, $row_name['name'], "　　".$stu_why1, "　　".$stu_why2, "　　".$stu_why3);
             }elseif ($stu_why1 != "" && $stu_why2 != "") {
@@ -1042,64 +1011,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
     
     $data["reason"] = $stu_why_array;
     
-    //$good_usr_list = array("demo23", "demo2");
     $data["good"] = $good_usr_list;
-    
-    ///////////////
-//    $usr_name_list2 = array();
-//                        
-//    $query = $this->db->query('SELECT user_id ' 
-//        . 'FROM webpage2annotation ' 
-//        . 'JOIN annotation USING (annotation_id)' 
-//        . 'WHERE webpage_id = '.$webpage_id.' ' 
-//        . 'GROUP BY user_id');
-//    $usr_id_row = $query->row_array();
-//    
-//    foreach ($query->result_array() as $usr_id_row){
-//    $query2 = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_row['user_id']);
-//    $row_name2 = $query2->row_array();
-//    array_push($usr_name_list2, $row_name2['name']);
-//    
-//    }
-//    $good_stu = array_diff($usr_name_list2, $stu_list_array);
-//    $data["good"] = $good_stu;
-//    
-//    $good_to_react = array();
-//    if(!empty($good_usr_list)){
-//    for($i = 0; $i<count($good_usr_list);$i++){
-//    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
-//    $row_name = $query->row_array();
-//    $who_react = array($row_name['name']);
-//    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id_list[$i]);
-//    $row_user_id = $query->row_array();
-//   
-//    $who_react = array();
-//        
-//    $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
-//                                .'FROM annotation topic ' 
-//                                    . 'JOIN webpage2annotation USING (annotation_id) '
-//                                    . 'JOIN annotation reply '
-//                                    .'ON topic.annotation_id = reply.topic_id '
-//                                    . 'AND reply.topic_id IS NOT NULL ' 
-//                                    . 'AND topic.deleted IS FALSE ' 
-//                                    . 'AND reply.deleted IS FALSE '
-//                                    . 'WHERE webpage_id = '.$webpage_id
-//                                    . 'AND reply.user_id = '.$usr_id_list[$i]);  
-//
-//    foreach ($query->result_array() as $row){ 
-//                            $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
-//                            $row_name = $query->row_array();
-//                            array_push($who_react, $row_name['name']);
-//
-//      }
-//    
-//    array_push($good_to_react,  "<br>".$stu_list_array[$i]."<br>" , $who_react);
-//    }}else{
-//        $good_to_react = "尚未有成績優良之名單";
-//    }
-//    
-//    $data['good_to_react'] = $good_to_react;
-    
     
 //    $note = array(
 //            'from_R' => $data['from_R'],
@@ -1117,45 +1029,6 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
 	
     }        
 }
-//none_interection_user_list	
-//抓未位互動
-public function none_interection_user_list($usr_id, $webpage_id, $usrlist, $array_count){
-    $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id);
-    $row_name = $query->row_array();
-    $who_to_react = array($row_name['name']);
-                    
-    $query = $this->db->query('SELECT DISTINCT topic.user_id "user_topic" '
-             .'FROM annotation topic ' 
-                . 'JOIN webpage2annotation USING (annotation_id) '
-                . 'JOIN annotation reply '
-                .'ON topic.annotation_id = reply.topic_id '
-                . 'AND reply.topic_id IS NOT NULL ' 
-                . 'AND topic.deleted IS FALSE ' 
-                . 'AND reply.deleted IS FALSE '
-                    . 'WHERE webpage_id = '.$webpage_id
-                . 'AND reply.user_id = '.$usr_id);  
-                    
-    foreach ($query->result_array() as $row){ 
-        $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$row['user_topic']);
-        $row_name = $query->row_array();
-        array_push($who_to_react, $row_name['name']);
-                    
-    }
-                    
-    $usr_name_list = array();
-                     
-    for($y = 1; $y < $array_count; $y++){
-	$usr_id2 = array_search($y, $usrlist);
-                     
-        $query = $this->db->query('SELECT name FROM public.user WHERE user_id = '.$usr_id2);
-        $row_name2 = $query->row_array();
-        array_push($usr_name_list, $row_name2['name']);
-        }
-                     
-        $tags = array_diff($usr_name_list, $who_to_react);
-	return $tags;
-}
-
 }
 
 /* End of file sna_counting.php */
