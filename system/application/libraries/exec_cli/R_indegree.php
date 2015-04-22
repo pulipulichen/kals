@@ -22,7 +22,7 @@ class R_indegree extends Exec_r {
 
     public function insert_data($file) {
 
-    exec("C:/R/bin/Rscript.exe  system/application/libraries/exec_cli/libraries/R/betweenness_rscript.r $file", $id_output, $return_var);
+    exec($this->base_command . " system/application/libraries/exec_cli/libraries/R/betweenness_rscript.r $file", $id_output, $return_var);
     return $id_output;
 
 }

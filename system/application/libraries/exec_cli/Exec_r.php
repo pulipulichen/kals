@@ -19,12 +19,13 @@ class Exec_r extends Exec_cli {
     protected $rscript = "";
     
     public function __construct() {
-        $CI =& get_instance();
-        $CI->config->load('sna_analysis');
-        $this->base_command = $CI->config->item("r_base_command");
+        parent::__construct();
         
+        //$CI =& get_instance();
+        $this->CI->load->config('sna_analysis');
+        $this->base_command = $this->CI->config->item("r_base_command");
         
-
+        return $this;
     }
 
     public function executable() {

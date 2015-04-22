@@ -22,7 +22,7 @@ class R_degree extends Exec_r {
 
     public function insert_data($file_degree) {
 
-    exec("C:/R/bin/Rscript.exe  system/application/libraries/exec_cli/libraries/R/degree_rscript.r $file_degree", $d_output, $return_var);
+    exec($this->base_command . " system/application/libraries/exec_cli/libraries/R/degree_rscript.r $file_degree", $d_output, $return_var);
 
     return $d_output;
 

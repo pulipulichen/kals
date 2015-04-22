@@ -21,12 +21,18 @@ class R_outdegree extends Exec_r {
 //    protected $options = array();
 
     public function insert_data($file) {
-    
-    exec("C:/R/bin/Rscript.exe system/application/libraries/exec_cli/libraries/R/outdegree_rscript.r $file", $od_output, $return_var);
-     
-    return $od_output;
+        
+//        $CI =& get_instance();
+//        $CI->load->config('sna_analysis');
+//        $this->base_command = $CI->config->item("r_base_command");
+        //throw  new Exception($this->base_command);
 
-}
+
+        exec($this->base_command . " system/application/libraries/exec_cli/libraries/R/outdegree_rscript.r $file", $od_output, $return_var);
+
+        return $od_output;
+
+    }
 }
 /* End of file Weka.php */
 /* Location: ./system/application/libraries/.../Weka.php */

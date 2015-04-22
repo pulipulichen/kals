@@ -221,7 +221,7 @@ class R_betweenness extends Exec_r {
 //            
 //        exec("C:/R/bin/Rscript.exe D:/betweenness_rscript.r $file", $b_output, $return_var);
     
-    exec("C:/R/bin/Rscript.exe system/application/libraries/exec_cli/libraries/R/betweenness_rscript.r $file", $b_output, $return_var);
+    exec($this->base_command . " system/application/libraries/exec_cli/libraries/R/betweenness_rscript.r $file", $b_output, $return_var);
 //exec("C:/R/bin/Rscript.exe D:/betweenness_rscript.r $file", $b_output, $return_var);
 //    for($j = 1; $j < count($b_output); $j++){
 //	$usr_id = 1;

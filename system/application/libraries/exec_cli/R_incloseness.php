@@ -22,7 +22,7 @@ class R_incloseness extends Exec_r {
  
     public function insert_data($file) {
 
-    exec("C:/R/bin/Rscript.exe  system/application/libraries/exec_cli/libraries/R/incloseness_rscript.r $file", $ic_output, $return_var);
+    exec($this->base_command . " system/application/libraries/exec_cli/libraries/R/incloseness_rscript.r $file", $ic_output, $return_var);
     return $ic_output;
 
 }

@@ -22,7 +22,7 @@ class R_pagerank extends Exec_r {
     
     public function insert_data($file) {
 
-    exec("C:/R/bin/Rscript.exe  system/application/libraries/exec_cli/libraries/R/pagerank_rscript.r $file", $p_output, $return_var);
+    exec($this->base_command . "  system/application/libraries/exec_cli/libraries/R/pagerank_rscript.r $file", $p_output, $return_var);
     return $p_output;
 
 }
