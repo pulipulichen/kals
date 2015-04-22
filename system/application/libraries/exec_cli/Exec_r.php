@@ -7,17 +7,26 @@ include_once 'Exec_cli.php';
  *
  * @package         KALS
  * @category        Libraries
- * @author          Pudding Chen <pulipuli.chhn@gmail.com>
- * @copyright       Copyright (c) 2014, Pudding Chen
+ * @author         red mao hong <r3dmaohong@gmail.com>
+ * @copyright       Copyright (c) 2015, red mao hong
  * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link            https://github.com/pulipulichen/kals
- * @version         1.0 2014/1/17 上午 11:07:24
+ * @version         1.0 2015/04/22
  */
 class Exec_r extends Exec_cli {
 
-    protected $base_command = "C:/R/bin/Rscript.exe";
+    protected $base_command;
     protected $rscript = "";
-            
+    
+    public function __construct() {
+        $CI =& get_instance();
+        $CI->config->load('sna_analysis');
+        $this->base_command = $CI->config->item("r_base_command");
+        
+        
+
+    }
+
     public function executable() {
         
         
