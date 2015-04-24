@@ -14,7 +14,13 @@
  */
 
 //要觀察的網址
-$config['r_base_command'] = 'C:/R/bin/Rscript.exe';
+
+if (is_file("'C:/R/bin/Rscript.exe'")) {
+    $config['r_base_command'] = 'C:/R/bin/Rscript.exe';
+}
+else if (is_file("/usr/lib/R/bin/Rscript")) {
+    $config['r_base_command'] = "/usr/lib/R/bin/Rscript";
+}
 
 
 /* End of file kals.php */

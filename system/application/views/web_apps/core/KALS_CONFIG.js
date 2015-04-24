@@ -279,6 +279,16 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      */
     enable_search_toolbar: true,
+    
+    /**
+     * 管理者的名字清單
+     * @type Array|String
+     * @author Pudding Chen 20150410
+     * admin_email_list: [
+        "demo@dlll.nccu.edu.tw"
+    ],
+     */
+    admin_email_list: [],
     	
     //----------------------------
     
@@ -623,6 +633,20 @@ DEFAULT_KALS_CONFIG = {
             "enable": false
         },
         /**
+         * 社會網路分析功能
+         */
+        Sna_counting: {
+            "enable": true
+        },
+        
+        /**
+         * 
+         * 推薦互動名單
+         */
+        Random_user: {
+            "enable": true
+        },
+        /**
          * 章節地圖
          */
         Window_map: {
@@ -666,7 +690,7 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         KALS_stamp: {
-        "enable": false,
+            "enable": false,
             /**
              * 獎章資格設定
              */

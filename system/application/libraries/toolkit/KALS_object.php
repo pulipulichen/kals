@@ -48,8 +48,9 @@ class KALS_object {
         $this->CI->load->helper('context');
         $this->CI->lang->load('kals');
         $this->lang = $this->CI->lang;
-        if (FALSE == isset($this->CI->db))
+        if (FALSE == isset($this->CI->db)) {
             $this->CI->load->database();
+        }
         $this->db = $this->CI->db;
         return $this;
     }

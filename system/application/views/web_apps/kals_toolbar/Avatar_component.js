@@ -18,6 +18,7 @@ function Avatar_component(_common_windows) {
     
     this.child('notification', new Notification_component());
     this.child('profile', new Profile_navigation(_common_windows));
+    this.child('profile_admin', new Profile_admin_navigation(_common_windows));
     this.child('embed', new Embed_navigation(_common_windows));
 }
 
@@ -35,6 +36,7 @@ Avatar_component.prototype._$create_ui = function () {
             + '<td class="name"></td>'
             + '<td class="notification"></td>'
             + '<td class="navigation profile"></td>'
+            + '<td class="navigation profile-admin"></td>'
             + '<td class="navigation embed"></td>'
             + '</tr></tbody></table>')
         .addClass('avatar-component');
@@ -47,6 +49,9 @@ Avatar_component.prototype._$create_ui = function () {
     
     var _profile_nav = this.profile.get_ui();
         _ui.find('td.profile.navigation:first').append(_profile_nav);
+        
+    var _profile_admin_nav = this.profile_admin.get_ui();
+        _ui.find('td.profile-admin.navigation:first').append(_profile_admin_nav);
     
     var _embed_nav = this.embed.get_ui();
         _ui.find('td.embed.navigation:first').append(_embed_nav)
@@ -69,12 +74,20 @@ Avatar_component.prototype._$create_ui = function () {
     KALS_context.auth.add_listener(function (_auth, _data) {
         
         var _is_embed = _auth.is_embed();
+        
         if (_is_embed === true) {
-			_this.toggle_navigation('embed');
-		}
-		else {
-			_this.toggle_navigation('profile');
-		}
+            _this.toggle_navigation('embed');
+        }
+        else {
+            var _is_admin = _auth.is_admin();
+            if (_is_admin === true) {
+                _this.toggle_navigation('profile-admin');
+            }
+            else {
+                _this.toggle_navigation('profile');
+            }
+            
+        }
     });
     
     return _ui;
