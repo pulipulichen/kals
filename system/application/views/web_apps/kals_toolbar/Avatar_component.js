@@ -79,14 +79,11 @@ Avatar_component.prototype._$create_ui = function () {
             _this.toggle_navigation('embed');
         }
         else {
-            var _is_admin = _auth.is_admin();
-            if (_is_admin === true) {
-                _this.toggle_navigation('profile-admin');
-            }
-            else {
-                _this.toggle_navigation('profile');
-            }
-            
+            _this.toggle_navigation('profile');
+        }
+        var _is_admin = _auth.is_admin();
+        if (_is_admin === true) {
+            _this.toggle_navigation('profile-admin');
         }
     });
     
