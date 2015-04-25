@@ -91,7 +91,7 @@ class random_user extends KALS_model {
                                $data["random_user"] = $random_keys;
                         }
                         }  else {
-                            $data["random_user"] = array("你目前做的很好！暫時不需要推薦人選歐！<br>");    
+                            $data["random_user"] = $data_good;    
                         }
                 return $data;
         
