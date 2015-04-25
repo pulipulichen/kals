@@ -644,7 +644,7 @@ DEFAULT_KALS_CONFIG = {
          * 推薦互動名單
          */
         Random_user: {
-            "enable": true
+            "enable": false
         },
         /**
          * 章節地圖

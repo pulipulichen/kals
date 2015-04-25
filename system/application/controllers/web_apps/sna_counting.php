@@ -35,7 +35,7 @@ public function sna_start(){
             . "AND webpage_id = ".$webpage_id. " " 
             . "AND action_key = 'sna_counting.cache'");
         
-    if ($query->num_rows() < 0) {
+    if ($query->num_rows() > 0) {
         $log_row = $query->row_array();
         
         $data = $log_row["note"];

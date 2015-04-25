@@ -10,7 +10,7 @@
    classv = read.csv(LINK,header=F)
 
 #類似import的概念，不能像使用R時直接import，需加入路徑！
-   library(igraph, lib.loc="system/application/libraries/exec_cli/libraries/R/R-library/3.1")
+   library(igraph, lib.loc="/usr/local/lib/R/site-library/")
    
 #轉換成陣列，以做接下來的使用   
    Mclassv <- get.adjacency(graph.edgelist(as.matrix(classv), directed=TRUE))
