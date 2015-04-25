@@ -339,7 +339,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             $stu_why3 = "";
             
             
-            if($sex_row['sex'] > 1){
+            if($sex_row['sex'] < 2){
                 if($input_b > 0.024469){
                     $stu_status1 = "A";
                 }  else {
@@ -439,7 +439,7 @@ public function sna_tree($b_output, $d_output, $p_output, $od_output, $id_output
             }
         } 
             
-        if($sex_row['sex'] > 1){
+        if($sex_row['sex'] < 2){
             if($input_od > 0.333333){
                 $stu_status2 = "A";
             }  else {
