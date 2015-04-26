@@ -279,7 +279,8 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      */
     enable_search_toolbar: true,
-        /**
+    
+    /**
      * 是否啟用離開時提示訊息
      * @author Pulipuli Chen 20150117
      * @type Boolean
@@ -638,19 +639,25 @@ DEFAULT_KALS_CONFIG = {
         Window_search: {
             "enable": false
         },
+        
         /**
          * 社會網路分析功能
+         * @author 20150426 洪維均
+         * 
+         * 預設應該關掉
          */
         Sna_counting: {
-            "enable": true
+            "enable": false
         },
         
         /**
-         * 
          * 推薦互動名單
+         * @author 20150426 洪維均
+         * 
+         * 預設應該關掉
          */
         Random_user: {
-            "enable": true
+            "enable": false
         },
         /**
          * 章節地圖
