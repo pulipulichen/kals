@@ -594,8 +594,22 @@ jQuery.is_string = function (_obj) {
     return (typeof(_obj) === 'string');
 };
 
+/**
+ * 檢查是否是整數
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
 jQuery.is_number = function (_obj) {
     return (typeof(_obj) === 'number');
+};
+
+/**
+ * 檢查是否是整數
+ * @param {Object} _obj
+ * @returns {Boolean}
+ */
+jQuery.is_int = function (_obj) {
+    return this.is_number(_obj);
 };
 
 /**
