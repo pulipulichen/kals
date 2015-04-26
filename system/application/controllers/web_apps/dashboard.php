@@ -94,6 +94,7 @@ class dashboard extends KALS_model {
         
         $data["activity"] = "Good";
         
+
         return $data;
     }
 }

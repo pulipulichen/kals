@@ -140,6 +140,20 @@ KALS_authentication.prototype.is_login = function () {
 }; 
 
 /**
+ * 是否是管理者的狀態
+ * @returns {Boolean}
+ * @author Pudding 20150410
+ */
+KALS_authentication.prototype.is_admin = function () {
+    //return false;
+    var _admin_email_list = KALS_CONFIG.admin_email_list;
+    //test_msg("auth.is_admin()", _admin_email_list);
+    var _user_email = KALS_context.user.get_email();
+    
+    return ($.inArray(_user_email, _admin_email_list) !== -1);
+};
+
+/**
  * 清空帳號資料
  * 
  * @return {null}

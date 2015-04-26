@@ -56,7 +56,21 @@
 <script type="text/javascript" src="/kals/web_apps/generic/loader/release"></script>
 <script type="text/javascript">  
  KALS_CONFIG = {
-     //user_email: "/user.php",
+	admin_email_list: [
+        "102155004@nccu.edu.tw"
+    ],
+ 
+     user_email: "/user.php",
+	 
+     web_search_url: { 
+        "圖片：Google圖片": "https://www.google.com.tw/search?tbm=isch&safe=active&q={query}",
+        "百科：維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",
+        "中英翻譯：Google翻譯": "https://translate.google.com.tw/#auto/zh-TW/{query}",
+        "中英字典：Yahoo字典": "https://tw.dictionary.yahoo.com/dictionary?p={query}",
+        "中文字典：萌典": "https://www.moedict.tw/{query}",
+     },		 
+	 
+	 
  /**
      * 使用的標註類型
      * 標註類型的順序會照以下設定排列。
@@ -701,7 +715,7 @@
                         liked_users_count: {
                             count:3  
                         },
-						annotation_count_rank: { //名次
+						annotation_count_ranking: { //名次
 							count:3
 						},
                     },

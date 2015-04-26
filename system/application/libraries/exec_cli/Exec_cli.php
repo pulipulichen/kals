@@ -13,7 +13,7 @@ include_once 'Cache_file.php';
  * @link            https://github.com/pulipulichen/kals
  * @version         1.0 2014/1/17 上午 11:00:25
  */
-class Exec_cli {
+class Exec_cli extends KALS_object {
     
     protected $base_commmand = "";
     protected $command = "";
