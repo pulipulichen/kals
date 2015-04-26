@@ -659,6 +659,7 @@ DEFAULT_KALS_CONFIG = {
         Random_user: {
             "enable": false
         },
+        
         /**
          * 章節地圖
          */
