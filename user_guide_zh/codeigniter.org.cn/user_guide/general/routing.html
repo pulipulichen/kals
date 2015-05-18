@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI 路由 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;URI 路由	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/general/routing.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>URI 路由</h1>
+<p>一般来说，URI字符串有着和它唯一对应的控制器(controller)类/方法。URI的各个部分是如下模式（pattern）：</p>
+
+<code>example.com/<dfn>class</dfn>/<samp>function</samp>/<var>id</var>/</code>
+
+<p>然而在一些例子中,你也许想重定向这种关系来调用一个不同的类/方法(class/function),而不是与URL一一对应(的调用).</p>
+
+<p>例如，你可能想使你的URL采用这种原型（prototype）：</p>
+
+
+<p>
+example.com/product/1/<br />
+example.com/product/2/<br />
+example.com/product/3/<br />
+example.com/product/4/
+</p>
+
+<p>一般情况下，URL的第二个部分表示方法名，不过在上面的例子中，它表示一个产品的ID。CodeIgniter可以实现这个功能，让用户可以重新定向(remap)URI处理程序.</p>
+
+<h2>设定你自己的路由规则</h2>
+
+<p>路由规则定义在<var>application/config/routes.php</var> 文件中.  在此文件中，你可以看到一个名为 <dfn>$route</dfn>的数组，它可以让你定义你自己的路由规则。  定义可以用两种方式： <dfn>通配符(wildcards)</dfn> 或者 <dfn>正则表达式(Regular Expressions)</dfn></p>
+
+<h2>通配符</h2>
+
+<p>一个典型的通配符路由看起来是这样的：</p>
+
+<code>$route['product/:num'] = "catalog/product_lookup";</code>
+
+<p>在一个路由中,数组的键包含着被匹配的URI,而数组的值包含着路由将被重定向的目的地.在上面的例子中,如果单词“product”出现在URL的第一个部分中，而且数字(:num)出现在URI的第二个部分中,"catalog"类和"product_lookup"方法将被替代使用(即将被重定向).</p>
+
+<p>你可以匹配文字的值或者使用以下两种通配符类型:</p>
+
+<p>
+:num<br />
+:any
+</p>
+
+<p><strong>:num</strong> 将匹配一个只包含有数字的segment(段).<br />
+<strong>:any</strong> 将匹配一个包含任何字符的segment.
+</p>
+
+<p class="important"><strong>注意:</strong> 路由将会按照定义的顺序来运行.高层的路由总是优先于低层的路由.</p>
+
+
+<h2>Examples</h2>
+
+<p>下面是一些简单的例子:</p>
+
+<code>$route['journals'] = "blogs";</code>
+<p>如果URL的第一个分段（类名）是关键字"journals"，那么将会重定向到"blogs"类中处理.</p>
+
+<code>$route['blog/joe'] = "blogs/users/34";</code>
+<p>如果URL的前两个分段是"blog"和"joe"，那么将会重定向到"blogs"类的"users"方法中处理.并且将ID"34"设为参数.</p>
+
+
+<code>$route['product/:any'] = "catalog/product_lookup";</code>
+<p>当"product"作为URL中第一个分段时, 无论第二分段是什么都将被重定向到"catalog"类的"product_lookup"方法.</p>
+
+<code>$route['product/(:num)'] = "catalog/product_lookup_by_id/$1";</code>
+<p>当“product”作为 URL 中第一个分段时, 无论第二分段是什么都将被重定向到“catalog”类，并传递所匹配的内容到“product_lookup_by_id”方法中。</p>
+
+<p class="important"><strong>重要提示:</strong> 不要在前面或后面加"/".</p>
+
+<h2>正则表达式</h2>
+
+<p>如果你喜欢可以使用正则表达式来自定义你的路由规则.  任何有效的正则表达式都是被允许的, 甚至逆向引用.</p>
+
+<p class="important"><strong>注意:</strong>&nbsp; 如果你使用逆向引用请将双反斜线语法替换为美元符语法（\\1 替换为 $1).</p>
+
+<p>一个典型的正则表达式看起来像下面的样子:</p>
+
+<code>$route['products/([a-z]+)/(\d+)'] = "$1/id_$2";</code>
+
+<p>上例中, 类似于 <dfn>products/shirts/123</dfn> 的URI 将换成调用 <dfn>shirts</dfn> 控制器类的 <dfn>id_123</dfn> 方法.</p>
+
+<p>你也可以混合使用通配符与正则表达式.</p>
+
+<h2>Reserved Routes</h2>
+
+<p>这里有两个需被保留的路由:</p>
+
+<code>$route['default_controller'] = 'welcome';</code>
+
+<p>这个路由指出当URI中不包含任何数据时默认使用的控制器是哪个,当别人加载你的根URL时这个就是实例. 上例中, "welcome" 类将被默认加载. 你应该总是保证一个默认路由，否则你的首页将会默认显示404错误.</p>
+
+<code>$route['scaffolding_trigger'] = 'scaffolding';</code>
+
+<p>该路由为您设置了一个秘密词，在URL触发器脚手架特点。详情请阅读 <a href="scaffolding.html">脚手架</a> 相关部分页面.</p>
+
+<p class="important"><strong>重要讯息:</strong>&nbsp; 在所有通配符或正则表达式路由之前使用它.</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+architectcom, caincheung, chouqiuqiu, Hex, nardo, shnwqshnwq</div>
+<div id="DocDate">
+最后修改: 2008-09-04 23:47:34</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="scaffolding.html">脚手架(Scaffolding)</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="errors.html">错误处理</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

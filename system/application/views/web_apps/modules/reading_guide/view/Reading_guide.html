@@ -1,0 +1,9 @@
+<div class="navigation">
+<button type="button" class="prev" kals-event-click="goto_prev_step()">{{kals-lang:button_prev}}</button>
+<button type="button" class="next" kals-event-click="goto_next_step()" class="default-focus">{{kals-lang:button_next}}</button>
+<button type="button" class="replay" kals-event-click="reset_steps()">{{kals-lang:button_replay}}</button>
+<div>STEP: {{step_index_display}}</div>
+</div>
+<div class="steps">
+<ol><li kals-event-click="select_this_step()" class="step-list">{{step_list}}</li></ol>
+</div>

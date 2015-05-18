@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>输入和安全类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;输入和安全类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/input.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>输入类</h1>
+
+<p>输入类有两个目的：</p>
+
+<ol>
+<li>为了安全，预处理输入数据。</li>
+<li>提供helper的一些方法，取得输入数据，并预处理输入数据。</li>
+</ol>
+
+<p class="important"><strong>说明:</strong> 系统自动加载此类，不用手动加载。</p>
+
+
+<h2>安全过滤（Security Filtering）</h2>
+
+<p>当触发一个<a href="../../user_guide/general/controllers.html">控制器</a>的时候，安全过滤（Security Filtering）功能自动启动。做以下事情：</p>
+
+<ul>
+
+<li>摧毁全局GET数组。CodeIgniter不用GET数组，就没有必要允许它。</li>
+<li>当 register_globals 被设置为 on 的时候，销毁所有的全局变量。</li>
+<li>过滤 POST/COOKIE 数组键，只允许字母-数字(以及一些其它的)字符。</li>
+<li>可以过滤跨站脚本攻击 (Cross-site Scripting Hacks)  此功能可全局打开（enabled globally），或者按要求打开。</li>
+<li>换行符统一换为 \n</li>
+</ul>
+
+
+<h2>跨站脚本过滤（XSS Filtering）</h2>
+
+<p>CodeIgniter可以自动过滤POST和COOKIE中的跨站脚本攻击，或者可以在每次处理POST和COOKIE的时候单独使用。缺省情况下，CodeIgniter<strong>没有</strong>开启自动过滤。因为这样的处理需要一定的cpu资源（a bit of processing overhead）。并且，用户也不一定完全需要。</p>
+
+<p>XSS过滤器会查找常用的那些触发JavaScript的技术，或者是其它类型的企图劫持Cookie或进行其它恶意行为的代码。一旦遇到不允许的内容，它将把数据转换为字符实体，以保证安全。</p>
+
+<p>
+说明: 此功能只应该处理提交的数据。而不应该用于其它情况，因为它要消耗很大的cpu资源。</p>
+
+
+<p>要想过滤数据中的跨站脚本，使用如下方法：</p>
+
+<h2>$this-&gt;input-&gt;xss_clean()</h2>
+
+<p>例子如下：</p>
+
+<code>$data = $this-&gt;input-&gt;xss_clean($data);</code>
+
+<p>如果你想让codeigniter自动处理POST 或者 COOKIE 数据。你可以在<kbd>application/config/config.php</kbd>文件中设定：</p>
+
+<code>$config['global_xss_filtering'] = TRUE;</code>
+
+<p>注意：表单验证类也提供了 XSS 过滤选项。</p>
+
+<p>对于文件上传的安全，此函数的第二个可选参数 <dfn>is_image</dfn>，允许此函数检测图像潜在的XSS攻击。当此第二个参数被设置为  <dfn>TRUE</dfn> 的时候，如果图像是安全的，它将会返回TRUE，而不是被修改后的字符串。如果图像含有浏览器将会执行的潜在恶意信息，函数将会返回FALSE。</p>
+
+<code>if ($this-&gt;input-&gt;xss_clean($file, TRUE) === FALSE)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;// file failed the XSS test<br />
+&#125;</code>
+
+<h2>使用 POST, COOKIE, 或 SERVER 数据</h2>
+
+<p>CodeIgniter 有3个 helper方法可以让用户取得POST, COOKIE 或 SERVER 的内容。用这些方法比直接使用php方法($_POST['something'])的好处是不用先检查此项目是不是存在。 直接使用php方法，必须先做如下检验：</p>
+
+<code>
+if ( ! isset($_POST['something']))<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$something = FALSE;<br />
+
+&#125;<br />
+else<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$something = $_POST['something'];<br />
+&#125;</code>
+
+<p>用CodeIgniter内建的方法，你可以这样：</p>
+
+<code>$something = $this-&gt;input-&gt;post('something');</code>
+
+<p>这3个方法是：</p>
+
+<ul>
+<li>$this-&gt;input-&gt;post()</li>
+<li>$this-&gt;input-&gt;cookie()</li>
+<li>$this-&gt;input-&gt;server()</li>
+</ul>
+
+<h2>$this-&gt;input-&gt;post()</h2>
+
+<p>第一个参数是所要取得的post中的数据：</p>
+
+<code>$this-&gt;input-&gt;post('some_data');</code>
+
+<p>如果数据不存在，方法将返回 FALSE (布尔值)。</p>
+
+<p>第二个参数是可选的，如果想让取得的数据经过跨站脚本过滤（XSS Filtering），把第二个参数设为TRUE。</p>
+
+<code>$this-&gt;input-&gt;post('some_data', TRUE);</code>
+
+<h2>$this-&gt;input-&gt;get()</h2>
+
+<p>This function is identical to the post function, only it fetches get data:</p>
+<p>此方法类似post方法，用来取得get数据：</p>
+
+<code>$this-&gt;input-&gt;get('some_data', TRUE);</code>
+
+<h2>$this-&gt;input-&gt;get_post()</h2>
+
+<p>This function will search through both the post and get streams for data, looking first in post, and then in get:</p>
+
+<p>这个方法将会搜索POST和GET方式的数据流，首先以POST方式搜索参数1中的值，否则以GET方式搜索:</p>
+
+<code>$this-&gt;input-&gt;get_post('some_data', TRUE);</code>
+
+<h2>$this-&gt;input-&gt;cookie()</h2>
+
+<p>此方法类似post方法，用来取得cookie数据：</p>
+
+<code>$this-&gt;input-&gt;cookie('some_data', TRUE);</code>
+
+<h2>$this-&gt;input-&gt;server()</h2>
+
+<p>此方法类似上面两个方法，用来取得server数据：</p>
+
+<code>$this-&gt;input-&gt;server('some_data');</code>
+
+
+
+
+<h2>$this-&gt;input-&gt;ip_address()</h2>
+
+<p>返回当前用户的IP。如果IP地址无效，返回0.0.0.0的IP：</p>
+<code>echo $this-&gt;input-&gt;ip_address();</code>
+
+
+<h2>$this-&gt;input-&gt;valid_ip(<var>$ip</var>)</h2>
+
+<p>测试输入的IP地址是不是有效，返回布尔值TRUE或者FALSE。  注意：$this-&gt;input-&gt;ip_address()自动测试输入的IP地址本身格式是不是有效。</p>
+
+<code>if ( ! $this-&gt;input-&gt;valid_ip($ip))<br />
+&#123;<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp; echo 'Not Valid';<br />
+&#125;<br />
+else<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp; echo 'Valid';<br />
+&#125;</code>
+
+
+<h2>$this-&gt;input-&gt;user_agent()</h2>
+
+<p>返回当前用户正在使用的浏览器的user agent信息。 如果不能得到数据，返回FALSE。</p>
+<code>echo $this-&gt;input-&gt;user_agent();</code><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+architectcom, Hex, soyota, xjflyttp, yinzhili</div>
+<div id="DocDate">
+最后修改: 2009-09-18 10:11:48</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="image_lib.html">图像处理类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="loader.html">装载器类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

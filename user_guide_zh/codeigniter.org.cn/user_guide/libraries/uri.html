@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>URI 类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;URI 类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/uri.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>URI 类</h1>
+
+<p>URI类提供了帮助你分割URI字符串的函数集合。如果你使用URI路由功能，那么你就可以通过分段来重新分发地址栏信息。</p>
+
+<p class="important"><strong>注意:</strong> URI类会被系统自动初始化，不必手动启用该功能。</p>
+
+<h2>$this-&gt;uri-&gt;segment(<var>n</var>)</h2>
+
+<p>它允许你重新分割一个详细的URI分段。  <var>n</var> 为你想要得到的段数。
+分割数按照从左至右的顺序编排。 例如，如果你完整的URL的地址如下：</p>
+
+<code>http://example.com/index.php/news/local/metro/crime_is_up</code>
+
+<p>每个URI分段的数字编号为:</p>
+
+<ol>
+<li>news</li>
+<li>local</li>
+<li>metro</li>
+<li>crime_is_up</li>
+</ol>
+
+<p>默认情况下URI没有分段那么该函数返回 FALSE(布尔值)。如果分段信息丢失，Segment函数还有第二个参数用来设置你的默认值。
+例如，这样设置后，当发生错误时，函数就会返回数字“0”。
+</p>
+
+<code>$product_id = $this-&gt;uri-&gt;segment(3, 0);</code>
+
+<p>如果没有该参数你的代码必须得像下面这样写:</p>
+
+<code>if ($this-&gt;uri-&gt;segment(3) === FALSE)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$product_id = 0;<br />
+&#125;<br />
+else<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$product_id = $this-&gt;uri-&gt;segment(3);<br />
+&#125;<br />
+</code>
+
+<h2>$this-&gt;uri-&gt;rsegment(<var>n</var>)</h2>
+
+<p>这个函数和上面的函数基本功能一样，不同点在于它允许你在开启CodeIgniter的<a href="../../user_guide/general/routing.html">URI路由</a>功能时进行详细分割并重新分发URI信息</P>
+
+<h2>$this-&gt;uri-&gt;slash_segment(<var>n</var>)</h2>
+
+<p>这个函数几乎和<dfn>$this-&gt;uri-&gt;segment()</dfn>一模一样，不过它可以通过第二个参数（"  ","leading","both"）给返回的URI参数加上“/”线，
+如果不使用该参数，就会在后面增加斜画线。例如：
+</p>
+
+<code>$this-&gt;uri-&gt;slash_segment(<var>3</var>);<br />
+$this-&gt;uri-&gt;slash_segment(<var>3</var>, 'leading');<br />
+$this-&gt;uri-&gt;slash_segment(<var>3</var>, 'both');</code>
+
+<p>返回:</p>
+
+<ol>
+<li>segment/</li>
+<li>/segment</li>
+<li>/segment/</li>
+</ol>
+
+
+<h2>$this-&gt;uri-&gt;slash_rsegment(<var>n</var>)</h2>
+<p>这个函数功能同上面的函数，不同点在于它允许你在开启CodeIgniter的<a href="../../user_guide/general/routing.html">URI路由</a>功能时进行详细分割并重新分发URI信息并可以增加斜线“/”。</p>
+
+<h2>$this-&gt;uri-&gt;uri_to_assoc(<var>n</var>)</h2>
+
+<p>你可以使用这个函数把每个分段信息以"标识字"=>"具体值"的形式存放在一个联合数组Array()里。
+注意这个URI:</p>
+
+<code>index.php/user/search/name/joe/location/UK/gender/male</code>
+
+<p>使用这个函数你可以把URI以如下原型翻转到联合数组中：</p>
+
+<code>[array]<br />
+(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'joe'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'location' => 'UK'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;'gender' => 'male'<br />
+)</code>
+
+<p>函数第一个参数可以设置偏移量，默认设置为<kbd>3</kbd>，因为一般情况下你的URI包含 控制器名 / 函数名 作为第一个和第二个分段。
+例如：</p>
+<code>
+$array = $this-&gt;uri-&gt;uri_to_assoc(3);<br />
+<br />
+echo $array['name'];
+</code>
+
+<p>第二个参数可以用来设置"标识字"，这样返回的数组总会包含索引里的标识字，甚至在丢失URI的情况下也是如此。例如：</p>
+
+<code>
+$default = array('name', 'gender', 'location', 'type', 'sort');<br />
+<br />
+$array = $this-&gt;uri-&gt;uri_to_assoc(3, $default);</code>
+
+<p>如果URI不包含对应你所给标识字的具体值时，该索引的值会被设置为"FALSE"。</P>
+
+<p>最后，如果相应的具体值找不到给定的标识字时(若URI段数为是一个单数时)具体值也会被设置为"FALSE"(布尔值)</p>
+
+
+<h2>$this-&gt;uri-&gt;ruri_to_assoc(<var>n</var>)</h2>
+
+<p>这个函数和上面的函数基本功能一样，不同点在于它允许你在开启CodeIgniter的<a href="../../user_guide/general/routing.html">URI路由</a>功能时把URI信息分割并翻转到联合数组中去。</P>
+
+<h2>$this-&gt;uri-&gt;assoc_to_uri()</h2>
+
+<p>这个函数的功能和uri_to_assoc的功能找相反，它把数组里的信息翻转成URI地址，例如：</p>
+
+<code>$array = array('product' => 'shoes', 'size' => 'large', 'color' => 'red');<br />
+<br />
+$str = $this-&gt;uri-&gt;assoc_to_uri($array);<br />
+<br />
+// 输出:  product/shoes/size/large/color/red
+</code>
+
+
+<h2>$this-&gt;uri-&gt;uri_string()</h2>
+
+<p>返回一个包含完整URI信息的字符串。例如,假设以下为你的完整URL：</p>
+
+<code>http://example.com/index.php/news/local/345</code>
+
+<p>函数将返回如下字符串:</p>
+
+<code>/news/local/345</code>
+
+
+<h2>$this-&gt;uri-&gt;ruri_string(<var>n</var>)</h2>
+
+<p>这个函数和上面的函数基本功能一样，不同点在于它允许你在开启CodeIgniter的<a href="../../user_guide/general/routing.html">URI路由</a>功能时把URI转换成对应的字符串。</P>
+
+
+
+<h2>$this-&gt;uri-&gt;total_segments()</h2>
+
+<p>返回总的URI的段数</p>
+
+
+<h2>$this-&gt;uri-&gt;total_rsegments()</h2>
+
+<p>这个函数和上面的函数基本功能一样，不同点在于它允许你在开启CodeIgniter的<a href="../../user_guide/general/routing.html">URI路由</a>功能时返回URI的段数。</P>
+
+
+<h2>$this-&gt;uri-&gt;segment_array()</h2>
+
+<p>返回一个包含URI分段的数组。例如：</p>
+
+<code>
+$segs = $this-&gt;uri-&gt;segment_array();<br />
+<br />
+foreach ($segs as $segment)<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $segment;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo '&lt;br />';<br />
+&#125;</code>
+
+<h2>$this-&gt;uri-&gt;rsegment_array()</h2>
+
+<p>这个函数和上面的函数基本功能一样，不同点在于它允许你在开启 CodeIgniter 的<a href="../../user_guide/general/routing.html"> URI 路由</a>功能时返回 URI 的数组。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, lomatus</div>
+<div id="DocDate">
+最后修改: 2009-02-21 23:54:47</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="unit_testing.html">单元测试类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="user_agent.html">User-Agent 类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

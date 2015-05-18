@@ -1,0 +1,205 @@
+.KALS .window-panel.window_search .search-form dt {
+    margin-bottom: 1em;
+}
+
+.KALS .window-panel.window_search .list_collection_search {
+    /*border-top: 1px solid gray;*/
+}
+
+.KALS .window-panel.window_search .topic-list {
+    max-height: 320px;
+    overflow-y: auto;
+    clear: both;
+    /*border-top: 1px solid gray;*/
+}
+
+.KALS .window-panel.window_search .topic-list .list-item-search-topic,
+.KALS .window-panel.window_search .topic-list .list-item-respond {
+    /*clear: both;*/
+    border-top: 1px solid gray;
+}
+
+/*.KALS .window-panel.window_search .list_collection_search .window-panel {
+	text-align:right;
+	padding-top: 10px;
+}*/
+
+/*
+.KALS .window-panel.window_search .list_collection_search .window-panel .reset-button {
+	float:right;
+	margin-left: 0.5em;
+}
+*/
+
+.KALS .window-panel.window_search .list_collection_search .result-count-tip {
+    /*text-align:right;
+    margin-top: 3px;*/	
+    text-align: left;
+}
+
+
+.KALS .window-panel.window_search .heading-row {
+    /*float:left;*/
+    margin: 0.5em 0;
+}
+
+.KALS .window-panel.window_search .info-subpanel {
+    margin-bottom: 0.5em;
+    font-size: small;
+}
+
+
+.KALS .window-panel.window_search .result-count-tip {
+    padding-bottom: 5px;
+}
+
+.KALS .window-panel.window_search .foot-tip {
+    padding-top: 5px;
+    text-align:center;
+    display:block;
+}
+
+.KALS .list_collection_search .list-item {
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: white;
+    cursor:pointer;
+} 
+
+/**
+ * @author Pulipuli Chen 20141111
+ * 搜尋結果中不明顯標示回應
+ */
+.KALS .list_collection_search .list-item-respond {
+    padding-left: 5px;
+}
+
+/*
+.KALS .window-panel.window_search .list-menu-option.edit,
+.KALS .window-panel.window_search .list-menu-option.delete,
+.KALS .window-panel.window_search .list-menu-option.respond,
+.KALS .window-panel.window_search .list-menu-option.view {
+	display: none;
+}
+*/
+
+.KALS .window-panel.window_search .list-menu-option {
+	border-left-width: 0;
+}
+
+.KALS .window-panel.window_search .list-item-respond {
+	padding-bottom: 5px;
+	/*border-bottom: 1px solid gray;*/
+	border-top-width: 0; 
+}
+
+.KALS .window-panel.window_search .list-item-topic {
+	border-bottom-width: 0; 
+}
+
+
+.KALS .window-panel.window_search .query-value-empty-hint {
+	display: none;
+	color:red;
+}
+
+.KALS .window-panel.window_search .list-like-component {
+	display: none;
+}
+
+.KALS .window-panel.window_search .list-item-topic .list-menu-block {
+	padding-bottom: 5px;
+}
+
+.kals-word.search_result {
+    /*background-color: #B2FFB7;*/
+    background-color: yellow !important;
+}
+
+.KALS .window-panel.window_search .window-panel.header {
+    background-color: transparent !important;
+    color: inherit;
+    background-image: none;
+}
+
+.KALS .window-panel.window_search .row dt {
+    width: 100px;
+    font-weight: bold;
+}
+
+/* ------------------------------------ */
+
+
+/* --------- */
+/* Search_component */
+/*.KALS .search-component {
+    
+}*/
+
+/**
+ * 搜尋類別
+ * @author Pulipuli Chen 20131113
+ */
+.KALS .search-component .query-field,
+.KALS .search-component .annotation-type {
+    height: 2em;
+    width: auto;
+    border-radius: 5px;
+    margin-right: 0.5em;
+}
+
+.KALS .search-component * {
+    margin:0;
+    /*height: 2em;*/
+}
+
+/**
+ * 讓搜尋功能置中
+ */
+.KALS .search-component .input {
+    vertical-align: middle;
+    text-align: left;
+}
+
+.KALS .search-component .query-value {
+    height: 1.5em;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 7em;
+    margin-right: 0.5em;
+	
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+}
+
+.KALS .search-component .search-form-submit {
+    height: 25px;
+    width: 25px;
+    display: block;
+    float:right;
+    padding: 0;
+	
+    border-radius: 5px;
+    min-height: 25px;
+    /*background-image:url("${base_url}images/web_search.png") !important;*/
+    background-repeat:no-repeat;
+    background-position: center;
+
+    border-width: 0 !important;
+    background-color: transparent;
+    /*float:right;*/
+}
+
+.KALS .search-component .search-form-submit .icon {
+    margin: 0;
+}
+
+.KALS .search-component .search-form-searched {
+    display: none;
+}
+
+.KALS .search-component .search-form-searched .button.dialog-option {
+    font-size: small;
+}

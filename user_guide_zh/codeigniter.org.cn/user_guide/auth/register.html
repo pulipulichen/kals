@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>注册 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<script type="text/javascript" src="../../user_guide/public/shared/js/jquery.js" ></script>
+<script type="text/javascript" src="../../user_guide/public/shared/js/flash.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+	  <td>	    <ul id="navlist">
+		<li><a href="login.html">登录</a></li>
+		<li id="active"><a href="register.html">注册</a></li>
+		<li><a href="forgotten_password.html">找回密码</a></li>
+	</ul></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;注册	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<br clear="all" /><!--START INCLUDED CONTENT-->
+<div id="content">
+<!--STAR FLASH MESSAGE-->
+<!--END FLASH-->
+
+<form action="" method="post" id="register_form">
+	<!--USERNAME-->
+	<p><label for="user_name">用户名:</label>
+	<input type="text" name="user_name" value="" id="user_name" maxlength="45" size="45"  />    </p>
+	 
+    <!--PASSWORD-->
+    <p><label for="password">密码:</label>
+	<input type="password" name="password" value="" id="password" maxlength="16" size="16"  />    </p>
+    
+     <!--CONFIRM PASSWORD-->
+     <p><label for="password_confirm">密码确认:</label>
+	<input type="password" name="password_confirm" value="" id="password_confirm" maxlength="16" size="16"  />    </p>
+    
+    
+    <!--EMAIL-->
+    <p><label for="email">Email:</label>
+	<input type="text" name="email" value="" id="email" maxlength="120" size="45"  />    </p>
+    
+    <!--CAPTCHA (security image)-->
+		<p><label for="security">验证码:</label>
+	<input type="text" name="security" value="" id="security" maxlength="45" size="45"  />        <span class="note">
+    <img src="../../user_guide/tmp/1277456305.9.jpg" alt="captcha img" />
+</span></p>
+        <!-- END CAPTCHA (security image)-->
+<p><textarea name="rules" class="textarea" rows="8" cols="50" readonly="readonly">
+CodeIgniter 中国网站用户注册协议:
+
+1. 在 CodeIgniter 中国编辑用户手册，您必须对所发布的内容负责，不得发布任何与 CodeIgniter 用户手册无关的内容，如发布违规内容本站有权中止用户的发布权利！
+2. 本协议最终解释权归 CodeIgniter 中国网站。
+</textarea>
+</p>
+    <p><label>
+	<input type="submit" name="register" value=" 我同意 "  />    </label></p>
+	<p><label>
+	<input type="button" name="cancel" value=" 我不同意 " class="button" onclick="confirmDecline();"  />    </label></p>
+</form>
+<script language="JavaScript" type="text/javascript">
+<!--
+function confirmDecline() 
+{
+    if (confirm('你真的想拒绝服务条款吗？\n\n单击“取消”继续注册。')) 
+		location = 'http://codeigniter.org.cn/user_guide/';
+} 
+//-->
+</script>
+</div><!--END REGISTER DIV--><!--END INCLUDED CONTENT--><!-- END CONTENT -->
+<div id="footer">
+  <p><a href="wsdindex.html#top">页首</a></p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

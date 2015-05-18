@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>FTP 类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;FTP 类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/ftp.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>FTP 类</h1>
+<p>CodeIgniter的FTP类允许你将本地文件传输到远程服务器上，同时可以移动、重命名和删除远程服务器上的文件。这个FTP类所包含的一个&quot;mirroring&quot;函数允许你通过FTP在远程服务器上创建一个本地文件夹的镜像。</p>
+<p class="important"><strong>注意:</strong>&nbsp;不支持 SFTP 和 SSL FTP 协议, 仅支持标准 FTP 协议.</p>
+<h2>初始化类</h2>
+<p>像大多数其他CodeIgniter 类一样，FTP 类在控制器里使用<dfn>$this-&gt;load-&gt;library</dfn> 函数来初始化:</p>
+<p><code>$this-&gt;load-&gt;library('ftp');</code></p>
+<p>一旦加载， FTP对象就可以使用： <dfn>$this-&gt;ftp</dfn></p>
+<h2>使用例子</h2>
+<p>在这个例子中，首先建立一个到FTP服务器的连接，接着读取一个本地文件然后以ASCII模式上传。文件的权限被设置为755。注意：设置权限需要PHP 5。</p>
+<p><code>$this-&gt;load-&gt;library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['debug'] = TRUE;<br />
+<br />
+$this-&gt;ftp-&gt;connect($config);<br />
+<br />
+$this-&gt;ftp-&gt;upload('/local/path/to/myfile.html', '/public_html/myfile.html', 'ascii', 0775);<br />
+<br />
+$this-&gt;ftp-&gt;close(); </code></p>
+<p>下面的例子从FTP服务器上获得了文件列表</p>
+<p><code>$this-&gt;load-&gt;library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['debug'] = TRUE;<br />
+<br />
+$this-&gt;ftp-&gt;connect($config);<br />
+<br />
+$list = $this-&gt;ftp-&gt;list_files('/public_html/');<br />
+<br />
+print_r($list);<br />
+<br />
+$this-&gt;ftp-&gt;close(); </code></p>
+<p>下面的例子在FTP服务器上创建了一个本地文件夹的镜像。</p>
+<p><code>$this-&gt;load-&gt;library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['debug'] = TRUE;<br />
+<br />
+$this-&gt;ftp-&gt;connect($config);<br />
+<br />
+$this-&gt;ftp-&gt;mirror('/path/to/myfolder/', '/public_html/myfolder/');<br />
+<br />
+$this-&gt;ftp-&gt;close(); </code></p>
+<h1>函数参考</h1>
+<h2>$this-&gt;ftp-&gt;connect()</h2>
+<p>连接并登录到FTP服务器，通过向函数传递一个数组来设置连接参数，或者你可以把这些参数保存在一个配置文件中。</p>
+<p>下面例子演示了如何手动设置参数:</p>
+<p><code>$this-&gt;load-&gt;library('ftp');<br />
+<br />
+$config['hostname'] = 'ftp.example.com';<br />
+$config['username'] = 'your-username';<br />
+$config['password'] = 'your-password';<br />
+$config['port']&nbsp;&nbsp;&nbsp;&nbsp; = 21;<br />
+$config['passive']&nbsp;&nbsp;= FALSE;<br />
+$config['debug']&nbsp;&nbsp;&nbsp;&nbsp;= TRUE;<br />
+<br />
+$this-&gt;ftp-&gt;connect($config);<br />
+</code></p>
+<h3>在配置文件中设置参数</h3>
+<p>如果你更倾向把FTP参数设置保存在一个配置文件中，只需创建一个名为<var>ftp.php</var>的文件, 把 <var>$config</var> 数组添加到该文件中，然后保存成<var>config/ftp.php</var> 它就会自动被读取。</p>
+<h3>可用连接选项:</h3>
+<ul>
+    <li><strong>hostname</strong> - FTP主机名。  通常看起来是这样的:&nbsp; <dfn>ftp.example.com</dfn></li>
+    <li><strong>username</strong> - FTP用户名。</li>
+    <li><strong>password</strong> - FTP密码。</li>
+    <li><strong>port</strong> - 端口号。 默认设置为<dfn>21</dfn></li>
+    <li><strong>debug</strong> - <kbd>TRUE/FALSE</kbd> (布尔值). 是否开启调试显示错误信息。</li>
+    <li><strong>passive</strong> - <kbd>TRUE/FALSE</kbd> (布尔值). 是否使用被动模式，默认设置为被动模式。</li>
+</ul>
+<h2>$this-&gt;ftp-&gt;upload()</h2>
+<p>将一个文件上传到你的服务器上。本地路径和远程路径这两个参数是必需的，而传输模式和权限设置这两个参数则是可选的。例如:</p>
+<p><code>$this-&gt;ftp-&gt;upload('/local/path/to/myfile.html', '/public_html/myfile.html', 'ascii', 0775);</code></p>
+<p><strong>传输模式包括:</strong>&nbsp; <kbd>ascii</kbd>, <kbd>binary</kbd>, 以及 <kbd>auto</kbd> (默认值)。如果使用了<kbd>auto</kbd>模式，将根据源文件的扩展名来自动选择传输模式。 </p>
+<p>权限设置仅在PHP5下有效，你可以将一个<kbd>octal</kbd> (八进制)的权限值通过第四个参数传递过去。</p>
+<h2>$this-&gt;ftp-&gt;rename()</h2>
+<p>作用是给一个文件重命名。请给出原文件名/路径和新的文件名/路径。</p>
+<p><code>// 将文件 green.html 重命名为 blue.html<br />
+$this-&gt;ftp-&gt;rename('/public_html/foo/green.html', '/public_html/foo/blue.html'); </code></p>
+<h2>$this-&gt;ftp-&gt;move()</h2>
+<p>作用是移动一个文件。请给出源路径和目标路径:</p>
+<p><code>// 将文件 blog.html 从 &quot;joe&quot; 移动到 &quot;fred&quot;<br />
+$this-&gt;ftp-&gt;move('/public_html/joe/blog.html', '/public_html/fred/blog.html'); </code></p>
+<p>说明: 如果源文件名与目标文件名不同，文件将会被重命名。</p>
+<h2>$this-&gt;ftp-&gt;delete_file&#40;&#41;</h2>
+<p>作用是删除一个文件。请给出源文件名和所在路径。</p>
+<p><code>$this-&gt;ftp-&gt;delete_file&#40;'/public_html/joe/blog.html'&#41;; </code></p>
+<h2>$this-&gt;ftp-&gt;delete_dir()</h2>
+<p>作用是删除一个目录以及此目录下的全部内容。请给出原目录的路径，并以斜线结束。</p>
+<p class="important"><strong>重要提示</strong>&nbsp; 请 非常谨慎 地使用这个函数。它将删除你给出的目录下的 <strong>所有内容</strong>，也就是说此目录下的所有子目录以及所有文件都会被删除。请确保你给出的路径是绝对正确的。可以先试着使用 <kbd>list_files()</kbd> 函数来验证你的路径是否正确。</p>
+<p><code>$this-&gt;ftp-&gt;delete_dir('/public_html/path/to/folder/'); </code></p>
+<h2>$this-&gt;ftp-&gt;list_files()</h2>
+<p>允许你检索你服务器上所有文件的列表，以<dfn>数组</dfn>的形式返回检索结果。你必须给出要检索的路径。</p>
+<p><code>$list = $this-&gt;ftp-&gt;list_files('/public_html/');<br />
+<br />
+print_r($list); </code></p>
+<h2>$this-&gt;ftp-&gt;mirror()</h2>
+<p>检索一个本地目录下的所有内容(包括子目录和所有文件)，并通过FTP为这个目录创建一份镜像。源路径下的任何结构都会被创建到服务器上。你必须给出源路径和目标路径:</p>
+<p><code>$this-&gt;ftp-&gt;mirror('/path/to/myfolder/', '/public_html/myfolder/'); </code></p>
+<h2>$this-&gt;ftp-&gt;mkdir()</h2>
+<p>允许你在服务器上创建一个目录。请给出你想要创建的目录的完整路径，截止到你要创建的目录名，并在末尾添加斜线结束。如果你在使用PHP5，你还可以在第二个参数中传递一个<kbd>八进制</kbd>的权限值。</p>
+<p><code>// 创建一个名为&quot;bar&quot;的目录<br />
+$this-&gt;ftp-&gt;mkdir('/public_html/foo/bar/', DIR_WRITE_MODE); </code></p>
+<h2>$this-&gt;ftp-&gt;chmod()</h2>
+<p>允许你设置文件权限。请给出你要设置的文件或者目录所在的路径:</p>
+<p><code>// 将 &quot;bar&quot; 的权限设置为 777<br />
+$this-&gt;ftp-&gt;chmod('/public_html/foo/bar/', DIR_WRITE_MODE); </code></p>
+<h2>$this-&gt;ftp-&gt;close();</h2>
+<p>关闭到服务器的连接。当你上传完毕时，建议使用这个函数关闭连接。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+dimitry, Hex, tg8866, yinzhili, yygcom</div>
+<div id="DocDate">
+最后修改: 2009-07-12 10:49:11</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="form_validation.html">表单验证类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="table.html">HTML 表格类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>
