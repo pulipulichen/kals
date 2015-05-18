@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>装载器类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;装载器类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/loader.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>装载类</h1>
+<p>装载，顾名思义，是用来装载元素。这些元素可以是库 (类) <a href="../../user_guide/general/views.html">视图文件</a>， <a href="../../user_guide/general/helpers.html">助手文件</a>， <a href="../../user_guide/general/plugins.html">插件</a>， 或者是你自己的文件。</p>
+<p class="important"><strong>提示：</strong> 这个类是由系统初始化的，所以，没有必要自己手动初始化。</p>
+<p>以下为这个类里面的函数：</p>
+
+<h2>$this-&gt;load-&gt;library('<var>class_name</var>', <samp>$config</samp>, <kbd>'object name'</kbd>)</h2>
+
+<p>这个函数是用来加载核心类。<var>class_name</var> 是你要加载的类的名称。 提示： &ldquo;类&rdquo;和&ldquo;库&rdquo;是可替换使用的。</p>
+<p>比如，你想用 CodeIgniter 来发送邮件，第一步就是在你的控制器里加载 email 类。</p>
+<p><code>$this-&gt;load-&gt;library('email');</code></p>
+<p>一旦被加载，就可以使用该类了，&nbsp;使用 <kbd>$this-&gt;email-&gt;</kbd><samp><em>some_function</em>()</samp>。
+<p>类库文件可以被保存到主libraries目录的子目录下面，或者保存到个人的<dfn>application/libraries</dfn> 目录下。  
+要载入子目录下的文件，只需将路径包含进来就可以了，注意这里说的路径是指相对于libraries目录的路径。
+例如，当你有一个文件保存在下面这个位置:</p>
+
+<code>libraries/flavors/chocolate.php</code>
+
+<p>你应该使用下面的方式来载入它:</p>
+
+<code>$this-&gt;load-&gt;library('flavors/chocolate');</code>
+
+<p>你可以随心所欲地将文件保存到多层的子目录下。</p>
+
+<h3>设置选项</h3>
+
+<p>第二个参数是可选的，作用是允许你有选择性地传递配置参数。一般来说你可以将参数以数组的形式传递过去:</p>
+
+<code>
+$config = array (<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'mailtype' => 'html',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'charset'&nbsp; => 'utf-8,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'priority' => '1'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+<br />
+$this-&gt;load-&gt;library('email', $config);</code>
+
+<p>配置参数通常也可以保存在一个配置文件中。每个类库在其各自的页面中都有详细的说明，所以在使用类库之前，你必须认真阅读它们的说明。</p>
+
+<h3>给类库分配不同的对象名</h3>
+
+<p>第三个参数也是可选的，如果为空，类库通常就会被赋值给一个与类库同名的对象。例如，如果类库名为 <dfn>Session</dfn>, 它将会被赋值给一个名为 <dfn>$this-&gt;session</dfn> 的变量。</p>
+
+<p>如果你希望使用你的自定义名称，你可以通过第三个参数把它传递过去:</p>
+
+<code>$this-&gt;load-&gt;library('session', '', 'my_session');<br /><br />
+
+// Session 类现在可以通过下面的方式访问:<br /><br />
+
+$this-&gt;my_session
+
+</code>
+
+
+<h2>$this-&gt;load-&gt;view('<var>file_name</var>', <samp>$data</samp>, <kbd>true/false</kbd>)</h2>
+<p>这个函数是用来加载你的视图文件。 如果你尚未阅读本手册<a href="../../user_guide/general/views.html">视图</a> 章节的话，建议你先去阅读那里的内容，会有更详细的函数使用说明.</p>
+<p>第一个参数是必须的. 指定你要载入的视图文件的名称. &nbsp;注意: 无需加上 .php 扩展名，除非你使用了其他的扩展名。</p>
+<p>第二个参数 <strong>optional</strong> 允许你传入数组或对象, 传入的数组或对象将使用 php <a href="http://www.php.net/extract">extract</a> 函数导出，你可以在视图中任意使用这些导出的变量. 此外，请阅读 <a href="../../user_guide/general/views.html">视图</a> 章节了解该功能的更多用法.</p>
+<p>第三个参数是<strong>可选</strong>的，作用是改变函数的运行方式，将数据以字符串的形式返回，而不是发送给浏览器。当你希望用不同的方式处理数据时，这个参数就非常有用。如果你将这个参数设置为 <kbd>true</kbd> (布尔型)，函数就会返回数据。这个参数的默认值是 <kbd>false</kbd>, 也就是数据将会被发送给浏览器。如果你希望数据被返回，记得要将它赋值给一个变量:</p>
+<p><code>$string = $this-&gt;load-&gt;view('<var>myfile</var>', '', <kbd>true</kbd>);</code></p>
+
+<h2>$this-&gt;load-&gt;model('<var>Model_name</var>');</h2>
+<p><code>$this-&gt;load-&gt;model('<var>Model_name</var>');</code></p>
+<p>如果你的模型位于models目录的子目录下，那么，相对路径也必须被包含进来。例如，如果你有一个模型位于 application/models/blog/queries.php ，你应该使用下面的语句来载入它:</p>
+<p><code>$this-&gt;load-&gt;model('<var>blog/queries</var>');</code></p>
+<p>如果你希望给模型赋予一个你自定义的对象名，请在函数的第二个参数中给出你自定义的名称:</p>
+<code> $this-&gt;load-&gt;model('<var>Model_name</var>', '<kbd>fubar</kbd>');<br />
+<br />
+$this-&gt;<kbd>fubar</kbd>-&gt;function();</code>
+
+<h2>$this-&gt;load-&gt;database('<var>options</var>', <kbd>true/false</kbd>)</h2>
+<p>这个函数的作用是载入数据库类。这两个参数都是<strong>可选的</strong>。请查看 <a href="../../user_guide/database/index.html">数据库</a> 段落以获取更多信息。</p>
+<h2>$this-&gt;load-&gt;scaffolding('<var>table_name</var>')</h2>
+<p>这个函数的作用是启用脚手架。请查看 <a href="../../user_guide/general/scaffolding.html">脚手架</a> 段落以获取更多信息。</p>
+<h2>$this-&gt;load-&gt;vars(<samp>$array</samp>)</h2>
+<p>这个函数以一个关联数组作为输入参数,将这个数组用PHP的<a href="http://www.php.net/extract">extract</a>函数, 转化成与这个数组对应的变量.这个函数如果用第二个参数,将产生和上面的<dfn>$this-&gt;load-&gt;view()</dfn>相同的结果 .你之所以要单独用这个函数也许是因为,你想在控制器的构造函数中设置一些全局变量,以使这些变量在任意函数调用的视图(view)里能够用上.你能多次调用这个函数.数组数据被缓存并被并入一个数组,用来转化成变量.</p>
+<h2>$this-&gt;load-&gt;helper('<var>file_name</var>')</h2>
+<p>这个函数的作用是载入辅助函数， <var>file_name</var> 是辅助函数对应的文件名，不包括 <kbd>_helper.php</kbd> 扩展名。</p>
+<h2>$this-&gt;load-&gt;plugin('<var>file_name</var>')</h2>
+<p>这个函数的作用是载入插件，<var>file_name</var> 是插件对应的文件名，不包括 <kbd>_plugin.php</kbd> 扩展名。</p>
+<h2>$this-&gt;load-&gt;file&#40;'<var>filepath/filename</var>', <kbd>true/false</kbd>&#41;</h2>
+<p>这是一个通用的文件载入函数。在第一个参数中给出文件所在的路径和文件名，对应的文件将会被打开。默认情况下，数据会被发送给浏览器，就如同视图文件一样，但如果你将第二个参数设置为 <kbd>true</kbd> (布尔型) 那么数据就会以字符串的形式被返回，而不是发送给浏览器。</p>
+<h2>$this-&gt;load-&gt;lang('<var>file_name</var>')</h2>
+<p>这个函数是 <a href="language.html">语言加载函数</a>: $this-&gt;lang-&gt;load() 的一个别名。</p>
+<h2>$this-&gt;load-&gt;config('<var>file_name</var>')</h2>
+<p>这个函数是 <a href="config.html">配置文件加载函数</a>: $this-&gt;config-&gt;load() 的一个别名。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+cookieu, Hex, tg8866, weelia, yinzhili</div>
+<div id="DocDate">
+最后修改: 2009-07-12 10:04:24</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="input.html">输入类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="language.html">语言类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

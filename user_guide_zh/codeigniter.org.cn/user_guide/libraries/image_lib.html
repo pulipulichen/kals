@@ -1,0 +1,517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>图像处理类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;图像处理类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/image_lib.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>图像处理类</h1>
+<p>CodeIgniter 的图像处理类可以使你完成以下的操作：</p>
+<ul>
+    <li>调整图像大小</li>
+    <li>创建缩略图</li>
+    <li>图像裁剪</li>
+    <li>图像旋转</li>
+    <li>添加图像水印</li>
+</ul>
+<p>可以很好的支持三个主流的图像库：GD/GD2, NetPBM, and ImageMagick。</p>
+<p class="important"><strong>注意:</strong> 添加水印操作仅仅在使用GD/GD2时可用。另外，即使支持其他的图像处理库，但是为了计算图像的属性，GD是必需的。然而，将使用你制定的库来进行图像处理操作。</p>
+
+<h2>初始化类</h2>
+<p>像 CodeIgniter 的大多数类一样，图像处理类在你的控制器里使用 <dfn>$this-&gt;load-&gt;library</dfn> 方法来初始化：</p>
+<p><code>$this-&gt;load-&gt;library('image_lib');</code></p>
+<p>在图像处理库被载入后就已经做好被使用的准备了。你将用来调用所有图像处理方法的图像处理库对象是：<dfn>$this-&gt;image_lib</dfn>O</p>
+<h2>处理一个图像</h2>
+<p>不管你想进行何种图像处理操作（调整大小，图像裁剪，图像旋转，添加水印），通常过程都是一样的。你先设置一些你想进行的图像操作的参数，然后调用四个可用方法中的一个。例如，创建一个图像缩略图：</p>
+<p><code>$config['image_library'] = 'gd2';<br />
+$config['source_image'] = '/path/to/image/mypic.jpg';<br />
+$config['create_thumb'] = TRUE;<br />
+$config['maintain_ratio'] = TRUE;<br />
+$config['width']  = 75;<br />
+$config['height'] = 50;<br />
+<br />
+$this-&gt;load-&gt;library('image_lib', $config);  <br />
+<br />
+$this-&gt;image_lib-&gt;resize();</code></p>
+<p>以上代码告诉<dfn>image_resize</dfn>函数去查找位于<dfn>source_image</dfn>目录且名为<em>mypic.jpg</em>的图片，然后运用GD2<dfn>图像库</dfn>创建75 X 50像素的缩略图。 当 <dfn>maintain_ratio</dfn> 选项设为可用时，生成的缩略图将在保持纵横比例的同时，尽可能的在宽度和高度上接近所设定的<dfn>width</dfn>和<dfn>height</dfn>。缩略图将被命名为类似 <em>mypic_thumb.jpg</em>的形式</p>
+<p class="important"><strong>注意:</strong> 为了让图像类能进行所有操作，包含图片的文件夹必须开启可写权限。</p>
+<h2>处理函数</h2>
+<p>有五个处理函数可以调用:</p>
+<ul>
+    <li>$this-&gt;image_lib-&gt;resize()</li>
+    <li>$this-&gt;image_lib-&gt;crop()</li>
+    <li>$this-&gt;image_lib-&gt;rotate()</li>
+    <li>$this-&gt;image_lib-&gt;watermark()</li>
+    <li>$this-&gt;image_lib-&gt;clear()</li>
+</ul>
+<p>当调用成功时，这些函数会返回 TRUE, 否则会返回 FALSE. 如果调用失败时，用以下函数可以获取错误信息:</p>
+<p><code>echo $this-&gt;image_lib-&gt;display_errors();</code></p>
+<p>像下面这样当调用失败时显示错误，是一个好的例子来有条件的使用处理函数:</p>
+<p><code>if ( ! $this-&gt;image_lib-&gt;resize())<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this-&gt;image_lib-&gt;display_errors();<br />
+&#125;</code></p>
+<p>注意:  你可以随意的给错误使用HTML的格式。像下面这样，添加打开/关闭标记符:</p>
+<p><code>$this-&gt;image_lib-&gt;display_errors('<var>&lt;p&gt;</var>', '<var>&lt;/p&gt;</var>');</code></p>
+<h2>参数</h2>
+<p>你可以用下面的参数来对图像处理进行调配，既而满足你的要求。</p>
+<p>注意，不是所有的参数都可以应用到任何得函数中。例如，x/y 轴参数只能被图像裁剪使用。但是，宽度和高度参数对裁剪函数是无效的。 &quot;可用性&quot; 列指明了哪些函数是可以使用对应的参数的。</p>
+<p>可用性图列:</p>
+<ul>
+    <li><var>R</var> - 调整图像大小</li>
+    <li><var>C</var> - 图像裁剪</li>
+    <li><var>X</var> - 图像旋转</li>
+    <li><var>W</var> - 添加图像水纹</li>
+</ul>
+<table cellspacing="1" cellpadding="0" border="0" style="width: 100%;" class="tableborder">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>默认值</th>
+            <th>选项</th>
+            <th>描述</th>
+            <th>可用性</th>
+        </tr>
+        <tr>
+            <td class="td"><strong>image_library</strong></td>
+            <td class="td">GD2</td>
+            <td class="td">GD, GD2, ImageMagick, NetPBM</td>
+            <td class="td">设置图像库</td>
+            <td class="td">R, C, X, W</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>library_path</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">设置 ImageMagick 或 NetPBM 库在服务器上的路径。要使用其中任何一个，你都需要设置它们的路径</td>
+            <td class="td">R, C, X</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>source_image</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">设置原始图像的名字/路径。 对路径而言，只能是相对或绝对的服务器路径，不能使用URL。</td>
+            <td class="td">R, C, S, W</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>dynamic_output</strong></td>
+            <td class="td">FALSE</td>
+            <td class="td">TRUE/FALSE (布尔值)</td>
+            <td class="td">决定新图像的生成是要写入硬盘还是动态的存在。注意，如果是动态生成的话，图像生成后是不能在页面中定位的。它简单地以header定义为image的动态图像形式显示在你的浏览器中。</td>
+            <td class="td">R, C, X, W</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>quality</strong></td>
+            <td class="td">90%</td>
+            <td class="td">1 - 100%</td>
+            <td class="td">设置图像的品质。品质越高，图像文件越大 </td>
+            <td class="td">R, C, X, W</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>new_image</strong></td>
+            <td class="td">None</td>
+            <td class="td">None</td>
+            <td class="td">设置图像的目标名/路径。 当复制图像时，你会用到这个参数的。这个路径必须是相对或绝对的服务器路径，不能是URL</td>
+            <td class="td">R, C, X, W</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>width</strong></td>
+            <td class="td">None</td>
+            <td class="td">None</td>
+            <td class="td">设置你想要得图像宽度。</td>
+            <td class="td">R, C</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>height</strong></td>
+            <td class="td">None</td>
+            <td class="td">None</td>
+            <td class="td">设置你想要得图像高度</td>
+            <td class="td">R, C</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>create_thumb</strong></td>
+            <td class="td">FALSE</td>
+            <td class="td">TRUE/FALSE (boolean)</td>
+            <td class="td">让图像处理函数产生一个预览图像</td>
+            <td class="td">R</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>thumb_marker</strong></td>
+            <td class="td">_thumb</td>
+            <td class="td">无</td>
+            <td class="td">指定预览图像的标示。它将在被插入文件扩展名之前。例如，mypic.jpg 将会变成 mypic_thumb.jpg</td>
+            <td class="td">R</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>maintain_ratio</strong></td>
+            <td class="td">TRUE</td>
+            <td class="td">TRUE/FALSE (boolean)</td>
+            <td class="td">指定是否在缩放或使用硬值的时候使图像保持原始的纵横比例。</td>
+            <td class="td">R, C</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>master_dim</strong></td>
+            <td class="td">auto</td>
+            <td class="td">auto, width, height</td>
+            <td class="td">指定一个选项作为缩放和创建缩略图时的主轴。例如，你想要将一张图片缩放到100×75像素。如果原来的图像的大小不能完美的缩放到这个尺寸，那么由这个参数决定把哪个轴作为硬值。&quot;auto&quot; 依据图片到底是过高还是过长自动设定轴。</td>
+            <td class="td">R</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>rotation_angle</strong></td>
+            <td class="td">None</td>
+            <td class="td">90, 180, 270, vrt, hor</td>
+            <td class="td">指定图片旋转的角度。PHP的旋转是逆时针的，如果想向右转90度就得把这个参数定义为270。</td>
+            <td class="td">X</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>x_axis</strong></td>
+            <td class="td">None</td>
+            <td class="td">None</td>
+            <td class="td">为图像的裁剪设定X轴上的长度。例如，设为30就是将图片左边的30像素裁去。</td>
+            <td class="td">C</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>y_axis</strong></td>
+            <td class="td">None</td>
+            <td class="td">None</td>
+            <td class="td">为图像的裁剪设定Y轴上的长度。例如，设为30就是将图片顶端的30像素裁去。</td>
+            <td class="td">C</td>
+        </tr>
+    </tbody>
+</table>
+<h2>在配置文件中设置参数</h2>
+<p>如果你不喜欢用以上的方式设置参数，你还能通过配置文件来设置它们。只要创建一个名为<var>image_lib.php</var>的文件,  在该文件中加入一个 <var>$config</var> 数组。 然后将这个文件保存到: <var>config/image_lib.php</var> ，它将会被自动调用。 如果你将参数保存在配置文件里，你就不需要再使用 <dfn>$this-&gt;image_lib-&gt;initialize</dfn> 函数。</p>
+<h2>$this-&gt;image_lib-&gt;resize()</h2>
+<p>这个图像大小调整函数让你能调整原始图像的大小，创建一个备份（调整过的和未调整过的），或者创建一个缩略图。</p>
+<p>创建一个备份和创建一个缩略图之间没有实际上的区别，除了缩略图的文件名会有一个预定义的后缀(如, mypic_thumb.jpg)。</p>
+<p>所有列在上面表中的参数对这个函数可用，除了这三个：rotation_angle, x_axis, and y_axis。</p>
+<h3>创建一个缩略图</h3>
+<p>resize函数能用俩创建缩略图&#40;并保留原图&#41; 只要你把这个参数设为TRUE:</p>
+<p><code>$config['create_thumb'] = TRUE;</code></p>
+<p>这一个参数决定是否创建一个缩略图。</p>
+<h3>创建一个备份</h3>
+<p>resize函数能创建一个图像的备份&#40;并保留原图&#41; 只要你通过以下参数设置一个新的路径或者文件名：</p>
+<p><code>$config['new_image'] = '/path/to/new_image.jpg';</code></p>
+<p>注意以下规则:</p>
+<ul>
+    <li>如果只指定新图像的名字，那么它会被放在原图像所在的文件夹下。</li>
+    <li>如果只指定路径，新图像会被放在指定的文件夹下，并且名字和原图像相同。</li>
+    <li>如果同时定义了路径和新图像的名字，那么新图像会以指定的名字放在指定的文件夹下。</li>
+</ul>
+<h3>调整原图像的大小</h3>
+<p>如果上述两个参数(create_thumb, and new_image)均未被指定，resize函数的处理结果将直接作用于原图像。</p>
+<h2>$this-&gt;image_lib-&gt;crop()</h2>
+<p>crop函数的用法与resize函数十分接近，除了它需要你设置用于裁剪的X和Y值（单位是像素），如下:</p>
+<p><code>$config['x_axis'] = '100';<br />
+$config['y_axis'] = '40';</code></p>
+<p>前面那张表中所列的所有参数都可以用于这个函数，除了这些：rotation_angle, width, height, create_thumb, new_image.</p>
+<p>这是一个如何裁剪一张图片的示例：</p>
+<p><code>$config['image_library'] = 'imagemagick';<br />
+$config['library_path'] = '/usr/X11R6/bin/';<br />
+$config['source_image'] = '/path/to/image/mypic.jpg';<br />
+$config['x_axis'] = '100';<br />
+$config['y_axis'] = '60';<br />
+<br />
+$this-&gt;image_lib-&gt;initialize($config); <br />
+<br />
+if ( ! $this-&gt;image_lib-&gt;crop())<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this-&gt;image_lib-&gt;display_errors();<br />
+&#125;</code></p>
+<p>注意：如果没有一个可视化的界面，是很难裁剪一张图片的。因此，除非你打算制作这么一个界面，否则这个函数并不是很有用。事实上我们(译注：指Ellislab公司，CodeIgniter的发行者)在自己开发的CMS系统ExpressionEngine的相册模块中添加的一个基于JavaScript的用户界面来选择裁剪的区域。</p>
+<h2>$this-&gt;image_lib-&gt;rotate()</h2>
+<p>rotate()函数需要通过参数设置旋转的角度：</p>
+<p><code>$config['rotation_angle'] = '90';</code></p>
+<p>以下是5个可选项:</p>
+<ol>
+    <li>90 - 逆时针旋转90度。</li>
+    <li>180 - 逆时针旋转180度。</li>
+    <li>270 - 逆时针旋转270度。</li>
+    <li>hor - 水平翻转。</li>
+    <li>vrt - 垂直翻转。</li>
+</ol>
+<p>下面是旋转图片的一个例子：</p>
+<p><code>$config['image_library'] = 'netpbm';<br />
+$config['library_path'] = '/usr/bin/';<br />
+$config['source_image'] = '/path/to/image/mypic.jpg';<br />
+$config['rotation_angle'] = 'hor';<br />
+<br />
+$this-&gt;image_lib-&gt;initialize($config); <br />
+<br />
+if ( ! $this-&gt;image_lib-&gt;rotate())<br />
+&#123;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo $this-&gt;image_lib-&gt;display_errors();<br />
+&#125;</code></p>
+
+<h2>$this-&gt;image_lib-&gt;clear()</h2>
+<p>clear函数重置所有之前用于处理图片的值。当你用循环来处理一批图片时，你可能会想使用它。</p>
+<p><code>$this-&gt;image_lib-&gt;clear();</code></p>
+
+<p>&nbsp;</p>
+<h1>图像水印处理</h1>
+<p>水印处理功能需要 GD/GD2 库的支持.</p>
+<h2>水印处理的两种类型</h2>
+<p>你可以使用以下两种图像水印处理方式:</p>
+<ul>
+    <li><strong>Text</strong>: 水印信息将以文字方式生成，要么使用你所指定的TrueType字体，要么使用GD库所支持的内部字体。如果你要使用TrueType版本，那么你安装的GD库必须是以支持TrueType的形式编译的（大多数时候是，不是所有）。</li>
+    <li><strong>Overlay</strong>: 水印信息将以图像方式生成，新生成的水印图像(通常是透明的 PNG 或者 GIF)将覆盖在原图像上.</li>
+</ul>
+<h2>水印处理一个图像</h2>
+<p>类似使用其他类型图像函数(resizing, cropping, and rotating)， 你也要对水印处理函数进行参数设置来生成你要得结果. 例子如下:</p>
+<p><code> $config['source_image'] = '/path/to/image/mypic.jpg';<br />
+$config['wm_text'] = 'Copyright 2006 - John Doe';<br />
+$config['wm_type'] = 'text';<br />
+$config['wm_font_path'] = './system/fonts/texb.ttf';<br />
+$config['wm_font_size'] = '16';<br />
+$config['wm_font_color'] = 'ffffff';<br />
+$config['wm_vrt_alignment']  = 'bottom';<br />
+$config['wm_hor_alignment']  = 'center';<br />
+$config['wm_padding']  = '20';<br />
+<br />
+$this-&gt;image_lib-&gt;initialize($config); <br />
+<br />
+$this-&gt;image_lib-&gt;watermark();</code></p>
+<p>上面的例子是使用16像素 True Type 字体来生成文本水印&quot;Copyright 2006 - John Doe&quot; 该水印将出现在离图像底部20像素的中底部位置，</p>
+<p class="important"><strong>注意:</strong> 当调用图像类处理图像时，任何目标图片文件必须有 &quot;写入&quot;的权限， 例如：777.</p>
+<h2>水印处理参数</h2>
+<p>这个表里列举了两种水印处理 (text or overlay) 的可设置的参数</p>
+<table cellspacing="1" cellpadding="0" border="0" style="width: 100%;" class="tableborder">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>默认值</th>
+            <th>选项</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_type</strong></td>
+            <td class="td">text</td>
+            <td class="td">text, overlay</td>
+            <td class="td">设置想要使用的水印处理类型.</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>source_image</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">设置原图像的名字和路径. 路径必须是相对或绝对路径，但不能是URL.</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>dynamic_output</strong></td>
+            <td class="td">FALSE</td>
+            <td class="td">TRUE/FALSE (布尔值)</td>
+            <td class="td">决定新的图片文件应该被写入磁盘还是动态生成。说明: 如果你选择动态生成, 那么每次就只能显示一张图片, 而且它还不能被定位在页面上, 仅仅是把原始图片动态输出到浏览器中，并且带上image header. </td>
+        </tr>
+        <tr>
+            <td class="td"><strong>quality</strong></td>
+            <td class="td">90%</td>
+            <td class="td">1 - 100%</td>
+            <td class="td">设置图片的质量。质量越高, 文件就越大。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>padding</strong></td>
+            <td class="td">无</td>
+            <td class="td">一个数字</td>
+            <td class="td">填充量, 以像素为单位, 在实际应用中将被设置为水印与图片边缘的距离。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_vrt_alignment</strong></td>
+            <td class="td">bottom</td>
+            <td class="td">top, middle, bottom</td>
+            <td class="td">设置水印图像的垂直对齐方式。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_hor_alignment</strong></td>
+            <td class="td">center</td>
+            <td class="td">left, center, right</td>
+            <td class="td">设置水印图像的水平对齐方式。</td>
+        </tr>
+<tr>
+<td class="td"><strong>wm_hor_offset</strong></td>
+<td class="td">无</td>
+<td class="td">无</td>
+<td class="td">你可以指定一个水平偏移量(以像素为单位)用于设置水印的位置。偏移量通常是向右移动水印, 除非你把水平对齐方式设置为"right", 那么你的偏移量将会向左移动水印。</td>
+</tr>
+
+<tr>
+<td class="td"><strong>wm_vrt_offset</strong></td>
+<td class="td">无</td>
+<td class="td">无</td>
+<td class="td">你可以指定一个垂直偏移量(以像素为单位)用于设置水印的位置。偏移量通常是向下移动水印, 除非你把垂直对齐方式设置为"bottom", 那么你的偏移量将会向上移动水印。</td>
+</tr>
+
+    </tbody>
+</table>
+<h3>Text参数</h3>
+<p>这个表格显示了Text类型水印的可用参数。</p>
+<table cellspacing="1" cellpadding="0" border="0" style="width: 100%;" class="tableborder">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>默认值</th>
+            <th>选项</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_text</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">你想作为水印显示的文本。通常是一份版权声明。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_font_path</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">你想使用的TTF字体在服务器上的路径。如果你没有使用这个选项，系统将使用原生的GD字体。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_font_size</strong></td>
+            <td class="td">16</td>
+            <td class="td">无</td>
+            <td class="td">文字的大小。 说明: 如果你没有使用上面的TTF字体选项，那么这个数值必须是 1-5 之间的一个数字。否则, 你可以使用任意一个用于你的字体的有效像素大小。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_font_color</strong></td>
+            <td class="td">ffffff</td>
+            <td class="td">无</td>
+            <td class="td">字体颜色，以十六进制给出。注意, 你必须给出完整的6位数的十六进制值(例如993300), 而不是3位数的简化值(例如fff)。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_shadow_color</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">阴影的颜色, 以十六进制给出。如果此项为空，那么阴影将不会被使用。注意, 你必须给出完整的6位数的十六进制值(例如993300), 而不是3位数的简化值(例如fff)。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_shadow_distance</strong></td>
+            <td class="td">3</td>
+            <td class="td">无</td>
+            <td class="td">阴影与文字之间的距离(以像素为单位)。</td>
+        </tr>
+    </tbody>
+</table>
+<h3>Overlay 参数</h3>
+<p>这个表格显示了Overlay类型水印的可用参数。</p>
+<table cellspacing="1" cellpadding="0" border="0" style="width: 100%;" class="tableborder">
+    <tbody>
+        <tr>
+            <th>参数</th>
+            <th>默认值</th>
+            <th>选项</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_overlay_path</strong></td>
+            <td class="td">无</td>
+            <td class="td">无</td>
+            <td class="td">你想要用作水印的图片在你服务器上的路径。只在你使用了overlay方法时需要。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_opacity</strong></td>
+            <td class="td">50</td>
+            <td class="td">1 - 100</td>
+            <td class="td">图像不透明度(opacity)。你可以指定你的水印图片的不透明度(例如transparency)。这将使水印模糊化，从而不会掩盖住底层原始图片的细节。通常设置为50%。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_x_transp</strong></td>
+            <td class="td">4</td>
+            <td class="td">一个数字</td>
+            <td class="td">如果你的水印图片是一个PNG或GIF图片, 你可以指定一种颜色用来使图片变得"透明"。这项设置(以及下面那项)将允许你指定这种颜色。它的原理是, 通过指定"X"和"Y"坐标值(从左上方开始测量)来确定图片上对应位置的某个像素, 这个像素所代表的颜色就是你要设置为透明的颜色。</td>
+        </tr>
+        <tr>
+            <td class="td"><strong>wm_y_transp</strong></td>
+            <td class="td">4</td>
+            <td class="td">一个数字</td>
+            <td class="td">与前一个选项一起, 允许你指定某个像素的坐标值, 这个像素所代表的颜色就是你要设置为透明的颜色。</td>
+        </tr>
+    </tbody>
+</table><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+aykirk, bnlt, Hex, sydcurie, szlinz, yinzhili</div>
+<div id="DocDate">
+最后修改: 2009-09-21 11:13:15</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="table.html">HTML 表格类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="input.html">输入类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

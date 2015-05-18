@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>单元测试类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;单元测试类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/libraries/unit_testing.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>单元测试类</h1>
+
+<p>单元测试是一种用于测试应用程序中每个函数的软件开发方法。如果你对此概念不熟悉，或许需要google一下相关概念。</p>
+
+<p>CodeIgniter的单元测试类非常简单，由一个评估函数和两个结果函数组成。它没打算成为一个十全的测试集，只提供一个简单的能够评测你的代码是否可以产生正确的数据类型及结果的解决方案。</p>
+
+
+<h2>初始化单元类</h2>
+
+<p>和大多数其它的类一样，在CodeIgniter中，单元测试类一样要在控制器中用函数<dfn>$this-&gt;load-&gt;library</dfn> 来初始化:</p>
+
+<code>$this-&gt;load-&gt;library('unit_test');</code>
+<p>测试类一旦加载，单元测试对象可以这样使用：<dfn>$this-&gt;unit</dfn></p>
+
+
+<h2>运行测试：</h2>
+
+<p>运行一个测试应提供一个测试及期望的结果给以下函数：</p>
+
+<h2>$this-&gt;unit-&gt;run( <var>test</var>, <var>expected result</var>, '<var>test name</var>' );</h2>
+
+<p>此处 <var>test</var> 是你所想测试的代码的执行结果，
+<var>expected result</var> 则是你所期望的数据类型，而 <var>test name</var> 是一个可选的该测试的名称。例：</p>
+
+<code>$test = 1 + 1;<br />
+<br />
+$expected_result = 2;<br />
+<br />
+$test_name = 'Adds one plus one';<br />
+<br />
+$this-&gt;unit-&gt;run($test, $expected_result, $test_name);</code>
+
+<p>你所给出的期望结果($expected_result)可以是字面上匹配(literal match)的也可以是数据类型上匹配的。下例为字面匹配(literal match)：</p>
+
+<code>$this-&gt;unit-&gt;run('Foo', 'Foo');</code>
+
+<p>下例为类型匹配(data type match)：</p>
+
+<code>$this-&gt;unit-&gt;run('Foo', 'is_string');</code>
+
+<p>注意第二个参数"is_string"的使用，它告诉函数测试你的测试用例把产生的将是一个字符串。下面是合法的类型列表：</p>
+
+<ul>
+<li>is_string</li>
+<li>is_bool</li>
+<li>is_true</li>
+
+<li>is_false</li>
+<li>is_int</li>
+<li>is_numeric</li>
+<li>is_float</li>
+<li>is_double</li>
+<li>is_array</li>
+<li>is_null</li>
+</ul>
+
+
+<h2>生成报告</h2>
+
+<p>你可以在每个测试后立刻显示结果，也可以运行若干测试后再产生报告。直接显示一个报告，可以用echo或者返回<var>run</var>函数(的执行结果)：</p>
+
+<code>echo $this-&gt;unit-&gt;run($test, $expected_result);</code>
+
+<p>显示所有测试的完整的报告，可以这样：</p>
+
+<code>echo $this-&gt;unit-&gt;report();</code>
+
+<p>报告会以格式化了的HTML表格的形式呈现。如果你更喜欢看原始的数据，可以用下面代码获取一个数组：</p>
+
+<code>echo $this-&gt;unit-&gt;result();</code>
+
+
+<h2>严格模式</h2>
+
+<p>默认情况下，单元测试类评测字面匹配(literal match)时比较宽松，考虑以下例子：</p>
+
+<code>$this-&gt;unit-&gt;run(1, TRUE);</code>
+
+<p>此测试评测的是一个整数，但是期望结果却是布尔值。不过，由于PHP是弱类型语言，使用正常的相等测试，以上代码返回的将是TRUE：</p>
+
+<code>if (1 == TRUE) echo 'This evaluates as true';</code>
+
+<p>喜欢的话，你可以让单元测试类在严格模式下执行，这样它会同时比较两数据的类型及值：</p>
+
+<code>if (1 === TRUE) echo 'This evaluates as FALSE';</code>
+
+<p>启用严格模式：</p>
+
+<code>$this-&gt;unit-&gt;use_strict(TRUE);</code>
+
+<h2>启用/禁用单元测试</h2>
+
+<p>如果你想放一些测试在代码中，而又希望让它只在需要的时候运行，你可以禁用单元测试：</p>
+
+<code>$this-&gt;unit-&gt;active(FALSE)</code>
+
+
+
+<h2>创建报告模板</h2>
+
+<p>如果你希望测试结果以自定义的格式显示，这里提供一个简单的模板示例。注意必需的伪变量(seudo-variables)：</p>
+
+<code>
+$str = '<br />
+&lt;table border="0" cellpadding="4" cellspacing="1"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<kbd>&#123;rows&#125;</kbd><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td><kbd>&#123;item&#125;</kbd>&lt;/td><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td><kbd>&#123;result&#125;</kbd>&lt;/td><br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<kbd>&#123;/rows&#125;</kbd><br />
+&lt;/table>';<br />
+<br />
+$this-&gt;unit-&gt;set_template($str);
+</code>
+
+<p class="important"><strong>注意：</strong> 你的模板必须在单元测试运行之前声明。</p><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, iptton</div>
+<div id="DocDate">
+最后修改: 2009-02-21 23:53:20</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="typography.html">排版类</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="uri.html">URI 类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

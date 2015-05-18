@@ -1,0 +1,16 @@
+# IDE, don't track them
+aptana/
+nbproject/
+test/
+.settings/
+/aptana/
+/nbproject/
+/.settings/
+
+/system/cache/
+/system/logs/
+/drupal/*
+/*/Thumbs.db
+Thumbs.db
+/libraries/ckfinder/userfiles/
+!/test/

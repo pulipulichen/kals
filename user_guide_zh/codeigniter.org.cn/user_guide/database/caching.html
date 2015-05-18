@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>数据库缓存类 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;<a href="index.html">数据库类</a>&nbsp;&#8250;&nbsp;数据库缓存类	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/database/caching.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>数据库缓存类</h1>
+
+<p>数据库缓存类允许你把数据库查询结果保存在文本文件中以减少数据库访问。</p>
+
+<p class="important"><strong>重要提示：</strong>&nbsp; 本类在激活后会随数据库驱动自动初始化。<b>切勿</b>手动加载。<br /><br />
+
+<strong>另：</strong>&nbsp; 并非所有查询结果都能被缓存。请仔细阅读本页内容。</p>
+
+<h2>激活缓存</h2>
+
+<p>激活缓存需要三步：</p>
+
+<ul>
+<li>在服务器上创建一个可写的目录以便保存缓存文件。</li>
+<li>在文件 <dfn>application/config/database.php</dfn> 中设置其目录。</li>
+
+<li>激活缓存特性，可以在文件 <dfn>application/config/database.php</dfn> 中设置全局选项，也可以用以本页下面的方法手动设置。</li>
+</ul>
+
+<p>一旦被激活，每一次含有数据库查询的页面被加载时缓存就会自动发生。</p>
+
+
+<h2>缓存如何工作？</h2>
+
+<p>当页面被浏览时CodeIgniter的查询缓存系统能够动态执行。如果缓存特性被激活，那么在此页面首次被加载时，数据库查询的结果对象将会被序列化并保存在你服务器的文本文件中。而页面再次被加载时缓存文件将会替代数据库查询。如此，在被缓存的页面中，你的数据库使用率会降至0。</p>
+
+<p>只有 <dfn>读类型(read-type)</dfn> (SELECT) 查询会被缓存，因为只有这种查询会产生结果集。
+<dfn>写类型(Write-type)</dfn> (INSERT, UPDATE, 等等) 查询，因为不会产生结果集，故缓存系统不对之进行缓存。</p>
+
+<p>缓存文件<b>不会</b>过期，除非你删掉，否则任何被缓存了的查询会一直存在。缓存系统允许你按页面清除，或把所有缓存都清除掉。一般来说，你可以在某些事件(比如向数据库添加了数据)发生时用下面的函数来清除缓存。</p>
+
+<h2>缓存能够提升站点的性能吗？</h2>
+
+<p>缓存能否获得性能增益，取决于很多因素。如果您有一个负荷很少而高度优化的数据库，你可能不会看到性能提升。
+如果您的数据库正在大量使用,您可能会看到缓存后带来的性能提升，前提是你的文件系统是并没有太多开销。(这里'CI中国社区'要补充一点:生成缓存以及索引缓存等一系列操作(缓存系统自身运算)也是存在开销的.) Remember that caching simply changes how your information is retrieved, shifting it from being a database
+operation to a file-system one.</p>
+
+<p>在一些群集服务器环境，会出现这样的情况，因为文件系统的操作太过频繁,缓存无法正确生成。
+在单一的服务器在共享的环境，高速缓存可能会是有益的。是否能有性能上的提升应还取决于您的数据库。这要看您的具体情况.</p>
+
+<h2>缓存文件如何存储？</h2>
+
+<p>CodeIgniter拥有每个 places the result of EACH query into its own cache file.  Sets of cache files are further organized into
+sub-folders corresponding to your controller functions.  To be precise, the sub-folders are named identically to the
+first two segments of your URI (the controller class name and function name).</p>
+<p>CI把每次查询的结果放置在自己的缓存文件里。根据你的控制器函数，缓存文件集将被进一步组织到子目录中。准确的话，子目录的名称由你的URI的前两段（控件器类名和函数名）决定</p>
+
+<p>For example, let's say you have a controller called <dfn>blog</dfn> with a function called <dfn>comments</dfn> that
+contains three queries.  The caching system will create a cache folder
+called <kbd>blog+comments</kbd>, into which it will write three cache files.</p>
+<p>
+例如，假设你有一个控制器<dfn>blog</dfn>和一个<dfn>comments</dfn>函数，这个函数包括三个查询。缓存系统将创建一个叫做blog+comments的目录并在这个目录里创建三个缓存文件。
+</p>
+
+<p>If you use dynamic queries that change based on information in your URI (when using pagination, for example), each instance of
+the query will produce its own cache file.  It's possible, therefore, to end up with many times more cache files than you have
+queries.</p>
+<p>当你根据URI上的信息动态查询时（例如使用分页），每次查询的实例将创建自己的缓存文件。因此，经过很多次查询后，缓存文件的个数可能比你查询的次数还多。</p>
+
+<h2>管理您的缓存文件</h2>
+
+<p>由于缓存文件不会过期，您需要在您的应用程序中写入删除缓存操作的代码。例如，假设您有一个博客，让用户发表评论。每当有新的评论被提交 您一定希望在某个控制器的方法中删除缓存文件与控制器的功能 .  你会发现如下两个删除功能的介绍，可以帮助您清除数据.</p>
+
+
+<h2>并非所有的数据库方法都带缓存</h2>
+
+<p>最后，我们需要指出的是，由于对象是缓存 是一个简化版本的全部结果对象。出于这一原因，一些不具备数据查询结果的方法不被缓存 如 插入 更新。.</p>
+
+<p>下列方法不能和缓存搭配使用:</p>
+
+<ul>
+<li>num_fields()</li>
+<li>field_names()</li>
+<li>field_data()</li>
+<li>free_result()</li>
+</ul>
+
+<p>同样, the two database resources (result_id and conn_id) are not available when caching, since result resources only
+pertain to run-time operations.</p>
+
+
+<br />
+
+<h1>函数参考</h1>
+
+
+
+<h2>$this-&gt;db-&gt;cache_on()&nbsp; / &nbsp; $this-&gt;db-&gt;cache_off()</h2>
+
+<p>可手动设置缓存开关。如果您想保留某些查询不被缓存 这个功能就十分有用。例如：:</p>
+
+<code>
+// 打开缓存开关<br />
+$this-&gt;db-&gt;cache_on();<br />
+$query = $this-&gt;db-&gt;query("SELECT * FROM mytable");<br />
+<br />
+// 使下面这条查询不被缓存<br />
+$this-&gt;db-&gt;cache_off();<br />
+$query = $this-&gt;db-&gt;query("SELECT * FROM members WHERE member_id = '$current_user'");<br />
+
+<br />
+// Turn caching back on<br />
+$this-&gt;db-&gt;cache_on();<br />
+$query = $this-&gt;db-&gt;query("SELECT * FROM another_table");
+</code>
+
+
+<h2>$this-&gt;db-&gt;cache_delete()</h2>
+
+<p>删除缓存文件与特定网页。如果你需要清除缓存后，更新您的数据库.</p>
+
+<p>缓存系统会在缓存存放目录中建立与被访问的URL所对应的子目录,同时把缓存文件存放在那个子目录中.缓存主目录就是您在<dfn>application/config/database.php</dfn> 里面设置的缓存目录.  例如, 如果您正在浏览地址为
+<dfn>example.com/index.php/blog/comments</dfn>的页面, 缓存系统会把所有生成的缓存文件放进一个以
+<dfn>blog+comments</dfn>做为名称的文件夹里.  如果您要删除关于刚才提到的这个例子与之对应的缓存文件 需要执行以下代码:</p>
+
+<code>$this-&gt;db-&gt;cache_delete('blog', 'comments');</code>
+
+<p>如果您不使用任何参数,目前的URI设置将决定什么时候应该清除/更新 该缓存.</p>
+
+
+<h2>$this-&gt;db-&gt;cache_delete_all()</h2>
+
+<p>清除所有所有的缓存文件。例子:</p>
+
+<code>$this-&gt;db-&gt;cache_delete_all();</code><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+baiyuxiong, Hex, iptton, soyota, yz20sui</div>
+<div id="DocDate">
+最后修改: 2009-12-29 11:20:30</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="call_function.html">自定义函数调用</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="forge.html">数据库维护类</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>

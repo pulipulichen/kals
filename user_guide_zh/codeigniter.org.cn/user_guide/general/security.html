@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="utf-8" lang="utf-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>安全 - CodeIgniter 中文手册|用户手册|用户指南|Wiki文档</title>
+<link rel="shortcut icon" href="http://codeigniter.org.cn/images/design/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" media="all" href="../../user_guide/userguide.css" />
+<link rel="search" href="http://codeigniter.org.cn/CodeIgniterSearch.xml" type="application/opensearchdescription+xml" title="CodeIgniter 搜索"/>
+<script type="text/javascript" src="../../user_guide/nav/nav.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/prototype.lite.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/moo.fx.js"></script>
+<script type="text/javascript" src="../../user_guide/nav/user_guide_menu.js"></script>
+<meta name="robots" content="all" />
+<meta name="author" content="ExpressionEngine Dev Team" />
+<meta name="description" content="CodeIgniter 中文手册, CodeIgniter 用户指南, CodeIgniter User Guide, Wiki 文档" />
+</head>
+<body>
+<!-- START NAVIGATION -->
+<div id="nav">
+  <div id="nav_inner">
+    <script type="text/javascript">create_menu('http://codeigniter.org.cn/user_guide/');</script>
+  </div>
+</div>
+<script type="text/javascript">_setNavigation();</script>
+<div id="nav2"><a name="top"></a><a href="javascript:void(0);" onclick="myHeight.toggle();"><img src="../../user_guide/images/nav_toggle_darker.jpg" width="154" height="43" border="0" title="切换目录" alt="切换目录" /></a></div>
+<div id="masthead">
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+    <tr>
+      <td width="350"><h1>CodeIgniter 用户指南 版本 1.7.2</h1></td>
+<td>编辑文档、查看近期更改请 <a href="../../user_guide/auth/login.html">登录</a> 或 <a href="../../user_guide/auth/register.html">注册</a> 　<a href="../../user_guide/auth/forgotten_password.html">找回密码</a></td>      <td id="breadcrumb_right"><a href="../../user_guide/toc.html">目录页</a></td>
+    </tr>
+  </table>
+</div>
+<!-- END NAVIGATION -->
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+  <tr>
+    <td id="breadcrumb">
+		<a href="http://codeigniter.org.cn/" target="_blank">CodeIgniter 中国首页</a>&nbsp;&#8250;&nbsp;
+<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&#8250;&nbsp;安全	</td>
+    <td id="searchbox">
+		<form method="get" action="http://www.google.com/search" target="google_window">
+		<input type="hidden" name="client" value="pub-0176846097796333"></input>
+		<input type="hidden" name="forid" value="1"></input>
+		<input type="hidden" name="ie" value="UTF-8"></input>
+		<input type="hidden" name="oe" value="UTF-8"></input>
+        <input type="hidden" name="as_sitesearch" id="as_sitesearch" value="codeigniter.org.cn/user_guide/" />
+        搜索用户指南&nbsp;
+        <input type="text" class="input" style="width:200px;" name="q" id="q" size="31" maxlength="255" value="" />
+        &nbsp;
+        <input type="submit" class="submit" name="sa" value="Go" />
+      </form>
+	</td>
+  </tr>
+</table>
+<!-- END BREADCRUMB -->
+<div style="clear:both;text-align:right;padding: 6px 40px 0 0;">
+<a href="http://codeigniter.com/user_guide/general/security.html" target="_blank">查看原文</a>
+</div>
+<!--<br clear="all" />--><!-- START CONTENT -->
+<div id="content">
+<h1>安全</h1>
+
+<p>本页描述了一些关于 Web 安全的“最佳实践”，并详细说明了 CodeIgniter 的内部安全特性。</p>
+
+
+<h2>URI 安全</h2>
+
+<p>CodeIgniter 严格限制 URI 中所能包含的字符，以此帮助你设计的程序减少被恶意数据入侵的可能。URI 一般只包含下列内容：
+</p>
+
+<ul>
+<li>字母和数字</li>
+<li>波浪符： ~ </li>
+<li>句号： .</li>
+<li>冒号： :</li>
+<li>下划线： _</li>
+<li>破折号： -</li>
+</ul>
+
+<h2>GET、POST 和 COOKIE 数据</h2>
+
+<p>当系统使用URI分段而不是传统的URL请求字符串时GET 数据被禁止使用(除非你已经在配置文件中开启了字符串请求). 在系统初始化期间全局GET数据被Input类设为<strong>unset</strong>.</p>
+
+<h2>Register_globals</h2>
+
+<p>系统初始化期间所有的全局变量都被unset, 除了那些在$_POST和$_COOKIE 数组中的数据. 实际上unsetting
+实例程序的作用与register_globals = off 相同.</p>
+
+
+<h2>magic_quotes_runtime</h2>
+
+<p>在系统初始化期间 magic_quotes_runtime 指令被关闭以便在数据库检索数据时不必去掉反斜线。</p>
+
+<h1>最佳实践</h1>
+
+<p>在接收任何数据到你的程序之前，不管是表单提交的 POST 数据、COOKIE 数据、URI 数据、XML-RPC 数据、还是 SERVER 数组中的数据，我们都推荐你实践下面的三个步骤：</p>
+
+<ol>
+
+<li>过滤不良数据.</li>
+<li>验证数据以确保符合正确的类型, 长度, 大小等. (有时这一步骤也可取代第一步骤)</li>
+<li>在提交数据到你的数据库之前将其转换.</li>
+
+</ol>
+
+<p>CodeIgniter 提供了下列函数以辅助这个过程:</p>
+
+<ul>
+
+<li><h2>XSS 过滤</h2>
+
+<p>CodeIgniter带有一个跨站脚本过滤器. 这个过滤器会查找那些用通常手段嵌入到你数据中恶意的Javascript,或其它一些试图欺骗cookie类型的或者做其它恶意事情的代码. XSS Filter的详细描述在 <a href="../../user_guide/libraries/input.html">这里</a>.
+</p>
+</li>
+
+<li><h2>验证数据</h2>
+
+<p>CodeIgniter 有一个<a href="../../user_guide/libraries/form_validation.html">表单验证类</a>用来帮助验证、过滤和预处理数据。</p>
+</li>
+
+<li><h2>插入数据库之前转义所有数据</h2>
+
+<p>不要插入未转义的信息到你的数据库中。要了解更多信息请参阅<a href="../../user_guide/database/queries.html">查询</a>章节。</p>
+
+</li>
+
+</ul><p>&nbsp;</p>
+<div id="Contributors">
+翻译贡献者:
+Hex, lishen2, shnwqshnwq</div>
+<div id="DocDate">
+最后修改: 2009-02-21 17:57:45</div>
+</div>
+<!-- END CONTENT -->
+<div id="footer">
+  <p>
+上一个主题:&nbsp;&nbsp;<a href="alternative_php.html">PHP 替代语法</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="wsdindex.html#top">页首</a>
+&nbsp;&middot;&nbsp;&nbsp;<a href="../../user_guide/index.html">用户指南首页</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;下一个主题:&nbsp;&nbsp;<a href="styleguide.html">开发规范</a>  </p>
+  <p><a href="http://codeigniter.com/">CodeIgniter</a> &nbsp;&middot;&nbsp; 版权所有 &#169; 2006-2009 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">Ellislab, Inc.</a></p>
+  <p>中文化: <a href="http://codeigniter.org.cn/">CodeIgniter 中国</a> &nbsp;&middot;&nbsp; 制作: Hex &nbsp;&middot;&nbsp; 版本: 1.20 &nbsp;&middot;&nbsp; 鸣谢: 子非鱼</p>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-272152-3']);
+_gaq.push(['_addOrganic', 'baidu', 'word']);
+_gaq.push(['_addOrganic', 'soso', 'w']);
+_gaq.push(['_addOrganic', '3721', 'name']);
+_gaq.push(['_addOrganic', 'yodao', 'q']);
+_gaq.push(['_addOrganic', 'vnet', 'kw']);
+_gaq.push(['_addOrganic', 'sogou', 'query']);
+_gaq.push(['_addIgnoredOrganic', 'codeigniter.org.cn']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script');
+    ga.src = (('https:' == document.location.protocol) ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})();
+</script>
+<div style="display:none"><script language="javascript" type="text/javascript" src="http://js.users.51.la/3289908.js"></script>
+<noscript><a href="http://www.51.la/?3289908" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/3289908.asp" style="border:none" /></a></noscript></div>
+</body>
+</html>
