@@ -88,7 +88,13 @@ class random_user extends KALS_model {
                 $data["random_user"] = $tags2;
                         }  else {
                                $random_keys=array_rand($tags2,3);
-                               $data["random_user"] = $random_keys;
+                               $tags3 = array();
+                               
+                               $tags3[0] = $tags2[$random_keys[0]];
+                               $tags3[1] = $tags2[$random_keys[1]];
+                               $tags3[2] = $tags2[$random_keys[2]];
+                               
+                               $data["random_user"] = $tags3;
                         }
                         }  else {
                             $data["random_user"] = $data_good;    
