@@ -5,3 +5,4 @@ if [ -z "$KALS_PATH" ]; then KALS_PATH=/var/www/moodle/kals; fi
 
 cd $KALS_PATH
 git clone git://github.com/pulipulichen/kals.git
+git reset --hard origin/master
