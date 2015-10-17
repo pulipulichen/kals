@@ -40,14 +40,12 @@
   <p>Please insert follow code in your html after &lt;body&gt;:</p>
     <div  style="color:#333;padding: 1em; border: 1px solid #333;">
          <pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: &#39;Courier New&#39;, courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">&lt;!-- [KALS] --&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span> src=<span style="color: #006080">&quot;<span id="setup_location6">http://public-kals-2010.dlll.nccu.edu.tw</span>/kals/web_apps/generic/loader/release&quot;</span>&gt;&lt;/script&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span>&gt;<code class="javascript" style="background-color: inherit">KALS_CONFIG = {
-    annotation_scope_selector: "#scope",
-    
     /**
      * 從其他檔案讀取設定檔
      * @author Pulipuli Chen 20151017
      * @type String
      */
-    config_uri: "embed_config_url.json"
+    kals_config_api: "embed_config_url.json"
 };</code><br />&lt;/script&gt;<br />&lt;!-- [/KALS] --&gt;</pre></div>
 
 <!--
@@ -85,6 +83,19 @@ KALS_CONFIG = {
      */
     kals_config_api: "http://www.pulipuli.tk/kals/help/embed_config_url.json",
 };    
+
+
+//http://localhost/kals-moodle/moodle/pluginfile.php/1427/mod_resource/content/0/07_%E8%AB%96%E7%AB%8B%E9%AB%94%E4%B8%BB%E7%BE%A9.htm
+
+//alert(window.location.pathname);
+/*
+var _pathname = "/kals-moodle/moodle/pluginfile.php/1427/mod_resource/content/0/07_%E8%AB%96%E7%AB%8B%E9%AB%94%E4%B8%BB%E7%BE%A9.htm";
+var _parts = _pathname.split("/pluginfile.php/");
+var _base_path = _parts[0];
+var _context_id = _parts[1].substr(0, _parts[1].indexOf("/"));
+var _kals_config_api = _base_path + "/mod/resource/kals_config.php?context_id=" + _context_id;
+*/
+//http://localhost/kals-moodle/moodle/mod/resource/kals_config.php?context_id=1427
 </script>
 <!-- [/KALS] -->
 

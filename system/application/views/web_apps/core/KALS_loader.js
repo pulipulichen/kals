@@ -645,7 +645,7 @@ this.complete = function () {
  * @author Pulipuli Chen 20151017
  */
 this._override_kals_config = function (_default_kals_config, _kals_config) {
-    console.log([_default_kals_config, _kals_config]);
+    //console.log([_default_kals_config, _kals_config]);
     /**
      * 偵測是否有參數，否則直接覆蓋
      */
@@ -678,23 +678,31 @@ this._override_kals_config_api = function (_callback) {
     var _ = this;
     
     var _trigger_callback = function () {
-        console.log("_trigger_callback");
+        //console.log("_trigger_callback");
         if (typeof(_callback) === "function") {
             _callback();
         }
     };
     
     //console.log(KALS_CONFIG.kals_config_api);
+    var _api = null;
     if (typeof(KALS_CONFIG.kals_config_api) === "string") {
-        console.log(KALS_CONFIG.kals_config_api);
+        _api = KALS_CONFIG.kals_config_api;
+    }
+    else if (typeof(KALS_CONFIG.kals_config_api) === "function") {
+        _api = KALS_CONFIG.kals_config_api();
+    }
+    
+    if (typeof(_api) === "string") {
+        //console.log(KALS_CONFIG.kals_config_api);
         //jQuery.post("http://www.pulipuli.tk/kals/help/embed_config_url.json", function (_data) {
         //    console.log(_data);
         //});
         jQuery.ajax({
-            url: KALS_CONFIG.kals_config_api,
+            url: _api,
             dataType: "json",
             success: function (_config) {
-                console.log(_config);
+                //console.log(_config);
                 KALS_CONFIG = _._override_kals_config(KALS_CONFIG, _config);
             },
             //timeout: 1000,
