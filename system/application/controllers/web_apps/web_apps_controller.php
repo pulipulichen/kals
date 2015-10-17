@@ -617,7 +617,7 @@ $style = implode("}\n", $parts);
         $style = $this->_css_replace_base_url($style);
         
         send_css_header($this->output);
-        $this->load->view($this->dir.'display', array('data'=>$style));
+        $this->load->view($this->dir.'display', array('data'=> $style));
     }
     
     /**
@@ -632,7 +632,6 @@ $style = implode("}\n", $parts);
         $base_url = trim($base_url);
         //$style = str_replace('${base_url} ', $base_url, $style);
         $style = str_replace('${base_url}', $base_url, $style);
-        
         
         return $style;
     }
