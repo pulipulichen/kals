@@ -37,6 +37,7 @@
   <li><a href="config_annotation_navigation_map.html">設定標註地圖</a></li> 
   <li><a href="config_windows_map.html">設定章節地圖</a></li> 
   <li><a href="night.html">設定獎章機制</a></li> 
+  <li><a href="embed_config_url.html">指定設定檔KALS_CONFIG的網址</a></li>
 </ul>
 
 <hr />

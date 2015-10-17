@@ -30,6 +30,7 @@ class generic extends Web_apps_controller {
          * 會用其他方法載入，在這邊不載入的清單
          */
         "exception_list" => array(
+            'core/KALS_CONFIG', // Pulipuli Chen 20151017
             "core/KALS_loader",
             "libraries/jquery"
         ),
@@ -71,8 +72,8 @@ class generic extends Web_apps_controller {
          * @var Array
          */
         "toolkit_list_package" => array(
-            'core/KALS_CONFIG'
-            , 'core/KALS_SITE_REFORM'
+            //'core/KALS_CONFIG', //改成跟KALS_loader一起載入
+            'core/KALS_SITE_REFORM'
             , 'core/KALS_language_param'
             , 'modules/feedback/feedback'
             , 'modules/feedback/html2canvas'
@@ -809,7 +810,10 @@ class generic extends Web_apps_controller {
             $this->dir = $this->release_dir;
         }
         
-        $path = 'core/KALS_loader';
+        $path = array(
+            'core/KALS_CONFIG',
+            'core/KALS_loader'
+        );
 
         //$this->load_js($path);
         $this->pack_js($path, 'loader');

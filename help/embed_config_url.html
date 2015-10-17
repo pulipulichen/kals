@@ -2,7 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>KALS!標註工具 指定預設登入帳號</title>
+<title>KALS!標註工具 從網址指定預設KALS_CONFIG設定</title>
+
+<link rel="stylesheet" href="highlight.js/default.min.css">
+<script src="highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </head>
 
 <body>
@@ -34,18 +38,17 @@
 <blockquote>
   <p>You can use demo account: 電子信箱位址：<strong>demo@dlll.nccu.edu.tw</strong> / 密碼：<strong>demo</strong></p>
   <p>Please insert follow code in your html after &lt;body&gt;:</p>
-  <!--
-  <div  style="color:#333;padding: 1em; border: 1px solid #333;">
-  <code>&lt;!-- [KALS] --&gt; <br />
-&lt;script type=&quot;text/javascript&quot; src=&quot;<span class="setup_location6">http://public-kals.dlll.nccu.edu.tw/</span>kals/web_apps/generic/loader/release&quot;&gt;&lt;/script&gt;<br />
-&lt;!-- [/KALS] --&gt;
-    </code></div>
-    -->
-    
     <div  style="color:#333;padding: 1em; border: 1px solid #333;">
-  <code>
-      <pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: &#39;Courier New&#39;, courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">&lt;!-- [KALS] --&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span> src=<span style="color: #006080">&quot;<span id="setup_location6">http://public-kals-2010.dlll.nccu.edu.tw</span>/kals/web_apps/generic/loader/release&quot;</span>&gt;&lt;/script&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span>&gt;<br />KALS_CONFIG = {<br />    <span style="color: #008000">/**</span><br /><span style="color: #008000">     * 預設登入帳號的網址</span><br /><span style="color: #008000">     * @type {string} = null E-mail郵件地址或登入網址</span><br /><span style="color: #008000">     *     不使用預設登入時則是null </span><br /><span style="color: #008000">     */</span><br />    user_email: <span style="color: #006080">&quot;/kals/help/user.txt&quot;</span><br />};    <br />&lt;/script&gt;<br />&lt;!-- [/KALS] --&gt;</pre>
-</code></div>
+         <pre style="border-bottom-style: none; text-align: left; padding-bottom: 0px; line-height: 12pt; border-right-style: none; background-color: #f4f4f4; margin: 0em; padding-left: 0px; width: 100%; padding-right: 0px; font-family: &#39;Courier New&#39;, courier, monospace; direction: ltr; border-top-style: none; color: black; font-size: 8pt; border-left-style: none; overflow: visible; padding-top: 0px" id="codeSnippet">&lt;!-- [KALS] --&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span> src=<span style="color: #006080">&quot;<span id="setup_location6">http://public-kals-2010.dlll.nccu.edu.tw</span>/kals/web_apps/generic/loader/release&quot;</span>&gt;&lt;/script&gt;<br />&lt;script type=<span style="color: #006080">&quot;text/javascript&quot;</span>&gt;<code class="javascript" style="background-color: inherit">KALS_CONFIG = {
+    annotation_scope_selector: "#scope",
+    
+    /**
+     * 從其他檔案讀取設定檔
+     * @author Pulipuli Chen 20151017
+     * @type String
+     */
+    config_uri: "embed_config_url.json"
+};</code><br />&lt;/script&gt;<br />&lt;!-- [/KALS] --&gt;</pre></div>
 
 <!--
 <span id="setup_location6">http://public-kals-2010.dlll.nccu.edu.tw</span>
@@ -76,11 +79,11 @@ KALS_CONFIG = {
     annotation_scope_selector: "#scope",
     
     /**
-     * 預設登入的帳號
-     * @type {string} = null E-mail郵件地址
-     *     不使用預設登入時則是null 
+     * 從其他檔案讀取設定檔
+     * @author Pulipuli Chen 20151017
+     * @type String
      */
-    user_email: "/kals/help/user.txt"
+    kals_config_api: "http://www.pulipuli.tk/kals/help/embed_config_url.json",
 };    
 </script>
 <!-- [/KALS] -->

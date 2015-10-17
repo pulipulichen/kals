@@ -296,6 +296,13 @@ DEFAULT_KALS_CONFIG = {
     ],
      */
     admin_email_list: [],
+    
+    /**
+     * 從其他檔案讀取設定檔
+     * @author Pulipuli Chen 20151017
+     * @type String
+     */
+    kals_config_api: null,
     	
     //----------------------------
     
@@ -1090,32 +1097,5 @@ DEFAULT_KALS_CONFIG = {
         }
     }
 };
-
-(function () {
-    /**
-     * 偵測是否有參數，否則直接覆蓋
-     */
-    if (typeof(KALS_CONFIG) !== 'undefined') {
-        for (var _i in KALS_CONFIG) {
-            /**
-             * @version 20140618 Pulipuli Chen
-             * 對應到Modules的 deeper copy
-             */
-            if ($.inArray(_i, ["modules", "annotation_editor", "annotation_list"]) > -1) {
-                for (var _j in KALS_CONFIG[_i]) {
-                    //console.log(_j);
-                    DEFAULT_KALS_CONFIG[_i][_j] = KALS_CONFIG[_i][_j];
-                }
-            }
-            else {
-                DEFAULT_KALS_CONFIG[_i] = KALS_CONFIG[_i];
-            }
-        }
-    }
-
-    KALS_CONFIG = DEFAULT_KALS_CONFIG;
-    
-})();
-
 /* End of file KALS_CONFIG */
 /* Location: ./system/application/views/web_apps/KALS_CONFIG.js */

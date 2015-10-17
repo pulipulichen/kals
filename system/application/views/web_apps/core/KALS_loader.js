@@ -1,5 +1,6 @@
 /**
  * KALS_loader
+ * 所有KALS環境的第一開始初始化步驟
  *
  * @package		KALS
  * @category		JavaScript Libraries
@@ -32,6 +33,7 @@ function KALS_loader_class() {
  * @param {Object} _callback 回呼函數
  */
 this.load = function (_conf, _callback) {
+    
     this.generic_load(_conf, _callback);
     return this;
 };
@@ -39,6 +41,7 @@ this.load = function (_conf, _callback) {
 this.generic_dispatcher = null;
 
 this.generic_load = function (_conf, _callback) {   
+    
     var _prefix = "generic/";
     
     if (typeof(_conf) === 'function' 
@@ -100,9 +103,7 @@ this.generic_load = function (_conf, _callback) {
             //_prefix+'package'
         ];
     
-    //console.log('[KALS] load jquery');
-    _this.load_jquery(function () {
-        
+    var _load_other_libraries = function () {
         //console.log('[KALS] load libraries');
         _this.load_libraries(_libraries, function () {
             
@@ -116,12 +117,31 @@ this.generic_load = function (_conf, _callback) {
                 //_this.load_libraries(_component_libraries, function () {
                 _this.load_scripts_orderly(_component_libraries, function () {
                     //console.log('[KALS] callback');
+      
                     if (typeof(_callback) === "function") {
                         _callback();
                     }
                 });    
             });
         });
+    };
+    
+    //console.log('[KALS] load jquery');
+    _this.load_jquery(function () {
+        /**
+         * 覆寫設定檔
+         * @author Pulipuli Chen 20151017
+         */
+        KALS_CONFIG = this._override_kals_config(DEFAULT_KALS_CONFIG, KALS_CONFIG);
+            
+        /**
+         * 加上一層，讀取外部的設定檔
+         * @author Pulipuli Chen 20151017
+         */
+        _this._override_kals_config_api(function () {
+            
+            _load_other_libraries();
+        })
     });
     
     return this;
@@ -620,10 +640,83 @@ this.complete = function () {
 
 };
 
+/**
+ * 覆寫KALS_CONFIG的動作，是修改全域變數喔
+ * @author Pulipuli Chen 20151017
+ */
+this._override_kals_config = function (_default_kals_config, _kals_config) {
+    console.log([_default_kals_config, _kals_config]);
+    /**
+     * 偵測是否有參數，否則直接覆蓋
+     */
+    if (typeof(_kals_config) !== 'undefined') {
+        for (var _i in _kals_config) {
+            /**
+             * @version 20140618 Pulipuli Chen
+             * 對應到Modules的 deeper copy
+             */
+            if ($.inArray(_i, ["modules", "annotation_editor", "annotation_list"]) > -1) {
+                for (var _j in _kals_config[_i]) {
+                    //console.log(_j);
+                    _default_kals_config[_i][_j] = _kals_config[_i][_j];
+                }
+            }
+            else {
+                _default_kals_config[_i] = _kals_config[_i];
+            }
+        }
+    }
+
+    return _default_kals_config;
+};
+
+/**
+ * 讀取KALS_CONFIG的kals_config_api
+ * @author Pulipuli Chen 20151017
+ */
+this._override_kals_config_api = function (_callback) {
+    var _ = this;
+    
+    var _trigger_callback = function () {
+        console.log("_trigger_callback");
+        if (typeof(_callback) === "function") {
+            _callback();
+        }
+    };
+    
+    //console.log(KALS_CONFIG.kals_config_api);
+    if (typeof(KALS_CONFIG.kals_config_api) === "string") {
+        console.log(KALS_CONFIG.kals_config_api);
+        //jQuery.post("http://www.pulipuli.tk/kals/help/embed_config_url.json", function (_data) {
+        //    console.log(_data);
+        //});
+        jQuery.ajax({
+            url: KALS_CONFIG.kals_config_api,
+            dataType: "json",
+            success: function (_config) {
+                console.log(_config);
+                KALS_CONFIG = _._override_kals_config(KALS_CONFIG, _config);
+            },
+            //timeout: 1000,
+            complete: _trigger_callback
+        });
+    }
+    else {
+        _trigger_callback();
+    }
+};
+
     // --------
     return this;
 }    //function KALS_loader_class() {
 
+
+// -------------------------------------------
+
+/**
+ * 初始化KALS囉
+ * @author Pulipuli Chen <Pulipuli Chen> 20151017
+ */
 setTimeout(function () {
     var KALS_loader = KALS_loader_class();
     KALS_loader.load();
