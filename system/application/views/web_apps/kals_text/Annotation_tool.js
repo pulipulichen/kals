@@ -833,7 +833,18 @@ Annotation_tool.prototype._listen_submit = function () {
 Annotation_tool.prototype.toggle_editor = function (_display, _callback) {
     this.editor_container.toggle_container(_display, _callback);
     return this;
-    
+};
+
+/**
+ * 重設編輯器
+ * @author Pulipuli Chen 20151018
+ * @param {Function} _callback
+ * @param {Boolean} _reset_container 預設 true
+ * @returns {Annotation_tool.prototype}
+ */
+Annotation_tool.prototype.reset_editor = function (_callback, _reset_container) {
+    this.editor_container.reset(_callback, _reset_container);
+    return this;
 };
 
 /* End of file Annotation_tool */

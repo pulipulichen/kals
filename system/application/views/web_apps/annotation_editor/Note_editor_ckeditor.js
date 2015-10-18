@@ -127,32 +127,9 @@ Note_editor_ckeditor._setup_ckeditor = function () {
                 var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
 
                 _ui.ckeditorGet().on("contentDom", function () {
-                    this.document.on("mousedown", function () {
-                        $.test_msg("鎖定捲軸位置");
-                        $.lock_scroll_once();
-                        //$.test_msg("儲存位置");
-//                        $.save_scroll_position();
-//                        $(window).one("scroll", function () {
-//                            $.test_msg("捲動中");
-//                            $.load_scroll_position();
-//                        });
-                        //setTimeout(function () {
-                        //    $.test_msg("讀取位置3");
-                        //    $.load_scroll_position();
-                        //}, 100);
-                    });
-//                    this.document.on("click", function (event) {
-//                        //$.test_msg("讀取位置2");
-//                        
-//                    });
+                    _this._prevent_scoll_jump(this.document);
+                    _this._setup_hotkey(this.document);
                 });
-//                _ui.ckeditorGet().on("focus", function () {
-//                    //alert(2);
-//                    setTimeout(function () {
-//                        $.test_msg("讀取位置1");
-//                        $.load_scroll_position();
-//                    }, 100);
-//                });
 //                
             }, _this._ckeditor_config);
 			
@@ -162,6 +139,59 @@ Note_editor_ckeditor._setup_ckeditor = function () {
     //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [standby ready]');
     this._setup_timer = setTimeout(_setup, 100);
     
+    return this;
+};
+
+/**
+ * 防止CKEditor捲軸亂跳的措施
+ * @param {Object} _ckeditor
+ * @returns {Note_editor_ckeditor}
+ * @author Pulipuli Chen 20151018
+ */
+Note_editor_ckeditor._prevent_scoll_jump = function (_ckeditor) {
+    
+    _ckeditor.on("mousedown", function () {
+        //$.test_msg("鎖定捲軸位置");
+        $.lock_scroll_once();
+    });
+
+    _ckeditor.on("keydown", function (_event) {
+        //$.test_msg("鎖定捲軸位置 貼上版本");
+        $.lock_scroll_once();
+    });
+    return this;
+};
+
+/**
+ * 設定熱鍵
+ * @param {Object} _ckeditor
+ * @returns {Note_editor_ckeditor}
+ */
+Note_editor_ckeditor._setup_hotkey = function (_ckeditor) {
+    // 按下Esc的時候，取消編輯
+    var _keydown = null;
+    //var _keyup = null;
+    
+    _ckeditor.on("keyup", function (_event) {
+        //$.test_msg("按下了ESC鍵?keyup", _event.data.$.keyCode);
+        if(_event.data.$.keyCode === 27 && _keydown === 27){
+            //$.test_msg("按下了ESC鍵");
+            KALS_text.tool.reset_editor(function () {
+                KALS_text.tool.close();
+            });
+        }
+    });
+    
+    _ckeditor.on("keydown", function (_event) {
+        //$.test_msg("按下了ESC鍵?keydown", _event.data.$.keyCode);
+        _keydown = _event.data.$.keyCode;
+//        if(_event.data.$.keyCode === 27){
+//            //$.test_msg("按下了ESC鍵");
+//            KALS_text.tool.reset_editor(function () {
+//                KALS_text.tool.close();
+//            });
+//        }
+    });
     return this;
 };
 

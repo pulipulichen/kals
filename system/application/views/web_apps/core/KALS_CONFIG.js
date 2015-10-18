@@ -105,55 +105,55 @@ DEFAULT_KALS_CONFIG = {
      *     
      *  請自行調整各標註類型的啟用範圍與順序
      */
-    annotation_type_basic: {
-        'importance' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+    "annotation_type_basic": {
+        "importance" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 10    // 數字越大，排序越上面
+            "order": 10    // 數字越大，排序越上面
         },
-        'concept' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+        "concept" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 10    // 數字越大，排序越上面
+            "order": 10    // 數字越大，排序越上面
         },
-        'confusion' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+        "confusion" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 10    // 數字越大，排序越上面
+            "order": 10    // 數字越大，排序越上面
         },
-        'question' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+        "question" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 10    // 數字越大，排序越上面
+            "order": 10    // 數字越大，排序越上面
         },
-        'example' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+        "example" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 10    // 數字越大，排序越上面
+            "order": 10    // 數字越大，排序越上面
         },
-        'summary' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+        "summary" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 10    // 數字越大，排序越上面
+            "order": 10    // 數字越大，排序越上面
         },
-        'custom' : {
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+        "custom" : {
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            "order": 1    // 數字越大，排序越上面
         }
     },
     
