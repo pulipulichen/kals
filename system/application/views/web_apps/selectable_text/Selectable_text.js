@@ -371,7 +371,7 @@ Selectable_text.prototype.initialize = function (_callback) {
         this.has_cache(function (_existed) {
             //_existed = false;
             if (_existed) {
-                $.test_msg('取得快取，開始還原文件');
+                //$.test_msg('取得快取，開始還原文件');
                 _task_list.push(_task_cache_restore);
             }
             else {

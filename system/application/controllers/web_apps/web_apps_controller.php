@@ -853,7 +853,8 @@ $style = implode("}\n", $parts);
      * @author Pulipuli Chen <pulipuli.chen@gmail.com>
      */
     protected function _display_post_complete() {
-        send_js_header($this->output);
+        //send_js_header($this->output);
+        send_html_header($this->output);
         $this->load->view('web_apps/display_post_complete');
     }
     

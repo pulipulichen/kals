@@ -249,6 +249,11 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
         //$.test_msg('login data', _data);
         
         if (this.is_embed()) {
+            
+            /**
+             * 如果是內嵌式登入，那就嘗試登入吧
+             * @author Pulipuli Chen 20151018
+             */
             this.request_embed_email(function () {
                 _data.email = _this.get_email();
                 _data.embed = _this.is_embed();
@@ -268,7 +273,7 @@ KALS_authentication.prototype.login = function (_return_error, _callback) {
                     $.trigger_callback(_callback);
                 }
             });
-        }
+        }   //if (this.is_embed()) {
         else {
             this.load(_data, function (_this, _data) {
                 //$.test_msg("embed_login 預備 after_login", _data);
@@ -345,6 +350,9 @@ KALS_authentication.prototype._after_login = function (_return_error, _data, _ca
 
 /**
  * 內嵌登入的檢查方法
+ * 
+ * 如果是網址，那就從網址取得的Email後登入
+ * @author Pulipuli Chen 20151018
  * @param {Function} _callback
  * @returns {KALS_authentication}
  */
@@ -381,8 +389,9 @@ KALS_authentication.prototype.request_embed_email = function (_callback) {
             };
             
             KALS_util.ajax_local_get({
-                url: _url,
-                callback: _get_callback
+                "url": _url,
+                "callback": _get_callback,
+                "data_type" : "text"    //不指定的話，就會出錯喔！
             });
         }
         else {

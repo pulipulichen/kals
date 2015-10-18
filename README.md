@@ -48,6 +48,7 @@ KALS!標註工具會在網頁上將重要性較高的範圍文字標示為「紅
 ## 系統使用教學
 
 - [2009年KALS的使用教學](http://pulipuli.blogspot.tw/2010/11/20101127kals.html)
+- [KALS_CONFIG的設定](https://github.com/pulipulichen/kals/blob/master/system/application/views/web_apps/core/KALS_CONFIG.js)
 
 ## 其他參考網頁
 

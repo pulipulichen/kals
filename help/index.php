@@ -51,8 +51,8 @@
 <hr />
 <h2>KALS使用的框架與函式庫說明</h2>
 <ul>
-	<li><a href="../user_guide_zh/" target="_blank">CodeIgnitor 1.7.2 使用說明 中文</a></li>
-	<li><a href="../user_guide/" target="_blank">CodeIgnitor 1.7.2 使用說明 English</a></li>
+	<li><a href="user_guide_zh/" target="_blank">CodeIgnitor 1.7.2 使用說明 中文</a></li>
+	<li><a href="user_guide/" target="_blank">CodeIgnitor 1.7.2 使用說明 English</a></li>
         
         <li><a href="http://jquery.com/" target="_blank">jQuery 1.4.2</a></li>
         <li><a href="http://jquerytools.github.io/download/" target="_blank">jQuery TOOLS</a></li>

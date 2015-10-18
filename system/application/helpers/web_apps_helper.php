@@ -76,6 +76,18 @@ if ( ! function_exists('display_jsonp'))
     }
 }
 
+/**
+ * 送出HTML標頭
+ */
+if ( ! function_exists('send_html_header')) {
+    function send_html_header(CI_Output $output)
+    {
+        //header('Content-type: text/javascript');
+        $header = 'Content-type: text/html';
+        $output->set_header($header, TRUE);
+    }
+}
+
 if ( ! function_exists('send_js_header')) {
     function send_js_header(CI_Output $output)
     {

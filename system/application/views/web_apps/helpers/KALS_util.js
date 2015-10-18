@@ -275,6 +275,8 @@ KALS_util.ajax_local_get = function (_config) {
     var _retry_wait = $.get_parameter(_config, 'retry_wait', 60 * 1000);
     var _retry_counter = 0;
     
+    var _data_type = $.get_parameter(_config, 'data_type', "json");
+    
     //_url = $.appends_with(_url, '/');
     
     var _callback_parameter = $.get_parameter(_config, "fixed_callback", "?");
@@ -441,7 +443,7 @@ KALS_util.ajax_local_get = function (_config) {
         //$.get(_url, _get_callback);
         $.ajax({
             url: _url,
-            //dataType: 'json',
+            dataType: _data_type,
             complete: _get_callback,
             error: _error_callback
         });
@@ -507,6 +509,7 @@ KALS_util.ajax_post = function (_config) {
     var _data = $.get_parameter(_config, 'data');
     var _callback = $.get_parameter(_config, 'callback', function() {});
     var _exception_handle = $.get_parameter(_config, 'exception_handle');
+    var _data_type = $.get_parameter(_config, 'data_type', "json");
     
     var _action = $.appends_with(_url, '/');
     
@@ -578,9 +581,10 @@ KALS_util.ajax_post = function (_config) {
         //$.test_msg("KALS_uitl.ajax_post 3", "_iframe_load_callback");
         //以同樣路徑，用ajax_get去取得資料，並回傳給callback
         _this.ajax_get({
-            url: _url, 
-            callback: _ajax_get_callback,
-            exception_handle: _exception_handle 
+            "url": _url, 
+            "callback": _ajax_get_callback,
+            "exception_handle": _exception_handle,
+            "dataType": _data_type
         });
     };
     
@@ -1265,6 +1269,7 @@ KALS_util.log = function (_action, _note, _callback) {
     var _config = {
         "url": "log/create",
         "data": _data,
+        "data_type": "json",
         "callback": _callback,
         "exception_handle": function () {
             // 不做任何事情
@@ -1272,6 +1277,7 @@ KALS_util.log = function (_action, _note, _callback) {
     };
     //KALS_util.ajax_get(_config);
     
+    //$.test_msg("KALS_util.log" , _config);
     KALS_util.ajax_post(_config);
 };
 

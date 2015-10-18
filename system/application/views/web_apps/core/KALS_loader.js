@@ -141,7 +141,7 @@ this.generic_load = function (_conf, _callback) {
         _this._override_kals_config_api(function () {
             
             _load_other_libraries();
-        })
+        });
     });
     
     return this;
@@ -181,8 +181,7 @@ this.get_base_url = function () {
                 
                 if (_pos > -1) {
                     _base_url = _url.substring(0, _pos + _needle.length);
-                }
-                
+                }     
             }
             
             if (_base_url !== null) {
@@ -195,7 +194,8 @@ this.get_base_url = function () {
             this.base_url = _base_url;
         }
         else {
-            window.alert('Detect base url error!');
+            //window.alert('Detect base url error!');
+            $.test_msg('Detect base url error!');
         }
     }
     return this.base_url;
