@@ -129,10 +129,14 @@ Note_editor.prototype.notify_ready = function () {
     return this;
 };
 
+/**
+ * 讓焦距聚焦在編輯器上
+ * @returns {Note_editor.prototype}
+ */
 Note_editor.prototype.focus = function () {
     var _ui = this.get_ui('.note-editor-textarea:first');
     if (_ui.length > 0) {
-            _ui.focus();	
+        _ui.focus();	
     }
     return this;
 };

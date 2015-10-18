@@ -257,7 +257,8 @@ Editor_container.prototype.submit_annotation = function (_callback) {
 
 /**
  * 開關編輯器
- * @param {boolean} _display
+ * @author Pulipuli Chen 20151018
+ * @param {boolean} _display 是否顯示
  * @param {function} _callback
  */
 Editor_container.prototype.toggle_container = function (_display, _callback) {
@@ -300,7 +301,6 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     var _hide_classname = 'hide';
     
     //$.test_msg("toggle_container", [_display, _visible]);
-    
     if (_display === true && _visible === false) {
         
         this.check_policy();
@@ -316,11 +316,16 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
        
         //$.test_msg('Editor_container.toggle_container() if true', _display);
         
+        $.lock_scroll_once();
         _container.show();
 
         _parent.removeClass(_hide_editor_classname);
         this._toggle.removeClass(_hide_classname);
+        
         this.editor.note.focus();
+        //setTimeout(function () {
+        //}, 1000);
+        
         //$.test_msg('Editor_container.toggle_container() if true end', _display);
     }
     else if (_display === false && _visible === true) {

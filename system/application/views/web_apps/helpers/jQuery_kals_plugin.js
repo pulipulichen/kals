@@ -2566,14 +2566,20 @@ jQuery.load_scroll_position = function () {
     }
     
     var _scroll_to = function () {
-        if ($("body").scrollTop() !== 0
-                && $("body").scrollTop() !== _this._last_pos.y) {
-            //alert("是誰？");
-        }
+//        if ($("body").scrollTop() !== 0
+//                && $("body").scrollTop() !== _this._last_pos.y) {
+//            //alert("是誰？");
+//        }
         if ($("body").scrollTop() === 0
                 && _this._last_pos !== undefined
                 && _this._last_pos !== null) {
             //alert("準備回滾");
+            //$.test_msg("jQuery.load_scroll_position 準備回滾 (scrollTop==0)", [_this._last_pos.scrollLeft, _this._last_pos.scrollTop]);
+            window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
+        }
+        else if (_this._last_pos !== undefined
+                && _this._last_pos !== null) {
+            //$.test_msg("jQuery.load_scroll_position 準備回滾", [_this._last_pos, $("body").scrollTop()]);
             window.scrollTo(_this._last_pos.scrollLeft, _this._last_pos.scrollTop);
         }
     };
@@ -2596,8 +2602,25 @@ jQuery.load_scroll_position = function () {
             //_this._last_pos = null;
         }, 0);
     }
+    else {
+        //$.test_msg("jQuery.load_scroll_position 沒有回滾，鎖住了");
+    }
         
     
+    return this;
+};
+
+/**
+ * 鎖定一次視窗捲動事件
+ * @returns {jQuery}
+ * @author Pudding 20151018
+ */
+jQuery.lock_scroll_once = function () {
+    $.save_scroll_position();
+    $(window).one("scroll", function () {
+        //$.test_msg("捲動中");
+        $.load_scroll_position();
+    });
     return this;
 };
 

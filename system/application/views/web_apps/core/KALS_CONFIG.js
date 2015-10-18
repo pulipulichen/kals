@@ -335,6 +335,7 @@ DEFAULT_KALS_CONFIG = {
         resize_enabled: false,
         startupFocus: false,
         uiColor : '#CB842E',
+        'startupFocus': true,
         recordmp3js: {
             /**
              * 上傳檔案的位置
