@@ -27,6 +27,8 @@
 $config["web_apps.localhost_domains"] = array(
     "http://pc-pudding-2013.dlll.nccu.edu.tw/",
     "http://140.119.61.127/",
+    "http://www.pulipuli.tk/",
+    "http://pulipuli.tk/"
     //"http://exp-kals-moodle-2014.dlll.nccu.edu.tw/"
 );
 
