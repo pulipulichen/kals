@@ -321,5 +321,17 @@ Selection.prototype.equals = function (_scope_coll) {
     }
 };
 
+/**
+ * 檢查這個範圍是否有標註
+ * @author Pulipuli 201051018
+ * @returns {Boolean}
+ */
+Selection.prototype.has_annotation = function () {
+    
+    //var _words = KALS_text.selection.text.get_words_by_scope_coll();
+    //$.test_msg(this._scope_coll);
+    return KALS_text.selection.has_annotation(this._scope_coll);
+};
+
 /* End of file Selection */
 /* Location: ./system/application/views/web_apps/Selection.js */

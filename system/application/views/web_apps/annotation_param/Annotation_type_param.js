@@ -46,6 +46,7 @@ Annotation_type_param.current_custom_id = 100;
  *     'dottedline': 底線虛線
  *     'doubleline': 底線雙線
  *     "background": 背景顏色
+ *     "none": 沒有特別的格式
  */
 Annotation_type_param.prototype._anchor_style = 'underline';
 
@@ -408,6 +409,9 @@ Annotation_type_param.prototype.get_anchor_css = function () {
     }
     else if (_style === 'background') {
         _css = 'background-color:' + _color;
+    }
+    else if (_style === 'none') {
+        //_css = 'color:' + _color;
     }
     else {
         _css = 'border-bottom:1px solid ' + _color;

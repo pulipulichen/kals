@@ -406,9 +406,37 @@ Selection_manager.prototype.get_selection_bottom = function () {
 };
 */
 
+/**
+ * 檢查範圍內是否有標註
+ * @author Pudding 20151019
+ * @param {jQuery|Scoll_coll_param} _word
+ * @returns {Boolean}
+ */
 Selection_manager.prototype.has_annotation = function (_word) {
-    return (this.my_basic.is_my(_word)
-            || this.navigation.is_navigation(_word));
+    if (_word === undefined) {
+        return false;
+    }
+    
+    //$.test_msg("has_annotation", typeof(_word.scopes));
+    if (typeof(_word.scopes) === "object") {
+        var _scope_coll = _word;
+        var _words = this.text.get_words_by_scope_coll(_scope_coll);
+        
+        
+        for (var _i in _words) {
+            for (var _j in _words[_i]) {
+                var _w = _words[_i][_j];
+                if (this.has_annotation(_w) === true) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    else {
+        return (this.my_basic.is_my(_word)
+                || this.navigation.is_navigation(_word));
+    }
 };
 
 /* End of file Selection_manager */

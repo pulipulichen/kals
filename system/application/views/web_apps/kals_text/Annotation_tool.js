@@ -151,6 +151,12 @@ Annotation_tool.prototype._$create_ui = function () {
      */
     this._listen_submit();
     
+//    var _ = this;
+//    KALS_context.add_once_listener(function () {
+//        $.test_msg("顯示吧");
+//        _.toggle_editor(true);
+//    });
+    
     return _ui;
 };
 
@@ -218,22 +224,23 @@ Annotation_tool.prototype.setup_list = function () {
     this.child('list', _component);
 	
     var _tool = this;
-    //註冊一下
-    _component.add_listener(function () {
-        //$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
-        
-        
-//        // 如果讀取已經完成，而且沒有標註的話，則開啟標註
-        if (_tool._close_editor_onopen 
-                && _component.is_totally_loaded() 
-                && _component.has_list_item() === false) {
-            _tool.editor_container.toggle_container(true);
-        }
-        
-        //else {
-        //	_tool.editor_container.toggle_container(false);
-        //}
-    });
+//    //註冊一下
+//    _component.add_listener(function () {
+//        //$.test_msg("Annotation_tool.setup_list", [_component.is_totally_loaded(), _component.has_list_item()]);
+//        
+//        
+////        // 如果讀取已經完成，而且沒有標註的話，則開啟標註
+//        $.test_msg("如果讀取已經完成，而且沒有標註的話，則開啟標註", [_tool._close_editor_onopen , _component.is_totally_loaded() , _component.has_list_item()]);
+//        if (_tool._close_editor_onopen 
+//                || ( _component.is_totally_loaded() 
+//                && _component.has_list_item() === false) ) {
+//            _tool.editor_container.toggle_container(true);
+//        }
+//        
+//        //else {
+//        //	_tool.editor_container.toggle_container(false);
+//        //}
+//    });
     return _component;
 };
 
@@ -315,6 +322,10 @@ Annotation_tool.prototype.onselect = function () {
      */
     //var _reset_container = false;
     var _reset_container = true;
+    
+    //$.test_msg("Annotation_tool.prototype.onselect", KALS_text.selection.select.has_annotation());
+    this.toggle_editor((KALS_text.selection.select.has_annotation() === false));
+    //this.toggle_editor(false);
     
     this.editor_container.reset(function () {
         //$.test_msg('Annotation_tool.onselect() open');
@@ -467,6 +478,7 @@ Annotation_tool.prototype.close = function (_callback) {
     
     var _close_action = function (_overlay_close_action) {
         _this.list.reset();
+        _this.toggle_editor(false);
         
         /**
          * @author Pulipuli 20140907

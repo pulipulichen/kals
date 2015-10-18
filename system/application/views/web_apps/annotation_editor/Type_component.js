@@ -89,19 +89,9 @@ Type_component.prototype._$create_ui = function () {
         }
         _option.hide().appendTo(_ui);
     }
-    
-    //$.test_msg("Type_component.prototype._$create_ui", [typeof(_options), typeof(_options), typeof(_options.length)]);
-    if (_options.length === undefined) {
-        // 如果沒有選單，則不加入下拉式選單
-        _ui.addClass('menu-hidden');
-    }
-    else {
-        // 如果有選單，則照舊
-        _ui.tooltip(_config);
-    }
-	
+    	
     //_ui.setup_hover();
-    
+    var _has_option = false;
 	// 20130603 Pudding Chen
 	// 預設選單
 	var _default_type = null;
@@ -117,6 +107,7 @@ Type_component.prototype._$create_ui = function () {
                     //$.test_msg("Type_component set default", this._default_type); 
                     break;
                 }
+                _has_option = true;
             }
 	}
 	
@@ -130,6 +121,17 @@ Type_component.prototype._$create_ui = function () {
             }
 	}
     this._listen_editor();
+    
+    
+    //$.test_msg("Type_component.prototype._$create_ui", [typeof(_options), typeof(_options), typeof(_options.length)]);
+    if (_has_option === false) {
+        // 如果沒有選單，則不加入下拉式選單
+        _ui.addClass('menu-hidden');
+    }
+    else {
+        // 如果有選單，則照舊
+        _ui.tooltip(_config);
+    }
     
     return _ui;
 };

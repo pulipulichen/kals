@@ -145,6 +145,9 @@ Selection_my_manager.prototype.clear = function () {
  * @returns {Boolean}
  */
 Selection_my_manager.prototype.is_my = function (_word) {
+    if (_word === undefined) {
+        return false;
+    }
     //$.test_msg("開始檢查 is_my", _word.attr("className"));
     for (var _i in this._my_selections) {
         var _selection_name = this._my_selections[_i];

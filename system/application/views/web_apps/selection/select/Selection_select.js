@@ -86,6 +86,7 @@ Selection_select.prototype.set_select = function (_word) {
         this._select_from = _id;
         this._select_from_word = _word;
         _word.addClass(_classname);
+        //$.test_msg(KALS_text.selection.has_annotation(_id));
         
         //2010.11.3 取消自動取消選取功能
         //var _this = this;
@@ -97,7 +98,7 @@ Selection_select.prototype.set_select = function (_word) {
         //}, this.auto_cancel_wait);
     }
     else {
-		//第二次點選，顯示Editor_contrainer
+        //第二次點選，顯示Editor_contrainer
 		
         //2010.11.3 取消自動取消選取功能
         //if ($.isset(this._select_timer))

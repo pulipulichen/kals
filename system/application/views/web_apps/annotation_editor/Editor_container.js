@@ -49,7 +49,7 @@ Editor_container.prototype._toggle_position = 'bottom';
  * 預設的開啟狀態
  * @tyep boolean true=開啟; false=關閉
  */
-Editor_container.prototype._$default_toggle = true;
+Editor_container.prototype._$default_toggle = false;
 
 /**
  * 編輯器。
@@ -104,10 +104,14 @@ Editor_container.prototype._$create_ui = function () {
     var _loading = this._create_loading();
     _loading.appendTo(_container.find('td:first'));
 
-    if ($.is_boolean(this._$default_toggle)) {
+    /**
+     * 預先狀態不是由她本人控制
+     * @author Pudding 20151018
+     */
+    //if ($.is_boolean(this._$default_toggle)) {
         //$.test_msg("編輯器設定預設狀態", this._$default_toggle);
-        this.toggle_container(this._$default_toggle);
-    }
+    //    this.toggle_container(this._$default_toggle);
+    //}
     
     var _this = this;
 	
@@ -115,7 +119,7 @@ Editor_container.prototype._$create_ui = function () {
     //    _this.toggle_deny(true);
     //}, 0);
     
-    this.check_policy();
+    //this.check_policy();
     
     return _ui;
 };
@@ -262,19 +266,19 @@ Editor_container.prototype.submit_annotation = function (_callback) {
  * @param {function} _callback
  */
 Editor_container.prototype.toggle_container = function (_display, _callback) {
-    
-    //$.test_msg('Editor_container.toggle_container()', this.has_setup_ui());
+    //$.test_msg('Editor_container.toggle_container()', _display);
 	//$.test_msg('Editor_container.toggle_container()', this.has_setup_ui());
     
     if (this.has_setup_ui() === false) {
+        //$.test_msg("Editor_container.prototype.toggle_container this.has_setup_ui()", "還沒準備好");
         //$.trigger_callback(_callback);
         return this;
     }
     
     var _container = this._container;
-    var _visible = (_container.css('display') !== 'none');
     
     //$.test_msg('Editor_container.toggle_container() visible', [_display, _visible]);
+    var _visible = (_container.css('display') !== 'none');
     
     if (_display === undefined || _display === null) {
         _display = !(_visible);
@@ -288,6 +292,7 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
     
     // 如果是deny狀態，則強制維持_display = false
     if (this.get_ui().hasClass(this._deny_classname)) {
+        //$.test_msg("Editor_container.prototype.toggle_container this.has_setup_ui()", "如果是deny狀態，則強制維持_display = false");
         _display = false;
     }
     
@@ -341,7 +346,12 @@ Editor_container.prototype.toggle_container = function (_display, _callback) {
         _container.hide();
         _parent.addClass(_hide_editor_classname);
         this._toggle.addClass(_hide_classname);
+        
+        //$.test_msg('Editor_container.toggle_container() if false end', _display);
     }
+    //else {
+        //$.test_msg('Editor_container.toggle_container() 不作任何變更', [_display, _visible]);
+    //}
     
     //$.test_msg('Editor_container.toggle_container() before callback', _display);
     
@@ -690,9 +700,10 @@ Editor_container.prototype.reset = function (_callback, _reset_container) {
     if (_reset_container === true) {
 		
         //$.test_msg("toggle editor_container 3", this._$default_toggle);
-        this.toggle_container(this._$default_toggle, function () {
-            $.trigger_callback(_callback);
-        });
+        //this.toggle_container(this._$default_toggle, function () {
+        //    $.trigger_callback(_callback);
+        //});
+        $.trigger_callback(_callback);
     }
     else {
         this.toggle_container(_container_display, function () {
@@ -765,6 +776,7 @@ Editor_container.prototype.set_writable = function(_writable, _deny_lang) {
     }
     else {
         this.toggle_deny(true);
+        $.test_msg("Editor_container.prototype.set_writable", "toggle_deny()");
         this.toggle_container(false);
         if ($.is_class(_deny_lang, "KALS_langauge_param") ) {
             this.set_deny_message(_deny_lang);

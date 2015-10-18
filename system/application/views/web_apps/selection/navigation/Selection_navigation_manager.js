@@ -119,6 +119,9 @@ Selection_navigation_manager.prototype.clear = function () {
  * @returns {Boolean}
  */
 Selection_navigation_manager.prototype.is_navigation = function (_word) {
+    if (_word === undefined) {
+        return false;
+    }
     //$.test_msg("開始檢查 is_nav", _word.attr("className"));
     for (var _i in this._nav_selections) {
         var _selection_name = this._nav_selections[_i];

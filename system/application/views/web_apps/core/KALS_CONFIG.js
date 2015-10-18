@@ -18,7 +18,7 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用KALS
      * @type Boolean
      */
-    enable_kals: true,
+    "enable_kals": true,
     
     /**
      * 標註範圍指定區塊
@@ -28,14 +28,14 @@ DEFAULT_KALS_CONFIG = {
      *     如果是指定區有多個區塊，那麼只有第一個區塊能夠進行標註。
      *     預設是選擇全部的網頁。
      */
-    annotation_scope_selector: null,
+    "annotation_scope_selector": null,
     
     /**
      * 標題圖示
      * 工具列左方的顯示內容
      * @type {string} HTML語法
      */
-    logo: "KALS",
+    "logo": "KALS",
     
     /**
      * 預設登入的帳號
@@ -43,7 +43,7 @@ DEFAULT_KALS_CONFIG = {
      *     也可以使用網址，該網址應該要回傳使用者的email，例如 "http://localhost/user.txt"
      *     不使用預設登入時則是null 
      */
-    user_email: null,
+    "user_email": null,
     
     /**
      * 預設權限
@@ -51,7 +51,7 @@ DEFAULT_KALS_CONFIG = {
      *     公開： default_policy: "public"
      *     私密： default_policy: "private" 
      */
-    default_policy_type: "public",
+    "default_policy_type": "public",
     
     /**
      * @type {boolean} = true 可否調整權限
@@ -61,7 +61,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * @type {boolean} = false 阻止註冊
      */
-    deny_register: false,
+    "deny_register": false,
     
     /**
      * @{type} string 登入時顯示的訊息，如果不使用的話，值填入null
@@ -164,7 +164,7 @@ DEFAULT_KALS_CONFIG = {
      * 如果是false，就會顯示「其他」
      * @type {boolean} = false
      */
-    enable_custom_name: true,
+    "enable_custom_name": true,
     
     /**
      * 預先定義標註類型。
@@ -177,41 +177,42 @@ DEFAULT_KALS_CONFIG = {
      * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefined」
      */
     /*
-    annotation_type_predefined: {
+    "annotation_type_predefined": {
         "預先定義1": {
-            //type_id: 15,
-            hint: '測試的說明',
-            option: {
-                background_color: 'blue',
-                font_color: 'white'
+            "hint": "測試的說明",
+            "option": {
+                // 顏色可以用CSS英文單字"blue" 或是 #FFF 色碼代表
+                "background_color": "blue",
+                "font_color": "white"
             },
-            anchor: {
-                style: 'dottedline',
-                color: 'blue'    
+            "anchor": {
+                // "underline": 底線(預設) / 'dashedline': 底線虛線 
+                // 'dottedline': 底線虛線 / 'doubleline': 底線雙線 
+                // "background": 背景顏色 / "none": 沒有特別的格式
+                "style": "dottedline",
+                "color": "blue"    
             },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            "order": 1    // 數字越大，排序越上面
         },
-        '預先定義2': {
-            //type_id: 16,
-            hint: '在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明',
-            option: {
-                background_color: 'red',
-                font_color: 'blue'
+        "預先定義2": {
+            "hint": "在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明在測試的說明",
+            "option": {
+                "background_color": "red",
+                "font_color": "blue"
             },
-            anchor: {
-                style: 'background',
-                color: '#F53004',
-                font_color: 'white'
+            "anchor": {
+                "style": "background",
+                "font_color": "white"
             },
-            enable: {   // 啟用範圍
-                topic: true,    // 新標註
-                respond: true   // 回應標註
+            "enable": {   // 啟用範圍
+                "topic": true,    // 新標註
+                "respond": true   // 回應標註
             },
-            order: 1    // 數字越大，排序越上面
+            "order": 1    // 數字越大，排序越上面
         }
     },
      */
@@ -222,7 +223,7 @@ DEFAULT_KALS_CONFIG = {
      * @type {string|null} help_base_url = 'help/' 網址
      *     也可以用http開頭的絕對網址，例如'http://www.google.com.tw/'
      */
-    help_base_url: 'help/',
+    "help_base_url": 'help/',
 	
     /**
      * 預設標註類型
@@ -230,7 +231,7 @@ DEFAULT_KALS_CONFIG = {
      * @copyright 20130603 Pudding Chen
      * @type {string} = "importance" 重要，也可以寫上自訂的名字
      */
-    default_annotation_type: "importance",
+    "default_annotation_type": "importance",
 
     /**
      * 網頁搜尋
@@ -240,7 +241,7 @@ DEFAULT_KALS_CONFIG = {
      * 
      * @type {String} web_search_url = "http://www.google.com/search?q={query}"; 不想開放網頁搜尋功能時，請設成"disable"
      */
-    web_search_url: { 
+    "web_search_url": { 
         "Google搜尋": "http://www.google.com/search?q={query}",
         "圖片：Google圖片": "https://www.google.com.tw/search?tbm=isch&safe=active&q={query}",
         "百科：維基百科": "http://zh.wikipedia.org/w/index.php?search={query}",

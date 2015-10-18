@@ -101,11 +101,23 @@ jQuery.test_msg = function (_title, _test) {
     }
     
     if (this.isset(_title)) {
-        console.log('[KALS]' + '[' + _title + '] ' + _test);
+        //console.log('[KALS]' + '[' + _title + '] ' + _test);
+        if (typeof(console.trace) === "function") {
+            console.trace('[KALS]' + '[' + _title + '] ' + _test);
+        }
+        else {
+            console.log('[KALS]' + '[' + _title + '] ' + _test);
+        }
+        
         _info.prepend('<strong>' + _title + ': </strong>');
     }
-	else {
-        console.log('[KALS] ' + _test);
+    else {
+        if (typeof(console.trace) === "function") {
+            console.trace('[KALS] ' + _test);
+        }
+        else {
+            console.log('[KALS] ' + _test);
+        }
     }
     //加上時間
     var _d = new Date();

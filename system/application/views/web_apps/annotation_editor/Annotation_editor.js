@@ -694,7 +694,7 @@ Annotation_editor.prototype.reset = function () {
          * 改為新增完成之後關閉
          */
         //this._editor_container.toggle_container(true);
-        this._editor_container.toggle_container(this._editor_container._$default_toggle);
+        //this._editor_container.toggle_container(this._editor_container._$default_toggle);
         
         return this.notify_listeners('reset');    
     }

@@ -380,33 +380,33 @@ Window_view.prototype.onload = function () {
     
     //$.test_msg("isset respond_param", $.isset(this._respond_param));
     if ($.isset(this._respond_param)) {
-		
-		this.editor_container.add_respond_to(this._respond_param);
-		this.editor_container.toggle_container(true);
+
+        this.editor_container.add_respond_to(this._respond_param);
+        this.editor_container.toggle_container(true);
 		
         this._respond_param = null;
     }
     else if ($.isset(this._edit_param)) {
-		//var _editor = this.editor_container.editor; 
+        //var _editor = this.editor_container.editor; 
         //_editor.set_editing(this._edit_param);
-		//_editor.set_editing(this._edit_param);
-		
-		var _item = this.list.get_list_item(this._edit_param);
-		if (_item !== null) {
-			_item.edit_annotation();
-		}
-		
+        //_editor.set_editing(this._edit_param);
+
+        var _item = this.list.get_list_item(this._edit_param);
+        if (_item !== null) {
+                _item.edit_annotation();
+        }
+
         this._edit_param = null;
     }            
     
     this._loaded = true;
     
     if (this._stop_select === false) {
-		this.set_selection();
-	}
-	else {
-		this._stop_select = false;
-	}
+        this.set_selection();
+    }
+    else {
+        this._stop_select = false;
+    }
     
     var _ui = this.get_ui();
     var _temp_logout = 'temp-logout';
