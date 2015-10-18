@@ -823,5 +823,18 @@ Annotation_tool.prototype._listen_submit = function () {
     return this;
 };
 
+/**
+ * 是否開啟編輯器
+ * @author Pulipuli Chen 20151018
+ * @param {boolean} _display
+ * @param {function} _callback
+ * @returns {Annotation_tool.prototype}
+ */
+Annotation_tool.prototype.toggle_editor = function (_display, _callback) {
+    this.editor_container.toggle_container(_display, _callback);
+    return this;
+    
+};
+
 /* End of file Annotation_tool */
 /* Location: ./system/application/views/web_apps/Annotation_tool.js */

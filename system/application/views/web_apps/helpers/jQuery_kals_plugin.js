@@ -2577,8 +2577,14 @@ jQuery.save_scroll_position = function () {
     
 //    this._scroll_position = [window.pageXOffset, window.pageYOffset];
     var _pos = $.get_current_scroll_position();
-    if (_pos.y !== 0 
-            && LOCK_SCROLL_LOCK === "free") {
+    
+    /**
+     * 不限制pos.y !== 0，現在有更好的方法可以防止捲軸跳了
+     * @author Pulipuli 20151018
+     */
+    //if (_pos.y !== 0 
+    //        && LOCK_SCROLL_LOCK === "free") {
+    if (LOCK_SCROLL_LOCK === "free") {
         //$.test_msg("儲存:現在的捲軸位置 (" + (new Date().getSeconds()) +  ")", _pos);    
         this._last_pos = _pos;
         LOCK_SCROLL_LOCK = "saved";

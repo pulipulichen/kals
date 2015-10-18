@@ -127,7 +127,8 @@ Note_editor_ckeditor._setup_ckeditor = function () {
                 var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
 
                 _ui.ckeditorGet().on("contentDom", function () {
-                    this.document.on("mousedown", function (event) {
+                    this.document.on("mousedown", function () {
+                        $.test_msg("鎖定捲軸位置");
                         $.lock_scroll_once();
                         //$.test_msg("儲存位置");
 //                        $.save_scroll_position();

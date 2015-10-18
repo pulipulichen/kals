@@ -653,8 +653,9 @@ Annotation_editor.prototype._edit_callback = function (_annotation_param, _origi
     /**
      * 編輯完成之後，還原狀態
      */
-    //this.reset();
-    $.trigger_callback(_callback);
+    this.reset();
+    KALS_text.tool.toggle_editor(false, _callback);
+    //$.trigger_callback(_callback);
     
     return this;
 };

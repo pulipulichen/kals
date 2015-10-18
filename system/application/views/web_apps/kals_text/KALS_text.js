@@ -71,6 +71,13 @@ KALS_text.prototype.selection = null;
 //KALS_text.prototype.margin = null;
 
 /**
+ * 標註工具
+ * @type {Annotation_tool}
+ */
+KALS_text.prototype.tool = null;
+
+
+/**
  * @type {My_annotation_loader}
  */
 KALS_text.prototype.load_my = null;
