@@ -140,7 +140,6 @@
  * 搜尋類別
  * @author Pulipuli Chen 20131113
  */
-.KALS .search-component .query-field,
 .KALS .search-component .annotation-type {
     height: 2em;
     width: auto;
@@ -161,6 +160,7 @@
     text-align: left;
 }
 
+/*
 .KALS .search-component .query-value {
     height: 1.5em;
     padding-left: 5px;
@@ -173,7 +173,9 @@
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
 }
+*/
 
+/*
 .KALS .search-component .search-form-submit {
     height: 25px;
     width: 25px;
@@ -191,6 +193,7 @@
     background-color: transparent;
     /*float:right;*/
 }
+*/
 
 .KALS .search-component .search-form-submit .icon {
     margin: 0;

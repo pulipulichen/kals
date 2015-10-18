@@ -2016,15 +2016,62 @@ jQuery.is_small_screen = function (_strict) {
 	}
 };
 
-jQuery.is_small_width = function () {
+
+/**
+ * 偵測現在的寬度等級
+ * 
+ * 參考 Bootstrap的Grid Options http://getbootstrap.com/css/#grid-options
+ * 我們將寬度分成4種不同的程度
+ * large >= 1200px
+ * medium 1199~992
+ * small 991~768
+ * extra_small 767~400
+ * 加上我自己定義的tiny < 400
+ * 
+ * 以下開始判斷
+ * 
+ * @returns {String}
+ * @author Pudding 20151018
+ */
+jQuery.detect_width_level = function () {
+    var _level = "large";
+    var _width = $.get_viewport_width();
+    if (_width < 1200 && _width > 991) {
+        _level = "medium";
+    }
+    else if (_width < 992 && _width > 767) {
+        _level = "small";
+    }
+    else if (_width < 768 && _width > 399) {
+        _level = "extra_small";
+    }
+    else if (_width < 400) {
+        _level = "tiny";
+    }
+    
+    return _level;
+};
+
+/**
+ * 偵測現在的寬度，如果寬度小於400就是小寬度
+ * 
+ * @returns {Boolean}
+ * @author Pudding 2013
+ */
+jQuery.is_tiny_width = function () {
     var _width = $.get_viewport_width();
     return (_width < 400);
 };
 
+/**
+ * 偵測現在的高度，如果高度小於480就是小寬度
+ * @returns {Boolean}
+ * @author Pudding 2013
+ */
 jQuery.is_small_height = function () {
     var _height = $.get_viewport_height();
     
-    return (!(_height > 480));
+    return (!(_height > 320));
 };
 
 jQuery.touchable = null;

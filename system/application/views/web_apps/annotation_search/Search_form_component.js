@@ -45,19 +45,25 @@ Search_form_component.prototype._$create_ui = function () {
     var _init_container = $("<div />").addClass(this._classname_init)
             .appendTo(_input_td);
 
-    var _range = this._create_query_field_input()
-            .appendTo(_init_container);
+    var _field = this._create_query_field_input();
+            //.appendTo(_init_container);
 
     var _type = this._create_annotation_type_input()
             .hide()
             .appendTo(_init_container);
 		
-    var _input = this._create_query_value_input()
-		.appendTo(_init_container);
+    var _input = this._create_query_value_input();
+		//.appendTo(_init_container);
     
-    var _search_submit_button = this._create_search_submit_button()
-		.appendTo(_init_container);
+    var _search_submit_button = this._create_search_submit_button();
+		//.appendTo(_init_container);
     this._search_submit_button = _search_submit_button;
+    
+    var _search_container = $("<span></span>").addClass("ui action mini icon input")
+            .append(_input)
+            .append(_field)
+            .append(_search_submit_button)
+            .appendTo(_init_container);
     
     var _init_searched = $("<div />").addClass(this._classname_searched)
             .appendTo(_input_td);
@@ -210,7 +216,9 @@ Search_form_component.prototype._create_search_submit_button = function () {
                 'window_search.search_icon'
             );
     
-    var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
+    //var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
+    var _submit = $('<button class="ui icon button"><i class="search icon"></i></button>')
+            .click(_click_callback);
 //    _submit.empty()
 //       .addClass("search-form-submit");
     
@@ -321,6 +329,7 @@ Search_form_component.prototype._create_query_field_input = function () {
     var _search = this._window_search;
 
     var _input = _search.create_query_field_input("dropdown");
+    _input.addClass("ui compact selection dropdown");
     
     var _this = this;
     _input.change(function () {

@@ -67,15 +67,16 @@
  }
 
 .KALS .toolbar-component, 
-.KALS .toolbar-padding {
+.KALS.toolbar-padding {
     /*height: 30px !important;
     line-height:1 !important;*/
     height: 40px;
 }
 
-.KALS .toolbar-padding {
+.KALS.toolbar-padding {
     margin: 0;
     padding:0;
+    margin-bottom: 1em;
 }
 
 .KALS .toolbar-component {
@@ -111,19 +112,58 @@
     vertical-align:middle !important;
 }
 
-@media screen and (max-width: 800px){
+/*@media screen and (max-width: 800px){
     .KALS .toolbar-left { 
         max-width: 50px;
-		overflow: hidden;
+        overflow: hidden;
     }
 }
 
-.KALS.kals-toolbar.compact-width .toolbar-left {
+
+.KALS.kals-toolbar.extra_small-width .toolbar-left,
+.KALS.kals-toolbar.tiny-width .toolbar-left {
     display: none;
+}*/
+
+@media screen and (max-width: 400px){
+    .KALS .toolbar-left { 
+        display: none;
+    }
 }
 
-.KALS.kals-toolbar.compact-width .toolbar-center {
-    text-align:left;
+@media screen and (max-width: 400px) {
+    .KALS.kals-toolbar .toolbar-center {
+        text-align:left;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .KALS .search-component .query-field,
+    .KALS .search-component .query-value {
+        display:none;
+    }
+    
+    .KALS .search-component .query-value {
+        width: 120px;
+    }
+    
+    .KALS .search-component .search-form-submit {
+        border-radius: .28571429rem !important;
+    }
+}
+.KALS .search-component .query-field {
+    padding: 0;
+}
+
+.KALS .search-component .query-value {
+    padding-right: 0;
+    width: 150px;
+}
+
+@media screen and (max-width: 992px) {
+    .KALS .search-component .query-value {
+        width: 120px;
+    }
 }
 
 /**
@@ -133,23 +173,32 @@
 .KALS.kals-toolbar .toolbar-center {
     padding: 0 1em;
     /*width: 240px;*/
-   /* 2010.11.25 因為暫時不做中間的search form 所以空間省了下來 */
-   max-width: 300px;
+    /* 2010.11.25 因為暫時不做中間的search form 所以空間省了下來 */
+    max-width: 300px;
     text-align: center;
     /*display: none;*/
 }
 
+/**
+ * @author Pulipuli Chen 20151018
+ */
+.KALS.kals-toolbar .toolbar-center .query-field {
+    color:black;
+}
+
+/*
 @media screen and (max-width: 800px){
     .KALS.kals-toolbar .toolbar-center {
         max-width: 30px;
         overflow: hidden;
     }
 }
-
-.KALS.kals-toolbar.compact-width .toolbar-center {
+*/
+/*
+.KALS.kals-toolbar.tiny-width .toolbar-center {
     width: 100px;
 }
-
+*/
 
 
 .KALS .toolbar-right {
@@ -242,8 +291,10 @@
     display: none;
 }
 
-.KALS.kals-toolbar.compact-width .loading-component .message {
-    display: none;
+@media screen and (max-width: 767px){
+    .KALS.kals-toolbar .loading-component .message {
+        display: none;
+    }
 }
 
 .KALS.kals-toolbar.loading .loading-component {
@@ -258,16 +309,21 @@
 }
 
 /* 寬度縮小的情況 */
-.KALS.kals-toolbar.compact-width .advanced-button {
-    display: inline !important;
+@media screen and (max-width: 767px){
+    .KALS.kals-toolbar .advanced-button {
+        display: inline !important;
+    }
 }
 
-.KALS.kals-toolbar.compact-width .search-form,
-.KALS.kals-toolbar.compact-width .search-result,
-.KALS.kals-toolbar.compact-width .advanced-link {
-    display: none !important;
+/*
+@media screen and (max-width: 767px){
+    .KALS.kals-toolbar .search-form,
+    .KALS.kals-toolbar .search-result,
+    .KALS.kals-toolbar .advanced-link {
+        display: none !important;
+    }
 }
-
+*/
 
 .KALS .search-form {
     margin: 0;
@@ -315,7 +371,7 @@
     margin-top: 1px;
 }
 
-@media screen and (max-width: 800px){
+@media screen and (max-width: 767px){
     .KALS .search-component .search-range,
     .KALS .search-component .search-keyword {
     	display:none;
@@ -351,15 +407,22 @@
 
 .KALS .navigation-list .menu {
     display: none;
+    color: white;
 }
 
 /* 寬度縮小的情況 */
-.KALS.kals-toolbar.compact-width .navigation-list .nav {
-    display:none;
-} 
+@media screen and (max-width: 767px){
+    .KALS.kals-toolbar .navigation-list .nav,
+    .KALS.kals-toolbar .navigation-list .nav {
+        display:none;
+    } 
+}
 
-.KALS.kals-toolbar.compact-width .navigation-list .menu {
-    display: inline;
+@media screen and (max-width: 767px){
+    .KALS.kals-toolbar .navigation-list .menu,
+    .KALS.kals-toolbar .navigation-list .menu {
+        display: inline;
+    }
 }
 
 .KALS .navigation-list .nav td.item {
@@ -493,6 +556,13 @@
     border: 0px !important;
     color: white;
 }
+
+@media screen and (max-width: 400px){
+    .KALS .toolbar-right .navigation-container .avatar-component tbody tr .name{
+        display:none;
+    }
+}
+
 .KALS .toolbar-right .navigation-container .avatar-component tbody tr .notification{
 	border: 0px !important;
 }

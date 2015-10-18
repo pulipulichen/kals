@@ -231,7 +231,8 @@ KALS_toolbar.prototype._display_mode = "standard";
  * @author Pulipuli Chen 20141109
  * @type String
  */
-KALS_toolbar.prototype._navigation_mode = "standard";
+//KALS_toolbar.prototype._navigation_mode = "standard";
+KALS_toolbar.prototype._navigation_mode = null;
 
 /**
  * 監聽帳號功能
@@ -305,22 +306,36 @@ KALS_toolbar.prototype._$onviewportmove = function (_ui) {
         }
     }
     
+    // -------------------------------------------------------------
+    
     /**
      * 控制寬度
      * @author Pulipuli Chen 20141109
      */
-    if ($.is_small_width() === false 
-            && this._navigation_mode !== "standard") {
-        this._navigation_mode = "standard";
-        _ui.removeClass('compact-width');
-        //this.toolbar.toggle_left(true);
-    }
-    else if ($.is_small_width() === true 
-            && this._navigation_mode !== "compact") {
-        this._navigation_mode = "compact";
-        _ui.addClass('compact-width');
-        //this.toolbar.toggle_left(false);
-    }
+//    if ($.is_tiny_width() === false 
+//            && this._navigation_mode !== "standard") {
+//        this._navigation_mode = "standard";
+//        _ui.removeClass('tiny-width');
+//        //this.toolbar.toggle_left(true);
+//    }
+//    else if ($.is_tiny_width() === true 
+//            && this._navigation_mode !== "tiny") {
+//        this._navigation_mode = "tiny";
+//        _ui.addClass('tiny-width');
+//        //this.toolbar.toggle_left(false);
+//    }
+    
+    /**
+     * 改用CSS的MediaQuery，不要再用JavaScript控制了。
+     */
+//    var _current_width_level = $.detect_width_level();
+//    if (this._navigation_mode !== _current_width_level) {
+//        _ui.removeClass(this._navigation_mode + "-width");
+//        this._navigation_mode = _current_width_level;
+//        _ui.addClass(_current_width_level + "-width");
+//    }
+    
+    // --------------------------------------------------------
     
     /**
      * 時常控制的位置
@@ -454,7 +469,15 @@ KALS_toolbar.prototype.toggle_loading = function (_is_loading) {
     return this;
 };
 
+/**
+ * 切換導覽列類型
+ * @author Pudding 2013
+ * @param {String} _show_classname
+ * @returns {KALS_toolbar.prototype}
+ */
 KALS_toolbar.prototype.toggle_navigation = function (_show_classname) {
+    
+    //$.test_msg('KALS_toolbar.toggle_navigation() ', _show_classname);
     
     var _toolbar_right = this.toolbar.get_right();
     var _container = _toolbar_right.children('.navigation-container:first');

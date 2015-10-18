@@ -68,7 +68,7 @@ Dialog_modal.prototype._$onviewportmove = function (_ui) {
     var _classname_compact_width = 'compact-width';
     var _classname_compact_height = 'compact-height';
     
-    if ($.is_small_width()) {
+    if ($.is_tiny_width()) {
         _ui.fullscreen_width();
         _ui.addClass(_classname_compact_width);
     }

@@ -117,7 +117,7 @@ KALS_window.prototype._$get_config = function () {
         
         var _ui = _this.get_ui();
     
-        if ($.is_small_width() === false) {
+        if ($.is_tiny_width() === false) {
             _ui.css('width', _this._width);
         }
         else {

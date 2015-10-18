@@ -285,7 +285,7 @@ Navigation_list.prototype._get_window_content = function (_index) {
 
 Navigation_list.prototype._create_menu = function() {
     
-    var _ui = $('<button></button>')
+    var _ui = $('<div><i class="sidebar icon"></i></div>')
         .addClass('menu');
     
     var _lang_param = new KALS_language_param(
@@ -293,7 +293,7 @@ Navigation_list.prototype._create_menu = function() {
         'toolbar.navigation_list.menu'
     );
     
-    KALS_context.lang.add_listener(_ui, _lang_param);
+    //KALS_context.lang.add_listener(_ui, _lang_param);
     
     var _options = [];
     for (var _i in this._$nav_items) {

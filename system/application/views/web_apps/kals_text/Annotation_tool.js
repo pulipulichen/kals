@@ -561,7 +561,7 @@ Annotation_tool.prototype.setup_position = function () {
     //$.test_msg('Annotation_tool.setup_position()');
     
     var _ui = this.get_ui();
-    if ($.is_small_width()) {
+    if ($.is_tiny_width()) {
         _ui.css('top', '0px');
         _ui.css('left', '0px');
         return this;

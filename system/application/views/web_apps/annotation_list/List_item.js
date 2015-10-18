@@ -235,7 +235,7 @@ List_item.prototype.is_enable = function (_option_name) {
 List_item.prototype._$onviewportmove = function (_ui) {
     
     if ($.is_null(this._menu_style_default)) {
-        if ($.is_small_width()) {
+        if ($.is_tiny_width()) {
             this._toggle_menu_style('block');
         }
         else {

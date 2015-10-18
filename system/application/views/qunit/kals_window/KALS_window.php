@@ -250,19 +250,14 @@ unit(function () {
         
         setTimeout(function () {
             
-        
-        
-            if ($.is_small_width())
-            {
+            if ($.is_tiny_width()){
                 test_equals(KALS_window.get_ui().width(), $.get_viewport_width(),
                     '視窗寬度是否有如設定般的一樣？');
             }
-            else
-            {
+            else{
                 test_equals(KALS_window.get_ui().width(), 320,
                     '視窗寬度是否有如設定般的一樣？');    
             }
-            
                 
             setTimeout(function () {
                 
