@@ -246,6 +246,9 @@ URL_hash_dispatcher.prototype._set_document_title = function (_hash) {
     this._set_lock = true;
     //設定標題修改
     var _title = document.title;
+    
+    //$.test_msg("_set_document_title", [_title, $("title").length]);
+    
     var _hash_pos = _title.lastIndexOf('#');
     
     if (_hash_pos > -1) {

@@ -288,6 +288,10 @@
     position:relative;
 }
 
+.KALS.kals-modal .annotation-editor .type-component.menu-hidden {
+    background-image: none;
+}
+
 .KALS .type-option {
     /*padding: 5px 10px;*/
     padding: 1px 5px !important;
@@ -727,6 +731,23 @@ table.cke_editor.inline-table {
    -moz-box-shadow: #FFFFFF 0px 0px 20px;
    -webkit-box-shadow: #FFFFFF 0px 0px 20px;
    box-shadow: #FFFFFF 0px 0px 20px;
+   
+}
+
+/**
+ * 幫搜尋鈕統一樣式
+ * @author Pudding 20151018
+ */
+.KALS.kals-modal .annotation-editor .web-search-container .web-search.button.dialog-option {
+    border-bottom: 1px solid #555 !important;
+    border-left: 1px solid #AAA !important;
+    border-right: 1px solid #555 !important;
+    border-top: 1px solid #AAA !important;
+    height: auto;
+    display: inline;
+    padding-top: 0;
+    padding-bottom: 0;
+    top: 0;
 }
 
 
