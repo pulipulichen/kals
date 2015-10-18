@@ -84,8 +84,8 @@ Context_predefined_type.prototype._initialize_type = function (_type_name, _type
     //    _type_param.set_id(_type_data.type_id);
 
     //檢查是否有hint
-    if (typeof(_type_config.hint) === 'string') {
-        _type_param.set_hint(_type_config.hint);
+    if (typeof(_type_config.hint) === 'string' && $.trim(_type_config.hint) !== "") {
+        _type_param.set_hint($.trim(_type_config.hint));
     }
 
     if (typeof(_type_config.option) !== 'undefined') {

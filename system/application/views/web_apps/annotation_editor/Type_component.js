@@ -124,14 +124,15 @@ Type_component.prototype._$create_ui = function () {
     
     
     //$.test_msg("Type_component.prototype._$create_ui", [typeof(_options), typeof(_options), typeof(_options.length)]);
-    if (_has_option === false) {
-        // 如果沒有選單，則不加入下拉式選單
-        _ui.addClass('menu-hidden');
-    }
-    else {
-        // 如果有選單，則照舊
-        _ui.tooltip(_config);
-    }
+//    if (_has_option === false) {
+//        // 如果沒有選單，則不加入下拉式選單
+//        _ui.addClass('menu-hidden');
+//    }
+//    else {
+//        // 如果有選單，則照舊
+//        _ui.tooltip(_config);
+//    }
+    _ui.tooltip(_config);
     
     return _ui;
 };
@@ -164,7 +165,7 @@ Type_component.prototype.set_type = function (_type, _is_manual) {
         _type = new Annotation_type_param(7);
     }
     else {
-        _custom_type = KALS_context.predefined_type.find_type(_type);
+        var _custom_type = KALS_context.predefined_type.find_type(_type);
 
         if (_custom_type !== null) {
             _type = _custom_type;

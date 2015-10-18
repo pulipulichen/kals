@@ -432,8 +432,8 @@ Annotation_type_param.prototype.get_anchor_css = function () {
  */
 Annotation_type_param.prototype.set_hint = function(_hint) {
     if ($.is_string(_hint)) {
-		_hint = $.trim(_hint);
-	}
+        _hint = $.trim(_hint);
+    }
     this._hint = _hint;
     return this;
 };
@@ -444,12 +444,16 @@ Annotation_type_param.prototype.set_hint = function(_hint) {
  * @return {string}
  */
 Annotation_type_param.prototype.get_hint = function () {
-    if ($.is_null(this._hint)) {
+    if (this.is_basic() === false && $.is_null(this._hint)) {
+        //$.test_msg("Annotation_type_param.prototype.get_hint is_predefined() and is_null");
+        return null;
+    }
+    else if ($.is_null(this._hint)) {
         var _type = this.get_type_name();
         var _lang = new KALS_language_param(
-        '',
-        'annotation.type.' + _type + '.hint'
-    );
+            '',
+            'annotation.type.' + _type + '.hint'
+        );
         var _hint = KALS_context.lang.line(_lang);
         this._hint = _hint;
     }

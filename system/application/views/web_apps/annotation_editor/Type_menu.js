@@ -96,9 +96,11 @@ Type_menu.prototype._setup_type_ui = function (_ui, _type) {
     _type_ui.appendTo(_ui);
     
     var _hint_ui = this.create_type_hint(_type);
-    _hint_ui.appendTo(_ui);
-    
-    _type_ui.tooltip(this._hint_tooltip_config);
+    if ($.is_null(_hint_ui) === false) {
+        //$.test_msg("setup_type_ui");
+        _hint_ui.appendTo(_ui);
+        _type_ui.tooltip(this._hint_tooltip_config);
+    }
     return this;
 };
 
@@ -202,6 +204,10 @@ Type_menu.prototype.create_type_hint = function (_type) {
     }
     else if ($.is_class(_type, 'Annotation_type_param')) {
         _classname = _type.get_classname();
+        var _hint = _type.get_hint();
+        if ($.is_null(_hint)) {
+            return null;
+        }
         _hint_ui.html(_type.get_hint());
     }
     

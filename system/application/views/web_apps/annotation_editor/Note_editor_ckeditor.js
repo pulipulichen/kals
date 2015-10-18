@@ -301,6 +301,7 @@ Note_editor_ckeditor.prototype.focus = function () {
     var _ui = this.get_ui('.note-editor-textarea:first');
     
     var _ckeditor = _ui.ckeditorGet();
+    $.lock_scroll_once();
     _ckeditor.focus();
 
     return this;	
