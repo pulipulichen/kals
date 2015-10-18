@@ -279,7 +279,14 @@ DEFAULT_KALS_CONFIG = {
      * 是否啟用搜尋工具列
      * @type Boolean
      */
-    enable_search_toolbar: true,
+    "enable_search_toolbar": true,
+    
+    /**
+     * 是否啟用KALS工具列
+     * @type Boolean
+     * @author Pudding 20151019
+     */
+    "enable_kals_toolbar": true,
     
     /**
      * 是否啟用離開時提示訊息

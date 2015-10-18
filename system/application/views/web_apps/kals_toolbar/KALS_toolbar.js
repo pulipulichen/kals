@@ -156,6 +156,9 @@ KALS_toolbar.prototype._$create_ui = function () {
     var _padding = this.padding.get_ui();
     //_padding.hide();
     $('body').prepend(_padding);
+    if (KALS_CONFIG.enable_kals_toolbar === false) {
+        _padding.hide();
+    }
     
     _ui.addClass('loading');
     
@@ -182,11 +185,18 @@ KALS_toolbar.prototype._$create_ui = function () {
             $(this).removeAttr('style');
         });
         */
-        _padding.show();
-        _padding.animate({
-            height: _toolbar_height + "px"
-        }, 1000);
-        _this.open();
+        
+    
+        /**
+         * 不啟用kals_toolbar的時候
+         */
+        if (KALS_CONFIG.enable_kals_toolbar === true) {
+            _padding.show();
+            _padding.animate({
+                height: _toolbar_height + "px"
+            }, 1000);
+            _this.open();
+        }
     }, 0);
     
     
