@@ -2002,18 +2002,19 @@ jQuery.is_mobile_mode = function () {
 jQuery.is_small_screen = function (_strict) {
     
     if ($.is_null(_strict)) {
-		_strict = true;
-	}
+        _strict = true;
+    }
     
     var _width = $.get_viewport_width();
     var _height = $.get_viewport_height();
+    //$.test_msg("jQuery.is_small_screen", [_width, _height]);
     
     if (_strict) {
-		return (!(_width > 400 && _height > 480));
-	}
-	else {
-		return (!(_width > 400 || _height > 480));
-	}
+        return (!(_width > 400 && _height > 480));
+    }
+    else {
+        return (!(_width > 400 || _height > 480));
+    }
 };
 
 
@@ -2071,7 +2072,8 @@ jQuery.is_tiny_width = function () {
 jQuery.is_small_height = function () {
     var _height = $.get_viewport_height();
     
-    return (!(_height > 320));
+    //return (!(_height > 320));
+    return (!(_height > 480));
 };
 
 jQuery.touchable = null;

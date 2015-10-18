@@ -19,304 +19,13 @@ class generic extends Web_apps_controller {
     protected $controller_enable_cache = FALSE;
     
     private $dirmap_path = "./system/application/views/web_apps/";
-    
+   
     /**
      * JavaScript載入清單
+     * @deprecated 改到 config/kals.php裡面去控制
      * @var Array
      */
-    public $javascript_import_list = array(
-        
-        /**
-         * 會用其他方法載入，在這邊不載入的清單
-         */
-        "exception_list" => array(
-            'core/KALS_CONFIG', // Pulipuli Chen 20151017
-            "core/KALS_loader",
-            "libraries/jquery"
-        ),
-        
-        /**
-         * 基本工具類
-         * 
-         * 以下檔案不需要壓縮了，已經壓縮完成了
-         * 
-         * 20130221 Pulipuli Chen
-         * 部分的JavaScript無法順利用Minify壓縮，這大部分都是別人寫好的程式庫
-         * 他們有些適合用YUI Compressor壓縮，壓縮過的程式碼不能再給Minify壓縮
-         * 我是用YUI Compressor Online壓縮的
-         * http://refresh-sf.com/yui
-         * 
-         * 實際上也可以用Web_apps_controller的_yui_compression_js()也有YUI Compressor的功能
-         * 
-         * 20140223 Pudding Chen
-         * 我改用NetBeans的Minify JS壓縮，這是NetBeans的plugin
-         * 
-         * @var Array 
-         */
-        "toolkit_list" => array(
-            'libraries/min/jquery.tools'
-            ,'libraries/min/jquery.ba-bbq.min'
-            , 'libraries/min/jquery.jcrop'
-            , 'libraries/min/jquery.ba-hashchange'
-            , 'libraries/min/jquery.placeheld.min'
-            , 'libraries/min/jquery.endless-scroll.1.4.1'
-            , 'libraries/min/yui-min'
-            , 'libraries/min/jQuery_mousewheel_plugin-min'
-            , 'libraries/min/jquery.scrollIntoView-min'
-            , 'libraries/min/jquery.storageapi.min'
-            , 'libraries/min/lz-string-1.3.3-min'
-        ),
-        
-        /**
-         * 工具類壓縮工具基本清單
-         * @var Array
-         */
-        "toolkit_list_package" => array(
-            //'core/KALS_CONFIG', //改成跟KALS_loader一起載入
-            'core/KALS_SITE_REFORM'
-            , 'core/KALS_language_param'
-            , 'modules/feedback/feedback'
-            , 'modules/feedback/html2canvas'
-            , 'helpers/jQuery_kals_plugin'
-            , 'toolkit/KALS_user_interface' //Qunit
-            , 'toolkit/KALS_modal'
-            , 'toolkit/Overlay_modal'
-            , 'toolkit/Tooltip_modal'
-            , 'toolkit/Dialog_modal'
-            , 'toolkit/Confirm_dialog_modal'
-            , 'toolkit/Dialog_option'
-            , 'toolkit/Dialog_link'
-            , 'toolkit/Dialog_close_option'
-            , 'toolkit/Dialog_close_link'
-            , 'toolkit/Dialog_disabled_option'  // Pulipuli Chen 20141111
-            , 'toolkit/Notify_modal'
-            , 'toolkit/Event_dispatcher'
-            , 'toolkit/Multi_event_dispatcher'
-            , 'toolkit/Injection_event_dispatcher'
-            , 'toolkit/Attribute_event_dispatcher'
-            , 'toolkit/JSONP_dispatcher'
-            , 'toolkit/Task_event_dispatcher'
-            , 'helpers/KALS_exception'
-            , 'toolkit/Name_value_pair'
-            , 'helpers/KALS_util'   //Qunit
-
-            , 'kals_framework/KALS_controller' // Pulipuli Chen 20131119
-
-            //, 'toolkit/'
-        ),
-        
-        /**
-         * 核心工具
-         * @type {Array}
-         */
-        "core_list_package" => array(
-            'core/KALS_language',
-            'kals_framework/KALS_view_manager',
-            'core/Viewportmove_dispatcher',
-            'modules/feedback/Feedback_manager',
-            'core/KALS_authentication',
-            'core/URL_hash_dispatcher',
-            'core/URL_dispatcher',  //20140519 Pulipuli Chen
-            'core/Context_loader',  //20140519 Pulipuli Chen
-            'core/Style_manager',
-            'core/Overlay_manager',
-            'core/KALS_storage',
-            'core/Site_reform',
-            'core/Context_user',
-            'core/Context_policy',
-            'core/Context_search',
-            'core/Context_basic_type',
-            'core/Context_predefined_type',
-            'core/KALS_module_manager',
-            'core/KALS_navigation',
-            'core/Init_context',
-            'core/Init_component',
-            'core/Init_profile',
-            'core/KALS_context'	//必須是最後一個！	
-            //''
-        ),
-        
-        /**
-         * 工具類
-         */
-        "component_list_package" => array(
-            //'',
-            'kals_window/KALS_window',
-            'kals_window/Window_loading_component',
-            'kals_window/Window_content',
-            'kals_framework/KALS_controller_window',  // Pulipuli Chen 201311119
-            'kals_window/Window_content_submit',
-            'kals_window/Window_content_submit_loading',    // Pulipuli Chen 20141111
-            'kals_window/Window_user_interface',
-            'kals_window/Window_change_link',
-
-            'navigation/Navigation_item',
-            'navigation/Navigation_item_link',
-            'navigation/Navigation_list',
-
-            'navigation/Anonymous_navigation',
-            'navigation/Mobile_navigation',
-
-            'navigation/Window_login',
-            'navigation/Window_login_submit',
-            'navigation/Window_register',
-            'navigation/Window_register_submit',
-
-            'navigation/Profile_navigation',
-            'navigation/Embed_navigation',
-            'navigation/Window_profile',
-            'navigation/Window_profile_submit',
-            //'navigation/Window_style',
-            //'navigation/Window_style_submit',
-            'navigation/Window_logout',
-            'navigation/Window_logout_submit',
-            'navigation/Window_password_change',
-            'navigation/Window_password_change_submit',
-            //'navigation/Window_search',
-            //'navigation/Window_search_submit',
-            'navigation/Common_navigation',
-            'navigation/Window_filter',
-            'navigation/Window_filter_submit',
-            
-            /**
-             * 20131116 婷芸小地圖
-             */
-            'modules/map/Window_map',
-
-            'kals_toolbar/Toolbar_component',
-            'kals_toolbar/Toolbar_toggle_component',
-            'kals_toolbar/Toolbar_padding_component',
-            'kals_toolbar/Logo_component',
-            'kals_toolbar/Loading_component',
-            //'kals_toolbar/Search_component',
-            //'kals_toolbar/Search_form_component',
-            //'kals_toolbar/Search_result_component',
-
-            'kals_toolbar/Avatar_component',
-            'kals_toolbar/Notification_component',
-
-            'kals_toolbar/KALS_toolbar',
-
-            'annotation_param/Scope_param',
-            'annotation_param/Scope_collection_param',
-            'annotation_param/User_param',
-            'annotation_param/User_collection_param',
-            'annotation_param/Annotation_type_param',
-            'annotation_param/Annotation_param',
-            'annotation_param/Annotation_collection_param',
-            'annotation_param/Recommend_param',
-
-            'selection/Selection',
-            'selection/select/Selection_view',
-            'selection/select/Selection_select',
-            //'selection/Selection_search',
-            'selection/recommend/Selection_recommend',
-            'selection/recommend/Selection_recommended',
-            'selection/recommend/Selection_recommend_by',
-            
-            'selection/my/Selection_my',
-            'selection/my/Selection_my_importance',
-            'selection/my/Selection_my_concept',
-            'selection/my/Selection_my_confusion',
-            'selection/my/Selection_my_question',
-            'selection/my/Selection_my_example',
-            'selection/my/Selection_my_summary',
-            'selection/my/Selection_my_custom',
-            'selection/my/Selection_my_manager',
-
-            'selection/my/Selection_my_custom_type',
-            'selection/my/Selection_my_custom_manager',
-            
-            'selection/navigation/Selection_navigation',
-            'selection/navigation/Selection_navigation_bad',
-            'selection/navigation/Selection_navigation_normal',
-            'selection/navigation/Selection_navigation_good',
-            'selection/navigation/Selection_navigation_great',
-            'selection/navigation/Selection_navigation_manager',
-
-            'selectable_text/Select_tooltip',
-            'selectable_text/Selectable_text_anchor',
-            'selectable_text/Selectable_text_chapter',
-            'selectable_text/Selectable_text_location',
-            'selectable_text/Selectable_text_offset',
-            'selectable_text/Selectable_text_paragraph',
-            'selectable_text/Selectable_text_scope',
-            'selectable_text/Selectable_text_sentence',
-            'selectable_text/Selectable_text_word',
-            'selectable_text/Webpage_cache',    // 20140517 Pulipuli Chen
-            'selectable_text/Selectable_text',
-            'selection/Selection_manager',
-
-            
-            'annotation_editor/Editor_container',
-            'annotation_editor/Annotation_editor',
-            'annotation_editor/Type_component',
-            'kals_framework/View_annotation_type_option',
-            'annotation_editor/Type_menu',
-            'annotation_editor/Note_editor',
-            'annotation_editor/Note_editor_ckeditor',
-            'annotation_editor/Init_note_editor',
-            'annotation_editor/Note_editor_manager',
-            'annotation_editor/Editor_respond_to',
-            'annotation_editor/Editor_respond_to_collection',
-            'annotation_editor/Editor_respond_to_topic',
-            'annotation_editor/Policy_component',
-            'annotation_editor/Window_policy',
-            'annotation_editor/Window_policy_submit',
-            'annotation_editor/Web_search_component',
-
-            'annotation_list/List_collection',
-            'annotation_list/List_collection_like',
-            'annotation_list/List_collection_my',
-            'annotation_list/List_collection_other',
-            //'annotation_list/List_collection_search',
-            'annotation_list/List_collection_anonymous',
-            'annotation_list/Respond_list_collection',
-            'annotation_list/Topic_list',
-
-
-            'annotation_list/List_timestamp_component',
-            'annotation_list/List_menu',
-
-            'annotation_list/List_menu_tooltip',
-            'annotation_list/List_menu_block',
-            'annotation_list/List_like_component',
-            'annotation_list/List_header_component',
-            'annotation_list/List_note_component',
-            'annotation_list/List_item',
-            'annotation_list/List_item_topic',
-            'annotation_list/List_item_respond',
-            //'annotation_list/List_menu_search',
-            
-            'kals_framework/View_annotation',
-            
-            'annotation_recommend/Recommend_hint',
-            'annotation_recommend/Recommend_tooltip',
-            'annotation_recommend/Recommend_list_item',
-
-            'annotation_view/View_anchor_text_component',
-            'annotation_view/View_list_collection',
-            'annotation_view/View_list_item_topic',
-            'annotation_view/View_list_item_respond',
-            'annotation_view/View_editor_container',
-            'annotation_view/View_respond_list_collection',
-            'annotation_view/Window_view',
-            
-            //'annotation_list/List_item_search_topic',
-            //'annotation_list/List_item_search_respond',
-
-            'kals_text/Annotation_tool',
-            'kals_text/Annotation_scope_loader',
-            'kals_text/My_annotation_loader',
-            'kals_text/My_basic_annotation_loader',
-            'kals_text/My_custom_annotation_loader',
-            'kals_text/Navigation_loader',
-            'selectable_text/Text_selector',  //20140519 Pulipuli Chen
-
-            'kals_text/Init_text',
-            'kals_text/KALS_text',
-        ),
-    );
+//    public $javascript_import_list = array(
     
     /**
      * 載入基本工具類
@@ -329,9 +38,11 @@ class generic extends Web_apps_controller {
     {
         $this->_enable_cache();
         
-        $list = $this->javascript_import_list["toolkit_list"];
+        //$list = $this->javascript_import_list["toolkit_list"];
+        $list = $this->config->item('web_apps.javascript_import')['toolkit_list'];
 
-        $list_package = $this->javascript_import_list["toolkit_list_package"];
+        //$list_package = $this->javascript_import_list["toolkit_list_package"];
+        $list_package = $this->config->item('web_apps.javascript_import')['toolkit_list_package'];
 
         if (is_null($return_list))
         {
@@ -358,7 +69,8 @@ class generic extends Web_apps_controller {
         );
 
         //注意順序！
-        $list_package = $this->javascript_import_list["core_list_package"];
+        //$list_package = $this->javascript_import_list["core_list_package"];
+        $list_package = $this->config->item('web_apps.javascript_import')['core_list_package'];
         
         /*
         $dir_list = array(
@@ -394,7 +106,8 @@ class generic extends Web_apps_controller {
             ''
         );
 
-        $list_package = $this->javascript_import_list["component_list_package"];
+        //$list_package = $this->javascript_import_list["component_list_package"];
+        $list_package = $this->config->item('web_apps.javascript_import')['component_list_package'];
         
     	/*
     	$dir_list = array(
@@ -490,7 +203,8 @@ class generic extends Web_apps_controller {
     private function _get_javascript_exception_list() {
         $list = array();
         
-        foreach ($this->javascript_import_list AS $l) {
+        //foreach ($this->javascript_import_list AS $l) {
+        foreach ($this->config->item('web_apps.javascript_import') AS $l) {
             //print_r($l);
             $list = array_merge($list, $l);
         }

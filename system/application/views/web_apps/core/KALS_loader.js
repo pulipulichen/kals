@@ -259,6 +259,15 @@ this.load_jquery = function (_callback) {
  * @param {Function} _callback
  */
 this.load_scripts = function (_script_list, _callback, _is_libraries) {
+    if (typeof(_script_list) === "object" 
+            && typeof(_script_list.length) === "number" 
+            && _script_list.length === 0) {
+        if (typeof(_callback) === 'function') {
+            _callback();
+        }
+        return;
+    }
+    
     var _loaded = [];
     
     var _check_complete = function (_script) {
@@ -418,6 +427,15 @@ this.insert_scripts = function (_script_list, _callback, _is_libraries) {
  * @returns {KALS_loader_class}
  */
 this.load_styles = function (_style_list, _callback) {
+    if (typeof(_style_list) === "object" 
+            && typeof(_style_list.length) === "number" 
+            && _style_list.length === 0) {
+        if (typeof(_callback) === 'function') {
+            _callback();
+        }
+        return;
+    }
+    
     var _loaded = [];
     var _check_complete = function (_style) {
         if (typeof(_style) === 'undefined' ||

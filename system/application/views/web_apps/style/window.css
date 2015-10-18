@@ -19,7 +19,11 @@
     width: 100%;
     font-size:medium;
     margin:0;
-    height: auto;
+    /**
+     * 克服ssemantic-ui的問題
+     * @author Pudding 20151018
+     */
+    height: auto !important;
     z-index: 999;
 }
 
