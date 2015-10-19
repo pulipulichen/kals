@@ -867,6 +867,7 @@ Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) 
         _this._item.adjust_note();
         setTimeout(function () {
             _this._item.adjust_note();
+            //if (_this._item.)
             $.trigger_callback(_callback);
         }, 0);
     };
@@ -888,6 +889,7 @@ Select_tooltip.prototype._has_annotation_classname = "has-annotation";
 Select_tooltip.prototype.reset_style = function () {
     var _ui = this.get_ui();
     _ui.removeClass(this._has_annotation_classname);
+    return this;
 };
 
 /**
@@ -896,6 +898,7 @@ Select_tooltip.prototype.reset_style = function () {
 Select_tooltip.prototype.set_has_annotation = function () {
     var _ui = this.get_ui();
     _ui.addClass(this._has_annotation_classname);
+    return this;
 };
 
 /**

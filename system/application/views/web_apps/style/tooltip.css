@@ -254,9 +254,13 @@
     -ms-user-select: none;
 }
 
-
-
-
+/**
+ * 固定顯示位置的大小
+ */
+.KALS .list-item-tooltip .list-note-component .note-container {
+    height: 100px;
+    overflow-y: hidden;
+}
 
 
 

@@ -47,6 +47,8 @@ List_item_tooltip.prototype._$create_ui = function () {
         _this.select();
     });
     
+    _ui.append('<div class="fade-out"></div>');
+    
     /**
      * @version 20141110 Pulipuli Chen
      * 初始化權限監聽器
