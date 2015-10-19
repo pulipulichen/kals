@@ -121,6 +121,10 @@ Editor_container.prototype._$create_ui = function () {
     
     //this.check_policy();
     
+    if (KALS_CONFIG.enable_annotation_editor === false) {
+        _ui.hide();
+    }
+    
     return _ui;
 };
 
@@ -268,6 +272,10 @@ Editor_container.prototype.submit_annotation = function (_callback) {
 Editor_container.prototype.toggle_container = function (_display, _callback) {
     //$.test_msg('Editor_container.toggle_container()', _display);
 	//$.test_msg('Editor_container.toggle_container()', this.has_setup_ui());
+    
+    if (KALS_CONFIG.enable_annotation_editor === false) {
+        _display = false;
+    }
     
     if (this.has_setup_ui() === false) {
         //$.test_msg("Editor_container.prototype.toggle_container this.has_setup_ui()", "還沒準備好");

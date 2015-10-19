@@ -289,6 +289,13 @@ DEFAULT_KALS_CONFIG = {
     "enable_kals_toolbar": true,
     
     /**
+     * 是否啟用KALS標註編輯器
+     * @type Boolean
+     * @author Pudding 20151019
+     */
+    "enable_annotation_editor": true,
+    
+    /**
      * 是否啟用離開時提示訊息
      * @author Pulipuli Chen 20150117
      * @type Boolean

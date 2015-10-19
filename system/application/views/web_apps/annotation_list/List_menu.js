@@ -106,7 +106,8 @@ List_menu.prototype._$create_ui = function ()
     
     //var _tr = _ui.find('tr:first');
     
-    if (this.is_enable('edit') && _writable === true) {
+    if (KALS_CONFIG.enable_annotation_editor === true
+        && this.is_enable('edit') && _writable === true) {
         var _edit = this._create_edit_ui();
         _edit.appendTo(_ui.find(".edit-container"));
     }
