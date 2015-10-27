@@ -138,7 +138,7 @@ Text_selector.prototype._init_selectable_text = function () {
     var _scope_content = $(_scope_selector);
 
     if (_scope_content.length === 0) {
-        _text_container = _default_scope();
+        _text_container = this._init_default_scope();
     }
     else if (_scope_content.length > 1) {
         _scope_content = _scope_content.filter(':first');
