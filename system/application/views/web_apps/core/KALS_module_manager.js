@@ -85,6 +85,9 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
     
     // 讀取KALS_CONFIG
     var _config = this._load_config(_name);
+    if (typeof(_config.enable) === "function") {
+        _config.enable = _config.enable();
+    }
     if (typeof(_config.enable) === "boolean"
             && _config.enable === false) {
         //$.test_msg("enable false", _name);

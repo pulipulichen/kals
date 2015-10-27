@@ -128,10 +128,10 @@ Navigation_list.prototype._create_nav = function() {
         _a.appendTo(_td);
     }
     
-    if (this._$show_help === true
-            && KALS_CONFIG.modules.Window_help.enable === true) {
-        this._setup_help().appendTo(_tr);
-    }
+//    if (this._$show_help === true
+//            && KALS_CONFIG.modules.Window_help.enable === true) {
+//        this._setup_help().appendTo(_tr);
+//    }
 	
     // 插入錯誤回報功能
     //if (this._$show_feedback === true) {
@@ -217,51 +217,80 @@ Navigation_list.prototype._create_nav_item = function  (_content, _i) {
     //return _content.get_ui();
 };
 
-/**
- * 建立說明按鈕
- * @type jQuery
- */
-Navigation_list.prototype._setup_help = function () {
-    var _td = $('<td></td>')
-        .addClass('item');
-            
-    var _a = $('<a href="#"></a>')
-        .appendTo(_td)
-        .addClass('help');
-
-    KALS_context.lang.add_listener(_a, this._help_lang);
-    
-    _a.click(function() {
-        
-        KALS_util.help();
-        
-        return false;
-    });
-	
-    return _td;
-};
+///**
+// * 建立說明按鈕
+// * @type jQuery
+// */
+//Navigation_list.prototype._setup_help = function () {
+//    var _td = $('<td></td>')
+//        .addClass('item');
+//            
+//    var _a = $('<a href="#"></a>')
+//        .appendTo(_td)
+//        .addClass('help');
+//
+//    KALS_context.lang.add_listener(_a, this._help_lang);
+//    
+//    _a.click(function() {
+//        
+//        KALS_util.help();
+//        
+//        return false;
+//    });
+//	
+//    return _td;
+//};
 
 /**
  * 建立錯誤回報按鈕
  * @type jQuery
+ * @deprecated 20151027 Pudding 不使用
  */
-Navigation_list.prototype._setup_feedback = function () {
+//Navigation_list.prototype._setup_feedback = function () {
+//    var _td = $('<td></td>')
+//        .addClass('item');
+//            
+//    var _a = $('<a href="#"></a>')
+//        .appendTo(_td)
+//        .addClass('feedback');
+//
+//    KALS_context.lang.add_listener(_a, this._feedback_lang);
+//    
+//    _a.click(function() {
+//        
+//        KALS_context.feedback.open();
+//        
+//        return false;
+//    });
+//    
+//    return _td;
+//};
+
+/**
+ * 建立回到上一層的按鈕
+ * @type jQuery
+ * @author Pudding 20151027
+ */
+Navigation_list.prototype._setup_back = function () {
     var _td = $('<td></td>')
         .addClass('item');
             
     var _a = $('<a href="#"></a>')
         .appendTo(_td)
-        .addClass('feedback');
+        .addClass('help')
+        .html('<i class="level up icon"></i>');
 
-    KALS_context.lang.add_listener(_a, this._feedback_lang);
+    var _back_url = KALS_CONFIG.modules.Navigation_back.back_url;
     
+    if ($.is_function(_back_url)) {
+        _back_url = _back_url();
+    }
+
     _a.click(function() {
-        
-        KALS_context.feedback.open();
-        
+        location.href = _back_url;
         return false;
     });
-    
+	
     return _td;
 };
 

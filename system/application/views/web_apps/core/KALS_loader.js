@@ -129,12 +129,17 @@ this.generic_load = function (_conf, _callback) {
     
     //console.log('[KALS] load jquery');
     _this.load_jquery(function () {
+        
+        //console.log(["有讀到module裡面的資料嗎？1", KALS_CONFIG.modules.Navigation_back.enable]);
+        
         /**
          * 覆寫設定檔
          * @author Pulipuli Chen 20151017
          */
         KALS_CONFIG = this._override_kals_config(DEFAULT_KALS_CONFIG, KALS_CONFIG);
-            
+        
+        //console.log(["有讀到module裡面的資料嗎？2", KALS_CONFIG.modules.Navigation_back.enable]);
+        
         /**
          * 加上一層，讀取外部的設定檔
          * @author Pulipuli Chen 20151017
@@ -258,6 +263,7 @@ this.load_jquery = function (_callback) {
  * 同時讀取指定的所有script，並在完全完成之後呼叫callback。
  * @param {Array} _script_list
  * @param {Function} _callback
+ * @param {Boolean} _is_libraries 是否是函式庫
  */
 this.load_scripts = function (_script_list, _callback, _is_libraries) {
     if (typeof(_script_list) === "object" 
@@ -313,6 +319,7 @@ this.load_scripts = function (_script_list, _callback, _is_libraries) {
  * 同時讀取指定的所有images，並在完全完成之後呼叫callback。
  * @param {Array} _images_list
  * @param {Function} _callback
+ * @param {Boolean} _is_libraries 是否是函式庫
  */
 this.load_images = function (_images_list, _callback, _is_libraries) {
     var _loaded = [];
@@ -721,14 +728,19 @@ this._override_kals_config_api = function (_callback) {
             url: _api,
             dataType: "json",
             success: function (_config) {
+                //console.log("成功讀到API");
                 //console.log(_config);
                 KALS_CONFIG = _._override_kals_config(KALS_CONFIG, _config);
+            },
+            error: function (){
+                console.log(["讀取CONFIG_API失敗", _api]);
             },
             //timeout: 1000,
             complete: _trigger_callback
         });
     }
     else {
+        //console.log("沒有API");
         _trigger_callback();
     }
 };

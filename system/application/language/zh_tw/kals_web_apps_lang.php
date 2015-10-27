@@ -106,8 +106,9 @@ $lang['web_apps.toolbar.search.search_result'] = '搜尋結果: ';
 
 $lang['web_apps.toolbar.navigation_list.link'] = '連結';
 $lang['web_apps.toolbar.navigation_list.menu'] = '設定選項';
-$lang['web_apps.toolbar.navigation_list.help'] = '說明';
+$lang['web_apps.toolbar.navigation_list.help'] = '<i class="help circle icon"></i>'; //'說明';
 $lang['web_apps.toolbar.navigation_list.feedback'] = '回報';
+$lang['web_apps.toolbar.navigation_list.back'] = '<i class="level up icon"></i>';
 
 $lang['web_apps.window.content.domain'] = '登入網站';
 $lang['web_apps.window.content.email'] = '電子信箱位址';

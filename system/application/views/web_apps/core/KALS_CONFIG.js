@@ -1103,8 +1103,12 @@ DEFAULT_KALS_CONFIG = {
              */
             "get_link_url": "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link"
         },
-        "Window_help": {
-            "enable": false,
+        /**
+         * 說明的設定
+         * @author Pudding 20151027
+         */
+        "Navigation_help": {
+            "enable": true,
             /**
              * KALS操作說明的網址
              * 
@@ -1112,6 +1116,28 @@ DEFAULT_KALS_CONFIG = {
              *     也可以用http開頭的絕對網址，例如'http://www.google.com.tw/'
              */
             "help_base_url": 'help/',
+        },
+        /**
+         * 回到指定頁面
+         * @author Pudding 20151027
+         */
+        "Navigation_back": {
+            /**
+             * 是否啟用
+             * 
+             * 也可以改成 function () { return (top != window); }
+             * 表示被嵌入在iframe的時候，不使用
+             * 
+             * @returns {Boolean}
+             */
+            "enable": false,
+            /**
+             * 回到上一層的網址
+             * 
+             * 可以用字串，也可以用function來計算
+             * @type String
+             */
+            "back_url": "https://github.com/pulipulichen/kals"
         }
     }
 };

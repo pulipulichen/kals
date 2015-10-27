@@ -445,7 +445,12 @@
 } 
 
 .KALS .navigation-list .nav td.item.last {
-    border-right-style: solid;
+    /*border-right-style: solid;*/
+    border-right-style: none;
+}
+
+.KALS .navigation-list .nav td.item i.icon {
+    text-decoration: none;
 }
 
 /**
