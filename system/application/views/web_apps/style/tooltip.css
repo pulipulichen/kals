@@ -211,6 +211,14 @@
     
 }
 
+/**
+ * @author Pudding 20151027
+ * 修正Sementic UI的問題
+ */ 
+.KALS .kals-select-trigger {
+    box-sizing: border-box;
+}
+
 .KALS.tooltip .kals-select-trigger.select {
     padding: 14px 10px;
 }

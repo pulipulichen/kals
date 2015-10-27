@@ -160,6 +160,29 @@
     text-align: left;
 }
 
+/* ---- */
+/**
+ * @author Pudding 20151027
+ * 調整搜尋列
+ */
+.KALS .search-component .query-value,
+.KALS .search-component .query-field,
+.KALS .search-component .search-form-submit,
+.KALS .search-component .search-form-reset {
+    height: 35px;
+    box-sizing: border-box;
+}
+.KALS .search-component .search-form-submit {
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+}
+.KALS .search-component .search-form-searched .search-form-submit {
+    position: relative;
+    top: 1px;
+}
+/* ---- */
+
+
 /*
 .KALS .search-component .query-value {
     height: 1.5em;
@@ -175,28 +198,13 @@
 }
 */
 
-/*
-.KALS .search-component .search-form-submit {
-    height: 25px;
-    width: 25px;
-    display: block;
-    float:right;
-    padding: 0;
-	
-    border-radius: 5px;
-    min-height: 25px;
-    /*background-image:url("${base_url}images/web_search.png") !important;*/
-    background-repeat:no-repeat;
-    background-position: center;
-
-    border-width: 0 !important;
-    background-color: transparent;
-    /*float:right;*/
-}
-*/
 
 .KALS .search-component .search-form-submit .icon {
     margin: 0;
+}
+
+.KALS .search-component .search-form-submit {
+    margin-left: 0.5em;
 }
 
 .KALS .search-component .search-form-searched {

@@ -172,6 +172,7 @@
 .KALS .button.dialog-option,
 .KALS .kals-view button,
 .KALS .kals-view .button {
+    /*
     cursor:pointer;
     margin: 0;
     
@@ -186,7 +187,9 @@
         
     border: 1px solid #D19405 !important;
     color: #4C3000;
+    */
     /*font-weight: bold;*/
+    /*
     outline: medium none;
     font-size: 0.7em;
     font: 70% arial,helvetica,clean,sans-serif;
@@ -203,7 +206,7 @@
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
     border-radius: 8px;
-    -khtml-border-radius: 8px;
+    -khtml-border-radius: 8px;*/
     /*min-height: 33px;*/
 }
 

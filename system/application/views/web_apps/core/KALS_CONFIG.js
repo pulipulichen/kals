@@ -56,7 +56,7 @@ DEFAULT_KALS_CONFIG = {
     /**
      * @type {boolean} = true 可否調整權限
      */
-    policy_changable: true,
+    "policy_changable": true,
     
     /**
      * @type {boolean} = false 阻止註冊
@@ -67,7 +67,7 @@ DEFAULT_KALS_CONFIG = {
      * @{type} string 登入時顯示的訊息，如果不使用的話，值填入null
      *     如果要使用的話，則填入字串
      */
-    login_hint: null,
+    "login_hint": null,
     
     /**
      * 顯示其他人的標註
@@ -78,12 +78,12 @@ DEFAULT_KALS_CONFIG = {
      *     "recommend": 顯示推薦標註。但並不準確，通常系統找不出推薦的標註。
      *     "none" | null：不顯示標註
      */
-    anchor_navigation_type: "all",
+    "anchor_navigation_type": "all",
     
     /**
      * @type {boolean} = false 是否啟用標註建議，預設關閉。
      */
-    enable_annotation_recommend: false,
+    "enable_annotation_recommend": false,
     
     /**
      * 使用的標註類型
@@ -259,13 +259,13 @@ DEFAULT_KALS_CONFIG = {
      * 開啟之後，所有人都只能看到自己的標註，無法看到別人的標註。
      * 但是關閉之後，所有人又能看到別人的標註
      */
-    isolation_mode: false,
+    "isolation_mode": false,
     
     /**
      * 是否啟用選取文字快取
      * @type Boolean
      */
-    selectable_text_cache: true,
+    "selectable_text_cache": true,
     
     /**
      * 是否覆寫選取文字快取
@@ -273,7 +273,7 @@ DEFAULT_KALS_CONFIG = {
      * 如果該選項一直維持true，則會強制一直覆寫快取，而不會讀取快取
      * @type Boolean
      */
-    selectable_text_clean_overwrite: false,
+    "selectable_text_clean_overwrite": false,
     
     /**
      * 是否啟用搜尋工具列

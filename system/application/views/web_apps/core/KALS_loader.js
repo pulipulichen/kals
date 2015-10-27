@@ -72,7 +72,8 @@ this.generic_load = function (_conf, _callback) {
             //"libraries/bootstrap/css/bootstrap.min.css",
             //"libraries/bootstrap/css/bootstrap-theme.min.css",
             //"libraries/font-awesome/css/font-awesome.min.css",
-            "libraries/semantic-ui/semantic.min.css"
+            //"libraries/semantic-ui/semantic.min.css"
+            "libraries/semantic-ui/semantic.css"
         ]
     };
     

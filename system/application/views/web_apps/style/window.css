@@ -72,7 +72,7 @@
 
 .KALS .window-panel .row dt {
     text-align:right;
-    width: 150px;
+    width: 120px; /* Pudding 20151027: 取代150px */
     float: left;
     padding-right: 0.5em !important;
     cursor:pointer;

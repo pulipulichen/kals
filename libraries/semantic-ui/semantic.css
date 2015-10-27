@@ -26,22 +26,23 @@
 
 /* Border-Box */
 
-*,
-*:before,
-*:after {
+.KALS,
+.KALS *,
+.KALS *:before,
+.KALS *:after {
   box-sizing: inherit;
 }
 
-html {
+.KALS {
   box-sizing: border-box;
 }
 
 /* iPad Input Shadows */
 
-input[type="text"],
-input[type="email"],
-input[type="search"],
-input[type="password"] {
+.KALS input[type="text"],
+.KALS input[type="email"],
+.KALS input[type="search"],
+.KALS input[type="password"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   /* mobile firefox too! */
@@ -65,7 +66,7 @@ input[type="password"] {
  *    user zoom.
  */
 
-html {
+.KALS {
   font-family: sans-serif;
   /* 1 */
   -ms-text-size-adjust: 100%;
@@ -78,9 +79,11 @@ html {
  * Remove default margin.
  */
 
+/*
 body {
   margin: 0;
 }
+*/
 
 /* HTML5 display definitions
    ========================================================================== */
@@ -91,18 +94,18 @@ body {
  * Correct `block` display not defined for `main` in IE 11.
  */
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-nav,
-section,
-summary {
+.KALS article,
+.KALS aside,
+.KALS details,
+.KALS figcaption,
+.KALS figure,
+.KALS footer,
+.KALS header,
+.KALS hgroup,
+.KALS main,
+.KALS nav,
+.KALS section,
+.KALS summary {
   display: block;
 }
 
@@ -111,10 +114,10 @@ summary {
  * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
  */
 
-audio,
-canvas,
-progress,
-video {
+.KALS audio,
+.KALS canvas,
+.KALS progress,
+.KALS video {
   display: inline-block;
   /* 1 */
   vertical-align: baseline;
@@ -126,7 +129,7 @@ video {
  * Remove excess height in iOS 5 devices.
  */
 
-audio:not([controls]) {
+.KALS audio:not([controls]) {
   display: none;
   height: 0;
 }
@@ -136,8 +139,8 @@ audio:not([controls]) {
  * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
  */
 
-[hidden],
-template {
+.KALS [hidden],
+.KALS template {
   display: none;
 }
 
@@ -148,7 +151,7 @@ template {
  * Remove the gray background color from active links in IE 10.
  */
 
-a {
+.KALS a {
   background: transparent;
 }
 
@@ -156,8 +159,8 @@ a {
  * Improve readability when focused and also mouse hovered in all browsers.
  */
 
-a:active,
-a:hover {
+.KALS a:active,
+.KALS a:hover {
   outline: 0;
 }
 
@@ -168,7 +171,7 @@ a:hover {
  * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
  */
 
-abbr[title] {
+.KALS abbr[title] {
   border-bottom: 1px dotted;
 }
 
@@ -176,8 +179,8 @@ abbr[title] {
  * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
  */
 
-b,
-strong {
+.KALS b,
+.KALS strong {
   font-weight: bold;
 }
 
@@ -185,7 +188,7 @@ strong {
  * Address styling not present in Safari and Chrome.
  */
 
-dfn {
+.KALS dfn {
   font-style: italic;
 }
 
@@ -194,7 +197,7 @@ dfn {
  * contexts in Firefox 4+, Safari, and Chrome.
  */
 
-h1 {
+.KALS h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
@@ -203,7 +206,7 @@ h1 {
  * Address styling not present in IE 8/9.
  */
 
-mark {
+.KALS mark {
   background: #ff0;
   color: #000;
 }
@@ -212,7 +215,7 @@ mark {
  * Address inconsistent and variable font size in all browsers.
  */
 
-small {
+.KALS small {
   font-size: 80%;
 }
 
@@ -220,19 +223,19 @@ small {
  * Prevent `sub` and `sup` affecting `line-height` in all browsers.
  */
 
-sub,
-sup {
+.KALS sub,
+.KALS sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
   vertical-align: baseline;
 }
 
-sup {
+.KALS sup {
   top: -0.5em;
 }
 
-sub {
+.KALS sub {
   bottom: -0.25em;
 }
 
@@ -243,7 +246,7 @@ sub {
  * Remove border when inside `a` element in IE 8/9/10.
  */
 
-img {
+.KALS img {
   border: 0;
 }
 
@@ -251,7 +254,7 @@ img {
  * Correct overflow not hidden in IE 9/10/11.
  */
 
-svg:not(:root) {
+.KALS svg:not(:root) {
   overflow: hidden;
 }
 
@@ -262,7 +265,7 @@ svg:not(:root) {
  * Address margin not present in IE 8/9 and Safari.
  */
 
-figure {
+.KALS figure {
   margin: 1em 40px;
 }
 
@@ -270,7 +273,7 @@ figure {
  * Address differences between Firefox and other browsers.
  */
 
-hr {
+.KALS hr {
   box-sizing: content-box;
   height: 0;
 }
@@ -279,7 +282,7 @@ hr {
  * Contain overflow in all browsers.
  */
 
-pre {
+.KALS pre {
   overflow: auto;
 }
 
@@ -287,10 +290,10 @@ pre {
  * Address odd `em`-unit font size rendering in all browsers.
  */
 
-code,
-kbd,
-pre,
-samp {
+.KALS code,
+.KALS kbd,
+.KALS pre,
+.KALS samp {
   font-family: monospace, monospace;
   font-size: 1em;
 }
@@ -310,11 +313,11 @@ samp {
  * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
  */
 
-button,
-input,
-optgroup,
-select,
-textarea {
+.KALS button,
+.KALS input,
+.KALS optgroup,
+.KALS select,
+.KALS textarea {
   color: inherit;
   /* 1 */
   font: inherit;
@@ -327,7 +330,7 @@ textarea {
  * Address `overflow` set to `hidden` in IE 8/9/10/11.
  */
 
-button {
+.KALS button {
   overflow: visible;
 }
 
@@ -338,8 +341,8 @@ button {
  * Correct `select` style inheritance in Firefox.
  */
 
-button,
-select {
+.KALS button,
+.KALS select {
   text-transform: none;
 }
 
@@ -351,10 +354,10 @@ select {
  *    `input` and others.
  */
 
-button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+.KALS button,
+.KALS html input[type="button"],
+.KALS input[type="reset"],
+.KALS input[type="submit"] {
   -webkit-appearance: button;
   /* 2 */
   cursor: pointer;
@@ -365,8 +368,8 @@ input[type="submit"] {
  * Re-set default cursor for disabled elements.
  */
 
-button[disabled],
-html input[disabled] {
+.KALS button[disabled],
+.KALS html input[disabled] {
   cursor: default;
 }
 
@@ -374,8 +377,8 @@ html input[disabled] {
  * Remove inner padding and border in Firefox 4+.
  */
 
-button::-moz-focus-inner,
-input::-moz-focus-inner {
+.KALS button::-moz-focus-inner,
+.KALS input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
@@ -385,7 +388,7 @@ input::-moz-focus-inner {
  * the UA stylesheet.
  */
 
-input {
+.KALS input {
   line-height: normal;
 }
 
@@ -397,8 +400,8 @@ input {
  * 2. Remove excess padding in IE 8/9/10.
  */
 
-input[type="checkbox"],
-input[type="radio"] {
+.KALS input[type="checkbox"],
+.KALS input[type="radio"] {
   box-sizing: border-box;
   /* 1 */
   padding: 0;
@@ -411,8 +414,8 @@ input[type="radio"] {
  * decrement button to change from `default` to `text`.
  */
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+.KALS input[type="number"]::-webkit-inner-spin-button,
+.KALS input[type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
 
@@ -422,7 +425,7 @@ input[type="number"]::-webkit-outer-spin-button {
  *    (include `-moz` to future-proof).
  */
 
-input[type="search"] {
+.KALS input[type="search"] {
   -webkit-appearance: textfield;
   /* 1 */
   /* 2 */
@@ -435,8 +438,8 @@ input[type="search"] {
  * padding (and `textfield` appearance).
  */
 
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
+.KALS input[type="search"]::-webkit-search-cancel-button,
+.KALS input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -444,7 +447,7 @@ input[type="search"]::-webkit-search-decoration {
  * Define consistent border, margin, and padding.
  */
 
-fieldset {
+.KALS fieldset {
   border: 1px solid #c0c0c0;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em;
@@ -455,7 +458,7 @@ fieldset {
  * 2. Remove padding so people aren't caught out if they zero out fieldsets.
  */
 
-legend {
+.KALS legend {
   border: 0;
   /* 1 */
   padding: 0;
@@ -466,7 +469,7 @@ legend {
  * Remove default vertical scrollbar in IE 8/9/10/11.
  */
 
-textarea {
+.KALS textarea {
   overflow: auto;
 }
 
@@ -475,7 +478,7 @@ textarea {
  * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
  */
 
-optgroup {
+.KALS optgroup {
   font-weight: bold;
 }
 
@@ -486,13 +489,13 @@ optgroup {
  * Remove most spacing between table cells.
  */
 
-table {
+.KALS table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-td,
-th {
+.KALS td,
+.KALS th {
   padding: 0;
 }
 
@@ -513,16 +516,16 @@ th {
 /*******************************
              Page
 *******************************/
-
+/*
 html,
 body {
   height: 100%;
-}
+}*/
 
-html {
+.KALS {
   font-size: 14px;
 }
-
+/*
 body {
   margin: 0px;
   padding: 0px;
@@ -535,16 +538,16 @@ body {
   color: rgba(0, 0, 0, 0.87);
   font-smoothing: antialiased;
 }
-
+*/
 /*******************************
              Headers
 *******************************/
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+.KALS h1,
+.KALS h2,
+.KALS h3,
+.KALS h4,
+.KALS h5 {
   font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   line-height: 1.2857em;
   margin: calc(2rem -  0.14285em ) 0em 1rem;
@@ -552,40 +555,40 @@ h5 {
   padding: 0em;
 }
 
-h1 {
+.KALS h1 {
   min-height: 1rem;
   font-size: 2rem;
 }
 
-h2 {
+.KALS h2 {
   font-size: 1.714rem;
 }
 
-h3 {
+.KALS h3 {
   font-size: 1.28rem;
 }
 
-h4 {
+.KALS h4 {
   font-size: 1.071rem;
 }
 
-h5 {
+.KALS h5 {
   font-size: 1rem;
 }
 
-h1:first-child,
-h2:first-child,
-h3:first-child,
-h4:first-child,
-h5:first-child {
+.KALS h1:first-child,
+.KALS h2:first-child,
+.KALS h3:first-child,
+.KALS h4:first-child,
+.KALS h5:first-child {
   margin-top: 0em;
 }
 
-h1:last-child,
-h2:last-child,
-h3:last-child,
-h4:last-child,
-h5:last-child {
+.KALS h1:last-child,
+.KALS h2:last-child,
+.KALS h3:last-child,
+.KALS h4:last-child,
+.KALS h5:last-child {
   margin-bottom: 0em;
 }
 
@@ -593,16 +596,16 @@ h5:last-child {
              Text
 *******************************/
 
-p {
+.KALS p {
   margin: 0em 0em 1em;
   line-height: 1.4285em;
 }
 
-p:first-child {
+.KALS p:first-child {
   margin-top: 0em;
 }
 
-p:last-child {
+.KALS p:last-child {
   margin-bottom: 0em;
 }
 
@@ -610,12 +613,12 @@ p:last-child {
         Links
 --------------------*/
 
-a {
+.KALS a {
   color: #4183c4;
   text-decoration: none;
 }
 
-a:hover {
+.KALS a:hover {
   color: #1e70bf;
   text-decoration: none;
 }
@@ -626,37 +629,37 @@ a:hover {
 
 /* Site */
 
-::-webkit-selection {
+.KALS ::-webkit-selection {
   background-color: #cce2ff;
   color: rgba(0, 0, 0, 0.87);
 }
 
-::-moz-selection {
+.KALS ::-moz-selection {
   background-color: #cce2ff;
   color: rgba(0, 0, 0, 0.87);
 }
 
-::selection {
+.KALS ::selection {
   background-color: #cce2ff;
   color: rgba(0, 0, 0, 0.87);
 }
 
 /* Form */
 
-textarea::-webkit-selection,
-input::-webkit-selection {
+.KALS textarea::-webkit-selection,
+.KALS input::-webkit-selection {
   background-color: rgba(100, 100, 100, 0.4);
   color: rgba(0, 0, 0, 0.87);
 }
 
-textarea::-moz-selection,
-input::-moz-selection {
+.KALS textarea::-moz-selection,
+.KALS input::-moz-selection {
   background-color: rgba(100, 100, 100, 0.4);
   color: rgba(0, 0, 0, 0.87);
 }
 
-textarea::selection,
-input::selection {
+.KALS textarea::selection,
+.KALS input::selection {
   background-color: rgba(100, 100, 100, 0.4);
   color: rgba(0, 0, 0, 0.87);
 }
