@@ -135,13 +135,20 @@ Text_selector.prototype._init_selectable_text = function () {
     var _text_container;
     
     var _scope_selector = KALS_CONFIG.annotation_scope_selector;
-    var _scope_content = $(_scope_selector);
-
-    if (_scope_content.length === 0) {
-        _text_container = this._init_default_scope();
+    var _scope_content;
+    if ($.is_null(_scope_content) === false) {
+        _scope_content = $(_scope_selector);
+        
+        if (_scope_content.length > 1) {
+            _scope_content = _scope_content.filter(':first');
+        }
+        else {
+            _scope_content = undefined;
+        }
     }
-    else if (_scope_content.length > 1) {
-        _scope_content = _scope_content.filter(':first');
+    
+    if (_scope_content === undefined) {
+        _scope_content = this._init_default_scope();
     }
 
     var _children_content = _scope_content.children();

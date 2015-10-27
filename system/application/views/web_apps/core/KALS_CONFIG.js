@@ -218,14 +218,6 @@ DEFAULT_KALS_CONFIG = {
      */
    
     /**
-     * KALS操作說明的網址
-     * 
-     * @type {string|null} help_base_url = 'help/' 網址
-     *     也可以用http開頭的絕對網址，例如'http://www.google.com.tw/'
-     */
-    "help_base_url": 'help/',
-	
-    /**
      * 預設標註類型
      *
      * @copyright 20130603 Pudding Chen
@@ -561,7 +553,7 @@ DEFAULT_KALS_CONFIG = {
      * 模組設定
      * @type {JSON}
      */
-    modules: {
+    "modules": {
         /**
          * 模組名稱: 模組設定內容
          * @type {JSON}
@@ -570,7 +562,7 @@ DEFAULT_KALS_CONFIG = {
          * 資訊區
          * @type {Object}
          */
-        Dashboard: {
+        "Dashboard": {
             /**
              * 是否啟用模組
              * @type Boolean
@@ -581,7 +573,7 @@ DEFAULT_KALS_CONFIG = {
                  * 顯示資料
                  * @type Boolean
                  */
-                display: true,
+                "display": true,
 
                 /**
                  * 決定顯示導覽列的位置
@@ -594,7 +586,7 @@ DEFAULT_KALS_CONFIG = {
                  * - anonymous: 未登入的使用者才會顯示
                  * @type String
                  */
-                nav_type: "common",
+                "nav_type": "common",
 
                 /**
                  * 排序順序
@@ -603,14 +595,14 @@ DEFAULT_KALS_CONFIG = {
                  * 數字最小的是1
                  * @type Number
                  */
-                order: 1
+                "order": 1
             }
         },
         /**
          * 標註小地圖
          * @type {Object}
          */
-        Annotation_navigation_map: {
+        "Annotation_navigation_map": {
             /**
              * 是否啟用模組
              * @type Boolean
@@ -631,16 +623,16 @@ DEFAULT_KALS_CONFIG = {
          * 零碎時間
          * @type type
          */
-        Frag_reading: {
+        "Frag_reading": {
             /**
              * 是否啟用模組
              * @type Boolean
              */
             "enable": true,
             "nav_config": {
-                display: false,
-                nav_type: "login",
-                order: 1
+                "display": false,
+                "nav_type": "login",
+                "order": 1
             },
             /**
              * 設定自動save_reading_progress的時間頻率
@@ -659,7 +651,7 @@ DEFAULT_KALS_CONFIG = {
         /**
          * 搜尋功能
          */
-        Window_search: {
+        "Window_search": {
             "enable": false
         },
         
@@ -669,7 +661,7 @@ DEFAULT_KALS_CONFIG = {
          * 
          * 預設應該關掉
          */
-        Sna_counting: {
+        "Sna_counting": {
             "enable": false
         },
         
@@ -679,20 +671,20 @@ DEFAULT_KALS_CONFIG = {
          * 
          * 預設應該關掉
          */
-        Random_user: {
+        "Random_user": {
             "enable": false
         },
         
         /**
          * 章節地圖
          */
-        Window_map: {
+        "Window_map": {
             "enable": true
         },
         /**
          * 標註顯示
          */
-        Window_filter: {
+        "Window_filter": {
             "enable": true
         },
         /**
@@ -706,13 +698,13 @@ DEFAULT_KALS_CONFIG = {
          * 
          * @version 20140625 因為不穩定，所以沒事不開啟
          */
-        Reading_guide: {
+        "Reading_guide": {
             "enable": false
         },
         /**
          * 回報功能
          */
-        Feedback_manager: {
+        "Feedback_manager": {
             "enable": true
             /**
              * 回報接收者的電子郵件信箱
@@ -726,7 +718,7 @@ DEFAULT_KALS_CONFIG = {
         /**
          * 獎章功能
          */
-        KALS_stamp: {
+        "KALS_stamp": {
             "enable": false,
             /**
              * 獎章資格設定
@@ -1085,31 +1077,41 @@ DEFAULT_KALS_CONFIG = {
          * 開啟行動版網頁
          * @type type
          */
-        Open_mobile_apps: {
+        "Open_mobile_apps": {
             enable: true
         },
         /**
          * 最新標註
          */
-        Window_search_recent: {
+        "Window_search_recent": {
             "enable": true
         },
         /**
          * 啟用檔案上傳功能
          * @version 20140902 Pulipuli Chen
          */
-        CKeditor_file_upload: {
+        "CKeditor_file_upload": {
             "enable": true,
             /**
              * 上傳的網址
              * @type String
              */
-            upload_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/upload",
+            "upload_url": "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/upload",
             /**
              * 取得檔案網址的網址
              * @type String
              */
-            get_link_url: "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link"
+            "get_link_url": "http://exp-php-file-host-2014.dlll.nccu.edu.tw/php-file-host/get_link"
+        },
+        "Window_help": {
+            "enable": false,
+            /**
+             * KALS操作說明的網址
+             * 
+             * @type {string|null} help_base_url = 'help/' 網址
+             *     也可以用http開頭的絕對網址，例如'http://www.google.com.tw/'
+             */
+            "help_base_url": 'help/',
         }
     }
 };

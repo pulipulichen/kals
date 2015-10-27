@@ -128,7 +128,8 @@ Navigation_list.prototype._create_nav = function() {
         _a.appendTo(_td);
     }
     
-    if (this._$show_help === true) {
+    if (this._$show_help === true
+            && KALS_CONFIG.modules.Window_help.enable === true) {
         this._setup_help().appendTo(_tr);
     }
 	
@@ -221,10 +222,10 @@ Navigation_list.prototype._create_nav_item = function  (_content, _i) {
  * @type jQuery
  */
 Navigation_list.prototype._setup_help = function () {
-	_td = $('<td></td>')
+    var _td = $('<td></td>')
         .addClass('item');
             
-    _a = $('<a href="#"></a>')
+    var _a = $('<a href="#"></a>')
         .appendTo(_td)
         .addClass('help');
 
@@ -237,7 +238,7 @@ Navigation_list.prototype._setup_help = function () {
         return false;
     });
 	
-	return _td;
+    return _td;
 };
 
 /**
@@ -245,10 +246,10 @@ Navigation_list.prototype._setup_help = function () {
  * @type jQuery
  */
 Navigation_list.prototype._setup_feedback = function () {
-    _td = $('<td></td>')
+    var _td = $('<td></td>')
         .addClass('item');
             
-    _a = $('<a href="#"></a>')
+    var _a = $('<a href="#"></a>')
         .appendTo(_td)
         .addClass('feedback');
 
@@ -271,7 +272,8 @@ Navigation_list.prototype._get_window_content = function (_index) {
     }
     else if (typeof(this._$nav_items[_index]) === 'string') {
         var _window_content = this._$nav_items[_index];
-        eval('var _content = new ' + _window_content + '()');
+        var _content;
+        eval('_content = new ' + _window_content + '()');
         return _content;
     }
     else if (typeof(this._$nav_items[_index]) === 'object') {
@@ -315,7 +317,7 @@ Navigation_list.prototype._create_menu = function() {
         _options.push(_option);
     }
     
-    if (this._$show_help === true) {
+    if (this._$show_help === true ) {
         _option = new Dialog_close_option(this._help_lang, function () {
             KALS_util.help();
         });

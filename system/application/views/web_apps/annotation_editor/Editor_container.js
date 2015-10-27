@@ -784,7 +784,7 @@ Editor_container.prototype.set_writable = function(_writable, _deny_lang) {
     }
     else {
         this.toggle_deny(true);
-        $.test_msg("Editor_container.prototype.set_writable", "toggle_deny()");
+        //$.test_msg("Editor_container.prototype.set_writable", "toggle_deny()");
         this.toggle_container(false);
         if ($.is_class(_deny_lang, "KALS_langauge_param") ) {
             this.set_deny_message(_deny_lang);
