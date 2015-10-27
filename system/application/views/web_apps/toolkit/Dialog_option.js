@@ -60,7 +60,7 @@ Dialog_option.prototype._$create_ui = function () {
     
     var _lang = this.lang;
     if ($.is_null(_lang)) {
-		_lang = this._default_lang;
+            _lang = this._default_lang;
 	}
     
     KALS_context.lang.add_listener(_button, _lang);

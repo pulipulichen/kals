@@ -60,7 +60,8 @@ Dialog_close_option.prototype.set_enable_close_callback = function (_boolean_val
  * @type {KALS_language_param}
  */
 Dialog_close_option.prototype._default_lang = new KALS_language_param(
-    'CLOSE',
+    //'CLOSE',
+    '<i class="remove icon"></i>',
     'dialog.option.close'
 );
 
@@ -68,7 +69,11 @@ Dialog_close_option.prototype._$create_ui = function () {
     
     var _ui = Dialog_option.prototype._$create_ui.call(this);
     
-    _ui.addClass('dialog-close');
+    _ui.addClass('dialog-close')
+            .addClass("inverted")
+            .addClass("circular")
+            .addClass("icon")
+            .addClass("mini");
     
     //var _this = this;
 //    _ui.click(function (_e) {
