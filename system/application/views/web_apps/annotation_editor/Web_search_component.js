@@ -170,6 +170,13 @@ Web_search_component.prototype._set_button_from_menu = function () {
 };
 
 /**
+ * 顯示在畫面上的字數
+ * @type Number
+ * @author Pudding 20151027
+ */
+Web_search_component.prototype._label_word_list = 10;
+
+/**
  * 設定按鈕
  * @param {String} _label
  * @param {String} _url
@@ -178,7 +185,7 @@ Web_search_component.prototype._set_button_from_menu = function () {
 Web_search_component.prototype.set_button = function (_label, _url) {
     var _ui = this.get_button();
     
-    var _label_limit = 10;
+    var _label_limit = this._label_word_list;
     if (_label.length > _label_limit) {
         _label = _label.substring(0, _label_limit) + "...";
     }

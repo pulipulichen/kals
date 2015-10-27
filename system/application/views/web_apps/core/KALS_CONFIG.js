@@ -526,10 +526,10 @@ DEFAULT_KALS_CONFIG = {
              * @author Pulipuli Chen 20141111
              * 測試搜尋最新標註用
              */
-            function () {
-                $.test_msg("點選最新標註");
-                $("td.item a.Window_search_recent:first").click();
-            }
+//            function () {
+//                $.test_msg("點選最新標註");
+//                $("td.item a.Window_search_recent:first").click();
+//            }
             /**
              * @author Pulipuli Chen 20141116
              * 測試帳號資料按鈕用

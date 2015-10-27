@@ -136,8 +136,14 @@
     width: 170px;
 }
 
+/*
 .KALS.window .dialog-options .dialog-option {
 	height: 33px;
+}
+*/
+
+.KALS.window .submit-container .create.dialog-option {
+    width: 100%;
 }
 
 

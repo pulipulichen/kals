@@ -273,7 +273,8 @@ Window_content_submit.prototype._$create_ui = function () {
     };
     
     var _ui = Dialog_option.prototype._$create_ui.call(this);
-    _ui.addClass('window-content-submit');
+    _ui.addClass('window-content-submit')
+            .addClass("brown");
     
     return _ui;
     

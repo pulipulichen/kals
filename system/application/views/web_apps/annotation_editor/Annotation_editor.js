@@ -862,6 +862,7 @@ Annotation_editor.prototype._create_submit_button = function () {
     
     var _create_button = $('<button type="submit"></button>')
         .addClass('create')
+        .addClass('ui').addClass('brown')
         .addClass('button dialog-option');
     
     var _create_lang = new KALS_language_param(
@@ -878,6 +879,8 @@ Annotation_editor.prototype._create_submit_button = function () {
     
     var _edit_button = $('<button type="submit"></button>')
         .addClass('edit')
+        .addClass('brown')
+        .addClass('ui').addClass('brown')
         .addClass('button dialog-option');
     
     var _edit_lang = new KALS_language_param(
@@ -893,6 +896,8 @@ Annotation_editor.prototype._create_submit_button = function () {
     
     var _cancel_button = $('<button type="button"></button>')
         .addClass('cancel')
+        .addClass('brown')
+        .addClass('ui').addClass('brown')
         .addClass('button dialog-option');
     
     var _cancel_lang = new KALS_language_param(

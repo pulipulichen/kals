@@ -37,7 +37,7 @@
     margin-bottom: 0;
     border-top-width: 0;
     border-bottom-width: 0;
-    top:0;
+    top:0 !important;
 }
 
 .KALS.dialog-modal.compact-height .dialog-table {

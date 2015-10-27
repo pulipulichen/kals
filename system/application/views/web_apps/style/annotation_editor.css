@@ -688,6 +688,13 @@ table.cke_editor.inline-table {
     border-radius: 2px;
     -moz-border-radius: 2px;
     */
+    padding-right: 20px !important;
+    word-break: keep-all;
+    overflow-x: hidden;
+    max-width: 130px;
+    display: inline-block;
+    position: static;
+    margin: 0px;
 }
 
 .KALS.kals-modal .web-search-container .web-search.menu {
