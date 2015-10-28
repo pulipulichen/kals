@@ -28,6 +28,7 @@ function Selection_select(_text) {
     KALS_context.ready(function () {
         //$.test_msg("準備 ok");
         KALS_text.tool.add_listener(["open", "close"], function (_tool) {
+            //$.test_msg("Selection_select 設定Annotation_tool開啟狀態", _tool.is_opened());
             _this._tool_open = _tool.is_opened();
         });
     });
@@ -86,7 +87,7 @@ Selection_select.prototype.set_select = function (_word) {
         this._select_from = _id;
         this._select_from_word = _word;
         _word.addClass(_classname);
-        //$.test_msg(KALS_text.selection.has_annotation(_id));
+        //$.test_msg("第一次點選", KALS_text.selection.has_annotation(_word));
         
         //2010.11.3 取消自動取消選取功能
         //var _this = this;
@@ -121,11 +122,14 @@ Selection_select.prototype.set_select = function (_word) {
             //}
 			
             _scope_coll.get(0).set_anchor_text(_anchor_text);
-        
+            
             this.set_scope_coll(_scope_coll);
             
             this._setted_hash = true;
 			
+        }
+        else {
+            //$.test_msg('Selection_select.set_select() 第二次選取，沒有選取到', [_anchor_text.length, KALS_CONFIG.anchor_length_max]);
         }
         
         this._select_from = null;
@@ -133,6 +137,54 @@ Selection_select.prototype.set_select = function (_word) {
         
         //$.test_msg('Selection_select.set_select()', [this._select_from, _id]);
     }
+    return this;
+};
+
+/**
+ * 設定一次性選取
+ * @author Pudding 20151029
+ * @param {jQuery} _word_start 開始的文字
+ * @param {jQuery} _word_end 結束的文字，可省略
+ */
+Selection_select.prototype.set_complete_select = function (_word_start, _word_end) {
+    
+    /**
+     * 不管編輯器開啟的狀態，反正選取就對了
+     */
+    this._tool_open = false;
+    
+    if (this.has_selected()) {
+        //$.test_msg("set_complete_select", "有選取範圍，先清空");
+        
+        //KALS_text.tool.close();
+        //this.clear();
+//        var _this = this;
+//        setTimeout(function () {
+//            _this.set_complete_select(_word_start, _word_end);
+//        }, 100);
+//        return this;
+    }
+    
+    if (_word_end === undefined) {
+        _word_end = _word_start;
+    }
+    if ($.is_array(_word_start) && _word_start.length > 1) {
+        this.set_select(_word_start[0]);
+        this.set_select(_word_start[1]);
+    }
+    else if ($.is_jquery(_word_start) && _word_start.length > 1) {
+        //$.test_msg("Selection_select.prototype.set_complete_select jquery", _word_start.length);
+        this.set_select(_word_start.eq(0));
+        this.set_select(_word_start.eq(1));
+    }
+    else {
+        //$.test_msg("Selection_select.prototype.set_complete_select else", [_word_start.length, _word_end.length]);
+        this.set_select(_word_start);
+        this.set_select(_word_end);
+    }
+    
+    //$.test_msg("set_complete_select", "選取範圍完成");
+    
     return this;
 };
 
@@ -168,13 +220,19 @@ Selection_select.prototype.cancel_select = function () {
     return this;
 };
 
-Selection_select.prototype.clear = function () {
+/**
+ * 取消選取
+ * @author Pudding 20151029
+ * @param {function} _callback
+ * @returns {Selection_select}
+ */
+Selection_select.prototype.clear = function (_callback) {
     if (this._setted_hash === true) {
         //$.test_msg("delete_field select 2");
         KALS_context.hash.delete_field('select');
     }
     
-    return Selection.prototype.clear.call(this);
+    return Selection.prototype.clear.call(this, _callback);
 };
 
 /**

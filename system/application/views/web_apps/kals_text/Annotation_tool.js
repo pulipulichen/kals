@@ -71,6 +71,12 @@ Annotation_tool.prototype._$create_ui = function () {
         .appendTo("body");
         
     var _config = this._$get_config();
+ 
+    
+    if (KALS_CONFIG.annotation_tool.editor_tool_display === false) {
+        _ui.addClass("editor-tool-hide");
+    }
+    
     
     //$.test_msg('Annotation_tool._$create_ui()', _config.onBeforeLoad);
     
@@ -83,7 +89,7 @@ Annotation_tool.prototype._$create_ui = function () {
     var _editor_tool = $('<div></div>')
         .addClass('editor-tool')
         .appendTo(_ui);
-    
+
     //設置標頭
     var _header = this._create_header_component()
         .appendTo(_editor_tool);
@@ -572,6 +578,14 @@ Annotation_tool.prototype.setup_position = function () {
     
     //$.test_msg('Annotation_tool.setup_position()');
     
+    /**
+     * 水平的模式
+     * 
+     * 有left跟center兩種
+     * @type String
+     */
+    var _horizon_align = KALS_CONFIG.annotation_tool.horizon_align;
+    
     var _ui = this.get_ui();
     if ($.is_tiny_width()) {
         _ui.css('top', '0px');
@@ -620,16 +634,20 @@ Annotation_tool.prototype.setup_position = function () {
         if (_mode === 'foot') {
             _t = _selection_bottom + _margin;
             
-            var _last_right = _selection.get_offset_last_right();
-            var _left = _selection.get_offset_left();
-            var _bottom_width = _last_right - _left;
-            
             //$.test_msg([_bottom_width , _tool_width]);
-            if (_bottom_width > _tool_width) {
-                _l = _last_right - _tool_width;
-            }
-            else {
-                _l = _left; 
+            if (_horizon_align === "left") {
+                
+                var _last_right = _selection.get_offset_last_right();
+                var _left = _selection.get_offset_left();
+                var _bottom_width = _last_right - _left;
+
+                
+                if (_bottom_width > _tool_width) {
+                    _l = _last_right - _tool_width;
+                }
+                else {
+                    _l = _left; 
+                }
             }
         }
         else {
@@ -650,6 +668,17 @@ Annotation_tool.prototype.setup_position = function () {
            
             //2010.11.1 一律置左
             _l = _first_left;
+        }
+        
+        if (_horizon_align === "center") {
+            var _first_left = _selection.get_offset_first_left();
+            var _last_right = _selection.get_offset_last_right();
+            
+            var _selection_left = Math.min(_first_left, _last_right);
+            var _selection_right = Math.max(_first_left, _last_right);
+            
+            var _center_left = (_selection_right - _selection_left) / 2 + _selection_left;
+            _l = _center_left - (_tool_width / 2);
         }
         
         //為了防止超出畫面左右的設置

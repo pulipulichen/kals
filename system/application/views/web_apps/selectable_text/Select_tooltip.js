@@ -649,18 +649,23 @@ Select_tooltip.prototype._$create_ui = function () {
     
     _select_tooltip.addClass('hide');
     
-    KALS_context.ready(function () {
-        //$.test_msg('Select_tooltip 準備註冊');
-        KALS_context.policy.add_attr_listener('read', function (_policy) {
-            //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
-            _this._set_readable(_policy.readable());
-        }, true);
+    if ($.is_number(KALS_CONFIG.annotation_tool.auto_select) === true) {
+        _this._set_enable(false);
+    }
+    else {
+        KALS_context.ready(function () {
+            //$.test_msg('Select_tooltip 準備註冊');
+            KALS_context.policy.add_attr_listener('read', function (_policy) {
+                //$.test_msg('Select_tooltip._$create_ui()', _policy.readable());
+                _this._set_readable(_policy.readable());
+            }, true);
 
-        KALS_text.tool.add_listener(["open", "close"], function (_tool) {
-            //$.test_msg("tool open", (_tool.is_opened() === false));
-            _this._set_enable((_tool.is_opened() === false));
-        });        
-    });
+            KALS_text.tool.add_listener(["open", "close"], function (_tool) {
+                //$.test_msg("tool open", (_tool.is_opened() === false));
+                _this._set_enable((_tool.is_opened() === false));
+            });
+        });
+    }
     
     return _select_tooltip;
 };
@@ -806,6 +811,14 @@ Select_tooltip.prototype.is_trigger_has_annotation = function () {
  * @param function _callback
  */
 Select_tooltip.prototype.load_tooltip_annotation = function (_index, _callback) {
+    
+    /**
+     * 如果不啟用的話，根本就不該開啟
+     * @author Pudding 20151029
+     */
+    if (this.is_enable() === false) {
+        return this;
+    }
     
     this.reset_style();
     

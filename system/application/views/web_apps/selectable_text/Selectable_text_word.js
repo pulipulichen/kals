@@ -37,6 +37,11 @@ function Selectable_text_word(_selectable_text) {
         //});
     });
     
+    if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
+        //$.test_msg("已經設定");
+        this._auto_select = true;
+    }
+    
     return this;
 }
 
@@ -213,6 +218,8 @@ Selectable_text_word.prototype.get_word_next_span = function (_word) {
  * @type {jQuery}
  */
 Selectable_text_word.prototype.create_span_word = function(_text) {
+    //$.test_msg("Selectable_text_word.prototype.create_span_word");
+    
     var _word = document.createElement("span");
     _word.className = this._span_classname + ' ' + this.word_classname;
 	
@@ -232,10 +239,13 @@ Selectable_text_word.prototype.create_span_word = function(_text) {
  * @type {jQuery}
  */
 Selectable_text_word.prototype.create_selectable_word = function(_para_id, _point_id, _text) {
+    
+    //$.test_msg("Selectable_text_word.prototype.create_selectable_word");
+    
     var _word = document.createElement("span");
 
     _word.className = this.word_classname
-    + ' ' + this._selectable_text.tooltip.trigger_classname;
+        + ' ' + this._selectable_text.tooltip.trigger_classname;
 
     var _word_id = this.word_id_prefix + _point_id; 
 
@@ -276,7 +286,10 @@ Selectable_text_word.prototype.KALS_SELECT_LOCK;
  * @returns {Selectable_text_word}
  */
 Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callback) {
-    	
+    
+    /**
+     * @type Selection_select
+     */
     var _select = KALS_text.selection.select;
     
     // @20130612 Pudding Chen
@@ -465,12 +478,76 @@ Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callb
     
     // ---------------------------------------
 
-
     if ($.is_function(_callback)) {
         _callback();
     }
     return this;
 };
+
+/**
+ * 加上自動選取的功能
+ * @author Pudding 20151028
+ * @param {jQuery} _words
+ */
+Selectable_text_word.prototype._setup_auto_select_event = function (_words) {
+    var _this = this;
+    
+    /**
+     * @type Selection_manager
+     */
+    var _selection_manager = KALS_text.selection;
+    
+    if (_selection_manager.has_annotation(_words) === false) {
+        //$.test_msg("沒有標註", _word.text());
+        return this;
+    }
+    
+    _words.addClass("auto-select");
+    
+    /**
+     * @type Selection_select
+     */
+    var _select = _selection_manager.select;
+    
+    var _hover_time = KALS_CONFIG.annotation_tool.auto_select * 1000;  //選取時的秒數
+
+    // 自動選取
+    _words.mouseover(function () {
+        var _word = $(this);
+        //$.test_msg("有觸發事件嗎？", _word.text());
+        
+        //$.test_msg("KALS_CONFIG.auto_select", ["開始選取", _hover_time, _word.text()]);
+        clearTimeout(_this._auto_select_timer);
+        _this._auto_select_timer = setTimeout(function () {
+            //_word.dblclick();
+            //_word.css("border", "1px solid red");
+            //$.test_msg("KALS_CONFIG.auto_select", ["選取了", _hover_time, _word.text()]);
+            _select.set_complete_select(_word);
+            //_this._auto_select_timer = null;
+            _this._auto_select_timer = undefined;
+        }, _hover_time);
+    });
+
+    // 取消選取
+    _words.mouseout(function () {
+        var _word = $(this);
+        
+        if (_this._auto_select_timer !== undefined) {
+            //$.test_msg("_setup_auto_select_event", "取消");
+            //_select.cancel_select();
+            clearTimeout(_this._auto_select_timer);
+            _this._auto_select_timer = undefined;
+        }
+    });
+    
+    return this;
+};
+
+/**
+ * 自動選取的計時器
+ * @type Null 或是setTimeout
+ */
+Selectable_text_word._auto_select_timer;
 
 /**
  * 檢查是否啟用滑鼠事件
@@ -485,28 +562,43 @@ Selectable_text_word.prototype._mouse_event_enable = true;
  */
 Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
     
-    _word = $(_word);
+    if ($.is_jquery(_word) === false) {
+        _word = $(_word);
+    }
     
     //$.test_msg("_init_word_selectable_event", 1);
     
-    // 20140223 Pudding Chen
-    // 轉移到這邊做tooltip
-    this.setup_word_tooltip(_word);
 
     //$.test_msg("_init_word_selectable_event", 2);
 
     // 20140518 Pulipuli Chen
     // 分開來做選取事件
-    this.setup_word_mouse_event(_word);
+    if (this._auto_select === false) {
+        // 20140223 Pudding Chen
+        // 轉移到這邊做tooltip
+        this.setup_word_tooltip(_word);
+        
+        this.setup_word_mouse_event(_word);
+    }
+    else {
+        this._setup_auto_select_event(_word);
+    }
     
     //$.test_msg("_init_word_selectable_event", 3);
     
-    _word.trigger("mouseover");
+    
     
     //$.test_msg("_init_word_selectable_event", 4);
     
     return this;
 };
+
+/**
+ * 自動選取模式
+ * @type Boolean
+ * @author Pudding 20151029
+ */
+Selectable_text_word.prototype._auto_select = false;
 
 /**
  * 讓所有文字都保持在可選取的狀態
@@ -531,10 +623,14 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
                 
                 var _word = _words.eq(_i);
                 
-                
+                /**
+                 * 在滑鼠移上去的時候才開始設定事件
+                 * @author Pudding 20151029
+                 */
                 _word.one("mouseover", function () {
                     //$.test_msg("初始化", this.id);
                     _this._init_word_selectable_event(this);
+                    $(this).trigger("mouseover");
                 });
                 
                 KALS_context.progress.add_count(2);
@@ -580,7 +676,6 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
  * 設定Word的Tooltip
  * 
  * 2325 轉接完畢，檢查完畢
- * @deprecated 不使用逐字設定toolip，改用on
  * @param {jQuery|HTMLElement} _word
  * @returns {jQuery}
  */
@@ -588,7 +683,13 @@ Selectable_text_word.prototype.setup_word_tooltip = function (_word) {
     
     var _tooltip_config = this._selectable_text.tooltip.get_tooltip_config();
     
-    $(_word).tooltip(_tooltip_config);
+    /**
+     * 如果是自動選取，那就不設定Tooltip
+     * @author Pudding 20151029
+     */
+    //if ($.is_number(KALS_CONFIG.auto_select) === false) {
+        $(_word).tooltip(_tooltip_config);
+    //}
     
     return _word;
 };

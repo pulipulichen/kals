@@ -267,6 +267,37 @@ DEFAULT_KALS_CONFIG = {
      */
     "selectable_text_clean_overwrite": false,
     
+    
+    /**
+     * 標註工具相關設定
+     * @author Pudding 20151028
+     */
+    "annotation_tool": {
+        /**
+         * 自動選取
+         *
+         * @type Number 如果是數字，就是選擇的秒數。如果是false，那就不啟用。
+         * @author Pudding 20151028
+         */
+        "auto_select": false,
+        
+        /**
+         * 是否顯示標註工具開頭的bar
+         * @type Boolean
+         * @author Pudding 20151029
+         */
+        "editor_tool_display": true,
+        
+        /**
+         * 水平對齊的模式
+         * left: 選擇範圍的左邊
+         * center: 選擇範圍的右邊
+         * @type String
+         * @author Pudding 20151029
+         */
+        "horizon_align": "left"
+    },
+    
     /**
      * 是否啟用搜尋工具列
      * @type Boolean

@@ -490,7 +490,7 @@ Selectable_text.prototype._filter_empty_node = function (_element) {
  */
 Selectable_text.prototype._merge_child_text_node = function (_element) {
     
-    var _contents = _element.contents()
+    var _contents = _element.contents();
     
     //$.test_msg("節點數量：", _contents.length);
     for (var _i = 0; _i < _contents.length; _i++) {
@@ -1361,7 +1361,7 @@ Selectable_text.prototype.cache_save = function (_callback) {
         "sentence": this.sentence.get_data(),
         "paragraph": this.paragraph.get_data(),
         "chapter": this.chapter.get_data()
-    }
+    };
     
     this.cache.save_json(_cache_data, _callback);
     

@@ -204,3 +204,10 @@
     background-color: #999999;
 }
 */
+
+/**
+ * @author Pudding 20151029
+ */
+.kals-word.auto-select {
+    cursor: wait;
+}

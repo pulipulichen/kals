@@ -68,12 +68,12 @@ Selection.prototype.set_scope_coll = function (_scope_coll) {
     
     //$.test_msg('Selection.set_scope_coll()', [$.is_class(_scope_coll, 'Scope_collection_param'), $.get_class(_scope_coll), _scope_coll.length()]);
     
-	if ($.is_array(_scope_coll)) {
-		_scope_coll = new Scope_collection_param(_scope_coll);
-	}
+    if ($.is_array(_scope_coll)) {
+        _scope_coll = new Scope_collection_param(_scope_coll);
+    }
 	
     if ($.is_class(_scope_coll, 'Scope_collection_param') === false
-        || _scope_coll.length() === 0) {
+            || _scope_coll.length() === 0) {
         //$.test_msg('Selection.set_scope_coll()', [($.is_class(_scope_coll, 'Scope_collection_param') === false), $.get_class(_scope_coll), _scope_coll.length()]);
         return this;
     }
@@ -88,10 +88,9 @@ Selection.prototype.set_scope_coll = function (_scope_coll) {
         return this;
     }
         
-    
     if (this._$select_once === true) {
-		this.clear();
-	}
+        this.clear();
+    }
     
     this._scope_coll = _scope_coll;
     
@@ -127,10 +126,17 @@ Selection.prototype.get_recommend_scope_coll = function () {
     return _recommend_scope_coll;
 };
 
-Selection.prototype.clear = function () {
+/**
+ * 清空選取狀態
+ * @author Pudding 20151029
+ * @param {function} _callback
+ * @returns {Selection.prototype}
+ */
+Selection.prototype.clear = function (_callback) {
     //如果本來就是清空的狀態，則不做任何改變
     if (this._scope_coll === null) {
         //$.test_msg('Selection.clear() no scope coll' , [this.get_classname()]);
+        $.trigger_callback(_callback);
         return this;
     }
     
@@ -145,6 +151,8 @@ Selection.prototype.clear = function () {
     this.set_classname();
     
     this.notify_listeners('clear', _scope_coll);
+    
+    $.trigger_callback(_callback);
     
     return this;
     
@@ -253,7 +261,7 @@ Selection.prototype.get_recommend_scope_coll = function () {
  * @type {boolean}
  */
 Selection.prototype.has_selected = function () {
-    return !(this._scope === null);
+    return !(this._scope_coll === null);
 };
 
 Selection.prototype._scroll_lock = false;

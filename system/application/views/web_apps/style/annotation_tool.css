@@ -183,3 +183,13 @@
     border-color: transparent; 
     border-width: 0;
 }
+
+/**
+ * @author Pudding 20151029
+ */
+.KALS.annotation-tool.editor-tool-hide .editor-tool {
+    display:none;
+}
+.KALS.annotation-tool.editor-tool-hide .annotation-tool-list {
+    border-radius: 8px;
+}
