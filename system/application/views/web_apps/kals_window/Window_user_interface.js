@@ -558,7 +558,7 @@ if (_now_page === 3){
 
  
  Window_user_interface.prototype.create_pager_button = function (_lang, _value, _callback) {
-	var _button = $("<button></button>")
+	var _button = $("<button type='button'></button>")
 		.addClass("pager-button");
 	
 	if ($.is_function(_callback)) {

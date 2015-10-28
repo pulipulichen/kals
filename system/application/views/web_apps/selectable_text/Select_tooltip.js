@@ -583,8 +583,8 @@ Select_tooltip.prototype._$create_ui = function () {
     var _container_classname = this.container_classname;
     var _button_classname = this.button_classname;
     
-    var _select_button = $('<button class="' + _button_classname + ' select">SELECT</button>');
-    var _cancel_button = $('<button class="' + _button_classname + ' cancel">CANCEL</button>');
+    var _select_button = $('<button type="button" class="' + _button_classname + ' select">SELECT</button>');
+    var _cancel_button = $('<button type="button" class="' + _button_classname + ' cancel">CANCEL</button>');
     
     var _content = $('<div class="tooltip">' 
             + '<div class="tip-needle top"></div>'

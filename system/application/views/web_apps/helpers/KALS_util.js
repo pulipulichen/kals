@@ -746,7 +746,7 @@ KALS_util.ajax_upload = function (_config) {
     }
     
     if (_debug === true) {
-        var _submit_btn = $('<button type="submit">SUBMIT</button>')
+        var _submit_btn = $('<button type="button">SUBMIT</button>')
             .appendTo(_form);
     }
     
