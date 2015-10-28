@@ -99,8 +99,8 @@ Window_view.prototype._load_url = 'annotation_getter/list';
  */
 Window_view.prototype.load_topic_param = function (_topic_id) {
     if ($.isset(this._topic_param)) {
-		return this;
-	}
+        return this;
+    }
     
     if ($.is_number(_topic_id) || $.is_string(_topic_id)) {
         try {

@@ -586,52 +586,14 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             _loop(_i, _child_nodes, _cb);
             return;
         }   //if (_this.element_has_class(_child_obj, _para_classname)) {
-		
-        if (_child_obj.nodeName !== '#text' &&
+	
+        else if (_child_obj.nodeName !== '#text' &&
             _this.is_element_has_class(_child_obj, _para_classname) === false) {
-        
+            
             var _check_word_count = _selectable_text_word.word_count;
             
-            var _deeper_parse = function () {
-                var _node_name = _child_obj.nodeName;
-                if (_check_word_count < _selectable_text_word.word_count
-                    && typeof(_node_name) === 'string' 
-                    && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
-                    
-                    //$.test_msg("是章節", _node_name);
-                    _selectable_text_paragraph.setup_paragraph_node(_child_obj);
-                
-                    // 20131231 連續加兩次是刻意的
-                    //_selectable_text_paragraph.paragraph_count++;
-                    //_selectable_text_paragraph.paragraph_count++;
-                    
-                    //$.test_msg("deeper parse 1", _selectable_text_word.word_count);
-                    //_selectable_text_paragraph.paragraph_structure.push(_selectable_text_word.word_count);
-                    //_selectable_text_paragraph.add_structure();
-                    
-                    // 20140102 Pulipuli Chen
-                    // 增加句子的計算數量
-                    _selectable_text_sentence.add_structure_last_word();
-                    
-                    // 20140103 Pulipuli Chen
-                    // 是章節嗎？
-                    if ($.inArray(_node_name.toLowerCase(), _chapter_tag_names) !== -1) {
-                        _selectable_text_chapter.add_structure(_child_obj);
-                    }
-                }   
-                else if (typeof(_node_name) === 'string'
-                    && _node_name.toLowerCase() === 'br') {
-                    _selectable_text_paragraph.paragraph_count++;
-                    
-                    //$.test_msg("deeper parse 2", _selectable_text_word.word_count);
-                    //_selectable_text_paragraph.paragraph_structure.push(_selectable_text_word.word_count);
-                    _selectable_text_paragraph.add_structure();
-                    
-                    // 20140102 Pulipuli Chen
-                    // 增加句子的計算數量
-                    _selectable_text_sentence.add_structure_last_word();
-                }
-				
+            var _next_loop = function () {
+                	
                 _i++;
                 
                 if (_i % _batch_excute === 0) {
@@ -644,159 +606,62 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     _loop(_i, _child_nodes, _cb);
                     return;
                 }
+            };
+            
+            var _deeper_parse = function () {
+                var _node_name = _child_obj.nodeName;
+                if (_check_word_count < _selectable_text_word.word_count
+                    && typeof(_node_name) === 'string' 
+                    && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
+                    
+                    //$.test_msg("是章節", _node_name);
+                    _selectable_text_paragraph.setup_paragraph_node(_child_obj);
+        
+                    // 20140102 Pulipuli Chen
+                    // 增加句子的計算數量
+                    _selectable_text_sentence.add_structure_last_word();
+                    
+                    // 20140103 Pulipuli Chen
+                    // 是章節嗎？
+                    if ($.inArray(_node_name.toLowerCase(), _chapter_tag_names) !== -1) {
+                        _selectable_text_chapter.add_structure(_child_obj);
+                    }
+                }
+                else if (typeof(_node_name) === 'string') {
+                    _node_name = _node_name.toLowerCase();
+                    if (_node_name === 'br') {
+                        _selectable_text_paragraph.paragraph_count++;
+
+                        //$.test_msg("deeper parse 2", _selectable_text_word.word_count);
+                        //_selectable_text_paragraph.paragraph_structure.push(_selectable_text_word.word_count);
+                        _selectable_text_paragraph.add_structure();
+
+                        // 20140102 Pulipuli Chen
+                        // 增加句子的計算數量
+                        _selectable_text_sentence.add_structure_last_word();
+                    }
+                }
+		
+                _next_loop();
             };  // var _deeper_parse = function () {
             
-            _this.setup_selectable_element($(_child_obj), _deeper_parse);
+            
+            if ($(_child_obj).hasClass("kals-annotation-spot")) {
+                //$(_child_obj).css("border", "3px solid red");
+                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj);
+                _this._setup_selectable_element_insert_action(_child_obj, _next_element);
+                _next_loop();
+            }
+            else {
+                _this.setup_selectable_element($(_child_obj), _deeper_parse);
+            }
             return;
         }   //if (_child_obj.nodeName !== '#text' &&
         else {
             var _text = _this.get_element_content(_child_obj);
-            
-            // 20140518 Pulipuli Chen
-            // 連接下一個text
-            /*
-            $.test_msg("開始找尋下一個", _i);
-            var _next_child_obj = _child_nodes.item(_i + 1);
-            while (_next_child_obj !== null 
-                    && _next_child_obj.nodeName === "#text") {
-                var _next_text = _this.get_element_content(_next_child_obj);
-                if ($.trim(_next_text) === "") {
-                    $.test_msg("空格", _next_text);
-                    //break;
-                }
-                else {
-                    $.test_msg("下一個text", _next_text);
-                }
-                _text = _text + _next_text;
-                _i++;
-                
-                $(_next_child_obj).remove();
-                _next_child_obj = _child_nodes.item(_i + 1);
-            }   //
-            
-            if (_text === "") {
-                _i++;
-                _loop(_i, _child_nodes, _cb);
-                return;
-            }
-            */
 
-            // 20140223 Pulipuli Chen
             // 將初始化next_element的動作往外移
             var _next_element = _this._setup_selectable_element_init_next_element(_text, _child_obj);
-//            var _next_element = null;
-//            _next_element = _this.create_selectable_paragraph(_selectable_text_paragraph.paragraph_count);
-//            $(_next_element).hide();
-//            
-//            /**
-//             * @version 20111106 Pudding Chen
-//             *     先不貼出去，讓他放在記憶體中處理。
-//             *     處理完一個段落在貼到DOM去。
-//             */
-//            //_child_obj.parentNode.insertBefore(_next_element, _child_obj);
-//            
-//            for (var _s = 0; _s < _text.length; _s++) {
-//                var _t = _text.substr(_s, 1);
-//                var _t_prev = '',  _t_next = '';
-//                
-//                if (_s > 0) {
-//                    _t_prev = _text.substr(parseInt(_s,10) - 1, 1);
-//                }
-//                
-//                if (_s < _text.length - 1) {
-//                    _t_next = _text.substr(parseInt(_s,10) + 1, 1);
-//                }
-//                
-//                if ($.match_english(_t) === true) {	
-//                    while ($.match_english(_t_next) === true) {
-//                        _t = _t + _t_next;
-//                        _s++;
-//                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
-//                    }
-//                }
-//                else if ($.match_number(_t) === true) {
-//                    while ($.match_number(_t_next) === true) {
-//                        _t = _t + _t_next;
-//                        _s++;
-//                        _t_next = _text.substr(parseInt(_s,10)+1, 1);
-//                    }
-//                }
-//                
-//                var _t_element = null;
-//                
-//                // 如果不是空白的話
-//                if ($.match_space(_t) === false) {
-//                    
-//                    _t_element = _selectable_text_word.create_selectable_word(
-//                            _selectable_text_paragraph.paragraph_count, 
-//                            _selectable_text_word.word_count, _t
-//                    );
-//                    
-//                    if ($.match_sentence_punctuation(_t)) {
-//                        if ($.match_english_sentence_punctuation(_t)) {
-//                            if (_t_next === '') {
-//                                $(_t_element).addClass(_sentence_punctuation_class_name);
-//                                
-//                                // 20140102 Pulipuli Chen
-//                                // 增加句子的計算數量
-//                                _selectable_text_sentence.add_structure();
-//                            }
-//                            else if ($.match_space(_t_next)) {
-//                                if (_s < _text.length - 2) {
-//                                    //檢測下下個字是否是大寫英文
-//                                    var _t_nnext = _text.substr(parseInt(_s, 10) + 2, 1);
-//                                    if ($.match_upper_english(_t_nnext)) {
-//                                        $(_t_element).addClass(_sentence_punctuation_class_name);
-//                                        
-//                                        // 20140102 Pulipuli Chen
-//                                        // 增加句子的計算數量
-//                                        _selectable_text_sentence.add_structure();
-//                                    }   //if ($.match_upper_english(_t_nnext)) {
-//                                    else {
-//                                        $(_t_element).addClass(_punctuation_classname);
-//                                    }
-//                                }   //if (_s < _text.length - 2) {
-//                                else {
-//                                    $(_t_element).addClass(_sentence_punctuation_class_name);
-//                                    
-//                                    // 20140102 Pulipuli Chen
-//                                    // 增加句子的計算數量
-//                                    _selectable_text_sentence.add_structure();
-//                                }
-//                            }   // else if ($.match_space(_t_next)) {
-//                            else {
-//                                $(_t_element).addClass(_punctuation_classname);
-//                            }
-//                        }   //if ($.match_sentence_punctuation(_t)) {
-//                        else {
-//                            $(_t_element).addClass(_sentence_punctuation_class_name);
-//                            
-//                            // 20140102 Pulipuli Chen
-//                            // 增加句子的計算數量
-//                            _selectable_text_sentence.add_structure();
-//                        }
-//                    }   //if ($.match_sentence_punctuation(_t)) {
-//                    else if ($.match_punctuation(_t)) {
-//                        $(_t_element).addClass(_punctuation_classname);
-//                    }   //else if ($.match_punctuation(_t)) {
-//                    _selectable_text_word.word_count++;
-//                }   //if ($.match_space(_t) === false) {
-//                else {
-//                    // 如果是空白的話
-//                    _t_element = _this.create_span_word(_t);
-//                }
-//                
-//                _next_element.appendChild(_t_element);
-//            }    //for (var _s = 0; _s < _text.length; _s++)
-    	
-            // 20140223 Pulipuli Chen
-            // 將腳本分離
-            //var _insert_action = function () {
-            //    _child_obj.parentNode.insertBefore(_next_element, _child_obj);
-            //    $(_next_element).css("display", "inline");
-            //    $(_child_obj).remove();
-            //};
-            //_this._task_stack.push(_insert_action);
             _this._setup_selectable_element_insert_action(_child_obj, _next_element);
             
             _i++;
@@ -840,6 +705,10 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
  */
 Selectable_text.prototype._setup_selectable_element_init_next_element = function (_text, _child_obj) {
     return this.paragraph._setup_selectable_element_init_next_element(_text, _child_obj);
+};
+
+Selectable_text.prototype._setup_selectable_element_clone_next_element = function (_child_obj) {
+    return this.paragraph._setup_selectable_element_clone_next_element(_child_obj);
 };
 
 /**

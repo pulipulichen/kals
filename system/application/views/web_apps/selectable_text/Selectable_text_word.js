@@ -276,6 +276,30 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
     return _word;
 };
 
+/**
+ * 建立一個可選取的文字
+ * 
+ * 2324 轉接完畢，檢查完畢
+ * @param {number} _para_id Paragraph ID
+ * @param {number} _point_id Word ID
+ * @param {string} _text 內容文字
+ * @type {jQuery}
+ * @author Pudding 20151029
+ */
+Selectable_text_word.prototype.create_selectable_element = function(_para_id, _point_id, _word) {
+    
+    _word.className =  $.trim(_word.className + " " + this.word_classname
+        + ' ' + this._selectable_text.tooltip.trigger_classname);
+
+    var _word_id = this.word_id_prefix + _point_id; 
+
+    _word.id = _word_id;
+
+    KALS_context.progress.add_count();
+ 
+    return _word;
+};
+
 Selectable_text_word.prototype.KALS_SELECT_MOUSEDOWN_LOCK;
 Selectable_text_word.prototype.KALS_SELECT_LOCK;
 
@@ -286,6 +310,7 @@ Selectable_text_word.prototype.KALS_SELECT_LOCK;
  * @returns {Selectable_text_word}
  */
 Selectable_text_word.prototype.setup_word_mouse_event = function (_words, _callback) {
+    
     
     /**
      * @type Selection_select
@@ -544,6 +569,25 @@ Selectable_text_word.prototype._setup_auto_select_event = function (_words) {
 };
 
 /**
+ * 加上單一選取的功能
+ * @author Pudding 20151029
+ * @param {jQuery} _words
+ */
+Selectable_text_word.prototype._setup_word_annotation_spot_event = function (_words) {
+    
+    /**
+     * @type Selection_select
+     */
+    var _select = KALS_text.selection.select;
+    
+    //$.test_msg("已經設定");
+    _words.click(function () {
+        var _word = $(this);
+        _select.set_complete_select(_word);
+    });
+};
+
+/**
  * 自動選取的計時器
  * @type Null 或是setTimeout
  */
@@ -573,7 +617,10 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
 
     // 20140518 Pulipuli Chen
     // 分開來做選取事件
-    if (this._auto_select === false) {
+    if (_word.hasClass("kals-annotation-spot")) {
+        this._setup_word_annotation_spot_event(_word);
+    }
+    else if (this._auto_select === false) {
         // 20140223 Pudding Chen
         // 轉移到這邊做tooltip
         this.setup_word_tooltip(_word);

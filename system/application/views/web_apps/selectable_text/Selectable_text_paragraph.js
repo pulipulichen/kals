@@ -193,7 +193,7 @@ Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
     var _this = this;   
     var _loop = function (_i) {
         if (_i < _last_paragraph_id + 1) {
-            _length = _this._text.find('.' 
+            var _length = _this._text.find('.' 
                     + _paragraph_id_prefix + _i 
                     + ' .' + _word_classname 
                     + ':not(.span):not(.'
@@ -419,8 +419,8 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
         if ($.match_space(_t) === false) {
 
             _t_element = _selectable_text_word.create_selectable_word(
-                    _selectable_text_paragraph.paragraph_count, 
-                    _selectable_text_word.word_count, _t
+                _selectable_text_paragraph.paragraph_count, 
+                _selectable_text_word.word_count, _t
             );
 
             if ($.match_sentence_punctuation(_t)) {
@@ -507,6 +507,31 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     */
     // ---------------------------
     // 回傳
+    
+    return _next_element;
+};
+
+/**
+ * 初始化next_element，只用於setup_selectable_element
+ * @param {String} _text
+ * @param {jQuery} _child_obj
+ * @returns {HTMLNode}
+ * @author Pudding 20151029
+ */
+Selectable_text_paragraph.prototype._setup_selectable_element_clone_next_element = function (_child_obj) {
+    // 變數簡化
+    var _selectable_text_paragraph = this;
+    var _selectable_text_word = this._selectable_text.word;
+    var _selectable_text_sentence = this._selectable_text.sentence;
+    var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
+    var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
+    
+    
+    var _next_element = $(_child_obj).clone().get(0);
+    _next_element = _selectable_text_word.create_selectable_element(
+        _selectable_text_paragraph.paragraph_count, 
+        _selectable_text_word.word_count, _next_element
+    );
     
     return _next_element;
 };
