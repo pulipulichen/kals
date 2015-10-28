@@ -344,7 +344,7 @@ Navigation_list.prototype._create_menu = function() {
             //KALS_window.setup_window(_content);    
             //}, 1000);
             $.test_msg("Navigation_list.prototype._create_menu", typeof(_content));
-            
+            $.test_msg("issue #152");
         }, _content);
         
         //$.test_msg('Navigation_list._create_menu() option classname', _content.name);

@@ -577,9 +577,9 @@ DEFAULT_KALS_CONFIG = {
              * @author Pulipuli Chen 20151028
              * 測試縮小選單
              */
-            function () {
-                $(".navigation-list.profile-navgation .menu").click();
-            }
+//            function () {
+//                $(".navigation-list.profile-navgation .menu").click();
+//            }
         ]
     },
     

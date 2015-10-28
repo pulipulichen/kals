@@ -160,7 +160,7 @@ Dialog_modal.prototype.setup_modal = function (_config) {
  */
 Dialog_modal.prototype.set_heading = function (_lang_param) {
     var _container = this.get_heading();
-    if (_container.length == 1) {
+    if (_container.length === 1) {
         if ($.is_string(_lang_param)) {
             _container.html(_lang_param);
         }
@@ -190,9 +190,9 @@ Dialog_modal.prototype.set_backward_option = function (_option) {
     
     var _option_ui = _option;
     if ($.is_jquery(_option) === false) {
-        if (typeof(_option.get_ui) != 'function') {
-			return this;
-		}
+        if (typeof(_option.get_ui) !== 'function') {
+            return this;
+        }
         _option_ui = _option.get_ui();
     }
     
@@ -225,9 +225,9 @@ Dialog_modal.prototype.set_backward_option = function (_option) {
 Dialog_modal.prototype.set_forward_option = function (_option) {
     var _ui = this.get_ui();
     
-    if (typeof(_option.get_ui) != 'function') {
-		return this;
-	}
+    if (typeof(_option.get_ui) !== 'function') {
+        return this;
+    }
     
     var _option_ui = _option.get_ui();
     var _container = _ui.find('.toolbar-forward:first');
@@ -286,7 +286,7 @@ Dialog_modal.prototype.toggle_toolbar_option = function(_display) {
 Dialog_modal.prototype.set_content = function (_lang) {
     var _container = this.get_content();
     
-    if (_container.length == 1) {
+    if (_container.length === 1) {
         this.toggle_content(true);
         this.get_ui().addClass('with-content');
         if ($.is_null(_lang)) {
@@ -299,7 +299,7 @@ Dialog_modal.prototype.set_content = function (_lang) {
             _container.html(_lang);
         }
         else if ($.is_class(_lang, 'KALS_language_param')) {
-            if (typeof(KALS_context) != 'undefined') {
+            if (typeof(KALS_context) !== 'undefined') {
                 KALS_context.lang.add_listener(_container, _lang);
             }
         }
@@ -371,7 +371,7 @@ Dialog_modal.prototype.set_options = function (_options, _double_col) {
     if ($.is_null(_options)) {
         _options = [];
     }
-    else if (false == $.is_array(_options)) {
+    else if (false === $.is_array(_options)) {
         _options = [_options];
     }
         
@@ -460,27 +460,33 @@ Dialog_modal.prototype.toggle_options = function (_display) {
  */
 Dialog_modal.prototype.focus_option = function (_offset) {
     if (this._setted_focus === true) {
-		return this;
-	}
+        //$.test_msg("Dialog_modal.prototype.focus_option", "沒有預設要聚焦喔");
+        return this;
+    }
     
     var _ui = this.get_ui();
     
     if (_ui !== null) {
         if ($.is_null(_offset)) {
-			_offset = 0;
-		}
+            _offset = 0;
+        }
             
         var _option = _ui.find('.dialog-options .dialog-option').eq(_offset);
         
-        if (_option.length == 1) {
-			_option.focus();
-		}
+        if (_option.length === 1) {
+            _option.focus();
+        }
         
         this._setted_focus = true;
     }
     return this;
 };
 
+/**
+ * 開啟時是否「不要」聚焦在第一個按鈕
+ * @type Boolean
+ * @author Pudding 20151028
+ */
 Dialog_modal.prototype._setted_focus = false;
 
 /**
@@ -714,7 +720,7 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
                 }
                 
                 var _bottom_padding = _el.find('.bottom-padding:first');
-                if (_bottom_padding.length == 1) {
+                if (_bottom_padding.length === 1) {
                     _option = {};
                     _option.height = 0;
                     _bottom_padding.animate(_option, {
@@ -764,9 +770,9 @@ Dialog_modal.prototype.enable_touch_scroll = function (_el) {
 };
 
 Dialog_modal.prototype.get_event_pageY = function (_event) {
-    if (typeof(_event.touches) != 'undefined' &&
-	typeof(_event.touches[0]) != 'undefined' &&
-	typeof(_event.touches[0].pageY) != 'undefined') {
+    if (typeof(_event.touches) !== 'undefined' &&
+	typeof(_event.touches[0]) !== 'undefined' &&
+	typeof(_event.touches[0].pageY) !== 'undefined') {
 		return _event.touches[0].pageY;
 	}
 	else {
@@ -778,11 +784,23 @@ Dialog_modal.prototype.get_event_pageY = function (_event) {
 /**
  * open的時候，focus在第一顆按鈕上
  * @param {Object} _callback
+ * @param {Boolean} _focus_first 預設 true
+ * @author Pudding 20151028
  */
-Dialog_modal.prototype.open = function (_callback) {
+Dialog_modal.prototype.open = function (_callback, _focus_first) {
+    
+    if (typeof(_callback) === "boolean") {
+        _focus_first = _callback;
+        _callback = undefined;
+    }
     
     var _this = this;
     this._setted_focus = false;
+    
+    if (_focus_first !== undefined) {
+        this._setted_focus = (_focus_first !== true);
+    }
+    
     var _open_callback = function (_ui) {
         
         //$.test_msg('Dialog_modal.open() _open_callback');
@@ -790,8 +808,8 @@ Dialog_modal.prototype.open = function (_callback) {
         _this.focus_option();
         
         if ($.is_function(_callback)) {
-			_callback(_ui);
-		}
+            _callback(_ui);
+        }
     };
     
     //2010.10.1 不使用Base庫

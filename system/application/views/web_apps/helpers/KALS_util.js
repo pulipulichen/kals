@@ -1186,7 +1186,7 @@ KALS_util.select_menu = function (_config) {
     }
     
     _menu.add_class('select-menu');
-    _menu.open();
+    _menu.open(false);
     
     return _menu;
 };
