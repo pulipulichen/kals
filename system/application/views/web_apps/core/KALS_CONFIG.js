@@ -310,7 +310,34 @@ DEFAULT_KALS_CONFIG = {
      * @type String
      */
     kals_config_api: null,
-    	
+    
+    /**
+     * 主題佈景的顏色
+     * 
+     * 選項請參考Semantic UI的顏色差異
+     * http://semantic-ui.com/elements/button.html#colored
+     * - red
+     * - orange
+     * - yellow
+     * - olive 橄欖綠
+     * - green
+     * - teal 青綠
+     * - blue
+     * - violet 藍紫
+     * - purple 紫色
+     * - pink 粉紅色
+     * - brown 棕色：KALS的預設色
+     * - grey 灰色
+     * - black
+     * @author Pudding 20151028
+     */
+    "theme": {
+        /**
+         * 按鈕
+         * @type String
+         */
+        "button": "brown"
+    },
     //----------------------------
     
     //以下是版面調整

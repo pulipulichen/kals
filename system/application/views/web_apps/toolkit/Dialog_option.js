@@ -51,7 +51,7 @@ Dialog_option.prototype._default_lang = new KALS_language_param(
  */
 Dialog_option.prototype._$create_option = function () {
     //return $('<button class="button"></button>');
-    return $('<button class="ui button"></button>');
+    return $('<button class="ui ' + KALS_CONFIG.theme.button + ' button"></button>');
 }; 
 Dialog_option.prototype._$create_ui = function () {
     
@@ -60,8 +60,8 @@ Dialog_option.prototype._$create_ui = function () {
     
     var _lang = this.lang;
     if ($.is_null(_lang)) {
-            _lang = this._default_lang;
-	}
+        _lang = this._default_lang;
+    }
     
     KALS_context.lang.add_listener(_button, _lang);
     

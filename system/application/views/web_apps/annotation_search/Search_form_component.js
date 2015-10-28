@@ -217,7 +217,7 @@ Search_form_component.prototype._create_search_submit_button = function () {
             );
     
     //var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
-    var _submit = $('<button class="ui icon button"><i class="search icon"></i></button>')
+    var _submit = $('<button class="ui icon button" .type="button"><i class="search icon"></i></button>')
             .click(_click_callback);
 //    _submit.empty()
 //       .addClass("search-form-submit");
@@ -227,7 +227,7 @@ Search_form_component.prototype._create_search_submit_button = function () {
 //            .html('<i class="search icon"></i>');
     
     _submit.addClass("search-form-submit")
-            .addClass("brown");
+            .addClass(KALS_CONFIG.theme.button);
     
     //var _submit = $('<button type="button" class="search-form-submit"></button>')
     //    .append(KALS_context.get_image_url('search.gif'));
@@ -287,8 +287,7 @@ Search_form_component.prototype._create_open_search = function () {
     
     var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
     _submit.addClass("search-form-submit")
-            .addClass("compact")
-            .addClass("brown");
+            .addClass("compact");
 //            .html('<i class="fa fa-search"></i>');
 	
     return _submit;
@@ -318,8 +317,7 @@ Search_form_component.prototype._create_reset_search_button = function () {
     
     var _submit = (new Dialog_option(_lang, _click_callback)).get_ui();
     _submit.addClass("search-form-reset")
-        .addClass("compact")
-        .addClass("brown");
+        .addClass("compact");
 
     return _submit;
 };

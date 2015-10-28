@@ -860,9 +860,9 @@ Annotation_editor.prototype._create_user_component = function () {
 
 Annotation_editor.prototype._create_submit_button = function () {
     
-    var _create_button = $('<button type="submit"></button>')
+    var _create_button = $('<button type="button"></button>')
         .addClass('create')
-        .addClass('ui').addClass('brown')
+        .addClass('ui').addClass(KALS_CONFIG.theme.button)
         .addClass('button dialog-option');
     
     var _create_lang = new KALS_language_param(
@@ -877,10 +877,10 @@ Annotation_editor.prototype._create_submit_button = function () {
         _this.submit();
     });
     
-    var _edit_button = $('<button type="submit"></button>')
+    var _edit_button = $('<button type="button"></button>')
         .addClass('edit')
-        .addClass('brown')
-        .addClass('ui').addClass('brown')
+        .addClass(KALS_CONFIG.theme.button)
+        .addClass('ui')
         .addClass('button dialog-option');
     
     var _edit_lang = new KALS_language_param(
@@ -896,8 +896,7 @@ Annotation_editor.prototype._create_submit_button = function () {
     
     var _cancel_button = $('<button type="button"></button>')
         .addClass('cancel')
-        .addClass('brown')
-        .addClass('ui').addClass('brown')
+        .addClass('ui').addClass(KALS_CONFIG.theme.button)
         .addClass('button dialog-option');
     
     var _cancel_lang = new KALS_language_param(

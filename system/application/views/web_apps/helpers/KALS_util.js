@@ -1206,7 +1206,7 @@ KALS_util.help = function (_url) {
         _url = _url.substr(1, _url.length);
     }
     
-    var _base_url = KALS_CONFIG.modules.Window_help.help_base_url;
+    var _base_url = KALS_CONFIG.modules.Navigation_help.help_base_url;
     var _needle = 'http';
     var _help_url = KALS_context.get_base_url([_base_url, _url]);
     if (_base_url.substr(0, _needle.length) === _needle) {
