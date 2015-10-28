@@ -159,7 +159,7 @@ KALS_window.prototype._setup_ui = function (_callback) {
     
     //$.test_msg('KALS_window._setup_ui()', this._$modal_name);
     
-    var _close_option = new Dialog_close_option();
+    var _close_option = new Dialog_close_icon();
     this.set_forward_option(_close_option);
         
     return this;    

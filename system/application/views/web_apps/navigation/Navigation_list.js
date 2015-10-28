@@ -314,6 +314,11 @@ Navigation_list.prototype._get_window_content = function (_index) {
     }
 }; 
 
+/**
+ * 窄畫面時的下拉式選單
+ * 
+ * @author  Pulipuli Chen 20151028
+ */
 Navigation_list.prototype._create_menu = function() {
     
     var _ui = $('<div><i class="sidebar icon"></i></div>')
@@ -330,13 +335,15 @@ Navigation_list.prototype._create_menu = function() {
     for (var _i in this._$nav_items) {
         //var _content = this._$nav_items[_i];
         var _content = this._get_window_content(_i);
-        var _option = new Dialog_close_option(_content.nav_heading, function (_content) {
+        
+        //$.test_msg("Navigation_list.prototype._create_menu", _content);
+        var _option = new Dialog_close_option(_content.get_nav_heading_lang(), function (_content) {
             
             //setTimeout(function() {
                 // TODO Navigation_list.create_menu() 這邊很有可能出錯，請務必檢查
-                KALS_window.setup_window(_content);    
+            //KALS_window.setup_window(_content);    
             //}, 1000);
-            
+            $.test_msg("Navigation_list.prototype._create_menu", typeof(_content));
             
         }, _content);
         
@@ -346,13 +353,13 @@ Navigation_list.prototype._create_menu = function() {
         _options.push(_option);
     }
     
-    if (this._$show_help === true ) {
-        _option = new Dialog_close_option(this._help_lang, function () {
-            KALS_util.help();
-        });
-        _option.add_class('help');
-        _options.push(_option);
-    }
+//    if (this._$show_help === true ) {
+//        _option = new Dialog_close_option(this._help_lang, function () {
+//            KALS_util.help();
+//        });
+//        _option.add_class('help');
+//        _options.push(_option);
+//    }
     
     var _config = {
         heading: _lang_param,

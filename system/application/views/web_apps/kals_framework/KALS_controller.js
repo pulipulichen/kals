@@ -31,6 +31,8 @@ function KALS_controller() {
         }
         //_this._auth_check();
     }
+    
+    
 }
 
 /**
@@ -709,7 +711,23 @@ KALS_controller.prototype.get_view_lang = function (_view_line) {
 KALS_controller.prototype.get_view_lang_line = function (_view_line) {
     var _lang = this.get_view_lang(_view_line);
     return KALS_context.lang.line(_lang);
-}
+};
+
+/**
+ * 取得導覽列的語系
+ * @author Pudding 20151028
+ * @return KALS_language_param
+ */
+KALS_controller.prototype.get_nav_heading_lang = function () {
+    var _lang;
+    if (typeof(this.nav_heading) !== "undefined") {
+        _lang = this.nav_heading;
+    }
+    else if (typeof(this._$nav_heading) !== "undefined") {
+        _lang = this._$nav_heading;
+    }
+    return _lang;
+};
 
 /* End of file KALS_controller */
 /* Location: ./system/application/views/web_apps/toolkit/KALS_controller.js */

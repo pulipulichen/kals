@@ -170,6 +170,7 @@ $config['web_apps.javascript_import']['toolkit_list_package'] = array(
     , 'toolkit/Dialog_option'
     , 'toolkit/Dialog_link'
     , 'toolkit/Dialog_close_option'
+    , 'toolkit/Dialog_close_icon'
     , 'toolkit/Dialog_close_link'
     , 'toolkit/Dialog_disabled_option'  // Pulipuli Chen 20141111
     , 'toolkit/Notify_modal'

@@ -83,5 +83,7 @@ Navigation_item_link.prototype.is_absolute = function () {
     return false;
 };
 
+Navigation_item_link.prototype.get_nav_heading_lang = KALS_controller.prototype.get_nav_heading_lang;
+
 /* End of file Navigation_item_link */
 /* Location: ./system/application/views/web_apps/Navigation_item_link.js */

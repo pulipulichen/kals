@@ -573,6 +573,13 @@ DEFAULT_KALS_CONFIG = {
 //                $(".search-form-init .dropdown.annotation-type").val("custom");
 //                $(".search-form-init .button.dialog-option.search-form-submit").click();
 //            }
+            /**
+             * @author Pulipuli Chen 20151028
+             * 測試縮小選單
+             */
+            function () {
+                $(".navigation-list.profile-navgation .menu").click();
+            }
         ]
     },
     

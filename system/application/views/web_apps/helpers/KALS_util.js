@@ -1003,7 +1003,7 @@ KALS_util._get_alert_modal = function () {
         _modal._$exposable = true;
         
         //var _close_option = _modal.create_close_option();
-        var _close_option = new Dialog_close_option();
+        var _close_option = new Dialog_close_icon();
         _modal.set_options(_close_option);
         _modal.get_ui().addClass('alert');
         
@@ -1032,11 +1032,11 @@ KALS_util.alert = function (_heading, _content, _callback) {
     _modal.set_content(_content);
     
     if ($.is_function(_callback)) {
-		_modal.set_onclose(_callback);
-	}
-	else {
-		_modal.set_onclose(false);
-	}
+        _modal.set_onclose(_callback);
+    }
+    else {
+        _modal.set_onclose(false);
+    }
     _modal.open();
     
     return _modal;
@@ -1180,7 +1180,8 @@ KALS_util.select_menu = function (_config) {
     _menu.set_onclose(_onclose);
     
     if (_heading_close === true) {
-        var _close_option = new Dialog_close_option();
+        // 關閉按鈕
+        var _close_option = new Dialog_close_icon();
         _menu.set_forward_option(_close_option);    
     }
     

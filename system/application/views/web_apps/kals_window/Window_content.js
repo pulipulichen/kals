@@ -520,6 +520,12 @@ Window_content.prototype.default_focus_input = '.dialog-content:first input:firs
  */
 Window_content.prototype.default_focus_submit = '.dialog-options button.window-content-submit:first';
 
+/**
+ * 取得導覽列的語系
+ * @author Pudding 20151028
+ * @return KALS_language_param
+ */
+Window_content.prototype.get_nav_heading_lang = KALS_controller.prototype.get_nav_heading_lang;
 
 /* End of file Window_content */
 /* Location: ./system/application/views/web_apps/Window_content.js */

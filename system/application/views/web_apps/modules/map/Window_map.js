@@ -264,7 +264,7 @@ Window_map.prototype._$create_ui = function () {
 	
     var _this = this;
     setTimeout(function () {
-        var _close_option = new Dialog_close_option();
+        var _close_option = new Dialog_close_icon();
         _this.set_forward_option(_close_option);
     }, 0);
 	

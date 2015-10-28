@@ -26,7 +26,6 @@ function Dialog_close_option(_lang, _callback, _arg) {
     };
     
     Dialog_option.call(this, _lang, _close_callback, _arg);
-    
 }
 
 Dialog_close_option.prototype = new Dialog_option();
@@ -69,20 +68,7 @@ Dialog_close_option.prototype._$create_ui = function () {
     
     var _ui = Dialog_option.prototype._$create_ui.call(this);
     
-    _ui.addClass('dialog-close')
-            .addClass("inverted")
-            .addClass("circular")
-            .addClass("icon")
-            .addClass("mini");
-    
-    //var _this = this;
-//    _ui.click(function (_e) {
-//        $.test_msg("Dialog_close_option click");
-//        var _ui = this;
-//        _e.preventDefault();
-//        _this.close_handle(_ui, _this.callback);
-//        return false;
-//    });
+    _ui.addClass('dialog-close');
     
     return _ui;
 };

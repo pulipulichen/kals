@@ -302,6 +302,10 @@
     margin-top: 5px;
 }
 
+.KALS .dialog-options .dialog-option i.icon  {
+    margin: 0;
+}
+
 .KALS .dialog-option.option-left {
     float:left;
     width: 49%;

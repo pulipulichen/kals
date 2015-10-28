@@ -646,7 +646,7 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     }
     
     // 設置關閉按鈕
-    var _option = new Dialog_close_option();
+    var _option = new Dialog_close_icon();
     var _close_ui = _option.get_ui();
     _close_ui.css("float", "right").prependTo(_ui.find(".dialog-heading:first"));
     _close_ui.clone()
