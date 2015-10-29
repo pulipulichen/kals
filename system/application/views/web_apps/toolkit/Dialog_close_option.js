@@ -81,8 +81,15 @@ Dialog_close_option.prototype._$create_ui = function () {
  */
 Dialog_close_option.prototype.close_handle = function (_ui) {
     
+    var _this = this;
+    
     var _enable_close_callback = this._enable_close_callback;
-    var _callback = this._close_callback;
+    
+    var _callback = function () {
+        if ($.is_function(_this._close_callback)) {
+            _this._close_callback(_this.arg);
+        }
+    };
     
     var _overlay_close_action = function () {
         var _overlay = $(_ui).parents('.dialog-modal:first').overlay();

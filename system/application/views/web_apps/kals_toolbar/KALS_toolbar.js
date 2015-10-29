@@ -529,5 +529,15 @@ KALS_toolbar.prototype.height = function () {
     return _height;
 };
 
+/**
+ * 開啟指定的功能
+ * @param {String} _nav_name
+ * @returns {KALS_toolbar.prototype}
+ */
+KALS_toolbar.prototype.open_navigation = function (_nav_name) {
+    this.get_ui().find(".navigation:visible .item a." + _nav_name + ":first").click();
+    return this;
+};
+
 /* End of file KALS_toolbar */
 /* Location: ./system/application/views/web_apps/KALS_toolbar.js */

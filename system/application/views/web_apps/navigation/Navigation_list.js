@@ -343,9 +343,14 @@ Navigation_list.prototype._create_menu = function() {
                 // TODO Navigation_list.create_menu() 這邊很有可能出錯，請務必檢查
             //KALS_window.setup_window(_content);    
             //}, 1000);
-            $.test_msg("Navigation_list.prototype._create_menu", typeof(_content));
-            $.test_msg("issue #152");
+            //var _name = $(this).attr("content_name");
+            var _name = _content.name;
+            //$.test_msg("Navigation_list.prototype._create_menu", _name);
+            //$.test_msg("issue #152");
+            KALS_toolbar.open_navigation(_name);
         }, _content);
+        
+        _option.get_ui().attr("content_name", _content.name);
         
         //$.test_msg('Navigation_list._create_menu() option classname', _content.name);
         _option.add_class(_content.name);
