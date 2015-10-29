@@ -608,9 +608,9 @@ DEFAULT_KALS_CONFIG = {
              * @author Pulipuli Chen 20151028
              * 測試縮小選單
              */
-            function () {
-                $(".navigation-list.profile-navgation .menu").click();
-            }
+//            function () {
+//                $(".navigation-list.profile-navgation .menu").click();
+//            }
             /**
              * @author Pulipuli Chen 20151029
              * 測試開啟工具列的功能

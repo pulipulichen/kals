@@ -535,7 +535,17 @@ KALS_toolbar.prototype.height = function () {
  * @returns {KALS_toolbar.prototype}
  */
 KALS_toolbar.prototype.open_navigation = function (_nav_name) {
-    this.get_ui().find(".navigation:visible .item a." + _nav_name + ":first").click();
+    var _nav_item;
+    
+    var _ui = this.get_ui();
+    var _navigation = _ui.find(".navigation:visible");
+    if (_navigation.length > 0) {
+        _nav_item = _navigation.find(".item a." + _nav_name + ":first");
+    }
+    else {
+        _nav_item = _ui.find(".navigation .item a." + _nav_name + ":first");
+    }
+    _nav_item.click();
     return this;
 };
 
