@@ -107,6 +107,7 @@ Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
  * 2208 檢查完成
  * @param {Scope_collection_param} _scope_coll
  * @param {String} _classname
+ * @param {function} _callback
  */
 Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _callback) {
     
@@ -118,8 +119,14 @@ Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _c
     var _this = this;
     var _add_class = function (_i, _j) {
         var _word = _words[_i][_j];
+            
+        // 如果標註位置有kals-annotation-spot，那就不加classname
+        if (_word.hasClass("kals-annotation-spot")) {
+            return;
+        }
         
         for (var _c in _classnames) {
+            
             _classname = _classnames[_c];
             _word.addClass(_classname);
             
@@ -214,6 +221,7 @@ Selectable_text_scope.prototype._filter_classname = function (_classname) {
  * 2212 檢查完成
  * @param {Scope_collection_param|String} _scope_coll
  * @param {String|null} _classname
+ * @param {function} _callback
  */
 Selectable_text_scope.prototype.remove_class = function (_scope_coll, _classname, _callback) {
     
