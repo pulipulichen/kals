@@ -494,8 +494,12 @@ Annotation_tool.prototype.close = function (_callback) {
         //KALS_modal.prototype.close.call(this, _callback);
 
         var _ui = _this.get_ui();
-        _ui.css('top', '-1000px');
-        _ui.css('left', '-1000px');
+        
+        if (KALS_CONFIG.annotation_tool.horizon_align === "left" 
+                || KALS_CONFIG.annotation_tool.horizon_align === "center" ) {
+            _ui.css('top', '-1000px');
+            _ui.css('left', '-1000px');
+        }
         _ui.hide();
 
         //$.test_msg("annotation tool close action");
@@ -585,6 +589,7 @@ Annotation_tool.prototype.setup_position = function () {
      * @type String
      */
     var _horizon_align = KALS_CONFIG.annotation_tool.horizon_align;
+    _horizon_align = "sidebar";
     
     var _ui = this.get_ui();
     if ($.is_tiny_width()) {
@@ -592,117 +597,175 @@ Annotation_tool.prototype.setup_position = function () {
         _ui.css('left', '0px');
         return this;
     }
-    else {
-        var _mode = 'foot';
-        
-        var _tool_height = _ui.height();
-        var _tool_width = _ui.width();
-        /**
-         * @type {Selection_select} _selection
-         */
-        var _selection = KALS_text.selection.select;
-        
-        //檢測是否有要更改_mode
-        var _selection_bottom = _selection.get_offset_bottom();
-        
-        //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
-        
-        //如果沒有選取，就不會有_selection_bottom，也就不用定位
-        if (_selection_bottom === null) {
-            _ui.css('top', '0px');
-            _ui.css('left', '0px');
-            _ui.hide();
-            return this;
-        }
-        
-        var _body_bottom = $('body').height();
-        var _margin_bottom = _body_bottom - _selection_bottom;
-        
-        //如果底下寬度不足的話
-        if (_margin_bottom < _tool_height) {
-            var _selection_top = _selection.get_offset_top();
-            
-            //如果上面寬度夠高，則定位於head
-            if (_selection_top > _tool_height) {
-                //$.test_msg('Annotation_tool.setup_position() head', [ _margin_bottom, _tool_height, _selection_top ]);
-                _mode = 'head';
-            }   
-            //否則仍定位在foot
-        }
-        
-        var _l, _t, _margin = 10;
-        if (_mode === 'foot') {
-            _t = _selection_bottom + _margin;
-            
-            //$.test_msg([_bottom_width , _tool_width]);
-            if (_horizon_align === "left") {
-                
-                var _last_right = _selection.get_offset_last_right();
-                var _left = _selection.get_offset_left();
-                var _bottom_width = _last_right - _left;
+    else if (_horizon_align === "sidebar") {
+        this._setup_position_sidebar(_ui);
+    }
+    else if (_horizon_align === "left" || _horizon_align === "center") {
+        this._setup_position_tooltip(_ui);
+    }
+    return this;
+};
 
-                
-                if (_bottom_width > _tool_width) {
-                    _l = _last_right - _tool_width;
-                }
-                else {
-                    _l = _left; 
-                }
-            }
-        }
-        else {
-            _t = _selection_top - _tool_height - _margin;
-            
-            var _first_left = _selection.get_offset_first_left();
-            //var _right = _selection.get_offset_right();
-            //var _top_width = _right - _first_left;
-            
-            /*
-            if (_top_width > _tool_width) {
-                _l = _first_left;
+/**
+ * 設定水平的位置
+ * @author Pudding 20151029
+ * @param {jQuery} _ui
+ * @returns {Annotation_tool.prototype}
+ */
+Annotation_tool.prototype._setup_position_tooltip = function (_ui) {
+    var _horizon_align = KALS_CONFIG.annotation_tool.horizon_align;
+    // tooltip的編輯狀況
+    var _mode = 'foot';
+
+    var _tool_height = _ui.height();
+    var _tool_width = _ui.width();
+    /**
+     * @type {Selection_select} _selection
+     */
+    var _selection = KALS_text.selection.select;
+
+    //檢測是否有要更改_mode
+    var _selection_bottom = _selection.get_offset_bottom();
+
+    //$.test_msg('Annotation_tool.setup_position() _selection_bottom', _selection_bottom);
+
+    //如果沒有選取，就不會有_selection_bottom，也就不用定位
+    if (_selection_bottom === null) {
+        _ui.css('top', '0px');
+        _ui.css('left', '0px');
+        _ui.hide();
+        return this;
+    }
+
+    var _body_bottom = $('body').height();
+    var _margin_bottom = _body_bottom - _selection_bottom;
+
+    //如果底下寬度不足的話
+    if (_margin_bottom < _tool_height) {
+        var _selection_top = _selection.get_offset_top();
+
+        //如果上面寬度夠高，則定位於head
+        if (_selection_top > _tool_height) {
+            //$.test_msg('Annotation_tool.setup_position() head', [ _margin_bottom, _tool_height, _selection_top ]);
+            _mode = 'head';
+        }   
+        //否則仍定位在foot
+    }
+
+    var _l, _t, _margin = 10;
+    if (_mode === 'foot') {
+        _t = _selection_bottom + _margin;
+
+        //$.test_msg([_bottom_width , _tool_width]);
+        if (_horizon_align === "left") {
+
+            var _last_right = _selection.get_offset_last_right();
+            var _left = _selection.get_offset_left();
+            var _bottom_width = _last_right - _left;
+
+
+            if (_bottom_width > _tool_width) {
+                _l = _last_right - _tool_width;
             }
             else {
-                _l = _right - _tool_width; 
+                _l = _left; 
             }
-            */
-           
-            //2010.11.1 一律置左
+        }
+    }
+    else {
+        _t = _selection_top - _tool_height - _margin;
+
+        var _first_left = _selection.get_offset_first_left();
+        //var _right = _selection.get_offset_right();
+        //var _top_width = _right - _first_left;
+
+        /*
+        if (_top_width > _tool_width) {
             _l = _first_left;
         }
-        
-        if (_horizon_align === "center") {
-            var _first_left = _selection.get_offset_first_left();
-            var _last_right = _selection.get_offset_last_right();
-            
-            var _selection_left = Math.min(_first_left, _last_right);
-            var _selection_right = Math.max(_first_left, _last_right);
-            
-            var _center_left = (_selection_right - _selection_left) / 2 + _selection_left;
-            _l = _center_left - (_tool_width / 2);
+        else {
+            _l = _right - _tool_width; 
         }
-        
-        //為了防止超出畫面左右的設置
-        var _body_right = $('body').width();
-        if (_l < 0) {
-            _l = 0;
-        }
-        else if (_l + _tool_width > _body_right) {
-            _l = _body_right - _tool_width;
-        }
-        
-        if (_t < 0) {
-            _t = 0;
-        }
-        else if ($.is_small_height() === false 
-                && _t < KALS_toolbar.get_ui().height()) {
-            _t = KALS_toolbar.get_ui().height();
-        }
-        
-        _ui.css('top', _t + 'px')
-            .css('left', _l + 'px');
-    
-        //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
+        */
+
+        //2010.11.1 一律置左
+        _l = _first_left;
     }
+
+    if (_horizon_align === "center") {
+        var _first_left = _selection.get_offset_left();
+        var _last_right = _selection.get_offset_right();
+
+        var _selection_left = Math.min(_first_left, _last_right);
+        var _selection_right = Math.max(_first_left, _last_right);
+
+        var _center_left = (_selection_right - _selection_left) / 2 + _selection_left;
+        _l = _center_left - (_tool_width / 2);
+    }
+
+    //為了防止超出畫面左右的設置
+    var _body_right = $('body').width();
+    if (_l < 0) {
+        _l = 0;
+    }
+    else if (_l + _tool_width > _body_right) {
+        _l = _body_right - _tool_width;
+    }
+
+    if (_t < 0) {
+        _t = 0;
+    }
+    else if ($.is_small_height() === false 
+            && _t < KALS_toolbar.get_ui().height()) {
+        _t = KALS_toolbar.get_ui().height();
+    }
+
+    _ui.css('top', _t + 'px')
+        .css('left', _l + 'px');
+
+    //$.test_msg('Annotation_tool.setup_position() 最後定位', [_t, _l]);
+    
+    return this;
+};
+
+/**
+ * 設定邊框欄的位置
+ * @author Pudding 20151029
+ * @param {jQuery} _ui
+ * @returns {Annotation_tool.prototype}
+ */
+Annotation_tool.prototype._setup_position_sidebar = function (_ui) {
+
+    
+    var _toolbar_height = KALS_toolbar.get_height();
+    
+    _ui.css("top", _toolbar_height + "px");
+    _ui.css("height", "calc(100% - " + _toolbar_height + "px");
+    _ui.addClass("sidebar");
+    
+    // -----------
+    /**
+     * @type {Selection_select} _selection
+     */
+    var _selection = KALS_text.selection.select;
+    var _scope_left = _selection.get_offset_left();
+    
+    
+    var _ui_width = _ui.get_width();
+    _ui_width = $.strip_unit(_ui_width);
+    //$.test_msg("_setup_position_sidebar", [_scope_left, _ui_width]);
+    
+    if (_scope_left < _ui_width) {
+        _ui.addClass("right");
+    }
+    else {
+        _ui.removeClass("right");
+    }
+    
+    _ui.show();
+    
+    //$.test_msg("顯示sidebar");
+    
     return this;
 };
 

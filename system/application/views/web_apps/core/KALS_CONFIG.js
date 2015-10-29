@@ -292,6 +292,7 @@ DEFAULT_KALS_CONFIG = {
          * 水平對齊的模式
          * left: 選擇範圍的左邊
          * center: 選擇範圍的右邊
+         * sidebar: 變成側邊框
          * @type String
          * @author Pudding 20151029
          */
