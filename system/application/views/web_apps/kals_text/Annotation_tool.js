@@ -589,7 +589,7 @@ Annotation_tool.prototype.setup_position = function () {
      * @type String
      */
     var _horizon_align = KALS_CONFIG.annotation_tool.horizon_align;
-    _horizon_align = "sidebar";
+    //_horizon_align = "sidebar";
     
     var _ui = this.get_ui();
     if ($.is_tiny_width()) {

@@ -317,7 +317,7 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      * @author Pudding 20151019
      */
-    "enable_annotation_editor": true,
+    "enable_annotation_editor": false,
     
     /**
      * 是否啟用離開時提示訊息
@@ -1203,7 +1203,7 @@ DEFAULT_KALS_CONFIG = {
              * 
              * @returns {Boolean}
              */
-            "enable": false,
+            "enable": true,
             /**
              * 回到上一層的網址
              * 
