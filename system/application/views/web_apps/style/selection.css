@@ -208,6 +208,6 @@
 /**
  * @author Pudding 20151029
  */
-.kals-word.auto-select {
+.kals-word.auto-select.wait {
     cursor: wait;
 }

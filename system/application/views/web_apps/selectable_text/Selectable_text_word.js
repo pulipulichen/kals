@@ -539,6 +539,7 @@ Selectable_text_word.prototype._setup_auto_select_event = function (_words) {
     // 自動選取
     _words.mouseover(function () {
         var _word = $(this);
+        _word.addClass("wait");
         //$.test_msg("有觸發事件嗎？", _word.text());
         
         //$.test_msg("KALS_CONFIG.auto_select", ["開始選取", _hover_time, _word.text()]);
@@ -550,6 +551,7 @@ Selectable_text_word.prototype._setup_auto_select_event = function (_words) {
             _select.set_complete_select(_word);
             //_this._auto_select_timer = null;
             _this._auto_select_timer = undefined;
+            _word.removeClass("wait");
         }, _hover_time);
     });
 
