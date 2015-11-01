@@ -160,17 +160,17 @@ class Authentication extends Web_apps_controller {
         
         $my_annotation = $annotation_getter->my();
         if (count($my_annotation['basic']) > 0) {
-            //$output['policy']['my_basic'] = $my_annotation['basic'];
+            $output['policy']['my_basic'] = $my_annotation['basic'];
         }
         if (count($my_annotation['custom']) > 0) {
-            //$output['policy']['my_custom'] = $my_annotation['custom'];
+            $output['policy']['my_custom'] = $my_annotation['custom'];
         }
         
         
         
         // 設定的位置是在 KALS_CONFIG.js 喔
         $nav_type = $GLOBALS['context']->get_anchor_navigation_type();
-        $nav_type = "original";
+        //$nav_type = "original";
         if ($nav_type === "original") {
             $other_annotation = $annotation_getter->other();
             if (count($other_annotation['basic']) > 0) {

@@ -60,6 +60,20 @@ Annotation_other_loader.prototype._$initialize_callback = function () {
     return this;
 }; 
 
+Annotation_other_loader.prototype.initialize = function () {
+    
+    //$.test_msg("Annotation_scope_loader_manager.prototype.initialize", [this._$basic_key, this._$custom_key]);
+    if (KALS_CONFIG.anchor_navigation_type === "original") {
+        var _this = this;
+        this.basic.initialize(function () {
+            _this.custom.initialize(function () {
+                $.trigger_callback(_this._$initialize_callback);
+            });
+        });
+    }
+    return this;
+};
+
 //----------------------------
 
 /* End of file Annotation_other_loader */
