@@ -317,7 +317,7 @@ DEFAULT_KALS_CONFIG = {
      * @type Boolean
      * @author Pudding 20151019
      */
-    "enable_annotation_editor": false,
+    "enable_annotation_editor": true,
     
     /**
      * 是否啟用離開時提示訊息
