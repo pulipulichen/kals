@@ -59,7 +59,6 @@ Annotation_scope_loader.prototype.setup_loader = function (_data, _callback) {
         _this._load_callback(null, _data, _callback);
     }
     
-    
     return this;
     
 };

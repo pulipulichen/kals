@@ -77,6 +77,7 @@ DEFAULT_KALS_CONFIG = {
      *     "all": 顯示所有標註
      *     "recommend": 顯示推薦標註。但並不準確，通常系統找不出推薦的標註。
      *     "none" | null：不顯示標註
+     *     "orignal": 顯示跟my的標註一樣的樣子(顏色跟樣式都相同喔) @author Pudding 20151101
      */
     "anchor_navigation_type": "all",
     

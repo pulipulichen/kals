@@ -238,12 +238,18 @@ class Annotation_getter extends Web_apps_controller {
      */
     function navigation($json = NULL, $callback = NULL)
     {
+        // 設定的位置是在 KALS_CONFIG.js 喔
         $type = $GLOBALS['context']->get_anchor_navigation_type();
+        //$type = "original";
 
-        if ($type == 'recommend') {
+        if ($type === "original") {
+            // @author Pudding 20151102
+            return $this->other_original($json, $callback);
+        }
+        else if ($type === 'recommend') {
             return $this->navigation_recommend($json, $callback);
         }
-        else if ($type == 'none') {
+        else if ($type === 'none') {
             return $this->navigation_none($json, $callback);
         }
         else {
@@ -410,8 +416,7 @@ class Annotation_getter extends Web_apps_controller {
         $score = 0;
 		
         //取得搜尋結果
-        foreach ($search AS $annotation)
-        {
+        foreach ($search AS $annotation) {
 
             //如果要讓標註指引有分數層次的差別，則請解開這邊的註解
             // @author Pulipuli Chen 20150116
@@ -457,8 +462,7 @@ class Annotation_getter extends Web_apps_controller {
         }
 
         $output_data = array();
-        foreach ($score_scope_colls AS $type_id => $scope_coll)
-        {
+        foreach ($score_scope_colls AS $type_id => $scope_coll) {
             $output_data[$type_id] = $scope_coll->export_webpage_data($this->url);
         }
         return $this->_display_jsonp($output_data, $callback);
@@ -469,8 +473,7 @@ class Annotation_getter extends Web_apps_controller {
      * @param {Object} $json=NULL
      * @param {Object} $callback=NULL
      */
-    function navigation_none($json = NULL, $callback = NULL)
-    {
+    function navigation_none($json = NULL, $callback = NULL) {
     	if (!isset($callback)) {
             $callback = $json;
         }
@@ -479,11 +482,182 @@ class Annotation_getter extends Web_apps_controller {
         return $this->_display_jsonp($output_data, $callback);
     }
     
-    function navigation_disable($json = NULL, $callback = NULL)
-    {
+    function navigation_disable($json = NULL, $callback = NULL) {
         return $this->navigation_none($json, $callback);
     }
 
+
+    /**
+     * 用跟my一樣的方式回傳範圍，只是這次不限制只有my
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151101
+     * @return array(0=> "basic", 1=> "custom")
+     */
+    function other($json = NULL, $callback = NULL) {
+
+        $check_time = NULL;
+        if (isset($callback)) {
+            $check_time = json_to_object($json);
+        }
+        else {
+            $callback = $json;
+        }
+        //login_require(true);
+        if (login_require(FALSE) === FALSE) {
+            $output_data = array (
+                'basic'=> array(),
+                'custom'=> array()
+            );
+            return $this->_display_jsonp($output_data, $callback);
+        }
+
+        $user = get_context_user();
+
+        $type_scope_colls = array();
+
+        /**
+         * @var array 自訂的類型
+         */
+        $custom_type_scope_colls = array();
+
+        $search = new Search_annotation_collection();
+        $search->set_target_topic(TRUE);
+        $search->set_target_referer_webpage();
+
+        if (isset ($check_time)) {
+            $search->set_target_newer_update($check_time);
+        }
+
+        // 按照時間排序
+        $search->add_order(6, FALSE);
+
+        //test_msg('準備要取得資料嚕');
+
+        //取得搜尋結果
+        foreach ($search AS $annotation)
+        {
+            $annotation_type = $annotation->get_type();
+            $annotation_type_id = $annotation_type->get_type_id();
+            $annotation_type_name = $annotation_type->get_custom_name();
+            $is_basic = $annotation_type->is_basic();
+            //test_msg('is_basic', array($is_basic, $annotation_type_id, $annotation->get_id()) );
+            $annotation_scope_coll = $annotation->get_scopes();
+
+            if ($is_basic == true)
+            {
+                if (isset($type_scope_colls[$annotation_type_id]) === false) {
+                    $type_scope_colls[$annotation_type_id] = new Annotation_scope_collection();
+                }
+
+                foreach ($type_scope_colls AS $type_id => $scope_coll) {
+                    if ($annotation_type_id === $type_id) {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->add_scope($scope);
+                        }
+                    }
+                    else
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->exclude_scope($scope);
+                        }
+                    }
+                }
+            }   //if ($is_basic)
+            else
+            {
+                if (isset($custom_type_scope_colls[$annotation_type_name]) === false) {
+                    //test_msg($annotation_type_name);
+                    $custom_type_scope_colls[$annotation_type_name] = new Annotation_scope_collection();
+                }
+
+                foreach ($custom_type_scope_colls AS $type_name => $scope_coll)
+                {
+                    if ($annotation_type_name === $type_name)
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->add_scope($scope);
+                        }
+                    }
+                    else
+                    {
+                        foreach ($annotation_scope_coll AS $scope)
+                        {
+                            $scope_coll->exclude_scope($scope);
+                        }
+                    }
+                }
+            }
+            
+            //test_msg('標註3', array($annotation_type_id, $annotation));
+        }
+
+        //test_msg('完成取得標註');
+
+        $output_data = array(
+            'basic' => array(),
+            'custom' => array()
+        );
+
+        foreach ($type_scope_colls AS $type_id => $scope_coll)
+        {
+            //這是給basic的！
+            $output_data['basic'][$type_id] = $scope_coll->export_webpage_data($this->url);
+        }
+
+        foreach ($custom_type_scope_colls AS $type_id => $scope_coll)
+        {
+            //這是給custom的！
+            $output_data['custom'][$type_id] = $scope_coll->export_webpage_data($this->url);
+        }
+        return $this->_display_jsonp($output_data, $callback);
+    }
+
+    /**
+     * 取出basic的範圍
+     * @param string $json
+     * @param string $callback
+     * @return array()
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
+     */
+    function other_basic($json = NULL, $callback = NULL)
+    {
+        $output_data = array();
+
+        $my_annotation = $this->other_original();
+        if (isset($my_annotation['basic'])) {
+            $output_data = $my_annotation['basic'];
+        }
+        else if (is_array($my_annotation)) {
+            $output_data = $my_annotation;
+        }
+
+        return $this->_display_jsonp($output_data, $callback);
+    }
+
+    /**
+     * 取出custom的範圍
+     * @param string $json
+     * @param string $callback
+     * @return array()
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
+     */
+    function other_custom($json = NULL, $callback = NULL)
+    {
+        $output_data = array();
+
+        $my_annotation = $this->other_original();
+        if (isset($my_annotation['custom'])) {
+            $output_data = $my_annotation['custom'];
+        }
+        else if (is_array($my_annotation)) {
+            $output_data = $my_annotation;
+        }
+
+        return $this->_display_jsonp($output_data, $callback);
+    }
+    
     /**
      * 判斷推薦標註的等級，目前分成4級
      * @version 20111106 Pudding Chen

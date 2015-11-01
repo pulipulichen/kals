@@ -14,26 +14,22 @@
 function Context_policy(){
     Attribute_event_dispatcher.call(this);
     
-    //if ($.object_isset('KALS_context.auth.add_listener()'))
-    //{
-        //KALS_context.auth.add_listener(this);
-            var _this = this;
-            KALS_context.auth.add_listener(function (_auth) {
-                //$.test_msg("Context_policy", _auth._data.policy);
-                if (typeof (_auth.get_data().policy) !== "undefined") {
-                    if (_auth.is_login()) {
-                        _this.set_attr(_auth.get_data().policy);
-                    }
-                    else {
-                        if (typeof(_auth.get_data().navigation_data) !== "undefined") {
-                                _this.set_attr("navigation_data", _auth.get_data().policy.navigation_data);
-                        }
-                        _this.reset();
-                    }	
+    var _this = this;
+    KALS_context.auth.add_listener(function (_auth) {
+        //$.test_msg("Context_policy", _auth._data.policy);
+        if (typeof (_auth.get_data().policy) !== "undefined") {
+            if (_auth.is_login()) {
+                _this.set_attr(_auth.get_data().policy);
             }
+            else {
+                if (typeof(_auth.get_data().navigation_data) !== "undefined") {
+                    _this.set_attr("navigation_data", _auth.get_data().policy.navigation_data);
+                }
+                _this.reset();
+            }	
+        }   //if (typeof (_auth.get_data().policy) !== "undefined") {
 
-            });
-    //}
+    }); //KALS_context.auth.add_listener(function (_auth) {
 	
     _this.reset();
 }

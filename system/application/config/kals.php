@@ -391,9 +391,15 @@ $config['web_apps.javascript_import']['component_list_package'] = array(
 
     'kals_text/Annotation_tool',
     'kals_text/Annotation_scope_loader',
+    'kals_text/Annotation_subscope_loader',
+    'kals_text/Annotation_scope_loader_manager',
     'kals_text/My_annotation_loader',
     'kals_text/My_basic_annotation_loader',
     'kals_text/My_custom_annotation_loader',
+    'kals_text/Annotation_other_loader',
+    'kals_text/Annotation_other_basic_loader',
+    'kals_text/Annotation_other_custom_loader',
+    
     'kals_text/Navigation_loader',
     'selectable_text/Text_selector',  //20140519 Pulipuli Chen
 

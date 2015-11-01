@@ -14,10 +14,10 @@ function Navigation_loader() {
     
     Annotation_scope_loader.call(this);
     
-	if (KALS_CONFIG.anchor_navigation_type === "disable") {
-		KALS_CONFIG.anchor_navigation_type = "none";
-	}
-	this._$load_url = this._$load_url + KALS_CONFIG.anchor_navigation_type;
+    if (KALS_CONFIG.anchor_navigation_type === "disable") {
+            KALS_CONFIG.anchor_navigation_type = "none";
+    }
+    this._$load_url = this._$load_url + KALS_CONFIG.anchor_navigation_type;
 }
 
 Navigation_loader.prototype = new Annotation_scope_loader();
@@ -136,7 +136,7 @@ Navigation_loader.prototype._$exception_handle = function (_data) {
             });    
         }, 5000);
         
-    }
+    }   //if (this.is_initialized() === false) {
     
 };
 

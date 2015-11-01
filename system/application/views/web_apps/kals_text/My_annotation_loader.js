@@ -13,109 +13,38 @@
  */
 function My_annotation_loader() {
     
-    Annotation_scope_loader.call(this);
+    Annotation_scope_loader_manager.call(this);
+    
+    return this;
+}
+
+My_annotation_loader.prototype = new Annotation_scope_loader_manager();
+
+// ------------------------------
+// 設定區
+// ------------------------------
+
+My_annotation_loader.prototype._$init_loaders = function () {
     
     this.basic = new My_basic_annotation_loader();
     this.custom = new My_custom_annotation_loader();
-	
-	return this;
-}
+};
 
-My_annotation_loader.prototype = new Annotation_scope_loader();
 
 /**
- * @return {My_basic_annotation_loader}
+ * 基本標註的關鍵字
+ * @type String
  */
-My_annotation_loader.prototype.basic = null;
+My_annotation_loader.prototype._$basic_key = "my_basic";
 
 /**
- * @return {My_custom_annotation_loader}
+ * 預訂標註的關鍵字
+ * @type String
  */
-My_annotation_loader.prototype.custom = null;
+My_annotation_loader.prototype._$custom_key = "my_custom";
 
 //----------------------------
 
-My_annotation_loader.prototype.setup_loader = function (_data, _callback) {
-    var _this = this;
-    var _basic_data = _data.basic;
-    var _custom_data = _data.custom;
-    this.basic.setup_loader(_basic_data, function () {
-        _this.custom.setup_loader(_custom_data, function(){
-			
-			if ($.is_function(_callback)) {
-				_callback();
-			}
-			
-		});
-    });
-    return this;
-};
-
-My_annotation_loader.prototype.stop_loader = function () {
-    this.basic.stop_loader();
-    this.custom.stop_loader();
-    return this;
-};
-
-My_annotation_loader.prototype.is_loaded = function () {
-    return (this.basic.is_loaded() && this.custom.is_loaded());
-};
-
-My_annotation_loader.prototype.load = function (_callback) {
-    var _this = this;
-    this.basic.load(function () {
-        _this.custom.load(_callback);
-    });
-    return this;
-};
-
-My_annotation_loader.prototype.load_annotation = function () {
-    this.basic.load_annotation();
-    this.custom.load_annotation();
-    return this;
-};
-
-My_annotation_loader.prototype.clear = function () {
-    this.basic.clear();
-    this.custom.clear();
-    return this;
-};
-
-My_annotation_loader.prototype.reset = function () {
-    this.basic.reset();
-    this.custom.reset();
-    return this;
-};
-
-My_annotation_loader.prototype.initialize = function () {
-    this.basic.initialize();
-    this.custom.initialize();
-};
-
-My_annotation_loader.prototype.reload = function (_data, _callback) {
-    var _this = this;
-	var _basic_data, _custom_data;
-	
-	//$.test_msg("My_annotation_loader.reload()", _data);
-	
-	if (typeof(_data) != "undefined") {
-		if (typeof(_data.my_basic) != "undefined") {
-			_basic_data = _data.my_basic;	
-		}
-		if (typeof(_data.my_custom) != "undefined") {
-			_custom_data = _data.my_custom;	
-		}
-	}
-	
-    this.basic.reload(_basic_data, function () {
-        _this.custom.reload(_custom_data, _callback);
-    });
-    return this;
-};
-
-My_annotation_loader.prototype.is_initialized = function () {
-    return (this.basic.is_initialized() && this.custom.is_initialized());
-};
 
 /* End of file My_annotation_loader */
 /* Location: ./system/application/views/web_apps/My_annotation_loader.js */

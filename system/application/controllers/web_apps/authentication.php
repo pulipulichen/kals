@@ -157,9 +157,20 @@ class Authentication extends Web_apps_controller {
 
         require_once 'annotation_getter.php';
         $annotation_getter = new annotation_getter();
+        
         $my_annotation = $annotation_getter->my();
         $output['policy']['my_basic'] = $my_annotation['basic'];
         $output['policy']['my_custom'] = $my_annotation['custom'];
+        
+        
+        // 設定的位置是在 KALS_CONFIG.js 喔
+        $nav_type = $GLOBALS['context']->get_anchor_navigation_type();
+        $nav_type = "original";
+        if ($nav_type === "original") {
+            $other_annotation = $annotation_getter->other();
+            $output['policy']['other_basic'] = $other_annotation['basic'];
+            $output['policy']['other_custom'] = $other_annotation['custom'];
+        }
         
         //$mobile_redirect = $this->session->flashdata("mobile_redirect");
         $mobile_redirect = $this->session->userdata("mobile_redirect");
