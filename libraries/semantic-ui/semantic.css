@@ -1,4 +1,8 @@
  /*
+ * 請使用CSS Minifier壓縮 http://cssminifier.com/
+ * 使用Download as File，不然檔案會太大，很難處理
+ * 然後貼到semantic.min.css上
+ *
  * # Semantic UI - 2.1.4
  * https://github.com/Semantic-Org/Semantic-UI
  * http://www.semantic-ui.com/
@@ -9,7 +13,7 @@
  *
  */
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
-/*!
+/*
  * # Semantic UI 2.1.4 - Reset
  * http://github.com/semantic-org/semantic-ui/
  *
