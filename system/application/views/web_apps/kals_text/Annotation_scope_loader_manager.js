@@ -75,7 +75,6 @@ Annotation_scope_loader_manager.prototype.setup_loader = function (_data, _callb
     var _custom_data = _data.custom;
     this.basic.setup_loader(_basic_data, function () {
         _this.custom.setup_loader(_custom_data, function(){
-
             if ($.is_function(_callback)) {
                 _callback();
             }
@@ -121,9 +120,25 @@ Annotation_scope_loader_manager.prototype.reset = function () {
 };
 
 Annotation_scope_loader_manager.prototype.initialize = function () {
-    this.basic.initialize();
-    this.custom.initialize();
+    
+    //$.test_msg("Annotation_scope_loader_manager.prototype.initialize", [this._$basic_key, this._$custom_key]);
+    if (KALS_CONFIG.anchor_navigation_type === "original") {
+        var _this = this;
+        this.basic.initialize(function () {
+            _this.custom.initialize(function () {
+                $.trigger_callback(_this._$initialize_callback);
+            });
+        });
+        
+    }
+    return this;
 };
+
+/**
+ * 完成後的動作
+ * @type {Function}
+ */
+Annotation_scope_loader_manager.prototype._$initialize_callback = null; 
 
 Annotation_scope_loader_manager.prototype.reload = function (_data, _callback) {
     var _this = this;
@@ -132,10 +147,10 @@ Annotation_scope_loader_manager.prototype.reload = function (_data, _callback) {
     //$.test_msg("Annotation_scope_loader_manager.reload()", _data);
 
     if (typeof(_data) !== "undefined") {
-        if (typeof(_data.my_basic) !== "undefined") {
+        if (typeof(_data[this._$basic_key]) !== "undefined") {
             _basic_data = _data[_this._$basic_key];
         }
-        if (typeof(_data.my_custom) !== "undefined") {
+        if (typeof(_data[this._$custom_key]) !== "undefined") {
             _custom_data = _data[_this._$custom_key];
         }
     }

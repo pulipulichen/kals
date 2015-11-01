@@ -78,6 +78,9 @@ Navigation_loader.prototype.clear = function () {
 };
 
 Navigation_loader.prototype.initialize = function () {
+    if (KALS_CONFIG.anchor_navigation_type === "original") {
+        return this;
+    }
     
     //$.test_msg('Navigation_loader.initialize()', typeof(KALS_text));
     

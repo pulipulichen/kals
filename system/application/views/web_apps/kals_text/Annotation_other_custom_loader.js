@@ -28,5 +28,14 @@ Annotation_other_custom_loader.prototype._$is_basic = false;
  */
 Annotation_other_custom_loader.prototype._$scope_name = "other_custom";
 
+Annotation_other_custom_loader.prototype._policy_allow_get = Annotation_other_basic_loader.prototype._policy_allow_get;
+
+
+/**
+ * 設定權限的名稱
+ * @type String
+ */
+Annotation_other_custom_loader.prototype._$policy_name = "navigation_data";
+
 /* End of file My_annotation_loader */
 /* Location: ./system/application/views/web_apps/My_annotation_loader.js */

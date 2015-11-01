@@ -28,5 +28,12 @@ My_basic_annotation_loader.prototype._$is_basic = true;
  */
 My_basic_annotation_loader.prototype._$scope_name = "my_basic";
 
+/**
+ * 設定權限的名稱
+ * @type String
+ */
+My_basic_annotation_loader.prototype._$policy_name = "my_basic";
+
+
 /* End of file My_annotation_loader */
 /* Location: ./system/application/views/web_apps/My_annotation_loader.js */

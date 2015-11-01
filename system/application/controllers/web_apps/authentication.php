@@ -159,8 +159,13 @@ class Authentication extends Web_apps_controller {
         $annotation_getter = new annotation_getter();
         
         $my_annotation = $annotation_getter->my();
-        $output['policy']['my_basic'] = $my_annotation['basic'];
-        $output['policy']['my_custom'] = $my_annotation['custom'];
+        if (count($my_annotation['basic']) > 0) {
+            //$output['policy']['my_basic'] = $my_annotation['basic'];
+        }
+        if (count($my_annotation['custom']) > 0) {
+            //$output['policy']['my_custom'] = $my_annotation['custom'];
+        }
+        
         
         
         // 設定的位置是在 KALS_CONFIG.js 喔
@@ -168,8 +173,12 @@ class Authentication extends Web_apps_controller {
         $nav_type = "original";
         if ($nav_type === "original") {
             $other_annotation = $annotation_getter->other();
-            $output['policy']['other_basic'] = $other_annotation['basic'];
-            $output['policy']['other_custom'] = $other_annotation['custom'];
+            if (count($other_annotation['basic']) > 0) {
+                 $output['policy']['other_basic'] = $other_annotation['basic'];
+            }
+            if (count($other_annotation['custom']) > 0) {
+                $output['policy']['other_custom'] = $other_annotation['custom'];
+            }
         }
         
         //$mobile_redirect = $this->session->flashdata("mobile_redirect");

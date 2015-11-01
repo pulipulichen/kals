@@ -276,11 +276,15 @@ Context_predefined_type.prototype.find_type = function (_type_name) {
     
     var _basic_id = Annotation_type_param.filter_basic_id(_type_name);
     
+    $.test_msg('Context_predefined_type.find_type 0', [$.is_number(_basic_id), _type_name]);
+    
     if ($.is_number(_basic_id)) {
         //$.test_msg("custom.find_type()", "基本資料");
-		
+        
         //表示是基本資料
         _output_type = new Annotation_type_param(_basic_id);
+        
+	$.test_msg('Context_predefined_type.find_type 1', [(_output_type === null)]);
     }
     else if ($.is_number(_type_name)) {
         //$.test_msg("custom.find_type()", "數字");
@@ -299,17 +303,20 @@ Context_predefined_type.prototype.find_type = function (_type_name) {
         
         if (_output_type === null) {
             _output_type = new Annotation_type_param(_target_type_id);
+            $.test_msg('Context_predefined_type.find_type 2', [_type_name, (_output_type === null)]);
         }
     }
     else {
-		//$.test_msg("custom.find_type()", "其他" + typeof(this._type_list[_type_name]));
-		
+        //$.test_msg("custom.find_type()", "其他" + typeof(this._type_list[_type_name]));
+
         if (typeof(this._type_list[_type_name]) !== 'undefined') {
             _output_type = this._type_list[_type_name];
         }
+        
+        $.test_msg('Context_predefined_type.find_type 3', [(_output_type === null)]);
     }
     
-    //$.test_msg('Context_predefined_type.find_type', [_type_name, (_output_type === null)]);
+    $.test_msg('Context_predefined_type.find_type', [_type_name, (_output_type === null)]);
     
     return _output_type;
 };

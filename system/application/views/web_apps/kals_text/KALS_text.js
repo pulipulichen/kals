@@ -47,6 +47,7 @@ KALS_text.prototype._init_component = function (_selector) {
     this.child('selection', new Selection_manager(_selector));
     this.child('load_my', new My_annotation_loader());
     this.child('load_navigation', new Navigation_loader());
+    this.child('load_other', new Annotation_other_loader());
     this.child('tool', new Annotation_tool(_selector));
     this.child('guide', new Reading_guide());
     

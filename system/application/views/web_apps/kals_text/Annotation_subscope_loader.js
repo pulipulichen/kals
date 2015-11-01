@@ -153,21 +153,38 @@ Annotation_subscope_loader.prototype.clear = function () {
  */
 Annotation_subscope_loader.prototype._policy_allow_get = function (_policy) {
     
-    var _my = _policy.get_attr(this._$scope_name);
+    var _my = _policy.get_attr(this._$policy_name);
     var _is_login = KALS_context.auth.is_login();
     
     return ($.isset(_my) && _is_login);
 };
 
-Annotation_subscope_loader.prototype.initialize = function () {
+/**
+ * 設定權限的名稱
+ * @type String
+ */
+Annotation_subscope_loader.prototype._$policy_name = null;
+
+Annotation_subscope_loader.prototype.initialize = function (_callback) {
     
+    //$.test_msg("Annotation_subscope_loader.prototype.initialize", [this._$scope_name, this._$policy_name]);
     if (typeof(KALS_text) === 'object') {
-        this._selection = KALS_text.selection[this._$scope_name];
+        
+        if (typeof(KALS_text.selection[this._$scope_name]) === "object") {
+            this._selection = KALS_text.selection[this._$scope_name];
+        }
+        else {
+            throw "找不到selection, 名稱: " + this._$scope_name;
+        }
+        
         
         var _this = this;
         
-        KALS_context.policy.add_attr_listener(_this._$scope_name, function(_policy) {
-            var _my = _policy.get_attr(_this._$scope_name);
+        //$.test_msg("Annotation_subscope_loader.prototype.initialize", [_this._$scope_name, _this._$policy_name]);
+        
+        KALS_context.policy.add_attr_listener(_this._$policy_name, function(_policy) {
+            var _my = _policy.get_attr(_this._$policy_name);
+            //$.test_msg("Annotation_subscope_loader.prototype.initialize", [_this._$scope_name, _this._$policy_name]);
             if (_this._policy_allow_get(_policy)) {
                 if (_this.is_loaded()) {
                     return;
@@ -181,6 +198,9 @@ Annotation_subscope_loader.prototype.initialize = function () {
             }
         });
     }
+    
+    $.trigger_callback(_callback);
+    
     return this;
 };
 

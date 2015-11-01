@@ -43,6 +43,9 @@ Init_profile.prototype._$onstart = function () {
     //KALS_context.init_profile.complete('my_annotation');
     
     KALS_text.load_navigation.initialize();
+    
+    KALS_text.load_other.initialize();
+    
     //KALS_context.init_profile.complete('navigation_annotation');
     
     // 因為My_style尚未實作，所以my_style直接算是完成

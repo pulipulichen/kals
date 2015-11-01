@@ -242,11 +242,12 @@ class Annotation_getter extends Web_apps_controller {
         $type = $GLOBALS['context']->get_anchor_navigation_type();
         //$type = "original";
 
-        if ($type === "original") {
-            // @author Pudding 20151102
-            return $this->other_original($json, $callback);
-        }
-        else if ($type === 'recommend') {
+//        if ($type === "original") {
+//            // @author Pudding 20151102
+//            return $this->other($json, $callback);
+//        }
+//        else if ($type === 'recommend') {
+        if ($type === 'recommend') {
             return $this->navigation_recommend($json, $callback);
         }
         else if ($type === 'none') {
@@ -625,7 +626,7 @@ class Annotation_getter extends Web_apps_controller {
     {
         $output_data = array();
 
-        $my_annotation = $this->other_original();
+        $my_annotation = $this->other();
         if (isset($my_annotation['basic'])) {
             $output_data = $my_annotation['basic'];
         }
@@ -647,7 +648,7 @@ class Annotation_getter extends Web_apps_controller {
     {
         $output_data = array();
 
-        $my_annotation = $this->other_original();
+        $my_annotation = $this->other();
         if (isset($my_annotation['custom'])) {
             $output_data = $my_annotation['custom'];
         }

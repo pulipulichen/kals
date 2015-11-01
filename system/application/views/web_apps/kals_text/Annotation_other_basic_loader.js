@@ -29,5 +29,21 @@ Annotation_other_basic_loader.prototype._$is_basic = true;
  */
 Annotation_other_basic_loader.prototype._$scope_name = "other_basic";
 
+/**
+ * 只需要得知是否可以瀏覽其他資料即可
+ * @param {Context_policy} _policy
+ * @returns {boolean}
+ */
+Annotation_other_basic_loader.prototype._policy_allow_get = function (_policy) {
+    //$.test_msg("Annotation_other_basic_loader.prototype._policy_allow_get", [_policy.get_attr("navigation_data")]);
+    return _policy.get_attr("navigation_data");
+};
+
+/**
+ * 設定權限的名稱
+ * @type String
+ */
+Annotation_other_basic_loader.prototype._$policy_name = "navigation_data";
+
 /* End of file My_annotation_loader */
 /* Location: ./system/application/views/web_apps/My_annotation_loader.js */

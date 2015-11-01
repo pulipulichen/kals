@@ -26,8 +26,8 @@ Annotation_other_loader.prototype = new Annotation_scope_loader_manager();
 
 Annotation_other_loader.prototype._$init_loaders = function () {
     
-    this.basic = new My_basic_annotation_loader();
-    this.custom = new My_custom_annotation_loader();
+    this.basic = new Annotation_other_basic_loader();
+    this.custom = new Annotation_other_custom_loader();
     
     // -------------------------------
     
@@ -42,23 +42,25 @@ Annotation_other_loader.prototype._$init_loaders = function () {
  * 基本標註的關鍵字
  * @type String
  */
-Annotation_other_loader.prototype._$basic_key = "basic";
+Annotation_other_loader.prototype._$basic_key = "other_basic";
 
 /**
  * 預訂標註的關鍵字
  * @type String
  */
-Annotation_other_loader.prototype._$custom_key = "custom";
-
-//----------------------------
+Annotation_other_loader.prototype._$custom_key = "other_custom";
 
 
 /**
- * @type {Selection_navigation}
+ * 完成後的動作
+ * @type {Function}
  */
-Navigation_loader.prototype._selection = null;
+Annotation_other_loader.prototype._$initialize_callback = function () {
+    KALS_context.init_profile.complete('navigation_annotation');
+    return this;
+}; 
 
-Navigation_loader.prototype._$load_url = 'annotation_getter/navigation_';
+//----------------------------
 
 /* End of file Annotation_other_loader */
 /* Location: ./system/application/views/web_apps/Annotation_other_loader.js */
