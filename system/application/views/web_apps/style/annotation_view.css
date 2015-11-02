@@ -22,8 +22,9 @@
     -khtml-box-shadow: 0 0 20px #666666;
     box-shadow: 0 0 20px #666666;
 	
-	max-height: 3em;
-	overflow-y: auto;
+    max-height: 5em;    /** @author Pudding 20151102 因為有Semantic UI Reset，所以要加大 */
+    overflow-y: auto;
+    width: 520px;
 }
 
 .KALS .window-view-content .editor-container {
