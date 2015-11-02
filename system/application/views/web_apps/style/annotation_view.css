@@ -63,13 +63,13 @@
 
 .KALS .window-view-content .view-list-container {
     /*max-height:215px;*/
-    max-height:160px;
-    height:160px;
+    max-height:150px;
+    height:150px;
     overflow-x:hidden;
     overflow-y:auto;
     background-color: white;
     border: 1px solid #494437;
-	padding-bottom: 20px;
+    padding-bottom: 20px;
 }
 
 .KALS .window-view-content.hide-editor .view-list-container {
@@ -88,7 +88,7 @@
 }
 
 .KALS .window-view-content .editor-container {
-    height: 180px;
+    height: 210px;
 }
 
 .KALS .window-view-content.hide-editor .editor-container {

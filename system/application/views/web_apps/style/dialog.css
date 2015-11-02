@@ -289,6 +289,7 @@
     cursor: auto;    
     /*max-height: 400px;*/
     line-height:normal !important;
+    box-sizing: border-box;
 }
 
 .KALS.dialog-modal.compact-height .dialog-content {

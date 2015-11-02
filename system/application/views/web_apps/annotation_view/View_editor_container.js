@@ -8,7 +8,9 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/11/6 下午 10:32:12
+ * 
  * @extends {Editor_container}
+ * 
  * @param {Annotation_param} _topic_param
  * @param {View_list_collection} _list_coll
  */
@@ -72,9 +74,10 @@ View_editor_container.prototype.add_respond_to = function (_respond_param) {
 
 /**
  * 預設的開啟狀態
+ * @deprecated Pudding 20151102
  * @tyep boolean true=開啟; false=關閉
  */
-View_editor_container.prototype._$default_toggle = false;
+//View_editor_container.prototype._$default_toggle = false;
 
 /* End of file View_editor_container */
 /* Location: ./system/application/views/web_apps/View_editor_container.js */

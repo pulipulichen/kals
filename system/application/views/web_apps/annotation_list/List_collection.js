@@ -212,6 +212,15 @@ List_collection.prototype._toggle_loading = function(_display) {
 
 List_collection.prototype._load_lock = false;
 
+/**
+ * 讀取標註清單
+ * 
+ * 要開始讀取請用這個方法
+ * @param {Annotation_param|Annotation_collection_param} _data
+ * @param {Function} _callback
+ * @returns {List_collection.prototype}
+ * @author Pudding 20151102
+ */
 List_collection.prototype.load_list = function(_data, _callback) {
     if ($.is_function(_data) && $.is_null(_callback)) {
         _callback = _data;
@@ -480,7 +489,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
             }
             _this._offset = _this._offset + _length;
             
-            //$.test_msg('List_collection.setup_load_list()', 'before complete');
+            //$.test_msg('List_collection.setup_load_list()', ['before complete', _length]);
             
             _setup_list_complete();
         };
@@ -504,10 +513,10 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
 
 
                     if (_param.user.name === _user_name) {
-                            _this.add_list_item(_param);
+                        _this.add_list_item(_param);
                     }
                     else if (typeof(_data.total_count) !== "undefined") {
-                        // @20130603 Pudding Chen
+                        // @TODO #172 20130603 Pudding Chen
                         // 有個Bug，我必須要在這邊說清楚
                         // 當列表未顯示，卻又有超過數量的非自己標註時，數字上就會大於0，Bug就會出現
                         // 目前還沒有想法可以解決，先擺著
@@ -515,9 +524,9 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
                     }
                 }
                 else {
-                        _this.add_list_item(_param);
+                    //$.test_msg("setup_load_list", _param);
+                    _this.add_list_item(_param);
                 }
-                
                 
                 setTimeout(function () {
                     _i++;
@@ -527,7 +536,7 @@ List_collection.prototype.setup_load_list = function (_data, _callback) {
             else {
                 _loop_annotation_complete();
             }
-        };
+        };  //var _loop_annotation = function (_i) {
         
         _loop_annotation(0);
     }
@@ -628,6 +637,8 @@ List_collection.prototype._$default_add_item_from_head = false;
  * @param {Boolean} _from_head = false; 是否從頭加入，或是從尾加入
  */
 List_collection.prototype.add_list_item = function(_param, _from_head) {
+    //$.test_msg("add_list_item", _param);
+    
     var _list_item = this.create_list_item(_param);
     
     if (_from_head === undefined) {
@@ -641,8 +652,9 @@ List_collection.prototype.add_list_item = function(_param, _from_head) {
         
         //if ($.is_null(_from_head) || _from_head === false) {
 		
-        var _ui = this.get_ui();
-		//$.test_msg('add_list_item', _ui.html());
+        //var _ui = this.get_ui();
+        //$.test_msg('add_list_item', _ui.html());
+        
         if (_from_head === false) {
             this._list_container.append(_list_item_ui);
         }

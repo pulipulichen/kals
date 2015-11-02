@@ -47,6 +47,7 @@ Editor_container.prototype._toggle_position = 'bottom';
 
 /**
  * 預設的開啟狀態
+ * @deprecated Pudding 20151102
  * @tyep boolean true=開啟; false=關閉
  */
 Editor_container.prototype._$default_toggle = false;
@@ -113,7 +114,7 @@ Editor_container.prototype._$create_ui = function () {
     //    this.toggle_container(this._$default_toggle);
     //}
     
-    var _this = this;
+    //var _this = this;
 	
     //setTimeout(function () {
     //    _this.toggle_deny(true);
@@ -130,6 +131,7 @@ Editor_container.prototype._$create_ui = function () {
 
 /**
  * 建立編輯器
+ * @type {Annotation_editor}
  */
 Editor_container.prototype._setup_editor = function () {
     
@@ -149,24 +151,20 @@ Editor_container.prototype._setup_editor = function () {
 
 Editor_container.prototype._create_toggle = function () {
     
-    //var _toggle = $('<div></div>')
-    //    .addClass('toggle');
-    
-    //_toggle.html(': : : :');
-    
     var _toggle = $('<tr><td></td></tr>')
         .addClass('toggle');
     
-    _toggle.find('td').append($('<span class="handler">: : : :</span>'));
+    this._toggle = _toggle;
     
-    _toggle.find('td').append($('<span class="deny-message"></span>'));
+    _toggle.find('td')
+            .append($('<span class="handler">: : : :</span>'))
+            .append($('<span class="deny-message"></span>'));
     
     var _this = this;
     _toggle.click(function () {
         _this.toggle_container();
     });
     
-    this._toggle = _toggle;
     return _toggle;
 };
 

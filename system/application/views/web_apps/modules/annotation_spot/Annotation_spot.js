@@ -70,17 +70,15 @@ Annotation_spot.prototype._$initialize_view = function () {
     
     // 列表的部分
     this.list = new Annotation_spot_list_collection();
-    
-    this.find(".list-collection view-list").append(this.list.get_ui());
+    this.find(".list-collection.view-list").append(this.list.get_ui());
     
     // 編輯器的部分
     this.editor = new Annotation_spot_editor_container(this.list);
     this.find(".editor-container").append(this.editor.get_ui());
     
-    
     // 測試範圍
     // @TODO #154 測試完請註解
-    var _scope_coll = new Scope_collection_param(7, 14);
+    var _scope_coll = new Scope_collection_param(155, 160);
     this.set_scope_coll(_scope_coll);
     
     
@@ -99,9 +97,10 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     this.anchor.set_scope_coll(_scope_coll);
     
     this.list.set_scope_coll(_scope_coll);
-    this.list.load();
+    this.list.load_list();
     
     this.editor.set_scope_coll(_scope_coll);
+    this.editor.toggle_container(false);
     
     return this;
 };
