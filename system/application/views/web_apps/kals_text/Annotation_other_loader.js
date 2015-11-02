@@ -63,7 +63,7 @@ Annotation_other_loader.prototype._$initialize_callback = function () {
 Annotation_other_loader.prototype.initialize = function () {
     
     //$.test_msg("Annotation_scope_loader_manager.prototype.initialize", [this._$basic_key, this._$custom_key]);
-    if (KALS_CONFIG.anchor_navigation_type === "original") {
+    if (KALS_CONFIG.anchor_navigation_type === "my") {
         var _this = this;
         this.basic.initialize(function () {
             _this.custom.initialize(function () {

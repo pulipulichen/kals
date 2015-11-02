@@ -1,6 +1,8 @@
 /**
  * Selection_my_custom_type
  *
+ * @deprecated Pudding 20151102 使用 Selection_custom_type 取代
+ *
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>

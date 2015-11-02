@@ -78,7 +78,7 @@ Navigation_loader.prototype.clear = function () {
 };
 
 Navigation_loader.prototype.initialize = function () {
-    if (KALS_CONFIG.anchor_navigation_type === "original") {
+    if (KALS_CONFIG.anchor_navigation_type === "my") {
         return this;
     }
     
