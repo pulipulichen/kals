@@ -143,6 +143,15 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
 };
 
 /**
+ * 讀取已經載入的模組
+ * @param {String} _name
+ * @returns {Boolean|Object|KALS_module_manager.prototype._loaded_modules}
+ */
+KALS_module_manager.prototype.get_module = function (_name) {
+    return this._get_loaded_module(_name);
+};
+
+/**
  * 檢查模組是否存在
  * @param {String} _name 模組名稱
  * @returns {Boolean} 是否存在

@@ -19,6 +19,8 @@ function Window_annotation_spot() {
 
 Window_annotation_spot.prototype = new Window_content();
 
+// -----------------------------------------------------
+
 /**
  * 初始化先隱藏視窗
  * @author Pudding 20151102
@@ -75,14 +77,7 @@ Window_annotation_spot.prototype._$create_ui = function () {
     _editor_container.get_ui().appendTo(_ui);
     
     var _not_login_classname = 'not-login';
-    /*
-    KALS_context.auth.add_listener(function (_auth) {
-        if (_auth.is_login())
-            _ui.removeClass(_not_login_classname);
-        else
-            _ui.addClass(_not_login_classname);
-    }, true);
-    */
+
     KALS_context.policy.add_attr_listener('write', function (_policy) {
         if (_policy.writable()) {
             _ui.removeClass(_not_login_classname);
@@ -95,6 +90,9 @@ Window_annotation_spot.prototype._$create_ui = function () {
     return _ui;
 };
 
+// ------------------------
+// anchor
+// ------------------------
 
 /**
  * @type {View_anchor_text_component}
@@ -111,6 +109,10 @@ Window_annotation_spot.prototype._setup_anchor = function () {
     }
     return this.anchor;
 };
+
+// ------------------------
+// list
+// ------------------------
 
 /**
  * 擺放列表的位置
@@ -140,6 +142,11 @@ Window_annotation_spot.prototype._setup_list = function () {
     return this.list;
 };
 
+// ------------------------
+// editor
+// ------------------------
+
+
 /**
  * @type {View_editor_container}
  */
@@ -153,25 +160,20 @@ Window_annotation_spot.prototype._setup_editor_container = function () {
     return this.editor_container;
 };
 
+// ---------------------------------------------------
+
 Window_annotation_spot.prototype._loaded = false;
 
 Window_annotation_spot.prototype.onload = function () {
     
     //$.test_msg('設定！！')
-    this.editor_container.editor.note.set_text(' ');    
-    
+    this.editor_container.editor.note.set_text('');    
     
     //$.test_msg('Window_annotation_spot.onload()');
     
     var _focus_anchor = true;
     if ($.isset(this._focus_id)) {
         var _result = this.list.focus(this._focus_id, true);
-        //var _result = this.list.focus(this._focus_id);
-        //if (_result != null)
-        //    _result.get_ui().css('color', 'red');
-        
-        //$.test_msg('Window_annotation_spot.onload() focus id', $.isset(_result));
-        //_result.get_ui().css('color', 'red');
         
         if ($.isset(_result)) {
             _focus_anchor = false;
@@ -233,19 +235,13 @@ Window_annotation_spot.prototype.onload = function () {
     return this;
 };
 
+/**
+ * 我猜這個功能應該不用改變
+ * @param {Function} _callback
+ * @returns {Window_annotation_spot.prototype}
+ */
 Window_annotation_spot.prototype.setup_content = function (_callback) {
-    /*    
-    var _this = this;
-    this.list.add_listener(function (_list) {
-       
-       $.test_msg('Window_annotation_spot.setup_content() ', _list.is_ready());
-       if (_list.is_ready()) {
-           _this.onload();
-       }
-        
-    });
-    */
-   
+    
     var _this = this;
     setTimeout(function () {
        Window_content.prototype.setup_content.call(_this, _callback);
@@ -267,13 +263,6 @@ Window_annotation_spot.prototype.focus = function (_param) {
     else {
         this.list.focus(_param);
     }
-    return this;
-};
-
-Window_annotation_spot.prototype.add_respond_to = function (_param) {
-    
-    this.editor_container.add_respond_to(_param);
-    
     return this;
 };
 

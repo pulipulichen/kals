@@ -1215,7 +1215,14 @@ DEFAULT_KALS_CONFIG = {
              * @type String
              */
             "back_url": "../"
-        }
+        },
+        /**
+         * 標註討論區
+         * @author Pudding 20151102
+         */
+        "Annotation_spot": {
+            "enable": true
+        },
     }
 };
 /* End of file KALS_CONFIG */
