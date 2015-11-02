@@ -98,7 +98,6 @@ KALS_module_manager.prototype.load = function (_name, _param, _callback) {
         return false;
     }
     else if (typeof _name === "function") {
-        // @TODO 尚未確定功能是否可以運作
         _name = _name.toString();
     }
     

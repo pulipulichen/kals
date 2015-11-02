@@ -366,7 +366,7 @@ class User extends KALS_actor {
     {
         $locale = $this->get_field('locale');
         
-        //@todo 20121223 讀不到自訂的MY_User_Agent
+        //@TODO #168 20121223 讀不到自訂的MY_User_Agent
         //失敗了，雖然有user_agent，可是卻沒有in_acceptable_language
         /*
         if (
@@ -506,7 +506,7 @@ class User extends KALS_actor {
      */
     /*
     public function get_annotation_count($webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         if ($annotation_type !== NULL ){
             //$type_id = $annotation_type->get_type_id();
@@ -540,7 +540,7 @@ class User extends KALS_actor {
      */
     /*
     public function get_topic_count($webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -574,7 +574,7 @@ class User extends KALS_actor {
      */
     /*
     public function get_responded_count($webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -612,7 +612,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_responded_by_user_count($webpage, $responded_user, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -650,7 +649,7 @@ class User extends KALS_actor {
      */
     /*
     public function get_respond_users($webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -691,7 +690,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_respond_users_count($webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $respond_user = $this->get_respond_users($webpage, $annotation_type);
         $count = count($respond_user);
         return $count;
@@ -741,7 +739,7 @@ class User extends KALS_actor {
      */
     /*
     public function get_respond_to_count_by_user($webpage, $respond_to_user, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -780,7 +778,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_respond_to_users($webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -821,7 +818,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_respond_to_users_count(Webpage $webpage, Annotation_type $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $respond_user = $this->get_respond_to_users($webpage, $annotation_type);
         $count = count($respond_user);
         return $count;
@@ -830,7 +826,6 @@ class User extends KALS_actor {
     
      /**
      * 取得自己喜愛的標註list
-     * @TODO 20140512 Pulipuli Chen
      * @param Webpage $webpage
      * @return Annotation_collection
      */
@@ -881,7 +876,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_like_to_user_count($webpage, $like_to_user) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         // use to test 
         //$user_id = 2002;
@@ -908,7 +902,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_liked_count($webpage) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         // use to test 
         //$user_id = 2002;
@@ -936,7 +929,6 @@ class User extends KALS_actor {
      */
     /*
     public function get_liked_by_user_count($webpage, $liked_user) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         // use to test 
         //$user_id = 2002;
@@ -961,7 +953,6 @@ class User extends KALS_actor {
      * 
      * @param Webpage $webpage
      * @param User $user 
-     * @todo 之後再完成
      */
     /*
     public function get_liked_user($webpage) {
@@ -970,12 +961,11 @@ class User extends KALS_actor {
     }
      * 
      */
-        /**
+    /**
      * 取得被多少人喜愛的數量
      * 
      * @param Webpage $webpage
      * @param User $user 
-     * @todo 之後再完成
      */
     /*
     public function get_liked_user_count($webpage) {

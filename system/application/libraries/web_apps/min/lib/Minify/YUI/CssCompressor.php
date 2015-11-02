@@ -34,8 +34,8 @@ class Minify_YUI_CssCompressor {
         $css = str_replace("\r\n", "\n", $css);
 
         /**
-         * @todo comment removal
-         * @todo re-port from newer Java version
+         * todo comment removal @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
+         * todo re-port from newer Java version @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
          */
 
         // Normalize all whitespace strings to single spaces. Easier to work with that way.

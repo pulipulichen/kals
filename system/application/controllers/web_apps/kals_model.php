@@ -59,7 +59,6 @@ class KALS_model extends Web_apps_controller {
      * 如果呼叫此controller之後還要做其他事情，請在此設定
      */
     protected function _initialize_model() {
-        // @TODO
         // 請覆寫此處
     }
     

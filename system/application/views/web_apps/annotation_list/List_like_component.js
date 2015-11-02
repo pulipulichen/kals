@@ -394,7 +394,6 @@ List_like_component.prototype._set_list_item_count = function () {
 /**
  * 偵測是否是respond
  * 
- * @todo 20140512
  * @returns {Boolean}
  */
 List_like_component.prototype._is_respond = function () {

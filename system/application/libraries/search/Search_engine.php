@@ -591,7 +591,6 @@ class Search_engine extends Generic_collection {
         // 第十七關 target_url 查詢
         //if (isset($this->target_url)) 
         //{
-            //@todo
             //1.要把url轉成id再搜尋：先從表中用url找出webpage_id->使用filter_webpage_object來轉換url->webpage_id
             //in webpage.php
             //$this->webpage_id = $this->CI->webpage->filter_webpage_id($this->target_url);
@@ -805,7 +804,7 @@ class Search_engine extends Generic_collection {
     //-------------------------------------------------------
     //annotation周遭屬性
 
-    // @todo target_like不知道要幹嘛用的
+    // @author Pudding 20151102 target_like不知道要幹嘛用的
     protected $target_over_like_count;
     public function set_target_over_like_count($like_count)
     {

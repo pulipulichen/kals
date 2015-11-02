@@ -1455,7 +1455,7 @@ Y.Array = YArray;
  * @method test
  * @static
  *
- * @todo current implementation (intenionally) will not implicitly 
+ * todo current implementation (intenionally) will not implicitly @author Pudding 20151102
  * handle html elements that are array-like (forms, selects, etc).  
  *
  * @return {int} a number indicating the results:

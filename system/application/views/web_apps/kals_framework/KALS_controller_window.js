@@ -62,7 +62,7 @@ KALS_controller_window.prototype._$hash_url = null;
  * 設定hash url
  */
 KALS_controller_window.prototype._setup_hash_url = function () {
-	// @TODO
+    
 };
 
 /**
@@ -73,7 +73,7 @@ KALS_controller_window.prototype._setup_hash_url = function () {
  */
 KALS_controller_window.prototype._$absolute = false;
 KALS_controller_window.prototype.is_absolute = function () {
-	return this._$absolute;
+    return this._$absolute;
 };
 
 
@@ -1487,7 +1487,7 @@ KALS_controller_window.prototype.toggle_toolbar_option = function(_display) {
 /**
  * 當讀取結束之後，跳到content中的第一個可輸入欄位吧
  * 
- * @todo 20140119 無法正常運作
+ * @TODO #167 20140119 無法正常運作
  * @return {KALS_controller_window}
  */
 KALS_controller_window.prototype.focus_input = function () {

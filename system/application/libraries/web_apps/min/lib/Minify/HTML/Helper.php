@@ -65,7 +65,7 @@ class Minify_HTML_Helper {
             $path .= '?';
         }
         if (null === $this->_groupKey) {
-            // @todo: implement shortest uri
+            // todo: implement shortest uri @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
             $path = self::_getShortestUri($this->_filePaths, $path);
         } else {
             $path .= "g=" . $this->_groupKey;

@@ -743,7 +743,6 @@ Context_user.prototype.get_respond_to_users_count = function () {
 /**
  * 設定喜愛別人的次數
  * 
- * @todo 20140515 初始化尚未設定 Pulipuli Chen
  * @param {Int} _count 次數
  * @returns {Context_user}
  */
@@ -754,7 +753,6 @@ Context_user.prototype.set_like_to_count = function (_count) {
 /**
  * 增加喜愛別人的次數
  * 
- * @todo 20140515 來源尚未設定 Pulipuli Chen
  * @param {Int} _count 次數
  * @returns {Context_user}
  */
@@ -766,7 +764,6 @@ Context_user.prototype.set_like_to_count_add = function (_count) {
 /**
  * 減少喜愛別人的次數
  * 
- * @todo 20140515 來源尚未設定 Pulipuli Chen
  * @param {Int} _count 次數
  * @returns {Context_user}
  */
@@ -790,8 +787,6 @@ Context_user.prototype.get_like_to_count = function () {
 /**
  * 設定被喜愛別人的次數
  * 
- * @todo 20140515 初始化尚未設定 Pulipuli Chen
- * @todo 20140515 來源尚未設定 Pulipuli Chen
  * @param {Int} _count 次數
  * @returns {Context_user}
  */

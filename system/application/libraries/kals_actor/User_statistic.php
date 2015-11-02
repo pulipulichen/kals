@@ -34,7 +34,7 @@ class User_statistic extends KALS_actor {
      * @return Int $count
      */
     public function get_annotation_count($user, $webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        // TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         if ($annotation_type !== NULL ){
             //$type_id = $annotation_type->get_type_id();
@@ -71,7 +71,7 @@ class User_statistic extends KALS_actor {
      * @return Int $count
      */
     public function get_topic_count($user, $webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        // TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -106,9 +106,10 @@ class User_statistic extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型(ALL)
      * @param User $user
      * @return Int $count
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20140512 Pulipuli Chen
      */
     public function get_responded_count($user, $webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -147,9 +148,10 @@ class User_statistic extends KALS_actor {
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @param User $user 
      * @return Int | count
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20140512 Pulipuli Chen
      */
     public function get_responded_by_user_count($user, $webpage, $responded_user, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
+        
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -189,7 +191,6 @@ class User_statistic extends KALS_actor {
      * @return Int $count
      */
     public function get_responded_users_count($user, $webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -229,11 +230,10 @@ class User_statistic extends KALS_actor {
      * @param User $responded_user
      * @param Annotation_type $annotation_type 如果是NULL，則不限定標註類型
      * @return User_collection
-     * @todo 建立user_collection再完成 
+     * @TODO #169 建立user_collection再完成 
      */
     public function get_respond_users($user, $webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
-
+        
         return 0;
     }
 
@@ -277,7 +277,6 @@ class User_statistic extends KALS_actor {
      * @return Int  $count
      */
     public function get_respond_to_count_by_user($user, $webpage, $topic_user, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -317,7 +316,6 @@ class User_statistic extends KALS_actor {
      * @return array | user_id
      */
     public function get_respond_to_users($user, $webpage, $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         //$type_id = $annotation_type->get_type_id();
         if ($annotation_type !== NULL){
@@ -361,7 +359,6 @@ class User_statistic extends KALS_actor {
      * @return Int $count
      */
     public function get_respond_to_users_count($user, Webpage $webpage, Annotation_type $annotation_type = NULL) {
-        // @TODO 20140512 Pulipuli Chen
         $respond_user = $this->get_respond_to_users($user, $webpage, $annotation_type);
         $count = count($respond_user);
         return $count;
@@ -369,7 +366,6 @@ class User_statistic extends KALS_actor {
     
      /**
      * 取得自己喜愛的標註list
-     * @TODO 20140512 Pulipuli Chen
      * @param Webpage $webpage
      * @return Annotation_collection
      */
@@ -417,7 +413,6 @@ class User_statistic extends KALS_actor {
      * @param User $user 
      */
     public function get_like_to_annotation_by_user_count($user, $webpage, $like_to_user) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
         //--------
@@ -444,7 +439,6 @@ class User_statistic extends KALS_actor {
      * @param User $user 
      */
     public function get_liked_count($user, $webpage) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
         //--------
@@ -470,7 +464,6 @@ class User_statistic extends KALS_actor {
      * @param User $user 
      */
     public function get_like_to_count($user, $webpage) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
         //--------
@@ -494,7 +487,6 @@ class User_statistic extends KALS_actor {
      * @param User $user 
      */
     public function get_liked_by_user_count($user, $webpage, $liked_user) {
-     // @TODO 20140512 Pulipuli Chen
         $webpage_id = $webpage->get_id(); 
         $user_id = $user->get_id();
         //--------
@@ -626,7 +618,6 @@ webpage2annotation.annotation_id');
     
     /**
      * 取得主題標註所有類型個別統計次數的陣列
-     * @todo 20140516 Pulipuli Chen 
      * @param User $user
      * @param Webpage $webpage
      * @return Array $type_count_collection
@@ -675,7 +666,6 @@ webpage2annotation.annotation_id');
     
  /**
      * 取得主題標註所有類型個別統計次數的陣列長度(使用了多少種類型)
-     * @todo 20140516 Pulipuli Chen 
      * @param User $user
      * @param Webpage $webpage
      * @return Int $type_used_count
@@ -723,7 +713,6 @@ webpage2annotation.annotation_id');
     
     /**
      * 取得別人回應自己的標註所有類型個別統計次數的陣列
-     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
      * @return Array $type_count_collection
@@ -782,7 +771,6 @@ webpage2annotation.annotation_id');
     
     /**
      * 取得回應給別人的標註所有類型個別統計次數的陣列(自己回應給別人的標註)
-     * @todo 20140516 Pulipuli Chen 請wyfan把它完成
      * @param User $user
      * @param Webpage $webpage
      * @return int

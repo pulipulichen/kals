@@ -580,7 +580,7 @@ class Annotation_setter extends Web_apps_controller {
         $data = $this->_load_my();
 
         /**
-         * @todo 20111106 如果有必要的話，在此讀取nav
+         * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20111106 如果有必要的話，在此讀取nav
          */
         $data['nav'] = $this->_load_nav();
         //$data['nav'] = array();

@@ -70,14 +70,14 @@ Selectable_text_word.prototype.word_count = 0;
 /**
  * 可選取文字的classname
  * @type {String}
- * @TODO 20140102 尚未更新相關使用的程式碼 this.word_classname
+ * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_classname
  */
 Selectable_text_word.prototype.word_classname = 'kals-word';
 
 /**
  * 可選取文字的ID前置
  * @type {String}
- * @TODO 20140102 尚未更新相關使用的程式碼 this.word_id_prefix
+ * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_id_prefix
  */
 Selectable_text_word.prototype.word_id_prefix = 'kals_word_';
 

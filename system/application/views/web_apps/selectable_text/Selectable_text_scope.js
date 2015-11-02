@@ -387,7 +387,6 @@ Selectable_text_scope.prototype.get_recommend_scope_coll = function (_scope_coll
  * 2322 檢查完成，轉接完成
  * @param {Scope_collection_param} _scope_coll
  * @type {jQuery[][]} 注意，陣列是兩階層喔！
- * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
  */
 Selectable_text_scope.prototype.get_words_by_scope_coll = function (_scope_coll) {
     

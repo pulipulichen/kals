@@ -5450,7 +5450,7 @@ class Postgres extends ADODB_base {
 	 * @param $ftsdict The dico's name
 	 * @param $cascade Cascade to dependenced objects
  	 *
- 	 * @todo Support of dictionary templates dropping
+ 	 * todo Support of dictionary templates dropping
          * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
 	 * @return 0 on success
  	 */

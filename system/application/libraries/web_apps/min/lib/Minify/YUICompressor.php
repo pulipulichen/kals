@@ -21,7 +21,7 @@
  * );
  * </code>
  * 
- * @todo unit tests, $options docs
+ * todo unit tests, $options docs @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
  * 
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>

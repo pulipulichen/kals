@@ -11,7 +11,7 @@
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>
  *
- * @todo can use a stream wrapper to unit test this?
+ * todo can use a stream wrapper to unit test this? @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
  */
 class Minify_JS_ClosureCompiler {
     const URL = 'http://closure-compiler.appspot.com/compile';

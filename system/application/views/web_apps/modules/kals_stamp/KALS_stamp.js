@@ -851,7 +851,7 @@ KALS_stamp.prototype._init_config = function() {
  */
 KALS_stamp.prototype._init_listener = function() {
     
-    // @TODO 20140516 Pulipuli Chen
+    // @author Pudding 20140516 Pulipuli Chen
     // 這邊只有監聽部分屬性，請把它擴增其他監聽的事件
     // 監聽其他需要的變數是否有變動，若是有變動則檢查獎章條件
     

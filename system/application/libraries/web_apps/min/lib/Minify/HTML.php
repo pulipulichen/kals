@@ -119,7 +119,7 @@ class Minify_HTML {
             ,$this->_html);
         
         // trim each line.
-        // @todo take into account attribute values that span multiple lines.
+        // todo take into account attribute values that span multiple lines. @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
         $this->_html = preg_replace('/^\\s+|\\s+$/m', '', $this->_html);
         
         // remove ws around block/undisplayed elements

@@ -24,8 +24,8 @@
  *
  * </code>
  *
- * @todo unit tests, $options docs
- * @todo more options support (or should just passthru them all?)
+ * todo unit tests, $options docs @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
+ * todo more options support (or should just passthru them all?) @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
  *
  * @package Minify
  * @author Stephen Clay <steve@mrclay.org>

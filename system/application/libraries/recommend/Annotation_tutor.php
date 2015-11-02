@@ -81,7 +81,7 @@ class Annotation_tutor extends KALS_object {
             
             //test_msg('Annotation_tutor->setup_recommend() 6', 6);
             
-            // @TODO 20140410 這個步驟會出錯
+            // @TODO #170 20140410 這個步驟會出錯
             $recommend->update();
 
             //加入通知

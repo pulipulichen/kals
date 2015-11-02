@@ -30,7 +30,7 @@ if (false === (@include 'class.JavaScriptPacker.php')) {
 class Minify_Packer {
     public static function minify($code, $options = array())
     {
-        // @todo: set encoding options based on $options :)
+        // todo: set encoding options based on $options :) @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
         $packer = new JavascriptPacker($code, 'Normal', true, false);
         return trim($packer->pack());
     }

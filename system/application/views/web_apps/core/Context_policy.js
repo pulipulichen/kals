@@ -195,7 +195,6 @@ Context_policy.prototype.reset = function () {
 /**
  * 是否可以讀取其他人的主題標註
  * 
- * @todo 20140511 對應功能未設定
  * @returns {Boolean}
  * @version 20140511 Pulipuli Chen
  */

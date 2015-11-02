@@ -872,7 +872,6 @@ Selectable_text.prototype.set_class = function (_scope_coll, _classname) {
  * 將範圍轉換成jQuery陣列來選取
  * @param {Scope_collection_param} _scope_coll
  * @type {jQuery[][]} 注意，陣列是兩階層喔！
- * @TODO 20140102 尚未更新相關使用的程式碼 this.get_word_id
  */
 Selectable_text.prototype.get_words_by_scope_coll = function (_scope_coll) {
     return this.scope.get_words_by_scope_coll(_scope_coll);
