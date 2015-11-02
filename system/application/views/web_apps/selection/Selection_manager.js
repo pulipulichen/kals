@@ -27,10 +27,13 @@ function Selection_manager(_selector) {
     this.child('search', new Selection_search(_text));
 	
     this.child('my_basic', new Selection_my_manager(_text));
+    //this.child('my_custom', new Selection_custom_manager(_text, "my_custom"));
     this.child('my_custom', new Selection_my_custom_manager(_text));
     
     this.child('other_basic', new Selection_my_manager(_text));
-    this.child('other_custom', new Selection_my_custom_manager(_text));
+    this.child('other_custom', new Selection_custom_manager(_text, "other"));
+    //this.child('other_custom', new Selection_custom_manager(_text, "other_custom"));
+    //this.child('other_custom', new Selection_my_custom_manager(_text));
 	
     
     this.child('recommend', new Selection_recommend(_text));

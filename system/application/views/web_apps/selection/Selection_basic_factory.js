@@ -19,15 +19,29 @@ function Selection_basic_factory(_text, _config) {
     
     Selection.call(this,_text);
     
-    if (typeof(_config.name) === "string") {
-        this._$name = _config.name;
-    }
-    if (typeof(_config.select_once) === "boolean") {
-        this._$select_once = _config.select_once;
-    }
-}
+    this._initialize_config(_config);
+};
 
 Selection_basic_factory.prototype = new Selection();
+
+/**
+ * 設定
+ * @param {JSON} _config
+ * @returns {Selection_basic_factory}
+ */
+Selection_basic_factory.prototype._initialize_config = function (_config) {
+    
+    if (typeof(_config) === "object") {
+        if (typeof(_config.name) === "string") {
+            this._$name = _config.name;
+        }
+        if (typeof(_config.select_once) === "boolean") {
+            this._$select_once = _config.select_once;
+        }
+    }
+    
+    return this;
+};
 
 /**
  * 改成用constructor設定

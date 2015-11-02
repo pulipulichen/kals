@@ -529,6 +529,15 @@ Annotation_type_param.prototype.get_my_classname = function (_prefix, _postfix) 
 };
 
 /**
+ * 取得標註類型的classname，以「my_」開頭
+ * @param {string|null} _prefix
+ * @return {string}
+ */
+Annotation_type_param.prototype.get_predefined_classname = function (_prefix) {
+    return _prefix + this.get_classname();
+};
+
+/**
  * 設置按鈕的背景顏色
  * @param {string} _color CSS顏色表示法
  */

@@ -1,5 +1,7 @@
 /**
  * Selection_my_summary
+ * 
+ * @deprecated Pudding 20151102 用Selection_basic_factory取代
  *
  * @package    KALS
  * @category   Webpage Application Libraries

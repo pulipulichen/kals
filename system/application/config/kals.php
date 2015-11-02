@@ -309,6 +309,8 @@ $config['web_apps.javascript_import']['component_list_package'] = array(
     'selection/my/Selection_my_custom',
     'selection/my/Selection_my_manager',
 
+    'selection/Selection_custom_manager',
+    'selection/Selection_custom_type',
     'selection/my/Selection_my_custom_type',
     'selection/my/Selection_my_custom_manager',
 

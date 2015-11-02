@@ -249,14 +249,21 @@ Context_predefined_type.prototype.setup_css = function () {
     
     _style_manager.create_style(_style_name);
     
-    for (var _type_name in this._type_list) {
-        var _type_param = this._type_list[_type_name];
+    var _prefix_names = ["my_", "other_"];
+    
+    for (var _p in _prefix_names) {
+        var _prefix_name = _prefix_names[_p];
         
-        var _selector = '.' + _type_param.get_my_classname();
-        var _style = _type_param.get_anchor_css();
-        //$.test_msg('Context_predefined_type.setup_css', [_type_name, _style]);
-        _style_manager.add_style(_style_name, _selector, _style);
+        for (var _type_name in this._type_list) {
+            var _type_param = this._type_list[_type_name];
+
+            var _selector = '.' + _type_param.get_predefined_classname(_prefix_name);
+            var _style = _type_param.get_anchor_css();
+            //$.test_msg('Context_predefined_type.setup_css', [_type_name, _style]);
+            _style_manager.add_style(_style_name, _selector, _style);
+        }
     }
+        
     
     return this;
 };

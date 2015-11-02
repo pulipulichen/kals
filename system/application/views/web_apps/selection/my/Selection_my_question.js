@@ -1,6 +1,8 @@
 /**
  * Selection_my_question
  *
+ * @deprecated Pudding 20151102 用Selection_basic_factory取代
+ *
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>
