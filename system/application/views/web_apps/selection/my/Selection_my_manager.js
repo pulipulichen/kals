@@ -1,6 +1,8 @@
 /**
  * Selection_my_manager
  *
+ * @deprecated Pudding 20151102 用 Selection_types_manager 取代
+ *
  * @package    KALS
  * @category   Webpage Application Libraries
  * @author     Pudding Chen <puddingchen.35@gmail.com>

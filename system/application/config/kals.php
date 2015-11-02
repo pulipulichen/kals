@@ -308,6 +308,7 @@ $config['web_apps.javascript_import']['component_list_package'] = array(
     'selection/my/Selection_my_summary',
     'selection/my/Selection_my_custom',
     'selection/my/Selection_my_manager',
+    'selection/Selection_types_manager',
 
     'selection/Selection_custom_manager',
     'selection/Selection_custom_type',
@@ -388,6 +389,7 @@ $config['web_apps.javascript_import']['component_list_package'] = array(
     'annotation_view/View_editor_container',
     'annotation_view/View_respond_list_collection',
     'annotation_view/Window_view',
+    'annotation_view/Window_annotation_spot',
 
     //'annotation_list/List_item_search_topic',
     //'annotation_list/List_item_search_respond',
