@@ -14,15 +14,31 @@ function Selection_my_manager(_text) {
     
     KALS_user_interface.call(this);
     
-    this.child('importance', new Selection_my_importance(_text));
-    this.child('concept', new Selection_my_concept(_text));
-    this.child('confusion', new Selection_my_confusion(_text));
-    this.child('question', new Selection_my_question(_text));
-    this.child('example', new Selection_my_example(_text));
-    this.child('summary', new Selection_my_summary(_text));
-    this.child('custom', new Selection_my_custom(_text));
+//    this.child('importance', new Selection_my_importance(_text));
+//    this.child('concept', new Selection_my_concept(_text));
+//    this.child('confusion', new Selection_my_confusion(_text));
+//    this.child('question', new Selection_my_question(_text));
+//    this.child('example', new Selection_my_example(_text));
+//    this.child('summary', new Selection_my_summary(_text));
+//    this.child('custom', new Selection_my_custom(_text));
+    
+    var _children_names = [
+        'importance',
+        'concept',
+        'confusion',
+        'question',
+        'example',
+        'summary',
+        'custom'
+    ];
+    
+    var _name_prefix = "my_"
+    for (var _i in _children_names) {
+        var _name = _name_prefix + _children_names[_i];
+        this.child(_children_names[_i], new Selection_basic_factory(_text, {name: _name, select_once: false}));
+    }
 	
-	return this;
+    return this;
 }
 
 // Extend from KALS_user_interface

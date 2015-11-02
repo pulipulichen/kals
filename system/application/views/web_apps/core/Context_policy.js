@@ -35,7 +35,7 @@ Context_policy.prototype._initialize_auth = function () {
         if (typeof (_auth.get_data().policy) !== "undefined") {
             
             var _data = _auth.get_data();
-            $.test_msg("_initialize_auth", _data);
+            //$.test_msg("_initialize_auth", _data);
             if (_auth.is_login()) {
                 // 預先設定囉
                 _this.set_attr(_data.policy);

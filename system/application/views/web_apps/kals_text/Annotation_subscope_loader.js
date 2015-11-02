@@ -91,12 +91,12 @@ Annotation_subscope_loader.prototype.load_annotation = function (_data, _callbac
 Annotation_subscope_loader.prototype._load_annotation_basic = function (_data, _is_initialize) {
     
     var _basic_scope = _data;
-    $.test_msg("_load_annotation_basic", _basic_scope);
+    //$.test_msg("_load_annotation_basic", _basic_scope);
     for (var _i in _basic_scope) {
         var _type_id = _i;
         var _scope_coll_json = _basic_scope[_i];
         
-        $.test_msg("_load_annotation_basic", [this._$scope_name, _type_id]);
+        //$.test_msg("_load_annotation_basic", [this._$scope_name, _type_id]);
         
         if (_scope_coll_json === null 
                 || _scope_coll_json.length === 0) {
@@ -182,11 +182,11 @@ Annotation_subscope_loader.prototype.initialize = function (_callback) {
         
         var _this = this;
         
-        $.test_msg("Annotation_subscope_loader.prototype.initialize 1", [_this._$scope_name, _this._$policy_name]);
+        //$.test_msg("Annotation_subscope_loader.prototype.initialize 1", [_this._$scope_name, _this._$policy_name]);
         
         KALS_context.policy.add_attr_listener(_this._$policy_name, function(_policy) {
             var _scope_name = _policy.get_attr(_this._$scope_name);
-            $.test_msg("Annotation_subscope_loader.prototype.initialize 2", [_this._$scope_name, _this._$policy_name]);
+            //$.test_msg("Annotation_subscope_loader.prototype.initialize 2", [_this._$scope_name, _this._$policy_name]);
             if (_this._policy_allow_get(_policy)) {
                 if (_this.is_loaded()) {
                     return;

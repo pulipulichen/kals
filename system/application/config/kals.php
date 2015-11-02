@@ -298,6 +298,7 @@ $config['web_apps.javascript_import']['component_list_package'] = array(
     'selection/recommend/Selection_recommended',
     'selection/recommend/Selection_recommend_by',
 
+    'selection/Selection_basic_factory',
     'selection/my/Selection_my',
     'selection/my/Selection_my_importance',
     'selection/my/Selection_my_concept',
