@@ -12,7 +12,6 @@
  * @link		http://sites.google.com/site/puddingkals/
  * @version		1.0 ${date} ${time}
  */
-
 class ${name} extends Controller {
 
     function __construct()
