@@ -9,7 +9,7 @@
     font: 100% arial,helvetica,clean,sans-serif;
     color: black;
     background-color: #CCC;
-    margin: 1em !important;
+    margin: 1em auto 1em auto !important;
     padding: 0.5em;
     
     -moz-border-radius: 8px;
@@ -24,7 +24,7 @@
 	
     max-height: 5em;    /** @author Pudding 20151102 因為有Semantic UI Reset，所以要加大 */
     overflow-y: auto;
-    width: 520px;
+    width: 90%;
 }
 
 .KALS .window-view-content .editor-container {

@@ -58,26 +58,27 @@ Annotation_spot.prototype._$view = 'modules/annotation_spot/view/Annotation_spot
  * 
  * 如果要在Controller啟動時為UI做設定，請覆寫這個方法
  * 這個方法只會執行一次
+ * 
+ * return Annotation_spot
  */
 Annotation_spot.prototype._$initialize_view = function () {
     
-    // 設置熱鍵
-    //this.init_hotkey();
+    // 測試範圍
+    //this._scope_coll = new Scope_collection_param(7, 14);
     
-    var _types = this.get_annotation_types();
-    //this.set_field('annotation_type', ['1', '2', '3']);
-    //_types = _types.question;
-    //this.debug('init view', typeof(_types.get_ui));
-    this.set_field('annotation_type', _types);
+    // 錨點的部分
+    var _anchor = new View_anchor_text_component(this._scope_coll);
+    this.find(".view-anchor-text-component").append(_anchor.get_ui());
     
-    // 設定連結
-    var _mobile_topics_link = KALS_context.get_base_url("mobile_apps/annotation_topics", true);
-    this.find("a.mobile-topics-link").attr("href", _mobile_topics_link);
+    // 列表的部分
+    var _list = new View_list_collection(this._scope_coll);
+    this.find(".list-collection view-list").append(_list.get_ui());
     
-    var _rss_feed_link = KALS_context.get_base_url("/rss");
-    this.find("a.rss-feed-link").attr("href", _rss_feed_link);
+    // 編輯器的部分
+    var _editor = new View_editor_container(this._scope_coll, _list);
+    this.find(".editor-container").append(_editor.get_ui());
     
-    
+    return this;
 };
 
 /**
@@ -257,6 +258,12 @@ Annotation_spot.prototype.nav_config = {
  * @returns {Annotation_spot}
  */
 Annotation_spot.prototype._$onopen = null;
+
+/**
+ * 這個討論串的範圍
+ * @type {Scope_collection_param}
+ */
+Annotation_spot.prototype._scope_coll = null;
 
 /* End of file Annotation_spot */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_spot.js */
