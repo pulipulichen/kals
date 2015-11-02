@@ -94,6 +94,8 @@ Selection_types_manager.prototype.custom = null;
  */
 Selection_types_manager.prototype.set_scope_coll = function (_type, _scope_coll, _is_initialize) {
     
+    //$.test_msg("Selection_types_manager.prototype.set_scope_coll", [_type, _scope_coll, _is_initialize]);
+    
     if (_scope_coll.length() === 0) {
         return this;
     }

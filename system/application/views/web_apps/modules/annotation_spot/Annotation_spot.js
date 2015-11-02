@@ -94,13 +94,17 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     
     this._scope_coll = _scope_coll;
     
+    // 開啟時變更選取範圍
+    KALS_text.selection.select.set_scope_coll(_scope_coll);
+    
     this.anchor.set_scope_coll(_scope_coll);
     
     this.list.set_scope_coll(_scope_coll);
     this.list.load_list();
     
     this.editor.set_scope_coll(_scope_coll);
-    this.editor.toggle_container(false);
+    //this.editor.toggle_container(false);
+    this.editor.toggle_container(true);
     
     return this;
 };

@@ -26,7 +26,7 @@ Dialog_close_icon.prototype = new Dialog_close_option();
  */
 Dialog_close_icon.prototype._default_lang = new KALS_language_param(
     '<i class="remove icon"></i>',
-    'dialog.option.close'
+    'dialog.option.close_icon'
 );
 
 Dialog_close_icon.prototype._$create_ui = function () {

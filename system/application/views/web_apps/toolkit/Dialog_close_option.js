@@ -59,8 +59,8 @@ Dialog_close_option.prototype.set_enable_close_callback = function (_boolean_val
  * @type {KALS_language_param}
  */
 Dialog_close_option.prototype._default_lang = new KALS_language_param(
-    //'CLOSE',
-    '<i class="remove icon"></i>',
+    'CLOSE',
+    //'<i class="remove icon"></i>',
     'dialog.option.close'
 );
 

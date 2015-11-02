@@ -869,16 +869,18 @@ KALS_util.show_exception = function (_exception, _uri) {
     var _heading = _exception.heading;
     var _message = _exception.message;
     var _request_uri = _exception.request_uri;
-    if (_request_uri === null || _request_uri === undefined) {
+    if (_request_uri === null 
+            || _request_uri === undefined) {
         _request_uri = _uri;
     }
-    if (_request_uri !== undefined
+    if (typeof(_request_uri) === "string"
             && _request_uri.substr(0,4) !== "http" 
             && _request_uri.substr(0,1) !== "/") {
         _request_uri = KALS_context.get_base_url(_request_uri);
     }
     
-    $.test_msg('KALS_util.show_exception()', [_heading, _message, '<a href="'+_request_uri+'" target="_blank">' + _request_uri + '</a>']);
+    $.test_msg('KALS_util.show_exception()'
+        , [_heading, _message, '<a href="'+_request_uri+'" target="_blank">' + _request_uri + '</a>']);
     
     var _exception_heading = new KALS_language_param('Sorry! System has got some trouble!', 'exception.alert.heading');
     var _exception_content = $('<dl></dl>').addClass('exception');
@@ -887,31 +889,41 @@ KALS_util.show_exception = function (_exception, _uri) {
     var _dt = $('<dt>Hint: </dt>')
         .addClass("hint")
         .appendTo(_exception_content);
-    KALS_context.lang.add_listener(_dt, new KALS_language_param('Hint: ', 'exception.hint.heading'));
+    KALS_context.lang.add_listener(_dt
+        , new KALS_language_param('Hint: ', 'exception.hint.heading'));
     
     var _dd = $('<dd></dd>')
         .addClass("hint")
         .appendTo(_exception_content);
-    KALS_context.lang.add_listener(_dd, new KALS_language_param('You can press "ESC" key to close message.', 'exception.hint.message'));
+
+    KALS_context.lang.add_listener(_dd
+        , new KALS_language_param('You can press "ESC" key to close message.', 'exception.hint.message'));
         
     
     if ($.isset(_heading)) {
         _dt = $('<dt>HEADING: </dt>')    //.html(_lang.create_listener('exception.message_heading.heading'))
             .addClass("heading")
             .appendTo(_exception_content);
-        KALS_context.lang.add_listener(_dt, new KALS_language_param('HEADING: ', 'exception.message_heading.heading'));
+        KALS_context.lang.add_listener(_dt
+            , new KALS_language_param('HEADING: ', 'exception.message_heading.heading'));
         
         _dd = $('<dd></dd>')
             .addClass("heading")
             .appendTo(_exception_content)
             .html(_heading);
-    }
+    }   //if ($.isset(_heading)) {
     
     if ($.isset(_message)) {
         _dt = $('<dt>MESSAGE: </dt>')    //.html(_lang.create_listener('exception.message_heading.message'))
             .addClass("message")
             .appendTo(_exception_content);
-        KALS_context.lang.add_listener(_dt, new KALS_language_param('MESSAGE: ', 'exception.message_heading.message'));
+        KALS_context.lang.add_listener(_dt
+            , new KALS_language_param('MESSAGE: ', 'exception.message_heading.message'));
+            
+        if ($.is_object(_message)) {
+            _message = $.json_encode(_message);
+        }
+           
         _dd = $('<dd></dd>')
             .addClass("message")
             .html(_message)
@@ -922,7 +934,8 @@ KALS_util.show_exception = function (_exception, _uri) {
         _dt = $('<dt>REQUEST URI: </dt>')    //.html(_lang.create_listener('exception.message_heading.request_uri'))
             .addClass("uri")
             .appendTo(_exception_content);
-        KALS_context.lang.add_listener(_dt, new KALS_language_param('REQUEST URI: ', 'exception.message_heading.request_uri'));
+        KALS_context.lang.add_listener(_dt
+            , new KALS_language_param('REQUEST URI: ', 'exception.message_heading.request_uri'));
         _dd = $('<dd></dd>')
             .addClass("uri")
             .appendTo(_exception_content)
@@ -933,7 +946,7 @@ KALS_util.show_exception = function (_exception, _uri) {
     //var _this = this;
     setTimeout(function () {
         var _alert = KALS_util.alert(_exception_heading, _exception_content);
-        _alert.get_ui().addClass('exception');    
+        _alert.get_ui().addClass('exception');
     }, 1000);
 	
     throw _message;
@@ -1002,8 +1015,7 @@ KALS_util._get_alert_modal = function () {
          */
         _modal._$exposable = true;
         
-        //var _close_option = _modal.create_close_option();
-        var _close_option = new Dialog_close_icon();
+        var _close_option = new Dialog_close_option();
         _modal.set_options(_close_option);
         _modal.get_ui().addClass('alert');
         

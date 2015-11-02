@@ -54,7 +54,8 @@ $lang['web_apps.authentication.deregister_error.message'] = '注銷動作失敗�
 $lang['web_apps.toolbar.loading_message'] = '讀取中，請稍候';
 
 $lang['web_apps.dialog.option.button'] = '按鈕';
-$lang['web_apps.dialog.option.close'] = '<i class="remove icon"></i>'; //'關閉';
+$lang['web_apps.dialog.option.close'] = '關閉';
+$lang['web_apps.dialog.option.close_icon'] = '<i class="remove icon"></i>'; //'關閉';
 $lang['web_apps.dialog.option.yes'] = '是';
 $lang['web_apps.dialog.option.no'] = '否';
 $lang['web_apps.dialog.option.disabled'] = '停用';

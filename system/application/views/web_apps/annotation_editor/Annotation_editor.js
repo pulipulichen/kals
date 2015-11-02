@@ -275,7 +275,10 @@ Annotation_editor.prototype.submit = function (_callback) {
     
     var _submit_callback = function (_data) {
         
-        $.test_msg("submit_callback", _data);
+        //$.test_msg("submit_callback", _data);
+        if (_data === "1") {
+            KALS_util.show_exception(_annotation_param, _load_url);
+        }
         
         //如果已經取消了loading動作，那就不作任何反應。
 //        if (_this.is_loading() === false) {
@@ -285,12 +288,12 @@ Annotation_editor.prototype.submit = function (_callback) {
         
         _prepare_callback(_data);
         
-        if (_is_editing_mode === false)    //新增模式
-        {
+        if (_is_editing_mode === false) {   
+            //新增模式
             _prepare_create_callback(_data);
         }
-        else    //編輯模式
-        {
+        else {
+            //編輯模式
             _prepare_edit_callback(_data);
         }
     };
