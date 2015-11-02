@@ -1208,10 +1208,13 @@ DEFAULT_KALS_CONFIG = {
             /**
              * 回到上一層的網址
              * 
-             * 可以用字串，也可以用function來計算
+             * 可以用字串："https://github.com/pulipulichen/kals"
+             * 、相對位置："../"
+             * 、也可以用function來計算
+             * 
              * @type String
              */
-            "back_url": "https://github.com/pulipulichen/kals"
+            "back_url": "../"
         }
     }
 };
