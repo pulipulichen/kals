@@ -12,11 +12,11 @@
  * @param {Annotation_param} _topic_param
  * @param {View_list_collection} _list_coll
  */
-function View_editor_container(_topic_prarm, _list_coll) {
+function View_editor_container(_topic_param, _list_coll) {
     
     Editor_container.call(this, _list_coll);
     
-    if ($.isset(_topic_prarm)) {
+    if ($.isset(_topic_param)) {
         this.set_topic_param(_topic_param);
     }
 }

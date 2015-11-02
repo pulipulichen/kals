@@ -17,6 +17,7 @@ function Annotation_spot() {
     // 繼承宣告的步驟之一
     
     KALS_controller_window.call(this);
+    
 }
 
 /**
@@ -63,20 +64,44 @@ Annotation_spot.prototype._$view = 'modules/annotation_spot/view/Annotation_spot
  */
 Annotation_spot.prototype._$initialize_view = function () {
     
-    // 測試範圍
-    //this._scope_coll = new Scope_collection_param(7, 14);
-    
     // 錨點的部分
-    var _anchor = new View_anchor_text_component(this._scope_coll);
-    this.find(".view-anchor-text-component").append(_anchor.get_ui());
+    this.anchor = new View_anchor_text_component();
+    this.find(".view-anchor-text-component").append(this.anchor.get_ui());
     
     // 列表的部分
-    var _list = new View_list_collection(this._scope_coll);
-    this.find(".list-collection view-list").append(_list.get_ui());
+    this.list = new Annotation_spot_list_collection();
+    
+    this.find(".list-collection view-list").append(this.list.get_ui());
     
     // 編輯器的部分
-    var _editor = new View_editor_container(this._scope_coll, _list);
-    this.find(".editor-container").append(_editor.get_ui());
+    this.editor = new Annotation_spot_editor_container(this.list);
+    this.find(".editor-container").append(this.editor.get_ui());
+    
+    
+    // 測試範圍
+    // @TODO #154 測試完請註解
+    var _scope_coll = new Scope_collection_param(7, 14);
+    this.set_scope_coll(_scope_coll);
+    
+    
+    return this;
+};
+
+/**
+ * 設定範圍參數
+ * @param {Scope_collection_param} _scope_coll
+ * @returns {Annotation_spot.prototype}
+ */
+Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
+    
+    this._scope_coll = _scope_coll;
+    
+    this.anchor.set_scope_coll(_scope_coll);
+    
+    this.list.set_scope_coll(_scope_coll);
+    this.list.load();
+    
+    this.editor.set_scope_coll(_scope_coll);
     
     return this;
 };
@@ -264,6 +289,22 @@ Annotation_spot.prototype._$onopen = null;
  * @type {Scope_collection_param}
  */
 Annotation_spot.prototype._scope_coll = null;
+
+/**
+ * @type {View_anchor_text_component}
+ */
+Annotation_spot.prototype.anchor = null;
+
+/**
+ * @type {Annotation_spot_list_collection}
+ */
+Annotation_spot.prototype.list = null;
+
+/**
+ * @type {Annotation_spot_editor_container}
+ */
+Annotation_spot.prototype.editor = null;
+
 
 /* End of file Annotation_spot */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_spot.js */

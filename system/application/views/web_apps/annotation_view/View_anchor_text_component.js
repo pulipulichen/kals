@@ -71,12 +71,27 @@ View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
     return this;
 };
 
+/**
+ * 設定參數範圍
+ * @param {Scope_collection_param} _scope_coll
+ * @returns {View_anchor_text_component.prototype}
+ */
 View_anchor_text_component.prototype.set_scope_coll_param = function (_scope_coll) {
     if ($.is_class(_scope_coll, 'Scope_collection_param')) {
         var _anchor_text = this.get_anchor_text(_scope_coll);
         this.set_anchor_text(_anchor_text);
     }
     return this;
+};
+
+/**
+ * 設定參數範圍
+ * @param {Scope_collection_param} _scope_coll
+ * @returns {View_anchor_text_component.prototype}
+ * @author Pudding 20151102
+ */
+View_anchor_text_component.prototype.set_scope_coll = function (_scope_coll) {
+    return this.set_scope_coll_param(_scope_coll);
 };
 
 /**

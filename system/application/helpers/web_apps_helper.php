@@ -41,7 +41,8 @@ if ( ! function_exists('json_to_array'))
             $result = json_decode($json, TRUE);
             
             if ($result === NULL) {
-                test_msg("json_to_array", json_last_error());
+                show_error("json_to_array ERROR, error code: ". json_last_error());
+                //throw "json_to_array ERROR, error code: " . json_last_error();
             }
             
             return $result;

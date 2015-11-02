@@ -808,6 +808,12 @@ List_collection.prototype.set_focus = function(_param, _scroll_to) {
     this._set_focus_scrollto = _scroll_to;
 };
 
+/**
+ * 設定搜尋範圍
+ * @param {Scope_collection_param} _scope_coll
+ * @returns {List_collection.prototype}
+ * @author Pudding
+ */
 List_collection.prototype.set_scope_coll = function (_scope_coll) {
     this._scope_coll = _scope_coll;
     return this;
