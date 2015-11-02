@@ -14,29 +14,54 @@
 function Context_policy(){
     Attribute_event_dispatcher.call(this);
     
-    var _this = this;
-    KALS_context.auth.add_listener(function (_auth) {
-        //$.test_msg("Context_policy", _auth._data.policy);
-        if (typeof (_auth.get_data().policy) !== "undefined") {
-            if (_auth.is_login()) {
-                _this.set_attr(_auth.get_data().policy);
-            }
-            else {
-                if (typeof(_auth.get_data().navigation_data) !== "undefined") {
-                    _this.set_attr("navigation_data", _auth.get_data().policy.navigation_data);
-                }
-                _this.reset();
-            }	
-        }   //if (typeof (_auth.get_data().policy) !== "undefined") {
-
-    }); //KALS_context.auth.add_listener(function (_auth) {
-	
-    _this.reset();
+    this._initialize_auth();
 }
 
 Context_policy.prototype = new Attribute_event_dispatcher();
 
 Context_policy.prototype._$data_key = 'policy';
+
+/**
+ * 初始化權限設定的部分
+ * @author Pudding 20151102
+ * @returns {Context_policy.prototype}
+ */
+Context_policy.prototype._initialize_auth = function () {
+    
+    var _this = this;
+    
+    KALS_context.auth.add_listener(function (_auth) {
+        //$.test_msg("Context_policy", _auth._data.policy);
+        if (typeof (_auth.get_data().policy) !== "undefined") {
+            
+            var _data = _auth.get_data();
+            $.test_msg("_initialize_auth", _data);
+            if (_auth.is_login()) {
+                // 預先設定囉
+                _this.set_attr(_data.policy);
+            }
+            else {
+                if (typeof(_data.navigation_data) !== "undefined") {
+                    _this.set_attr("navigation_data", _data.policy.navigation_data);
+                }
+                
+                if (typeof(_data.other_basic) !== "undefined") {
+                    _this.set_attr("other_basic", _data.policy.other_basic);
+                }
+                if (typeof(_data.other_custom) !== "undefined") {
+                    _this.set_attr("other_custom", _data.policy.other_custom);
+                }
+                
+                _this.reset();
+            }
+        }   //if (typeof (_auth.get_data().policy) !== "undefined") {
+
+    }); //KALS_context.auth.add_listener(function (_auth) {
+	
+    this.reset();
+    
+    return this;
+};
 
 /**
  * 是否可讀取
@@ -98,6 +123,24 @@ Context_policy.prototype.get_my_basic = function () {
 Context_policy.prototype.get_my_custom = function () {
     return this.get_attr('my_custom');
 };
+
+/**
+ * 其他人的標註的範圍資料
+ * @author Pudding 20151102
+ */
+Context_policy.prototype.get_other_basic = function () {
+    return this.get_attr('other_basic');
+};
+
+/**
+ * 其他人的自訂標註的範圍資料
+ * @author Pudding 20151102
+ */
+Context_policy.prototype.get_other_custom = function () {
+    return this.get_attr('other_custom');
+};
+
+// --------------------------------------
 
 Context_policy.prototype.set_readable = function (_boolean) {
     return this.set_attr('read', _boolean);

@@ -197,6 +197,7 @@ class Annotation_getter extends Web_apps_controller {
      */
     function my_basic($json = NULL, $callback = NULL)
     {
+        $this->_check_json_callback($json, $callback);
         $output_data = array();
 
         $my_annotation = $this->my();
@@ -218,6 +219,7 @@ class Annotation_getter extends Web_apps_controller {
      */
     function my_custom($json = NULL, $callback = NULL)
     {
+        $this->_check_json_callback($json, $callback);
         $output_data = array();
 
         $my_annotation = $this->my();
@@ -565,31 +567,25 @@ class Annotation_getter extends Web_apps_controller {
                     }
                 }
             }   //if ($is_basic)
-            else
-            {
+            else {
                 if (isset($custom_type_scope_colls[$annotation_type_name]) === false) {
                     //test_msg($annotation_type_name);
                     $custom_type_scope_colls[$annotation_type_name] = new Annotation_scope_collection();
                 }
 
-                foreach ($custom_type_scope_colls AS $type_name => $scope_coll)
-                {
-                    if ($annotation_type_name === $type_name)
-                    {
-                        foreach ($annotation_scope_coll AS $scope)
-                        {
+                foreach ($custom_type_scope_colls AS $type_name => $scope_coll) {
+                    if ($annotation_type_name === $type_name) {
+                        foreach ($annotation_scope_coll AS $scope) {
                             $scope_coll->add_scope($scope);
                         }
                     }
-                    else
-                    {
-                        foreach ($annotation_scope_coll AS $scope)
-                        {
+                    else {
+                        foreach ($annotation_scope_coll AS $scope) {
                             $scope_coll->exclude_scope($scope);
                         }
                     }
                 }
-            }
+            }   // else {
             
             //test_msg('標註3', array($annotation_type_id, $annotation));
         }
@@ -624,6 +620,8 @@ class Annotation_getter extends Web_apps_controller {
      */
     function other_basic($json = NULL, $callback = NULL)
     {
+        $this->_check_json_callback($json, $callback);
+        
         $output_data = array();
 
         $my_annotation = $this->other();
@@ -646,6 +644,7 @@ class Annotation_getter extends Web_apps_controller {
      */
     function other_custom($json = NULL, $callback = NULL)
     {
+        $this->_check_json_callback($json, $callback);
         $output_data = array();
 
         $my_annotation = $this->other();
@@ -655,8 +654,23 @@ class Annotation_getter extends Web_apps_controller {
         else if (is_array($my_annotation)) {
             $output_data = $my_annotation;
         }
-
+        
         return $this->_display_jsonp($output_data, $callback);
+    }
+    
+    /**
+     * 確認json跟callback
+     * @param String $json
+     * @param String $callback
+     * @return \Annotation_getter
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
+     */
+    function _check_json_callback(&$json, &$callback) {
+        if ($callback === NULL && is_string($json)) {
+            $callback = $json;
+            $json = NULL;
+        }
+        return $this;
     }
     
     /**
