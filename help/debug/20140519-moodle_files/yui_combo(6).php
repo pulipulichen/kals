@@ -36,7 +36,8 @@ Y.Event.define("actionkey", {
         //arrows
         '37': 'collapse',
         '39': 'expand',
-        //(@todo: lrt/rtl/M.core_dock.cfg.orientation decision to assign arrow to meanings)
+        //(todo: lrt/rtl/M.core_dock.cfg.orientation decision to assign arrow to meanings)
+        // @author Pudding 20151102
         '32': 'toggle',
         '13': 'enter'
     },

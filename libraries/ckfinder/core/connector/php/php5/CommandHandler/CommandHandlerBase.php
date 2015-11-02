@@ -117,7 +117,8 @@ class CKFinder_Connector_CommandHandler_CommandHandlerBase
             if ($_clientPath == "/") {
                 if (!CKFinder_Connector_Utils_FileSystem::createDirectoryRecursively($this->_currentFolder->getServerPath())) {
                     /**
-                     * @todo handle error
+                     * todo handle error
+                     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 去掉TODO
                      */
                 }
             }

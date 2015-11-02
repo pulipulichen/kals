@@ -226,8 +226,8 @@ class CKFinder_Connector_Core_FolderHandler
             if (!is_dir($this->_thumbsServerPath)) {
                 if(!CKFinder_Connector_Utils_FileSystem::createDirectoryRecursively($this->_thumbsServerPath)) {
                     /**
-                     * @todo  Ckfinder_Connector_Utils_Xml::raiseError(); perhaps we should return error
-                     *
+                     * todo  Ckfinder_Connector_Utils_Xml::raiseError(); perhaps we should return error
+                     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
                      */
                 }
             }

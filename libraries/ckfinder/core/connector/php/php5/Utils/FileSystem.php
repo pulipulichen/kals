@@ -371,7 +371,8 @@ class CKFinder_Connector_Utils_FileSystem
                 return str_replace("\0", "_", utf8_decode($fileName));
             } else if (function_exists('mb_convert_encoding')) {
                 /**
-                 * @todo check whether charset is supported - mb_list_encodings
+                 * todo check whether charset is supported - mb_list_encodings
+                 * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
                  */
                 $encoded = @mb_convert_encoding($fileName, $encoding, 'UTF-8');
                 if (@mb_strlen($fileName, "UTF-8") != @mb_strlen($encoded, $encoding)) {
