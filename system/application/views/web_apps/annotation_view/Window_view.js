@@ -14,13 +14,25 @@ function Window_view() {
     
     Window_content.call(this);
     
+    this._initialize_ui();
+}
+
+Window_view.prototype = new Window_content();
+
+/**
+ * 初始化先隱藏視窗
+ * @author Pudding 20151102
+ * @returns {Window_view.prototype}
+ */
+Window_view.prototype._initialize_ui = function () {
+    
     var _this = this;
     setTimeout(function () {
         _this.get_ui().appendTo($('body')).hide();
     }, 1000);
-}
-
-Window_view.prototype = new Window_content();
+    
+    return this;
+};
 
 Window_view.prototype.name = 'View';
 
@@ -112,23 +124,25 @@ Window_view.prototype.load_topic_param = function (_topic_id) {
             target_id: _topic_id
         };
         
+        var _callback = function (_data) {
+            if (typeof(_data.annotation_collection) !== 'undefined'
+                    && $.is_array(_data.annotation_collection)
+                    && _data.annotation_collection.length > 0) {
+                var _topic_data = _data.annotation_collection[0];
+                var _topic_param = _data;
+                if ($.is_class(_topic_data, 'Annotation_param') === false) {
+                    _topic_param = new Annotation_param(_topic_param); 
+                }
+
+                _this.set_topic_param(_topic_param);    
+            }
+        };
+        
         var _this = this;
         var _config = {
             url: this._load_url,
             data: _data,
-            callback: function (_data) {
-                if (typeof(_data.annotation_collection) != 'undefined'
-                    && $.is_array(_data.annotation_collection)
-                    && _data.annotation_collection.length > 0) {
-                    var _topic_data = _data.annotation_collection[0];
-					var _topic_param = _data;
-					if ($.is_class(_topic_data, 'Annotation_param') === false) {
-						_topic_param = new Annotation_param(_topic_param); 
-					}
-					
-                    _this.set_topic_param(_topic_param);    
-                }
-            }
+            callback: _callback
         };
     }
     else if ($.is_class(_topic_param, 'Annotation_param')) {

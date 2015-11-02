@@ -9,19 +9,43 @@
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/11/6 下午 10:30:46
  * @extends {KALS_user_interface}
- * @param {Annotation_param} _topic_param
+ * @param {Annotation_param} _config
  */
-function View_anchor_text_component(_topic_param) {
+function View_anchor_text_component(_config) {
     
     KALS_user_interface.call(this);
     
-    this.set_topic_param(_topic_param);
+    this._initialize_config(_config);
 }
 
 // Extend from KALS_user_interface
 View_anchor_text_component.prototype = new KALS_user_interface();
 
 /**
+ * 設定參數
+ * @param {Object} _config
+ * @returns {View_anchor_text_component.prototype}
+ * 
+ * @author Pudding 20151102
+ * 讓參數選項變成可以設定範圍的選項
+ */
+View_anchor_text_component.prototype._initialize_config = function (_config) {
+    
+    if ($.is_class(_config, 'Annotation_param')) {
+        this.set_topic_param(_config);
+    }
+    else if ($.is_class(_config, 'Scope_collection_param')) {
+        this.set_scope_coll_param(_config);
+    }
+    
+    return this;
+};
+
+/**
+ * 頂層標註的參數
+ * 
+ * Pudding 20151102
+ * 這個屬性是幹嘛用的? 好像沒有用到啊
  * @type {Annotation_param}
  */
 View_anchor_text_component.prototype._topic_param = null;
@@ -38,8 +62,18 @@ View_anchor_text_component.prototype._anchor_text = null;
 
 View_anchor_text_component.prototype.set_topic_param = function (_topic_param) {
     if ($.is_class(_topic_param, 'Annotation_param')) {
+        
         this._topic_param = _topic_param;
+        
         var _anchor_text = this.get_anchor_text(_topic_param.scope);
+        this.set_anchor_text(_anchor_text);
+    }
+    return this;
+};
+
+View_anchor_text_component.prototype.set_scope_coll_param = function (_scope_coll) {
+    if ($.is_class(_scope_coll, 'Scope_collection_param')) {
+        var _anchor_text = this.get_anchor_text(_scope_coll);
         this.set_anchor_text(_anchor_text);
     }
     return this;

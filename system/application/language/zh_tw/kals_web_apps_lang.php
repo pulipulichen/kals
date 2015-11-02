@@ -333,6 +333,7 @@ $lang['web_apps.respond_list_collection.skip_message.1'] = '略過舊的';
  * Window_view
  */
 $lang['web_apps.window.view.heading'] = '瀏覽討論';
+$lang['web_apps.window.annotation_spot.heading'] = '瀏覽討論';
 
 /**
  * Recommend_tooltip
