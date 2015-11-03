@@ -84,15 +84,18 @@ List_item_respond.prototype._disable_option = [
 /**
  * 從回覆列表中，回應指定標註
  * 會開啟Window_view
+ * @returns {List_item_respond}
  */
 List_item_respond.prototype.respond_annotation = function () {
     var _respond_to = this.get_data();
     
     var _content = KALS_text.tool.view;
     _content.set_respond_param(_respond_to);
-	_content._respond_param = _respond_to;
+    _content._respond_param = _respond_to;
     _content.set_focus_id(_respond_to.annotation_id);
-	
+
+    //$.test_msg("List_item_respond.prototype.respond_annotation()");
+
     return this.view_thread();
 };
 

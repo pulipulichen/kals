@@ -25,7 +25,7 @@ Annotation_spot_list_item_topic.prototype = new List_item_topic();
 Annotation_spot_list_item_topic.prototype.respond_list = null;
 
 Annotation_spot_list_item_topic.prototype._setup_respond_list = function () {
-    var _component = new View_respond_list_collection(this);
+    var _component = new Annotation_spot_respond_list_collection(this);
     this.child('respond_list', _component);
     return _component;
 };

@@ -38,6 +38,7 @@ Annotation_spot_list_collection.prototype.create_list_item = function(_param) {
         return new Annotation_spot_list_item_topic(_param);
     }
     else {
+        $.test_msg("1212");
         return new Annotation_spot_list_item_respond(_param);
     }
 };

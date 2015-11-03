@@ -9,6 +9,7 @@
  * @link       https://github.com/pulipulichen/kals/
  * @version    1.0 2015/11/3 下午 03:36:17
  * @extends {List_item_respond}
+ 
  * @param {JSON} _param
  * @param {List_item} _topic_item
  */
@@ -62,8 +63,9 @@ Annotation_spot_list_item_respond.prototype.respond_annotation = function () {
     
     //先將Window_view的editor打開吧
     KALS_text.tool.view.editor_container.toggle_container(true);
+    //$.test_msg("Annotation_spot_list_item_respond");
     
-    return List_item.prototype.respond_annotation.call(this);
+    return List_item_respond.prototype.respond_annotation.call(this);
 };
 
 /**

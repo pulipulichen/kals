@@ -85,7 +85,9 @@
 } 
 
 .KALS .window-view-content .list-item-topic {
-    border-bottom-style: none;
+    /*border-bottom-style: none;*/
+    border-bottom: 1px dashed #CCC;
+    padding-bottom: 1rem;
 }
 
 .KALS .window-view-content table.editor-container {

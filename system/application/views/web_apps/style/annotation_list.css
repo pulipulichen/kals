@@ -73,9 +73,9 @@
 }
 
 .KALS .list-item .list-anchor-text-component {
-	padding-left: 1em;
-	font-style:italic;
-	color:gray;
+    padding-left: 1em;
+    font-style:italic;
+    color:gray;
 }
 
 
@@ -556,7 +556,7 @@
      * 盡量不要使用!important
      */
     /*padding-left: 2em !important;*/
-    padding-left: 2em;
+    margin-left: 2em;
 }
 
 /*

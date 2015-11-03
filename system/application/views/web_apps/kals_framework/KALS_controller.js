@@ -19,18 +19,18 @@ function KALS_controller() {
     
     JSONP_dispatcher.call(this);
     
-    var _this = this;
-    
-    if (this._$enable_auth_check === true) {
-        //this.debug('init view data', 'check auth');
-        
-        if (typeof(KALS_context) === 'object') {
-            KALS_context.auth.add_listener(function () {
-                //_this._auth_check();
-            });
-        }
-        //_this._auth_check();
-    }
+//    var _this = this;
+//    
+//    if (this._$enable_auth_check === true) {
+//        //this.debug('init view data', 'check auth');
+//        
+//        if (typeof(KALS_context) === 'object') {
+//            KALS_context.auth.add_listener(function () {
+//                //_this._auth_check();
+//            });
+//        }
+//        //_this._auth_check();
+//    }
     
     
 }

@@ -403,8 +403,13 @@ List_menu.prototype.edit_annotation = function () {
     return this;
 };
 
+/**
+ * 回應標註
+ * @author Pudding 20151103
+ * @returns {List_menu.prototype}
+ */
 List_menu.prototype.respond_annotation = function () {
-    
+    $.test_msg("respond_annotation", this._item.respond_annotation);
     this._item.respond_annotation();
     
     return this;

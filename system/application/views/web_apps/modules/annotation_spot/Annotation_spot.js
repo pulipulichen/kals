@@ -122,8 +122,8 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     this.list.load_list();
     
     this.editor.set_scope_coll(_scope_coll);
-    //this.editor.toggle_container(false);
-    this.editor.toggle_container(true);
+    this.editor.toggle_container(false);
+    //this.editor.toggle_container(true);
     
     return this;
 };
@@ -251,6 +251,12 @@ Annotation_spot.prototype._$position_left = null;
  * @type String
  */
 Annotation_spot.prototype._$position_top = null;
+
+/**
+ * 設定背後有背景
+ * @type Boolean
+ */
+Annotation_spot.prototype._$exposable = true;
 
 /**
  * ====================
