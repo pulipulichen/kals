@@ -77,7 +77,6 @@ Annotation_spot.prototype._$initialize_view = function () {
     this.find(".editor-container").append(this.editor.get_ui());
     
     // 測試範圍
-    // @TODO #154 測試完請註解
     //var _scope_coll = new Scope_collection_param(155, 160);
     //this.set_scope_coll(_scope_coll);
     

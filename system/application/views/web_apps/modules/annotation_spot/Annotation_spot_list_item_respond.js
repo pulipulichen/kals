@@ -70,7 +70,6 @@ Annotation_spot_list_item_respond.prototype.respond_annotation = function () {
 
 /**
  * 使用最原始的List_item.edit_annotation()
- * @TODO #154 這邊很有可能會有問題 @author Pudding 20151103
  */
 Annotation_spot_list_item_respond.prototype.edit_annotation = function () {
     return List_item.prototype.edit_annotation.call(this);
