@@ -126,6 +126,15 @@ Annotation_editor.prototype.set_editing = function (_param ) {
         this._editing_param = _param;
         this.list_coll.set_editing_param(_param);
         KALS_text.selection.select.set_scope_coll(_scope_coll);
+        
+        /**
+         * @author Pudding 20151103
+         * 重新選取範圍之後，再度進入編輯模式
+         */
+        var _this = this;
+        setTimeout(function () {
+            _this.set_editing(_param);
+        }, 0);
         return this;
     }
     

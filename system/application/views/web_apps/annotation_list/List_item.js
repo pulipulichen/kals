@@ -565,6 +565,11 @@ List_item.prototype.respond_annotation = function () {
     return this;
 };
 
+/**
+ * 準備進入編輯
+ * @author Pudding 2010
+ * @returns {List_item.prototype}
+ */
 List_item.prototype.edit_annotation = function () {
     
     //var _param = this.get_data();
@@ -577,7 +582,10 @@ List_item.prototype.edit_annotation = function () {
     var _param = this.get_data();
     _editor.set_editing(_param);
     
-    _editor.set_editing_item(this);    
+    _editor.set_editing_item(this);
+    
+    //$.test_msg("List_item.prototype.edit_annotation", "有進入編輯嗎？");
+    
     return this;
 };
 
