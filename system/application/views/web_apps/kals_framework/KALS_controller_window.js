@@ -202,22 +202,23 @@ KALS_controller_window.prototype.close = function (_callback) {
     
     KALS_util.log(this.name + ".close");
     
+    //$.test_msg("KALS_controller_window close 1");
     return KALS_controller.prototype.close.call(this, function () {
-        
+        //$.test_msg("KALS_controller_window close 2");
         /**
          * 依照視窗是否獨立，判斷是否要延後呼叫callback
          * @author Pulipuli Chen 20141110
          */
-        KALS_window.close(function () {
-            if (_this._$absolute === true) {
-                $.trigger_callback(_callback);
-            }
-            else {
+        if (_this._$absolute === true) {
+            $.trigger_callback(_callback);
+        }
+        else {
+            KALS_window.close(function () {
                 setTimeout(function () {
                     $.trigger_callback(_callback);
                 }, 500);
-            }
-        });
+            });
+        }
     });
 };
 
@@ -583,6 +584,7 @@ KALS_controller_window.prototype._lang_filter = function () {
  */
 KALS_controller_window.prototype._initialize_absolute_window = function (_view) {
     
+    var _this = this;
     var _ui = this._$create_ui_prototype();
     
     _ui.addClass('dialog-modal')
@@ -648,6 +650,9 @@ KALS_controller_window.prototype._initialize_absolute_window = function (_view) 
     
     // 設置關閉按鈕
     var _option = new Dialog_close_icon();
+    _option.set_close_callback(function () {
+        _this.close();
+    });
     var _close_ui = _option.get_ui();
     _close_ui.css("float", "right").prependTo(_ui.find(".dialog-heading:first"));
     _close_ui.clone()

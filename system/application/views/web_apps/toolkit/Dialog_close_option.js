@@ -37,6 +37,19 @@ Dialog_close_option.prototype = new Dialog_option();
 Dialog_close_option.prototype._close_callback = null;
 
 /**
+ * 設定關閉的回呼函數
+ * @param {Function} _callback
+ * @returns {Dialog_close_option.prototype}
+ * @author Pudding 20151103
+ */
+Dialog_close_option.prototype.set_close_callback = function (_callback) {
+    if ($.is_function(_callback)) {
+        this._close_callback = _callback;
+    }
+    return this;
+};
+
+/**
  * 是否以callback來關閉視窗
  * @type Boolean
  */

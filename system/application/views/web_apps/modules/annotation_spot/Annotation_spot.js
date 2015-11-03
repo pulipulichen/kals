@@ -209,13 +209,13 @@ Annotation_spot.prototype._$nav_heading = 'heading';
  * 設定視窗的寬度
  * @type Number 單位是px，null表示不設定
  */
-Annotation_spot.prototype._$width = 600;
+//Annotation_spot.prototype._$width = null;
 
 /**
  * 設定視窗的高度
  * @type Number 單位是px，null表示不設定
  */
-Annotation_spot.prototype._$height = null;
+//Annotation_spot.prototype._$height = null;
 
 
 /**
@@ -353,6 +353,16 @@ Annotation_spot.prototype.get_list = function () {
 Annotation_spot.prototype.set_select = function (_word) {
     //$.test_msg("Annotation_spot.prototype.set_select", $.get_prefixed_id(_word));
     var _this = this;
+    
+    if (this.is_opened()) {
+        this.close(function () {
+            _this.set_select(_word);
+        });
+        return this;
+    }
+    
+    
+    this.reset();
     this.open(function () {
         _this.set_scope_coll(_word);
     });
@@ -386,6 +396,35 @@ Annotation_spot.prototype.get_anchor_text_from_word = function (_word) {
     else {
         return _word;
     }
+};
+
+/**
+ * 重置
+ * @param {Function} _callback
+ * @returns {Annotation_spot.prototype}
+ */
+Annotation_spot.prototype.reset = function (_callback) {
+    if ($.isset(this.anchor)) {
+        this.anchor.reset();
+        this.list.reset();
+        this.editor.reset();
+    }
+    $.trigger_callback(_callback);
+    return this;
+};
+
+/**
+ * 覆寫原本的callback
+ * @param {function} _callback
+ * @returns {Annotation_spot.prototype}
+ */
+Annotation_spot.prototype.close = function (_callback) {
+    var _this = this;
+    //$.test_msg("關閉？");
+    KALS_text.tool.close(function () {
+        KALS_controller_window.prototype.close.call(_this, _callback);
+    });
+    return this;
 };
 
 /* End of file Annotation_spot */

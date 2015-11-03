@@ -513,42 +513,6 @@ Annotation_tool.prototype.close = function (_callback) {
     };
     
     /**
-     * 關閉Annotation_tool的時候，檢查是否有note，如果有note則遞交。
-     * @deprecated 20140907 不應該從這裡判斷
-     * @author 20140907 Pulipuli
-     */
-//    var _param = this.get_annotation_param();
-//    var _note = _param.note;
-//    if (_note === null) {
-//        _close_action();
-//    }
-//    else {
-////        var _heading_lang = new KALS_language_param(
-////                "Your annotation is not saved.",
-////                "annotation_tool.close_confirm.annotation_not_save.heading"
-////                );
-////        var _body_lang = new KALS_language_param(
-////                "You have not save this annotation. Do you want to save it?",
-////                "annotation_tool.close_confirm.annotation_not_save.body"
-////                );
-////        
-////        KALS_util.confirm(_heading_lang, _body_lang, function (_result, _overlay_close_action) {
-////            //return;
-////            if (_result === true) {
-////                $.test_msg("儲存資料", _this._close_lock);
-////                //_this.submit_annotation(function () {
-////                    _close_action(_overlay_close_action);
-////                //});
-////            }
-////            else {
-////                _close_action(_overlay_close_action);
-////            }
-////        });
-//        _close_action();
-//        _this.submit_annotation();
-//    }
-    
-    /**
      * 直接關閉訊息
      * @author 20140907 Pulipuli
      */
