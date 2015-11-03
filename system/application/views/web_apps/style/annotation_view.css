@@ -44,7 +44,8 @@
 }
 
 .KALS .window-view-content.not-login .editor-container,
-.KALS .window-view-content.temp-logout .editor-container {
+.KALS .window-view-content.temp-logout .editor-container,
+.KALS .deny-write.editor-container .container {
     display: none;
 }
 
@@ -87,8 +88,11 @@
     border-bottom-style: none;
 }
 
-.KALS .window-view-content .editor-container {
+.KALS .window-view-content table.editor-container {
     height: 210px;
+}
+.KALS .editor-container.deny-write {
+    height: auto !important;
 }
 
 .KALS .window-view-content.hide-editor .editor-container {

@@ -126,6 +126,24 @@ Editor_container.prototype._$create_ui = function () {
         _ui.hide();
     }
     
+    /*
+    KALS_context.auth.add_listener(function (_auth) {
+        if (_auth.is_login())
+            _ui.removeClass(_not_login_classname);
+        else
+            _ui.addClass(_not_login_classname);
+    }, true);
+    */
+    KALS_context.policy.add_attr_listener('write', function (_policy) {
+        var _deny_write_classname = 'deny-write';
+        if (_policy.writable()) {
+            _ui.removeClass(_deny_write_classname);
+        }
+        else {
+            _ui.addClass(_deny_write_classname);
+        }
+    }, true);
+    
     return _ui;
 };
 
