@@ -171,7 +171,7 @@ KALS_controller_window.prototype.open = function (_callback) {
             _this.open_kals_window(_callback);
         }
         else {
-            $.test_msg("開啟之後有回饋嗎？");
+            //$.test_msg("開啟之後有回饋嗎？");
             _this.open_absolute_window(_callback);
         }
     });

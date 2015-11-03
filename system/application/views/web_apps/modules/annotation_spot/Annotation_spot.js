@@ -87,7 +87,7 @@ Annotation_spot.prototype._$initialize_view = function () {
 
 /**
  * 設定範圍參數
- * @param {Scope_collection_param} _scope_coll
+ * @param {Scope_collection_param|jQuery} _scope_coll
  * @returns {Annotation_spot.prototype}
  */
 Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
@@ -99,11 +99,24 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     
     this._scope_coll = _scope_coll;
     
+    var _word = null;
+    if (this.is_annotation_spot(_scope_coll)) {
+        _word = _scope_coll;
+        _scope_coll = new Scope_collection_param(_scope_coll);
+    }
+    
     // 開啟時變更選取範圍
-    $.test_msg("有變更選取範圍嗎？");
+    //$.test_msg("有變更選取範圍嗎？");
     KALS_text.selection.select.set_scope_coll(_scope_coll);
     
-    this.anchor.set_scope_coll(_scope_coll);
+    
+    if ($.is_null(_word)) {
+        this.anchor.set_scope_coll(_scope_coll);
+    }
+    else {
+        var _anchor_text = this.get_anchor_text_from_word(_word);
+        this.anchor.set_word(_anchor_text);
+    }
     
     this.list.set_scope_coll(_scope_coll);
     this.list.load_list();
@@ -334,18 +347,45 @@ Annotation_spot.prototype.get_list = function () {
 
 /**
  * 設定選取這個文字
- * @param {jQuery} _word
+ * @param {jQuery|Scope_collection_param} _word
  * @returns {Annotation_spot.prototype}
  */
 Annotation_spot.prototype.set_select = function (_word) {
     //$.test_msg("Annotation_spot.prototype.set_select", $.get_prefixed_id(_word));
     var _this = this;
     this.open(function () {
-        $.test_msg("Annotation_spot.prototype.set_select", $.get_prefixed_id(_word));
-        var _scope_coll = new Scope_collection_param(_word);
-        _this.set_scope_coll(_scope_coll);
+        _this.set_scope_coll(_word);
     });
     return this;
+};
+
+/**
+ * 標註討論點的名稱
+ * @type String
+ */
+Annotation_spot.prototype.annotation_spot_classname = "kals-annotation-spot";
+
+/**
+ * 確認是否是標註討論點
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ */
+Annotation_spot.prototype.is_annotation_spot = function (_word) {
+    return ($.is_jquery(_word) && _word.hasClass(this.annotation_spot_classname));
+};
+
+/**
+ * 取得標註的文字
+ * @param {jQuery} _word
+ * @returns {jQuery|string}
+ */
+Annotation_spot.prototype.get_anchor_text_from_word = function (_word) {
+    if (_word.hasAttr("title")) {
+        return _word.attr("title");
+    }
+    else {
+        return _word;
+    }
 };
 
 /* End of file Annotation_spot */

@@ -682,7 +682,7 @@ jQuery.is_undefined = function (_obj) {
  * @param {Object} _obj
  */
 jQuery.is_jquery = function (_obj) {
-    return (typeof(_obj) == 'object' && (_obj instanceof jQuery));
+    return (typeof(_obj) === 'object' && (_obj instanceof jQuery));
 };
 
 /**

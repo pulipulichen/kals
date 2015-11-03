@@ -95,6 +95,21 @@ View_anchor_text_component.prototype.set_scope_coll = function (_scope_coll) {
 };
 
 /**
+ * 設定參數範圍
+ * @param {jQuery} _word
+ * @returns {View_anchor_text_component.prototype}
+ * @author Pudding 20151103
+ */
+View_anchor_text_component.prototype.set_word = function (_word) {
+    var _text_container = this._create_text_container();
+    if ($.is_jquery(_word)) {
+        _word = _word.clone();
+    }
+    _text_container.html(_word);
+    return this;
+};
+
+/**
  * 取得標註範圍文字
  * @param {Array} _scope_coll
  */
