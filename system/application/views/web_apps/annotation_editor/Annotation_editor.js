@@ -238,6 +238,20 @@ Annotation_editor.prototype.submit = function (_callback) {
     
     var _annotation_param = this.get_data();
     
+    var _scope_data = this.get_select_scope_data();
+    
+    var _last_scope;
+    if (_scope_data !== null) {
+        _last_scope = _scope_data.scope;
+        //$.test_msg("editor submit last type 1", _last_scope);
+    }
+    else {
+        _last_scope = KALS_text.selection.select.get_scope_coll();
+        //$.test_msg("editor submit last type 2", _last_scope);
+    }
+    
+    $.test_msg('Annotation_editor.submit() 這時候應該就有scope了', _annotation_param.scope);
+    
      //if (this._check_note(_annotation_param) === false) {
     if (this._validate_annotation_param(_annotation_param) === false) {
         $.trigger_callback(_callback);
@@ -245,12 +259,12 @@ Annotation_editor.prototype.submit = function (_callback) {
     }
     
     var _annotation_json = _annotation_param.export_json();
-    
     //檢查取得資料是否正確
     //$.test_msg('Annotation_editor.submit()', _annotation_json);
     
     var _load_url;
     var _is_editing_mode = this.is_editing(); 
+    
     if (_is_editing_mode) {
         _load_url = this._edit_url;
     }
@@ -260,18 +274,8 @@ Annotation_editor.prototype.submit = function (_callback) {
     
     var _this = this;
     
-    var _scope_data = _this.get_select_scope_data();
-    var _last_scope;
-    if (_scope_data !== null) {
-        _last_scope = _scope_data.scope;
-    }
-    else {
-        _last_scope = KALS_text.selection.select.get_scope_coll();
-    }
-    //
-    //var _last_type = _annotation_param.type;
-    //$.test_msg("editor submit last type", _last_type);
-    var _original_param = _annotation_param;
+    
+    // -----------------------------
     
     var _submit_callback = function (_data) {
         
@@ -339,7 +343,7 @@ Annotation_editor.prototype.submit = function (_callback) {
     
     var _prepare_edit_callback = function (_data) {
         if ($.isset(_data)
-            && typeof(_data.timestamp) !== 'undefined') {
+                && typeof(_data.timestamp) !== 'undefined') {
             _annotation_param.timestamp = _data.timestamp;
         }
         //var _scope_coll = KALS_text.selection.select.get_scope_coll();
@@ -353,7 +357,8 @@ Annotation_editor.prototype.submit = function (_callback) {
     var _submit_final_callback = function () {
         if (_annotation_param.is_respond() === false) {
             //設置selection
-            //$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
+            $.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
+            
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
             
             //$.test_msg('_data.nav setup', [KALS_context.user.get_anchor_navigation_type(), _annotation_param.get_navigation_level()]);
@@ -384,6 +389,11 @@ Annotation_editor.prototype.submit = function (_callback) {
             KALS_util.ajax_post(_get_config);
         }
     });
+    
+    //var _last_type = _annotation_param.type;
+    //$.test_msg("editor submit last type", _last_type);
+    var _original_param = _annotation_param;
+    //var _original_param = _prepare_callback(_annotation_param);
     
     _submit_final_callback();
     
@@ -1061,7 +1071,7 @@ Annotation_editor.prototype._setup_note_editor = function () {
     
 	var _this = this;
 	this.type.add_listener(function () {
-		_this.note.focus();
+            _this.note.focus();
 	});
     
     return _note_editor;
@@ -1164,25 +1174,25 @@ Annotation_editor.prototype.web_search = null;
  */
 Annotation_editor.prototype._setup_type_hint = function () {
 	
-	var _type_hint = this._container.find("td.annotation-type-hint:first");
-	
-	this.type.add_listener(function (_type) {
-		
-		//$.test_msg("Annotation_editor._setup_type_hint()", _type.get_hint());
-		
-		var _hint = _type.get_hint();
-		if ($.is_null(_hint)
-			|| typeof(_hint) === "undefined"
-			|| _hint === "") {
-			_type_hint.hide();
-		}
-		else {
-			_type_hint.show();
-			_type_hint.html(_hint);
-		}
-	});
-	
-	return this;
+    var _type_hint = this._container.find("td.annotation-type-hint:first");
+
+    this.type.add_listener(function (_type) {
+
+        //$.test_msg("Annotation_editor._setup_type_hint()", _type.get_hint());
+
+        var _hint = _type.get_hint();
+        if ($.is_null(_hint)
+                || typeof(_hint) === "undefined"
+                || _hint === "") {
+            _type_hint.hide();
+        }
+        else {
+            _type_hint.show();
+            _type_hint.html(_hint);
+        }
+    });
+
+    return this;
 };
 
 /**
@@ -1196,20 +1206,38 @@ Annotation_editor.prototype._select_scope_data = null;
  * @type {JSON}
  */
 Annotation_editor.prototype.get_select_scope_data = function () {
+    if (this._select_scope_data === null) {
+        this._select_scope_data = this._get_scope_data_from_select();
+    }
     return this._select_scope_data;
 };
 
+/**
+ * 初始化對範圍的監聽器
+ * @author Pudding 20151103
+ * @returns {Annotation_editor.prototype}
+ */
 Annotation_editor.prototype._init_listeners = function () {
     var _this = this;
     KALS_text.selection.select.add_listener('select', function () {
         //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-        var _select = KALS_text.selection.select;
-        _this._select_scope_data = {
-            scope: _select.get_scope_coll(),
-            feature_location: _select.get_location_feature(),
-            feature_recommend_scope: _select.get_recommend_scope_coll()
-        };
+        _this._select_scope_data = _this._get_scope_data_from_select();
     });
+    return this;
+};
+
+/**
+ * 取得標註範圍的資料
+ * @returns {JSON}
+ * @author Pudding 20151103
+ */
+Annotation_editor.prototype._get_scope_data_from_select = function () {
+    var _select = KALS_text.selection.select;
+    return {
+        scope: _select.get_scope_coll(),
+        feature_location: _select.get_location_feature(),
+        feature_recommend_scope: _select.get_recommend_scope_coll()
+    };
 };
 
 /* End of file Annotation_editor */
