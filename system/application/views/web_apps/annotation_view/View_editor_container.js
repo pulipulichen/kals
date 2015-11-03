@@ -71,7 +71,6 @@ View_editor_container.prototype.add_respond_to = function (_respond_param) {
     return this;
 };
 
-
 /**
  * 預設的開啟狀態
  * @deprecated Pudding 20151102

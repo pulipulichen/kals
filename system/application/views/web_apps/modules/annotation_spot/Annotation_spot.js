@@ -308,6 +308,23 @@ Annotation_spot.prototype.list = null;
  */
 Annotation_spot.prototype.editor = null;
 
+/**
+ * 取得編輯器
+ * @author Pudding 20151103
+ * @returns {Annotation_editor}
+ */
+Annotation_spot.prototype.get_editor = function () {
+    return this.editor.get_editor();
+};
+
+/**
+ * 取得列表
+ * @author Pudding 20151103
+ * @returns {Annotation_spot_list_collection}
+ */
+Annotation_spot.prototype.get_list = function () {
+    return this.list;
+};
 
 /* End of file Annotation_spot */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_spot.js */

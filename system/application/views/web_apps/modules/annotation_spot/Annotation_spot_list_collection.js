@@ -35,10 +35,10 @@ Annotation_spot_list_collection.prototype._$need_login = true;
  */
 Annotation_spot_list_collection.prototype.create_list_item = function(_param) {
     if (this._$target_topic === true) {
-        return new View_list_item_topic(_param, this._topic_param);
+        return new Annotation_spot_list_item_topic(_param);
     }
     else {
-        return new View_list_item_respond(_param, this._topic_param);
+        return new Annotation_spot_list_item_respond(_param);
     }
 };
 

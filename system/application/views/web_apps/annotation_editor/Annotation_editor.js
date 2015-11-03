@@ -250,7 +250,7 @@ Annotation_editor.prototype.submit = function (_callback) {
         //$.test_msg("editor submit last type 2", _last_scope);
     }
     
-    $.test_msg('Annotation_editor.submit() 這時候應該就有scope了', _annotation_param.scope);
+    //$.test_msg('Annotation_editor.submit() 這時候應該就有scope了', _annotation_param.scope);
     
      //if (this._check_note(_annotation_param) === false) {
     if (this._validate_annotation_param(_annotation_param) === false) {
@@ -357,7 +357,7 @@ Annotation_editor.prototype.submit = function (_callback) {
     var _submit_final_callback = function () {
         if (_annotation_param.is_respond() === false) {
             //設置selection
-            $.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
+            //$.test_msg("submt之後,檢查標註資料", [_annotation_param.type.get_type_name(), _annotation_param.scope]);
             
             KALS_text.selection.my_basic.set_scope_coll(_annotation_param.type.get_type_name(), _annotation_param.scope);
             

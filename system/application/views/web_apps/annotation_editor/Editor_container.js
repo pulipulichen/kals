@@ -791,5 +791,15 @@ Editor_container.prototype.set_writable = function(_writable, _deny_lang) {
     return this;
 };
 
+
+/**
+ * 取得編輯器
+ * @returns {Annotation_editor}
+ * @author Pudding 20151103
+ */
+Editor_container.prototype.get_editor = function () {
+    return this.editor;
+};
+
 /* End of file Editor_container */
 /* Location: ./system/application/views/web_apps/Editor_container.js */
