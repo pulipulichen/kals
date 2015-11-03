@@ -78,8 +78,8 @@ Annotation_spot.prototype._$initialize_view = function () {
     
     // 測試範圍
     // @TODO #154 測試完請註解
-    var _scope_coll = new Scope_collection_param(155, 160);
-    this.set_scope_coll(_scope_coll);
+    //var _scope_coll = new Scope_collection_param(155, 160);
+    //this.set_scope_coll(_scope_coll);
     
     
     return this;
@@ -92,9 +92,15 @@ Annotation_spot.prototype._$initialize_view = function () {
  */
 Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     
+    if ($.is_null(_scope_coll)) {
+        KALS_util.show_exception("Annotation_spot.prototype.set_scope_coll() _scope_colll is null");
+        return this;
+    }
+    
     this._scope_coll = _scope_coll;
     
     // 開啟時變更選取範圍
+    $.test_msg("有變更選取範圍嗎？");
     KALS_text.selection.select.set_scope_coll(_scope_coll);
     
     this.anchor.set_scope_coll(_scope_coll);
@@ -324,6 +330,22 @@ Annotation_spot.prototype.get_editor = function () {
  */
 Annotation_spot.prototype.get_list = function () {
     return this.list;
+};
+
+/**
+ * 設定選取這個文字
+ * @param {jQuery} _word
+ * @returns {Annotation_spot.prototype}
+ */
+Annotation_spot.prototype.set_select = function (_word) {
+    //$.test_msg("Annotation_spot.prototype.set_select", $.get_prefixed_id(_word));
+    var _this = this;
+    this.open(function () {
+        $.test_msg("Annotation_spot.prototype.set_select", $.get_prefixed_id(_word));
+        var _scope_coll = new Scope_collection_param(_word);
+        _this.set_scope_coll(_scope_coll);
+    });
+    return this;
 };
 
 /* End of file Annotation_spot */

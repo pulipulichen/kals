@@ -15,6 +15,13 @@ function Scope_collection_param(_scope_coll, _to) {
     
     this.scopes = [];
     
+    if ($.is_jquery(_scope_coll) && $.is_null(_to)) {
+        var _id = $.get_prefixed_id(_scope_coll);
+        _scope_coll = _id;
+        _to = _id;
+        //$.test_msg("有設定嗎？", _id);
+    }
+    
     if ($.isset(_scope_coll) && $.is_null(_to)) {
         this.import_coll(_scope_coll);
     }

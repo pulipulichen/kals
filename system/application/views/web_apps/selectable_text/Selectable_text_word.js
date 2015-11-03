@@ -580,12 +580,14 @@ Selectable_text_word.prototype._setup_word_annotation_spot_event = function (_wo
     /**
      * @type Selection_select
      */
-    var _select = KALS_text.selection.select;
+    //var _select = KALS_text.selection.select;
     
     //$.test_msg("已經設定");
     _words.click(function () {
         var _word = $(this);
-        _select.set_complete_select(_word);
+        //_select.set_complete_select(_word);
+        //$.test_msg("_setup_word_annotation_spot_event", $.get_prefixed_id(_word));
+        KALS_context.module.get_module("Annotation_spot").set_select(_word);
     });
 };
 
@@ -676,10 +678,24 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
                  * 在滑鼠移上去的時候才開始設定事件
                  * @author Pudding 20151029
                  */
+                var _lock_name = "kals_word_selectable";
+                
                 _word.one("mouseover", function () {
-                    //$.test_msg("初始化", this.id);
+                    if ($(this).hasAttr(_lock_name)) {
+                        return;
+                    }
+                    $(this).attr(_lock_name, 1);
                     _this._init_word_selectable_event(this);
                     $(this).trigger("mouseover");
+                });
+                
+                _word.one("click", function () {
+                    if ($(this).hasAttr(_lock_name)) {
+                        return;
+                    }
+                    $(this).attr(_lock_name, 1);
+                    _this._init_word_selectable_event(this);
+                    $(this).trigger("click");
                 });
                 
                 KALS_context.progress.add_count(2);

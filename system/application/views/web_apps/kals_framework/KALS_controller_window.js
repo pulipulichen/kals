@@ -171,6 +171,7 @@ KALS_controller_window.prototype.open = function (_callback) {
             _this.open_kals_window(_callback);
         }
         else {
+            $.test_msg("開啟之後有回饋嗎？");
             _this.open_absolute_window(_callback);
         }
     });
@@ -751,6 +752,9 @@ KALS_controller_window.prototype.open_absolute_window = function (_callback) {
     //this.overlay_open(_callback);
     //this.debug('open absolute window', _config);
     this.get_ui().overlay().load();
+    
+    // @author Pudding 20151103 居然忘記加上去
+    $.trigger_callback(_callback);  
     return this;
 };
 
