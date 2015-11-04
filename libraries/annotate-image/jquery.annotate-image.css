@@ -7,13 +7,13 @@
     float: left;
     font-family: Verdana, Sans-Serif;
     font-size: 12px;    
-    height: 24px;
+    /* height: 24px; */
     line-height: 20px;    
     /*padding: 2px 0 2px 24px;*/
     padding: 2px 0;
     text-align: center;
     margin: 5px 0;
-    width: 84px;
+    width: 100px;
     text-decoration: none;
 }
 .image-annotate-add:hover {
@@ -101,6 +101,14 @@
 #image-annotate-edit-form .form-button, #image-annotate-edit-form .form-submit {
     margin: 0;
 }
+
+/**
+ * @author Pudding 20151104
+ */
+#image-annotate-edit-form .controller {
+    text-align: right;
+}
+
 #image-annotate-edit-form a {
     background-color: #fff;
     background-repeat: no-repeat;
@@ -108,16 +116,16 @@
     border: solid 1px #ccc;
     color: #333;
     cursor: pointer;
-    display: block;
-    float: left;    
+    display: inline-block;
+    /*float: left;*/
     font-family: Verdana, Sans-Serif;
     font-size: 12px;        
-    height: 24px;
+    /* height: 24px; */
     line-height: 20px;
     /*padding: 2px 0 2px 24px;*/
     padding: 2px 0;
     margin: 3px 6px 3px 0;
-    width: 68px;
+    width: 70px;
     text-align: center;
 }
 #image-annotate-edit-form a:hover {

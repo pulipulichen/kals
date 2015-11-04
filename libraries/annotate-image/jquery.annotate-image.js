@@ -66,7 +66,7 @@
 
         // Add the "Add a note" button
         if (this.editable) {
-            this.button = $('<a class="image-annotate-add" id="image-annotate-add" href="#">Add Note</a>');
+            this.button = $('<a class="image-annotate-add" id="image-annotate-add" href="#">' + $.fn.annotateImage.lang.addNote + '</a>');
             this.button.click(function() {
                 $.fn.annotateImage.add(image);
             });
@@ -136,10 +136,10 @@
     * Plugin Defaults
     **/
     $.fn.annotateImage.lang = {
-        addNote: 'Add Note',
-        ok: 'OK',
-        delete: 'Delete',
-        cancel: "Cancel"
+        addNote: '<i class="add circle icon"></i>Add Note',
+        ok: '<i class="check circle icon"></i>Save',
+        delete: '<i class="minus circle icon"></i>Delete',
+        cancel: '<i class="remove circle icon"></i>Cancel'
     };
 
     $.fn.annotateImage.clear = function(image) {
@@ -236,7 +236,7 @@
 
             editable.destroy();
         });
-        editable.form.append(ok);
+        editable.form.find(".controller").append(ok);
     };
 
     $.fn.annotateImage.createCancelButton = function(editable, image) {
@@ -248,7 +248,7 @@
             editable.destroy();
             image.mode = 'view';
         });
-        editable.form.append(cancel);
+        editable.form.find(".controller").append(cancel);
     };
 
     $.fn.annotateImage.saveAsHtml = function(image, target) {
@@ -316,7 +316,14 @@
         image.canvas.children('.image-annotate-edit').show();
 
         // Add the note (which we'll load with the form afterwards)
-        var form = $('<div id="image-annotate-edit-form"><form><textarea id="image-annotate-text" name="text" rows="3" cols="30">' + this.note.text + '</textarea></form></div>');
+        var form = $('<div id="image-annotate-edit-form">'
+            + '<form>' 
+                + '<textarea id="image-annotate-text" name="text" rows="3" cols="30">' 
+                    + this.note.text 
+                + '</textarea>'
+            + '</form>'
+            + '<div class="controller"></div>'
+            + '</div>');
         this.form = form;
 
         $('body').append(this.form);
@@ -475,7 +482,7 @@
                 editable.destroy();
                 annotation.destroy();
             });
-            editable.form.append(del);
+            editable.form.find(".controller").append(del);
 
             $.fn.annotateImage.createCancelButton(editable, this.image);
         }
