@@ -19,6 +19,10 @@
         this.editable = opts.editable;
         this.useAjax = opts.useAjax;
         this.notes = opts.notes;
+        
+        if (typeof(opts.lang) !== "object") {
+            this.lang = opts.lang;
+        }
 
         // Add the canvas
         this.canvas = $('<div class="image-annotate-canvas"><div class="image-annotate-view"></div><div class="image-annotate-edit"><div class="image-annotate-edit-area"></div></div></div>');
@@ -122,6 +126,16 @@
         useAjax: true,
         notes: new Array()
     };
+    
+    /**
+    * Plugin Defaults
+    **/
+    $.fn.annotateImage.lang = {
+        addNote: 'Add Note',
+        ok: 'OK',
+        delete: 'Delete',
+        cancel: "Cancel"
+    };
 
     $.fn.annotateImage.clear = function(image) {
         ///	<summary>
@@ -182,7 +196,7 @@
         ///	<summary>
         ///		Creates a Save button on the editable note.
         ///	</summary>
-        var ok = $('<a class="image-annotate-edit-ok">OK</a>');
+        var ok = $('<a class="image-annotate-edit-ok">' + $.fn.annotateImage.lang.ok + '</a>');
 
         ok.click(function() {
             var form = $('#image-annotate-edit-form form');
@@ -224,7 +238,7 @@
         ///	<summary>
         ///		Creates a Cancel button on the editable note.
         ///	</summary>
-        var cancel = $('<a class="image-annotate-edit-close">Cancel</a>');
+        var cancel = $('<a class="image-annotate-edit-close">' + $.fn.annotateImage.lang.cancel + '</a>');
         cancel.click(function() {
             editable.destroy();
             image.mode = 'view';
@@ -259,7 +273,7 @@
          * @author Pudding 20151104
          */
         var _offset = undefined;
-        if (typeof(note.top) !== "undefined") {
+        if (note !== undefined && typeof(note.top) !== "undefined") {
             _offset = note;
             note = undefined;
         }
@@ -438,7 +452,7 @@
             $.fn.annotateImage.createSaveButton(editable, this.image, annotation);
 
             // Add the delete button
-            var del = $('<a class="image-annotate-edit-delete">Delete</a>');
+            var del = $('<a class="image-annotate-edit-delete">' + $.fn.annotateImage.lang.delete + '</a>');
             del.click(function() {
                 var form = $('#image-annotate-edit-form form');
 
