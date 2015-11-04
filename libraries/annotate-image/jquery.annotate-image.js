@@ -11,6 +11,14 @@
         ///		Creates annotations on the given image.
         ///     Images are loaded from the "getUrl" propety passed into the options.
         ///	</summary>
+        
+        if (this.length > 1) {
+            for (var _i = 0; _i < this.length; _i++) {
+                $(this[_i]).annotateImage(options);
+            }
+            return this;
+        }
+        
         var opts = $.extend({}, $.fn.annotateImage.defaults, options);
         var image = this;
 
@@ -273,6 +281,8 @@
         ///		Defines an editable annotation area.
         ///	</summary>
         this.image = image;
+        
+        console.log(note);
 
         /**
          * @author Pudding 20151104
@@ -280,7 +290,7 @@
         var _offset = undefined;
         if (note !== undefined && typeof(note.top) !== "undefined") {
             _offset = note;
-            note = undefined;
+            //note = undefined;
         }
 
         if (note) {
