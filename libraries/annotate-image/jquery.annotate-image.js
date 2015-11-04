@@ -32,6 +32,7 @@
         this.editable = opts.editable;
         this.useAjax = opts.useAjax;
         this.notes = opts.notes;
+        this.types = opts.types;
         
         if (typeof(opts.lang) !== "object") {
             this.lang = opts.lang;
@@ -147,7 +148,8 @@
         deleteUrl: 'your-delete.rails',
         editable: true,
         useAjax: true,
-        notes: new Array()
+        notes: new Array(),
+        types: ["重要"]
     };
     
     /**
@@ -339,13 +341,33 @@
         // Add the note (which we'll load with the form afterwards)
         var form = $('<div id="image-annotate-edit-form">'
             + '<form>' 
+                + '<div class="line-1">'
+                    + '<span class="user"></span>'
+                    + '<select name="type" class="type"></select>'
+                + '</div>'
+                + '<div class="line-2">'
                 + '<textarea id="image-annotate-text" name="text" rows="3" cols="30">' 
                     + this.note.text 
                 + '</textarea>'
+                + '</div>'
             + '</form>'
             + '<div class="controller"></div>'
             + '</div>');
         this.form = form;
+        
+        var _type_select = form.find(".type");
+        //console.log(image.types);
+        for (var _t in image.types) {
+            var _type = image.types[_t];
+            var _option = $('<option value="' + _type + '">' + _type + '</option>');
+            if (_type === this.note.type) {
+                _option.attr("selected", true);
+            }
+            _type_select.append(_option);
+        }
+        
+        form.find(".user").html(this.note.user);
+        //form.find(".type").attr("value", this.note.type);
 
         $('body').append(this.form);
         this.form.css('left', this.area.offset().left + 'px');
@@ -404,7 +426,12 @@
         image.canvas.children('.image-annotate-view').prepend(this.area);
 
         // Add the note
-        this.form = $('<div class="image-annotate-note">' + note.text + '</div>');
+        this.form = $('<div class="image-annotate-note"></div>');
+        
+        this.form.append('<span class="user">' + note.user + '</span>');
+        this.form.append('<span class="type">' + note.type + '</span>');
+        this.form.append('<span class="text">' + note.text + '</span>');
+        
         this.form.hide();
         image.canvas.children('.image-annotate-view').append(this.form);
         this.form.children('span.actions').hide();

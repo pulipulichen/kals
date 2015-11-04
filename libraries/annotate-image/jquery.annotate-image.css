@@ -72,6 +72,23 @@
     padding: 3px 7px;
     position: absolute;
 }
+
+/**
+ * @author Pudding 20151104 
+ */
+.image-annotate-note .type {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ccc;
+    display: inline-block;
+    margin-left: 0.3rem;
+    padding: 0 3px;
+}
+
+.image-annotate-note .text {
+    display: block;
+}
+
 .image-annotate-note .actions {
     display: block;
     font-size: 80%;
@@ -82,7 +99,7 @@
 #image-annotate-edit-form {
     background: #FFFEE3 none repeat scroll 0 0;
     border: 1px solid #000000;
-    height: 92px;
+    height: 7rem;
     padding: 7px;
     position: absolute;
     width: 264px;
