@@ -230,24 +230,26 @@
         var ok = $('<a class="image-annotate-edit-ok">' + $.fn.annotateImage.lang.ok + '</a>');
 
         ok.click(function() {
-            var form = $('#image-annotate-edit-form form');
-            var text = $('#image-annotate-text').val();
+            var form = $('.image-annotate-edit-form form');
+            var text = $('.image-annotate-text').val();
             $.fn.annotateImage.appendPosition(form, editable);
             image.mode = 'view';
-
+            
+            //alert(form.find("type").val());
             // Save via AJAX
             if (image.useAjax) {
-                $.ajax({
-                    url: image.saveUrl,
-                    data: form.serialize(),
-                    error: function(e) { alert("An error occured saving that note."); },
-                    success: function(data) {
-                        if (data.annotation_id !== undefined) {
-                            editable.note.id = data.annotation_id;
-                        }
-		    },
-                    dataType: "json"
-                });
+                console.log(form.serialize());
+//                $.ajax({
+//                    url: image.saveUrl,
+//                    data: form.serialize(),
+//                    error: function(e) { alert("An error occured saving that note."); },
+//                    success: function(data) {
+//                        if (data.annotation_id !== undefined) {
+//                            editable.note.id = data.annotation_id;
+//                        }
+//		    },
+//                    dataType: "json"
+//                });
             }
 
             // Add to canvas
@@ -536,7 +538,7 @@
             // Add the delete button
             var del = $('<a class="image-annotate-edit-delete">' + $.fn.annotateImage.lang.delete + '</a>');
             del.click(function() {
-                var form = $('#image-annotate-edit-form form');
+                var form = $('.image-annotate-edit-form form');
 
                 $.fn.annotateImage.appendPosition(form, editable);
 
