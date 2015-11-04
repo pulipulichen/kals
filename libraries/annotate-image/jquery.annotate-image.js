@@ -1,3 +1,8 @@
+/**
+ * @author flipbit.co.uk 2015
+ * GitHub: https://github.com/flipbit/jquery-image-annotate
+ * Demo: http://flipbit.co.uk/jquery-image-annotation.html
+ */
 /// <reference path="jquery-1.2.6-vsdoc.js" />
 (function($) {
 
