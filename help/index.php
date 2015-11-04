@@ -39,6 +39,7 @@
   <li><a href="night.html">設定獎章機制</a></li> 
   <li><a href="embed_config_url.html">指定設定檔KALS_CONFIG的網址</a></li>
   <li><a href="kals_annotation_spot.html">指定標註討論點</a></li>
+  <li><a href="annotate-image.html">標註在圖片上</a></li>
 </ul>
 
 <hr />

@@ -185,6 +185,8 @@ $config['web_apps.javascript_import']['toolkit_list_package'] = array(
     , 'helpers/KALS_util'   //Qunit
 
     , 'kals_framework/KALS_controller' // Pulipuli Chen 20131119
+    
+    , 'libraries/src/jquery.annotate-image' // @TODO #107 要記得壓縮
 
     //, 'toolkit/'
 );
