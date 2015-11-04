@@ -32,7 +32,12 @@
         this.editable = opts.editable;
         this.useAjax = opts.useAjax;
         this.notes = opts.notes;
+        
+        /**
+         * @author Pudding 20151104
+         */
         this.types = opts.types;
+        this.user = opts.user;
         
         if (typeof(opts.lang) !== "object") {
             this.lang = opts.lang;
@@ -80,7 +85,7 @@
         // Add the "Add a note" button
         if (this.editable) {
             this.button = $('<span class="image-annotate-add-container">'
-                + '<a class="image-annotate-add" id="image-annotate-add" href="#">' 
+                + '<a class="image-annotate-add" href="#">' 
                     + $.fn.annotateImage.lang.addNote 
                 + '</a>'
                 + '</span>');
@@ -149,7 +154,8 @@
         editable: true,
         useAjax: true,
         notes: new Array(),
-        types: ["重要"]
+        types: ["重要"],
+        user: "test"
     };
     
     /**
@@ -236,9 +242,9 @@
                     data: form.serialize(),
                     error: function(e) { alert("An error occured saving that note."); },
                     success: function(data) {
-				if (data.annotation_id !== undefined) {
-					editable.note.id = data.annotation_id;
-				}
+                        if (data.annotation_id !== undefined) {
+                            editable.note.id = data.annotation_id;
+                        }
 		    },
                     dataType: "json"
                 });
@@ -257,6 +263,7 @@
             editable.destroy();
         });
         editable.form.find(".controller").append(ok);
+        return this;
     };
 
     $.fn.annotateImage.createCancelButton = function(editable, image) {
@@ -269,6 +276,7 @@
             image.mode = 'view';
         });
         editable.form.find(".controller").append(cancel);
+        return this;
     };
 
     $.fn.annotateImage.saveAsHtml = function(image, target) {
@@ -282,6 +290,7 @@
             html += $.fn.annotateImage.createHiddenField("width_" + i, image.notes[i].width);
         }
         element.html(html);
+        return this;
     };
 
     $.fn.annotateImage.createHiddenField = function(name, value) {
@@ -339,14 +348,14 @@
         image.canvas.children('.image-annotate-edit').show();
 
         // Add the note (which we'll load with the form afterwards)
-        var form = $('<div id="image-annotate-edit-form">'
+        var form = $('<div class="image-annotate-edit-form">'
             + '<form>' 
                 + '<div class="line-1">'
                     + '<span class="user"></span>'
                     + '<select name="type" class="type"></select>'
                 + '</div>'
                 + '<div class="line-2">'
-                + '<textarea id="image-annotate-text" name="text" rows="3" cols="30">' 
+                + '<textarea class="image-annotate-text" name="text" rows="3" cols="30">' 
                     + this.note.text 
                 + '</textarea>'
                 + '</div>'
@@ -366,7 +375,16 @@
             _type_select.append(_option);
         }
         
-        form.find(".user").html(this.note.user);
+        var _user = this.note.user;
+        if (_user === undefined) {
+            if (this.image.user) {
+                _user = this.image.user;
+            }
+            else {
+                _user = this.get_user_name();
+            }
+        }
+        form.find(".user").html(_user);
         //form.find(".type").attr("value", this.note.type);
 
         $('body').append(this.form);
@@ -395,6 +413,10 @@
             }
         });
         return this;
+    };
+    
+    $.fn.annotateEdit.prototype.get_user_name = function () {
+        //return $.fn.annotateImage;
     };
 
     $.fn.annotateEdit.prototype.destroy = function() {
