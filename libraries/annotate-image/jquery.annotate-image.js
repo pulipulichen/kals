@@ -51,19 +51,23 @@
         this.canvas.children('.image-annotate-view, .image-annotate-edit').width(this.width());
 
         // Add the behavior: hide/show the notes when hovering the picture
-        this.canvas.hover(function() {
-            if ($(this).children('.image-annotate-edit').css('display') === 'none') {
-                $(this).children('.image-annotate-view').show();
+        this.canvas.parent().hover(function() {
+            if ($(this).find('.image-annotate-edit').css('display') === 'none') {
+                $(this).find('.image-annotate-view').show();
             }
+            $(this).find(".image-annotate-add-container:first").show();
+            //console.log("開了");
         }, function() {
-            $(this).children('.image-annotate-view').hide();
+            //console.log("關了");
+            $(this).find('.image-annotate-view').hide();
+            $(this).find(".image-annotate-add-container:first").hide();
         });
 
-        this.canvas.children('.image-annotate-view').hover(function() {
-            $(this).show();
-        }, function() {
-            $(this).hide();
-        });
+//        this.canvas.children('.image-annotate-view').hover(function() {
+//            $(this).show();
+//        }, function() {
+//            $(this).hide();
+//        });
 
         // load the notes
         if (this.useAjax) {
@@ -74,51 +78,57 @@
 
         // Add the "Add a note" button
         if (this.editable) {
-            this.button = $('<a class="image-annotate-add" id="image-annotate-add" href="#">' + $.fn.annotateImage.lang.addNote + '</a>');
+            this.button = $('<span class="image-annotate-add-container">'
+                + '<a class="image-annotate-add" id="image-annotate-add" href="#">' 
+                    + $.fn.annotateImage.lang.addNote 
+                + '</a>'
+                + '</span>');
             this.button.click(function() {
                 $.fn.annotateImage.add(image);
             });
+            this.button.hide();
             this.canvas.after(this.button);
             
             /**
              * @author Pudding 20151104
              * 拖曳加上標註範圍
              */
-            var _mouse_down_lock = false;
-            this.canvas.mousedown(function (_event) {
-                _mouse_down_lock = true;
+//            var _mouse_down_lock = false;
+//            this.canvas.mousedown(function (_event) {
+//                _mouse_down_lock = true;
+//            });
+//            
+//            this.canvas.mouseup(function () {
+//                _mouse_down_lock = false;
+//                _mouse_move_lock = false;
+//            });
+//            
+//            var _convert_client_to_offset = function (_event, _canvas) {
+//                var _canvas_offset = $(_canvas).offset();
+//                var _offset = {
+//                    "top": _event.clientY - _canvas_offset.top,
+//                    "left": _event.clientX - _canvas_offset.left,
+//                    "event": true
+//                };
+//                return _offset;
+//            };
+//            
+//            
+//            var _mouse_move_lock = false;
+//            this.canvas.mousemove(function (_event) {
+//                if (_mouse_down_lock === true 
+//                        && _mouse_move_lock === false) {
+//                    _mouse_move_lock = true;
+//                    
+//                    var _offset = _convert_client_to_offset(_event, this);
+//                    $.fn.annotateImage.add(image, _offset);
+//                }
+//            });
+            
+            this.canvas.dblclick(function (_event) {
+                var _offset = _convert_client_to_offset(_event, this);
+                $.fn.annotateImage.add(image, _offset);
             });
-            
-            this.canvas.mouseup(function () {
-                _mouse_down_lock = false;
-                _mouse_move_lock = false;
-            });
-            
-            var _convert_client_to_offset = function (_event, _canvas) {
-                var _canvas_offset = $(_canvas).offset();
-                var _offset = {
-                    "top": _event.clientY - _canvas_offset.top,
-                    "left": _event.clientX - _canvas_offset.left
-                };
-                return _offset;
-            };
-            
-            
-            var _mouse_move_lock = false;
-            this.canvas.mousemove(function (_event) {
-                if (_mouse_down_lock === true 
-                        && _mouse_move_lock === false) {
-                    _mouse_move_lock = true;
-                    
-                    var _offset = _convert_client_to_offset(_event, this);
-                    $.fn.annotateImage.add(image, _offset);
-                }
-            });
-            
-            //this.canvas.dblclick(function (_event) {
-            //    var _offset = _convert_client_to_offset(_event, this);
-            //    $.fn.annotateImage.add(image, _offset);
-            //});
             
         }
 
@@ -282,15 +292,16 @@
         ///	</summary>
         this.image = image;
         
-        console.log(note);
+        //console.log(note);
 
         /**
          * @author Pudding 20151104
          */
-        var _offset = undefined;
-        if (note !== undefined && typeof(note.top) !== "undefined") {
+        var _offset;
+        if (note !== undefined 
+                && typeof(note.event) !== "undefined" ) {
             _offset = note;
-            //note = undefined;
+            note = undefined;
         }
 
         if (note) {

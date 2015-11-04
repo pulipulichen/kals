@@ -1,3 +1,7 @@
+.image-annotate-add-container {
+    position: absolute;
+}
+
 .image-annotate-add {
     /*background: #fff url(../images/asterisk_yellow.png) no-repeat 3px 3px;*/
     border: solid 1px #ccc !important;
@@ -15,6 +19,15 @@
     margin: 5px 0;
     width: 100px;
     text-decoration: none;
+    
+    /**
+     * @author Pudding 20151104
+     */
+    position: relative;
+    top: -3em;
+    left: 0.5rem;
+    background-color: white;
+    z-index: 2;
 }
 .image-annotate-add:hover {
     background-color: #eee;
