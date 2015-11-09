@@ -637,6 +637,8 @@ DEFAULT_KALS_CONFIG = {
          * @type {Object}
          */
         "Dashboard": {
+            //"heading": "資訊區",    //視窗的名稱
+            //"nav_heading": "資訊區",    //工具列上的名稱
             /**
              * 是否啟用模組
              * @type Boolean
@@ -677,6 +679,8 @@ DEFAULT_KALS_CONFIG = {
          * @type {Object}
          */
         "Annotation_navigation_map": {
+            //"heading": "標註地圖",    //視窗的名稱
+            //"nav_heading": "標註地圖",    //工具列上的名稱
             /**
              * 是否啟用模組
              * @type Boolean
@@ -753,12 +757,16 @@ DEFAULT_KALS_CONFIG = {
          * 章節地圖
          */
         "Window_map": {
+            //"heading": "章節地圖",    //視窗的名稱
+            //"nav_heading": "章節地圖",    //工具列上的名稱
             "enable": true
         },
         /**
          * 標註顯示
          */
         "Window_filter": {
+            //"heading": "標註顯示",    //視窗的名稱
+            //"nav_heading": "標註顯示",    //工具列上的名稱
             "enable": true
         },
         /**
@@ -779,6 +787,8 @@ DEFAULT_KALS_CONFIG = {
          * 回報功能
          */
         "Feedback_manager": {
+            //"heading": "回報",    //視窗的名稱
+            //"nav_heading": "回報",    //工具列上的名稱
             "enable": true
             /**
              * 回報接收者的電子郵件信箱
@@ -793,6 +803,8 @@ DEFAULT_KALS_CONFIG = {
          * 獎章功能
          */
         "KALS_stamp": {
+            //"heading": "獎章",    //視窗的名稱
+            //"nav_heading": "獎章",    //工具列上的名稱
             "enable": false,
             /**
              * 獎章資格設定
@@ -1158,6 +1170,8 @@ DEFAULT_KALS_CONFIG = {
          * 最新標註
          */
         "Window_search_recent": {
+            //"heading": "最新標註",    //視窗的名稱
+            //"nav_heading": "最新標註",    //工具列上的名稱
             "enable": true
         },
         /**
@@ -1182,6 +1196,7 @@ DEFAULT_KALS_CONFIG = {
          * @author Pudding 20151027
          */
         "Navigation_help": {
+            //"nav_heading": "<i class='help circle icon'></i>",    //工具列上的名稱
             "enable": true,
             /**
              * KALS操作說明的網址
@@ -1196,6 +1211,7 @@ DEFAULT_KALS_CONFIG = {
          * @author Pudding 20151027
          */
         "Navigation_back": {
+            //"nav_heading": "<i class='level up icon'></i>",    //工具列上的名稱
             /**
              * 是否啟用
              * 
