@@ -20,7 +20,7 @@ Annotation_spot_list_collection.prototype = new List_collection();
 
 Annotation_spot_list_collection.prototype._$name = 'view-list';
 
-Annotation_spot_list_collection.prototype._$target_my = true;
+Annotation_spot_list_collection.prototype._$target_my = null;
 
 Annotation_spot_list_collection.prototype._$target_like = false;
 

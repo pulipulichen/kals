@@ -14,12 +14,13 @@
 function Selection_select(_text) {
     
     Selection.call(this, _text);
-	if (KALS_context.hash.has_field('select')) {
-            this._setted_hash = true;
-	}
+    
+    if (KALS_context.hash.has_field('select')) {
+        this._setted_hash = true;
+    }
 	
-	var _this = this;
-	KALS_context.policy.add_attr_listener('read', function (_policy) {
+    var _this = this;
+    KALS_context.policy.add_attr_listener('read', function (_policy) {
         //$.test_msg('Selection_select()', _policy.readable());
         _this._selectable = _policy.readable();
     }, true);
@@ -32,6 +33,8 @@ function Selection_select(_text) {
             _this._tool_open = _tool.is_opened();
         });
     });
+    
+    this._add_listener_URL_hash_dispatcher();
 }
 
 Selection_select.prototype = new Selection();
@@ -268,6 +271,36 @@ Selection_select.prototype.load_select = function (_scope_text) {
     
     KALS_context.hash.set_field('select', _first_index + ',' + _last_index);
     
+    return this;
+};
+
+/**
+ * 監聽URL_hash_dispatcher事件
+ * @author Pudding 20151109
+ * @returns {Selection_select.prototype}
+ */
+Selection_select.prototype._add_listener_URL_hash_dispatcher = function () {
+    var _this = this;
+    //$.test_msg("_add_listener_URL_hash_dispatcher 呼叫?");
+    KALS_context.hash.add_listener(function (_hash) {
+        if (_hash.has_field("select") === false 
+                || _hash.has_field("modal") === true) {
+            return;
+        }
+        
+        if ($.is_mobile_mode()) {
+            return;
+        }
+
+        //$.test_msg('URL_hash_dispatcher', 'pass5');
+        var _scope_text = _hash.get_field('select');
+        //$.test_msg('has check_hash()', _scope_text);
+
+        //KALS_context.init_profile.add_listener(function () {
+        KALS_context.ready(function() {
+            KALS_text.selection.select.load_select(_scope_text);  
+        });
+    });
     return this;
 };
 

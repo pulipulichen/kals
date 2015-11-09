@@ -454,10 +454,13 @@ URL_hash_dispatcher.prototype.check_hash = function (_callback) {
         if (this.has_field('recommend') === true) {
             this._action_recommend()
         }
-        if (this.has_field('select') === true) {
-            this._action_select();
-        }  
+//        if (this.has_field('select') === true) {
+//            //this._action_select();
+//            
+//        } 
     }
+    this.notify_listeners(this);
+
     
     //$.test_msg('has check_hash() end', this.has_field('recommend'));
     
@@ -535,38 +538,39 @@ URL_hash_dispatcher.prototype._action_recommend = function () {
 
 /**
  * 啟動select的動作
+ * @deprecated Pudding 20151109 改用監聽的方法
  * @returns {URL_hash_dispatcher.prototype}
  */
-URL_hash_dispatcher.prototype._action_select = function () {
-    
-    if ($.is_mobile_mode()) {
-        return this;
-    }
-    
-    //$.test_msg('URL_hash_dispatcher', 'pass5');
-    var _scope_text = this.get_field('select');
-    //$.test_msg('has check_hash()', _scope_text);
-
-    //KALS_context.init_profile.add_listener(function () {
-    KALS_context.ready(function() {
-        KALS_text.selection.select.load_select(_scope_text);  
-    });
-    /*
-    KALS_context.init_profile.add_listener(function () {
-        //KALS_context.auth.add_once_listener(function () {
-            //setTimeout(function () {
-                $.test_msg("gogo select");
-                KALS_text.selection.select.load_select(_scope_text);  
-            ///}, 5000);
-        //});
-    });
-    */
-    //setTimeout(function () {
-    //	KALS_text.selection.select.load_select(_scope_text);
-    //}, 3000); 
-    
-    return this;
-};
+//URL_hash_dispatcher.prototype._action_select = function () {
+//    
+//    if ($.is_mobile_mode()) {
+//        return this;
+//    }
+//    
+//    //$.test_msg('URL_hash_dispatcher', 'pass5');
+//    var _scope_text = this.get_field('select');
+//    //$.test_msg('has check_hash()', _scope_text);
+//
+//    //KALS_context.init_profile.add_listener(function () {
+//    KALS_context.ready(function() {
+//        KALS_text.selection.select.load_select(_scope_text);  
+//    });
+//    /*
+//    KALS_context.init_profile.add_listener(function () {
+//        //KALS_context.auth.add_once_listener(function () {
+//            //setTimeout(function () {
+//                $.test_msg("gogo select");
+//                KALS_text.selection.select.load_select(_scope_text);  
+//            ///}, 5000);
+//        //});
+//    });
+//    */
+//    //setTimeout(function () {
+//    //	KALS_text.selection.select.load_select(_scope_text);
+//    //}, 3000); 
+//    
+//    return this;
+//};
 
 /* End of file URL_hash_dispatcher */
 /* Location: ./system/application/views/web_apps/URL_hash_dispatcher.js */

@@ -533,6 +533,8 @@ Selectable_text_paragraph.prototype._setup_selectable_element_clone_next_element
         _selectable_text_word.word_count, _next_element
     );
     
+    _selectable_text_word.word_count++;
+    
     return _next_element;
 };
 

@@ -18,6 +18,8 @@ function Annotation_spot() {
     
     KALS_controller_window.call(this);
     
+    
+    this._add_listener_URL_hash_dispatcher();
 }
 
 /**
@@ -99,6 +101,11 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     this._scope_coll = _scope_coll;
     
     var _word = null;
+    if ($.is_int(_scope_coll)) {
+        _scope_coll = KALS_text.selection.text.get_word_by_index(_scope_coll);
+        //$.test_msg(_scope_coll.html());
+    }
+    
     if (this.is_annotation_spot(_scope_coll)) {
         _word = _scope_coll;
         _scope_coll = new Scope_collection_param(_scope_coll);
@@ -118,9 +125,15 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     }
     
     this.list.set_scope_coll(_scope_coll);
+    
+    // @TODO #154
+    if (this.is_annotation_spot_private(_word)) {
+        this.list._$target_my = true;
+    }
+    
     this.list.load_list();
     
-    this.editor.set_scope_coll(_scope_coll);
+    //this.editor.set_scope_coll(_scope_coll);
     this.editor.toggle_container(false);
     //this.editor.toggle_container(true);
     
@@ -381,12 +394,33 @@ Annotation_spot.prototype.set_select = function (_word) {
 Annotation_spot.prototype.annotation_spot_classname = "kals-annotation-spot";
 
 /**
+ * 私人標註討論點的名稱
+ * @type String
+ * @author Pudding 20151109
+ */
+Annotation_spot.prototype.annotation_spot_private_classname = "private";
+
+/**
  * 確認是否是標註討論點
  * @param {jQuery} _word
  * @returns {Boolean}
  */
 Annotation_spot.prototype.is_annotation_spot = function (_word) {
-    return ($.is_jquery(_word) && _word.hasClass(this.annotation_spot_classname));
+    return ($.is_jquery(_word) 
+            && _word.hasClass(this.annotation_spot_classname));
+};
+
+/**
+ * 確認是否是私人的標註討論點
+ * @param {jQuery} _word
+ * @returns {Boolean}
+ * @author Pudding 20151109
+ */
+Annotation_spot.prototype.is_annotation_spot_private = function (_word) {
+    //$.test_msg("is_annotation_spot_private", _word.attr("className"))
+    return ($.is_jquery(_word) 
+            && _word.hasClass(this.annotation_spot_classname) 
+            && _word.hasClass(this.annotation_spot_private_classname) );
 };
 
 /**
@@ -428,6 +462,40 @@ Annotation_spot.prototype.close = function (_callback) {
     //$.test_msg("關閉？");
     KALS_text.tool.close(function () {
         KALS_controller_window.prototype.close.call(_this, _callback);
+    });
+    return this;
+};
+
+/**
+ * 監聽URL_hash_dispatcher事件
+ * @author Pudding 20151109
+ * @returns {Selection_select.prototype}
+ */
+Annotation_spot.prototype._add_listener_URL_hash_dispatcher = function () {
+    var _this = this;
+    //$.test_msg("_add_listener_URL_hash_dispatcher 呼叫?");
+    KALS_context.hash.add_listener(function (_hash) {
+        if (_hash.has_field("modal") === false 
+                || _hash.get_field("modal") !== _this.name) {
+            //$.test_msg("不是的");
+            return;
+        }
+        //$.test_msg("是的");
+        
+        if ($.is_mobile_mode()) {
+            return;
+        }
+
+        //$.test_msg('URL_hash_dispatcher', 'pass5');
+        var _scope_text = _hash.get_field('select');
+        var _word_id = _scope_text.substr(0, _scope_text.indexOf(","));
+        _word_id = parseInt(_word_id);
+        //$.test_msg("word_id", _word_id);
+
+        //KALS_context.init_profile.add_listener(function () {
+        KALS_context.ready(function() {
+            _this.set_select(_word_id);
+        });
     });
     return this;
 };

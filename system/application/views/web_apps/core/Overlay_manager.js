@@ -195,12 +195,13 @@ Overlay_manager.prototype.unlock_mask = function () {
 Overlay_manager.prototype.add_opened = function (_modal) {
     
     if (_modal._$exposable === false) {
-		return this;
-	}
+         return this;
+    }
     
-    if (_modal === null || typeof(_modal.is_closable) !== 'function') {
-		return this;
-	}
+    if (_modal === null 
+            || typeof(_modal.is_closable) !== 'function') {
+        return this;
+    }
     
     if ($.inArray(_modal, this._opened_modals) === -1
         && _modal.is_closable()) {
@@ -214,17 +215,17 @@ Overlay_manager.prototype.add_opened = function (_modal) {
             for (var _i in this._opened_modals) {
                 var _opened_modal = this._opened_modals[_i];
                 if (_opened_modal.is_exposable()) {
-					_opened_modal.cover();
-				}
+                    _opened_modal.cover();
+                }
             } 
-			if (typeof(_modal.expose) === "function") {
-				_modal.expose();
-			}
+            if (typeof(_modal.expose) === "function") {
+                _modal.expose();
+            }
         }
         
         //跟URL_hash_dispatcher註冊
-        if (typeof(KALS_context) == 'object'
-            && typeof(KALS_context.hash) == 'object') {
+        if (typeof(KALS_context) === 'object'
+             && typeof(KALS_context.hash) === 'object') {
             KALS_context.hash.set_field('modal', _modal.get_modal_name());
         }   
     }   
@@ -246,8 +247,8 @@ Overlay_manager.prototype.has_opened = function () {
 Overlay_manager.prototype.delete_opened = function (_modal) {
     
     if (_modal._$exposable === false) {
-		return this;
-	}
+        return this;
+    }
     
 	//$.test_msg("Overlay_manager delete_opended", "check point 1");
     var _this = this;
@@ -260,11 +261,11 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
         var _new_opened = [];
         for (var _i = 0; _i < this._opened_modals.length; _i++) {
             if (_i === _deleted) {
-				continue;
-			}
-			else {
-				_new_opened.push(this._opened_modals[_i]);
-			}
+                continue;
+            }
+            else {
+                _new_opened.push(this._opened_modals[_i]);
+            }
         }
         this._opened_modals = _new_opened;
         
@@ -290,7 +291,7 @@ Overlay_manager.prototype.delete_opened = function (_modal) {
             //_last_modal.get_ui().css('z-index', 9999);
             if (typeof(_last_modal.expose) !== "undefined") {
                     $.test_msg("Overlay_manager", "before last_modal expose");
-                    _last_modal.expose();	
+                _last_modal.expose();	
             }
             
             //_last_modal.focus_option();

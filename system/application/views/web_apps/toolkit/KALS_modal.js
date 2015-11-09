@@ -359,7 +359,14 @@ KALS_modal.prototype.call_temp_callback = function (_ui) {
  * @type {string}
  */
 KALS_modal.prototype.get_modal_name = function () {
-    return this._$modal_name;
+    var _name;
+    if ($.is_null(this._$modal_name) === false) {
+        _name = this._$modal_name;
+    }
+    else if ($.is_null(this.name) === false) {
+        _name = this.name;
+    }
+    return _name;
 };
 
 // ---------
