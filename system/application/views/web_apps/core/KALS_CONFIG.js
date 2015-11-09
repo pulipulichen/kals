@@ -325,7 +325,7 @@ DEFAULT_KALS_CONFIG = {
      * @author Pulipuli Chen 20150117
      * @type Boolean
      */
-    enable_exit_confirm: false,
+    "enable_exit_confirm": false,
     
     /**
      * 管理者的名字清單
@@ -335,7 +335,7 @@ DEFAULT_KALS_CONFIG = {
         "demo@dlll.nccu.edu.tw"
     ],
      */
-    admin_email_list: [],
+    "admin_email_list": [],
     
     /**
      * 從其他檔案讀取設定檔
@@ -1233,7 +1233,10 @@ DEFAULT_KALS_CONFIG = {
             "back_url": "../"
         },
         /**
-         * 標註討論區
+         * 標註討論點
+         * 
+         * class="kals-annotation-spot" 成為標註討論點
+         * class="kals-annotation-spot private" 成為標註討論點，並且只能看到自己的標註。但是加入admin_email_list的帳號不受到限制。
          * @author Pudding 20151102
          */
         "Annotation_spot": {

@@ -127,7 +127,8 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     this.list.set_scope_coll(_scope_coll);
     
     // @TODO #154
-    if (this.is_annotation_spot_private(_word)) {
+    if (this.is_annotation_spot_private(_word) 
+            && KALS_context.auth.is_admin() === false) {
         this.list._$target_my = true;
     }
     
