@@ -47,7 +47,7 @@ List_timestamp_component.prototype._$create_ui = function () {
     var _ui = $('<td></td>')
         .addClass('list-timestamp-component');
     
-    var _this = this;
+    //var _this = this;
     //setTimeout(function () {
     //    _this.set_timestamp();
     //});
@@ -65,11 +65,14 @@ List_timestamp_component.prototype.set_timestamp = function (_timestamp) {
         _timestamp = this._item.get_data().timestamp;
     }
     
-    var _until_time = $.get_interval_time(_timestamp);
+    //var _until_time = $.get_interval_time(_timestamp);
     
-    var _message = KALS_context.lang.get_fulldate(_timestamp);
+    var _message;
     if (this.full_display === false) {
         _message = KALS_context.lang.get_interval_message(_timestamp);
+    }
+    else {
+        _message = KALS_context.lang.get_fulldate(_timestamp);
     }
 	
     

@@ -7,7 +7,8 @@
     "id": "e69213d0-2eef-40fa-a04b-0ed998f9f1f5",
     "editable": false ,
     "type": "疑惑",
-    "user": "楊舜閔"
+    "user": "楊舜閔",
+    "timestamp": 1445172850
 },
 { 
     "top": 134,
@@ -18,6 +19,7 @@
     "id": "e7f44ac5-bcf2-412d-b440-6dbb8b19ffbe",
     "editable": true,
     "type": "重要",
-    "user": "布丁"
+    "user": "布丁",
+    "timestamp": 1447193220
 }
 ]

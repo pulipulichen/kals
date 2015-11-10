@@ -267,7 +267,6 @@ KALS_language.prototype.create_listener = function (_lang_param) {
  * @type {jQuery}
  */
 KALS_language.prototype.create_interval_time_listener = function (_time) {
-    
     var _param = this.get_interval_param(_time);
     return this.create_listener(_param);
 };
@@ -340,7 +339,7 @@ KALS_language.prototype._date_params = {
  * @type {KALS_language_param} Lang語言變數的結果
  */
 KALS_language.prototype.get_interval_param = function (_time) {
-    var _s, _m, _h, _hh, _d, _hd, _w, _hw, _y;
+    var _s, _m, _h, _hh, _d, _hd, _w, _hw, _month, _y;
     _s = 1;    //一秒鐘
     _m = _s * 60;    //一分鐘
     _h = _m * 60;    //一小時
@@ -357,8 +356,8 @@ KALS_language.prototype.get_interval_param = function (_time) {
     var _unit = null;
     
     if ($.is_string(_time)) {
-		_time = parseInt(_time, 10);
-	}
+        _time = parseInt(_time, 10);
+    }
     
     var _interval = $.get_interval_time(_time);
     
@@ -455,7 +454,7 @@ KALS_language.prototype.get_interval_param = function (_time) {
 
 /**
  * 取得月份
- * @param {date} )_date_obj
+ * @param {String} _date_obj
  * @type {string} 月份字串，例如Jan、Feb
  */
 KALS_language.prototype.get_month = function (_date_obj) {

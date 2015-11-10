@@ -996,30 +996,26 @@ class Annotation extends KALS_resource {
             //test_msg($actors);
 
             if (count($actors) == 1
-                && $this->get_user()->equals($actors[0]))
-            {
+                && $this->get_user()->equals($actors[0])) {
                 $data['policy_type'] = 'private';
             }
-            else if (count($actors) > 0)
-            {
+            else if (count($actors) > 0) {
                 $data['policy_type'] = 'share';
                 $actors_data = array();
-                foreach ($actors AS $actor)
-                {
+                foreach ($actors AS $actor) {
                     $actors_data[] = $actor->export_simple_data();
                 }
                 $data['share_list'] = $actors_data;
             }
 
-            if ($this->is_respond() === FALSE)
-            {
+            if ($this->is_respond() === FALSE) {
                 //匯出建議
                 $recommend = $this->get_recommend();
-                if (isset($recommend))
-                {
+                if (isset($recommend)) {
                     $recommend_data = $recommend->export_webpage_data($url);
-                    if (isset($recommend_data))
+                    if (isset($recommend_data)) {
                         $data['recommend'] = $recommend_data;
+                    }
                 }
             }
         }

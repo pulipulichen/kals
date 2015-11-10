@@ -118,6 +118,15 @@
 
 .image-annotate-note .text {
     display: block;
+    
+}
+
+/**
+ * @author Pudding 20151110
+ */
+.image-annotate-note .timestamp {
+    display: block;
+    text-align: right;
 }
 
 .image-annotate-note .actions {

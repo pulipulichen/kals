@@ -462,6 +462,10 @@
         this.form.append('<span class="type">' + note.type + '</span>');
         this.form.append('<span class="text">' + note.text + '</span>');
         
+        var _timestamp_message = KALS_context.lang.get_interval_message(note.timestamp);
+        $('<span class="timestamp"></span>').append(_timestamp_message)
+                .appendTo(this.form);
+        
         this.form.hide();
         image.canvas.children('.image-annotate-view').append(this.form);
         this.form.children('span.actions').hide();
