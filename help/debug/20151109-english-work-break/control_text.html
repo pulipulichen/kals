@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>KALS數位閱讀標註_Feel the Burn</title>
+<style>
+<!--
+ p.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:Calibri;
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+-->
+p.kals-paragraph {
+	word-break: normal !important;
+}
+</style>
+</head>
+
+<body>
+
+<div>
+    
+<h1>KALS數位閱讀標註_Feel the Burn</h1>
+
+<hr />
+
+<div id="scope" style="line-height: 2em">
+<div style="clear: both; font-size: 16pt">
+    <h2 align="center">Feel the Burn</h2>
+</div>        
+</div>
+</div>
+<p align="center"><img border="0" src="control_img.jpg" width="400" height="400"></p>
+
+<p align="center">(請在這裡撰寫預測)</p>
+<br>
+
+<p style="word-wrap: break-word;text-indent : 4em; font-size:24px;">
+Why does your mouth feel like it is on fire when you eat peppers?<br> 
+(A)	Because peppers make small fires on your tongue.<br> 
+(B)	It’s your body’s way of rejecting dangerous foods.<br>  
+(C)	Because your brain thinks your mouth is burning.<br>  
+(D) Because peppers leave a burn mark on your tongue.<br> 
+</p>
+<p style="word-wrap: break-word;text-indent : 4em; font-size:24px;">
+People often describe spicy food as “hot”. That’s because eating spicy food makes your body feel the same way as overheating. When you eat peppers, the receptors on your tongue send a message to your brain. This message makes your brain think, “Your mouth is on fire! Your body is burning!” When this happens, you might sweat and your heart begins to beat faster. Some people don’t enjoy hot food because it’s painful. However, to others, it’s exciting. Although they don’t feel less pain, their bodies are able to handle it better.
+</p> 
+
+<p style="word-wrap: break-word;text-indent : 4em; font-size:24px;">
+Not all peppers are the same. The Scoville scale measures how spicy something is. A bell pepper is about only 0-5 Scovile Heat Unites (SHU) on the scale. Because of its mild taste and bright color, a bell pepper is often served as the side dish. The Carolina Reaper, however, is 1,600,000~2,200,000 SHU. It has been rated as the world's hottest chili pepper by Guinness World Records since August 7, 2013. Very few people in the world dare to give it a try.
+</p>
+<p style="word-wrap: break-word;text-indent : 4em; font-size:24px;">
+Researchers believe your personality is related to how much you like spicy food. People who enjoy action and adventure are six times more likely to enjoy hot food. It is said that they prefer a more challenging and bold life style, such as listening to the music at full volume, gambling, seeing horror movies, and looking down from the edge.   
+</p>
+<p style="word-wrap: break-word;text-indent : 4em; font-size:24px;">
+People in warmer areas usually eat more spicy food, and there’s a scientific reason. Germs grow faster on food in warm climates. Spices and peppers can kill germs and prevent them from growing. Therefore, people living in warmer areas are accustomed to cooking the dishes with peppers or other spicy flavors. 
+</p>
+
+
+<p style="word-wrap: break-word;text-indent : 4em; font-size:24px;">
+What about you? Do you have a pepper phobia or pepper mania? What if you want to add some pretty peppers in your dish but don’t want it too spicy at the same time? Here’s the tip- try to remove the seed pod for it has capsaicin, which hot peppers get their heat from! 
+<br>
+</p>
+
+
+<font size="3">
+(請在這裡撰寫摘要)<br>
+
+
+</font>
+
+
+
+
+
+<script type="text/javascript" src="/kals/web_apps/generic/loader"></script>
+	  <script type="text/javascript">
+KALS_CONFIG = {
+    user_email: "/user.php",
+	
+	/**
+     * 使用的標註類型
+     * 標註類型的順序會照以下設定排列。
+     * 
+     * 20140425 Pulipuli Chen
+     * 舊名稱「annotation_type_option」，新名稱「annotation_type_basic_enable」
+     * 20140505 Pulipuli Chen
+     * 舊名稱「annotation_type_basic_enable」，新名稱「annotation_type_basic」
+     * 
+     * 基本的標註類型如下：
+     *     importance: 重要
+     *     concept: 概念
+     *     confusion: 困惑
+     *     question: 疑問
+     *     example: 舉例
+     *     summary: 摘要
+     *     custon: 自訂
+     *     
+     *  請自行調整各標註類型的啟用範圍與順序
+     */
+	 annotation_type_basic: {
+    },	
+	
+	/**
+     * 預先定義標註類型。
+     * 
+     * 注意，這個設定不會覆蓋annotation_type_option設定的標註類型
+     * 而是會加在原本的標註類型下面。
+     * 如果你要取消原本的標註類型，請修改annotation_type_option
+     * 
+     * 20140425 Pulipuli Chen
+     * 舊名稱「annotation_custom_type」，新名稱「annotation_type_predefined」
+     */
+	annotation_type_predefined: {
+      "預測": {
+            //type_id: 15,
+            hint: '請先仔細閱讀標題和圖片，預測此篇可能的內容',
+            option: {
+                background_color: 'rgb(189,252,50)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },
+		
+	  "澄清": {
+            //type_id: 15,
+            hint: '澄清自己或是別人不懂的單字及概念',
+            option: {
+                background_color: 'darkgoldenrod',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },
+		
+	  "問題": {
+            //type_id: 15,
+            hint: '針對文章內容提出相關的問題或回應問題',
+            option: {
+                background_color: 'rgb(222,120,222)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },	
+
+	  "摘要": {
+            //type_id: 15,
+            hint: '針對本篇文章做簡單的大意摘要',
+            option: {
+                background_color: 'rgb(18,49,204)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        },	
+		
+	  "其他": {
+            //type_id: 15,
+            hint: '其他',
+            option: {
+                background_color: 'rgb(173,173,173)',
+                font_color: 'black'
+            },
+            anchor: {
+                style: 'dottedline',
+                color: 'blue'    
+            },
+            enable: {   // 啟用範圍
+                topic: true,    // 新標註
+                respond: true   // 回應標註
+            },
+            //order: 1    // 數字越大，排序越上面
+        }		
+	},
+
+	/**
+     * 模組設定(是否啟用)
+     * @type {JSON}
+     */
+	 modules: {
+        Dashboard:{
+            "enable": false
+        },	
+        Window_filter:{
+            "enable": false
+        },  
+        Feedback_manager: {
+            "enable": false
+       },	
+        Annotation_navigation_map: {
+            /**
+             * 是否啟用模組
+             * @type Boolean
+             */
+            "enable": true,
+            "nav_config": {
+                display: true,
+                nav_type: "common",
+                order: 1
+            },
+            /**
+             * 安照原本的章節順序排序
+             * @type boolean
+             */
+            order_by_article: true
+        }
+
+		
+    }
+	
+};    
+</script>
+
+</body>
+</html>

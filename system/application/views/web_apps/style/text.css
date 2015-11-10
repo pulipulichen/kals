@@ -7,6 +7,10 @@
     word-break: break-all;
 }
 
+p.kals-paragraph {
+    word-break: initial;
+}
+
 .selectable-text {
     margin:0;
     padding:0;
