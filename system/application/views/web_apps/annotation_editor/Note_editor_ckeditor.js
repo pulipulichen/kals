@@ -89,7 +89,7 @@ Note_editor_ckeditor._setup_ckeditor = function () {
          * 這樣就不會重複初始化已經初始化過的textarea了
          * @author Pulipuli Chen 20151018
          */
-        _textareas.addClass("initialized");
+        //_textareas.addClass("initialized");
         
         _textareas.each(function(_index, _textarea) {
             var _ui = $(_textarea).find('textarea.note-editor-textarea:first');
@@ -106,32 +106,34 @@ Note_editor_ckeditor._setup_ckeditor = function () {
                     .insertAfter(_ui);
 
 			
-            //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [each textarea]', [_ui.length, typeof(_ui.ckeditor)]);
-            _ui.ckeditor(function () {
-            
-                //$.test_msg('Note_editor_ckeditor.setup_ckeditor() after ckeditor setup ok?');
-                
-                //var _ui = _textareas.eq(_i);
-                
-                var _editor_span = _ui.nextAll('span:first'); 
-                var _toolbox = _editor_span.find('.cke_toolbox');
-                
-                _toolbox.children('.cke_toolbar:last').addClass('minimize');
-                _toolbox.children('.cke_toolbar:not(:last)').addClass('maximize');
-                
-                /**
-                 * 隱藏多餘的工具列，預設只顯示最後一行
-                 * @author Pulipuli Chen 20151018
-                 */
-                var _cke_editor = _editor_span.find('table.cke_editor:first');
-                var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
-
-                _ui.ckeditorGet().on("contentDom", function () {
-                    _this._prevent_scoll_jump(this.document);
-                    _this._setup_hotkey(this.document);
-                });
+//            //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [each textarea]', [_ui.length, typeof(_ui.ckeditor)]);
+//            _ui.ckeditor(function () {
+//            
+//                //$.test_msg('Note_editor_ckeditor.setup_ckeditor() after ckeditor setup ok?');
 //                
-            }, _this._ckeditor_config);
+//                //var _ui = _textareas.eq(_i);
+//                
+//                var _editor_span = _ui.nextAll('span:first'); 
+//                var _toolbox = _editor_span.find('.cke_toolbox');
+//                
+//                _toolbox.children('.cke_toolbar:last').addClass('minimize');
+//                _toolbox.children('.cke_toolbar:not(:last)').addClass('maximize');
+//                
+//                /**
+//                 * 隱藏多餘的工具列，預設只顯示最後一行
+//                 * @author Pulipuli Chen 20151018
+//                 */
+//                var _cke_editor = _editor_span.find('table.cke_editor:first');
+//                var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
+//
+//                _ui.ckeditorGet().on("contentDom", function () {
+//                    _this._prevent_scoll_jump(this.document);
+//                    _this._setup_hotkey(this.document);
+//                });
+////                
+//            }, _this._ckeditor_config);
+            
+            _this.initialize_ckeditor(_ui, _this._ckeditor_config);
 			
         });
     };
@@ -139,6 +141,55 @@ Note_editor_ckeditor._setup_ckeditor = function () {
     //$.test_msg('Note_editor_ckeditor.setup_ckeditor() [standby ready]');
     this._setup_timer = setTimeout(_setup, 100);
     
+    return this;
+};
+
+/**
+ * 初始化動作獨立出來
+ * @author Pudding 20151111
+ * @param {jQuery} _ui
+ * @param {JSON} _ckeditor_config
+ * @returns {Note_editor_ckeditor.prototype}
+ */
+Note_editor_ckeditor.initialize_ckeditor = function (_ui, _ckeditor_config, _callback) {
+    var _this = this;
+    
+    if (_ui.hasClass("initialized")) {
+        $.trigger_callback(_callback);
+        //$.test_msg("取消");
+        return this;
+    }
+    
+    //$.test_msg("initialize_ckeditor");
+    _ui.ckeditor(function () {
+
+        _ui.addClass("initialized");
+
+        //$.test_msg('Note_editor_ckeditor.setup_ckeditor() after ckeditor setup ok?');
+
+        //var _ui = _textareas.eq(_i);
+
+        var _editor_span = _ui.nextAll('span:first'); 
+        var _toolbox = _editor_span.find('.cke_toolbox');
+
+        _toolbox.children('.cke_toolbar:last').addClass('minimize');
+        _toolbox.children('.cke_toolbar:not(:last)').addClass('maximize');
+
+        /**
+         * 隱藏多餘的工具列，預設只顯示最後一行
+         * @author Pulipuli Chen 20151018
+         */
+        var _cke_editor = _editor_span.find('table.cke_editor:first');
+        var _cke_bottom_tr = _cke_editor.find('> tbody > tr:last').addClass('cke_bottom_tr');
+
+        _ui.ckeditorGet().on("contentDom", function () {
+            _this._prevent_scoll_jump(this.document);
+            _this._setup_hotkey(this.document);
+            
+            $.trigger_callback(_callback);
+        });
+//                
+    }, _ckeditor_config);
     return this;
 };
 

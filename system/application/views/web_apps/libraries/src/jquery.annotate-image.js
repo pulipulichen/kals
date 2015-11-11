@@ -353,13 +353,13 @@
         // Add the note (which we'll load with the form afterwards)
         var form = $(".KALS.image-annotate-edit-form");
         if (form.length === 0) {
-            form = $('<div class="KALS image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
+            form = $('<div class="KALS kals-modal image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
                 + '<form class="ui form">' 
                     + '<div class="field">'
                         + '<label class="user"></label>'
                         + '<select name="type" class="type"></select>'
                     + '</div>'
-                    + '<div class="field">'
+                    + '<div class="field note-editor">'
                     + '<textarea class="image-annotate-text field" name="text">' 
                     + '</textarea>'
                     + '</div>'
@@ -395,6 +395,11 @@
         //form.find(".type").attr("value", this.note.type);
 
         $('body').append(this.form);
+        
+        // @TODO #175
+        //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
+        
+        
         //image.canvas.append(this.form);
         this.form.css('left', this.area.offset().left + 'px');
         this.form.css('top', (parseInt(this.area.offset().top) + parseInt(this.area.height()) + 7) + 'px');
