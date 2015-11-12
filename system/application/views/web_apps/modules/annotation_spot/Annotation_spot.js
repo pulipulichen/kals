@@ -105,9 +105,7 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
         _scope_coll = _spot.get_spot_by_index(_scope_coll);
         //$.test_msg(_scope_coll.html());
     }
-    
-//    this._scope_coll = _scope_coll;
-//    
+      
     var _word = null;
 ////    if ($.is_int(_scope_coll)) {
 ////        _scope_coll = KALS_text.selection.text.get_word_by_index(_scope_coll);
@@ -120,6 +118,8 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
         _scope_coll.set_type(KALS_text.selection.text.spot.classname);
         //$.test_msg("已經設定");
     }
+    
+    this._scope_coll = _scope_coll;
     
     if (_index === undefined) {
         _index = $.get_prefixed_id(_word);
@@ -155,6 +155,16 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     KALS_context.hash.set_field('select', _index);
     
     return this;
+};
+
+/**
+ * 設定範圍參數
+ * @param {Scope_collection_param|jQuery} _scope_coll
+ * @returns {Annotation_spot.prototype}
+ */
+Annotation_spot.prototype.get_scope_coll = function () {
+    return this._scope_coll;
+    
 };
 
 /**

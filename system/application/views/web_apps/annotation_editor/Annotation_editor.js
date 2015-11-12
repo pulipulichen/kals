@@ -252,11 +252,11 @@ Annotation_editor.prototype.submit = function (_callback) {
     var _last_scope;
     if (_scope_data !== null) {
         _last_scope = _scope_data.scope;
-        $.test_msg("editor submit last type 1", _last_scope);
+        //$.test_msg("editor submit last type 1", _last_scope);
     }
     else {
         _last_scope = KALS_text.selection.select.get_scope_coll();
-        $.test_msg("editor submit last type 2", _last_scope);
+        //$.test_msg("editor submit last type 2", _last_scope);
     }
     
     //$.test_msg('Annotation_editor.submit() 這時候應該就有scope了', _annotation_param.scope);
