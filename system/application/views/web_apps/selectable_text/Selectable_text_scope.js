@@ -19,7 +19,7 @@
 function Selectable_text_scope(_selectable_text) {
     
     this._selectable_text = _selectable_text;
-    this._selectable_text_word = _selectable_text.word;
+    //this._selectable_text_word = _selectable_text.word;
     return this;
 }
 
@@ -38,8 +38,9 @@ Selectable_text_scope.prototype._selectable_text;
 /**
  * 父物件的Selectable_text_word
  * @type {Selectable_text_word}
+ * @deprecated Pudding 201511112
  */
-Selectable_text_scope.prototype._selectable_text_word;
+//Selectable_text_scope.prototype._selectable_text_word;
 
 // -----------------------------------
 // 內部參數設定
@@ -64,7 +65,7 @@ Selectable_text_scope.prototype.selected_middle_classname = 'middle';
  */
 Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
     
-    var _selectable_text_word = this._selectable_text_word;
+    var _selectable_text_word = this._selectable_text.word;
     var _word_classname = _selectable_text_word.classname;
     
     var _classnames = _classname.split(' ');
@@ -111,7 +112,7 @@ Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
  */
 Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _callback) {
     
-    var _selectable_text_word = this._selectable_text_word;
+    var _selectable_text_word = this._selectable_text.word;
     var _words = this.get_words_by_scope_coll(_scope_coll);
     
     var _classnames = this._filter_classname(_classname);
@@ -227,7 +228,7 @@ Selectable_text_scope.prototype._filter_classname = function (_classname) {
 Selectable_text_scope.prototype.remove_class = function (_scope_coll, _classname, _callback) {
     
     // 取得word元件
-    var _selectable_text_word = this._selectable_text_word;
+    var _selectable_text_word = this._selectable_text.word;
     
     if ($.is_string(_scope_coll) && $.is_null(_classname)) {
         _classname = _scope_coll;
@@ -406,7 +407,7 @@ Selectable_text_scope.prototype.get_words_by_scope_coll = function (_scope_coll)
         var _index_ary = _index_array[_i];
         for (var _j in _index_ary) {
             var _index = _index_ary[_j];
-            var _word = this._selectable_text_word.get_word_by_index(_index);
+            var _word = this._selectable_text.word.get_word_by_index(_index);
             _ary.push(_word);
         }
         _coll.push(_ary);

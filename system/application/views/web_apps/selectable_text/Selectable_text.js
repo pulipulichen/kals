@@ -22,7 +22,7 @@ function Selectable_text(_selector) {
     }
     
     // Selectable_text_component
-    this.child('word', new Selectable_text_word(this));
+    this.child('word', new Selectable_element_word(this));
     this.child('spot', new Selectable_text_spot(this));
     
     this.child('offset', new Selectable_text_offset(this));
@@ -61,7 +61,7 @@ Selectable_text.prototype.tooltip = null;
 // -------------------------
 
 /**
- * @type {Selectable_text_word}
+ * @type {Selectable_element_word}
  */
 Selectable_text.prototype.word;
 
@@ -965,12 +965,12 @@ Selectable_text.prototype.get_sentence_index = function () {
 };
 
 // -------------------------------------
-// Selectable_text_word
+// Selectable_element_word
 // -------------------------------------
 
 /**
  * 取得word_id_prefix
- * @returns {Selectable_text_word.word_id_prefix}
+ * @returns {Selectable_element_word.word_id_prefix}
  */
 Selectable_text.prototype.get_word_id_prefix = function () {
     return this.word.get_word_id_prefix();
@@ -1264,7 +1264,7 @@ Selectable_text.prototype.cache_save = function (_callback) {
  *  取代了原本使用storage來儲存的作法
  *  改用Webpage_cache的方式從伺服器取得快取
  * @param {funciton} _callback
- * @returns {Selectable_text_word}
+ * @returns {Selectable_element_word}
  */
 Selectable_text.prototype.cache_restore = function (_callback) {
     

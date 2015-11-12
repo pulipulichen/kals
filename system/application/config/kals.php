@@ -333,8 +333,8 @@ $config['web_apps.javascript_import']['component_list_package'] = array(
     'selectable_text/Selectable_text_scope',
     'selectable_text/Selectable_text_sentence',
     
-    'selectable_text/Selectable_text_element',
-    'selectable_text/Selectable_text_word',
+    'selectable_text/Selectable_element',
+    'selectable_text/Selectable_element_word',
     'selectable_text/Selectable_text_spot',
     'selectable_text/Webpage_cache',    // 20140517 Pulipuli Chen
     'selectable_text/Selectable_text',
