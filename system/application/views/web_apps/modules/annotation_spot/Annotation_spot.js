@@ -98,23 +98,36 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
         return this;
     }
     
-    this._scope_coll = _scope_coll;
-    
-    var _word = null;
+    var _spot = KALS_text.selection.text.spot;
+    var _index;
     if ($.is_int(_scope_coll)) {
-        _scope_coll = KALS_text.selection.text.get_word_by_index(_scope_coll);
+        _index = _scope_coll;
+        _scope_coll = _spot.get_spot_by_index(_scope_coll);
         //$.test_msg(_scope_coll.html());
     }
     
+//    this._scope_coll = _scope_coll;
+//    
+    var _word = null;
+////    if ($.is_int(_scope_coll)) {
+////        _scope_coll = KALS_text.selection.text.get_word_by_index(_scope_coll);
+////        $.test_msg(_scope_coll.html());
+////    }
+////    
     if (this.is_annotation_spot(_scope_coll)) {
         _word = _scope_coll;
         _scope_coll = new Scope_collection_param(_scope_coll);
+        _scope_coll.set_type(KALS_text.selection.text.spot.classname);
+        //$.test_msg("已經設定");
+    }
+    
+    if (_index === undefined) {
+        _index = $.get_prefixed_id(_word);
     }
     
     // 開啟時變更選取範圍
     //$.test_msg("有變更選取範圍嗎？");
-    KALS_text.selection.select.set_scope_coll(_scope_coll);
-    
+    //KALS_text.selection.select.set_scope_coll(_scope_coll);
     
     if ($.is_null(_word)) {
         this.anchor.set_scope_coll(_scope_coll);
@@ -137,6 +150,9 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     //this.editor.set_scope_coll(_scope_coll);
     this.editor.toggle_container(false);
     //this.editor.toggle_container(true);
+    
+    
+    KALS_context.hash.set_field('select', _index);
     
     return this;
 };
@@ -432,10 +448,13 @@ Annotation_spot.prototype.is_annotation_spot_private = function (_word) {
  * @returns {jQuery|string}
  */
 Annotation_spot.prototype.get_anchor_text_from_word = function (_word) {
-    if (_word.hasAttr("title")) {
+    if (_word.hasAttr("title") 
+            && $.trim(_word.attr("title")) !== "") {
+        //$.test_msg("取得title");
         return _word.attr("title");
     }
     else {
+        //$.test_msg("取得word本身");
         return _word;
     }
 };
@@ -463,9 +482,11 @@ Annotation_spot.prototype.reset = function (_callback) {
 Annotation_spot.prototype.close = function (_callback) {
     var _this = this;
     //$.test_msg("關閉？");
-    KALS_text.tool.close(function () {
-        KALS_controller_window.prototype.close.call(_this, _callback);
-    });
+    //KALS_text.tool.close(function () {
+    //    KALS_controller_window.prototype.close.call(_this, _callback);
+    //});
+    KALS_context.hash.delete_field('select');
+    KALS_controller_window.prototype.close.call(_this, _callback);
     return this;
 };
 
@@ -492,8 +513,9 @@ Annotation_spot.prototype._add_listener_URL_hash_dispatcher = function () {
 
         //$.test_msg('URL_hash_dispatcher', 'pass5');
         var _scope_text = _hash.get_field('select');
-        var _word_id = _scope_text.substr(0, _scope_text.indexOf(","));
-        _word_id = parseInt(_word_id);
+        //var _word_id = _scope_text.substr(0, _scope_text.indexOf(","));
+        var _word_id = _scope_text;
+        _word_id = parseInt(_word_id, 10); 
         //$.test_msg("word_id", _word_id);
 
         //KALS_context.init_profile.add_listener(function () {

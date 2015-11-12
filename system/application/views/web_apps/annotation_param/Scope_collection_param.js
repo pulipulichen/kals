@@ -11,7 +11,7 @@
  * @param {Scope_collection_param|Scope_param[]} _coll
  * @param {Object} _to
  */
-function Scope_collection_param(_scope_coll, _to) {
+function Scope_collection_param(_scope_coll, _to, _type) {
     
     this.scopes = [];
     
@@ -27,7 +27,7 @@ function Scope_collection_param(_scope_coll, _to) {
     }
     else if ($.isset(_scope_coll) && $.isset(_to)) {
         var _from = _scope_coll;
-        var _scope = new Scope_param(_from, _to);
+        var _scope = new Scope_param(_from, _to, _type);
         this.import_coll(_scope);
     }
 }
@@ -358,23 +358,37 @@ Scope_collection_param.prototype.export_json = function (_export_anchor_text) {
  */
 Scope_collection_param.prototype.equals = function (_scope_coll) {
     if ($.is_class(_scope_coll, 'Scope_collection_param') === false) {
-		return false;
-	}
+        return false;
+    }
     
-    if (this.length() != _scope_coll.length()) {
-		return false;
-	}
+    if (this.length() !== _scope_coll.length()) {
+        return false;
+    }
         
     for (var _i = 0; _i < this.length(); _i++) {
         var _this_scope = this.get(_i);
         var _scope = _scope_coll.get(_i);
         
         if (_this_scope.equals(_scope) === false) {
-			return false;
-		}
+            return false;
+        }
     }
     
     return true;
+};
+
+// -------------------------------------
+
+/**
+ * 設定範圍
+ * @param {String} _type
+ * @returns {Scope_collection_param.prototype}
+ */
+Scope_collection_param.prototype.set_type = function (_type) {
+    for (var _i = 0; _i < this.length(); _i++) {
+        this.get(_i).set_type(_type);
+    }
+    return this;
 };
 
 /* End of file Scope_collection_param */
