@@ -669,10 +669,11 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 _next_loop();
             };  // var _deeper_parse = function () {
             
+            //$.test_msg("selectable_text", _this.spot.is_spot(_child_obj));
             if (_this.spot.is_spot(_child_obj)) {
                 var _next_element = _this.spot.setup_selectable_element_clone_next_element(_child_obj, false);
-                $(_next_element).css("border", "3px solid red");
-                $.test_msg("找到");
+                //$(_next_element).css("border", "3px solid red");
+                //$.test_msg("找到", $(_next_element).html());
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
                 _next_loop();
             }

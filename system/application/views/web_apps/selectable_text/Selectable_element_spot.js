@@ -418,19 +418,18 @@ Selectable_element_spot.prototype.is_spot = function (_obj) {
     }
     
     //$.test_msg("is_spot", _obj.attr("className"));
-    return _obj.hasClass(this.spot_classname);
+    return _obj.hasClass(this.classname);
 };
 
 
 /**
  * 讓所有文字都保持在可選取的狀態
  * 
- * 2254 轉接完畢，檢查完畢
  * @param {function} _callback
  */
 Selectable_element_spot.prototype.setup_word_spot_selectable = function (_callback) {
     
-    var _select = KALS_text.selection.select;
+    //var _select = KALS_text.selection.select;
     
     //$.test_msg("已經設定");
     
@@ -445,7 +444,7 @@ Selectable_element_spot.prototype.setup_word_spot_selectable = function (_callba
     }
     var _this = this;
 
-    var _words = this._text.find('.'+ this.word_spot_classname + ':not(.' + this.span_classname + ')');
+    var _words = this._text.find('.'+ this.classname + ':not(.' + this.span_classname + ')');
 
     var _i = 0;
     var _wait_i = 1000;

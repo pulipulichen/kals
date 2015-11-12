@@ -114,6 +114,7 @@ Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _c
     
     var _selectable_text_word = this._selectable_text.word;
     var _selectable_text_spot = this._selectable_text.spot;
+    
     var _words = this.get_words_by_scope_coll(_scope_coll);
     
     var _classnames = this._filter_classname(_classname);
