@@ -22,6 +22,10 @@ Logo_component.prototype._$create_ui = function () {
     
     var _ui = $('<div class="logo-component">' + KALS_CONFIG.logo + '</div>');
     
+    KALS_context.add_once_listener(function () {
+        _ui.addClass("ready");
+    });
+    
     return _ui;
 };
 

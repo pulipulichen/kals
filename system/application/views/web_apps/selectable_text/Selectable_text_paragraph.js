@@ -518,22 +518,31 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
  * @returns {HTMLNode}
  * @author Pudding 20151029
  */
-Selectable_text_paragraph.prototype._setup_selectable_element_clone_next_element = function (_child_obj) {
+Selectable_text_paragraph.prototype._setup_selectable_element_clone_next_element = function (_child_obj, _is_word) {
     // 變數簡化
     var _selectable_text_paragraph = this;
     var _selectable_text_word = this._selectable_text.word;
-    var _selectable_text_sentence = this._selectable_text.sentence;
-    var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
-    var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
+    var _selectable_text_spot = this._selectable_text.spot;
+    //var _selectable_text_sentence = this._selectable_text.sentence;
+    //var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
+    //var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
     
     
     var _next_element = $(_child_obj).clone().get(0);
-    _next_element = _selectable_text_word.create_selectable_element(
-        _selectable_text_paragraph.paragraph_count, 
-        _selectable_text_word.word_count, _next_element
-    );
+    if (_is_word === true) {
+        _next_element = _selectable_text_word.create_selectable_element(
+            _selectable_text_paragraph.paragraph_count, 
+            _selectable_text_word.word_count, _next_element
+        );
+    }
+    else {
+        _next_element = _selectable_text_spot.create_selectable_element(
+            _selectable_text_paragraph.paragraph_count, 
+            _selectable_text_spot.spot_count, _next_element
+        );
+    }
     
-    _selectable_text_word.word_count++;
+    _selectable_text_spot.spot_count++;
     
     return _next_element;
 };

@@ -23,6 +23,7 @@ function Selectable_text(_selector) {
     
     // Selectable_text_component
     this.child('word', new Selectable_text_word(this));
+    this.child('spot', new Selectable_text_spot(this));
     
     this.child('offset', new Selectable_text_offset(this));
     this.child('scope', new Selectable_text_scope(this));
@@ -63,6 +64,12 @@ Selectable_text.prototype.tooltip = null;
  * @type {Selectable_text_word}
  */
 Selectable_text.prototype.word;
+
+/**
+ * @type {Selectable_text_spot}
+ * @author Pudding 201151111
+ */
+Selectable_text.prototype.spot;
 
 /**
  * @type {Selectable_text_offset}
@@ -321,6 +328,13 @@ Selectable_text.prototype.initialize = function (_callback) {
         return _this.setup_word_selectable(_callback);
     };
     
+    /**
+     * @author Pudding 20151111
+     */
+    var _task_setup_word_spot_selectable = function (_callback) {
+        return _this.spot.setup_word_spot_selectable(_callback);
+    };
+    
     var _task_complete = function (_callback) {
         //$.test_msg("Selectacble_text _task_complete");
         KALS_context.init_profile.add_listener(function () {
@@ -384,6 +398,7 @@ Selectable_text.prototype.initialize = function (_callback) {
             }
             
             _task_list.push(_task_setup_word_selectable);
+            _task_list.push(_task_setup_word_spot_selectable);
             _task_list.push(_task_progress);
             _task_list.push(_task_complete);
             _task_list.push(_callback);
@@ -399,6 +414,7 @@ Selectable_text.prototype.initialize = function (_callback) {
         _task_list.push(_task_restore_clone_text);
         
         _task_list.push(_task_setup_word_selectable);
+        _task_list.push(_task_setup_word_spot_selectable);
         _task_list.push(_task_progress);
         _task_list.push(_task_complete);
         _task_list.push(_callback);
@@ -580,6 +596,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
          * @type {jQuery}
          */
         var _child_obj = _child_nodes.item(_i);
+        //$.test_msg("_child_obj", _child_obj.nodeName);
         
         if (_this.is_element_has_class(_child_obj, _para_classname)) {
             _i++;
@@ -629,6 +646,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 }
                 else if (typeof(_node_name) === 'string') {
                     _node_name = _node_name.toLowerCase();
+                    //$.test_msg("_node_name", _node_name);
                     if (_node_name === 'br') {
                         _selectable_text_paragraph.paragraph_count++;
 
@@ -640,15 +658,18 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                         // 增加句子的計算數量
                         _selectable_text_sentence.add_structure_last_word();
                     }
+                    else if (_node_name === "img") {
+                        $(_child_obj).css("border", "1px solid red");
+                    }
                 }
 		
                 _next_loop();
             };  // var _deeper_parse = function () {
             
-            
-            if ($(_child_obj).hasClass("kals-annotation-spot")) {
-                //$(_child_obj).css("border", "3px solid red");
-                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj);
+            if (_this.spot.is_spot(_child_obj)) {
+                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, false);
+                //$(_next_element).css("border", "3px solid red");
+                //$.test_msg("找到");
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
                 _next_loop();
             }
@@ -707,8 +728,8 @@ Selectable_text.prototype._setup_selectable_element_init_next_element = function
     return this.paragraph._setup_selectable_element_init_next_element(_text, _child_obj);
 };
 
-Selectable_text.prototype._setup_selectable_element_clone_next_element = function (_child_obj) {
-    return this.paragraph._setup_selectable_element_clone_next_element(_child_obj);
+Selectable_text.prototype._setup_selectable_element_clone_next_element = function (_child_obj, _is_word) {
+    return this.paragraph._setup_selectable_element_clone_next_element(_child_obj, _is_word);
 };
 
 /**

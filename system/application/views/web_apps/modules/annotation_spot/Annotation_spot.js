@@ -477,7 +477,8 @@ Annotation_spot.prototype._add_listener_URL_hash_dispatcher = function () {
     //$.test_msg("_add_listener_URL_hash_dispatcher 呼叫?");
     KALS_context.hash.add_listener(function (_hash) {
         if (_hash.has_field("modal") === false 
-                || _hash.get_field("modal") !== _this.name) {
+                || _hash.get_field("modal") !== _this.name
+                || _hash.has_field('select') === false) {
             //$.test_msg("不是的");
             return;
         }
