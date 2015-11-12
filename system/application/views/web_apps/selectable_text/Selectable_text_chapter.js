@@ -77,7 +77,7 @@ Selectable_text_chapter.prototype.classname = "kals-heading";
  */
 Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
     
-    var _word_count = this._selectable_text.word.word_count;
+    var _word_count = this._selectable_text.word.count;
     
     var _temp_heading = false;
     if (_child_obj === undefined) {
@@ -141,7 +141,7 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
  */
 Selectable_text_chapter.prototype.add_ending_structure = function () {
     
-    var _word_count = this._selectable_text.word.word_count;
+    var _word_count = this._selectable_text.word.count;
     
     var _temp_heading = false;
     

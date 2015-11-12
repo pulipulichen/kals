@@ -13,6 +13,8 @@
  * @requires jQuery
  * @requires Other_class
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */
+/*global DEFAULT_KALS_CONFIG:false */
 
 /**
  * @class KALS_loader
@@ -135,6 +137,7 @@ this.generic_load = function (_conf, _callback) {
         /**
          * 覆寫設定檔
          * @author Pulipuli Chen 20151017
+         * @global
          */
         KALS_CONFIG = this._override_kals_config(DEFAULT_KALS_CONFIG, KALS_CONFIG);
         
@@ -617,6 +620,9 @@ this.load_libraries = function (_libraries, _callback) {
 
 /**
  * 依序讀取JS程式檔
+ * @param {Array|String} _scripts
+ * @param {Function} _callback
+ * @returns {KALS_loader}
  */
 this.load_scripts_orderly = function (_scripts, _callback) {
     
@@ -643,32 +649,40 @@ this.load_scripts_orderly = function (_scripts, _callback) {
             _callback();
         }
     }, false); 
+    
+    return this;
 };
 
 /**
  * Setup完畢之後，接下來要開始跟伺服器取得資料，進行初始化。
+ * @deprecated Pudding 20151112
  */
-this.initialize = function (email) {
-    
-};
+//this.initialize = function (_email) {
+//    
+//};
 
 /**
  * 初始化完畢、也取得伺服器資料之後，接下來就進行更進一步的設置。
+ * @deprecated Pudding 20151112
  */
-this.ready = function () {
-
-};
+//this.ready = function () {
+//
+//};
 
 /**
  * 上述工作完成之後，最後的設定。
+ * @deprecated Pudding 20151112
  */
-this.complete = function () {
-
-};
+//this.complete = function () {
+//
+//};
 
 /**
  * 覆寫KALS_CONFIG的動作，是修改全域變數喔
  * @author Pulipuli Chen 20151017
+ * @param {JSON} _default_kals_config
+ * @param {JSON} _kals_config
+ * @returns {JSON}
  */
 this._override_kals_config = function (_default_kals_config, _kals_config) {
     //console.log([_default_kals_config, _kals_config]);
@@ -699,6 +713,7 @@ this._override_kals_config = function (_default_kals_config, _kals_config) {
 /**
  * 讀取KALS_CONFIG的kals_config_api
  * @author Pulipuli Chen 20151017
+ * @param {Function} _callback
  */
 this._override_kals_config_api = function (_callback) {
     var _ = this;

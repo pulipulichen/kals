@@ -11,6 +11,8 @@
  * @link        https://github.com/pulipulichen/kals
  * @version     1.0 2014/1/2 下午 08:25:49
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */
+/*global Selectable_text_element:false */
 
 /**
  * @memberOf {Selectable_text_word}
@@ -20,16 +22,14 @@
  */
 function Selectable_text_word(_selectable_text) {
     
-    this._selectable_text = _selectable_text;
-    this._text = _selectable_text._text;
-    
-    
+    // 初始化時做的事情
+    Selectable_text_element.call(this, _selectable_text);
     this._init_site_reform();
     
-//    if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
-//        //$.test_msg("已經設定");
-//        this._auto_select = true;
-//    }
+    if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
+        //$.test_msg("已經設定");
+        this._auto_select = true;
+    }
     
     return this;
 }
@@ -38,7 +38,7 @@ function Selectable_text_word(_selectable_text) {
  * Extends from KALS_user_interface.
  * @memberOf {Selectable_text_word}
  */
-Selectable_text_word.prototype = new KALS_user_interface();
+Selectable_text_word.prototype = new Selectable_text_element();
 
 /**
  * 父物件
@@ -49,12 +49,6 @@ Selectable_text_word.prototype._selectable_text;
 // -----------------------------------
 // 內部參數設定
 // -----------------------------------
-
-/**
- * 文字記數，初始化時使用。
- * @type {number}
- */
-Selectable_text_word.prototype.word_count = 0;
 
 /**
  * 可選取文字的classname
@@ -69,15 +63,6 @@ Selectable_text_word.prototype.classname = 'kals-word';
  * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_id_prefix
  */
 Selectable_text_word.prototype.id_prefix = 'kals_word_';
-
-
-Selectable_text_word.prototype._span_classname = 'span';
-
-/**
- * 鎖
- * @type Array
- */
-Selectable_text_word.prototype.locks = [];
 
 // -----------------------------------
 // 方法
@@ -113,34 +98,12 @@ Selectable_text_word.prototype.get_word_id_prefix = function () {
 };
 
 /**
- * 取得word_id_prefix
- * @returns {Selectable_text_word.word_id_prefix}
- * @author Pudding 20151112
- */
-Selectable_text_word.prototype.get_id_prefix = function () {
-    return this.id_prefix;
-};
-
-/**
  * 從ID取得Word
- * @param {number} _id
+ * @param {number} _index
  * @return {jQuery}
  */
 Selectable_text_word.prototype.get_word_by_index = function(_index) {
     return this.get_ele_by_index(_index);
-};
-
-/**
- * 從ID取得Word
- * @param {number} _id
- * @return {jQuery}
- * @author Pudding 20151112
- */
-Selectable_text_word.prototype.get_ele_by_index = function(_index) {
-    var _ele_id_prefix = this.id_prefix;
-    var _ele_id = _ele_id_prefix + _index;
-    var _ele = $('#' + _ele_id);
-    return _ele;
 };
 
 /**
@@ -151,7 +114,7 @@ Selectable_text_word.prototype.get_ele_by_index = function(_index) {
  * @returns {jQuery}
  */
 Selectable_text_word.prototype.get_word = function (_word_id) {
-    return this.get_word_by_index(_word_id);
+    return this.get_ele_by_index(_word_id);
 };
 
 /**
@@ -161,22 +124,8 @@ Selectable_text_word.prototype.get_word = function (_word_id) {
  * @param {jQuery} _word
  */
 Selectable_text_word.prototype.get_word_id = function (_word) {
-    if ($.is_object(_word)) {
-        if ($.is_jquery(_word)) {
-            _word = _word.attr('id');
-        }
-        else {
-            _word = _word.id;
-        }
-    }
-       
-    var _id_prefix = this.id_prefix;
-    if ($.starts_with(_word, _id_prefix)) {
-        _word = _word.substring(_id_prefix.length, _word.length);
-    }
-    return parseInt(_word,10);
+    return this.get_element_id(_word);
 };
-
 
 /**
  * 如果下一個字是英文的話
@@ -215,7 +164,7 @@ Selectable_text_word.prototype.is_word_next_span = function (_word) {
         return false;
     }
     else {
-        return _next.hasClass(this._span_classname);
+        return _next.hasClass(this.span_classname);
     }
 };
 
@@ -249,7 +198,7 @@ Selectable_text_word.prototype.create_span_word = function(_text) {
     //$.test_msg("Selectable_text_word.prototype.create_span_word");
     
     var _word = document.createElement("span");
-    _word.className = this._span_classname + ' ' + this.classname;
+    _word.className = this.span_classname + ' ' + this.classname;
 	
     var _t_text = document.createTextNode(_text);
     _word.appendChild(_t_text);
@@ -304,31 +253,20 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
     return _word;
 };
 
+// --------------------------------------
+
 /**
- * 建立一個可選取的文字
- * 
- * 2324 轉接完畢，檢查完畢
- * @param {number} _para_id Paragraph ID
- * @param {number} _point_id Word ID
- * @param {string} _text 內容文字
- * @type {jQuery}
- * @author Pudding 20151029
+ * setup_word_mouse_event 會用到的鎖
+ * @type boolean
+ * @author Pudding 20151112
  */
-Selectable_text_word.prototype.create_selectable_element = function(_para_id, _point_id, _word) {
-    
-    _word.className =  $.trim(_word.className + " " + this.classname
-        + ' ' + this._selectable_text.tooltip.trigger_classname);
-
-    var _word_id = this.id_prefix + _point_id; 
-
-    _word.id = _word_id;
-
-    KALS_context.progress.add_count();
- 
-    return _word;
-};
-
 Selectable_text_word.prototype.KALS_SELECT_MOUSEDOWN_LOCK;
+
+/**
+ * setup_word_mouse_event 會用到的鎖
+ * @type boolean
+ * @author Pudding 20151112
+ */
 Selectable_text_word.prototype.KALS_SELECT_LOCK;
 
 /**
@@ -598,26 +536,27 @@ Selectable_text_word.prototype._setup_auto_select_event = function (_words) {
     return this;
 };
 
-/**
- * 加上單一選取的功能
- * @author Pudding 20151029
- * @param {jQuery} _words
- */
-Selectable_text_word.prototype._setup_word_annotation_spot_event = function (_words) {
-    
-    /**
-     * @type Selection_select
-     */
-    //var _select = KALS_text.selection.select;
-    
-    //$.test_msg("已經設定");
-    _words.click(function () {
-        var _word = $(this);
-        //_select.set_complete_select(_word);
-        //$.test_msg("_setup_word_annotation_spot_event", $.get_prefixed_id(_word));
-        KALS_context.module.get_module("Annotation_spot").set_select(_word);
-    });
-};
+///**
+// * 加上單一選取的功能
+// * @author Pudding 20151029
+// * @param {jQuery} _words
+// * @deprecated Pudding 20151112 應該改到Selectable_text_word_spot去做
+// */
+//Selectable_text_word.prototype._setup_word_annotation_spot_event = function (_words) {
+//    
+//    /**
+//     * @type Selection_select
+//     */
+//    //var _select = KALS_text.selection.select;
+//    
+//    //$.test_msg("已經設定");
+//    _words.click(function () {
+//        var _word = $(this);
+//        //_select.set_complete_select(_word);
+//        //$.test_msg("_setup_word_annotation_spot_event", $.get_prefixed_id(_word));
+//        KALS_context.module.get_module("Annotation_spot").set_select(_word);
+//    });
+//};
 
 /**
  * 自動選取的計時器
@@ -635,6 +574,7 @@ Selectable_text_word.prototype._mouse_event_enable = true;
  * 初始化這個文字的事件
  * @param {jQuery} _word
  * @returns {Selectable_text_word}
+ * @author Pudding 20151112
  */
 Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
     
@@ -653,8 +593,8 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
     if (_word.hasClass("kals-annotation-spot")) {
         this._setup_word_annotation_spot_event(_word);
     }
-    //else if (this._auto_select === false) {
-    else if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
+    else if (this._auto_select === false) {
+    //else if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
         // 20140223 Pudding Chen
         // 轉移到這邊做tooltip
         this.setup_word_tooltip(_word);
@@ -680,7 +620,7 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
  * @author Pudding 20151029
  * @deprecated Pudding 20151112 直接看KALS_CONFIG就好了，要這個幹嘛？
  */
-//Selectable_text_word.prototype._auto_select = false;
+Selectable_text_word.prototype._auto_select = false;
 
 /**
  * 讓所有文字都保持在可選取的狀態
@@ -689,82 +629,7 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
  * @param {function} _callback
  */
 Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
-    
-    var _select = KALS_text.selection.select;
-    
-	// 如果是一般模式
-    if ($.is_mobile_mode() === false) {
-        if (typeof(this.locks.word_click) === 'undefined') {
-            var _this = this;
-			
-            var _words = this._text.find('.'+ this.classname + ':not(.' + this._span_classname + ')');
-            
-            var _i = 0;
-            var _wait_i = 1000;
-            var _loop = function () {
-                
-                var _word = _words.eq(_i);
-                
-                /**
-                 * 在滑鼠移上去的時候才開始設定事件
-                 * @author Pudding 20151029
-                 */
-                var _lock_name = "kals_word_selectable";
-                
-                _word.one("mouseover", function () {
-                    if ($(this).hasAttr(_lock_name)) {
-                        return;
-                    }
-                    $(this).attr(_lock_name, 1);
-                    _this._init_word_selectable_event(this);
-                    $(this).trigger("mouseover");
-                });
-                
-                _word.one("click", function () {
-                    if ($(this).hasAttr(_lock_name)) {
-                        return;
-                    }
-                    $(this).attr(_lock_name, 1);
-                    _this._init_word_selectable_event(this);
-                    $(this).trigger("click");
-                });
-                
-                KALS_context.progress.add_count(2);
-                
-                _continue();
-            };
-            
-            var _continue = function () {
-                _i++;
-                if (_i < _words.length) {
-                    
-                    if (_i % _wait_i === 0) {
-                        setTimeout(function () {
-                            _loop();
-                        }, 10);
-                    }
-                    else {
-                        _loop();
-                    }
-                }
-                else {
-                    _complete();
-                }
-            };
-            
-            var _complete = function () {
-                _this.locks.word_click = true;
-                $.trigger_callback(_callback);
-            };
-			
-            _loop();
-        }
-    }
-    else {
-        $.trigger_callback(_callback);
-    }
-    
-    return this;
+    return this.setup_ele_selectable(_callback);
 };
 
 
@@ -814,6 +679,7 @@ Selectable_text_word.prototype._init_word_tooltip = function () {
     //return _word;
 };
 */
+
 /**
  * 估算大概會多少字
  * 
@@ -839,89 +705,12 @@ Selectable_text_word.prototype.get_estimate_total_words = function (_text) {
     return _total;
 };
 
-///**
-// * 儲存到快取中
-// * @param {String} _cache_id
-// * @param {funciton} _callback
-// * @returns {Selectable_text_word}
-// */
-//Selectable_text_word.prototype.cache_save = function (_cache_id, _callback) {
-//    _cache_id = _cache_id + '_word';
-//    //$.test_msg('word save: ' + _cache_id, this.word_count);
-//    KALS_context.storage.set(_cache_id, this.word_count, _callback);
-//    return this;
-//};
-//
-///**
-// * 從快取中復原
-// * @param {String} _cache_id
-// * @param {funciton} _callback
-// * @returns {Selectable_text_word}
-// */
-//Selectable_text_word.prototype.cache_restore = function (_cache_id, _callback) {
-//    _cache_id = _cache_id + '_word';
-//    var _this = this;
-//    KALS_context.storage.get(_cache_id, function (_value) {
-//        if (_value !== undefined) {
-//            _this.word_count = _value;
-//        }
-//        
-//        $.trigger_callback(_callback);
-//    });
-//    //this.word_count = $.localStorage.get(_cache_id);
-//    //$.test_msg('word restore: ' + _cache_id, this.word_count);
-//    return this;
-//};
-
-/**
- * 取得要快取的資料
- * @returns {Number}
- */
-Selectable_text_word.prototype.get_data = function () {
-    return this.word_count;
-};
-
-/**
- * 設定被快取的資料
- * @param {Int} _data 從快取中取回的資料
- * @returns {Selectable_text_word}
- */
-Selectable_text_word.prototype.set_data = function (_data) {
-    if ($.is_number(_data)) {
-        this.word_count = _data;
-    }
-    return this;
-};
-
-/**
- * 捲動到指定文字
- * @param {Int} _heading_id
- * @param {Function} _callback
- * @returns {Selectable_text_chapter.prototype}
- */
-Selectable_text_word.prototype.scroll_to = function (_target_id, _callback) {
-    
-    if (_target_id === undefined) {
-        return this;
-    }
-    
-    var _position = {
-        selector: "#" + this.id_prefix + _target_id
-    };
-    
-    var _speed = 500;
-    //$.test_msg("chapter scroll_to", _position);
-    $.scroll_to(_position, _speed, _callback);
-    
-    return this;
-};
 /**
  * 取得現在捲軸的位置的first word id
  * 
  * @param {Function} _callback
  * @return {int} word_id
  */
-
 Selectable_text_word.prototype.get_current_progress_word = function (_callback) {
 
     // 1.先比對kals_paragraph_i
@@ -994,24 +783,7 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
             return;
         }
     };
-    
-    /*
-    for (var _index = 0; _index < _paragraph_collection.length; _index++ ) {
-        var _paragraph = _paragraph_collection.eq(_index);
-        //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
-        //取得每個paragraph的第一個word的top
-        var _paragraph_height = $.get_offset_top(_paragraph.find(".kals-word:first")); 
-        //$.test_msg('save_reading_progress', [_paragraph_height, _scroll_top, _index]);
             
-        if (_paragraph_height > _scroll_top) {
-            //找前一段
-            _target_paragraph = _paragraph_collection.eq(_index-1);
-            break;
-        }
-            //$.test_msg('i', _i);
-    }
-    */
-        
     var _word_index = 0;
     var _word_loop = function () {
         
@@ -1149,7 +921,7 @@ Selectable_text_word.prototype.get_setence_position_word = function (_index_word
     var _target_word = _index_word;
     var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
     var _sentence_punctuation_classname = this._selectable_text.sentence.sententce_punctuation_classname;
-    var _span_classname = this._span_classname;
+    var _span_classname = this.span_classname;
     
     // 如果自己就是斷句位置
     if (_index_word.hasClass(_punctuation_classname)) {

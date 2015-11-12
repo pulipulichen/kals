@@ -68,7 +68,7 @@ Selectable_text_spot.prototype.word_spot_classname = 'kals-word-spot';
 Selectable_text_spot.prototype.spot_id_prefix = 'kals_spot_';
 
 
-Selectable_text_spot.prototype._span_classname = 'span';
+Selectable_text_spot.prototype.span_classname = 'span';
 
 /**
  * 鎖
@@ -506,7 +506,7 @@ Selectable_text_spot.prototype.setup_word_spot_selectable = function (_callback)
         if (typeof(this.locks.word_click) === 'undefined') {
             var _this = this;
 			
-            var _words = this._text.find('.'+ this.word_spot_classname + ':not(.' + this._span_classname + ')');
+            var _words = this._text.find('.'+ this.word_spot_classname + ':not(.' + this.span_classname + ')');
             
             var _i = 0;
             var _wait_i = 1000;

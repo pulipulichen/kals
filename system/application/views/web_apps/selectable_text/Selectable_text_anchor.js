@@ -186,7 +186,7 @@ Selectable_text_anchor.prototype.get_display_anchor_text = function (_scope_coll
     var _selectable_text_word = this._selectable_text_word;
     
     var _ellipsis = '<span class="ellipsis">...</span>';
-    var _last_id = _selectable_text_word.word_count;
+    var _last_id = _selectable_text_word.count;
     
     for (var _i = 0; _i < _scope_coll.length(); _i++) {
         var _sentence = '';

@@ -607,7 +607,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         else if (_child_obj.nodeName !== '#text' &&
             _this.is_element_has_class(_child_obj, _para_classname) === false) {
             
-            var _check_word_count = _selectable_text_word.word_count;
+            var _check_word_count = _selectable_text_word.count;
             
             var _next_loop = function () {
                 	
@@ -627,7 +627,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             
             var _deeper_parse = function () {
                 var _node_name = _child_obj.nodeName;
-                if (_check_word_count < _selectable_text_word.word_count
+                if (_check_word_count < _selectable_text_word.count
                     && typeof(_node_name) === 'string' 
                     && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
                     

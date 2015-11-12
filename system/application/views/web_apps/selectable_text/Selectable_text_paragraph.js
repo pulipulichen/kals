@@ -211,7 +211,7 @@ Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
             }, 0);
         }
         else {
-            $.test_msg('Total words', _selectable_text_word.word_count);
+            $.test_msg('Total words', _selectable_text_word.count);
     
             var _sum = 0;
             for (_i in _para_ary) {
@@ -231,7 +231,7 @@ Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
  * @returns {Selectable_text_sentence.prototype}
  */
 Selectable_text_paragraph.prototype.add_structure = function () {
-    var _word_count = this._selectable_text.word.word_count;
+    var _word_count = this._selectable_text.word.count;
     
     if (_word_count < 1) {
         return this;
@@ -370,7 +370,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
     // 以下是正式的初始化
     
     if (this.is_paragraph_node(_child_obj)) {
-        _next_element = this.create_selectable_paragraph(_selectable_text_word.word_count);
+        _next_element = this.create_selectable_paragraph(_selectable_text_word.count);
     }
     else {
         _next_element = this.create_span();
@@ -420,7 +420,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
 
             _t_element = _selectable_text_word.create_selectable_word(
                 _selectable_text_paragraph.paragraph_count, 
-                _selectable_text_word.word_count, _t
+                _selectable_text_word.count, _t
             );
 
             if ($.match_sentence_punctuation(_t)) {
@@ -471,7 +471,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_init_next_element 
                 $(_t_element).addClass(_punctuation_classname);
             }   //else if ($.match_punctuation(_t)) {
             
-            _selectable_text_word.word_count++;
+            _selectable_text_word.count++;
             
         }   //if ($.match_space(_t) === false) {
         else if ($.match_space(_t) && $.match_space(_t_prev)) {
@@ -532,7 +532,7 @@ Selectable_text_paragraph.prototype._setup_selectable_element_clone_next_element
     if (_is_word === true) {
         _next_element = _selectable_text_word.create_selectable_element(
             _selectable_text_paragraph.paragraph_count, 
-            _selectable_text_word.word_count, _next_element
+            _selectable_text_word.count, _next_element
         );
     }
     else {

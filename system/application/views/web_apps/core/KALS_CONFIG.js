@@ -11,7 +11,6 @@
  * @link            https://github.com/pulipulichen/kals
  * @version		1.5 2014/4/28 下午 07:50:21
  */
-
 DEFAULT_KALS_CONFIG = {
     
     /**
@@ -1241,7 +1240,7 @@ DEFAULT_KALS_CONFIG = {
          */
         "Annotation_spot": {
             "enable": true
-        },
+        }
     }
 };
 /* End of file KALS_CONFIG */

@@ -181,7 +181,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
  * @returns {Selectable_text_sentence.prototype}
  */
 Selectable_text_sentence.prototype.add_structure = function () {
-    var _word_count = this._selectable_text.word.word_count;
+    var _word_count = this._selectable_text.word.count;
     this.sentence_structure.push(_word_count);
     return this;
 };
@@ -191,7 +191,7 @@ Selectable_text_sentence.prototype.add_structure = function () {
  * @returns {Selectable_text_sentence.prototype}
  */
 Selectable_text_sentence.prototype.add_structure_last_word = function () {
-    var _word_count = this._selectable_text.word.word_count;
+    var _word_count = this._selectable_text.word.count;
     _word_count--;
     
     if (_word_count < 1) {
