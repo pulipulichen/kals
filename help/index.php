@@ -74,6 +74,8 @@
         <li><a href="../phppgadmin/" target="_blank">PostgreSQL資料庫 phpPgAdmin</a> 
             (<a href="../phppgadmin/redirect.php?server=localhost%3A5432%3Aallow&subject=schema&database=kals&schema=public" target="_blank">KALS資料表</a>, 
             <a href="../phppgadmin/display.php?server=localhost%3A5432%3Aallow&database=kals&schema=public&table=log&subject=table&return=table&sortkey=1&sortdir=desc&strings=collapsed&page=1">行為記錄</a>)</li>
+        <!-- @TODO #182 -->
+        <li><a href="#" target="_blank">更新kals-database.sql (尚未完成)</a></li>
 </ul>
 <hr />
 
