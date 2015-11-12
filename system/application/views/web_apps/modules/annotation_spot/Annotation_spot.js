@@ -392,14 +392,14 @@ Annotation_spot.prototype.set_select = function (_word) {
  * 標註討論點的名稱
  * @type String
  */
-Annotation_spot.prototype.annotation_spot_classname = "kals-annotation-spot";
+//Annotation_spot.prototype.annotation_spot_classname = "kals-spot";
 
 /**
  * 私人標註討論點的名稱
  * @type String
  * @author Pudding 20151109
  */
-Annotation_spot.prototype.annotation_spot_private_classname = "private";
+//Annotation_spot.prototype.annotation_spot_private_classname = "private";
 
 /**
  * 確認是否是標註討論點
@@ -407,8 +407,9 @@ Annotation_spot.prototype.annotation_spot_private_classname = "private";
  * @returns {Boolean}
  */
 Annotation_spot.prototype.is_annotation_spot = function (_word) {
+    var _annotation_spot_classname = KALS_text.selection.text.spot.classname;
     return ($.is_jquery(_word) 
-            && _word.hasClass(this.annotation_spot_classname));
+            && _word.hasClass(_annotation_spot_classname));
 };
 
 /**
@@ -419,9 +420,10 @@ Annotation_spot.prototype.is_annotation_spot = function (_word) {
  */
 Annotation_spot.prototype.is_annotation_spot_private = function (_word) {
     //$.test_msg("is_annotation_spot_private", _word.attr("className"))
+    var _spot = KALS_text.selection.text.spot;
     return ($.is_jquery(_word) 
-            && _word.hasClass(this.annotation_spot_classname) 
-            && _word.hasClass(this.annotation_spot_private_classname) );
+            && _word.hasClass(_spot.classname) 
+            && _word.hasClass(_spot.private_classname) );
 };
 
 /**

@@ -113,6 +113,7 @@ Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
 Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _callback) {
     
     var _selectable_text_word = this._selectable_text.word;
+    var _selectable_text_spot = this._selectable_text.spot;
     var _words = this.get_words_by_scope_coll(_scope_coll);
     
     var _classnames = this._filter_classname(_classname);
@@ -122,8 +123,7 @@ Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _c
         var _word = _words[_i][_j];
             
         // 如果標註位置有kals-annotation-spot，那就不加classname
-        // @TODO #176 改用is_spot來確認
-        if (_word.hasClass("kals-annotation-spot")) {
+        if (_selectable_text_spot.is_spot(_word)) {
             return;
         }
         

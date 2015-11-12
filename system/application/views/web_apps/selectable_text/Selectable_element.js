@@ -24,6 +24,7 @@ function Selectable_element(_selectable_text) {
     if (_selectable_text !== undefined) {
         this._selectable_text = _selectable_text;
         this._text = _selectable_text._text;
+        this.locks = [];
     }
     
     return this;
@@ -254,77 +255,81 @@ Selectable_element.prototype.setup_ele_selectable = function (_callback) {
     
     var _select = KALS_text.selection.select;
     
-	// 如果是一般模式
-    if ($.is_mobile_mode() === false) {
-        if (typeof(this.locks.word_click) === 'undefined') {
-            var _this = this;
-			
-            var _words = this._text.find('.'+ this.classname + ':not(.' + this.span_classname + ')');
-            
-            var _i = 0;
-            var _wait_i = 1000;
-            var _loop = function () {
-                
-                var _word = _words.eq(_i);
-                
-                /**
-                 * 在滑鼠移上去的時候才開始設定事件
-                 * @author Pudding 20151029
-                 */
-                var _lock_name = "kals_word_selectable";
-                
-                _word.one("mouseover", function () {
-                    if ($(this).hasAttr(_lock_name)) {
-                        return;
-                    }
-                    $(this).attr(_lock_name, 1);
-                    _this._init_word_selectable_event(this);
-                    $(this).trigger("mouseover");
-                });
-                
-                _word.one("click", function () {
-                    if ($(this).hasAttr(_lock_name)) {
-                        return;
-                    }
-                    $(this).attr(_lock_name, 1);
-                    _this._init_word_selectable_event(this);
-                    $(this).trigger("click");
-                });
-                
-                KALS_context.progress.add_count(2);
-                
-                _continue();
-            };
-            
-            var _continue = function () {
-                _i++;
-                if (_i < _words.length) {
-                    
-                    if (_i % _wait_i === 0) {
-                        setTimeout(function () {
-                            _loop();
-                        }, 10);
-                    }
-                    else {
-                        _loop();
-                    }
-                }
-                else {
-                    _complete();
-                }
-            };
-            
-            var _complete = function () {
-                _this.locks.word_click = true;
-                $.trigger_callback(_callback);
-            };
-			
-            _loop();
-        }
-    }
-    else {
+    // 如果是一般模式
+    if ($.is_mobile_mode() === true) {
         $.trigger_callback(_callback);
+        return this;
     }
+    
+    if (typeof(this.locks.word_click) !== 'undefined') {
+        return this;
+    }
+    
+    var _this = this;
+
+    var _words = this._text.find('.'+ this.classname + ':not(.' + this.span_classname + ')');
+
+    var _i = 0;
+    var _wait_i = 1000;
+    var _loop = function () {
+
+        var _word = _words.eq(_i);
+
+        /**
+         * 在滑鼠移上去的時候才開始設定事件
+         * @author Pudding 20151029
+         */
+        var _lock_name = "kals_word_selectable";
+
+        _word.one("mouseover", function () {
+            if ($(this).hasAttr(_lock_name)) {
+                return;
+            }
+            $(this).attr(_lock_name, 1);
+            _this._init_word_selectable_event(this);
+            $(this).trigger("mouseover");
+        });
+
+        _word.one("click", function () {
+            if ($(this).hasAttr(_lock_name)) {
+                return;
+            }
+            $(this).attr(_lock_name, 1);
+            _this._init_word_selectable_event(this);
+            $(this).trigger("click");
+        });
+
+        KALS_context.progress.add_count(2);
+
+        _continue();
+    };
+
+    var _continue = function () {
+        _i++;
+        if (_i < _words.length) {
+
+            if (_i % _wait_i === 0) {
+                setTimeout(function () {
+                    _loop();
+                }, 10);
+            }
+            else {
+                _loop();
+            }
+        }
+        else {
+            _complete();
+        }
+    };
+
+    var _complete = function () {
+        _this.locks.word_click = true;
+
+        //$.test_msg("setup_ele_selectable 完成");
+        $.trigger_callback(_callback);
+    };
+
+    _loop();
     
     return this;
 };

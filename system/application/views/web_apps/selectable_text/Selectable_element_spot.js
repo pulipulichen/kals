@@ -1,5 +1,5 @@
 /**
- * Selectable_text_spot
+ * Selectable_element_spot
  * 
  * 建立Selectable_text中的Spot
  * 
@@ -11,70 +11,48 @@
  * @link        https://github.com/pulipulichen/kals
  * @version     1.0 2015/11/11 下午 08:25:49
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */
+/*global Selectable_element:false */
 
 /**
- * @memberOf {Selectable_text_spot}
- * @extends {KALS_user_interface}
+ * @memberOf {Selectable_element_spot}
+ * @extends {Selectable_element}
  * @constructor
  * @param {Selectable_text} _selectable_text 父物件
  */
-function Selectable_text_spot(_selectable_text) {
-    
-    this._selectable_text = _selectable_text;
-    this._text = _selectable_text._text;
-    
+function Selectable_element_spot(_selectable_text) {
+    // 初始化時做的事情
+    Selectable_element.call(this, _selectable_text);
 }
 
 /**
- * Extends from KALS_user_interface.
- * @memberOf {Selectable_text_spot}
+ * Extends from Selectable_element.
+ * @memberOf {Selectable_element_spot}
  */
-Selectable_text_spot.prototype = new KALS_user_interface();
-
-/**
- * 父物件
- * @type {Selectable_text}
- */
-Selectable_text_spot.prototype._selectable_text;
+Selectable_element_spot.prototype = new Selectable_element();
 
 // -----------------------------------
 // 內部參數設定
 // -----------------------------------
 
 /**
- * 記數，初始化時使用。
- * @type {number}
- */
-Selectable_text_spot.prototype.spot_count = 0;
-
-/**
  * 列入特殊標註點的classname
  * @type {String}
  */
-Selectable_text_spot.prototype.spot_classname = 'kals-spot';
+Selectable_element_spot.prototype.classname = 'kals-spot';
 
 /**
- * 文字標註的位置點的classname
+ * 列入特殊標註點的classname，私人
  * @type {String}
- * @author Pudding 20151111
  */
-Selectable_text_spot.prototype.word_spot_classname = 'kals-word-spot';
+Selectable_element_spot.prototype.private_classname = 'private';
 
 /**
  * 可選取文字的ID前置
  * @type {String}
  * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_id_prefix
  */
-Selectable_text_spot.prototype.spot_id_prefix = 'kals_spot_';
-
-
-Selectable_text_spot.prototype.span_classname = 'span';
-
-/**
- * 鎖
- * @type Array
- */
-Selectable_text_spot.prototype.locks = [];
+Selectable_element_spot.prototype.id_prefix = 'kals_spot_';
 
 // -----------------------------------
 // 方法
@@ -84,21 +62,17 @@ Selectable_text_spot.prototype.locks = [];
  * 取得spot_id_prefix
  * @returns {String}
  */
-Selectable_text_spot.prototype.get_spot_id_prefix = function () {
-    return this.spot_id_prefix;
+Selectable_element_spot.prototype.get_spot_id_prefix = function () {
+    return this.get_id_prefix();
 };
 
 /**
  * 從ID取得Spot
- * @param {number} _id
+ * @param {number} _index
  * @return {jQuery}
  */
-Selectable_text_spot.prototype.get_spot_by_index = function(_index) {
-    
-    var _id_prefix = this.spot_id_prefix;
-    var _id = _id_prefix + _index;
-    var _spot = $('#' + _id);
-    return _spot;
+Selectable_element_spot.prototype.get_spot_by_index = function(_index) {
+    return this.get_ele_by_index(_index);
 };
 
 /**
@@ -106,29 +80,16 @@ Selectable_text_spot.prototype.get_spot_by_index = function(_index) {
  * @param {int} _spot_id
  * @returns {jQuery}
  */
-Selectable_text_spot.prototype.get_spot = function (_spot_id) {
-    return this.get_spot_by_index(_spot_id);
+Selectable_element_spot.prototype.get_spot = function (_spot_id) {
+    return this.get_ele_by_index(_spot_id);
 };
 
 /**
  * 取得spot id，但似乎沒有人使用他
  * @param {jQuery} _spot
  */
-Selectable_text_spot.prototype.get_spot_id = function (_spot) {
-    if ($.is_object(_spot)) {
-        if ($.is_jquery(_spot)) {
-            _spot = _spot.attr('id');
-        }
-        else {
-            _spot = _spot.id;
-        }
-    }
-       
-    var _id_prefix = this.spot_id_prefix;
-    if ($.starts_with(_spot, _id_prefix)) {
-        _spot = _spot.substring(_id_prefix.length, _spot.length);
-    }
-    return parseInt(_spot,10);
+Selectable_element_spot.prototype.get_spot_id = function (_spot) {
+    return this.get_element_id(_spot);
 };
 
 /**
@@ -140,19 +101,23 @@ Selectable_text_spot.prototype.get_spot_id = function (_spot) {
  * @type {jQuery}
  * @author Pudding 20151029
  */
-Selectable_text_spot.prototype.create_selectable_element = function(_para_id, _point_id, _obj) {
+Selectable_element_spot.prototype.create_selectable_element = function(_para_id, _point_id, _obj) {
     
+//    _obj.className = $.trim(_obj.className 
+//                + ' '
+//                + this.classname);
+//    
+//    if (_obj.className.indexOf(this.word_spot_classname) !== -1) {
+//        _obj.className = $.trim(_obj.className 
+//                + ' '
+//                + this._selectable_text.tooltip.trigger_classname);
+//    }
+//    
     _obj.className = $.trim(_obj.className 
                 + ' '
-                + this.spot_classname);
-    
-    if (_obj.className.indexOf(this.word_spot_classname) !== -1) {
-        _obj.className = $.trim(_obj.className 
-                + ' '
                 + this._selectable_text.tooltip.trigger_classname);
-    }
 
-    var _id = this.spot_id_prefix + _point_id; 
+    var _id = this.id_prefix + _point_id; 
 
     _obj.id = _id;
 
@@ -161,16 +126,16 @@ Selectable_text_spot.prototype.create_selectable_element = function(_para_id, _p
     return _obj;
 };
 
-Selectable_text_spot.prototype.KALS_SELECT_MOUSEDOWN_LOCK;
-Selectable_text_spot.prototype.KALS_SELECT_LOCK;
+Selectable_element_spot.prototype.KALS_SELECT_MOUSEDOWN_LOCK;
+Selectable_element_spot.prototype.KALS_SELECT_LOCK;
 
 /**
  * 設定文字的滑鼠事件
  * @param {jQuery} _words
  * @param {Function} _callback
- * @returns {Selectable_text_spot}
+ * @returns {Selectable_element_spot}
  */
-Selectable_text_spot.prototype.setup_spot_mouse_event = function (_words, _callback) {
+Selectable_element_spot.prototype.setup_spot_mouse_event = function (_words, _callback) {
     
     
     /**
@@ -375,7 +340,7 @@ Selectable_text_spot.prototype.setup_spot_mouse_event = function (_words, _callb
  * @author Pudding 20151029
  * @param {jQuery} _words
  */
-Selectable_text_spot.prototype._setup_word_spot_annotation_event = function (_words) {
+Selectable_element_spot.prototype._setup_word_spot_annotation_event = function (_words) {
     
     /**
      * @type Selection_select
@@ -393,14 +358,14 @@ Selectable_text_spot.prototype._setup_word_spot_annotation_event = function (_wo
  * 檢查是否啟用滑鼠事件
  * @type Boolean
  */
-Selectable_text_spot.prototype._mouse_event_enable = true;
+Selectable_element_spot.prototype._mouse_event_enable = true;
 
 /**
  * 初始化這個文字的事件
  * @param {jQuery} _word
- * @returns {Selectable_text_spot}
+ * @returns {Selectable_element_spot}
  */
-Selectable_text_spot.prototype._init_word_spot_selectable_event = function (_word) {
+Selectable_element_spot.prototype._init_word_spot_selectable_event = function (_word) {
     
     if ($.is_jquery(_word) === false) {
         _word = $(_word);
@@ -412,60 +377,40 @@ Selectable_text_spot.prototype._init_word_spot_selectable_event = function (_wor
 };
 
 /**
- * 取得要快取的資料
- * @returns {Number}
- */
-Selectable_text_spot.prototype.get_data = function () {
-    return this.spot_count;
-};
-
-/**
- * 設定被快取的資料
- * @param {Int} _data 從快取中取回的資料
- * @returns {Selectable_text_spot}
- */
-Selectable_text_spot.prototype.set_data = function (_data) {
-    if ($.is_number(_data)) {
-        this.spot_count = _data;
-    }
-    return this;
-};
-
-/**
- * 捲動到指定文字
- * @param {Int} _heading_id
- * @param {Function} _callback
- * @returns {Selectable_text_chapter.prototype}
- */
-Selectable_text_spot.prototype.scroll_to = function (_target_id, _callback) {
-    
-    if (_target_id === undefined) {
-        return this;
-    }
-    
-    var _position = {
-        selector: "#" + this.spot_id_prefix + _target_id
-    };
-    
-    var _speed = 500;
-    //$.test_msg("chapter scroll_to", _position);
-    $.scroll_to(_position, _speed, _callback);
-    
-    return this;
-};
-
-/**
  * 可以接受的標籤名稱
  * @type Array|String[]
  */
-Selectable_text_spot.prototype.spot_tag_name_list = ["img"];
+//Selectable_element_spot.prototype.spot_tag_name_list = ["img"];
 
 /**
  * 是標註討論點
+ * 
+ * @author Pudding 20151112 只判斷kals-spot
  * @param {jQuery} _obj
  * @returns {Boolean}
  */
-Selectable_text_spot.prototype.is_spot = function (_obj) {
+Selectable_element_spot.prototype.is_spot = function (_obj) {
+//    if ($.is_jquery(_obj) === false) {
+//        //$.test_msg("is_spot not jquery");
+//        //return false;
+//        _obj = $(_obj);
+//    }
+//    
+//    //$.test_msg("is_spot", _obj.attr("className"));
+//    if (_obj.hasClass(this.word_spot_classname)) {
+//        return true;
+//    }
+//    
+//    var _tag_name = _obj.attr("tagName");
+//    if (_tag_name === undefined) {
+//        return false;
+//    }
+//    
+//    _tag_name = _tag_name.toLowerCase();
+//    //$.test_msg("is_spot", [_tag_name, ($.inArray(_tag_name, this.spot_tag_name_list) > -1)]);
+//    
+//    return ($.inArray(_tag_name, this.spot_tag_name_list) > -1);
+    
     if ($.is_jquery(_obj) === false) {
         //$.test_msg("is_spot not jquery");
         //return false;
@@ -473,19 +418,7 @@ Selectable_text_spot.prototype.is_spot = function (_obj) {
     }
     
     //$.test_msg("is_spot", _obj.attr("className"));
-    if (_obj.hasClass(this.word_spot_classname)) {
-        return true;
-    }
-    
-    var _tag_name = _obj.attr("tagName");
-    if (_tag_name === undefined) {
-        return false;
-    }
-    
-    _tag_name = _tag_name.toLowerCase();
-    //$.test_msg("is_spot", [_tag_name, ($.inArray(_tag_name, this.spot_tag_name_list) > -1)]);
-    
-    return ($.inArray(_tag_name, this.spot_tag_name_list) > -1);
+    return _obj.hasClass(this.spot_classname);
 };
 
 
@@ -495,86 +428,115 @@ Selectable_text_spot.prototype.is_spot = function (_obj) {
  * 2254 轉接完畢，檢查完畢
  * @param {function} _callback
  */
-Selectable_text_spot.prototype.setup_word_spot_selectable = function (_callback) {
+Selectable_element_spot.prototype.setup_word_spot_selectable = function (_callback) {
     
     var _select = KALS_text.selection.select;
     
     //$.test_msg("已經設定");
     
     // 如果是一般模式
-    if ($.is_mobile_mode() === false) {
-        if (typeof(this.locks.word_click) === 'undefined') {
-            var _this = this;
-			
-            var _words = this._text.find('.'+ this.word_spot_classname + ':not(.' + this.span_classname + ')');
-            
-            var _i = 0;
-            var _wait_i = 1000;
-            var _loop = function () {
-                
-                var _word = _words.eq(_i);
-                
-                /**
-                 * 在滑鼠移上去的時候才開始設定事件
-                 * @author Pudding 20151029
-                 */
-                var _lock_name = "kals_spot_selectable";
-                
-                _word.one("mouseover", function () {
-                    if ($(this).hasAttr(_lock_name)) {
-                        return;
-                    }
-                    $(this).attr(_lock_name, 1);
-                    _this._init_word_spot_selectable_event(this);
-                    $(this).trigger("mouseover");
-                });
-                
-                _word.one("click", function () {
-                    if ($(this).hasAttr(_lock_name)) {
-                        return;
-                    }
-                    $(this).attr(_lock_name, 1);
-                    _this._init_word_spot_selectable_event(this);
-                    $(this).trigger("click");
-                });
-                
-                KALS_context.progress.add_count(2);
-                
-                _continue();
-            };
-            
-            var _continue = function () {
-                _i++;
-                if (_i < _words.length) {
-                    
-                    if (_i % _wait_i === 0) {
-                        setTimeout(function () {
-                            _loop();
-                        }, 10);
-                    }
-                    else {
-                        _loop();
-                    }
-                }
-                else {
-                    _complete();
-                }
-            };
-            
-            var _complete = function () {
-                _this.locks.word_click = true;
-                $.trigger_callback(_callback);
-            };
-			
-            _loop();
-        }
-    }
-    else {
+    if ($.is_mobile_mode() === true) {
         $.trigger_callback(_callback);
+        return this;
     }
+    
+    if (typeof(this.locks.word_click) !== 'undefined') {
+        return this;
+    }
+    var _this = this;
+
+    var _words = this._text.find('.'+ this.word_spot_classname + ':not(.' + this.span_classname + ')');
+
+    var _i = 0;
+    var _wait_i = 1000;
+    var _loop = function () {
+
+        var _word = _words.eq(_i);
+
+        /**
+         * 在滑鼠移上去的時候才開始設定事件
+         * @author Pudding 20151029
+         */
+        var _lock_name = "kals_spot_selectable";
+
+        _word.one("mouseover", function () {
+            if ($(this).hasAttr(_lock_name)) {
+                return;
+            }
+            $(this).attr(_lock_name, 1);
+            _this._init_word_spot_selectable_event(this);
+            $(this).trigger("mouseover");
+        });
+
+        _word.one("click", function () {
+            if ($(this).hasAttr(_lock_name)) {
+                return;
+            }
+            $(this).attr(_lock_name, 1);
+            _this._init_word_spot_selectable_event(this);
+            $(this).trigger("click");
+        });
+
+        KALS_context.progress.add_count(2);
+
+        _continue();
+    };
+
+    var _continue = function () {
+        _i++;
+        if (_i < _words.length) {
+
+            if (_i % _wait_i === 0) {
+                setTimeout(function () {
+                    _loop();
+                }, 10);
+            }
+            else {
+                _loop();
+            }
+        }
+        else {
+            _complete();
+        }
+    };
+
+    var _complete = function () {
+        _this.locks.word_click = true;
+        $.trigger_callback(_callback);
+    };
+
+    _loop();
     
     return this;
 };
 
-/* End of file Selectable_text_spot */
-/* Location: ./system/application/views/web_apps/Selectable_text_spot.js */
+// ------------------------------------------
+
+/**
+ * 初始化next_element，只用於setup_selectable_element
+ * @param {jQuery} _child_obj
+ * @returns {HTMLNode}
+ * @author Pudding 20151029
+ */
+Selectable_element_spot.prototype.setup_selectable_element_clone_next_element = function (_child_obj) {
+    // 變數簡化
+    var _selectable_text_paragraph = this._selectable_text.paragraph;
+    //var _selectable_text_word = this._selectable_text.word;
+    var _selectable_text_spot = this;
+    //var _selectable_text_sentence = this._selectable_text.sentence;
+    //var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
+    //var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
+    
+    
+    var _next_element = $(_child_obj).clone().get(0);
+    _next_element = _selectable_text_spot.create_selectable_element(
+        _selectable_text_paragraph.paragraph_count, 
+        _selectable_text_spot.count, _next_element
+    );
+    
+    _selectable_text_spot.count++;
+    
+    return _next_element;
+};
+/* End of file Selectable_element_spot */
+/* Location: ./system/application/views/web_apps/Selectable_element_spot.js */
