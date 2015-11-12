@@ -89,7 +89,7 @@ Selectable_text_chapter.prototype.add_structure = function (_child_obj) {
             && _temp_heading === false) {
         var _selectable_text_word = this._selectable_text.word;
         _child_obj = $(_child_obj);
-        var _word_classname = _selectable_text_word.word_classname;
+        var _word_classname = _selectable_text_word.classname;
         var _first_word = _child_obj.find("." + _word_classname + ":first");
         var _first_word_id = _selectable_text_word.get_word_id(_first_word);
         _word_count = _first_word_id - 1;

@@ -96,7 +96,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
         for (var _i = 0; _i < _sentences.length; _i++) {
             var _sentence = _sentences.eq(_i);
             var _word_id = _sentence.attr('id');
-            _word_id = _word_id.substr(_selectable_text_word.word_id_prefix.length, _word_id);
+            _word_id = _word_id.substr(_selectable_text_word.id_prefix.length, _word_id);
             _word_id = parseInt(_word_id,10);
             
             if (_word_id !== null) {
@@ -121,7 +121,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     }
 
     //再來看段落的最後一個字
-    var _last_word = this._text.find('.'+_selectable_text_word.word_classname+':last');
+    var _last_word = this._text.find('.'+_selectable_text_word.classname+':last');
     var _last_paragraph = _last_word.parents("."+_selectable_text_word.paragraph_classname+":first");
 
     //var _last_paragraph_classname = _last_paragraph.attr('className');
@@ -135,7 +135,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
 
         if (_paragraph.length === 1) {
             _last_word = _paragraph.find('.'
-                    + _selectable_text_word.word_classname 
+                    + _selectable_text_word.classname 
                     + '.tooltip-trigger:last:not(.' 
                     + this.sententce_punctuation_classname+')');
 
@@ -159,7 +159,7 @@ Selectable_text_sentence.prototype.get_sentence_index = function () {
     for (_i = 0; _i < _sentence_index.length; _i++) {
 
         var _sentense_index_word = $('#' 
-                + _selectable_text_word.word_id_prefix 
+                + _selectable_text_word.id_prefix 
                 + _sentence_index[_i]);
         _sentense_index_word.addClass(this.sententce_index_classname);
 

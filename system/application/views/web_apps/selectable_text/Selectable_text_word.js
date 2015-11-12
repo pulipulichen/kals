@@ -24,23 +24,12 @@ function Selectable_text_word(_selectable_text) {
     this._text = _selectable_text._text;
     
     
-    // 監聽site_reform事件
-    var _this = this;
-    KALS_context.ready(function () {
-        //KALS_context.module_ready("KALS_context.site_reform", function (_site_reform) {
-            //$.test_msg("開始註冊site_reform");
-            KALS_context.site_reform.add_instant_listener(function (_site_reform) {
-                var _is_pdf2htmlex = _site_reform.is_site("pdf2htmlEx");
-                //$.test_msg("是pdf2htmlEx嗎？", _is_pdf2htmlex);
-                _this._mouse_event_enable = (_is_pdf2htmlex === false);
-            });
-        //});
-    });
+    this._init_site_reform();
     
-    if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
-        //$.test_msg("已經設定");
-        this._auto_select = true;
-    }
+//    if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
+//        //$.test_msg("已經設定");
+//        this._auto_select = true;
+//    }
     
     return this;
 }
@@ -72,14 +61,14 @@ Selectable_text_word.prototype.word_count = 0;
  * @type {String}
  * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_classname
  */
-Selectable_text_word.prototype.word_classname = 'kals-word';
+Selectable_text_word.prototype.classname = 'kals-word';
 
 /**
  * 可選取文字的ID前置
  * @type {String}
  * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_id_prefix
  */
-Selectable_text_word.prototype.word_id_prefix = 'kals_word_';
+Selectable_text_word.prototype.id_prefix = 'kals_word_';
 
 
 Selectable_text_word.prototype._span_classname = 'span';
@@ -95,11 +84,41 @@ Selectable_text_word.prototype.locks = [];
 // -----------------------------------
 
 /**
+ * 監聽事件
+ * @author Pudding 20151112
+ * @returns {Selectable_text_word.prototype}
+ */
+Selectable_text_word.prototype._init_site_reform = function () {
+    // 監聽site_reform事件
+    var _this = this;
+    KALS_context.ready(function () {
+        //KALS_context.module_ready("KALS_context.site_reform", function (_site_reform) {
+            //$.test_msg("開始註冊site_reform");
+            KALS_context.site_reform.add_instant_listener(function (_site_reform) {
+                var _is_pdf2htmlex = _site_reform.is_site("pdf2htmlEx");
+                //$.test_msg("是pdf2htmlEx嗎？", _is_pdf2htmlex);
+                _this._mouse_event_enable = (_is_pdf2htmlex === false);
+            });
+        //});
+    });
+    return this;
+};
+
+/**
  * 取得word_id_prefix
  * @returns {Selectable_text_word.word_id_prefix}
  */
 Selectable_text_word.prototype.get_word_id_prefix = function () {
-    return this.word_id_prefix;
+    return this.get_id_prefix();
+};
+
+/**
+ * 取得word_id_prefix
+ * @returns {Selectable_text_word.word_id_prefix}
+ * @author Pudding 20151112
+ */
+Selectable_text_word.prototype.get_id_prefix = function () {
+    return this.id_prefix;
 };
 
 /**
@@ -108,11 +127,20 @@ Selectable_text_word.prototype.get_word_id_prefix = function () {
  * @return {jQuery}
  */
 Selectable_text_word.prototype.get_word_by_index = function(_index) {
-    
-    var _word_id_prefix = this.word_id_prefix;
-    var _word_id = _word_id_prefix + _index;
-    var _word = $('#' + _word_id);
-    return _word;
+    return this.get_ele_by_index(_index);
+};
+
+/**
+ * 從ID取得Word
+ * @param {number} _id
+ * @return {jQuery}
+ * @author Pudding 20151112
+ */
+Selectable_text_word.prototype.get_ele_by_index = function(_index) {
+    var _ele_id_prefix = this.id_prefix;
+    var _ele_id = _ele_id_prefix + _index;
+    var _ele = $('#' + _ele_id);
+    return _ele;
 };
 
 /**
@@ -142,7 +170,7 @@ Selectable_text_word.prototype.get_word_id = function (_word) {
         }
     }
        
-    var _id_prefix = this.word_id_prefix;
+    var _id_prefix = this.id_prefix;
     if ($.starts_with(_word, _id_prefix)) {
         _word = _word.substring(_id_prefix.length, _word.length);
     }
@@ -221,7 +249,7 @@ Selectable_text_word.prototype.create_span_word = function(_text) {
     //$.test_msg("Selectable_text_word.prototype.create_span_word");
     
     var _word = document.createElement("span");
-    _word.className = this._span_classname + ' ' + this.word_classname;
+    _word.className = this._span_classname + ' ' + this.classname;
 	
     var _t_text = document.createTextNode(_text);
     _word.appendChild(_t_text);
@@ -244,10 +272,10 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
     
     var _word = document.createElement("span");
 
-    _word.className = this.word_classname
+    _word.className = this.classname
         + ' ' + this._selectable_text.tooltip.trigger_classname;
 
-    var _word_id = this.word_id_prefix + _point_id; 
+    var _word_id = this.id_prefix + _point_id; 
 
     _word.id = _word_id;
 
@@ -288,10 +316,10 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
  */
 Selectable_text_word.prototype.create_selectable_element = function(_para_id, _point_id, _word) {
     
-    _word.className =  $.trim(_word.className + " " + this.word_classname
+    _word.className =  $.trim(_word.className + " " + this.classname
         + ' ' + this._selectable_text.tooltip.trigger_classname);
 
-    var _word_id = this.word_id_prefix + _point_id; 
+    var _word_id = this.id_prefix + _point_id; 
 
     _word.id = _word_id;
 
@@ -621,10 +649,12 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
 
     // 20140518 Pulipuli Chen
     // 分開來做選取事件
+    // @TODO #176 改用其他的判斷式
     if (_word.hasClass("kals-annotation-spot")) {
         this._setup_word_annotation_spot_event(_word);
     }
-    else if (this._auto_select === false) {
+    //else if (this._auto_select === false) {
+    else if ($.is_number(KALS_CONFIG.annotation_tool.auto_select)) {
         // 20140223 Pudding Chen
         // 轉移到這邊做tooltip
         this.setup_word_tooltip(_word);
@@ -648,8 +678,9 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
  * 自動選取模式
  * @type Boolean
  * @author Pudding 20151029
+ * @deprecated Pudding 20151112 直接看KALS_CONFIG就好了，要這個幹嘛？
  */
-Selectable_text_word.prototype._auto_select = false;
+//Selectable_text_word.prototype._auto_select = false;
 
 /**
  * 讓所有文字都保持在可選取的狀態
@@ -666,7 +697,7 @@ Selectable_text_word.prototype.setup_word_selectable = function (_callback) {
         if (typeof(this.locks.word_click) === 'undefined') {
             var _this = this;
 			
-            var _words = this._text.find('.'+ this.word_classname + ':not(.' + this._span_classname + ')');
+            var _words = this._text.find('.'+ this.classname + ':not(.' + this._span_classname + ')');
             
             var _i = 0;
             var _wait_i = 1000;
@@ -875,7 +906,7 @@ Selectable_text_word.prototype.scroll_to = function (_target_id, _callback) {
     }
     
     var _position = {
-        selector: "#" + this.word_id_prefix + _target_id
+        selector: "#" + this.id_prefix + _target_id
     };
     
     var _speed = 500;
@@ -899,6 +930,7 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
     _scroll_top = _scroll_top + KALS_toolbar.get_height();
 
     // 取得所有的kals_paragraph(array)
+    // @TODO #176 改掉
     var _paragraph_collection = $('.kals-paragraph');
     
     //$.test_msg('save_reading_progress, para length', _paragraph_len);
@@ -909,11 +941,12 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
     var _para_index = 0;
     var _wait_index = 100;
     
+    var _this = this;
     var _para_loop = function () {
         var _paragraph = _paragraph_collection.eq(_para_index);
         //var _paragraph_height = parseInt($('.kals_paragraph_' + _i).offset().top, 10);        
         //取得每個paragraph的第一個word的top
-        var _paragraph_height = $.get_offset_top(_paragraph.find(".kals-word:first")); 
+        var _paragraph_height = $.get_offset_top(_paragraph.find("." + _this._classname + ":first")); 
         //$.test_msg('save_reading_progress', [_paragraph_height, _scroll_top, _index]);
             
         if (_paragraph_height > _scroll_top) {
@@ -951,12 +984,12 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
     var _para_complete = function () {
         if (_target_paragraph !== undefined) {
             //段落中所有的word
-            _words = _target_paragraph.find(".kals-word");
+            _words = _target_paragraph.find("." + _this.classname);
             _word_loop();
             return;
         }
         else {
-            _target_word = $(".kals-word:last");
+            _target_word = $("." +  + _this.classname + ":last");
             _word_complete();
             return;
         }
@@ -998,7 +1031,7 @@ Selectable_text_word.prototype.get_current_progress_word = function (_callback) 
             // get_prefixed_id 只取ID的值
             var _word_id = $.get_prefixed_id(_target_word.attr("id"));
             // id裡的值為"kals-word_id"
-            _target_word = $("#kals_word_" + (_word_id+1));
+            _target_word = $("#" + _this.id_prefix + (_word_id+1));
             _word_complete();
             return;
         }

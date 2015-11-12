@@ -65,7 +65,7 @@ Selectable_text_scope.prototype.selected_middle_classname = 'middle';
 Selectable_text_scope.prototype.retrieve_scope_coll = function (_classname) {
     
     var _selectable_text_word = this._selectable_text_word;
-    var _word_classname = _selectable_text_word.word_classname;
+    var _word_classname = _selectable_text_word.classname;
     
     var _classnames = _classname.split(' ');
     _classname = _classnames.join('.');
@@ -121,6 +121,7 @@ Selectable_text_scope.prototype.add_class = function(_scope_coll, _classname, _c
         var _word = _words[_i][_j];
             
         // 如果標註位置有kals-annotation-spot，那就不加classname
+        // @TODO #176 改用is_spot來確認
         if (_word.hasClass("kals-annotation-spot")) {
             return;
         }
@@ -271,7 +272,7 @@ Selectable_text_scope.prototype.remove_class = function (_scope_coll, _classname
         for (_j in _classnames) {
             _classname = _classnames[_j];
             //要記得是限定在選取範圍喔！
-            $('.' + _selectable_text_word.word_classname + '.' + _classname)
+            $('.' + _selectable_text_word.classname + '.' + _classname)
                 .removeClass(_classname)
                 .removeClass(_classname + '_from')
                 .removeClass(_classname + '_to')
@@ -312,7 +313,7 @@ Selectable_text_scope.prototype.get_recommend_scope_coll = function (_scope_coll
     var _selectable_text_sentence = this._selectable_text.sentence;
     var _selectable_text_paragraph = this._selectable_text.paragraph;
     
-    var _word_id_prefix = _selectable_text_word.word_id_prefix;
+    var _word_id_prefix = _selectable_text_word.id_prefix;
     var _sentence_punctuation_class_name = _selectable_text_sentence.sententce_punctuation_classname;
     
     var _recommend_scope_coll = new Scope_collection_param();

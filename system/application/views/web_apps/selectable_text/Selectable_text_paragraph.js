@@ -130,7 +130,7 @@ Selectable_text_paragraph.prototype.get_paragraph_id = function(_word) {
     var _selectable_text_word = this._selectable_text.word;
     
     if ($.is_number(_word)) {
-        _word = _selectable_text_word.word_id_prefix + _word;
+        _word = _selectable_text_word.id_prefix + _word;
     }
     if ($.is_string(_word)) {
         _word = $('#' + _word);
@@ -184,7 +184,7 @@ Selectable_text_paragraph.prototype.count_paragraph_words_avg = function () {
     var _first_paragraph_id = this.get_paragraph_id(_first_paragraph);
     var _last_paragraph_id = this.get_paragraph_id(_last_paragraph);
     
-    var _word_classname = _selectable_text_word.word_classname;
+    var _word_classname = _selectable_text_word.classname;
     var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
     var _sententce_punctuation_classname = this._selectable_text.sentence.sententce_punctuation_classname;
     

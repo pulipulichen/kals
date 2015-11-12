@@ -173,7 +173,10 @@ Recommend_hint.prototype._create_recommend_content = function () {
 // POSITION
 // ---------
 
-Recommend_hint.prototype.word_id_prefix = 'kals_word_';
+/**
+ * @deprecated Pudding 20151112 不應該在這邊設定
+ */
+//Recommend_hint.prototype.word_id_prefix = 'kals_word_';
 
 Recommend_hint.prototype._first_word = null;
 Recommend_hint.prototype._last_word = null;
@@ -181,15 +184,16 @@ Recommend_hint.prototype._last_word = null;
 Recommend_hint.prototype._setup_position_words = function () {
     
     if (this.has_recommend() === false) {
-		return this;
-	}
+        return this;
+    }
     
     var _scope = this._recommended.scope;
     var _first_index = _scope.get_first_index();
     var _last_index = _scope.get_last_index();
     
-    this._first_word = $('#' + this.word_id_prefix + _first_index);
-    this._last_word = $('#' + this.word_id_prefix + _last_index);
+    var _word_id_prefix = KALS_text.selection.text.word.get_id_prefix();
+    this._first_word = $('#' + _word_id_prefix + _first_index);
+    this._last_word = $('#' + _word_id_prefix + _last_index);
     
     return this;
 };
