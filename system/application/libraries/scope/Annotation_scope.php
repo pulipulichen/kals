@@ -44,7 +44,7 @@ class Annotation_scope extends Generic_object {
     # Memver Varibles
     private $anchor_text;
     protected $use_cache = FALSE;
-
+    
     # Methods
     public function create_scope($from, $to, $anchor_text_id = NULL, $webpage_id = NULL)
     {
@@ -55,11 +55,12 @@ class Annotation_scope extends Generic_object {
             $anchor_text_id = $this->CI->scope_anchor_text->filter_anchor_text_id($text);
         }
 
-        if (NULL != $webpage_id)
+        if (NULL !== $webpage_id)
         {
             $key = $from.'-'.$to;
-            if (is_object($webpage_id))
+            if (is_object($webpage_id)) {
                 $webpage_id = $webpage_id->get_id();
+            }
             $value = $webpage_id;
             $scope = get_cache($this, $key, $value);
             
@@ -67,8 +68,7 @@ class Annotation_scope extends Generic_object {
             {
                 $data = $this->_create_cond($webpage_id, $from, $to, $anchor_text_id);
                 $scope = $this->find($data);
-                if (is_null($scope))
-                {
+                if (is_null($scope)) {
                     //test_msg('Annotation_scope->create_scope() not find, before create', $data);
                     $scope = $this->create($data);
                 }
@@ -114,12 +114,15 @@ class Annotation_scope extends Generic_object {
             $to = intval($this->get_field('to_index'));
         }
 
-        if (is_null($from) AND is_null($to))
+        if (is_null($from) AND is_null($to)) {
             return NULL;
-        if (is_null($from))
+        }
+        if (is_null($from)) {
             $from = $to;
-        else if (is_null($to))
+        }
+        else if (is_null($to)) {
             $to = $from;
+        }
 
         $from = intval($from);
         $to = intval($to);
@@ -166,10 +169,13 @@ class Annotation_scope extends Generic_object {
         return $index['to'] - $index['from'] + 1;
     }
 
+    // -----------------------------
+    
     public function set_anchor_text($text)
     {
-        if (is_null($text))
+        if (is_null($text)) {
             return $this;
+        }
 
         if (is_null($this->anchor_text))
         {
@@ -205,14 +211,39 @@ class Annotation_scope extends Generic_object {
         }
         return $this->anchor_text;
     }
+    
+    // -----------------------------
+    
+    /**
+     * 取得範圍類型
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151113
+     * @return String
+     */
+    public function get_type() {
+        return $this->get_field('type');
+    }
+    
+    /**
+     * 設定範圍類型
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151113
+     * @param String $type
+     * @return \Annotation_scope
+     */
+    public function set_type($type) {
+        return $this->set_field('type', $type);
+    }
+
+    // -----------------------------
 
     public function get_speechs($count_sort = FALSE)
     {
         $anchor_text = $this->get_anchor_text();
-        if (is_null($anchor_text))
+        if (is_null($anchor_text)) {
             return array();
-        else
+        }
+        else {
             return $anchor_text->get_speechs($count_sort);
+        }
     }
 
     public function get_text()

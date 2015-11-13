@@ -188,6 +188,19 @@ class Annotation_scope_collection extends Generic_association_collection {
         }
         return $len;
     }
+    
+    /**
+     * 設定類型
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151113
+     * @param type $type
+     * @return \Annotation_scope_collection
+     */
+    public function set_type($type) {
+        foreach ($this->members AS $scope) {
+            $scope->set_type($type);
+        }
+        return $this;
+    }
 
     /**
      * 取得第一個範圍的起始編號
@@ -245,15 +258,15 @@ class Annotation_scope_collection extends Generic_association_collection {
 
     static public function sort_scopes($scopes)
     {
-        if (count($scopes) < 2)
+        if (count($scopes) < 2) {
             return $scopes;
+        }
         
         //先依照from來sort $scopes吧
         $from_array = array();
 
         $webpage_scopes = array();
-        foreach ($scopes AS $key => $scope)
-        {
+        foreach ($scopes AS $key => $scope) {
             $from_array[$key] = $scope->get_from_index();
         }
 
@@ -264,11 +277,13 @@ class Annotation_scope_collection extends Generic_association_collection {
         {
             $scope = $scopes[$key];
             $webpage_id = $scope->get_webpage_id();
-            if (is_null($webpage_id))
+            if (is_null($webpage_id)) {
                 $webpage_id = 'null';
+            }
 
-            if (!isset($webpage_scopes[$webpage_id]))
+            if (!isset($webpage_scopes[$webpage_id])) {
                 $webpage_scopes[$webpage_id] = array();
+            }
             $webpage_scopes[$webpage_id][] = $scope;
             //$sort_scopes[] = $scopes[$key];
         }
@@ -285,8 +300,9 @@ class Annotation_scope_collection extends Generic_association_collection {
             {
                 if ($i == count($sort_scopes) - 1)
                 {
-                    if ($hold === FALSE)
+                    if ($hold === FALSE) {
                         $output_scopes[] = $sort_scopes[$i];
+                    }
                     break;
                 }   //if ($i == count($sort_scopes) - 1)
 
@@ -303,14 +319,14 @@ class Annotation_scope_collection extends Generic_association_collection {
                     // NEXT              ##############
 
                     //避免跟之前的scope相同
-                    if (count($output_scopes) > 0)
-                    {
+                    if (count($output_scopes) > 0) {
                         $last_scope = $output_scopes[count($output_scopes)-1];
                         $last_from = $last_scope->get_from_index();
                         $last_to = $last_scope->get_to_index();
 
-                        if ($from != $last_from && $to != $last_to)
+                        if ($from != $last_from && $to != $last_to) {
                             $output_scopes[] = $sort_scopes[$i];
+                        }
                     }
                     else
                     {
@@ -320,7 +336,8 @@ class Annotation_scope_collection extends Generic_association_collection {
                     $hold = FALSE;
                     continue;
                 }   //if ($to + 1 < $next_from)
-                else if ($to == $next_to && $from == $next_from)
+                else if ($to === $next_to 
+                        && $from === $next_from)
                 {
                     //都一樣的話就不用處理啦
                     $hold = FALSE;
@@ -384,8 +401,10 @@ class Annotation_scope_collection extends Generic_association_collection {
 
     static public function exclude_scopes($scopes, $exclude_scopes)
     {
-        if (count($scopes) === 0 || count($exclude_scopes) === 0)
+        if (count($scopes) === 0 
+                || count($exclude_scopes) === 0) {
             return $scopes;
+        }
 
         foreach ($exclude_scopes AS $ex_key => $ex)
         {
@@ -407,7 +426,7 @@ class Annotation_scope_collection extends Generic_association_collection {
                     continue;
 
                 if ($to < $ex_from
-                    OR $from > $ex_to)
+                    || $from > $ex_to)
                 {
                     //SCOPE     ##########
                     //EXCLUDE               ######
@@ -420,7 +439,7 @@ class Annotation_scope_collection extends Generic_association_collection {
                     continue;
                 }
                 else if (($from == $ex_from && $to == $ex_to)
-                    OR ($from >= $ex_from && $to <= $ex_to))
+                    || ($from >= $ex_from && $to <= $ex_to))
                 {
                     //SCOPE     ######
                     //EXCLUDE   ######
@@ -437,7 +456,8 @@ class Annotation_scope_collection extends Generic_association_collection {
                     unset($scopes[$key]);
                     continue;
                 }
-                else if ($from <= $ex_from && $to <= $ex_to)
+                else if ($from <= $ex_from 
+                        && $to <= $ex_to)
                 {
                     //SCOPE     ##########
                     //EXCLUDE         ######
@@ -467,7 +487,8 @@ class Annotation_scope_collection extends Generic_association_collection {
 
                     $scopes[$key] = $scope;
                 }
-                else if ($from >= $ex_from && $to >= $ex_to)
+                else if ($from >= $ex_from 
+                        && $to >= $ex_to)
                 {
                     //SCOPE         ##########
                     //EXCLUDE   ######
@@ -554,8 +575,9 @@ class Annotation_scope_collection extends Generic_association_collection {
 
         foreach ($scopes AS $scope)
         {
-            if ($text != '')
+            if ($text != '') {
                 $text .= ' ';
+            }
 
             $text .= $scope->get_text();
         }
@@ -634,17 +656,23 @@ class Annotation_scope_collection extends Generic_association_collection {
             $from_index = $scope->get_from_index();
             $to_index = $scope->get_to_index();
             
-            $data = array($from_index, $to_index);
+            //$data = array($from_index, $to_index);
+            $data = array(
+                "from" => $from_index, 
+                "to" => $to_index
+            );
             if ($export_anchor === TRUE)
             {
                 $anchor_text_id = $scope->get_field('anchor_text_id');
-                if (isset($anchor_text_id))
+                if (isset($anchor_text_id)) {
                     $anchor_text_id = intval($anchor_text_id);
-                $data[] = $anchor_text_id;
+                }
+                $data["anchor_text"] = $anchor_text_id;
             }
             
-            if (FALSE === isset($webpage_scopes[$webpage_id]))
+            if (FALSE === isset($webpage_scopes[$webpage_id])) {
                 $webpage_scopes[$webpage_id] = array();
+            }
             
             $webpage_scopes[$webpage_id][] = $data;
         }
@@ -659,10 +687,12 @@ class Annotation_scope_collection extends Generic_association_collection {
 
         $webpage_scopes = $this->export_data($export_anchor);
 
-        if (isset($webpage_scopes[$webpage_id]))
+        if (isset($webpage_scopes[$webpage_id])) {
             return $webpage_scopes[$webpage_id];
-        else
+        }
+        else {
             return array();
+        }
     }
 
     public function import_json($serialized_json)
@@ -715,26 +745,35 @@ class Annotation_scope_collection extends Generic_association_collection {
 
         foreach ($scope_indices AS $scope_index)
         {
-            $from = $scope_index[0];
-            $to = $scope_index[1];
-
+            //$from = $scope_index[0];
+            //$to = $scope_index[1];
+            $from = $scope_index["from"];
+            $to = $scope_index["to"];
+            
             $cond = array(
                 'from_index' => $from,
                 'to_index' => $to,
                 'webpage_id' => $webpage_id
             );
+            
+            
+            if (isset($scope_index["type"])) {
+                $cond["type"] = $scope_index["type"];
+            }
 
             $anchor_text_id = NULL;
 
-            if (isset($scope_index[2]))
+            if (isset($scope_index["anchor_text"]))
             {
-                $anchor_text_id = $scope_index[2];
+                //$anchor_text_id = $scope_index[2];
+                $anchor_text_id = $scope_index["anchor_text"];
                 if (is_int($anchor_text_id) === FALSE)
                 {
                     $text = $anchor_text_id;
 
-                    if (is_string(($text)))
+                    if (is_string($text)) {
                         $text = urldecode($text);
+                    }
 
                     $this->_CI_load('library', 'scope/Scope_anchor_text');
                     $anchor_text_id = $this->CI->scope_anchor_text->filter_anchor_text_id($text);
@@ -777,8 +816,10 @@ class Annotation_scope_collection extends Generic_association_collection {
 
         foreach ($scope_indices AS $scope_index)
         {
-            $from = $scope_index[0];
-            $to = $scope_index[1];
+            //$from = $scope_index[0];
+            //$to = $scope_index[1];
+            $from = $scope_index["from"];
+            $to = $scope_index["to"];
 
             //test_msg('import webpage list data', $scope_index);
 

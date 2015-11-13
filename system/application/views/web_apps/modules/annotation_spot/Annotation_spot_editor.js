@@ -24,12 +24,27 @@ Annotation_spot_editor.prototype = new Annotation_editor();
  * @author Pudding 20151103
  */
 Annotation_spot_editor.prototype._get_scope_data_from_select = function () {
+    /**
+     * @type Scpoe_collection_param
+     */
     var _select = KALS_context.module.get_module("Annotation_spot").get_scope_coll();
+    
+    $.test_msg("_get_scope_data_from_select", _select.export_json());
+    
     return {
         scope: _select.get_scope_coll(),
         feature_location: _select.get_location_feature(),
         feature_recommend_scope: _select.get_recommend_scope_coll()
     };
+};
+
+/**
+ * 初始化對範圍的監聽器
+ * @author Pudding 20151113 不做任何事情
+ * @returns {Annotation_editor.prototype}
+ */
+Annotation_spot_editor.prototype._init_listeners = function () {
+    return this;
 };
 
 

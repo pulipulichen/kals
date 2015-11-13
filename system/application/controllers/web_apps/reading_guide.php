@@ -43,7 +43,8 @@ class reading_guide extends KALS_model {
         
         $output_scope = $scopes[0];
         foreach ($scopes AS $s => $scope) {
-            $from_index = $scope[0];
+            //$from_index = $scope[0];
+            $from_index = $scope->from;
             if ($index > $from_index) {
                 $output_scope = $scope;
             }
@@ -62,7 +63,8 @@ class reading_guide extends KALS_model {
         
         $output_scope = 0;
         foreach ($scopes AS $s => $scope) {
-            $from_index = $scope[0];
+            //$from_index = $scope[0];
+            $from_index = $scope->from;
             if ($index > $from_index) {
                 $output_scope = $s;
             }
@@ -80,8 +82,10 @@ class reading_guide extends KALS_model {
         }
         
         $last_scope = $scopes[(count($scopes) - 1)];
-        if ($last_scope[0] == $scope[0]
-                && $last_scope[1] == $scope[1]) {
+//        if ($last_scope[0] == $scope[0]
+//                && $last_scope[1] == $scope[1]) {
+        if ($last_scope->from == $scope->from
+            && $last_scope->to == $scope->to) {
             return true;
         }
         else {

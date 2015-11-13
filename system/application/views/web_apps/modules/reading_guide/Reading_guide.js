@@ -322,8 +322,8 @@ Reading_guide.prototype._filter_scope_coll = function (_coll) {
     else if ($.is_array(_coll)) {
         //$.test_msg('是普通的陣列嗎？');
         for (var _c in _coll) {
-            var _from = _coll[_c][0];
-            var _to = _coll[_c][1];
+            var _from = _coll[_c].from;
+            var _to = _coll[_c].to;
             var _scope_coll = new Scope_collection_param(_from, _to);
             _output_coll.push(_scope_coll);
         }
@@ -341,8 +341,8 @@ Reading_guide.prototype._filter_scope_coll = function (_coll) {
  */
 Reading_guide.prototype.create_step_list = function (_scope_coll_param, _index) {
 
-    var _scope_json = _scope_coll_param.export_json(false); //$.json_encode(_scope_array);
-    _scope_json = $.json_encode(_scope_json);
+    //var _scope_json = _scope_coll_param.export_json(false); //$.json_encode(_scope_array);
+    //_scope_json = $.json_encode(_scope_json);
             
     // 取出文字
     var _text = KALS_text.selection.text;

@@ -170,18 +170,28 @@ Scope_param.prototype._check_order = function () {
     return this;
 };
 
+/**
+ * 輸出成JSON
+ * @param {boolean} _export_anchor_text
+ * @returns {JSON}
+ */
 Scope_param.prototype.export_json = function (_export_anchor_text) {
     
-    var _json = [
-        this.get_from(),
-        this.get_to()
-    ];
+    var _json = {
+        "from": this.get_from(),   // to
+        "to": this.get_to()  // from
+    };
     
     if (_export_anchor_text !== false
         && this.get_anchor_text() !== null) {
         var _anchor_text = this.get_anchor_text();
         _anchor_text = encodeURIComponent(_anchor_text); 
-        _json.push(_anchor_text);
+        //_json.push(_anchor_text);
+        _json["anchor_text"] = _anchor_text;
+    }
+    
+    if (this.type !== undefined) {
+        _json["type"] = this.type;
     }
     
     return _json;
@@ -194,8 +204,8 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
 Scope_param.prototype.equals = function (_scope) {
     
     if ($.is_class(_scope, 'Scope_param') === false) {
-		return false;
-	}
+        return false;
+    }
         
     var _this_to = this.get_to();
     var _this_from = this.get_from();
