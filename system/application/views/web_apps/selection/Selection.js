@@ -126,12 +126,6 @@ Selection.prototype.get_recommend_scope_coll = function () {
     return _recommend_scope_coll;
 };
 
-/**
- * 清空選取狀態
- * @author Pudding 20151029
- * @param {function} _callback
- * @returns {Selection.prototype}
- */
 Selection.prototype.clear = function (_callback) {
     //如果本來就是清空的狀態，則不做任何改變
     if (this._scope_coll === null) {

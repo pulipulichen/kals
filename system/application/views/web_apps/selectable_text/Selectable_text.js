@@ -10,6 +10,8 @@
  * @version    1.0 2010/10/15 下午 05:05:14
  * @extends {KALS_user_interface}
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
+/*global KALS_user_interface:false */
 function Selectable_text(_selector) {
     
     KALS_user_interface.call(this);
@@ -659,6 +661,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                         _selectable_text_sentence.add_structure_last_word();
                     }
                     else if (_node_name === "img") {
+                        // #TODO #107?
                         $(_child_obj).css("border", "1px solid red");
                     }
                 }
@@ -666,7 +669,12 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 _next_loop();
             };  // var _deeper_parse = function () {
             
-            if (_this.spot.is_spot(_child_obj)) {
+            if (_this.spot.is_annotation_spot(_child_obj)) {
+                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, true);
+                _this._setup_selectable_element_insert_action(_child_obj, _next_element);
+                _next_loop();
+            }
+            else if (_this.spot.is_spot(_child_obj)) {
                 var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, false);
                 //$(_next_element).css("border", "3px solid red");
                 //$.test_msg("找到");

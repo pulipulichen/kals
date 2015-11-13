@@ -96,9 +96,9 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     if ($.is_null(_scope_coll)) {
         KALS_util.show_exception("Annotation_spot.prototype.set_scope_coll() _scope_colll is null");
         return this;
-    }
     
-    this._scope_coll = _scope_coll;
+    }
+    //$.test_msg("set_scope_coll", _scope_coll);
     
     var _word = null;
     if ($.is_int(_scope_coll)) {
@@ -109,7 +109,10 @@ Annotation_spot.prototype.set_scope_coll = function (_scope_coll) {
     if (this.is_annotation_spot(_scope_coll)) {
         _word = _scope_coll;
         _scope_coll = new Scope_collection_param(_scope_coll);
+        //$.test_msg("如何？", "if (this.is_annotation_spot(_scope_coll)) {");
     }
+    
+    this._scope_coll = _scope_coll;
     
     // 開啟時變更選取範圍
     //$.test_msg("有變更選取範圍嗎？");
@@ -392,7 +395,7 @@ Annotation_spot.prototype.set_select = function (_word) {
  * 標註討論點的名稱
  * @type String
  */
-Annotation_spot.prototype.annotation_spot_classname = "kals-annotation-spot";
+Annotation_spot.prototype.annotation_spot_classname = "kals-word-spot";
 
 /**
  * 私人標註討論點的名稱

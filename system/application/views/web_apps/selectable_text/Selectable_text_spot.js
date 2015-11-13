@@ -465,6 +465,22 @@ Selectable_text_spot.prototype.spot_tag_name_list = ["img"];
  * @param {jQuery} _obj
  * @returns {Boolean}
  */
+Selectable_text_spot.prototype.is_annotation_spot = function (_obj) {
+    if ($.is_jquery(_obj) === false) {
+        //$.test_msg("is_spot not jquery");
+        //return false;
+        _obj = $(_obj);
+    }
+    
+    //$.test_msg("is_spot", _obj.attr("className"));
+    return _obj.hasClass(this.word_spot_classname);
+};
+
+/**
+ * 是標註討論點
+ * @param {jQuery} _obj
+ * @returns {Boolean}
+ */
 Selectable_text_spot.prototype.is_spot = function (_obj) {
     if ($.is_jquery(_obj) === false) {
         //$.test_msg("is_spot not jquery");

@@ -21,8 +21,11 @@
 function Selectable_text_word(_selectable_text) {
     
     this._selectable_text = _selectable_text;
-    this._text = _selectable_text._text;
     
+    /**
+     * @type Selectable_text
+     */
+    this._text = _selectable_text._text;
     
     // 監聽site_reform事件
     var _this = this;
@@ -614,6 +617,7 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
         _word = $(_word);
     }
     
+    var _spot = this._selectable_text.spot;
     //$.test_msg("_init_word_selectable_event", 1);
     
 
@@ -621,7 +625,8 @@ Selectable_text_word.prototype._init_word_selectable_event = function (_word) {
 
     // 20140518 Pulipuli Chen
     // 分開來做選取事件
-    if (_word.hasClass("kals-annotation-spot")) {
+    //if (_word.hasClass("kals-word-spot")) {
+    if (_spot.is_annotation_spot(_word)) {
         this._setup_word_annotation_spot_event(_word);
     }
     else if (this._auto_select === false) {
