@@ -530,14 +530,14 @@ Selectable_text_paragraph.prototype._setup_selectable_element_clone_next_element
     
     var _next_element = $(_child_obj).clone().get(0);
     if (_is_word === true) {
-        _next_element = _selectable_text_word.create_selectable_element(
+        _next_element = _selectable_text_word.create_selectable_word_spot(
                 _selectable_text_paragraph.paragraph_count
                 , _selectable_text_word.word_count
                 , _next_element
         );
     }
     else {
-        _next_element = _selectable_text_spot.create_selectable_element(
+        _next_element = _selectable_text_word.create_selectable_img_spot(
                 _selectable_text_paragraph.paragraph_count
                 , _selectable_text_spot.spot_count
                 , _next_element

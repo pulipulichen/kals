@@ -280,19 +280,41 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
 };
 
 /**
- * 建立一個可選取的文字
- * 
- * 2324 轉接完畢，檢查完畢
+ * 建立一個可選取的標註討論點
  * @param {number} _para_id Paragraph ID
  * @param {number} _point_id Word ID
  * @param {string} _text 內容文字
  * @type {jQuery}
  * @author Pudding 20151029
  */
-Selectable_text_word.prototype.create_selectable_element = function(_para_id, _point_id, _word) {
+Selectable_text_word.prototype.create_selectable_word_spot = function(_para_id, _point_id, _word) {
     
     _word.className =  $.trim(_word.className + " " + this.word_classname
         + ' ' + this._selectable_text.tooltip.trigger_classname);
+
+    var _word_id = this.word_id_prefix + _point_id; 
+
+    _word.id = _word_id;
+
+    KALS_context.progress.add_count();
+ 
+    return _word;
+};
+
+/**
+ * 建立一個可選取的標註討論點
+ * @param {number} _para_id Paragraph ID
+ * @param {number} _point_id Word ID
+ * @param {string} _text 內容文字
+ * @type {jQuery}
+ * @author Pudding 20151113
+ */
+Selectable_text_word.prototype.create_selectable_img_spot = function(_para_id, _point_id, _word) {
+    
+    var _spot = this._selectable_text.spot;
+    
+    _word.className =  $.trim(_word.className 
+            + " " + _spot.img_spot_classname);
 
     var _word_id = this.word_id_prefix + _point_id; 
 

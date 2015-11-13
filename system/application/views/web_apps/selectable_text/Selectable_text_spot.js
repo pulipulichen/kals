@@ -11,6 +11,7 @@
  * @link        https://github.com/pulipulichen/kals
  * @version     1.0 2015/11/11 下午 08:25:49
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
 
 /**
  * @memberOf {Selectable_text_spot}
@@ -61,6 +62,13 @@ Selectable_text_spot.prototype.spot_classname = 'kals-spot';
 Selectable_text_spot.prototype.word_spot_classname = 'kals-word-spot';
 
 /**
+ * 圖片標註的位置點的classname
+ * @type {String}
+ * @author Pudding 20151113
+ */
+Selectable_text_spot.prototype.img_spot_classname = 'kals-img-spot';
+
+/**
  * 可選取文字的ID前置
  * @type {String}
  * @author Pudding 20140102 尚未更新相關使用的程式碼 this.word_id_prefix
@@ -90,7 +98,7 @@ Selectable_text_spot.prototype.get_spot_id_prefix = function () {
 
 /**
  * 從ID取得Spot
- * @param {number} _id
+ * @param {number} _index
  * @return {jQuery}
  */
 Selectable_text_spot.prototype.get_spot_by_index = function(_index) {
@@ -433,7 +441,7 @@ Selectable_text_spot.prototype.set_data = function (_data) {
 
 /**
  * 捲動到指定文字
- * @param {Int} _heading_id
+ * @param {Int} _target_id
  * @param {Function} _callback
  * @returns {Selectable_text_chapter.prototype}
  */
@@ -475,6 +483,39 @@ Selectable_text_spot.prototype.is_annotation_spot = function (_obj) {
     //$.test_msg("is_spot", _obj.attr("className"));
     return _obj.hasClass(this.word_spot_classname);
 };
+
+/**
+ * 可以接受的標籤名稱
+ * @type Array|String[]
+ */
+Selectable_text_spot.prototype.spot_tag_name_list = ["img"];
+
+/**
+ * 是圖片標註討論點
+ * @param {jQuery} _obj
+ * @returns {Boolean}
+ */
+Selectable_text_spot.prototype.is_img_spot = function (_obj) {
+    
+    if (KALS_CONFIG.modules.Annotation_image_spot.enable === false) {
+        return false;
+    }
+    
+    if ($.is_jquery(_obj) === false) {
+        //$.test_msg("is_spot not jquery");
+        //return false;
+        _obj = $(_obj);
+    }
+    
+    var _tag_name = _obj.attr("tagName");
+    if (_tag_name === undefined) {
+        return false;
+    }
+    
+    _tag_name = _tag_name.toLowerCase();
+    return (_tag_name === "img");
+};
+
 
 /**
  * 是標註討論點

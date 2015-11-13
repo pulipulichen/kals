@@ -678,7 +678,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 _selectable_text_word.word_count++;
                 _next_loop();
             }
-            else if (_this.spot.is_spot(_child_obj)) {
+            else if (_this.spot.is_img_spot(_child_obj)) {
                 var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, false);
                 //$(_next_element).css("border", "3px solid red");
                 //$.test_msg("找到");
