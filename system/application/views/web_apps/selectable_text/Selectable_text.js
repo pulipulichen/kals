@@ -9,9 +9,11 @@
  * @link       http://sites.google.com/site/puddingkals/
  * @version    1.0 2010/10/15 下午 05:05:14
  * @extends {KALS_user_interface}
+ * @param {jQuery} _selector 要被選取的文字物件
  */
 /*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
 /*global KALS_user_interface:false */
+/*global LZString:false */
 function Selectable_text(_selector) {
     
     KALS_user_interface.call(this);
@@ -332,6 +334,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     
     /**
      * @author Pudding 20151111
+     * @param {Function} _callback
      */
     var _task_setup_word_spot_selectable = function (_callback) {
         return _this.spot.setup_word_spot_selectable(_callback);
@@ -672,6 +675,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             if (_this.spot.is_annotation_spot(_child_obj)) {
                 var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, true);
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
+                _selectable_text_word.word_count++;
                 _next_loop();
             }
             else if (_this.spot.is_spot(_child_obj)) {
@@ -679,6 +683,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                 //$(_next_element).css("border", "3px solid red");
                 //$.test_msg("找到");
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
+                _selectable_text_word.word_count++;
                 _next_loop();
             }
             else {
@@ -873,6 +878,7 @@ Selectable_text.prototype.retrieve_scope_coll = function (_classname) {
  * 
  * @param {Scope_collection_param} _scope_coll
  * @param {String} _classname
+ * @param {Function} _callback
  */
 Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callback) {
     this.scope.add_class(_scope_coll, _classname, _callback);
@@ -883,6 +889,7 @@ Selectable_text.prototype.add_class = function(_scope_coll, _classname, _callbac
  * 
  * @param {Scope_collection_param|String} _scope_coll
  * @param {String|null} _classname
+ * @param {Function} _callback
  */
 Selectable_text.prototype.remove_class = function (_scope_coll, _classname, _callback) {
     return this.scope.remove_class(_scope_coll, _classname, _callback);
@@ -995,7 +1002,7 @@ Selectable_text.prototype.setup_word_selectable = function (_callback) {
 
 /**
  * 從ID取得Word
- * @param {number} _id
+ * @param {number} _index
  * @return {jQuery}
  */
 Selectable_text.prototype.get_word_by_index = function(_index) {

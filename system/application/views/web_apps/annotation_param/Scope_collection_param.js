@@ -310,7 +310,7 @@ Scope_collection_param.prototype.get_first_index = function () {
  * @type number
  */
 Scope_collection_param.prototype.get_from = function(){
-	return this.get_first_index();
+    return this.get_first_index();
 };
 
 Scope_collection_param.prototype.get_last_index = function () {

@@ -214,7 +214,10 @@ Annotation_tool.prototype._init_listener = function (_ui, _topic_list) {
         //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
         _select.add_listener('select', function (_select) {
             //$.test_msg('Annotation_tool onselect listen', $.isset(_selector));
-            _this.onselect();
+            
+            if (_select.is_annotation_spot() === false) { 
+                _this.onselect();
+            }
         });
 
         _select.add_listener('clear', function () {

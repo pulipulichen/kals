@@ -304,5 +304,11 @@ Selection_select.prototype._add_listener_URL_hash_dispatcher = function () {
     return this;
 };
 
+Selection_select.prototype.is_annotation_spot = function () {
+    var _from = this._scope_coll.get_from();
+    var _word = KALS_text.selection.text.word.get_word_by_index(_from);
+    return KALS_text.selection.text.spot.is_annotation_spot(_word);
+};
+
 /* End of file Selection_select */
 /* Location: ./system/application/views/web_apps/Selection_select.js */
