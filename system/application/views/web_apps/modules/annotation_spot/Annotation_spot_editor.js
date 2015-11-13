@@ -1,5 +1,7 @@
 /**
  * Annotation_spot_editor
+ * 
+ * @deprecated Pudding 20151113 暫時不操作
  *
  * @package    KALS
  * @category   Webpage Application Libraries

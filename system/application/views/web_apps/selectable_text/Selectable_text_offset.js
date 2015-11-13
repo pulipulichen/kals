@@ -19,7 +19,7 @@
 function Selectable_text_offset(_selectable_text) {
    
     this._selectable_text = _selectable_text;
-    //this._selectable_text_word = _selectable_text.word;
+    this._selectable_text_word = _selectable_text.word;
     return this;
 }
 
@@ -36,10 +36,10 @@ Selectable_text_offset.prototype = new KALS_user_interface();
 Selectable_text_offset.prototype._selectable_text;
 
 /**
- * 父物件的Selectable_element_word
- * @type {Selectable_element_word}
+ * 父物件的Selectable_text_word
+ * @type {Selectable_text_word}
  */
-Selectable_text_offset.prototype._selectable_element_word;
+Selectable_text_offset.prototype._selectable_text_word;
 
 
 // -----------------------------------
@@ -67,7 +67,7 @@ Selectable_text_offset.prototype.get_offset_top = function (_scope_coll) {
     
     var _index = _scope_coll.get_first_index();
     if ($.isset(_index)) {
-        var _word = this._selectable_text.word.get_word_by_index(_index);
+        var _word = this._selectable_text_word.get_word_by_index(_index);
         //_offset = _word.offset().top;
         _offset = $.get_offset_top(_word);
     }
@@ -91,7 +91,7 @@ Selectable_text_offset.prototype.get_offset_bottom = function (_scope_coll) {
     
     var _index = _scope_coll.get_last_index();
     if ($.isset(_index)) {
-        var _word = this._selectable_text.word.get_word_by_index(_index);
+        var _word = this._selectable_text_word.get_word_by_index(_index);
         
         /**
          * @20140110 Pudding Chen
@@ -177,7 +177,7 @@ Selectable_text_offset.prototype.get_offset_first_left = function (_scope_coll) 
     var _index = _scope_coll.get_first_index();
     
     if ($.is_number(_index)) {
-        var _word = this._selectable_text.word.get_word_by_index(_index);
+        var _word = this._selectable_text_word.get_word_by_index(_index);
         //_offset = _word.offset().left;
         _offset = $.get_offset_left(_word);
     }
@@ -198,7 +198,7 @@ Selectable_text_offset.prototype.get_offset_last_right = function (_scope_coll) 
     var _index = _scope_coll.get_last_index();
     
     if ($.is_number(_index)) {
-        var _word = this._selectable_text.word.get_word_by_index(_index);
+        var _word = this._selectable_text_word.get_word_by_index(_index);
         //_offset = _word.offset().left + _word.width();
         _offset = $.get_offset_right(_word);
     }

@@ -284,15 +284,6 @@
      */
     font-size: 16px;
     text-align: center;
-    
-    /**
-     * @author Pudding 20151112
-     */
-    opacity: 0.5;
-}
-
-.KALS .logo-component.ready {
-    opacity: 1;
 }
 
 /* --------- */

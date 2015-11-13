@@ -14,7 +14,6 @@
  * @param {Annotation_param} _topic_param
  * @param {View_list_collection} _list_coll
  */
-/*global Editor_container:false */
 function View_editor_container(_topic_param, _list_coll) {
     
     Editor_container.call(this, _list_coll);

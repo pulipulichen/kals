@@ -13,6 +13,8 @@
  * @param {List_collection} _list_coll
  * @param {String[]} _disable_option
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
+/*global Multi_event_dispatcher:false */
 function Annotation_editor(_editor_container, _list_coll, _disable_option) {
     
     Multi_event_dispatcher.call(this);
@@ -1099,7 +1101,8 @@ Annotation_editor.prototype._setup_note_editor = function () {
 Annotation_editor.prototype._topic = null;
 
 /**
- * @type {Annotation_param} _param
+ * 設定主題標註的參數
+ * @type {Annotation_param} _param 設定主題標註
  */
 Annotation_editor.prototype.set_topic = function (_param) {
     this._topic = _param;

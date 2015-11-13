@@ -154,9 +154,9 @@ Selectable_text_location.prototype.setup_paragraph_location = function(_callback
     
     var _selectable_text_word = _selectable_text.word;
     
-    var _word_class_name = _selectable_text_word.classname;
-    var _span_classname = _selectable_text_word.span_classname;
-    var _word_id_prefix = _selectable_text_word.id_prefix;
+    var _word_class_name = _selectable_text_word.word_classname;
+    var _span_classname = _selectable_text_word._span_classname;
+    var _word_id_prefix = _selectable_text_word.word_id_prefix;
     
     //--- 
     

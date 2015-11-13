@@ -2,6 +2,8 @@
  * Selectable_element
  * 
  * 建立Selectable_text中各種Element的父類別
+ *
+ * @deprecated Pudding 20151113
  * 
  * @package     KALS
  * @category    Webpage Application Libraries

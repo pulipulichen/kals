@@ -11,8 +11,6 @@
  * @version    1.0 2010/7/28 下午 04:42:00
  * @extends {JSONP_dispatcher}
  */
-/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */
-
 KALS_context = new JSONP_dispatcher();
 
 /**
@@ -499,9 +497,7 @@ KALS_context.create_type_param_list = function(_enable_type) {
         for (var _order in _order_list) {
             _order_index_array.push(_order);
         }
-        _order_index_array.sort(function(_a, _b){
-            return _b - _a;
-        });
+        _order_index_array.sort(function(_a, _b){return _b-_a});
         
         var _list = {};
         for (var _order_index in _order_index_array) {

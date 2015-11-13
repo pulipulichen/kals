@@ -10,7 +10,7 @@
  * @version    1.0 2010/10/15 下午 10:56:35
  * @extends {KALS_user_interface}
  */
-function Scope_param(_from, _to, _type) {
+function Scope_param(_from, _to, _anchor_text) {
     
     if ($.isset(_from)) {
         this.set_from(_from);
@@ -18,35 +18,14 @@ function Scope_param(_from, _to, _type) {
     if ($.isset(_to)) {
         this.set_to(_to);
     }
-    //if ($.isset(_anchor_text)) {
-    //    this.set_anchor_text(_anchor_text);
-    //}
-    
-    if ($.isset(_type)) {
-        this.set_type(_type);
+    if ($.isset(_anchor_text)) {
+        this.set_anchor_text(_anchor_text);
     }
 }
 
-/**
- * 範圍起始點
- * @type {Int}
- */
 Scope_param.prototype.from = null;
 
-/**
- * 範圍終點
- * @type {Int}
- */
 Scope_param.prototype.to = null;
-
-/**
- * 範圍類型
- * 
- * 預設值是kals-word
- * 也可以是kals-spot
- * @type {String}
- */
-Scope_param.prototype.type;
 
 Scope_param.prototype.anchor_text = null;
 
@@ -111,8 +90,6 @@ Scope_param.prototype.get_to = function () {
     return this.to;
 };
 
-//-------------------------------
-
 Scope_param.prototype.set_anchor_text = function (_text) {
     this.anchor_text = _text;
     return this;
@@ -121,29 +98,6 @@ Scope_param.prototype.set_anchor_text = function (_text) {
 Scope_param.prototype.get_anchor_text = function () {
     return this.anchor_text;
 };
-
-//------------------------------
-
-/**
- * @author Pudding 20151112
- * @param {type} _type
- * @returns {Scope_param.prototype}
- */
-Scope_param.prototype.set_type = function (_type) {
-    this.type = _type;
-    return this;
-};
-
-/**
- * @author Pudding 20151112
- * @param {type} _type
- * @returns {Scope_param.prototype}
- */
-Scope_param.prototype.get_type = function () {
-    return this.type;
-};
-
-//---------------------------------------
 
 Scope_param.prototype.reset = function() {
     this.from = null;
@@ -170,28 +124,18 @@ Scope_param.prototype._check_order = function () {
     return this;
 };
 
-/**
- * 輸出成JSON
- * @param {boolean} _export_anchor_text
- * @returns {JSON}
- */
 Scope_param.prototype.export_json = function (_export_anchor_text) {
     
-    var _json = {
-        "from": this.get_from(),   // to
-        "to": this.get_to()  // from
-    };
+    var _json = [
+        this.get_from(),
+        this.get_to()
+    ];
     
     if (_export_anchor_text !== false
         && this.get_anchor_text() !== null) {
         var _anchor_text = this.get_anchor_text();
         _anchor_text = encodeURIComponent(_anchor_text); 
-        //_json.push(_anchor_text);
-        _json["anchor_text"] = _anchor_text;
-    }
-    
-    if (this.type !== undefined) {
-        _json["type"] = this.type;
+        _json.push(_anchor_text);
     }
     
     return _json;
@@ -204,8 +148,8 @@ Scope_param.prototype.export_json = function (_export_anchor_text) {
 Scope_param.prototype.equals = function (_scope) {
     
     if ($.is_class(_scope, 'Scope_param') === false) {
-        return false;
-    }
+		return false;
+	}
         
     var _this_to = this.get_to();
     var _this_from = this.get_from();

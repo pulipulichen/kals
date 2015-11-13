@@ -11,8 +11,6 @@
  * @extends {KALS_user_interface}
  * @param {List_collection} _list_coll
  */
-/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
-/*global KALS_user_interface:false */
 function Editor_container(_list_coll) {
     
     KALS_user_interface.call(this);
@@ -170,7 +168,7 @@ Editor_container.prototype._setup_editor = function () {
 // --------
 
 Editor_container.prototype._create_toggle = function () {
-    /*global _toggle:false */
+    
     var _toggle = $('<tr><td></td></tr>')
         .addClass('toggle');
     
@@ -404,10 +402,7 @@ Editor_container.prototype._deny = null;
  */
 Editor_container.prototype._create_deny_conpoment = function () {
     
-    /*global _deny:false */
-    var _deny;
-    
-    _deny = $('<div></div>')
+    var _deny = $('<div></div>')
         .addClass('editor-deny');
     
     var _not_login = $('<span></span>')
@@ -468,7 +463,6 @@ Editor_container.prototype._loading = null;
  */
 Editor_container.prototype._create_loading = function () {
     
-    /*global _loading:false */
     var _loading = $('<div></div>')
             .addClass('editor-loading')
             .addClass('editor-message');
@@ -494,7 +488,6 @@ Editor_container.prototype._container = null;
 
 Editor_container.prototype._create_container = function () {
     
-    /*global _container:false */
     var _container = $('<tr><td class="container-td"></td></tr>')
         .addClass('container');
     

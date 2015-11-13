@@ -54,3 +54,12 @@ KALS!標註工具會在網頁上將重要性較高的範圍文字標示為「紅
 
 - [Markdown 語法說明](http://zh.wikipedia.org/wiki/Markdown/)
 - [Markdown 語法編輯器](http://markdown.pioul.fr/)
+
+## NetBeans編輯指導
+
+### JSDoc
+
+````js
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
+````
+

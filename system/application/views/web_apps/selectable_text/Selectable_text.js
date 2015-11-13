@@ -22,8 +22,8 @@ function Selectable_text(_selector) {
     }
     
     // Selectable_text_component
-    this.child('word', new Selectable_element_word(this));
-    this.child('spot', new Selectable_element_spot(this));
+    this.child('word', new Selectable_text_word(this));
+    this.child('spot', new Selectable_text_spot(this));
     
     this.child('offset', new Selectable_text_offset(this));
     this.child('scope', new Selectable_text_scope(this));
@@ -61,17 +61,15 @@ Selectable_text.prototype.tooltip = null;
 // -------------------------
 
 /**
- * @type {Selectable_element_word}
+ * @type {Selectable_text_word}
  */
 Selectable_text.prototype.word;
 
 /**
- * @type {Selectable_element_spot}
+ * @type {Selectable_text_spot}
  * @author Pudding 201151111
  */
 Selectable_text.prototype.spot;
-
-// ------------------------------
 
 /**
  * @type {Selectable_text_offset}
@@ -327,7 +325,7 @@ Selectable_text.prototype.initialize = function (_callback) {
     
     var _task_setup_word_selectable = function (_callback) {
         //$.test_msg("Selectacble_text _task_setup_word_selectable");
-        return _this.word.setup_word_selectable(_callback);
+        return _this.setup_word_selectable(_callback);
     };
     
     /**
@@ -609,7 +607,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         else if (_child_obj.nodeName !== '#text' &&
             _this.is_element_has_class(_child_obj, _para_classname) === false) {
             
-            var _check_word_count = _selectable_text_word.count;
+            var _check_word_count = _selectable_text_word.word_count;
             
             var _next_loop = function () {
                 	
@@ -629,7 +627,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             
             var _deeper_parse = function () {
                 var _node_name = _child_obj.nodeName;
-                if (_check_word_count < _selectable_text_word.count
+                if (_check_word_count < _selectable_text_word.word_count
                     && typeof(_node_name) === 'string' 
                     && $.inArray(_node_name.toLowerCase(), _para_tag_names) !== -1) {
                     
@@ -661,19 +659,17 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                         _selectable_text_sentence.add_structure_last_word();
                     }
                     else if (_node_name === "img") {
-                        // @TODO #107
-                        //$(_child_obj).css("border", "1px solid red");
+                        $(_child_obj).css("border", "1px solid red");
                     }
                 }
 		
                 _next_loop();
             };  // var _deeper_parse = function () {
             
-            //$.test_msg("selectable_text", _this.spot.is_spot(_child_obj));
             if (_this.spot.is_spot(_child_obj)) {
-                var _next_element = _this.spot.setup_selectable_element_clone_next_element(_child_obj, false);
+                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, false);
                 //$(_next_element).css("border", "3px solid red");
-                //$.test_msg("找到", $(_next_element).html());
+                //$.test_msg("找到");
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
                 _next_loop();
             }
@@ -685,8 +681,8 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
         else {
             var _text = _this.get_element_content(_child_obj);
 
-            //$.test_msg("將初始化next_element的動作往外移");
-            var _next_element = _this.word.setup_selectable_element_init_next_element(_text, _child_obj);
+            // 將初始化next_element的動作往外移
+            var _next_element = _this._setup_selectable_element_init_next_element(_text, _child_obj);
             _this._setup_selectable_element_insert_action(_child_obj, _next_element);
             
             _i++;
@@ -727,23 +723,14 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
  * @param {String} _text
  * @param {jQuery} _child_obj
  * @returns {HTMLNode}
- * @deprecated Pudding 20151112 轉移到Selectable_elemenet_word裡面
  */
-//Selectable_text.prototype._setup_selectable_element_init_next_element = function (_text, _child_obj) {
-//    return this.paragraph._setup_selectable_element_init_next_element(_text, _child_obj);
-//};
+Selectable_text.prototype._setup_selectable_element_init_next_element = function (_text, _child_obj) {
+    return this.paragraph._setup_selectable_element_init_next_element(_text, _child_obj);
+};
 
-/**
- * 不使用
- * 
- * @deprecated Pudding 20151112 轉移到Selectable_elemenet裡面
- * @param {type} _child_obj
- * @param {type} _is_word
- * @returns {Selectable_text.prototype@pro;paragraph@call;_setup_selectable_element_clone_next_element}
- */
-//Selectable_text.prototype._setup_selectable_element_clone_next_element = function (_child_obj, _is_word) {
-//    return this.paragraph._setup_selectable_element_clone_next_element(_child_obj, _is_word);
-//};
+Selectable_text.prototype._setup_selectable_element_clone_next_element = function (_child_obj, _is_word) {
+    return this.paragraph._setup_selectable_element_clone_next_element(_child_obj, _is_word);
+};
 
 /**
  * 新增任務
@@ -978,12 +965,12 @@ Selectable_text.prototype.get_sentence_index = function () {
 };
 
 // -------------------------------------
-// Selectable_element_word
+// Selectable_text_word
 // -------------------------------------
 
 /**
  * 取得word_id_prefix
- * @returns {Selectable_element_word.word_id_prefix}
+ * @returns {Selectable_text_word.word_id_prefix}
  */
 Selectable_text.prototype.get_word_id_prefix = function () {
     return this.word.get_word_id_prefix();
@@ -991,12 +978,12 @@ Selectable_text.prototype.get_word_id_prefix = function () {
 
 /**
  * 讓所有文字都保持在可選取的狀態
- * @deprecated Pudding 20151112 改成直接取用
+ * 
  * @param {function} _callback
  */
-//Selectable_text.prototype.setup_word_selectable = function (_callback) {
-//    return this.word.setup_word_selectable(_callback);
-//};
+Selectable_text.prototype.setup_word_selectable = function (_callback) {
+    return this.word.setup_word_selectable(_callback);
+};
 
 /**
  * 從ID取得Word
@@ -1277,7 +1264,7 @@ Selectable_text.prototype.cache_save = function (_callback) {
  *  取代了原本使用storage來儲存的作法
  *  改用Webpage_cache的方式從伺服器取得快取
  * @param {funciton} _callback
- * @returns {Selectable_element_word}
+ * @returns {Selectable_text_word}
  */
 Selectable_text.prototype.cache_restore = function (_callback) {
     
