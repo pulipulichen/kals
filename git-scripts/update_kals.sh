@@ -10,3 +10,4 @@ git --git-dir="$KALS_PATH"/.git reset --hard "$KALS_BRANCH"
 git --git-dir="$KALS_PATH"/.git pull --force kals
 
 git --git-dir="$KALS_PATH"/.git merge "$KALS_BRANCH" --no-commit
+
