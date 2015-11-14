@@ -18,3 +18,7 @@
 .cke_dialog_ui_input_file {
     display: none;
 }
+
+.cke_maximized .cke_toolbar.minimize {
+    display: none;
+}

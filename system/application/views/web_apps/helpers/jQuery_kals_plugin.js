@@ -2684,11 +2684,27 @@ jQuery.load_scroll_position = function () {
  */
 jQuery.lock_scroll_once = function () {
     $.save_scroll_position();
-    $(window).one("scroll", function () {
+    $(window).one("scroll", function (_event) {
         //$.test_msg("捲動中");
         $.load_scroll_position();
+        //$.test_msg(_event);
+        _event.preventDefault();
+        _event.stopPropagation();
     });
     return this;
+};
+
+jQuery._lock_scoll_previousScrollTop = 0;
+jQuery.lock_scoll = function () {
+    this._lock_scoll_previousScrollTop = $(window).scrollTop();
+    var _this = this;
+    $(window).scroll(function() {     
+        $(window).scrollTop(_this._lock_scoll_previousScrollTop); 
+    });
+};
+
+jQuery.unlock_scoll = function () {
+    $(window).unbind("scroll");
 };
 
 // -------------------------------------------

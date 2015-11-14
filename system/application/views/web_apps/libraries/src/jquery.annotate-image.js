@@ -242,6 +242,8 @@
         ///	<summary>
         ///		Adds a note to the image.
         ///	</summary>        
+        $.lock_scoll();
+        
         if (image.mode === 'view') {
             image.mode = 'edit';
 
@@ -251,6 +253,10 @@
             $.fn.annotateImage.createSaveButton(editable, image);
             $.fn.annotateImage.createCancelButton(editable, image);
         }
+        
+        setTimeout(function () {
+            $.unlock_scoll();
+        }, 500);
     };
 
     $.fn.annotateImage.createSaveButton = function(editable, image, note) {
@@ -465,13 +471,15 @@
         
         var _type_select = form.find(".type");
         //console.log(image.types);
-        for (var _t in image.types) {
-            var _type = image.types[_t];
-            var _option = $('<option value="' + _type.get_id() + '">' + _type.get_type_name_display() + '</option>');
-            if (_type === this.note.type) {
-                _option.attr("selected", true);
+        if (_type_select.children().length === 0) {
+            for (var _t in image.types) {
+                var _type = image.types[_t];
+                var _option = $('<option value="' + _type.get_id() + '">' + _type.get_type_name_display() + '</option>');
+                if (_type === this.note.type) {
+                    _option.attr("selected", true);
+                }
+                _type_select.append(_option);
             }
-            _type_select.append(_option);
         }
         
         //var _user = this.note.user;
@@ -668,12 +676,15 @@
     $.fn.annotateView.prototype.edit = function() {
         ///	<summary>
         ///		Edits the annotation.
-        ///	</summary>      
+        ///	</summary>    
+        
+        $.save_scroll_position();
+        $.lock_scoll();
+        //alert(111);
+        
         if (this.image.mode === 'view') {
             this.image.mode = 'edit';
             var annotation = this;
-            
-            $.save_scroll_position();
             //$.lock_scroll_once();
 
             // Create/prepare the editable note elements
@@ -720,11 +731,13 @@
                 
                 $.fn.annotateImage.createCancelButton(editable, this.image);
             
-            setTimeout(function () {
-                //$.test_msg("讀取");
-                $.load_scroll_position();
-            }, 0);
         }   //if (this.image.mode === 'view') {
+        //alert(1212);
+        setTimeout(function () {
+            $.unlock_scoll();
+            $.load_scroll_position();
+            //alert(33);
+        }, 500);
     };
 
     $.fn.annotateImage.appendPosition = function(form, editable) {
