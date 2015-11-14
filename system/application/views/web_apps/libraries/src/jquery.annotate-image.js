@@ -259,8 +259,8 @@
         ///	</summary>
         
         if (editable.form.find(".controller .menu .image-annotate-edit-ok").length > 0) {
-            $.test_msg("createSaveButton");
-            //return this;
+            //$.test_msg("createSaveButton");
+            return this;
         }
         
         var ok = $('<a class="image-annotate-edit-ok item">' + $.fn.annotateImage.lang.ok + '</a>');
@@ -347,8 +347,8 @@
         ///	</summary>
         
         if (editable.form.find(".controller .menu .image-annotate-edit-close").length > 0) {
-            $.test_msg("createCancelButton");
-            //return this;
+            //$.test_msg("createCancelButton");
+            return this;
         }
         
         var cancel = $('<a class="image-annotate-edit-close item">' + $.fn.annotateImage.lang.cancel + '</a>');
@@ -449,7 +449,7 @@
                     + '<div class="controller field"><div class="ui compact brown inverted menu"></div></div>'
                     + '</div>'
                 + '</form>');
-            image.canvas.append(this.form);
+            image.canvas.append(form);
             
             // @TODO #175
             //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
@@ -679,38 +679,41 @@
             var _canvas = this.image.canvas;
 
             // Add the delete button
-            //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
+            //$.test_msg(_form.find(".controller .menu .image-annotate-edit-delete").length);
+                if (_form.find(".controller .menu .image-annotate-edit-delete").length === 0) {
 
-                var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
-                del.click(function() {
-                    //var form = $('.image-annotate-edit-form form');
-                    //var form = ('.image-annotate-edit-form form');
+                    var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
+                    del.click(function() {
+                        //var form = $('.image-annotate-edit-form form');
+                        //var form = ('.image-annotate-edit-form form');
 
-                    $.fn.annotateImage.appendPosition(_form, editable);
+                        $.fn.annotateImage.appendPosition(_form, editable);
 
-                    if (annotation.image.useAjax) {
-    //                    $.ajax({
-    //                        url: annotation.image.deleteUrl,
-    //                        data: form.serialize(),
-    //                        error: function(e) { alert("An error occured deleting that note."); }
-    //                    });
+                        if (annotation.image.useAjax) {
+        //                    $.ajax({
+        //                        url: annotation.image.deleteUrl,
+        //                        data: form.serialize(),
+        //                        error: function(e) { alert("An error occured deleting that note."); }
+        //                    });
 
-                        var _annotation_id = _form.find('[name="id"]').val();
-                        KALS_util.ajax_get({
-                            url: annotation.image.deleteUrl,
-                            data: _annotation_id
-                        });
-                        //$.test_msg(_form.serialize());
-                    }
+                            var _annotation_id = _form.find('[name="id"]').val();
+                            KALS_util.ajax_get({
+                                url: annotation.image.deleteUrl,
+                                data: _annotation_id
+                            });
+                            //$.test_msg(_form.serialize());
+                        }
 
-                    annotation.image.mode = 'view';
-                    _canvas.removeClass("editing");
-                    editable.destroy();
-                    annotation.destroy();
-                });
-                editable.form.find(".controller .menu").append(del);
+                        annotation.image.mode = 'view';
+                        _canvas.removeClass("editing");
+                        editable.destroy();
+                        annotation.destroy();
+                    });
+                    editable.form.find(".controller .menu").append(del);
+                }   //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
+                
                 $.fn.annotateImage.createCancelButton(editable, this.image);
-            //}   //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
+            
 
             
         }
