@@ -1247,8 +1247,8 @@ DEFAULT_KALS_CONFIG = {
          * 圖片的標註討論點
          * @author Pudding 20151113
          */
-        "Annotation_image_spot": {
-            "enable": false
+        "Image_spot": {
+            "enable": true
         },
     }
 };

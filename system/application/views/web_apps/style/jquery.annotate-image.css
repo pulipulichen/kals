@@ -96,6 +96,14 @@
     position: absolute;
     display: inline-block;
     border-radius: 10px;
+    
+    transition:border linear .2s,box-shadow linear .5s;
+    -moz-transition:border linear .2s,-moz-box-shadow linear .5s;
+    -webkit-transition:border linear .2s,-webkit-box-shadow linear .5s;
+    outline:none;border-color:rgba(0,0,0,.75);
+    box-shadow:0 0 2px rgba(0,0,0,.5);
+    -moz-box-shadow:0 0 2px rgba(0,0,0,.5);
+    -webkit-box-shadow:0 0 2px rgba(0,0,0,3);
 }
 .KALS .image-annotate-area div {
     border: 1px solid #FFFFFF;
@@ -103,13 +111,27 @@
     border-radius: 10px;
 }
 .KALS .image-annotate-area-hover div {
-    border-color: yellow !important;
+    /*border-color: yellow !important;*/
 }
 .KALS .image-annotate-area-editable.is-my {
     cursor: pointer;
+    
+    transition:border linear .2s,box-shadow linear .5s;
+    -moz-transition:border linear .2s,-moz-box-shadow linear .5s;
+    -webkit-transition:border linear .2s,-webkit-box-shadow linear .5s;
+    outline:none;border-color:rgba(0,0,255,.75);
+    box-shadow:0 0 2px rgba(0,0,255,.5);
+    -moz-box-shadow:0 0 2px rgba(0,0,255,.5);
+    -webkit-box-shadow:0 0 2px rgba(0,0,255,3);
 }
-.KALS .image-annotate-area-editable-hover.is-my div {
-    border-color: #00AD00 !important;
+.KALS .image-annotate-area-editable-hover.is-my {
+    /*border-color: #00AD00 !important;*/
+    /*border-color: blue !important;*/
+    
+    outline:none;border-color:rgba(0,0,255,1);
+    box-shadow:0 0 10px rgba(0,0,255,1);
+    -moz-box-shadow:0 0 10px rgba(0,0,255,1);
+    -webkit-box-shadow:0 0 10px rgba(0,0,255,3);
 }
 .KALS .image-annotate-note {
     background: #E7FFE7 none repeat scroll 0 0;

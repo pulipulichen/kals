@@ -590,6 +590,14 @@
             form.css('top', _top + 'px');
         };
         
+        var _area_set_position = function () {
+            var _left = parseInt(form.offset().left, 10) - _canvas.offset().left + 1;
+            area.css('left', _left + 'px');
+            var _top = (parseInt(form.offset().top, 10) - parseInt(area.height(), 10) - _canvas.offset().top - 3);
+            //$.test_msg([_top, parseInt(area.offset().top, 10), parseInt(area.height(), 10), _canvas.offset().top]);
+            area.css('top', _top + 'px');
+        };
+        
         _form_set_position();
 
         // Set the area as a draggable/resizable element contained in the image canvas.
@@ -613,6 +621,17 @@
                 _form_set_position();
             }
         });
+        
+        form.draggable({
+            scroll: false,
+            drag: function(e, ui) {
+                _area_set_position();
+            },
+            stop: function(e, ui) {
+                _area_set_position();
+            }
+        });
+        
         return this;
     };
     

@@ -497,7 +497,7 @@ Selectable_text_spot.prototype.spot_tag_name_list = ["img"];
  */
 Selectable_text_spot.prototype.is_img_spot = function (_obj) {
     
-    if (KALS_CONFIG.modules.Annotation_image_spot.enable === false) {
+    if (KALS_CONFIG.modules.Image_spot.enable === false) {
         return false;
     }
     
