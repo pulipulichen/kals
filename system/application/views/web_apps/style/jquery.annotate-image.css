@@ -96,10 +96,10 @@
 .KALS .image-annotate-area-hover div {
     border-color: yellow !important;
 }
-.KALS .image-annotate-area-editable {
+.KALS .image-annotate-area-editable.is-my {
     cursor: pointer;
 }
-.KALS .image-annotate-area-editable-hover div {
+.KALS .image-annotate-area-editable-hover.is-my div {
     border-color: #00AD00 !important;
 }
 .KALS .image-annotate-note {

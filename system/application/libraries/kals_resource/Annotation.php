@@ -637,10 +637,10 @@ class Annotation extends KALS_resource {
         if (isset($serialized_json))
         {
             $feature_location = json_decode($serialized_json);
-            if (is_array($feature_location) === FALSE)
-            {
-                $feature_location = array($feature_location);
-            }
+            //if (is_array($feature_location) === FALSE)
+            //{
+            //    $feature_location = array($feature_location);
+            //}
             return $feature_location;
         }
         else{
@@ -1117,12 +1117,14 @@ class Annotation extends KALS_resource {
         $data = array();
 
         //$data['class'] = get_class($this);
-        $data['annotation_id'] = $this->get_id();
+        $data['id'] = $this->get_id();
         $note = $this->get_note();
         if (isset($note)) {
             $data['text'] = $this->get_note();
         }
-        $data['user'] = $this->get_user()->export_simple_data();
+        $user = $this->get_user()->export_simple_data();
+        $data['user'] = $user["name"];
+        $data['user_id'] = $user["id"];
         $data['type'] = $this->get_type()->export_data();
         $data['timestamp'] = $this->get_create_epoch();
 
@@ -1139,10 +1141,10 @@ class Annotation extends KALS_resource {
 //        }
         
         $pos = $this->get_feature_image_spot_position();
-        $data["top"] = $pos["top"];
-        $data["left"] = $pos["left"];
-        $data["width"] = $pos["width"];
-        $data["height"] = $pos["height"];
+        $data["top"] = $pos->top;
+        $data["left"] = $pos->left;
+        $data["width"] = $pos->width;
+        $data["height"] = $pos->height;
 
         // jquery-image-annotate 固定資料
         $data["editable"] = true;

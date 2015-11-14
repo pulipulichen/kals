@@ -546,6 +546,7 @@
         this.form = $('<div class="image-annotate-note"></div>');
         
         this.form.append('<span class="user">' + note.user + '</span>');
+        //this.form.append('<span class="user-id">' + note.user_id + '</span>');
         this.form.append('<span class="type">' + note.type + '</span>');
         this.form.append('<span class="text">' + note.text + '</span>');
         
@@ -568,13 +569,29 @@
             annotation.hide();
         });
 
-        // Edit a note feature
+        // 做權限監控
+        var _area = this.area;
+        var _note_user_id = note.user_id;
+        var _is_my_classname = "is-my";
+        KALS_context.auth.add_instant_listener(function (_auth) {
+            if (KALS_context.user.get_id() === _note_user_id) {
+                _area.addClass(_is_my_classname);
+            }
+            else {
+                _area.removeClass(_is_my_classname);
+            } 
+        });
+        
+        // Edit a note feature1
         if (this.editable) {
             var form = this;
             this.area.click(function() {
-                form.edit();
+                if (KALS_context.user.get_id() === _note_user_id) {
+                    form.edit();
+                }
             });
         }
+        
     };
 
     $.fn.annotateView.prototype.setPosition = function() {
