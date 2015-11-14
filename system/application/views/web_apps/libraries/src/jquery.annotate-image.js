@@ -184,7 +184,7 @@
     $.fn.annotateImage.lang = {
         addNote: '<i class="add circle icon"></i>Add Note',
         ok: '<i class="check circle icon"></i>Save',
-        delete: '<i class="minus circle icon"></i>Delete',
+        del: '<i class="minus circle icon"></i>Delete',
         cancel: '<i class="remove circle icon"></i>Cancel'
     };
 
@@ -377,7 +377,7 @@
         
         if (_form.find(".controller .menu .image-annotate-edit-delete").length === 0) {
 
-            var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
+            var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.del + '</a>');
             del.click(function() {
                 //var form = $('.image-annotate-edit-form form');
                 //var form = ('.image-annotate-edit-form form');

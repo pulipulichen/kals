@@ -67,7 +67,6 @@ class Web_apps_controller extends Controller {
             $path = array($path);
         }
         
-        
         //製作快取路徑
         $cache_path = './system/cache/'.$cache_name.'.js';
         
@@ -128,8 +127,15 @@ class Web_apps_controller extends Controller {
                 if ($p == '') {
                     continue;
                 }
+                //echo "//準備";
                 $script = $this->load->view($this->dir.$p.'.js', NULL, TRUE);
+                //echo "//" . $this->dir.$p.".js \n";
+                
+                //test_msg("預備壓縮");
+                //echo "// 預備壓縮";
                 $packed = $this->_minify_compression_js($script);
+                //echo "// 壓縮完成";
+                //test_msg("壓縮完成");
                 if ($packed !== '') {
                     $this->load->view($this->dir.'display_js', array('data'=>$packed));
                 }
@@ -153,8 +159,9 @@ class Web_apps_controller extends Controller {
         $scripts_ary = array();
         if (is_string($path))
         {
-            if (isset($path2))
+            if (isset($path2)) {
                 $path .= '/'.$path2;
+            }
             $path .= '.js';
             $script = $this->load->view($this->dir.$path, NULL, TRUE);
             //$script = $this->_minify_compression_js($script);
@@ -165,14 +172,16 @@ class Web_apps_controller extends Controller {
             $list =  $path;
             foreach ($list AS $path)
             {
-                if (isset($path2))
+                if (isset($path2)) {
                     $path .= '/'.$path2;
+                }
                 $path = $path .'.js';
 
                 $file_path = './system/application/views/'.$this->dir.$path;
                 //test_msg($file_path, is_file($file_path));
-                if (is_file($file_path) == FALSE)
+                if (is_file($file_path) === FALSE) {
                     continue;
+                }
 
                 $script = $this->load->view($this->dir.$path, NULL, TRUE);
                 //$script = $this->_minify_compression_js($script);
@@ -227,13 +236,13 @@ class Web_apps_controller extends Controller {
     {
         return $this->_yui_compression_js($script);
         
-        $this->load->library('web_apps/JavaScriptPacker');
-
-        //$packer = new JavaScriptPacker($script, 'Normal', true, false);
-        //$packer = new JavaScriptPacker($script, 62, false, true);
-        $packer = new JavaScriptPacker($script, 62, false, true);
-        $packed = $packer->pack();
-        return $packed;
+//        $this->load->library('web_apps/JavaScriptPacker');
+//
+//        //$packer = new JavaScriptPacker($script, 'Normal', true, false);
+//        //$packer = new JavaScriptPacker($script, 62, false, true);
+//        $packer = new JavaScriptPacker($script, 62, false, true);
+//        $packed = $packer->pack();
+//        return $packed;
     }
     
     function _wait() {

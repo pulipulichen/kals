@@ -39,15 +39,22 @@ class generic extends Web_apps_controller {
         $this->_enable_cache();
         
         //$list = $this->javascript_import_list["toolkit_list"];
-        $list = $this->config->item('web_apps.javascript_import')['toolkit_list'];
+        $list = $this->config->item('web_apps.javascript_import');
+        $list = $list['toolkit_list'];
+        
+        //test_msg("toolkit 1");
 
         //$list_package = $this->javascript_import_list["toolkit_list_package"];
-        $list_package = $this->config->item('web_apps.javascript_import')['toolkit_list_package'];
+        $list_package = $this->config->item('web_apps.javascript_import');
+        $list_package = $list_package['toolkit_list_package'];
 
         if (is_null($return_list))
         {
+            //test_msg("toolkit 2");
             $this->load_js($list);
+            //test_msg("toolkit 3");
             $this->pack_js($list_package, 'toolkit');
+            //test_msg("toolkit 4");
         }
         else
         {
@@ -70,7 +77,8 @@ class generic extends Web_apps_controller {
 
         //注意順序！
         //$list_package = $this->javascript_import_list["core_list_package"];
-        $list_package = $this->config->item('web_apps.javascript_import')['core_list_package'];
+        $list_package = $this->config->item('web_apps.javascript_import');
+        $list_package = $list_package['core_list_package'];
         
         /*
         $dir_list = array(
@@ -107,7 +115,8 @@ class generic extends Web_apps_controller {
         );
 
         //$list_package = $this->javascript_import_list["component_list_package"];
-        $list_package = $this->config->item('web_apps.javascript_import')['component_list_package'];
+        $list_package = $this->config->item('web_apps.javascript_import');
+        $list_package = $list_package['component_list_package'];
         
     	/*
     	$dir_list = array(
@@ -124,7 +133,7 @@ class generic extends Web_apps_controller {
         $files = $this->dirmap($dir_list);
         */
         
-        // 取得其他的JavaScript
+        //test_msg("取得其他的JavaScript");
         $exception_list = $this->_get_javascript_exception_list();
         $other_list_package = $this->_dir_get_list(".js", $exception_list);
         
@@ -153,7 +162,7 @@ class generic extends Web_apps_controller {
     function dirmap($dirs) {
     	
     	if (is_string($dirs)) {
-    		$dirs = array($dirs);
+            $dirs = array($dirs);
     	}
     	
     	$files = array();
@@ -166,13 +175,19 @@ class generic extends Web_apps_controller {
                 $f[$j] = $dirs[$i]."/".$f[$j];
             }
             $file_name = $f;
+            
+            //echo "// [!] " . $file_name;
+            //if (strpos($file_name, "libraries/src") !== FALSE) {
+            //    continue;
+            //}
+            
             $files = array_merge($files, $file_name);
     	}
         
         for ($i = 0; $i < count($files); $i++) {
             $name = $files[$i];
+            
             $name = substr($name, 0 , strrpos($name, "."));
-
             $files[$i] = $name;
         }
         
@@ -208,6 +223,11 @@ class generic extends Web_apps_controller {
             //print_r($l);
             $list = array_merge($list, $l);
         }
+        
+        //$file = directory_map($this->dirmap_path . "libraries/src/", false);
+        //$files = $this->_dir_get_file_path($needle, $files, $dir, $file, $exception_list);
+        
+        // 把libraries/src加入
         
         return $list;
     }
@@ -255,7 +275,8 @@ class generic extends Web_apps_controller {
                
                if (FALSE === in_array($path, $exception_list)
                     && $this->_filter_file($path)
-                    && ends_with($path, "_test") === FALSE) {
+                    && ends_with($path, "_test") === FALSE
+                    && starts_with($path, "libraries/src/") === FALSE) {
                    $files[] = $path;
                }
            }
@@ -294,7 +315,7 @@ class generic extends Web_apps_controller {
                 $this->dir = $this->release_dir;
         }
 
-        $full_list = array();
+        //$full_list = array();
         
         $list_toolkit = $this->toolkit(true);
         $list_core = $this->core(true);

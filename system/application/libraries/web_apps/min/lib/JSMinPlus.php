@@ -200,25 +200,26 @@ class JSMinPlus
 		static $instance;
 
 		// this is a singleton
-		if(!$instance)
-			$instance = new JSMinPlus();
+		if(!$instance) {
+                    $instance = new JSMinPlus();
+                }
 
 		return $instance->min($js, $filename);
 	}
 
 	private function min($js, $filename)
 	{
-		try
-		{
-			$n = $this->parser->parse($js, $filename, 1);
-			return $this->parseTree($n);
-		}
-		catch(Exception $e)
-		{
-			echo $e->getMessage() . "\n";
-		}
+		//try
+		//{
+                    $n = $this->parser->parse($js, $filename, 1);
+                    return $this->parseTree($n);
+		//}
+		//catch(Exception $e)
+		//{
+                //   echo "[JSMinPlus.php] $js " . $e->getMessage() . "\n";
+		//}
 
-		return false;
+		//return false;
 	}
 
 	public function parseTree($n, $noBlockGrouping = false)
@@ -2063,24 +2064,25 @@ class JSTokenizer
 
 	public function unget()
 	{
-		if (++$this->lookahead == 4)
-			throw $this->newSyntaxError('PANIC: too much lookahead!');
+            if (++$this->lookahead == 4) {
+                throw $this->newSyntaxError('PANIC: too much lookahead!');
+            }
 
-		$this->tokenIndex = ($this->tokenIndex - 1) & 3;
+            $this->tokenIndex = ($this->tokenIndex - 1) & 3;
 	}
 
 	public function newSyntaxError($m)
 	{
-		return new Exception('Parse error: ' . $m . ' in file \'' . $this->filename . '\' on line ' . $this->lineno);
+            return new Exception('Parse error:  "' . $m . '" in file \'' . $this->filename . '\' on line ' . $this->lineno);
 	}
 }
 
 class JSToken
 {
-	public $type;
-	public $value;
-	public $start;
-	public $end;
-	public $lineno;
-	public $assignOp;
+    public $type;
+    public $value;
+    public $start;
+    public $end;
+    public $lineno;
+    public $assignOp;
 }
