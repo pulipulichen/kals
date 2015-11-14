@@ -1248,7 +1248,7 @@ DEFAULT_KALS_CONFIG = {
          * @author Pudding 20151113
          */
         "Image_spot": {
-            "enable": true
+            "enable":  false    // 預設不開啟，影響太大了
         },
     }
 };

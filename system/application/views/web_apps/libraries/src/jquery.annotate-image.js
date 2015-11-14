@@ -56,13 +56,15 @@
         var _not_login_classname = "not-login";
         this.canvas.addClass(_not_login_classname);
         var _canvas = this.canvas;
-        KALS_context.auth.add_instant_listener(function (_auth) {
-            if (_auth.is_login()) {
-                _canvas.removeClass(_not_login_classname);
-            }
-            else {
-                _canvas.addClass(_not_login_classname);
-            }
+        KALS_context.ready(function () {
+            KALS_context.auth.add_instant_listener(function (_auth) {
+                if (_auth.is_login()) {
+                    _canvas.removeClass(_not_login_classname);
+                }
+                else {
+                    _canvas.addClass(_not_login_classname);
+                }
+            });
         });
 
         // Give the canvas and the container their size and background
@@ -152,6 +154,10 @@
 //            });
             
             this.canvas.dblclick(function (_event) {
+                if (KALS_context.auth.is_login() === false) {
+                    return;
+                }
+                
                 var _offset = _convert_client_to_offset(_event, this);
                 $.fn.annotateImage.add(image, _offset);
             });
@@ -853,6 +859,13 @@
         this.area.children('div').width((editable.area.width() - 2) + 'px');
         this.area.css('left', (editable.area.position().left) + 'px');
         this.area.css('top', (editable.area.position().top) + 'px');
+        this.area.addClass("is-my");
+        
+        var _this = this;
+        //var _note_user_id = note.user_id;
+        this.area.click(function() {
+            _this.edit();
+        });
         this.form.css('left', (editable.area.position().left) + 'px');
         this.form.css('top', (parseInt(editable.area.position().top) + parseInt(editable.area.height()) + 7) + 'px');
 
