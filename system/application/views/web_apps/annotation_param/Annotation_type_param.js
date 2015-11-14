@@ -310,6 +310,11 @@ Annotation_type_param.prototype.export_json = function () {
 
 Annotation_type_param.filter_basic_id = function (_param) {
     
+    if ($.is_string(_param) 
+            && (parseInt(_param, 10) + "" === _param )) {
+        _param = parseInt(_param, 10);
+    }
+    
     if ($.is_number(_param)) {
         if (typeof(Annotation_type_param._type_mapping[_param]) === 'string') {
             return _param;

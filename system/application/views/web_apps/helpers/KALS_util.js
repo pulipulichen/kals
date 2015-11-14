@@ -609,7 +609,7 @@ KALS_util.ajax_post = function (_config) {
             return;
         }
 
-        $.test_msg("KALS_util.ajax_post", [_debug, _data]);
+        //$.test_msg("KALS_util.ajax_post", [_debug, _data]);
         if (_debug === false || _data === "true" || _data === "1" || _data === 1) {
             _layer.remove();
         }

@@ -12,7 +12,7 @@
 
 .KALS .image-annotate-add {
     /*background: #fff url(../images/asterisk_yellow.png) no-repeat 3px 3px;*/
-    border: solid 1px #ccc !important;
+    border: solid 1px #ccc !important;.
     /*color: #000 !important;*/
     cursor: pointer;
     display: block;
@@ -79,6 +79,13 @@
     display: inline-block;
     margin: 0;
     position: relative;
+    
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .KALS .image-annotate-view {
     display: none;
@@ -130,7 +137,11 @@
 
 .KALS .image-annotate-note .text {
     display: block;
-    
+    white-space: pre;
+}
+
+.KALS .image-annotate-note .user {
+    font-weight: bold;
 }
 
 /**
@@ -139,6 +150,7 @@
 .KALS .image-annotate-note .timestamp {
     display: block;
     text-align: right;
+    font-weight: bold;
 }
 
 .KALS .image-annotate-note .actions {

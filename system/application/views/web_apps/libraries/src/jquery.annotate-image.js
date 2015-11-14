@@ -73,7 +73,8 @@
         this.canvas.children('.image-annotate-view, .image-annotate-edit').width(this.width());
 
         // Add the behavior: hide/show the notes when hovering the picture
-        this.canvas.parent().hover(function() {
+        //this.canvas.parent().hover(function() {
+        this.canvas.hover(function() {
             if ($(this).find('.image-annotate-edit').css('display') === 'none') {
                 $(this).find('.image-annotate-view').show();
             }
@@ -126,15 +127,17 @@
 //                _mouse_move_lock = false;
 //            });
 //            
-//            var _convert_client_to_offset = function (_event, _canvas) {
-//                var _canvas_offset = $(_canvas).offset();
-//                var _offset = {
-//                    "top": _event.clientY - _canvas_offset.top,
-//                    "left": _event.clientX - _canvas_offset.left,
-//                    "event": true
-//                };
-//                return _offset;
-//            };
+            var _convert_client_to_offset = function (_event, _canvas) {
+                var _canvas_offset = $(_canvas).offset();
+                var _current_position = $.get_current_scroll_position();
+                var _offset = {
+                    "top": _current_position.scrollTop + _event.clientY - _canvas_offset.top,
+                    "left": _current_position.scrollLeft + _event.clientX - _canvas_offset.left,
+                    "event": true
+                };
+                //$.test_msg(_event.clientY, _offset);
+                return _offset;
+            };
 //            
 //            
 //            var _mouse_move_lock = false;
@@ -250,7 +253,9 @@
             // Create/prepare the editable note elements
             var editable = new $.fn.annotateEdit(image, offset);
 
+            $.fn.annotateImage.clearButton(editable);
             $.fn.annotateImage.createSaveButton(editable, image);
+            //$.fn.annotateImage.createDeleteButton(editable, image);
             $.fn.annotateImage.createCancelButton(editable, image);
         }
         
@@ -277,6 +282,10 @@
             $.fn.annotateImage.appendPosition(form, editable);
             image.mode = 'view';
             
+            var _get_field = function(_name) {
+                return form.find('[name="' + _name + '"]').val();
+            };
+            
             //alert(form.find("type").val());
             // Save via AJAX
             if (image.useAjax) {
@@ -293,9 +302,7 @@
 //                    dataType: "json"
 //                });
 
-                var _get_field = function(_name) {
-                    return form.find('[name="' + _name + '"]').val();
-                };
+                
 
                 var _data = {
                     "scope": _get_field("scope"),
@@ -332,18 +339,79 @@
             }
 
             // Add to canvas
+            var create_view_annotation = function (_user, _type, _note, _timestamp) {
+                
+            };
+            
+            // 設定text
+            //var _annotation = $.fn.annotateImage.create_view_annotation(_user, );
+            
+            var _new_note = {
+                "user": KALS_context.user.get_name(),
+                "text": text,
+                "type": _get_field("type"),
+                "timestamp": (new Date()).getTime()
+            };
+            
             if (note) {
-                note.resetPosition(editable, text);
+                note.resetPosition(editable, _new_note);
             } else {
                 editable.note.editable = true;
                 note = new $.fn.annotateView(image, editable.note);
-                note.resetPosition(editable, text);
+                note.resetPosition(editable, _new_note);
                 image.notes.push(editable.note);
             }
 
             editable.destroy();
-        });
+        }); //ok.click(function() {
+        
         editable.form.find(".controller .menu").append(ok);
+        return this;
+    };
+    
+    $.fn.annotateImage.createDeleteButton = function(editable, annotation) {
+        var _canvas = annotation.image.canvas
+        var _form = _canvas.find('.image-annotate-edit-form form');
+        
+        //var editable = new $.fn.annotateEdit(this.image, this.note);
+        
+        if (_form.find(".controller .menu .image-annotate-edit-delete").length === 0) {
+
+            var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
+            del.click(function() {
+                //var form = $('.image-annotate-edit-form form');
+                //var form = ('.image-annotate-edit-form form');
+
+                $.fn.annotateImage.appendPosition(_form, editable);
+
+                if (annotation.image.useAjax) {
+    //                    $.ajax({
+    //                        url: annotation.image.deleteUrl,
+    //                        data: form.serialize(),
+    //                        error: function(e) { alert("An error occured deleting that note."); }
+    //                    });
+
+                    var _annotation_id = _form.find('[name="id"]').val();
+                    KALS_util.ajax_get({
+                        url: annotation.image.deleteUrl,
+                        data: _annotation_id
+                    });
+                    //$.test_msg(_form.serialize());
+                }
+
+                annotation.image.mode = 'view';
+                _canvas.removeClass("editing");
+                editable.destroy();
+                annotation.destroy();
+            });
+            editable.form.find(".controller .menu").append(del);
+        }   //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
+                
+        return this;
+    };
+    
+    $.fn.annotateImage.clearButton = function(editable) {
+        editable.form.find(".controller .menu").empty();
         return this;
     };
 
@@ -458,7 +526,9 @@
             image.canvas.append(form);
             
             // @TODO #175
-            Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) ;
+            try {
+                //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) ;
+            } catch (_e) {}
             
         }
         else {
@@ -527,13 +597,15 @@
         
         area.resizable({
             handles: 'all',
-
+            containment: image.canvas,
+            scroll: false,
             stop: function(e, ui) {
                 _form_set_position();
             }
         })
         .draggable({
             containment: image.canvas,
+            scroll: false,
             drag: function(e, ui) {
                 _form_set_position();
             },
@@ -580,17 +652,18 @@
 
         // Add the note
         this.form = $('<div class="image-annotate-note"></div>');
-        
-        this.form.append('<span class="user">' + note.user + '</span>');
-        //this.form.append('<span class="user-id">' + note.user_id + '</span>');
-        
-        var _type_display_name = new Annotation_type_param(note.type).get_type_name_display();
-        this.form.append('<span class="type">' + _type_display_name + '</span>');
-        this.form.append('<span class="text">' + note.text + '</span>');
-        
-        var _timestamp_message = KALS_context.lang.get_interval_message(note.timestamp);
-        $('<span class="timestamp"></span>').append(_timestamp_message)
-                .appendTo(this.form);
+//        
+//        this.form.append('<span class="user">' + note.user + '</span>');
+//        //this.form.append('<span class="user-id">' + note.user_id + '</span>');
+//        
+//        var _type_display_name = new Annotation_type_param(note.type).get_type_name_display();
+//        this.form.append('<span class="type">' + _type_display_name + '</span>');
+//        this.form.append('<span class="text">' + note.text + '</span>');
+//        
+//        var _timestamp_message = KALS_context.lang.get_interval_message(note.timestamp);
+//        $('<span class="timestamp"></span>').append(_timestamp_message)
+//                .appendTo(this.form);
+        $.fn.annotateView.prototype.setupForm(this.form, note);
         
         this.form.hide();
         image.canvas.children('.image-annotate-view').append(this.form);
@@ -691,45 +764,15 @@
             //var editable = new $.fn.annotateEdit(this.image, this.note);
             var editable = new $.fn.annotateEdit(this.image, this.note);
 
+            $.fn.annotateImage.clearButton(editable);
             $.fn.annotateImage.createSaveButton(editable, this.image, annotation);
             var _form = this.image.canvas.find('.image-annotate-edit-form form');
             var _canvas = this.image.canvas;
 
             // Add the delete button
             //$.test_msg(_form.find(".controller .menu .image-annotate-edit-delete").length);
-                if (_form.find(".controller .menu .image-annotate-edit-delete").length === 0) {
-
-                    var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
-                    del.click(function() {
-                        //var form = $('.image-annotate-edit-form form');
-                        //var form = ('.image-annotate-edit-form form');
-
-                        $.fn.annotateImage.appendPosition(_form, editable);
-
-                        if (annotation.image.useAjax) {
-        //                    $.ajax({
-        //                        url: annotation.image.deleteUrl,
-        //                        data: form.serialize(),
-        //                        error: function(e) { alert("An error occured deleting that note."); }
-        //                    });
-
-                            var _annotation_id = _form.find('[name="id"]').val();
-                            KALS_util.ajax_get({
-                                url: annotation.image.deleteUrl,
-                                data: _annotation_id
-                            });
-                            //$.test_msg(_form.serialize());
-                        }
-
-                        annotation.image.mode = 'view';
-                        _canvas.removeClass("editing");
-                        editable.destroy();
-                        annotation.destroy();
-                    });
-                    editable.form.find(".controller .menu").append(del);
-                }   //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
-                
-                $.fn.annotateImage.createCancelButton(editable, this.image);
+            $.fn.annotateImage.createDeleteButton(editable, annotation);
+            $.fn.annotateImage.createCancelButton(editable, this.image);
             
         }   //if (this.image.mode === 'view') {
         //alert(1212);
@@ -751,13 +794,40 @@
                            '<input type="hidden" value="' + editable.note.id + '" name="id"/>');
         form.append(areaFields);
     };
+    
+    /**
+     * @author Pudding 20151114
+     * @param {type} _form
+     * @param {type} _note
+     * @returns {unresolved}
+     */
+    $.fn.annotateView.prototype.setupForm = function (_form, _note) {
+        _form.html("");
+        _form.append('<span class="user">' + _note.user + '</span>');
+        //this.form.append('<span class="user-id">' + note.user_id + '</span>');
+        
+        var _type_display_name = new Annotation_type_param(_note.type).get_type_name_display();
+        _form.append('<span class="type">' + _type_display_name + '</span>');
+        _form.append('<span class="text">' + _note.text + '</span>');
+        
+        var _timestamp_message = KALS_context.lang.get_interval_message(_note.timestamp);
+        $('<span class="timestamp"></span>').append(_timestamp_message)
+                .appendTo(_form);
+        return _form;
+    };
 
-    $.fn.annotateView.prototype.resetPosition = function(editable, text) {
+    $.fn.annotateView.prototype.resetPosition = function(editable, note) {
         ///	<summary>
         ///		Sets the position of an annotation.
         ///	</summary>
-        this.form.html(text);
-        this.form.hide();
+        //$.test_msg("text", text);
+        
+        //this.form.html(_text);
+        //$.test_msg("resetPosition", note);
+        //this.form.empty();
+        this.from = $.fn.annotateView.prototype.setupForm.call(this, this.form, note);
+        //$.test_msg("this.form", this.form.html());
+        //this.form.hide();
 
         // Resize
         this.area.children('div').height(editable.area.height() + 'px');
@@ -772,9 +842,12 @@
         this.note.left = editable.area.position().left;
         this.note.height = editable.area.height();
         this.note.width = editable.area.width();
-        this.note.text = text;
+        
+        this.note.text = note.text;
         this.note.id = editable.note.id;
         this.editable = true;
+        
+        //$.test_msg("設定完了");
     };
 
 })(jQuery);
