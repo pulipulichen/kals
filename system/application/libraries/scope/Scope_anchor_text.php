@@ -185,11 +185,16 @@ class Scope_anchor_text extends Generic_object {
 
     public function filter_anchor_text_id($anchor_id)
     {
+        if ($anchor_id === NULL) {
+            $anchor_id = "";
+        }
+        
         if (is_string($anchor_id))
         {
             $text = $anchor_id;
-            if (starts_with($text, '%'))
+            if (starts_with($text, '%')) {
                 $text = urldecode ($text);
+            }
             
             $anchor_text = $this->create_anchor_text($text);
             $anchor_id = $anchor_text->get_id();

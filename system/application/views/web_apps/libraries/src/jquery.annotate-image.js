@@ -291,6 +291,8 @@
                     "image_spot_position": {
                         top: _get_field("top"),
                         left: _get_field("left"),
+                        width: _get_field("width"),
+                        height: _get_field("height"),
                     }
                 };
                 

@@ -1072,6 +1072,8 @@ class Annotation extends KALS_resource {
 
         return $data;
     }
+    
+    // ------------------------------
 
     public function export_webpage_recommend_data($url)
     {
@@ -1102,6 +1104,53 @@ class Annotation extends KALS_resource {
 
         return $data;
     }
+    
+    // --------------------------------------
+    
+    /**
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151114
+     * @param String $url
+     * @return String|JSON
+     */
+    public function export_webpage_imape_spot_data($url)
+    {
+        $data = array();
+
+        //$data['class'] = get_class($this);
+        $data['annotation_id'] = $this->get_id();
+        $note = $this->get_note();
+        if (isset($note)) {
+            $data['text'] = $this->get_note();
+        }
+        $data['user'] = $this->get_user()->export_simple_data();
+        $data['type'] = $this->get_type()->export_data();
+        $data['timestamp'] = $this->get_create_epoch();
+
+//        $respond_to_topic= $this->get_respond_to_topic();
+//        if (isset($respond_to_topic))
+//        {
+//            $data['topic'] = $respond_to_topic->export_simple_data();
+//        }
+//
+//        $respond_to_coll = $this->get_respond_to_coll();
+//        if (isset($respond_to_coll) && $respond_to_coll->length() > 0)
+//        {
+//            $data['respond_to_coll'] = $respond_to_coll->export_respond_to_data();
+//        }
+        
+        $pos = $this->get_feature_image_spot_position();
+        $data["top"] = $pos["top"];
+        $data["left"] = $pos["left"];
+        $data["width"] = $pos["width"];
+        $data["height"] = $pos["height"];
+
+        // jquery-image-annotate 固定資料
+        $data["editable"] = true;
+
+        return $data;
+    }
+    
+    // --------------------------------------
 
     public function export_json()
     {

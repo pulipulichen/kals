@@ -55,11 +55,12 @@ class Annotation_scope extends Generic_object {
             $anchor_text_id = $this->CI->scope_anchor_text->filter_anchor_text_id($text);
         }
 
-        if (NULL != $webpage_id)
+        if (NULL !== $webpage_id)
         {
             $key = $from.'-'.$to;
-            if (is_object($webpage_id))
+            if (is_object($webpage_id)) {
                 $webpage_id = $webpage_id->get_id();
+            }
             $value = $webpage_id;
             $scope = get_cache($this, $key, $value);
             

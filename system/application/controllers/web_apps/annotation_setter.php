@@ -85,7 +85,7 @@ class Annotation_setter extends Web_apps_controller {
         $data = json_to_object($json);
         
         //檢視資料
-        //test_msg('annotation_setter._create_process', $json);
+        test_msg('annotation_setter._create_process', $json);
         //{
         //  "feature_location":[0,2,4],
         //  "note":"%3Cp%3E%0A%09test%3C%2Fp%3E%0A",
@@ -843,7 +843,7 @@ class Annotation_setter extends Web_apps_controller {
         $data = json_to_object($json);
         
         //檢視資料
-        //test_msg('annotation_setter._create_process', $json);
+        //test_msg('annotation_setter._create_image_spot_process', $json);
         //{
         //  "feature_location":[0,2,4],
         //  "note":"%3Cp%3E%0A%09test%3C%2Fp%3E%0A",
@@ -866,7 +866,11 @@ class Annotation_setter extends Web_apps_controller {
 
         //取得來自$json的範圍資料
         $scope_coll_data = $data->scope;
+        //$scope_coll_data = "[35,35]";
+        //echo $scope_coll_data;
         $scope_coll = $this->annotation_scope_collection->import_webpage_data($url, $scope_coll_data);
+        //echo $scope_coll->get_id();
+        //echo $scope_coll->export_json();
 
         //建立標註
         $annotation = $this->annotation->create_annotation($user, $scope_coll);

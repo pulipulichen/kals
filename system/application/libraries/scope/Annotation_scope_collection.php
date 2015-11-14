@@ -716,8 +716,8 @@ class Annotation_scope_collection extends Generic_association_collection {
         if (is_int($scope_indices) || is_string($scope_indices)) {
             $scope_indices = array(
                 array(
-                    $scope_indices,
-                    $scope_indices
+                    intval($scope_indices),
+                    intval($scope_indices)
                 )
             );
         }
@@ -784,6 +784,15 @@ class Annotation_scope_collection extends Generic_association_collection {
         }
 
         $members = array();
+        
+        if (is_int($scope_indices) || is_string($scope_indices)) {
+            $scope_indices = array(
+                array(
+                    intval($scope_indices),
+                    intval($scope_indices)
+                )
+            );
+        }
 
         foreach ($scope_indices AS $scope_index)
         {
