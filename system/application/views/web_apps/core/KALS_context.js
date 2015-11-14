@@ -603,6 +603,27 @@ KALS_context.get_webpage_id = function () {
     return this.loader.webpage_id;
 };
 
+/**
+ * 取得基本標註與自訂標註的資料
+ * @param {String} _enable_type 要啟用的類型
+ * @return {Annotation_type_param[]}
+ */
+KALS_context.get_annotation_type_list = function (_enable_type) {
+    var _type_list = [];
+    
+    var _basic_type = this.basic_type.get_type_list(_enable_type);
+    for (var _i in _basic_type) {
+        _type_list.push(_basic_type[_i]);
+    }
+    
+    var _predefined_type = this.predefined_type.get_type_list(_enable_type);
+    for (var _i in _predefined_type) {
+        _type_list.push(_predefined_type[_i]);
+    }
+    
+    return _type_list;
+};
+
 // ------------------------------------------------
 
 /**

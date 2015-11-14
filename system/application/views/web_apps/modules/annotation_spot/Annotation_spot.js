@@ -534,8 +534,9 @@ Annotation_spot.prototype.del_url = "image_spot/delete/";
 
 Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback) {
     
-    var _types = ["重要", "困惑", "舉例", "摘要"];
-    var _user = "布丁";
+    //var _types = ["重要", "困惑", "舉例", "摘要"];
+    var _types = KALS_context.get_annotation_type_list("topic");
+    //var _user = "布丁";
     
     var _this = this;
     _images.each(function (_index, _img) {
@@ -553,8 +554,8 @@ Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback
             editable: true,
             useAjax: true,
             //notes: _notes,
-            types: _types,
-            user: _user
+            types: _types
+            //user: _user
         });
     });
     

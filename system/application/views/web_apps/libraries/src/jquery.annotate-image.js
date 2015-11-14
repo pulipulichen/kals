@@ -445,7 +445,7 @@
         //console.log(image.types);
         for (var _t in image.types) {
             var _type = image.types[_t];
-            var _option = $('<option value="' + _type + '">' + _type + '</option>');
+            var _option = $('<option value="' + _type.get_id() + '">' + _type.get_type_name_display() + '</option>');
             if (_type === this.note.type) {
                 _option.attr("selected", true);
             }
@@ -556,7 +556,9 @@
         
         this.form.append('<span class="user">' + note.user + '</span>');
         //this.form.append('<span class="user-id">' + note.user_id + '</span>');
-        this.form.append('<span class="type">' + note.type + '</span>');
+        
+        var _type_display_name = new Annotation_type_param(note.type).get_type_name_display();
+        this.form.append('<span class="type">' + _type_display_name + '</span>');
         this.form.append('<span class="text">' + note.text + '</span>');
         
         var _timestamp_message = KALS_context.lang.get_interval_message(note.timestamp);
