@@ -113,7 +113,7 @@ class Image_spot extends Web_apps_controller {
      * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151114
      * @param String|Null $json
      */
-    public function set($json = NULL) {
+    public function create($json = NULL) {
         $index = 'create_image_spot_post';
         if ($this->_is_callback($json) == false)
         {
@@ -204,7 +204,7 @@ class Image_spot extends Web_apps_controller {
         //log區
         $array_data = $annotation->export_webpage_data($this->url);
 
-        $action = "create_image_spot_post";
+        $action = "image_spot.create";
         kals_log($this->db, $action, $array_data);
         
         set_ignore_authorize(false);
@@ -381,16 +381,131 @@ class Image_spot extends Web_apps_controller {
 
         return $return_data;
     }
-    
+
     // ------------------------------
-    public function delete($json, $callback = NULL)
-    {
-        require_once 'annotation_setter.php';
-        $annotation_setter = new annotation_setter();
-        $annotation_setter->delete($json, $callback);
-        return true;
+
+
+    public function edit($json = NULL) {
+        $index = 'edit_image_spot_post';
+        if ($this->_is_callback($json) == false)
+        {
+            //從POST中取得JSON的資料
+            $json = $this->_get_post_json();
+            $data = $this->_edit_process($json);
+
+            //然後把data存入session中
+            $this->_set_post_session($index, $data);
+        }
+        else
+        {
+            $callback = $json;
+            $data = $this->_get_post_session($index);
+            $this->_display_jsonp($data, $callback);
+        }
+        context_complete();
     }
     
+    private function _edit_process($json)
+    {
+        $data = json_to_object($json);
+
+        //先將權限設成管理者
+        set_ignore_authorize(true);
+
+        //取得參考網址資料跟位於session的user
+        $user = $this->user;
+
+        $annotation = NULL;
+        if (isset($data->annotation_id))
+        {
+            $annotation = new Annotation($data->annotation_id);
+
+            $annotation_user = $annotation->get_user();
+            if ($user->get_id() == $annotation_user->get_id())
+            {
+                $data = $this->_setup_annotation($annotation, $data);
+            }
+            else {
+                $data = create_json_excpetion('Edit Annnotation Error', 'You cannot edit annotation whick is not yours.');
+            }
+        } else
+        {
+            $data = create_json_excpetion('Edit Annnotation Error', 'Annotation ID is NULL');
+        }
+
+        //log區
+        $array_data = NULL;
+        if (isset($annotation)) {
+            $array_data = $annotation->export_webpage_data($this->url);
+        }
+
+        $action = "image_spot.edit";
+        kals_log($this->db, $action, $array_data);
+
+        return $data;
+    }
+    
+    // ------------------------------
+//    public function delete($json, $callback = NULL)
+//    {
+//        require_once 'annotation_setter.php';
+//        $annotation_setter = new annotation_setter();
+//        $annotation_setter->delete($json, $callback);
+//        return true;
+//    }
+
+    public function delete($json, $callback = NULL)
+    {
+        $annotation_id = json_to_object($json);
+
+        if (is_null($annotation_id))
+        {
+            $data = FALSE;
+            return $this->_display_jsonp($data, $callback);
+        }
+
+        //set_ignore_authorize(true);
+        $annotation = new Annotation($annotation_id);
+        $this->_delete_annotation($annotation);
+        set_ignore_authorize(true);
+        context_complete();
+
+        $data = true;
+        return $this->_display_jsonp($data, $callback);
+    }    
+    
+    /**
+     * 
+     * @param Annotation $annotation
+     * @return Boolean
+     */
+    private function _delete_annotation($annotation) {
+        $annotation_id = $annotation->get_id();
+        $annotation_user = $annotation->get_user();
+
+        //test_msg('delete', $annotation_user->get_id());
+        if (is_null($annotation_user->get_id()))
+        {
+            $data = show_error('No annotation.');
+            return $this->_display_jsonp($data, $callback);
+        }
+
+        $user = $this->user;
+        if ($user->equals($annotation_user) === FALSE)
+        {
+            $data = show_error('Permission deny.');
+            return $this->_display_jsonp($data, $callback);
+        }
+
+        $action = "image_spot.delete";
+        kals_log($this->db, $action, $annotation_id);
+
+        set_ignore_authorize(true);
+        
+        $annotation->delete();
+        context_complete();
+        set_ignore_authorize(false);
+    }
 }
 
 /* End of file annotation_getter.php */

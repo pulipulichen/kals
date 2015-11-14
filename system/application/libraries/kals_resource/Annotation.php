@@ -1130,7 +1130,7 @@ class Annotation extends KALS_resource {
         $data['user'] = $user["name"];
         $data['user_id'] = $user["id"];
         $data['type'] = $this->get_type()->export_data();
-        $data['timestamp'] = $this->get_create_epoch();
+        $data['timestamp'] = $this->get_update_epoch();
 
 //        $respond_to_topic= $this->get_respond_to_topic();
 //        if (isset($respond_to_topic))

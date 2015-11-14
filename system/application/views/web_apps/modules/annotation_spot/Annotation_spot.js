@@ -517,8 +517,14 @@ Annotation_spot.prototype.get_url = "image_spot/get/";
  * 儲存資料的網址
  * @type String
  */
-Annotation_spot.prototype.set_url = "image_spot/set/";
+Annotation_spot.prototype.set_url = "image_spot/create/";
 //Annotation_spot.prototype.set_url = "annotation_setter/image_spot/";
+
+/**
+ * 更新資料的網址
+ * @type String
+ */
+Annotation_spot.prototype.edit_url = "image_spot/edit/";
 
 /**
  * 刪除資料的網址
@@ -541,6 +547,7 @@ Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback
         _img.annotateImage({
             getUrl: _this.get_url,
             saveUrl: _this.set_url,
+            editUrl: _this.edit_url,
             deleteUrl: _this.del_url,
             scope: _scope,
             editable: true,

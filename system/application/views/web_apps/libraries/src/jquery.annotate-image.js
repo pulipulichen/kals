@@ -30,6 +30,7 @@
         this.getUrl = opts.getUrl;
         this.scope = opts.scope;
         this.saveUrl = opts.saveUrl;
+        this.editUrl = opts.editUrl;
         this.deleteUrl = opts.deleteUrl;
         this.editable = opts.editable;
         this.useAjax = opts.useAjax;
@@ -296,8 +297,16 @@
                     }
                 };
                 
+                var _url = image.saveUrl;
+                //$.test_msg('id', form.find('[name="id"]').val() );
+                if (form.find('[name="id"]').length > 0 
+                        && form.find('[name="id"]').val() !== "new") {
+                    _data["annotation_id"] = form.find('[name="id"]').val();
+                    _url = image.editUrl;
+                }
+                
                 KALS_util.ajax_post({
-                    url: image.saveUrl,
+                    url: _url,
                     data: _data,
                     callback: function(data) {
                         if (data.annotation_id !== undefined) {
@@ -649,6 +658,7 @@
 
             $.fn.annotateImage.createSaveButton(editable, this.image, annotation);
             var _form = this.image.canvas.find('.image-annotate-edit-form form');
+            var _canvas = this.image.canvas;
 
             // Add the delete button
             var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
@@ -674,6 +684,7 @@
                 }
 
                 annotation.image.mode = 'view';
+                _canvas.removeClass("editing");
                 editable.destroy();
                 annotation.destroy();
             });
