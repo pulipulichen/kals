@@ -22,7 +22,8 @@ class Annotation_feature_collection extends Generic_attribute_collection {
 
     protected $class_name = array(
         1 => 'Annotation_feature_location',
-        2 => 'Annotation_feature_recommend_scope'
+        2 => 'Annotation_feature_recommend_scope',
+        3 => 'Annotation_feature_image_spot_position',
     );
     protected $class_dir = 'annotation/';
 }

@@ -4,6 +4,7 @@
  * Demo: http://flipbit.co.uk/jquery-image-annotation.html
  */
 /// <reference path="jquery-1.2.6-vsdoc.js" />
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
 (function($) {
 
     $.fn.annotateImage = function(options) {
@@ -266,7 +267,7 @@
             //alert(form.find("type").val());
             // Save via AJAX
             if (image.useAjax) {
-                console.log(form.serialize());
+                //console.log(form.serialize());
 //                $.ajax({
 //                    url: image.saveUrl,
 //                    data: form.serialize(),
@@ -278,13 +279,29 @@
 //		    },
 //                    dataType: "json"
 //                });
+
+                var _get_field = function(_name) {
+                    return form.find('[name="' + _name + '"]').val();
+                };
+
+                var _data = {
+                    "scope": _get_field("scope"),
+                    "type": _get_field("type"),
+                    "note": _get_field("text"),
+                    "image_spot_position": {
+                        top: _get_field("top"),
+                        left: _get_field("left"),
+                    }
+                };
+                
                 KALS_util.ajax_post({
                     url: image.saveUrl,
-                    data: form.serialize(),
+                    data: _data,
                     callback: function(data) {
                         if (data.annotation_id !== undefined) {
                             editable.note.id = data.annotation_id;
                         }
+                        image.canvas.removeClass("editing");
 		    },
                     exception_handle: function(e) { alert("An error occured saving that note."); }
                     //dataType: "json"
@@ -315,6 +332,7 @@
         cancel.click(function() {
             editable.destroy();
             image.mode = 'view';
+            image.canvas.removeClass("editing");
         });
         editable.form.find(".controller .menu").append(cancel);
         return this;
@@ -389,14 +407,15 @@
         image.canvas.children('.image-annotate-edit').show();
 
         // Add the note (which we'll load with the form afterwards)
-        var form = $(".KALS.image-annotate-edit-form");
-        if (form.length === 0) {
-            form = $('<div class="KALS kals-modal image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
+        //var form = $(".KALS.image-annotate-edit-form");
+        
+        //if (form.length === 0) {
+            var form = $('<div class="KALS kals-modal image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
                 + '<form class="ui form">' 
                     + '<input class="scope" name="scope" type="hidden" value="' + image.scope + '" />'
                     + '<div class="field">'
                         + '<label class="user-name"></label>'
-                        + '<input class="user-id" name="user_id" type="hidden" />'
+                        //+ '<input class="user-id" name="user_id" type="hidden" />'
                         + '<select name="type" class="type"></select>'
                     + '</div>'
                     + '<div class="field note-editor">'
@@ -406,7 +425,7 @@
                     + '<div class="controller field"><div class="ui compact brown inverted menu"></div></div>'
                     + '</div>'
                 + '</form>');
-        }
+        //}
         this.form = form;
         
         form.find(".image-annotate-text").val(this.note.text);
@@ -436,7 +455,7 @@
 //            _user = KALS_context.user.get_name();
 //        }
         form.find(".user-name").html(KALS_context.user.get_name());
-        form.find(".user-id").html(KALS_context.user.get_id());
+        //form.find(".user-id").html(KALS_context.user.get_id());
         //form.find(".type").attr("value", this.note.type);
 
         //$('body').append(this.form);
@@ -610,11 +629,13 @@
             var editable = new $.fn.annotateEdit(this.image, this.note);
 
             $.fn.annotateImage.createSaveButton(editable, this.image, annotation);
+            var _form = this.image.canvas.find('.image-annotate-edit-form form');
 
             // Add the delete button
             var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
             del.click(function() {
-                var form = $('.image-annotate-edit-form form');
+                //var form = $('.image-annotate-edit-form form');
+                //var form = ('.image-annotate-edit-form form');
 
                 $.fn.annotateImage.appendPosition(form, editable);
 

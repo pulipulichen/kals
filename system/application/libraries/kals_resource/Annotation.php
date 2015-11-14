@@ -529,7 +529,13 @@ class Annotation extends KALS_resource {
     {
         return $this->feature_coll->get_item($feature_type_id);
     }
+    
+    // ---------------------------------------
 
+    /**
+     * @param String|JSON $value
+     * @return \Annotation
+     */
     public function set_feature_location($value)
     {
         $this->_CI_load('library', 'annotation/Annotation_feature_location', 'annotation_feature_location');
@@ -564,6 +570,8 @@ class Annotation extends KALS_resource {
             return array();
         }
     }
+    
+    // ---------------------------
 
     public function set_recommend_scopes(Annotation_scope_collection $scope_coll)
     {
@@ -595,6 +603,48 @@ class Annotation extends KALS_resource {
         }
         else{
             return NULL;
+        }
+    }
+
+// ---------------------------------------
+
+    /**
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 201511114
+     * @param String|JSON $value
+     * @return \Annotation
+     */
+    public function set_feature_image_spot_position($value)
+    {
+        $this->_CI_load('library', 'annotation/Annotation_feature_image_spot_position', 'annotation_feature_image_spot_position');
+        $feature_type_id = $this->CI->annotation_feature_image_spot_position->get_type_id();
+
+        $value = json_encode($value);
+        $this->set_feature($feature_type_id, $value);
+        return $this;
+    }
+
+    /**
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 201511114
+     * @return array|string
+     */
+    public function get_feature_image_spot_position()
+    {
+        $this->_CI_load('library', 'annotation/Annotation_feature_image_spot_position', 'annotation_feature_image_spot_position');
+        $feature_type_id = $this->CI->annotation_feature_image_spot_position->get_type_id();
+
+        $serialized_json = $this->get_feature($feature_type_id)->get_value();
+
+        if (isset($serialized_json))
+        {
+            $feature_location = json_decode($serialized_json);
+            if (is_array($feature_location) === FALSE)
+            {
+                $feature_location = array($feature_location);
+            }
+            return $feature_location;
+        }
+        else{
+            return array();
         }
     }
 

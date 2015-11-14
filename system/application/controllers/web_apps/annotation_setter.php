@@ -373,7 +373,7 @@ class Annotation_setter extends Web_apps_controller {
             }
             
             if (isset($data->image_spot_position)) {
-                $annotation->set_feature("image_spot_position", $data->image_spot_position);
+                $annotation->set_feature_image_spot_position($data->image_spot_position);
             }
 
         //設定respond
@@ -793,7 +793,13 @@ class Annotation_setter extends Web_apps_controller {
         return $this->_display_jsonp($data, $callback);
     }
     
-    public function image_spot($json) {
+    // ----------------------------------------------------------
+    
+    /**
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151114
+     * @param String|Null $json
+     */
+    public function image_spot($json = NULL) {
         $index = 'create_image_spot_post';
         if ($this->_is_callback($json) == false)
         {
