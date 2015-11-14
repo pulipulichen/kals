@@ -675,7 +675,7 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
                     }
                     else if (_node_name === "img") {
                         // #TODO #107?
-                        $(_child_obj).css("border", "1px solid red");
+                        //$(_child_obj).css("border", "1px solid red");
                     }
                 }
 		
