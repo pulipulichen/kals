@@ -257,6 +257,12 @@
         ///	<summary>
         ///		Creates a Save button on the editable note.
         ///	</summary>
+        
+        if (editable.form.find(".controller .menu .image-annotate-edit-ok").length > 0) {
+            $.test_msg("createSaveButton");
+            //return this;
+        }
+        
         var ok = $('<a class="image-annotate-edit-ok item">' + $.fn.annotateImage.lang.ok + '</a>');
 
         ok.click(function() {
@@ -339,6 +345,12 @@
         ///	<summary>
         ///		Creates a Cancel button on the editable note.
         ///	</summary>
+        
+        if (editable.form.find(".controller .menu .image-annotate-edit-close").length > 0) {
+            $.test_msg("createCancelButton");
+            //return this;
+        }
+        
         var cancel = $('<a class="image-annotate-edit-close item">' + $.fn.annotateImage.lang.cancel + '</a>');
         cancel.click(function() {
             editable.destroy();
@@ -437,15 +449,15 @@
                     + '<div class="controller field"><div class="ui compact brown inverted menu"></div></div>'
                     + '</div>'
                 + '</form>');
-            this.form = form;
             image.canvas.append(this.form);
             
             // @TODO #175
-            Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
+            //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
         }
         else {
             form.show();
         }
+        this.form = form;
         
         form.find(".image-annotate-text").val(this.note.text);
         
@@ -667,36 +679,40 @@
             var _canvas = this.image.canvas;
 
             // Add the delete button
-            var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
-            del.click(function() {
-                //var form = $('.image-annotate-edit-form form');
-                //var form = ('.image-annotate-edit-form form');
+            //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
 
-                $.fn.annotateImage.appendPosition(_form, editable);
+                var del = $('<a class="image-annotate-edit-delete item">' + $.fn.annotateImage.lang.delete + '</a>');
+                del.click(function() {
+                    //var form = $('.image-annotate-edit-form form');
+                    //var form = ('.image-annotate-edit-form form');
 
-                if (annotation.image.useAjax) {
-//                    $.ajax({
-//                        url: annotation.image.deleteUrl,
-//                        data: form.serialize(),
-//                        error: function(e) { alert("An error occured deleting that note."); }
-//                    });
-                    
-                    var _annotation_id = _form.find('[name="id"]').val();
-                    KALS_util.ajax_get({
-                        url: annotation.image.deleteUrl,
-                        data: _annotation_id
-                    });
-                    //$.test_msg(_form.serialize());
-                }
+                    $.fn.annotateImage.appendPosition(_form, editable);
 
-                annotation.image.mode = 'view';
-                _canvas.removeClass("editing");
-                editable.destroy();
-                annotation.destroy();
-            });
-            editable.form.find(".controller .menu").append(del);
+                    if (annotation.image.useAjax) {
+    //                    $.ajax({
+    //                        url: annotation.image.deleteUrl,
+    //                        data: form.serialize(),
+    //                        error: function(e) { alert("An error occured deleting that note."); }
+    //                    });
 
-            $.fn.annotateImage.createCancelButton(editable, this.image);
+                        var _annotation_id = _form.find('[name="id"]').val();
+                        KALS_util.ajax_get({
+                            url: annotation.image.deleteUrl,
+                            data: _annotation_id
+                        });
+                        //$.test_msg(_form.serialize());
+                    }
+
+                    annotation.image.mode = 'view';
+                    _canvas.removeClass("editing");
+                    editable.destroy();
+                    annotation.destroy();
+                });
+                editable.form.find(".controller .menu").append(del);
+                $.fn.annotateImage.createCancelButton(editable, this.image);
+            //}   //if (editable.form.find(".image-annotate-edit-delete").length > 0) {
+
+            
         }
     };
 
