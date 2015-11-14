@@ -524,7 +524,7 @@ Annotation_spot.prototype.set_url = "image_spot/set/";
  * 刪除資料的網址
  * @type String
  */
-Annotation_spot.prototype.del_url = "image_spot/del/";
+Annotation_spot.prototype.del_url = "image_spot/delete/";
 
 Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback) {
     

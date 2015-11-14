@@ -381,6 +381,16 @@ class Image_spot extends Web_apps_controller {
 
         return $return_data;
     }
+    
+    // ------------------------------
+    public function delete($json, $callback = NULL)
+    {
+        require_once 'annotation_setter.php';
+        $annotation_setter = new annotation_setter();
+        $annotation_setter->delete($json, $callback);
+        return true;
+    }
+    
 }
 
 /* End of file annotation_getter.php */

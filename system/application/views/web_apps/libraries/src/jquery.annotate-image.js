@@ -656,14 +656,21 @@
                 //var form = $('.image-annotate-edit-form form');
                 //var form = ('.image-annotate-edit-form form');
 
-                $.fn.annotateImage.appendPosition(form, editable);
+                $.fn.annotateImage.appendPosition(_form, editable);
 
                 if (annotation.image.useAjax) {
-                    $.ajax({
+//                    $.ajax({
+//                        url: annotation.image.deleteUrl,
+//                        data: form.serialize(),
+//                        error: function(e) { alert("An error occured deleting that note."); }
+//                    });
+                    
+                    var _annotation_id = _form.find('[name="id"]').val();
+                    KALS_util.ajax_get({
                         url: annotation.image.deleteUrl,
-                        data: form.serialize(),
-                        error: function(e) { alert("An error occured deleting that note."); }
+                        data: _annotation_id
                     });
+                    //$.test_msg(_form.serialize());
                 }
 
                 annotation.image.mode = 'view';

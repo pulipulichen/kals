@@ -439,6 +439,10 @@ class Annotation extends KALS_resource {
         if ($do_update){
             $annotation->update();
         }
+        
+        if (is_null($annotation->get_id())) {
+            show_error("Annotation create fail. scope_coll: " . $scope_coll . "; user_id: " . $user_id);
+        }
 
         return $annotation;
     }
