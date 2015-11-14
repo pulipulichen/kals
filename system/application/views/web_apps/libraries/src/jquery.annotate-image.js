@@ -452,10 +452,12 @@
             image.canvas.append(form);
             
             // @TODO #175
-            //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
+            Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) ;
+            
         }
         else {
             form.show();
+            //form.css("z-index", 0);
         }
         this.form = form;
         
@@ -551,6 +553,7 @@
         this.area.css('top', '');
         //this.form.remove();
         this.form.hide();
+        //this.form.css("top", "-10000px");
     };
 
     $.fn.annotateView = function(image, note) {
@@ -669,6 +672,9 @@
         if (this.image.mode === 'view') {
             this.image.mode = 'edit';
             var annotation = this;
+            
+            $.save_scroll_position();
+            //$.lock_scroll_once();
 
             // Create/prepare the editable note elements
             //var editable = new $.fn.annotateEdit(this.image, this.note);
@@ -714,9 +720,11 @@
                 
                 $.fn.annotateImage.createCancelButton(editable, this.image);
             
-
-            
-        }
+            setTimeout(function () {
+                //$.test_msg("讀取");
+                $.load_scroll_position();
+            }, 0);
+        }   //if (this.image.mode === 'view') {
     };
 
     $.fn.annotateImage.appendPosition = function(form, editable) {

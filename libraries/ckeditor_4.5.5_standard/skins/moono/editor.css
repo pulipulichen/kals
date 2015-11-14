@@ -231,12 +231,12 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
     text-decoration: none;
     text-overflow: ellipsis;
 }
-* html .cke_panel_listItem a
+* html .KALS .cke_panel_listItem a
 {
     color: #000;
     width: 100%;
 }
-*:first-child+html .cke_panel_listItem a
+*:first-child+html .KALS .cke_panel_listItem a
 {
     color: #000;
 }
@@ -317,19 +317,19 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 {
     float: right;
 }
-.KALS a:hover.cke_colorbox,a:focus.cke_colorbox,a:active.cke_colorbox
+.KALS a:hover.cke_colorbox,.KALS a:focus.cke_colorbox,.KALS a:active.cke_colorbox
 {
     background-color: #e5e5e5;
     border: #b6b6b6 1px solid;
 }
-.KALS a.cke_colorauto,a.cke_colormore
+.KALS a.cke_colorauto,.KALS a.cke_colormore
 {
     border: #fff 1px solid;
     cursor: pointer;
     display: block;
     padding: 2px;
 }
-.KALS a:hover.cke_colorauto,a:hover.cke_colormore,a:focus.cke_colorauto,a:focus.cke_colormore,a:active.cke_colorauto,a:active.cke_colormore
+.KALS a:hover.cke_colorauto,.KALS a:hover.cke_colormore,.KALS a:focus.cke_colorauto,.KALS a:focus.cke_colormore,.KALS a:active.cke_colorauto,.KALS a:active.cke_colormore
 {
     background-color: #e5e5e5;
     border: #b6b6b6 1px solid;
@@ -414,11 +414,11 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 {
     opacity: .5;
 }
-.KALS a.cke_button_on:hover,a.cke_button_on:focus,a.cke_button_on:active
+.KALS a.cke_button_on:hover,.KALS a.cke_button_on:focus,.KALS a.cke_button_on:active
 {
     box-shadow: 0 1px 6px rgba(0,0,0,.7) inset,0 1px 0 rgba(0,0,0,.2);
 }
-.KALS a.cke_button_off:hover,a.cke_button_off:focus,a.cke_button_off:active,a.cke_button_disabled:hover,a.cke_button_disabled:focus,a.cke_button_disabled:active
+.KALS a.cke_button_off:hover,.KALS a.cke_button_off:focus,.KALS a.cke_button_off:active,.KALS a.cke_button_disabled:hover,.KALS a.cke_button_disabled:focus,.KALS a.cke_button_disabled:active
 {
     background: #ccc;
     background-image: linear-gradient(to bottom,#f2f2f2,#ccc);
@@ -848,7 +848,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 {
     float: right;
 }
-.KALS a.cke_path_item:hover,a.cke_path_item:focus,a.cke_path_item:active
+.KALS a.cke_path_item:hover,.KALS a.cke_path_item:focus,.KALS a.cke_path_item:active
 {
     background-color: #bfbfbf;
     border-radius: 2px;
@@ -873,7 +873,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 {
     width: 120px;
 }
-textarea.cke_source
+.KALS textarea.cke_source
 {
     background-color: #fff;
     border: 0;

@@ -54,6 +54,8 @@ this.generic_load = function (_conf, _callback) {
     
     var _libraries = {
         libraries_list: [
+            //"libraries/ckeditor/ckeditor.js",
+            //"libraries/ckeditor_4.5.5_standard/ckeditor.js",
             "libraries/ckeditor/ckeditor.js",
             "libraries/jquery-ui/js/jquery-ui-1.8.5.custom.min.js",
             //"libraries/bootstrap/js/bootstrap.min.js",
