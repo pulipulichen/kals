@@ -868,6 +868,22 @@ $style = implode("}\n", $parts);
         //send_js_header($this->output);
         $this->load->view('web_apps/display', array("data" => $data) );
     }
+    
+    
+    /**
+     * 確認json跟callback
+     * @param String $json
+     * @param String $callback
+     * @return \Image_spot
+     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
+     */
+    protected function _check_json_callback(&$json, &$callback) {
+        if ($callback === NULL && is_string($json)) {
+            $callback = $json;
+            $json = NULL;
+        }
+        return $this;
+    }
 }
 
 /* End of file web_apps.php */

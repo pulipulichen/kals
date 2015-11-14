@@ -507,11 +507,31 @@ Annotation_spot.prototype._add_listener_URL_hash_dispatcher = function () {
 
 // ------------------------------------------------------------------
 
+/**
+ * 取得資料的網址
+ * @type String
+ */
+Annotation_spot.prototype.get_url = "image_spot/get/";
+
+/**
+ * 儲存資料的網址
+ * @type String
+ */
+Annotation_spot.prototype.set_url = "image_spot/set/";
+//Annotation_spot.prototype.set_url = "annotation_setter/image_spot/";
+
+/**
+ * 刪除資料的網址
+ * @type String
+ */
+Annotation_spot.prototype.del_url = "image_spot/del/";
+
 Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback) {
     
     var _types = ["重要", "困惑", "舉例", "摘要"];
     var _user = "布丁";
     
+    var _this = this;
     _images.each(function (_index, _img) {
         _img = $(_img);
         var _scope = $.get_prefixed_id(_img);
@@ -519,8 +539,9 @@ Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback
         //var _url = KALS_context.get_base_url("annotation_getter/image_spot/");
         
         _img.annotateImage({
-            getUrl: "annotation_getter/image_spot/",
-            saveUrl: "annotation_setter/image_spot/",
+            getUrl: _this.get_url,
+            saveUrl: _this.set_url,
+            deleteUrl: _this.del_url,
             scope: _scope,
             editable: true,
             useAjax: true,

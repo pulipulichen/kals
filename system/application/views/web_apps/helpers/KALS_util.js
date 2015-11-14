@@ -609,9 +609,17 @@ KALS_util.ajax_post = function (_config) {
             return;
         }
 
-        if (_debug === false) {
+        $.test_msg("KALS_util.ajax_post", [_debug, _data]);
+        if (_debug === false || _data === "true" || _data === "1" || _data === 1) {
             _layer.remove();
         }
+//        else if (_data !== true && _data !== "true") {
+//            _iframe.css('width', '640px')
+//                .css('height', '480px');
+//            _layer.css('top', '50px')
+//                .css('position', 'fixed')
+//                .css('background-color', 'white');
+//        }
 
         //$.test_msg("KALS_uitl.ajax_post 5", "預備final callback: " +  $.json_encode(_data));
         if ($.is_function(_callback)) {

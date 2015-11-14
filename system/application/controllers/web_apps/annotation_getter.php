@@ -659,21 +659,6 @@ class Annotation_getter extends Web_apps_controller {
     }
     
     /**
-     * 確認json跟callback
-     * @param String $json
-     * @param String $callback
-     * @return \Annotation_getter
-     * @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
-     */
-    function _check_json_callback(&$json, &$callback) {
-        if ($callback === NULL && is_string($json)) {
-            $callback = $json;
-            $json = NULL;
-        }
-        return $this;
-    }
-    
-    /**
      * 判斷推薦標註的等級，目前分成4級
      * @version 20111106 Pudding Chen
      * @param float $score
@@ -1370,58 +1355,6 @@ class Annotation_getter extends Web_apps_controller {
         
         // -------------
         // 輸出
-        
-        return $this->_display_jsonp($output_data, $callback);
-    }
-    
-    // ------------------------------------
-    /**
-     * 取得image_spot指定的標註
-     * @param int $index 標註的位置
-     * @param string $callback
-     */
-    public function image_spot($index, $callback) {
-        $output_data = array();
-        
-        $url = $this->url;
-        $search = new Search_annotation_collection();
-        
-        // 設定範圍
-        $scope_coll = $this->annotation_scope_collection->import_webpage_search_data($url, $index);
-        $search->set_target_scope($scope_coll);
-        
-        foreach ($search AS $search_annotation)
-        {
-            $annotation_data = $search_annotation->export_webpage_imape_spot_data($url);
-            $output_data[] = $annotation_data;
-        }
-
-        
-//        $output_data[] = array(
-//            "top" => 286,
-//            "left" => 161,
-//            "width" => 52,
-//            "height" => 37,
-//            "text" => "Small people on the steps",
-//            "id" => "e69213d0-2eef-40fa-a04b-0ed998f9f1f5",
-//            "editable" => false ,
-//            "type" => "疑惑",
-//            "user" => "楊舜閔",
-//            "timestamp" => 1445172850
-//        );
-//        
-//        $output_data[] = array(
-//            "top" => 134,
-//            "left" => 179,
-//            "width" => 68,
-//            "height" => 74,
-//            "text" => "National Gallery Dome<span style='color:red;'>color</span>",
-//            "id" => "e7f44ac5-bcf2-412d-b440-6dbb8b19ffbe",
-//            "editable" => true,
-//            "type" => "重要",
-//            "user" => "布丁",
-//            "timestamp" => 1447201802
-//        );
         
         return $this->_display_jsonp($output_data, $callback);
     }

@@ -85,7 +85,7 @@ class Annotation_setter extends Web_apps_controller {
         $data = json_to_object($json);
         
         //檢視資料
-        test_msg('annotation_setter._create_process', $json);
+        //test_msg('annotation_setter._create_process', $json);
         //{
         //  "feature_location":[0,2,4],
         //  "note":"%3Cp%3E%0A%09test%3C%2Fp%3E%0A",
@@ -145,6 +145,8 @@ class Annotation_setter extends Web_apps_controller {
             $this->_setup_scores($consensus);
             $consensus->update();
         }
+        
+        // --------------------------------------------
 
         //log區
         $array_data = $annotation->export_webpage_data($this->url);
@@ -816,7 +818,7 @@ class Annotation_setter extends Web_apps_controller {
             
             //test_msg("create_post", 4);
             $this->_display_post_complete();
-        }
+}
         else
         {
             $callback = $json;
