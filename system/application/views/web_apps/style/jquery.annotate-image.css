@@ -1,11 +1,13 @@
 .KALS .image-annotate-add-container {
     position: absolute;
+    bottom: 0px;
 }
 .KALS.not-login .image-annotate-add-container,
 .KALS.not-login .image-annotate-add,
 .KALS.editing .image-annotate-add-container,
-.KALS.editing .image-annotate-add {
-    display: none;
+.KALS.editing .image-annotate-add,
+.KALS.editing .image-annotate-view {
+    display: none !important;
 }
 
 .KALS .image-annotate-add {
@@ -30,7 +32,7 @@
      * @author Pudding 20151104
      */
     position: relative;
-    top: -3em;
+    top: 0;
     left: 0.5rem;
     background-color: white;
     z-index: 1;

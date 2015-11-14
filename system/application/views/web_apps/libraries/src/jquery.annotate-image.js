@@ -414,14 +414,15 @@
         }
 
         // Show the edition canvas and hide the view canvas
-        image.canvas.children('.image-annotate-view').hide();
+        //image.canvas.children('.image-annotate-view').hide();
         image.canvas.children('.image-annotate-edit').show();
 
         // Add the note (which we'll load with the form afterwards)
         //var form = $(".KALS.image-annotate-edit-form");
         
-        //if (form.length === 0) {
-            var form = $('<div class="KALS kals-modal image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
+        var form = image.canvas.find(".KALS.image-annotate-edit-form");
+        if (form.length === 0) {
+            form = $('<div class="KALS kals-modal image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
                 + '<form class="ui form">' 
                     + '<input class="scope" name="scope" type="hidden" value="' + image.scope + '" />'
                     + '<div class="field">'
@@ -436,8 +437,15 @@
                     + '<div class="controller field"><div class="ui compact brown inverted menu"></div></div>'
                     + '</div>'
                 + '</form>');
-        //}
-        this.form = form;
+            this.form = form;
+            image.canvas.append(this.form);
+            
+            // @TODO #175
+            Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
+        }
+        else {
+            form.show();
+        }
         
         form.find(".image-annotate-text").val(this.note.text);
         
@@ -470,13 +478,8 @@
         //form.find(".type").attr("value", this.note.type);
 
         //$('body').append(this.form);
-        image.canvas.append(this.form);
         
         image.canvas.addClass("editing");
-        
-        // @TODO #175
-        //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
-        
         
 //        //image.canvas.append(this.form);
 //        //var _left = this.area.offset().left;
@@ -534,7 +537,8 @@
         this.area.css('width', '');
         this.area.css('left', '');
         this.area.css('top', '');
-        this.form.remove();
+        //this.form.remove();
+        this.form.hide();
     };
 
     $.fn.annotateView = function(image, note) {
