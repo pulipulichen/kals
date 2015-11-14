@@ -27,6 +27,7 @@
 
         // Assign defaults
         this.getUrl = opts.getUrl;
+        this.scope = opts.scope;
         this.saveUrl = opts.saveUrl;
         this.deleteUrl = opts.deleteUrl;
         this.editable = opts.editable;
@@ -48,6 +49,19 @@
         this.canvas.children('.image-annotate-edit').hide();
         this.canvas.children('.image-annotate-view').hide();
         this.image.after(this.canvas);
+        
+        // 設定KALS權限
+        var _not_login_classname = "not-login";
+        this.canvas.addClass(_not_login_classname);
+        var _canvas = this.canvas;
+        KALS_context.auth.add_instant_listener(function (_auth) {
+            if (_auth.is_login()) {
+                _canvas.removeClass(_not_login_classname);
+            }
+            else {
+                _canvas.addClass(_not_login_classname);
+            }
+        });
 
         // Give the canvas and the container their size and background
         this.canvas.height(this.height());
@@ -184,10 +198,23 @@
         ///		Loads the annotations from the "getUrl" property passed in on the
         ///     options object.
         ///	</summary>
-        $.getJSON(image.getUrl + '?ticks=' + $.fn.annotateImage.getTicks(), function(data) {
-            image.notes = data;
-            $.fn.annotateImage.load(image);
+        //var _url = image.getUrl + '?ticks=' + $.fn.annotateImage.getTicks();
+        
+//        var _url = image.getUrl + '?ticks=' + $.fn.annotateImage.getTicks();
+//        $.getJSON(_url, function(data) {
+//            image.notes = data;
+//            $.fn.annotateImage.load(image);
+//        });
+        
+        KALS_util.ajax_get({
+            "url": image.getUrl,
+            "data": image.scope,
+            "callback": function (_data) {
+                image.notes = _data;
+                $.fn.annotateImage.load(image);
+            }
         });
+        
     };
 
     $.fn.annotateImage.load = function(image) {
@@ -231,8 +258,8 @@
         var ok = $('<a class="image-annotate-edit-ok item">' + $.fn.annotateImage.lang.ok + '</a>');
 
         ok.click(function() {
-            var form = $('.image-annotate-edit-form form');
-            var text = $('.image-annotate-text').val();
+            var form = image.canvas.find('.image-annotate-edit-form form');
+            var text = form.find('.image-annotate-text').val();
             $.fn.annotateImage.appendPosition(form, editable);
             image.mode = 'view';
             
@@ -251,6 +278,17 @@
 //		    },
 //                    dataType: "json"
 //                });
+                KALS_util.ajax_post({
+                    url: image.saveUrl,
+                    data: form.serialize(),
+                    callback: function(data) {
+                        if (data.annotation_id !== undefined) {
+                            editable.note.id = data.annotation_id;
+                        }
+		    },
+                    exception_handle: function(e) { alert("An error occured saving that note."); }
+                    //dataType: "json"
+                });
             }
 
             // Add to canvas
@@ -355,8 +393,10 @@
         if (form.length === 0) {
             form = $('<div class="KALS kals-modal image-annotate-edit-form  ui tertiary inverted yellow raised segment">'
                 + '<form class="ui form">' 
+                    + '<input class="scope" name="scope" type="hidden" value="' + image.scope + '" />'
                     + '<div class="field">'
-                        + '<label class="user"></label>'
+                        + '<label class="user-name"></label>'
+                        + '<input class="user-id" name="user_id" type="hidden" />'
                         + '<select name="type" class="type"></select>'
                     + '</div>'
                     + '<div class="field note-editor">'
@@ -382,47 +422,68 @@
             _type_select.append(_option);
         }
         
-        var _user = this.note.user;
-        if (_user === undefined) {
-            if (this.image.user) {
-                _user = this.image.user;
-            }
-            else {
-                _user = this.get_user_name();
-            }
-        }
-        form.find(".user").html(_user);
+        //var _user = this.note.user;
+        //var _user = KALS_context.user.get_name();
+//        if (_user === undefined) {
+//            //if (this.image.user) {
+////            if (KALS_context.user.get_id()) {
+////                //_user = this.image.user;
+////                _user = KALS_context.user.get_id();
+////            }
+////            else {
+////                _user = this.get_user_name();
+////            }
+//            _user = KALS_context.user.get_name();
+//        }
+        form.find(".user-name").html(KALS_context.user.get_name());
+        form.find(".user-id").html(KALS_context.user.get_id());
         //form.find(".type").attr("value", this.note.type);
 
-        $('body').append(this.form);
+        //$('body').append(this.form);
+        image.canvas.append(this.form);
+        
+        image.canvas.addClass("editing");
         
         // @TODO #175
         //Note_editor_ckeditor.initialize_ckeditor(form.find("textarea.image-annotate-text"), KALS_CONFIG.ckeditor_config ) 
         
         
-        //image.canvas.append(this.form);
-        this.form.css('left', this.area.offset().left + 'px');
-        this.form.css('top', (parseInt(this.area.offset().top) + parseInt(this.area.height()) + 7) + 'px');
+//        //image.canvas.append(this.form);
+//        //var _left = this.area.offset().left;
+//        var _left = parseInt(this.area.offset().left, 10) - image.canvas.offset().left - 1;
+//        this.form.css('left', _left + 'px');
+//        //var _top = (parseInt(this.area.offset().top) + parseInt(this.area.height()) + 7);
+//        var _top = (parseInt(this.area.offset().top, 10) - image.canvas.offset().top + 14);
+//        this.form.css('top', _top + 'px');
+        
+        var _canvas = image.canvas;
+        var _form_set_position = function () {
+            var _left = parseInt(area.offset().left, 10) - _canvas.offset().left - 1;
+            form.css('left', _left + 'px');
+            var _top = (parseInt(area.offset().top, 10) + parseInt(area.height(), 10) - _canvas.offset().top - 14);
+            //$.test_msg([_top, parseInt(area.offset().top, 10), parseInt(area.height(), 10), _canvas.offset().top]);
+            form.css('top', _top + 'px');
+        };
+        
+        _form_set_position();
 
         // Set the area as a draggable/resizable element contained in the image canvas.
         // Would be better to use the containment option for resizable but buggy
+        
         area.resizable({
             handles: 'all',
 
             stop: function(e, ui) {
-                form.css('left', area.offset().left + 'px');
-                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 2) + 'px');
+                _form_set_position();
             }
         })
         .draggable({
             containment: image.canvas,
             drag: function(e, ui) {
-                form.css('left', area.offset().left + 'px');
-                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 2) + 'px');
+                _form_set_position();
             },
             stop: function(e, ui) {
-                form.css('left', area.offset().left + 'px');
-                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 2) + 'px');
+                _form_set_position();
             }
         });
         return this;

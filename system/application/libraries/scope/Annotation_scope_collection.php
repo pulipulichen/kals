@@ -712,6 +712,15 @@ class Annotation_scope_collection extends Generic_association_collection {
         }
         
         $members = array();
+        
+        if (is_int($scope_indices) || is_string($scope_indices)) {
+            $scope_indices = array(
+                array(
+                    $scope_indices,
+                    $scope_indices
+                )
+            );
+        }
 
         foreach ($scope_indices AS $scope_index)
         {
@@ -733,8 +742,9 @@ class Annotation_scope_collection extends Generic_association_collection {
                 {
                     $text = $anchor_text_id;
 
-                    if (is_string(($text)))
+                    if (is_string(($text))) {
                         $text = urldecode($text);
+                    }
 
                     $this->_CI_load('library', 'scope/Scope_anchor_text');
                     $anchor_text_id = $this->CI->scope_anchor_text->filter_anchor_text_id($text);

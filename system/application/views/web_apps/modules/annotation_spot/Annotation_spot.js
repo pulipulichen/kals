@@ -505,5 +505,34 @@ Annotation_spot.prototype._add_listener_URL_hash_dispatcher = function () {
     return this;
 };
 
+// ------------------------------------------------------------------
+
+Annotation_spot.prototype.initialize_jquery_image = function (_images, _callback) {
+    
+    var _types = ["重要", "困惑", "舉例", "摘要"];
+    var _user = "布丁";
+    
+    _images.each(function (_index, _img) {
+        _img = $(_img);
+        var _scope = $.get_prefixed_id(_img);
+        
+        //var _url = KALS_context.get_base_url("annotation_getter/image_spot/");
+        
+        _img.annotateImage({
+            getUrl: "annotation_getter/image_spot/",
+            saveUrl: "annotation_setter/image_spot/",
+            scope: _scope,
+            editable: true,
+            useAjax: true,
+            //notes: _notes,
+            types: _types,
+            user: _user
+        });
+    });
+    
+    $.trigger_callback(_callback);
+    return this;
+};
+
 /* End of file Annotation_spot */
 /* Location: ./system/application/views/web_apps/extension/dashboard/Annotation_spot.js */

@@ -513,6 +513,7 @@ Selectable_text_spot.prototype.is_img_spot = function (_obj) {
     }
     
     _tag_name = _tag_name.toLowerCase();
+    //$.test_msg("is_img_spot", [_tag_name, (_tag_name === "img")]);
     return (_tag_name === "img");
 };
 
@@ -630,6 +631,17 @@ Selectable_text_spot.prototype.setup_word_spot_selectable = function (_callback)
         $.trigger_callback(_callback);
     }
     
+    return this;
+};
+
+/**
+ * 讓圖片都保持在可選取的狀態
+ * 
+ * @param {function} _callback
+ */
+Selectable_text_spot.prototype.setup_image_spot_selectable = function (_callback) {
+    var _img = $("." + this.img_spot_classname);
+    KALS_context.module.get_module("Annotation_spot").initialize_jquery_image(_img, _callback);
     return this;
 };
 

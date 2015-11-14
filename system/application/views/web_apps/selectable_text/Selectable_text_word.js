@@ -11,6 +11,7 @@
  * @link        https://github.com/pulipulichen/kals
  * @version     1.0 2014/1/2 下午 08:25:49
  */
+/*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
 
 /**
  * @memberOf {Selectable_text_word}
@@ -107,7 +108,7 @@ Selectable_text_word.prototype.get_word_id_prefix = function () {
 
 /**
  * 從ID取得Word
- * @param {number} _id
+ * @param {number} _index
  * @return {jQuery}
  */
 Selectable_text_word.prototype.get_word_by_index = function(_index) {
@@ -287,18 +288,109 @@ Selectable_text_word.prototype.create_selectable_word = function(_para_id, _poin
  * @type {jQuery}
  * @author Pudding 20151029
  */
-Selectable_text_word.prototype.create_selectable_word_spot = function(_para_id, _point_id, _word) {
+//Selectable_text_word.prototype.create_selectable_word_spot = function(_para_id, _point_id, _word) {
+//    
+//    _word.className =  $.trim(_word.className + " " + this.word_classname
+//        + ' ' + this._selectable_text.tooltip.trigger_classname);
+//
+//    var _word_id = this.word_id_prefix + _point_id; 
+//
+//    _word.id = _word_id;
+//
+//    KALS_context.progress.add_count();
+// 
+//    return _word;
+//};
+
+/**
+ * 建立一個可選取的標註討論點
+ * @param {number} _para_id Paragraph ID
+ * @param {number} _point_id Word ID
+ * @param {string} _text 內容文字
+ * @type {jQuery}
+ * @author Pudding 20151029
+ */
+//Selectable_text_word.prototype.create_selectable_image_spot = function(_para_id, _point_id, _word) {
+//    
+//    _word.className =  $.trim(_word.className + " " + this.word_classname);
+//
+//    var _word_id = this.word_id_prefix + _point_id; 
+//
+//    _word.id = _word_id;
+//
+//    KALS_context.progress.add_count();
+// 
+//    return _word;
+//};
+
+
+/**
+ * 初始化next_element，只用於setup_selectable_element
+ * @param {jQuery} _child_obj
+ * @returns {HTMLNode}
+ * @author Pudding 20151113
+ */
+Selectable_text_word.prototype.create_selectable_word_spot = function (_child_obj) {
+    // 變數簡化
+    var _selectable_text_paragraph = this._selectable_text.paragraph;
+    var _selectable_text_word = this;
+    var _selectable_text_spot = this._selectable_text.spot;
+    //var _selectable_text_sentence = this._selectable_text.sentence;
+    //var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
+    //var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
     
-    _word.className =  $.trim(_word.className + " " + this.word_classname
+    
+    var _next_element = $(_child_obj).clone().get(0);
+//    _next_element = _selectable_text_word.create_selectable_word_spot(
+//            _selectable_text_paragraph.paragraph_count
+//            , _selectable_text_word.word_count
+//            , _next_element
+//    );
+    
+    _next_element.className =  $.trim(_next_element.className + " " + this.word_classname
         + ' ' + this._selectable_text.tooltip.trigger_classname);
 
-    var _word_id = this.word_id_prefix + _point_id; 
+    var _word_id = this.word_id_prefix + _selectable_text_word.word_count; 
 
-    _word.id = _word_id;
+    _next_element.id = _word_id;
+
+    KALS_context.progress.add_count();
+    
+    _selectable_text_word.word_count++;
+    
+    return _next_element;
+};
+
+/**
+ * 初始化next_element，只用於setup_selectable_element
+ * @param {jQuery} _child_obj
+ * @returns {HTMLNode}
+ * @author Pudding 20151113
+ */
+Selectable_text_word.prototype.create_selectable_image_spot = function (_child_obj) {
+    // 變數簡化
+    var _selectable_text_paragraph = this._selectable_text.paragraph;
+    var _selectable_text_word = this;
+    var _selectable_text_spot = this._selectable_text.spot;
+    //var _selectable_text_sentence = this._selectable_text.sentence;
+    //var _sentence_punctuation_class_name = this._selectable_text.sentence.sententce_punctuation_classname;
+    //var _punctuation_classname = this._selectable_text.sentence.punctuation_classname;
+    
+    //$.test_msg("create_selectable_image_spot", _child_obj.tagName);
+    
+    var _next_element = $(_child_obj).clone().get(0);
+    
+    _next_element.className =  $.trim(_next_element.className + " " + _selectable_text_spot.img_spot_classname);
+
+    var _word_id = this.word_id_prefix + _selectable_text_word.word_count; 
+
+    _next_element.id = _word_id;
 
     KALS_context.progress.add_count();
  
-    return _word;
+    _selectable_text_word.word_count++;
+    
+    return _next_element;
 };
 
 /**
@@ -308,22 +400,25 @@ Selectable_text_word.prototype.create_selectable_word_spot = function(_para_id, 
  * @param {string} _text 內容文字
  * @type {jQuery}
  * @author Pudding 20151113
+ * @deprecated Pudding 20151113
  */
-Selectable_text_word.prototype.create_selectable_img_spot = function(_para_id, _point_id, _word) {
-    
-    var _spot = this._selectable_text.spot;
-    
-    _word.className =  $.trim(_word.className 
-            + " " + _spot.img_spot_classname);
+//Selectable_text_word.prototype.create_selectable_img_spot = function(_para_id, _point_id, _word) {
+//    
+//    var _spot = this._selectable_text.spot;
+//    
+//    _word.className =  $.trim(_word.className 
+//            + " " + _spot.img_spot_classname);
+//
+//    var _word_id = this.word_id_prefix + _point_id; 
+//
+//    _word.id = _word_id;
+//
+//    KALS_context.progress.add_count();
+// 
+//    return _word;
+//};
 
-    var _word_id = this.word_id_prefix + _point_id; 
-
-    _word.id = _word_id;
-
-    KALS_context.progress.add_count();
- 
-    return _word;
-};
+// -------------------------------------------
 
 Selectable_text_word.prototype.KALS_SELECT_MOUSEDOWN_LOCK;
 Selectable_text_word.prototype.KALS_SELECT_LOCK;

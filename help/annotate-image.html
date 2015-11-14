@@ -147,8 +147,8 @@ KALS_CONFIG = {
              * 測試
              */
             function () {
-                _annotate_image("#scope img");
-                $("#scope img").mouseover();
+                //_annotate_image("#scope img");
+                //$("#scope img").mouseover();
                 //$("#scope .image-annotate-add").click();
                 
                 //var _current =  new Date().getTime();
@@ -164,6 +164,7 @@ KALS_CONFIG = {
 <!-- [/KALS] -->
 <script language="javascript">
             _annotate_image = function (_selector) {
+                return;
                 //$.getJSON("annotate.notes.json", function (_notes) {
                     $(_selector).annotateImage({
                         getUrl: "annotate-image.json",

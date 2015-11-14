@@ -1,8 +1,14 @@
-.image-annotate-add-container {
+.KALS .image-annotate-add-container {
     position: absolute;
 }
+.KALS.not-login .image-annotate-add-container,
+.KALS.not-login .image-annotate-add,
+.KALS.editing .image-annotate-add-container,
+.KALS.editing .image-annotate-add {
+    display: none;
+}
 
-.image-annotate-add {
+.KALS .image-annotate-add {
     /*background: #fff url(../images/asterisk_yellow.png) no-repeat 3px 3px;*/
     border: solid 1px #ccc !important;
     /*color: #000 !important;*/
@@ -14,7 +20,7 @@
     /* height: 24px; */
     line-height: 20px;    
     /*padding: 2px 0 2px 24px;*/
-    padding: 2px 0;
+    padding: 2px 5px;
     text-align: center;
     margin: 5px 0;
     /*width: 100px;*/
@@ -27,11 +33,11 @@
     top: -3em;
     left: 0.5rem;
     background-color: white;
-    z-index: 2;
+    z-index: 1;
     opacity: 0.7;
 }
 
-.image-annotate-edit-form .field {
+.KALS .image-annotate-edit-form .field {
     margin-bottom: 0.3rem !important;
 }
 
@@ -46,7 +52,7 @@
     top: -0.1rem;
 } */
 
-.KALS.image-annotate-edit-form label.user {
+.KALS.image-annotate-edit-form label.user-name {
     line-height: 2rem;
     display: inline-block;
 }
@@ -60,11 +66,11 @@
     padding-bottom: 0;
 }
 
-.image-annotate-add:hover {
+.KALS .image-annotate-add:hover {
     background-color: #eee;
     opacity: 1;
 }
-.image-annotate-canvas {
+.KALS.image-annotate-canvas {
     border: solid 1px #ccc;
     background-position: left top;
     background-repeat: no-repeat;
@@ -72,31 +78,31 @@
     margin: 0;
     position: relative;
 }
-.image-annotate-view {
+.KALS .image-annotate-view {
     display: none;
     position: relative;
 }
-.image-annotate-area {
+.KALS .image-annotate-area {
     border: 1px solid #000000;
     position: absolute;
     display: inline-block;
     border-radius: 10px;
 }
-.image-annotate-area div {
+.KALS .image-annotate-area div {
     border: 1px solid #FFFFFF;
     display: block;
     border-radius: 10px;
 }
-.image-annotate-area-hover div {
+.KALS .image-annotate-area-hover div {
     border-color: yellow !important;
 }
-.image-annotate-area-editable {
+.KALS .image-annotate-area-editable {
     cursor: pointer;
 }
-.image-annotate-area-editable-hover div {
+.KALS .image-annotate-area-editable-hover div {
     border-color: #00AD00 !important;
 }
-.image-annotate-note {
+.KALS .image-annotate-note {
     background: #E7FFE7 none repeat scroll 0 0;
     border: solid 1px #397F39;
     color: #000;
@@ -111,7 +117,7 @@
 /**
  * @author Pudding 20151104 
  */
-.image-annotate-note .type {
+.KALS .image-annotate-note .type {
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #ccc;
@@ -120,7 +126,7 @@
     padding: 0 3px;
 }
 
-.image-annotate-note .text {
+.KALS .image-annotate-note .text {
     display: block;
     
 }
@@ -128,16 +134,16 @@
 /**
  * @author Pudding 20151110
  */
-.image-annotate-note .timestamp {
+.KALS .image-annotate-note .timestamp {
     display: block;
     text-align: right;
 }
 
-.image-annotate-note .actions {
+.KALS .image-annotate-note .actions {
     display: block;
     font-size: 80%;
 }
-.image-annotate-edit {
+.KALS .image-annotate-edit {
     display: none;
 }
 .KALS.image-annotate-edit-form {
@@ -148,17 +154,18 @@
     position: absolute !important;
     width: 370px;
     box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08) !important;
+    z-index: 3;
 }
-.image-annotate-edit-form form {
+.KALS .image-annotate-edit-form form {
     clear: right;
     margin: 0 !important;
     padding: 0;
     z-index: 999;
 }
-.image-annotate-edit-form .box {
+.KALS .image-annotate-edit-form .box {
     margin: 0;
 }
-.image-annotate-edit-form input.form-text, .image-annotate-edit-form #edit-comment-wrapper textarea {
+.KALS .image-annotate-edit-form input.form-text, .image-annotate-edit-form #edit-comment-wrapper textarea {
     width: 90%;
 }
 .KALS.image-annotate-edit-form textarea.image-annotate-text {
@@ -169,20 +176,20 @@
     font-size: 12px;    */
     /*width: 248px;*/
 }
-.image-annotate-edit-form fieldset {
+.KALS .image-annotate-edit-form fieldset {
     background: transparent none repeat scroll 0 0;
 }
-.image-annotate-edit-form .form-item {
+.KALS .image-annotate-edit-form .form-item {
     margin: 0 0 5px;
 }
-.image-annotate-edit-form .form-button, .image-annotate-edit-form .form-submit {
+.KALS .image-annotate-edit-form .form-button, .image-annotate-edit-form .form-submit {
     margin: 0;
 }
 
 /**
  * @author Pudding 20151104
  */
-.image-annotate-edit-form .controller {
+.KALS .image-annotate-edit-form .controller {
     text-align: right;
 }
 
@@ -196,10 +203,10 @@
     padding: 0 0.5rem;
 }
 
-.image-annotate-edit-form a:hover {
+.KALS .image-annotate-edit-form a:hover {
     background-color: #eee;
 }
-.image-annotate-edit-area {
+.KALS .image-annotate-edit-area {
     border: 1px solid black;
     cursor: move;
     display: block;
@@ -211,7 +218,7 @@
     top: 10px;
     width: 60px;
 }
-.image-annotate-edit-area .ui-resizable-handle {
+.KALS .image-annotate-edit-area .ui-resizable-handle {
     opacity: 0.8;
 }
 /*
@@ -225,71 +232,76 @@
     background-image: url(../images/cross.png);
 }
 */
-.ui-resizable {
+
+<!-- ui-resizable --------------------------- -->
+
+.KALS .ui-resizable {
     position: relative;
 }
-.ui-resizable-handle {
+.KALS .ui-resizable-handle {
     position: absolute;
     font-size: 0.1px;
     z-index: 99999;
     display: block;
 }
-.ui-resizable-disabled .ui-resizable-handle, .ui-resizable- autohide .ui-resizable-handle {
+.KALS .ui-resizable-disabled .ui-resizable-handle, .ui-resizable- autohide .ui-resizable-handle {
     display: block;
 }
-.ui-resizable-n {
+.KALS .ui-resizable-n {
     cursor: n-resize;
     height: 7px;
     width: 100%;
     top: -5px;
     left: 0px;
 }
-.ui-resizable-s {
+.KALS .ui-resizable-s {
     cursor: s-resize;
     height: 7px;
     width: 100%;
     bottom: -5px;
     left: 0px;
 }
-.ui-resizable-e {
+.KALS .ui-resizable-e {
     cursor: e-resize;
     width: 7px;
     right: -5px;
     top: 0px;
     height: 100%;
 }
-.ui-resizable-w {
+.KALS .ui-resizable-w {
     cursor: w-resize;
     width: 7px;
     left: -5px;
     top: 0px;
     height: 100%;
 }
-.ui-resizable-se {
+.KALS .ui-resizable-se {
     cursor: se-resize;
     width: 12px;
     height: 12px;
     right: 1px;
     bottom: 1px;
 }
-.ui-resizable-sw {
+.KALS .ui-resizable-sw {
     cursor: sw-resize;
     width: 9px;
     height: 9px;
     left: -5px;
     bottom: -5px;
 }
-.ui-resizable-nw {
+.KALS .ui-resizable-nw {
     cursor: nw-resize;
     width: 9px;
     height: 9px;
     left: -5px;
     top: -5px;
 }
-.ui-resizable-ne {
+.KALS .ui-resizable-ne {
     cursor: ne-resize;
     width: 9px;
     height: 9px;
     right: -5px;
     top: -5px;
 }
+
+<!-- ui-resizable --------------------------- -->

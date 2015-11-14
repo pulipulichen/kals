@@ -311,7 +311,7 @@ if ( ! function_exists('kals_log'))
      * 
      * 
      * @param CI_DB $db
-     * @param String|Int $action
+     * @param String|Int $action 如果是用string，則會記錄在資料庫的 action_key
      * @param Object $data
      */
     function kals_log($db, $action, $data = array())
@@ -341,7 +341,8 @@ if ( ! function_exists('kals_log'))
             if (isset($data['memo']))
             {
                 $note = $data['memo'];
-                if (is_array($note) || is_object($note)) {
+                if (is_array($note) 
+                        || is_object($note)) {
                     $note = json_encode($note);
                 }
 

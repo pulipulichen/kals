@@ -1373,6 +1373,45 @@ class Annotation_getter extends Web_apps_controller {
         
         return $this->_display_jsonp($output_data, $callback);
     }
+    
+    // ------------------------------------
+    /**
+     * 取得image_spot指定的標註
+     * @param int $index 標註的位置
+     * @param string $callback
+     */
+    public function image_spot($index, $callback) {
+        $output_data = array();
+        
+        $output_data[] = array(
+            "top" => 286,
+            "left" => 161,
+            "width" => 52,
+            "height" => 37,
+            "text" => "Small people on the steps",
+            "id" => "e69213d0-2eef-40fa-a04b-0ed998f9f1f5",
+            "editable" => false ,
+            "type" => "疑惑",
+            "user" => "楊舜閔",
+            "timestamp" => 1445172850
+        );
+        
+        $output_data[] = array(
+            "top" => 134,
+            "left" => 179,
+            "width" => 68,
+            "height" => 74,
+            "text" => "National Gallery Dome<span style='color:red;'>color</span>",
+            "id" => "e7f44ac5-bcf2-412d-b440-6dbb8b19ffbe",
+            "editable" => true,
+            "type" => "重要",
+            "user" => "布丁",
+            "timestamp" => 1447201802
+        );
+        
+        return $this->_display_jsonp($output_data, $callback);
+    }
+    
 }
 
 /* End of file annotation_getter.php */

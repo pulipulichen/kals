@@ -340,6 +340,14 @@ Selectable_text.prototype.initialize = function (_callback) {
         return _this.spot.setup_word_spot_selectable(_callback);
     };
     
+    /**
+     * @author Pudding 20151111
+     * @param {Function} _callback
+     */
+    var _task_setup_image_spot_selectable = function (_callback) {
+        return _this.spot.setup_image_spot_selectable(_callback);
+    };
+    
     var _task_complete = function (_callback) {
         //$.test_msg("Selectacble_text _task_complete");
         KALS_context.init_profile.add_listener(function () {
@@ -404,6 +412,7 @@ Selectable_text.prototype.initialize = function (_callback) {
             
             _task_list.push(_task_setup_word_selectable);
             _task_list.push(_task_setup_word_spot_selectable);
+            _task_list.push(_task_setup_image_spot_selectable);
             _task_list.push(_task_progress);
             _task_list.push(_task_complete);
             _task_list.push(_callback);
@@ -420,6 +429,7 @@ Selectable_text.prototype.initialize = function (_callback) {
         
         _task_list.push(_task_setup_word_selectable);
         _task_list.push(_task_setup_word_spot_selectable);
+        _task_list.push(_task_setup_image_spot_selectable);
         _task_list.push(_task_progress);
         _task_list.push(_task_complete);
         _task_list.push(_callback);
@@ -673,13 +683,15 @@ Selectable_text.prototype.setup_selectable_element = function (_element, _callba
             };  // var _deeper_parse = function () {
             
             if (_this.spot.is_annotation_spot(_child_obj)) {
-                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, true);
+                //var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, true);
+                var _next_element = _this.word.create_selectable_word_spot(_child_obj);
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
                 _selectable_text_word.word_count++;
                 _next_loop();
             }
             else if (_this.spot.is_img_spot(_child_obj)) {
-                var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, false);
+                //var _next_element = _this._setup_selectable_element_clone_next_element(_child_obj, false);
+                var _next_element = _this.word.create_selectable_image_spot(_child_obj);
                 //$(_next_element).css("border", "3px solid red");
                 //$.test_msg("找到");
                 _this._setup_selectable_element_insert_action(_child_obj, _next_element);
