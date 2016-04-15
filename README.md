@@ -50,6 +50,10 @@ KALS!標註工具會在網頁上將重要性較高的範圍文字標示為「紅
 - [2009年KALS的使用教學](http://pulipuli.blogspot.tw/2010/11/20101127kals.html)
 - [KALS_CONFIG的設定](https://github.com/pulipulichen/kals/blob/master/system/application/views/web_apps/core/KALS_CONFIG.js)
 
+## 系統安裝教學
+
+- https://github.com/pulipulichen/kals/wiki/KALS%E9%96%8B%E7%99%BC%E7%92%B0%E5%A2%83%E6%9E%B6%E8%A8%AD%E6%95%99%E5%AD%B8
+
 ## 其他參考網頁
 
 - [Markdown 語法說明](http://zh.wikipedia.org/wiki/Markdown/)
