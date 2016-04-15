@@ -14,3 +14,4 @@ test/
 Thumbs.db
 /libraries/ckfinder/userfiles/
 !/test/
+/system/application/config/database.php
