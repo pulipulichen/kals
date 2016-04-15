@@ -52,7 +52,7 @@ KALS!標註工具會在網頁上將重要性較高的範圍文字標示為「紅
 
 ## 系統安裝教學
 
-- https://github.com/pulipulichen/kals/wiki/KALS%E9%96%8B%E7%99%BC%E7%92%B0%E5%A2%83%E6%9E%B6%E8%A8%AD%E6%95%99%E5%AD%B8
+- [WIKI網頁] (https://github.com/pulipulichen/kals/wiki/KALS%E9%96%8B%E7%99%BC%E7%92%B0%E5%A2%83%E6%9E%B6%E8%A8%AD%E6%95%99%E5%AD%B8)
 
 ## 其他參考網頁
 
@@ -66,4 +66,3 @@ KALS!標註工具會在網頁上將重要性較高的範圍文字標示為「紅
 ````js
 /*global KALS_CONFIG:false */ /*global KALS_context:false */ /*global KALS_util:false */ /*global KALS_text:false */ /*global KALS_toolbar:false */ /*global KALS_window:false */
 ````
-
