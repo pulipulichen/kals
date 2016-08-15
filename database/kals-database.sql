@@ -2,11 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5beta1
+-- Dumped by pg_dump version 9.5beta1
+
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -29,7 +34,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: anchor_text; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: anchor_text; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE anchor_text (
@@ -40,7 +45,7 @@ CREATE TABLE anchor_text (
 );
 
 
-ALTER TABLE public.anchor_text OWNER TO kals;
+ALTER TABLE anchor_text OWNER TO kals;
 
 --
 -- Name: TABLE anchor_text; Type: COMMENT; Schema: public; Owner: kals
@@ -61,7 +66,7 @@ CREATE SEQUENCE anchor_text_anchor_text_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.anchor_text_anchor_text_id_seq OWNER TO kals;
+ALTER TABLE anchor_text_anchor_text_id_seq OWNER TO kals;
 
 --
 -- Name: anchor_text_anchor_text_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -71,7 +76,7 @@ ALTER SEQUENCE anchor_text_anchor_text_id_seq OWNED BY anchor_text.anchor_text_i
 
 
 --
--- Name: annotation; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE annotation (
@@ -87,7 +92,7 @@ CREATE TABLE annotation (
 );
 
 
-ALTER TABLE public.annotation OWNER TO kals;
+ALTER TABLE annotation OWNER TO kals;
 
 --
 -- Name: TABLE annotation; Type: COMMENT; Schema: public; Owner: kals
@@ -97,7 +102,7 @@ COMMENT ON TABLE annotation IS '標註資料';
 
 
 --
--- Name: annotation2scope; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation2scope; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE annotation2scope (
@@ -107,10 +112,10 @@ CREATE TABLE annotation2scope (
 );
 
 
-ALTER TABLE public.annotation2scope OWNER TO kals;
+ALTER TABLE annotation2scope OWNER TO kals;
 
 --
--- Name: scope; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: scope; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE scope (
@@ -118,11 +123,12 @@ CREATE TABLE scope (
     webpage_id integer NOT NULL,
     from_index integer NOT NULL,
     to_index integer NOT NULL,
-    anchor_text_id integer NOT NULL
+    anchor_text_id integer NOT NULL,
+    scope_type text
 );
 
 
-ALTER TABLE public.scope OWNER TO kals;
+ALTER TABLE scope OWNER TO kals;
 
 --
 -- Name: TABLE scope; Type: COMMENT; Schema: public; Owner: kals
@@ -132,14 +138,29 @@ COMMENT ON TABLE scope IS '標註範圍';
 
 
 --
+-- Name: COLUMN scope.scope_type; Type: COMMENT; Schema: public; Owner: kals
+--
+
+COMMENT ON COLUMN scope.scope_type IS '沒有資料的話，就帶表示word';
+
+
+--
 -- Name: annotation2anchor_text; Type: VIEW; Schema: public; Owner: kals
 --
 
 CREATE VIEW annotation2anchor_text AS
-    SELECT annotation.annotation_id, anchor_text.anchor_text_id, anchor_text.text, anchor_text.indexed, anchor_text.segmented FROM (((annotation JOIN annotation2scope USING (annotation_id)) JOIN scope USING (scope_id)) JOIN anchor_text USING (anchor_text_id));
+ SELECT annotation.annotation_id,
+    anchor_text.anchor_text_id,
+    anchor_text.text,
+    anchor_text.indexed,
+    anchor_text.segmented
+   FROM (((annotation
+     JOIN annotation2scope USING (annotation_id))
+     JOIN scope USING (scope_id))
+     JOIN anchor_text USING (anchor_text_id));
 
 
-ALTER TABLE public.annotation2anchor_text OWNER TO kals;
+ALTER TABLE annotation2anchor_text OWNER TO kals;
 
 --
 -- Name: VIEW annotation2anchor_text; Type: COMMENT; Schema: public; Owner: kals
@@ -149,7 +170,7 @@ COMMENT ON VIEW annotation2anchor_text IS '標註對應的錨點文字';
 
 
 --
--- Name: annotation2like; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation2like; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE annotation2like (
@@ -164,7 +185,7 @@ CREATE TABLE annotation2like (
 );
 
 
-ALTER TABLE public.annotation2like OWNER TO kals;
+ALTER TABLE annotation2like OWNER TO kals;
 
 --
 -- Name: annotation2like_annotation2like_id_seq; Type: SEQUENCE; Schema: public; Owner: kals
@@ -178,7 +199,7 @@ CREATE SEQUENCE annotation2like_annotation2like_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.annotation2like_annotation2like_id_seq OWNER TO kals;
+ALTER TABLE annotation2like_annotation2like_id_seq OWNER TO kals;
 
 --
 -- Name: annotation2like_annotation2like_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -192,10 +213,15 @@ ALTER SEQUENCE annotation2like_annotation2like_id_seq OWNED BY annotation2like.a
 --
 
 CREATE VIEW annotation2like_count AS
-    SELECT annotation.annotation_id, count(annotation2like.user_id) AS like_count FROM (annotation LEFT JOIN annotation2like ON ((((annotation.annotation_id = annotation2like.annotation_id) AND (annotation2like.canceled = false)) AND (annotation.user_id <> annotation2like.user_id)))) GROUP BY annotation.annotation_id ORDER BY annotation.annotation_id;
+ SELECT annotation.annotation_id,
+    count(annotation2like.user_id) AS like_count
+   FROM (annotation
+     LEFT JOIN annotation2like ON (((annotation.annotation_id = annotation2like.annotation_id) AND (annotation2like.canceled = false) AND (annotation.user_id <> annotation2like.user_id))))
+  GROUP BY annotation.annotation_id
+  ORDER BY annotation.annotation_id;
 
 
-ALTER TABLE public.annotation2like_count OWNER TO kals;
+ALTER TABLE annotation2like_count OWNER TO kals;
 
 --
 -- Name: VIEW annotation2like_count; Type: COMMENT; Schema: public; Owner: kals
@@ -205,7 +231,7 @@ COMMENT ON VIEW annotation2like_count IS '標註對應的喜愛次數';
 
 
 --
--- Name: annotation2respond; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation2respond; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE annotation2respond (
@@ -215,7 +241,7 @@ CREATE TABLE annotation2respond (
 );
 
 
-ALTER TABLE public.annotation2respond OWNER TO kals;
+ALTER TABLE annotation2respond OWNER TO kals;
 
 --
 -- Name: annotation2respond_annotation2respond_id_seq; Type: SEQUENCE; Schema: public; Owner: kals
@@ -229,7 +255,7 @@ CREATE SEQUENCE annotation2respond_annotation2respond_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.annotation2respond_annotation2respond_id_seq OWNER TO kals;
+ALTER TABLE annotation2respond_annotation2respond_id_seq OWNER TO kals;
 
 --
 -- Name: annotation2respond_annotation2respond_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -243,10 +269,14 @@ ALTER SEQUENCE annotation2respond_annotation2respond_id_seq OWNED BY annotation2
 --
 
 CREATE VIEW annotation2respond_count AS
-    SELECT annotation.annotation_id, count(annotation2respond.annotation_id) AS responded_count FROM (annotation LEFT JOIN annotation2respond ON ((annotation.annotation_id = annotation2respond.respond_to))) GROUP BY annotation.annotation_id;
+ SELECT annotation.annotation_id,
+    count(annotation2respond.annotation_id) AS responded_count
+   FROM (annotation
+     LEFT JOIN annotation2respond ON ((annotation.annotation_id = annotation2respond.respond_to)))
+  GROUP BY annotation.annotation_id;
 
 
-ALTER TABLE public.annotation2respond_count OWNER TO kals;
+ALTER TABLE annotation2respond_count OWNER TO kals;
 
 --
 -- Name: VIEW annotation2respond_count; Type: COMMENT; Schema: public; Owner: kals
@@ -267,7 +297,7 @@ CREATE SEQUENCE annotation2scope_annotation2scope_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.annotation2scope_annotation2scope_id_seq OWNER TO kals;
+ALTER TABLE annotation2scope_annotation2scope_id_seq OWNER TO kals;
 
 --
 -- Name: annotation2scope_annotation2scope_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -281,10 +311,12 @@ ALTER SEQUENCE annotation2scope_annotation2scope_id_seq OWNED BY annotation2scop
 --
 
 CREATE VIEW scope2length AS
-    SELECT scope.scope_id, ((scope.to_index - scope.from_index) + 1) AS length FROM scope;
+ SELECT scope.scope_id,
+    ((scope.to_index - scope.from_index) + 1) AS length
+   FROM scope;
 
 
-ALTER TABLE public.scope2length OWNER TO kals;
+ALTER TABLE scope2length OWNER TO kals;
 
 --
 -- Name: VIEW scope2length; Type: COMMENT; Schema: public; Owner: kals
@@ -298,10 +330,14 @@ COMMENT ON VIEW scope2length IS '範圍的長度';
 --
 
 CREATE VIEW annotation2scope_length AS
-    SELECT annotation2scope.annotation_id, sum(scope2length.length) AS scope_length FROM (annotation2scope JOIN scope2length USING (scope_id)) GROUP BY annotation2scope.annotation_id;
+ SELECT annotation2scope.annotation_id,
+    sum(scope2length.length) AS scope_length
+   FROM (annotation2scope
+     JOIN scope2length USING (scope_id))
+  GROUP BY annotation2scope.annotation_id;
 
 
-ALTER TABLE public.annotation2scope_length OWNER TO kals;
+ALTER TABLE annotation2scope_length OWNER TO kals;
 
 --
 -- Name: VIEW annotation2scope_length; Type: COMMENT; Schema: public; Owner: kals
@@ -311,7 +347,7 @@ COMMENT ON VIEW annotation2scope_length IS '標註範圍的長度';
 
 
 --
--- Name: score; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: score; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE score (
@@ -322,7 +358,7 @@ CREATE TABLE score (
 );
 
 
-ALTER TABLE public.score OWNER TO kals;
+ALTER TABLE score OWNER TO kals;
 
 --
 -- Name: TABLE score; Type: COMMENT; Schema: public; Owner: kals
@@ -336,10 +372,17 @@ COMMENT ON TABLE score IS '優質標註分數記錄';
 --
 
 CREATE VIEW annotation2score AS
-    SELECT annotation.annotation_id, CASE WHEN (score.score IS NOT NULL) THEN score.score ELSE (0)::numeric END AS score FROM (annotation LEFT JOIN score ON (((annotation.annotation_id = score.annotation_id) AND (score.score_type_id = 0)))) ORDER BY annotation.annotation_id;
+ SELECT annotation.annotation_id,
+        CASE
+            WHEN (score.score IS NOT NULL) THEN score.score
+            ELSE (0)::numeric
+        END AS score
+   FROM (annotation
+     LEFT JOIN score ON (((annotation.annotation_id = score.annotation_id) AND (score.score_type_id = 0))))
+  ORDER BY annotation.annotation_id;
 
 
-ALTER TABLE public.annotation2score OWNER TO kals;
+ALTER TABLE annotation2score OWNER TO kals;
 
 --
 -- Name: VIEW annotation2score; Type: COMMENT; Schema: public; Owner: kals
@@ -353,10 +396,15 @@ COMMENT ON VIEW annotation2score IS '優質標註分數';
 --
 
 CREATE VIEW annotation2topic_respond_count AS
-    SELECT annotation_topic.annotation_id, count(annotation_respond.annotation_id) AS topic_responded_count FROM (annotation annotation_topic LEFT JOIN annotation annotation_respond ON ((((annotation_respond.topic_id = annotation_topic.annotation_id) AND (annotation_respond.deleted IS FALSE)) AND (annotation_respond.topic_id IS NOT NULL)))) GROUP BY annotation_topic.annotation_id ORDER BY annotation_topic.annotation_id;
+ SELECT annotation_topic.annotation_id,
+    count(annotation_respond.annotation_id) AS topic_responded_count
+   FROM (annotation annotation_topic
+     LEFT JOIN annotation annotation_respond ON (((annotation_respond.topic_id = annotation_topic.annotation_id) AND (annotation_respond.deleted IS FALSE) AND (annotation_respond.topic_id IS NOT NULL))))
+  GROUP BY annotation_topic.annotation_id
+  ORDER BY annotation_topic.annotation_id;
 
 
-ALTER TABLE public.annotation2topic_respond_count OWNER TO kals;
+ALTER TABLE annotation2topic_respond_count OWNER TO kals;
 
 --
 -- Name: VIEW annotation2topic_respond_count; Type: COMMENT; Schema: public; Owner: kals
@@ -377,7 +425,7 @@ CREATE SEQUENCE annotation_annotation_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.annotation_annotation_id_seq OWNER TO kals;
+ALTER TABLE annotation_annotation_id_seq OWNER TO kals;
 
 --
 -- Name: annotation_annotation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -391,10 +439,25 @@ ALTER SEQUENCE annotation_annotation_id_seq OWNED BY annotation.annotation_id;
 --
 
 CREATE VIEW annotation_consensus AS
-    SELECT main.annotation_id, count(consensus.annotation_id) AS count FROM ((SELECT annotation.annotation_id, annotation.user_id, annotation2scope.scope_id FROM (annotation JOIN annotation2scope USING (annotation_id)) WHERE ((annotation.topic_id IS NULL) AND (annotation.deleted IS FALSE))) main LEFT JOIN (SELECT annotation.annotation_id, annotation.user_id, annotation2scope.scope_id FROM (annotation JOIN annotation2scope USING (annotation_id)) WHERE ((annotation.topic_id IS NULL) AND (annotation.deleted IS FALSE))) consensus ON ((((main.scope_id = consensus.scope_id) AND (main.annotation_id <> consensus.annotation_id)) AND (main.user_id <> consensus.user_id)))) GROUP BY main.annotation_id ORDER BY main.annotation_id;
+ SELECT main.annotation_id,
+    count(consensus.annotation_id) AS count
+   FROM (( SELECT annotation.annotation_id,
+            annotation.user_id,
+            annotation2scope.scope_id
+           FROM (annotation
+             JOIN annotation2scope USING (annotation_id))
+          WHERE ((annotation.topic_id IS NULL) AND (annotation.deleted IS FALSE))) main
+     LEFT JOIN ( SELECT annotation.annotation_id,
+            annotation.user_id,
+            annotation2scope.scope_id
+           FROM (annotation
+             JOIN annotation2scope USING (annotation_id))
+          WHERE ((annotation.topic_id IS NULL) AND (annotation.deleted IS FALSE))) consensus ON (((main.scope_id = consensus.scope_id) AND (main.annotation_id <> consensus.annotation_id) AND (main.user_id <> consensus.user_id))))
+  GROUP BY main.annotation_id
+  ORDER BY main.annotation_id;
 
 
-ALTER TABLE public.annotation_consensus OWNER TO kals;
+ALTER TABLE annotation_consensus OWNER TO kals;
 
 --
 -- Name: VIEW annotation_consensus; Type: COMMENT; Schema: public; Owner: kals
@@ -404,7 +467,7 @@ COMMENT ON VIEW annotation_consensus IS '標註共識的統計表';
 
 
 --
--- Name: c_score; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: c_score; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE c_score (
@@ -417,10 +480,10 @@ CREATE TABLE c_score (
 );
 
 
-ALTER TABLE public.c_score OWNER TO kals;
+ALTER TABLE c_score OWNER TO kals;
 
 --
--- Name: ci_sessions; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: ci_sessions; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE ci_sessions (
@@ -432,7 +495,7 @@ CREATE TABLE ci_sessions (
 );
 
 
-ALTER TABLE public.ci_sessions OWNER TO kals;
+ALTER TABLE ci_sessions OWNER TO kals;
 
 --
 -- Name: TABLE ci_sessions; Type: COMMENT; Schema: public; Owner: kals
@@ -442,7 +505,7 @@ COMMENT ON TABLE ci_sessions IS 'CodeIgnitor使用的SESSION資料表';
 
 
 --
--- Name: domain; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: domain; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE domain (
@@ -452,7 +515,7 @@ CREATE TABLE domain (
 );
 
 
-ALTER TABLE public.domain OWNER TO kals;
+ALTER TABLE domain OWNER TO kals;
 
 --
 -- Name: TABLE domain; Type: COMMENT; Schema: public; Owner: kals
@@ -473,7 +536,7 @@ CREATE SEQUENCE domain_domain_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.domain_domain_id_seq OWNER TO kals;
+ALTER TABLE domain_domain_id_seq OWNER TO kals;
 
 --
 -- Name: domain_domain_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -483,7 +546,7 @@ ALTER SEQUENCE domain_domain_id_seq OWNED BY domain.domain_id;
 
 
 --
--- Name: feature; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: feature; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE feature (
@@ -494,7 +557,7 @@ CREATE TABLE feature (
 );
 
 
-ALTER TABLE public.feature OWNER TO kals;
+ALTER TABLE feature OWNER TO kals;
 
 --
 -- Name: TABLE feature; Type: COMMENT; Schema: public; Owner: kals
@@ -515,7 +578,7 @@ CREATE SEQUENCE feature_feature_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.feature_feature_id_seq OWNER TO kals;
+ALTER TABLE feature_feature_id_seq OWNER TO kals;
 
 --
 -- Name: feature_feature_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -525,7 +588,7 @@ ALTER SEQUENCE feature_feature_id_seq OWNED BY feature.feature_id;
 
 
 --
--- Name: group; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: group; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE "group" (
@@ -535,10 +598,10 @@ CREATE TABLE "group" (
 );
 
 
-ALTER TABLE public."group" OWNER TO kals;
+ALTER TABLE "group" OWNER TO kals;
 
 --
--- Name: group2actor; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: group2actor; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE group2actor (
@@ -549,7 +612,7 @@ CREATE TABLE group2actor (
 );
 
 
-ALTER TABLE public.group2actor OWNER TO kals;
+ALTER TABLE group2actor OWNER TO kals;
 
 --
 -- Name: group2actor_group2actor_id_seq; Type: SEQUENCE; Schema: public; Owner: kals
@@ -563,7 +626,7 @@ CREATE SEQUENCE group2actor_group2actor_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.group2actor_group2actor_id_seq OWNER TO kals;
+ALTER TABLE group2actor_group2actor_id_seq OWNER TO kals;
 
 --
 -- Name: group2actor_group2actor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -584,7 +647,7 @@ CREATE SEQUENCE group_group_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.group_group_id_seq OWNER TO kals;
+ALTER TABLE group_group_id_seq OWNER TO kals;
 
 --
 -- Name: group_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -594,7 +657,7 @@ ALTER SEQUENCE group_group_id_seq OWNED BY "group".group_id;
 
 
 --
--- Name: langvar; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: langvar; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE langvar (
@@ -609,7 +672,7 @@ CREATE TABLE langvar (
 );
 
 
-ALTER TABLE public.langvar OWNER TO kals;
+ALTER TABLE langvar OWNER TO kals;
 
 --
 -- Name: TABLE langvar; Type: COMMENT; Schema: public; Owner: kals
@@ -630,7 +693,7 @@ CREATE SEQUENCE langvar_langvar_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.langvar_langvar_id_seq OWNER TO kals;
+ALTER TABLE langvar_langvar_id_seq OWNER TO kals;
 
 --
 -- Name: langvar_langvar_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -640,7 +703,7 @@ ALTER SEQUENCE langvar_langvar_id_seq OWNED BY langvar.langvar_id;
 
 
 --
--- Name: log; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: log; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE log (
@@ -655,27 +718,13 @@ CREATE TABLE log (
 );
 
 
-ALTER TABLE public.log OWNER TO kals;
+ALTER TABLE log OWNER TO kals;
+
 --
 -- Name: TABLE log; Type: COMMENT; Schema: public; Owner: kals
 --
 
-COMMENT ON TABLE log IS 'action id的代號，請參考[controllers]/web_apps/log.php
-';
-
-
---
--- Name: COLUMN log.action; Type: COMMENT; Schema: public; Owner: kals
---
-
-COMMENT ON COLUMN log.action IS '未來將放棄不使用。action id的代號，請參考[controllers]/web_apps/log.php';
-
-
---
--- Name: COLUMN log.action_key; Type: COMMENT; Schema: public; Owner: kals
---
-
-COMMENT ON COLUMN log.action_key IS 'action id的代號，請參考[controllers]/web_apps/log.php。以字串代替數字的action，讓說明更有利。範例為「login.check.success=檢查登入成功」';
+COMMENT ON TABLE log IS '請參考 https://github.com/pulipulichen/kals/blob/master/system/application/controllers/web_apps/log.php';
 
 
 --
@@ -690,7 +739,7 @@ CREATE SEQUENCE log_log_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.log_log_id_seq OWNER TO kals;
+ALTER TABLE log_log_id_seq OWNER TO kals;
 
 --
 -- Name: log_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -700,7 +749,7 @@ ALTER SEQUENCE log_log_id_seq OWNED BY log.log_id;
 
 
 --
--- Name: notification; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: notification; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE notification (
@@ -717,7 +766,7 @@ CREATE TABLE notification (
 );
 
 
-ALTER TABLE public.notification OWNER TO kals;
+ALTER TABLE notification OWNER TO kals;
 
 --
 -- Name: TABLE notification; Type: COMMENT; Schema: public; Owner: kals
@@ -738,7 +787,7 @@ CREATE SEQUENCE notification_notification_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.notification_notification_id_seq OWNER TO kals;
+ALTER TABLE notification_notification_id_seq OWNER TO kals;
 
 --
 -- Name: notification_notification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -748,7 +797,7 @@ ALTER SEQUENCE notification_notification_id_seq OWNED BY notification.notificati
 
 
 --
--- Name: policy; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: policy; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE policy (
@@ -759,7 +808,7 @@ CREATE TABLE policy (
 );
 
 
-ALTER TABLE public.policy OWNER TO kals;
+ALTER TABLE policy OWNER TO kals;
 
 --
 -- Name: TABLE policy; Type: COMMENT; Schema: public; Owner: kals
@@ -769,7 +818,7 @@ COMMENT ON TABLE policy IS '權限';
 
 
 --
--- Name: policy2actor; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: policy2actor; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE policy2actor (
@@ -780,7 +829,7 @@ CREATE TABLE policy2actor (
 );
 
 
-ALTER TABLE public.policy2actor OWNER TO kals;
+ALTER TABLE policy2actor OWNER TO kals;
 
 --
 -- Name: TABLE policy2actor; Type: COMMENT; Schema: public; Owner: kals
@@ -801,7 +850,7 @@ CREATE SEQUENCE policy2actor_policy2actor_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.policy2actor_policy2actor_id_seq OWNER TO kals;
+ALTER TABLE policy2actor_policy2actor_id_seq OWNER TO kals;
 
 --
 -- Name: policy2actor_policy2actor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -822,7 +871,7 @@ CREATE SEQUENCE policy_policy_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.policy_policy_id_seq OWNER TO kals;
+ALTER TABLE policy_policy_id_seq OWNER TO kals;
 
 --
 -- Name: policy_policy_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -843,10 +892,10 @@ CREATE SEQUENCE recommend_recommend_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.recommend_recommend_id_seq OWNER TO kals;
+ALTER TABLE recommend_recommend_id_seq OWNER TO kals;
 
 --
--- Name: recommend; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: recommend; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE recommend (
@@ -863,7 +912,7 @@ CREATE TABLE recommend (
 );
 
 
-ALTER TABLE public.recommend OWNER TO kals;
+ALTER TABLE recommend OWNER TO kals;
 
 --
 -- Name: TABLE recommend; Type: COMMENT; Schema: public; Owner: kals
@@ -884,7 +933,7 @@ CREATE SEQUENCE scope_scope_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.scope_scope_id_seq OWNER TO kals;
+ALTER TABLE scope_scope_id_seq OWNER TO kals;
 
 --
 -- Name: scope_scope_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -905,7 +954,7 @@ CREATE SEQUENCE score_score_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.score_score_id_seq OWNER TO kals;
+ALTER TABLE score_score_id_seq OWNER TO kals;
 
 --
 -- Name: score_score_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -913,6 +962,17 @@ ALTER TABLE public.score_score_id_seq OWNER TO kals;
 
 ALTER SEQUENCE score_score_id_seq OWNED BY score.score_id;
 
+
+--
+-- Name: shell; Type: TABLE; Schema: public; Owner: kals
+--
+
+CREATE TABLE shell (
+    web text NOT NULL
+);
+
+
+ALTER TABLE shell OWNER TO kals;
 
 --
 -- Name: top_annotation_id_seq; Type: SEQUENCE; Schema: public; Owner: kals
@@ -926,10 +986,10 @@ CREATE SEQUENCE top_annotation_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.top_annotation_id_seq OWNER TO kals;
+ALTER TABLE top_annotation_id_seq OWNER TO kals;
 
 --
--- Name: top; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: top; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE top (
@@ -948,10 +1008,10 @@ CREATE TABLE top (
 );
 
 
-ALTER TABLE public.top OWNER TO kals;
+ALTER TABLE top OWNER TO kals;
 
 --
--- Name: user; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: user; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE "user" (
@@ -968,7 +1028,7 @@ CREATE TABLE "user" (
 );
 
 
-ALTER TABLE public."user" OWNER TO kals;
+ALTER TABLE "user" OWNER TO kals;
 
 --
 -- Name: TABLE "user"; Type: COMMENT; Schema: public; Owner: kals
@@ -982,10 +1042,15 @@ COMMENT ON TABLE "user" IS '使用者';
 --
 
 CREATE VIEW webpage2annotation AS
-    SELECT DISTINCT scope.webpage_id, annotation.annotation_id FROM ((annotation JOIN annotation2scope ON ((annotation.annotation_id = annotation2scope.annotation_id))) JOIN scope ON ((annotation2scope.scope_id = scope.scope_id))) ORDER BY scope.webpage_id;
+ SELECT DISTINCT scope.webpage_id,
+    annotation.annotation_id
+   FROM ((annotation
+     JOIN annotation2scope ON ((annotation.annotation_id = annotation2scope.annotation_id)))
+     JOIN scope ON ((annotation2scope.scope_id = scope.scope_id)))
+  ORDER BY scope.webpage_id;
 
 
-ALTER TABLE public.webpage2annotation OWNER TO kals;
+ALTER TABLE webpage2annotation OWNER TO kals;
 
 --
 -- Name: VIEW webpage2annotation; Type: COMMENT; Schema: public; Owner: kals
@@ -999,13 +1064,23 @@ COMMENT ON VIEW webpage2annotation IS '網頁與標註的關聯表';
 --
 
 CREATE VIEW top_ranking AS
-    SELECT webpage2annotation.webpage_id, "user".user_id, "user".name AS user_name, avg(top.t_score) AS t_score_avg FROM webpage2annotation, top, "user" WHERE ((top.user_id = "user".user_id) AND (webpage2annotation.annotation_id = top.topic_id)) GROUP BY "user".user_id, webpage2annotation.webpage_id, "user".name HAVING (count(top.t_score) >= 5) ORDER BY avg(top.t_score) DESC;
+ SELECT webpage2annotation.webpage_id,
+    "user".user_id,
+    "user".name AS user_name,
+    avg(top.t_score) AS t_score_avg
+   FROM webpage2annotation,
+    top,
+    "user"
+  WHERE ((top.user_id = "user".user_id) AND (webpage2annotation.annotation_id = top.topic_id))
+  GROUP BY "user".user_id, webpage2annotation.webpage_id, "user".name
+ HAVING (count(top.t_score) >= 5)
+  ORDER BY (avg(top.t_score)) DESC;
 
 
-ALTER TABLE public.top_ranking OWNER TO kals;
+ALTER TABLE top_ranking OWNER TO kals;
 
 --
--- Name: type; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: type; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE type (
@@ -1015,7 +1090,7 @@ CREATE TABLE type (
 );
 
 
-ALTER TABLE public.type OWNER TO kals;
+ALTER TABLE type OWNER TO kals;
 
 --
 -- Name: TABLE type; Type: COMMENT; Schema: public; Owner: kals
@@ -1036,7 +1111,7 @@ CREATE SEQUENCE type_type_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.type_type_id_seq OWNER TO kals;
+ALTER TABLE type_type_id_seq OWNER TO kals;
 
 --
 -- Name: type_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -1044,6 +1119,114 @@ ALTER TABLE public.type_type_id_seq OWNER TO kals;
 
 ALTER SEQUENCE type_type_id_seq OWNED BY type.type_id;
 
+
+--
+-- Name: user_annotation_count_ranking; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW user_annotation_count_ranking AS
+ SELECT a1.user_id,
+    a1.count,
+    count(a2.count) AS rank,
+    a1.webpage_id
+   FROM ( SELECT annotation.user_id,
+            count(annotation.annotation_id) AS count,
+            webpage2annotation.webpage_id
+           FROM (annotation
+             JOIN webpage2annotation ON ((annotation.annotation_id = webpage2annotation.annotation_id)))
+          WHERE (annotation.deleted = false)
+          GROUP BY annotation.user_id, webpage2annotation.webpage_id) a1,
+    ( SELECT annotation.user_id,
+            count(annotation.annotation_id) AS count,
+            webpage2annotation.webpage_id
+           FROM (annotation
+             JOIN webpage2annotation ON ((annotation.annotation_id = webpage2annotation.annotation_id)))
+          WHERE (annotation.deleted = false)
+          GROUP BY annotation.user_id, webpage2annotation.webpage_id) a2
+  WHERE ((a1.count < a2.count) OR ((a1.count = a2.count) AND (a1.user_id = a2.user_id)))
+  GROUP BY a1.user_id, a1.count, a1.webpage_id, a2.webpage_id
+ HAVING (a1.webpage_id = a2.webpage_id)
+  ORDER BY a1.count DESC, a1.user_id;
+
+
+ALTER TABLE user_annotation_count_ranking OWNER TO kals;
+
+--
+-- Name: user_like_to; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW user_like_to AS
+ SELECT annotation2like.user_id AS me,
+    annotation.user_id AS like_to_user,
+    annotation2like.annotation_id
+   FROM ((annotation2like
+     JOIN annotation ON ((annotation2like.annotation_id = annotation.annotation_id)))
+     JOIN webpage2annotation ON ((annotation.annotation_id = webpage2annotation.annotation_id)))
+  WHERE ((annotation.deleted = false) AND (annotation2like.canceled = false))
+  ORDER BY annotation2like.user_id;
+
+
+ALTER TABLE user_like_to OWNER TO kals;
+
+--
+-- Name: user_liked; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW user_liked AS
+ SELECT annotation.user_id AS me,
+    annotation2like.user_id AS liked_user,
+    annotation.annotation_id
+   FROM ((annotation
+     JOIN webpage2annotation ON ((annotation.annotation_id = webpage2annotation.annotation_id)))
+     JOIN annotation2like ON ((annotation.annotation_id = annotation2like.annotation_id)))
+  WHERE ((annotation.deleted = false) AND (annotation2like.canceled = false))
+  GROUP BY annotation.user_id, annotation2like.user_id, annotation.annotation_id
+  ORDER BY annotation.user_id;
+
+
+ALTER TABLE user_liked OWNER TO kals;
+
+--
+-- Name: user_respond_to_count; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW user_respond_to_count AS
+ SELECT res.user_id,
+    res.webpage_id,
+    count(res.user_id) AS count
+   FROM ( SELECT DISTINCT my.user_id,
+            respond_to.user_id AS respond_to_user,
+            webpage2annotation.webpage_id
+           FROM ((annotation my
+             JOIN annotation respond_to ON ((my.topic_id = respond_to.annotation_id)))
+             JOIN webpage2annotation ON ((my.annotation_id = webpage2annotation.annotation_id)))
+          WHERE ((my.deleted = false) AND (respond_to.deleted = false) AND (my.topic_id IS NOT NULL) AND (my.user_id <> respond_to.user_id))) res
+  GROUP BY res.user_id, res.webpage_id
+  ORDER BY res.user_id;
+
+
+ALTER TABLE user_respond_to_count OWNER TO kals;
+
+--
+-- Name: user_responded_count; Type: VIEW; Schema: public; Owner: kals
+--
+
+CREATE VIEW user_responded_count AS
+ SELECT res.user_id,
+    res.webpage_id,
+    count(res.user_id) AS count
+   FROM ( SELECT DISTINCT my.user_id,
+            responded.user_id AS responded_user,
+            webpage2annotation.webpage_id
+           FROM ((annotation my
+             JOIN annotation responded ON ((responded.topic_id = my.annotation_id)))
+             JOIN webpage2annotation ON ((my.annotation_id = webpage2annotation.annotation_id)))
+          WHERE ((my.deleted = false) AND (responded.deleted = false) AND (responded.topic_id IS NOT NULL) AND (my.topic_id IS NULL) AND (responded.user_id <> my.user_id))) res
+  GROUP BY res.user_id, res.webpage_id
+  ORDER BY res.user_id;
+
+
+ALTER TABLE user_responded_count OWNER TO kals;
 
 --
 -- Name: user_user_id_seq; Type: SEQUENCE; Schema: public; Owner: kals
@@ -1057,7 +1240,7 @@ CREATE SEQUENCE user_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.user_user_id_seq OWNER TO kals;
+ALTER TABLE user_user_id_seq OWNER TO kals;
 
 --
 -- Name: user_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -1067,7 +1250,7 @@ ALTER SEQUENCE user_user_id_seq OWNED BY "user".user_id;
 
 
 --
--- Name: webpage; Type: TABLE; Schema: public; Owner: kals; Tablespace: 
+-- Name: webpage; Type: TABLE; Schema: public; Owner: kals
 --
 
 CREATE TABLE webpage (
@@ -1078,7 +1261,7 @@ CREATE TABLE webpage (
 );
 
 
-ALTER TABLE public.webpage OWNER TO kals;
+ALTER TABLE webpage OWNER TO kals;
 
 --
 -- Name: TABLE webpage; Type: COMMENT; Schema: public; Owner: kals
@@ -1099,7 +1282,7 @@ CREATE SEQUENCE webpage_webpage_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.webpage_webpage_id_seq OWNER TO kals;
+ALTER TABLE webpage_webpage_id_seq OWNER TO kals;
 
 --
 -- Name: webpage_webpage_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: kals
@@ -1242,7 +1425,7 @@ ALTER TABLE ONLY webpage ALTER COLUMN webpage_id SET DEFAULT nextval('webpage_we
 
 
 --
--- Name: anchor_text_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: anchor_text_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY anchor_text
@@ -1250,7 +1433,7 @@ ALTER TABLE ONLY anchor_text
 
 
 --
--- Name: anchor_text_text_key; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: anchor_text_text_key; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY anchor_text
@@ -1258,7 +1441,7 @@ ALTER TABLE ONLY anchor_text
 
 
 --
--- Name: annotation2like_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation2like_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY annotation2like
@@ -1266,7 +1449,7 @@ ALTER TABLE ONLY annotation2like
 
 
 --
--- Name: annotation2respond_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation2respond_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY annotation2respond
@@ -1274,7 +1457,7 @@ ALTER TABLE ONLY annotation2respond
 
 
 --
--- Name: annotation2scope_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation2scope_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY annotation2scope
@@ -1282,7 +1465,7 @@ ALTER TABLE ONLY annotation2scope
 
 
 --
--- Name: annotation_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: annotation_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY annotation
@@ -1290,7 +1473,7 @@ ALTER TABLE ONLY annotation
 
 
 --
--- Name: ci_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: ci_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY ci_sessions
@@ -1298,7 +1481,7 @@ ALTER TABLE ONLY ci_sessions
 
 
 --
--- Name: domain_pk; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: domain_pk; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY domain
@@ -1306,7 +1489,7 @@ ALTER TABLE ONLY domain
 
 
 --
--- Name: feature_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: feature_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY feature
@@ -1314,7 +1497,7 @@ ALTER TABLE ONLY feature
 
 
 --
--- Name: group2actor_group_id_key; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: group2actor_group_id_key; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY group2actor
@@ -1322,7 +1505,7 @@ ALTER TABLE ONLY group2actor
 
 
 --
--- Name: group2actor_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: group2actor_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY group2actor
@@ -1330,7 +1513,7 @@ ALTER TABLE ONLY group2actor
 
 
 --
--- Name: group_group_id_key; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: group_group_id_key; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY "group"
@@ -1338,7 +1521,7 @@ ALTER TABLE ONLY "group"
 
 
 --
--- Name: group_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: group_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY "group"
@@ -1346,7 +1529,7 @@ ALTER TABLE ONLY "group"
 
 
 --
--- Name: langvar_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: langvar_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY langvar
@@ -1354,7 +1537,7 @@ ALTER TABLE ONLY langvar
 
 
 --
--- Name: langvar_webpage_id_key; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: langvar_webpage_id_key; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY langvar
@@ -1362,7 +1545,7 @@ ALTER TABLE ONLY langvar
 
 
 --
--- Name: log_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: log_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY log
@@ -1370,7 +1553,7 @@ ALTER TABLE ONLY log
 
 
 --
--- Name: notification_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: notification_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY notification
@@ -1378,7 +1561,7 @@ ALTER TABLE ONLY notification
 
 
 --
--- Name: notification_trigger_actor_type_id_key; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: notification_trigger_actor_type_id_key; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY notification
@@ -1386,7 +1569,7 @@ ALTER TABLE ONLY notification
 
 
 --
--- Name: policy2actor_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: policy2actor_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY policy2actor
@@ -1394,7 +1577,7 @@ ALTER TABLE ONLY policy2actor
 
 
 --
--- Name: policy_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: policy_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY policy
@@ -1402,7 +1585,7 @@ ALTER TABLE ONLY policy
 
 
 --
--- Name: recommend_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: recommend_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY recommend
@@ -1410,7 +1593,7 @@ ALTER TABLE ONLY recommend
 
 
 --
--- Name: scope_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: scope_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY scope
@@ -1418,7 +1601,7 @@ ALTER TABLE ONLY scope
 
 
 --
--- Name: score_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: score_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY score
@@ -1426,7 +1609,7 @@ ALTER TABLE ONLY score
 
 
 --
--- Name: top_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: top_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY top
@@ -1434,7 +1617,7 @@ ALTER TABLE ONLY top
 
 
 --
--- Name: type_pk_type_id; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: type_pk_type_id; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY type
@@ -1442,7 +1625,7 @@ ALTER TABLE ONLY type
 
 
 --
--- Name: type_unique_name; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: type_unique_name; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY type
@@ -1450,7 +1633,7 @@ ALTER TABLE ONLY type
 
 
 --
--- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY "user"
@@ -1458,7 +1641,7 @@ ALTER TABLE ONLY "user"
 
 
 --
--- Name: webpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kals; Tablespace: 
+-- Name: webpage_pkey; Type: CONSTRAINT; Schema: public; Owner: kals
 --
 
 ALTER TABLE ONLY webpage
@@ -1466,28 +1649,28 @@ ALTER TABLE ONLY webpage
 
 
 --
--- Name: fki_; Type: INDEX; Schema: public; Owner: kals; Tablespace: 
+-- Name: fki_; Type: INDEX; Schema: public; Owner: kals
 --
 
 CREATE INDEX fki_ ON group2actor USING btree (group_id);
 
 
 --
--- Name: fki_annotation2respond_respond_to; Type: INDEX; Schema: public; Owner: kals; Tablespace: 
+-- Name: fki_annotation2respond_respond_to; Type: INDEX; Schema: public; Owner: kals
 --
 
 CREATE INDEX fki_annotation2respond_respond_to ON annotation2respond USING btree (respond_to);
 
 
 --
--- Name: fki_feature_2_annotation; Type: INDEX; Schema: public; Owner: kals; Tablespace: 
+-- Name: fki_feature_2_annotation; Type: INDEX; Schema: public; Owner: kals
 --
 
 CREATE INDEX fki_feature_2_annotation ON feature USING btree (annotation_id);
 
 
 --
--- Name: fki_notification_association_user_id; Type: INDEX; Schema: public; Owner: kals; Tablespace: 
+-- Name: fki_notification_association_user_id; Type: INDEX; Schema: public; Owner: kals
 --
 
 CREATE INDEX fki_notification_association_user_id ON notification USING btree (association_user_id);
@@ -1676,3 +1859,13 @@ GRANT SELECT ON TABLE annotation2respond_count TO PUBLIC;
 -- PostgreSQL database dump complete
 --
 
+
+INSERT INTO type VALUES (1, 'annotation.type.importance', true);
+INSERT INTO type VALUES (2, 'annotation.type.question', true);
+INSERT INTO type VALUES (3, 'annotation.type.confusion', true);
+INSERT INTO type VALUES (4, 'annotation.type.summary', true);
+INSERT INTO type VALUES (5, 'annotation.type.concept', true);
+INSERT INTO type VALUES (6, 'annotation.type.example', true);
+INSERT INTO type VALUES (7, 'annotation.type.custom', true);
+
+-- KALS export completed
