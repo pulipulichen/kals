@@ -1,4 +1,4 @@
 RewriteEngine on
-RewriteCond $1 !^(index\.php|images|js|help|libraries|user_photo|user_guide|user_guide_zh|test|phppgadmin|robots\.txt)
+RewriteCond $1 !^(index\.php|images|js|help|libraries|user_photo|user_guide|user_guide_zh|test|phppgadmin|database|robots\.txt)
 RewriteRule ^(.*)$ /kals/index.php/$1 [L]
 Header set Access-Control-Allow-Origin "*"
