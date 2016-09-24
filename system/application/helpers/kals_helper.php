@@ -623,7 +623,7 @@ if ( ! function_exists('strip_selected_tags'))
             }
         }
 
-        return preg_replace( '/(<('.join('|',$tags).')(\\n|\\r|.)*\/>)/iu', '', $text);
+        return preg_replace_callback( '/(<('.join('|',$tags).')(\\n|\\r|.)*\/>)/iu', '', $text);
     }
 }
 

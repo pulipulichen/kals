@@ -39,27 +39,27 @@ class Minify_YUI_CssCompressor {
          */
 
         // Normalize all whitespace strings to single spaces. Easier to work with that way.
-        $css = preg_replace('@\s+@', ' ', $css);
+        $css = preg_replace_callback('@\s+@', ' ', $css);
 
         // Make a pseudo class for the Box Model Hack
-        $css = preg_replace("@\"\\\\\"}\\\\\"\"@", "___PSEUDOCLASSBMH___", $css);
+        $css = preg_replace_callback("@\"\\\\\"}\\\\\"\"@", "___PSEUDOCLASSBMH___", $css);
 
         // Remove the spaces before the things that should not have spaces before them.
         // But, be careful not to turn "p :link {...}" into "p:link{...}"
         // Swap out any pseudo-class colons with the token, and then swap back.
         $css = preg_replace_callback("@(^|\\})(([^\\{:])+:)+([^\\{]*\\{)@", array($this, '_removeSpacesCB'), $css);
 
-        $css = preg_replace("@\\s+([!{};:>+\\(\\)\\],])@", "$1", $css);
+        $css = preg_replace_callback("@\\s+([!{};:>+\\(\\)\\],])@", "$1", $css);
         $css = str_replace("___PSEUDOCLASSCOLON___", ":", $css);
 
         // Remove the spaces after the things that should not have spaces after them.
-        $css = preg_replace("@([!{}:;>+\\(\\[,])\\s+@", "$1", $css);
+        $css = preg_replace_callback("@([!{}:;>+\\(\\[,])\\s+@", "$1", $css);
 
         // Add the semicolon where it's missing.
-        $css = preg_replace("@([^;\\}])}@", "$1;}", $css);
+        $css = preg_replace_callback("@([^;\\}])}@", "$1;}", $css);
 
         // Replace 0(px,em,%) with 0.
-        $css = preg_replace("@([\\s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)@", "$1$2", $css);
+        $css = preg_replace_callback("@([\\s:])(0)(px|em|%|in|cm|mm|pc|pt|ex)@", "$1$2", $css);
 
         // Replace 0 0 0 0; with 0.
         $css = str_replace(":0 0 0 0;", ":0;", $css);
@@ -70,7 +70,7 @@ class Minify_YUI_CssCompressor {
         $css = str_replace("background-position:0;", "background-position:0 0;", $css);
 
         // Replace 0.6 to .6, but only when preceded by : or a white-space
-        $css = preg_replace("@(:|\\s)0+\\.(\\d+)@", "$1.$2", $css);
+        $css = preg_replace_callback("@(:|\\s)0+\\.(\\d+)@", "$1.$2", $css);
 
         // Shorten colors from rgb(51,102,153) to #336699
         // This makes it more likely that it'll get further compressed in the next step.
@@ -85,7 +85,7 @@ class Minify_YUI_CssCompressor {
         $css = preg_replace_callback("@([^\"'=\\s])(\\s*)#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])@", array($this, '_shortenHexCB'), $css);
 
         // Remove empty rules.
-        $css = preg_replace("@[^\\}]+\\{;\\}@", "", $css);
+        $css = preg_replace_callback("@[^\\}]+\\{;\\}@", "", $css);
 
         $linebreakpos = isset($this->_options['linebreakpos'])
             ? $this->_options['linebreakpos']
@@ -127,10 +127,10 @@ class Minify_YUI_CssCompressor {
 
         // Replace multiple semi-colons in a row by a single one
         // See SF bug #1980989
-        $css = preg_replace("@;;+@", ";", $css);
+        $css = preg_replace_callback("@;;+@", ";", $css);
 
         // prevent triggering IE6 bug: http://www.crankygeek.com/ie6pebug/
-        $css = preg_replace('/:first-l(etter|ine)\\{/', ':first-l$1 {', $css);
+        $css = preg_replace_callback('/:first-l(etter|ine)\\{/', ':first-l$1 {', $css);
 
         // Trim the final string (for any leading or trailing white spaces)
         $css = trim($css);

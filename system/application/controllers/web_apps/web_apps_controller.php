@@ -31,8 +31,9 @@ class Web_apps_controller extends Controller {
         $this->load->helper('web_apps');
         $this->load->config('kals');
 
-        if ($this->controller_enable_cache)
+        if ($this->controller_enable_cache) {
             $this->_enable_cache();
+        }
         create_context();
         
         if ($this->login_require === TRUE)
@@ -451,7 +452,6 @@ class Web_apps_controller extends Controller {
         
         //$style = $this->load->view($this->dir.$path, NULL, TRUE);
         $style = $this->_initialize_css($path);
-
         
         if ($this->_is_config_package_enable()) {
             //$style = $this->_compress_css($style);
@@ -461,7 +461,7 @@ class Web_apps_controller extends Controller {
              */
             //$style = $this->_yui_compression_css($style);
             
-            $style = $this->_minify_compression_css($style);
+            //$style = $this->_minify_compression_css($style);
         }
 
         //取代網址
@@ -487,7 +487,7 @@ class Web_apps_controller extends Controller {
         if (!is_null($strip_end)) {
             $classname = substr($classname,0, (1-  strlen($strip_end)));
         }
-        $classname = preg_replace('/[\W|\_]/', $replace, $classname);
+        $classname = preg_replace_callback('/[\W|\_]/', $replace, $classname);
 
         $classname = strtolower($classname);
         return $classname;
@@ -507,7 +507,7 @@ class Web_apps_controller extends Controller {
         if (strpos($path, 'view/') !== FALSE) {
             $classname = $path;
             $classname = substr($classname,0, -4);
-            $classname = preg_replace('/[\W|\_]/', "-", $classname);
+            $classname = preg_replace_callback('/[\W|\_]/', "-", $classname);
             /*
             $class_array1 = explode('}', $classname);
             foreach ($class_array1 AS $c_ary1) {
@@ -530,8 +530,8 @@ class Web_apps_controller extends Controller {
             //test_msg($classname);
             
             // 如果是樣板的話
-            //preg_replace($style, $path, $style);
-            //$style = preg_replace('/[\}|\,]*[\{|\,]/', "" .$classname+"\$0", $style);
+            //preg_replace_callback($style, $path, $style);
+            //$style = preg_replace_callback('/[\}|\,]*[\{|\,]/', "" .$classname+"\$0", $style);
             
             
 $parts = explode('}', $style);
@@ -655,13 +655,13 @@ $style = implode("}\n", $parts);
      */
     private function _compress_css($buffer) {
         /* Remove comments */
-        $buffer = preg_replace("/\/\*(.*?)\*\//s", ' ', $buffer);
+        $buffer = preg_replace_callback("/\/\*(.*?)\*\//s", ' ', $buffer);
 
         /* Remove new lines, spaces */
-        $buffer = preg_replace("/(\s{2,}|[\r\n|\n|\t|\r])/", ' ', $buffer);
+        $buffer = preg_replace_callback("/(\s{2,}|[\r\n|\n|\t|\r])/", ' ', $buffer);
 
         /* Join rules */
-        $buffer = preg_replace('/([,|;|:|{|}]) /', '\\1', $buffer);
+        $buffer = preg_replace_callback('/([,|;|:|{|}]) /', '\\1', $buffer);
         $buffer = str_replace(' {', '{', $buffer);
 
         /* Remove ; for the last attribute */

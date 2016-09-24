@@ -103,7 +103,7 @@ class Minify_ImportProcessor {
     private function _importCB($m)
     {
         $url = $m[1];
-        $mediaList = preg_replace('/\\s+/', '', $m[2]);
+        $mediaList = preg_replace_callback('/\\s+/', '', $m[2]);
 
         if (strpos($url, '://') > 0) {
             // protocol, leave in place for CSS, comment for JS

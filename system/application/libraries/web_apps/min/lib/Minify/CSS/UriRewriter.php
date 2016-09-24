@@ -185,7 +185,7 @@ class Minify_CSS_UriRewriter {
         $uri = str_replace('/./', '/', $uri);
         // inspired by patch from Oleg Cherniy
         do {
-            $uri = preg_replace('@/[^/]+/\\.\\./@', '/', $uri, 1, $changed);
+            $uri = preg_replace_callback('@/[^/]+/\\.\\./@', '/', $uri, 1, $changed);
         } while ($changed);
         return $uri;
     }
@@ -251,7 +251,7 @@ class Minify_CSS_UriRewriter {
      */
     private static function _trimUrls($css)
     {
-        return preg_replace('/
+        return preg_replace_callback('/
             url\\(      # url(
             \\s*
             ([^\\)]+?)  # 1 = URI (assuming does not contain ")")
