@@ -403,7 +403,7 @@ class Web_apps_controller extends Controller {
                 //如果有快取檔案，回傳快取檔案的內容，記得送出js_header
                 $packed = read_file($cache_path);
                 //$packed = file_get_contents($cache_path);
-                //$packed = $this->create_pack_css($path);
+                $packed = $this->create_pack_css($path);
             } 
             else {
                 //如果沒有快取檔案，那麼照以下步驟製作出快取之後，寫入快取檔案
@@ -447,6 +447,7 @@ class Web_apps_controller extends Controller {
         //$style = $this->load->view($this->dir.$path, NULL, TRUE);
         $style = $this->_initialize_css($path);
         
+        //echo "/****************".$this->_is_config_package_enable()."*/";
         if ($this->_is_config_package_enable()) {
             //$style = $this->_compress_css($style);
             /**
@@ -456,6 +457,7 @@ class Web_apps_controller extends Controller {
             //$style = $this->_yui_compression_css($style);
             
             $style = $this->_minify_compression_css($style);
+            //echo "/*****************/";
         }
 
         //取代網址

@@ -90,7 +90,7 @@ class CSSmin
         }
 
         // preserve strings so their content doesn't get accidentally minified
-        $css = preg_replace('/(?:"(?:[^\\\\"]|\\\\.|\\\\)*")|'."(?:'(?:[^\\\\']|\\\\.|\\\\)*')/S", array($this, 'replace_string'), $css);
+        $css = preg_replace_callback('/(?:"(?:[^\\\\"]|\\\\.|\\\\)*")|'."(?:'(?:[^\\\\']|\\\\.|\\\\)*')/S", array($this, 'replace_string'), $css);
 
         // Let's divide css code in chunks of 25.000 chars aprox.
         // Reason: PHP's PCRE functions like preg_replace have a "backtrack limit"
@@ -265,7 +265,7 @@ class CSSmin
         $css = preg_replace('/\s+/', ' ', $css);
 
         // Shorten & preserve calculations calc(...) since spaces are important
-        $css = preg_replace('/calc(\((?:[^\(\)]+|(?1))*\))/i', array($this, 'replace_calc'), $css);
+        $css = preg_replace_callback('/calc(\((?:[^\(\)]+|(?1))*\))/i', array($this, 'replace_calc'), $css);
 
         // Replace positive sign from numbers preceded by : or a white-space before the leading space is removed
         // +1.2em to 1.2em, +.8px to .8px, +2% to 2%
@@ -288,7 +288,7 @@ class CSSmin
         // Remove the spaces before the things that should not have spaces before them.
         // But, be careful not to turn "p :link {...}" into "p:link{...}"
         // Swap out any pseudo-class colons with the token, and then swap back.
-        $css = preg_replace('/(?:^|\})(?:(?:[^\{\:])+\:)+(?:[^\{]*\{)/', array($this, 'replace_colon'), $css);
+        $css = preg_replace_callback('/(?:^|\})(?:(?:[^\{\:])+\:)+(?:[^\{]*\{)/', array($this, 'replace_colon'), $css);
         $css = preg_replace('/\s+([\!\{\}\;\:\>\+\(\)\]\~\=,])/', '$1', $css);
         $css = preg_replace('/' . self::CLASSCOLON . '/', ':', $css);
 
@@ -321,23 +321,23 @@ class CSSmin
 
         // Fix for issue: #2528142
         // Replace text-shadow:0; with text-shadow:0 0 0;
-        $css = preg_replace('/(text-shadow\:0)(;|\})/ie', "strtolower('$1 0 0$2')", $css);
+        @$css = preg_replace('/(text-shadow\:0)(;|\})/ie', "strtolower('$1 0 0$2')", $css);
 
         // Replace background-position:0; with background-position:0 0;
         // same for transform-origin
-        $css = preg_replace('/(background\-position|(?:webkit|moz|o|ms|)\-?transform\-origin)\:0(;|\})/ieS', "strtolower('$1:0 0$2')", $css);
+        @$css = preg_replace('/(background\-position|(?:webkit|moz|o|ms|)\-?transform\-origin)\:0(;|\})/ieS', "strtolower('$1:0 0$2')", $css);
 
         // Shorten colors from rgb(51,102,153) to #336699, rgb(100%,0%,0%) to #ff0000 (sRGB color space)
         // Shorten colors from hsl(0, 100%, 50%) to #ff0000 (sRGB color space)
         // This makes it more likely that it'll get further compressed in the next step.
-        $css = preg_replace('/rgb\s*\(\s*([0-9,\s\-\.\%]+)\s*\)(.{1})/i', array($this, 'rgb_to_hex'), $css);
-        $css = preg_replace('/hsl\s*\(\s*([0-9,\s\-\.\%]+)\s*\)(.{1})/i', array($this, 'hsl_to_hex'), $css);
+        $css = preg_replace_callback('/rgb\s*\(\s*([0-9,\s\-\.\%]+)\s*\)(.{1})/i', array($this, 'rgb_to_hex'), $css);
+        $css = preg_replace_callback('/hsl\s*\(\s*([0-9,\s\-\.\%]+)\s*\)(.{1})/i', array($this, 'hsl_to_hex'), $css);
 
         // Shorten colors from #AABBCC to #ABC or short color name.
         $css = $this->compress_hex_colors($css);
 
         // border: none to border:0, outline: none to outline:0
-        $css = preg_replace('/(border\-?(?:top|right|bottom|left|)|outline)\:none(;|\})/ieS', "strtolower('$1:0$2')", $css);
+        @$css = preg_replace('/(border\-?(?:top|right|bottom|left|)|outline)\:none(;|\})/ieS', "strtolower('$1:0$2')", $css);
 
         // shorter opacity IE filter
         $css = preg_replace('/progid\:DXImageTransform\.Microsoft\.Alpha\(Opacity\=/i', 'alpha(opacity=', $css);

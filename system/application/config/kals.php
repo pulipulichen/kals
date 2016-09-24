@@ -46,7 +46,7 @@ $config['output.cache.disable_domains'] = array(
     "http://127.0.0.1/"
 );
 
-$config['output.cache.enable'] = false; //是否使用快取功能，預設是true;
+$config['output.cache.enable'] = true; //是否使用快取功能，預設是true;
 $config['output.cache.expiration'] = 50;  //快取的單位是「分鐘」
 $config['output.cache.navigation_data.expiration'] = 0.25;  //快取的單位是「分鐘」
 
@@ -57,7 +57,7 @@ $config['output.cache.navigation_data.expiration'] = 0.25;  //快取的單位是
  */
 $config['output.package.disable_domains'] = $config['output.cache.disable_domains'];
 //$config['output.package.disable_domains'] = array();
-$config['output.package.enable'] = false; //是否啟用壓縮功能，預設是true;
+$config['output.package.enable'] = true; //是否啟用壓縮功能，預設是true;
 
 // --------
 // KALS User Password Key
