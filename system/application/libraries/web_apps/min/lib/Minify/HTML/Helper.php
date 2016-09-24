@@ -200,7 +200,7 @@ class Minify_HTML_Helper {
             }
             ++$pos;
         }
-        $base = preg_replace_callback('@[^/]+$@', '', $base);
+        $base = preg_replace('@[^/]+$@', '', $base);
         $uri = $minRoot . 'f=' . implode(',', $paths);
         
         if (substr($base, -1) === '/') {

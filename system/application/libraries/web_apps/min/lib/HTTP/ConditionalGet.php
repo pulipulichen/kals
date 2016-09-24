@@ -341,7 +341,7 @@ class HTTP_ConditionalGet {
     protected function normalizeEtag($etag) {
         $etag = trim($etag);
         return $this->_stripEtag
-            ? preg_replace_callback('/;\\w\\w"$/', '"', $etag)
+            ? preg_replace('/;\\w\\w"$/', '"', $etag)
             : $etag;
     }
 

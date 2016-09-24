@@ -90,53 +90,53 @@ class Minify_HTML {
         $this->_placeholders = array();
         
         // replace SCRIPTs (and minify) with placeholders
-        $this->_html = preg_replace_callback(
+        $this->_html = preg_replace(
             '/(\\s*)<script(\\b[^>]*?>)([\\s\\S]*?)<\\/script>(\\s*)/i'
             ,array($this, '_removeScriptCB')
             ,$this->_html);
         
         // replace STYLEs (and minify) with placeholders
-        $this->_html = preg_replace_callback(
+        $this->_html = preg_replace(
             '/\\s*<style(\\b[^>]*>)([\\s\\S]*?)<\\/style>\\s*/i'
             ,array($this, '_removeStyleCB')
             ,$this->_html);
         
         // remove HTML comments (not containing IE conditional comments).
-        $this->_html = preg_replace_callback(
+        $this->_html = preg_replace(
             '/<!--([\\s\\S]*?)-->/'
             ,array($this, '_commentCB')
             ,$this->_html);
         
         // replace PREs with placeholders
-        $this->_html = preg_replace_callback('/\\s*<pre(\\b[^>]*?>[\\s\\S]*?<\\/pre>)\\s*/i'
+        $this->_html = preg_replace('/\\s*<pre(\\b[^>]*?>[\\s\\S]*?<\\/pre>)\\s*/i'
             ,array($this, '_removePreCB')
             ,$this->_html);
         
         // replace TEXTAREAs with placeholders
-        $this->_html = preg_replace_callback(
+        $this->_html = preg_replace(
             '/\\s*<textarea(\\b[^>]*?>[\\s\\S]*?<\\/textarea>)\\s*/i'
             ,array($this, '_removeTextareaCB')
             ,$this->_html);
         
         // trim each line.
         // todo take into account attribute values that span multiple lines. @author Pulipuli Chen <pulipuli.chen@gmail.com> 20151102
-        $this->_html = preg_replace_callback('/^\\s+|\\s+$/m', '', $this->_html);
+        $this->_html = preg_replace('/^\\s+|\\s+$/m', '', $this->_html);
         
         // remove ws around block/undisplayed elements
-        $this->_html = preg_replace_callback('/\\s+(<\\/?(?:area|base(?:font)?|blockquote|body'
+        $this->_html = preg_replace('/\\s+(<\\/?(?:area|base(?:font)?|blockquote|body'
             .'|caption|center|cite|col(?:group)?|dd|dir|div|dl|dt|fieldset|form'
             .'|frame(?:set)?|h[1-6]|head|hr|html|legend|li|link|map|menu|meta'
             .'|ol|opt(?:group|ion)|p|param|t(?:able|body|head|d|h||r|foot|itle)'
             .'|ul)\\b[^>]*>)/i', '$1', $this->_html);
         
         // remove ws outside of all elements
-        $this->_html = preg_replace_callback(
+        $this->_html = preg_replace(
             '/>(\\s(?:\\s*))?([^<]+)(\\s(?:\s*))?</'
             ,'>$1$2$3<'
             ,$this->_html);
         
         // use newlines before 1st attribute in open tags (to limit line lengths)
-        $this->_html = preg_replace_callback('/(<[a-z\\-]+)\\s+([^>]+>)/i', "$1\n$2", $this->_html);
+        $this->_html = preg_replace('/(<[a-z\\-]+)\\s+([^>]+>)/i', "$1\n$2", $this->_html);
         
         // fill placeholders
         $this->_html = str_replace(
@@ -188,7 +188,7 @@ class Minify_HTML {
         $openStyle = "<style{$m[1]}";
         $css = $m[2];
         // remove HTML comments
-        $css = preg_replace_callback('/(?:^\\s*<!--|-->\\s*$)/', '', $css);
+        $css = preg_replace('/(?:^\\s*<!--|-->\\s*$)/', '', $css);
         
         // remove CDATA section markers
         $css = $this->_removeCdata($css);
@@ -215,7 +215,7 @@ class Minify_HTML {
         $ws2 = ($m[4] === '') ? '' : ' ';
  
         // remove HTML comments (and ending "//" if present)
-        $js = preg_replace_callback('/(?:^\\s*<!--\\s*|\\s*(?:\\/\\/)?\\s*-->\\s*$)/', '', $js);
+        $js = preg_replace('/(?:^\\s*<!--\\s*|\\s*(?:\\/\\/)?\\s*-->\\s*$)/', '', $js);
             
         // remove CDATA section markers
         $js = $this->_removeCdata($js);

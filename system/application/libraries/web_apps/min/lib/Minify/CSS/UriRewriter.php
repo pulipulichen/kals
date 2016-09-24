@@ -68,9 +68,9 @@ class Minify_CSS_UriRewriter {
         $css = self::_trimUrls($css);
         
         // rewrite
-        $css = preg_replace_callback('/@import\\s+([\'"])(.*?)[\'"]/'
+        $css = preg_replace('/@import\\s+([\'"])(.*?)[\'"]/'
             ,array(self::$className, '_processUriCB'), $css);
-        $css = preg_replace_callback('/url\\(\\s*([^\\)\\s]+)\\s*\\)/'
+        $css = preg_replace('/url\\(\\s*([^\\)\\s]+)\\s*\\)/'
             ,array(self::$className, '_processUriCB'), $css);
 
         return $css;
@@ -92,9 +92,9 @@ class Minify_CSS_UriRewriter {
         $css = self::_trimUrls($css);
         
         // append
-        $css = preg_replace_callback('/@import\\s+([\'"])(.*?)[\'"]/'
+        $css = preg_replace('/@import\\s+([\'"])(.*?)[\'"]/'
             ,array(self::$className, '_processUriCB'), $css);
-        $css = preg_replace_callback('/url\\(\\s*([^\\)\\s]+)\\s*\\)/'
+        $css = preg_replace('/url\\(\\s*([^\\)\\s]+)\\s*\\)/'
             ,array(self::$className, '_processUriCB'), $css);
 
         self::$_prependPath = null;
@@ -185,7 +185,7 @@ class Minify_CSS_UriRewriter {
         $uri = str_replace('/./', '/', $uri);
         // inspired by patch from Oleg Cherniy
         do {
-            $uri = preg_replace_callback('@/[^/]+/\\.\\./@', '/', $uri, 1, $changed);
+            $uri = preg_replace('@/[^/]+/\\.\\./@', '/', $uri, 1, $changed);
         } while ($changed);
         return $uri;
     }
@@ -251,7 +251,7 @@ class Minify_CSS_UriRewriter {
      */
     private static function _trimUrls($css)
     {
-        return preg_replace_callback('/
+        return preg_replace('/
             url\\(      # url(
             \\s*
             ([^\\)]+?)  # 1 = URI (assuming does not contain ")")

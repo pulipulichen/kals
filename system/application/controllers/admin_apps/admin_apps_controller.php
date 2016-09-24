@@ -126,13 +126,13 @@ class Admin_apps_controller extends Controller {
      */
     private function _compress_css($buffer) {
         /* Remove comments */
-        $buffer = preg_replace_callback("/\/\*(.*?)\*\//s", ' ', $buffer);
+        $buffer = preg_replace("/\/\*(.*?)\*\//s", ' ', $buffer);
 
         /* Remove new lines, spaces */
-        $buffer = preg_replace_callback("/(\s{2,}|[\r\n|\n|\t|\r])/", ' ', $buffer);
+        $buffer = preg_replace("/(\s{2,}|[\r\n|\n|\t|\r])/", ' ', $buffer);
 
         /* Join rules */
-        $buffer = preg_replace_callback('/([,|;|:|{|}]) /', '\\1', $buffer);
+        $buffer = preg_replace('/([,|;|:|{|}]) /', '\\1', $buffer);
         $buffer = str_replace(' {', '{', $buffer);
 
         /* Remove ; for the last attribute */

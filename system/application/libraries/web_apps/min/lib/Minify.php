@@ -561,8 +561,8 @@ class Minify {
      */
     protected static function _getCacheId($prefix = 'minify')
     {
-        $name = preg_replace_callback('/[^a-zA-Z0-9\\.=_,]/', '', self::$_controller->selectionId);
-        $name = preg_replace_callback('/\\.+/', '.', $name);
+        $name = preg_replace('/[^a-zA-Z0-9\\.=_,]/', '', self::$_controller->selectionId);
+        $name = preg_replace('/\\.+/', '.', $name);
         $name = substr($name, 0, 200 - 34 - strlen($prefix));
         $md5 = md5(serialize(array(
             Minify_Source::getDigest(self::$_controller->sources)
@@ -587,10 +587,10 @@ class Minify {
         if (self::$_options['bubbleCssImports']) {
             // bubble CSS imports
             preg_match_all('/@import.*?;/', $css, $imports);
-            $css = implode('', $imports[0]) . preg_replace_callback('/@import.*?;/', '', $css);
+            $css = implode('', $imports[0]) . preg_replace('/@import.*?;/', '', $css);
         } else if ('' !== self::$importWarning) {
             // remove comments so we don't mistake { in a comment as a block
-            $noCommentCss = preg_replace_callback('@/\\*[\\s\\S]*?\\*/@', '', $css);
+            $noCommentCss = preg_replace('@/\\*[\\s\\S]*?\\*/@', '', $css);
             $lastImportPos = strrpos($noCommentCss, '@import');
             $firstBlockPos = strpos($noCommentCss, '{');
             if (false !== $lastImportPos

@@ -265,7 +265,7 @@ class Cli {
                 $v = getcwd() . "/$v";
                 $v = str_replace('/./', '/', $v);
                 do {
-                    $v = preg_replace_callback('@/[^/]+/\\.\\./@', '/', $v, 1, $changed);
+                    $v = preg_replace('@/[^/]+/\\.\\./@', '/', $v, 1, $changed);
                 } while ($changed);
                 $r[$k] = $v;
             }

@@ -736,7 +736,7 @@ class FirePHP {
    * @return string
    */
   protected function _standardizePath($Path) {
-    return preg_replace_callback('/\\\\+/','/',$Path);    
+    return preg_replace('/\\\\+/','/',$Path);    
   }
   
   /**
@@ -769,7 +769,7 @@ class FirePHP {
     if(strpos($File,'\\')) {
       /* First strip down to single \ */
       
-      $file = preg_replace_callback('/\\\\+/','\\',$File);
+      $file = preg_replace('/\\\\+/','\\',$File);
       
       return $file;
     }

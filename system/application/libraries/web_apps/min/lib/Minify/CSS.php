@@ -66,7 +66,7 @@ class Minify_CSS {
         ), $options);
         
         if ($options['removeCharsets']) {
-            $css = preg_replace_callback('/@charset[^;]+;\\s*/', '', $css);
+            $css = preg_replace('/@charset[^;]+;\\s*/', '', $css);
         }
         if ($options['compress']) {
             if (! $options['preserveComments']) {

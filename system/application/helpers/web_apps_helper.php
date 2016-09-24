@@ -213,7 +213,7 @@ if ( !function_exists("kals_json_encode")) {
         //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
         $arr = json_encode($arr);
         
-        $arr = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+        $arr = preg_replace('/\\\\u([0-9a-f]{4})/i',
                         function($matches) {
                             return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
                         }, $arr);
@@ -225,7 +225,7 @@ if ( !function_exists("kals_json_encode")) {
         array_walk_recursive($arr, 
             function (&$item, $key) { 
                 if (is_string($item)) {
-                    $item = preg_replace_callback('/\\\\u([0-9a-f]{4})/i',
+                    $item = preg_replace('/\\\\u([0-9a-f]{4})/i',
                         function($matches) {
                             return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
                         }, $item);
@@ -466,6 +466,21 @@ if ( ! function_exists('kals_mobile_log'))
             'action'=> $action,
             'note'=>$note
         ));
+    }
+}
+
+if (function_exists("remove_css_comments") === FALSE) {
+    
+    function remove_css_comments($css) {
+        $REMOVE_CSS_COMMENTS_REGEX = array(
+            "`^([\t\s]+)`ism"=>'',
+            "`^\/\*(.+?)\*\/`ism"=>"",
+            "`([\n\A;]+)\/\*(.+?)\*\/`ism"=>"$1",
+            "`([\n\A;\s]+)//(.+?)[\n\r]`ism"=>"$1\n",
+            "`(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+`ism"=>"\n"
+        );
+        
+        return preg_replace(array_keys($REMOVE_CSS_COMMENTS_REGEX),$REMOVE_CSS_COMMENTS_REGEX,$css);
     }
 }
 

@@ -44,7 +44,7 @@ class Minify_Lines {
         // Hackily rewrite strings with XPath expressions that are
         // likely to throw off our dumb parser (for Prototype 1.6.1).
         $content = str_replace('"/*"', '"/"+"*"', $content);
-        $content = preg_replace_callback('@([\'"])(\\.?//?)\\*@', '$1$2$1+$1*', $content);
+        $content = preg_replace('@([\'"])(\\.?//?)\\*@', '$1$2$1+$1*', $content);
 
         $lines = explode("\n", $content);
         $numLines = count($lines);

@@ -303,8 +303,8 @@ class JavaScriptPacker {
 
 		$encode = ($this->_encoding > 62) ? '_encode95' : $this->_getEncoder($ascii);
 		$encode = $this->_getJSFunction($encode);
-		$encode = preg_replace_callback('/_encoding/','$ascii', $encode);
-		$encode = preg_replace_callback('/arguments\\.callee/','$encode', $encode);
+		$encode = preg_replace('/_encoding/','$ascii', $encode);
+		$encode = preg_replace('/arguments\\.callee/','$encode', $encode);
 		$inline = '\\$count' . ($ascii > 10 ? '.toString(\\$ascii)' : '');
 
 		// $decode: code snippet to speed up decoding
@@ -312,14 +312,14 @@ class JavaScriptPacker {
 			// create the decoder
 			$decode = $this->_getJSFunction('_decodeBody');
 			if ($this->_encoding > 62)
-				$decode = preg_replace_callback('/\\\\w/', '[\\xa1-\\xff]', $decode);
+				$decode = preg_replace('/\\\\w/', '[\\xa1-\\xff]', $decode);
 			// perform the encoding inline for lower ascii values
 			elseif ($ascii < 36)
-				$decode = preg_replace_callback($ENCODE, $inline, $decode);
+				$decode = preg_replace($ENCODE, $inline, $decode);
 			// special case: when $count==0 there are no keywords. I want to keep
 			//  the basic shape of the unpacking funcion so i'll frig the code...
 			if ($count == 0)
-				$decode = preg_replace_callback($this->_safeRegExp('($count)\\s*=\\s*1'), '$1=0', $decode, 1);
+				$decode = preg_replace($this->_safeRegExp('($count)\\s*=\\s*1'), '$1=0', $decode, 1);
 		}
 
 		// boot function
@@ -327,20 +327,20 @@ class JavaScriptPacker {
 		if ($this->_fastDecode) {
 			// insert the decoder
 			$this->buffer = $decode;
-			$unpack = preg_replace_callback('/\\{/', array(&$this, '_insertFastDecode'), $unpack, 1);
+			$unpack = preg_replace('/\\{/', array(&$this, '_insertFastDecode'), $unpack, 1);
 		}
-		$unpack = preg_replace_callback('/"/', "'", $unpack);
+		$unpack = preg_replace('/"/', "'", $unpack);
 		if ($this->_encoding > 62) { // high-ascii
 			// get rid of the word-boundaries for regexp matches
-			$unpack = preg_replace_callback('/\'\\\\\\\\b\'\s*\\+|\\+\s*\'\\\\\\\\b\'/', '', $unpack);
+			$unpack = preg_replace('/\'\\\\\\\\b\'\s*\\+|\\+\s*\'\\\\\\\\b\'/', '', $unpack);
 		}
 		if ($ascii > 36 || $this->_encoding > 62 || $this->_fastDecode) {
 			// insert the encode function
 			$this->buffer = $encode;
-			$unpack = preg_replace_callback('/\\{/', array(&$this, '_insertFastEncode'), $unpack, 1);
+			$unpack = preg_replace('/\\{/', array(&$this, '_insertFastEncode'), $unpack, 1);
 		} else {
 			// perform the encoding inline
-			$unpack = preg_replace_callback($ENCODE, $inline, $unpack);
+			$unpack = preg_replace($ENCODE, $inline, $unpack);
 		}
 		// pack the boot function too
 		$unpackPacker = new JavaScriptPacker($unpack, 0, false, true);
@@ -411,7 +411,7 @@ class JavaScriptPacker {
 	}
 	
 	private function _safeRegExp($string) {
-		return '/'.preg_replace_callback('/\$/', '\\\$', $string).'/';
+		return '/'.preg_replace('/\$/', '\\\$', $string).'/';
 	}
 	
 	private function _encodePrivate($charCode) {
@@ -420,12 +420,12 @@ class JavaScriptPacker {
 	
 	// protect characters used by the parser
 	private function _escape($script) {
-		return preg_replace_callback('/([\\\\\'])/', '\\\$1', $script);
+		return preg_replace('/([\\\\\'])/', '\\\$1', $script);
 	}
 	
 	// protect high-ascii characters already in the script
 	private function _escape95($script) {
-		return preg_replace_callback(
+		return preg_replace(
 			'/[\\xa1-\\xff]/',
 			array(&$this, '_escape95Bis'),
 			$script
@@ -604,7 +604,7 @@ class ParseMaster {
 		$regexp .= ($this->ignoreCase) ? 'i' : '';
 		
 		$string = $this->_escape($string, $this->escapeChar);
-		$string = preg_replace_callback(
+		$string = preg_replace(
 			$regexp,
 			array(
 				&$this,
@@ -614,7 +614,7 @@ class ParseMaster {
 		);
 		$string = $this->_unescape($string, $this->escapeChar);
 		
-		return preg_replace_callback($this->DELETED, '', $string);
+		return preg_replace($this->DELETED, '', $string);
 	}
 		
 	public function reset() {
@@ -694,7 +694,7 @@ class ParseMaster {
 	private function _escape($string, $escapeChar) {
 		if ($escapeChar) {
 			$this->buffer = $escapeChar;
-			return preg_replace_callback(
+			return preg_replace(
 				'/\\' . $escapeChar . '(.)' .'/',
 				array(&$this, '_escapeBis'),
 				$string
@@ -738,7 +738,7 @@ class ParseMaster {
 	}
 	
 	private function _internalEscape($string) {
-		return preg_replace_callback($this->ESCAPE, '', $string);
+		return preg_replace($this->ESCAPE, '', $string);
 	}
 }
 ?>
