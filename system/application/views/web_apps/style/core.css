@@ -10,7 +10,8 @@
 }
 
 .KALS.check-css {
-	color:rgb(128, 128, 128);
+    display: block !important;
+    color:rgb(128, 128, 128);
 }
 
 @font-face {

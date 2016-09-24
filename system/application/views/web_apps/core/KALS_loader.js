@@ -490,19 +490,27 @@ this.load_styles = function (_style_list, _callback) {
             _style = this.get_libraries_url() + _style_url;
         }
             
+        var _head = $("head");
+        
         //檢查一下是否已有該title
         var _link = null;
+        
+        var _link_title = "";
+        if (_style_title !== null) {
+            _link_title = ' title="'+_style_title+'"';
+        }
+        
         if (_style_title !== null) {
             _link = $('link[type="text/css"][rel="stylesheet"][title="' + _style_title + '"]');
             if (_link.length === 0) {
-                _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
+                _link = $('<link type="text/css" '+_link_title+' rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
             }
             else {
                 _link.attr('href', _style);
             }
         }
         else {
-            _link = $('<link type="text/css" rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
+            _link = $('<link type="text/css" '+_link_title+'  rel="stylesheet" href="' + _style + '" />').appendTo($('head'));
         }
         
         _link.attr('onreadystatechange', function () {
@@ -513,12 +521,19 @@ this.load_styles = function (_style_list, _callback) {
             .attr('onload', function () {
                 _check_complete(this.href);
             });
-            
-        if (_style_title !== null) {
-            _link.attr('title', _style_title);
-        }
     }
     return this;
+};
+
+this._load_style_element = function (_href) {
+    var link = document.createElement( "link" );
+    link.href = _href;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.media = "screen,print";
+
+    document.getElementsByTagName( "head" )[0].appendChild( link );
+    return $(link);
 };
 
 /**

@@ -9,7 +9,7 @@
         'request_uri' => $_SERVER["REQUEST_URI"]
     );
 
-    $json = json_encode($data);
+    $json = json_encode($data, JSON_UNESCAPED_UNICODE);
 
     //log區
     $array_data = $data;

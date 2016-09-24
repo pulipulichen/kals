@@ -70,7 +70,7 @@ if ( ! function_exists('display_jsonp'))
 {
     function display_jsonp($callback, $json)
     {
-        $json = json_encode($json);
+        $json = json_encode($json, JSON_UNESCAPED_UNICODE);
         $pos = stripos($callback, '='); // 取得 = 號的位置
         $jsonp = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
         echo "{$jsonp}({$json})"; // 輸出
@@ -209,14 +209,18 @@ if ( !function_exists("kals_json_encode")) {
                 });
         }
         
+        
+        //$arr = urlencode($arr);
         //return mb_decode_numericentity(json_encode($arr), array (0x80, 0xffff, 0, 0xffff), 'UTF-8');
         //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');
-        $arr = json_encode($arr);
+        $arr = json_encode($arr, JSON_UNESCAPED_UNICODE);
         
-        $arr = preg_replace('/\\\\u([0-9a-f]{4})/i',
-                        function($matches) {
-                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
-                        }, $arr);
+        //$arr = urldecode($arr);
+        
+//        $arr = preg_replace('/\\\\u([0-9a-f]{4})/i',
+//                        function($matches) {
+//                            return mb_convert_encoding(pack('H*', $matches[1]), 'UTF-8', 'UTF-16');
+//            }, $arr);
         return $arr;
         
         //return mb_convert_encoding($arr, 'HTML-ENTITIES', 'utf-8');

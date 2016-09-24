@@ -159,11 +159,12 @@ class Admin_apps_controller extends Controller {
 
     protected function _display_jsonp($object, $callback = NULL)
     {
-        if (is_null($callback))
+        if (is_null($callback)) {
             return $object;
+        }
 
         send_js_header($this->output);
-        $json = json_encode($object);
+        $json = json_encode($object, JSON_UNESCAPED_UNICODE);
         $pos = stripos($callback, '='); // 取得 = 號的位置
         $callback_hash = ($pos === false) ?  '' : substr($callback, $pos+1);  // 擷取 = 後面的字串
         //echo "{$jsonp}({$json})"; // 輸出

@@ -49,11 +49,11 @@ Init_context.prototype._$onstart = function () {
 
             // 完成KALS_context的載入
             KALS_context.init_context.complete('load');
+            
+            $(function () {
+                _this._check_css_setup();
+            });
         });
-    });
-        
-    $(function () {
-       _this._check_css_setup();	
     });
 };
 
@@ -84,7 +84,7 @@ Init_context.prototype._check_css_setup = function () {
        .hide()
        .appendTo($("body"));
    
-   this._check_css_loaded();
+   return this._check_css_loaded();
 };
 
 /**
@@ -94,6 +94,9 @@ Init_context.prototype._check_css_loaded = function () {
     
     var _ui = $(".KALS.check-css");
     var _color = _ui.css("color");
+    
+    // $(".KALS.check-css").css("color");
+    
     var _normal_color = "rgb(128, 128, 128)";
     var _assert = (_color === _normal_color);
 	
@@ -105,6 +108,7 @@ Init_context.prototype._check_css_loaded = function () {
         if (this._retry_check_css_count > 3) {
             var _message = KALS_context.lang.line("exception.css_not_load_complete");
             
+            return;
             if (window.confirm(_message)) {
                 location.reload();
             }
